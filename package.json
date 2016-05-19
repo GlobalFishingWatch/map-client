@@ -1,0 +1,22 @@
+{
+  "name": "global-fishing-watch",
+  "version": "1.0.0",
+  "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vizzuality/GlobalFishingWatch.git"
+  },
+  "keywords": [
+    "visualisation"
+  ],
+  "author": "Vizzuality <hello@vizzuality.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vizzuality/GlobalFishingWatch/issues"
+  },
+  "homepage": "https://github.com/Vizzuality/GlobalFishingWatch#readme"
+}
