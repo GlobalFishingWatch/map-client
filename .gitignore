@@ -13,3 +13,6 @@
 
 # ENV variables
 .env
+
+# Compiled files
+/dist
