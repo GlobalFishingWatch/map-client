@@ -5,9 +5,11 @@ import {render} from 'react-dom';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
-import {syncHistoryWithStore, routerReducer} from 'react-router-redux';
-import AppContainer from './containers/app';
+import {browserHistory} from 'react-router';
+import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux';
+import Routes from './routes';
+
+import '../styles/index.scss';
 
 /**
  * Reducers
@@ -18,6 +20,9 @@ const reducer = combineReducers({
   routing: routerReducer
 });
 
+
+const middlewareRouter = routerMiddleware(browserHistory);
+
 /**
  * Global state
  * @info(http://redux.js.org/docs/basics/Store.html)
@@ -25,6 +30,7 @@ const reducer = combineReducers({
  */
 const store = createStore(
   reducer,
+  applyMiddleware(middlewareRouter),
   applyMiddleware(thunk)
 );
 
@@ -37,9 +43,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 render(
   <Provider store={store}>
-    <Router history={history}>
-      <Route path="/" component={AppContainer} />
-    </Router>
+    <Routes history={history}/>
   </Provider>,
   document.getElementById('app')
 );
