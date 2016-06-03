@@ -1,13 +1,15 @@
 'use strict';
-
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
 
   context: path.join(__dirname, 'app'),
 
   entry: [
+    'whatwg-fetch',
     './src/index.jsx'
   ],
 
@@ -22,18 +24,26 @@ const config = {
       test: /\.(js|jsx)?/,
       exclude: /node_modules/,
       loader: 'babel'
+    }, {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!sass?sourceMap')
     }]
   },
 
   resolve: {
+    modulesDirectories: ['node_modules', 'app'],
     extensions: ['', '.js', '.jsx']
   },
 
-  plugins: []
+  plugins: [
+    new ExtractTextPlugin('styles.css', {
+      allChunks: true
+    })
+  ]
 
 };
 
-if (!process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
@@ -42,6 +52,13 @@ if (!process.env.NODE_ENV === 'production') {
         unused: true,
         dead_code: true,
         warnings: false
+      }
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Global Fishing Watch',
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
       }
     })
   );
