@@ -11,13 +11,16 @@ import Routes from './routes';
 
 import '../styles/index.scss';
 
+import vesselReducer from './reducers/vessel';
+
 /**
  * Reducers
  * @info(http://redux.js.org/docs/basics/Reducers.html)
  * @type {Object}
  */
 const reducer = combineReducers({
-  routing: routerReducer
+  routing: routerReducer,
+  vessel: vesselReducer
 });
 
 

@@ -1,0 +1,2 @@
+export const VESSEL_INIT = 'VESSEL_INIT';
+export const VESSEL_ZOOM_UPDATE = 'VESSEL_ZOOM_UPDATE';

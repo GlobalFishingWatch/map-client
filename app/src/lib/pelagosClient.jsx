@@ -28,6 +28,7 @@ class PelagosClient {
   }
 
   handleData() {
+    var self = this;
     if (!this.request)
       return;
     if (this.error)
