@@ -3,7 +3,7 @@
 import {connect} from 'react-redux';
 import Map from '../components/map';
 
-import {init} from '../actions/vessel';
+import {init, loadZoom, move} from '../actions/vessel';
 
 const mapStateToProps = (state) => {
   return {
@@ -12,7 +12,9 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    initVesselLayer: () => {dispatch(init());}
+    initVesselLayer: () => {dispatch(init());},
+    loadVesselLayer: (map) => {dispatch(loadZoom(map))},
+    move: (map) => {dispatch(move(map))}
   };
 }
 

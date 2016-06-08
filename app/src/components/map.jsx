@@ -6,6 +6,21 @@ import {default as ScriptjsLoader} from "react-google-maps/lib/async/ScriptjsLoa
 import createOverlayLayer from './layers/vesselONeLayer';
 import map from '../../styles/index.scss';
 
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
 class Map extends Component {
 
   onClick() {
@@ -13,34 +28,42 @@ class Map extends Component {
 
   }
   onZoomChanged() {
-    // this.refs.map.props.map.overlayMapTypes.removeAt(0);
-    // this.refs.map.props.map.overlayMapTypes.insertAt(0, new VesselLayer(this.refs.map));
-    console.log(this.refs.map.getZoom());
-    this.state.overlay.regenerate();
+      this.state.overlay.regenerate();
+    this.props.loadVesselLayer(this.refs.map.props.map);
+  }
+
+  onBoundsChanged(){
+    debounce(function(){
+      this.props.move(this.refs.map.props.map);
+    }.bind(this), 2000)();
+
+
   }
 
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
-
       this.props.initVesselLayer();
+      var Overlay = createOverlayLayer(google);
+      var overlay = new Overlay(this.refs.map.props.map);
+      this.setState({overlay: overlay});
+      this.props.loadVesselLayer(this.refs.map.props.map);
     }
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      if (nextProps.vessel.visible) {
-        var bounds = new google.maps.LatLngBounds(new google.maps.LatLng(62.281819, -150.287132), new google.maps.LatLng(62.400471, -150.005608));
+      if(nextProps.vessel.data !== this.props.vessel.data ){
+        if(!nextProps.vessel.data){
+          // this.state.overlay.regenerate();
+        } else {
+          let keys = Object.keys(nextProps.vessel.data);
+          for (let i=0, length = keys.length; i < length; i++){
+            if(!this.props.vessel.data || !this.props.vessel.data[keys[i]]){
+              this.state.overlay.drawTile(nextProps.vessel.data[keys[i]]);
+            }
+          }
+        }
 
-        // The photograph is courtesy of the U.S. Geological Survey.
-        var srcImage = 'https://developers.google.com/maps/documentation/' +
-        'javascript/examples/full/images/talkeetna.png';
-
-        var Overlay = createOverlayLayer(google);
-        var overlay = new Overlay(this.refs.map.props.map);
-        this.setState({overlay: overlay});
-        // this.refs.map.props.map.overlayMapTypes.insertAt(0, new VesselLayer(this.refs.map));
-        // this.refs.map.props.map.data.loadGeoJson('http://localhost:8080/geojson.json');
-        // this.refs.map.props.map.data.setStyle({fillColor: 'green', strokeWeight: 3});
       }
     }
   }
@@ -61,6 +84,9 @@ class Map extends Component {
       }
       onIdle = {
         this.onIdle.bind(this)
+      }
+      onBoundsChanged = {
+        this.onBoundsChanged.bind(this)
       }
       onZoomChanged = {
         this.onZoomChanged.bind(this)
