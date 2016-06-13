@@ -4,7 +4,9 @@ import {connect} from 'react-redux';
 import App from '../components/App';
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    loading: state.vessel.loading
+  };
 };
 const mapDispatchToProps = (dispatch) => {
   return {};

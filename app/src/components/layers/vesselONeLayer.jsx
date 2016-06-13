@@ -6,10 +6,13 @@ var url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/da
 var createOverlayLayer = function(google) {
   function VesselLayer(map) {
 
-
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
+    this.offset = {
+      x: 0,
+      y: 0
+    }
 
     var canvas = document.createElement('canvas');
     canvas.className = 'this.layer.slug';
@@ -34,22 +37,64 @@ var createOverlayLayer = function(google) {
   }
 
   VesselLayer.prototype = new google.maps.OverlayView();
-  VesselLayer.prototype.regenerate = function(){
+  VesselLayer.prototype.regenerate = function() {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
+
+  VesselLayer.prototype.recalculatePosition = function() {
+    this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    var map = this.getMap();
+
+    // topLeft can't be calculated from map.getBounds(), because bounds are
+    // clamped to -180 and 180 when completely zoomed out. Instead, calculate
+    // left as an offset from the center, which is an unwrapped LatLng.
+    var top = map.getBounds().getNorthEast().lat();
+    var center = map.getCenter();
+    var scale = Math.pow(2, map.getZoom());
+    var left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
+    this.topLeft_ = new google.maps.LatLng(top, left);
+
+    // Canvas position relative to draggable map's container depends on
+    // overlayView's projection, not the map's. Have to use the center of the
+    // map for this, not the top left, for the same reason as above.
+    var projection = this.getProjection();
+    var divCenter = projection.fromLatLngToDivPixel(center);
+    var offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
+    var offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
+    this.offset = {
+      x: offsetX,
+      y: offsetY
+    }
+    this.canvas.style[VesselLayer.CSS_TRANSFORM_] = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+  };
+
+  VesselLayer.CSS_TRANSFORM_ = (function() {
+    var div = document.createElement('div');
+    var transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+    for (var i = 0; i < transformProps.length; i++) {
+      var prop = transformProps[i];
+      if (div.style[prop] !== undefined) {
+        return prop;
+      }
+    }
+
+    // return unprefixed version by default
+    return transformProps[0];
+  })();
+
   VesselLayer.prototype.drawTile = function(data) {
     var overlayProjection = this.getProjection();
     var ctx = this.canvas.ctx;
     for (var i = 0, length = data.latitude.length / 2; i < length; i++) {
 
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-      this.canvas.ctx.fillRect(coords.x, coords.y, 1, 1);
+      this.canvas.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
     }
   }
   VesselLayer.prototype.onAdd = function() {
 
     var panes = this.getPanes();
-
 
     panes.overlayLayer.appendChild(this.canvas);
     // var closure = function (i, bounds){
@@ -93,7 +138,6 @@ var createOverlayLayer = function(google) {
     this.canvas.parentNode.removeChild(this.canvas);
     this.canvas = null;
   };
-
 
   return VesselLayer;
 }

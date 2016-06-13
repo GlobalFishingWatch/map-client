@@ -6,7 +6,12 @@ import Map from '../containers/map';
 class App extends Component {
 
   render() {
-    return (<Map></Map>);
+    return (
+      <div>
+        {this.props.loading && <div>CArgando....</div>}
+        <Map></Map>
+      </div>
+    );
   }
 
 }
