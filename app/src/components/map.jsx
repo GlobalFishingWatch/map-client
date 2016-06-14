@@ -47,6 +47,36 @@ class Map extends Component {
 		this.props.addLayer(url);
   }
 
+  timelineStart() {
+    var data    = this.props.vessel.data;
+    var newData = new Array(365);
+    var m2015 = 1420070400000;
+    var mDay  = 86400000;
+    for (var i = 0; i< 365; i++){ newData[i]={latitude: [], longitude: []} }
+
+    for (var prop in data) {
+      for (var i = 0; i < data[prop].datetime.length; i++) {
+        var cTime = data[prop].datetime[i];
+        cTime = ~~((cTime - m2015) / mDay);
+        var refIndex = newData[cTime];
+        if (! !!refIndex) break;
+        refIndex.latitude.push(data[prop].latitude[i]);
+        refIndex.longitude.push(data[prop].longitude[i]);
+      }
+    }
+    this.animateMapData(newData);
+  }
+
+  animateMapData(data,ite) {
+    var ite = ite || 0;
+    if (ite == data.length) return;
+    setTimeout(function() {
+      this.state.overlay.regenerate();
+      this.state.overlay.drawTile(data[ite]);
+      this.animateMapData(data,ite+1);
+    }.bind(this), 100);
+  }
+
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
       this.props.initVesselLayer();
@@ -54,10 +84,6 @@ class Map extends Component {
       var overlay = new Overlay(this.refs.map.props.map);
       this.setState({overlay: overlay});
       this.props.loadVesselLayer(this.refs.map.props.map);
-			var map = this.refs.map.props.map;
-
-      // cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
-			// .addTo(map, 1);
     }
   }
 
@@ -90,7 +116,8 @@ class Map extends Component {
   render() {
 
 		return <div>
-			<button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
+      <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
+			<button onClick={this.timelineStart.bind(this)} className={map.timeline}>PLAY</button>
 				<GoogleMapLoader
 						  containerElement={
 						    <div className = {

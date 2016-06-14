@@ -14,9 +14,14 @@ body {
   z-index: 5;
 }
 
-.addButton{
+.addButton,
+.timeline {
   position: absolute !important;;
   top: 50px;
   left: 10px;
   z-index: 10;
+}
+
+.timeline {
+  top: 70px
 }

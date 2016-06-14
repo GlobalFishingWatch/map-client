@@ -1,8 +1,6 @@
 import calculateBounds from '../../lib/calculateBounds';
 import PelagosClient from '../../lib/pelagosClient';
 
-var url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
-
 var createOverlayLayer = function(google) {
   function VesselLayer(map) {
 
@@ -83,53 +81,26 @@ var createOverlayLayer = function(google) {
     return transformProps[0];
   })();
 
+  VesselLayer.prototype.timelineStart = function() {
+    this.drawTile()
+  };
+
   VesselLayer.prototype.drawTile = function(data) {
     var overlayProjection = this.getProjection();
-    var ctx = this.canvas.ctx;
-    for (var i = 0, length = data.latitude.length / 2; i < length; i++) {
-
+    for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       this.canvas.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
     }
   }
   VesselLayer.prototype.onAdd = function() {
-
     var panes = this.getPanes();
-
     panes.overlayLayer.appendChild(this.canvas);
-    // var closure = function (i, bounds){
-    //   setTimeout(function(){
-    //     new PelagosClient().obtainTile(url + this.bounds[i].toString()).then(this.drawTile.bind(this));
-    //   }.bind(this), i * 4000);
-    // };
-    // for (var i = 0, length = this.bounds.length; i < length; i++) {
-    //   new PelagosClient().obtainTile(url + this.bounds[i].toString()).then(this.drawTile.bind(this));
-    //
-    // }
   };
 
+  // We use the south-west and north-east
+  // coordinates of the overlay to peg it to the correct position and size.
+  // To do this, we need to retrieve the projection from the overlay.
   VesselLayer.prototype.draw = function() {
-
-    // // We use the south-west and north-east
-    // // coordinates of the overlay to peg it to the correct position and size.
-    // // To do this, we need to retrieve the projection from the overlay.
-    // var overlayProjection = this.getProjection();
-    //
-    // var canvas = this.canvas;
-    // // var sw = overlayProjection.fromLatLngToDivPixel(bound.getSouthWest());
-    // // var ne = overlayProjection.fromLatLngToDivPixel(bound.getNorthEast());
-    // var ctx = canvas.getContext('2d');
-    // canvas.style.left = 0 + 'px';
-    // canvas.style.top = 0 + 'px';
-    // ctx.width = canvas.width = window.innerWidth;
-    // ctx.height = canvas.height = window.innerHeight;
-    //
-    // ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    // ctx.fillRect(0, 0, 1, 1);
-    // canvas.ctx = ctx;
-    // for (var i = 0, length = this.bounds.length; i < length; i++) {
-    //   new PelagosClient().obtainTile(url + this.bounds[i].toString()).then(this.drawTile.bind(this));
-    // }
   };
 
   // The onRemove() method will be called automatically from the API if

@@ -40,7 +40,6 @@ export function loadZoom(map){
       type: VESSEL_ZOOM_UPDATE
     });
     let bounds = calculateBounds(map);
-    console.log('Bounds', bounds.length);
     var obtainTile = function(key){
       new PelagosClient().obtainTile(url + key).then(function(data){
         let obj = {};
@@ -65,7 +64,6 @@ export function move(map){
   return function(dispatch, getState){
     let state = getState();
     let bounds = calculateBounds(map);
-    console.log('Bounds', bounds.length);
     var obtainTile = function(key){
       new PelagosClient().obtainTile(url + key).then(function(data){
         let obj = {};

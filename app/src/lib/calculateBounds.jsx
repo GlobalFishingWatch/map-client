@@ -91,32 +91,8 @@ var getTiles = function(bounds){
 }
 
 var getUrls = function(map){
-  let bounds = getBounds(map);
-  let set = getTiles(bounds).set;
-  console.log(set);
-
-  let geojson = {"type": "FeatureCollection",
-  "features":[]};
-  for(var i= 0; i< set.length; i++){
-
-    let feature = {"type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          []
-        ]
-      }};
-      feature.geometry.coordinates[0].push([set[i].left,set[i].bottom ])
-      feature.geometry.coordinates[0].push([set[i].left,set[i].top ]);
-      feature.geometry.coordinates[0].push([set[i].right,set[i].top ]);
-      feature.geometry.coordinates[0].push([set[i].right,set[i].bottom ]);
-      feature.geometry.coordinates[0].push([set[i].left,set[i].bottom ]);
-      geojson.features.push(feature);
-  }
-
-  console.log(JSON.stringify(geojson));
-  return set;
+  let bounds = getBounds(map);  
+  return getTiles(bounds).set;
 }
 
 export default getUrls;
