@@ -74,7 +74,7 @@ class Map extends Component {
       this.state.overlay.regenerate();
       this.state.overlay.drawTile(data[ite]);
       this.animateMapData(data,ite+1);
-    }.bind(this), 100);
+    }.bind(this), 50);
   }
 
   onIdle() {
