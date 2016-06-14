@@ -53,7 +53,7 @@ class Map extends Component {
     var m2015 = 1420070400000;
     var mDay = 86400000;
     for (var i = 0; i < 365; i++) {
-      newData[i] = {latitude: [], longitude: []}
+      newData[i] = {latitude: [], longitude: [], weight: []}
     }
 
     for (var prop in data) {
@@ -64,6 +64,7 @@ class Map extends Component {
         if (!!!refIndex) break;
         refIndex.latitude.push(data[prop].latitude[i]);
         refIndex.longitude.push(data[prop].longitude[i]);
+        refIndex.weight.push(data[prop].weight[i]);
       }
     }
     this.animateMapData(newData);
@@ -130,7 +131,7 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {4} defaultCenter = {{lat: 0, lng: 0}}
+								<GoogleMap ref="map" defaultZoom = {0} defaultCenter = {{lat: 0, lng: 0}}
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }

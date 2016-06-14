@@ -87,9 +87,14 @@ var createOverlayLayer = function (google) {
 
   VesselLayer.prototype.drawTile = function (data) {
     var overlayProjection = this.getProjection();
+    var ctx = this.canvas.ctx;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-      this.canvas.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
+        if (data.weight[i] > 0.75) {ctx.fillStyle = 'rgb(0,0,0)'}
+        else if (data.weight[i] > 0.50) {ctx.fillStyle = 'rgb(255,0,0)'}
+        else if (data.weight[i] > 0.25) {ctx.fillStyle = 'rgb(0,255,0)'}
+        else {ctx.fillStyle = 'rgb(0,0,255)'}
+      ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
     }
   }
   VesselLayer.prototype.onAdd = function () {

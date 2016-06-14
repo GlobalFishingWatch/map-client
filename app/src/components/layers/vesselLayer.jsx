@@ -53,7 +53,10 @@ VesselLayer.prototype.getTile = function (coord, zoom, ownerDocument) {
   ctx.height = canvas.height = this.tileSize.height;
 
   canvas.ctx = ctx;
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
+  if (data.weight[i] > 0.75) {ctx.fillStyle = 'rgb(0,0,0)'}
+  else if (data.weight[i] > 0.50) {ctx.fillStyle = 'rgb(255,0,0)'}
+  else if (data.weight[i] > 0.25) {ctx.fillStyle = 'rgb(0,255,0)'}
+  else {ctx.fillStyle = 'rgb(0,0,255)'}
   ctx.fillRect(0, 0, this.tileSize.width, this.tileSize.height);
 
   return canvas;
