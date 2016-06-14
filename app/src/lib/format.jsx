@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 class Format {
 
-  static initialize(args){
+  static initialize(args) {
     var self = this;
     self.header = {length: 0, colsByName: {}};
     self.data = {};

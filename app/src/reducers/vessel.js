@@ -5,7 +5,7 @@ const initialState = {
 };
 import {VESSEL_INIT, VESSEL_ZOOM_UPDATE, VESSEL_TILE_LOADED, SHOW_LOADING, RESET_CACHE, ADD_LAYER} from '../constants';
 
-export default function(state = initialState, action){
+export default function (state = initialState, action) {
   switch (action.type) {
     case VESSEL_INIT:
       return Object.assign({}, state, action.payload);

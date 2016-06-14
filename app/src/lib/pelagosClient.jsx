@@ -7,7 +7,7 @@ class PelagosClient {
   }
 
   obtainTile(url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var self = this;
       this.request = null;
       if (typeof XMLHttpRequest != 'undefined') {
@@ -36,9 +36,9 @@ class PelagosClient {
 
     if (this.request.readyState == 4) {
       /* HTTP reports success with a 200 status. The file protocol
-             reports success with zero. HTTP returns zero as a status
-             code for forbidden cross domain requests.
-             https://developer.mozilla.org/En/Using_XMLHttpRequest */
+       reports success with zero. HTTP returns zero as a status
+       code for forbidden cross domain requests.
+       https://developer.mozilla.org/En/Using_XMLHttpRequest */
       var success = this.request.status == 200 || (this.isFileUri && this.request.status == 0);
       if (!success) {
         this.reject('Could not load ' + this.url + ' due to HTTP status ' + this.status);
@@ -87,7 +87,8 @@ class PelagosClient {
           col.max = col.max + col.offset;
 
         self.rowLen += col.typespec.size;
-      };
+      }
+      ;
 
       self.offset += self.headerLen;
 
@@ -98,7 +99,7 @@ class PelagosClient {
       if (self.header.orientation != 'rowwise' && self.header.orientation != 'columnwise') {
         self.errorLoading({
           orientation: self.header.orientation,
-          toString: function() {
+          toString: function () {
             return 'Could not load ' + this.url + ' due to unsupported file orientation. Orientation: ' + this.orientation + '. Supported orientations: rowwise, columnwise.';
           }
         });
@@ -139,7 +140,7 @@ class PelagosClient {
         for (var colidx = 0; colidx < self.header.cols.length; colidx++) {
           var col = self.header.cols[colidx];
 
-          colValues = new(eval(col.typespec.array))(response.slice(self.offset, self.offset + col.typespec.size * self.header.length))
+          colValues = new (eval(col.typespec.array))(response.slice(self.offset, self.offset + col.typespec.size * self.header.length))
           self.offset += self.header.length * col.typespec.size;
 
           result[col.name] = colValues;

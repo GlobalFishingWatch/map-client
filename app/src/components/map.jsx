@@ -8,20 +8,20 @@ import map from '../../styles/index.scss';
 
 function debounce(func, wait, immediate) {
   var timeout;
-  return function() {
+  return function () {
     var context = this,
       args = arguments;
-    var later = function() {
+    var later = function () {
       timeout = null;
       if (!immediate)
         func.apply(context, args);
-      };
+    };
     var callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
     if (callNow)
       func.apply(context, args);
-    };
+  };
 };
 
 class Map extends Component {
@@ -44,22 +44,24 @@ class Map extends Component {
 
   addLayer() {
     let url = window.prompt('Url');
-		this.props.addLayer(url);
+    this.props.addLayer(url);
   }
 
   timelineStart() {
-    var data    = this.props.vessel.data;
+    var data = this.props.vessel.data;
     var newData = new Array(365);
     var m2015 = 1420070400000;
-    var mDay  = 86400000;
-    for (var i = 0; i< 365; i++){ newData[i]={latitude: [], longitude: []} }
+    var mDay = 86400000;
+    for (var i = 0; i < 365; i++) {
+      newData[i] = {latitude: [], longitude: []}
+    }
 
     for (var prop in data) {
       for (var i = 0; i < data[prop].datetime.length; i++) {
         var cTime = data[prop].datetime[i];
         cTime = ~~((cTime - m2015) / mDay);
         var refIndex = newData[cTime];
-        if (! !!refIndex) break;
+        if (!!!refIndex) break;
         refIndex.latitude.push(data[prop].latitude[i]);
         refIndex.longitude.push(data[prop].longitude[i]);
       }
@@ -67,13 +69,13 @@ class Map extends Component {
     this.animateMapData(newData);
   }
 
-  animateMapData(data,ite) {
+  animateMapData(data, ite) {
     var ite = ite || 0;
     if (ite == data.length) return;
-    setTimeout(function() {
+    setTimeout(function () {
       this.state.overlay.regenerate();
       this.state.overlay.drawTile(data[ite]);
-      this.animateMapData(data,ite+1);
+      this.animateMapData(data, ite + 1);
     }.bind(this), 50);
   }
 
@@ -102,24 +104,24 @@ class Map extends Component {
         }
 
       }
-			if(nextProps.vessel.layers !== this.props.vessel.layers){
-				for(let i = 0, length = nextProps.vessel.layers.length; i < length; i++){
-					if(nextProps.vessel.layers[i] !== this.props.vessel.layers[i]){
-						cartodb.createLayer(this.refs.map.props.map, nextProps.vessel.layers[i])
-						.addTo(this.refs.map.props.map, i +1);
-					}
-				}
-			}
+      if (nextProps.vessel.layers !== this.props.vessel.layers) {
+        for (let i = 0, length = nextProps.vessel.layers.length; i < length; i++) {
+          if (nextProps.vessel.layers[i] !== this.props.vessel.layers[i]) {
+            cartodb.createLayer(this.refs.map.props.map, nextProps.vessel.layers[i])
+              .addTo(this.refs.map.props.map, i + 1);
+          }
+        }
+      }
     }
   }
 
   render() {
 
-		return <div>
+    return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
-			<button onClick={this.timelineStart.bind(this)} className={map.timeline}>PLAY</button>
-				<GoogleMapLoader
-						  containerElement={
+      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>PLAY</button>
+      <GoogleMapLoader
+        containerElement={
 						    <div className = {
 					        map.map
 					      } style={{
@@ -127,7 +129,7 @@ class Map extends Component {
 						      }}
 						    />
 						  }
-						  googleMapElement={
+        googleMapElement={
 								<GoogleMap ref="map" defaultZoom = {4} defaultCenter = {{lat: 0, lng: 0}}
 					      onIdle = {
 					        this.onIdle.bind(this)
@@ -143,8 +145,8 @@ class Map extends Component {
 					        this.onZoomChanged.bind(this)
 					      }> </GoogleMap>
 						  }
-						></GoogleMapLoader>
-						</div>
+      ></GoogleMapLoader>
+    </div>
 
 
   }

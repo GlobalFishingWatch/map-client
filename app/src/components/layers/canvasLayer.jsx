@@ -19,7 +19,7 @@
  * @author Brendan Kenny
  */
 
-var createOverlayLayer = function(google) {
+var createOverlayLayer = function (google) {
 
   /**
    * A map layer that provides a canvas over the slippy map and a callback
@@ -113,7 +113,7 @@ var createOverlayLayer = function(google) {
     this.requestAnimationFrameId_ = null;
 
     var canvas = document.createElement('canvas');
-    canvas.id="pepe";
+    canvas.id = "pepe";
     canvas.style.position = 'absolute';
     canvas.style.top = 0;
     canvas.style.left = 0;
@@ -153,7 +153,7 @@ var createOverlayLayer = function(google) {
      * @param {function} func The function to be bound.
      */
     function simpleBindShim(thisArg, func) {
-      return function() {
+      return function () {
         func.apply(thisArg);
       };
     }
@@ -202,7 +202,7 @@ var createOverlayLayer = function(google) {
    * @const
    * @private
    */
-  CanvasLayer.CSS_TRANSFORM_ = (function() {
+  CanvasLayer.CSS_TRANSFORM_ = (function () {
     var div = document.createElement('div');
     var transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
     for (var i = 0; i < transformProps.length; i++) {
@@ -224,9 +224,9 @@ var createOverlayLayer = function(google) {
    * @return {number} The browser-defined id for the requested callback.
    * @private
    */
-  CanvasLayer.prototype.requestAnimFrame_ = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-    return window.setTimeout(callback, 1000 / 60);
-  };
+  CanvasLayer.prototype.requestAnimFrame_ = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+      return window.setTimeout(callback, 1000 / 60);
+    };
 
   /**
    * The cancelAnimationFrame function, with vendor-prefixed fallback. Does not
@@ -237,13 +237,14 @@ var createOverlayLayer = function(google) {
    * @param {number=} requestId The id of the frame request to cancel.
    * @private
    */
-  CanvasLayer.prototype.cancelAnimFrame_ = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || window.msCancelAnimationFrame || function(requestId) {};
+  CanvasLayer.prototype.cancelAnimFrame_ = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || window.oCancelAnimationFrame || window.msCancelAnimationFrame || function (requestId) {
+    };
 
   /**
    * Sets any options provided. See CanvasLayerOptions for more information.
    * @param {CanvasLayerOptions} options The options to set.
    */
-  CanvasLayer.prototype.setOptions = function(options) {
+  CanvasLayer.prototype.setOptions = function (options) {
     if (options.animate !== undefined) {
       this.setAnimate(options.animate);
     }
@@ -275,7 +276,7 @@ var createOverlayLayer = function(google) {
    * a map property changes that could require the canvas content to be redrawn.
    * @param {boolean} animate Whether the canvas is animated.
    */
-  CanvasLayer.prototype.setAnimate = function(animate) {
+  CanvasLayer.prototype.setAnimate = function (animate) {
     this.isAnimated_ = !!animate;
 
     if (this.isAnimated_) {
@@ -286,7 +287,7 @@ var createOverlayLayer = function(google) {
   /**
    * @return {boolean} Whether the canvas is animated.
    */
-  CanvasLayer.prototype.isAnimated = function() {
+  CanvasLayer.prototype.isAnimated = function () {
     return this.isAnimated_;
   };
 
@@ -295,7 +296,7 @@ var createOverlayLayer = function(google) {
    * {@code google.maps.MapPanes} for the panes available.
    * @param {string} paneName The name of the desired MapPane.
    */
-  CanvasLayer.prototype.setPaneName = function(paneName) {
+  CanvasLayer.prototype.setPaneName = function (paneName) {
     this.paneName_ = paneName;
 
     this.setPane_();
@@ -304,7 +305,7 @@ var createOverlayLayer = function(google) {
   /**
    * @return {string} The name of the current container pane.
    */
-  CanvasLayer.prototype.getPaneName = function() {
+  CanvasLayer.prototype.getPaneName = function () {
     return this.paneName_;
   };
 
@@ -314,7 +315,7 @@ var createOverlayLayer = function(google) {
    * checked (and an error is thrown if it doesn't exist).
    * @private
    */
-  CanvasLayer.prototype.setPane_ = function() {
+  CanvasLayer.prototype.setPane_ = function () {
     if (!this.isAdded_) {
       return;
     }
@@ -334,7 +335,7 @@ var createOverlayLayer = function(google) {
    * existing callback is removed.
    * @param {?function=} opt_resizeHandler The resize callback function.
    */
-  CanvasLayer.prototype.setResizeHandler = function(opt_resizeHandler) {
+  CanvasLayer.prototype.setResizeHandler = function (opt_resizeHandler) {
     this.resizeHandler_ = opt_resizeHandler;
   };
 
@@ -345,7 +346,7 @@ var createOverlayLayer = function(google) {
    * window.devicePixelRatio).
    * @param {number} scale
    */
-  CanvasLayer.prototype.setResolutionScale = function(scale) {
+  CanvasLayer.prototype.setResolutionScale = function (scale) {
     if (typeof scale === 'number') {
       this.resolutionScale_ = scale;
       this.resize_();
@@ -358,14 +359,14 @@ var createOverlayLayer = function(google) {
    * removed.
    * @param {?function=} opt_updateHandler The update callback function.
    */
-  CanvasLayer.prototype.setUpdateHandler = function(opt_updateHandler) {
+  CanvasLayer.prototype.setUpdateHandler = function (opt_updateHandler) {
     this.updateHandler_ = opt_updateHandler;
   };
 
   /**
    * @inheritDoc
    */
-  CanvasLayer.prototype.onAdd = function() {
+  CanvasLayer.prototype.onAdd = function () {
     if (this.isAdded_) {
       return;
     }
@@ -383,7 +384,7 @@ var createOverlayLayer = function(google) {
   /**
    * @inheritDoc
    */
-  CanvasLayer.prototype.onRemove = function() {
+  CanvasLayer.prototype.onRemove = function () {
     if (!this.isAdded_) {
       return;
     }
@@ -414,7 +415,7 @@ var createOverlayLayer = function(google) {
    * map properly covered.
    * @private
    */
-  CanvasLayer.prototype.resize_ = function() {
+  CanvasLayer.prototype.resize_ = function () {
     if (!this.isAdded_) {
       return;
     }
@@ -449,7 +450,7 @@ var createOverlayLayer = function(google) {
   /**
    * @inheritDoc
    */
-  CanvasLayer.prototype.draw = function() {
+  CanvasLayer.prototype.draw = function () {
     this.repositionCanvas_();
   };
 
@@ -459,7 +460,7 @@ var createOverlayLayer = function(google) {
    * keep the canvas in place.
    * @private
    */
-  CanvasLayer.prototype.repositionCanvas_ = function() {
+  CanvasLayer.prototype.repositionCanvas_ = function () {
     // TODO(bckenny): *should* only be executed on RAF, but in current browsers
     //     this causes noticeable hitches in map and overlay relative
     //     positioning.
@@ -495,7 +496,7 @@ var createOverlayLayer = function(google) {
    * schedules the next frame if overlay is animated.
    * @private
    */
-  CanvasLayer.prototype.update_ = function() {
+  CanvasLayer.prototype.update_ = function () {
     this.requestAnimationFrameId_ = null;
 
     if (!this.isAdded_) {
@@ -521,7 +522,7 @@ var createOverlayLayer = function(google) {
    * the current view of the map.
    * @return {google.maps.LatLng} The top left coordinate.
    */
-  CanvasLayer.prototype.getTopLeft = function() {
+  CanvasLayer.prototype.getTopLeft = function () {
     return this.topLeft_;
   };
 
@@ -529,13 +530,13 @@ var createOverlayLayer = function(google) {
    * Schedule a requestAnimationFrame callback to updateHandler. If one is
    * already scheduled, there is no effect.
    */
-  CanvasLayer.prototype.scheduleUpdate = function() {
+  CanvasLayer.prototype.scheduleUpdate = function () {
     if (this.isAdded_ && !this.requestAnimationFrameId_) {
       this.requestAnimationFrameId_ = this.requestAnimFrame_.call(window, this.requestUpdateFunction_);
     }
   };
 
-  CanvasLayer.prototype.drawTile = function(data) {
+  CanvasLayer.prototype.drawTile = function (data) {
     var overlayProjection = this.getProjection();
     var ctx = this.canvas.ctx;
     for (var i = 0, length = data.latitude.length / 2; i < length; i++) {
@@ -544,7 +545,7 @@ var createOverlayLayer = function(google) {
       this.canvas.ctx.fillRect(coords.x - this.mioffset.x, coords.y - this.mioffset.y, 1, 1);
     }
   }
-  CanvasLayer.prototype.regenerate = function() {
+  CanvasLayer.prototype.regenerate = function () {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 

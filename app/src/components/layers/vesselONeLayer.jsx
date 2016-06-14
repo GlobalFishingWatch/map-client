@@ -1,7 +1,7 @@
 import calculateBounds from '../../lib/calculateBounds';
 import PelagosClient from '../../lib/pelagosClient';
 
-var createOverlayLayer = function(google) {
+var createOverlayLayer = function (google) {
   function VesselLayer(map) {
 
     this.map = map;
@@ -35,11 +35,11 @@ var createOverlayLayer = function(google) {
   }
 
   VesselLayer.prototype = new google.maps.OverlayView();
-  VesselLayer.prototype.regenerate = function() {
+  VesselLayer.prototype.regenerate = function () {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  VesselLayer.prototype.recalculatePosition = function() {
+  VesselLayer.prototype.recalculatePosition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     var map = this.getMap();
@@ -67,7 +67,7 @@ var createOverlayLayer = function(google) {
     this.canvas.style[VesselLayer.CSS_TRANSFORM_] = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
   };
 
-  VesselLayer.CSS_TRANSFORM_ = (function() {
+  VesselLayer.CSS_TRANSFORM_ = (function () {
     var div = document.createElement('div');
     var transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
     for (var i = 0; i < transformProps.length; i++) {
@@ -81,18 +81,18 @@ var createOverlayLayer = function(google) {
     return transformProps[0];
   })();
 
-  VesselLayer.prototype.timelineStart = function() {
+  VesselLayer.prototype.timelineStart = function () {
     this.drawTile()
   };
 
-  VesselLayer.prototype.drawTile = function(data) {
+  VesselLayer.prototype.drawTile = function (data) {
     var overlayProjection = this.getProjection();
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       this.canvas.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
     }
   }
-  VesselLayer.prototype.onAdd = function() {
+  VesselLayer.prototype.onAdd = function () {
     var panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);
   };
@@ -100,12 +100,12 @@ var createOverlayLayer = function(google) {
   // We use the south-west and north-east
   // coordinates of the overlay to peg it to the correct position and size.
   // To do this, we need to retrieve the projection from the overlay.
-  VesselLayer.prototype.draw = function() {
+  VesselLayer.prototype.draw = function () {
   };
 
   // The onRemove() method will be called automatically from the API if
   // we ever set the overlay's map property to 'null'.
-  VesselLayer.prototype.onRemove = function() {
+  VesselLayer.prototype.onRemove = function () {
     this.canvas.parentNode.removeChild(this.canvas);
     this.canvas = null;
   };

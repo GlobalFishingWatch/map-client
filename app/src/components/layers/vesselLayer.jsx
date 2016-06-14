@@ -1,6 +1,6 @@
 import calculateBounds from '../../lib/calculateBounds';
 
-var getCoordsMap = function(map) {
+var getCoordsMap = function (map) {
   var bounds = map.getBounds();
   var ne = bounds.getNorthEast();
   var sw = bounds.getSouthWest();
@@ -21,14 +21,14 @@ function VesselLayer(map) {
   // new google.maps.Size(window.innerWidth, window.innerHeight)
   let set = calculateBounds(map);
   var width, height = null;
-  for(var i = 0, length=set.length; i < length; i++){
-    if(!width){
+  for (var i = 0, length = set.length; i < length; i++) {
+    if (!width) {
       width = Math.abs(set[i].right - set[i].left);
       height = Math.abs(set[i].top - set[i].bottom);
     }
     var widthn = Math.abs(set[i].right - set[i].left);
     var heightn = Math.abs(set[i].top - set[i].bottom);
-    if(widthn !== width || heightn !== height){
+    if (widthn !== width || heightn !== height) {
       alert('Peligro');
     }
   }
@@ -37,10 +37,10 @@ function VesselLayer(map) {
   let tileHeight = (window.innerHeight / (Math.abs(coords.top - coords.bottom))) * (Math.abs(set[0].top - set[0].bottom));
   let tileWidth = (window.innerWidth / (Math.abs(coords.right - coords.left))) * (Math.abs(set[0].right - set[0].left));
   console.log('tileHeight', tileHeight, 'tileWidth', tileWidth);
-  this.tileSize = new google.maps.Size(tileWidth,tileHeight);
+  this.tileSize = new google.maps.Size(tileWidth, tileHeight);
 }
-VesselLayer.prototype.getTile = function(coord, zoom, ownerDocument) {
-  
+VesselLayer.prototype.getTile = function (coord, zoom, ownerDocument) {
+
   var canvas = ownerDocument.createElement('canvas');
   canvas.className = 'this.layer.slug';
   canvas.style.border = '1px solid black';

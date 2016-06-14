@@ -12,12 +12,24 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    initVesselLayer: () => {dispatch(init());},
-    loadVesselLayer: (map) => {dispatch(loadZoom(map))},
-    move: (map) => {dispatch(move(map))},
-    showLoading: () => {dispatch(showLoading(true))},
-    resetCache: () => {dispatch(resetCache())},
-    addLayer: (url) => {dispatch(addLayer(url))}
+    initVesselLayer: () => {
+      dispatch(init());
+    },
+    loadVesselLayer: (map) => {
+      dispatch(loadZoom(map))
+    },
+    move: (map) => {
+      dispatch(move(map))
+    },
+    showLoading: () => {
+      dispatch(showLoading(true))
+    },
+    resetCache: () => {
+      dispatch(resetCache())
+    },
+    addLayer: (url) => {
+      dispatch(addLayer(url))
+    }
   };
 }
 
