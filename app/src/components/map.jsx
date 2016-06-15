@@ -56,8 +56,8 @@ class Map extends Component {
     }
 
     for (var prop in data) {
-      for (var i = 0; i < data[prop].datetime.length; i++) {
-        var prop = data[prop];
+      var prop = data[prop];
+      for (var i = 0; i < prop.datetime.length; i++) {
         var cTime = prop.datetime[i];
         cTime = ~~((cTime - m2015) / mDay);
         var refIndex = newData[cTime];
