@@ -24,7 +24,8 @@ export function showLoading(show) {
 export function addLayer(url) {
   return {
     type: ADD_LAYER,
-    payload: url
+    payload: [
+    'https://team.cartodb.com/u/ramirocartodb/api/v2/viz/0ba65c92-120b-11e6-9ab2-0e5db1731f59/viz.json']
   };
 };
 

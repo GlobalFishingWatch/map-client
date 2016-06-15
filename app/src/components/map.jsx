@@ -43,8 +43,7 @@ class Map extends Component {
   }
 
   addLayer() {
-    let url = window.prompt('Url');
-    this.props.addLayer(url);
+    this.props.addLayer();
   }
 
   timelineStart() {
@@ -77,7 +76,7 @@ class Map extends Component {
       this.state.overlay.regenerate();
       this.state.overlay.drawTile(data[ite]);
       this.animateMapData(data, ite + 1);
-    }.bind(this), 200);
+    }.bind(this), 100);
   }
 
   onIdle() {
