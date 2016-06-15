@@ -58,13 +58,10 @@ class Map extends Component {
     for (var prop in data) {
       var prop = data[prop];
       for (var i = 0; i < prop.datetime.length; i++) {
-        var cTime = prop.datetime[i];
-        cTime = ~~((cTime - m2015) / mDay);
-        var refIndex = newData[cTime];
-        if (!!!refIndex) break;
-        refIndex.latitude.push(prop.latitude[i]);
-        refIndex.longitude.push(prop.longitude[i]);
-        refIndex.weight.push(prop.weight[i]);
+        var rI = newData[~~((prop.datetime[i] - m2015) / mDay)];
+        rI.latitude.push(prop.latitude[i]);
+        rI.longitude.push(prop.longitude[i]);
+        rI.weight.push(prop.weight[i]);
       }
     }
     this.animateMapData(newData);
@@ -92,23 +89,22 @@ class Map extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      if (nextProps.vessel.data !== this.props.vessel.data) {
-        if (!nextProps.vessel.data) {
-          // this.state.overlay.regenerate();
-        } else {
-          let keys = Object.keys(nextProps.vessel.data);
-          for (let i = 0, length = keys.length; i < length; i++) {
-            if (!this.props.vessel.data || !this.props.vessel.data[keys[i]]) {
-              this.state.overlay.drawTile(nextProps.vessel.data[keys[i]]);
-            }
+      let PVData    = this.props.vessel.data;
+      let nPVData   = nextProps.vessel.data;
+      let PVLayers  = this.props.vessel.layers;
+      let nPVLayers = nextProps.vessel.layers;
+      if (nPVData !== PVData && !!nPVData) {
+        let keys = Object.keys(nPVData);
+        for (let i = 0, length = keys.length; i < length; i++) {
+          if (!PVData || !PVData[keys[i]]) {
+            this.state.overlay.drawTile(nPVData[keys[i]]);
           }
         }
-
       }
-      if (nextProps.vessel.layers !== this.props.vessel.layers) {
-        for (let i = 0, length = nextProps.vessel.layers.length; i < length; i++) {
-          if (nextProps.vessel.layers[i] !== this.props.vessel.layers[i]) {
-            cartodb.createLayer(this.refs.map.props.map, nextProps.vessel.layers[i])
+      if (nPVLayers !== PVLayers) {
+        for (let i = 0, length = nPVLayers.length; i < length; i++) {
+          if (nPVLayers[i] !== PVLayers[i]) {
+            cartodb.createLayer(this.refs.map.props.map, nPVLayers[i])
               .addTo(this.refs.map.props.map, i + 1);
           }
         }
