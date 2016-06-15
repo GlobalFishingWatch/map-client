@@ -28,6 +28,7 @@
     "babel-preset-react": "^6.5.0",
     "dotenv": "^2.0.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "html-loader": "^0.4.3",
     "koa": "^1.2.0",
     "koa-static": "^2.0.0",
     "koa-webpack-dev-middleware": "^1.2.1",
