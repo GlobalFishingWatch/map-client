@@ -57,13 +57,14 @@ class Map extends Component {
 
     for (var prop in data) {
       for (var i = 0; i < data[prop].datetime.length; i++) {
-        var cTime = data[prop].datetime[i];
+        var prop = data[prop];
+        var cTime = prop.datetime[i];
         cTime = ~~((cTime - m2015) / mDay);
         var refIndex = newData[cTime];
         if (!!!refIndex) break;
-        refIndex.latitude.push(data[prop].latitude[i]);
-        refIndex.longitude.push(data[prop].longitude[i]);
-        refIndex.weight.push(data[prop].weight[i]);
+        refIndex.latitude.push(prop.latitude[i]);
+        refIndex.longitude.push(prop.longitude[i]);
+        refIndex.weight.push(prop.weight[i]);
       }
     }
     this.animateMapData(newData);
