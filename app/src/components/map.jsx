@@ -72,12 +72,12 @@ class Map extends Component {
 
   animateMapData(data, ite) {
     var ite = ite || 0;
-    if (ite == data.length) return;
+    if (ite == data.length) return ;
     setTimeout(function () {
       this.state.overlay.regenerate();
       this.state.overlay.drawTile(data[ite]);
       this.animateMapData(data, ite + 1);
-    }.bind(this), 50);
+    }.bind(this), 200);
   }
 
   onIdle() {
@@ -131,7 +131,7 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {0} defaultCenter = {{lat: 0, lng: 0}}
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}}
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }

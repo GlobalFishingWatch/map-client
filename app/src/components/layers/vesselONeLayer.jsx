@@ -90,11 +90,11 @@ var createOverlayLayer = function (google) {
     var ctx = this.canvas.ctx;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-        if (data.weight[i] > 0.75) {ctx.fillStyle = 'rgb(0,0,0)'}
-        else if (data.weight[i] > 0.50) {ctx.fillStyle = 'rgb(255,0,0)'}
-        else if (data.weight[i] > 0.25) {ctx.fillStyle = 'rgb(0,255,0)'}
-        else {ctx.fillStyle = 'rgb(0,0,255)'}
-      ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1, 1);
+      var size = 1;
+      if (data.weight[i] > 0.75) {ctx.fillStyle = 'rgba(0,101,193,0.7)'; size = 2}
+      else if (data.weight[i] > 0.50) {ctx.fillStyle = 'rgba(255,207,59,0.5)'}
+      else {ctx.fillStyle = 'rgba(0,255,242,1)'}
+      ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, size, size);
     }
   }
   VesselLayer.prototype.onAdd = function () {
