@@ -32,6 +32,7 @@ var createOverlayLayer = function (google) {
     ctx.height = canvas.height = window.innerHeight;
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     canvas.ctx = ctx;
+    this.ctx = this.canvas.ctx;
   }
 
   VesselLayer.prototype = new google.maps.OverlayView();
@@ -87,14 +88,15 @@ var createOverlayLayer = function (google) {
 
   VesselLayer.prototype.drawTile = function (data) {
     var overlayProjection = this.getProjection();
-    var ctx = this.canvas.ctx;
+    var styles = [['rgba(0,101,193,0.7)',2],['rgba(255,207,59,0.5)',1],['rgba(0,255,242,1)',1]];
+    var size = null;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-      var size = 1;
-      if (data.weight[i] > 0.75) {ctx.fillStyle = 'rgba(0,101,193,0.7)'; size = 2}
-      else if (data.weight[i] > 0.50) {ctx.fillStyle = 'rgba(255,207,59,0.5)'}
-      else {ctx.fillStyle = 'rgba(0,255,242,1)'}
-      ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, size, size);
+      var weight = data.weight[i];
+      if (weight > 0.75) {this.ctx.fillStyle = styles[0][0]; size = styles[0][1]}
+      else if (weight > 0.50) {this.ctx.fillStyle = styles[1][0]; size = styles[1][1]}
+      else {this.ctx.fillStyle = styles[2][0]; size = styles[1][1]}
+      this.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, size, size);
     }
   }
   VesselLayer.prototype.onAdd = function () {
