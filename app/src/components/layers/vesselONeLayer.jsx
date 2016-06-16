@@ -94,15 +94,15 @@ var createOverlayLayer = function (google) {
       var weight = data.weight[i];
       if (weight > 0.75) {
         this.ctx.fillStyle = this.pointStyles[0];
-        this.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 2,2);
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2,2);
         continue;}
       else if (weight > 0.50) {
         this.ctx.fillStyle = this.pointStyles[1];
-        this.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1,1);
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);
         continue;}
       else {
         this.ctx.fillStyle = this.pointStyles[2]; 
-        this.ctx.fillRect(coords.x - this.offset.x, coords.y - this.offset.y, 1,1);}
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);}
       
     }
   }
