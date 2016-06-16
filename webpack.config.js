@@ -27,7 +27,7 @@ const config = {
     }, {
       test: /\.scss$/,
       loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!sass?sourceMap')
-    }]
+    }, { test: /\.html$/, loader: 'html-loader' }]
   },
 
   resolve: {
@@ -47,6 +47,9 @@ if (process.env.NODE_ENV === 'production') {
   config.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
+    new webpack.DefinePlugin({
+    'process.env.NODE_ENV': '"production"'
+}),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         unused: true,
@@ -56,6 +59,8 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new HtmlWebpackPlugin({
       title: 'Global Fishing Watch',
+      filename: 'index.html',
+      template: 'template.html',
       minify: {
         removeComments: true,
         collapseWhitespace: true

@@ -5,11 +5,13 @@ import {render} from 'react-dom';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import {browserHistory} from 'react-router';
+import {browserHistory, hashHistory} from 'react-router';
 import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux';
 import Routes from './routes';
 
 import '../styles/index.scss';
+
+import vesselReducer from './reducers/vessel';
 
 /**
  * Reducers
@@ -17,11 +19,12 @@ import '../styles/index.scss';
  * @type {Object}
  */
 const reducer = combineReducers({
-  routing: routerReducer
+  routing: routerReducer,
+  vessel: vesselReducer
 });
 
 
-const middlewareRouter = routerMiddleware(browserHistory);
+const middlewareRouter = routerMiddleware(hashHistory);
 
 /**
  * Global state
@@ -39,7 +42,7 @@ const store = createStore(
  * @info(https://github.com/reactjs/react-router/tree/master/docs)
  * @type {Object}
  */
-const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(hashHistory, store);
 
 render(
   <Provider store={store}>
