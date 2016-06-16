@@ -53,7 +53,6 @@ export function loadZoom(map) {
         });
       });
     }
-
     for (var i = 0, length = bounds.length; i < length; i++) {
       obtainTile(bounds[i].toString());
     }
@@ -65,6 +64,7 @@ export function move(map) {
   return function (dispatch, getState) {
     let state = getState();
     let bounds = calculateBounds(map);
+    let vData = state.vessel.data;
     var obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
@@ -83,7 +83,7 @@ export function move(map) {
     }
 
     for (var i = 0, length = bounds.length; i < length; i++) {
-      if (!state.vessel.data || !state.vessel.data[bounds[i].toString()]) {
+      if (!vData || !vData[bounds[i].toString()]) {
         obtainTile(bounds[i].toString());
       }
     }
