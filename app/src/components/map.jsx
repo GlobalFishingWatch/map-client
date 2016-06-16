@@ -64,17 +64,19 @@ class Map extends Component {
         rI.weight.push(prop.weight[i]);
       }
     }
-    this.animateMapData(newData);
+    requestAnimationFrame(function() {
+        this.animateMapData(newData);
+    }.bind(this));
   }
 
   animateMapData(data, ite) {
     var ite = ite || 0;
     if (ite == data.length) return ;
-    setTimeout(function () {
-      this.state.overlay.regenerate();
-      this.state.overlay.drawTile(data[ite]);
-      this.animateMapData(data, ite + 1);
-    }.bind(this), 50);
+    this.state.overlay.regenerate();
+    this.state.overlay.drawTile(data[ite]);
+    requestAnimationFrame(function() {
+        this.animateMapData(data,ite+1);
+    }.bind(this));
   }
 
   onIdle() {
@@ -89,10 +91,12 @@ class Map extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      let PVData    = this.props.vessel.data;
-      let nPVData   = nextProps.vessel.data;
-      let PVLayers  = this.props.vessel.layers;
-      let nPVLayers = nextProps.vessel.layers;
+      let nProps    = nextProps.vessel;
+      let tProps    = this.props.vessel;
+      let PVData    = tProps.data;
+      let nPVData   = nProps.data;
+      let PVLayers  = tProps.layers;
+      let nPVLayers = nProps.layers;
       if (nPVData !== PVData && !!nPVData) {
         let keys = Object.keys(nPVData);
         for (let i = 0, length = keys.length; i < length; i++) {
