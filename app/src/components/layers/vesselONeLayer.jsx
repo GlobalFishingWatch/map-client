@@ -3,7 +3,7 @@ import PelagosClient from '../../lib/pelagosClient';
 
 var createOverlayLayer = function (google) {
   function VesselLayer(map) {
-
+    
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
