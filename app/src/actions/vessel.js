@@ -21,6 +21,13 @@ export function showLoading(show) {
   };
 };
 
+/*
+** CartoDB layers:
+** MPA
+** EEZ
+** High Seas Pockets
+** RFMOs
+*/
 export function addLayer(url) {
   return {
     type: ADD_LAYER,
