@@ -51,6 +51,7 @@ class Map extends Component {
     var newData = new Array(365);
     var m2015 = 1420070400000;
     var mDay = 86400000;
+    this.setState({running: !!!this.state.running});
     for (var i = 0; i < 365; i++) {
       newData[i] = {latitude: [], longitude: [], weight: []}
     }
@@ -65,11 +66,12 @@ class Map extends Component {
       }
     }
     requestAnimationFrame(function() {
-        this.animateMapData(newData);
+      this.animateMapData(newData);
     }.bind(this));
   }
 
   animateMapData(data, ite) {
+    if (!this.state.running) return;
     var ite = ite || 0;
     if (ite == data.length) return ;
     this.state.overlay.regenerate();
@@ -120,7 +122,7 @@ class Map extends Component {
 
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
-      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>PLAY</button>
+      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause"}</button>
       <GoogleMapLoader
         containerElement={
 						    <div className = {
