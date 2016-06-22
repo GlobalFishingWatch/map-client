@@ -145,7 +145,8 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}}
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
+
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }
