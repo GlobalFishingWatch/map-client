@@ -73,7 +73,11 @@ class Map extends Component {
   animateMapData(data, ite) {
     if (!this.state.running) return;
     var ite = ite || 0;
-    if (ite == data.length) return ;
+    if (ite == data.length) {
+      this.setState({running: !!!this.state.running});
+      this.onDragEnd();
+      return ;
+    }
     this.state.overlay.regenerate();
     this.state.overlay.drawTile(data[ite]);
     var animationID = requestAnimationFrame(function() {
