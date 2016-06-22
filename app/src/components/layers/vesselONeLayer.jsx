@@ -3,7 +3,7 @@ import PelagosClient from '../../lib/pelagosClient';
 
 var createOverlayLayer = function (google) {
   function VesselLayer(map) {
-    
+
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
@@ -89,20 +89,21 @@ var createOverlayLayer = function (google) {
 
   VesselLayer.prototype.drawTile = function (data) {
     var overlayProjection = this.getProjection();
+    var mult = this.map.getZoom() > 6 ? 2 : 1;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       var weight = data.weight[i];
       if (weight > 0.75) {
         this.ctx.fillStyle = this.pointStyles[0];
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2,2);
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2*mult ,2*mult);
         continue;}
       else if (weight > 0.50) {
         this.ctx.fillStyle = this.pointStyles[1];
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1*mult ,1*mult);
         continue;}
       else {
         this.ctx.fillStyle = this.pointStyles[2]; 
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);}
+        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1*mult ,1*mult);}
       
     }
   }
