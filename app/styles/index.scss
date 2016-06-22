@@ -15,7 +15,8 @@ body {
 }
 
 .addButton,
-.timeline {
+.timeline,
+.timelineStop {
   position: absolute !important;;
   top: 50px;
   left: 10px;
@@ -24,4 +25,7 @@ body {
 
 .timeline {
   top: 70px
+}
+.timelineStop {
+  top: 90px;
 }

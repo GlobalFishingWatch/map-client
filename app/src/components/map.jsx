@@ -76,9 +76,16 @@ class Map extends Component {
     if (ite == data.length) return ;
     this.state.overlay.regenerate();
     this.state.overlay.drawTile(data[ite]);
-    requestAnimationFrame(function() {
+    var animationID = requestAnimationFrame(function() {
         this.animateMapData(data,ite+1);
     }.bind(this));
+    this.setState({'animationID' : animationID});
+  }
+
+  timelineStop() {
+    cancelAnimationFrame(this.state.animationID);
+    this.setState({running: !!!this.state.running});
+    this.onDragEnd();
   }
 
   onIdle() {
@@ -123,6 +130,7 @@ class Map extends Component {
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
+      <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
       <GoogleMapLoader
         containerElement={
 						    <div className = {
