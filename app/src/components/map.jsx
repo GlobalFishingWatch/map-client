@@ -30,6 +30,7 @@ class Map extends Component {
   onZoomChanged() {
     this.state.overlay.regenerate();
     this.props.loadVesselLayer(this.refs.map.props.map);
+    this.setState({zoom:this.refs.map.props.map.getZoom()});
   }
 
   onDragStart() {
@@ -79,7 +80,7 @@ class Map extends Component {
       return ;
     }
     this.state.overlay.regenerate();
-    this.state.overlay.drawTile(data[ite]);
+    this.state.overlay.drawTile(data[ite],(this.state.zoom > 6 ? 3 : 2));
     var animationID = requestAnimationFrame(function() {
         this.animateMapData(data,ite+1);
     }.bind(this));
