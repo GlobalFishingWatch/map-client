@@ -33,7 +33,7 @@ var createOverlayLayer = function (google) {
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
-    this.pointStyles = ['rgba(0,101,193,0.7)','rgba(255,207,59,0.5)','rgba(0,255,242,1)'];
+    this.pointStyles = ['rgba(255,255,240,1)','rgba(10,200,200,1)','rgba(0,255,242,1)'];
   }
 
   VesselLayer.prototype = new google.maps.OverlayView();
@@ -87,24 +87,17 @@ var createOverlayLayer = function (google) {
     this.drawTile()
   };
 
-  VesselLayer.prototype.drawTile = function (data) {
+  VesselLayer.prototype.drawTile = function (data,size) {
     var overlayProjection = this.getProjection();
-    var mult = this.map.getZoom() > 6 ? 2 : 1;
+    var size = size || 1;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
       var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       var weight = data.weight[i];
-      if (weight > 0.75) {
-        this.ctx.fillStyle = this.pointStyles[0];
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2*mult ,2*mult);
-        continue;}
-      else if (weight > 0.50) {
-        this.ctx.fillStyle = this.pointStyles[1];
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1*mult ,1*mult);
-        continue;}
-      else {
-        this.ctx.fillStyle = this.pointStyles[2]; 
-        this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1*mult ,1*mult);}
-      
+      if (!weight) continue;
+      if (weight > 0.9)       this.ctx.fillStyle = 'rgb(255,255,240)';
+      else if (weight > 0.05) this.ctx.fillStyle = 'rgb(10,200,200)';
+      else                    this.ctx.fillStyle = 'rgb(0,255,242)';
+      this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, size, size);
     }
   }
   VesselLayer.prototype.onAdd = function () {
