@@ -30,6 +30,7 @@ class Map extends Component {
   onZoomChanged() {
     this.state.overlay.regenerate();
     this.props.loadVesselLayer(this.refs.map.props.map);
+    this.setState({zoom:this.refs.map.props.map.getZoom()});
   }
 
   onDragStart() {
@@ -51,6 +52,7 @@ class Map extends Component {
     var newData = new Array(365);
     var m2015 = 1420070400000;
     var mDay = 86400000;
+    this.setState({running: !!!this.state.running});
     for (var i = 0; i < 365; i++) {
       newData[i] = {latitude: [], longitude: [], weight: []}
     }
@@ -64,17 +66,31 @@ class Map extends Component {
         rI.weight.push(prop.weight[i]);
       }
     }
-    this.animateMapData(newData);
+    requestAnimationFrame(function() {
+      this.animateMapData(newData);
+    }.bind(this));
   }
 
   animateMapData(data, ite) {
+    if (!this.state.running) return;
     var ite = ite || 0;
-    if (ite == data.length) return ;
-    setTimeout(function () {
-      this.state.overlay.regenerate();
-      this.state.overlay.drawTile(data[ite]);
-      this.animateMapData(data, ite + 1);
-    }.bind(this), 50);
+    if (ite == data.length) {
+      this.setState({running: !!!this.state.running});
+      this.onDragEnd();
+      return ;
+    }
+    this.state.overlay.regenerate();
+    this.state.overlay.drawTile(data[ite],(this.state.zoom > 6 ? 3 : 2));
+    var animationID = requestAnimationFrame(function() {
+        this.animateMapData(data,ite+1);
+    }.bind(this));
+    this.setState({'animationID' : animationID});
+  }
+
+  timelineStop() {
+    cancelAnimationFrame(this.state.animationID);
+    this.setState({running: !!!this.state.running});
+    this.onDragEnd();
   }
 
   onIdle() {
@@ -89,10 +105,12 @@ class Map extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      let PVData    = this.props.vessel.data;
-      let nPVData   = nextProps.vessel.data;
-      let PVLayers  = this.props.vessel.layers;
-      let nPVLayers = nextProps.vessel.layers;
+      let nProps    = nextProps.vessel;
+      let tProps    = this.props.vessel;
+      let PVData    = tProps.data;
+      let nPVData   = nProps.data;
+      let PVLayers  = tProps.layers;
+      let nPVLayers = nProps.layers;
       if (nPVData !== PVData && !!nPVData) {
         let keys = Object.keys(nPVData);
         for (let i = 0, length = keys.length; i < length; i++) {
@@ -115,8 +133,9 @@ class Map extends Component {
   render() {
 
     return <div>
-      <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
-      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>PLAY</button>
+      <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
+      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
+      <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
       <GoogleMapLoader
         containerElement={
 						    <div className = {
@@ -127,7 +146,8 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}}
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
+
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }

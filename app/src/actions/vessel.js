@@ -21,11 +21,22 @@ export function showLoading(show) {
   };
 };
 
+/*
+** CartoDB layers:
+** MPA
+** EEZ
+** High Seas Pockets
+** RFMOs
+*/
 export function addLayer(url) {
   return {
     type: ADD_LAYER,
     payload: [
-    'https://team.cartodb.com/u/ramirocartodb/api/v2/viz/0ba65c92-120b-11e6-9ab2-0e5db1731f59/viz.json']
+    'http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json',
+    'http://cartodb.skytruth.org/user/dev/api/v2/viz/2e169268-bde4-11e5-87b3-0242ac110002/viz.json',
+    'http://cartodb.skytruth.org/user/wmerten/api/v2/viz/bb870984-033f-11e6-bfbe-0242ac110006/viz.json',
+    'http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json',
+    'http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json']
   };
 };
 
@@ -53,7 +64,6 @@ export function loadZoom(map) {
         });
       });
     }
-
     for (var i = 0, length = bounds.length; i < length; i++) {
       obtainTile(bounds[i].toString());
     }
@@ -65,6 +75,7 @@ export function move(map) {
   return function (dispatch, getState) {
     let state = getState();
     let bounds = calculateBounds(map);
+    let vData = state.vessel.data;
     var obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
@@ -83,7 +94,7 @@ export function move(map) {
     }
 
     for (var i = 0, length = bounds.length; i < length; i++) {
-      if (!state.vessel.data || !state.vessel.data[bounds[i].toString()]) {
+      if (!vData || !vData[bounds[i].toString()]) {
         obtainTile(bounds[i].toString());
       }
     }

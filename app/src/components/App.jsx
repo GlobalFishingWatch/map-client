@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {this.props.loading && <div>CArgando....</div>}
+        {this.props.loading && <div>Loading....</div>}
         <Map></Map>
       </div>
     );
