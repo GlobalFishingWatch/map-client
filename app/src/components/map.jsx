@@ -133,7 +133,7 @@ class Map extends Component {
   render() {
 
     return <div>
-      <button onClick={this.addLayer.bind(this)} className={map.addButton}>Add layer</button>
+      <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
       <GoogleMapLoader
