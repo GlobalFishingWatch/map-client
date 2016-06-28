@@ -28,16 +28,44 @@ export function showLoading(show) {
 ** High Seas Pockets
 ** RFMOs
 */
-export function addLayer(url) {
+export function addLayer() {
   return {
-    type: ADD_LAYER,
-    payload: [
-    'http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json',
-    'http://cartodb.skytruth.org/user/dev/api/v2/viz/2e169268-bde4-11e5-87b3-0242ac110002/viz.json',
-    'http://cartodb.skytruth.org/user/wmerten/api/v2/viz/bb870984-033f-11e6-bfbe-0242ac110006/viz.json',
-    'http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json',
-    'http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json']
-  };
+        type: ADD_LAYER,
+        payload: ["http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"]
+      }
+  var p1 = new Promise(
+    // The resolver function is called with the ability to resolve or
+    // reject the promise
+    function(resolve, reject) {
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = returnLayers;
+        httpRequest.open('GET', '/workspace.json', true);
+        httpRequest.responseType = "text";
+        httpRequest.send();
+        
+        function returnLayers() {
+          if (httpRequest.readyState == XMLHttpRequest.DONE ) {
+             if (httpRequest.status == 200) {
+                var data = JSON.parse(httpRequest.responseText);
+                var layers = [];
+                for (var prop in data.map.animations) {
+                  if(data.map.animations[prop].type === "CartoDBAnimation" && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
+                    layers.push(data.map.animations[prop].args.source.args.url);
+                  }
+                }
+                resolve(layers);
+              }
+           }
+        }
+      }
+  );
+  p1.then( 
+    function(layers) {
+      return {
+        type: ADD_LAYER,
+        payload: ["http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"]
+      }
+    });
 };
 
 export function resetCache() {

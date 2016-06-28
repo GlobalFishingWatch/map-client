@@ -54,7 +54,7 @@ class Map extends Component {
     var mDay = 86400000;
     this.setState({running: !!!this.state.running});
     for (var i = 0; i < 365; i++) {
-      newData[i] = {latitude: [], longitude: [], weight: []}
+      newData[i] = {latitude: [], longitude: [], weight: []};
     }
 
     for (var prop in data) {
