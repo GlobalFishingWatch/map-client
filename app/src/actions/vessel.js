@@ -1,7 +1,7 @@
 import {VESSEL_INIT, VESSEL_ZOOM_UPDATE, VESSEL_TILE_LOADED, SHOW_LOADING, RESET_CACHE, ADD_LAYER} from '../constants';
 import calculateBounds from '../lib/calculateBounds';
 import PelagosClient from '../lib/pelagosClient';
-var url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
+const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
 
 
 export function init() {
@@ -33,11 +33,11 @@ export function addLayer() {
         type: ADD_LAYER,
         payload: ["http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json", "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"]
       }
-  var p1 = new Promise(
+  let p1 = new Promise(
     // The resolver function is called with the ability to resolve or
     // reject the promise
     function(resolve, reject) {
-        var httpRequest = new XMLHttpRequest();
+        let httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = returnLayers;
         httpRequest.open('GET', '/workspace.json', true);
         httpRequest.responseType = "text";
@@ -46,9 +46,9 @@ export function addLayer() {
         function returnLayers() {
           if (httpRequest.readyState == XMLHttpRequest.DONE ) {
              if (httpRequest.status == 200) {
-                var data = JSON.parse(httpRequest.responseText);
-                var layers = [];
-                for (var prop in data.map.animations) {
+                let data = JSON.parse(httpRequest.responseText);
+                let layers = [];
+                for (let prop in data.map.animations) {
                   if(data.map.animations[prop].type === "CartoDBAnimation" && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
                     layers.push(data.map.animations[prop].args.source.args.url);
                   }
@@ -80,7 +80,7 @@ export function loadZoom(map) {
       type: VESSEL_ZOOM_UPDATE
     });
     let bounds = calculateBounds(map);
-    var obtainTile = function (key) {
+    let obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
         obj[key] = data;
@@ -92,7 +92,7 @@ export function loadZoom(map) {
         });
       });
     }
-    for (var i = 0, length = bounds.length; i < length; i++) {
+    for (let i = 0, length = bounds.length; i < length; i++) {
       obtainTile(bounds[i].toString());
     }
 
@@ -104,7 +104,7 @@ export function move(map) {
     let state = getState();
     let bounds = calculateBounds(map);
     let vData = state.vessel.data;
-    var obtainTile = function (key) {
+    let obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
         obj[key] = data;
@@ -121,7 +121,7 @@ export function move(map) {
       });
     }
 
-    for (var i = 0, length = bounds.length; i < length; i++) {
+    for (let i = 0, length = bounds.length; i < length; i++) {
       if (!vData || !vData[bounds[i].toString()]) {
         obtainTile(bounds[i].toString());
       }

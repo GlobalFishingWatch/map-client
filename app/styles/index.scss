@@ -4,7 +4,7 @@ body {
 }
 
 .map {
-  position: absolute !important;;
+  position: absolute !important;
   top: 0;
   left: 0;
   right: 0;
@@ -17,7 +17,7 @@ body {
 .addButton,
 .timeline,
 .timelineStop {
-  position: absolute !important;;
+  position: absolute !important;
   top: 50px;
   left: 10px;
   z-index: 10;
@@ -28,4 +28,31 @@ body {
 }
 .timelineStop {
   top: 90px;
+}
+.range_container {
+    position: absolute;
+    bottom: 30px;
+    background: rgba(211,211,211,0.6);
+    height: 30px;
+    width: 90%;
+    z-index: 6;
+    margin: 0 45px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+  .timeline_range {
+    width: 100%;
+    background: lightsalmon;
+    height: 3px;
+    cursor: pointer;
+    .handle {
+      background: salmon;
+      width: 5px;
+      height: 5px;
+      display: block;
+      position: relative;
+      top: -1px;
+    }
+  }
 }
