@@ -8,7 +8,6 @@ class PelagosClient {
 
   obtainTile(url) {
     return new Promise(function (resolve, reject) {
-      var self = this;
       this.request = null;
       if (typeof XMLHttpRequest != 'undefined') {
         this.request = new XMLHttpRequest();
@@ -18,7 +17,6 @@ class PelagosClient {
       this.resolve = resolve;
       this.reject = reject;
       this.request.open('GET', url, true);
-      //request.withCredentials = self.withCredentials;
       this.request.responseType = "arraybuffer";
       this.request.onload = this.handleData.bind(this);
       this.request.onerror = this.handleData.bind(this);
