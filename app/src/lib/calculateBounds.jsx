@@ -1,13 +1,13 @@
 import Bounds from './Bounds';
 
-var getBounds = function (map) {
-  var bounds = map.getBounds();
-  var ne = bounds.getNorthEast();
-  var sw = bounds.getSouthWest();
-  var bottom = sw.lat();
-  var left = sw.lng();
-  var top = ne.lat();
-  var right = ne.lng();
+const getBounds = function (map) {
+  const bounds = map.getBounds();
+  const ne = bounds.getNorthEast();
+  const sw = bounds.getSouthWest();
+  const bottom = sw.lat();
+  const left = sw.lng();
+  const top = ne.lat();
+  const right = ne.lng();
   return {
     top: top,
     left: left,
@@ -16,17 +16,17 @@ var getBounds = function (map) {
   }
 };
 
-var TileBounds = function () {
+const TileBounds = function () {
 };
 TileBounds.world = new Bounds([-180, -90, 180, 90]);
 TileBounds.tileParamsForRegion = function (args) {
-  var bounds = args.bounds;
-  var tilesPerScreen = args.tilesPerScreen;
+  let bounds = args.bounds;
+  const tilesPerScreen = args.tilesPerScreen;
 
-  var origBounds = new Bounds(bounds);
+  const origBounds = new Bounds(bounds);
   bounds = origBounds.unwrapDateLine(TileBounds.world);
 
-  var res = {
+  const res = {
     bounds: origBounds,
     unwrappedBounds: bounds,
     width: bounds.getWidth(),
@@ -64,14 +64,14 @@ TileBounds.tileParamsForRegion = function (args) {
 
 TileBounds.tileBoundsForRegion = function (args) {
   /* Returns a list of tile bounds covering a region. */
-  var bounds = args.bounds;
-  var tilesPerScreen = args.tilesPerScreen;
+  const bounds = args.bounds;
+  const tilesPerScreen = args.tilesPerScreen;
 
-  var params = TileBounds.tileParamsForRegion(args);
+  const params = TileBounds.tileParamsForRegion(args);
 
-  var res = [];
-  for (var x = 0; x < params.tilesx; x++) {
-    for (var y = 0; y < params.tilesy; y++) {
+  let res = [];
+  for (let x = 0; x < params.tilesx; x++) {
+    for (let y = 0; y < params.tilesy; y++) {
       res.push(new Bounds([
         params.tileleft + x * params.tilewidth,
         params.tilebottom + y * params.tileheight,
@@ -89,12 +89,11 @@ TileBounds.tileBoundsForRegion = function (args) {
 };
 
 
-var getTiles = function (bounds) {
-  var result = TileBounds.tileBoundsForRegion({bounds: bounds, tilesPerScreen: 32})
-  return result;
+const getTiles = function (bounds) {
+  return TileBounds.tileBoundsForRegion({bounds: bounds, tilesPerScreen: 32});
 }
 
-var getUrls = function (map) {
+const getUrls = function (map) {
   let bounds = getBounds(map);
   return getTiles(bounds).set;
 }
