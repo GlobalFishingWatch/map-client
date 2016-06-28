@@ -48,6 +48,7 @@ class Map extends Component {
   }
 
   timelineStart() {
+    this.timelinerange = document.getElementById('timeline_handler');
     var data = this.props.vessel.data;
     var newData = new Array(365);
     var m2015 = 1420070400000;
@@ -74,6 +75,7 @@ class Map extends Component {
   animateMapData(data, ite) {
     if (!this.state.running) return;
     var ite = ite || 0;
+    this.timelinerange.style.width = ite/365 * 100 + '%';
     if (ite == data.length) {
       this.setState({running: !!!this.state.running});
       this.onDragEnd();
@@ -136,6 +138,9 @@ class Map extends Component {
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      <div className={map.range_container}>
+        <span className={map.timeline_range}><span className={map.handle} id="timeline_handler"></span></span>
+      </div>
       <GoogleMapLoader
         containerElement={
 						    <div className = {
