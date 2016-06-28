@@ -1,7 +1,7 @@
 import calculateBounds from '../../lib/calculateBounds';
 import PelagosClient from '../../lib/pelagosClient';
 
-var createOverlayLayer = function (google) {
+const createOverlayLayer = function (google) {
   function VesselLayer(map) {
 
     this.map = map;
@@ -12,7 +12,7 @@ var createOverlayLayer = function (google) {
       y: 0
     }
 
-    var canvas = document.createElement('canvas');
+    let canvas = document.createElement('canvas');
     canvas.className = 'this.layer.slug';
     canvas.style.border = '1px solid black';
     canvas.style.margin = '0';
@@ -25,7 +25,7 @@ var createOverlayLayer = function (google) {
 
     this.canvas = canvas;
 
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
     canvas.style.left = 0 + 'px';
     canvas.style.top = 0 + 'px';
     ctx.width = canvas.width = window.innerWidth;
@@ -44,24 +44,24 @@ var createOverlayLayer = function (google) {
   VesselLayer.prototype.recalculatePosition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.canvas.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    var map = this.getMap();
+    const map = this.getMap();
 
     // topLeft can't be calculated from map.getBounds(), because bounds are
     // clamped to -180 and 180 when completely zoomed out. Instead, calculate
     // left as an offset from the center, which is an unwrapped LatLng.
-    var top = map.getBounds().getNorthEast().lat();
-    var center = map.getCenter();
-    var scale = Math.pow(2, map.getZoom());
-    var left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
+    const top = map.getBounds().getNorthEast().lat();
+    const center = map.getCenter();
+    const scale = Math.pow(2, map.getZoom());
+    const left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
     this.topLeft_ = new google.maps.LatLng(top, left);
 
     // Canvas position relative to draggable map's container depends on
     // overlayView's projection, not the map's. Have to use the center of the
     // map for this, not the top left, for the same reason as above.
-    var projection = this.getProjection();
-    var divCenter = projection.fromLatLngToDivPixel(center);
-    var offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
-    var offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
+    const projection = this.getProjection();
+    const divCenter = projection.fromLatLngToDivPixel(center);
+    const offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
+    const offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
     this.offset = {
       x: offsetX,
       y: offsetY
@@ -70,10 +70,10 @@ var createOverlayLayer = function (google) {
   };
 
   VesselLayer.CSS_TRANSFORM_ = (function () {
-    var div = document.createElement('div');
-    var transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-    for (var i = 0; i < transformProps.length; i++) {
-      var prop = transformProps[i];
+    const div = document.createElement('div');
+    const transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+    for (let i = 0; i < transformProps.length; i++) {
+      const prop = transformProps[i];
       if (div.style[prop] !== undefined) {
         return prop;
       }
@@ -88,11 +88,11 @@ var createOverlayLayer = function (google) {
   };
 
   VesselLayer.prototype.drawTile = function (data,size) {
-    var overlayProjection = this.getProjection();
-    var size = size || 1;
-    for (var i = 0, length = data.latitude.length; i < length; i++) {
-      var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-      var weight = data.weight[i];
+    const overlayProjection = this.getProjection();
+    size = size || 1;
+    for (let i = 0, length = data.latitude.length; i < length; i++) {
+      let coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
+      const weight = data.weight[i];
       if (!weight) continue;
       if (weight > 0.9)       this.ctx.fillStyle = 'rgb(255,255,240)';
       else if (weight > 0.05) this.ctx.fillStyle = 'rgb(10,200,200)';
@@ -101,7 +101,7 @@ var createOverlayLayer = function (google) {
     }
   }
   VesselLayer.prototype.onAdd = function () {
-    var panes = this.getPanes();
+    const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);
   };
 
