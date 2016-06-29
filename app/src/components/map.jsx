@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import {default as ScriptjsLoader} from "react-google-maps/lib/async/ScriptjsLoader";
 import createOverlayLayer from './layers/vesselONeLayer';
 import map from '../../styles/index.scss';
 
@@ -153,7 +152,7 @@ class Map extends Component {
   }
 
   render() {
-
+    let key = config.googleMapsApiKey;
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
@@ -167,6 +166,7 @@ class Map extends Component {
         </span>
       </div>
       <GoogleMapLoader
+        query={{ key: key }}
         containerElement={
 						    <div className = {
 					        map.map
