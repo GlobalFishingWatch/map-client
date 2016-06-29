@@ -101,6 +101,9 @@ section {
 	align-items: center;
 	flex-direction: column;
 }
+section.pwd {
+	padding: 0 20%;
+}
 h1 {
 	font-weight: bold;
 	font-size: 70px;
@@ -165,4 +168,15 @@ input[type='submit'] {
     transform: rotate(-45deg);
     right: 15px;
     top: 5px;
+ }
+ section p {
+ 	line-height: 50px;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 0.7px;
+ }
+ .cancel {
+ 	margin: 0 auto;
+ 	text-decoration: none;
+ 	color: #fff;
  }
