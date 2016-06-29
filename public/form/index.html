@@ -10,15 +10,16 @@
 			global fishing watch
 		</a>
 		<nav>
-			<span>map</span>
-			<span>news</span>
-			<span>how to</span>
-			<span>bout</span>
-			<span class="selected">login</span>
+			<a href="#">map</a>
+			<a href="#">news</a>
+			<a href="#">how to</a>
+			<a href="#">about</a>
+			<a href="#" class="separator"></a>
+			<a href="#" class="selected">login</a>
 		</nav>
 	</header>
 	<section>
-		<h1>Contac us</h1>
+		<h1>Contact us</h1>
 		<form method="post" action="#">
 			<label for="gfw_firstname">first name</label>
 			<input type="text" id="gfw_firstname" placeholder="first name" />
@@ -27,12 +28,14 @@
 			<label for="gfw_email">email address</label>
 			<input type="email" id="gfw_email" placeholder="email address" required />
 			<label for="gfw_questiontype">question type</label>
-			<select id="gfw_questiontype">
-				<option>select a question type</option>
-			</select>
+			<div class="select_container">
+				<select id="gfw_questiontype">
+					<option>select a question type</option>
+				</select>
+			</div>
 			<label for="gfw_typeoforganization">type of organization</label>
-			<textarea id="gfw_typeoforganization"></textarea>
-			<input type="submit" />
+			<textarea id="gfw_typeoforganization" placeholder="please let us know how we can help!"></textarea>
+			<input type="submit" value="SEND"/>
 		</form>
 	</section>
 </body>
