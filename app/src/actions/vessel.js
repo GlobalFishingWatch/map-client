@@ -79,8 +79,8 @@ export function loadZoom(map) {
     dispatch({
       type: VESSEL_ZOOM_UPDATE
     });
-    let bounds = calculateBounds(map);
-    let obtainTile = function (key) {
+    const bounds = calculateBounds(map);
+    const obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
         obj[key] = data;
@@ -101,10 +101,10 @@ export function loadZoom(map) {
 
 export function move(map) {
   return function (dispatch, getState) {
-    let state = getState();
-    let bounds = calculateBounds(map);
-    let vData = state.vessel.data;
-    let obtainTile = function (key) {
+    const state = getState();
+    const bounds = calculateBounds(map);
+    const vData = state.vessel.data;
+    const obtainTile = function (key) {
       new PelagosClient().obtainTile(url + key).then(function (data) {
         let obj = {};
         obj[key] = data;
