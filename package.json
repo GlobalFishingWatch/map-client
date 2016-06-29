@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "build": "NODE_ENV=production webpack -p",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "echo postinstall time; ./node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",
@@ -42,12 +43,12 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "webpack": "^1.13.0",
-    "whatwg-fetch": "^1.0.0",
-    "html-webpack-plugin": "^2.19.0"
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.23.1",
+    "html-webpack-plugin": "^2.19.0",
     "node-sass": "^3.7.0",
     "sass-loader": "^3.2.0"
   },
