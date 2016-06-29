@@ -180,3 +180,53 @@ input[type='submit'] {
  	text-decoration: none;
  	color: #fff;
  }
+hr {
+	width: 100%;
+	margin: 40px 0;
+}
+.login_buttons {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.login_buttons a {
+	width: 49%;
+	height: 60px;
+	text-transform: uppercase;
+	line-height: 60px;
+	text-align: center;
+	text-decoration: none;
+	color: #fff;
+}
+.login_buttons a.fb {
+	background-color: #3b5998;
+}
+.login_buttons a.go {
+	background-color: #db3236;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
