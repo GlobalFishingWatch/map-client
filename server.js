@@ -2,31 +2,15 @@
 
 require('dotenv').config({silent: true});
 
-const path = require('path');
-const koa = require('koa');
-const serve = require('koa-static');
-const webpack = require('webpack');
-const webpackMiddleware = require('koa-webpack-dev-middleware');
-const webpackConfig = require('./webpack.config.js');
-
 const port = process.env.PORT || 3000;
-const app = koa();
+const app = require('./config/application');
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(serve(path.join(__dirname, 'dist')));
-} else {
-  app.use(serve(path.join(__dirname, 'app')));
-  app.use(webpackMiddleware(webpack(webpackConfig), {
-    stats: {
-      colors: true
-    }
-  }));
-}
-
-app.use(serve(path.join(__dirname, 'public')));
-
-var server = app.listen(port, function() {
-  var host = server.address().address;
-  var port = server.address().port;
-  console.log('App listening at http://%s:%s', host, port);
+/**
+ * Initializing server
+ */
+app.listen(port, '0.0.0.0', err => {
+  if (err) {
+    console.log(err);
+  }
+  console.info('==> 🌎 Listening on http://0.0.0.0:%s/', port);
 });
