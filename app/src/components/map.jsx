@@ -7,16 +7,16 @@ import createOverlayLayer from './layers/vesselONeLayer';
 import map from '../../styles/index.scss';
 
 function debounce(func, wait, immediate) {
-  var timeout;
+  let timeout;
   return function () {
-    var context = this,
+    const context = this,
       args = arguments;
-    var later = function () {
+    const later = function () {
       timeout = null;
       if (!immediate)
         func.apply(context, args);
     };
-    var callNow = immediate && !timeout;
+    const callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
     if (callNow)
@@ -47,26 +47,26 @@ class Map extends Component {
     this.props.addLayer();
   }
   moveTimeline(e) {
-    this.timelinerange = document.getElementById('timeline_handler');
+    this.timelinerange   = document.getElementById('timeline_handler');
     this.timelineStart(this.timelinerange.style.width = (e.clientX-60) + 'px');
-
   }
 
   timelineStart(width) {
+    this.timelinetooltip = document.getElementById('timeline_tooltip');
     this.timelinerange = document.getElementById('timeline_handler');
-    var data = this.props.vessel.data;
-    var newData = new Array(365);
-    var m2015 = 1420070400000;
-    var mDay = 86400000;
+    let data = this.props.vessel.data;
+    let newData = new Array(365);
+    const m2015 = 1420070400000;
+    const mDay = 86400000;
     this.setState({running: !!!this.state.running});
-    for (var i = 0; i < 365; i++) {
+    for (let i = 0; i < 365; i++) {
       newData[i] = {latitude: [], longitude: [], weight: []};
     }
 
-    for (var prop in data) {
-      var prop = data[prop];
-      for (var i = 0; i < prop.datetime.length; i++) {
-        var rI = newData[~~((prop.datetime[i] - m2015) / mDay)];
+    for (let prop in data) {
+      let prop = data[prop];
+      for (let i = 0; i < prop.datetime.length; i++) {
+        let rI = newData[~~((prop.datetime[i] - m2015) / mDay)];
         rI.latitude.push(prop.latitude[i]);
         rI.longitude.push(prop.longitude[i]);
         rI.weight.push(prop.weight[i]);
@@ -76,6 +76,10 @@ class Map extends Component {
       width = ~~this.timelinerange.style.width.replace('px','');
       width = (width * 365) / this.timelinerange.parentNode.offsetWidth;
     }
+    this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
+    const result = new Date(m2015);
+    result.setDate(result.getDate() + width);
+    this.timelinetooltip.innerHTML = result;
     requestAnimationFrame(function() {
       this.animateMapData(newData, ~~width || 0);
     }.bind(this));
@@ -83,16 +87,22 @@ class Map extends Component {
 
   animateMapData(data, ite) {
     if (!this.state.running) return;
-    var ite = ite || 0;
-    this.timelinerange.style.width = ite/365 * 100 + '%';
+    ite = ite || 0;
     if (ite == data.length) {
       this.setState({running: !!!this.state.running});
       this.onDragEnd();
+      this.timelinerange.style.width = 0;
+      this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
       return ;
     }
+    this.timelinerange.style.width = ite/365 * 100 + '%';
+    const result = new Date(1420070400000);
+    result.setDate(result.getDate() + ite);
+    this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
+    this.timelinetooltip.innerHTML = result;
     this.state.overlay.regenerate();
     this.state.overlay.drawTile(data[ite],(this.state.zoom > 6 ? 3 : 2));
-    var animationID = requestAnimationFrame(function() {
+    let animationID = requestAnimationFrame(function() {
         this.animateMapData(data,ite+1);
     }.bind(this));
     this.setState({'animationID' : animationID});
@@ -108,8 +118,8 @@ class Map extends Component {
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
       this.props.initVesselLayer();
-      var Overlay = createOverlayLayer(google);
-      var overlay = new Overlay(this.refs.map.props.map);
+      const Overlay = createOverlayLayer(google);
+      const overlay = new Overlay(this.refs.map.props.map);
       this.setState({overlay: overlay});
       this.props.loadVesselLayer(this.refs.map.props.map);
     }
@@ -149,6 +159,9 @@ class Map extends Component {
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
       <div className={map.range_container}>
+        <span className={map.tooltip} id="timeline_tooltip">
+        2015-01-01
+        </span>
         <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
           <span className={map.handle} id="timeline_handler"></span>
         </span>

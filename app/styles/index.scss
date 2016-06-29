@@ -55,4 +55,13 @@ body {
       top: -1px;
     }
   }
+  .tooltip {
+    background-color: white;
+    font-family: sans-serif;
+    font-size: 11px;
+    width: 140px;
+    position: absolute;
+    top: 1px;
+    transform: translate(-50%,-60%);
+  }
 }
