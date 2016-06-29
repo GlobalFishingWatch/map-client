@@ -1,0 +1,66 @@
+<html>
+<head>
+	<title>Registration</title>
+	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+</head>
+<body class="bg reg">
+	<header>
+		<a href="#">
+			<img src="http://globalfishingwatch.org/images/logo.png">
+			global fishing watch
+		</a>
+		<nav>
+			<a href="#">map</a>
+			<a href="#">news</a>
+			<a href="#">how to</a>
+			<a href="#">about</a>
+			<a href="#" class="separator"></a>
+			<a href="#" class="selected">login</a>
+		</nav>
+	</header>
+	<section class="reg">
+		<h1>Registration</h1>
+		<form method="post" action="#">
+			<div class="column-container">
+				<div class="column l">
+					<label for="gfw_firstname">First name</label>
+					<input type="text" id="gfw_firstname" placeholder="First name" />
+					<label for="gfw_questiontype">Type of organization</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a question type</option>
+						</select>
+					</div>
+					<label for="gfw_questiontype">state/province</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a state</option>
+						</select>
+					</div>
+					<label for="gfw_email">Email</label>
+					<input type="email" id="gfw_email" placeholder="Email address" required />
+				</div>
+				<div class="column r">
+					<label for="gfw_lastname">last name</label>
+					<input type="text" id="gfw_lastname" placeholder="Last name" required />
+					<label for="gfw_questiontype">Country</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a country</option>
+						</select>
+					</div>
+					<label for="gfw_zip">Zip code</label>
+					<input type="text" id="gfw_zip" placeholder="Zip code" />
+					<label for="gfw_phone">Phone number</label>
+					<input type="text" id="gfw_phone" placeholder="Phone number" />
+				</div>
+			</div>
+			<div class="tos">
+				<span><input type="checkbox" required /> Accept terms of service</span>
+				<span><input type="checkbox" required /> Accept private policy</span>
+			</div>
+			<input type="submit" value="SEND"/>
+		</form>
+	</section>
+</body>
+</html>
