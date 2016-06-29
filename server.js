@@ -25,4 +25,8 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(serve(path.join(__dirname, 'public')));
 
-app.listen(port);
+var server = app.listen(port, function() {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('App listening at http://%s:%s', host, port);
+});
