@@ -29,7 +29,8 @@ const webpackConfig = {
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       inject: 'body',
-      filename: 'index.html'
+      filename: 'index.html',
+      key: envVariables.GOOGLE_API_KEY
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -37,9 +38,6 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
       VERSION: JSON.stringify(require('../package.json').version),
-      config: JSON.stringify({
-        googleMapsApiKey: envVariables.GOOGLE_API_KEY
-      })
     })
   ],
 
