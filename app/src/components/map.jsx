@@ -152,7 +152,6 @@ class Map extends Component {
   }
 
   render() {
-    let googleMapsKey = config.googleMapsApiKey;
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
@@ -166,7 +165,6 @@ class Map extends Component {
         </span>
       </div>
       <GoogleMapLoader
-        query={{ key: googleMapsKey }}
         containerElement={
 						    <div className = {
 					        map.map
