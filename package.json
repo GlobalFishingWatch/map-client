@@ -50,7 +50,8 @@
     "sass-loader": "^3.2.0",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
-    "xo": "^0.16.0"
+    "xo": "^0.16.0",
+    "basic-auth-connect": "^1.0.0"
   },
   "engines": {
     "node": "5.10.x",
