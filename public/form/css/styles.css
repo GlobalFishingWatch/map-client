@@ -104,6 +104,9 @@ section {
 section.pwd {
 	padding: 0 20%;
 }
+section.reg {
+
+}
 h1 {
 	font-weight: bold;
 	font-size: 70px;
@@ -204,12 +207,37 @@ hr {
 .login_buttons a.go {
 	background-color: #db3236;
 }
-
-
-
-
-
-
+section.reg form{
+	width: 70%;
+}
+.column-container {
+	display: flex;
+	flex-direction: row;
+}
+.column {
+	width: 48%;
+	display: inline;
+}
+.column.l {
+	margin: 0 2% 0 0;
+}
+.column label {
+	display: block;
+}
+.column input {
+	width: 100%;
+}
+.tos {
+	text-align: center;
+    margin: 40px 0 0 0;
+}
+.tos span {
+	    width: 30%;
+    display: inline-block;
+}
+.tos input:required {
+	height: 12px;
+}
 
 
 

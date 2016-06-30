@@ -18,23 +18,47 @@
 			<a href="#" class="selected">login</a>
 		</nav>
 	</header>
-	<section>
-		<h1>Contact us</h1>
+	<section class="reg">
+		<h1>Registration</h1>
 		<form method="post" action="#">
-			<label for="gfw_firstname">first name</label>
-			<input type="text" id="gfw_firstname" placeholder="first name" />
-			<label for="gfw_lastname">last name</label>
-			<input type="text" id="gfw_lastname" placeholder="last name" required />
-			<label for="gfw_email">email address</label>
-			<input type="email" id="gfw_email" placeholder="email address" required />
-			<label for="gfw_questiontype">question type</label>
-			<div class="select_container">
-				<select id="gfw_questiontype">
-					<option>select a question type</option>
-				</select>
+			<div class="column-container">
+				<div class="column l">
+					<label for="gfw_firstname">first name</label>
+					<input type="text" id="gfw_firstname" placeholder="first name" />
+					<label for="gfw_questiontype">Type of organization</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a question type</option>
+						</select>
+					</div>
+					<label for="gfw_questiontype">state/province</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a state</option>
+						</select>
+					</div>
+					<label for="gfw_email">Email</label>
+					<input type="email" id="gfw_email" placeholder="email address" required />
+				</div>
+				<div class="column r">
+					<label for="gfw_lastname">last name</label>
+					<input type="text" id="gfw_lastname" placeholder="last name" required />
+					<label for="gfw_questiontype">Country</label>
+					<div class="select_container">
+						<select id="gfw_questiontype">
+							<option>Select a country</option>
+						</select>
+					</div>
+					<label for="gfw_zip">Postal code</label>
+					<input type="text" id="gfw_zip" placeholder="postal code" />
+					<label for="gfw_phone">phone number</label>
+					<input type="text" id="gfw_phone" placeholder="phone number" />
+				</div>
 			</div>
-			<label for="gfw_typeoforganization">type of organization</label>
-			<textarea id="gfw_typeoforganization" placeholder="please let us know how we can help!"></textarea>
+			<div class="tos">
+				<span><input type="checkbox" required /> Accept terms of service</span>
+				<span><input type="checkbox" required /> Accept private policy</span>
+			</div>
 			<input type="submit" value="SEND"/>
 		</form>
 	</section>
