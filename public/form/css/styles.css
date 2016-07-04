@@ -120,8 +120,6 @@ h1 {
 
 }
 form {
-	display: flex;
-	flex-direction: column;
 	width: 450px;
 }
 label {
@@ -342,6 +340,7 @@ and (max-device-width : 667px) {
 	    font-size: 23px;
 	    position: relative;
 	    left: -1%;
+	    display: block;
 	}
 	.tos span input {
 		-webkit-appearance: checkbox;
