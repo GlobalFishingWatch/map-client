@@ -313,6 +313,7 @@ and (max-device-width : 667px) {
 		justify-content: flex-start;
 		padding: 10% 0 0!important;
 		height: 170%;
+		max-height: 170%;
 	}
 	select {
 		height: 60px !important;
@@ -364,6 +365,11 @@ and (max-device-width : 667px) {
 	}
 	.cancel {
 		font-size: 23px;
+	}
+}
+@media (orientation : portrait) {
+	section {
+		height: 100%;
 	}
 }
 @-moz-document url-prefix() { 
