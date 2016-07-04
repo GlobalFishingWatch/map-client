@@ -298,8 +298,8 @@ section.reg form{
 }
 
 @media only screen 
-and (min-device-width : 375px) 
-and (max-device-width : 667px) {
+and (min-device-width : 414px) 
+and (max-device-width : 736px) {
 	header {
 		padding: 0 4%;
 	}
@@ -373,7 +373,7 @@ and (max-device-width : 667px) {
 }
 @media (orientation : portrait) {
 	section {
-		height: 100%;
+		height: calc(100% - 10% - 50px);
 	}
 }
 @-moz-document url-prefix() { 
