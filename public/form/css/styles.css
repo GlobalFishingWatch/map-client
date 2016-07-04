@@ -381,7 +381,7 @@ and (max-device-width : 768px) {
 }
 @media (orientation : portrait) {
 	section {
-		height: calc(100% - 10% - 50px);
+		height: calc(100% - 10% - 20px)
 	}
 }
 @-moz-document url-prefix() { 
