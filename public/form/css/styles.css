@@ -120,7 +120,12 @@ h1 {
 
 }
 form {
+	display: flex;
+	flex-direction: column;
 	width: 450px;
+}
+.reg form {
+	display: block;
 }
 label {
     text-transform: uppercase;
