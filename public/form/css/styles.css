@@ -126,6 +126,7 @@ form {
 }
 .reg form {
 	display: block;
+    text-align: center;
 }
 label {
     text-transform: uppercase;
@@ -135,6 +136,7 @@ label {
     margin: 15px 0 0;
     letter-spacing: 1.5px;
     font-family: helvetica, arial, sans-serif;
+    label
 }
 input, textarea {
 	height: 30px;
@@ -369,7 +371,9 @@ and (max-device-width : 768px) {
 	.pwd p {
 	    font-size: 35px;
 	    line-height: 40px;
-	    width: 80%;
+	}
+	.res .pwd p {
+		width: 80%;
 	}
 	.cancel {
 		font-size: 23px;
