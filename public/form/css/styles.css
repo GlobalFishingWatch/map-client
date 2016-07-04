@@ -296,8 +296,7 @@ section.reg form{
 
 @media only screen 
 and (min-device-width : 375px) 
-and (max-device-width : 667px) 
-and (orientation : portrait) {
+and (max-device-width : 667px) {
 	header {
 		padding: 0 4%;
 	}
@@ -313,6 +312,7 @@ and (orientation : portrait) {
 	section {
 		justify-content: flex-start;
 		padding: 10% 0 0!important;
+		height: 170%;
 	}
 	select {
 		height: 60px !important;
