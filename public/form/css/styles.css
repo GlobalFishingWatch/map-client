@@ -103,11 +103,12 @@ header .selected {
 }
 section {
 	background-color: rgba(23,64,132,0.8);
-	height: 100%;
+	height: calc(100% + 120px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	min-height: 730px;
 }
 section.pwd {
 	padding: 0 20%;
@@ -123,6 +124,16 @@ form {
 	display: flex;
 	flex-direction: column;
 	width: 450px;
+	height: 100%;
+}
+.reg form {
+	display: block;
+    text-align: center;
+}
+.reg form input[type="submit"]{
+	width: 98%;
+    position: relative;
+    left: -1%;
 }
 label {
     text-transform: uppercase;
@@ -130,12 +141,17 @@ label {
     height: 30px;
     line-height: 30px;
     margin: 15px 0 0;
+    letter-spacing: 1.5px;
+    font-family: helvetica, arial, sans-serif;
+
 }
 input, textarea {
 	height: 30px;
 	padding: 0 6px;
 	border: 0;
 	font-size: 11px;
+	font-family: helvetica, arial, sans-serif;
+	flex-shrink: 0;
 }
 textarea {
 	padding: 6px;
@@ -159,6 +175,7 @@ input[type='submit'] {
     margin: 40px auto;
     height: 60px;
     cursor: pointer;
+    letter-spacing: 1.5px;
 }
 select::-ms-expand {
     display: none;
@@ -250,6 +267,7 @@ section.reg form{
 }
 .column label {
 	display: block;
+	text-align: left;
 }
 .column input {
 	width: 100%;
@@ -275,6 +293,7 @@ section.reg form{
 	background-size: cover;
 	background-attachment: fixed;
 	background-position: 50%;
+	background-repeat: no-repeat;
 }
 .bg.reg {
 	background-image: url('../img/ship.png');
@@ -295,9 +314,7 @@ section.reg form{
 }
 
 @media only screen 
-and (min-device-width : 375px) 
-and (max-device-width : 667px) 
-and (orientation : portrait) {
+and (max-device-width : 768px) {
 	header {
 		padding: 0 4%;
 	}
@@ -313,6 +330,8 @@ and (orientation : portrait) {
 	section {
 		justify-content: flex-start;
 		padding: 10% 0 0!important;
+		height: 170%;
+		max-height: 170%;
 	}
 	select {
 		height: 60px !important;
@@ -337,10 +356,9 @@ and (orientation : portrait) {
 		border-radius: 0;
 	}
 	input[type="submit"] {
-		width: 98%;
+		width: 100%;
 	    font-size: 23px;
-	    position: relative;
-	    left: -1%;
+	    display: block;
 	}
 	.tos span input {
 		-webkit-appearance: checkbox;
@@ -359,13 +377,17 @@ and (orientation : portrait) {
 		font-size: 23px;
 	}
 	.pwd p {
-	    font-size: 34px;
-	    line-height: 60px;
+	    font-size: 35px;
+	    line-height: 40px;
+	}
+	.res .pwd p {
+		width: 80%;
 	}
 	.cancel {
 		font-size: 23px;
 	}
 }
+
 @-moz-document url-prefix() { 
   select {
      padding: 2px !important;
