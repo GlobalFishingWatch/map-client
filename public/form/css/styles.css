@@ -108,6 +108,7 @@ section {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	min-height: 700px;
 }
 section.pwd {
 	padding: 0 20%;
@@ -381,21 +382,12 @@ and (max-device-width : 768px) {
 		font-size: 23px;
 	}
 }
-@media (orientation : portrait) {
-	section {
-		height: calc(100% - 10% - 20px)
-	}
-}
+
 @-moz-document url-prefix() { 
   select {
      padding: 2px !important;
      color: #767676 !important;
   }
-	@media (orientation : portrait) {
-		section {
-			height: 170%;
-		}
-	}
 }
 @supports (-ms-accelerator:true) {
   input:required {
