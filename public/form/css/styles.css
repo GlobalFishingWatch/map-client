@@ -391,6 +391,11 @@ and (max-device-width : 768px) {
      padding: 2px !important;
      color: #767676 !important;
   }
+	@media (orientation : portrait) {
+		section {
+			height: 170%;
+		}
+	}
 }
 @supports (-ms-accelerator:true) {
   input:required {
