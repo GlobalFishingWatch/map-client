@@ -130,6 +130,11 @@ form {
 	display: block;
     text-align: center;
 }
+.reg form input[type="submit"]{
+	width: 98%;
+    position: relative;
+    left: -1%;
+}
 label {
     text-transform: uppercase;
     font-size: 14px;
