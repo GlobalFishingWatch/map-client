@@ -259,6 +259,7 @@ section.reg form{
 }
 .column label {
 	display: block;
+	text-align: left;
 }
 .column input {
 	width: 100%;
