@@ -2,7 +2,8 @@
 
 import React, {Component} from 'react';
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import createOverlayLayer from './layers/vesselONeLayer';
+import createOverlayLayer from './layers/vesselOneLayer';
+import CanvasLayer from './layers/canvasLayer';
 import map from '../../styles/index.scss';
 
 function debounce(func, wait, immediate) {
@@ -116,11 +117,14 @@ class Map extends Component {
 
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
-      this.props.initVesselLayer();
-      const Overlay = createOverlayLayer(google);
-      const overlay = new Overlay(this.refs.map.props.map);
-      this.setState({overlay: overlay});
-      this.props.loadVesselLayer(this.refs.map.props.map);
+      // this.props.initVesselLayer();
+      // const Overlay = createOverlayLayer(google);
+      // const overlay = new Overlay(this.refs.map.props.map);
+      // this.setState({overlay: overlay});
+      // this.props.loadVesselLayer(this.refs.map.props.map);
+      const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
+
+
     }
   }
 
@@ -151,11 +155,20 @@ class Map extends Component {
     }
   }
 
+  login(){
+    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
+    window.location = url;
+  }
+
   render() {
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
       <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running ? "Play ►" : "Pause ||"}</button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      {
+        this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>
+      }
+      {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.range_container}>
         <span className={map.tooltip} id="timeline_tooltip">
         2015-01-01

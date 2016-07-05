@@ -12,6 +12,7 @@ import Routes from './routes';
 import '../styles/index.scss';
 
 import vesselReducer from './reducers/vessel';
+import userReducer from './reducers/user';
 
 /**
  * Reducers
@@ -20,7 +21,8 @@ import vesselReducer from './reducers/vessel';
  */
 const reducer = combineReducers({
   routing: routerReducer,
-  vessel: vesselReducer
+  vessel: vesselReducer,
+  user: userReducer
 });
 
 
