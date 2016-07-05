@@ -346,10 +346,8 @@ and (max-device-width : 768px) {
 		border-radius: 0;
 	}
 	input[type="submit"] {
-		width: 98%;
+		width: 100%;
 	    font-size: 23px;
-	    position: relative;
-	    left: -1%;
 	    display: block;
 	}
 	.tos span input {
