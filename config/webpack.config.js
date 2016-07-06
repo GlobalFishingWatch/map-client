@@ -13,6 +13,7 @@ const envVariables = process.env;
 const webpackConfig = {
 
   entry: [
+    'whatwg-fetch',
     path.join(rootPath, 'app/src/index.jsx')
   ],
 

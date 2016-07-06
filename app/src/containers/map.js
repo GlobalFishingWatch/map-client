@@ -7,7 +7,8 @@ import {init, loadZoom, move, showLoading, resetCache, addLayer} from '../action
 
 const mapStateToProps = (state) => {
   return {
-    vessel: state.vessel
+    vessel: state.vessel,
+    loggedUser: state.user.loggedUser
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -23,6 +23,13 @@ body {
   z-index: 10;
 }
 
+.loginButton, .loggedUser{
+  position: absolute !important;
+  top: 50px;
+  right: 10px;
+  z-index: 10;
+}
+
 .timeline {
   top: 70px
 }

@@ -5,6 +5,12 @@ import Map from '../containers/map';
 
 class App extends Component {
 
+  componentDidMount(){
+    if(this.props.params.accessToken){
+      this.props.setToken(this.props.params.accessToken.split('&state')[0]);
+    }
+    this.props.getLoggedUser();
+  }
   render() {
     return (
       <div>
