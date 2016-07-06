@@ -28,20 +28,10 @@ class Map extends Component {
 
 
   onZoomChanged() {
-    this.state.overlay.regenerate();
-    this.props.loadVesselLayer(this.refs.map.props.map);
     this.setState({zoom:this.refs.map.props.map.getZoom()});
   }
 
-  onDragStart() {
-    this.props.showLoading();
-  }
 
-  onDragEnd() {
-    this.state.overlay.recalculatePosition();
-    this.props.resetCache();
-    this.props.move(this.refs.map.props.map);
-  }
 
   addLayer() {
     this.props.addLayer();
@@ -192,13 +182,6 @@ class Map extends Component {
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }
-					      onDragend = {
-					        this.onDragEnd.bind(this)
-					      }
-					      onDragstart = {
-					        this.onDragStart.bind(this)
-					      }
-
 					      onZoomChanged = {
 					        this.onZoomChanged.bind(this)
 					      }> </GoogleMap>
