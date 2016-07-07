@@ -66,7 +66,7 @@ class CanvasLayer {
     let coordRec = this.getNormalizedCoord(coord, zoom);
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
     if(coordRec){
-      new PelagosClient().obtainTile(`https://storage.googleapis.com/vizzuality-staging/data/${coordRec.x},${coordRec.y},${zoom}`).then(function(data) {
+      new PelagosClient().obtainTile(`https://storage.googleapis.com/vizzuality-staging/data/${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
         this.drawTile(canvas, zoom, data);
       }.bind(this));
     }
