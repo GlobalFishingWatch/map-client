@@ -1,6 +1,6 @@
 import PelagosClient from '../../lib/pelagosClient';
 
-const url = 'https://storage.googleapis.com/vizzuality-staging/data/'
+const url = 'https://1fc7a3a3.ngrok.io/pelagos-testtiles/data/'
 
 class CanvasLayer {
   constructor(position, options, map) {
@@ -26,13 +26,25 @@ class CanvasLayer {
     canvas.ctx = ctx;
     return canvas;
   }
-  drawTile(canvas, zoom, data) {
+  drawTile(canvas, zoom, data, coord, zoom_diff) {
     const overlayProjection = this.map.getProjection();
+    const scale = 1 << zoom;
+    const tile_base_x = coord.x * 256;
+    const tile_base_y = coord.y * 256;
+
     let size = zoom > 6
       ? 3
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
-      let coords = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
+      let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
+      const pxcoord = new google.maps.Point(
+        Math.floor(pointLatLong.x * scale),
+        Math.floor(pointLatLong.y * scale)
+      );
+      let xcoords = {
+        x: (pxcoord.x - tile_base_x) << zoom_diff,
+        y: (pxcoord.y - tile_base_y) << zoom_diff
+      }
       const weight = data.weight[i];
       if (!weight)
         continue;
@@ -42,7 +54,7 @@ class CanvasLayer {
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
-      canvas.ctx.fillRect(~~ coords.x, ~~ coords.y, size, size);
+      canvas.ctx.fillRect(~~ xcoords.x, ~~ xcoords.y, size, size);
     }
   }
 
@@ -69,7 +81,7 @@ class CanvasLayer {
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
     if(coordRec){
       new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
-        this.drawTile(canvas, zoom, data);
+        this.drawTile(canvas, zoom, data, coordRec, zoomDiff);
       }.bind(this));
     }
 
