@@ -1,0 +1,39 @@
+.c_input_button {
+  display: flex;
+  input {
+    font-family: $font-family-primary;
+    border-left: 0;
+    border-right: 0;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #D7DBDD;
+    padding-left: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 12px;
+    font-weight: normal;
+    color: $font-color-1;
+    outline: 0;
+  }
+  .button_addOnLeft {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    cursor: pointer;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    background-color: #4EBBE4;
+    font-size: 12px;
+    border: 1px solid #16A2D7;
+    border-radius: 4px;
+  }
+  .button_addOnRight {
+    cursor: pointer;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    background-color: $color3;
+    font-size: 12px;
+    border: 1px solid $color3;
+  }
+}

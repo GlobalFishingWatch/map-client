@@ -1,3 +1,17 @@
+@charset "utf-8";
+@import 'normalize.scss';
+@import 'slick.scss';
+@import 'colors.scss';
+@import 'text.scss';
+@import 'layout/homepage.scss';
+@import 'components/c_button.scss';
+@import 'components/c_input_button.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -23,7 +37,7 @@ body {
   z-index: 10;
 }
 
-.loginButton, .loggedUser{
+.loginButton, .loggedUser {
   position: absolute !important;
   top: 50px;
   right: 10px;
@@ -31,30 +45,32 @@ body {
 }
 
 .timeline {
-  top: 70px
+  top: 70px;
 }
+
 .timelineStop {
   top: 90px;
 }
+
 .range_container {
-    position: absolute;
-    bottom: 30px;
-    background: rgba(211,211,211,0.6);
-    height: 30px;
-    width: 90%;
-    z-index: 6;
-    margin: 0 45px;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    box-sizing: border-box;
+  position: absolute;
+  bottom: 30px;
+  background: rgba(211, 211, 211, 0.6);
+  height: 30px;
+  width: 90%;
+  z-index: 6;
+  margin: 0 45px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-sizing: border-box;
   .timeline_range {
     width: 100%;
-    background: lightsalmon;
+    background: $color1;
     height: 3px;
     cursor: pointer;
     .handle {
-      background: salmon;
+      background: $color2;
       width: 5px;
       height: 5px;
       display: block;
@@ -63,12 +79,12 @@ body {
     }
   }
   .tooltip {
-    background-color: white;
+    background-color: $color9;
     font-family: sans-serif;
     font-size: 11px;
     width: 140px;
     position: absolute;
     top: 1px;
-    transform: translate(-50%,-60%);
+    transform: translate(-50%, -60%);
   }
 }
