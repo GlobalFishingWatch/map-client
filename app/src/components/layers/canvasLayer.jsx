@@ -1,5 +1,7 @@
 import PelagosClient from '../../lib/pelagosClient';
 
+const url = 'https://storage.googleapis.com/vizzuality-staging/data/'
+
 class CanvasLayer {
   constructor(position, options, map) {
     this.map = map;
@@ -66,7 +68,7 @@ class CanvasLayer {
     let coordRec = this.getNormalizedCoord(coord, zoom);
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
     if(coordRec){
-      new PelagosClient().obtainTile(`https://storage.googleapis.com/vizzuality-staging/data/${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
+      new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
         this.drawTile(canvas, zoom, data);
       }.bind(this));
     }
