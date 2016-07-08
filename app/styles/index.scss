@@ -6,6 +6,10 @@
 @import 'layaout/homepage.scss';
 @import 'components/c_button.scss';
 @import 'components/c_input_button.scss';
+* {
+   margin: 0;
+   padding: 0;
+}
 body {
   margin: 0;
   padding: 0;
