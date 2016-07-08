@@ -1,6 +1,6 @@
 /*HOME PAGE*/
 .header_home {
-  background-color: blue;
+  background-color: $bluesecondary;
   nav {
     display: flex;
     justify-content: space-between;
@@ -137,7 +137,7 @@
       width: 463px;
       max-width: 463px;
       height: 316px;
-      background-color: blue;
+      background-color: $bluesecondary;
       margin-right: 0;
     }
   }
@@ -145,7 +145,7 @@
 .infomap {
   font-family: $font-family-primary;
   height: 748px;
-  background-color: blue;
+  background-color: $bluesecondary;
   display: flex;
   align-items: center;
   padding-left: 168px;
@@ -201,7 +201,7 @@
       margin-right: 20px;
       width: 316px;
       .img {
-        background-color: blue;
+        background-color: $bluesecondary;
         width: 316px;
         height: 228px;
       }
