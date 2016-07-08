@@ -1,6 +1,10 @@
 @charset "utf-8";
 @import 'normalize.scss';
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100,900);
+@import 'slick.scss';
+@import 'colors.scss';
+@import 'text.scss';
+@import 'layaout/homepage.scss';
+@import 'components/c_button.scss';
 body {
   margin: 0;
   padding: 0;
@@ -51,11 +55,11 @@ body {
   box-sizing: border-box;
   .timeline_range {
     width: 100%;
-    background: lightsalmon;
+    background: $color1;
     height: 3px;
     cursor: pointer;
     .handle {
-      background: salmon;
+      background: $color2;
       width: 5px;
       height: 5px;
       display: block;
@@ -64,7 +68,7 @@ body {
     }
   }
   .tooltip {
-    background-color: white;
+    background-color: $color9;
     font-family: sans-serif;
     font-size: 11px;
     width: 140px;
@@ -73,6 +77,7 @@ body {
     transform: translate(-50%,-60%);
   }
 }
+
 .header_home {
   background-color: blue;
   nav {

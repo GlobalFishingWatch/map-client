@@ -1,0 +1,263 @@
+/*HOME PAGE*/
+.header_home {
+  background-color: blue;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 67px;
+    padding-right: 62px;
+    padding-top: 40px;
+    ul {
+      list-style: none;
+      li {
+        display: inline-block;
+        margin-right: 92px;
+        &:nth-last-child(2) {
+          margin-right: 46px;
+        }
+        &:last-child {
+          border-left: 1px solid $color9;
+          padding-left: 46px;
+          margin-right: 0;
+        }
+        a {
+          color: $color9;
+          text-decoration: none;
+          font-family: $font-family-primary;
+          font-size: $font-size-normal;
+          font-weight: bold;
+          letter-spacing: -0.1px;
+        }
+      }
+    }
+  }
+  h1 {
+    font-family: $font-family-primary;
+    font-size: $font-size-xlarge;
+    font-weight: $font-weight-bold;
+    line-height: 0.85;
+    letter-spacing: -1.5px;
+    color: $color9;
+    max-width: 870px;
+    padding-left: 124px;
+    margin-bottom: 0;
+    margin-top: 100px;
+    &:after {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: $color3;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      width: 174px;
+    }
+  }
+  p {
+    padding-left: 124px;
+    color: $color9;
+    font-family: $font-family-primary;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    letter-spacing: -0.1px;
+    max-width: 668px;
+    margin-bottom: 170px;
+  }
+  .footer_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .triangle {
+      margin: 0 auto;
+      width: 52px;
+      height: 52px;
+      transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+      -moz-transform: rotate(-135deg);
+      -o-transform: rotate(-135deg);
+      -ms-transform: rotate(-135deg);
+      border-right: 2px solid $color9;
+      border-bottom: 2px solid $color9;
+      margin-bottom: -30px;
+      cursor: pointer;
+      .triangle_min {
+        width: 12px;
+        height: 12px;
+        transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        border-right: 2px solid $color9;
+        border-bottom: 2px solid $color9;
+        margin-bottom: 0;
+        margin-left: 32px;
+        margin-top: 32px;
+      }
+    }
+  }
+}
+.infostudy {
+  font-family: $font-family-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 90px 168px 140px;
+  div {
+    &:first-child {
+      width: 463px;
+      max-width: 463px;
+      margin-right: 18px;
+      h2 {
+        font-size: 14px;
+        font-weight: $font-weight-bold;
+        letter-spacing: -0.1px;
+        color: $color3;
+        margin-bottom: 30px;
+      }
+      h3 {
+        font-size: $font-size-large;
+        font-weight: $font-weight-regular;
+        line-height: 1.05;
+        margin-bottom: 11px;
+      }
+      p {
+        font-size: $font-size-normal;
+        font-weight: $font-weight-regular;
+        line-height: 1.63;
+        margin-top: 0;
+        margin-bottom: 11px;
+        a {
+          text-decoration: none;
+          display: inline-block;
+        }
+      }
+    }
+    &:last-child {
+      width: 463px;
+      max-width: 463px;
+      height: 316px;
+      background-color: blue;
+      margin-right: 0;
+    }
+  }
+}
+.infomap {
+  font-family: $font-family-primary;
+  height: 748px;
+  background-color: blue;
+  display: flex;
+  align-items: center;
+  padding-left: 168px;
+  div {
+    width: 360px;
+    h2 {
+      font-size: 14px;
+      font-weight: $font-weight-bold;
+      letter-spacing: -0.1px;
+      color: $color9;
+      &:after {
+        content: " ";
+        display: block;
+        height: 3px;
+        background-color: $color9;
+        margin-top: 16px;
+        margin-bottom: 12px;
+        width: 50px;
+      }
+    }
+    h3 {
+      font-size: $font-size-large;
+      font-weight: $font-weight-regular;
+      line-height: 1.05;
+      color: $color9;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+    p {
+      font-size: $font-size-normal;
+      font-weight: $font-weight-regular;
+      line-height: 1.25;
+      color: $color9;
+      margin-top: 20px;
+    }
+  }
+}
+.success_story {
+  font-family: $font-family-primary;
+  background-color: $color8;
+  padding-top: 85px;
+  padding-left: 155px;
+  padding-right: 155px;
+  padding-bottom: 96px;
+  h2 {
+    font-size: $font-size-large;
+    font-weight: $font-weight-regular;
+    line-height: 1.05;
+    color: $font-color-1;
+  }
+  .gallery_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .image_text {
+      margin-right: 20px;
+      width: 316px;
+      .img {
+        background-color: blue;
+        width: 316px;
+        height: 228px;
+      }
+      .info_text {
+        margin-top: 34px;
+        font-size: $font-size-xsmall;
+        font-weight: $font-weight-regular;
+        line-height: 2.08;
+        color: $font-color-1;
+        .title_info {
+          display: block;
+        }
+        .link_more{
+          display: block;
+          color: $font-color-3;
+          text-transform: uppercase;
+          margin-top: 45px;
+          text-decoration: none;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          line-height: 0.4;
+          letter-spacing: -0.1px;
+        }
+      }
+      &:last-child{
+        margin-right: 0px;
+      }
+    }
+  }
+}
+
+footer{
+  font-family: $font-family-primary;
+  background-color: $color5;
+  padding-top: 56px;
+  .logos_footer{
+    .partner_footer{
+      span{
+        color: $font-color-2;
+        font-size: $font-size-normal;
+      }
+    }
+    .sponsor_footer{
+      span{
+        color: $font-color-2;
+        font-size: $font-size-normal;
+      }
+    }
+  }
+  .nav_footer{
+
+  }
+  .project_name_footer{
+    background-color: $color10;
+  }
+}
