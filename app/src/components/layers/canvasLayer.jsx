@@ -1,6 +1,6 @@
 import PelagosClient from '../../lib/pelagosClient';
 
-const url = 'https://1fc7a3a3.ngrok.io/pelagos-testtiles/data/'
+const url = 'https://storage.googleapis.com/vizzuality-staging/data/'
 
 class CanvasLayer {
   constructor(position, options, map) {
