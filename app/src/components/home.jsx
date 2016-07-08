@@ -40,7 +40,7 @@ class Home extends Component {
       </section>
       <section className={home.infostudy}>
         <div>
-          <h2>CASE ESTUDY</h2>
+          <h2>CASE STUDY</h2>
           <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis orci varius sem posuere tempus. Pellentesque enim nulla, consequat vitae faucibus a, vulputate at est. Quisque interdum, ex imperdiet feugiat eleifend, dui nibh cursus neque, dapibus fringilla lectus elit eget dolor. Phasellus ut nisl tortor. Ut posuere convallis consectetur. Nam.</p>
@@ -56,7 +56,7 @@ class Home extends Component {
           <h3>Lorem ipsum dolor sit amet</h3>
           <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat sodales lectus.</p>
           <p>
-            <a href="#" className={home.c_btn_primary}>EXPLORE MAP</a>
+            <a href="#map" className={home.c_btn_primary}>EXPLORE MAP</a>
           </p>
         </div>
       </section>
@@ -103,7 +103,7 @@ class Home extends Component {
         </div>
         <div className={home.nav_footer}>
           <ul>
-            <li>map</li>
+            <li><a href="#map">Map</a></li>
             <li>news</li>
             <li>how to</li>
             <li>about</li>
@@ -118,7 +118,7 @@ class Home extends Component {
             <li>ICONS</li>
           </ul>
           <div className={home.input_footer}>
-            <span>SUSCRIBE TO NEWS</span>
+            <span>SUBSCRIBE TO NEWS</span>
               <div className={home.c_input_button} >
                 <input type="email" placeholder="Email"></input>
                 <button class="button--addOnRight" className={home.button_addOnRight}>icon</button>
