@@ -186,10 +186,7 @@
 .success_story {
   font-family: $font-family-primary;
   background-color: $color8;
-  padding-top: 85px;
-  padding-left: 155px;
-  padding-right: 155px;
-  padding-bottom: 96px;
+  padding: 85px 155px 96px;
   h2 {
     font-size: $font-size-large;
     font-weight: $font-weight-regular;
@@ -217,7 +214,7 @@
         .title_info {
           display: block;
         }
-        .link_more{
+        .link_more {
           display: block;
           color: $font-color-3;
           text-transform: uppercase;
@@ -229,35 +226,71 @@
           letter-spacing: -0.1px;
         }
       }
-      &:last-child{
-        margin-right: 0px;
+      &:last-child {
+        margin-right: 0;
       }
     }
   }
 }
-
-footer{
+footer {
   font-family: $font-family-primary;
   background-color: $color5;
   padding-top: 56px;
-  .logos_footer{
-    .partner_footer{
-      span{
+  padding-left: 170px;
+  padding-right: 170px;
+  .logos_footer {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 54px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    .partner_footer {
+      span {
         color: $font-color-2;
         font-size: $font-size-normal;
+        display: block;
+      }
+      img {
+        display: inline-block;
+        width: 130px;
       }
     }
-    .sponsor_footer{
-      span{
+    .sponsor_footer {
+      span {
         color: $font-color-2;
         font-size: $font-size-normal;
       }
     }
   }
-  .nav_footer{
-
+  .nav_footer {
+    padding-top: 38px;
+    padding-bottom: 45px;
+    display: flex;
+    justify-content: space-between;
+    ul {
+      list-style: none;
+      -webkit-margin-before: 0;
+      -webkit-margin-after: 0;
+      -webkit-padding-start: 0;
+      li {
+        text-transform: uppercase;
+        color: $font-color-2;
+        font-size: $font-size-small;
+        font-weight: $font-weight-regular;
+        line-height: 2.27;
+      }
+    }
+    .input_footer{
+      span{
+        display: block;
+        text-transform: uppercase;
+        font-size: $font-size-small;
+        font-weight: $font-weight-regular;
+        line-height: 2.27;
+        color: $font-color-2;
+      }
+    }
   }
-  .project_name_footer{
+  .project_name_footer {
     background-color: $color10;
   }
 }
