@@ -1,11 +1,14 @@
 import PelagosClient from '../../lib/pelagosClient';
 
-const url = 'https://storage.googleapis.com/vizzuality-staging/data/'
+const url = 'https://storage.googleapis.com/vizzuality-staging/random/'
+const DAY_MS = 24*60*60*1000;
 
 class CanvasLayer {
   constructor(position, options, map) {
     this.map = map;
+    this.data = {};
     this.position = position;
+    this.minDate = Date.now();
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
     this.map.overlayMapTypes.insertAt(position, this);
@@ -14,9 +17,10 @@ class CanvasLayer {
   _getCanvas(coord, zoom, ownerDocument) {
     // create canvas and reset style
     var canvas = ownerDocument.createElement('canvas');
-    canvas.style.border = '1px solid red';
+    canvas.style.border = 'none';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
+    canvas.id = `${zoom},${coord.x},${coord.y}`;
 
     // prepare canvas and context sizes
     var ctx = canvas.getContext('2d');
@@ -26,7 +30,34 @@ class CanvasLayer {
     canvas.ctx = ctx;
     return canvas;
   }
+  drawFrame(pos, zoom){
+    let canvasKeys = Object.keys(this.data);
+    for(let i = 0, length = canvasKeys.length; i < length; i++){
+      if(this.data[canvasKeys[i]] && this.data[canvasKeys[i]][pos]){
+        let data = this.data[canvasKeys[i]][pos];
+        let canvas = document.getElementById(canvasKeys[i]);
+        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let j = 0, lengthData = data.latitude.length; j < lengthData; j++){
+          const weight = data.weight[j];
+          if (!weight)
+            continue;
+          if (weight > 0.9)
+            canvas.ctx.fillStyle = 'rgb(255,255,240)';
+          else if (weight > 0.05)
+            canvas.ctx.fillStyle = 'rgb(10,200,200)';
+          else
+            canvas.ctx.fillStyle = 'rgb(0,255,242)';
+          canvas.ctx.fillRect(~~data.x[j], ~~ data.y[j], 1, 1);
+        }
+      }
+    }
+  }
   drawTile(canvas, zoom, data, coord, zoom_diff) {
+    let parseData = false;
+    if(!this.data[`${zoom},${coord.x},${coord.y}`]){
+      parseData = true;
+      this.data[`${zoom},${coord.x},${coord.y}`] = {};
+    }
     const overlayProjection = this.map.getProjection();
     const scale = 1 << zoom;
     const tile_base_x = coord.x * 256;
@@ -55,6 +86,24 @@ class CanvasLayer {
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
       canvas.ctx.fillRect(~~ xcoords.x, ~~ xcoords.y, size, size);
+      if(parseData){
+        let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
+        if(!this.data[`${zoom},${coord.x},${coord.y}`][time]){
+          this.data[`${zoom},${coord.x},${coord.y}`][time] = {
+            latitude: [],
+            longitude: [],
+            weight: [],
+            x: [],
+            y: []
+          }
+        }
+        this.data[`${zoom},${coord.x},${coord.y}`][time].latitude.push(data.latitude[i]);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].longitude.push(data.longitude[i]);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].weight.push(data.weight[i]);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].x.push(~~ xcoords.x);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].y.push(~~ xcoords.y);
+
+      }
     }
   }
 
