@@ -11,7 +11,11 @@ class CanvasLayer {
     this.minDate = Date.now();
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
-    this.map.overlayMapTypes.insertAt(position, this);
+    this.map.overlayMapTypes.insertAt(0, this);
+  }
+
+  resetData(){
+    this.data = {};
   }
 
   _getCanvas(coord, zoom, ownerDocument) {
@@ -35,20 +39,39 @@ class CanvasLayer {
     for(let i = 0, length = canvasKeys.length; i < length; i++){
       if(this.data[canvasKeys[i]] && this.data[canvasKeys[i]][pos]){
         let data = this.data[canvasKeys[i]][pos];
-        let canvas = document.getElementById(canvasKeys[i]);
-        canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for(let j = 0, lengthData = data.latitude.length; j < lengthData; j++){
-          const weight = data.weight[j];
-          if (!weight)
-            continue;
-          if (weight > 0.9)
-            canvas.ctx.fillStyle = 'rgb(255,255,240)';
-          else if (weight > 0.05)
-            canvas.ctx.fillStyle = 'rgb(10,200,200)';
-          else
-            canvas.ctx.fillStyle = 'rgb(0,255,242)';
-          canvas.ctx.fillRect(~~data.x[j], ~~ data.y[j], 1, 1);
-        }
+        this.drawTile2Canvas(canvasKeys[i], data, false);
+      }
+    }
+  }
+
+  drawTile2Canvas(idCanvas, data, accumulative){
+    let canvas = document.getElementById(idCanvas);
+    if(!accumulative){
+      canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    let size = this.map.getZoom() > 6
+      ? 3
+      : 2 || 1;
+    for(let j = 0, lengthData = data.latitude.length; j < lengthData; j++){
+      const weight = data.weight[j];
+      if (!weight)
+        continue;
+      if (weight > 0.9)
+        canvas.ctx.fillStyle = 'rgb(255,255,240)';
+      else if (weight > 0.05)
+        canvas.ctx.fillStyle = 'rgb(10,200,200)';
+      else
+        canvas.ctx.fillStyle = 'rgb(0,255,242)';
+      canvas.ctx.fillRect(~~data.x[j], ~~ data.y[j], size, size);
+    }
+  }
+
+  regenerate(){
+    let canvasKeys = Object.keys(this.data);
+    for(let i = 0, length = canvasKeys.length; i < length; i++){
+      let times = Object.keys(this.data[canvasKeys[i]]);
+      for(let j = 0, lengthTime = times.length; j < lengthTime; j++){
+        this.drawTile2Canvas(canvasKeys[i], this.data[canvasKeys[i]][times[j]], true);
       }
     }
   }
@@ -119,7 +142,7 @@ class CanvasLayer {
     }
     // repeat across x-axis
     if (x < 0 || x >= tileRange) {
-      x = (x % tileRange + tileRange) % tileRange;
+      return null;
     }
     return {x: x, y: y};
   }
