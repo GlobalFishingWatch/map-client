@@ -73,7 +73,6 @@ class Map extends Component {
     result.setDate(result.getDate() + ite);
     this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
     this.timelinetooltip.innerHTML = result;
-    // this.state.overlay.regenerate();
     this.state.overlay.drawFrame(ite * (24*60*60*1000),(this.state.zoom > 6 ? 3 : 2));
     let animationID = requestAnimationFrame(function() {
         this.animateMapData(ite+1);
@@ -90,11 +89,6 @@ class Map extends Component {
 
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
-      // this.props.initVesselLayer();
-      // const Overlay = createOverlayLayer(google);
-      // const overlay = new Overlay(this.refs.map.props.map);
-      // this.setState({overlay: overlay});
-      // this.props.loadVesselLayer(this.refs.map.props.map);
       const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
       this.setState({overlay: canvasLayer});
 
@@ -113,14 +107,18 @@ class Map extends Component {
         }
       }
     }
-    var trajectory = new google.maps.Polyline({
-      path: positions,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2
-    });
-    trajectory.setMap(this.refs.map.props.map);
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null)
+    }
+    this.setState({trajectory : new google.maps.Polyline({
+          path: positions,
+          geodesic: false,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        })
+      })
+    this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
   onClick(e) {
