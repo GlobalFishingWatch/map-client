@@ -113,7 +113,7 @@ class Map extends Component {
     this.setState({trajectory : new google.maps.Polyline({
           path: positions,
           geodesic: false,
-          strokeColor: '#FF0000',
+          strokeColor: '#1181fb',
           strokeOpacity: 1.0,
           strokeWeight: 2
         })
