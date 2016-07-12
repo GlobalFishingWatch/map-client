@@ -100,7 +100,11 @@ class Map extends Component {
 
     }
   }
-
+  onClick(e) {
+    const LAT   = e.latLng.lat();
+    const LNG   = e.latLng.lng();
+    const data = this.props.vessel.data;
+  }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
       let nProps    = nextProps.vessel;
@@ -160,11 +164,14 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {0} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
 
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }
+                onClick = {
+                  this.onClick.bind(this)
+                }
 					      onZoomChanged = {
 					        this.onZoomChanged.bind(this)
 					      }> </GoogleMap>
