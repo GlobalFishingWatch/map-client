@@ -45,40 +45,23 @@ class Map extends Component {
     this.timelinetooltip = document.getElementById('timeline_tooltip');
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
-    let newData = new Array(365);
-    const m2015 = 1420070400000;
+    const m2015 = 0;
     const mDay = 86400000;
     this.setState({running: !!!this.state.running});
-    for (let i = 0; i < 365; i++) {
-      newData[i] = {latitude: [], longitude: [], weight: []};
-    }
 
-    for (let prop in data) {
-      let prop = data[prop];
-      for (let i = 0; i < prop.datetime.length; i++) {
-        let rI = newData[~~((prop.datetime[i] - m2015) / mDay)];
-        rI.latitude.push(prop.latitude[i]);
-        rI.longitude.push(prop.longitude[i]);
-        rI.weight.push(prop.weight[i]);
-      }
-    }
-    if (width) {
-      width = ~~this.timelinerange.style.width.replace('px','');
-      width = (width * 365) / this.timelinerange.parentNode.offsetWidth;
-    }
     this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
     const result = new Date(m2015);
     result.setDate(result.getDate() + width);
     this.timelinetooltip.innerHTML = result;
     requestAnimationFrame(function() {
-      this.animateMapData(newData, ~~width || 0);
+      this.animateMapData(0);
     }.bind(this));
   }
 
-  animateMapData(data, ite) {
+  animateMapData(ite) {
     if (!this.state.running) return;
     ite = ite || 0;
-    if (ite == data.length) {
+    if (ite == 365) {
       this.setState({running: !!!this.state.running});
       this.onDragEnd();
       this.timelinerange.style.width = 0;
@@ -90,10 +73,9 @@ class Map extends Component {
     result.setDate(result.getDate() + ite);
     this.timelinetooltip.style.left = this.timelinerange.offsetWidth + 'px';
     this.timelinetooltip.innerHTML = result;
-    this.state.overlay.regenerate();
-    this.state.overlay.drawTile(data[ite],(this.state.zoom > 6 ? 3 : 2));
+    this.state.overlay.drawFrame(ite * (24*60*60*1000),(this.state.zoom > 6 ? 3 : 2));
     let animationID = requestAnimationFrame(function() {
-        this.animateMapData(data,ite+1);
+        this.animateMapData(ite+1);
     }.bind(this));
     this.setState({'animationID' : animationID});
   }
@@ -107,17 +89,54 @@ class Map extends Component {
 
   onIdle() {
     if (this.props.vessel && !this.props.vessel.load) {
-      // this.props.initVesselLayer();
-      // const Overlay = createOverlayLayer(google);
-      // const overlay = new Overlay(this.refs.map.props.map);
-      // this.setState({overlay: overlay});
-      // this.props.loadVesselLayer(this.refs.map.props.map);
       const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
-
+      this.setState({overlay: canvasLayer});
 
     }
   }
+  findSeriesPositions(series) {
+    const tiles = this.state.overlay.data;
+    let positions = [];
 
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (tiles[tile][timestamp].series[i] == series) {
+            positions.push({'lat' : tiles[tile][timestamp].latitude[i], 'lng' : tiles[tile][timestamp].longitude[i]})
+          }
+        }
+      }
+    }
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null)
+    }
+    this.setState({trajectory : new google.maps.Polyline({
+          path: positions,
+          geodesic: false,
+          strokeColor: '#1181fb',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        })
+      })
+    this.state.trajectory.setMap(this.refs.map.props.map);
+  }
+
+  onClick(e) {
+    const LAT   = Math.round(e.latLng.lat() * 1) / 1;
+    const LNG   = Math.round(e.latLng.lng() * 1) / 1;
+    const tiles = this.state.overlay.data;
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (Math.round(tiles[tile][timestamp].latitude[i]  * 1) / 1 == LAT && 
+              Math.round(tiles[tile][timestamp].longitude[i] * 1) / 1 == LNG ) {
+            this.findSeriesPositions(tiles[tile][timestamp].series[i]);
+            return;
+          }
+        }
+      }
+    }
+  }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
       let nProps    = nextProps.vessel;
@@ -177,11 +196,14 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {0} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
 
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }
+                onClick = {
+                  this.onClick.bind(this)
+                }
 					      onZoomChanged = {
 					        this.onZoomChanged.bind(this)
 					      }> </GoogleMap>
