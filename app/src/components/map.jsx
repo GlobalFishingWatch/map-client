@@ -113,7 +113,6 @@ class Map extends Component {
         }
       }
     }
-    console.log(positions);
     var trajectory = new google.maps.Polyline({
       path: positions,
       geodesic: true,
