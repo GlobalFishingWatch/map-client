@@ -100,10 +100,45 @@ class Map extends Component {
 
     }
   }
+  findSeriesPositions(series) {
+    const tiles = this.state.overlay.data;
+    let positions = [];
+
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (tiles[tile][timestamp].series[i] == series) {
+            positions.push({'lat' : tiles[tile][timestamp].latitude[i], 'lng' : tiles[tile][timestamp].longitude[i]})
+          }
+        }
+      }
+    }
+    console.log(positions);
+    var trajectory = new google.maps.Polyline({
+      path: positions,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    });
+    trajectory.setMap(this.refs.map.props.map);
+  }
+
   onClick(e) {
-    const LAT   = e.latLng.lat();
-    const LNG   = e.latLng.lng();
-    const data = this.props.vessel.data;
+    const LAT   = Math.round(e.latLng.lat() * 1) / 1;
+    const LNG   = Math.round(e.latLng.lng() * 1) / 1;
+    const tiles = this.state.overlay.data;
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (Math.round(tiles[tile][timestamp].latitude[i]  * 1) / 1 == LAT && 
+              Math.round(tiles[tile][timestamp].longitude[i] * 1) / 1 == LNG ) {
+            this.findSeriesPositions(tiles[tile][timestamp].series[i]);
+            return;
+          }
+        }
+      }
+    }
   }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {

@@ -94,7 +94,8 @@ class CanvasLayer {
             longitude: [],
             weight: [],
             x: [],
-            y: []
+            y: [],
+            series: []
           }
         }
         this.data[`${zoom},${coord.x},${coord.y}`][time].latitude.push(data.latitude[i]);
@@ -102,6 +103,7 @@ class CanvasLayer {
         this.data[`${zoom},${coord.x},${coord.y}`][time].weight.push(data.weight[i]);
         this.data[`${zoom},${coord.x},${coord.y}`][time].x.push(~~ xcoords.x);
         this.data[`${zoom},${coord.x},${coord.y}`][time].y.push(~~ xcoords.y);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].series.push(data.series[i]);
 
       }
     }
