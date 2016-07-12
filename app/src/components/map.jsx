@@ -45,8 +45,10 @@ class Map extends Component {
   }
 
   animateMapData(ite) {
-    if (!this.state.running)
-      return;
+    if (!this.state.running) return;
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null)
+    }
 
     ite = ite || 0;
     if (ite > tmlnMaxDate) {
@@ -184,6 +186,10 @@ class Map extends Component {
 
     }
   }
+  onMousemove(ev){
+    this.refs.map.props.map.setOptions({ draggableCursor: 'default' });
+  }
+
   toggleLayer(layer) {
     layer.visible = !layer.visible;
     this.props.updateLayer(layer);
