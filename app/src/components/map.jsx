@@ -7,7 +7,7 @@ import CanvasLayer from './layers/canvasLayer';
 import map from '../../styles/index.scss';
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
-let tmlnMaxDate = 1451606400000; // 1/1/2015
+let tmlnMaxDate = 1451606400000; // 1/1/2016
 const mDay = 86400000;
 
 class Map extends Component {
