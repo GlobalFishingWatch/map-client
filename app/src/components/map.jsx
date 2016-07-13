@@ -6,8 +6,8 @@ import createOverlayLayer from './layers/vesselOneLayer';
 import CanvasLayer from './layers/canvasLayer';
 import map from '../../styles/index.scss';
 
-const min2015 = 1420070400000; // 1/1/2015
-const max2015 = 1451606400000; // 1/1/2015
+const tmlnMinDate = 1420070400000; // 1/1/2015
+const tmlnMaxDate = 1451606400000; // 1/1/2015
 const mDay = 86400000;
 
 class Map extends Component {
@@ -16,7 +16,7 @@ class Map extends Component {
     super(props);
     this.state = {
       overlay: null,
-      ite: min2015
+      ite: tmlnMinDate
     };
   }
   onZoomChanged() {
@@ -39,7 +39,7 @@ class Map extends Component {
 
     this.setState({running: !!!this.state.running});
     requestAnimationFrame(function() {
-      this.animateMapData(this.state.ite || min2015 , mDay);
+      this.animateMapData(this.state.ite || tmlnMinDate , mDay);
     }.bind(this));
   }
 
@@ -47,11 +47,11 @@ class Map extends Component {
     if (!this.state.running) return;
 
     ite = ite || 0;
-    if (ite > max2015) {
+    if (ite > tmlnMaxDate) {
       this.setState({running: !!!this.state.running, ite: null, widthRange: 0});
       return ;
     }
-    let width = ((ite - min2015) / mDay)/ ((max2015 - min2015) / mDay) * 100;
+    let width = ((ite - tmlnMinDate) / mDay)/ ((tmlnMaxDate - tmlnMinDate) / mDay) * 100;
     this.setState({widthRange: width +'%', ite: ite});
     // this.state.overlay.regenerate();
     this.state.overlay.drawFrame(ite, (this.state.zoom > 6 ? 3 : 2));
@@ -159,6 +159,10 @@ class Map extends Component {
         this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>
       }
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
+      <div className={map.date_inputs}>
+        <label for="mindate">Min date<input type="date" id="mindate" value="2015-01-01" /></label>
+        <label for="maxdate">Max date<input type="date" id="maxdate" value="2015-12-31" /></label>
+      </div>
       <div className={map.range_container}>
         <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
           {new Date(this.state.ite).toString()}
