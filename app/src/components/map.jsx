@@ -48,11 +48,9 @@ class Map extends Component {
 
     ite = ite || 0;
     if (ite > max2015) {
-        debugger;
       this.setState({running: !!!this.state.running, ite: null, widthRange: 0});
       return ;
     }
-
     let width = ((ite - min2015) / mDay)/ ((max2015 - min2015) / mDay) * 100;
     this.setState({widthRange: width +'%', ite: ite});
     // this.state.overlay.regenerate();
@@ -77,7 +75,49 @@ class Map extends Component {
 
     }
   }
+  findSeriesPositions(series) {
+    const tiles = this.state.overlay.data;
+    let positions = [];
 
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (tiles[tile][timestamp].series[i] == series) {
+            positions.push({'lat' : tiles[tile][timestamp].latitude[i], 'lng' : tiles[tile][timestamp].longitude[i]})
+          }
+        }
+      }
+    }
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null)
+    }
+    this.setState({trajectory : new google.maps.Polyline({
+          path: positions,
+          geodesic: false,
+          strokeColor: '#1181fb',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        })
+      })
+    this.state.trajectory.setMap(this.refs.map.props.map);
+  }
+
+  onClick(e) {
+    const LAT   = Math.round(e.latLng.lat() * 1) / 1;
+    const LNG   = Math.round(e.latLng.lng() * 1) / 1;
+    const tiles = this.state.overlay.data;
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++){
+          if (Math.round(tiles[tile][timestamp].latitude[i]  * 1) / 1 == LAT && 
+              Math.round(tiles[tile][timestamp].longitude[i] * 1) / 1 == LNG ) {
+            this.findSeriesPositions(tiles[tile][timestamp].series[i]);
+            return;
+          }
+        }
+      }
+    }
+  }
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
       let nProps    = nextProps.vessel;
@@ -137,11 +177,14 @@ class Map extends Component {
 						    />
 						  }
         googleMapElement={
-								<GoogleMap ref="map" defaultZoom = {2} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
 
+								<GoogleMap ref="map" defaultZoom = {3} defaultCenter = {{lat: 0, lng: 0}} defaultMapTypeId = {google.maps.MapTypeId.SATELLITE}
 					      onIdle = {
 					        this.onIdle.bind(this)
 					      }
+                onClick = {
+                  this.onClick.bind(this)
+                }
 					      onZoomChanged = {
 					        this.onZoomChanged.bind(this)
 					      }> </GoogleMap>
