@@ -21,6 +21,7 @@ class Map extends Component {
       ite: tmlnMinDate
     };
   }
+
   onZoomChanged() {
     this.setState({zoom: this.refs.map.props.map.getZoom()});
     this.state.overlay.resetData();
@@ -39,8 +40,8 @@ class Map extends Component {
     this.setState({
       running: !!!this.state.running
     });
-    requestAnimationFrame(function() {
-      this.animateMapData(this.state.ite || tmlnMinDate , mDay);
+    requestAnimationFrame(function () {
+      this.animateMapData(this.state.ite || tmlnMinDate, mDay);
     }.bind(this));
   }
 
@@ -68,7 +69,7 @@ class Map extends Component {
     this.state.overlay.drawFrame(ite, (this.state.zoom > 6
       ? 3
       : 2));
-    let animationID = requestAnimationFrame(function() {
+    let animationID = requestAnimationFrame(function () {
       this.animateMapData(ite + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
@@ -88,6 +89,7 @@ class Map extends Component {
     //
     // }
   }
+
   findSeriesPositions(series) {
     const tiles = this.state.overlay.data;
     let positions = [];
@@ -96,7 +98,8 @@ class Map extends Component {
       for (var timestamp in tiles[tile]) {
         for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++) {
           if (tiles[tile][timestamp].series[i] == series) {
-            positions.push({'lat': tiles[tile][timestamp].latitude[i],
+            positions.push({
+              'lat': tiles[tile][timestamp].latitude[i],
               'lng': tiles[tile][timestamp].longitude[i]
             })
           }
@@ -107,7 +110,13 @@ class Map extends Component {
       this.state.trajectory.setMap(null)
     }
     this.setState({
-      trajectory: new google.maps.Polyline({path: positions, geodesic: false, strokeColor: '#1181fb', strokeOpacity: 1.0, strokeWeight: 2})
+      trajectory: new google.maps.Polyline({
+        path: positions,
+        geodesic: false,
+        strokeColor: '#1181fb',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      })
     })
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
@@ -128,7 +137,7 @@ class Map extends Component {
     }
   }
 
-  componentWillMount(){
+  componentWillMount() {
     // this.props.initVesselLayer();
     this.props.getLayers();
   }
@@ -145,39 +154,40 @@ class Map extends Component {
         for (let i = 0, length = nPVLayers.length; i < length; i++) {
           if (nPVLayers[i].visible && !addedLayers[nPVLayers[i].title]) {
             // add layer and not exist
-            if(nPVLayers[i].title === 'VESSEL'){
+            if (nPVLayers[i].title === 'VESSEL') {
               const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
               this.setState({overlay: canvasLayer});
               addedLayers[nPVLayers[i].title] = canvasLayer;
             } else {
-              let promise =  new Promise(function(resolve, reject){
-                      cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
-                    .addTo(this.refs.map.props.map, i ).done(function(layer, cartoLayer){
-                      addedLayers[layer.title] = cartoLayer;
-                      resolve();
-                    }.bind(this, nPVLayers[i]));}.bind(this));
+              let promise = new Promise(function (resolve, reject) {
+                cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
+                  .addTo(this.refs.map.props.map, i).done(function (layer, cartoLayer) {
+                  addedLayers[layer.title] = cartoLayer;
+                  resolve();
+                }.bind(this, nPVLayers[i]));
+              }.bind(this));
               promises.push(promise);
             }
 
-          } else if(nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && !addedLayers[nPVLayers[i].title].isVisible()) {
+          } else if (nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && !addedLayers[nPVLayers[i].title].isVisible()) {
             // visible and already exist
-            if(nPVLayers[i].title === 'VESSEL'){
+            if (nPVLayers[i].title === 'VESSEL') {
               this.state.overlay.show();
-            }else {
+            } else {
               addedLayers[nPVLayers[i].title].show();
             }
           } else if (!nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && addedLayers[nPVLayers[i].title].isVisible()) {
             //hide layer
-            if(nPVLayers[i].title === 'VESSEL'){
+            if (nPVLayers[i].title === 'VESSEL') {
               this.state.overlay.hide();
-            }else {
+            } else {
               addedLayers[nPVLayers[i].title].hide();
             }
           }
         }
       }
-      if(promises && promises.length > 0){
-        Promise.all(promises).then(function(){
+      if (promises && promises.length > 0) {
+        Promise.all(promises).then(function () {
           this.setState({addedLayers: addedLayers});
         }.bind(this));
       } else {
@@ -186,8 +196,9 @@ class Map extends Component {
 
     }
   }
-  onMousemove(ev){
-    this.refs.map.props.map.setOptions({ draggableCursor: 'default' });
+
+  onMousemove(ev) {
+    this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
 
   toggleLayer(layer) {
@@ -212,48 +223,48 @@ class Map extends Component {
 
   render() {
     return <div>
-      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>{!this.state || !this.state.running
-          ? "Play ►"
-          : "Pause ||"}</button>
+      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+        {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+      </button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
-      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>
-}
+      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.date_inputs}>
-        <label for="mindate">Min date<input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)} /></label>
-        <label for="maxdate">Max date<input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)} /></label>
+        <label for="mindate">
+          Min date
+          <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
+        </label>
+        <label for="maxdate">
+          Max date
+          <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
+        </label>
       </div>
       <div className={map.range_container}>
-        <span className={map.tooltip} id="timeline_tooltip" style={{
-          left: this.state.widthRange
-        }}>
+        <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
           {new Date(this.state.ite).toString()}
         </span>
         <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
-          <span className={map.handle} id="timeline_handler" style={{
-            width: this.state.widthRange
-          }}></span>
+          <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
         </span>
       </div>
       <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-      <GoogleMapLoader containerElement={< div className = {
-        map.map
-      }
-      style = {{ height: "100%", }}/>} googleMapElement={< GoogleMap ref = "map" defaultZoom = {
-        3
-      }
-      defaultCenter = {{lat: 0, lng: 0}}defaultMapTypeId = {
-        google.maps.MapTypeId.SATELLITE
-      }
-      onIdle = {
-        this.onIdle.bind(this)
-      }
-      onClick = {
-        this.onClick.bind(this)
-      }
-      onZoomChanged = {
-        this.onZoomChanged.bind(this)
-      } > </GoogleMap>}></GoogleMapLoader>
+      <GoogleMapLoader
+        containerElement={
+          <div className={map.map} style={{height: "100%",}}/>
+        }
+        googleMapElement={
+          <GoogleMap
+            ref="map"
+            defaultZoom={3}
+            defaultCenter={{lat: 0, lng: 0}}
+            defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+            onIdle={this.onIdle.bind(this)}
+            onClick={this.onClick.bind(this)}
+            onMousemove={this.onMousemove.bind(this)}
+            onZoomChanged={this.onZoomChanged.bind(this)}>
+          </GoogleMap>
+        }>
+      </GoogleMapLoader>
     </div>
 
   }
