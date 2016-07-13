@@ -26,7 +26,7 @@ const reducer = combineReducers({
 });
 
 
-const middlewareRouter = routerMiddleware(hashHistory);
+const middlewareRouter = routerMiddleware(browserHistory);
 
 /**
  * Global state
@@ -44,7 +44,7 @@ const store = createStore(
  * @info(https://github.com/reactjs/react-router/tree/master/docs)
  * @type {Object}
  */
-const history = syncHistoryWithStore(hashHistory, store);
+const history = syncHistoryWithStore(browserHistory, store);
 
 render(
   <Provider store={store}>
