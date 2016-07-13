@@ -11,7 +11,20 @@ class CanvasLayer {
     this.minDate = Date.now();
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
-    this.map.overlayMapTypes.insertAt(0, this);
+    this.map.overlayMapTypes.insertAt(this.position, this);
+    this.visible = true;
+  }
+
+  hide(){
+    this.visible = false;
+    this.map.overlayMapTypes.removeAt(this.position);
+  }
+  show(){
+    this.visible = true;
+    this.map.overlayMapTypes.insertAt(this.position, this);
+  }
+  isVisible(){
+    return this.visible;
   }
 
   resetData(){
