@@ -6,8 +6,8 @@ import createOverlayLayer from './layers/vesselOneLayer';
 import CanvasLayer from './layers/canvasLayer';
 import map from '../../styles/index.scss';
 
-const tmlnMinDate = 1420070400000; // 1/1/2015
-const tmlnMaxDate = 1451606400000; // 1/1/2015
+let tmlnMinDate = 1420070400000; // 1/1/2015
+let tmlnMaxDate = 1451606400000; // 1/1/2015
 const mDay = 86400000;
 
 class Map extends Component {
@@ -150,6 +150,14 @@ class Map extends Component {
     window.location = url;
   }
 
+  updateDates(ev) {
+    if (ev.target.id == 'mindate') {
+      tmlnMinDate = new Date(ev.target.value).getTime();
+    } else if (ev.target.id == 'maxdate') {
+      tmlnMaxDate = new Date(ev.target.value).getTime();
+    }
+  }
+
   render() {
     return <div>
       <button onClick={this.addLayer.bind(this)} className={map.addButton}>Show layers</button>
@@ -160,8 +168,8 @@ class Map extends Component {
       }
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.date_inputs}>
-        <label for="mindate">Min date<input type="date" id="mindate" value="2015-01-01" /></label>
-        <label for="maxdate">Max date<input type="date" id="maxdate" value="2015-12-31" /></label>
+        <label for="mindate">Min date<input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)} /></label>
+        <label for="maxdate">Max date<input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)} /></label>
       </div>
       <div className={map.range_container}>
         <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
