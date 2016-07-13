@@ -146,6 +146,9 @@ class Map extends Component {
       }
     }
   }
+  onMousemove(ev){
+    this.refs.map.props.map.setOptions({ draggableCursor: 'default' });
+  }
 
   login(){
     let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
@@ -186,6 +189,9 @@ class Map extends Component {
 					      }
                 onClick = {
                   this.onClick.bind(this)
+                }
+                onMousemove = {
+                  this.onMousemove.bind(this)
                 }
 					      onZoomChanged = {
 					        this.onZoomChanged.bind(this)
