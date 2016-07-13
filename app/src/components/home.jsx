@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import home from '../../styles/index.scss';
+import { Link } from 'react-router';
 
 class Home extends Component {
 
@@ -9,22 +10,24 @@ class Home extends Component {
     return <div>
       <section className={home.header_home}>
         <nav>
-          <img src="#"/>
+          <Link to="/">
+            <img src="#"/>
+          </Link>
           <ul>
             <li>
-              <a href="#map">Map</a>
+              <Link to="/map">Map</Link>
             </li>
             <li>
-              <a href="#">News</a>
+              <Link to="/">News</Link>
             </li>
             <li>
-              <a href="#">How to</a>
+              <Link to="/">How to</Link>
             </li>
             <li>
-              <a href="#">About</a>
+              <Link to="/">About</Link>
             </li>
             <li>
-              <a href="#">Login</a>
+              <Link to="/">Login</Link>
             </li>
           </ul>
         </nav>
