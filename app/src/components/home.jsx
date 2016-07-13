@@ -59,7 +59,7 @@ class Home extends Component {
           <h3>Lorem ipsum dolor sit amet</h3>
           <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat sodales lectus.</p>
           <p>
-            <a href="#map" className={home.c_btn_primary}>EXPLORE MAP</a>
+            <a href="map" className={home.c_btn_primary}>EXPLORE MAP</a>
           </p>
         </div>
       </section>
@@ -106,7 +106,7 @@ class Home extends Component {
         </div>
         <div className={home.nav_footer}>
           <ul>
-            <li><a href="#map">Map</a></li>
+            <li><a href="map">Map</a></li>
             <li>news</li>
             <li>how to</li>
             <li>about</li>
