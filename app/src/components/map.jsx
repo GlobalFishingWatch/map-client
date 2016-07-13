@@ -151,6 +151,7 @@ class Map extends Component {
   }
 
   updateDates(ev) {
+    if (!!!ev.target.value) return;
     if (ev.target.id == 'mindate') {
       tmlnMinDate = new Date(ev.target.value).getTime();
     } else if (ev.target.id == 'maxdate') {
