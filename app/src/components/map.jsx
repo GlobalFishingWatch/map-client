@@ -156,6 +156,7 @@ class Map extends Component {
     } else if (ev.target.id == 'maxdate') {
       tmlnMaxDate = new Date(ev.target.value).getTime();
     }
+    this.setState({ite: tmlnMinDate})
   }
 
   render() {
