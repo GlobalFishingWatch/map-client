@@ -47,7 +47,7 @@ class Map extends Component {
     if (!this.state.running) return;
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null)
-    } 
+    }
     ite = ite || 0;
     if (ite > max2015) {
       this.setState({running: !!!this.state.running, ite: null, widthRange: 0});
