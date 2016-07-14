@@ -1,18 +1,16 @@
 'use strict';
 
-import React from 'react';
-import {render} from 'react-dom';
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
-import thunk from 'redux-thunk';
-import {browserHistory, hashHistory} from 'react-router';
-import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux';
-import Routes from './routes';
-
-import '../styles/index.scss';
-
-import vesselReducer from './reducers/vessel';
-import userReducer from './reducers/user';
+import React from "react";
+import {render} from "react-dom";
+import {createStore, combineReducers, applyMiddleware} from "redux";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
+import {browserHistory} from "react-router";
+import {syncHistoryWithStore, routerReducer, routerMiddleware} from "react-router-redux";
+import Routes from "./routes";
+import "../styles/index.scss";
+import vesselReducer from "./reducers/vessel";
+import userReducer from "./reducers/user";
 
 /**
  * Reducers

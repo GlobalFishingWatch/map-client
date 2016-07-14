@@ -97,6 +97,7 @@
     }
   }
 }
+
 .infostudy {
   font-family: $font-family-primary;
   display: flex;
@@ -142,6 +143,7 @@
     }
   }
 }
+
 .infomap {
   font-family: $font-family-primary;
   height: 748px;
@@ -183,6 +185,7 @@
     }
   }
 }
+
 .success_story {
   font-family: $font-family-primary;
   background-color: $color8;
@@ -232,6 +235,7 @@
     }
   }
 }
+
 footer {
   font-family: $font-family-primary;
   background-color: $color5;
@@ -279,8 +283,8 @@ footer {
         line-height: 2.27;
       }
     }
-    .input_footer{
-      span{
+    .input_footer {
+      span {
         display: block;
         text-transform: uppercase;
         font-size: $font-size-small;

@@ -1,4 +1,4 @@
-import Bounds from './Bounds';
+import Bounds from "./Bounds";
 
 const getBounds = function (map) {
   const bounds = map.getBounds();

@@ -1,11 +1,10 @@
 'use strict';
 
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import createOverlayLayer from './layers/vesselOneLayer';
-import CanvasLayer from './layers/canvasLayer';
-import LayerPanel from './layerPanel';
-import map from '../../styles/index.scss';
+import CanvasLayer from "./layers/canvasLayer";
+import LayerPanel from "./layerPanel";
+import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
 let tmlnMaxDate = 1451606400000; // 1/1/2016
@@ -219,7 +218,7 @@ class Map extends Component {
     }
     this.setState({ite: tmlnMinDate});
     this.state.overlay.hide();
-    this.state.overlay.applyFilters({'timeline' : [tmlnMinDate,tmlnMaxDate]});
+    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
   }
 
   render() {

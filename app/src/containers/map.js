@@ -1,9 +1,8 @@
 'use strict';
 
-import {connect} from 'react-redux';
-import Map from '../components/map';
-
-import {init, showLoading, getLayers, updateLayer} from '../actions/vessel';
+import {connect} from "react-redux";
+import Map from "../components/map";
+import {init, showLoading, getLayers, updateLayer} from "../actions/vessel";
 
 const mapStateToProps = (state) => {
   return {

@@ -1,4 +1,4 @@
-import Pack from './Pack';
+import Pack from "./Pack";
 
 class PelagosClient {
 

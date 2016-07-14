@@ -1,9 +1,8 @@
 'use strict';
 
-import {connect} from 'react-redux';
-import App from '../components/App';
-
-import {setToken, getLoggedUser} from '../actions/user';
+import {connect} from "react-redux";
+import App from "../components/App";
+import {setToken, getLoggedUser} from "../actions/user";
 
 const mapStateToProps = (state) => {
   return {

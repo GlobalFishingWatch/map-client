@@ -1,7 +1,7 @@
-import PelagosClient from '../../lib/pelagosClient';
+import PelagosClient from "../../lib/pelagosClient";
 
 const url = 'https://storage.googleapis.com/vizzuality-staging/random/'
-const DAY_MS = 24*60*60*1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 class CanvasLayer {
   constructor(position, options, map) {
@@ -16,17 +16,20 @@ class CanvasLayer {
     this.filters = {}
   }
 
-  hide(){
+  hide() {
     this.visible = false;
     this.map.overlayMapTypes.removeAt(this.position);
   }
-  show(){
+
+  show() {
     this.visible = true;
     this.map.overlayMapTypes.insertAt(this.position, this);
   }
-  isVisible(){
+
+  isVisible() {
     return this.visible;
   }
+
   applyFilters(filters) {
     if (filters.timeline) {
       this.filters.timeline = filters.timeline;
@@ -34,7 +37,7 @@ class CanvasLayer {
     this.show();
   }
 
-  resetData(){
+  resetData() {
     this.data = {};
   }
 
@@ -54,25 +57,26 @@ class CanvasLayer {
     canvas.ctx = ctx;
     return canvas;
   }
-  drawFrame(pos, zoom){
+
+  drawFrame(pos, zoom) {
     let canvasKeys = Object.keys(this.data);
-    for(let i = 0, length = canvasKeys.length; i < length; i++){
-      if(this.data[canvasKeys[i]] && this.data[canvasKeys[i]][pos]){
+    for (let i = 0, length = canvasKeys.length; i < length; i++) {
+      if (this.data[canvasKeys[i]] && this.data[canvasKeys[i]][pos]) {
         let data = this.data[canvasKeys[i]][pos];
         this.drawTile2Canvas(canvasKeys[i], data, false);
       }
     }
   }
 
-  drawTile2Canvas(idCanvas, data, accumulative){
+  drawTile2Canvas(idCanvas, data, accumulative) {
     let canvas = document.getElementById(idCanvas);
-    if(!accumulative){
+    if (!accumulative) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     let size = this.map.getZoom() > 6
       ? 3
       : 2 || 1;
-    for(let j = 0, lengthData = data.latitude.length; j < lengthData; j++){
+    for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
       const weight = data.weight[j];
       if (!weight)
         continue;
@@ -82,22 +86,23 @@ class CanvasLayer {
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
-      canvas.ctx.fillRect(~~data.x[j], ~~ data.y[j], size, size);
+      canvas.ctx.fillRect(~~data.x[j], ~~data.y[j], size, size);
     }
   }
 
-  regenerate(){
+  regenerate() {
     let canvasKeys = Object.keys(this.data);
-    for(let i = 0, length = canvasKeys.length; i < length; i++){
+    for (let i = 0, length = canvasKeys.length; i < length; i++) {
       let times = Object.keys(this.data[canvasKeys[i]]);
-      for(let j = 0, lengthTime = times.length; j < lengthTime; j++){
+      for (let j = 0, lengthTime = times.length; j < lengthTime; j++) {
         this.drawTile2Canvas(canvasKeys[i], this.data[canvasKeys[i]][times[j]], true);
       }
     }
   }
+
   drawTile(canvas, zoom, data, coord, zoom_diff, filters) {
     let parseData = false;
-    if(!this.data[`${zoom},${coord.x},${coord.y}`]){
+    if (!this.data[`${zoom},${coord.x},${coord.y}`]) {
       parseData = true;
       this.data[`${zoom},${coord.x},${coord.y}`] = {};
     }
@@ -111,9 +116,9 @@ class CanvasLayer {
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (!!filters && filters.hasOwnProperty('timeline') &&
-        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1])){
-          continue;
-        }
+        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1])) {
+        continue;
+      }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       const pxcoord = new google.maps.Point(
         Math.floor(pointLatLong.x * scale),
@@ -132,15 +137,15 @@ class CanvasLayer {
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
-      canvas.ctx.fillRect(~~ xcoords.x, ~~ xcoords.y, size, size);
-      if(parseData){
+      canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
+      if (parseData) {
         let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
-        if(!this.data[`${zoom},${coord.x},${coord.y}`][time]){
+        if (!this.data[`${zoom},${coord.x},${coord.y}`][time]) {
           this.data[`${zoom},${coord.x},${coord.y}`][time] = {
             latitude: [],
             longitude: [],
             weight: [],
-            x: [],
+            x: [],
             y: [],
             series: []
           }
@@ -148,8 +153,8 @@ class CanvasLayer {
         this.data[`${zoom},${coord.x},${coord.y}`][time].latitude.push(data.latitude[i]);
         this.data[`${zoom},${coord.x},${coord.y}`][time].longitude.push(data.longitude[i]);
         this.data[`${zoom},${coord.x},${coord.y}`][time].weight.push(data.weight[i]);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].x.push(~~ xcoords.x);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].y.push(~~ xcoords.y);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].x.push(~~xcoords.x);
+        this.data[`${zoom},${coord.x},${coord.y}`][time].y.push(~~xcoords.y);
         this.data[`${zoom},${coord.x},${coord.y}`][time].series.push(data.series[i]);
 
       }
@@ -172,13 +177,14 @@ class CanvasLayer {
     }
     return {x: x, y: y};
   }
+
   getTile(coord, zoom, ownerDocument) {
 
     var canvas = this._getCanvas(coord, zoom, ownerDocument);
     let coordRec = this.getNormalizedCoord(coord, zoom);
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
-    if(coordRec){
-      new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
+    if (coordRec) {
+      new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function (data) {
         this.drawTile(canvas, zoom, data, coordRec, zoomDiff, this.filters);
       }.bind(this));
     }

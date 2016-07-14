@@ -1,7 +1,5 @@
-const initialState = {
-
-};
-import {GET_USER, SET_TOKEN} from '../constants';
+const initialState = {};
+import {GET_USER, SET_TOKEN} from "../constants";
 
 export default function (state = initialState, action) {
   switch (action.type) {

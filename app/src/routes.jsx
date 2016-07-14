@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import AppContainer from './containers/app';
-import HomeContainer from './containers/home';
-import {Router, Route, IndexRedirect} from 'react-router';
+import React, {Component} from "react";
+import AppContainer from "./containers/app";
+import HomeContainer from "./containers/home";
+import {Router, Route} from "react-router";
 
 class Routes extends Component {
   render() {

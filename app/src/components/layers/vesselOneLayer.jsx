@@ -1,6 +1,3 @@
-import calculateBounds from '../../lib/calculateBounds';
-import PelagosClient from '../../lib/pelagosClient';
-
 const createOverlayLayer = function (google) {
   function VesselLayer(map) {
 
@@ -33,7 +30,7 @@ const createOverlayLayer = function (google) {
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
-    this.pointStyles = ['rgba(255,255,240,1)','rgba(10,200,200,1)','rgba(0,255,242,1)'];
+    this.pointStyles = ['rgba(255,255,240,1)', 'rgba(10,200,200,1)', 'rgba(0,255,242,1)'];
   }
 
   VesselLayer.prototype = new google.maps.OverlayView();
@@ -87,7 +84,7 @@ const createOverlayLayer = function (google) {
     this.drawTile()
   };
 
-  VesselLayer.prototype.drawTile = function (data,size) {
+  VesselLayer.prototype.drawTile = function (data, size) {
     const overlayProjection = this.getProjection();
     size = size || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
