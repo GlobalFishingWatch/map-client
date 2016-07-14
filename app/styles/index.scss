@@ -30,26 +30,37 @@ body {
 
 .addButton,
 .timeline,
-.timelineStop {
+.timelineStop,
+.date_inputs,
+.loginButton,
+.loggedUser {
   position: absolute !important;
   top: 50px;
   left: 10px;
   z-index: 10;
 }
 
-.loginButton, .loggedUser {
-  position: absolute !important;
-  top: 50px;
+.loginButton,
+.loggedUser {
   right: 10px;
-  z-index: 10;
+  left: inherit;
 }
-
 .timeline {
   top: 70px;
 }
 
 .timelineStop {
   top: 90px;
+}
+
+.date_inputs {
+  top: 120px;
+  background-color: rgba(255,255,255,0.8);
+  label {
+    display: block;
+    width: 170px;
+    text-align: center;
+  }
 }
 
 .range_container {
