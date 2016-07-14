@@ -1,0 +1,12 @@
+.layerPanel {
+  position: absolute;
+  top: 120px;
+  right: 20px;
+  border: 1px solid #000;
+  background: #fff;
+  z-index: 9;
+  padding: 20px;
+  ul{
+    list-style: none;
+  }
+}
