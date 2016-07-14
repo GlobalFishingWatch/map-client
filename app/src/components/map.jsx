@@ -9,6 +9,10 @@ import map from "../../styles/index.scss";
 let tmlnMinDate = 1420070400000; // 1/1/2015
 let tmlnMaxDate = 1451606400000; // 1/1/2016
 const mDay = 86400000;
+const strictBounds = new google.maps.LatLngBounds(
+  new google.maps.LatLng(-85, -180),
+  new google.maps.LatLng(85, 180)
+ );
 
 class Map extends Component {
 
@@ -17,12 +21,17 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      ite: tmlnMinDate
+      ite: tmlnMinDate,
+      lastCenter: null
     };
   }
 
   onZoomChanged() {
-    this.setState({zoom: this.refs.map.props.map.getZoom()});
+    const ZOOM = this.refs.map.props.map.getZoom();
+    if (ZOOM < 3) {
+        this.refs.map.props.map.setZoom(3);
+    }
+    this.setState({zoom: ZOOM});
     this.state.overlay.resetData();
   }
 
@@ -32,7 +41,6 @@ class Map extends Component {
   }
 
   timelineStart() {
-    this.timelinetooltip = document.getElementById('timeline_tooltip');
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
 
@@ -54,9 +62,8 @@ class Map extends Component {
     if (ite > tmlnMaxDate) {
       this.setState({
         running: !!!this.state.running,
-        ite: null,
-        widthRange: 0
       });
+      this.timelineStop();
       return;
     }
     let width = ((ite - tmlnMinDate) / mDay) / ((tmlnMaxDate - tmlnMinDate) / mDay) * 100;
@@ -76,8 +83,7 @@ class Map extends Component {
   timelineStop() {
     cancelAnimationFrame(this.state.animationID);
     this.state.overlay.regenerate();
-    this.setState({running: null, ite: null, widthRange: 0});
-    // this.onDragEnd();
+    this.setState({running: null, ite: tmlnMinDate, widthRange: 0});
   }
 
   onIdle() {
@@ -198,6 +204,16 @@ class Map extends Component {
   onMousemove(ev) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
+  onDragStart(ev) {
+    if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
+  }
+  onDragEnd(ev) {
+    if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
+      this.state.lastCenter = this.refs.map.props.map.getCenter();
+      return;
+    }
+    this.refs.map.props.map.panTo(this.state.lastCenter);
+  }
 
   toggleLayer(layer) {
     layer.visible = !layer.visible;
@@ -223,25 +239,27 @@ class Map extends Component {
 
   render() {
     return <div>
-      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
-        {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
-      </button>
-      <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      <div className={map.time_controls}>
+        <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+          {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+        </button>
+        <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      </div>
       {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.date_inputs}>
         <label for="mindate">
-          Min date
+          Start date
           <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
         </label>
         <label for="maxdate">
-          Max date
+          End date
           <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
         </label>
       </div>
       <div className={map.range_container}>
         <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-          {new Date(this.state.ite).toString()}
+          {new Date(this.state.ite).toISOString().slice(0,10)}
         </span>
         <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
           <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
@@ -261,7 +279,9 @@ class Map extends Component {
             onIdle={this.onIdle.bind(this)}
             onClick={this.onClick.bind(this)}
             onMousemove={this.onMousemove.bind(this)}
-            onZoomChanged={this.onZoomChanged.bind(this)}>
+            onZoomChanged={this.onZoomChanged.bind(this)}
+            onDragstart={this.onDragStart.bind(this)}
+            onDragend={this.onDragEnd.bind(this)}>
           </GoogleMap>
         }>
       </GoogleMapLoader>
