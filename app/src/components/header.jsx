@@ -12,7 +12,7 @@ export default function(props) {
           <Link to="/map">Map</Link>
         </li>
         <li>
-          <Link to="/">News</Link>
+          <Link to="/news">News</Link>
         </li>
         <li>
           <Link to="/">How to</Link>
