@@ -258,8 +258,6 @@ class Map extends Component {
           <GoogleMap
             ref="map"
             defaultZoom={3}
-            minZoom={3}
-            maxZoom={3}
             defaultCenter={{lat: 0, lng: 0}}
             defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
             onIdle={this.onIdle.bind(this)}
