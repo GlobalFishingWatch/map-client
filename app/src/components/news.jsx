@@ -46,8 +46,8 @@ class News extends Component {
         </div>
         <div className={home.nav_footer}>
           <ul>
-            <li><a href="map">Map</a></li>
-            <li>news</li>
+            <li><a href="/map">Map</a></li>
+            <li><a href="/news">News</a></li>
             <li>how to</li>
             <li>about</li>
           </ul>
