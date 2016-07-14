@@ -225,25 +225,27 @@ class Map extends Component {
 
   render() {
     return <div>
-      <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
-        {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
-      </button>
-      <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      <div className={map.time_controls}>
+        <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+          {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+        </button>
+        <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      </div>
       {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.date_inputs}>
         <label for="mindate">
-          Min date
+          Start date
           <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
         </label>
         <label for="maxdate">
-          Max date
+          End date
           <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
         </label>
       </div>
       <div className={map.range_container}>
         <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-          {new Date(this.state.ite).toString()}
+          {new Date(this.state.ite).toISOString().slice(0,10)}
         </span>
         <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
           <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
