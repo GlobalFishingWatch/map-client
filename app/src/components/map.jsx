@@ -9,6 +9,10 @@ import map from "../../styles/index.scss";
 let tmlnMinDate = 1420070400000; // 1/1/2015
 let tmlnMaxDate = 1451606400000; // 1/1/2016
 const mDay = 86400000;
+const strictBounds = new google.maps.LatLngBounds(
+  new google.maps.LatLng(-85, -180),
+  new google.maps.LatLng(85, 180)
+ );
 
 class Map extends Component {
 
@@ -17,7 +21,8 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      ite: tmlnMinDate
+      ite: tmlnMinDate,
+      lastCenter: null
     };
   }
 
@@ -79,7 +84,6 @@ class Map extends Component {
     cancelAnimationFrame(this.state.animationID);
     this.state.overlay.regenerate();
     this.setState({running: null, ite: tmlnMinDate, widthRange: 0});
-    // this.onDragEnd();
   }
 
   onIdle() {
@@ -200,6 +204,16 @@ class Map extends Component {
   onMousemove(ev) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
+  onDragStart(ev) {
+    if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
+  }
+  onDragEnd(ev) {
+    if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
+      this.state.lastCenter = this.refs.map.props.map.getCenter();
+      return;
+    }
+    this.refs.map.props.map.panTo(this.state.lastCenter);
+  }
 
   toggleLayer(layer) {
     layer.visible = !layer.visible;
@@ -265,7 +279,9 @@ class Map extends Component {
             onIdle={this.onIdle.bind(this)}
             onClick={this.onClick.bind(this)}
             onMousemove={this.onMousemove.bind(this)}
-            onZoomChanged={this.onZoomChanged.bind(this)}>
+            onZoomChanged={this.onZoomChanged.bind(this)}
+            onDragstart={this.onDragStart.bind(this)}
+            onDragend={this.onDragEnd.bind(this)}>
           </GoogleMap>
         }>
       </GoogleMapLoader>
