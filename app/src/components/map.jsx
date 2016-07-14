@@ -40,13 +40,15 @@ class Map extends Component {
       running: !!!this.state.running
     });
     requestAnimationFrame(function() {
-      this.animateMapData(this.state.ite || tmlnMinDate , mDay);
+      this.animateMapData(this.state.ite || tmlnMinDate, mDay);
     }.bind(this));
   }
 
   animateMapData(ite) {
-    if (!this.state.running)
-      return;
+    if (!this.state.running) return;
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null)
+    }
 
     ite = ite || 0;
     if (ite > tmlnMaxDate) {
@@ -184,6 +186,10 @@ class Map extends Component {
 
     }
   }
+  onMousemove(ev){
+    this.refs.map.props.map.setOptions({ draggableCursor: 'default' });
+  }
+  
   toggleLayer(layer) {
     layer.visible = !layer.visible;
     this.props.updateLayer(layer);
@@ -210,8 +216,7 @@ class Map extends Component {
           ? "Play ►"
           : "Pause ||"}</button>
       <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
-      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>
-}
+      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
       {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
       <div className={map.date_inputs}>
         <label for="mindate">Min date<input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)} /></label>
@@ -245,9 +250,13 @@ class Map extends Component {
       onClick = {
         this.onClick.bind(this)
       }
+      onMousemove = {
+        this.onMousemove.bind(this)
+      }
       onZoomChanged = {
         this.onZoomChanged.bind(this)
-      } > </GoogleMap>}></GoogleMapLoader>
+      } > 
+      </GoogleMap>}></GoogleMapLoader>
     </div>
 
   }
