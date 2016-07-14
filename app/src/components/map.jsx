@@ -22,7 +22,11 @@ class Map extends Component {
   }
 
   onZoomChanged() {
-    this.setState({zoom: this.refs.map.props.map.getZoom()});
+    const ZOOM = this.refs.map.props.map.getZoom();
+    if (ZOOM < 3) {
+        this.refs.map.props.map.setZoom(3);
+    }
+    this.setState({zoom: ZOOM});
     this.state.overlay.resetData();
   }
 
@@ -32,7 +36,6 @@ class Map extends Component {
   }
 
   timelineStart() {
-    this.timelinetooltip = document.getElementById('timeline_tooltip');
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
 
@@ -54,9 +57,8 @@ class Map extends Component {
     if (ite > tmlnMaxDate) {
       this.setState({
         running: !!!this.state.running,
-        ite: null,
-        widthRange: 0
       });
+      this.timelineStop();
       return;
     }
     let width = ((ite - tmlnMinDate) / mDay) / ((tmlnMaxDate - tmlnMinDate) / mDay) * 100;
@@ -76,7 +78,7 @@ class Map extends Component {
   timelineStop() {
     cancelAnimationFrame(this.state.animationID);
     this.state.overlay.regenerate();
-    this.setState({running: null, ite: null, widthRange: 0});
+    this.setState({running: null, ite: tmlnMinDate, widthRange: 0});
     // this.onDragEnd();
   }
 
