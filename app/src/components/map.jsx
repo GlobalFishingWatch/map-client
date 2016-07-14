@@ -64,7 +64,6 @@ class Map extends Component {
       widthRange: width + '%',
       ite: ite
     });
-    // this.state.overlay.regenerate();
     this.state.overlay.drawFrame(ite, (this.state.zoom > 6
       ? 3
       : 2));
@@ -207,7 +206,9 @@ class Map extends Component {
     } else if (ev.target.id == 'maxdate') {
       tmlnMaxDate = new Date(ev.target.value).getTime();
     }
-    this.setState({ite: tmlnMinDate})
+    this.setState({ite: tmlnMinDate});
+    this.state.overlay.hide();
+    this.state.overlay.applyFilters({'timeline' : [tmlnMinDate,tmlnMaxDate]});
   }
 
   render() {

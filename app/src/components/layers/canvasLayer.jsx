@@ -13,6 +13,7 @@ class CanvasLayer {
     this.options = _.extend({}, this.defaults, this.options || {});
     this.map.overlayMapTypes.insertAt(this.position, this);
     this.visible = true;
+    this.filters = {}
   }
 
   hide(){
@@ -25,6 +26,12 @@ class CanvasLayer {
   }
   isVisible(){
     return this.visible;
+  }
+  applyFilters(filters) {
+    if (filters.timeline) {
+      this.filters.timeline = filters.timeline;
+    }
+    this.show();
   }
 
   resetData(){
@@ -88,7 +95,7 @@ class CanvasLayer {
       }
     }
   }
-  drawTile(canvas, zoom, data, coord, zoom_diff) {
+  drawTile(canvas, zoom, data, coord, zoom_diff, filters) {
     let parseData = false;
     if(!this.data[`${zoom},${coord.x},${coord.y}`]){
       parseData = true;
@@ -103,6 +110,10 @@ class CanvasLayer {
       ? 3
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
+      if (!!filters && filters.hasOwnProperty('timeline') &&
+        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1])){
+          continue;
+        }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       const pxcoord = new google.maps.Point(
         Math.floor(pointLatLong.x * scale),
@@ -168,7 +179,7 @@ class CanvasLayer {
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
     if(coordRec){
       new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function(data) {
-        this.drawTile(canvas, zoom, data, coordRec, zoomDiff);
+        this.drawTile(canvas, zoom, data, coordRec, zoomDiff, this.filters);
       }.bind(this));
     }
 
