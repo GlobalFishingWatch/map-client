@@ -2,35 +2,14 @@
 
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
-import {Link} from "react-router";
+import Header from "./header";
 
 class Home extends Component {
 
   render() {
     return <div>
       <section className={home.header_home}>
-        <nav>
-          <Link to="/">
-            <img src="#"/>
-          </Link>
-          <ul>
-            <li>
-              <Link to="/map">Map</Link>
-            </li>
-            <li>
-              <Link to="/">News</Link>
-            </li>
-            <li>
-              <Link to="/">How to</Link>
-            </li>
-            <li>
-              <Link to="/">About</Link>
-            </li>
-            <li>
-              <Link to="/">Login</Link>
-            </li>
-          </ul>
-        </nav>
+        <Header></Header>
         <h1>
           The first global view of commercial fishing activity
         </h1>
