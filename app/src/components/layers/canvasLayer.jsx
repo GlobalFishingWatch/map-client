@@ -150,12 +150,13 @@ class CanvasLayer {
             series: []
           }
         }
-        this.data[`${zoom},${coord.x},${coord.y}`][time].latitude.push(data.latitude[i]);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].longitude.push(data.longitude[i]);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].weight.push(data.weight[i]);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].x.push(~~xcoords.x);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].y.push(~~xcoords.y);
-        this.data[`${zoom},${coord.x},${coord.y}`][time].series.push(data.series[i]);
+        let timestamp = this.data[`${zoom},${coord.x},${coord.y}`][time];
+        timestamp.latitude.push(data.latitude[i]);
+        timestamp.longitude.push(data.longitude[i]);
+        timestamp.weight.push(data.weight[i]);
+        timestamp.x.push(~~xcoords.x);
+        timestamp.y.push(~~xcoords.y);
+        timestamp.series.push(data.series[i]);
 
       }
     }
