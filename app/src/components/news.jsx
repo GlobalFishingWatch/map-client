@@ -3,20 +3,28 @@
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
 import Header from "./header";
-import Footer from './footer';
+import Footer from "./footer";
 
 class News extends Component {
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.getRecentPost();
   }
+
   render() {
-    let posts = [];
-    if (this.props.recentPost){
-      for (let i = 0, length = this.props.recentPost.posts.length; i < length; i++) {
-        posts.push(<li>{this.props.recentPost.posts[i].title}</li>);
-      }
+    let articles = [];
+    if (this.props.recentPost) {
+      articles = this.props.recentPost.posts.map(function (article) {
+        return (
+          <article>
+            <h2>{article.title}</h2>
+            <span dangerouslySetInnerHTML={{__html: article.content}}/>
+          </article>
+        );
+      });
     }
+
+
     return <div>
       <section className={home.header_home}>
         <Header></Header>
@@ -26,11 +34,7 @@ class News extends Component {
 
       </section>
       <section>
-        <div>
-          <ul>
-            {posts}
-          </ul>
-        </div>
+        {articles}
       </section>
       <Footer></Footer>
     </div>
