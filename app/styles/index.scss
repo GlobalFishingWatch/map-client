@@ -97,15 +97,22 @@ body {
   bottom: 50px;
   left: 5px;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
   label {
     display: inline-block;
     width: 95px;
     text-align: center;
+    color: white;
+    font-size: 13px;
+    text-transform: uppercase;
   }
   input {
-    width: 91px;
+    width: 111px;
     font-size: 11px;
+    border: none;
+    position: relative;
+    background-color: transparent;
+    left: 17px;
   }
 }
 
