@@ -1,22 +1,27 @@
 import React from "react";
 import {Link} from "react-router";
 import home from "../../styles/components/c_footer.scss";
+import navfooter from "../../styles/components/c_nav_footer.scss";
+import logosfooter from "../../styles/components/c_logos_footer.scss";
+
+import logooceana from '../../assets/logos/oceana_logo.png';
+import logosky from '../../assets/logos/skytruth_logo.jpg';
 
 export default function(props) {
   return (
     <footer>
-      <div className={home.logos_footer}>
-        <div className={home.partner_footer}>
+      <div className={logosfooter.c_logos_footer}>
+        <div className={logosfooter.partner_footer}>
           <span>Founding Partners</span>
-          <img src="app/assets/partners/google.png"></img>
-          <img src="app/assets/partners/google.png"></img>
+          <img src={logooceana}></img>
+          <img src={logosky}></img>
           <img src="app/assets/partners/google.png"></img>
         </div>
-        <div className={home.sponsor_footer}>
+        <div className={logosfooter.sponsor_footer}>
           <span>Lead Sponsor</span>
         </div>
       </div>
-      <div className={home.nav_footer}>
+      <div className={navfooter.c_nav_footer}>
         <ul>
           <li><a href="/map">Map</a></li>
           <li><a href="/news">News</a></li>
@@ -32,13 +37,9 @@ export default function(props) {
           <li>Follow us</li>
           <li>ICONS</li>
         </ul>
-        <div className={home.input_footer}>
-          <span>SUBSCRIBE TO NEWS</span>
-          <div className={home.c_input_button}>
-            <input type="email" placeholder="Email"></input>
-            <button class="button--addOnRight" className={home.button_addOnRight}>icon</button>
-          </div>
-        </div>
+        <ul>
+          <li>SUBSCRIBE TO NEWS</li>
+          </ul>
       </div>
       <div className={home.project_name_footer}></div>
     </footer>
