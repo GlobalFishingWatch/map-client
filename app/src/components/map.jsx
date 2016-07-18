@@ -4,6 +4,7 @@ import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
+import Header from "./header";
 import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
@@ -239,54 +240,58 @@ class Map extends Component {
 
   render() {
     return <div>
-      <div className={map.time_controls}>
-        <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
-          {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
-        </button>
-        <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      <div className={map.header_home}>
+        <Header />
       </div>
-      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
-      {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
-      <div className={map.date_inputs}>
-        <label for="mindate">
-          Start date
-          <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
-        </label>
-        <label for="maxdate">
-          End date
-          <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
-        </label>
+      <div className={map.map_container}>
+        <div className={map.time_controls}>
+          <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+            {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+          </button>
+          <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+        </div>
+        {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
+        {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
+        <div className={map.date_inputs}>
+          <label for="mindate">
+            Start date
+            <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
+          </label>
+          <label for="maxdate">
+            End date
+            <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
+          </label>
+        </div>
+        <div className={map.range_container}>
+          <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
+            {new Date(this.state.ite).toISOString().slice(0,10)}
+          </span>
+          <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
+            <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
+          </span>
+        </div>
+        <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
+        <GoogleMapLoader
+          containerElement={
+            <div className={map.map} style={{height: "100%",}}/>
+          }
+          googleMapElement={
+            <GoogleMap
+              ref="map"
+              defaultZoom={3}
+              defaultCenter={{lat: 0, lng: 0}}
+              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+              onIdle={this.onIdle.bind(this)}
+              onClick={this.onClick.bind(this)}
+              onMousemove={this.onMousemove.bind(this)}
+              onZoomChanged={this.onZoomChanged.bind(this)}
+              onDragstart={this.onDragStart.bind(this)}
+              onDragend={this.onDragEnd.bind(this)}>
+            </GoogleMap>
+          }>
+        </GoogleMapLoader>
       </div>
-      <div className={map.range_container}>
-        <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-          {new Date(this.state.ite).toISOString().slice(0,10)}
-        </span>
-        <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
-          <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
-        </span>
-      </div>
-      <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-      <GoogleMapLoader
-        containerElement={
-          <div className={map.map} style={{height: "100%",}}/>
-        }
-        googleMapElement={
-          <GoogleMap
-            ref="map"
-            defaultZoom={3}
-            defaultCenter={{lat: 0, lng: 0}}
-            defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-            onIdle={this.onIdle.bind(this)}
-            onClick={this.onClick.bind(this)}
-            onMousemove={this.onMousemove.bind(this)}
-            onZoomChanged={this.onZoomChanged.bind(this)}
-            onDragstart={this.onDragStart.bind(this)}
-            onDragend={this.onDragEnd.bind(this)}>
-          </GoogleMap>
-        }>
-      </GoogleMapLoader>
     </div>
-
   }
 
 }
