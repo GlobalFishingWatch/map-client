@@ -279,7 +279,12 @@ class Map extends Component {
             <GoogleMap
               ref="map"
               defaultZoom={3}
+              defaultZoomControl={false}
               defaultCenter={{lat: 0, lng: 0}}
+              defaultOptions={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                zoomControl: false}}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onIdle={this.onIdle.bind(this)}
               onClick={this.onClick.bind(this)}
