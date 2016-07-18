@@ -1,7 +1,7 @@
 import React from "react";
 import {Image} from 'react';
 import {Link} from "react-router";
-import home from "../../styles/components/c_menu.scss";
+import home from "../../styles/components/c_menu.scss"; 
 
 import logoimg from '../../assets/logos/gfw_logo_hor.png';
 

@@ -10,7 +10,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
+
 const webpackConfig = {
+
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/index.jsx')
