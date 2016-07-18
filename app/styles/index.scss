@@ -19,12 +19,17 @@
   margin: 0;
   padding: 0;
 }
-
+html {
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  > div, > div > div,  > div > div > div{
+    height: 100%;
+  }
 }
-
 .map {
   position: absolute !important;
   top: 0;
@@ -35,7 +40,6 @@ body {
   height: 100%;
   z-index: 5;
 }
-
 .timeline,
 .timelineStop,
 .loginButton,
@@ -117,4 +121,8 @@ body {
     top: 1px;
     transform: translate(-50%, -60%);
   }
+}
+.map_container {
+  height: calc(100% - 64px);;
+  position: relative;
 }
