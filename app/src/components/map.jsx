@@ -88,11 +88,6 @@ class Map extends Component {
   }
 
   onIdle() {
-    // if (this.props.vessel && !this.props.vessel.load && !this.state.overlay) {
-    //   const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
-    //   this.setState({overlay: canvasLayer});
-    //
-    // }
   }
 
   findSeriesPositions(series) {
@@ -155,14 +150,19 @@ class Map extends Component {
       let nPVLayers = nProps.layers;
       const addedLayers = this.state.addedLayers;
       let promises = [];
+
+      const addVessel = function(title, pos){
+        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map);
+        this.setState({overlay: canvasLayer});
+        addedLayers[title] = canvasLayer;
+      }
+      let callAddVessel = null;
       if (nPVLayers !== PVLayers) {
         for (let i = 0, length = nPVLayers.length; i < length; i++) {
           if (nPVLayers[i].visible && !addedLayers[nPVLayers[i].title]) {
             // add layer and not exist
             if (nPVLayers[i].title === 'VESSEL') {
-              const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
-              this.setState({overlay: canvasLayer});
-              addedLayers[nPVLayers[i].title] = canvasLayer;
+              callAddVessel = addVessel.bind(this, nPVLayers[i].title, i);
             } else {
               let promise = new Promise(function (resolve, reject) {
                 cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
@@ -193,6 +193,9 @@ class Map extends Component {
       }
       if (promises && promises.length > 0) {
         Promise.all(promises).then(function () {
+          if(callAddVessel){
+            callAddVessel();
+          }
           this.setState({addedLayers: addedLayers});
         }.bind(this));
       } else {
