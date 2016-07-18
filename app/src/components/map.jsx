@@ -238,37 +238,52 @@ class Map extends Component {
     this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
   }
 
+  shareMap(ev) {
+    alert('TODO: share map');
+  }
+
+  changeZoomLevel(ev) {
+    this.refs.map.props.map.setZoom((ev.target.id === 'zoom_up') ? this.refs.map.props.map.getZoom() + 1 : this.refs.map.props.map.getZoom() - 1);
+  }
+
   render() {
     return <div>
       <div className={map.header_home}>
         <Header />
       </div>
       <div className={map.map_container}>
-        <div className={map.time_controls}>
-          <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
-            {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
-          </button>
-          <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+        <div className={map.zoom_controls}>
+          <span id="share_map" onClick={this.shareMap.bind(this)}>S</span>
+          <span id="zoom_up" onClick={this.changeZoomLevel.bind(this)}>+</span>
+          <span id="zoom_down" onClick={this.changeZoomLevel.bind(this)}>-</span>
         </div>
         {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
         {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
-        <div className={map.date_inputs}>
-          <label for="mindate">
-            Start date
-            <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
-          </label>
-          <label for="maxdate">
-            End date
-            <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
-          </label>
-        </div>
-        <div className={map.range_container}>
-          <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-            {new Date(this.state.ite).toISOString().slice(0,10)}
-          </span>
-          <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
-            <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
-          </span>
+        <div className={map.timeline_container}>
+          <div className={map.time_controls}>
+            <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+              {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+            </button>
+            <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+          </div>
+          <div className={map.date_inputs}>
+            <label for="mindate">
+              Start date
+              <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
+            </label>
+            <label for="maxdate">
+              End date
+              <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
+            </label>
+          </div>
+          <div className={map.range_container}>
+            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
+              {new Date(this.state.ite).toISOString().slice(0,10)}
+            </span>
+            <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
+              <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
+            </span>
+          </div>
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
         <GoogleMapLoader
