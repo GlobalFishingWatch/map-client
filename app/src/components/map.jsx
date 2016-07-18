@@ -40,7 +40,10 @@ class Map extends Component {
     this.timelinerange = document.getElementById('timeline_handler');
     this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
   }
-
+  handlerMoved(ev) {
+    console.log(ev.target);
+    ev.target.style.left = (ev.clientX - 240) + 'px';
+  }
   timelineStart() {
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
@@ -251,9 +254,9 @@ class Map extends Component {
 
   render() {
     return <div>
-      <div className={map.header_home}>
-        <Header />
-      </div>
+      <header className={map.c_header}>
+        <Header></Header>
+      </header>
       <div className={map.map_container}>
         <div className={map.zoom_controls}>
           <span id="share_map" onClick={this.shareMap.bind(this)}>S</span>
@@ -280,9 +283,11 @@ class Map extends Component {
             </label>
           </div>
           <div className={map.range_container}>
+            <span className={map.handler_grab} draggable={"true"} onDragStart={this.handlerMoved.bind(this)}><i></i></span>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0,10)}
             </span>
+            <span className={[map.handler_grab,map.right].join(' ')} draggable={"true"} onDragStart={this.handlerMoved.bind(this)} style={{left: this.state.widthRange}}><i></i></span>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
             </span>
