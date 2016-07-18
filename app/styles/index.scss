@@ -1,11 +1,20 @@
 @charset "utf-8";
-@import 'normalize.scss';
-@import 'slick.scss';
-@import 'colors.scss';
-@import 'text.scss';
-@import 'layout/homepage.scss';
-@import 'components/c_button.scss';
-@import 'components/c_input_button.scss';
+/*Base*/
+@import 'base/normalize.scss';
+@import 'base/slick.scss';
+@import 'base/text.scss';
+@import 'base/colors.scss';
+
+/*Components*/
+@import 'components/c-button.scss';
+@import 'components/c-input-button.scss';
+
+/*Modules*/
+@import 'modules/m-header-menu.scss';
+@import 'modules/m-cover-page.scss';
+
+/*Layaout*/
+@import 'layout/l-homepage.scss';
 
 * {
   margin: 0;

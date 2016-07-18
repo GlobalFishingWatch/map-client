@@ -9,8 +9,10 @@ class Home extends Component {
 
   render() {
     return <div>
-      <section className={home.header_home}>
+      <header className={home.m_header_menu}>
         <Header></Header>
+      </header>
+      <section className={home.m_cover_page}>
         <h1>
           The first global view of commercial fishing activity
         </h1>
