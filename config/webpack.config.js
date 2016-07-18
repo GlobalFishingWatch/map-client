@@ -10,8 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
-const webpackConfig = {
-
+const webpackConfig = { 
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/index.jsx')
@@ -48,7 +47,15 @@ const webpackConfig = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel'
-      }, {
+      },
+      {
+         test: /\.(jpe?g|png|gif|svg)$/i,
+         loaders: [
+             'file?hash=sha512&digest=hex&name=[hash].[ext]',
+             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+         ]
+       },
+      {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!sass?sourceMap')
       }

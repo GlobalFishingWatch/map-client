@@ -8,8 +8,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -20,7 +20,7 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -48,7 +48,7 @@ table {
 /**/
 @font-face {
   font-family: 'roboto';
-  src: url('roboto/Roboto-Regular.ttf')  format('truetype'); 
+  src: url('roboto/Roboto-Regular.ttf')  format('truetype');
 }
 /**/
 body{
@@ -80,7 +80,7 @@ header img {
 	margin: 0 10px 0 0;
 }
 header nav {
-	width: 50%;
+	  width: 50%;
     display: flex;
     text-transform: capitalize;
     font-weight: normal;
@@ -313,7 +313,7 @@ section.reg form{
 	background-image: url('../img/man.png');
 }
 
-@media only screen 
+@media only screen
 and (max-device-width : 768px) {
 	header {
 		padding: 0 4%;
@@ -388,7 +388,7 @@ and (max-device-width : 768px) {
 	}
 }
 
-@-moz-document url-prefix() { 
+@-moz-document url-prefix() {
   select {
      padding: 2px !important;
      color: #767676 !important;

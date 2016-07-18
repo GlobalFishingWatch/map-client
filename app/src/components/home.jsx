@@ -8,8 +8,10 @@ class Home extends Component {
 
   render() {
     return <div>
-      <section className={home.header_home}>
+      <header className={home.m_header_menu}>
         <Header></Header>
+      </header>
+      <section className={home.m_cover_page}>
         <h1>
           The first global view of commercial fishing activity
         </h1>
@@ -91,6 +93,7 @@ class Home extends Component {
           </div>
           <div className={home.sponsor_footer}>
             <span>Lead Sponsor</span>
+            <img src="app/assets/partners/google.png"></img>
           </div>
         </div>
         <div className={home.nav_footer}>
@@ -113,7 +116,7 @@ class Home extends Component {
             <span>SUBSCRIBE TO NEWS</span>
             <div className={home.c_input_button}>
               <input type="email" placeholder="Email"></input>
-              <button class="button--addOnRight" className={home.button_addOnRight}>icon</button>
+              <button className={home.button_addOnRight}>icon</button>
             </div>
           </div>
         </div>
