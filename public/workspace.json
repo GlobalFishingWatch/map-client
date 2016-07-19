@@ -7,153 +7,201 @@
     "lon": 190.3093,
     "zoom": 4,
     "time": {
-      "__jsonclass__": ["Date", "2014-12-31T23:59:59.999Z"]
+      "__jsonclass__": [
+        "Date",
+        "2014-12-31T23:59:59.999Z"
+      ]
     },
     "timeExtent": 2842859650,
     "paused": true
   },
   "map": {
-    "animations": [{
-    "args": {
-        "title": "Bathymetry",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "https://simbiotica.carto.com/api/v3/viz/da62db46-3e9d-11e6-8e2a-0e3ff518bd15/viz.json"
-          }
-        },
-        "visible": true,
-        "color": "green"
-      },
-      "type": "CartoDBAnimation"
-    },{
-      "args": {
-        "title": "VESSEL",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "https://storage.googleapis.com/vizzuality-staging/random/"
-          }
-        },
-        "visible": true,
-        "color": "green"
-      },
-      "type": "CartoDBAnimation"
-    },{
-      "args": {
-        "title": "MPA",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/d7c9313c-97b8-11e5-87b3-0242ac110002/viz.json"
-          }
-        },
-        "visible": true,
-        "color": "green"
-      },
-      "type": "CartoDBAnimation"
-    }, {
-      "args": {
-        "title": "EEZ",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
-          }
-        },
-        "visible": true,
-        "color": "blue"
-      },
-      "type": "CartoDBAnimation"
-    }, {
-      "args": {
-        "title": "High Seas Pockets",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
-          }
-        },
-        "visible": true,
-        "color": "blue"
-      },
-      "type": "CartoDBAnimation"
-    }, {
-      "args": {
-        "title": "RFMOs",
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"
-          }
-        },
-        "visible": true,
-        "color": "blue"
-      },
-      "type": "CartoDBAnimation"
-    }, {
-      "args": {
-        "source": {
-          "type": "BinFormat",
-          "args": {
-            "url": "05499511170989622376-16524589196162594663"
-          }
-        },
-        "title": "Bathymetry",
-        "visible": false,
-        "color": "blue",
-        "hideremovebtn": true
-      },
-      "type": "MapsEngineAnimation"
-    }, {
-      "args": {
-        "title": "Fishing Effort",
-        "visible": true,
-        "source": {
-          "type": "TiledBinFormat",
-          "args": {
-            "url": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31"
-          }
-        },
-        "selections": {
-          "selected": {
-            "sortcols": ["seriesgroup"]
+    "animations": [
+      {
+        "args": {
+          "title": "Bathymetry",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v3/viz/da62db46-3e9d-11e6-8e2a-0e3ff518bd15/viz.json"
+            }
           },
-          "hover": {
-            "sortcols": ["seriesgroup"]
-          }
-        }
+          "visible": true,
+          "color": "green"
+        },
+        "type": "CartoDBAnimation"
       },
-      "type": "ClusterAnimation"
-    }],
+      {
+        "args": {
+          "title": "VESSEL",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://storage.googleapis.com/vizzuality-staging/random/"
+            }
+          },
+          "visible": true,
+          "color": "green"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "MPA - No Take",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2e169268-bde4-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
+          "visible": true,
+          "color": "#da0000"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "MPA - Restricted Use",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/wmerten/api/v2/viz/bb870984-033f-11e6-bfbe-0242ac110006/viz.json"
+            }
+          },
+          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
+          "visible": true,
+          "color": "#c45e00"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "EEZ",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "blue"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "High Seas Pockets",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "blue"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "RFMOs",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "blue"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "05499511170989622376-16524589196162594663"
+            }
+          },
+          "title": "Bathymetry",
+          "visible": false,
+          "color": "blue",
+          "hideremovebtn": true
+        },
+        "type": "MapsEngineAnimation"
+      },
+      {
+        "args": {
+          "title": "Fishing Effort",
+          "visible": true,
+          "source": {
+            "type": "TiledBinFormat",
+            "args": {
+              "url": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31"
+            }
+          },
+          "selections": {
+            "selected": {
+              "sortcols": [
+                "seriesgroup"
+              ]
+            },
+            "hover": {
+              "sortcols": [
+                "seriesgroup"
+              ]
+            }
+          }
+        },
+        "type": "ClusterAnimation"
+      }
+    ],
     "options": {
       "mapTypeId": "roadmap",
-      "styles": [{
-        "featureType": "poi",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }, {
-        "featureType": "administrative",
-        "stylers": [{
-          "visibility": "simplified"
-        }]
-      }, {
-        "featureType": "administrative.country",
-        "stylers": [{
-          "visibility": "on"
-        }]
-      }, {
-        "featureType": "road",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }, {
-        "featureType": "landscape.natural",
-        "stylers": [{
-          "visibility": "off"
-        }]
-      }]
+      "styles": [
+        {
+          "featureType": "poi",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "stylers": [
+            {
+              "visibility": "simplified"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.country",
+          "stylers": [
+            {
+              "visibility": "on"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        }
+      ]
     }
   }
 }
