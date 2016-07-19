@@ -251,9 +251,9 @@ class Map extends Component {
 
   render() {
     return <div>
-      <div className={map.header_home}>
-        <Header />
-      </div>
+      <header className={map.c_header}>
+        <Header></Header>
+      </header>
       <div className={map.map_container}>
         <div className={map.zoom_controls}>
           <span id="share_map" onClick={this.shareMap.bind(this)}>S</span>
