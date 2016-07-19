@@ -1,13 +1,11 @@
 import React from "react";
-import {Link} from "react-router";
 import home from "../../styles/components/c_footer.scss";
 import navfooter from "../../styles/components/c_nav_footer.scss";
 import logosfooter from "../../styles/components/c_logos_footer.scss";
+import logooceana from "../../assets/logos/oceana_logo.png";
+import logosky from "../../assets/logos/skytruth_logo.jpg";
 
-import logooceana from '../../assets/logos/oceana_logo.png';
-import logosky from '../../assets/logos/skytruth_logo.jpg';
-
-export default function(props) {
+export default function (props) {
   return (
     <footer>
       <div className={logosfooter.c_logos_footer}>
@@ -40,7 +38,7 @@ export default function(props) {
         <ul>
           <li>SUBSCRIBE TO NEWS</li>
           <li><a href="#" target="_blank">Go to form</a></li>
-          </ul>
+        </ul>
       </div>
       <div className={home.project_name_footer}></div>
     </footer>

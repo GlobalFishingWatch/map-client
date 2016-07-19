@@ -1,14 +1,12 @@
 'use strict';
 
-import React, {Component} from 'react';
-import home from '../../styles/index.scss';
-import gallery from '../../styles/components/c_gallery_images.scss';
-import button from '../../styles/components/c_button.scss';
-import box_triangle from '../../styles/components/c_box_triangle.scss';
-import slick from '../../styles/base/slick.scss';
-import Header from './header';
-import Footer from './footer';
-
+import React, {Component} from "react";
+import home from "../../styles/index.scss";
+import gallery from "../../styles/components/c_gallery_images.scss";
+import button from "../../styles/components/c_button.scss";
+import box_triangle from "../../styles/components/c_box_triangle.scss";
+import Header from "./header";
+import Footer from "./footer";
 
 
 class Home extends Component {

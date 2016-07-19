@@ -13,7 +13,7 @@ const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
   new google.maps.LatLng(-85, -180),
   new google.maps.LatLng(85, 180)
- );
+);
 
 class Map extends Component {
 
@@ -30,7 +30,7 @@ class Map extends Component {
   onZoomChanged() {
     const ZOOM = this.refs.map.props.map.getZoom();
     if (ZOOM < 3) {
-        this.refs.map.props.map.setZoom(3);
+      this.refs.map.props.map.setZoom(3);
     }
     this.setState({zoom: ZOOM});
     this.state.overlay.resetData();
@@ -151,7 +151,7 @@ class Map extends Component {
       const addedLayers = this.state.addedLayers;
       let promises = [];
 
-      const addVessel = function(title, pos){
+      const addVessel = function (title, pos) {
         const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map);
         this.setState({overlay: canvasLayer});
         addedLayers[title] = canvasLayer;
@@ -193,7 +193,7 @@ class Map extends Component {
       }
       if (promises && promises.length > 0) {
         Promise.all(promises).then(function () {
-          if(callAddVessel){
+          if (callAddVessel) {
             callAddVessel();
           }
           this.setState({addedLayers: addedLayers});
@@ -208,9 +208,11 @@ class Map extends Component {
   onMousemove(ev) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
+
   onDragStart(ev) {
     if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
   }
+
   onDragEnd(ev) {
     if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
       this.state.lastCenter = this.refs.map.props.map.getCenter();
@@ -281,7 +283,7 @@ class Map extends Component {
           </div>
           <div className={map.range_container}>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-              {new Date(this.state.ite).toISOString().slice(0,10)}
+              {new Date(this.state.ite).toISOString().slice(0, 10)}
             </span>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
@@ -302,7 +304,8 @@ class Map extends Component {
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
-                zoomControl: false}}
+                zoomControl: false
+              }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onIdle={this.onIdle.bind(this)}
               onClick={this.onClick.bind(this)}

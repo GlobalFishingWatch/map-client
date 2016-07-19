@@ -110,7 +110,7 @@ footer {
     justify-content: space-between;
     padding-bottom: 54px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    .partner_footer,.sponsor_footer {
+    .partner_footer, .sponsor_footer {
       span {
         color: $font-color-2;
         font-size: $font-size-normal;
@@ -138,7 +138,7 @@ footer {
         color: $font-color-2;
         font-weight: $font-weight-regular;
         line-height: 2.27;
-        a{
+        a {
           color: $font-color-2;
           text-decoration: none;
         }

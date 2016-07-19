@@ -1,6 +1,7 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
-.c_logos_footer{
+
+.c_logos_footer {
   display: flex;
   justify-content: space-between;
   padding-bottom: 54px;
@@ -17,7 +18,7 @@
       width: 130px;
       margin-left: 75px;
     }
-    .first_partner{
+    .first_partner {
       margin-left: 0;
     }
   }

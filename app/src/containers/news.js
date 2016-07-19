@@ -2,8 +2,7 @@
 
 import {connect} from "react-redux";
 import News from "../components/news";
-
-import {getRecentPost} from '../actions/blog';
+import {getRecentPost} from "../actions/blog";
 
 const mapStateToProps = (state) => {
   return {
