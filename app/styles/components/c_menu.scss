@@ -1,0 +1,41 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
+.c_menu{
+  img {
+    height: 60px;
+    display: inline;
+    margin: 0 10px 0 0;
+  }
+  height: 100px;
+  display: flex;
+  text-transform: capitalize;
+  font-weight: normal;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 30px;
+  align-items: center;
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+      margin-right: 92px;
+      &:nth-last-child(2) {
+        margin-right: 46px;
+      }
+      &:last-child {
+        border-left: 1px solid $color9;
+        padding-left: 46px;
+        margin-right: 0;
+      }
+      a {
+        color: $color9;
+        text-decoration: none;
+        font-family: $font-family-primary;
+        font-size: $font-size-normal;
+        font-weight: $font-weight-regular;
+        letter-spacing: -0.1px;
+        cursor: pointer;
+      }
+    }
+  }
+}

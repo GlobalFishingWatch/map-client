@@ -2,15 +2,23 @@
 
 import React, {Component} from 'react';
 import home from '../../styles/index.scss';
+import gallery from '../../styles/components/c_gallery_images.scss';
+import button from '../../styles/components/c_button.scss';
+import box_triangle from '../../styles/components/c_box_triangle.scss';
+import slick from '../../styles/base/slick.scss';
 import Header from './header';
 import Footer from './footer';
+
+
 
 class Home extends Component {
 
   render() {
     return <div>
-      <section className={home.header_home}>
+      <header className={home.c_header}>
         <Header></Header>
+      </header>
+      <section className={home.c_cover_page}>
         <h1>
           The first global view of commercial fishing activity
         </h1>
@@ -19,8 +27,8 @@ class Home extends Component {
           will hold our leaders accountable for maintaining abundant oceans and show consumers where - - and by whom --
           their fish is being caught.</p>
         <div className={home.footer_header}>
-          <div className={home.triangle}>
-            <div className={home.triangle_min}></div>
+          <div className={box_triangle.c_box_triangle}>
+            <div className={box_triangle.triangle_min}></div>
           </div>
         </div>
       </section>
@@ -46,38 +54,38 @@ class Home extends Component {
           <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat
             sodales lectus.</p>
           <p>
-            <a href="map" className={home.c_btn_primary}>EXPLORE MAP</a>
+            <a href="map" className={button.c_btn_primary}>EXPLORE MAP</a>
           </p>
         </div>
       </section>
       <section className={home.success_story}>
         <h2>Success Stories</h2>
-        <div className={home.gallery_info}>
-          <div className={home.image_text}>
-            <div className={home.img}></div>
-            <p className={home.info_text}>
+        <div className={gallery.c_gallery_images}>
+          <div className={gallery.image_text}>
+            <div className={gallery.img}></div>
+            <p className={gallery.info_text}>
               Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
               porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.
-              <span className={home.title_info}><b>Name</b> / Position</span>
-              <a className={home.link_more} href="#">find out more</a>
+              <span className={gallery.title_info}><b>Name</b> / Position</span>
+              <a className={gallery.link_more} href="#">find out more</a>
             </p>
           </div>
-          <div className={home.image_text}>
-            <div className={home.img}></div>
-            <p className={home.info_text}>
+          <div className={gallery.image_text}>
+            <div className={gallery.img}></div>
+            <p className={gallery.info_text}>
               Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
               porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.
-              <span className={home.title_info}><b>Name</b> / Position</span>
-              <a className={home.link_more} href="#">find out more</a>
+              <span className={gallery.title_info}><b>Name</b> / Position</span>
+              <a className={gallery.link_more} href="#">find out more</a>
             </p>
           </div>
-          <div className={home.image_text}>
-            <div className={home.img}></div>
-            <p className={home.info_text}>
+          <div className={gallery.image_text}>
+            <div className={gallery.img}></div>
+            <p className={gallery.info_text}>
               Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
               porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.
-              <span className={home.title_info}><b>Name</b> / Position</span>
-              <a className={home.link_more} href="#">find out more</a>
+              <span className={gallery.title_info}><b>Name</b> / Position</span>
+              <a className={gallery.link_more} href="#">find out more</a>
             </p>
           </div>
         </div>

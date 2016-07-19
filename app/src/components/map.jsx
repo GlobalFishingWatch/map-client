@@ -4,6 +4,7 @@ import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
+import Header from "./header";
 import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
@@ -87,11 +88,6 @@ class Map extends Component {
   }
 
   onIdle() {
-    // if (this.props.vessel && !this.props.vessel.load && !this.state.overlay) {
-    //   const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
-    //   this.setState({overlay: canvasLayer});
-    //
-    // }
   }
 
   findSeriesPositions(series) {
@@ -154,14 +150,19 @@ class Map extends Component {
       let nPVLayers = nProps.layers;
       const addedLayers = this.state.addedLayers;
       let promises = [];
+
+      const addVessel = function(title, pos){
+        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map);
+        this.setState({overlay: canvasLayer});
+        addedLayers[title] = canvasLayer;
+      }
+      let callAddVessel = null;
       if (nPVLayers !== PVLayers) {
         for (let i = 0, length = nPVLayers.length; i < length; i++) {
           if (nPVLayers[i].visible && !addedLayers[nPVLayers[i].title]) {
             // add layer and not exist
             if (nPVLayers[i].title === 'VESSEL') {
-              const canvasLayer = new CanvasLayer(0, null, this.refs.map.props.map);
-              this.setState({overlay: canvasLayer});
-              addedLayers[nPVLayers[i].title] = canvasLayer;
+              callAddVessel = addVessel.bind(this, nPVLayers[i].title, i);
             } else {
               let promise = new Promise(function (resolve, reject) {
                 cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
@@ -192,6 +193,9 @@ class Map extends Component {
       }
       if (promises && promises.length > 0) {
         Promise.all(promises).then(function () {
+          if(callAddVessel){
+            callAddVessel();
+          }
           this.setState({addedLayers: addedLayers});
         }.bind(this));
       } else {
@@ -237,56 +241,80 @@ class Map extends Component {
     this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
   }
 
+  shareMap(ev) {
+    alert('TODO: share map');
+  }
+
+  changeZoomLevel(ev) {
+    this.refs.map.props.map.setZoom((ev.target.id === 'zoom_up') ? this.refs.map.props.map.getZoom() + 1 : this.refs.map.props.map.getZoom() - 1);
+  }
+
   render() {
     return <div>
-      <div className={map.time_controls}>
-        <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
-          {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
-        </button>
-        <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+      <header className={map.c_header}>
+        <Header></Header>
+      </header>
+      <div className={map.map_container}>
+        <div className={map.zoom_controls}>
+          <span id="share_map" onClick={this.shareMap.bind(this)}>S</span>
+          <span id="zoom_up" onClick={this.changeZoomLevel.bind(this)}>+</span>
+          <span id="zoom_down" onClick={this.changeZoomLevel.bind(this)}>-</span>
+        </div>
+        {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
+        {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
+        <div className={map.timeline_container}>
+          <div className={map.time_controls}>
+            <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+              {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+            </button>
+            <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+          </div>
+          <div className={map.date_inputs}>
+            <label for="mindate">
+              Start date
+              <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
+            </label>
+            <label for="maxdate">
+              End date
+              <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
+            </label>
+          </div>
+          <div className={map.range_container}>
+            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
+              {new Date(this.state.ite).toISOString().slice(0,10)}
+            </span>
+            <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
+              <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
+            </span>
+          </div>
+        </div>
+        <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
+        <GoogleMapLoader
+          containerElement={
+            <div className={map.map} style={{height: "100%",}}/>
+          }
+          googleMapElement={
+            <GoogleMap
+              ref="map"
+              defaultZoom={3}
+              defaultZoomControl={false}
+              defaultCenter={{lat: 0, lng: 0}}
+              defaultOptions={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                zoomControl: false}}
+              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+              onIdle={this.onIdle.bind(this)}
+              onClick={this.onClick.bind(this)}
+              onMousemove={this.onMousemove.bind(this)}
+              onZoomChanged={this.onZoomChanged.bind(this)}
+              onDragstart={this.onDragStart.bind(this)}
+              onDragend={this.onDragEnd.bind(this)}>
+            </GoogleMap>
+          }>
+        </GoogleMapLoader>
       </div>
-      {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
-      {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
-      <div className={map.date_inputs}>
-        <label for="mindate">
-          Start date
-          <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
-        </label>
-        <label for="maxdate">
-          End date
-          <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
-        </label>
-      </div>
-      <div className={map.range_container}>
-        <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-          {new Date(this.state.ite).toISOString().slice(0,10)}
-        </span>
-        <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
-          <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
-        </span>
-      </div>
-      <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-      <GoogleMapLoader
-        containerElement={
-          <div className={map.map} style={{height: "100%",}}/>
-        }
-        googleMapElement={
-          <GoogleMap
-            ref="map"
-            defaultZoom={3}
-            defaultCenter={{lat: 0, lng: 0}}
-            defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-            onIdle={this.onIdle.bind(this)}
-            onClick={this.onClick.bind(this)}
-            onMousemove={this.onMousemove.bind(this)}
-            onZoomChanged={this.onZoomChanged.bind(this)}
-            onDragstart={this.onDragStart.bind(this)}
-            onDragend={this.onDragEnd.bind(this)}>
-          </GoogleMap>
-        }>
-      </GoogleMapLoader>
     </div>
-
   }
 
 }

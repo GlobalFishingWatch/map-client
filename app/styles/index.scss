@@ -1,22 +1,36 @@
 @charset "utf-8";
-@import 'normalize.scss';
-@import 'slick.scss';
-@import 'colors.scss';
-@import 'text.scss';
-@import 'layout/homepage.scss';
-@import 'components/c_button.scss';
-@import 'components/c_input_button.scss';
+/*Base*/
+@import 'base/normalize.scss';
+@import 'base/slick.scss';
+@import 'base/text.scss';
+@import 'base/colors.scss';
 
+/*Components*/
+@import 'components/c-button.scss';
+@import 'components/c-input-button.scss';
+@import 'components/c_header.scss';
+@import 'components/c_cover_page.scss';
+
+
+/*Layaout*/
+@import 'layout/l-homepage.scss';
+
+$corporateColor: #233e76;
 * {
   margin: 0;
   padding: 0;
 }
-
+html {
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  > div, > div > div,  > div > div > div{
+    height: 100%;
+  }
 }
-
 .map {
   position: absolute !important;
   top: 0;
@@ -27,7 +41,6 @@ body {
   height: 100%;
   z-index: 5;
 }
-
 .timeline,
 .timelineStop,
 .loginButton,
@@ -43,40 +56,77 @@ body {
   right: 10px;
   left: inherit;
 }
-
+.zoom_controls {
+  position: absolute;
+  bottom:  135px;
+  left: 10px;
+  z-index: 6;
+  span {
+    background-color: $corporateColor;
+    height: 35px;
+    width: 35px;
+    display: block;
+    border-radius: 50%;
+    color: white;
+    line-height: 35px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+  } 
+}
+.timeline_container {
+  background-color: #021437;
+  height: 130px;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  z-index: 6; 
+}
 .time_controls {
   position: absolute !important;
-  bottom: 245px;
   button {
-    width: 170px;
+    width: 50px;
+    left: 200px;
+    height: 40px;
   }
 }
 
 .timeline {
-  top: 70px;
+  top: 18px;
 }
 
 .timelineStop {
-  top: 93px;
+  top: 61px;
 }
 
 .date_inputs {
   position: absolute !important;
-  bottom: 30px;
-  left: 10px;
+  bottom: 50px;
+  left: 5px;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: transparent;
   label {
-    display: block;
-    width: 170px;
+    display: inline-block;
+    width: 95px;
     text-align: center;
+    color: white;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+  input {
+    width: 111px;
+    font-size: 11px;
+    border: none;
+    position: relative;
+    background-color: transparent;
+    left: 17px;
   }
 }
 
 .range_container {
   position: absolute;
-  bottom: 30px;
-  left: 215px;
+  bottom: 60px;
+  left: 235px;
   background: rgba(211, 211, 211, 0.6);
   height: 30px;
   width: 75%;
@@ -109,4 +159,8 @@ body {
     top: 1px;
     transform: translate(-50%, -60%);
   }
+}
+.map_container {
+  height: calc(100% - 100px);;
+  position: relative;
 }

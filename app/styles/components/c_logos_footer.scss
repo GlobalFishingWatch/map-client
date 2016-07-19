@@ -1,0 +1,30 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
+.c_logos_footer{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 54px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  .partner_footer {
+    span {
+      color: $font-color-2;
+      font-size: $font-size-normal;
+      display: block;
+      margin-bottom: 35px;
+    }
+    img {
+      display: inline-block;
+      width: 130px;
+      margin-left: 75px;
+    }
+    .first_partner{
+      margin-left: 0;
+    }
+  }
+  .sponsor_footer {
+    span {
+      color: $font-color-2;
+      font-size: $font-size-normal;
+    }
+  }
+}
