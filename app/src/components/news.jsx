@@ -26,8 +26,10 @@ class News extends Component {
 
 
     return <div>
-      <section className={home.header_home}>
+      <header className={home.c_header}>
         <Header></Header>
+      </header>
+      <section className={home.header_home}>
         <h1>
           News
         </h1>
