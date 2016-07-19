@@ -13,8 +13,8 @@ export default function(props) {
       <div className={logosfooter.c_logos_footer}>
         <div className={logosfooter.partner_footer}>
           <span>Founding Partners</span>
-          <img src={logooceana}></img>
-          <img src={logosky}></img>
+          <img className={logosfooter.first_partner} src={logooceana} alt="oceana logo"></img>
+          <img src={logosky} alt="skytruth logo"></img>
           <img src="app/assets/partners/google.png"></img>
         </div>
         <div className={logosfooter.sponsor_footer}>
@@ -39,6 +39,7 @@ export default function(props) {
         </ul>
         <ul>
           <li>SUBSCRIBE TO NEWS</li>
+          <li><a href="#" target="_blank">Go to form</a></li>
           </ul>
       </div>
       <div className={home.project_name_footer}></div>

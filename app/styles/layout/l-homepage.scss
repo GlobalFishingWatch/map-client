@@ -97,44 +97,6 @@
     line-height: 1.05;
     color: $font-color-1;
   }
-  .gallery_info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .image_text {
-      margin-right: 20px;
-      width: 316px;
-      .img {
-        background-color: $bluesecondary;
-        width: 316px;
-        height: 228px;
-      }
-      .info_text {
-        margin-top: 34px;
-        font-size: $font-size-xsmall;
-        font-weight: $font-weight-regular;
-        line-height: 2.08;
-        color: $font-color-1;
-        .title_info {
-          display: block;
-        }
-        .link_more {
-          display: block;
-          color: $font-color-3;
-          text-transform: uppercase;
-          margin-top: 45px;
-          text-decoration: none;
-          font-size: $font-size-small;
-          font-weight: $font-weight-bold;
-          line-height: 0.4;
-          letter-spacing: -0.1px;
-        }
-      }
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
 }
 
 footer {
