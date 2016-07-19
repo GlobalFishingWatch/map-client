@@ -282,9 +282,11 @@ class Map extends Component {
             </label>
           </div>
           <div className={map.range_container}>
+            <span className={map.handler_grab, map.left}><i></i></span>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0, 10)}
             </span>
+            <span className={map.handler_grab, map.right}><i></i></span>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
             </span>
