@@ -5,12 +5,16 @@ import home from '../../styles/index.scss';
 import Header from './header';
 import Footer from './footer';
 
+
+
 class Home extends Component {
 
   render() {
     return <div>
-      <section className={home.header_home}>
+      <header className={home.c_header}>
         <Header></Header>
+      </header>
+      <section className={home.c_cover_page}>
         <h1>
           The first global view of commercial fishing activity
         </h1>

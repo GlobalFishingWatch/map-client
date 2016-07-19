@@ -1,0 +1,68 @@
+.c_cover_page{
+  background-color: $bluesecondary;
+  padding-top: 100px;
+  h1 {
+    font-family: $font-family-primary;
+    font-size: $font-size-xlarge;
+    font-weight: $font-weight-bold;
+    line-height: 0.85;
+    letter-spacing: -1.5px;
+    color: $color9;
+    max-width: 870px;
+    padding-left: 124px;
+    margin-bottom: 0;
+    margin-top: 0;
+    &:after {
+      content: "";
+      display: block;
+      height: 5px;
+      background-color: $color3;
+      margin-top: 18px;
+      margin-bottom: 10px;
+      width: 174px;
+    }
+  }
+  p {
+    padding-left: 124px;
+    color: $color9;
+    font-family: $font-family-primary;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    letter-spacing: -0.1px;
+    max-width: 668px;
+    margin-bottom: 170px;
+  }
+  .footer_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .triangle {
+      margin: 0 auto;
+      width: 52px;
+      height: 52px;
+      transform: rotate(-135deg);
+      -webkit-transform: rotate(-135deg);
+      -moz-transform: rotate(-135deg);
+      -o-transform: rotate(-135deg);
+      -ms-transform: rotate(-135deg);
+      border-right: 2px solid $color9;
+      border-bottom: 2px solid $color9;
+      margin-bottom: -30px;
+      cursor: pointer;
+      .triangle_min {
+        width: 12px;
+        height: 12px;
+        transform: rotate(-180deg);
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        border-right: 2px solid $color9;
+        border-bottom: 2px solid $color9;
+        margin-bottom: 0;
+        margin-left: 32px;
+        margin-top: 32px;
+      }
+    }
+  }
+}
