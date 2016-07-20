@@ -12,7 +12,9 @@ export function getLoggedUser() {
         'Authorization': 'Bearer ' + state.user.token
       }
     }).then((response) => {
-      return response.json()
+      if(response.ok){
+        return response.json();
+      }
     }).then((user) => {
       dispatch({
         type: GET_USER,
