@@ -48,9 +48,16 @@ class Map extends Component {
 
     if (ev.target.id === 'dateHandlerLeft') {
       tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      
+      // UPDATE VISIBLE TIMESTAMP
+      TIMELINESCOPE.childNodes[0].style.left  = ev.target.style.left;
+      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - ev.target.getBoundingClientRect().left) + 'px';
     } else if (ev.target.id === 'dateHandlerRight') {
       tmlnMaxDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      // UPDATE VISIBLE TIMESTAP
+      TIMELINESCOPE.childNodes[0].style.width = (ev.target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
+    // UPDATE DATES
     this.setState({ite: tmlnMinDate});
     this.state.overlay.hide();
     this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
