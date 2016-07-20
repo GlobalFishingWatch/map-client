@@ -65,6 +65,7 @@ class Map extends Component {
     document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
   }
   handlerMoving(ev) {
+    debugger
     ev.target.style.bottom = 0;
   }
   timelineStart() {
