@@ -23,7 +23,8 @@
         display: block;
       }
       .link_more {
-        display: block;
+        display: flex;
+        align-items: center;
         color: $font-color-3;
         text-transform: uppercase;
         margin-top: 45px;
@@ -32,6 +33,11 @@
         font-weight: $font-weight-bold;
         line-height: 0.4;
         letter-spacing: -0.1px;
+        img{
+          width: 35px;
+          margin-right: 7px;
+            margin-left: -5px;
+        }
       }
     }
     &:last-child {

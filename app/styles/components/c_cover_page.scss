@@ -1,3 +1,5 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
 .c_cover_page {
   background-color: $bluesecondary;
   padding-top: 100px;
@@ -36,5 +38,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 170px;
+    padding-left: 140px;
   }
 }

@@ -4,6 +4,8 @@
 @import 'base/slick.scss';
 @import 'base/text.scss';
 @import 'base/colors.scss';
+@import 'base/slick.scss';
+@import 'base/slick-theme.scss';
 
 /*Components*/
 @import 'components/c-button.scss';
@@ -13,7 +15,7 @@
 @import 'components/c_map.scss';
 
 
-/*Layaout*/
+/*Layout*/
 @import 'layout/l-homepage.scss';
 
 * {
