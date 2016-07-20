@@ -58,7 +58,7 @@ class Home extends Component {
           <div className={box_triangle.c_box_triangle} onClick={this.scrollToSection()}>
             <div className={box_triangle.triangle_min}></div>
           </div>
-          <div>Hello</div>
+          <div>Brought to you by:</div>
         </div>
       </section>
       <section id="case_study" className={home.infostudy}>
