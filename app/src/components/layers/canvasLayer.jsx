@@ -70,6 +70,7 @@ class CanvasLayer {
 
   drawTile2Canvas(idCanvas, data, accumulative) {
     let canvas = document.getElementById(idCanvas);
+    if (!canvas) return;
     if (!accumulative) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
