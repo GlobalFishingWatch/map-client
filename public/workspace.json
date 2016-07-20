@@ -109,7 +109,7 @@
           "source": {
             "type": "BinFormat",
             "args": {
-              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/3e755a02-97cb-11e5-87b3-0242ac110002/viz.json"
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
           "visible": true,
