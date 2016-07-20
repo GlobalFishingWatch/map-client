@@ -42,27 +42,30 @@ class Map extends Component {
     this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
   }
   handlerMoved(tick, ev) {
-    let TARGET = null;
-    if (tick === 2) {
-      TARGET = document.getElementById('dateHandlerRight');
-    } else {
-      TARGET = document.getElementById('dateHandlerLeft');
-    }
-    TARGET.style.left = '0px';
+    let   target         = null;
     const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
     const ABSMAXMOMENT  = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
-    const PERCENTAGE    = ((~~TARGET.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+    let   PERCENTAGE    = null;
+    if (tick === 1) {
+      target = document.getElementById('dateHandlerLeft');
+      target.style.left = '0px';
+      PERCENTAGE = ((~~target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+    } else {
+      target = document.getElementById('dateHandlerRight');
+      target.style.right = '0px';
+      PERCENTAGE = ((~~target.style.right.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+    }
 
-    if (TARGET.id === 'dateHandlerLeft') {
+    if (target.id === 'dateHandlerLeft') {
       tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
       
       // UPDATE VISIBLE TIMESTAMP
-      TIMELINESCOPE.childNodes[0].style.left  = (TARGET.getBoundingClientRect().left - TARGET.parentElement.getBoundingClientRect().left - 15) + 'px';
-      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - TARGET.getBoundingClientRect().left) + 'px';
-    } else if (TARGET.id === 'dateHandlerRight') {
+      TIMELINESCOPE.childNodes[0].style.left  = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
+      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
+    } else if (target.id === 'dateHandlerRight') {
       tmlnMaxDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
       // UPDATE VISIBLE TIMESTAP
-      TIMELINESCOPE.childNodes[0].style.width = (TARGET.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
+      TIMELINESCOPE.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
     // UPDATE DATES
     this.setState({ite: tmlnMinDate});
@@ -329,7 +332,7 @@ class Map extends Component {
               onStop={this.handlerMoved.bind(this,2)}>
                 <span className={[map.handler_grab,map.right].join(' ')} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
             </Draggable>
-            <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
+            <span className={map.timeline_range}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
             </span>
           </div>
