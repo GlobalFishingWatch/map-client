@@ -40,7 +40,33 @@ class Map extends Component {
     this.timelinerange = document.getElementById('timeline_handler');
     this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
   }
+  handlerMoved(ev) {
+    ev.target.style.left = (ev.clientX - 290) + 'px';
+    const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
+    const ABSMAXMOMENT  = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
+    const PERCENTAGE    = ((~~ev.target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
 
+    if (ev.target.id === 'dateHandlerLeft') {
+      tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      
+      // UPDATE VISIBLE TIMESTAMP
+      TIMELINESCOPE.childNodes[0].style.left  = ev.target.style.left;
+      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - ev.target.getBoundingClientRect().left) + 'px';
+    } else if (ev.target.id === 'dateHandlerRight') {
+      tmlnMaxDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      // UPDATE VISIBLE TIMESTAP
+      TIMELINESCOPE.childNodes[0].style.width = (ev.target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
+    }
+    // UPDATE DATES
+    this.setState({ite: tmlnMinDate});
+    this.state.overlay.hide();
+    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
+    document.getElementById('mindate').value = new Date(tmlnMinDate).toISOString().slice(0, 10);
+    document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
+  }
+  handlerMoving(ev) {
+    ev.target.style.bottom = 0;
+  }
   timelineStart() {
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
@@ -282,9 +308,11 @@ class Map extends Component {
             </label>
           </div>
           <div className={map.range_container}>
+            <span className={map.handler_grab} draggable={"true"} onDrag={this.handlerMoving.bind(this)} onDragEnd={this.handlerMoved.bind(this)} id="dateHandlerLeft"><i></i></span>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0, 10)}
             </span>
+            <span className={[map.handler_grab,map.right].join(' ')} draggable={"true"} onDrag={this.handlerMoving.bind(this)} onDragEnd={this.handlerMoved.bind(this)} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
             </span>
