@@ -2,6 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
+import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
 import Header from "./header";
@@ -65,7 +66,6 @@ class Map extends Component {
     document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
   }
   handlerMoving(ev) {
-    debugger
     ev.target.style.bottom = 0;
   }
   timelineStart() {
@@ -309,11 +309,24 @@ class Map extends Component {
             </label>
           </div>
           <div className={map.range_container}>
-            <span className={map.handler_grab} draggable={"true"} onDrag={this.handlerMoving.bind(this)} onDragEnd={this.handlerMoved.bind(this)} id="dateHandlerLeft"><i></i></span>
+            <Draggable
+              axis="x"
+              zIndex={100}
+              onDrag={this.handlerMoving.bind(this)}
+              onStop={this.handlerMoved.bind(this)}>
+                <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
+            </Draggable>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0, 10)}
             </span>
-            <span className={[map.handler_grab,map.right].join(' ')} draggable={"true"} onDrag={this.handlerMoving.bind(this)} onDragEnd={this.handlerMoved.bind(this)} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
+            
+            <Draggable
+              axis="x"
+              zIndex={100}
+              onDrag={this.handlerMoving.bind(this)}
+              onStop={this.handlerMoved.bind(this)}>
+                <span className={[map.handler_grab,map.right].join(' ')} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
+            </Draggable>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
             </span>
