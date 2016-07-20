@@ -1,43 +1,23 @@
 'use strict';
 
 import React, {Component} from "react";
-import $ from "jquery";
 import home from "../../styles/index.scss";
 import gallery from "../../styles/components/c_gallery_images.scss";
 import button from "../../styles/components/c_button.scss";
 import box_triangle from "../../styles/components/c_box_triangle.scss";
 import Header from "../containers/header";
-import slider_case from "../../styles/components/c_slider_case.scss";
-import link_box from "../../styles/components/c_link_box.scss";
 import Footer from "./footer";
 import FooterSecond from "./second_footer";
+import CaseStudySlider from "./case_study_slider"
 import boxtriangle from "../../assets/icons/box_triangle.svg";
 import boxtrianglewhite from "../../assets/icons/box_triangle_white.svg";
-require('../lib/slick.min');
-
 
 class Home extends Component {
-
-  setSlick() {
-
-    $('#case_study').slick({
-      dots: true,
-      arrows: false,
-      infinite: true,
-      speed: 500,
-      fade: true
-      // appendDots: $(".slick-list")
-    });
-  }
 
   scrollToSection() {
     $('html,body').animate({
       scrollTop: $('#case_study')
     });
-  }
-
-  componentDidMount() {
-    this.setSlick();
   }
 
   render() {
@@ -62,39 +42,9 @@ class Home extends Component {
         </div>
       </section>
       <section id="case_study" className={home.infostudy}>
-        <div className={slider_case.c_slider_case}>
-          <div className={slider_case.c_slider_case_text}>
-            <h2>CASE STUDY</h2>
-            <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis orci varius sem posuere tempus.
-              Pellentesque enim nulla, consequat vitae faucibus a, vulputate at est. Quisque interdum, ex imperdiet
-              feugiat eleifend, dui nibh cursus neque, dapibus fringilla lectus elit eget dolor. Phasellus ut nisl
-              tortor.
-              Ut posuere convallis consectetur. Nam.</p>
-            <p>
-              <a className={link_box.c_link_box} href="#"><img src={boxtriangle}></img>FIND OUT MORE</a>
-            </p>
-          </div>
-          <div className={slider_case.c_slider_case_img}></div>
-        </div>
-        <div className={slider_case.c_slider_case}>
-          <div className={slider_case.c_slider_case_text}>
-            <h2>CASE STUDY 2</h2>
-            <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis orci varius sem posuere tempus.
-              Pellentesque enim nulla, consequat vitae faucibus a, vulputate at est. Quisque interdum, ex imperdiet
-              feugiat eleifend, dui nibh cursus neque, dapibus fringilla lectus elit eget dolor. Phasellus ut nisl
-              tortor.
-              Ut posuere convallis consectetur. Nam.</p>
-            <p>
-              <a className={link_box.c_link_box} href="#"><img src={boxtriangle}></img>FIND OUT MORE</a>
-            </p>
-          </div>
-          <div className={slider_case.c_slider_case_img}></div>
-        </div>
+        <CaseStudySlider></CaseStudySlider>
       </section>
+
       <section className={home.infomap}>
         <div>
           <h2>THE MAP</h2>
