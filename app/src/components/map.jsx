@@ -41,22 +41,28 @@ class Map extends Component {
     this.timelinerange = document.getElementById('timeline_handler');
     this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
   }
-  handlerMoved(ev) {
-    ev.target.style.left = (ev.clientX - 290) + 'px';
+  handlerMoved(tick, ev) {
+    let TARGET = null;
+    if (tick === 2) {
+      TARGET = document.getElementById('dateHandlerRight');
+    } else {
+      TARGET = document.getElementById('dateHandlerLeft');
+    }
+    TARGET.style.left = '0px';
     const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
     const ABSMAXMOMENT  = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
-    const PERCENTAGE    = ((~~ev.target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+    const PERCENTAGE    = ((~~TARGET.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
 
-    if (ev.target.id === 'dateHandlerLeft') {
+    if (TARGET.id === 'dateHandlerLeft') {
       tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
       
       // UPDATE VISIBLE TIMESTAMP
-      TIMELINESCOPE.childNodes[0].style.left  = ev.target.style.left;
-      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - ev.target.getBoundingClientRect().left) + 'px';
-    } else if (ev.target.id === 'dateHandlerRight') {
+      TIMELINESCOPE.childNodes[0].style.left  = (TARGET.getBoundingClientRect().left - TARGET.parentElement.getBoundingClientRect().left - 15) + 'px';
+      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - TARGET.getBoundingClientRect().left) + 'px';
+    } else if (TARGET.id === 'dateHandlerRight') {
       tmlnMaxDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
       // UPDATE VISIBLE TIMESTAP
-      TIMELINESCOPE.childNodes[0].style.width = (ev.target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
+      TIMELINESCOPE.childNodes[0].style.width = (TARGET.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
     // UPDATE DATES
     this.setState({ite: tmlnMinDate});
@@ -65,9 +71,7 @@ class Map extends Component {
     document.getElementById('mindate').value = new Date(tmlnMinDate).toISOString().slice(0, 10);
     document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
   }
-  handlerMoving(ev) {
-    ev.target.style.bottom = 0;
-  }
+
   timelineStart() {
     this.timelinerange = document.getElementById('timeline_handler');
     let data = this.props.vessel.data;
@@ -312,8 +316,7 @@ class Map extends Component {
             <Draggable
               axis="x"
               zIndex={100}
-              onDrag={this.handlerMoving.bind(this)}
-              onStop={this.handlerMoved.bind(this)}>
+              onStop={this.handlerMoved.bind(this,1)}>
                 <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
             </Draggable>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
@@ -323,8 +326,7 @@ class Map extends Component {
             <Draggable
               axis="x"
               zIndex={100}
-              onDrag={this.handlerMoving.bind(this)}
-              onStop={this.handlerMoved.bind(this)}>
+              onStop={this.handlerMoved.bind(this,2)}>
                 <span className={[map.handler_grab,map.right].join(' ')} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
             </Draggable>
             <span className={map.timeline_range} onClick={this.moveTimeline.bind(this)}>
