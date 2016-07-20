@@ -10,6 +10,7 @@ import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
 let tmlnMaxDate = 1451606400000; // 1/1/2016
+const maxZoomLevel = 2;
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
   new google.maps.LatLng(-85, -180),
@@ -30,8 +31,8 @@ class Map extends Component {
 
   onZoomChanged() {
     const ZOOM = this.refs.map.props.map.getZoom();
-    if (ZOOM < 3) {
-      this.refs.map.props.map.setZoom(3);
+    if (ZOOM < maxZoomLevel) {
+      this.refs.map.props.map.setZoom(maxZoomLevel);
     }
     this.setState({zoom: ZOOM});
     this.state.overlay.resetData();
@@ -58,7 +59,7 @@ class Map extends Component {
 
     if (target.id === 'dateHandlerLeft') {
       tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
-      
+
       // UPDATE VISIBLE TIMESTAMP
       TIMELINESCOPE.childNodes[0].style.left  = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
       TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
@@ -325,7 +326,7 @@ class Map extends Component {
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0, 10)}
             </span>
-            
+
             <Draggable
               axis="x"
               zIndex={100}
