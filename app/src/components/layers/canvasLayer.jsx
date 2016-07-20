@@ -117,7 +117,8 @@ class CanvasLayer {
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (!!filters && filters.hasOwnProperty('timeline') &&
-        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1])) {
+        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) ||
+        !data.weight[i]) {
         continue;
       }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
@@ -130,8 +131,6 @@ class CanvasLayer {
         y: (pxcoord.y - tile_base_y) << zoom_diff
       }
       const weight = data.weight[i];
-      if (!weight)
-        continue;
       if (weight > 0.9)
         canvas.ctx.fillStyle = 'rgb(255,255,240)';
       else if (weight > 0.05)
