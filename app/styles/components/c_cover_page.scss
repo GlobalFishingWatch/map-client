@@ -41,5 +41,16 @@
     padding-right: 170px;
     padding-left: 140px;
     color: $white;
+    padding-bottom: 40px;
+    svg {
+      fill: #FFF;
+      stroke-width: 3;
+      stroke: #FFF;
+      transform: rotate(45deg);
+      margin-right: 15px;
+      &last-child{
+        margin-right: 0;
+      }
+    }
   }
 }
