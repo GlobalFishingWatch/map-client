@@ -54,13 +54,10 @@ class Map extends Component {
     let PERCENTAGE = null;
     if (tick === 1) {
       target = document.getElementById('dateHandlerLeft');
-      target.style.left = '0px';
-      PERCENTAGE = ((~~target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth + 34;
     } else {
       target = document.getElementById('dateHandlerRight');
-      target.style.right = '0px';
-      PERCENTAGE = ((~~target.style.right.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth + 34;
     }
+    PERCENTAGE = ((target.getBoundingClientRect().left - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth;
 
     if (target.id === 'dateHandlerLeft') {
       tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date('01-01-2015').getTime();
