@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component} from "react";
 import $ from "jquery";
-import ButtonBoxSlider from "../button_box_slider";
+import ButtonBoxSlider from "./button_box_slider";
 import cover_page from "../../../styles/components/c_cover_page.scss";
 import box_triangle from "../../../styles/components/c_box_triangle.scss";
 

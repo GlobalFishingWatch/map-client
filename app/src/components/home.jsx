@@ -3,8 +3,8 @@
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
 import Header from "../containers/header";
-import Footer from "./footer";
-import FooterSecond from "./second_footer";
+import Footer from "./shared/footer";
+import FooterSecond from "./shared/second_footer";
 import CaseStudySlider from "./home/case_study_slider";
 import CoverPage from "./home/cover_page";
 import InfoMap from "./home/info_map";

@@ -1,7 +1,7 @@
 'use strict';
 
 import {connect} from "react-redux";
-import Header from "../components/header";
+import Header from "../components/shared/header";
 
 const mapStateToProps = (state) => {
   return {

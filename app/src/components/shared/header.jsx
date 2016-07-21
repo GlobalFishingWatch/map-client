@@ -1,7 +1,7 @@
 import React, {Component, Image} from "react";
 import {Link} from "react-router";
-import home from "../../styles/components/c_menu.scss";
-import logoimg from "../../assets/logos/gfw_logo_hor_second.png";
+import home from "../../../styles/components/c_menu.scss";
+import logoimg from "../../../assets/logos/gfw_logo_hor_second.png";
 
 
 class Header extends Component {
@@ -23,23 +23,23 @@ class Header extends Component {
           <Link to="#">News</Link>
           <ul>
             <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/">Articles and Publications</Link></li>
+            <li><Link to="/articles-publications">Articles and Publications</Link></li>
           </ul>
         </li>
         <li>
           <Link to="#">How to</Link>
           <ul>
-            <li><Link to="/">FAQ</Link></li>
-            <li><Link to="/">Tutorials</Link></li>
-            <li><Link to="/">Definitions</Link></li>
+            <li><Link to="/faq">FAQ</Link></li>
+            <li><Link to="/tutorials">Tutorials</Link></li>
+            <li><Link to="/definitions">Definitions</Link></li>
           </ul>
         </li>
         <li>
           <Link to="#">About</Link>
           <ul>
-            <li><Link to="/">The project</Link></li>
-            <li><Link to="/">Partners</Link></li>
-            <li><Link to="/">Contact us</Link></li>
+            <li><Link to="/the-project">The project</Link></li>
+            <li><Link to="/partners">Partners</Link></li>
+            <li><Link to="/contact-us">Contact us</Link></li>
           </ul>
         </li>
         <li>

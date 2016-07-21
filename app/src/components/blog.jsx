@@ -2,8 +2,8 @@
 
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
-import Header from "./header";
-import Footer from "./footer";
+import Header from "./shared/header";
+import Footer from "./shared/footer";
 
 class Blog extends Component {
 
