@@ -43,14 +43,19 @@
     color: $white;
     padding-bottom: 40px;
     svg {
-      fill: #FFF;
+      fill: $color9;
       stroke-width: 3;
-      stroke: #FFF;
+      stroke: $color9;
       transform: rotate(45deg);
       margin-right: 15px;
       &last-child{
         margin-right: 0;
       }
+    }
+    #selected_box{
+      fill: $color4;
+      stroke-width: 3;
+      stroke: $color4;
     }
   }
 }

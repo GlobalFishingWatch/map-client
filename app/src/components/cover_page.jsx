@@ -1,7 +1,9 @@
 'use strict';
 import React, {Component} from "react";
-import box_triangle from "../../styles/components/c_box_triangle.scss";
+import ButtonBoxSlider from "./button_box_slider";
 import cover_page from "../../styles/components/c_cover_page.scss";
+import boxtriangle from "../../assets/icons/box_triangle.svg";
+import box_triangle from "../../styles/components/c_box_triangle.scss";
 
 class CoverPage extends Component {
 
@@ -13,23 +15,7 @@ class CoverPage extends Component {
         </h1>
         <p>Global Fishing Watch, a partnership of Oceana, SkyTruth and Google, enables anyone with an Internet connection to see global fishing activity worldwide in near real-time - for free. It s a powerful tool that will hold our leaders accountable for maintaining abundant oceans and show consumers where - - and by whom -- their fish is being caught.</p>
         <div className={cover_page.footer_header}>
-          <div>
-            <svg width="12" height="12">
-                <rect width="12" height="12"/>
-            </svg>
-            <svg width="12" height="12">
-                <rect width="12" height="12"/>
-            </svg>
-            <svg width="12" height="12">
-                <rect width="12" height="12"/>
-            </svg>
-            <svg width="12" height="12">
-                <rect width="12" height="12"/>
-            </svg>
-            <svg width="12" height="12">
-                <rect width="12" height="12"/>
-            </svg>
-          </div>
+          <ButtonBoxSlider></ButtonBoxSlider>
           <div className={box_triangle.c_box_triangle}>
             <div className={box_triangle.triangle_min}></div>
           </div>
