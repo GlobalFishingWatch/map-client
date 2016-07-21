@@ -80,7 +80,7 @@ class CanvasLayer {
     for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
       const weight = data.weight[j];
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(218,165,32,.8)';
+        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
       else if (weight > 0.05)
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
@@ -134,7 +134,7 @@ class CanvasLayer {
       }
       const weight = data.weight[i];
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(218,165,32,.8)';
+        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
       else if (weight > 0.05)
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
