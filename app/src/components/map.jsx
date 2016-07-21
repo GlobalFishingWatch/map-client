@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import Draggable, {DraggableCore} from 'react-draggable';
+import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
 import Header from "../containers/header";
@@ -42,29 +42,30 @@ class Map extends Component {
     this.timelinerange = document.getElementById('timeline_handler');
     this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
   }
+
   handlerMoved(tick, ev) {
-    let   target         = null;
+    let target = null;
     const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
-    const ABSMAXMOMENT  = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
-    let   PERCENTAGE    = null;
+    const ABSMAXMOMENT = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
+    let PERCENTAGE = null;
     if (tick === 1) {
       target = document.getElementById('dateHandlerLeft');
       target.style.left = '0px';
-      PERCENTAGE = ((~~target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+      PERCENTAGE = ((~~target.style.left.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth + 34;
     } else {
       target = document.getElementById('dateHandlerRight');
       target.style.right = '0px';
-      PERCENTAGE = ((~~target.style.right.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left)*100)/TIMELINESCOPE.offsetWidth + 34;
+      PERCENTAGE = ((~~target.style.right.match(/\d/g).join("") - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth + 34;
     }
 
     if (target.id === 'dateHandlerLeft') {
-      tmlnMinDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date('01-01-2015').getTime();
 
       // UPDATE VISIBLE TIMESTAMP
-      TIMELINESCOPE.childNodes[0].style.left  = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
+      TIMELINESCOPE.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
       TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
     } else if (target.id === 'dateHandlerRight') {
-      tmlnMaxDate = (PERCENTAGE*ABSMAXMOMENT)/100 + new Date('01-01-2015').getTime();
+      tmlnMaxDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date('01-01-2015').getTime();
       // UPDATE VISIBLE TIMESTAP
       TIMELINESCOPE.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
@@ -313,8 +314,8 @@ class Map extends Component {
             <Draggable
               axis="x"
               zIndex={100}
-              onStop={this.handlerMoved.bind(this,1)}>
-                <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
+              onStop={this.handlerMoved.bind(this, 1)}>
+              <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
             </Draggable>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
               {new Date(this.state.ite).toISOString().slice(0, 10)}
@@ -323,8 +324,9 @@ class Map extends Component {
             <Draggable
               axis="x"
               zIndex={100}
-              onStop={this.handlerMoved.bind(this,2)}>
-                <span className={[map.handler_grab,map.right].join(' ')} id="dateHandlerRight" style={{left: this.state.widthRange}}><i></i></span>
+              onStop={this.handlerMoved.bind(this, 2)}>
+              <span className={[map.handler_grab, map.right].join(' ')} id="dateHandlerRight"
+                    style={{left: this.state.widthRange}}><i></i></span>
             </Draggable>
             <span className={map.timeline_range}>
               <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>

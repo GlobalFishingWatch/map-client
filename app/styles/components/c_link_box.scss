@@ -1,5 +1,6 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
+
 .c_link_box {
   display: flex;
   align-items: center;
@@ -9,7 +10,7 @@
   line-height: 0.4;
   letter-spacing: -0.1px;
   font-size: $font-size-small;
-  color:$color6;
+  color: $color6;
   img {
     width: 35px;
     margin-right: 7px;

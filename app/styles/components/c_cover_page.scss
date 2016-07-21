@@ -1,5 +1,6 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
+
 .c_cover_page {
   background-color: $bluesecondary;
   padding-top: 100px;
@@ -48,11 +49,11 @@
       stroke: $color9;
       transform: rotate(45deg);
       margin-right: 15px;
-      &last-child{
+      &last-child {
         margin-right: 0;
       }
     }
-    #selected_box{
+    #selected_box {
       fill: $color4;
       stroke-width: 3;
       stroke: $color4;

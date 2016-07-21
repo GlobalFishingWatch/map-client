@@ -10,7 +10,8 @@ class InfoMap extends Component {
     return <div className={info_map_content.c_info_map_content}>
       <h2>THE MAP</h2>
       <h3>Lorem ipsum dolor sit amet</h3>
-      <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat sodales lectus.</p>
+      <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat
+        sodales lectus.</p>
       <p>
         <a href="map" className={button.c_btn_primary}>
           <img src={boxtrianglewhite}></img>EXPLORE MAP</a>

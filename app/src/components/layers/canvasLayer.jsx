@@ -117,8 +117,7 @@ class CanvasLayer {
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (!!filters && filters.hasOwnProperty('timeline') &&
-        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) ||
-        !data.weight[i]) {
+        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i]) {
         continue;
       }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));

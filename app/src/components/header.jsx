@@ -43,7 +43,7 @@ class Header extends Component {
           </ul>
         </li>
         <li>
-          {this.props.loggedUser && <Link to="#" >{this.props.loggedUser.displayName}</Link>}
+          {this.props.loggedUser && <Link to="#">{this.props.loggedUser.displayName}</Link>}
           {!this.props.loggedUser && <Link to="#" onClick={this.login.bind(this)}>Login</Link>}
         </li>
       </ul>
