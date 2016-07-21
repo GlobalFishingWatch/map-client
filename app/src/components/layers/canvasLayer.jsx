@@ -79,15 +79,18 @@ class CanvasLayer {
       : 2 || 1;
     for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
       const weight = data.weight[j];
-      if (!weight)
-        continue;
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgb(255,255,240)';
+        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
       else if (weight > 0.05)
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
-      canvas.ctx.fillRect(~~data.x[j], ~~data.y[j], size, size);
+      canvas.ctx.fillRect(~~data.x, ~~data.y, size, size);
+      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+0, size +1, size +1);
+      canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+1, size +1, size +1);
+      canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-0, size +1, size +1);
+      canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-1, size +1, size +1);
     }
   }
 
@@ -131,12 +134,17 @@ class CanvasLayer {
       }
       const weight = data.weight[i];
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgb(255,255,240)';
+        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
       else if (weight > 0.05)
         canvas.ctx.fillStyle = 'rgb(10,200,200)';
       else
         canvas.ctx.fillStyle = 'rgb(0,255,242)';
       canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
+      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      canvas.ctx.fillRect(~~xcoords.x+1, ~~xcoords.y+0, size +1, size +1);
+      canvas.ctx.fillRect(~~xcoords.x+1, ~~xcoords.y+1, size +1, size +1);
+      canvas.ctx.fillRect(~~xcoords.x-1, ~~xcoords.y-0, size +1, size +1);
+      canvas.ctx.fillRect(~~xcoords.x-1, ~~xcoords.y-1, size +1, size +1);
       if (parseData) {
         let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
         if (!this.data[`${zoom},${coord.x},${coord.y}`][time]) {
