@@ -86,17 +86,22 @@ class CanvasLayer {
     for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
       const weight = data.weight[j];
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
+        canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
       else if (weight > 0.05)
-        canvas.ctx.fillStyle = 'rgb(10,200,200)';
+        canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
       else
-        canvas.ctx.fillStyle = 'rgb(0,255,242)';
+        canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~data.x, ~~data.y, size, size);
-      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      canvas.ctx.fillStyle = 'rgba(17,129,251,.2)';
       canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+0, size +1, size +1);
       canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+1, size +1, size +1);
       canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-0, size +1, size +1);
       canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-1, size +1, size +1);
+      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      canvas.ctx.fillRect(~~data.x[j]+2, ~~data.y[j]+1, size, size);
+      canvas.ctx.fillRect(~~data.x[j]+2, ~~data.y[j]+2, size, size);
+      canvas.ctx.fillRect(~~data.x[j]-2, ~~data.y[j]-1, size, size);
+      canvas.ctx.fillRect(~~data.x[j]-2, ~~data.y[j]-2, size, size);
     }
   }
 
@@ -144,11 +149,11 @@ class CanvasLayer {
       }
       const weight = data.weight[i];
       if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(47,133,33,.8)';
+        canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
       else if (weight > 0.05)
-        canvas.ctx.fillStyle = 'rgb(10,200,200)';
+        canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
       else
-        canvas.ctx.fillStyle = 'rgb(0,255,242)';
+        canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
       canvas.ctx.fillRect(~~xcoords.x+1, ~~xcoords.y+0, size +1, size +1);
