@@ -5,7 +5,8 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
-import Header from "../containers/header";
+import FiltersPanel from "./filtersPanel";
+import Header from "./header";
 import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 01/01/2015
@@ -290,6 +291,20 @@ class Map extends Component {
     }
     this.state.overlay.hide();
   }
+  displayVesselsByCountrie(iso){
+    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
+  }
+  login() {
+    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
+    window.location = url;
+  }
+
+  updateDates(ev) {
+    if (!!!ev.target.value) return;
+    if (ev.target.id == 'mindate') {
+      tmlnMinDate = new Date(ev.target.value).getTime();
+    } else if (ev.target.id == 'maxdate') {
+      tmlnMaxDate = new Date(ev.target.value).getTime();
 
   shareMap(ev) {
     alert('TODO: share map');
@@ -351,6 +366,7 @@ class Map extends Component {
           </div>
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
+        <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)} />
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>
