@@ -20,13 +20,27 @@ class Header extends Component {
           <Link to="/map">Map</Link>
         </li>
         <li>
-          <Link to="/news">News</Link>
+          <Link to="#">News</Link>
+          <ul>
+            <li><Link to="/news">Blog</Link></li>
+            <li><Link to="/">Articles and Publications</Link></li>
+          </ul>
         </li>
         <li>
-          <Link to="/">How to</Link>
+          <Link to="#">How to</Link>
+          <ul>
+            <li><Link to="/">FAQ</Link></li>
+            <li><Link to="/">Tutorials</Link></li>
+            <li><Link to="/">Definitions</Link></li>
+          </ul>
         </li>
         <li>
-          <Link to="/">About</Link>
+          <Link to="#">About</Link>
+          <ul>
+            <li><Link to="/">The project</Link></li>
+            <li><Link to="/">Partners</Link></li>
+            <li><Link to="/">Contact us</Link></li>
+          </ul>
         </li>
         <li>
           {this.props.loggedUser && <Link to="#" >{this.props.loggedUser.displayName}</Link>}
