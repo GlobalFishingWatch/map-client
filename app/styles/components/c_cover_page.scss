@@ -1,3 +1,6 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
+
 .c_cover_page {
   background-color: $bluesecondary;
   padding-top: 100px;
@@ -36,5 +39,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-right: 170px;
+    padding-left: 140px;
+    color: $white;
+    padding-bottom: 40px;
+    svg {
+      fill: $color9;
+      stroke-width: 3;
+      stroke: $color9;
+      transform: rotate(45deg);
+      margin-right: 15px;
+      &last-child {
+        margin-right: 0;
+      }
+    }
+    #selected_box {
+      fill: $color4;
+      stroke-width: 3;
+      stroke: $color4;
+    }
   }
 }

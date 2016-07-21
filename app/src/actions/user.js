@@ -12,7 +12,7 @@ export function getLoggedUser() {
         'Authorization': 'Bearer ' + state.user.token
       }
     }).then((response) => {
-      if(response.ok){
+      if (response.ok) {
         return response.json();
       }
     }).then((user) => {

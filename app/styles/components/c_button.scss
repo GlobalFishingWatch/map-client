@@ -4,7 +4,6 @@
 .c_btn_primary {
   background-color: $color4;
   color: $color9;
-  padding: 15px 40px;
   text-decoration: none;
   display: inline-block;
   font-family: $font-family-primary;
@@ -12,4 +11,14 @@
   font-weight: $font-weight-regular;
   letter-spacing: -0.1px;
   line-height: 0.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 210px;
+  height: 40px;
+  img {
+    width: 35px;
+    margin-left: -5px;
+    margin-right: 7px;
+  }
 }

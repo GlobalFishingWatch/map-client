@@ -1,0 +1,13 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
+
+.c_second_footer {
+  height: 42px;
+  background-color: $black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 85px;
+  }
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 import {connect} from "react-redux";
-import News from "../components/news";
+import Blog from "../components/blog";
 import {getRecentPost} from "../actions/blog";
 
 const mapStateToProps = (state) => {
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch) => {
     getRecentPost: () => dispatch(getRecentPost())
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(News);
+export default connect(mapStateToProps, mapDispatchToProps)(Blog);

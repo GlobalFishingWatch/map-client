@@ -5,7 +5,7 @@ import home from "../../styles/index.scss";
 import Header from "./header";
 import Footer from "./footer";
 
-class News extends Component {
+class Blog extends Component {
 
   componentDidMount() {
     this.props.getRecentPost();
@@ -31,7 +31,7 @@ class News extends Component {
       </header>
       <section className={home.header_home}>
         <h1>
-          News
+          Blog
         </h1>
 
       </section>
@@ -45,4 +45,4 @@ class News extends Component {
 
 }
 
-export default News;
+export default Blog;
