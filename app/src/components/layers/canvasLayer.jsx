@@ -1,6 +1,6 @@
 import PelagosClient from "../../lib/pelagosClient";
 
-const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;'
+const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/'
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 class CanvasLayer {
@@ -209,7 +209,7 @@ class CanvasLayer {
       return `${year}-01-01T00:00:00.000Z`;
     }
     for(let i = startYear; i <= endYear; i++){
-      urls.push(`https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-${i}-${i+1}-v1/${firstDayYear(i)},${firstDayYear(i+1)};${pos}`);
+      urls.push(url+`${firstDayYear(i)},${firstDayYear(i+1)};${pos}`);
     }
     return urls;
   }
