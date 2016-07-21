@@ -1,7 +1,6 @@
 'use strict';
 
 import React, {Component} from "react";
-import Map from "../containers/map";
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-\_]*)(&[a-z=])?/g
 

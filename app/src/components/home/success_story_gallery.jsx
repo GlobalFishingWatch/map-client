@@ -1,10 +1,10 @@
 'use strict';
 import React, {Component} from "react";
-import button from "../../styles/components/c_button.scss";
-import boxtrianglewhite from "../../assets/icons/box_triangle_white.svg";
-import gallery from "../../styles/components/c_gallery_images.scss";
-import box_triangle from "../../styles/components/c_box_triangle.scss";
-import boxtriangle from "../../assets/icons/box_triangle.svg";
+import button from "../../../styles/components/c_button.scss";
+import boxtrianglewhite from "../../../assets/icons/box_triangle_white.svg";
+import gallery from "../../../styles/components/c_gallery_images.scss";
+import box_triangle from "../../../styles/components/c_box_triangle.scss";
+import boxtriangle from "../../../assets/icons/box_triangle.svg";
 
 class SuccessStoryGallery extends Component {
 

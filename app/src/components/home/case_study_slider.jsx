@@ -2,9 +2,9 @@
 
 import React, {Component} from "react";
 import Slider from "react-slick";
-import slider_case from "../../styles/components/c_slider_case.scss";
-import link_box from "../../styles/components/c_link_box.scss";
-import boxtriangle from "../../assets/icons/box_triangle.svg";
+import slider_case from "../../../styles/components/c_slider_case.scss";
+import link_box from "../../../styles/components/c_link_box.scss";
+import boxtriangle from "../../../assets/icons/box_triangle.svg";
 
 class CaseStudySlider extends Component {
 

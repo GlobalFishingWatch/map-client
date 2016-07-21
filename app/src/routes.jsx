@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import AppContainer from "./containers/app";
 import HomeContainer from "./containers/home";
 import MapContainer from "./containers/map";
-import NewsContainer from "./containers/news";
+import BlogContainer from "./containers/blog";
 import {Router, Route, IndexRoute} from "react-router";
 
 class Routes extends Component {
@@ -11,7 +11,7 @@ class Routes extends Component {
       <Route path="/" component={AppContainer}>
         <Route path="map" component={MapContainer}/>
         <IndexRoute component={HomeContainer}/>
-        <Route path="news" component={NewsContainer}/>
+        <Route path="blog" component={BlogContainer}/>
       </Route>
     </Router>;
   }

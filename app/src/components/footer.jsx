@@ -23,7 +23,7 @@ export default function (props) {
       <div className={navfooter.c_nav_footer}>
         <ul>
           <li><a href="/map">Map</a></li>
-          <li><a href="/news">News</a></li>
+          <li><a href="/blog">Blog</a></li>
           <li>how to</li>
           <li>about</li>
         </ul>

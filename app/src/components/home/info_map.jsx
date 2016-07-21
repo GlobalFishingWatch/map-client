@@ -1,8 +1,8 @@
 'use strict';
 import React, {Component} from "react";
-import info_map_content from "../../styles/components/c_info_map_content.scss";
-import button from "../../styles/components/c_button.scss";
-import boxtrianglewhite from "../../assets/icons/box_triangle_white.svg";
+import info_map_content from "../../../styles/components/c_info_map_content.scss";
+import button from "../../../styles/components/c_button.scss";
+import boxtrianglewhite from "../../../assets/icons/box_triangle_white.svg";
 
 class InfoMap extends Component {
 

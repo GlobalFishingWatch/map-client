@@ -22,7 +22,7 @@ class Header extends Component {
         <li>
           <Link to="#">News</Link>
           <ul>
-            <li><Link to="/news">Blog</Link></li>
+            <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/">Articles and Publications</Link></li>
           </ul>
         </li>
