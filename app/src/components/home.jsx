@@ -5,7 +5,7 @@ import home from "../../styles/index.scss";
 import gallery from "../../styles/components/c_gallery_images.scss";
 import button from "../../styles/components/c_button.scss";
 import box_triangle from "../../styles/components/c_box_triangle.scss";
-import Header from "./header";
+import Header from "../containers/header";
 import Footer from "./footer";
 
 
