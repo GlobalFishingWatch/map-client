@@ -7,7 +7,8 @@ import {init, showLoading, getLayers, updateLayer} from "../actions/vessel";
 const mapStateToProps = (state) => {
   return {
     vessel: state.vessel,
-    loggedUser: state.user.loggedUser
+    loggedUser: state.user.loggedUser,
+    token: state.user.token,
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -35,39 +35,35 @@ export function updateLayer(layer) {
  ** RFMOs
  */
 export function getLayers() {
-  return function (dispatch) {
-    let p1 = new Promise(
-      // The resolver function is called with the ability to resolve or
-      // reject the promise
-      function (resolve, reject) {
-        let httpRequest = new XMLHttpRequest();
-        httpRequest.onreadystatechange = returnLayers;
-        httpRequest.open('GET', '/workspace.json', true);
-        httpRequest.responseType = "text";
-        httpRequest.send();
+  return function (dispatch, getState) {
+    let state = getState();
 
-        function returnLayers() {
-          if (httpRequest.readyState == XMLHttpRequest.DONE) {
-            if (httpRequest.status == 200) {
-              let data = JSON.parse(httpRequest.responseText);
-              let layers = [];
-              for (let prop in data.map.animations) {
-                if (data.map.animations[prop].type === "CartoDBAnimation" && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
-                  layers.push(data.map.animations[prop].args);
-                }
-              }
-              resolve(layers);
-            }
-          }
+    let path = '/workspace.json';
+    if(state.user.token){
+      path = '/workspace-logged.json';
+    }
+    fetch(path, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + state.user.token
+      }
+    }).then((response) => {
+      if(response.ok){
+        return response.json();
+      }
+    }).then((data) => {
+      let layers = [];
+      for (let prop in data.map.animations) {
+        if (data.map.animations[prop].type === "CartoDBAnimation" && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
+          layers.push(data.map.animations[prop].args);
         }
       }
-    );
-    p1.then(
-      function (layers) {
-        dispatch({
-          type: SET_LAYERS,
-          payload: layers
-        });
+      return layers;
+    }).then((layers) => {
+      dispatch({
+        type: SET_LAYERS,
+        payload: layers
       });
+    });
   }
 };

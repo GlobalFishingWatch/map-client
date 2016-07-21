@@ -1,29 +1,35 @@
 import PelagosClient from "../../lib/pelagosClient";
 
-const url = 'https://storage.googleapis.com/vizzuality-staging/random/'
+const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;'
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 class CanvasLayer {
-  constructor(position, options, map) {
+  constructor(position, options, map, token, filters) {
     this.map = map;
     this.data = {};
     this.position = position;
     this.minDate = Date.now();
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
-    this.map.overlayMapTypes.insertAt(this.position, this);
-    this.visible = true;
-    this.filters = {}
+    // this.map.overlayMapTypes.insertAt(this.position, this);
+    this.visible = false;
+    this.filters = filters || {};
+    this.token = token;
   }
 
   hide() {
-    this.visible = false;
-    this.map.overlayMapTypes.removeAt(this.position);
+    if(this.visible){
+      this.visible = false;
+      this.map.overlayMapTypes.removeAt(this.position);
+    }
   }
 
   show() {
-    this.visible = true;
-    this.map.overlayMapTypes.insertAt(this.position, this);
+
+    if(!this.visible){
+      this.visible = true;
+      this.map.overlayMapTypes.insertAt(this.position, this);
+    }
   }
 
   isVisible() {
@@ -105,6 +111,10 @@ class CanvasLayer {
   }
 
   drawTile(canvas, zoom, data, coord, zoom_diff, filters) {
+    if(!data){
+      canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
     let parseData = false;
     if (!this.data[`${zoom},${coord.x},${coord.y}`]) {
       parseData = true;
@@ -186,16 +196,55 @@ class CanvasLayer {
     return {x: x, y: y};
   }
 
+  calculateUrls(pos, filters){
+    let startYear = new Date(filters.timeline[0]).getFullYear();
+    let endYear = new Date(filters.timeline[1]).getFullYear();
+    let urls = [];
+    const firstDayYear = function(year){
+      return `${year}-01-01T00:00:00.000Z`;
+    }
+    for(let i = startYear; i <= endYear; i++){
+      urls.push(`https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-${i}-${i+1}-v1/${firstDayYear(i)},${firstDayYear(i+1)};${pos}`);
+    }
+    return urls;
+  }
+
+  groupData(data){
+    if(data && data.length > 1){
+      for(let i = 1, length = data.length; i < length; i++){
+        if(data[i] !== null){
+          data[0].category = data[0].category.concat(data[i].category);
+          data[0].datetime = data[0].datetime.concat(data[i].datetime);
+          data[0].latitude = data[0].latitude.concat(data[i].latitude);
+          data[0].longitude = data[0].longitude.concat(data[i].longitude);
+          data[0].series = data[0].series.concat(data[i].series);
+          data[0].seriesgroup = data[0].seriesgroup.concat(data[i].seriesgroup);
+          data[0].sigma = data[0].sigma.concat(data[i].sigma);
+          data[0].weight = data[0].weight.concat(data[i].weight);
+        }
+      }
+    }
+    return data[0];
+  }
+
   getTile(coord, zoom, ownerDocument) {
 
     var canvas = this._getCanvas(coord, zoom, ownerDocument);
     let coordRec = this.getNormalizedCoord(coord, zoom);
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
+    let promises = [];
     if (coordRec) {
-      new PelagosClient().obtainTile(url + `${zoom},${coordRec.x},${coordRec.y}`).then(function (data) {
-        this.drawTile(canvas, zoom, data, coordRec, zoomDiff, this.filters);
-      }.bind(this));
+      let urls = this.calculateUrls(`${zoom},${coordRec.x},${coordRec.y}`, this.filters);
+
+      for(let i = 0, length = urls.length; i < length; i++){
+        promises.push(new PelagosClient().obtainTile(urls[i] , this.token));
+      }
     }
+    Promise.all(promises).then(function (data) {
+      let dataGroup = this.groupData(data);
+      this.drawTile(canvas, zoom, dataGroup, coordRec, zoomDiff, this.filters);
+
+    }.bind(this))
 
     return canvas;
   }
