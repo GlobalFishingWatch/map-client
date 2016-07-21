@@ -2,7 +2,7 @@ const initialState = {
   loading: false,
   layers: []
 };
-import {VESSEL_INIT, SHOW_LOADING, UPDATE_LAYER, GET_LAYERS} from "../constants";
+import {VESSEL_INIT, SHOW_LOADING, UPDATE_LAYER, SET_LAYERS} from "../constants";
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -10,8 +10,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, {loading: action.payload.data});
-    case GET_LAYERS:
-      return Object.assign({}, state, {layers: state.layers.concat(action.payload)});
+    case SET_LAYERS:
+      return Object.assign({}, state, {layers: action.payload});
     case UPDATE_LAYER:
       const layers = state.layers.slice(0);
       for (let i = 0, length = layers.length; i < length; i++) {

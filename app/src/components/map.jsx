@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import Draggable, {DraggableCore} from 'react-draggable'; // Both at the same time
+import Draggable, {DraggableCore} from 'react-draggable';
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
 import Header from "./header";

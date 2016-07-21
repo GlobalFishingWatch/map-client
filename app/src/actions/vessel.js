@@ -1,4 +1,4 @@
-import {VESSEL_INIT, SHOW_LOADING, GET_LAYERS, UPDATE_LAYER} from "../constants";
+import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, UPDATE_LAYER} from "../constants";
 
 const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
 
@@ -65,7 +65,7 @@ export function getLayers() {
     p1.then(
       function (layers) {
         dispatch({
-          type: GET_LAYERS,
+          type: SET_LAYERS,
           payload: layers
         });
       });
