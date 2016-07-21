@@ -5,7 +5,8 @@ import logoimg from "../../../assets/logos/gfw_logo_hor_second.png";
 
 
 class Header extends Component {
-  login() {
+  login(event) {
+    event.preventDefault();
     let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
     window.location = url;
   }

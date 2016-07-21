@@ -25,7 +25,11 @@ class Map extends Component {
       overlay: null,
       addedLayers: [],
       ite: tmlnMinDate,
-      lastCenter: null
+      lastCenter: null,
+      filters:{
+        startDate: tmlnMinDate,
+        endDate: tmlnMaxDate
+      }
     };
   }
 
@@ -173,7 +177,7 @@ class Map extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // this.props.initVesselLayer();
     this.props.getLayers();
   }
@@ -188,7 +192,7 @@ class Map extends Component {
       let promises = [];
 
       const addVessel = function (title, pos) {
-        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map);
+        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map, this.props.token, {'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()]});
         this.setState({overlay: canvasLayer});
         addedLayers[title] = canvasLayer;
       }
@@ -241,6 +245,24 @@ class Map extends Component {
     }
   }
 
+  isVisibleVessel(layers){
+    if(layers){
+      // debugger;
+      for (let i = 0, length = layers.length; i < length; i++) {
+        if(layers[i].title === 'VESSEL'){
+          return layers[i].visible;
+        }
+      }
+    }
+    return true;
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if(nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)){
+      nextState.overlay.applyFilters({'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()]});
+    }
+  }
+
   onMousemove(ev) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
@@ -262,16 +284,14 @@ class Map extends Component {
     this.props.updateLayer(layer);
   }
 
-  updateDates(ev) {
-    if (!!!ev.target.value) return;
-    if (ev.target.id == 'mindate') {
-      tmlnMinDate = new Date(ev.target.value).getTime();
-    } else if (ev.target.id == 'maxdate') {
-      tmlnMaxDate = new Date(ev.target.value).getTime();
+  updateDates(target, value) {
+    let filters = this.state.filters;
+    filters[target] =  new Date(value).getTime();
+    this.setState({filters: filters});
+    if(target === 'startDate'){
+        this.setState({ite: new Date(value).getTime()});
     }
-    this.setState({ite: tmlnMinDate});
     this.state.overlay.hide();
-    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
   }
 
   shareMap(ev) {
@@ -303,11 +323,11 @@ class Map extends Component {
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" defaultValue="2015-01-01" onChange={this.updateDates.bind(this)}/>
+              <input type="date" id="mindate" value={new Date(this.state.filters.startDate).toISOString().slice(0, 10)} onChange={(e) => this.updateDates('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" defaultValue="2015-12-31" onChange={this.updateDates.bind(this)}/>
+              <input type="date" id="maxdate" value={new Date(this.state.filters.endDate).toISOString().slice(0, 10)} onChange={(e) => this.updateDates('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>

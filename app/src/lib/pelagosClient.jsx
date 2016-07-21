@@ -6,7 +6,7 @@ class PelagosClient {
     this.MAGIC_COOKIE = 'tmtx';
   }
 
-  obtainTile(url) {
+  obtainTile(url, token) {
     return new Promise(function (resolve, reject) {
       this.request = null;
       if (typeof XMLHttpRequest != 'undefined') {
@@ -17,6 +17,7 @@ class PelagosClient {
       this.resolve = resolve;
       this.reject = reject;
       this.request.open('GET', url, true);
+      this.request.setRequestHeader("Authorization", `Bearer ${token}`);
       this.request.responseType = "arraybuffer";
       this.request.onload = this.handleData.bind(this);
       this.request.onerror = this.handleData.bind(this);
@@ -39,7 +40,8 @@ class PelagosClient {
        https://developer.mozilla.org/En/Using_XMLHttpRequest */
       var success = this.request.status == 200 || (this.isFileUri && this.request.status == 0);
       if (!success) {
-        this.reject('Could not load ' + this.url + ' due to HTTP status ' + this.status);
+        console.error('Error loading tile');
+        this.resolve(null);
         return;
       }
     }

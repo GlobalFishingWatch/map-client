@@ -33,6 +33,20 @@
       },
       {
         "args": {
+          "title": "VESSEL",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://storage.googleapis.com/vizzuality-staging/random/"
+            }
+          },
+          "visible": true,
+          "color": "green"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
           "title": "MPA - No Take",
           "source": {
             "type": "BinFormat",
