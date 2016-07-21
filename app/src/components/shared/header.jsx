@@ -10,7 +10,24 @@ class Header extends Component {
     window.location = url;
   }
 
+  logout() {
+    console.log('TODO: implement logout');
+  }
+
   render() {
+    let userLinks;
+    if (this.props.loggedUser) {
+      userLinks = (<li className={home.dropdown}>
+        <Link to="#">{this.props.loggedUser.displayName}</Link>
+        <ul className={home.dropdown_content}>
+          <li><Link to="#">Profile</Link></li>
+          <li><Link to="#" onClick={this.logout.bind(this)}>Logout</Link></li>
+        </ul>
+      </li>)
+    } else {
+      userLinks = <li><Link to="javascript:void(0);" onClick={this.login.bind(this)}>Login</Link></li>
+    }
+
     return <nav className={home.c_menu}>
       <Link to="/">
         <img src={logoimg}></img>
@@ -42,10 +59,7 @@ class Header extends Component {
             <li><Link to="/contact-us">Contact us</Link></li>
           </ul>
         </li>
-        <li>
-          {this.props.loggedUser && <Link to="#">{this.props.loggedUser.displayName}</Link>}
-          {!this.props.loggedUser && <Link to="#" onClick={this.login.bind(this)}>Login</Link>}
-        </li>
+        {userLinks}
       </ul>
     </nav>
   }
