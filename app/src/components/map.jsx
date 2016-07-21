@@ -5,7 +5,7 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import Draggable, {DraggableCore} from 'react-draggable';
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
-import Header from "./header";
+import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 1/1/2015
@@ -261,11 +261,6 @@ class Map extends Component {
     this.props.updateLayer(layer);
   }
 
-  login() {
-    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
-    window.location = url;
-  }
-
   updateDates(ev) {
     if (!!!ev.target.value) return;
     if (ev.target.id == 'mindate') {
@@ -297,8 +292,6 @@ class Map extends Component {
           <span id="zoom_up" onClick={this.changeZoomLevel.bind(this)}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel.bind(this)}>-</span>
         </div>
-        {this.props.loggedUser && <span className={map.loggedUser}>{this.props.loggedUser.displayName}</span>}
-        {!this.props.loggedUser && <button className={map.loginButton} onClick={this.login.bind(this)}>Login</button>}
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
             <button onClick={this.timelineStart.bind(this)} className={map.timeline}>

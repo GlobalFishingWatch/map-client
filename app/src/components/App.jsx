@@ -3,7 +3,7 @@
 import React, {Component} from "react";
 import Map from "../containers/map";
 
-const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.]*)(&[a-z=])?/g
+const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-\_]*)(&[a-z=])?/g
 
 class App extends Component {
 
@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <div>
         {this.props.loading && <div>Loading....</div>}
-        <Map></Map>
+        {this.props.children}
       </div>
     );
   }
