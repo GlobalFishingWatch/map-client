@@ -19,24 +19,24 @@ class Header extends Component {
         <li>
           <Link to="/map">Map</Link>
         </li>
-        <li>
+        <li className={home.dropdown}>
           <Link to="#">News</Link>
-          <ul>
+          <ul className={home.dropdown_content}>
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/articles-publications">Articles and Publications</Link></li>
           </ul>
         </li>
-        <li>
+        <li className={home.dropdown}>
           <Link to="#">How to</Link>
-          <ul>
+          <ul className={home.dropdown_content}>
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/tutorials">Tutorials</Link></li>
             <li><Link to="/definitions">Definitions</Link></li>
           </ul>
         </li>
-        <li>
+        <li className={home.dropdown}>
           <Link to="#">About</Link>
-          <ul>
+          <ul className={home.dropdown_content}>
             <li><Link to="/the-project">The project</Link></li>
             <li><Link to="/partners">Partners</Link></li>
             <li><Link to="/contact-us">Contact us</Link></li>
