@@ -1,4 +1,5 @@
 import React from "react";
+import "../../styles/components/c_footer.scss";
 import navfooter from "../../styles/components/c_nav_footer.scss";
 import logosfooter from "../../styles/components/c_logos_footer.scss";
 import logooceana from "../../assets/logos/oceana_logo.png";
