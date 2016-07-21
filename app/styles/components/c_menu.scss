@@ -1,6 +1,5 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
-
 .c_menu {
   img {
     height: 70px;
@@ -38,5 +37,30 @@
         cursor: pointer;
       }
     }
+  }
+  .dropdown {
+    display: inline-block;
+    position: relative;
+  }
+  .dropdown_content {
+    display: none;
+    position: absolute;
+    width: 200px;
+    li{
+      display: block;
+      padding-left: 0 !important;
+      margin-right: 0 !important;
+      line-height: 40px;
+      &:first-child{
+        margin-top: 10px;
+      }
+      &:last-child {
+        border-left: 0;
+      }
+    }
+  }
+
+  .dropdown:hover > ul {
+    display: block;
   }
 }
