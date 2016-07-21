@@ -8,8 +8,8 @@ import LayerPanel from "./layerPanel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
-let tmlnMinDate = 1420070400000; // 1/1/2015
-let tmlnMaxDate = 1451606400000; // 1/1/2016
+let tmlnMinDate = 1420070400000; // 01/01/2015
+let tmlnMaxDate = 1451516400000; // 31/12/2015
 const maxZoomLevel = 2;
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
