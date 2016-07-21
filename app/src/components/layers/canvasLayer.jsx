@@ -218,14 +218,25 @@ class CanvasLayer {
     if(data && data.length > 1){
       for(let i = 1, length = data.length; i < length; i++){
         if(data[i] !== null){
-          data[0].category = data[0].category.concat(data[i].category);
-          data[0].datetime = data[0].datetime.concat(data[i].datetime);
-          data[0].latitude = data[0].latitude.concat(data[i].latitude);
-          data[0].longitude = data[0].longitude.concat(data[i].longitude);
-          data[0].series = data[0].series.concat(data[i].series);
-          data[0].seriesgroup = data[0].seriesgroup.concat(data[i].seriesgroup);
-          data[0].sigma = data[0].sigma.concat(data[i].sigma);
-          data[0].weight = data[0].weight.concat(data[i].weight);
+          if(i === 1){
+            data[0].category = Array.prototype.slice.call(data[0].category).concat(Array.prototype.slice.call(data[i].category));
+            data[0].datetime =  Array.prototype.slice.call(data[0].datetime).concat(Array.prototype.slice.call(data[i].datetime));
+            data[0].latitude = Array.prototype.slice.call(data[0].latitude).concat(Array.prototype.slice.call(data[i].latitude));
+            data[0].longitude = Array.prototype.slice.call(data[0].longitude).concat(Array.prototype.slice.call(data[i].longitude));
+            data[0].series = Array.prototype.slice.call(data[0].series).concat(Array.prototype.slice.call(data[i].series));
+            data[0].seriesgroup = Array.prototype.slice.call(data[0].seriesgroup).concat(Array.prototype.slice.call(data[i].seriesgroup));
+            data[0].sigma = Array.prototype.slice.call(data[0].sigma).concat(Array.prototype.slice.call(data[i].sigma));
+            data[0].weight = Array.prototype.slice.call(data[0].weight).concat(Array.prototype.slice.call(data[i].weight));
+          } else {
+            data[0].category = data[0].category.concat(Array.prototype.slice.call(data[i].category));
+            data[0].datetime =  data[0].datetime.concat(Array.prototype.slice.call(data[i].datetime));
+            data[0].latitude = data[0].latitude.concat(Array.prototype.slice.call(data[i].latitude));
+            data[0].longitude = data[0].longitude.concat(Array.prototype.slice.call(data[i].longitude));
+            data[0].series = data[0].series.concat(Array.prototype.slice.call(data[i].series));
+            data[0].seriesgroup = data[0].seriesgroup.concat(Array.prototype.slice.call(data[i].seriesgroup));
+            data[0].sigma = data[0].sigma.concat(Array.prototype.slice.call(data[i].sigma));
+            data[0].weight = data[0].weight.concat(Array.prototype.slice.call(data[i].weight));
+          }
         }
       }
     }
