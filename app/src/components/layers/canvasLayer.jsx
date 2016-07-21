@@ -85,11 +85,11 @@ class CanvasLayer {
       : 2 || 1;
     for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
       const weight = data.weight[j];
-      if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
-      else if (weight > 0.05)
-        canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
-      else
+      // if (weight > 0.9)
+      //   canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
+      // else if (weight > 0.05)
+      //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
+      // else
         canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~data.x, ~~data.y, size, size);
       canvas.ctx.fillStyle = 'rgba(17,129,251,.2)';
@@ -148,11 +148,11 @@ class CanvasLayer {
         y: (pxcoord.y - tile_base_y) << zoom_diff
       }
       const weight = data.weight[i];
-      if (weight > 0.9)
-        canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
-      else if (weight > 0.05)
-        canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
-      else
+      // if (weight > 0.9)
+      //   canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
+      // else if (weight > 0.05)
+      //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
+      // else
         canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
