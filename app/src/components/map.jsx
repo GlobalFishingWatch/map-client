@@ -5,6 +5,7 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
+import FiltersPanel from "./filtersPanel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
@@ -28,7 +29,8 @@ class Map extends Component {
       lastCenter: null,
       filters:{
         startDate: tmlnMinDate,
-        endDate: tmlnMaxDate
+        endDate: tmlnMaxDate,
+        flag: ''
       }
     };
   }
@@ -244,7 +246,6 @@ class Map extends Component {
 
   isVisibleVessel(layers){
     if(layers){
-      // debugger;
       for (let i = 0, length = layers.length; i < length; i++) {
         if(layers[i].title === 'VESSEL'){
           return layers[i].visible;
@@ -256,7 +257,9 @@ class Map extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if(nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)){
-      nextState.overlay.applyFilters({'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()]});
+      nextState.overlay.applyFilters({
+        'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()],
+        'flag':this.state.filters.flag});
     }
   }
 
@@ -289,6 +292,19 @@ class Map extends Component {
         this.setState({ite: new Date(value).getTime()});
     }
     this.state.overlay.hide();
+  }
+  displayVesselsByCountrie(iso){
+    // if (iso.length > 2){
+    // switch to type INT
+      let filters = this.state.filters;
+      filters['flag'] = iso;
+      this.setState({filters: filters});
+      this.state.overlay.hide();
+    // }
+  }
+  login() {
+    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
+    window.location = url;
   }
 
   shareMap(ev) {
@@ -351,6 +367,7 @@ class Map extends Component {
           </div>
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
+        <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)} />
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>

@@ -37,8 +37,8 @@ class CanvasLayer {
   }
 
   applyFilters(filters) {
-    if (filters.timeline) {
-      this.filters.timeline = filters.timeline;
+    if (filters) {
+      this.filters = filters;
     }
     this.show();
   }
@@ -134,9 +134,13 @@ class CanvasLayer {
       ? 3
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
-      if (!!filters && filters.hasOwnProperty('timeline') &&
-        (data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i]) {
+      if (!!filters) {
+        if (filters.hasOwnProperty('timeline') && ((data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i])) {
         continue;
+        }
+        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (data.series[i]%210 != filters.flag)) {
+          continue;
+        } 
       }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       const pxcoord = new google.maps.Point(

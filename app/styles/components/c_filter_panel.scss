@@ -1,12 +1,12 @@
-.layerPanel {
+.filtersPanel {
   position: absolute;
-  top: 20px;
+  top: 190px;
   right: 20px;
   border: 1px solid #000;
   background: #fff;
   z-index: 9;
   padding: 20px;
-  ul {
-    list-style: none;
+  input {
+    display: block;
   }
 }
