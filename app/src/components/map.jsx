@@ -330,7 +330,7 @@ class Map extends Component {
     this.state.overlay.hide();
   }
 
-  displayVesselsByCountrie(iso) {
+  displayVesselsByCountry(iso) {
     // if (iso.length > 2){
     // switch to type INT
     let filters = this.state.filters;
@@ -407,8 +407,8 @@ class Map extends Component {
           </div>
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-        <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)}/>
-        <VesselPanel onChange={this.displayVesselsByCountrie.bind(this)}/>
+        <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
+        <VesselPanel onChange={this.displayVesselsByCountry.bind(this)}/>
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>
