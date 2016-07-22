@@ -10,7 +10,7 @@ export default function (props) {
       <p>LAT: <span id="vesselPanelLat"></span></p>
       <p>LONG: <span id="vesselPanelLong"></span></p>
       <p>WEIGHT: <span id="vesselPanelWeight"></span></p>
-      <p>See more: <span id="vesselPanelMore"</span></p>
+      <!--<p>See more: <span id="vesselPanelMore"</span></p>-->
     </div>
   );
 }
