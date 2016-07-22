@@ -6,7 +6,7 @@ import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
 import FiltersPanel from "./filtersPanel";
-import Header from "./header";
+import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
 let tmlnMinDate = 1420070400000; // 01/01/2015
@@ -29,7 +29,8 @@ class Map extends Component {
       lastCenter: null,
       filters:{
         startDate: tmlnMinDate,
-        endDate: tmlnMaxDate
+        endDate: tmlnMaxDate,
+        flag: ''
       }
     };
   }
@@ -245,7 +246,6 @@ class Map extends Component {
 
   isVisibleVessel(layers){
     if(layers){
-      // debugger;
       for (let i = 0, length = layers.length; i < length; i++) {
         if(layers[i].title === 'VESSEL'){
           return layers[i].visible;
@@ -257,7 +257,9 @@ class Map extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if(nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)){
-      nextState.overlay.applyFilters({'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()]});
+      nextState.overlay.applyFilters({
+        'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()],
+        'flag':this.state.filters.flag});
     }
   }
 
@@ -292,19 +294,18 @@ class Map extends Component {
     this.state.overlay.hide();
   }
   displayVesselsByCountrie(iso){
-    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
+    // if (iso.length > 2){
+    // switch to type INT
+      let filters = this.state.filters;
+      filters['flag'] = iso;
+      this.setState({filters: filters});
+      this.state.overlay.hide();
+    // }
   }
   login() {
     let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
     window.location = url;
   }
-
-  updateDates(ev) {
-    if (!!!ev.target.value) return;
-    if (ev.target.id == 'mindate') {
-      tmlnMinDate = new Date(ev.target.value).getTime();
-    } else if (ev.target.id == 'maxdate') {
-      tmlnMaxDate = new Date(ev.target.value).getTime();
 
   shareMap(ev) {
     alert('TODO: share map');
