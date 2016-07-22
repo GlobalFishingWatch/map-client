@@ -1,12 +1,53 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
 .layerPanel {
+  font-family: $font-family-primary;
   position: absolute;
-  top: 120px;
-  right: 20px;
-  border: 1px solid #000;
   background: #fff;
   z-index: 9;
   padding: 20px;
+  right: 0;
+  background-color: $color12;
+  padding: 0 30px;
+  font-size: $font-size-xsmall;
+  width: 320px;
+  max-width: 320px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  font-weight: $font-weight-bold;
+  line-height: 3;
   ul {
     list-style: none;
+    color: $color9;
+    text-transform: uppercase;
+    padding: 5px 0;
+    border-bottom: 1px solid $color5;
+  }
+  .react-sanfona {
+    color: $color9;
+    .react-sanfona-item {
+      h3 {
+        color: $color9;
+      }
+    }
+  }
+  .content_accordion{
+    color: $color9;
+    font-size: $font-size-xxsmall;
+    font-weight: font-weight-regular;
+    line-height: 2;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+  }
+}
+.title_accordion{
+  color: $color9;
+  font-weight: $font-weight-bold;
+  line-height: 3;
+  font-family: $font-family-primary;
+  font-size: $font-size-xsmall;
+  text-transform: uppercase;
+  border-bottom: 1px solid $color5;
+  &:last-child{
+    border-bottom: 0;
   }
 }
