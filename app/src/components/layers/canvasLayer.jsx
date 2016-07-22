@@ -18,7 +18,7 @@ class CanvasLayer {
   }
 
   hide() {
-    if(this.visible){
+    if (this.visible) {
       this.visible = false;
       this.map.overlayMapTypes.removeAt(this.position);
     }
@@ -26,7 +26,7 @@ class CanvasLayer {
 
   show() {
 
-    if(!this.visible){
+    if (!this.visible) {
       this.visible = true;
       this.map.overlayMapTypes.insertAt(this.position, this);
     }
@@ -90,18 +90,18 @@ class CanvasLayer {
       // else if (weight > 0.05)
       //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
       // else
-        canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
+      canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~data.x, ~~data.y, size, size);
       canvas.ctx.fillStyle = 'rgba(17,129,251,.2)';
-      canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+0, size +1, size +1);
-      canvas.ctx.fillRect(~~data.x[j]+1, ~~data.y[j]+1, size +1, size +1);
-      canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-0, size +1, size +1);
-      canvas.ctx.fillRect(~~data.x[j]-1, ~~data.y[j]-1, size +1, size +1);
+      canvas.ctx.fillRect(~~data.x[j] + 1, ~~data.y[j] + 0, size + 1, size + 1);
+      canvas.ctx.fillRect(~~data.x[j] + 1, ~~data.y[j] + 1, size + 1, size + 1);
+      canvas.ctx.fillRect(~~data.x[j] - 1, ~~data.y[j] - 0, size + 1, size + 1);
+      canvas.ctx.fillRect(~~data.x[j] - 1, ~~data.y[j] - 1, size + 1, size + 1);
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      canvas.ctx.fillRect(~~data.x[j]+2, ~~data.y[j]+1, size, size);
-      canvas.ctx.fillRect(~~data.x[j]+2, ~~data.y[j]+2, size, size);
-      canvas.ctx.fillRect(~~data.x[j]-2, ~~data.y[j]-1, size, size);
-      canvas.ctx.fillRect(~~data.x[j]-2, ~~data.y[j]-2, size, size);
+      canvas.ctx.fillRect(~~data.x[j] + 2, ~~data.y[j] + 1, size, size);
+      canvas.ctx.fillRect(~~data.x[j] + 2, ~~data.y[j] + 2, size, size);
+      canvas.ctx.fillRect(~~data.x[j] - 2, ~~data.y[j] - 1, size, size);
+      canvas.ctx.fillRect(~~data.x[j] - 2, ~~data.y[j] - 2, size, size);
     }
   }
 
@@ -116,7 +116,7 @@ class CanvasLayer {
   }
 
   drawTile(canvas, zoom, data, coord, zoom_diff, filters) {
-    if(!data){
+    if (!data) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
@@ -136,11 +136,11 @@ class CanvasLayer {
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (!!filters) {
         if (filters.hasOwnProperty('timeline') && ((data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i])) {
-        continue;
-        }
-        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (data.series[i]%210 != filters.flag)) {
           continue;
-        } 
+        }
+        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (data.series[i] % 210 != filters.flag)) {
+          continue;
+        }
       }
       let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
       const pxcoord = new google.maps.Point(
@@ -157,13 +157,13 @@ class CanvasLayer {
       // else if (weight > 0.05)
       //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
       // else
-        canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
+      canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
       canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      canvas.ctx.fillRect(~~xcoords.x+1, ~~xcoords.y+0, size +1, size +1);
-      canvas.ctx.fillRect(~~xcoords.x+1, ~~xcoords.y+1, size +1, size +1);
-      canvas.ctx.fillRect(~~xcoords.x-1, ~~xcoords.y-0, size +1, size +1);
-      canvas.ctx.fillRect(~~xcoords.x-1, ~~xcoords.y-1, size +1, size +1);
+      canvas.ctx.fillRect(~~xcoords.x + 1, ~~xcoords.y + 0, size + 1, size + 1);
+      canvas.ctx.fillRect(~~xcoords.x + 1, ~~xcoords.y + 1, size + 1, size + 1);
+      canvas.ctx.fillRect(~~xcoords.x - 1, ~~xcoords.y - 0, size + 1, size + 1);
+      canvas.ctx.fillRect(~~xcoords.x - 1, ~~xcoords.y - 1, size + 1, size + 1);
       if (parseData) {
         let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
         if (!this.data[`${zoom},${coord.x},${coord.y}`][time]) {
@@ -207,26 +207,26 @@ class CanvasLayer {
     return {x: x, y: y};
   }
 
-  calculateUrls(pos, filters){
+  calculateUrls(pos, filters) {
     let startYear = new Date(filters.timeline[0]).getFullYear();
     let endYear = new Date(filters.timeline[1]).getFullYear();
     let urls = [];
-    const firstDayYear = function(year){
+    const firstDayYear = function (year) {
       return `${year}-01-01T00:00:00.000Z`;
     }
-    for(let i = startYear; i <= endYear; i++){
-      urls.push(url+`${firstDayYear(i)},${firstDayYear(i+1)};${pos}`);
+    for (let i = startYear; i <= endYear; i++) {
+      urls.push(url + `${firstDayYear(i)},${firstDayYear(i + 1)};${pos}`);
     }
     return urls;
   }
 
-  groupData(data){
-    if(data && data.length > 1){
-      for(let i = 1, length = data.length; i < length; i++){
-        if(data[i] !== null){
-          if(i === 1){
+  groupData(data) {
+    if (data && data.length > 1) {
+      for (let i = 1, length = data.length; i < length; i++) {
+        if (data[i] !== null) {
+          if (i === 1) {
             data[0].category = Array.prototype.slice.call(data[0].category).concat(Array.prototype.slice.call(data[i].category));
-            data[0].datetime =  Array.prototype.slice.call(data[0].datetime).concat(Array.prototype.slice.call(data[i].datetime));
+            data[0].datetime = Array.prototype.slice.call(data[0].datetime).concat(Array.prototype.slice.call(data[i].datetime));
             data[0].latitude = Array.prototype.slice.call(data[0].latitude).concat(Array.prototype.slice.call(data[i].latitude));
             data[0].longitude = Array.prototype.slice.call(data[0].longitude).concat(Array.prototype.slice.call(data[i].longitude));
             data[0].series = Array.prototype.slice.call(data[0].series).concat(Array.prototype.slice.call(data[i].series));
@@ -235,7 +235,7 @@ class CanvasLayer {
             data[0].weight = Array.prototype.slice.call(data[0].weight).concat(Array.prototype.slice.call(data[i].weight));
           } else {
             data[0].category = data[0].category.concat(Array.prototype.slice.call(data[i].category));
-            data[0].datetime =  data[0].datetime.concat(Array.prototype.slice.call(data[i].datetime));
+            data[0].datetime = data[0].datetime.concat(Array.prototype.slice.call(data[i].datetime));
             data[0].latitude = data[0].latitude.concat(Array.prototype.slice.call(data[i].latitude));
             data[0].longitude = data[0].longitude.concat(Array.prototype.slice.call(data[i].longitude));
             data[0].series = data[0].series.concat(Array.prototype.slice.call(data[i].series));
@@ -258,8 +258,8 @@ class CanvasLayer {
     if (coordRec) {
       let urls = this.calculateUrls(`${zoom},${coordRec.x},${coordRec.y}`, this.filters);
 
-      for(let i = 0, length = urls.length; i < length; i++){
-        promises.push(new PelagosClient().obtainTile(urls[i] , this.token));
+      for (let i = 0, length = urls.length; i < length; i++) {
+        promises.push(new PelagosClient().obtainTile(urls[i], this.token));
       }
     }
     Promise.all(promises).then(function (data) {

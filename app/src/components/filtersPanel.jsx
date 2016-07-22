@@ -5,7 +5,7 @@ export default function (props) {
   return (
     <div className={filtersPanel.filtersPanel}>
       <label for="ISOfilter">Vessel flag (ISO code)
-      <input type="text" id="ISOfilter" onChange={(e) => props.onChange(e.target.value)} /></label>
+        <input type="text" id="ISOfilter" onChange={(e) => props.onChange(e.target.value)}/></label>
     </div>
   );
 }

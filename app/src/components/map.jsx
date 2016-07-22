@@ -28,7 +28,7 @@ class Map extends Component {
       addedLayers: [],
       ite: tmlnMinDate,
       lastCenter: null,
-      filters:{
+      filters: {
         startDate: tmlnMinDate,
         endDate: tmlnMaxDate,
         flag: ''
@@ -175,25 +175,25 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
-  getVesselDetails(tiles, tile, timestamp, i){
-      document.getElementById('vesselBox').style.display = 'block';
-      document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
-      document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
-      document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
-      document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
-      document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
-      if (typeof XMLHttpRequest != 'undefined') {
-        this.request = new XMLHttpRequest();
-      } else {
-        throw 'XMLHttpRequest is disabled';
-      }
-      this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
-      this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
-      this.request.responseType = "application/json";
-      this.request.onload = this.handleData.bind(this);
-      this.request.onerror = this.handleData.bind(this);
-      this.request.send(null);
+  getVesselDetails(tiles, tile, timestamp, i) {
+    document.getElementById('vesselBox').style.display = 'block';
+    document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
+    document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
+    document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
+    document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
+    document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
+    if (typeof XMLHttpRequest != 'undefined') {
+      this.request = new XMLHttpRequest();
+    } else {
+      throw 'XMLHttpRequest is disabled';
     }
+    this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
+    this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
+    this.request.responseType = "application/json";
+    this.request.onload = this.handleData.bind(this);
+    this.request.onerror = this.handleData.bind(this);
+    this.request.send(null);
+  }
 
   onClickMap(e) {
     const LAT = Math.round(e.latLng.lat() * 1) / 1;
@@ -279,10 +279,10 @@ class Map extends Component {
     }
   }
 
-  isVisibleVessel(layers){
-    if(layers){
+  isVisibleVessel(layers) {
+    if (layers) {
       for (let i = 0, length = layers.length; i < length; i++) {
-        if(layers[i].title === 'VESSEL'){
+        if (layers[i].title === 'VESSEL') {
           return layers[i].visible;
         }
       }
@@ -291,10 +291,11 @@ class Map extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if(nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)){
+    if (nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)) {
       nextState.overlay.applyFilters({
         'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()],
-        'flag':this.state.filters.flag});
+        'flag': this.state.filters.flag
+      });
     }
   }
 
@@ -321,22 +322,24 @@ class Map extends Component {
 
   updateDates(target, value) {
     let filters = this.state.filters;
-    filters[target] =  new Date(value).getTime();
+    filters[target] = new Date(value).getTime();
     this.setState({filters: filters});
-    if(target === 'startDate'){
-        this.setState({ite: new Date(value).getTime()});
+    if (target === 'startDate') {
+      this.setState({ite: new Date(value).getTime()});
     }
     this.state.overlay.hide();
   }
-  displayVesselsByCountrie(iso){
+
+  displayVesselsByCountrie(iso) {
     // if (iso.length > 2){
     // switch to type INT
-      let filters = this.state.filters;
-      filters['flag'] = iso;
-      this.setState({filters: filters});
-      this.state.overlay.hide();
+    let filters = this.state.filters;
+    filters['flag'] = iso;
+    this.setState({filters: filters});
+    this.state.overlay.hide();
     // }
   }
+
   login() {
     let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
     window.location = url;
@@ -371,11 +374,13 @@ class Map extends Component {
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" value={new Date(this.state.filters.startDate).toISOString().slice(0, 10)} onChange={(e) => this.updateDates('startDate', e.currentTarget.value)}/>
+              <input type="date" id="mindate" value={new Date(this.state.filters.startDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateDates('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" value={new Date(this.state.filters.endDate).toISOString().slice(0, 10)} onChange={(e) => this.updateDates('endDate', e.currentTarget.value)}/>
+              <input type="date" id="maxdate" value={new Date(this.state.filters.endDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateDates('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>
@@ -402,8 +407,8 @@ class Map extends Component {
           </div>
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-        <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)} />
-        <VesselPanel onChange={this.displayVesselsByCountrie.bind(this)} />
+        <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)}/>
+        <VesselPanel onChange={this.displayVesselsByCountrie.bind(this)}/>
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>

@@ -1,5 +1,6 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
+
 .c_menu {
   img {
     height: 70px;
@@ -50,12 +51,12 @@
     z-index: 99;
     padding-left: 15px;
     padding-right: 15px;
-    li{
+    li {
       display: block;
       padding-left: 0 !important;
       margin-right: 0 !important;
       line-height: 40px;
-      &:first-child{
+      &:first-child {
         margin-top: 10px;
       }
       &:last-child {

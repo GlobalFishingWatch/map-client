@@ -7,7 +7,7 @@ export function getLoggedUser() {
   return (dispatch, getState) => {
     let state = getState();
     let token = state.user.token;
-    if((!state.user || !state.user.token) && (sessionStorage.getItem(TOKEN_SESSION))){
+    if ((!state.user || !state.user.token) && (sessionStorage.getItem(TOKEN_SESSION))) {
       token = sessionStorage.getItem(TOKEN_SESSION);
       dispatch(setToken(token));
     }
