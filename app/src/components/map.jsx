@@ -6,6 +6,7 @@ import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
 import FiltersPanel from "./filtersPanel";
+import VesselPanel from "./vesselPanel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
@@ -140,7 +141,11 @@ class Map extends Component {
             positions.push({
               'lat': tiles[tile][timestamp].latitude[i],
               'lng': tiles[tile][timestamp].longitude[i]
-            })
+            });
+            document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
+            document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
+            document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
+            document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
           }
         }
       }
@@ -160,7 +165,7 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
-  onClick(e) {
+  onClickMap(e) {
     const LAT = Math.round(e.latLng.lat() * 1) / 1;
     const LNG = Math.round(e.latLng.lng() * 1) / 1;
     const tiles = this.state.overlay.data;
@@ -368,6 +373,7 @@ class Map extends Component {
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
         <FiltersPanel onChange={this.displayVesselsByCountrie.bind(this)} />
+        <VesselPanel onChange={this.displayVesselsByCountrie.bind(this)} />
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>
@@ -385,7 +391,7 @@ class Map extends Component {
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onIdle={this.onIdle.bind(this)}
-              onClick={this.onClick.bind(this)}
+              onClick={this.onClickMap.bind(this)}
               onMousemove={this.onMousemove.bind(this)}
               onZoomChanged={this.onZoomChanged.bind(this)}
               onDragstart={this.onDragStart.bind(this)}
