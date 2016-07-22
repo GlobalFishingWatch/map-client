@@ -19,14 +19,14 @@ export default function (props) {
   }
   return (
     <div className={layerPanel.layerPanel}>
-      <Accordion allowMultiple={false}>
+      <Accordion allowMultiple={false} activeItems={6}>
         {["Search Vessels", "BaseMap", "Layers"].map((item) => {
           return (
             <AccordionItem title={`${ item }`} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
                 {item === "Search Vessels" ? <p>Hola</p> : null}
                 {item === "BaseMap" ? <p>Hola</p> : null}
-                {item === "Layers" ? <p>{layers}</p>: null}
+                {item === "Layers" ? <ul>{layers}</ul>: null}
               </div>
             </AccordionItem>
           );
