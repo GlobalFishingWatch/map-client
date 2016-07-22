@@ -208,8 +208,8 @@ class CanvasLayer {
   }
 
   calculateUrls(pos, filters) {
-    let startYear = new Date(filters.timeline[0]).getFullYear();
-    let endYear = new Date(filters.timeline[1]).getFullYear();
+    let startYear = new Date(filters.timeline[0]).getUTCFullYear();
+    let endYear = new Date(filters.timeline[1]).getUTCFullYear();
     let urls = [];
     const firstDayYear = function (year) {
       return `${year}-01-01T00:00:00.000Z`;
