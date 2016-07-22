@@ -24,8 +24,8 @@ export default function (props) {
           return (
             <AccordionItem title={`${ item }`} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
-                {item === "Search Vessels" ? <p>Hola</p> : null}
-                {item === "BaseMap" ? <p>Hola</p> : null}
+                {item === "Search Vessels" ? <p>Hello</p> : null}
+                {item === "BaseMap" ? <p>Hello</p> : null}
                 {item === "Layers" ? <ul>{layers}</ul>: null}
               </div>
             </AccordionItem>
