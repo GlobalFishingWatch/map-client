@@ -46,6 +46,10 @@
     display: none;
     position: absolute;
     width: 200px;
+    background-color: $color5;
+    z-index: 99;
+    padding-left: 15px;
+    padding-right: 15px;
     li{
       display: block;
       padding-left: 0 !important;
