@@ -50,7 +50,7 @@ class Map extends Component {
   handlerMoved(tick, ev) {
     let target = null;
     const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
-    const ABSMAXMOMENT = new Date('01-01-2016').getTime() - new Date('01-01-2015').getTime();
+    const ABSMAXMOMENT = new Date(tmlnMaxDate).getTime() - new Date(tmlnMinDate).getTime();
     let PERCENTAGE = null;
     if (tick === 1) {
       target = document.getElementById('dateHandlerLeft');
@@ -60,13 +60,13 @@ class Map extends Component {
     PERCENTAGE = ((target.getBoundingClientRect().left - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth;
 
     if (target.id === 'dateHandlerLeft') {
-      tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date('01-01-2015').getTime();
+      tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
 
       // UPDATE VISIBLE TIMESTAMP
       TIMELINESCOPE.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
       TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
     } else if (target.id === 'dateHandlerRight') {
-      tmlnMaxDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date('01-01-2015').getTime();
+      tmlnMaxDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
       // UPDATE VISIBLE TIMESTAP
       TIMELINESCOPE.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
