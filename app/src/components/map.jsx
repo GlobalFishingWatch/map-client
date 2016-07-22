@@ -137,6 +137,7 @@ class Map extends Component {
     document.getElementById('vesselPanelImo').innerHTML = data.imo;
     document.getElementById('vesselPanelMmsi').innerHTML = data.mmsi;
     document.getElementById('vesselPanelName').innerHTML = data.vesselname;
+    document.getElementById('vesselPanelMarineTraffic').innerHTML = '<a href="http://www.marinetraffic.com/en/ais/details/ships/mmsi:'+ data.mmsi + '" target="_blank">here</a>';
   }
 
   findSeriesPositions(series) {
