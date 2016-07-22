@@ -173,7 +173,8 @@ class CanvasLayer {
             weight: [],
             x: [],
             y: [],
-            series: []
+            series: [],
+            seriesgroup: []
           }
         }
         let timestamp = this.data[`${zoom},${coord.x},${coord.y}`][time];
@@ -183,6 +184,7 @@ class CanvasLayer {
         timestamp.x.push(~~xcoords.x);
         timestamp.y.push(~~xcoords.y);
         timestamp.series.push(data.series[i]);
+        timestamp.seriesgroup.push(data.seriesgroup[i]);
 
       }
     }

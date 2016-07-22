@@ -6,9 +6,11 @@ export default function (props) {
     <div className={vesselPanel.vesselPanel}>
       Click on a vessel:
       <p>SERIES: <span id="vesselPanelSeries"></span></p>
+      <p>SERIESGROUP: <span id="vesselPanelSeriesgroup"></span></p>
       <p>LAT: <span id="vesselPanelLat"></span></p>
       <p>LONG: <span id="vesselPanelLong"></span></p>
       <p>WEIGHT: <span id="vesselPanelWeight"></span></p>
+      <p>See more: <span id="vesselPanelMore"</span></p>
     </div>
   );
 }
