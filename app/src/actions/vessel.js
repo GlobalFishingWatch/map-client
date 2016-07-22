@@ -39,7 +39,7 @@ export function getLayers() {
     let state = getState();
 
     let path = '/workspace.json';
-    if(state.user.token){
+    if (state.user.token) {
       path = '/workspace-logged.json';
     }
     fetch(path, {
@@ -48,7 +48,7 @@ export function getLayers() {
         'Authorization': 'Bearer ' + state.user.token
       }
     }).then((response) => {
-      if(response.ok){
+      if (response.ok) {
         return response.json();
       }
     }).then((data) => {
