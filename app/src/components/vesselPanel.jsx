@@ -3,7 +3,7 @@ import vesselPanel from "../../styles/components/c_vessel_panel.scss";
 
 export default function (props) {
   return (
-    <div className={vesselPanel.vesselPanel}>
+    <div className={vesselPanel.vesselPanel} id="vesselBox">
       Click on a vessel:
       <p>SERIES: <span id="vesselPanelSeries"></span></p>
       <p>SERIESGROUP: <span id="vesselPanelSeriesgroup"></span></p>

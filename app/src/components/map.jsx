@@ -152,6 +152,7 @@ class Map extends Component {
               'lat': tiles[tile][timestamp].latitude[i],
               'lng': tiles[tile][timestamp].longitude[i]
             });
+            document.getElementById('vesselBox').style.display = 'block';
             document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
             document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
             document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
