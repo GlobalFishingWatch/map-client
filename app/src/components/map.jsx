@@ -137,12 +137,12 @@ class Map extends Component {
     document.getElementById('vesselPanelImo').innerHTML = data.imo;
     document.getElementById('vesselPanelMmsi').innerHTML = data.mmsi;
     document.getElementById('vesselPanelName').innerHTML = data.vesselname;
-    
   }
 
   findSeriesPositions(series) {
     const tiles = this.state.overlay.data;
     let positions = [];
+    let detailsDrawn = false;
 
     for (var tile in tiles) {
       for (var timestamp in tiles[tile]) {
@@ -152,24 +152,11 @@ class Map extends Component {
               'lat': tiles[tile][timestamp].latitude[i],
               'lng': tiles[tile][timestamp].longitude[i]
             });
-            document.getElementById('vesselBox').style.display = 'block';
-            document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
-            document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
-            document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
-            document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
-            document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
-            if (typeof XMLHttpRequest != 'undefined') {
-              this.request = new XMLHttpRequest();
-            } else {
-              throw 'XMLHttpRequest is disabled';
+            if (!detailsDrawn) {
+              detailsDrawn = true;
+              this.getVesselDetails(tiles, tile, timestamp, i);
             }
-            this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup='+tiles[tile][timestamp].seriesgroup[i]+'/info', true);
-            this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
-            this.request.responseType = "application/json";
-            this.request.onload = this.handleData.bind(this);
-            this.request.onerror = this.handleData.bind(this);
-            this.request.send(null);
-                }
+          }
         }
       }
     }
@@ -187,6 +174,26 @@ class Map extends Component {
     })
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
+
+  getVesselDetails(tiles, tile, timestamp, i){
+      document.getElementById('vesselBox').style.display = 'block';
+      document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
+      document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
+      document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
+      document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
+      document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
+      if (typeof XMLHttpRequest != 'undefined') {
+        this.request = new XMLHttpRequest();
+      } else {
+        throw 'XMLHttpRequest is disabled';
+      }
+      this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
+      this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
+      this.request.responseType = "application/json";
+      this.request.onload = this.handleData.bind(this);
+      this.request.onerror = this.handleData.bind(this);
+      this.request.send(null);
+    }
 
   onClickMap(e) {
     const LAT = Math.round(e.latLng.lat() * 1) / 1;
