@@ -117,12 +117,13 @@ class CanvasLayer {
 
   drawStaticTile(canvas, zoom, data, coord, zoom_diff) {
     let filters = this.filters;
-    let tileID = this.getTileID(coord.x, coord.y, zoom);
 
     if (!data) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
+    
+    let tileID = this.getTileID(coord.x, coord.y, zoom);
     let parseData = false;
     if (!this.data[tileID]) {
       parseData = true;
@@ -137,7 +138,7 @@ class CanvasLayer {
       ? 3
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
-      
+
       if (!!filters) {
         if (filters.hasOwnProperty('timeline') && ((data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i])) {
           continue;
