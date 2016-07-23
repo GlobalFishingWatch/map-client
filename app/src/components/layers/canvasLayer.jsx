@@ -8,10 +8,8 @@ class CanvasLayer {
     this.map = map;
     this.data = {};
     this.position = position;
-    this.minDate = Date.now();
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
-    // this.map.overlayMapTypes.insertAt(this.position, this);
     this.visible = false;
     this.filters = filters || {};
     this.token = token;
@@ -25,11 +23,14 @@ class CanvasLayer {
   }
 
   show() {
-
     if (!this.visible) {
       this.visible = true;
       this.map.overlayMapTypes.insertAt(this.position, this);
     }
+  }
+
+  getTileID(x, y, z) {
+    return (x * 1000000000) + (y * 100) + z
   }
 
   isVisible() {
@@ -53,7 +54,7 @@ class CanvasLayer {
     canvas.style.border = 'none';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
-    canvas.id = `${zoom},${coord.x},${coord.y}`;
+    canvas.id = this.getTileID(coord.x, coord.y, zoom);
 
     // prepare canvas and context sizes
     var ctx = canvas.getContext('2d');
@@ -64,39 +65,38 @@ class CanvasLayer {
     return canvas;
   }
 
-  drawFrame(pos, zoom) {
+  drawFrame(pos) {
     let canvasKeys = Object.keys(this.data);
     for (let i = 0, length = canvasKeys.length; i < length; i++) {
       if (this.data[canvasKeys[i]] && this.data[canvasKeys[i]][pos]) {
         let data = this.data[canvasKeys[i]][pos];
-        this.drawTile2Canvas(canvasKeys[i], data, false);
+        this.drawDynamicTile(canvasKeys[i], data, false);
       }
     }
   }
 
-  drawTile2Canvas(idCanvas, data, accumulative) {
+  /**
+   * Draws tiles during playback mode
+   *
+   * @param idCanvas
+   * @param data
+   * @param accumulative
+   */
+  drawDynamicTile(idCanvas, data, accumulative) {
     let canvas = document.getElementById(idCanvas);
     if (!canvas) return;
+    let filters = this.filters;
     if (!accumulative) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-    let size = this.map.getZoom() > 6
-      ? 3
-      : 2 || 1;
+    let size = this.map.getZoom() > 6 ? 3 : 2 || 1;
     for (let j = 0, lengthData = data.latitude.length; j < lengthData; j++) {
-      const weight = data.weight[j];
-      // if (weight > 0.9)
-      //   canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
-      // else if (weight > 0.05)
-      //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
-      // else
-      canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
-      canvas.ctx.fillRect(~~data.x, ~~data.y, size, size);
-      canvas.ctx.fillStyle = 'rgba(17,129,251,.2)';
-      canvas.ctx.fillRect(~~data.x[j] + 1, ~~data.y[j] + 0, size + 1, size + 1);
-      canvas.ctx.fillRect(~~data.x[j] + 1, ~~data.y[j] + 1, size + 1, size + 1);
-      canvas.ctx.fillRect(~~data.x[j] - 1, ~~data.y[j] - 0, size + 1, size + 1);
-      canvas.ctx.fillRect(~~data.x[j] - 1, ~~data.y[j] - 1, size + 1, size + 1);
+      if (!!filters) {
+        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (data.series[j] % 210 != filters.flag)) {
+          continue;
+        }
+      }
+      this.drawVesselPoint(canvas, data.x[j], data.y[j], size, data.weight[j]);
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
       canvas.ctx.fillRect(~~data.x[j] + 2, ~~data.y[j] + 1, size, size);
       canvas.ctx.fillRect(~~data.x[j] + 2, ~~data.y[j] + 2, size, size);
@@ -110,20 +110,23 @@ class CanvasLayer {
     for (let i = 0, length = canvasKeys.length; i < length; i++) {
       let times = Object.keys(this.data[canvasKeys[i]]);
       for (let j = 0, lengthTime = times.length; j < lengthTime; j++) {
-        this.drawTile2Canvas(canvasKeys[i], this.data[canvasKeys[i]][times[j]], true);
+        this.drawDynamicTile(canvasKeys[i], this.data[canvasKeys[i]][times[j]], true);
       }
     }
   }
 
-  drawTile(canvas, zoom, data, coord, zoom_diff, filters) {
+  drawStaticTile(canvas, zoom, data, coord, zoom_diff) {
+    let filters = this.filters;
+    let tileID = this.getTileID(coord.x, coord.y, zoom);
+
     if (!data) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
     let parseData = false;
-    if (!this.data[`${zoom},${coord.x},${coord.y}`]) {
+    if (!this.data[tileID]) {
       parseData = true;
-      this.data[`${zoom},${coord.x},${coord.y}`] = {};
+      this.data[tileID] = {};
     }
     const overlayProjection = this.map.getProjection();
     const scale = 1 << zoom;
@@ -134,6 +137,7 @@ class CanvasLayer {
       ? 3
       : 2 || 1;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
+      
       if (!!filters) {
         if (filters.hasOwnProperty('timeline') && ((data.datetime[i] < filters.timeline[0] || data.datetime[i] > filters.timeline[1]) || !data.weight[i])) {
           continue;
@@ -151,71 +155,82 @@ class CanvasLayer {
         x: (pxcoord.x - tile_base_x) << zoom_diff,
         y: (pxcoord.y - tile_base_y) << zoom_diff
       }
-      const weight = data.weight[i];
-      // if (weight > 0.9)
-      //   canvas.ctx.fillStyle = 'rgba(17,129,251,1)';
-      // else if (weight > 0.05)
-      //   canvas.ctx.fillStyle = 'gba(47,133,163,.7)';
-      // else
-      canvas.ctx.fillStyle = 'rgba(120,120,242,.5)';
-      canvas.ctx.fillRect(~~xcoords.x, ~~xcoords.y, size, size);
-      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      canvas.ctx.fillRect(~~xcoords.x + 1, ~~xcoords.y + 0, size + 1, size + 1);
-      canvas.ctx.fillRect(~~xcoords.x + 1, ~~xcoords.y + 1, size + 1, size + 1);
-      canvas.ctx.fillRect(~~xcoords.x - 1, ~~xcoords.y - 0, size + 1, size + 1);
-      canvas.ctx.fillRect(~~xcoords.x - 1, ~~xcoords.y - 1, size + 1, size + 1);
+      this.drawVesselPoint(canvas, xcoords.x, xcoords.y, size, data.weight[i]);
       if (parseData) {
-        let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
-        if (!this.data[`${zoom},${coord.x},${coord.y}`][time]) {
-          this.data[`${zoom},${coord.x},${coord.y}`][time] = {
-            latitude: [],
-            longitude: [],
-            weight: [],
-            x: [],
-            y: [],
-            series: [],
-            seriesgroup: []
-          }
-        }
-        let timestamp = this.data[`${zoom},${coord.x},${coord.y}`][time];
-        timestamp.latitude.push(data.latitude[i]);
-        timestamp.longitude.push(data.longitude[i]);
-        timestamp.weight.push(data.weight[i]);
-        timestamp.x.push(~~xcoords.x);
-        timestamp.y.push(~~xcoords.y);
-        timestamp.series.push(data.series[i]);
-        timestamp.seriesgroup.push(data.seriesgroup[i]);
-
+        this.extractData(data, i,  xcoords, tileID);
       }
+    }
+  }
+
+  extractData(data, i, coords, tileID) {
+    let time = data.datetime[i] - (data.datetime[i] % DAY_MS);
+    if (!this.data[tileID][time]) {
+      this.data[tileID][time] = {
+        latitude: [],
+        longitude: [],
+        weight: [],
+        x: [],
+        y: [],
+        series: [],
+        seriesgroup: []
+      }
+    }
+    let timestamp = this.data[tileID][time];
+    timestamp.latitude.push(data.latitude[i]);
+    timestamp.longitude.push(data.longitude[i]);
+    timestamp.weight.push(data.weight[i]);
+    timestamp.x.push(~~coords.x);
+    timestamp.y.push(~~coords.y);
+    timestamp.series.push(data.series[i]);
+    timestamp.seriesgroup.push(data.seriesgroup[i]);
+    return {time: time, timestamp: timestamp};
+  }
+
+  drawVesselPoint(canvas, x, y, size, weight) {
+    let calculatedWeight = Math.min(weight / 5, 1);
+    let roundedX = ~~x;
+    let roundedY = ~~y;
+
+    canvas.ctx.fillStyle = 'rgba(17,129,251,' + calculatedWeight + ')';
+    canvas.ctx.fillRect(roundedX, roundedY, size, size);
+
+    if (calculatedWeight > 0.5) {
+      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      canvas.ctx.fillRect(roundedX + 1, roundedY, size + 1, size + 1);
+      canvas.ctx.fillRect(roundedX + 1, roundedY + 1, size + 1, size + 1);
+      canvas.ctx.fillRect(roundedX - 1, roundedY, size + 1, size + 1);
+      canvas.ctx.fillRect(roundedX - 1, roundedY - 1, size + 1, size + 1);
     }
   }
 
   getNormalizedCoord(coord, zoom) {
     let y = coord.y;
     let x = coord.x;
-    // tile range in one direction range is dependent on zoom level
-    // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
     const tileRange = 1 << zoom;
-    // don't repeat across y-axis (vertically)
     if (y < 0 || y >= tileRange) {
       return null;
     }
-    // repeat across x-axis
     if (x < 0 || x >= tileRange) {
       return null;
     }
     return {x: x, y: y};
   }
 
-  calculateUrls(pos, filters) {
+  /**
+   * Generates the URLs to load vessel track data
+   *
+   * @param zoom
+   * @param x
+   * @param y
+   * @param filters
+   * @returns {Array}
+   */
+  getTemporalTileURLs(zoom, x, y, filters) {
     let startYear = new Date(filters.timeline[0]).getUTCFullYear();
     let endYear = new Date(filters.timeline[1]).getUTCFullYear();
     let urls = [];
-    const firstDayYear = function (year) {
-      return `${year}-01-01T00:00:00.000Z`;
-    }
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(url + `${firstDayYear(i)},${firstDayYear(i + 1)};${pos}`);
+      urls.push(`${url}${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;${zoom},${x},${y}`);
     }
     return urls;
   }
@@ -250,22 +265,19 @@ class CanvasLayer {
   }
 
   getTile(coord, zoom, ownerDocument) {
-
     var canvas = this._getCanvas(coord, zoom, ownerDocument);
-    let coordRec = this.getNormalizedCoord(coord, zoom);
+    let normalizedCoord = this.getNormalizedCoord(coord, zoom);
     var zoomDiff = zoom + 8 - Math.min(zoom + 8, 16);
     let promises = [];
-    if (coordRec) {
-      let urls = this.calculateUrls(`${zoom},${coordRec.x},${coordRec.y}`, this.filters);
-
+    if (normalizedCoord) {
+      let urls = this.getTemporalTileURLs(zoom, normalizedCoord.x, normalizedCoord.y, this.filters);
       for (let i = 0, length = urls.length; i < length; i++) {
         promises.push(new PelagosClient().obtainTile(urls[i], this.token));
       }
     }
     Promise.all(promises).then(function (data) {
       let dataGroup = this.groupData(data);
-      this.drawTile(canvas, zoom, dataGroup, coordRec, zoomDiff, this.filters);
-
+      this.drawStaticTile(canvas, zoom, dataGroup, normalizedCoord, zoomDiff);
     }.bind(this))
 
     return canvas;

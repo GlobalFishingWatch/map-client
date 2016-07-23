@@ -2,6 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
+import {TIMELINE_MIN_DATE, TIMELINE_MAX_DATE} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvasLayer";
 import LayerPanel from "./layerPanel";
@@ -10,9 +11,8 @@ import VesselPanel from "./vesselPanel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
-let tmlnMinDate = 1420070400000; // 01/01/2015
-let tmlnMaxDate = 1451516400000; // 31/12/2015
-const maxZoomLevel = 2;
+const minZoomLevel = 2;
+const maxZoomLevel = 12;
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
   new google.maps.LatLng(-85, -180),
@@ -26,118 +26,133 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      ite: tmlnMinDate,
+      currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
       filters: {
-        startDate: tmlnMinDate,
-        endDate: tmlnMaxDate,
+        startDate: TIMELINE_MIN_DATE,
+        endDate: TIMELINE_MAX_DATE,
         flag: ''
       }
     };
   }
 
   onZoomChanged() {
-    const ZOOM = this.refs.map.props.map.getZoom();
-    if (ZOOM < maxZoomLevel) {
+    const zoom = this.refs.map.props.map.getZoom();
+    if (zoom < minZoomLevel) {
+      this.refs.map.props.map.setZoom(minZoomLevel);
+    }
+    if (zoom > maxZoomLevel) {
       this.refs.map.props.map.setZoom(maxZoomLevel);
     }
-    this.setState({zoom: ZOOM});
+    this.setState({zoom: zoom});
     this.state.overlay.resetData();
   }
 
-  moveTimeline(e) {
+  moveTimeline(event) {
     this.timelinerange = document.getElementById('timeline_handler');
-    this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
+    this.playbackStart(this.timelinerange.style.width = (event.clientX - 60) + 'px');
   }
 
-  handlerMoved(tick, ev) {
+  handlerMoved(tick, event) {
     let target = null;
-    const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
-    const ABSMAXMOMENT = new Date(tmlnMaxDate).getTime() - new Date(tmlnMinDate).getTime();
-    let PERCENTAGE = null;
+    let startDate = this.state.filters.startDate;
+    let endDate = this.state.filters.endDate;
+
+    const timelineScope = document.getElementById('timeline_handler').parentElement;
+    const absMaxMoment = new Date(endDate).getTime() - new Date(startDate).getTime();
     if (tick === 1) {
       target = document.getElementById('dateHandlerLeft');
     } else {
       target = document.getElementById('dateHandlerRight');
     }
-    PERCENTAGE = ((target.getBoundingClientRect().left - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth;
+    let percentage = ((target.getBoundingClientRect().left - timelineScope.getBoundingClientRect().left) * 100) / timelineScope.offsetWidth;
 
     if (target.id === 'dateHandlerLeft') {
-      tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
+      startDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
 
       // UPDATE VISIBLE TIMESTAMP
-      TIMELINESCOPE.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
-      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
+      timelineScope.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
+      timelineScope.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
     } else if (target.id === 'dateHandlerRight') {
-      tmlnMaxDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
-      // UPDATE VISIBLE TIMESTAP
-      TIMELINESCOPE.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
+      endDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
+      // UPDATE VISIBLE TIMESTAMP
+      timelineScope.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
     // UPDATE DATES
-    this.setState({ite: tmlnMinDate});
+    this.setState({currentTimestamp: startDate});
     this.state.overlay.hide();
-    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
-    document.getElementById('mindate').value = new Date(tmlnMinDate).toISOString().slice(0, 10);
-    document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
+    this.state.overlay.applyFilters({'timeline': [startDate, endDate]});
+    document.getElementById('mindate').value = new Date(startDate).toISOString().slice(0, 10);
+    document.getElementById('maxdate').value = new Date(endDate).toISOString().slice(0, 10);
   }
 
-  timelineStart() {
+  /**
+   * Executed when the user presses the "Play" button
+   */
+  playbackStart() {
     this.timelinerange = document.getElementById('timeline_handler');
-    let data = this.props.vessel.data;
 
     this.setState({
       running: !!!this.state.running
     });
     requestAnimationFrame(function () {
-      this.animateMapData(this.state.ite || tmlnMinDate, mDay);
+      this.animateMapData(this.state.currentTimestamp || this.stats.filters.startDate, mDay);
     }.bind(this));
   }
 
-  animateMapData(ite) {
+  animateMapData(currentTimestamp) {
     if (!this.state.running) return;
+    if (!this.state.overlay) return;
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null)
     }
 
-    ite = ite || 0;
-    if (ite > tmlnMaxDate) {
+    currentTimestamp = currentTimestamp || 0;
+    let startDate = this.state.filters.startDate;
+    let endDate = this.state.filters.endDate;
+
+    if (currentTimestamp > endDate) {
       this.setState({
         running: !!!this.state.running,
       });
       this.timelineStop();
       return;
     }
-    let width = ((ite - tmlnMinDate) / mDay) / ((tmlnMaxDate - tmlnMinDate) / mDay) * 100;
+    let width = (currentTimestamp - startDate) / (endDate - startDate) * 100;
     this.setState({
       widthRange: width + '%',
-      ite: ite
+      currentTimestamp: currentTimestamp
     });
-    this.state.overlay.drawFrame(ite, (this.state.zoom > 6
-      ? 3
-      : 2));
+
+    let zoom = this.state.zoom > 6 ? 3 : 2;
+    this.state.overlay.drawFrame(currentTimestamp, zoom, this.state.filters);
     let animationID = requestAnimationFrame(function () {
-      this.animateMapData(ite + mDay);
+      this.animateMapData(currentTimestamp + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
   }
 
   timelineStop() {
     cancelAnimationFrame(this.state.animationID);
+    this.state.overlay.applyFilters({
+      'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()],
+      'flag': this.state.filters.flag
+    });
     this.state.overlay.regenerate();
-    this.setState({running: null, ite: tmlnMinDate, widthRange: 0});
+    this.setState({running: null, currentTimestamp: this.state.filters.startDate, widthRange: 0});
   }
 
   onIdle() {
   }
 
-  handleData(data) {
+  handleVesselInfo(data) {
     data = JSON.parse(data.target.response);
     document.getElementById('vesselPanelCallsign').innerHTML = data.callsign;
     document.getElementById('vesselPanelFlag').innerHTML = data.flag;
     document.getElementById('vesselPanelImo').innerHTML = data.imo;
     document.getElementById('vesselPanelMmsi').innerHTML = data.mmsi;
     document.getElementById('vesselPanelName').innerHTML = data.vesselname;
-    document.getElementById('vesselPanelMarineTraffic').innerHTML = '<a href="http://www.marinetraffic.com/en/ais/details/ships/mmsi:'+ data.mmsi + '" target="_blank">here</a>';
+    document.getElementById('vesselPanelMarineTraffic').innerHTML = '<a href="http://www.marinetraffic.com/en/ais/details/ships/mmsi:' + data.mmsi + '" target="_blank">here</a>';
   }
 
   findSeriesPositions(series) {
@@ -191,14 +206,14 @@ class Map extends Component {
     this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
     this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
     this.request.responseType = "application/json";
-    this.request.onload = this.handleData.bind(this);
-    this.request.onerror = this.handleData.bind(this);
+    this.request.onload = this.handleVesselInfo.bind(this);
+    this.request.onerror = this.handleVesselInfo.bind(this);
     this.request.send(null);
   }
 
-  onClickMap(e) {
-    const LAT = Math.round(e.latLng.lat() * 1) / 1;
-    const LNG = Math.round(e.latLng.lng() * 1) / 1;
+  onClickMap(event) {
+    const LAT = Math.round(event.latLng.lat() * 1) / 1;
+    const LNG = Math.round(event.latLng.lng() * 1) / 1;
     const tiles = this.state.overlay.data;
     for (var tile in tiles) {
       for (var timestamp in tiles[tile]) {
@@ -213,7 +228,6 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    // this.props.initVesselLayer();
     this.props.getLayers();
   }
 
@@ -300,15 +314,15 @@ class Map extends Component {
     }
   }
 
-  onMousemove(ev) {
+  onMouseMove(event) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
 
-  onDragStart(ev) {
+  onDragStart(event) {
     if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
   }
 
-  onDragEnd(ev) {
+  onDragEnd(event) {
     if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
       this.state.lastCenter = this.refs.map.props.map.getCenter();
       return;
@@ -321,12 +335,32 @@ class Map extends Component {
     this.props.updateLayer(layer);
   }
 
+  /**
+   * Triggered when the user updates the start or end dates of the slider/datepickers
+   *
+   * @param target startDate/endDate
+   * @param value
+   */
   updateDates(target, value) {
     let filters = this.state.filters;
-    filters[target] = new Date(value).getTime();
+    let newDateValue = new Date(value).getTime();
+    let currentTimestamp = this.state.currentTimestamp
+
+    if (target === 'startDate' && newDateValue >= filters['endDate']) {
+      return;
+    }
+    if (target === 'endDate' && newDateValue <= filters['startDate']) {
+      return;
+    }
+
+    filters[target] = newDateValue
     this.setState({filters: filters});
-    if (target === 'startDate') {
-      this.setState({ite: new Date(value).getTime()});
+
+    if (target === 'startDate' && currentTimestamp < newDateValue) {
+      this.setState({currentTimestamp: newDateValue});
+    }
+    if (target === 'endDate' && currentTimestamp > newDateValue) {
+      this.setState({currentTimestamp: newDateValue});
     }
     this.state.overlay.hide();
   }
@@ -341,12 +375,7 @@ class Map extends Component {
     // }
   }
 
-  login() {
-    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
-    window.location = url;
-  }
-
-  shareMap(ev) {
+  shareMap(event) {
     alert('TODO: share map');
   }
 
@@ -367,7 +396,7 @@ class Map extends Component {
         </div>
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
-            <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+            <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
               {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
             </button>
             <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
@@ -392,7 +421,7 @@ class Map extends Component {
               <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
             </Draggable>
             <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-              {new Date(this.state.ite).toISOString().slice(0, 10)}
+              {new Date(this.state.currentTimestamp).toISOString().slice(0, 10)}
             </span>
 
             <Draggable
@@ -425,10 +454,10 @@ class Map extends Component {
                 mapTypeControl: false,
                 zoomControl: false
               }}
-              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+              defaultMapTypeId={google.maps.MapTypeId.SATELLcurrentTimestamp}
               onIdle={this.onIdle.bind(this)}
               onClick={this.onClickMap.bind(this)}
-              onMousemove={this.onMousemove.bind(this)}
+              onMousemove={this.onMouseMove.bind(this)}
               onZoomChanged={this.onZoomChanged.bind(this)}
               onDragstart={this.onDragStart.bind(this)}
               onDragend={this.onDragEnd.bind(this)}>
