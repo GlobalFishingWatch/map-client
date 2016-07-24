@@ -1,0 +1,12 @@
+.controlPanel {
+  position: absolute;
+  top: 256px;
+  right: 20px;
+  border: 1px solid #000;
+  background: #fff;
+  z-index: 9;
+  padding: 20px;
+  input {
+    display: block;
+  }
+}

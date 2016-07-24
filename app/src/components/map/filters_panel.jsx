@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import filtersPanel from "../../styles/components/c_filter_panel.scss";
-import {FLAGS} from "../constants";
+import filtersPanel from "../../../styles/components/c_filter_panel.scss";
+import {FLAGS} from "../../constants";
 
 export default function (props) {
   let countries = Object.keys(FLAGS).map(function(index) {

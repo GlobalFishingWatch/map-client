@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import vesselPanel from "../../styles/components/c_vessel_panel.scss";
+import vesselPanel from "../../../styles/components/c_vessel_panel.scss";
 
 export default function (props) {
   return (

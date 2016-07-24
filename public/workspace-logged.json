@@ -55,7 +55,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": true,
+          "visible": false,
           "color": "#da0000"
         },
         "type": "CartoDBAnimation"
@@ -70,7 +70,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
-          "visible": true,
+          "visible": false,
           "color": "#c45e00"
         },
         "type": "CartoDBAnimation"
@@ -84,7 +84,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "blue"
         },
         "type": "CartoDBAnimation"
@@ -98,7 +98,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "blue"
         },
         "type": "CartoDBAnimation"
@@ -112,7 +112,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "blue"
         },
         "type": "CartoDBAnimation"

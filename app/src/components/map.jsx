@@ -2,12 +2,13 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import {TIMELINE_MIN_DATE, TIMELINE_MAX_DATE} from "../constants";
+import {TIMELINE_MIN_DATE, TIMELINE_MAX_DATE, TIMELINE_STEP} from "../constants";
 import Draggable from "react-draggable";
-import CanvasLayer from "./layers/canvasLayer";
-import LayerPanel from "./layerPanel";
-import FiltersPanel from "./filtersPanel";
-import VesselPanel from "./vesselPanel";
+import CanvasLayer from "./layers/canvas_layer";
+import LayerPanel from "./map/layer_panel";
+import FiltersPanel from "./map/filters_panel";
+import VesselPanel from "./map/vessel_panel";
+import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
@@ -28,6 +29,8 @@ class Map extends Component {
       addedLayers: [],
       currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
+      playbackLength: 1,
+      vesselLayerDensity: 1,
       filters: {
         startDate: TIMELINE_MIN_DATE,
         endDate: TIMELINE_MAX_DATE,
@@ -100,46 +103,47 @@ class Map extends Component {
     }.bind(this));
   }
 
-  animateMapData(currentTimestamp) {
+  animateMapData(drawInitialTimestamp) {
     if (!this.state.running) return;
     if (!this.state.overlay) return;
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null)
     }
 
-    currentTimestamp = currentTimestamp || 0;
+    drawInitialTimestamp = drawInitialTimestamp || 0;
+    let drawFinalTimestamp = drawInitialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
     let startDate = this.state.filters.startDate;
     let endDate = this.state.filters.endDate;
 
-    if (currentTimestamp > endDate) {
+    if (drawFinalTimestamp > endDate) {
       this.setState({
         running: !!!this.state.running,
       });
       this.timelineStop();
       return;
     }
-    let width = (currentTimestamp - startDate) / (endDate - startDate) * 100;
+    let width = (drawInitialTimestamp - startDate) / (endDate - startDate) * 100;
     this.setState({
       widthRange: width + '%',
-      currentTimestamp: currentTimestamp
+      currentTimestamp: drawInitialTimestamp
     });
 
-    let zoom = this.state.zoom > 6 ? 3 : 2;
-    this.state.overlay.drawFrame(currentTimestamp, zoom, this.state.filters);
+    this.state.overlay.drawTimeRange(drawInitialTimestamp, drawFinalTimestamp);
     let animationID = requestAnimationFrame(function () {
-      this.animateMapData(currentTimestamp + mDay);
+      this.animateMapData(drawInitialTimestamp + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
   }
 
   timelineStop() {
+    let filters = this.state.filters;
     cancelAnimationFrame(this.state.animationID);
     this.state.overlay.applyFilters({
-      'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()],
-      'flag': this.state.filters.flag
+      'timeline': [new Date(filters.startDate).getTime(), new Date(filters.endDate).getTime()],
+      'flag': filters.flag
     });
-    this.state.overlay.regenerate();
-    this.setState({running: null, currentTimestamp: this.state.filters.startDate, widthRange: 0});
+    this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
+    this.setState({running: null, currentTimestamp: filters.startDate, widthRange: 0});
   }
 
   onIdle() {
@@ -241,7 +245,7 @@ class Map extends Component {
       let promises = [];
 
       const addVessel = function (title, pos) {
-        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map, this.props.token, {'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()]});
+        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map, this.props.token, {'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()]}, this.state.vesselLayerDensity);
         this.setState({overlay: canvasLayer});
         addedLayers[title] = canvasLayer;
       }
@@ -375,6 +379,16 @@ class Map extends Component {
     // }
   }
 
+  updatePlaybackRange(range) {
+    this.setState({playbackLength: range});
+  }
+
+  updateVesselLayerDensity(vesselLayerDensity) {
+    let filters = this.state.filters;
+    this.setState({vesselLayerDensity: vesselLayerDensity});
+    this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
+  }
+
   shareMap(event) {
     alert('TODO: share map');
   }
@@ -438,6 +452,7 @@ class Map extends Component {
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
         <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
+        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)} onDrawDensityChange={this.updateVesselLayerDensity.bind(this)} startDate={this.state.filters.startDate} endDate={this.state.filters.endDate}/>
         <VesselPanel onChange={this.displayVesselsByCountry.bind(this)}/>
         <GoogleMapLoader
           containerElement={
