@@ -121,7 +121,7 @@ class CanvasLayer {
    * @param vectorArray
    * @param drawTrail
    */
-  drawTileFromVectorArray(canvas, vectorArray, drawTrail) {
+  drawTileFromVectorArray(canvas, vectorArray) {
     if (!canvas) return;
     let filters = this.filters;
     if (!vectorArray) {
@@ -139,7 +139,7 @@ class CanvasLayer {
           continue;
         }
       }
-      this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], drawTrail);
+      this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], false);
     }
   }
 
@@ -314,7 +314,7 @@ class CanvasLayer {
     Promise.all(promises).then(function (rawTileData) {
       if (tileCoordinates) {
         let vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        this.drawTileFromVectorArray(canvas, vectorArray, tileCoordinates);
+        this.drawTileFromVectorArray(canvas, vectorArray);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
       }
     }.bind(this))

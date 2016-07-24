@@ -3,11 +3,15 @@ import controlPanel from "../../../styles/components/c_control_panel.scss";
 import {TIMELINE_STEP} from "../../constants";
 
 export default function (props) {
-  let options = [];
+  let options = [], intensities = [];
   let maxLength = ~~((props.endDate - props.startDate) / TIMELINE_STEP);
 
   for (let length = 1; length < Math.min(maxLength, 30); length += 1) {
     options.push(<option value={length} key={length}>{length}</option>)
+  }
+
+  for (let intensity = 5; intensity <= 50; intensity += 5) {
+    intensities.push(<option value={intensity} key={intensity}>{intensity}</option>)
   }
 
   return (
@@ -22,8 +26,9 @@ export default function (props) {
 
       <div>
         <label for="drawIntensity">Vessel intensity
-          <input id="drawIntensity" type="range" onChange={(e) => props.onDrawDensityChange(e.target.value)} min="1"
-                 max="10" defaultValue={10}/>
+          <select id="drawIntensity" onChange={(e) => props.onDrawDensityChange(e.target.value)} defaultValue={9}>
+            {intensities}
+          </select>
         </label>
       </div>
     </div>

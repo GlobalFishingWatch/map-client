@@ -119,7 +119,7 @@ class Map extends Component {
       this.setState({
         running: !!!this.state.running,
       });
-      this.timelineStop();
+      this.playbackStop();
       return;
     }
     let width = (drawInitialTimestamp - startDate) / (endDate - startDate) * 100;
@@ -135,7 +135,7 @@ class Map extends Component {
     this.setState({'animationID': animationID});
   }
 
-  timelineStop() {
+  playbackStop() {
     let filters = this.state.filters;
     cancelAnimationFrame(this.state.animationID);
     this.state.overlay.applyFilters({
@@ -370,13 +370,13 @@ class Map extends Component {
   }
 
   displayVesselsByCountry(iso) {
-    // if (iso.length > 2){
-    // switch to type INT
     let filters = this.state.filters;
     filters['flag'] = iso;
     this.setState({filters: filters});
-    this.state.overlay.hide();
-    // }
+    
+    if (!this.state.running) {
+      this.state.overlay.hide();
+    }
   }
 
   updatePlaybackRange(range) {
@@ -384,10 +384,12 @@ class Map extends Component {
   }
 
   updateVesselLayerDensity(vesselLayerDensity) {
-    let filters = this.state.filters;
     this.setState({vesselLayerDensity: vesselLayerDensity});
-    this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
-  }
+    this.state.overlay.vesselLayerDensity = vesselLayerDensity;
+
+    if (!this.state.running) {
+      this.state.overlay.hide();
+    }  }
 
   shareMap(event) {
     alert('TODO: share map');
@@ -413,7 +415,7 @@ class Map extends Component {
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
               {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
             </button>
-            <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+            <button onClick={this.playbackStop.bind(this)} className={map.playbackStop}>Stop</button>
           </div>
           <div className={map.date_inputs}>
             <label for="mindate">
@@ -452,7 +454,9 @@ class Map extends Component {
         </div>
         <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
         <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
-        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)} onDrawDensityChange={this.updateVesselLayerDensity.bind(this)} startDate={this.state.filters.startDate} endDate={this.state.filters.endDate}/>
+        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
+                      onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+                      startDate={this.state.filters.startDate} endDate={this.state.filters.endDate}/>
         <VesselPanel onChange={this.displayVesselsByCountry.bind(this)}/>
         <GoogleMapLoader
           containerElement={
