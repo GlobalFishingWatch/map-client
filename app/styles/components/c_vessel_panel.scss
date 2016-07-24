@@ -1,12 +1,12 @@
 .vesselPanel {
   position: absolute;
-  top: 275px;
+  top: 344px;
   right: 20px;
   border: 1px solid #000;
   background: #fff;
   z-index: 9;
   padding: 20px;
-  display: none;
+  display: block;
   input {
     display: block;
   }

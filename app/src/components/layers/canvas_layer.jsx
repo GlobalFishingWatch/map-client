@@ -66,6 +66,27 @@ class CanvasLayer {
     return canvas;
   }
 
+  getVesselAtLocation(lat, long) {
+    let tiles = this.playbackData;
+    for (var tileId in tiles) {
+      for (var timestamp in tiles[tileId]) {
+        for (var i = 0; i < tiles[tileId][timestamp].latitude.length; i++) {
+          if (~~tiles[tileId][timestamp].latitude[i] == lat && ~~tiles[tileId][timestamp].longitude[i] == long) {
+            return {
+              latitude: tiles[tileId][timestamp].latitude[i],
+              longitude: tiles[tileId][timestamp].longitude[i],
+              weight: tiles[tileId][timestamp].weight[i],
+              x: tiles[tileId][timestamp].x[i],
+              y: tiles[tileId][timestamp].y[i],
+              series: tiles[tileId][timestamp].series[i],
+              seriesgroup: tiles[tileId][timestamp].seriesgroup[i]
+            }
+          }
+        }
+      }
+    }
+  }
+
   /**
    * Draws a single frame during playback mode
    *

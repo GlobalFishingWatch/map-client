@@ -25,7 +25,7 @@ export default function (props) {
       </div>
 
       <div>
-        <label for="drawIntensity">Vessel intensity
+        <label for="drawIntensity">Vessel transparency
           <select id="drawIntensity" onChange={(e) => props.onDrawDensityChange(e.target.value)} defaultValue={9}>
             {intensities}
           </select>

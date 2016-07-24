@@ -31,6 +31,7 @@ class Map extends Component {
       lastCenter: null,
       playbackLength: 1,
       vesselLayerDensity: 1,
+      currentVesselInfo: {},
       filters: {
         startDate: TIMELINE_MIN_DATE,
         endDate: TIMELINE_MAX_DATE,
@@ -149,20 +150,27 @@ class Map extends Component {
   onIdle() {
   }
 
-  handleVesselInfo(data) {
+  handleLoadedVesselInfo(data) {
+    let currentVesselInfo = this.state.currentVesselInfo;
+
     data = JSON.parse(data.target.response);
-    document.getElementById('vesselPanelCallsign').innerHTML = data.callsign;
-    document.getElementById('vesselPanelFlag').innerHTML = data.flag;
-    document.getElementById('vesselPanelImo').innerHTML = data.imo;
-    document.getElementById('vesselPanelMmsi').innerHTML = data.mmsi;
-    document.getElementById('vesselPanelName').innerHTML = data.vesselname;
-    document.getElementById('vesselPanelMarineTraffic').innerHTML = '<a href="http://www.marinetraffic.com/en/ais/details/ships/mmsi:' + data.mmsi + '" target="_blank">here</a>';
+    currentVesselInfo.callsign = data.callsign;
+    currentVesselInfo.flag = data.flag;
+    currentVesselInfo.imo = data.imo;
+    currentVesselInfo.mmsi = data.mmsi;
+    currentVesselInfo.name = data.vesselname;
+
+    this.setState({
+      currentVesselInfo: currentVesselInfo
+    })
   }
 
-  findSeriesPositions(series) {
-    const tiles = this.state.overlay.data;
+  findSeriesPositions(vesselInfo) {
+    const tiles = this.state.overlay.playbackData;
+    let series = vesselInfo.series
     let positions = [];
-    let detailsDrawn = false;
+
+    this.getVesselDetails(vesselInfo);
 
     for (var tile in tiles) {
       for (var timestamp in tiles[tile]) {
@@ -172,10 +180,7 @@ class Map extends Component {
               'lat': tiles[tile][timestamp].latitude[i],
               'lng': tiles[tile][timestamp].longitude[i]
             });
-            if (!detailsDrawn) {
-              detailsDrawn = true;
-              this.getVesselDetails(tiles, tile, timestamp, i);
-            }
+
           }
         }
       }
@@ -195,39 +200,44 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
-  getVesselDetails(tiles, tile, timestamp, i) {
-    document.getElementById('vesselBox').style.display = 'block';
-    document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
-    document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
-    document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
-    document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
-    document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
+  loadVesselDetails(seriesGroup) {
     if (typeof XMLHttpRequest != 'undefined') {
       this.request = new XMLHttpRequest();
     } else {
       throw 'XMLHttpRequest is disabled';
     }
-    this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
+    this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + seriesGroup + '/info', true);
     this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
     this.request.responseType = "application/json";
-    this.request.onload = this.handleVesselInfo.bind(this);
-    this.request.onerror = this.handleVesselInfo.bind(this);
+    this.request.onload = this.handleLoadedVesselInfo.bind(this);
+    this.request.onerror = this.handleLoadedVesselInfo.bind(this);
     this.request.send(null);
   }
 
+  getVesselDetails(vesselInfo) {
+    let currentVesselInfo = {
+      series: vesselInfo.series,
+      seriesGroup: vesselInfo.seriesgroup,
+      latitude: vesselInfo.latitude,
+      longitude: vesselInfo.longitude,
+      weight: vesselInfo.weight
+    };
+
+    this.setState({currentVesselInfo: currentVesselInfo})
+    this.loadVesselDetails(vesselInfo.seriesgroup)
+  }
+
   onClickMap(event) {
-    const LAT = Math.round(event.latLng.lat() * 1) / 1;
-    const LNG = Math.round(event.latLng.lng() * 1) / 1;
-    const tiles = this.state.overlay.data;
-    for (var tile in tiles) {
-      for (var timestamp in tiles[tile]) {
-        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++) {
-          if (Math.round(tiles[tile][timestamp].latitude[i] * 1) / 1 == LAT && Math.round(tiles[tile][timestamp].longitude[i] * 1) / 1 == LNG) {
-            this.findSeriesPositions(tiles[tile][timestamp].series[i]);
-            return;
-          }
-        }
-      }
+    let clickLat = ~~event.latLng.lat();
+    let clickLong = ~~event.latLng.lng();
+
+    let vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
+    if (vesselInfo) {
+      this.findSeriesPositions(vesselInfo);
+    } else {
+      this.state.trajectory.setMap(null);
+      this.setState({currentVesselInfo: {}})
+
     }
   }
 
@@ -373,7 +383,7 @@ class Map extends Component {
     let filters = this.state.filters;
     filters['flag'] = iso;
     this.setState({filters: filters});
-    
+
     if (!this.state.running) {
       this.state.overlay.hide();
     }
@@ -389,7 +399,8 @@ class Map extends Component {
 
     if (!this.state.running) {
       this.state.overlay.hide();
-    }  }
+    }
+  }
 
   shareMap(event) {
     alert('TODO: share map');
@@ -457,7 +468,7 @@ class Map extends Component {
         <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
                       onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
                       startDate={this.state.filters.startDate} endDate={this.state.filters.endDate}/>
-        <VesselPanel onChange={this.displayVesselsByCountry.bind(this)}/>
+        <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>
