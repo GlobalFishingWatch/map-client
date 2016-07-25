@@ -7,7 +7,7 @@ import Home from "../components/home";
 
 const mapStateToProps = (state) => {
   return {
-    vessel: 'state.vessel'
+    map: state.map
   };
 };
 export default connect(mapStateToProps)(Home);

@@ -4,7 +4,7 @@ import {TIMELINE_STEP} from "../../constants";
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/'
 
 class CanvasLayer {
-  constructor(position, map, token, filters, vesselLayerDensity) {
+  constructor(position, map, token, filters, vesselLayerDensity, visible) {
     this.map = map;
     this.playbackData = {};
     this.position = position;
@@ -14,18 +14,30 @@ class CanvasLayer {
     this.filters = filters || {};
     this.token = token;
     this.vesselLayerDensity = vesselLayerDensity;
-  }
-
-  hide() {
-    if (this.visible) {
-      this.visible = false;
-      this.map.overlayMapTypes.removeAt(this.position);
+    if (visible) {
+      this.show()
     }
   }
 
-  show() {
+  hide() {
     if (!this.visible) {
-      this.visible = true;
+      return;
+    }
+    this.visible = false;
+    this.map.overlayMapTypes.removeAt(this.position);
+  }
+
+  show() {
+    if (this.visible) {
+      return;
+    }
+    this.visible = true;
+    this.map.overlayMapTypes.insertAt(this.position, this);
+  }
+
+  refresh() {
+    if (this.visible) {
+      this.map.overlayMapTypes.removeAt(this.position);
       this.map.overlayMapTypes.insertAt(this.position, this);
     }
   }
@@ -38,11 +50,11 @@ class CanvasLayer {
     return this.visible;
   }
 
-  applyFilters(filters) {
+  updateFilters(filters) {
     if (filters) {
       this.filters = filters;
     }
-    this.show();
+    this.refresh();
   }
 
   resetData() {

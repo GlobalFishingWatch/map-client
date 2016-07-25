@@ -6,9 +6,12 @@ export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 
 export const GET_USER = 'GET_USER';
 export const SET_TOKEN = 'SET_TOKEN';
-
 export const GET_RECENT_POST = 'GET_RECENT_POST';
 
+// Filters actions
+export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+
+// Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 
 export const TIMELINE_MIN_DATE = 1420070400000; // 01/01/2015

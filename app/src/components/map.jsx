@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import {TIMELINE_MIN_DATE, TIMELINE_MAX_DATE, TIMELINE_STEP} from "../constants";
+import {TIMELINE_MIN_DATE, TIMELINE_STEP} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
 import LayerPanel from "./map/layer_panel";
@@ -31,8 +31,7 @@ class Map extends Component {
       lastCenter: null,
       playbackLength: 1,
       vesselLayerDensity: 1,
-      currentVesselInfo: {},
-      filters: props.filters
+      currentVesselInfo: {}
     };
   }
 
@@ -80,8 +79,7 @@ class Map extends Component {
     }
     // UPDATE DATES
     this.setState({currentTimestamp: startDate});
-    this.state.overlay.hide();
-    this.state.overlay.applyFilters({'timeline': [startDate, endDate]});
+    this.state.overlay.updateFilters(this.props.filters);
     document.getElementById('mindate').value = new Date(startDate).toISOString().slice(0, 10);
     document.getElementById('maxdate').value = new Date(endDate).toISOString().slice(0, 10);
   }
@@ -109,8 +107,8 @@ class Map extends Component {
 
     drawInitialTimestamp = drawInitialTimestamp || 0;
     let drawFinalTimestamp = drawInitialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
-    let startDate = this.state.filters.startDate;
-    let endDate = this.state.filters.endDate;
+    let startDate = this.props.filters.startDate;
+    let endDate = this.props.filters.endDate;
 
     if (drawFinalTimestamp > endDate) {
       this.setState({
@@ -133,12 +131,9 @@ class Map extends Component {
   }
 
   playbackStop() {
-    let filters = this.state.filters;
+    let filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
-    this.state.overlay.applyFilters({
-      'timeline': [new Date(filters.startDate).getTime(), new Date(filters.endDate).getTime()],
-      'flag': filters.flag
-    });
+    this.state.overlay.updateFilters(filters);
     this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
     this.setState({running: null, currentTimestamp: filters.startDate, widthRange: 0});
   }
@@ -242,20 +237,20 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.vessel || nextProps.vessel == this.props.vessel) {
+    if (!nextProps.map) {
       return;
     }
 
-    let currentLayers = this.props.vessel.layers;
-    let newLayers = nextProps.vessel.layers;
+    let currentLayers = this.props.map.layers;
+    let newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
     const map = this.refs.map.props.map
     let promises = [];
 
     let callAddVesselLayer = null;
     if (newLayers !== currentLayers) {
-      for (let i = 0, length = newLayers.length; i < length; i++) {
-        let newLayer = newLayers[i];
+      for (let index = 0, length = newLayers.length; index < length; index++) {
+        let newLayer = newLayers[index];
         if (!addedLayers[newLayer.title]) {
           if (!newLayer.visible) {
             continue;
@@ -279,12 +274,12 @@ class Map extends Component {
     }.bind(this));
 
     if (this.state.overlay) {
-      this.state.overlay.filters = nextProps.filters;
+      this.state.overlay.refresh();
     }
   }
 
   addVesselLayer(layer, filters) {
-    const canvasLayer = new CanvasLayer(layer.zIndex, this.refs.map.props.map, this.props.token, filters, this.state.vesselLayerDensity);
+    const canvasLayer = new CanvasLayer(layer.zIndex, this.refs.map.props.map, this.props.token, filters, this.state.vesselLayerDensity, layer.visible);
     this.setState({overlay: canvasLayer});
     this.state.addedLayers[layer.title] = canvasLayer;
   }
@@ -321,23 +316,6 @@ class Map extends Component {
     }
   }
 
-  isVesselLayerVisible(layers) {
-    if (layers) {
-      for (let i = 0, length = layers.length; i < length; i++) {
-        if (layers[i].type === 'ClusterAnimation') {
-          return layers[i].visible;
-        }
-      }
-    }
-    return true;
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.overlay && this.isVesselLayerVisible(nextProps.vessel.layers)) {
-      nextState.overlay.applyFilters(nextProps.filters);
-    }
-  }
-
   onMouseMove(event) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
@@ -360,38 +338,32 @@ class Map extends Component {
    * @param target startDate/endDate
    * @param value
    */
-  updateDates(target, value) {
-    let filters = this.state.filters;
+  updateFilters(target, value) {
+    let filters = this.props.filters;
     let newDateValue = new Date(value).getTime();
     let currentTimestamp = this.state.currentTimestamp
 
-    if (target === 'startDate' && newDateValue >= filters['endDate']) {
-      return;
+    if (target === 'startDate') {
+      if (newDateValue >= filters['endDate']) {
+        return;
+      }
+      value = new Date(value).getTime();
+      if (currentTimestamp < value) {
+        this.setState({currentTimestamp: newDateValue});
+      }
     }
     if (target === 'endDate' && newDateValue <= filters['startDate']) {
-      return;
+      if (newDateValue >= filters['endDate']) {
+        return;
+      }
+      value = new Date(value).getTime();
+      if (currentTimestamp > newDateValue) {
+        this.setState({currentTimestamp: newDateValue});
+      }
     }
 
-    filters[target] = newDateValue
-    this.setState({filters: filters});
-
-    if (target === 'startDate' && currentTimestamp < newDateValue) {
-      this.setState({currentTimestamp: newDateValue});
-    }
-    if (target === 'endDate' && currentTimestamp > newDateValue) {
-      this.setState({currentTimestamp: newDateValue});
-    }
-    this.state.overlay.hide();
-  }
-
-  displayVesselsByCountry(iso) {
-    let filters = this.state.filters;
-    filters['flag'] = iso;
-    this.setState({filters: filters});
-
-    if (!this.state.running) {
-      this.state.overlay.hide();
-    }
+    filters[target] = value;
+    this.props.updateFilters(filters);
   }
 
   updatePlaybackRange(range) {
@@ -403,7 +375,7 @@ class Map extends Component {
     this.state.overlay.vesselLayerDensity = vesselLayerDensity;
 
     if (!this.state.running) {
-      this.state.overlay.hide();
+      this.state.overlay.refresh();
     }
   }
 
@@ -436,13 +408,13 @@ class Map extends Component {
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" value={new Date(this.state.filters.startDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateDates('startDate', e.currentTarget.value)}/>
+              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" value={new Date(this.state.filters.endDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateDates('endDate', e.currentTarget.value)}/>
+              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>
@@ -468,11 +440,11 @@ class Map extends Component {
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.vessel.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
-        <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
+        <LayerPanel layers={this.props.map.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
+        <FiltersPanel onChange={this.updateFilters.bind(this)}/>
         <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
                       onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
-                      startDate={this.state.filters.startDate} endDate={this.state.filters.endDate}/>
+                      startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={

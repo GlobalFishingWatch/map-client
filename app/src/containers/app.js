@@ -6,7 +6,7 @@ import {setToken, getLoggedUser} from "../actions/user";
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.vessel.loading
+    loading: state.map.loading
   };
 };
 const mapDispatchToProps = (dispatch) => {

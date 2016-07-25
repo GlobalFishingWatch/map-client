@@ -10,8 +10,8 @@ export default function (props) {
   return (
     <div className={filtersPanel.filtersPanel}>
       <label for="ISOfilter">Vessel flag (ISO code)
-        <select id="ISOfilter" onChange={(e) => props.onChange(e.target.value)} defaultValue={0}>
-          <option value={0} key={0}>Select one...</option>
+        <select id="ISOfilter" onChange={(e) => props.onChange('flag', e.target.value)} defaultValue={0}>
+          <option value={null} key={0}>Select one...</option>
           {countries}
         </select>
       </label>
