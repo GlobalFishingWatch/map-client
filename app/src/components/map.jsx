@@ -31,7 +31,11 @@ class Map extends Component {
       lastCenter: null,
       playbackLength: 1,
       vesselLayerDensity: 1,
-      currentVesselInfo: {}
+      currentVesselInfo: {},
+
+      leftHandlerPosition: 0,
+      rightHandlerPosition: 0,
+      timeBarWidth: 0,
     };
   }
 
@@ -54,8 +58,8 @@ class Map extends Component {
 
   handlerMoved(tick, event) {
     let target = null;
-    let startDate = this.state.filters.startDate;
-    let endDate = this.state.filters.endDate;
+    let startDate = this.props.filters.startDate;
+    let endDate = this.props.filters.endDate;
 
     const timelineScope = document.getElementById('timeline_handler').parentElement;
     const absMaxMoment = new Date(endDate).getTime() - new Date(startDate).getTime();
@@ -94,7 +98,7 @@ class Map extends Component {
       running: !!!this.state.running
     });
     requestAnimationFrame(function () {
-      this.animateMapData(this.state.currentTimestamp || this.state.filters.startDate, mDay);
+      this.animateMapData(this.state.currentTimestamp || this.props.filters.startDate, mDay);
     }.bind(this));
   }
 
@@ -114,9 +118,14 @@ class Map extends Component {
       this.playbackStop();
       return;
     }
-    let width = (drawInitialTimestamp - startDate) / (endDate - startDate) * 100;
+    let leftHandlerPosition = (drawInitialTimestamp - startDate) / (endDate - startDate) * 100;
+    let timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
+    let rightHandlerPosition = (drawFinalTimestamp - startDate) / (endDate - startDate) * 100;
+
     this.setState({
-      widthRange: width + '%',
+      leftHandlerPosition: leftHandlerPosition+'%',
+      rightHandlerPosition: rightHandlerPosition+'%',
+      timeBarWidth: timeBarWidth+'%',
       currentTimestamp: drawInitialTimestamp
     });
 
@@ -130,15 +139,24 @@ class Map extends Component {
   playbackStop() {
     let filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
+
+    let timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (filters.endDate - filters.startDate) * 100;
+
     this.state.overlay.updateFilters(filters);
     this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
-    this.setState({running: null, currentTimestamp: filters.startDate, widthRange: 0});
+    this.setState({
+      running: null,
+      currentTimestamp: filters.startDate,
+      leftHandlerPosition: '0%',
+      rightHandlerPosition: timeBarWidth+'%',
+      timeBarWidth: timeBarWidth+'%',
+    });
   }
 
   onIdle() {
   }
 
-  handleLoadedVesselInfo(data) {
+  handleAdditionalVesselDetails(data) {
     let currentVesselInfo = this.state.currentVesselInfo;
 
     data = JSON.parse(data.target.response);
@@ -154,28 +172,9 @@ class Map extends Component {
   }
 
   findSeriesPositions(vesselInfo) {
-    const tiles = this.state.overlay.playbackData;
-    let series = vesselInfo.series
-    let positions = [];
-
+    let positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
     this.getVesselDetails(vesselInfo);
 
-    for (var tile in tiles) {
-      for (var timestamp in tiles[tile]) {
-        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++) {
-          if (tiles[tile][timestamp].series[i] == series) {
-            positions.push({
-              'lat': tiles[tile][timestamp].latitude[i],
-              'lng': tiles[tile][timestamp].longitude[i]
-            });
-
-          }
-        }
-      }
-    }
-    if (this.state.trajectory) {
-      this.state.trajectory.setMap(null)
-    }
     this.setState({
       trajectory: new google.maps.Polyline({
         path: positions,
@@ -188,7 +187,7 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
-  loadVesselDetails(seriesGroup) {
+  loadAdditionalVesselDetails(seriesGroup) {
     if (typeof XMLHttpRequest != 'undefined') {
       this.request = new XMLHttpRequest();
     } else {
@@ -197,8 +196,7 @@ class Map extends Component {
     this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + seriesGroup + '/info', true);
     this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
     this.request.responseType = "application/json";
-    this.request.onload = this.handleLoadedVesselInfo.bind(this);
-    this.request.onerror = this.handleLoadedVesselInfo.bind(this);
+    this.request.onload = this.handleAdditionalVesselDetails.bind(this);
     this.request.send(null);
   }
 
@@ -213,7 +211,7 @@ class Map extends Component {
     };
 
     this.setState({currentVesselInfo: currentVesselInfo})
-    this.loadVesselDetails(vesselInfo.seriesgroup)
+    this.loadAdditionalVesselDetails(vesselInfo.seriesgroup)
   }
 
   onClickMap(event) {
@@ -221,12 +219,15 @@ class Map extends Component {
     let clickLong = ~~event.latLng.lng();
 
     let vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
+
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null);
+    }
+
     if (vesselInfo) {
       this.findSeriesPositions(vesselInfo);
     } else if (this.state.trajectory) {
-      this.state.trajectory.setMap(null);
       this.setState({currentVesselInfo: {}})
-
     }
   }
 
@@ -238,7 +239,17 @@ class Map extends Component {
     if (!nextProps.map) {
       return;
     }
+    this.updateLayersState(nextProps);
+    this.updateFiltersState(nextProps);
+  }
 
+  updateFiltersState(nextProps) {
+    if (this.state.overlay) {
+      this.state.overlay.updateFilters(nextProps.filters);
+    }
+  }
+
+  updateLayersState(nextProps) {
     let currentLayers = this.props.map.layers;
     let newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
@@ -270,10 +281,6 @@ class Map extends Component {
       }
       this.setState({addedLayers: addedLayers});
     }.bind(this));
-
-    if (this.state.overlay) {
-      this.state.overlay.updateFilters(nextProps.filters);
-    }
   }
 
   addVesselLayer(layer, filters) {
@@ -366,7 +373,10 @@ class Map extends Component {
   }
 
   updatePlaybackRange(range) {
-    this.setState({playbackLength: range});
+    let filters = this.props.filters;
+    let timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
+
+    this.setState({playbackLength: range, timeBarWidth: timeBarWidth+'%', rightHandlerPosition: timeBarWidth+'%'});
   }
 
   updateVesselLayerDensity(vesselLayerDensity) {
@@ -421,9 +431,10 @@ class Map extends Component {
               axis="x"
               zIndex={100}
               onStop={this.handlerMoved.bind(this, 1)}>
-              <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
+              <span className={map.handler_grab} id="dateHandlerLeft"
+                    style={{left: this.state.leftHandlerPosition}}><i></i></span>
             </Draggable>
-            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
+            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.rightHandlerPosition}}>
               {new Date(this.state.currentTimestamp).toISOString().slice(0, 10)}
             </span>
 
@@ -432,10 +443,10 @@ class Map extends Component {
               zIndex={100}
               onStop={this.handlerMoved.bind(this, 2)}>
               <span className={[map.handler_grab, map.right].join(' ')} id="dateHandlerRight"
-                    style={{left: this.state.widthRange}}><i></i></span>
+                    style={{left: this.state.rightHandlerPosition}}><i></i></span>
             </Draggable>
             <span className={map.timeline_range}>
-              <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
+              <span className={map.handle} id="timeline_handler" style={{left: this.state.leftHandlerPosition, width: this.state.timeBarWidth}}></span>
             </span>
           </div>
         </div>

@@ -77,6 +77,25 @@ class CanvasLayer {
     return canvas;
   }
 
+  getAllPositionsBySeries(series) {
+    const tiles = this.playbackData;
+    let positions = [];
+
+    for (var tile in tiles) {
+      for (var timestamp in tiles[tile]) {
+        for (var index = 0; index < tiles[tile][timestamp].latitude.length; index++) {
+          if (tiles[tile][timestamp].series[index] == series) {
+            positions.push({
+              'lat': tiles[tile][timestamp].latitude[index],
+              'lng': tiles[tile][timestamp].longitude[index]
+            });
+          }
+        }
+      }
+    }
+    return positions;
+  }
+
   getVesselAtLocation(lat, long) {
     let filters = this.filters;
     let tiles = this.playbackData;
