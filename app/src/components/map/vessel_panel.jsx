@@ -7,9 +7,12 @@ export default function (props) {
   if (!Object.keys(props.vesselInfo).length) {
     return null
   }
+  let humanDate = new Date(props.vesselInfo.timestamp).toISOString().slice(0, 10);
+
   return (
     <div className={vesselPanel.vesselPanel} id="vesselBox">
       Vessel information:
+      <p>Date: <span id="vesselPanelDate">{humanDate}</span></p>
       <p>Series: <span id="vesselPanelSeries">{props.vesselInfo.series}</span></p>
       <p>Series Group: <span id="vesselPanelSeriesGroup">{props.vesselInfo.seriesGroup}</span></p>
       <p>Lat: <span id="vesselPanelLat">{props.vesselInfo.latitude}</span></p>

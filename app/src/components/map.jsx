@@ -101,9 +101,6 @@ class Map extends Component {
   animateMapData(drawInitialTimestamp) {
     if (!this.state.running) return;
     if (!this.state.overlay) return;
-    if (this.state.trajectory) {
-      this.state.trajectory.setMap(null)
-    }
 
     drawInitialTimestamp = drawInitialTimestamp || 0;
     let drawFinalTimestamp = drawInitialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
@@ -211,7 +208,8 @@ class Map extends Component {
       seriesGroup: vesselInfo.seriesgroup,
       latitude: vesselInfo.latitude,
       longitude: vesselInfo.longitude,
-      weight: vesselInfo.weight
+      weight: vesselInfo.weight,
+      timestamp: vesselInfo.timestamp
     };
 
     this.setState({currentVesselInfo: currentVesselInfo})
@@ -225,7 +223,7 @@ class Map extends Component {
     let vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
     if (vesselInfo) {
       this.findSeriesPositions(vesselInfo);
-    } else {
+    } else if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
       this.setState({currentVesselInfo: {}})
 
@@ -274,7 +272,7 @@ class Map extends Component {
     }.bind(this));
 
     if (this.state.overlay) {
-      this.state.overlay.refresh();
+      this.state.overlay.updateFilters(nextProps.filters);
     }
   }
 
@@ -352,7 +350,7 @@ class Map extends Component {
         this.setState({currentTimestamp: newDateValue});
       }
     }
-    if (target === 'endDate' && newDateValue <= filters['startDate']) {
+    if (target === 'endDate') {
       if (newDateValue >= filters['endDate']) {
         return;
       }
@@ -363,6 +361,7 @@ class Map extends Component {
     }
 
     filters[target] = value;
+
     this.props.updateFilters(filters);
   }
 

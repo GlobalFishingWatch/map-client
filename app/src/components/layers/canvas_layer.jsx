@@ -51,9 +51,8 @@ class CanvasLayer {
   }
 
   updateFilters(filters) {
-    if (filters) {
-      this.filters = filters;
-    }
+    this.filters = filters;
+    this.resetData();
     this.refresh();
   }
 
@@ -79,15 +78,20 @@ class CanvasLayer {
   }
 
   getVesselAtLocation(lat, long) {
+    let filters = this.filters;
     let tiles = this.playbackData;
     for (var tileId in tiles) {
-      for (var timestamp in tiles[tileId]) {
+      for (var timestamp = filters.startDate; timestamp <= filters.endDate; timestamp += TIMELINE_STEP) {
+        if (!tiles[tileId].hasOwnProperty(timestamp)) {
+          continue;
+        }
         for (var i = 0; i < tiles[tileId][timestamp].latitude.length; i++) {
           if (~~tiles[tileId][timestamp].latitude[i] == lat && ~~tiles[tileId][timestamp].longitude[i] == long) {
             return {
               latitude: tiles[tileId][timestamp].latitude[i],
               longitude: tiles[tileId][timestamp].longitude[i],
               weight: tiles[tileId][timestamp].weight[i],
+              timestamp: timestamp,
               x: tiles[tileId][timestamp].x[i],
               y: tiles[tileId][timestamp].y[i],
               series: tiles[tileId][timestamp].series[i],
@@ -116,7 +120,6 @@ class CanvasLayer {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (let timestamp = start; timestamp < end; timestamp += TIMELINE_STEP) {
-
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           let playbackData = this.playbackData[canvasKey][timestamp];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
@@ -134,15 +137,9 @@ class CanvasLayer {
    */
   drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
     if (!canvas) return;
-    let filters = this.filters;
     let size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
-      if (!!filters) {
-        if (filters.flag && (filters.flag.length > 0) && (playbackData.series[index] % 210 != filters.flag)) {
-          continue;
-        }
-      }
       this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], drawTrail);
     }
   }
@@ -169,12 +166,25 @@ class CanvasLayer {
         if (filters.startDate && filters.endDate && ((vectorArray.datetime[index] < filters.startDate || vectorArray.datetime[index] > filters.endDate) || !vectorArray.weight[index])) {
           continue;
         }
-        if (filters.flag && (filters.flag.length > 0) && (vectorArray.series[index] % 210 != filters.flag)) {
+        if (filters.flag != "" && (vectorArray.series[index] % 210 != filters.flag)) {
           continue;
         }
       }
       this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], false);
     }
+  }
+
+  passesFilters(data, index) {
+    let filters = this.filters;
+    if (!!filters) {
+      if (filters.startDate && filters.endDate && ((data.datetime[index] < filters.startDate || data.datetime[index] > filters.endDate) || !data.weight[index])) {
+        return false;
+      }
+      if (filters.flag != "" && (data.series[index] % 210 != filters.flag)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -219,6 +229,10 @@ class CanvasLayer {
     }
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
+      if (!this.passesFilters(vectorArray, index)) {
+        continue;
+      }
+
       let time = vectorArray.datetime[index] - (vectorArray.datetime[index] % TIMELINE_STEP);
 
       if (!this.playbackData[tileId][time]) {
@@ -346,7 +360,7 @@ class CanvasLayer {
       }
     }
     Promise.all(promises).then(function (rawTileData) {
-      if (tileCoordinates) {
+      if (tileCoordinates && rawTileData[0]) {
         let vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
         this.drawTileFromVectorArray(canvas, vectorArray);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
