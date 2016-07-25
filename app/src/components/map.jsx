@@ -32,11 +32,7 @@ class Map extends Component {
       playbackLength: 1,
       vesselLayerDensity: 1,
       currentVesselInfo: {},
-      filters: {
-        startDate: TIMELINE_MIN_DATE,
-        endDate: TIMELINE_MAX_DATE,
-        flag: ''
-      }
+      filters: props.filters
     };
   }
 
@@ -100,7 +96,7 @@ class Map extends Component {
       running: !!!this.state.running
     });
     requestAnimationFrame(function () {
-      this.animateMapData(this.state.currentTimestamp || this.stats.filters.startDate, mDay);
+      this.animateMapData(this.state.currentTimestamp || this.state.filters.startDate, mDay);
     }.bind(this));
   }
 
@@ -246,72 +242,89 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      let nProps = nextProps.vessel;
-      let tProps = this.props.vessel;
-      let PVLayers = tProps.layers;
-      let nPVLayers = nProps.layers;
-      const addedLayers = this.state.addedLayers;
-      let promises = [];
+    if (!nextProps.vessel || nextProps.vessel == this.props.vessel) {
+      return;
+    }
 
-      const addVessel = function (title, pos) {
-        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map, this.props.token, {'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()]}, this.state.vesselLayerDensity);
-        this.setState({overlay: canvasLayer});
-        addedLayers[title] = canvasLayer;
-      }
-      let callAddVessel = null;
-      if (nPVLayers !== PVLayers) {
-        for (let i = 0, length = nPVLayers.length; i < length; i++) {
-          if (nPVLayers[i].visible && !addedLayers[nPVLayers[i].title]) {
-            // add layer and not exist
-            if (nPVLayers[i].title === 'VESSEL') {
-              callAddVessel = addVessel.bind(this, nPVLayers[i].title, i);
-            } else {
-              let promise = new Promise(function (resolve, reject) {
-                cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
-                  .addTo(this.refs.map.props.map, i).done(function (layer, cartoLayer) {
-                  addedLayers[layer.title] = cartoLayer;
-                  resolve();
-                }.bind(this, nPVLayers[i]));
-              }.bind(this));
-              promises.push(promise);
-            }
+    let currentLayers = this.props.vessel.layers;
+    let newLayers = nextProps.vessel.layers;
+    const addedLayers = this.state.addedLayers;
+    const map = this.refs.map.props.map
+    let promises = [];
 
-          } else if (nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && !addedLayers[nPVLayers[i].title].isVisible()) {
-            // visible and already exist
-            if (nPVLayers[i].title === 'VESSEL') {
-              this.state.overlay.show();
-            } else {
-              addedLayers[nPVLayers[i].title].show();
-            }
-          } else if (!nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && addedLayers[nPVLayers[i].title].isVisible()) {
-            //hide layer
-            if (nPVLayers[i].title === 'VESSEL') {
-              this.state.overlay.hide();
-            } else {
-              addedLayers[nPVLayers[i].title].hide();
-            }
+    let callAddVesselLayer = null;
+    if (newLayers !== currentLayers) {
+      for (let i = 0, length = newLayers.length; i < length; i++) {
+        let newLayer = newLayers[i];
+        if (!addedLayers[newLayer.title]) {
+          if (!newLayer.visible) {
+            continue;
           }
+          if (newLayer.type === 'ClusterAnimation') {
+            callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, nextProps.filters);
+          } else {
+            promises.push(this.addCartoLayer(map, newLayer, addedLayers));
+          }
+        } else {
+          this.toggleLayerVisibility(newLayer, addedLayers);
         }
       }
-      if (promises && promises.length > 0) {
-        Promise.all(promises).then(function () {
-          if (callAddVessel) {
-            callAddVessel();
-          }
-          this.setState({addedLayers: addedLayers});
-        }.bind(this));
-      } else {
-        this.setState({addedLayers: addedLayers});
-      }
+    }
 
+    Promise.all(promises).then(function () {
+      if (callAddVesselLayer) {
+        callAddVesselLayer();
+      }
+      this.setState({addedLayers: addedLayers});
+    }.bind(this));
+
+    if (this.state.overlay) {
+      this.state.overlay.filters = nextProps.filters;
     }
   }
 
-  isVisibleVessel(layers) {
+  addVesselLayer(layer, filters) {
+    const canvasLayer = new CanvasLayer(layer.zIndex, this.refs.map.props.map, this.props.token, filters, this.state.vesselLayerDensity);
+    this.setState({overlay: canvasLayer});
+    this.state.addedLayers[layer.title] = canvasLayer;
+  }
+
+  addCartoLayer(map, newLayer, addedLayers) {
+    let promise = new Promise(function (resolve, reject) {
+      cartodb.createLayer(map, newLayer.source.args.url).addTo(map, newLayer.zIndex).done(function (layer, cartoLayer) {
+        addedLayers[layer.title] = cartoLayer;
+        resolve();
+      }.bind(this, newLayer));
+    }.bind(this));
+    return promise;
+  }
+
+  toggleLayerVisibility(newLayer, addedLayers) {
+    if (newLayer.visible) {
+      if (addedLayers[newLayer.title].isVisible()) {
+        return;
+      }
+      if (newLayer.type === 'ClusterAnimation') {
+        this.state.overlay.show();
+      } else {
+        addedLayers[newLayer.title].show();
+      }
+    } else {
+      if (!addedLayers[newLayer.title].isVisible()) {
+        return;
+      }
+      if (newLayer.type === 'ClusterAnimation') {
+        this.state.overlay.hide();
+      } else {
+        addedLayers[newLayer.title].hide();
+      }
+    }
+  }
+
+  isVesselLayerVisible(layers) {
     if (layers) {
       for (let i = 0, length = layers.length; i < length; i++) {
-        if (layers[i].title === 'VESSEL') {
+        if (layers[i].type === 'ClusterAnimation') {
           return layers[i].visible;
         }
       }
@@ -320,11 +333,8 @@ class Map extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)) {
-      nextState.overlay.applyFilters({
-        'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()],
-        'flag': this.state.filters.flag
-      });
+    if (nextState.overlay && this.isVesselLayerVisible(nextProps.vessel.layers)) {
+      nextState.overlay.applyFilters(nextProps.filters);
     }
   }
 
@@ -342,11 +352,6 @@ class Map extends Component {
       return;
     }
     this.refs.map.props.map.panTo(this.state.lastCenter);
-  }
-
-  toggleLayer(layer) {
-    layer.visible = !layer.visible;
-    this.props.updateLayer(layer);
   }
 
   /**
@@ -463,7 +468,7 @@ class Map extends Component {
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
+        <LayerPanel layers={this.props.vessel.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
         <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
         <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
                       onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
@@ -484,7 +489,7 @@ class Map extends Component {
                 mapTypeControl: false,
                 zoomControl: false
               }}
-              defaultMapTypeId={google.maps.MapTypeId.SATELLcurrentTimestamp}
+              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onIdle={this.onIdle.bind(this)}
               onClick={this.onClickMap.bind(this)}
               onMousemove={this.onMouseMove.bind(this)}

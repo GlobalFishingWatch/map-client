@@ -4,7 +4,7 @@ import {TIMELINE_STEP} from "../../constants";
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/'
 
 class CanvasLayer {
-  constructor(position, options, map, token, filters, vesselLayerDensity) {
+  constructor(position, map, token, filters, vesselLayerDensity) {
     this.map = map;
     this.playbackData = {};
     this.position = position;
@@ -127,7 +127,7 @@ class CanvasLayer {
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       if (!!filters) {
-        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (playbackData.series[index] % 210 != filters.flag)) {
+        if (filters.flag && (filters.flag.length > 0) && (playbackData.series[index] % 210 != filters.flag)) {
           continue;
         }
       }
@@ -144,6 +144,7 @@ class CanvasLayer {
    */
   drawTileFromVectorArray(canvas, vectorArray) {
     if (!canvas) return;
+
     let filters = this.filters;
     if (!vectorArray) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,10 +154,10 @@ class CanvasLayer {
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       if (!!filters) {
-        if (filters.hasOwnProperty('timeline') && ((vectorArray.datetime[index] < filters.timeline[0] || vectorArray.datetime[index] > filters.timeline[1]) || !vectorArray.weight[index])) {
+        if (filters.startDate && filters.endDate && ((vectorArray.datetime[index] < filters.startDate || vectorArray.datetime[index] > filters.endDate) || !vectorArray.weight[index])) {
           continue;
         }
-        if (filters.hasOwnProperty('flag') && (filters.flag.length > 0) && (vectorArray.series[index] % 210 != filters.flag)) {
+        if (filters.flag && (filters.flag.length > 0) && (vectorArray.series[index] % 210 != filters.flag)) {
           continue;
         }
       }
@@ -284,8 +285,8 @@ class CanvasLayer {
    * @returns {Array}
    */
   getTemporalTileURLs(tileCoordinates, filters) {
-    let startYear = new Date(filters.timeline[0]).getUTCFullYear();
-    let endYear = new Date(filters.timeline[1]).getUTCFullYear();
+    let startYear = new Date(filters.startDate).getUTCFullYear();
+    let endYear = new Date(filters.endDate).getUTCFullYear();
     let urls = [];
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${url}${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);

@@ -117,31 +117,6 @@
           "hideremovebtn": true
         },
         "type": "MapsEngineAnimation"
-      },
-      {
-        "args": {
-          "title": "Fishing Effort",
-          "visible": true,
-          "source": {
-            "type": "TiledBinFormat",
-            "args": {
-              "url": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31"
-            }
-          },
-          "selections": {
-            "selected": {
-              "sortcols": [
-                "seriesgroup"
-              ]
-            },
-            "hover": {
-              "sortcols": [
-                "seriesgroup"
-              ]
-            }
-          }
-        },
-        "type": "ClusterAnimation"
       }
     ],
     "options": {

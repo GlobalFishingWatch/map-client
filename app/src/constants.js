@@ -2,16 +2,20 @@ export const VESSEL_INIT = 'VESSEL_INIT';
 export const SHOW_LOADING = 'SHOW_LOADING';
 
 export const SET_LAYERS = 'SET_LAYERS';
-export const UPDATE_LAYER = 'UPDATE_LAYER';
+export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 
 export const GET_USER = 'GET_USER';
 export const SET_TOKEN = 'SET_TOKEN';
 
 export const GET_RECENT_POST = 'GET_RECENT_POST';
 
+export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
+
 export const TIMELINE_MIN_DATE = 1420070400000; // 01/01/2015
 export const TIMELINE_MAX_DATE = 1451516400000; // 31/12/2015
-export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
+
+export const TIMELINE_DEFAULT_START_DATE = 1420070400000; // 01/01/2015
+export const TIMELINE_DEFAULT_END_DATE = 1451516400000; // 31/12/2015
 
 export const FLAGS = {
   1: 'ad.png',
