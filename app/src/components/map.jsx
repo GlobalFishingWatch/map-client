@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
-import {TIMELINE_MIN_DATE, TIMELINE_STEP} from "../constants";
+import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
 import LayerPanel from "./map/layer_panel";
@@ -12,8 +12,6 @@ import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
-const minZoomLevel = 2;
-const maxZoomLevel = 12;
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
   new google.maps.LatLng(-85, -180),
@@ -30,7 +28,7 @@ class Map extends Component {
       currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
       playbackLength: 1,
-      vesselLayerDensity: 1,
+      vesselLayerTransparency: 1,
       currentVesselInfo: {},
 
       leftHandlerPosition: 0,
@@ -39,18 +37,28 @@ class Map extends Component {
     };
   }
 
+  /**
+   * Zoom change handler
+   * Enforces min and max zoom levels
+   * Resets vessel layer data on change
+   */
   onZoomChanged() {
     const zoom = this.refs.map.props.map.getZoom();
-    if (zoom < minZoomLevel) {
-      this.refs.map.props.map.setZoom(minZoomLevel);
+    if (zoom < MIN_ZOOM_LEVEL) {
+      this.refs.map.props.map.setZoom(MIN_ZOOM_LEVEL);
     }
-    if (zoom > maxZoomLevel) {
-      this.refs.map.props.map.setZoom(maxZoomLevel);
+    if (zoom > MAX_ZOOM_LEVEL) {
+      this.refs.map.props.map.setZoom(MAX_ZOOM_LEVEL);
     }
     this.setState({zoom: zoom});
-    this.state.overlay.resetData();
+    this.state.overlay.resetPlaybackData();
   }
 
+  /**
+   * TODO: review
+   *
+   * @param event
+   */
   moveTimeline(event) {
     this.timelinerange = document.getElementById('timeline_handler');
     this.playbackStart(this.timelinerange.style.width = (event.clientX - 60) + 'px');
@@ -98,44 +106,58 @@ class Map extends Component {
       running: !!!this.state.running
     });
     requestAnimationFrame(function () {
-      this.animateMapData(this.state.currentTimestamp || this.props.filters.startDate, mDay);
+      this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate, mDay);
     }.bind(this));
   }
 
-  animateMapData(drawInitialTimestamp) {
+  /**
+   * Draws a single frame during playback mode
+   * Each frame may represent multiple days of data
+   * Recursively calls itself to animate the following frams
+   *
+   * Handles time slider animation
+   * Calculates initial and final vessel timestamp, and calls vessel layer rendering.
+   *
+   * @param initialTimestamp Initial timestamp to be drawn
+   */
+  drawVesselFrame(initialTimestamp) {
     if (!this.state.running) return;
     if (!this.state.overlay) return;
 
-    drawInitialTimestamp = drawInitialTimestamp || 0;
-    let drawFinalTimestamp = drawInitialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
+    initialTimestamp = initialTimestamp || 0;
+    let finalTimestamp = initialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
     let startDate = this.props.filters.startDate;
     let endDate = this.props.filters.endDate;
 
-    if (drawFinalTimestamp > endDate) {
+    if (finalTimestamp > endDate) {
       this.setState({
         running: !!!this.state.running,
       });
       this.playbackStop();
       return;
     }
-    let leftHandlerPosition = (drawInitialTimestamp - startDate) / (endDate - startDate) * 100;
+    let leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
     let timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
-    let rightHandlerPosition = (drawFinalTimestamp - startDate) / (endDate - startDate) * 100;
+    let rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
 
     this.setState({
-      leftHandlerPosition: leftHandlerPosition+'%',
-      rightHandlerPosition: rightHandlerPosition+'%',
-      timeBarWidth: timeBarWidth+'%',
-      currentTimestamp: drawInitialTimestamp
+      leftHandlerPosition: leftHandlerPosition + '%',
+      rightHandlerPosition: rightHandlerPosition + '%',
+      timeBarWidth: timeBarWidth + '%',
+      currentTimestamp: initialTimestamp
     });
 
-    this.state.overlay.drawTimeRange(drawInitialTimestamp, drawFinalTimestamp);
+    this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
     let animationID = requestAnimationFrame(function () {
-      this.animateMapData(drawInitialTimestamp + mDay);
+      this.drawVesselFrame(initialTimestamp + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
   }
 
+  /**
+   * Handles playback stop
+   * Called when playback ends or user interrupts it using the "Stop" button
+   */
   playbackStop() {
     let filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
@@ -148,14 +170,17 @@ class Map extends Component {
       running: null,
       currentTimestamp: filters.startDate,
       leftHandlerPosition: '0%',
-      rightHandlerPosition: timeBarWidth+'%',
-      timeBarWidth: timeBarWidth+'%',
+      rightHandlerPosition: timeBarWidth + '%',
+      timeBarWidth: timeBarWidth + '%',
     });
   }
 
-  onIdle() {
-  }
-
+  /**
+   * Called once additional vessel details are loaded
+   * TODO: should probably be moved elsewhere
+   *
+   * @param data Data returned by the API
+   */
   handleAdditionalVesselDetails(data) {
     let currentVesselInfo = this.state.currentVesselInfo;
 
@@ -171,9 +196,15 @@ class Map extends Component {
     })
   }
 
-  findSeriesPositions(vesselInfo) {
+  /**
+   * Draws a line that connects by timestamp order all paths of the following vessel
+   * Triggers the rendering of the vessel info panel
+   * TODO: this needs to be reimplemented using data from the series group API
+   *
+   * @param vesselInfo
+   */
+  drawSeriesPath(vesselInfo) {
     let positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
-    this.getVesselDetails(vesselInfo);
 
     this.setState({
       trajectory: new google.maps.Polyline({
@@ -187,6 +218,13 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
+  /**
+   * Given a series group ID, loads additional info for that vessel
+   * Used to display additional data on the vessel details panel
+   * TODO: should probably be moved elsewhere
+   *
+   * @param seriesGroup
+   */
   loadAdditionalVesselDetails(seriesGroup) {
     if (typeof XMLHttpRequest != 'undefined') {
       this.request = new XMLHttpRequest();
@@ -200,7 +238,13 @@ class Map extends Component {
     this.request.send(null);
   }
 
-  getVesselDetails(vesselInfo) {
+  /**
+   * Displays the currently selected vessel details on the corresponding panel
+   * Triggers additional vessel details loading.
+   *
+   * @param vesselInfo
+   */
+  showVesselDetails(vesselInfo) {
     let currentVesselInfo = {
       series: vesselInfo.series,
       seriesGroup: vesselInfo.seriesgroup,
@@ -214,6 +258,13 @@ class Map extends Component {
     this.loadAdditionalVesselDetails(vesselInfo.seriesgroup)
   }
 
+  /**
+   * Detects and handles map clicks
+   * Detects collisions with current vessel data
+   * Draws tracks and loads vessel details
+   *
+   * @param event
+   */
   onClickMap(event) {
     let clickLat = ~~event.latLng.lat();
     let clickLong = ~~event.latLng.lng();
@@ -225,7 +276,8 @@ class Map extends Component {
     }
 
     if (vesselInfo) {
-      this.findSeriesPositions(vesselInfo);
+      this.showVesselDetails(vesselInfo);
+      this.drawSeriesPath(vesselInfo);
     } else if (this.state.trajectory) {
       this.setState({currentVesselInfo: {}})
     }
@@ -243,17 +295,25 @@ class Map extends Component {
     this.updateFiltersState(nextProps);
   }
 
+  /**
+   * Handles and propagates filters changes
+   *
+   * @param nextProps
+   */
   updateFiltersState(nextProps) {
     if (this.state.overlay) {
       this.state.overlay.updateFilters(nextProps.filters);
     }
   }
 
+  /**
+   * Handles and propagates layers changes
+   * @param nextProps
+   */
   updateLayersState(nextProps) {
     let currentLayers = this.props.map.layers;
     let newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
-    const map = this.refs.map.props.map
     let promises = [];
 
     let callAddVesselLayer = null;
@@ -267,10 +327,10 @@ class Map extends Component {
           if (newLayer.type === 'ClusterAnimation') {
             callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, nextProps.filters);
           } else {
-            promises.push(this.addCartoLayer(map, newLayer, addedLayers));
+            promises.push(this.addCartoLayer(newLayer));
           }
         } else {
-          this.toggleLayerVisibility(newLayer, addedLayers);
+          this.toggleLayerVisibility(newLayer);
         }
       }
     }
@@ -283,40 +343,61 @@ class Map extends Component {
     }.bind(this));
   }
 
-  addVesselLayer(layer, filters) {
-    const canvasLayer = new CanvasLayer(layer.zIndex, this.refs.map.props.map, this.props.token, filters, this.state.vesselLayerDensity, layer.visible);
+  /**
+   * Creates vessel track layer
+   *
+   * @param layerSettings
+   */
+  addVesselLayer(layerSettings) {
+    const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.refs.map.props.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
     this.setState({overlay: canvasLayer});
-    this.state.addedLayers[layer.title] = canvasLayer;
+    this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
-  addCartoLayer(map, newLayer, addedLayers) {
+  /**
+   * Creates a Carto-based layer
+   *
+   * @param map
+   * @returns {Promise}
+   */
+  addCartoLayer(layerSettings) {
+    const map = this.refs.map.props.map
+    const addedLayers = this.state.addedLayers;
+
     let promise = new Promise(function (resolve, reject) {
-      cartodb.createLayer(map, newLayer.source.args.url).addTo(map, newLayer.zIndex).done(function (layer, cartoLayer) {
+      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function (layer, cartoLayer) {
         addedLayers[layer.title] = cartoLayer;
         resolve();
-      }.bind(this, newLayer));
+      }.bind(this, layerSettings));
     }.bind(this));
     return promise;
   }
 
-  toggleLayerVisibility(newLayer, addedLayers) {
-    if (newLayer.visible) {
-      if (addedLayers[newLayer.title].isVisible()) {
+  /**
+   * Toggles a layer's visibility
+   *
+   * @param layerSettings
+   */
+  toggleLayerVisibility(layerSettings) {
+    const layers = this.state.addedLayers;
+
+    if (layerSettings.visible) {
+      if (layers[layerSettings.title].isVisible()) {
         return;
       }
-      if (newLayer.type === 'ClusterAnimation') {
+      if (layerSettings.type === 'ClusterAnimation') {
         this.state.overlay.show();
       } else {
-        addedLayers[newLayer.title].show();
+        layers[layerSettings.title].show();
       }
     } else {
-      if (!addedLayers[newLayer.title].isVisible()) {
+      if (!layers[layerSettings.title].isVisible()) {
         return;
       }
-      if (newLayer.type === 'ClusterAnimation') {
+      if (layerSettings.type === 'ClusterAnimation') {
         this.state.overlay.hide();
       } else {
-        addedLayers[newLayer.title].hide();
+        layers[layerSettings.title].hide();
       }
     }
   }
@@ -338,10 +419,11 @@ class Map extends Component {
   }
 
   /**
-   * Triggered when the user updates the start or end dates of the slider/datepickers
+   * Triggered when the user updates the vessel data pickers
+   * Has special handling for startDate/endDate
    *
-   * @param target startDate/endDate
-   * @param value
+   * @param target Name of the filter
+   * @param value New value of the filter
    */
   updateFilters(target, value) {
     let filters = this.props.filters;
@@ -372,16 +454,26 @@ class Map extends Component {
     this.props.updateFilters(filters);
   }
 
+  /**
+   * Handles changes to the playback range
+   *
+   * @param range
+   */
   updatePlaybackRange(range) {
     let filters = this.props.filters;
     let timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
 
-    this.setState({playbackLength: range, timeBarWidth: timeBarWidth+'%', rightHandlerPosition: timeBarWidth+'%'});
+    this.setState({playbackLength: range, timeBarWidth: timeBarWidth + '%', rightHandlerPosition: timeBarWidth + '%'});
   }
 
-  updateVesselLayerDensity(vesselLayerDensity) {
-    this.setState({vesselLayerDensity: vesselLayerDensity});
-    this.state.overlay.vesselLayerDensity = vesselLayerDensity;
+  /**
+   * Handles changes
+   *
+   * @param vesselLayerTransparency
+   */
+  updateVesselLayerDensity(vesselLayerTransparency) {
+    this.setState({vesselLayerTransparency: vesselLayerTransparency});
+    this.state.overlay.vesselLayerTransparency = vesselLayerTransparency;
 
     if (!this.state.running) {
       this.state.overlay.refresh();
@@ -392,10 +484,24 @@ class Map extends Component {
     alert('TODO: share map');
   }
 
-  changeZoomLevel(ev) {
-    this.refs.map.props.map.setZoom((ev.target.id === 'zoom_up') ? this.refs.map.props.map.getZoom() + 1 : this.refs.map.props.map.getZoom() - 1);
+  /**
+   * Handles clicks on the +/- buttons that manipulate the map zoom
+   *
+   * @param event
+   */
+  changeZoomLevel(event) {
+    let map = this.refs.map.props.map;
+    let newZoomLevel = (event.target.id === 'zoom_up') ? map.getZoom() + 1 : map.getZoom() - 1
+
+    map.setZoom(newZoomLevel);
   }
 
+  /**
+   * Big scary map rendering method
+   * TODO: see if we can split this up into multiple React components or, if not, split up into multiple render methods
+   *
+   * @returns {XML}
+   */
   render() {
     return <div>
       <header className={map.c_header}>
@@ -446,7 +552,8 @@ class Map extends Component {
                     style={{left: this.state.rightHandlerPosition}}><i></i></span>
             </Draggable>
             <span className={map.timeline_range}>
-              <span className={map.handle} id="timeline_handler" style={{left: this.state.leftHandlerPosition, width: this.state.timeBarWidth}}></span>
+              <span className={map.handle} id="timeline_handler"
+                    style={{left: this.state.leftHandlerPosition, width: this.state.timeBarWidth}}></span>
             </span>
           </div>
         </div>
@@ -472,7 +579,6 @@ class Map extends Component {
                 zoomControl: false
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-              onIdle={this.onIdle.bind(this)}
               onClick={this.onClickMap.bind(this)}
               onMousemove={this.onMouseMove.bind(this)}
               onZoomChanged={this.onZoomChanged.bind(this)}

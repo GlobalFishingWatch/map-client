@@ -4,7 +4,7 @@ import {TIMELINE_STEP} from "../../constants";
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/'
 
 class CanvasLayer {
-  constructor(position, map, token, filters, vesselLayerDensity, visible) {
+  constructor(position, map, token, filters, vesselLayerTransparency, visible) {
     this.map = map;
     this.playbackData = {};
     this.position = position;
@@ -13,12 +13,15 @@ class CanvasLayer {
     this.visible = false;
     this.filters = filters || {};
     this.token = token;
-    this.vesselLayerDensity = vesselLayerDensity;
+    this.vesselLayerTransparency = vesselLayerTransparency;
     if (visible) {
       this.show()
     }
   }
 
+  /**
+   * Hides the layer
+   */
   hide() {
     if (!this.visible) {
       return;
@@ -27,6 +30,9 @@ class CanvasLayer {
     this.map.overlayMapTypes.removeAt(this.position);
   }
 
+  /**
+   * Shows the layer
+   */
   show() {
     if (this.visible) {
       return;
@@ -35,6 +41,9 @@ class CanvasLayer {
     this.map.overlayMapTypes.insertAt(this.position, this);
   }
 
+  /**
+   * Forces a redraw of the layer
+   */
   refresh() {
     if (this.visible) {
       this.map.overlayMapTypes.removeAt(this.position);
@@ -42,6 +51,14 @@ class CanvasLayer {
     }
   }
 
+  /**
+   * Calculates a tile ID/key based on their x/y/zoom coordinates
+   *
+   * @param x
+   * @param y
+   * @param z
+   * @returns {*}
+     */
   getTileId(x, y, z) {
     return (x * 1000000000) + (y * 100) + z
   }
@@ -50,16 +67,34 @@ class CanvasLayer {
     return this.visible;
   }
 
+  /**
+   * Updates the filters info
+   * Clears playback data and redraws the layer
+   *
+   * @param filters
+   */
   updateFilters(filters) {
     this.filters = filters;
-    this.resetData();
+    this.resetPlaybackData();
     this.refresh();
   }
 
-  resetData() {
+  /**
+   * Resets playback data
+   */
+  resetPlaybackData() {
     this.playbackData = {};
   }
 
+  /**
+   * Creates a canvas element
+   *
+   * @param coord
+   * @param zoom
+   * @param ownerDocument
+   * @returns {*}
+   * @private
+   */
   _getCanvas(coord, zoom, ownerDocument) {
     // create canvas and reset style
     var canvas = ownerDocument.createElement('canvas');
@@ -77,6 +112,13 @@ class CanvasLayer {
     return canvas;
   }
 
+  /**
+   * Given a series number, returns all matching points
+   * TODO: can probably be removed once the tracks are being drawn with the correct, detail data
+   *
+   * @param series
+   * @returns {Array}
+   */
   getAllPositionsBySeries(series) {
     const tiles = this.playbackData;
     let positions = [];
@@ -96,6 +138,14 @@ class CanvasLayer {
     return positions;
   }
 
+  /**
+   * Loads the first matching vessel for the given lat/long pair
+   * TODO: return and handle multiple vessels on the same coordinates
+   *
+   * @param lat
+   * @param long
+   * @returns {{latitude, longitude, weight, timestamp: *, x: *, y: *, series, seriesgroup}}
+   */
   getVesselAtLocation(lat, long) {
     let filters = this.filters;
     let tiles = this.playbackData;
@@ -123,9 +173,11 @@ class CanvasLayer {
   }
 
   /**
-   * Draws a single frame during playback mode
+   * Draws all data in between the given start and end times
    *
-   * @param timestamp
+   *
+   * @param start
+   * @param end
    */
   drawTimeRange(start, end) {
     let canvasKeys = Object.keys(this.playbackData);
@@ -165,6 +217,9 @@ class CanvasLayer {
 
   /**
    * Draws a tile using VectorArray data
+   * Used only immediately after data is loaded.
+   *
+   * @see drawTileFromPlaybackData
    *
    * @param canvas
    * @param vectorArray
@@ -193,6 +248,13 @@ class CanvasLayer {
     }
   }
 
+  /**
+   * Validates if the vessel point matches the current filter state
+   *
+   * @param data
+   * @param index
+   * @returns {boolean}
+   */
   passesFilters(data, index) {
     let filters = this.filters;
     if (!!filters) {
@@ -207,7 +269,7 @@ class CanvasLayer {
   }
 
   /**
-   * Add projected lat/long values as x/y coordinates
+   * Add projected lat/long values transformed as x/y coordinates
    */
   addTileCoordinates(tileCoordinates, vectorArray) {
     const overlayProjection = this.map.getProjection();
@@ -235,6 +297,7 @@ class CanvasLayer {
 
   /**
    * Converts Vector Array data to Playback format and stores it locally
+   *
    * @param vectorArray
    * @param tileCoordinates
    */
@@ -276,9 +339,19 @@ class CanvasLayer {
     }
   }
 
-  drawVesselPoint(canvas, x, y, size, weight, trail) {
-    let vesselLayerDensity = this.vesselLayerDensity
-    let calculatedWeight = Math.min(weight / vesselLayerDensity, 1);
+  /**
+   * Draws a single point representing a vessel
+   *
+   * @param canvas
+   * @param x
+   * @param y
+   * @param size
+   * @param weight
+   * @param drawTrail
+   */
+  drawVesselPoint(canvas, x, y, size, weight, drawTrail) {
+    let vesselLayerTransparency = this.vesselLayerTransparency
+    let calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
 
     canvas.ctx.fillStyle = 'rgba(17,129,251,' + calculatedWeight + ')';
     canvas.ctx.fillRect(x, y, size, size);
@@ -291,7 +364,7 @@ class CanvasLayer {
       canvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
     }
 
-    if (trail) {
+    if (drawTrail) {
       canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
       canvas.ctx.fillRect(x + 2, y + 1, size, size);
       canvas.ctx.fillRect(x + 2, y + 2, size, size);
@@ -339,6 +412,12 @@ class CanvasLayer {
     return urls;
   }
 
+  /**
+   * TODO: clarify exactly what this does
+   *
+   * @param vectorArray
+   * @returns {*}
+   */
   groupData(vectorArray) {
     if (vectorArray && vectorArray.length > 1) {
       for (let index = 1, length = vectorArray.length; index < length; index++) {
@@ -368,6 +447,14 @@ class CanvasLayer {
     return vectorArray[0];
   }
 
+  /**
+   * Creates and loads data for each tile
+   *
+   * @param coord
+   * @param zoom
+   * @param ownerDocument
+   * @returns {*}
+   */
   getTile(coord, zoom, ownerDocument) {
     var canvas = this._getCanvas(coord, zoom, ownerDocument);
     let tileCoordinates = this.getTileCoordinates(coord, zoom);
