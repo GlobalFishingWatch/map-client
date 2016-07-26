@@ -47,17 +47,32 @@
     display: none;
     position: absolute;
     width: 200px;
-    background-color: $color5;
+    background-color: $color9;
     z-index: 99;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding:15px;
+  	width:160px;
+  	transform: translate(-40%, 0px);
     li {
       display: block;
       padding-left: 0 !important;
       margin-right: 0 !important;
       line-height: 40px;
+      a{
+        opacity: 0.9;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 3.13;
+        text-align: center;
+        color: #0d1a34;
+        text-transform:uppercase;
+        transition:0.2s;
+        display:block;
+      }
+      a:hover{
+        opacity: 0.6;
+        background-color: #8bbcc7;
+      }
       &:first-child {
-        margin-top: 10px;
       }
       &:last-child {
         border-left: 0;
