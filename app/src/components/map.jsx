@@ -42,6 +42,9 @@ class Map extends Component {
    * Resets vessel layer data on change
    */
   onZoomChanged() {
+    if (!this.map) {
+      return;
+    }
     const zoom = this.map.getZoom();
     if (zoom < MIN_ZOOM_LEVEL) {
       this.map.setZoom(MIN_ZOOM_LEVEL);
@@ -405,14 +408,25 @@ class Map extends Component {
   }
 
   onMouseMove(event) {
+    if (!this.map) {
+      return;
+    }
     this.map.setOptions({draggableCursor: 'default'});
   }
 
   onDragStart(event) {
-    if (this.state.lastCenter === null) this.lastValidCenter = this.map.getCenter();
+    if (!this.map) {
+      return;
+    }
+    if (this.state.lastCenter === null) {
+      this.lastValidCenter = this.map.getCenter();
+    }
   }
 
   onDragEnd(event) {
+    if (!this.map) {
+      return;
+    }
     if (strictBounds.contains(this.map.getCenter())) {
       this.state.lastCenter = this.map.getCenter();
       return;
