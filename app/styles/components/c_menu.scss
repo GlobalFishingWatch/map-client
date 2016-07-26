@@ -1,6 +1,9 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
-
+.c_header_menu {
+  background-color: $bluesecondary;
+  padding: 0 64px;
+}
 .c_menu {
   img {
     height: 70px;
@@ -36,6 +39,14 @@
         font-weight: $font-weight-regular;
         letter-spacing: -0.1px;
         cursor: pointer;
+      }
+      #menu_selected::after{
+        content: "";
+        display:block;
+        height: 4px;
+        border-radius: 100px;
+        background-color: #ffffff;
+        margin-top:1px;
       }
     }
   }
@@ -83,4 +94,7 @@
   .dropdown:hover > ul {
     display: block;
   }
+}
+#menu_transparent{
+  background-color: rgba(23,64,132,0.8);
 }

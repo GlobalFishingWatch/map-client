@@ -9,9 +9,7 @@ class Definitions extends Component {
 
   render() {
     return <div>
-      <header className={home.c_header}>
-        <Header></Header>
-      </header>
+      <Header></Header>
       <section className={home.header_home}>
         <div>
           <h1>

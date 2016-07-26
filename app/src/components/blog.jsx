@@ -26,9 +26,7 @@ class Blog extends Component {
 
 
     return <div>
-      <header className={home.c_header}>
-        <Header></Header>
-      </header>
+      <Header></Header>
       <section className={home.header_home}>
         <h1>
           Blog

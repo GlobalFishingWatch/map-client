@@ -16,6 +16,7 @@ class Header extends Component {
   }
 
   render() {
+
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (<li className={home.dropdown}>
@@ -28,17 +29,18 @@ class Header extends Component {
     } else {
       userLinks = <li><Link to="javascript:void(0);" onClick={this.login.bind(this)}>Login</Link></li>
     }
-
-    return <nav className={home.c_menu}>
+    
+    return <header className={home.c_header_menu} id={location.pathname==="/map"? 'menu_transparent' : null}>
+      <nav className={home.c_menu} >
       <Link to="/">
         <img src={logoimg}></img>
       </Link>
       <ul>
         <li>
-          <Link to="/map">Map</Link>
+          <Link id={location.pathname==="/map"? 'menu_selected' : null} to="/map">Map</Link>
         </li>
         <li className={home.dropdown}>
-          <Link to="#">News</Link>
+          <Link id={location.pathname==="/blog"? 'menu_selected' : null} to="#">News</Link>
           <ul className={home.dropdown_content}>
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/articles-publications">Articles and Publications</Link></li>
@@ -53,7 +55,7 @@ class Header extends Component {
           </ul>
         </li>
         <li className={home.dropdown}>
-          <Link to="#">About</Link>
+          <Link to="#" >About</Link>
           <ul className={home.dropdown_content}>
             <li><Link to="/the-project">The project</Link></li>
             <li><Link to="/partners">Partners</Link></li>
@@ -63,6 +65,7 @@ class Header extends Component {
         {userLinks}
       </ul>
     </nav>
+    </header>
   }
 }
 
