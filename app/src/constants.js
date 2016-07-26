@@ -4,8 +4,12 @@ export const SHOW_LOADING = 'SHOW_LOADING';
 export const SET_LAYERS = 'SET_LAYERS';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 
+// User actions
 export const GET_USER = 'GET_USER';
 export const SET_TOKEN = 'SET_TOKEN';
+export const LOGOUT = 'LOGOUT';
+export const TOKEN_SESSION = 'TOKEN_SESSION';
+
 export const GET_RECENT_POST = 'GET_RECENT_POST';
 
 // Filters actions

@@ -2,7 +2,7 @@
 
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
-import Header from "./shared/header";
+import Header from "../containers/header";
 import Footer from "./shared/footer";
 
 class ArticlesPublications extends Component {
