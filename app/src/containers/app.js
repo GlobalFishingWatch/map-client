@@ -1,7 +1,7 @@
 'use strict';
 
 import {connect} from "react-redux";
-import App from "../components/App";
+import App from "../components/app";
 import {setToken, getLoggedUser} from "../actions/user";
 
 const mapStateToProps = (state) => {
