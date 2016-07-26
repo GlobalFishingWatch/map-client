@@ -180,6 +180,7 @@ class Map extends Component {
   componentDidMount() {
     // this.props.initVesselLayer();
     this.props.getLayers();
+    new $.Zebra_Accordion($('.Zebra_Accordion'));
   }
 
   componentWillReceiveProps(nextProps) {
