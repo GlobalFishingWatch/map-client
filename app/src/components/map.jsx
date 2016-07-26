@@ -5,6 +5,7 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
+import TrackLayer from "./layers/track_layer";
 import LayerPanel from "./map/layer_panel";
 import VesselPanel from "./map/vessel_panel";
 import ControlPanel from "./map/control_panel";
@@ -280,12 +281,25 @@ class Map extends Component {
       this.state.trajectory.setMap(null);
     }
 
-    if (vesselInfo) {
-      this.showVesselDetails(vesselInfo);
-      this.drawSeriesPath(vesselInfo);
-    } else if (this.state.trajectory) {
-      this.setState({currentVesselInfo: {}})
-    }
+    this.createTrackLayer(vesselInfo);
+    // if (vesselInfo) {
+    //   this.showVesselDetails(vesselInfo);
+    //   this.drawSeriesPath(vesselInfo);
+    // } else if (this.state.trajectory) {
+    //   this.setState({currentVesselInfo: {}})
+    // }
+  }
+
+  createTrackLayer(vesselInfo) {
+    let trackLayer = new TrackLayer(
+      this.state.overlay.position-1,
+      this.map,
+      this.props.token,
+      this.props.filters,
+      this.state.vesselLayerTransparency,
+      true,
+      vesselInfo.seriesgroup
+    );
   }
 
   componentWillReceiveProps(nextProps) {
