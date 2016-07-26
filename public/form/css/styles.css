@@ -59,47 +59,113 @@ body{
 	height: 100%;
 }
 header {
-	height: 120px;
-	background-color: rgb(36,62,118);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0 10%;
+	height: 140px;
+  display: flex;
+  text-transform: capitalize;
+  font-weight: normal;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 30px;
+  align-items: center;
+	padding: 0 64px;
 }
-header a {
-	display: flex;
-	align-items: center;
-	color: currentColor;
-	text-decoration: none;
-	text-transform: capitalize;
-	font-size: 15px;
+.menu_transparent{
+	background-color: rgba(23,64,132,0.8);
 }
 header img {
-	height: 60px;
+	height: 70px;
 	display: inline;
 	margin: 0 10px 0 0;
 }
-header nav {
-	  width: 50%;
-    display: flex;
-    text-transform: capitalize;
-    font-weight: normal;
-    justify-content: space-between;
-    font-size: 16px;
-    line-height: 30px;
+
+header ul{
+	list-style: none;
 }
-header nav a {
+
+header ul>li{
+	display: inline-block;
+	margin-right: 92px;
+}
+
+header ul>li:nth-last-child(2) {
+	margin-right: 46px;
+}
+
+header ul>li:last-child {
+	border-left: 1px solid #FFF;
+	padding-left: 46px;
+	margin-right: 0;
+}
+
+header ul>li>a{
+	color: #FFF;
 	text-decoration: none;
-	color: white;
-	cursor: pointer;
 	font-size: 16px;
+	font-weight: regular;
+	letter-spacing: -0.1px;
+	cursor: pointer;
+	text-decoration:none;
 }
-header .separator {
-    height: 30px;
-    border-left: 1px solid white;
+
+header .selected:after{
+	content: "";
+	display:block;
+	height: 4px;
+  border-radius: 100px;
+  background-color: #ffffff;
+	margin-top:1px;
 }
-header .selected {
-	border-bottom: 2px solid white;
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown_content {
+  display: none;
+  position: absolute;
+  background-color: #FFF;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  z-index: 99;
+	padding:15px;
+	width:160px;
+	transform: translate(-40%, 0px);
+}
+.dropdown_content li {
+  display: block;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+  line-height: 40px;
+	text-align:center;
+}
+
+.dropdown_content li>a{
+	opacity: 0.9;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 3.13;
+  text-align: center;
+  color: #0d1a34;
+	text-transform:uppercase;
+	transition:0.2s;
+	display:block;
+
+}
+
+.dropdown_content li>a:hover{
+	opacity: 0.6;
+  background-color: #8bbcc7;
+}
+
+
+.dropdown_content li:first-child {
+  margin-top: 0;
+}
+.dropdown_content li:last-child {
+  border-left: 0;
+}
+
+.dropdown:hover > ul {
+  display: block;
 }
 section {
 	background-color: rgba(23,64,132,0.8);
