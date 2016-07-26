@@ -1,12 +1,12 @@
 'use strict';
 
 import {connect} from "react-redux";
-import App from "../components/App";
+import App from "../components/app";
 import {setToken, getLoggedUser} from "../actions/user";
 
 const mapStateToProps = (state) => {
   return {
-    loading: state.vessel.loading
+    loading: state.map.loading
   };
 };
 const mapDispatchToProps = (dispatch) => {

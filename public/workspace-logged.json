@@ -27,7 +27,8 @@
             }
           },
           "visible": true,
-          "color": "green"
+          "color": "green",
+          "zIndex": 0
         },
         "type": "CartoDBAnimation"
       },
@@ -41,9 +42,10 @@
             }
           },
           "visible": true,
-          "color": "green"
+          "color": "green",
+          "zIndex": 1
         },
-        "type": "CartoDBAnimation"
+        "type": "ClusterAnimation"
       },
       {
         "args": {
@@ -55,8 +57,9 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": true,
-          "color": "#da0000"
+          "visible": false,
+          "color": "#da0000",
+          "zIndex": 2
         },
         "type": "CartoDBAnimation"
       },
@@ -70,8 +73,9 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
-          "visible": true,
-          "color": "#c45e00"
+          "visible": false,
+          "color": "#c45e00",
+          "zIndex": 3
         },
         "type": "CartoDBAnimation"
       },
@@ -84,8 +88,9 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
+          "visible": false,
+          "color": "blue",
+          "zIndex": 4
         },
         "type": "CartoDBAnimation"
       },
@@ -98,8 +103,9 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
+          "visible": false,
+          "color": "blue",
+          "zIndex": 5
         },
         "type": "CartoDBAnimation"
       },
@@ -112,50 +118,11 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
-        },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "05499511170989622376-16524589196162594663"
-            }
-          },
-          "title": "Bathymetry",
           "visible": false,
           "color": "blue",
-          "hideremovebtn": true
+          "zIndex": 6
         },
-        "type": "MapsEngineAnimation"
-      },
-      {
-        "args": {
-          "title": "Fishing Effort",
-          "visible": true,
-          "source": {
-            "type": "TiledBinFormat",
-            "args": {
-              "url": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31"
-            }
-          },
-          "selections": {
-            "selected": {
-              "sortcols": [
-                "seriesgroup"
-              ]
-            },
-            "hover": {
-              "sortcols": [
-                "seriesgroup"
-              ]
-            }
-          }
-        },
-        "type": "ClusterAnimation"
+        "type": "CartoDBAnimation"
       }
     ],
     "options": {

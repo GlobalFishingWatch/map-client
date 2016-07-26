@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import layerPanel from "../../styles/components/c_layer_panel.scss";
+import layerPanel from "../../../styles/components/c_layer_panel.scss";
 
 export default function (props) {
   let layers = [];

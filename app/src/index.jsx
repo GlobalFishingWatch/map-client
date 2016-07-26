@@ -9,9 +9,10 @@ import {browserHistory} from "react-router";
 import {syncHistoryWithStore, routerReducer, routerMiddleware} from "react-router-redux";
 import Routes from "./routes";
 import "../styles/index.scss";
-import vesselReducer from "./reducers/vessel";
+import mapReducer from "./reducers/map";
 import userReducer from "./reducers/user";
 import blogReducer from "./reducers/blog";
+import filtersReducer from "./reducers/filters";
 
 /**
  * Reducers
@@ -20,9 +21,10 @@ import blogReducer from "./reducers/blog";
  */
 const reducer = combineReducers({
   routing: routerReducer,
-  vessel: vesselReducer,
+  map: mapReducer,
   user: userReducer,
-  blog: blogReducer
+  blog: blogReducer,
+  filters: filtersReducer
 });
 
 

@@ -2,21 +2,23 @@
 
 import {connect} from "react-redux";
 import Map from "../components/map";
-import {init, showLoading, getLayers, updateLayer} from "../actions/vessel";
+import {init, showLoading, getLayers, toggleLayerVisibility} from "../actions/map";
+import {updateFilters} from "../actions/filters";
 
 const mapStateToProps = (state) => {
   return {
-    vessel: state.vessel,
+    map: state.map,
+    filters: state.filters,
     loggedUser: state.user.loggedUser,
     token: state.user.token,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    initVesselLayer: () => {
+    initMapLayer: () => {
       dispatch(init());
     },
-    loadVesselLayer: (map) => {
+    loadMapLayer: (map) => {
       dispatch(loadZoom(map))
     },
     showLoading: () => {
@@ -25,8 +27,11 @@ const mapDispatchToProps = (dispatch) => {
     getLayers: () => {
       dispatch(getLayers())
     },
-    updateLayer: (layer) => {
-      dispatch(updateLayer(layer))
+    toggleLayerVisibility: (layer) => {
+      dispatch(toggleLayerVisibility(layer))
+    },
+    updateFilters: (filters) => {
+      dispatch(updateFilters(filters))
     }
   };
 }

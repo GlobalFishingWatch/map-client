@@ -2,17 +2,16 @@
 
 import React, {Component} from "react";
 import {GoogleMapLoader, GoogleMap} from "react-google-maps";
+import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "../constants";
 import Draggable from "react-draggable";
-import CanvasLayer from "./layers/canvasLayer";
-import LayerPanel from "./layerPanel";
-import FiltersPanel from "./filtersPanel";
-import VesselPanel from "./vesselPanel";
+import CanvasLayer from "./layers/canvas_layer";
+import LayerPanel from "./map/layer_panel";
+import FiltersPanel from "./map/filters_panel";
+import VesselPanel from "./map/vessel_panel";
+import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
-let tmlnMinDate = 1420070400000; // 01/01/2015
-let tmlnMaxDate = 1451516400000; // 31/12/2015
-const maxZoomLevel = 2;
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
   new google.maps.LatLng(-85, -180),
@@ -26,144 +25,194 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      ite: tmlnMinDate,
+      currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
-      filters: {
-        startDate: tmlnMinDate,
-        endDate: tmlnMaxDate,
-        flag: ''
-      }
+      playbackLength: 1,
+      vesselLayerTransparency: 1,
+      currentVesselInfo: {},
+
+      leftHandlerPosition: 0,
+      rightHandlerPosition: 0,
+      timeBarWidth: 0,
     };
   }
 
+  /**
+   * Zoom change handler
+   * Enforces min and max zoom levels
+   * Resets vessel layer data on change
+   */
   onZoomChanged() {
-    const ZOOM = this.refs.map.props.map.getZoom();
-    if (ZOOM < maxZoomLevel) {
-      this.refs.map.props.map.setZoom(maxZoomLevel);
+    const zoom = this.refs.map.props.map.getZoom();
+    if (zoom < MIN_ZOOM_LEVEL) {
+      this.refs.map.props.map.setZoom(MIN_ZOOM_LEVEL);
     }
-    this.setState({zoom: ZOOM});
-    this.state.overlay.resetData();
+    if (zoom > MAX_ZOOM_LEVEL) {
+      this.refs.map.props.map.setZoom(MAX_ZOOM_LEVEL);
+    }
+    this.setState({zoom: zoom});
+    this.state.overlay.resetPlaybackData();
   }
 
-  moveTimeline(e) {
+  /**
+   * TODO: review
+   *
+   * @param event
+   */
+  moveTimeline(event) {
     this.timelinerange = document.getElementById('timeline_handler');
-    this.timelineStart(this.timelinerange.style.width = (e.clientX - 60) + 'px');
+    this.playbackStart(this.timelinerange.style.width = (event.clientX - 60) + 'px');
   }
 
-  handlerMoved(tick, ev) {
+  /**
+   * Handles drag+drop of the time slider handles
+   * TODO: review
+   *
+   * @param tick
+   * @param event
+   */
+  handlerMoved(tick, event) {
     let target = null;
-    const TIMELINESCOPE = document.getElementById('timeline_handler').parentElement;
-    const ABSMAXMOMENT = new Date(tmlnMaxDate).getTime() - new Date(tmlnMinDate).getTime();
-    let PERCENTAGE = null;
+    let startDate = this.props.filters.startDate;
+    let endDate = this.props.filters.endDate;
+
+    const timelineScope = document.getElementById('timeline_handler').parentElement;
+    const absMaxMoment = new Date(endDate).getTime() - new Date(startDate).getTime();
     if (tick === 1) {
       target = document.getElementById('dateHandlerLeft');
     } else {
       target = document.getElementById('dateHandlerRight');
     }
-    PERCENTAGE = ((target.getBoundingClientRect().left - TIMELINESCOPE.getBoundingClientRect().left) * 100) / TIMELINESCOPE.offsetWidth;
+    const percentage = ((target.getBoundingClientRect().left - timelineScope.getBoundingClientRect().left) * 100) / timelineScope.offsetWidth;
 
     if (target.id === 'dateHandlerLeft') {
-      tmlnMinDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
+      startDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
 
       // UPDATE VISIBLE TIMESTAMP
-      TIMELINESCOPE.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
-      TIMELINESCOPE.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
+      timelineScope.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
+      timelineScope.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
     } else if (target.id === 'dateHandlerRight') {
-      tmlnMaxDate = (PERCENTAGE * ABSMAXMOMENT) / 100 + new Date(tmlnMinDate).getTime();
-      // UPDATE VISIBLE TIMESTAP
-      TIMELINESCOPE.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
+      endDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
+      // UPDATE VISIBLE TIMESTAMP
+      timelineScope.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
     }
     // UPDATE DATES
-    this.setState({ite: tmlnMinDate});
-    this.state.overlay.hide();
-    this.state.overlay.applyFilters({'timeline': [tmlnMinDate, tmlnMaxDate]});
-    document.getElementById('mindate').value = new Date(tmlnMinDate).toISOString().slice(0, 10);
-    document.getElementById('maxdate').value = new Date(tmlnMaxDate).toISOString().slice(0, 10);
+    this.setState({currentTimestamp: startDate});
+    this.state.overlay.updateFilters(this.props.filters);
+    document.getElementById('mindate').value = new Date(startDate).toISOString().slice(0, 10);
+    document.getElementById('maxdate').value = new Date(endDate).toISOString().slice(0, 10);
   }
 
-  timelineStart() {
+  /**
+   * Executed when the user presses the "Play" button
+   */
+  playbackStart() {
     this.timelinerange = document.getElementById('timeline_handler');
-    let data = this.props.vessel.data;
 
     this.setState({
       running: !!!this.state.running
     });
     requestAnimationFrame(function () {
-      this.animateMapData(this.state.ite || tmlnMinDate, mDay);
+      this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate, mDay);
     }.bind(this));
   }
 
-  animateMapData(ite) {
+  /**
+   * Draws a single frame during playback mode
+   * Each frame may represent multiple days of data
+   * Recursively calls itself to animate the following frams
+   *
+   * Handles time slider animation
+   * Calculates initial and final vessel timestamp, and calls vessel layer rendering.
+   *
+   * @param initialTimestamp Initial timestamp to be drawn
+   */
+  drawVesselFrame(initialTimestamp) {
     if (!this.state.running) return;
-    if (this.state.trajectory) {
-      this.state.trajectory.setMap(null)
-    }
+    if (!this.state.overlay) return;
 
-    ite = ite || 0;
-    if (ite > tmlnMaxDate) {
+    initialTimestamp = initialTimestamp || 0;
+    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
+    const startDate = this.props.filters.startDate;
+    const endDate = this.props.filters.endDate;
+
+    if (finalTimestamp > endDate) {
       this.setState({
         running: !!!this.state.running,
       });
-      this.timelineStop();
+      this.playbackStop();
       return;
     }
-    let width = ((ite - tmlnMinDate) / mDay) / ((tmlnMaxDate - tmlnMinDate) / mDay) * 100;
+    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
+    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
+    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
+
     this.setState({
-      widthRange: width + '%',
-      ite: ite
+      leftHandlerPosition: leftHandlerPosition + '%',
+      rightHandlerPosition: rightHandlerPosition + '%',
+      timeBarWidth: timeBarWidth + '%',
+      currentTimestamp: initialTimestamp
     });
-    this.state.overlay.drawFrame(ite, (this.state.zoom > 6
-      ? 3
-      : 2));
-    let animationID = requestAnimationFrame(function () {
-      this.animateMapData(ite + mDay);
+
+    this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
+    const animationID = requestAnimationFrame(function () {
+      this.drawVesselFrame(initialTimestamp + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
   }
 
-  timelineStop() {
+  /**
+   * Handles playback stop
+   * Called when playback ends or user interrupts it using the "Stop" button
+   */
+  playbackStop() {
+    const filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
-    this.state.overlay.regenerate();
-    this.setState({running: null, ite: tmlnMinDate, widthRange: 0});
+
+    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (filters.endDate - filters.startDate) * 100;
+
+    this.state.overlay.updateFilters(filters);
+    this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
+    this.setState({
+      running: null,
+      currentTimestamp: filters.startDate,
+      leftHandlerPosition: '0%',
+      rightHandlerPosition: timeBarWidth + '%',
+      timeBarWidth: timeBarWidth + '%',
+    });
   }
 
-  onIdle() {
-  }
+  /**
+   * Called once additional vessel details are loaded
+   * TODO: should probably be moved elsewhere
+   *
+   * @param data Data returned by the API
+   */
+  handleAdditionalVesselDetails(data) {
+    let currentVesselInfo = this.state.currentVesselInfo;
 
-  handleData(data) {
     data = JSON.parse(data.target.response);
-    document.getElementById('vesselPanelCallsign').innerHTML = data.callsign;
-    document.getElementById('vesselPanelFlag').innerHTML = data.flag;
-    document.getElementById('vesselPanelImo').innerHTML = data.imo;
-    document.getElementById('vesselPanelMmsi').innerHTML = data.mmsi;
-    document.getElementById('vesselPanelName').innerHTML = data.vesselname;
-    document.getElementById('vesselPanelMarineTraffic').innerHTML = '<a href="http://www.marinetraffic.com/en/ais/details/ships/mmsi:'+ data.mmsi + '" target="_blank">here</a>';
+    currentVesselInfo.callsign = data.callsign;
+    currentVesselInfo.flag = data.flag;
+    currentVesselInfo.imo = data.imo;
+    currentVesselInfo.mmsi = data.mmsi;
+    currentVesselInfo.name = data.vesselname;
+
+    this.setState({
+      currentVesselInfo: currentVesselInfo
+    })
   }
 
-  findSeriesPositions(series) {
-    const tiles = this.state.overlay.data;
-    let positions = [];
-    let detailsDrawn = false;
+  /**
+   * Draws a line that connects by timestamp order all paths of the following vessel
+   * Triggers the rendering of the vessel info panel
+   * TODO: this needs to be reimplemented using data from the series group API
+   *
+   * @param vesselInfo
+   */
+  drawSeriesPath(vesselInfo) {
+    const positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
 
-    for (var tile in tiles) {
-      for (var timestamp in tiles[tile]) {
-        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++) {
-          if (tiles[tile][timestamp].series[i] == series) {
-            positions.push({
-              'lat': tiles[tile][timestamp].latitude[i],
-              'lng': tiles[tile][timestamp].longitude[i]
-            });
-            if (!detailsDrawn) {
-              detailsDrawn = true;
-              this.getVesselDetails(tiles, tile, timestamp, i);
-            }
-          }
-        }
-      }
-    }
-    if (this.state.trajectory) {
-      this.state.trajectory.setMap(null)
-    }
     this.setState({
       trajectory: new google.maps.Polyline({
         path: positions,
@@ -176,139 +225,199 @@ class Map extends Component {
     this.state.trajectory.setMap(this.refs.map.props.map);
   }
 
-  getVesselDetails(tiles, tile, timestamp, i) {
-    document.getElementById('vesselBox').style.display = 'block';
-    document.getElementById('vesselPanelSeries').innerHTML = tiles[tile][timestamp].series[i];
-    document.getElementById('vesselPanelSeriesgroup').innerHTML = tiles[tile][timestamp].seriesgroup[i];
-    document.getElementById('vesselPanelLat').innerHTML = tiles[tile][timestamp].latitude[i];
-    document.getElementById('vesselPanelLong').innerHTML = tiles[tile][timestamp].longitude[i];
-    document.getElementById('vesselPanelWeight').innerHTML = tiles[tile][timestamp].weight[i];
+  /**
+   * Given a series group ID, loads additional info for that vessel
+   * Used to display additional data on the vessel details panel
+   * TODO: should probably be moved elsewhere
+   *
+   * @param seriesGroup
+   */
+  loadAdditionalVesselDetails(seriesGroup) {
     if (typeof XMLHttpRequest != 'undefined') {
       this.request = new XMLHttpRequest();
     } else {
       throw 'XMLHttpRequest is disabled';
     }
-    this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + tiles[tile][timestamp].seriesgroup[i] + '/info', true);
+    this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + seriesGroup + '/info', true);
     this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
     this.request.responseType = "application/json";
-    this.request.onload = this.handleData.bind(this);
-    this.request.onerror = this.handleData.bind(this);
+    this.request.onload = this.handleAdditionalVesselDetails.bind(this);
     this.request.send(null);
   }
 
-  onClickMap(e) {
-    const LAT = Math.round(e.latLng.lat() * 1) / 1;
-    const LNG = Math.round(e.latLng.lng() * 1) / 1;
-    const tiles = this.state.overlay.data;
-    for (var tile in tiles) {
-      for (var timestamp in tiles[tile]) {
-        for (var i = 0; i < tiles[tile][timestamp].latitude.length; i++) {
-          if (Math.round(tiles[tile][timestamp].latitude[i] * 1) / 1 == LAT && Math.round(tiles[tile][timestamp].longitude[i] * 1) / 1 == LNG) {
-            this.findSeriesPositions(tiles[tile][timestamp].series[i]);
-            return;
-          }
-        }
-      }
+  /**
+   * Displays the currently selected vessel details on the corresponding panel
+   * Triggers additional vessel details loading.
+   *
+   * @param vesselInfo
+   */
+  showVesselDetails(vesselInfo) {
+    const currentVesselInfo = {
+      series: vesselInfo.series,
+      seriesGroup: vesselInfo.seriesgroup,
+      latitude: vesselInfo.latitude,
+      longitude: vesselInfo.longitude,
+      weight: vesselInfo.weight,
+      timestamp: vesselInfo.timestamp
+    };
+
+    this.setState({currentVesselInfo: currentVesselInfo})
+    this.loadAdditionalVesselDetails(vesselInfo.seriesgroup)
+  }
+
+  /**
+   * Detects and handles map clicks
+   * Detects collisions with current vessel data
+   * Draws tracks and loads vessel details
+   *
+   * @param event
+   */
+  onClickMap(event) {
+    const clickLat = ~~event.latLng.lat();
+    const clickLong = ~~event.latLng.lng();
+
+    const vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
+
+    if (this.state.trajectory) {
+      this.state.trajectory.setMap(null);
+    }
+
+    if (vesselInfo) {
+      this.showVesselDetails(vesselInfo);
+      this.drawSeriesPath(vesselInfo);
+    } else if (this.state.trajectory) {
+      this.setState({currentVesselInfo: {}})
     }
   }
 
   componentDidMount() {
-    // this.props.initVesselLayer();
     this.props.getLayers();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.vessel && nextProps.vessel != this.props.vessel) {
-      let nProps = nextProps.vessel;
-      let tProps = this.props.vessel;
-      let PVLayers = tProps.layers;
-      let nPVLayers = nProps.layers;
-      const addedLayers = this.state.addedLayers;
-      let promises = [];
+    if (!nextProps.map) {
+      return;
+    }
+    this.updateLayersState(nextProps);
+    this.updateFiltersState(nextProps);
+  }
 
-      const addVessel = function (title, pos) {
-        const canvasLayer = new CanvasLayer(pos, null, this.refs.map.props.map, this.props.token, {'timeline': [new Date(this.state.filters.startDate).getTime(), new Date(this.state.filters.endDate).getTime()]});
-        this.setState({overlay: canvasLayer});
-        addedLayers[title] = canvasLayer;
-      }
-      let callAddVessel = null;
-      if (nPVLayers !== PVLayers) {
-        for (let i = 0, length = nPVLayers.length; i < length; i++) {
-          if (nPVLayers[i].visible && !addedLayers[nPVLayers[i].title]) {
-            // add layer and not exist
-            if (nPVLayers[i].title === 'VESSEL') {
-              callAddVessel = addVessel.bind(this, nPVLayers[i].title, i);
-            } else {
-              let promise = new Promise(function (resolve, reject) {
-                cartodb.createLayer(this.refs.map.props.map, nPVLayers[i].source.args.url)
-                  .addTo(this.refs.map.props.map, i).done(function (layer, cartoLayer) {
-                  addedLayers[layer.title] = cartoLayer;
-                  resolve();
-                }.bind(this, nPVLayers[i]));
-              }.bind(this));
-              promises.push(promise);
-            }
+  /**
+   * Handles and propagates filters changes
+   *
+   * @param nextProps
+   */
+  updateFiltersState(nextProps) {
+    if (this.state.overlay) {
+      this.state.overlay.updateFilters(nextProps.filters);
+    }
+  }
 
-          } else if (nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && !addedLayers[nPVLayers[i].title].isVisible()) {
-            // visible and already exist
-            if (nPVLayers[i].title === 'VESSEL') {
-              this.state.overlay.show();
-            } else {
-              addedLayers[nPVLayers[i].title].show();
-            }
-          } else if (!nPVLayers[i].visible && addedLayers[nPVLayers[i].title] && addedLayers[nPVLayers[i].title].isVisible()) {
-            //hide layer
-            if (nPVLayers[i].title === 'VESSEL') {
-              this.state.overlay.hide();
-            } else {
-              addedLayers[nPVLayers[i].title].hide();
-            }
+  /**
+   * Handles and propagates layers changes
+   * @param nextProps
+   */
+  updateLayersState(nextProps) {
+    const currentLayers = this.props.map.layers;
+    const newLayers = nextProps.map.layers;
+    const addedLayers = this.state.addedLayers;
+    let promises = [];
+
+    let callAddVesselLayer = null;
+    if (newLayers !== currentLayers) {
+      for (let index = 0, length = newLayers.length; index < length; index++) {
+        let newLayer = newLayers[index];
+        if (!addedLayers[newLayer.title]) {
+          if (!newLayer.visible) {
+            continue;
           }
+          if (newLayer.type === 'ClusterAnimation') {
+            callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, nextProps.filters);
+          } else {
+            promises.push(this.addCartoLayer(newLayer));
+          }
+        } else {
+          this.toggleLayerVisibility(newLayer);
         }
       }
-      if (promises && promises.length > 0) {
-        Promise.all(promises).then(function () {
-          if (callAddVessel) {
-            callAddVessel();
-          }
-          this.setState({addedLayers: addedLayers});
-        }.bind(this));
+    }
+
+    Promise.all(promises).then(function () {
+      if (callAddVesselLayer) {
+        callAddVesselLayer();
+      }
+      this.setState({addedLayers: addedLayers});
+    }.bind(this));
+  }
+
+  /**
+   * Creates vessel track layer
+   *
+   * @param layerSettings
+   */
+  addVesselLayer(layerSettings) {
+    const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.refs.map.props.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
+    this.setState({overlay: canvasLayer});
+    this.state.addedLayers[layerSettings.title] = canvasLayer;
+  }
+
+  /**
+   * Creates a Carto-based layer
+   *
+   * @param map
+   * @returns {Promise}
+   */
+  addCartoLayer(layerSettings) {
+    const map = this.refs.map.props.map
+    const addedLayers = this.state.addedLayers;
+
+    let promise = new Promise(function (resolve, reject) {
+      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function (layer, cartoLayer) {
+        addedLayers[layer.title] = cartoLayer;
+        resolve();
+      }.bind(this, layerSettings));
+    }.bind(this));
+    return promise;
+  }
+
+  /**
+   * Toggles a layer's visibility
+   *
+   * @param layerSettings
+   */
+  toggleLayerVisibility(layerSettings) {
+    const layers = this.state.addedLayers;
+
+    if (layerSettings.visible) {
+      if (layers[layerSettings.title].isVisible()) {
+        return;
+      }
+      if (layerSettings.type === 'ClusterAnimation') {
+        this.state.overlay.show();
       } else {
-        this.setState({addedLayers: addedLayers});
+        layers[layerSettings.title].show();
       }
-
-    }
-  }
-
-  isVisibleVessel(layers) {
-    if (layers) {
-      for (let i = 0, length = layers.length; i < length; i++) {
-        if (layers[i].title === 'VESSEL') {
-          return layers[i].visible;
-        }
+    } else {
+      if (!layers[layerSettings.title].isVisible()) {
+        return;
+      }
+      if (layerSettings.type === 'ClusterAnimation') {
+        this.state.overlay.hide();
+      } else {
+        layers[layerSettings.title].hide();
       }
     }
-    return true;
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextState.overlay && this.isVisibleVessel(nextProps.vessel.layers)) {
-      nextState.overlay.applyFilters({
-        'timeline': [new Date(nextState.filters.startDate).getTime(), new Date(nextState.filters.endDate).getTime()],
-        'flag': this.state.filters.flag
-      });
-    }
-  }
-
-  onMousemove(ev) {
+  onMouseMove(event) {
     this.refs.map.props.map.setOptions({draggableCursor: 'default'});
   }
 
-  onDragStart(ev) {
+  onDragStart(event) {
     if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
   }
 
-  onDragEnd(ev) {
+  onDragEnd(event) {
     if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
       this.state.lastCenter = this.refs.map.props.map.getCenter();
       return;
@@ -316,44 +425,87 @@ class Map extends Component {
     this.refs.map.props.map.panTo(this.state.lastCenter);
   }
 
-  toggleLayer(layer) {
-    layer.visible = !layer.visible;
-    this.props.updateLayer(layer);
-  }
+  /**
+   * Triggered when the user updates the vessel data pickers
+   * Has special handling for startDate/endDate
+   *
+   * @param target Name of the filter
+   * @param value New value of the filter
+   */
+  updateFilters(target, value) {
+    const filters = this.props.filters;
 
-  updateDates(target, value) {
-    let filters = this.state.filters;
-    filters[target] = new Date(value).getTime();
-    this.setState({filters: filters});
     if (target === 'startDate') {
-      this.setState({ite: new Date(value).getTime()});
+      value = new Date(value).getTime();
+      if (value >= filters.endDate) {
+        return;
+      }
+      if (this.state.currentTimestamp < value) {
+        this.setState({currentTimestamp: value});
+      }
+    } else if (target === 'endDate') {
+      value = new Date(value).getTime();
+      if (value <= filters['startDate']) {
+        return;
+      }
+      if (this.state.currentTimestamp > value) {
+        this.setState({currentTimestamp: value});
+      }
     }
-    this.state.overlay.hide();
+
+    filters[target] = value;
+
+    this.props.updateFilters(filters);
   }
 
-  displayVesselsByCountry(iso) {
-    // if (iso.length > 2){
-    // switch to type INT
-    let filters = this.state.filters;
-    filters['flag'] = iso;
-    this.setState({filters: filters});
-    this.state.overlay.hide();
-    // }
+  /**
+   * Handles changes to the playback range
+   *
+   * @param range
+   */
+  updatePlaybackRange(range) {
+    const filters = this.props.filters;
+    const timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
+
+    this.setState({playbackLength: range, timeBarWidth: timeBarWidth + '%', rightHandlerPosition: timeBarWidth + '%'});
   }
 
-  login() {
-    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
-    window.location = url;
+  /**
+   * Handles changes
+   *
+   * @param vesselLayerTransparency
+   */
+  updateVesselLayerDensity(vesselLayerTransparency) {
+    this.setState({vesselLayerTransparency: vesselLayerTransparency});
+    this.state.overlay.vesselLayerTransparency = vesselLayerTransparency;
+
+    if (!this.state.running) {
+      this.state.overlay.refresh();
+    }
   }
 
-  shareMap(ev) {
+  shareMap(event) {
     alert('TODO: share map');
   }
 
-  changeZoomLevel(ev) {
-    this.refs.map.props.map.setZoom((ev.target.id === 'zoom_up') ? this.refs.map.props.map.getZoom() + 1 : this.refs.map.props.map.getZoom() - 1);
+  /**
+   * Handles clicks on the +/- buttons that manipulate the map zoom
+   *
+   * @param event
+   */
+  changeZoomLevel(event) {
+    const map = this.refs.map.props.map;
+    const newZoomLevel = (event.target.id === 'zoom_up') ? map.getZoom() + 1 : map.getZoom() - 1
+
+    map.setZoom(newZoomLevel);
   }
 
+  /**
+   * Big scary map rendering method
+   * TODO: see if we can split this up into multiple React components or, if not, split up into multiple render methods
+   *
+   * @returns {XML}
+   */
   render() {
     return <div>
       <header className={map.c_header}>
@@ -367,21 +519,21 @@ class Map extends Component {
         </div>
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
-            <button onClick={this.timelineStart.bind(this)} className={map.timeline}>
+            <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
               {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
             </button>
-            <button onClick={this.timelineStop.bind(this)} className={map.timelineStop}>Stop</button>
+            <button onClick={this.playbackStop.bind(this)} className={map.playbackStop}>Stop</button>
           </div>
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" value={new Date(this.state.filters.startDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateDates('startDate', e.currentTarget.value)}/>
+              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" value={new Date(this.state.filters.endDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateDates('endDate', e.currentTarget.value)}/>
+              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>
@@ -389,10 +541,11 @@ class Map extends Component {
               axis="x"
               zIndex={100}
               onStop={this.handlerMoved.bind(this, 1)}>
-              <span className={map.handler_grab} id="dateHandlerLeft"><i></i></span>
+              <span className={map.handler_grab} id="dateHandlerLeft"
+                    style={{left: this.state.leftHandlerPosition}}><i></i></span>
             </Draggable>
-            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.widthRange}}>
-              {new Date(this.state.ite).toISOString().slice(0, 10)}
+            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.rightHandlerPosition}}>
+              {new Date(this.state.currentTimestamp).toISOString().slice(0, 10)}
             </span>
 
             <Draggable
@@ -400,16 +553,20 @@ class Map extends Component {
               zIndex={100}
               onStop={this.handlerMoved.bind(this, 2)}>
               <span className={[map.handler_grab, map.right].join(' ')} id="dateHandlerRight"
-                    style={{left: this.state.widthRange}}><i></i></span>
+                    style={{left: this.state.rightHandlerPosition}}><i></i></span>
             </Draggable>
             <span className={map.timeline_range}>
-              <span className={map.handle} id="timeline_handler" style={{width: this.state.widthRange}}></span>
+              <span className={map.handle} id="timeline_handler"
+                    style={{left: this.state.leftHandlerPosition, width: this.state.timeBarWidth}}></span>
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.vessel.layers} onToggle={this.toggleLayer.bind(this)}/>
-        <FiltersPanel onChange={this.displayVesselsByCountry.bind(this)}/>
-        <VesselPanel onChange={this.displayVesselsByCountry.bind(this)}/>
+        <LayerPanel layers={this.props.map.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
+        <FiltersPanel onChange={this.updateFilters.bind(this)}/>
+        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
+                      onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+                      startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
+        <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{height: "100%",}}/>
@@ -426,9 +583,8 @@ class Map extends Component {
                 zoomControl: false
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-              onIdle={this.onIdle.bind(this)}
               onClick={this.onClickMap.bind(this)}
-              onMousemove={this.onMousemove.bind(this)}
+              onMousemove={this.onMouseMove.bind(this)}
               onZoomChanged={this.onZoomChanged.bind(this)}
               onDragstart={this.onDragStart.bind(this)}
               onDragend={this.onDragEnd.bind(this)}>

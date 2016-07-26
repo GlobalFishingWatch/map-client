@@ -1,7 +1,6 @@
-import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, UPDATE_LAYER} from "../constants";
+import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY} from "../constants";
 
 const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
-
 
 export function init() {
   return {
@@ -20,9 +19,9 @@ export function showLoading(show) {
   };
 };
 
-export function updateLayer(layer) {
+export function toggleLayerVisibility(layer) {
   return {
-    type: UPDATE_LAYER,
+    type: TOGGLE_LAYER_VISIBILITY,
     payload: layer
   };
 }
@@ -53,9 +52,12 @@ export function getLayers() {
       }
     }).then((data) => {
       let layers = [];
+      let allowedTypes = ['CartoDBAnimation', 'ClusterAnimation']
       for (let prop in data.map.animations) {
-        if (data.map.animations[prop].type === "CartoDBAnimation" && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
-          layers.push(data.map.animations[prop].args);
+        if (allowedTypes.indexOf(data.map.animations[prop].type) !== -1 && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
+          let layerDetails = data.map.animations[prop].args;
+          layerDetails.type = data.map.animations[prop].type;
+          layers.push(layerDetails);
         }
       }
       return layers;
