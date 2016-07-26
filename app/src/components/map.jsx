@@ -27,12 +27,13 @@ class Map extends Component {
       addedLayers: [],
       currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
-      playbackLength: 1,
+      playbackRange: 1,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
       leftHandlerPosition: 0,
       rightHandlerPosition: 0,
       timeBarWidth: 0,
+      running: 'stop'
     };
   }
 
@@ -111,56 +112,61 @@ class Map extends Component {
   playbackStart() {
     this.timelinerange = document.getElementById('timeline_handler');
 
-    this.setState({
-      running: !!!this.state.running
-    });
+    if (this.state.running == 'play') {
+      this.setState({running: 'pause'});
+    } else {
+      this.setState({running: 'play'});
+    }
+
     requestAnimationFrame(function () {
-      this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate, mDay);
+      this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate);
     }.bind(this));
   }
 
   /**
    * Draws a single frame during playback mode
    * Each frame may represent multiple days of data
-   * Recursively calls itself to animate the following frams
+   * Recursively calls itself to animate the following frames
    *
    * Handles time slider animation
    * Calculates initial and final vessel timestamp, and calls vessel layer rendering.
    *
    * @param initialTimestamp Initial timestamp to be drawn
    */
-  drawVesselFrame(initialTimestamp) {
-    if (!this.state.running) return;
-    if (!this.state.overlay) return;
+  drawVesselFrame(initialTimestamp, playbackRange) {
+    if (this.state.running == 'stop') {
+      return;
+    }
+    if (!this.state.overlay) {
+      return;
+    }
 
     initialTimestamp = initialTimestamp || 0;
-    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
-    const startDate = this.props.filters.startDate;
+
+    playbackRange = playbackRange || this.state.playbackRange;
+    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
     const endDate = this.props.filters.endDate;
 
     if (finalTimestamp > endDate) {
-      this.setState({
-        running: !!!this.state.running,
-      });
+      this.setState({running: 'stop'});
       this.playbackStop();
       return;
     }
-    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
-    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
-    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
 
-    this.setState({
-      leftHandlerPosition: leftHandlerPosition + '%',
-      rightHandlerPosition: rightHandlerPosition + '%',
-      timeBarWidth: timeBarWidth + '%',
-      currentTimestamp: initialTimestamp
-    });
+    this.setState({currentTimestamp: initialTimestamp});
+
+    this.updatePlaybackBar(initialTimestamp, playbackRange);
 
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
+
+
     const animationID = requestAnimationFrame(function () {
-      this.drawVesselFrame(initialTimestamp + mDay);
+      if (this.state.running == 'play') {
+        this.drawVesselFrame(initialTimestamp + mDay);
+      }
     }.bind(this));
     this.setState({'animationID': animationID});
+
   }
 
   /**
@@ -171,17 +177,12 @@ class Map extends Component {
     const filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
 
-    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (filters.endDate - filters.startDate) * 100;
-
     this.state.overlay.updateFilters(filters);
     this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
-    this.setState({
-      running: null,
-      currentTimestamp: filters.startDate,
-      leftHandlerPosition: '0%',
-      rightHandlerPosition: timeBarWidth + '%',
-      timeBarWidth: timeBarWidth + '%',
-    });
+
+    this.setState({running: 'stop', currentTimestamp: filters.startDate});
+
+    this.updatePlaybackBar(filters.startDate, this.state.playbackRange);
   }
 
   /**
@@ -483,13 +484,32 @@ class Map extends Component {
   /**
    * Handles changes to the playback range
    *
-   * @param range
+   * @param playbackRange
    */
-  updatePlaybackRange(range) {
-    const filters = this.props.filters;
-    const timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
+  updatePlaybackRange(playbackRange) {
+    this.setState({playbackRange: playbackRange});
 
-    this.setState({playbackLength: range, timeBarWidth: timeBarWidth + '%', rightHandlerPosition: timeBarWidth + '%'});
+    if (this.state.running == 'pause') {
+      this.drawVesselFrame(this.state.currentTimestamp, playbackRange);
+    }
+
+    this.updatePlaybackBar(this.state.currentTimestamp, playbackRange);
+  }
+
+  updatePlaybackBar(initialTimestamp, playbackRange) {
+    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
+    const startDate = this.props.filters.startDate;
+    const endDate = this.props.filters.endDate;
+
+    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
+    const timeBarWidth = ((TIMELINE_STEP * playbackRange)) / (endDate - startDate) * 100;
+    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
+
+    this.setState({
+      leftHandlerPosition: leftHandlerPosition + '%',
+      rightHandlerPosition: rightHandlerPosition + '%',
+      timeBarWidth: timeBarWidth + '%',
+    });
   }
 
   /**
@@ -501,7 +521,7 @@ class Map extends Component {
     this.setState({vesselLayerTransparency: vesselLayerTransparency});
     this.state.overlay.vesselLayerTransparency = vesselLayerTransparency;
 
-    if (!this.state.running) {
+    if (this.state.running != 'play') {
       this.state.overlay.refresh();
     }
   }
@@ -541,7 +561,7 @@ class Map extends Component {
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
-              {!this.state || !this.state.running ? "Play ►" : "Pause ||"}
+              {this.state.running != 'play' ? "Play ►" : "Pause ||"}
             </button>
             <button onClick={this.playbackStop.bind(this)} className={map.playbackStop}>Stop</button>
           </div>
