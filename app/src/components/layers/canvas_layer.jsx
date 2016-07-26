@@ -147,8 +147,8 @@ class CanvasLayer {
    * @returns {{latitude, longitude, weight, timestamp: *, x: *, y: *, series, seriesgroup}}
    */
   getVesselAtLocation(lat, long) {
-    let filters = this.filters;
-    let tiles = this.playbackData;
+    const filters = this.filters;
+    const tiles = this.playbackData;
     for (var tileId in tiles) {
       for (var timestamp = filters.startDate; timestamp <= filters.endDate; timestamp += TIMELINE_STEP) {
         if (!tiles[tileId].hasOwnProperty(timestamp)) {
@@ -180,7 +180,7 @@ class CanvasLayer {
    * @param end
    */
   drawTimeRange(start, end) {
-    let canvasKeys = Object.keys(this.playbackData);
+    const canvasKeys = Object.keys(this.playbackData);
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
 
       let canvasKey = canvasKeys[index];
@@ -208,7 +208,7 @@ class CanvasLayer {
    */
   drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
     if (!canvas) return;
-    let size = canvas.zoom > 6 ? 3 : 2;
+    const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], drawTrail);
@@ -228,12 +228,12 @@ class CanvasLayer {
   drawTileFromVectorArray(canvas, vectorArray) {
     if (!canvas) return;
 
-    let filters = this.filters;
+    const filters = this.filters;
     if (!vectorArray) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
-    let size = canvas.zoom > 6 ? 3 : 2;
+    const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       if (!!filters) {
@@ -256,7 +256,7 @@ class CanvasLayer {
    * @returns {boolean}
    */
   passesFilters(data, index) {
-    let filters = this.filters;
+    const filters = this.filters;
     if (!!filters) {
       if (filters.startDate && filters.endDate && ((data.datetime[index] < filters.startDate || data.datetime[index] > filters.endDate) || !data.weight[index])) {
         return false;
@@ -276,7 +276,7 @@ class CanvasLayer {
     const scale = 1 << tileCoordinates.zoom;
     const tileBaseX = tileCoordinates.x * 256;
     const tileBaseY = tileCoordinates.y * 256;
-    let zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
+    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
 
     vectorArray.x = new Int32Array(vectorArray.latitude.length);
     vectorArray.y = new Int32Array(vectorArray.latitude.length);
@@ -302,7 +302,7 @@ class CanvasLayer {
    * @param tileCoordinates
    */
   storeAsPlaybackData(vectorArray, tileCoordinates) {
-    let tileId = this.getTileId(tileCoordinates.x, tileCoordinates.y, tileCoordinates.zoom);
+    const tileId = this.getTileId(tileCoordinates.x, tileCoordinates.y, tileCoordinates.zoom);
 
     if (!this.playbackData[tileId]) {
       this.playbackData[tileId] = {};
@@ -350,8 +350,8 @@ class CanvasLayer {
    * @param drawTrail
    */
   drawVesselPoint(canvas, x, y, size, weight, drawTrail) {
-    let vesselLayerTransparency = this.vesselLayerTransparency
-    let calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
+    const vesselLayerTransparency = this.vesselLayerTransparency
+    const calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
 
     canvas.ctx.fillStyle = 'rgba(17,129,251,' + calculatedWeight + ')';
     canvas.ctx.fillRect(x, y, size, size);
@@ -381,8 +381,8 @@ class CanvasLayer {
    * @returns {*}
    */
   getTileCoordinates(coord, zoom) {
-    let y = coord.y;
-    let x = coord.x;
+    const y = coord.y;
+    const x = coord.x;
     const tileRange = 1 << zoom;
     if (y < 0 || y >= tileRange) {
       return null;
@@ -403,8 +403,8 @@ class CanvasLayer {
    * @returns {Array}
    */
   getTemporalTileURLs(tileCoordinates, filters) {
-    let startYear = new Date(filters.startDate).getUTCFullYear();
-    let endYear = new Date(filters.endDate).getUTCFullYear();
+    const startYear = new Date(filters.startDate).getUTCFullYear();
+    const endYear = new Date(filters.endDate).getUTCFullYear();
     let urls = [];
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${url}${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
@@ -456,8 +456,8 @@ class CanvasLayer {
    * @returns {*}
    */
   getTile(coord, zoom, ownerDocument) {
-    var canvas = this._getCanvas(coord, zoom, ownerDocument);
-    let tileCoordinates = this.getTileCoordinates(coord, zoom);
+    const canvas = this._getCanvas(coord, zoom, ownerDocument);
+    const tileCoordinates = this.getTileCoordinates(coord, zoom);
     let promises = [];
     if (tileCoordinates) {
       let urls = this.getTemporalTileURLs(tileCoordinates, this.filters);

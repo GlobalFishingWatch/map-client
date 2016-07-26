@@ -64,6 +64,13 @@ class Map extends Component {
     this.playbackStart(this.timelinerange.style.width = (event.clientX - 60) + 'px');
   }
 
+  /**
+   * Handles drag+drop of the time slider handles
+   * TODO: review
+   *
+   * @param tick
+   * @param event
+   */
   handlerMoved(tick, event) {
     let target = null;
     let startDate = this.props.filters.startDate;
@@ -76,7 +83,7 @@ class Map extends Component {
     } else {
       target = document.getElementById('dateHandlerRight');
     }
-    let percentage = ((target.getBoundingClientRect().left - timelineScope.getBoundingClientRect().left) * 100) / timelineScope.offsetWidth;
+    const percentage = ((target.getBoundingClientRect().left - timelineScope.getBoundingClientRect().left) * 100) / timelineScope.offsetWidth;
 
     if (target.id === 'dateHandlerLeft') {
       startDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
@@ -125,9 +132,9 @@ class Map extends Component {
     if (!this.state.overlay) return;
 
     initialTimestamp = initialTimestamp || 0;
-    let finalTimestamp = initialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
-    let startDate = this.props.filters.startDate;
-    let endDate = this.props.filters.endDate;
+    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * this.state.playbackLength);
+    const startDate = this.props.filters.startDate;
+    const endDate = this.props.filters.endDate;
 
     if (finalTimestamp > endDate) {
       this.setState({
@@ -136,9 +143,9 @@ class Map extends Component {
       this.playbackStop();
       return;
     }
-    let leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
-    let timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
-    let rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
+    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
+    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (endDate - startDate) * 100;
+    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
 
     this.setState({
       leftHandlerPosition: leftHandlerPosition + '%',
@@ -148,7 +155,7 @@ class Map extends Component {
     });
 
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
-    let animationID = requestAnimationFrame(function () {
+    const animationID = requestAnimationFrame(function () {
       this.drawVesselFrame(initialTimestamp + mDay);
     }.bind(this));
     this.setState({'animationID': animationID});
@@ -159,10 +166,10 @@ class Map extends Component {
    * Called when playback ends or user interrupts it using the "Stop" button
    */
   playbackStop() {
-    let filters = this.props.filters;
+    const filters = this.props.filters;
     cancelAnimationFrame(this.state.animationID);
 
-    let timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (filters.endDate - filters.startDate) * 100;
+    const timeBarWidth = ((TIMELINE_STEP * this.state.playbackLength)) / (filters.endDate - filters.startDate) * 100;
 
     this.state.overlay.updateFilters(filters);
     this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
@@ -204,7 +211,7 @@ class Map extends Component {
    * @param vesselInfo
    */
   drawSeriesPath(vesselInfo) {
-    let positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
+    const positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
 
     this.setState({
       trajectory: new google.maps.Polyline({
@@ -245,7 +252,7 @@ class Map extends Component {
    * @param vesselInfo
    */
   showVesselDetails(vesselInfo) {
-    let currentVesselInfo = {
+    const currentVesselInfo = {
       series: vesselInfo.series,
       seriesGroup: vesselInfo.seriesgroup,
       latitude: vesselInfo.latitude,
@@ -266,10 +273,10 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-    let clickLat = ~~event.latLng.lat();
-    let clickLong = ~~event.latLng.lng();
+    const clickLat = ~~event.latLng.lat();
+    const clickLong = ~~event.latLng.lng();
 
-    let vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
+    const vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
 
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
@@ -311,8 +318,8 @@ class Map extends Component {
    * @param nextProps
    */
   updateLayersState(nextProps) {
-    let currentLayers = this.props.map.layers;
-    let newLayers = nextProps.map.layers;
+    const currentLayers = this.props.map.layers;
+    const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
     let promises = [];
 
@@ -426,26 +433,23 @@ class Map extends Component {
    * @param value New value of the filter
    */
   updateFilters(target, value) {
-    let filters = this.props.filters;
-    let newDateValue = new Date(value).getTime();
-    let currentTimestamp = this.state.currentTimestamp
+    const filters = this.props.filters;
 
     if (target === 'startDate') {
-      if (newDateValue >= filters['endDate']) {
+      value = new Date(value).getTime();
+      if (value >= filters.endDate) {
         return;
       }
-      value = new Date(value).getTime();
-      if (currentTimestamp < value) {
-        this.setState({currentTimestamp: newDateValue});
+      if (this.state.currentTimestamp < value) {
+        this.setState({currentTimestamp: value});
       }
-    }
-    if (target === 'endDate') {
-      if (newDateValue >= filters['endDate']) {
+    } else if (target === 'endDate') {
+      value = new Date(value).getTime();
+      if (value <= filters['startDate']) {
         return;
       }
-      value = new Date(value).getTime();
-      if (currentTimestamp > newDateValue) {
-        this.setState({currentTimestamp: newDateValue});
+      if (this.state.currentTimestamp > value) {
+        this.setState({currentTimestamp: value});
       }
     }
 
@@ -460,8 +464,8 @@ class Map extends Component {
    * @param range
    */
   updatePlaybackRange(range) {
-    let filters = this.props.filters;
-    let timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
+    const filters = this.props.filters;
+    const timeBarWidth = ((TIMELINE_STEP * range)) / (filters.endDate - filters.startDate) * 100;
 
     this.setState({playbackLength: range, timeBarWidth: timeBarWidth + '%', rightHandlerPosition: timeBarWidth + '%'});
   }
@@ -490,8 +494,8 @@ class Map extends Component {
    * @param event
    */
   changeZoomLevel(event) {
-    let map = this.refs.map.props.map;
-    let newZoomLevel = (event.target.id === 'zoom_up') ? map.getZoom() + 1 : map.getZoom() - 1
+    const map = this.refs.map.props.map;
+    const newZoomLevel = (event.target.id === 'zoom_up') ? map.getZoom() + 1 : map.getZoom() - 1
 
     map.setZoom(newZoomLevel);
   }
