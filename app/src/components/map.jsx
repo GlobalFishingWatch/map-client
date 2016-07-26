@@ -30,7 +30,6 @@ class Map extends Component {
       playbackLength: 1,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
-
       leftHandlerPosition: 0,
       rightHandlerPosition: 0,
       timeBarWidth: 0,
@@ -43,12 +42,12 @@ class Map extends Component {
    * Resets vessel layer data on change
    */
   onZoomChanged() {
-    const zoom = this.refs.map.props.map.getZoom();
+    const zoom = this.map.getZoom();
     if (zoom < MIN_ZOOM_LEVEL) {
-      this.refs.map.props.map.setZoom(MIN_ZOOM_LEVEL);
+      this.map.setZoom(MIN_ZOOM_LEVEL);
     }
     if (zoom > MAX_ZOOM_LEVEL) {
-      this.refs.map.props.map.setZoom(MAX_ZOOM_LEVEL);
+      this.map.setZoom(MAX_ZOOM_LEVEL);
     }
     this.setState({zoom: zoom});
     this.state.overlay.resetPlaybackData();
@@ -222,7 +221,7 @@ class Map extends Component {
         strokeWeight: 2
       })
     })
-    this.state.trajectory.setMap(this.refs.map.props.map);
+    this.state.trajectory.setMap(this.map);
   }
 
   /**
@@ -290,10 +289,6 @@ class Map extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.getLayers();
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!nextProps.map) {
       return;
@@ -356,7 +351,7 @@ class Map extends Component {
    * @param layerSettings
    */
   addVesselLayer(layerSettings) {
-    const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.refs.map.props.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
+    const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
     this.setState({overlay: canvasLayer});
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
@@ -368,7 +363,7 @@ class Map extends Component {
    * @returns {Promise}
    */
   addCartoLayer(layerSettings) {
-    const map = this.refs.map.props.map
+    const map = this.map
     const addedLayers = this.state.addedLayers;
 
     let promise = new Promise(function (resolve, reject) {
@@ -410,19 +405,32 @@ class Map extends Component {
   }
 
   onMouseMove(event) {
-    this.refs.map.props.map.setOptions({draggableCursor: 'default'});
+    this.map.setOptions({draggableCursor: 'default'});
   }
 
   onDragStart(event) {
-    if (this.state.lastCenter === null) this.lastValidCenter = this.refs.map.props.map.getCenter();
+    if (this.state.lastCenter === null) this.lastValidCenter = this.map.getCenter();
   }
 
   onDragEnd(event) {
-    if (strictBounds.contains(this.refs.map.props.map.getCenter())) {
-      this.state.lastCenter = this.refs.map.props.map.getCenter();
+    if (strictBounds.contains(this.map.getCenter())) {
+      this.state.lastCenter = this.map.getCenter();
       return;
     }
-    this.refs.map.props.map.panTo(this.state.lastCenter);
+    this.map.panTo(this.state.lastCenter);
+  }
+
+  /**
+   * Handles map idle event (once loading is done)
+   * Used here to do the initial load of the layers
+   *
+   * @param event
+   */
+  onMapIdle(event) {
+    if (!this.map) {
+      this.map = this.refs.map.props.map;
+      this.props.getLayers();
+    }
   }
 
   /**
@@ -494,10 +502,9 @@ class Map extends Component {
    * @param event
    */
   changeZoomLevel(event) {
-    const map = this.refs.map.props.map;
-    const newZoomLevel = (event.target.id === 'zoom_up') ? map.getZoom() + 1 : map.getZoom() - 1
+    const newZoomLevel = (event.target.id === 'zoom_up') ? this.map.getZoom() + 1 : this.map.getZoom() - 1
 
-    map.setZoom(newZoomLevel);
+    this.map.setZoom(newZoomLevel);
   }
 
   /**
@@ -587,8 +594,9 @@ class Map extends Component {
               onMousemove={this.onMouseMove.bind(this)}
               onZoomChanged={this.onZoomChanged.bind(this)}
               onDragstart={this.onDragStart.bind(this)}
-              onDragend={this.onDragEnd.bind(this)}>
-            </GoogleMap>
+              onDragend={this.onDragEnd.bind(this)}
+              onIdle={this.onMapIdle.bind(this)}
+            />
           }>
         </GoogleMapLoader>
       </div>
