@@ -5,16 +5,6 @@ import logoimg from "../../../assets/logos/gfw_logo_hor_second.png";
 
 
 class Header extends Component {
-  login(event) {
-    event.preventDefault();
-    let url = "https://skytruth-pleuston.appspot.com/v1/authorize?response_type=token&client_id=asddafd&redirect_uri=" + window.location;
-    window.location = url;
-  }
-
-  logout() {
-    console.log('TODO: implement logout');
-  }
-
   render() {
     let userLinks;
     if (this.props.loggedUser) {
@@ -22,11 +12,11 @@ class Header extends Component {
         <Link to="#">{this.props.loggedUser.displayName}</Link>
         <ul className={home.dropdown_content}>
           <li><Link to="#">Profile</Link></li>
-          <li><Link to="#" onClick={this.logout.bind(this)}>Logout</Link></li>
+          <li><a href="javascript:;" onClick={this.props.logout.bind(this)}>Logout</a></li>
         </ul>
       </li>)
     } else {
-      userLinks = <li><Link to="javascript:void(0);" onClick={this.login.bind(this)}>Login</Link></li>
+      userLinks = <li><a href="javascript:;" onClick={this.props.login.bind(this)}>Login</a></li>
     }
 
     return <nav className={home.c_menu}>
