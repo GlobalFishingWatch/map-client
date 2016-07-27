@@ -51,6 +51,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "react-router-redux": "^4.0.4",
+    "react-sanfona": "0.0.13",
     "react-slick": "^0.12.2",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
