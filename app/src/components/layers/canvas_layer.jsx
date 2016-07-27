@@ -236,13 +236,8 @@ class CanvasLayer {
     const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      if (!!filters) {
-        if (filters.startDate && filters.endDate && ((vectorArray.datetime[index] < filters.startDate || vectorArray.datetime[index] > filters.endDate) || !vectorArray.weight[index])) {
-          continue;
-        }
-        if (filters.flag != "" && (vectorArray.series[index] % 210 != filters.flag)) {
-          continue;
-        }
+      if (!this.passesFilters(vectorArray, index)) {
+        continue;
       }
       this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], false);
     }
@@ -261,7 +256,7 @@ class CanvasLayer {
       if (filters.startDate && filters.endDate && ((data.datetime[index] < filters.startDate || data.datetime[index] > filters.endDate) || !data.weight[index])) {
         return false;
       }
-      if (filters.flag != "" && (data.series[index] % 210 != filters.flag)) {
+      if (filters.flag != "" && data.category[index] != parseInt(filters.flag)) {
         return false;
       }
     }
@@ -316,9 +311,9 @@ class CanvasLayer {
       }
 
       let time = vectorArray.datetime[index] - (vectorArray.datetime[index] % TIMELINE_STEP);
-
       if (!this.playbackData[tileId][time]) {
         this.playbackData[tileId][time] = {
+          category: [],
           latitude: [],
           longitude: [],
           weight: [],
@@ -329,6 +324,7 @@ class CanvasLayer {
         }
       }
       let timestamp = this.playbackData[tileId][time];
+      timestamp.category.push(vectorArray.category[index]);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
       timestamp.weight.push(vectorArray.weight[index]);
