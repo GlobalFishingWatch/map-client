@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import FiltersPanel from "./filters_panel";
 import layerPanel from "../../../styles/components/c_layer_panel.scss";
 import {Accordion, AccordionItem} from "react-sanfona";
 
@@ -35,7 +36,7 @@ export default function (props) {
       return (
         <AccordionItem title={item_s} key={item_s} >
           <div className={layerPanel.content_accordion}>
-            {item_s === title_accordion[3] ? <div><select className={layerPanel.select_search}><option>Vessel flag (ISO code)</option></select><span className={layerPanel.button_advanced_search}>ADVANCED SEARCH</span></div> : null}
+            {item_s === title_accordion[3] ? <div><FiltersPanel/><span className={layerPanel.button_advanced_search}>ADVANCED SEARCH</span></div> : null}
           </div>
         </AccordionItem>
       );

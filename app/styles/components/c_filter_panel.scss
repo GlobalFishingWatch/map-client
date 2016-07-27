@@ -1,12 +1,21 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
 .filtersPanel {
-  position: absolute;
-  top: 190px;
-  right: 20px;
-  border: 1px solid #000;
-  background: #fff;
-  z-index: 9;
-  padding: 20px;
   input {
     display: block;
+  }
+  select{
+    width: 260px;
+    height: 40px;
+    background-color: $color13;
+    border: solid 1px $color14;
+    color: $color9;
+    font-weight: $font-weight-regular;
+    font-size:$font-size-medium;
+    outline: 0;
+    display: block;
+    margin: 0 auto;
+    border-radius: 0;
+    margin-bottom: 7px;
   }
 }

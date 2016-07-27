@@ -127,7 +127,7 @@
     cursor: pointer;
   }
   .button_advanced_search{
-      width: 250px;
+      width: 260px;
       margin: 0 auto;
       background-color: $color5;
       display: block;
@@ -140,20 +140,6 @@
       letter-spacing: -0.1px;
       padding: 10px 0;
       cursor: pointer;
-  }
-  .select_search{
-    width: 260px;
-    height: 40px;
-    background-color: #0d1d3f;
-    border: solid 1px #2d3a57;
-    color: $color9;
-    font-weight: $font-weight-regular;
-    font-size:$font-size-medium;
-    outline: 0;
-    display: block;
-    margin: 0 auto;
-    border-radius: 0;
-    margin-bottom: 7px;
   }
 }
 .title_accordion {
