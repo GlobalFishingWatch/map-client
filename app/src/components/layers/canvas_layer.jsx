@@ -216,6 +216,7 @@ class CanvasLayer {
     range = range || 1;
     const vesselLayerTransparency = this.vesselLayerTransparency;
     for (let index = 0, lengthData = playbackData.latitude.length/range; index < lengthData; index++) {
+      if (playbackData.weight[index] < 0.9) continue;
       const calculatedWeight = Math.min(playbackData.weight[index] / vesselLayerTransparency, 1);
       const x = playbackData.x[index];
       const y = playbackData.y[index];
