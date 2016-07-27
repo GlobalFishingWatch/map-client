@@ -27,6 +27,20 @@ export default function (props) {
     </div>
   </div>);
   title_accordion.push(<span className={layerPanel.title_acordion}>Layers</span>);
+  title_accordion.push(<span className={layerPanel.text_search}>advanced search</span>);
+
+  var content_search_advanced = []
+  content_search_advanced.push(<Accordion allowMultiple={false} activeItems={6}>
+    {[title_accordion[3]].map((item_s) => {
+      return (
+        <AccordionItem title={item_s} key={item_s} >
+          <div className={layerPanel.content_accordion}>
+            {item_s === title_accordion[3] ? <div><select className={layerPanel.select_search}><option>Vessel flag (ISO code)</option></select><span className={layerPanel.button_advanced_search}>ADVANCED SEARCH</span></div> : null}
+          </div>
+        </AccordionItem>
+      );
+    })}
+  </Accordion>);
 
   return (
     <div className={layerPanel.layerPanel}>
@@ -35,8 +49,7 @@ export default function (props) {
           return (
             <AccordionItem title={item} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
-                {item === title_accordion[0] ? <div><p className={layerPanel.text_search}>advanced search</p><span
-                  className={layerPanel.button_advanced_search}>ADVANCED SEARCH</span></div> : null}
+                {item === title_accordion[0] ? <div>{content_search_advanced}</div> : null}
                 {item === title_accordion[1] ? <p>Hello2</p> : null}
                 {item === title_accordion[2] ? <ul>{layers}</ul> : null}
               </div>
