@@ -211,7 +211,7 @@ class CanvasLayer {
     const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
-      this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], drawTrail);
+      this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], playbackData.sigma[index], drawTrail);
     }
   }
 
@@ -228,7 +228,6 @@ class CanvasLayer {
   drawTileFromVectorArray(canvas, vectorArray) {
     if (!canvas) return;
 
-    const filters = this.filters;
     if (!vectorArray) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
@@ -239,7 +238,7 @@ class CanvasLayer {
       if (!this.passesFilters(vectorArray, index)) {
         continue;
       }
-      this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], false);
+      this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], vectorArray.sigma[index], false);
     }
   }
 
@@ -320,7 +319,8 @@ class CanvasLayer {
           x: [],
           y: [],
           series: [],
-          seriesgroup: []
+          seriesgroup: [],
+          sigma: []
         }
       }
       let timestamp = this.playbackData[tileId][time];
@@ -332,6 +332,7 @@ class CanvasLayer {
       timestamp.y.push(vectorArray.y[index]);
       timestamp.series.push(vectorArray.series[index]);
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+      timestamp.sigma.push(vectorArray.sigma[index]);
     }
   }
 
@@ -343,9 +344,10 @@ class CanvasLayer {
    * @param y
    * @param size
    * @param weight
+   * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(canvas, x, y, size, weight, drawTrail) {
+  drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
     const vesselLayerTransparency = this.vesselLayerTransparency
     const calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
 
