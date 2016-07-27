@@ -9,7 +9,7 @@ export default function (props) {
   for (let length = 1; length < Math.min(maxLength, 30); length += 1) {
     options.push(<option value={length} key={length}>{length}</option>)
   }
-
+    options.push(<option value={90} key={31}>90</option>)
   for (let intensity = 5; intensity <= 50; intensity += 5) {
     intensities.push(<option value={intensity} key={intensity}>{intensity}</option>)
   }
