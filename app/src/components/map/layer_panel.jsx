@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import layerPanel from "../../../styles/components/c_layer_panel.scss";
-import { Accordion, AccordionItem } from 'react-sanfona';
+import {Accordion, AccordionItem} from "react-sanfona";
 
 export default function (props) {
   let layers = [];
@@ -18,9 +18,14 @@ export default function (props) {
     }
   }
 
-  let title_accordion = [];
+  var title_accordion = [];
   title_accordion.push(<input className={layerPanel.input_acordion} placeholder="SEARCH VESSELS"></input>);
-  title_accordion.push(<span className={layerPanel.title_acordion}>Basemap</span>);
+  title_accordion.push(<div className={layerPanel.title_acordion}>Basemap
+    <div className={layerPanel.content_box}>
+      <div className={layerPanel.box_basemap}></div>
+      <div className={layerPanel.box_image_basemap}></div>
+    </div>
+  </div>);
   title_accordion.push(<span className={layerPanel.title_acordion}>Layers</span>);
 
   return (
@@ -30,9 +35,10 @@ export default function (props) {
           return (
             <AccordionItem title={item} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
-                {item === title_accordion[0] ? <p>Hello</p> : null}
-                {item === title_accordion[1] ? <p>Hello</p> : null}
-                {item === title_accordion[2] ? <ul>{layers}</ul>: null}
+                {item === title_accordion[0] ? <div><p className={layerPanel.text_search}>advanced search</p><span
+                  className={layerPanel.button_advanced_search}>ADVANCED SEARCH</span></div> : null}
+                {item === title_accordion[1] ? <p>Hello2</p> : null}
+                {item === title_accordion[2] ? <ul>{layers}</ul> : null}
               </div>
             </AccordionItem>
           );

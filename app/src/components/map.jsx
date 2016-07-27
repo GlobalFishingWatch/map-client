@@ -360,6 +360,10 @@ class Map extends Component {
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
+  componentDidMount() {
+    new $.Zebra_Accordion($('.Zebra_Accordion'));
+  }
+
   /**
    * Creates a Carto-based layer
    *

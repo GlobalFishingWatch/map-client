@@ -16,6 +16,13 @@
     line-height: 3;
     font-size: $font-size-xsmall;
     font-weight: $font-weight-bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    .content_box{
+      display: flex;
+    }
   }
   .input_acordion {
     line-height: 3;
@@ -95,6 +102,44 @@
     background-position: 0 0, 15px 0;
     padding-left: 10px;
     padding-right: 0;
+  }
+  .box_basemap{
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    border: 3px solid $color9;
+    margin-right: 12px;
+  }
+  .box_image_basemap{
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    border: 3px solid $color9;
+  }
+  .text_search{
+    display: block;
+    text-align: right;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-regular;
+    font-style: italic;
+    text-decoration: underline;
+    text-transform: lowercase;
+    cursor: pointer;
+  }
+  .button_advanced_search{
+      width: 250px;
+      margin: 0 auto;
+      background-color: $color5;
+      display: block;
+      font-size: $font-size-small;
+      text-transform: uppercase;
+      font-weight: $font-weight-semi;
+      text-align: center;
+      color: $color9;
+      font-family: $font-family-primary;
+      letter-spacing: -0.1px;
+      padding: 10px 0;
+      cursor: pointer;
   }
 }
 .title_accordion {
