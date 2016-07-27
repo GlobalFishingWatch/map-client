@@ -17,16 +17,22 @@ export default function (props) {
       );
     }
   }
+
+  let title_accordion = [];
+  title_accordion.push(<input className={layerPanel.input_acordion} placeholder="SEARCH VESSELS"></input>);
+  title_accordion.push(<span className={layerPanel.title_acordion}>Basemap</span>);
+  title_accordion.push(<span className={layerPanel.title_acordion}>Layers</span>);
+
   return (
     <div className={layerPanel.layerPanel}>
       <Accordion allowMultiple={false} activeItems={6}>
-        {["Search Vessels", "BaseMap", "Layers"].map((item) => {
+        {[title_accordion[0], title_accordion[1], title_accordion[2]].map((item) => {
           return (
-            <AccordionItem title={`${ item }`} key={item} className={layerPanel.title_accordion}>
+            <AccordionItem title={item} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
-                {item === "Search Vessels" ? <p>Hello</p> : null}
-                {item === "BaseMap" ? <p>Hello</p> : null}
-                {item === "Layers" ? <ul>{layers}</ul>: null}
+                {item === title_accordion[0] ? <p>Hello</p> : null}
+                {item === title_accordion[1] ? <p>Hello</p> : null}
+                {item === title_accordion[2] ? <ul>{layers}</ul>: null}
               </div>
             </AccordionItem>
           );
