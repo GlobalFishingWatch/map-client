@@ -14,9 +14,7 @@ class Home extends Component {
 
   render() {
     return <div>
-      <header className={home.c_header}>
-        <Header></Header>
-      </header>
+      <Header></Header>
       <CoverPage></CoverPage>
       <section id="case_study" className={home.infostudy}>
         <CaseStudySlider></CaseStudySlider>

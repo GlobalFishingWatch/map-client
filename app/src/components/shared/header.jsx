@@ -6,6 +6,7 @@ import logoimg from "../../../assets/logos/gfw_logo_hor_second.png";
 
 class Header extends Component {
   render() {
+
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (<li className={home.dropdown}>
@@ -19,23 +20,26 @@ class Header extends Component {
       userLinks = <li><a href="javascript:;" onClick={this.props.login.bind(this)}>Login</a></li>
     }
 
-    return <nav className={home.c_menu}>
+
+    return <header className={home.c_header_menu} id={location.pathname==="/map"? 'menu_transparent' : null}>
+      <style dangerouslySetInnerHTML={{__html: "\n#menu_selected:after{\n\tcontent: \"\";\n\tdisplay:block;\n\theight: 4px;\n  border-radius: 100px;\n  background-color: #ffffff;\n\tmargin-top:1px;\n}\n" }} />
+      <nav className={home.c_menu} >
       <Link to="/">
         <img src={logoimg}></img>
       </Link>
       <ul>
         <li>
-          <Link to="/map">Map</Link>
+          <Link id={location.pathname==="/map"? 'menu_selected' : null} to="/map">Map</Link>
         </li>
         <li className={home.dropdown}>
-          <Link to="#">News</Link>
+          <Link id={location.pathname==="/blog" || location.pathname==="/articles-publications"? 'menu_selected' : null} to="#">News</Link>
           <ul className={home.dropdown_content}>
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/articles-publications">Articles and Publications</Link></li>
           </ul>
         </li>
         <li className={home.dropdown}>
-          <Link to="#">How to</Link>
+          <Link id={location.pathname==="/faq" || location.pathname==="/tutorials" || location.pathname==="/definitions"? 'menu_selected' : null} to="#">How to</Link>
           <ul className={home.dropdown_content}>
             <li><Link to="/faq">FAQ</Link></li>
             <li><Link to="/tutorials">Tutorials</Link></li>
@@ -43,7 +47,7 @@ class Header extends Component {
           </ul>
         </li>
         <li className={home.dropdown}>
-          <Link to="#">About</Link>
+          <Link to="#" id={location.pathname==="/the-project" || location.pathname==="/partners" || location.pathname==="/contact-us"? 'menu_selected' : null}>About</Link>
           <ul className={home.dropdown_content}>
             <li><Link to="/the-project">The project</Link></li>
             <li><Link to="/partners">Partners</Link></li>
@@ -53,6 +57,7 @@ class Header extends Component {
         {userLinks}
       </ul>
     </nav>
+    </header>
   }
 }
 

@@ -4,19 +4,39 @@
 	<link rel="stylesheet" type="text/css" href="./css/styles.css">
 </head>
 <body class="bg ty">
-	<header>
+	<header class="menu_transparent">
 		<a href="#">
-			<img src="http://globalfishingwatch.org/images/logo.png">
-			global fishing watch
+			<img src="img/gfw_logo_hor_second.png">
 		</a>
-		<nav>
-			<a href="#">map</a>
-			<a href="#">news</a>
-			<a href="#">how to</a>
-			<a href="#">about</a>
-			<a href="#" class="separator"></a>
-			<a href="#" class="selected">login</a>
-		</nav>
+		<ul>
+			<li><a href="#">map</a></li>
+			<li class="dropdown"><a href="#">news</a>
+				<ul class="dropdown_content">
+					<li><a href="#">Blog</a></li>
+					<li><a href="#">Articles and Publications</a></li>
+				</ul>
+			</li>
+			<li class="dropdown"><a href="#">how to</a>
+				<ul class="dropdown_content">
+					<li><a href="#">FAQ</a></li>
+					<li><a href="#">Tutorials</a></li>
+					<li><a href="#">Definitions</a></li>
+				</ul>
+			</li>
+			<li class="dropdown"><a href="#">about</a>
+				<ul class="dropdown_content">
+					<li><a href="#">The Project</a></li>
+					<li><a href="#">Partners</a></li>
+					<li><a href="#">Contact us</a></li>
+				</ul>
+			</li>
+			<li><a href="#" class="selected">login</a>
+				<ul class="dropdown_content">
+					<li><a href="#">Blog</a></li>
+					<li><a href="#">Articles and Publications</a></li>
+				</ul>
+			</li>
+		</ul>
 	</header>
 	<section class="pwd">
 		<h1>Thank you!</h1>
