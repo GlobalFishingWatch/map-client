@@ -361,7 +361,6 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    new $.Zebra_Accordion($('.Zebra_Accordion'));
   }
 
   /**
