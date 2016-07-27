@@ -32,6 +32,9 @@
     border: none;
     outline: 0;
     width: 100%;
+    &:focus{
+      border-bottom: 1px solid $color9;
+    }
   }
   ::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */
@@ -140,6 +143,19 @@
       letter-spacing: -0.1px;
       padding: 10px 0;
       cursor: pointer;
+  }
+  .list_results{
+    list-style: none;
+    li{
+      display: block;
+      font-size: $font-size-xsmall;
+      font-weight: $font-weight-bold;
+      line-height: 1.29;
+      color: $white;
+      span{
+        opacity: 0.7;
+      }
+    }
   }
 }
 .title_accordion {

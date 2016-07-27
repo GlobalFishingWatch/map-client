@@ -50,7 +50,7 @@ export default function (props) {
           return (
             <AccordionItem title={item} key={item} className={layerPanel.title_accordion}>
               <div className={layerPanel.content_accordion}>
-                {item === title_accordion[0] ? <div>{content_search_advanced}</div> : null}
+                {item === title_accordion[0] ? <div><ul className={layerPanel.list_results}><li>JOVE,<span>MMSI012345</span></li></ul>{content_search_advanced}</div> : null}
                 {item === title_accordion[1] ? <p>Hello2</p> : null}
                 {item === title_accordion[2] ? <ul>{layers}</ul> : null}
               </div>
