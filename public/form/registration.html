@@ -8,35 +8,30 @@
 		<a href="#">
 			<img src="img/gfw_logo_hor_second.png">
 		</a>
-		<ul>
-			<li><a href="#">map</a></li>
-			<li class="dropdown"><a href="#">news</a>
-				<ul class="dropdown_content">
-					<li><a href="#">Blog</a></li>
-					<li><a href="#">Articles and Publications</a></li>
-				</ul>
-			</li>
-			<li class="dropdown"><a href="#">how to</a>
-				<ul class="dropdown_content">
-					<li><a href="#">FAQ</a></li>
-					<li><a href="#">Tutorials</a></li>
-					<li><a href="#">Definitions</a></li>
-				</ul>
-			</li>
-			<li class="dropdown"><a href="#">about</a>
-				<ul class="dropdown_content">
-					<li><a href="#">The Project</a></li>
-					<li><a href="#">Partners</a></li>
-					<li><a href="#">Contact us</a></li>
-				</ul>
-			</li>
-			<li><a href="#" class="selected">login</a>
-				<ul class="dropdown_content">
-					<li><a href="#">Blog</a></li>
-					<li><a href="#">Articles and Publications</a></li>
-				</ul>
-			</li>
-		</ul>
+    <ul>
+      <li><a href="/map">map</a></li>
+      <li class="dropdown"><a href="#">news</a>
+        <ul class="dropdown_content">
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/articles-publications">Articles and Publications</a></li>
+        </ul>
+      </li>
+      <li class="dropdown"><a href="#">how to</a>
+        <ul class="dropdown_content">
+          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/tutorials">Tutorials</a></li>
+          <li><a href="/definitions">Definitions</a></li>
+        </ul>
+      </li>
+      <li class="dropdown"><a href="#">about</a>
+        <ul class="dropdown_content">
+          <li><a href="/the-project">The Project</a></li>
+          <li><a href="/partners">Partners</a></li>
+          <li><a href="/contact-us">Contact us</a></li>
+        </ul>
+      </li>
+      <li><a href="#" class="selected">login</a></li>
+    </ul>
 	</header>
 	<section class="reg">
 		<h1>Registration</h1>
@@ -51,9 +46,9 @@
 							<option>Select a question type</option>
 						</select>
 					</div>
-					<label for="gfw_questiontype">state/province</label>
+					<label for="gfw_questionstate">state/province</label>
 					<div class="select_container">
-						<select id="gfw_questiontype">
+						<select id="gfw_questionstate">
 							<option>Select a state</option>
 						</select>
 					</div>
@@ -63,9 +58,9 @@
 				<div class="column r">
 					<label for="gfw_lastname">last name</label>
 					<input type="text" id="gfw_lastname" placeholder="Last name" required />
-					<label for="gfw_questiontype">Country</label>
+					<label for="gfw_questioncountry">Country</label>
 					<div class="select_container">
-						<select id="gfw_questiontype">
+						<select id="gfw_questioncountry">
 							<option>Select a country</option>
 						</select>
 					</div>
