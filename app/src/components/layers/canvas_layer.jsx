@@ -179,8 +179,13 @@ class CanvasLayer {
    * @param start
    * @param end
    */
-  drawTimeRange(start, end) {
+  drawTimeRange(start, end, range) {
     const canvasKeys = Object.keys(this.playbackData);
+    const setrange = function(range) {
+      if (~~range > 50) return 100;
+      if (~~range > 15) return 10;
+      else return false;
+    }
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
 
       let canvasKey = canvasKeys[index];
@@ -192,8 +197,7 @@ class CanvasLayer {
 
       for (let timestamp = start; timestamp < end; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
-          let playbackData = this.playbackData[canvasKey][timestamp];
-          this.drawTileFromPlaybackData(canvas, playbackData, false);
+          this.drawTileFromPlaybackData(canvas, this.playbackData[canvasKey][timestamp], setrange(range));
         }
       }
     }
@@ -206,12 +210,25 @@ class CanvasLayer {
    * @param playbackData
    * @param drawTrail
    */
-  drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
-    if (!canvas) return;
-    const size = canvas.zoom > 6 ? 3 : 2;
+  drawTileFromPlaybackData(canvas, playbackData, range) {
+    let size = (canvas.zoom > 6) ? 3 : 2;
+    size = (range && range > 50) ? size * 2 : size;
+    range = range || 1;
+    const vesselLayerTransparency = this.vesselLayerTransparency;
+    for (let index = 0, lengthData = playbackData.latitude.length/range; index < lengthData; index++) {
+      const calculatedWeight = Math.min(playbackData.weight[index] / vesselLayerTransparency, 1);
+      const x = playbackData.x[index];
+      const y = playbackData.y[index];
+      canvas.ctx.fillStyle = 'rgba(17,129,251,' + calculatedWeight + ')';
+      canvas.ctx.fillRect(x, y, size, size);
 
-    for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
-      this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], playbackData.sigma[index], drawTrail);
+      if (calculatedWeight > 0.5) {
+        canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        canvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
+        canvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
+        canvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
+        canvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
+      }
     }
   }
 
