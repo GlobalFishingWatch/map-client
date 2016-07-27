@@ -1,12 +1,111 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
 .layerPanel {
+  font-family: $font-family-primary;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  border: 1px solid #000;
-  background: #fff;
+  background: $color9;
   z-index: 9;
   padding: 20px;
+  right: 0;
+  background-color: $color12;
+  padding: 0 30px;
+  width: 320px;
+  max-width: 320px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  .title_acordion {
+    line-height: 3;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-bold;
+  }
+  .input_acordion {
+    line-height: 3;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-bold;
+    background-color: transparent;
+    border: none;
+    outline: 0;
+    width: 100%;
+  }
+  ::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    color: $color9;
+  }
+  ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: $color9;
+  }
+  :-ms-input-placeholder {
+    /* IE 10+ */
+    color: $color9;
+  }
+  :-moz-placeholder {
+    /* Firefox 18- */
+    color: $color9;
+  }
   ul {
     list-style: none;
+    color: $color9;
+    text-transform: uppercase;
+    padding: 5px 0;
+  }
+  .react-sanfona {
+    color: $color9;
+    .react-sanfona-item {
+      h3 {
+        color: $color9;
+      }
+    }
+  }
+  .content_accordion {
+    color: $color9;
+    font-size: $font-size-xxsmall;
+    font-weight: $font-weight-regular;
+    line-height: 2;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+  }
+  input[type="checkbox"] {
+    background-image: -webkit-linear-gradient(hsla(0,0%,0%,.1), hsla(0,0%,100%,.1)), -webkit-linear-gradient(left, #c7c7c7 50%, #ef4323 50%);
+    background-size: 100% 100%, 200% 100%;
+    background-position: 0 0, 5px 0;
+    border-radius: 25px;
+    cursor: pointer;
+    height: 10px;
+    padding-right: 10px;
+    position: relative;
+    width: 20px;
+    -webkit-appearance: none;
+    -webkit-transition: 0.15s;
+    outline: 0;
+    margin-right: 8px;
+  }
+  input[type="checkbox"]:after {
+    background-color: #eee;
+    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.1));
+    border-radius: 25px;
+    content: '';
+    display: block;
+    height: 10px;
+    left: 0;
+    position: relative;
+    top: 0;
+    width: 10px;
+  }
+  input[type="checkbox"]:checked {
+    background-position: 0 0, 15px 0;
+    padding-left: 10px;
+    padding-right: 0;
+  }
+}
+.title_accordion {
+  color: $color9;
+  font-weight: $font-weight-bold;
+  line-height: 3;
+  font-family: $font-family-primary;
+  font-size: $font-size-xsmall;
+  text-transform: uppercase;
+  border-bottom: 1px solid $color5;
+  &:last-child {
+    border-bottom: 0;
   }
 }

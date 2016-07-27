@@ -1,0 +1,52 @@
+.main .title {
+
+}
+
+.section {
+  position: relative;
+  width: 100%;
+  border-bottom: 5px solid #c80e3d;
+  border-left: 2px solid #c80e3d;
+  border-right: 2px solid #c80e3d;
+}
+.section button {
+  position: absolute;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  height: 3em;
+  width: 3em;
+  outline: 0;
+  border: 0;
+  background: none;
+  text-indent: -9999%;
+  pointer-events: none;
+}
+.section button:before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 12px;
+  width: 4px;
+  border-radius: .3em;
+  background: #ee0c4b;
+  transform-origin: 50%;
+  top: 50%;
+  left: 50%;
+  transition: all .25s ease-in-out;
+  transform: translate(75%, -50%) rotate(45deg);
+}
+.section button:after {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 12px;
+  width: 4px;
+  border-radius: .3em;
+  background: #ee0c4b;
+  transform-origin: 50%;
+  top: 50%;
+  left: 50%;
+  transition: all .25s ease-in-out;
+  transform: translate(-75%, -50%) rotate(-45deg);
+}
