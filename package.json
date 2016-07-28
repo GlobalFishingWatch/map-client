@@ -68,11 +68,10 @@
     "npm": "3.8.x"
   },
   "xo": {
+    "extends": "xo-react",
     "esnext": true,
     "space": 2,
-    "ignores": [
-      "app/**"
-    ],
+    "ignores": [],
     "rules": {
       "space-before-function-paren": [
         "error",
