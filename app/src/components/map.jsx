@@ -5,10 +5,9 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
-import createTrackLayer from './layers/track_layer';
+import createTrackLayer from "./layers/track_layer";
 import LayerPanel from "./map/layer_panel";
 import VesselPanel from "./map/vessel_panel";
-import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
@@ -51,6 +50,7 @@ class Map extends Component {
       this.map.setZoom(MAX_ZOOM_LEVEL);
     }
     this.setState({zoom: zoom});
+    this.props.setZoom(zoom);
     this.state.overlay.resetPlaybackData();
   }
 
@@ -115,7 +115,7 @@ class Map extends Component {
       this.setState({running: 'play'});
     }
 
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
       this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate);
     }.bind(this));
   }
@@ -154,11 +154,11 @@ class Map extends Component {
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
 
     // paint track layer
-    if(this.state.trackLayer){
+    if (this.state.trackLayer) {
       this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters, this.state.currentTimestamp || this.props.filters.startDate);
     }
 
-    const animationID = requestAnimationFrame(function() {
+    const animationID = requestAnimationFrame(function () {
       if (this.state.running == 'play') {
         this.drawVesselFrame(initialTimestamp + mDay);
       }
@@ -182,7 +182,7 @@ class Map extends Component {
 
     this.updatePlaybackBar(filters.startDate, this.state.playbackRange);
 
-    if(this.state.trackLayer){
+    if (this.state.trackLayer) {
       this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
     }
   }
@@ -217,7 +217,13 @@ class Map extends Component {
     const positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
 
     this.setState({
-      trajectory: new google.maps.Polyline({path: positions, geodesic: false, strokeColor: '#1181fb', strokeOpacity: 1.0, strokeWeight: 2})
+      trajectory: new google.maps.Polyline({
+        path: positions,
+        geodesic: false,
+        strokeColor: '#1181fb',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      })
     })
     this.state.trajectory.setMap(this.map);
   }
@@ -306,7 +312,7 @@ class Map extends Component {
         this.setState({trackLayer: trackLayer});
       }
       trackLayer.regenerate();
-      trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries,  nextProps.filters);
+      trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
     }
   }
 
@@ -354,7 +360,7 @@ class Map extends Component {
       }
     }
 
-    Promise.all(promises).then(function() {
+    Promise.all(promises).then(function () {
       if (callAddVesselLayer) {
         callAddVesselLayer();
       }
@@ -373,7 +379,8 @@ class Map extends Component {
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+  }
 
   /**
    * Creates a Carto-based layer
@@ -385,8 +392,8 @@ class Map extends Component {
     const map = this.map
     const addedLayers = this.state.addedLayers;
 
-    let promise = new Promise(function(resolve, reject) {
-      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function(layer, cartoLayer) {
+    let promise = new Promise(function (resolve, reject) {
+      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function (layer, cartoLayer) {
         addedLayers[layer.title] = cartoLayer;
         resolve();
       }.bind(this, layerSettings));
@@ -446,14 +453,17 @@ class Map extends Component {
     if (this.state.trackLayer) {
 
       this.state.trackLayer.recalculatePosition();
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries,  this.props.filters);
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
     }
-    if (strictBounds.contains(this.map.getCenter())) {
-      this.state.lastCenter = this.map.getCenter();
+    const center = this.map.getCenter();
+
+    if (strictBounds.contains(center)) {
+      this.state.lastCenter = center;
+      this.props.setCenter([center.lat(), center.lng()]);
       return;
     }
     this.map.panTo(this.state.lastCenter);
-
+    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
   }
 
   /**
@@ -500,7 +510,7 @@ class Map extends Component {
     filters[target] = value;
 
     this.props.updateFilters(filters);
-    if(this.state.trackLayer){
+    if (this.state.trackLayer) {
       this.props.getSeriesGroup(this.props.map.track.seriesgroup, this.props.map.track.selectedSeries, filters);
     }
   }
@@ -599,11 +609,13 @@ class Map extends Component {
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)} onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
+              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)} onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
+              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)}
+                     onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>
@@ -635,7 +647,11 @@ class Map extends Component {
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.map.layers} onLayerToggle={this.props.toggleLayerVisibility.bind(this)} onFilterChange={this.updateFilters.bind(this)} onTimeStepChange={this.updatePlaybackRange.bind(this)} onDrawDensityChange={this.updateVesselLayerDensity.bind(this)} startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
+        <LayerPanel layers={this.props.map.layers} onLayerToggle={this.props.toggleLayerVisibility.bind(this)}
+                    onFilterChange={this.updateFilters.bind(this)}
+                    onTimeStepChange={this.updatePlaybackRange.bind(this)}
+                    onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+                    startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={
