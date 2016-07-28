@@ -144,27 +144,20 @@ class Map extends Component {
 
     playbackRange = playbackRange || this.state.playbackRange;
     const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
-    const endDate = this.props.filters.endDate;
 
-    if (finalTimestamp > endDate) {
+    if (finalTimestamp > this.props.filters.endDate) {
       this.setState({running: 'stop'});
       this.playbackStop();
       return;
     }
-
-    this.setState({currentTimestamp: initialTimestamp});
-
-    this.updatePlaybackBar(initialTimestamp, playbackRange);
-
-    this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
-
-
     const animationID = requestAnimationFrame(function () {
       if (this.state.running == 'play') {
         this.drawVesselFrame(initialTimestamp + mDay);
       }
     }.bind(this));
-    this.setState({'animationID': animationID});
+    this.updatePlaybackBar(initialTimestamp, playbackRange);
+    this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp,playbackRange);
+    this.setState({currentTimestamp: initialTimestamp,'animationID': animationID});
 
   }
 
@@ -499,18 +492,13 @@ class Map extends Component {
   }
 
   updatePlaybackBar(initialTimestamp, playbackRange) {
-    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
     const startDate = this.props.filters.startDate;
     const endDate = this.props.filters.endDate;
 
-    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
-    const timeBarWidth = ((TIMELINE_STEP * playbackRange)) / (endDate - startDate) * 100;
-    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
-
     this.setState({
-      leftHandlerPosition: leftHandlerPosition + '%',
-      rightHandlerPosition: rightHandlerPosition + '%',
-      timeBarWidth: timeBarWidth + '%',
+      leftHandlerPosition: (initialTimestamp - startDate) / (endDate - startDate) * 100 + '%',
+      rightHandlerPosition: (initialTimestamp + (TIMELINE_STEP * playbackRange) - startDate) / (endDate - startDate) * 100 + '%',
+      timeBarWidth: ((TIMELINE_STEP * playbackRange)) / (endDate - startDate) * 100 + '%',
     });
   }
 
