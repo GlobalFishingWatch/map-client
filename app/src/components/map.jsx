@@ -5,8 +5,7 @@ import {GoogleMapLoader, GoogleMap} from "react-google-maps";
 import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "../constants";
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
-import TrackLayer from "./layers/track_layer";
-import createTrackLayer from './layers/track_layer_canvas';
+import createTrackLayer from './layers/track_layer';
 import LayerPanel from "./map/layer_panel";
 import VesselPanel from "./map/vessel_panel";
 import ControlPanel from "./map/control_panel";
@@ -155,8 +154,8 @@ class Map extends Component {
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
 
     // paint track layer
-    if (this.state.trackLayer) {
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters, this.state.currentTimestamp || this.props.filters.startDate);
+    if(this.state.trackLayer){
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters, this.state.currentTimestamp || this.props.filters.startDate);
     }
 
     const animationID = requestAnimationFrame(function() {
@@ -182,8 +181,9 @@ class Map extends Component {
     this.setState({running: 'stop', currentTimestamp: filters.startDate});
 
     this.updatePlaybackBar(filters.startDate, this.state.playbackRange);
-    if (this.state.trackLayer) {
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+
+    if(this.state.trackLayer){
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
     }
   }
 
@@ -278,7 +278,7 @@ class Map extends Component {
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
     }
-    this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series);
+    this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
 
     // this.createTrackLayer(vesselInfo);
     // if (vesselInfo) {
@@ -307,7 +307,7 @@ class Map extends Component {
         this.setState({trackLayer: trackLayer});
       }
       trackLayer.regenerate();
-      trackLayer.drawTile(nextProps.map.track.seriesGroup, nextProps.map.track.selectedSeries, nextProps.filters);
+      trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries,  nextProps.filters);
     }
   }
 
@@ -321,7 +321,7 @@ class Map extends Component {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
         this.state.trackLayer.regenerate();
-        this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, nextProps.filters);
+        this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, nextProps.filters);
       }
     }
   }
@@ -447,7 +447,7 @@ class Map extends Component {
     if (this.state.trackLayer) {
 
       this.state.trackLayer.recalculatePosition();
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries,  this.props.filters);
     }
     if (strictBounds.contains(this.map.getCenter())) {
       this.state.lastCenter = this.map.getCenter();
@@ -501,6 +501,9 @@ class Map extends Component {
     filters[target] = value;
 
     this.props.updateFilters(filters);
+    if(this.state.trackLayer){
+      this.props.getSeriesGroup(this.props.map.track.seriesgroup, this.props.map.track.selectedSeries, filters);
+    }
   }
 
   /**
@@ -565,7 +568,7 @@ class Map extends Component {
     this.map.setZoom(newZoomLevel);
     if (this.state.trackLayer) {
       this.state.trackLayer.regenerate();
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
     }
   }
 

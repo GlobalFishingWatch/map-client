@@ -33,8 +33,8 @@ const mapDispatchToProps = (dispatch) => {
     updateFilters: (filters) => {
       dispatch(updateFilters(filters))
     },
-    getSeriesGroup: (seriesgroup, series) => {
-      dispatch(getSeriesGroup(seriesgroup, series))
+    getSeriesGroup: (seriesgroup, series, filters) => {
+      dispatch(getSeriesGroup(seriesgroup, series, filters))
     }
   };
 }
