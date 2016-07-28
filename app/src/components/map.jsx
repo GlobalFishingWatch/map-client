@@ -6,6 +6,7 @@ import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
 import TrackLayer from "./layers/track_layer";
+import createTrackLayer from './layers/track_layer_canvas';
 import LayerPanel from "./map/layer_panel";
 import VesselPanel from "./map/vessel_panel";
 import ControlPanel from "./map/control_panel";
@@ -13,10 +14,7 @@ import Header from "../containers/header";
 import map from "../../styles/index.scss";
 
 const mDay = 86400000;
-const strictBounds = new google.maps.LatLngBounds(
-  new google.maps.LatLng(-85, -180),
-  new google.maps.LatLng(85, 180)
-);
+const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
 class Map extends Component {
 
@@ -118,7 +116,7 @@ class Map extends Component {
       this.setState({running: 'play'});
     }
 
-    requestAnimationFrame(function () {
+    requestAnimationFrame(function() {
       this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate);
     }.bind(this));
   }
@@ -156,7 +154,12 @@ class Map extends Component {
     this.updatePlaybackBar(initialTimestamp, playbackRange);
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
 
-    const animationID = requestAnimationFrame(function () {
+    // paint track layer
+    if (this.state.trackLayer) {
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters, this.state.currentTimestamp || this.props.filters.startDate);
+    }
+
+    const animationID = requestAnimationFrame(function() {
       if (this.state.running == 'play') {
         this.drawVesselFrame(initialTimestamp + mDay);
       }
@@ -179,6 +182,9 @@ class Map extends Component {
     this.setState({running: 'stop', currentTimestamp: filters.startDate});
 
     this.updatePlaybackBar(filters.startDate, this.state.playbackRange);
+    if (this.state.trackLayer) {
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+    }
   }
 
   /**
@@ -197,9 +203,7 @@ class Map extends Component {
     currentVesselInfo.mmsi = data.mmsi;
     currentVesselInfo.name = data.vesselname;
 
-    this.setState({
-      currentVesselInfo: currentVesselInfo
-    })
+    this.setState({currentVesselInfo: currentVesselInfo})
   }
 
   /**
@@ -213,13 +217,7 @@ class Map extends Component {
     const positions = this.state.overlay.getAllPositionsBySeries(vesselInfo.series);
 
     this.setState({
-      trajectory: new google.maps.Polyline({
-        path: positions,
-        geodesic: false,
-        strokeColor: '#1181fb',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      })
+      trajectory: new google.maps.Polyline({path: positions, geodesic: false, strokeColor: '#1181fb', strokeOpacity: 1.0, strokeWeight: 2})
     })
     this.state.trajectory.setMap(this.map);
   }
@@ -280,8 +278,9 @@ class Map extends Component {
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
     }
+    this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series);
 
-    this.createTrackLayer(vesselInfo);
+    // this.createTrackLayer(vesselInfo);
     // if (vesselInfo) {
     //   this.showVesselDetails(vesselInfo);
     //   this.drawSeriesPath(vesselInfo);
@@ -290,24 +289,26 @@ class Map extends Component {
     // }
   }
 
-  createTrackLayer(vesselInfo) {
-    let trackLayer = new TrackLayer(
-      this.state.overlay.position-1,
-      this.map,
-      this.props.token,
-      this.props.filters,
-      this.state.vesselLayerTransparency,
-      true,
-      vesselInfo.seriesgroup
-    );
-  }
-
   componentWillReceiveProps(nextProps) {
     if (!nextProps.map) {
       return;
     }
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
+    this.updateTrackLayer(nextProps);
+  }
+
+  updateTrackLayer(nextProps) {
+    if (this.props.map.track !== nextProps.map.track) {
+      var trackLayer = this.state.trackLayer;
+      if (!trackLayer) {
+        var Overlay = createTrackLayer(google);
+        trackLayer = new Overlay(this.refs.map.props.map, this.refs.mapContainer.offsetWidth, this.refs.mapContainer.offsetHeight);
+        this.setState({trackLayer: trackLayer});
+      }
+      trackLayer.regenerate();
+      trackLayer.drawTile(nextProps.map.track.seriesGroup, nextProps.map.track.selectedSeries, nextProps.filters);
+    }
   }
 
   /**
@@ -316,8 +317,12 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
-    if (this.state.overlay) {
+    if (this.state.overlay && this.props.filters !== nextProps.filters) {
       this.state.overlay.updateFilters(nextProps.filters);
+      if (this.state.trackLayer) {
+        this.state.trackLayer.regenerate();
+        this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, nextProps.filters);
+      }
     }
   }
 
@@ -350,7 +355,7 @@ class Map extends Component {
       }
     }
 
-    Promise.all(promises).then(function () {
+    Promise.all(promises).then(function() {
       if (callAddVesselLayer) {
         callAddVesselLayer();
       }
@@ -369,8 +374,7 @@ class Map extends Component {
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   /**
    * Creates a Carto-based layer
@@ -382,8 +386,8 @@ class Map extends Component {
     const map = this.map
     const addedLayers = this.state.addedLayers;
 
-    let promise = new Promise(function (resolve, reject) {
-      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function (layer, cartoLayer) {
+    let promise = new Promise(function(resolve, reject) {
+      cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function(layer, cartoLayer) {
         addedLayers[layer.title] = cartoLayer;
         resolve();
       }.bind(this, layerSettings));
@@ -440,11 +444,17 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
+    if (this.state.trackLayer) {
+
+      this.state.trackLayer.recalculatePosition();
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+    }
     if (strictBounds.contains(this.map.getCenter())) {
       this.state.lastCenter = this.map.getCenter();
       return;
     }
     this.map.panTo(this.state.lastCenter);
+
   }
 
   /**
@@ -520,7 +530,7 @@ class Map extends Component {
     this.setState({
       leftHandlerPosition: leftHandlerPosition + '%',
       rightHandlerPosition: rightHandlerPosition + '%',
-      timeBarWidth: timeBarWidth + '%',
+      timeBarWidth: timeBarWidth + '%'
     });
   }
 
@@ -548,9 +558,15 @@ class Map extends Component {
    * @param event
    */
   changeZoomLevel(event) {
-    const newZoomLevel = (event.target.id === 'zoom_up') ? this.map.getZoom() + 1 : this.map.getZoom() - 1
+    const newZoomLevel = (event.target.id === 'zoom_up')
+      ? this.map.getZoom() + 1
+      : this.map.getZoom() - 1
 
     this.map.setZoom(newZoomLevel);
+    if (this.state.trackLayer) {
+      this.state.trackLayer.regenerate();
+      this.state.trackLayer.drawTile(this.props.map.track.seriesGroup, this.props.map.track.selectedSeries, this.props.filters);
+    }
   }
 
   /**
@@ -561,8 +577,9 @@ class Map extends Component {
    */
   render() {
     return <div>
-        <Header></Header>
-      <div className={map.map_container}>
+      <Header></Header>
+      <div className={map.map_container} ref="mapContainer">
+
         <div className={map.zoom_controls}>
           <span id="share_map" onClick={this.shareMap.bind(this)}>S</span>
           <span id="zoom_up" onClick={this.changeZoomLevel.bind(this)}>+</span>
@@ -571,81 +588,83 @@ class Map extends Component {
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
-              {this.state.running != 'play' ? "Play ►" : "Pause ||"}
+              {this.state.running != 'play'
+                ? "Play ►"
+                : "Pause ||"}
             </button>
             <button onClick={this.playbackStop.bind(this)} className={map.timelineStop}>Stop</button>
           </div>
           <div className={map.date_inputs}>
             <label for="mindate">
               Start date
-              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
+              <input type="date" id="mindate" value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)} onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}/>
             </label>
             <label for="maxdate">
               End date
-              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)}
-                     onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
+              <input type="date" id="maxdate" value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)} onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
             </label>
           </div>
           <div className={map.range_container}>
-            <Draggable
-              axis="x"
-              zIndex={100}
-              onStop={this.handlerMoved.bind(this, 1)}>
-              <span className={map.handler_grab} id="dateHandlerLeft"
-                    style={{left: this.state.leftHandlerPosition}}><i></i></span>
+            <Draggable axis="x" zIndex={100} onStop={this.handlerMoved.bind(this, 1)}>
+              <span className={map.handler_grab} id="dateHandlerLeft" style={{
+                left: this.state.leftHandlerPosition
+              }}>
+                <i></i>
+              </span>
             </Draggable>
-            <span className={map.tooltip} id="timeline_tooltip" style={{left: this.state.rightHandlerPosition}}>
+            <span className={map.tooltip} id="timeline_tooltip" style={{
+              left: this.state.rightHandlerPosition
+            }}>
               {new Date(this.state.currentTimestamp).toISOString().slice(0, 10)}
             </span>
 
-            <Draggable
-              axis="x"
-              zIndex={100}
-              onStop={this.handlerMoved.bind(this, 2)}>
-              <span className={[map.handler_grab, map.right].join(' ')} id="dateHandlerRight"
-                    style={{left: this.state.rightHandlerPosition}}><i></i></span>
+            <Draggable axis="x" zIndex={100} onStop={this.handlerMoved.bind(this, 2)}>
+              <span className={[map.handler_grab, map.right].join(' ')} id="dateHandlerRight" style={{
+                left: this.state.rightHandlerPosition
+              }}>
+                <i></i>
+              </span>
             </Draggable>
             <span className={map.timeline_range}>
-              <span className={map.handle} id="timeline_handler"
-                    style={{left: this.state.leftHandlerPosition, width: this.state.timeBarWidth}}></span>
+              <span className={map.handle} id="timeline_handler" style={{
+                left: this.state.leftHandlerPosition,
+                width: this.state.timeBarWidth
+              }}></span>
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.map.layers}
-                    onLayerToggle={this.props.toggleLayerVisibility.bind(this)}
-                    onFilterChange={this.updateFilters.bind(this)}
-                    onTimeStepChange={this.updatePlaybackRange.bind(this)}
-                    onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
-                    startDate={this.props.filters.startDate}
-                    endDate={this.props.filters.endDate}
-        />
+        <LayerPanel layers={this.props.map.layers} onLayerToggle={this.props.toggleLayerVisibility.bind(this)} onFilterChange={this.updateFilters.bind(this)} onTimeStepChange={this.updatePlaybackRange.bind(this)} onDrawDensityChange={this.updateVesselLayerDensity.bind(this)} startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
-        <GoogleMapLoader
-          containerElement={
-            <div className={map.map} style={{height: "100%",}}/>
-          }
-          googleMapElement={
-            <GoogleMap
-              ref="map"
-              defaultZoom={3}
-              defaultZoomControl={false}
-              defaultCenter={{lat: 0, lng: 0}}
-              defaultOptions={{
-                streetViewControl: false,
-                mapTypeControl: false,
-                zoomControl: false
-              }}
-              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-              onClick={this.onClickMap.bind(this)}
-              onMousemove={this.onMouseMove.bind(this)}
-              onZoomChanged={this.onZoomChanged.bind(this)}
-              onDragstart={this.onDragStart.bind(this)}
-              onDragend={this.onDragEnd.bind(this)}
-              onIdle={this.onMapIdle.bind(this)}
-            />
-          }>
-        </GoogleMapLoader>
+        <GoogleMapLoader containerElement={< div className = {
+          map.map
+        }
+        style = {{height: "100%",}}/>} googleMapElement={< GoogleMap ref = "map" defaultZoom = {
+          3
+        }
+        defaultZoomControl = {
+          false
+        }
+        defaultCenter = {{lat: 0, lng: 0}}defaultOptions = {{ streetViewControl: false, mapTypeControl: false, zoomControl: false }}defaultMapTypeId = {
+          google.maps.MapTypeId.SATELLITE
+        }
+        onClick = {
+          this.onClickMap.bind(this)
+        }
+        onMousemove = {
+          this.onMouseMove.bind(this)
+        }
+        onZoomChanged = {
+          this.onZoomChanged.bind(this)
+        }
+        onDragstart = {
+          this.onDragStart.bind(this)
+        }
+        onDragend = {
+          this.onDragEnd.bind(this)
+        }
+        onIdle = {
+          this.onMapIdle.bind(this)
+        } />}></GoogleMapLoader>
       </div>
     </div>
   }

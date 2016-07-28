@@ -2,7 +2,7 @@
 
 import {connect} from "react-redux";
 import Map from "../components/map";
-import {init, showLoading, getLayers, toggleLayerVisibility} from "../actions/map";
+import {init, showLoading, getLayers, toggleLayerVisibility, getSeriesGroup} from "../actions/map";
 import {updateFilters} from "../actions/filters";
 
 const mapStateToProps = (state) => {
@@ -32,6 +32,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateFilters: (filters) => {
       dispatch(updateFilters(filters))
+    },
+    getSeriesGroup: (seriesgroup, series) => {
+      dispatch(getSeriesGroup(seriesgroup, series))
     }
   };
 }

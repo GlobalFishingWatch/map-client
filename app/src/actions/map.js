@@ -1,6 +1,7 @@
-import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY} from "../constants";
-
-const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
+import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY, GET_SERIESGROUP} from "../constants";
+import PelagosClient from '../lib/PelagosClient';
+import _ from 'lodash';
+const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 
 export function init() {
   return {
@@ -25,6 +26,25 @@ export function toggleLayerVisibility(layer) {
     payload: layer
   };
 }
+
+export function getSeriesGroup(seriesgroup, serie){
+  return function (dispatch , getState) {
+    const state = getState();
+    let url = `${urlVessel}seriesgroup=${seriesgroup}/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;0,0,0`
+
+    new PelagosClient().obtainTile(url, state.user.token).then((data) => {
+      dispatch({
+        type: GET_SERIESGROUP,
+        payload: {
+          seriesGroup: data,
+          series: _.uniq(data.series),
+          selectedSeries: serie
+        }
+      });
+    });
+  }
+}
+
 
 /*
  ** CartoDB layers:
