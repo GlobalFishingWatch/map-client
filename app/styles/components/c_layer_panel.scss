@@ -5,10 +5,8 @@
   position: absolute;
   background: $color9;
   z-index: 9;
-  padding: 20px;
   right: 0;
   background-color: $color12;
-  padding: 0 30px;
   width: 320px;
   max-width: 320px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
@@ -19,8 +17,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    .content_box{
+    padding: 10px 30px;
+    .content_box {
       display: flex;
     }
   }
@@ -32,7 +30,10 @@
     border: none;
     outline: 0;
     width: 100%;
-    &:focus{
+    max-width: 260px;
+    display: block;
+    margin: 10px auto;
+    &:focus {
       border-bottom: 1px solid $color9;
     }
   }
@@ -106,20 +107,20 @@
     padding-left: 10px;
     padding-right: 0;
   }
-  .box_basemap{
+  .box_basemap {
     width: 30px;
     height: 30px;
     border-radius: 2px;
     border: 3px solid $color9;
     margin-right: 12px;
   }
-  .box_image_basemap{
+  .box_image_basemap {
     width: 30px;
     height: 30px;
     border-radius: 2px;
     border: 3px solid $color9;
   }
-  .text_search{
+  .text_search {
     display: block;
     text-align: right;
     font-size: $font-size-xsmall;
@@ -128,34 +129,56 @@
     text-decoration: underline;
     text-transform: lowercase;
     cursor: pointer;
+    padding-right: 30px;
   }
-  .button_advanced_search{
-      width: 260px;
-      margin: 0 auto;
-      background-color: $color5;
-      display: block;
-      font-size: $font-size-small;
-      text-transform: uppercase;
-      font-weight: $font-weight-semi;
-      text-align: center;
-      color: $color9;
-      font-family: $font-family-primary;
-      letter-spacing: -0.1px;
-      padding: 10px 0;
-      cursor: pointer;
+  .button_advanced_search {
+    width: 260px;
+    margin: 0 auto;
+    background-color: $color5;
+    display: block;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+    font-weight: $font-weight-semi;
+    text-align: center;
+    color: $color9;
+    font-family: $font-family-primary;
+    letter-spacing: -0.1px;
+    padding: 10px 0;
+    cursor: pointer;
   }
-  .list_results{
+  .list_results {
     list-style: none;
-    li{
-      display: block;
+    li {
+      display: flex;
+      align-items: center;
       font-size: $font-size-xsmall;
       font-weight: $font-weight-bold;
       line-height: 1.29;
       color: $white;
-      span{
+      height: 40px;
+      transition: 0.2s;
+      cursor: pointer;
+      padding-left: 30px;
+      &:hover {
+        background-color: rgba(138, 187, 199, 0.2);
+      }
+      span {
         opacity: 0.7;
       }
     }
+  }
+  .text_hide_search {
+    display: block;
+    font-family: $font-family-primary;
+    font-size: $font-size-xsmall;
+    font-weight:$font-weight-regular;
+    font-style: italic;
+    text-align: right;
+    padding-right: 30px;
+    text-transform: lowercase;
+    padding-top: 10px;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
 .title_accordion {
