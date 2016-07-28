@@ -6,7 +6,7 @@ export default function (props) {
   let options = [], intensities = [];
   let maxLength = ~~((props.endDate - props.startDate) / TIMELINE_STEP);
 
-  for (let length = 1; length < Math.min(maxLength, 30); length += 1) {
+  for (let length = 1; length < Math.min(maxLength, 20); length += 1) {
     options.push(<option value={length} key={length}>{length}</option>)
   }
 

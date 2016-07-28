@@ -1,6 +1,7 @@
-import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY} from "../constants";
-
-const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
+import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY, GET_SERIESGROUP} from "../constants";
+import PelagosClient from '../lib/pelagosClient';
+import _ from 'lodash';
+const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 
 export function init() {
   return {
@@ -25,6 +26,73 @@ export function toggleLayerVisibility(layer) {
     payload: layer
   };
 }
+
+function groupData(vectorArray) {
+  if (vectorArray && vectorArray.length > 1) {
+    for (let index = 1, length = vectorArray.length; index < length; index++) {
+      if (vectorArray[index] !== null) {
+        if (index === 1) {
+          vectorArray[0].category = Array.prototype.slice.call(vectorArray[0].category).concat(Array.prototype.slice.call(vectorArray[index].category));
+          vectorArray[0].datetime = Array.prototype.slice.call(vectorArray[0].datetime).concat(Array.prototype.slice.call(vectorArray[index].datetime));
+          vectorArray[0].latitude = Array.prototype.slice.call(vectorArray[0].latitude).concat(Array.prototype.slice.call(vectorArray[index].latitude));
+          vectorArray[0].longitude = Array.prototype.slice.call(vectorArray[0].longitude).concat(Array.prototype.slice.call(vectorArray[index].longitude));
+          vectorArray[0].series = Array.prototype.slice.call(vectorArray[0].series).concat(Array.prototype.slice.call(vectorArray[index].series));
+          vectorArray[0].seriesgroup = Array.prototype.slice.call(vectorArray[0].seriesgroup).concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
+          vectorArray[0].sigma = Array.prototype.slice.call(vectorArray[0].sigma).concat(Array.prototype.slice.call(vectorArray[index].sigma));
+          vectorArray[0].weight = Array.prototype.slice.call(vectorArray[0].weight).concat(Array.prototype.slice.call(vectorArray[index].weight));
+        } else {
+          vectorArray[0].category = vectorArray[0].category.concat(Array.prototype.slice.call(vectorArray[index].category));
+          vectorArray[0].datetime = vectorArray[0].datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
+          vectorArray[0].latitude = vectorArray[0].latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
+          vectorArray[0].longitude = vectorArray[0].longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
+          vectorArray[0].series = vectorArray[0].series.concat(Array.prototype.slice.call(vectorArray[index].series));
+          vectorArray[0].seriesgroup = vectorArray[0].seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
+          vectorArray[0].sigma = vectorArray[0].sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
+          vectorArray[0].weight = vectorArray[0].weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
+        }
+      }
+    }
+  }
+  return vectorArray[0];
+}
+
+export function getSeriesGroup(seriesgroup, serie, filters){
+  return function (dispatch , getState) {
+    const state = getState();
+
+    const startYear = new Date(filters.startDate).getUTCFullYear();
+    const endYear = new Date(filters.endDate).getUTCFullYear();
+    let urls = [];
+    for (let i = startYear; i <= endYear; i++) {
+      urls.push(`${urlVessel}seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+    }
+    let promises = [];
+    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+      promises.push(new PelagosClient().obtainTile(urls[urlIndex], state.user.token));
+    }
+
+    Promise.all(promises).then(function (rawTileData) {
+      if (rawTileData[0]) {
+        let data = groupData(rawTileData);
+        dispatch({
+          type: GET_SERIESGROUP,
+          payload: {
+            seriesgroup: seriesgroup,
+            seriesGroupData: data,
+            series: _.uniq(data.series),
+            selectedSeries: serie
+          }
+        });
+      }else {
+        dispatch({
+          type: GET_SERIESGROUP,
+          payload: null
+        });
+      }
+    }.bind(this));
+  }
+}
+
 
 /*
  ** CartoDB layers:
