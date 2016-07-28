@@ -19,21 +19,6 @@
     "animations": [
       {
         "args": {
-          "title": "Bathymetry",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://simbiotica.carto.com/api/v3/viz/da62db46-3e9d-11e6-8e2a-0e3ff518bd15/viz.json"
-            }
-          },
-          "visible": true,
-          "color": "green",
-          "zIndex": 0
-        },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
           "title": "VESSEL",
           "source": {
             "type": "BinFormat",
@@ -96,7 +81,7 @@
       },
       {
         "args": {
-          "title": "High Seas Pockets",
+          "title": "High Seas Pocket",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -111,7 +96,7 @@
       },
       {
         "args": {
-          "title": "RFMOs",
+          "title": "RFMO",
           "source": {
             "type": "BinFormat",
             "args": {
