@@ -602,10 +602,14 @@ class Map extends Component {
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.map.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
-        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
-                      onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
-                      startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
+        <LayerPanel layers={this.props.map.layers}
+                    onLayerToggle={this.props.toggleLayerVisibility.bind(this)}
+                    onFilterChange={this.updateFilters.bind(this)}
+                    onTimeStepChange={this.updatePlaybackRange.bind(this)}
+                    onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+                    startDate={this.props.filters.startDate}
+                    endDate={this.props.filters.endDate}
+        />
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={

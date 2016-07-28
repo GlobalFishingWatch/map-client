@@ -10,7 +10,7 @@
   width: 320px;
   max-width: 320px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
-  .title_acordion {
+  .title_accordion {
     line-height: 3;
     font-size: $font-size-xsmall;
     font-weight: $font-weight-bold;
@@ -22,7 +22,7 @@
       display: flex;
     }
   }
-  .input_acordion {
+  .input_accordion {
     line-height: 3;
     font-size: $font-size-xsmall;
     font-weight: $font-weight-bold;
@@ -184,7 +184,7 @@
     cursor: pointer;
   }
 }
-.title_accordion {
+.accordion_item {
   color: $color9;
   font-weight: $font-weight-bold;
   line-height: 3;
