@@ -36,6 +36,26 @@ class Map extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // if(nextProps.map.vessel && this.state.overlay && nextState.overlay) {
+    //   debugger;
+    //   const vesselInfo = this.state.overlay.getVesselAtLocation(nextProps.map.vessel[0], nextProps.map.vessel[1]);
+    //
+    //   if (this.state.trajectory) {
+    //     this.state.trajectory.setMap(null);
+    //   }
+    //
+    //   if (vesselInfo) {
+    //     this.showVesselDetails(vesselInfo);
+    //     this.drawSeriesPath(vesselInfo);
+    //   } else if (this.state.trajectory) {
+    //     this.setState({currentVesselInfo: {}})
+    //   }
+    // }
+
+    return true;
+  }
+
   /**
    * Zoom change handler
    * Enforces min and max zoom levels
@@ -446,7 +466,7 @@ class Map extends Component {
   onMapIdle(event) {
     if (!this.map) {
       this.map = this.refs.map.props.map;
-      this.props.getLayers();
+      this.props.getWorkspace();
     }
   }
 
@@ -618,9 +638,9 @@ class Map extends Component {
           googleMapElement={
             <GoogleMap
               ref="map"
-              defaultZoom={3}
+              zoom={this.props.map.zoom}
               defaultZoomControl={false}
-              defaultCenter={{lat: 0, lng: 0}}
+              center={{lat: this.props.map.center[0], lng: this.props.map.center[1]}}
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
