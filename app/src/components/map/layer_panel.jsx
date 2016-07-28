@@ -38,7 +38,7 @@ class LayerPanel extends Component {
           <li className={layerPanel.list_checkbox} key={i}>
             <label>
               <input type="checkbox" checked={this.props.layers[i].visible}
-                     onChange={(e) => this.props.onToggle(this.props.layers[i])}></input>
+                     onChange={(e) => this.props.onLayerToggle(this.props.layers[i])}></input>
               {this.props.layers[i].title}
             </label>
           </li>
