@@ -3,9 +3,11 @@
     "title": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31",
     "offset": 20,
     "maxoffset": 100,
-    "lat": 0,
-    "lon": 0,
-    "zoom": 3,
+    "lat": -5.908418,
+    "lon": -85.158530,
+    "start_date": "2015-08-01",
+    "end_date": "2015-08-31",
+    "zoom": 6,
     "time": {
       "__jsonclass__": [
         "Date",
@@ -28,7 +30,7 @@
           },
           "visible": true,
           "color": "green",
-          "zIndex": 0
+          "zIndex": 1
         },
         "type": "ClusterAnimation"
       },

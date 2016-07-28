@@ -34,6 +34,26 @@ class Map extends Component {
     };
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // if(nextProps.map.vessel && this.state.overlay && nextState.overlay) {
+    //   debugger;
+    //   const vesselInfo = this.state.overlay.getVesselAtLocation(nextProps.map.vessel[0], nextProps.map.vessel[1]);
+    //
+    //   if (this.state.trajectory) {
+    //     this.state.trajectory.setMap(null);
+    //   }
+    //
+    //   if (vesselInfo) {
+    //     this.showVesselDetails(vesselInfo);
+    //     this.drawSeriesPath(vesselInfo);
+    //   } else if (this.state.trajectory) {
+    //     this.setState({currentVesselInfo: {}})
+    //   }
+    // }
+
+    return true;
+  }
+
   /**
    * Zoom change handler
    * Enforces min and max zoom levels
@@ -465,7 +485,7 @@ class Map extends Component {
   onMapIdle(event) {
     if (!this.map) {
       this.map = this.refs.map.props.map;
-      this.props.getLayers();
+      this.props.getWorkspace();
     }
   }
 
@@ -637,36 +657,31 @@ class Map extends Component {
         </div>
         <LayerPanel layers={this.props.map.layers} onLayerToggle={this.props.toggleLayerVisibility.bind(this)} onFilterChange={this.updateFilters.bind(this)} onTimeStepChange={this.updatePlaybackRange.bind(this)} onDrawDensityChange={this.updateVesselLayerDensity.bind(this)} startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
-        <GoogleMapLoader containerElement={< div className = {
-          map.map
-        }
-        style = {{height: "100%",}}/>} googleMapElement={< GoogleMap ref = "map" defaultZoom = {
-          3
-        }
-        defaultZoomControl = {
-          false
-        }
-        defaultCenter = {{lat: 0, lng: 0}}defaultOptions = {{ streetViewControl: false, mapTypeControl: false, zoomControl: false }}defaultMapTypeId = {
-          google.maps.MapTypeId.SATELLITE
-        }
-        onClick = {
-          this.onClickMap.bind(this)
-        }
-        onMousemove = {
-          this.onMouseMove.bind(this)
-        }
-        onZoomChanged = {
-          this.onZoomChanged.bind(this)
-        }
-        onDragstart = {
-          this.onDragStart.bind(this)
-        }
-        onDragend = {
-          this.onDragEnd.bind(this)
-        }
-        onIdle = {
-          this.onMapIdle.bind(this)
-        } />}></GoogleMapLoader>
+        <GoogleMapLoader
+          containerElement={
+            <div className={map.map} style={{height: "100%",}}/>
+          }
+          googleMapElement={
+            <GoogleMap
+              ref="map"
+              zoom={this.props.map.zoom}
+              defaultZoomControl={false}
+              center={{lat: this.props.map.center[0], lng: this.props.map.center[1]}}
+              defaultOptions={{
+                streetViewControl: false,
+                mapTypeControl: false,
+                zoomControl: false
+              }}
+              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+              onClick={this.onClickMap.bind(this)}
+              onMousemove={this.onMouseMove.bind(this)}
+              onZoomChanged={this.onZoomChanged.bind(this)}
+              onDragstart={this.onDragStart.bind(this)}
+              onDragend={this.onDragEnd.bind(this)}
+              onIdle={this.onMapIdle.bind(this)}
+            />
+          }>
+        </GoogleMapLoader>
       </div>
     </div>
   }

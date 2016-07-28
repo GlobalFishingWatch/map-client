@@ -3,9 +3,9 @@
     "title": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31",
     "offset": 20,
     "maxoffset": 100,
-    "lat": 0,
-    "lon": 0,
-    "zoom": 3,
+    "lat": -23.970609,
+    "lon": 23.695288,
+    "zoom": 4,
     "time": {
       "__jsonclass__": [
         "Date",
@@ -28,7 +28,7 @@
           },
           "visible": true,
           "color": "green",
-          "zIndex": 0
+          "zIndex": 1
         },
         "type": "ClusterAnimation"
       },
@@ -42,7 +42,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": false,
+          "visible": true,
           "color": "#da0000",
           "zIndex": 2
         },
@@ -103,7 +103,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
-          "visible": false,
+          "visible": true,
           "color": "blue",
           "zIndex": 6
         },

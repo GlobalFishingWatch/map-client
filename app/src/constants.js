@@ -3,6 +3,9 @@ export const SHOW_LOADING = 'SHOW_LOADING';
 export const GET_SERIESGROUP = 'GET_SERIESGROUP';
 export const SET_LAYERS = 'SET_LAYERS';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
+export const SET_ZOOM = 'SET_ZOOM';
+export const SET_CENTER = 'SET_CENTER';
+export const SET_TIMELINE_DATES = 'SET_TIMELINE_DATES';
 
 // User actions
 export const GET_USER = 'GET_USER';
