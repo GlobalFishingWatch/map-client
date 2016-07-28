@@ -1,0 +1,25 @@
+
+body {
+  margin:0;
+  background-color: #011137;
+}
+
+.area {
+  fill: #2c5197;
+}
+
+.x-axis line, .x-axis path {
+  stroke: #fff;
+}
+
+.x-axis text {
+  fill: #fff;
+}
+
+.inner-brush .selection {
+  stroke: red;
+}
+
+.outer-brush .selection {
+  stroke: blue;
+}
