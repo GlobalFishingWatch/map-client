@@ -6,7 +6,6 @@ import {TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL} from "
 import Draggable from "react-draggable";
 import CanvasLayer from "./layers/canvas_layer";
 import LayerPanel from "./map/layer_panel";
-import FiltersPanel from "./map/filters_panel";
 import VesselPanel from "./map/vessel_panel";
 import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
@@ -360,6 +359,9 @@ class Map extends Component {
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
+  componentDidMount() {
+  }
+
   /**
    * Creates a Carto-based layer
    *
@@ -600,11 +602,14 @@ class Map extends Component {
             </span>
           </div>
         </div>
-        <LayerPanel layers={this.props.map.layers} onToggle={this.props.toggleLayerVisibility.bind(this)}/>
-        <FiltersPanel onChange={this.updateFilters.bind(this)}/>
-        <ControlPanel onTimeStepChange={this.updatePlaybackRange.bind(this)}
-                      onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
-                      startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}/>
+        <LayerPanel layers={this.props.map.layers}
+                    onLayerToggle={this.props.toggleLayerVisibility.bind(this)}
+                    onFilterChange={this.updateFilters.bind(this)}
+                    onTimeStepChange={this.updatePlaybackRange.bind(this)}
+                    onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+                    startDate={this.props.filters.startDate}
+                    endDate={this.props.filters.endDate}
+        />
         <VesselPanel vesselInfo={this.state.currentVesselInfo}/>
         <GoogleMapLoader
           containerElement={
