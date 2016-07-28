@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import {TIMELINE_TOTAL_DATE_EXTENT} from '../../constants';
 import css from '../../../styles/index.scss';
+import DatePicker from './date_picker';
 
 const margin = {top: 10, right: 50, bottom: 40, left: 50};
 const width = 800 - margin.left - margin.right;
@@ -25,6 +26,14 @@ const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
 
 class Timeline extends Component {
 
+  constructor(props) {
+    super(props);
+    this.updateOuterExtent = this.updateOuterExtent.bind(this);
+    this.state = {
+      outerExtent: TIMELINE_TOTAL_DATE_EXTENT
+    };
+  }
+
   componentWillMount() {
   }
 
@@ -42,12 +51,9 @@ class Timeline extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.props)
-    var innerExt = [x(this.props.filters.innerExtent[0]), x(this.props.filters.innerExtent[1])];
-    var outerExt = [x(this.props.filters.outerExtent[0]), x(this.props.filters.outerExtent[1])];
-    console.log(outerExt);
-    // this.innerBrushFunc.move(this.innerBrush, currentInnerOffsetExtent);
-    this.outerBrushFunc.move(this.outerBrush, outerExt);
+    const newOuterOffsetExtent = [x(this.state.outerExtent[0]), x(this.state.outerExtent[1])];
+    console.log(newOuterOffsetExtent)
+    this.redrawOuter(newOuterOffsetExtent);
   }
 
   build() {
@@ -80,11 +86,13 @@ class Timeline extends Component {
 
     // disable default d3 brush events
     this.outerBrush.on('.brush', null);
-    // this.innerBrush.on('.brush', null);
+    //
 
     this.innerBrush = this.group.append('g')
         .attr('class', css.c_timeline_outer_brush)
         .call(this.innerBrushFunc);
+
+    // this.innerBrush.on('.brush', null);
 
     this.outerBrushFunc.move(this.outerBrush, [0, width]);
     this.innerBrushFunc.move(this.innerBrush, currentInnerOffsetExtent);
@@ -166,13 +174,24 @@ class Timeline extends Component {
   }
 
   setOuterZoom() {
+    const newOuterTimeExtent = this.redrawOuter(currentOuterOffsetExtent);
+    // propagate to state
+    console.log(newOuterTimeExtent)
+    this.setState({
+      outerExtent: newOuterTimeExtent
+    });
+  }
+
+  redrawOuter(newOuterOffsetExtent) {
     // grab inner time extent before changing scale
     const prevInnerTimeExtent = [x.invert(currentInnerOffsetExtent[0]), x.invert(currentInnerOffsetExtent[1])];
 
     // use the new x scale to compute new time values
     // do not get out of total range for outer brush
-    const newOuterTimeExtentLeft = d3.max([x.invert(currentOuterOffsetExtent[0]), TIMELINE_TOTAL_DATE_EXTENT[0]], d => d.getTime());
-    const newOuterTimeExtentRight = d3.min([x.invert(currentOuterOffsetExtent[1]), TIMELINE_TOTAL_DATE_EXTENT[1]], d => d.getTime());
+    const newOuterTimeLeft = x.invert(newOuterOffsetExtent[0]);
+    const newOuterTimeExtentLeft = (newOuterTimeLeft.getTime() > TIMELINE_TOTAL_DATE_EXTENT[0].getTime()) ? newOuterTimeLeft : TIMELINE_TOTAL_DATE_EXTENT[0];
+    const newOuterTimeRight = x.invert(newOuterOffsetExtent[1]);
+    const newOuterTimeExtentRight = (newOuterTimeRight.getTime() < TIMELINE_TOTAL_DATE_EXTENT[1].getTime()) ? newOuterTimeRight : TIMELINE_TOTAL_DATE_EXTENT[1];
     const newOuterTimeExtent = [newOuterTimeExtentLeft, newOuterTimeExtentRight];
     x.domain(newOuterTimeExtent);
 
@@ -183,14 +202,14 @@ class Timeline extends Component {
     // calculate new inner extent, using old inner extent on new x scale
     currentInnerOffsetExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
     this.innerBrushFunc.move(this.innerBrush, currentInnerOffsetExtent);
+
+    return newOuterTimeExtent;
   }
 
   onInnerBrushed() {
     const innerOffsetExtent = d3.event.selection;
     const innerExtent = [x.invert(innerOffsetExtent[0]), x.invert(innerOffsetExtent[1])];
-    this.props.updateFilters({
-      innerExtent
-    });
+    // TODO : call some callback to propagate to map
   }
 
   getDummyData() {
@@ -209,12 +228,18 @@ class Timeline extends Component {
     return dummyData;
   }
 
-
+  updateOuterExtent(outerExtent) {
+    this.setState({
+      outerExtent
+    })
+  }
 
   render() {
-    console.log(this.props.filters)
     return (
-      <div id="timeline_svg_container"/>
+      <div>
+        <DatePicker updateOuterExtent={this.updateOuterExtent} start={this.state.outerExtent[0]} end={this.state.outerExtent[1]}/>
+        <div id="timeline_svg_container"/>
+      </div>
     );
   }
  }

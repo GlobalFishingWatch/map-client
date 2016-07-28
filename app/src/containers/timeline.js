@@ -12,6 +12,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateFilters: filters => {
+      console.log('t:mapDispatchToProps', filters)
       dispatch(updateFilters(filters));
     }
   };
