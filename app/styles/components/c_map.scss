@@ -164,3 +164,13 @@ $corporateColor: #233e76;
   height: calc(100% - 100px);;
   position: relative;
 }
+
+.timeline2_container {
+  position: absolute;
+  bottom: 200px;
+  left: 0px;
+  width: 800px;
+  height: 200px;
+  background: #000;
+    z-index: 6;
+}

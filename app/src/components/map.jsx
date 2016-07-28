@@ -11,6 +11,7 @@ import VesselPanel from "./map/vessel_panel";
 import ControlPanel from "./map/control_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
+import Timeline from "../containers/timeline";
 
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(
@@ -556,6 +557,9 @@ class Map extends Component {
           <span id="zoom_up" onClick={this.changeZoomLevel.bind(this)}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel.bind(this)}>-</span>
         </div>
+        <div className={map.timeline2_container}>
+          <Timeline/>
+        </div>
         <div className={map.timeline_container}>
           <div className={map.time_controls}>
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
@@ -575,6 +579,7 @@ class Map extends Component {
                      onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}/>
             </label>
           </div>
+
           <div className={map.range_container}>
             <Draggable
               axis="x"

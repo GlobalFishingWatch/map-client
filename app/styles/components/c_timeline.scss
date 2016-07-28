@@ -1,0 +1,22 @@
+@import '../base/colors.scss';
+
+.c_timeline {
+
+  .c_timeline_area {
+    fill: $bluedark;
+  }
+  .c_timeline_x_axis line, .c_timeline_x_axis path {
+    stroke: #fff;
+  }
+  .c_timeline_x_axis text {
+    fill: #fff;
+  }
+
+  .c_timeline_inner_brush .selection {
+    stroke: red;
+  }
+
+  .c_timeline_outer_brush .selection {
+    stroke: blue;
+  }
+}

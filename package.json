@@ -70,6 +70,7 @@
   "xo": {
     "extends": "xo-react",
     "esnext": true,
+    "envs": ["browser"],
     "space": 2,
     "ignores": [],
     "rules": {
