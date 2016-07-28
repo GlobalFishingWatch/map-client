@@ -46,7 +46,9 @@ class CanvasLayer {
    */
   refresh() {
     if (this.visible) {
-      this.map.overlayMapTypes.removeAt(this.position);
+      if (this.map.overlayMapTypes.getAt(this.position)) {
+        this.map.overlayMapTypes.removeAt(this.position);
+      }
       this.map.overlayMapTypes.insertAt(this.position, this);
     }
   }
