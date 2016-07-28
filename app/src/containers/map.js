@@ -2,7 +2,7 @@
 
 import {connect} from "react-redux";
 import Map from "../components/map";
-import {init, showLoading, getWorkspace, toggleLayerVisibility} from "../actions/map";
+import {init, showLoading, getWorkspace, toggleLayerVisibility, setZoom, setCenter} from "../actions/map";
 import {updateFilters} from "../actions/filters";
 
 const mapStateToProps = (state) => {
@@ -33,7 +33,9 @@ const mapDispatchToProps = (dispatch, { location }) => {
     },
     updateFilters: (filters) => {
       dispatch(updateFilters(filters))
-    }
+    },
+    setZoom: zoom => dispatch(setZoom(zoom)),
+    setCenter: center => dispatch(setCenter(center))
   };
 }
 

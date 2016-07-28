@@ -53,6 +53,7 @@ class Map extends Component {
       this.map.setZoom(MAX_ZOOM_LEVEL);
     }
     this.setState({zoom: zoom});
+    this.props.setZoom(zoom);
     this.state.overlay.resetPlaybackData();
   }
 
@@ -430,11 +431,16 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (strictBounds.contains(this.map.getCenter())) {
-      this.state.lastCenter = this.map.getCenter();
+
+    const center = this.map.getCenter();
+
+    if (strictBounds.contains(center)) {
+      this.state.lastCenter = center;
+      this.props.setCenter([ center.lat(), center.lng() ]);
       return;
     }
     this.map.panTo(this.state.lastCenter);
+    this.props.setCenter([ this.state.lastCenter.lat(), this.state.lastCenter.lng() ]);
   }
 
   /**

@@ -26,6 +26,20 @@ export function toggleLayerVisibility(layer) {
   };
 }
 
+export function setZoom(zoom) {
+  return {
+    type: SET_ZOOM,
+    payload: zoom
+  };
+};
+
+export function setCenter(center) {
+  return {
+    type: SET_CENTER,
+    payload: center
+  };
+};
+
 /*
  ** CartoDB layers:
  ** MPA
