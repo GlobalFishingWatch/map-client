@@ -152,19 +152,15 @@ class Map extends Component {
       return;
     }
 
-    this.setState({currentTimestamp: initialTimestamp});
-
     this.updatePlaybackBar(initialTimestamp, playbackRange);
-
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
-
 
     const animationID = requestAnimationFrame(function () {
       if (this.state.running == 'play') {
         this.drawVesselFrame(initialTimestamp + mDay);
       }
     }.bind(this));
-    this.setState({'animationID': animationID});
+    this.setState({'animationID': animationID, currentTimestamp: initialTimestamp});
 
   }
 
