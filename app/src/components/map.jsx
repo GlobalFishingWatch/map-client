@@ -36,26 +36,6 @@ class Map extends Component {
     };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // if(nextProps.map.vessel && this.state.overlay && nextState.overlay) {
-    //   debugger;
-    //   const vesselInfo = this.state.overlay.getVesselAtLocation(nextProps.map.vessel[0], nextProps.map.vessel[1]);
-    //
-    //   if (this.state.trajectory) {
-    //     this.state.trajectory.setMap(null);
-    //   }
-    //
-    //   if (vesselInfo) {
-    //     this.showVesselDetails(vesselInfo);
-    //     this.drawSeriesPath(vesselInfo);
-    //   } else if (this.state.trajectory) {
-    //     this.setState({currentVesselInfo: {}})
-    //   }
-    // }
-
-    return true;
-  }
-
   /**
    * Zoom change handler
    * Enforces min and max zoom levels
