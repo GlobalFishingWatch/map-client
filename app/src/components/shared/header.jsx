@@ -2,6 +2,9 @@ import React, {Component, Image} from "react";
 import {Link} from "react-router";
 import home from "../../../styles/components/c_menu.scss";
 import logoimg from "../../../assets/logos/gfw_logo_hor_second.png";
+import logoimg_second from "../../../assets/logos/gfw_logo_hor_white.png";
+import menuicon from "../../../assets/icons/menu_icon.svg";
+
 
 
 class Header extends Component {
@@ -24,9 +27,12 @@ class Header extends Component {
     return <header className={home.c_header_menu} id={location.pathname==="/map"? 'menu_transparent' : null}>
       <style dangerouslySetInnerHTML={{__html: "\n#menu_selected:after{\n\tcontent: \"\";\n\tdisplay:block;\n\theight: 4px;\n  border-radius: 100px;\n  background-color: #ffffff;\n\tmargin-top:1px;\n}\n" }} />
       <nav className={home.c_menu} >
+        <img onClick={()=>this.props.setVisibleMenu(true)} className={home.icon_menu_mobile} src={menuicon}></img>
       <Link to="/">
-        <img src={logoimg}></img>
+        <img className={home.img_desktop} src={logoimg}></img>
+        <img className={home.img_mobile} src={logoimg_second}></img>
       </Link>
+      <span className={home.share_header}>Share</span>
       <ul>
         <li>
           <Link id={location.pathname==="/map"? 'menu_selected' : null} to="/map">Map</Link>
