@@ -280,13 +280,12 @@ class Map extends Component {
     }
     this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
 
-    // this.createTrackLayer(vesselInfo);
-    // if (vesselInfo) {
-    //   this.showVesselDetails(vesselInfo);
-    //   this.drawSeriesPath(vesselInfo);
-    // } else if (this.state.trajectory) {
-    //   this.setState({currentVesselInfo: {}})
-    // }
+    if (vesselInfo) {
+      this.showVesselDetails(vesselInfo);
+      this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
+    } else if (this.state.trajectory) {
+      this.setState({currentVesselInfo: {}})
+    }
   }
 
   componentWillReceiveProps(nextProps) {
