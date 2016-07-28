@@ -1,5 +1,5 @@
 import {VESSEL_INIT, SHOW_LOADING, SET_LAYERS, TOGGLE_LAYER_VISIBILITY, GET_SERIESGROUP} from "../constants";
-import PelagosClient from '../lib/PelagosClient';
+import PelagosClient from '../lib/pelagosClient';
 import _ from 'lodash';
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 

@@ -264,9 +264,6 @@ class CanvasLayer {
       if (filters.flag != "" && data.category[index] != parseInt(filters.flag)) {
         return false;
       }
-      if (data.weight[index] <= 1) {
-        return false;
-      }
     }
     return true;
   }
