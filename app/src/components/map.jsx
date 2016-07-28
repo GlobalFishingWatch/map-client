@@ -563,7 +563,7 @@ class Map extends Component {
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
               {this.state.running != 'play' ? "Play ►" : "Pause ||"}
             </button>
-            <button onClick={this.playbackStop.bind(this)} className={map.playbackStop}>Stop</button>
+            <button onClick={this.playbackStop.bind(this)} className={map.timelineStop}>Stop</button>
           </div>
           <div className={map.date_inputs}>
             <label for="mindate">
