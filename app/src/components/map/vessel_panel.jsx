@@ -11,7 +11,7 @@ export default function (props) {
 
   return (
     <div className={vesselPanel.vesselPanel} id="vesselBox">
-      Vessel information:
+      <h3>Vessel information:</h3>
       <p>Date: <span id="vesselPanelDate">{humanDate}</span></p>
       <p>Series: <span id="vesselPanelSeries">{props.vesselInfo.series}</span></p>
       <p>Series Group: <span id="vesselPanelSeriesGroup">{props.vesselInfo.seriesGroup}</span></p>
