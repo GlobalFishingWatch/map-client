@@ -152,7 +152,7 @@ class Map extends Component {
       return;
     }
 
-    this.updatePlaybackBar(initialTimestamp, playbackRange);
+    this.updatePlaybackBar(this.props.filters.startDate, this.props.filters.endDate, initialTimestamp, playbackRange);
     this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
 
     // paint track layer
@@ -182,7 +182,7 @@ class Map extends Component {
 
     this.setState({running: 'stop', currentTimestamp: filters.startDate});
 
-    this.updatePlaybackBar(filters.startDate, this.state.playbackRange);
+    this.updatePlaybackBar(filters.startDate, filters.endDate, filters.startDate, this.state.playbackRange);
 
     if (this.state.trackLayer) {
       this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
@@ -324,6 +324,21 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
+    let currentTimestamp = this.state.currentTimestamp;
+
+    if (nextProps.filters.startDate > this.state.currentTimestamp) {
+      currentTimestamp = nextProps.filters.startDate;
+    }
+    if (nextProps.filters.endDate < this.state.currentTimestamp) {
+      currentTimestamp = nextProps.filters.endDate;
+    }
+
+    if (currentTimestamp != this.state.currentTimestamp) {
+      this.setState({currentTimestamp: currentTimestamp});
+    }
+
+    this.updatePlaybackBar(nextProps.filters.startDate, nextProps.filters.endDate, currentTimestamp, this.state.playbackRange);
+
     if (this.state.overlay && this.props.filters !== nextProps.filters) {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
@@ -529,13 +544,11 @@ class Map extends Component {
       this.drawVesselFrame(this.state.currentTimestamp, playbackRange);
     }
 
-    this.updatePlaybackBar(this.state.currentTimestamp, playbackRange);
+    this.updatePlaybackBar(this.props.filters.startDate, this.props.filters.endDate, this.state.currentTimestamp, playbackRange);
   }
 
-  updatePlaybackBar(initialTimestamp, playbackRange) {
+  updatePlaybackBar(startDate, endDate, initialTimestamp, playbackRange) {
     const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
-    const startDate = this.props.filters.startDate;
-    const endDate = this.props.filters.endDate;
 
     const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
     const timeBarWidth = ((TIMELINE_STEP * playbackRange)) / (endDate - startDate) * 100;

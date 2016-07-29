@@ -5,8 +5,8 @@
     "maxoffset": 100,
     "lat": -5.908418,
     "lon": -85.158530,
-    "start_date": "2015-08-01",
-    "end_date": "2015-08-31",
+    "start_date": 1438387200000,
+    "end_date": 1440892800000,
     "zoom": 6,
     "time": {
       "__jsonclass__": [
