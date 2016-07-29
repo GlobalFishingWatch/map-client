@@ -42,11 +42,13 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    const zoom = this.map.getZoom();
+    let zoom = this.map.getZoom();
     if (zoom < MIN_ZOOM_LEVEL) {
+      zoom = MIN_ZOOM_LEVEL;
       this.map.setZoom(MIN_ZOOM_LEVEL);
     }
     if (zoom > MAX_ZOOM_LEVEL) {
+      zoom = MAX_ZOOM_LEVEL;
       this.map.setZoom(MAX_ZOOM_LEVEL);
     }
     this.setState({zoom: zoom});

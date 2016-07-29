@@ -1,4 +1,4 @@
-import PelagosClient from "../lib/pelagosClient";
+import PelagosClient from '../lib/pelagosClient';
 import _ from "lodash";
 import {
   VESSEL_INIT,

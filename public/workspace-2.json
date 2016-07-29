@@ -30,7 +30,7 @@
           },
           "visible": true,
           "color": "green",
-          "zIndex": 1
+          "zIndex": 0
         },
         "type": "ClusterAnimation"
       },
