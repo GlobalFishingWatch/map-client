@@ -641,23 +641,23 @@ section.reg form {
 }
 
 .bg.reg {
-  background-image: url('./img/ship.png');
+  background-image: url('../img/ship.png');
 }
 
 .bg.con {
-  background-image: url('./img/ship2.png');
+  background-image: url('../img/ship2.png');
 }
 
 .bg.log {
-  background-image: url('./img/sky.png');
+  background-image: url('../img/sky.png');
 }
 
 .bg.res {
-  background-image: url('./img/ship3.png');
+  background-image: url('../img/ship3.png');
 }
 
 .bg.ty {
-  background-image: url('./img/man.png');
+  background-image: url('../img/man.png');
 }
 
 @media only screen and (max-device-width: 768px) {
