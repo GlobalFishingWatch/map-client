@@ -467,6 +467,7 @@
   .allow a {
     color: #FFF;
     text-decoration: none;
+    display:inline-block;
   }
   .allow h1 {
     -webkit-margin-before: 0;
@@ -491,7 +492,6 @@
   }
   .allow .content>ul {
     margin-right: 25px;
-    width: 350px;
     margin: 0px;
     font-size: 14px;
     font-weight: 500;
@@ -512,6 +512,12 @@
     display: block;
     margin-bottom: 55px;
     margin-top: 0;
+  }
+  .allow a:after{
+    content:"";
+    display:block;
+    height:1px;
+    background-color: #f04323;
   }
   .allow #button_allow {
     background-color: #8abbc7;
