@@ -8,7 +8,9 @@
   right: 0;
   background-color: $color5;
   width: 320px;
-  top: 450px;
+  bottom: 130px;
+  max-height: calc(100% - 391px);
+  overflow-y: auto;
   max-width: 320px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
   color: $white;
