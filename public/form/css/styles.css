@@ -486,24 +486,24 @@
     display: block;
   }
   .allow .content {
-    display: flex;
+    display: block;
     margin-bottom: 30px;
   }
-  .allow .content>p {
+  .allow .content>ul {
     margin-right: 25px;
-    max-width: 350px;
+    width: 350px;
     margin: 0px;
     font-size: 14px;
     font-weight: 500;
     line-height: 2;
-    text-align: left;
+    text-align: center;
   }
-  .allow .content>p:first-child {
+  .allow .content>ul:first-child {
     margin-right: 25px;
-    text-align: left;
+    text-align: center;
   }
-  .allow .content>p:last-child {
-    text-align: left;
+  .allow .content>ul:last-child {
+    text-align: center;
   }
   .allow #advise_email {
     font-size: 14px;
@@ -543,6 +543,19 @@
     header img {}
     .allow{
       padding:0px;
+    }
+    .allow .content {
+      display: flex;
+    }
+    .allow .content>ul {
+      text-align: left;
+    }
+    .allow .content>ul:first-child {
+      margin-right: 25px;
+      text-align: left;
+    }
+    .allow .content>ul:last-child {
+      text-align: left;
     }
   }
   @media screen and (min-width: 769px) {
