@@ -514,12 +514,6 @@
     margin-bottom: 55px;
     margin-top: 0;
   }
-  .allow a:after{
-    content:"";
-    display:block;
-    height:1px;
-    background-color: #fff;
-  }
   .link_underline{
     display:inline-block;
   }
