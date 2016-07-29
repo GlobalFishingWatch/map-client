@@ -18,6 +18,9 @@ export const GET_RECENT_POST = 'GET_RECENT_POST';
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 
+// Appearence actions
+export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
+
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 

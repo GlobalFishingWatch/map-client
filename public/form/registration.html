@@ -1,38 +1,76 @@
-<html>
+<html lang="en">
 <head>
 	<title>Registration</title>
-	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/styles.min.css">
 </head>
 <body class="bg reg">
-	<header class="menu_transparent">
-		<a href="#">
-			<img src="img/gfw_logo_hor_second.png">
+	<div class="mobile-menu js-mobile-menu">
+		<div class="drawer">
+			<ul>
+				<li><a href="/map">Map</a></li>
+				<li>News</li>
+				<ul class="submenu_mobile">
+					<li><a href="/blog">Blog</a></li>
+					<li><a href="/articles-publications">Articles and Publications</a></li>
+				</ul>
+				<li>How To</li>
+				<ul class="submenu_mobile">
+					<li><a href="/faq">FAQ</a></li>
+					<li><a href="/tutorials">Tutorials</a></li>
+					<li><a href="/definitions">Definitions</a></li>
+				</ul>
+				<li>About</li>
+				<ul class="submenu_mobile">
+					<li><a href="/the-project">The Project</a></li>
+					<li><a href="/partners">Partners</a></li>
+					<li><a href="/contact-us">Contact Us</a></li>
+				</ul>
+			</ul>
+			<a href="#" class="button_login">LOG IN</a>
+			<p class="forgot_text">
+				<a href="#">Forgot your password?</a>
+				<a href="#">Not a member</a>
+			</p>
+		</div>
+	</div>
+
+	<header class="menu">
+		<svg class="hamburger-icon js-hamburger-menu" viewBox="0 0 25 25">
+			<path d="M0 2h25v4H0V2zm0 8h25v4H0v-4zm0 8h25v4H0v-4z" fill="#FFF" fill-rule="evenodd"/>
+		</svg>
+
+		<a href="/">
+			<h1 class="logo">Global Fishing Watch</h1>
 		</a>
-    <ul>
-      <li><a href="/map">map</a></li>
-      <li class="dropdown"><a href="#">news</a>
-        <ul class="dropdown_content">
-          <li><a href="/blog">Blog</a></li>
-          <li><a href="/articles-publications">Articles and Publications</a></li>
-        </ul>
-      </li>
-      <li class="dropdown"><a href="#">how to</a>
-        <ul class="dropdown_content">
-          <li><a href="/faq">FAQ</a></li>
-          <li><a href="/tutorials">Tutorials</a></li>
-          <li><a href="/definitions">Definitions</a></li>
-        </ul>
-      </li>
-      <li class="dropdown"><a href="#">about</a>
-        <ul class="dropdown_content">
-          <li><a href="/the-project">The Project</a></li>
-          <li><a href="/partners">Partners</a></li>
-          <li><a href="/contact-us">Contact us</a></li>
-        </ul>
-      </li>
-      <li><a href="#" class="selected">login</a></li>
-    </ul>
+
+		<ul class="desktop-menu">
+			<li><a href="/map">Map</a></li>
+			<li class="dropdown"><a href="#">News</a>
+				<ul class="dropdown_content">
+					<li><a href="/blog">Blog</a></li>
+					<li><a href="/articles-publications">Articles and Publications</a></li>
+				</ul>
+			</li>
+			<li class="dropdown"><a href="#">How To</a>
+				<ul class="dropdown_content">
+					<li><a href="/faq">FAQ</a></li>
+					<li><a href="/tutorials">Tutorials</a></li>
+					<li><a href="/definitions">Definitions</a></li>
+				</ul>
+			</li>
+			<li class="dropdown"><a href="#">About</a>
+				<ul class="dropdown_content">
+					<li><a href="/the-project">The Project</a></li>
+					<li><a href="/partners">Partners</a></li>
+					<li><a href="/contact-us">Contact Us</a></li>
+				</ul>
+			</li>
+			<li><a href="#" class="selected">Login</a></li>
+		</ul>
 	</header>
+
 	<section class="reg">
 		<h1>Registration</h1>
 		<form method="post" action="#">
@@ -71,11 +109,22 @@
 				</div>
 			</div>
 			<div class="tos">
-				<span><input type="checkbox" required /> <span>Accept terms of service</span></span>
-				<span><input type="checkbox" required /> <span>Accept private policy</span></span>
+				<span><input type="checkbox" required /> <span>Accept <a href="/terms-of-use">terms of use</a></span></span>
+				<span><input type="checkbox" required /> <span>Accept <a href="/privacy-policy">private policy</a></span></span>
 			</div>
 			<input type="submit" value="SEND"/>
 		</form>
 	</section>
+	<script>
+		var mobileMenu = document.querySelector('.mobile-menu');
+
+		document.querySelector('.js-hamburger-menu').addEventListener('click', function() {
+			mobileMenu.classList.toggle('-opened');
+		});
+
+		document.querySelector('.js-mobile-menu').addEventListener('click', function(e) {
+			if(e.target === mobileMenu) mobileMenu.classList.remove('-opened');
+		});
+	</script>
 </body>
 </html>

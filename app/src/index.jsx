@@ -13,10 +13,11 @@ import mapReducer from "./reducers/map";
 import userReducer from "./reducers/user";
 import blogReducer from "./reducers/blog";
 import filtersReducer from "./reducers/filters";
+import appearenceReducer from "./reducers/appearence";
 
 /**
  * Reducers
- * @info(http://redux.js.org/docs/basics/Reducers.html)
+ * @info(http://redux.js.org/docs/basics/Reducers.html) 
  * @type {Object}
  */
 const reducer = combineReducers({
@@ -24,7 +25,8 @@ const reducer = combineReducers({
   map: mapReducer,
   user: userReducer,
   blog: blogReducer,
-  filters: filtersReducer
+  filters: filtersReducer,
+  appearence: appearenceReducer
 });
 
 
