@@ -459,7 +459,8 @@
     height:100%;
   }
   .allow hr {
-    width: 486px;
+    width:100%;
+    max-width: 486px;
     display: block;
     margin: 0 auto;
     margin-bottom: 45px;
@@ -497,6 +498,7 @@
     font-weight: 500;
     line-height: 2;
     text-align: center;
+    display:block;
   }
   .allow .content>ul:first-child {
     margin-right: 25px;
@@ -517,7 +519,7 @@
     content:"";
     display:block;
     height:1px;
-    background-color: #f04323;
+    background-color: #fff;
   }
   .allow #button_allow {
     background-color: #8abbc7;
@@ -530,6 +532,9 @@
     padding: 20px 100px;
     display: block;
     margin-bottom: 30px;
+  }
+  .allow #button_allow:after {
+    display:none;
   }
   .allow #allow_deny {
     font-size: 14px;
