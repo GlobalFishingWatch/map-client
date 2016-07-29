@@ -134,7 +134,7 @@ export function getWorkspace(workspace) {
       path = '/workspace-logged.json';
     }
 
-    if (!!~[1, 2, 3].indexOf(+workspace)) {
+    if (!!~[1, 2].indexOf(+workspace)) {
       path = `/workspace-${workspace}.json`;
     }
 
