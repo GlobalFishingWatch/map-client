@@ -2,7 +2,16 @@
 
 import {connect} from "react-redux";
 import Map from "../components/map";
-import {init, showLoading, getLayers, toggleLayerVisibility, getSeriesGroup} from "../actions/map";
+import {
+  init,
+  showLoading,
+  getWorkspace,
+  getLayers,
+  toggleLayerVisibility,
+  getSeriesGroup,
+  setZoom,
+  setCenter
+} from "../actions/map";
 import {updateFilters} from "../actions/filters";
 
 const mapStateToProps = (state) => {
@@ -13,7 +22,8 @@ const mapStateToProps = (state) => {
     token: state.user.token,
   };
 };
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, {location}) => {
+  const queryParams = location.query;
   return {
     initMapLayer: () => {
       dispatch(init());
@@ -24,8 +34,8 @@ const mapDispatchToProps = (dispatch) => {
     showLoading: () => {
       dispatch(showLoading(true))
     },
-    getLayers: () => {
-      dispatch(getLayers())
+    getWorkspace: () => {
+      dispatch(getWorkspace(queryParams.workspace))
     },
     toggleLayerVisibility: (layer) => {
       dispatch(toggleLayerVisibility(layer))
@@ -35,7 +45,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getSeriesGroup: (seriesgroup, series, filters) => {
       dispatch(getSeriesGroup(seriesgroup, series, filters))
-    }
+    },
+    setZoom: zoom => dispatch(setZoom(zoom)),
+    setCenter: center => dispatch(setCenter(center))
   };
 }
 
