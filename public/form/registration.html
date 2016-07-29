@@ -72,45 +72,53 @@
 	</header>
 
 	<section class="reg">
-		<h1>Registration</h1>
 		<form method="post" action="#">
-			<div class="column-container">
-				<div class="column l">
+			<h1>Registration</h1>
+			<div class="reg-form">
+				<div>
 					<label for="gfw_firstname">First name</label>
 					<input type="text" id="gfw_firstname" placeholder="First name" />
+				</div>
+				<div>
+					<label for="gfw_lastname">last name</label>
+					<input type="text" id="gfw_lastname" placeholder="Last name" required />
+				</div>
+				<div>
 					<label for="gfw_questiontype">Type of organization</label>
-					<div class="select_container">
-						<select id="gfw_questiontype">
-							<option>Select a question type</option>
-						</select>
-					</div>
+					<select id="gfw_questiontype">
+						<option>Select a question type</option>
+					</select>
+				</div>
+				<div>
+					<label for="gfw_questioncountry">Country</label>
+					<select id="gfw_questioncountry">
+						<option>Select a country</option>
+					</select>
+				</div>
+				<div>
 					<label for="gfw_questionstate">state/province</label>
-					<div class="select_container">
-						<select id="gfw_questionstate">
-							<option>Select a state</option>
-						</select>
-					</div>
+					<select id="gfw_questionstate">
+						<option>Select a state</option>
+					</select>
+				</div>
+				<div>
+					<label for="gfw_zip">Zip code</label>
+					<input type="text" id="gfw_zip" placeholder="Zip code" />
+				</div>
+				<div>
 					<label for="gfw_email">Email</label>
 					<input type="email" id="gfw_email" placeholder="Email address" required />
 				</div>
-				<div class="column r">
-					<label for="gfw_lastname">last name</label>
-					<input type="text" id="gfw_lastname" placeholder="Last name" required />
-					<label for="gfw_questioncountry">Country</label>
-					<div class="select_container">
-						<select id="gfw_questioncountry">
-							<option>Select a country</option>
-						</select>
-					</div>
-					<label for="gfw_zip">Zip code</label>
-					<input type="text" id="gfw_zip" placeholder="Zip code" />
+				<div>
 					<label for="gfw_phone">Phone number</label>
 					<input type="text" id="gfw_phone" placeholder="Phone number" />
 				</div>
 			</div>
 			<div class="tos">
-				<span><input type="checkbox" required /> <span>Accept <a href="/terms-of-use">terms of use</a></span></span>
-				<span><input type="checkbox" required /> <span>Accept <a href="/privacy-policy">private policy</a></span></span>
+				<input type="checkbox" id="gfw_tos" required />
+				<label for="gfw_tos">Accept <a href="/terms-of-use">terms of use</a></label>
+				<input type="checkbox" id="gfw_privacy" required />
+				<label for="gfw_privacy">Accept <a href="/privacy-policy">private policy</a></label>
 			</div>
 			<input type="submit" value="SEND"/>
 		</form>
