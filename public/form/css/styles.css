@@ -183,7 +183,6 @@
   h1 {
     font-weight: bold;
     font-size: 70px;
-    margin: 60px 0;
     text-align: center;
   }
   form {
@@ -377,7 +376,7 @@
   }
   .bg.al {
     background-image: url('../img/ship3.png');
-    overflow: hidden;
+    overflow: auto;
   }
   @media only screen and (max-device-width: 768px) {
     header {
@@ -456,6 +455,8 @@
     color: #FFF;
     font-family: 'roboto';
     overflow: hidden;
+    padding:30px;
+    height:100%;
   }
   .allow hr {
     width: 486px;
@@ -538,13 +539,19 @@
     margin: 0;
     font-family: 'roboto';
   }
-  @media screen and (min-width: 640x) {
+  @media screen and (min-width: 640px) {
     header img {}
+    .allow{
+      padding:0px;
+    }
   }
   @media screen and (min-width: 769px) {
     header ul {
       display: block;
       list-style: none;
+    }
+    .allow{
+      padding:0px;
     }
     header img {
       height: 70px;
