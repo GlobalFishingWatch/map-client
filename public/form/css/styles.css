@@ -500,7 +500,7 @@
   .allow h1 {
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     font-size: 35px;
     font-weight: 700;
     letter-spacing: -1px;
@@ -612,6 +612,7 @@
     }
     .allow h1{
       font-size:70px;
+      margin-bottom:30px;
     }
     .allow .content {
       display: flex;
