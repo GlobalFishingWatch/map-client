@@ -2,6 +2,8 @@
 
 <head>
 	<title>Login</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./css/styles.css">
 </head>
 
@@ -36,8 +38,8 @@
 		</ul>
 	</header>
 	<section class="pwd">
-		<h1>Login</h1>
 		<form method="post" action="#">
+			<h1>Login</h1>
 			<label for="gfw_email">email</label>
 			<input type="email" id="gfw_email" placeholder="email address" required />
 			<label for="gfw_password">Password</label>
@@ -46,7 +48,7 @@
 			<span><a href="#" class="cancel link_underline">Forgot  your password?</a>
 			<a href="#" class="cancel link_underline">Not a member?</a></span>
 			<hr>
-			<p>Sign in with</p>
+			<p id="login_p">Sign in with</p>
 			<div class="login_buttons">
 				<a href="#" class="fb">facebook</a>
 				<a href="#" class="go">google</a>
