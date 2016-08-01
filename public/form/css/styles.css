@@ -170,7 +170,7 @@
   }
   section {
     background-color: rgba(23, 64, 132, 0.8);
-    height: calc(100% + 120px);
+    height: calc(100%+ 120px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -377,7 +377,6 @@
     background-image: url('../img/ship3.png');
     overflow: auto;
   }
-
   @media only screen and (max-device-width: 768px) {
     header {
       padding: 0 4%;
@@ -455,11 +454,12 @@
     color: #FFF;
     font-family: 'roboto';
     overflow: hidden;
-    padding:30px;
-    height:100%;
+    padding: 30px;
+    height: 100%;
+        display:block;
   }
   .allow hr {
-    width:100%;
+    width: 100%;
     max-width: 486px;
     display: block;
     margin: 0 auto;
@@ -468,7 +468,7 @@
   .allow a {
     color: #FFF;
     text-decoration: none;
-    display:inline-block;
+    display: inline-block;
   }
   .allow h1 {
     -webkit-margin-before: 0;
@@ -486,10 +486,13 @@
     font-weight: 400;
     line-height: 1.68;
     display: block;
+    text-align:center;
   }
   .allow .content {
-    display: block;
+    margin:0 auto;
     margin-bottom: 30px;
+    display: block;
+    box-sizing: border-box;
   }
   .allow .content>ul {
     margin-right: 25px;
@@ -498,7 +501,13 @@
     font-weight: 500;
     line-height: 2;
     text-align: center;
-    display:block;
+    display: block;
+    vertical-align: bottom;
+    box-sizing: border-box;
+  }
+  .allow .content>ul>li {
+    box-sizing: border-box;
+    display: block;
   }
   .allow .content>ul:first-child {
     margin-right: 0px;
@@ -514,16 +523,17 @@
     display: block;
     margin-bottom: 55px;
     margin-top: 0;
+    box-sizing: border-box;
   }
-  .link_underline{
-    display:inline-block;
+  .link_underline {
+    display: inline-block;
   }
-  .link_underline:after{
-    content:"";
-    display:block;
-    height:1px;
+  .link_underline:after {
+    content: "";
+    display: block;
+    height: 1px;
     background-color: #f04323;
-    margin-top:2px;
+    margin-top: 2px;
   }
   .allow #button_allow {
     background-color: #8abbc7;
@@ -536,9 +546,10 @@
     padding: 20px 100px;
     display: block;
     margin-bottom: 30px;
+    text-align:center;
   }
   .allow #button_allow:after {
-    display:none;
+    display: none;
   }
   .allow #allow_deny {
     font-size: 14px;
@@ -556,8 +567,9 @@
   }
   @media screen and (min-width: 640px) {
     header img {}
-    .allow{
-      padding:0px;
+    .allow {
+      padding: 0px;
+      display:flex;
     }
     .allow .content {
       display: flex;
@@ -578,8 +590,8 @@
       display: block;
       list-style: none;
     }
-    .allow{
-      padding:0px;
+    .allow {
+      padding: 0px;
     }
     header img {
       height: 70px;
