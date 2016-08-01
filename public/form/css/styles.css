@@ -724,12 +724,6 @@ section.reg form {
 
 .bg.al {
   background-image: url('../img/ship3.png');
-  overflow: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  padding: 60px 25px 30px 25px;
 }
 
 .bg.al::before, .bg.log::before, .bg.reg::before, .bg.res::before, .bg.ty::before {
@@ -910,6 +904,10 @@ section.reg form {
   box-sizing: border-box;
 }
 
+.allow p {
+  line-height: 1.5;
+}
+
 .allow .content > ul {
   margin: 0px;
   font-size: 14px;
@@ -939,7 +937,6 @@ section.reg form {
   display: block;
   margin-bottom: 55px;
   margin-top: 0;
-  box-sizing: border-box;
 }
 
 .allow #advise_email > a {
@@ -1074,6 +1071,7 @@ section.reg form {
   .allow .content > ul:first-child {
     margin-right: 25px;
     text-align: left;
+    min-width: 335px;
   }
 
   .allow .content > ul:last-child {
