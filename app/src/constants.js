@@ -21,6 +21,9 @@ export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 // Appearence actions
 export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
 
+// Contact actions
+export const FORM_RESPONSE = 'FORM_RESPONSE';
+
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 
