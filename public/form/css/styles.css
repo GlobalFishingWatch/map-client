@@ -1,4 +1,5 @@
   /*START RESET*/
+
   html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
@@ -31,8 +32,8 @@
   }
   /*END RESET*/
   /**/
-
   /*TYPOGRAPHY*/
+
   @font-face {
     font-family: 'roboto';
     src: url('roboto/Roboto-Regular.ttf') format('truetype');
@@ -46,8 +47,8 @@
     font-weight: 100;
     height: 100%;
   }
-
   /*HEADER MENU STYLES*/
+
   header {
     height: 140px;
     display: flex;
@@ -187,8 +188,8 @@
     font-size: 70px;
     text-align: center;
   }
-
   /*FORM STYLES*/
+
   form {
     display: flex;
     flex-direction: column;
@@ -357,6 +358,7 @@
     top: -1px;
   }
   /*BACKGROUND PAGES STYLES*/
+
   .bg {
     background-size: cover;
     background-attachment: fixed;
@@ -399,7 +401,7 @@
       justify-content: flex-start;
       padding: 10% 0 0!important;
       height: 170%;
-      max-height: 170%;
+      /*max-height: 170%;*/
     }
     select {
       height: 60px !important;
@@ -456,13 +458,16 @@
     }
   }
   /*ALLOW PAGE STYLES*/
+
   .allow {
     color: #FFF;
     font-family: 'roboto';
     overflow: hidden;
     padding: 30px;
-    height: 100%;
-        display:block;
+    height: initial;
+    display: block;
+    min-height: initial;
+    padding:30px !important;
   }
   .allow hr {
     width: 100%;
@@ -492,10 +497,10 @@
     font-weight: 400;
     line-height: 1.68;
     display: block;
-    text-align:center;
+    text-align: center;
   }
   .allow .content {
-    margin:0 auto;
+    margin: 0 auto;
     margin-bottom: 30px;
     display: block;
     box-sizing: border-box;
@@ -531,6 +536,10 @@
     margin-top: 0;
     box-sizing: border-box;
   }
+  .allow #advise_email>a {
+    display: inline-block;
+    width: 100%;
+  }
   .link_underline {
     display: inline-block;
   }
@@ -552,7 +561,7 @@
     padding: 20px 100px;
     display: block;
     margin-bottom: 30px;
-    text-align:center;
+    text-align: center;
   }
   .allow #button_allow:after {
     display: none;
@@ -571,13 +580,14 @@
     margin: 0;
     font-family: 'roboto';
   }
-
   /*TABLET STYLES*/
+
   @media screen and (min-width: 640px) {
     header img {}
     .allow {
       padding: 0px;
-      display:flex;
+      display: flex;
+      height: 100%;
     }
     .allow .content {
       display: flex;
@@ -592,8 +602,13 @@
     .allow .content>ul:last-child {
       text-align: left;
     }
+    .allow #advise_email>a {
+      display: inline-block;
+      width: inherit;
+    }
   }
-  /*MEIDUM SCREENS STYLES*/
+  /*HEADER MENU STYLES*/
+
   @media screen and (min-width: 769px) {
     header ul {
       display: block;
