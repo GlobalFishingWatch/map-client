@@ -377,6 +377,7 @@
     background-image: url('../img/ship3.png');
     overflow: auto;
   }
+
   @media only screen and (max-device-width: 768px) {
     header {
       padding: 0 4%;
@@ -500,7 +501,7 @@
     display:block;
   }
   .allow .content>ul:first-child {
-    margin-right: 25px;
+    margin-right: 0px;
     text-align: center;
   }
   .allow .content>ul:last-child {
