@@ -891,22 +891,25 @@ section.reg form {
 
   .dropdown_content li {
     display: block;
+    height: 40px;
     padding-left: 0 !important;
     margin-right: 0 !important;
-    line-height: 40px;
     text-align: center;
   }
 
   .dropdown_content li > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     opacity: 0.9;
     font-size: 15px;
     font-weight: 400;
-    line-height: 3.13;
+    line-height: 1.5;
     text-align: center;
     color: #0d1a34;
     text-transform: uppercase;
     transition: 0.2s;
-    display: block;
   }
 
   .dropdown_content li > a:hover {
