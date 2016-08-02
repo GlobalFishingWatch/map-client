@@ -724,6 +724,11 @@ section.reg form {
   font-size: 25px;
 }
 
+.pwd p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 @media only screen and (max-device-width: 768px) {
   header {
     padding: 0 4%;
@@ -774,11 +779,6 @@ section.reg form {
     font-size: 14px;
     margin: 45px 0 0;
   }*/
-
-  .pwd p {
-    font-size: 35px;
-    line-height: 40px;
-  }
 
   .res .pwd p {
     width: 80%;
