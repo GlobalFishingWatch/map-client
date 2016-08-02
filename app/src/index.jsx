@@ -1,18 +1,21 @@
 'use strict';
 
-import React from "react";
-import {render} from "react-dom";
-import {createStore, combineReducers, applyMiddleware} from "redux";
-import {Provider} from "react-redux";
-import thunk from "redux-thunk";
-import {browserHistory} from "react-router";
-import {syncHistoryWithStore, routerReducer, routerMiddleware} from "react-router-redux";
-import Routes from "./routes";
-import "../styles/index.scss";
-import mapReducer from "./reducers/map";
-import userReducer from "./reducers/user";
-import blogReducer from "./reducers/blog";
-import filtersReducer from "./reducers/filters";
+import React from 'react';
+import {render} from 'react-dom';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import thunk from 'redux-thunk';
+import {browserHistory} from 'react-router';
+import {syncHistoryWithStore, routerReducer, routerMiddleware} from 'react-router-redux';
+import Routes from './routes';
+import '../styles/index.scss';
+import mapReducer from './reducers/map';
+import userReducer from './reducers/user';
+import blogReducer from './reducers/blog';
+import filtersReducer from './reducers/filters';
+import appearenceReducer from './reducers/appearence';
+import '../styles/index.scss';
+import contactReducer from './reducers/contact';
 
 /**
  * Reducers
@@ -24,7 +27,9 @@ const reducer = combineReducers({
   map: mapReducer,
   user: userReducer,
   blog: blogReducer,
-  filters: filtersReducer
+  filters: filtersReducer,
+  appearence: appearenceReducer,
+  contactStatus: contactReducer
 });
 
 

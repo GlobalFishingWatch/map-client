@@ -1,13 +1,27 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
 .vesselPanel {
+  font-family: $font-family-primary;
   position: absolute;
-  top: 344px;
-  right: 20px;
-  border: 1px solid #000;
-  background: #fff;
+  background: $color5;
   z-index: 9;
-  padding: 20px;
-  display: block;
-  input {
-    display: block;
+  right: 0;
+  background-color: $color5;
+  width: 320px;
+  bottom: 130px;
+  max-height: calc(100% - 391px);
+  overflow-y: auto;
+  max-width: 320px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.5);
+  color: $white;
+  padding: 30px 0px;
+  p {
+    padding: 2px 30px;
+  }
+  h3 {
+    padding: 7px 30px;
+  }
+  a {
+    color: $white-two;
   }
 }

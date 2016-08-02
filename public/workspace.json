@@ -3,9 +3,9 @@
     "title": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31",
     "offset": 20,
     "maxoffset": 100,
-    "lat": -7.453709,
-    "lon": 190.3093,
-    "zoom": 4,
+    "lat": 0,
+    "lon": 0,
+    "zoom": 3,
     "time": {
       "__jsonclass__": [
         "Date",
@@ -17,21 +17,6 @@
   },
   "map": {
     "animations": [
-      {
-        "args": {
-          "title": "Bathymetry",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://simbiotica.carto.com/api/v3/viz/da62db46-3e9d-11e6-8e2a-0e3ff518bd15/viz.json"
-            }
-          },
-          "visible": true,
-          "color": "green",
-          "zIndex": 0
-        },
-        "type": "CartoDBAnimation"
-      },
       {
         "args": {
           "title": "MPA - No Take",

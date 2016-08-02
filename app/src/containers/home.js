@@ -5,7 +5,8 @@ import Home from "../components/home";
 
 const mapStateToProps = (state) => {
   return {
-    map: state.map
+    map: state.map,
+    menuVisible: state.appearence.menuVisible
   };
 };
 export default connect(mapStateToProps)(Home);

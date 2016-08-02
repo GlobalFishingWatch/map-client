@@ -11,9 +11,11 @@ class CanvasLayer {
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
     this.visible = false;
-    this.filters = filters || {};
+    this.filters = filters;
     this.token = token;
     this.vesselLayerTransparency = vesselLayerTransparency;
+    this.frameStartDate = filters.startDate;
+    this.frameEndDate = filters.endDate;
     if (visible) {
       this.show()
     }
@@ -46,7 +48,9 @@ class CanvasLayer {
    */
   refresh() {
     if (this.visible) {
-      this.map.overlayMapTypes.removeAt(this.position);
+      if (this.map.overlayMapTypes.getAt(this.position)) {
+        this.map.overlayMapTypes.removeAt(this.position);
+      }
       this.map.overlayMapTypes.insertAt(this.position, this);
     }
   }
@@ -181,6 +185,8 @@ class CanvasLayer {
    */
   drawTimeRange(start, end) {
     const canvasKeys = Object.keys(this.playbackData);
+    this.frameStartDate = start;
+    this.frameEndDate = end;
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
 
       let canvasKey = canvasKeys[index];
@@ -251,10 +257,10 @@ class CanvasLayer {
    */
   passesFilters(data, index) {
     const filters = this.filters;
+    if (this.frameStartDate && this.frameEndDate && ((data.datetime[index] < this.frameStartDate || data.datetime[index] > this.frameEndDate) || !data.weight[index])) {
+      return false;
+    }
     if (!!filters) {
-      if (filters.startDate && filters.endDate && ((data.datetime[index] < filters.startDate || data.datetime[index] > filters.endDate) || !data.weight[index])) {
-        return false;
-      }
       if (filters.flag != "" && data.category[index] != parseInt(filters.flag)) {
         return false;
       }
@@ -397,12 +403,13 @@ class CanvasLayer {
    * @param zoom
    * @param x
    * @param y
-   * @param filters
+   * @param startDate
+   * @param endDate
    * @returns {Array}
    */
-  getTemporalTileURLs(tileCoordinates, filters) {
-    const startYear = new Date(filters.startDate).getUTCFullYear();
-    const endYear = new Date(filters.endDate).getUTCFullYear();
+  getTemporalTileURLs(tileCoordinates, startDate, endDate) {
+    const startYear = new Date(startDate).getUTCFullYear();
+    const endYear = new Date(endDate).getUTCFullYear();
     let urls = [];
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${url}${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
@@ -458,7 +465,7 @@ class CanvasLayer {
     const tileCoordinates = this.getTileCoordinates(coord, zoom);
     let promises = [];
     if (tileCoordinates) {
-      let urls = this.getTemporalTileURLs(tileCoordinates, this.filters);
+      let urls = this.getTemporalTileURLs(tileCoordinates, this.frameStartDate, this.frameEndDate);
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
       }

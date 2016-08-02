@@ -1,8 +1,11 @@
 export const VESSEL_INIT = 'VESSEL_INIT';
 export const SHOW_LOADING = 'SHOW_LOADING';
-
+export const GET_SERIESGROUP = 'GET_SERIESGROUP';
 export const SET_LAYERS = 'SET_LAYERS';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
+export const SET_ZOOM = 'SET_ZOOM';
+export const SET_CENTER = 'SET_CENTER';
+export const SET_TIMELINE_DATES = 'SET_TIMELINE_DATES';
 
 // User actions
 export const GET_USER = 'GET_USER';
@@ -14,6 +17,12 @@ export const GET_RECENT_POST = 'GET_RECENT_POST';
 
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
+
+// Appearence actions
+export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
+
+// Contact actions
+export const FORM_RESPONSE = 'FORM_RESPONSE';
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
