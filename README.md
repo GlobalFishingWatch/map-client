@@ -21,3 +21,10 @@ node server.js
 ```
 
 You should be able to access your application at [http://localhost:3000/](http://localhost:3000/)
+
+Eslint and sass-lint should be run before pushing anything. You can set up that behaviour by adding a symlink to a file that runs `npm test`:
+```
+cd .git/hooks && ln -s -f ../../scripts/pre-push pre-push && cd ../..
+```
+
+Note that as of now, before we fix all errors on the existing codebase, the push will carry on even with errors.

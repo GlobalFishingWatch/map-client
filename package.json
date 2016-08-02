@@ -4,7 +4,9 @@
   "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint-js || npm run lint-sass",
+    "lint-sass": "sass-lint -v -q 'app/**/*.scss'",
+    "lint-js": "eslint -c .eslintrc app",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build"
   },
@@ -59,33 +61,18 @@
     "slick-carousel": "^1.6.0",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
-    "whatwg-fetch": "^1.0.0",
-    "xo": "^0.16.0"
+    "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.2.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "sass-lint": "^1.8.2"
   },
   "engines": {
     "node": "5.10.x",
     "npm": "3.8.x"
-  },
-  "xo": {
-    "esnext": true,
-    "space": 2,
-    "ignores": [
-      "app/**"
-    ],
-    "rules": {
-      "space-before-function-paren": [
-        "error",
-        {
-          "anonymous": "never",
-          "named": "never"
-        }
-      ],
-      "camelcase": [
-        "error",
-        {
-          "properties": "never"
-        }
-      ]
-    }
   }
 }
