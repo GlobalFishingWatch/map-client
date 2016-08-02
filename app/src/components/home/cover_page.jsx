@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import $ from "jquery";
 import ButtonBoxSlider from "./button_box_slider";
-import cover_page from "../../../styles/components/c_cover_page.scss";
+import cover_page from "../../../styles/components/c-cover_page.scss";
 import box_triangle from "../../../styles/components/c_box_triangle.scss";
 
 class CoverPage extends Component {
@@ -13,7 +13,7 @@ class CoverPage extends Component {
   }
 
   render() {
-    return <section className={cover_page.c_cover_page}>
+    return <section className={cover_page['c-cover-page']}>
       <div>
         <h1>
           The first global view of commercial fishing activity
