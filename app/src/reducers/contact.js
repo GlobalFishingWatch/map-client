@@ -1,5 +1,5 @@
 const initialState = null;
-import {FORM_RESPONSE} from '../constants';
+import { FORM_RESPONSE } from '../constants';
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -8,4 +8,4 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-};
+}

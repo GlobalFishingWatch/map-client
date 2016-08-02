@@ -1,29 +1,25 @@
-'use strict';
+import { connect } from 'react-redux';
+import Header from '../components/shared/header';
+import { login, logout } from '../actions/user';
+import { getWorkspace } from '../actions/map';
+import { setVisibleMenu } from '../actions/appearence';
 
-import {connect} from "react-redux";
-import Header from "../components/shared/header";
-import {login, logout} from "../actions/user";
-import {getLayers} from "../actions/map";
-import {setVisibleMenu} from "../actions/appearence";
+const mapStateToProps = (state) => ({
+  loggedUser: state.user.loggedUser
+});
 
-const mapStateToProps = (state) => {
-  return {
-    loggedUser: state.user.loggedUser
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: () => {
-      dispatch(login());
-    },
-    logout: () => {
-      dispatch(logout());
-      dispatch(getLayers());
-    },
-    setVisibleMenu: (visible) => {
-      dispatch(setVisibleMenu(visible));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  login: () => {
+    dispatch(login());
+  },
+  logout: () => {
+    const queryParams = location.query.workspace;
+    dispatch(logout());
+    dispatch(getWorkspace(queryParams.workspace));
+  },
+  setVisibleMenu: (visible) => {
+    dispatch(setVisibleMenu(visible));
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

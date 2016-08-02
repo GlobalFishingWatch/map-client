@@ -1,5 +1,5 @@
 import PelagosClient from '../lib/pelagosClient';
-import _ from "lodash";
+import _ from 'lodash';
 import {
   VESSEL_INIT,
   SHOW_LOADING,
@@ -9,27 +9,8 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   SET_TIMELINE_DATES,
   GET_SERIESGROUP
-} from "../constants";
+} from '../constants';
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
-
-const url = "https://storage.googleapis.com/skytruth-pelagos-production/pelagos/data/tiles/benthos-pipeline/gfw-vessel-scoring-602-tileset-2014-2016_2016-05-17/cluster_tiles/2015-01-01T00:00:00.000Z,2016-01-01T00:00:00.000Z;";
-
-export function init() {
-  return {
-    type: VESSEL_INIT,
-    payload: {
-      visible: true,
-      load: true
-    }
-  };
-};
-
-export function showLoading(show) {
-  return {
-    type: SHOW_LOADING,
-    payload: show
-  };
-};
 
 export function toggleLayerVisibility(layer) {
   return {
@@ -39,59 +20,76 @@ export function toggleLayerVisibility(layer) {
 }
 
 function groupData(vectorArray) {
+  const data = vectorArray[0];
   if (vectorArray && vectorArray.length > 1) {
     for (let index = 1, length = vectorArray.length; index < length; index++) {
       if (vectorArray[index] !== null) {
         if (index === 1) {
-          vectorArray[0].category = Array.prototype.slice.call(vectorArray[0].category).concat(Array.prototype.slice.call(vectorArray[index].category));
-          vectorArray[0].datetime = Array.prototype.slice.call(vectorArray[0].datetime).concat(Array.prototype.slice.call(vectorArray[index].datetime));
-          vectorArray[0].latitude = Array.prototype.slice.call(vectorArray[0].latitude).concat(Array.prototype.slice.call(vectorArray[index].latitude));
-          vectorArray[0].longitude = Array.prototype.slice.call(vectorArray[0].longitude).concat(Array.prototype.slice.call(vectorArray[index].longitude));
-          vectorArray[0].series = Array.prototype.slice.call(vectorArray[0].series).concat(Array.prototype.slice.call(vectorArray[index].series));
-          vectorArray[0].seriesgroup = Array.prototype.slice.call(vectorArray[0].seriesgroup).concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
-          vectorArray[0].sigma = Array.prototype.slice.call(vectorArray[0].sigma).concat(Array.prototype.slice.call(vectorArray[index].sigma));
-          vectorArray[0].weight = Array.prototype.slice.call(vectorArray[0].weight).concat(Array.prototype.slice.call(vectorArray[index].weight));
+          data.category = Array.prototype.slice.call(data.category).concat(
+            Array.prototype.slice.call(vectorArray[index].category)
+          );
+          data.datetime = Array.prototype.slice.call(data.datetime).concat(
+            Array.prototype.slice.call(vectorArray[index].datetime)
+          );
+          data.latitude = Array.prototype.slice.call(data.latitude).concat(
+            Array.prototype.slice.call(vectorArray[index].latitude)
+          );
+          data.longitude = Array.prototype.slice.call(data.longitude).concat(
+            Array.prototype.slice.call(vectorArray[index].longitude)
+          );
+          data.series = Array.prototype.slice.call(data.series).concat(
+            Array.prototype.slice.call(vectorArray[index].series)
+          );
+          data.seriesgroup = Array.prototype.slice.call(data.seriesgroup).concat(
+            Array.prototype.slice.call(vectorArray[index].seriesgroup)
+          );
+          data.sigma = Array.prototype.slice.call(data.sigma).concat(
+            Array.prototype.slice.call(vectorArray[index].sigma)
+          );
+          data.weight = Array.prototype.slice.call(data.weight).concat(
+            Array.prototype.slice.call(vectorArray[index].weight)
+          );
         } else {
-          vectorArray[0].category = vectorArray[0].category.concat(Array.prototype.slice.call(vectorArray[index].category));
-          vectorArray[0].datetime = vectorArray[0].datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
-          vectorArray[0].latitude = vectorArray[0].latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
-          vectorArray[0].longitude = vectorArray[0].longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
-          vectorArray[0].series = vectorArray[0].series.concat(Array.prototype.slice.call(vectorArray[index].series));
-          vectorArray[0].seriesgroup = vectorArray[0].seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
-          vectorArray[0].sigma = vectorArray[0].sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
-          vectorArray[0].weight = vectorArray[0].weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
+          data.category = data.category.concat(Array.prototype.slice.call(vectorArray[index].category));
+          data.datetime = data.datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
+          data.latitude = data.latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
+          data.longitude = data.longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
+          data.series = data.series.concat(Array.prototype.slice.call(vectorArray[index].series));
+          data.seriesgroup = data.seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
+          data.sigma = data.sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
+          data.weight = data.weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
         }
       }
     }
   }
-  return vectorArray[0];
+  return data;
 }
 
-export function getSeriesGroup(seriesgroup, serie, filters) {
-  return function (dispatch, getState) {
+export function getSeriesGroup(seriesGroup, series, filters) {
+  return (dispatch, getState) => {
     const state = getState();
 
     const startYear = new Date(filters.startDate).getUTCFullYear();
     const endYear = new Date(filters.endDate).getUTCFullYear();
-    let urls = [];
+    const urls = [];
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${urlVessel}seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+      urls.push(`${urlVessel}seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
-    let promises = [];
+    const promises = [];
     for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
       promises.push(new PelagosClient().obtainTile(urls[urlIndex], state.user.token));
     }
 
-    Promise.all(promises).then(function (rawTileData) {
+    Promise.all(promises).then((rawTileData) => {
       if (rawTileData[0]) {
-        let data = groupData(rawTileData);
+        const data = groupData(rawTileData);
         dispatch({
           type: GET_SERIESGROUP,
           payload: {
-            seriesgroup: seriesgroup,
+            seriesgroup: seriesGroup,
             seriesGroupData: data,
             series: _.uniq(data.series),
-            selectedSeries: serie
+            selectedSeries: series
           }
         });
       } else {
@@ -100,8 +98,8 @@ export function getSeriesGroup(seriesgroup, serie, filters) {
           payload: null
         });
       }
-    }.bind(this));
-  }
+    });
+  };
 }
 
 export function setZoom(zoom) {
@@ -109,15 +107,13 @@ export function setZoom(zoom) {
     type: SET_ZOOM,
     payload: zoom
   };
-};
-
+}
 export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
   };
-};
-
+}
 /*
  ** CartoDB layers:
  ** MPA
@@ -126,8 +122,8 @@ export function setCenter(center) {
  ** RFMOs
  */
 export function getWorkspace(workspace) {
-  return function (dispatch, getState) {
-    let state = getState();
+  return (dispatch, getState) => {
+    const state = getState();
 
     let path = '/workspace.json';
     if (state.user.token) {
@@ -141,19 +137,22 @@ export function getWorkspace(workspace) {
     fetch(path, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer ' + state.user.token
+        Authorization: `Bearer ${state.user.token}`
       }
     }).then((response) => {
       if (response.ok) {
         return response.json();
       }
+      return null;
     }).then((data) => {
-      let layers = [];
-      let allowedTypes = ['CartoDBAnimation', 'ClusterAnimation']
-      for (let prop in data.map.animations) {
-        if (allowedTypes.indexOf(data.map.animations[prop].type) !== -1 && data.map.animations[prop].args.source.args.url.indexOf('http') === 0) {
-          let layerDetails = data.map.animations[prop].args;
-          layerDetails.type = data.map.animations[prop].type;
+      const layers = [];
+      const allowedTypes = ['CartoDBAnimation', 'ClusterAnimation'];
+
+      for (let animationsIndex = 0, length = data.map.animations.length; animationsIndex < length; animationsIndex++) {
+        const animation = data.map.animations[animationsIndex];
+        if (allowedTypes.indexOf(animation.type) !== -1 && animation.args.source.args.url.indexOf('http') === 0) {
+          const layerDetails = animation.args;
+          layerDetails.type = animation.type;
           layers.push(layerDetails);
         }
       }
@@ -164,33 +163,36 @@ export function getWorkspace(workspace) {
         center: [data.state.lat, data.state.lon],
         timeline: [data.state.start_date, data.state.end_date]
       };
-    }).then(({layers, zoom, center, timeline}) => {
-      dispatch({
-        type: SET_LAYERS,
-        payload: layers
-      });
-
-      if (zoom) {
+    })
+      .then(({
+        layers, zoom, center, timeline
+      }) => {
         dispatch({
-          type: SET_ZOOM,
-          payload: zoom
+          type: SET_LAYERS,
+          payload: layers
         });
-      }
 
-      if (center) {
-        dispatch({
-          type: SET_CENTER,
-          payload: center
-        });
-      }
+        if (zoom) {
+          dispatch({
+            type: SET_ZOOM,
+            payload: zoom
+          });
+        }
 
-      if (timeline) {
-        dispatch({
-          type: SET_TIMELINE_DATES,
-          payload: timeline
-        });
-      }
+        if (center) {
+          dispatch({
+            type: SET_CENTER,
+            payload: center
+          });
+        }
 
-    }).catch(err => console.warn(`Unable to fetch the layers: ${err}`));
-  }
-};
+        if (timeline) {
+          dispatch({
+            type: SET_TIMELINE_DATES,
+            payload: timeline
+          });
+        }
+      })
+      .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
+  };
+}

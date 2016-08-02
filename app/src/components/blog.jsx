@@ -1,9 +1,7 @@
-'use strict';
-
-import React, {Component} from "react";
-import home from "../../styles/index.scss";
-import Header from "../containers/header";
-import Footer from "./shared/footer";
+import React, { Component } from 'react';
+import home from '../../styles/index.scss';
+import Header from '../containers/header';
+import Footer from './shared/footer';
 
 class Blog extends Component {
 
@@ -14,19 +12,17 @@ class Blog extends Component {
   render() {
     let articles = [];
     if (this.props.recentPost) {
-      articles = this.props.recentPost.posts.map(function (article) {
-        return (
-          <article>
-            <h2>{article.title}</h2>
-            <span dangerouslySetInnerHTML={{__html: article.content}}/>
-          </article>
-        );
-      });
+      articles = this.props.recentPost.posts.map((article) => (
+        <article>
+          <h2>{article.title}</h2>
+          <span dangerouslySetInnerHTML={{ __html: article.content }} />
+        </article>
+      ));
     }
 
 
-    return <div>
-      <Header></Header>
+    return (<div>
+      <Header />
       <section className={home.header_home}>
         <h1>
           Blog
@@ -36,11 +32,15 @@ class Blog extends Component {
       <section>
         {articles}
       </section>
-      <Footer></Footer>
-    </div>
-
+      <Footer />
+    </div>);
   }
-
 }
+
+Blog.propTypes = {
+  recentPost: React.PropTypes.object,
+  getRecentPost: React.PropTypes.func
+};
+
 
 export default Blog;

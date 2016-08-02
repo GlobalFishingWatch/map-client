@@ -1,19 +1,12 @@
-'use strict';
+import { connect } from 'react-redux';
+import App from '../components/app';
+import { setToken, getLoggedUser } from '../actions/user';
 
-import {connect} from "react-redux";
-import App from "../components/app";
-import {setToken, getLoggedUser} from "../actions/user";
+const mapStateToProps = (state) => ({ loading: state.map.loading });
 
-const mapStateToProps = (state) => {
-  return {
-    loading: state.map.loading
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setToken: (token) => dispatch(setToken(token)),
-    getLoggedUser: () => dispatch(getLoggedUser())
-  };
-}
+const mapDispatchToProps = (dispatch) => ({
+  setToken: (token) => dispatch(setToken(token)),
+  getLoggedUser: () => dispatch(getLoggedUser())
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

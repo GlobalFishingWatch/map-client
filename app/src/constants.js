@@ -18,7 +18,7 @@ export const GET_RECENT_POST = 'GET_RECENT_POST';
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 
-// Appearence actions
+// Appearance actions
 export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
 
 // Contact actions
@@ -286,5 +286,5 @@ export const FLAGS = {
   244: 'yt.png',
   245: 'za.png',
   246: 'zm.png',
-  247: 'zw.png',
+  247: 'zw.png'
 };

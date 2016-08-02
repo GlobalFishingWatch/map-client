@@ -27,6 +27,7 @@
       "allow": ["warn", "error", "info"]
     }],
     "comma-dangle": ["error", "never"],
-    "max-len": ["error", 120]
+    "max-len": ["error", 120],
+    "react/prefer-stateless-function": "off"
   }
 }

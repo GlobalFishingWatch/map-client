@@ -1,8 +1,7 @@
-import {TIMELINE_STEP} from "../../constants";
+import { TIMELINE_STEP } from '../../constants';
 
-var createTrackLayer = function (google) {
+const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {
-
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
@@ -31,7 +30,7 @@ var createTrackLayer = function (google) {
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
     // this.pointStyles = ['rgba(0,101,193,0.7)','rgba(255,207,59,0.5)','rgba(0,255,242,1)'];
-    this.pointStyles = ['rgba(255, 0, 0,1)','rgba(255, 0, 0,1)','rgba(255, 0, 0,1)'];
+    this.pointStyles = ['rgba(255, 0, 0,1)', 'rgba(255, 0, 0,1)', 'rgba(255, 0, 0,1)'];
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
@@ -81,17 +80,17 @@ var createTrackLayer = function (google) {
     return transformProps[0];
   })();
 
-  TrackLayer.prototype.checkFilter = function(data, index, series, timestamp, filters){
-    if(series && data.series[index] === series){
+  TrackLayer.prototype.checkFilter = function (data, index, series, timestamp, filters) {
+    if (series && data.series[index] === series) {
       return false;
     }
-    if (timestamp && (data.datetime[index] - (data.datetime[index] % TIMELINE_STEP)) !== timestamp){
+    if (timestamp && (data.datetime[index] - (data.datetime[index] % TIMELINE_STEP)) !== timestamp) {
       return false;
     }
-    if(filters && filters.startDate && data.datetime[index] < filters.startDate){
+    if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
       return false;
     }
-    if(filters && filters.endDate && data.datetime[index] > filters.endDate){
+    if (filters && filters.endDate && data.datetime[index] > filters.endDate) {
       return false;
     }
     return true;
@@ -103,40 +102,43 @@ var createTrackLayer = function (google) {
     let nextPoint = null;
     let first = true;
     for (var i = 0, length = data.latitude.length; i < length; i++) {
-      if(this.checkFilter(data, i, series, timestamp, filters)){
+      if (this.checkFilter(data, i, series, timestamp, filters)) {
         var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
         var weight = data.weight[i];
-        if(i +1 < length){
-          nextPoint = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i+1], data.longitude[i+1]));
+        if (i + 1 < length) {
+          nextPoint = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i + 1], data.longitude[i + 1]));
         }
         if (weight > 0.75) {
           this.ctx.fillStyle = this.pointStyles[0];
-          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2,2);
-          continue;}
+          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2, 2);
+          continue;
+        }
         else if (weight > 0.50) {
           this.ctx.fillStyle = this.pointStyles[1];
-          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);
-          continue;}
+          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
+          continue;
+        }
         else {
           this.ctx.fillStyle = this.pointStyles[2];
-          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1,1);}
+          this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
         }
-        if(nextPoint && !timestamp){
-          if(first){
-            this.ctx.beginPath();
-            this.ctx.moveTo(~~coords.x - this.offset.x, ~~coords.y - this.offset.y);
-            first = false;
-          } else {
-            this.ctx.strokeStyle= 'rgba(255,0,0, 1)';
-            this.ctx.lineTo(~~nextPoint.x - this.offset.x, ~~nextPoint.y - this.offset.y);
-          }
+      }
+      if (nextPoint && !timestamp) {
+        if (first) {
+          this.ctx.beginPath();
+          this.ctx.moveTo(~~coords.x - this.offset.x, ~~coords.y - this.offset.y);
+          first = false;
+        } else {
+          this.ctx.strokeStyle = 'rgba(255,0,0, 1)';
+          this.ctx.lineTo(~~nextPoint.x - this.offset.x, ~~nextPoint.y - this.offset.y);
+        }
 
-        }
       }
-      if(!timestamp){
-        this.ctx.closePath();
-        this.ctx.stroke();
-      }
+    }
+    if (!timestamp) {
+      this.ctx.closePath();
+      this.ctx.stroke();
+    }
     //
   }
   TrackLayer.prototype.onAdd = function () {

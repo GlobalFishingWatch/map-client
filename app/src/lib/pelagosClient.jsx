@@ -1,4 +1,4 @@
-import Pack from "./Pack";
+import Pack from './Pack';
 
 class PelagosClient {
 
@@ -28,10 +28,12 @@ class PelagosClient {
 
   handleData() {
     var self = this;
-    if (!this.request)
+    if (!this.request) {
       return;
-    if (this.error)
+      }
+    if (this.error) {
       return true;
+      }
 
     if (this.request.readyState == 4) {
       /* HTTP reports success with a 200 status. The file protocol
@@ -46,14 +48,16 @@ class PelagosClient {
       }
     }
 
-    if (!this.request.response)
+    if (!this.request.response) {
       return;
+      }
     var length = this.request.response.byteLength;
     var response = this.request.response;
     var dataView = new DataView(response);
 
-    if (length < 4 + 4)
+    if (length < 4 + 4) {
       return;
+      }
     if (self.headerLen == null) {
       var cookie = Pack.arrayBufferToString(response.slice(0, 4));
       if (cookie != this.MAGIC_COOKIE) {
@@ -65,8 +69,9 @@ class PelagosClient {
 
       self.offset = 4 + 4;
     }
-    if (length < self.offset + self.headerLen)
+    if (length < self.offset + self.headerLen) {
       return;
+      }
     if (!self.headerIsLoaded) {
       self.header = JSON.parse(Pack.arrayBufferToString(response.slice(self.offset, self.offset + self.headerLen)));
       self.rowLen = 0;
@@ -77,14 +82,18 @@ class PelagosClient {
         self.header.colsByName[col.name] = col;
         col.typespec = Pack.typemap.byname[col.type];
 
-        if (col.multiplier != undefined && col.min != undefined)
+        if (col.multiplier != undefined && col.min != undefined) {
           col.min = col.min * col.multiplier;
-        if (col.offset != undefined && col.min != undefined)
+        }
+        if (col.offset != undefined && col.min != undefined) {
           col.min = col.min + col.offset;
-        if (col.multiplier != undefined && col.max != undefined)
+        }
+        if (col.multiplier != undefined && col.max != undefined) {
           col.max = col.max * col.multiplier;
-        if (col.offset != undefined && col.max != undefined)
+        }
+        if (col.offset != undefined && col.max != undefined) {
           col.max = col.max + col.offset;
+        }
 
         self.rowLen += col.typespec.size;
       }

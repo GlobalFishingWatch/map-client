@@ -1,6 +1,5 @@
-import React, {Component, Image} from "react";
-import {Link} from "react-router";
-import menuMobile from "../../../styles/components/c_mobile_menu.scss";
+import React, { Component, Image } from 'react';
+import menuMobile from '../../../styles/components/c_mobile_menu.scss';
 
 class MenuMobile extends Component {
   render() {

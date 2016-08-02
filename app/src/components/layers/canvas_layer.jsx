@@ -1,7 +1,8 @@
-import PelagosClient from "../../lib/pelagosClient";
-import {TIMELINE_STEP} from "../../constants";
+import PelagosClient from '../../lib/pelagosClient';
+import { TIMELINE_STEP } from '../../constants';
+import _ from 'lodash';
 
-const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/'
+const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselLayerTransparency, visible) {
@@ -17,7 +18,7 @@ class CanvasLayer {
     this.frameStartDate = filters.startDate;
     this.frameEndDate = filters.endDate;
     if (visible) {
-      this.show()
+      this.show();
     }
   }
 
@@ -62,9 +63,9 @@ class CanvasLayer {
    * @param y
    * @param z
    * @returns {*}
-     */
+   */
   getTileId(x, y, z) {
-    return (x * 1000000000) + (y * 100) + z
+    return (x * 1000000000) + (y * 100) + z;
   }
 
   isVisible() {
@@ -101,14 +102,14 @@ class CanvasLayer {
    */
   _getCanvas(coord, zoom, ownerDocument) {
     // create canvas and reset style
-    var canvas = ownerDocument.createElement('canvas');
+    const canvas = ownerDocument.createElement('canvas');
     canvas.style.border = 'none';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
     canvas.id = this.getTileId(coord.x, coord.y, zoom);
 
     // prepare canvas and context sizes
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     ctx.width = canvas.width = this.tileSize.width;
     ctx.height = canvas.height = this.tileSize.height;
 
@@ -125,20 +126,27 @@ class CanvasLayer {
    */
   getAllPositionsBySeries(series) {
     const tiles = this.playbackData;
-    let positions = [];
+    const positions = [];
 
-    for (var tile in tiles) {
-      for (var timestamp in tiles[tile]) {
-        for (var index = 0; index < tiles[tile][timestamp].latitude.length; index++) {
-          if (tiles[tile][timestamp].series[index] == series) {
+    const tileIds = Object.keys(tiles);
+    for (let tileIdIndex = 0; tileIdIndex < tileIds.length; tileIdIndex++) {
+      const tile = tiles[tileIds[tileIdIndex]];
+
+      const timestamps = Object.keys(tile);
+      for (let timestampIndex = 0; timestampIndex < timestamps.length; timestampIndex++) {
+        const frame = timestamps[timestamps[timestampIndex]];
+
+        for (let index = 0; index < frame.latitude.length; index++) {
+          if (frame.series[index] === series) {
             positions.push({
-              'lat': tiles[tile][timestamp].latitude[index],
-              'lng': tiles[tile][timestamp].longitude[index]
+              lat: frame.latitude[index],
+              lng: frame.longitude[index]
             });
           }
         }
       }
     }
+
     return positions;
   }
 
@@ -148,32 +156,41 @@ class CanvasLayer {
    *
    * @param lat
    * @param long
-   * @returns {{latitude, longitude, weight, timestamp: *, x: *, y: *, series, seriesgroup}}
    */
   getVesselAtLocation(lat, long) {
     const filters = this.filters;
     const tiles = this.playbackData;
-    for (var tileId in tiles) {
-      for (var timestamp = filters.startDate; timestamp <= filters.endDate; timestamp += TIMELINE_STEP) {
-        if (!tiles[tileId].hasOwnProperty(timestamp)) {
+
+
+    const tileIds = Object.keys(tiles);
+    for (let tileIdIndex = 0; tileIdIndex < tileIds.length; tileIdIndex++) {
+      const tile = tiles[tileIds[tileIdIndex]];
+
+      for (
+        let currentTimestamp = filters.startDate;
+        currentTimestamp <= filters.endDate;
+        currentTimestamp += TIMELINE_STEP
+      ) {
+        if (!tile.hasOwnProperty(currentTimestamp)) {
           continue;
         }
-        for (var i = 0; i < tiles[tileId][timestamp].latitude.length; i++) {
-          if (~~tiles[tileId][timestamp].latitude[i] == lat && ~~tiles[tileId][timestamp].longitude[i] == long) {
+        for (let i = 0; i < tile[currentTimestamp].latitude.length; i++) {
+          if (~~tile[currentTimestamp].latitude[i] === lat && ~~tile[currentTimestamp].longitude[i] === long) {
             return {
-              latitude: tiles[tileId][timestamp].latitude[i],
-              longitude: tiles[tileId][timestamp].longitude[i],
-              weight: tiles[tileId][timestamp].weight[i],
-              timestamp: timestamp,
-              x: tiles[tileId][timestamp].x[i],
-              y: tiles[tileId][timestamp].y[i],
-              series: tiles[tileId][timestamp].series[i],
-              seriesgroup: tiles[tileId][timestamp].seriesgroup[i]
-            }
+              latitude: tile[currentTimestamp].latitude[i],
+              longitude: tile[currentTimestamp].longitude[i],
+              weight: tile[currentTimestamp].weight[i],
+              timestamp: currentTimestamp,
+              x: tile[currentTimestamp].x[i],
+              y: tile[currentTimestamp].y[i],
+              series: tile[currentTimestamp].series[i],
+              seriesgroup: tile[currentTimestamp].seriesgroup[i]
+            };
           }
         }
       }
     }
+    return null;
   }
 
   /**
@@ -188,9 +205,8 @@ class CanvasLayer {
     this.frameStartDate = start;
     this.frameEndDate = end;
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
-
-      let canvasKey = canvasKeys[index];
-      let canvas = document.getElementById(canvasKeys[index]);
+      const canvasKey = canvasKeys[index];
+      const canvas = document.getElementById(canvasKeys[index]);
       if (!canvas) {
         return;
       }
@@ -198,7 +214,7 @@ class CanvasLayer {
 
       for (let timestamp = start; timestamp < end; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
-          let playbackData = this.playbackData[canvasKey][timestamp];
+          const playbackData = this.playbackData[canvasKey][timestamp];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
         }
       }
@@ -208,16 +224,26 @@ class CanvasLayer {
   /**
    * Draws a tile using playback data
    *
-   * @param idCanvas
+   * @param canvas
    * @param playbackData
    * @param drawTrail
    */
   drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
-    if (!canvas) return;
+    if (!canvas) {
+      return;
+    }
     const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
-      this.drawVesselPoint(canvas, playbackData.x[index], playbackData.y[index], size, playbackData.weight[index], playbackData.sigma[index], drawTrail);
+      this.drawVesselPoint(
+        canvas,
+        playbackData.x[index],
+        playbackData.y[index],
+        size,
+        playbackData.weight[index],
+        playbackData.sigma[index],
+        drawTrail
+      );
     }
   }
 
@@ -229,10 +255,11 @@ class CanvasLayer {
    *
    * @param canvas
    * @param vectorArray
-   * @param drawTrail
    */
   drawTileFromVectorArray(canvas, vectorArray) {
-    if (!canvas) return;
+    if (!canvas) {
+      return;
+    }
 
     if (!vectorArray) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -244,7 +271,15 @@ class CanvasLayer {
       if (!this.passesFilters(vectorArray, index)) {
         continue;
       }
-      this.drawVesselPoint(canvas, vectorArray.x[index], vectorArray.y[index], size, vectorArray.weight[index], vectorArray.sigma[index], false);
+      this.drawVesselPoint(
+        canvas,
+        vectorArray.x[index],
+        vectorArray.y[index],
+        size,
+        vectorArray.weight[index],
+        vectorArray.sigma[index],
+        false
+      );
     }
   }
 
@@ -257,11 +292,17 @@ class CanvasLayer {
    */
   passesFilters(data, index) {
     const filters = this.filters;
-    if (this.frameStartDate && this.frameEndDate && ((data.datetime[index] < this.frameStartDate || data.datetime[index] > this.frameEndDate) || !data.weight[index])) {
+    if (this.frameStartDate && data.datetime[index] < this.frameStartDate) {
+      return false;
+    }
+    if (this.frameEndDate && data.datetime[index] > this.frameEndDate) {
+      return false;
+    }
+    if (!data.weight[index]) {
       return false;
     }
     if (!!filters) {
-      if (filters.flag != "" && data.category[index] != parseInt(filters.flag)) {
+      if (filters.flag !== '' && data.category[index] !== parseInt(filters.flag, 10)) {
         return false;
       }
     }
@@ -272,27 +313,30 @@ class CanvasLayer {
    * Add projected lat/long values transformed as x/y coordinates
    */
   addTileCoordinates(tileCoordinates, vectorArray) {
+    const data = vectorArray;
     const overlayProjection = this.map.getProjection();
     const scale = 1 << tileCoordinates.zoom;
     const tileBaseX = tileCoordinates.x * 256;
     const tileBaseY = tileCoordinates.y * 256;
     const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
 
-    vectorArray.x = new Int32Array(vectorArray.latitude.length);
-    vectorArray.y = new Int32Array(vectorArray.latitude.length);
+    data.x = new Int32Array(data.latitude.length);
+    data.y = new Int32Array(data.latitude.length);
 
-    for (let index = 0; index < vectorArray.latitude.length; index++) {
-      let pointLatLong = overlayProjection.fromLatLngToPoint(new google.maps.LatLng(vectorArray.latitude[index], vectorArray.longitude[index]));
+    for (let index = 0; index < data.latitude.length; index++) {
+      const pointLatLong = overlayProjection.fromLatLngToPoint(
+        new google.maps.LatLng(data.latitude[index], data.longitude[index])
+      );
 
       const pointCoordinates = new google.maps.Point(
         Math.floor(pointLatLong.x * scale),
         Math.floor(pointLatLong.y * scale)
       );
 
-      vectorArray.x[index] = ~~((pointCoordinates.x - tileBaseX) << zoomDiff);
-      vectorArray.y[index] = ~~((pointCoordinates.y - tileBaseY) << zoomDiff);
+      data.x[index] = ~~((pointCoordinates.x - tileBaseX) << zoomDiff);
+      data.y[index] = ~~((pointCoordinates.y - tileBaseY) << zoomDiff);
     }
-    return vectorArray;
+    return data;
   }
 
   /**
@@ -315,7 +359,7 @@ class CanvasLayer {
         continue;
       }
 
-      let time = vectorArray.datetime[index] - (vectorArray.datetime[index] % TIMELINE_STEP);
+      const time = vectorArray.datetime[index] - (vectorArray.datetime[index] % TIMELINE_STEP);
       if (!this.playbackData[tileId][time]) {
         this.playbackData[tileId][time] = {
           category: [],
@@ -327,9 +371,9 @@ class CanvasLayer {
           series: [],
           seriesgroup: [],
           sigma: []
-        }
+        };
       }
-      let timestamp = this.playbackData[tileId][time];
+      const timestamp = this.playbackData[tileId][time];
       timestamp.category.push(vectorArray.category[index]);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
@@ -354,26 +398,27 @@ class CanvasLayer {
    * @param drawTrail
    */
   drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
-    const vesselLayerTransparency = this.vesselLayerTransparency
+    const workCanvas = canvas;
+    const vesselLayerTransparency = this.vesselLayerTransparency;
     const calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
 
-    canvas.ctx.fillStyle = 'rgba(17,129,251,' + calculatedWeight + ')';
-    canvas.ctx.fillRect(x, y, size, size);
+    workCanvas.ctx.fillStyle = `rgba(17,129,251,${calculatedWeight})`;
+    workCanvas.ctx.fillRect(x, y, size, size);
 
     if (calculatedWeight > 0.5) {
-      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      canvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
-      canvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
-      canvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
-      canvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
+      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      workCanvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
+      workCanvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
+      workCanvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
+      workCanvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
     }
 
     if (drawTrail) {
-      canvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      canvas.ctx.fillRect(x + 2, y + 1, size, size);
-      canvas.ctx.fillRect(x + 2, y + 2, size, size);
-      canvas.ctx.fillRect(x - 2, y - 1, size, size);
-      canvas.ctx.fillRect(x - 2, y - 2, size, size);
+      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      workCanvas.ctx.fillRect(x + 2, y + 1, size, size);
+      workCanvas.ctx.fillRect(x + 2, y + 2, size, size);
+      workCanvas.ctx.fillRect(x - 2, y - 1, size, size);
+      workCanvas.ctx.fillRect(x - 2, y - 2, size, size);
     }
   }
 
@@ -394,15 +439,13 @@ class CanvasLayer {
     if (x < 0 || x >= tileRange) {
       return null;
     }
-    return {x: x, y: y, zoom: zoom};
+    return { x, y, zoom };
   }
 
   /**
    * Generates the URLs to load vessel track data
    *
-   * @param zoom
-   * @param x
-   * @param y
+   * @param tileCoordinates
    * @param startDate
    * @param endDate
    * @returns {Array}
@@ -410,9 +453,10 @@ class CanvasLayer {
   getTemporalTileURLs(tileCoordinates, startDate, endDate) {
     const startYear = new Date(startDate).getUTCFullYear();
     const endYear = new Date(endDate).getUTCFullYear();
-    let urls = [];
-    for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${url}${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
+    const urls = [];
+    for (let year = startYear; year <= endYear; year++) {
+      urls.push(`${url}${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;\
+${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     }
     return urls;
   }
@@ -424,32 +468,49 @@ class CanvasLayer {
    * @returns {*}
    */
   groupData(vectorArray) {
+    const data = vectorArray[0];
     if (vectorArray && vectorArray.length > 1) {
       for (let index = 1, length = vectorArray.length; index < length; index++) {
         if (vectorArray[index] !== null) {
           if (index === 1) {
-            vectorArray[0].category = Array.prototype.slice.call(vectorArray[0].category).concat(Array.prototype.slice.call(vectorArray[index].category));
-            vectorArray[0].datetime = Array.prototype.slice.call(vectorArray[0].datetime).concat(Array.prototype.slice.call(vectorArray[index].datetime));
-            vectorArray[0].latitude = Array.prototype.slice.call(vectorArray[0].latitude).concat(Array.prototype.slice.call(vectorArray[index].latitude));
-            vectorArray[0].longitude = Array.prototype.slice.call(vectorArray[0].longitude).concat(Array.prototype.slice.call(vectorArray[index].longitude));
-            vectorArray[0].series = Array.prototype.slice.call(vectorArray[0].series).concat(Array.prototype.slice.call(vectorArray[index].series));
-            vectorArray[0].seriesgroup = Array.prototype.slice.call(vectorArray[0].seriesgroup).concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
-            vectorArray[0].sigma = Array.prototype.slice.call(vectorArray[0].sigma).concat(Array.prototype.slice.call(vectorArray[index].sigma));
-            vectorArray[0].weight = Array.prototype.slice.call(vectorArray[0].weight).concat(Array.prototype.slice.call(vectorArray[index].weight));
+            data.category = Array.prototype.slice.call(data.category).concat(
+              Array.prototype.slice.call(vectorArray[index].category)
+            );
+            data.datetime = Array.prototype.slice.call(data.datetime).concat(
+              Array.prototype.slice.call(vectorArray[index].datetime)
+            );
+            data.latitude = Array.prototype.slice.call(data.latitude).concat(
+              Array.prototype.slice.call(vectorArray[index].latitude)
+            );
+            data.longitude = Array.prototype.slice.call(data.longitude).concat(
+              Array.prototype.slice.call(vectorArray[index].longitude)
+            );
+            data.series = Array.prototype.slice.call(data.series).concat(
+              Array.prototype.slice.call(vectorArray[index].series)
+            );
+            data.seriesgroup = Array.prototype.slice.call(data.seriesgroup).concat(
+              Array.prototype.slice.call(vectorArray[index].seriesgroup)
+            );
+            data.sigma = Array.prototype.slice.call(data.sigma).concat(
+              Array.prototype.slice.call(vectorArray[index].sigma)
+            );
+            data.weight = Array.prototype.slice.call(data.weight).concat(
+              Array.prototype.slice.call(vectorArray[index].weight)
+            );
           } else {
-            vectorArray[0].category = vectorArray[0].category.concat(Array.prototype.slice.call(vectorArray[index].category));
-            vectorArray[0].datetime = vectorArray[0].datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
-            vectorArray[0].latitude = vectorArray[0].latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
-            vectorArray[0].longitude = vectorArray[0].longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
-            vectorArray[0].series = vectorArray[0].series.concat(Array.prototype.slice.call(vectorArray[index].series));
-            vectorArray[0].seriesgroup = vectorArray[0].seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
-            vectorArray[0].sigma = vectorArray[0].sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
-            vectorArray[0].weight = vectorArray[0].weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
+            data.category = data.category.concat(Array.prototype.slice.call(vectorArray[index].category));
+            data.datetime = data.datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
+            data.latitude = data.latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
+            data.longitude = data.longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
+            data.series = data.series.concat(Array.prototype.slice.call(vectorArray[index].series));
+            data.seriesgroup = data.seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
+            data.sigma = data.sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
+            data.weight = data.weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
           }
         }
       }
     }
-    return vectorArray[0];
+    return data;
   }
 
   /**
@@ -463,20 +524,20 @@ class CanvasLayer {
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(coord, zoom, ownerDocument);
     const tileCoordinates = this.getTileCoordinates(coord, zoom);
-    let promises = [];
+    const promises = [];
     if (tileCoordinates) {
-      let urls = this.getTemporalTileURLs(tileCoordinates, this.frameStartDate, this.frameEndDate);
+      const urls = this.getTemporalTileURLs(tileCoordinates, this.frameStartDate, this.frameEndDate);
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
       }
     }
-    Promise.all(promises).then(function (rawTileData) {
+    Promise.all(promises).then((rawTileData) => {
       if (tileCoordinates && rawTileData[0]) {
-        let vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
+        const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
         this.drawTileFromVectorArray(canvas, vectorArray);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
       }
-    }.bind(this))
+    });
 
     return canvas;
   }

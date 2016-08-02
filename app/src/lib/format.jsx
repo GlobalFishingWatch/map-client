@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 class Format {
 
@@ -13,7 +13,9 @@ class Format {
     self.headerIsLoaded = false;
     self.allIsLoaded = false;
 
-    if (args) _.extend(self, args);
+    if (args) {
+      _.extend(self, args);
+      }
   }
 }
 

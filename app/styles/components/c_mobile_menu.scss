@@ -1,6 +1,7 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
 @import '../base/screen.scss';
+
 .c_mobile_menu {
   font-family: $font-family-primary;
   position: fixed;
@@ -9,7 +10,7 @@
   left: 0;
   z-index: 100;
   width: 90%;
-  max-width:290px;
+  max-width: 290px;
   background-color: $color5;
   transition: all 0.3s ease-in 0.2s;
   transform: translatex(-100%);
@@ -60,6 +61,7 @@
     font-weight: $font-weight-regular;
   }
 }
+
 .menu_back {
   position: fixed;
   left: 0;

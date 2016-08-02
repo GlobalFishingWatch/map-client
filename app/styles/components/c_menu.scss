@@ -1,6 +1,7 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
 @import '../base/screen.scss';
+
 .c_header_menu {
   background-color: $bluesecondary;
   padding: 0 64px;
@@ -9,6 +10,7 @@
     box-shadow: 0;
   }
 }
+
 .c_menu {
   img {
     height: 70px;
@@ -22,37 +24,37 @@
   font-size: 16px;
   line-height: 30px;
   align-items: center;
-  ul{
+  ul {
     display: none;
   }
-  .icon_menu_mobile{
+  .icon_menu_mobile {
     display: block;
     width: 21px;
     cursor: pointer;
   }
-  .img_mobile{
+  .img_mobile {
     display: block;
     height: 50px;
   }
-  .img_desktop{
+  .img_desktop {
     display: none;
   }
-  .share_header{
+  .share_header {
     display: block;
     color: $color9;
   }
   @media screen and (min-width: $screen-m) {
     height: 140px;
-    .img_mobile{
+    .img_mobile {
       display: none;
     }
-    .img_desktop{
+    .img_desktop {
       display: block;
     }
-    .icon_menu_mobile{
+    .icon_menu_mobile {
       display: none;
     }
-    .share_header{
+    .share_header {
       display: none;
     }
     ul {
@@ -78,13 +80,13 @@
           letter-spacing: -0.1px;
           cursor: pointer;
         }
-        #menu_selected::after{
+        #menu_selected::after {
           content: "";
-          display:block;
+          display: block;
           height: 4px;
           border-radius: 100px;
           background-color: #ffffff;
-          margin-top:1px;
+          margin-top: 1px;
         }
       }
     }
@@ -98,26 +100,26 @@
       width: 200px;
       background-color: $color9;
       z-index: 99;
-      padding:15px;
-    	width:160px;
-    	transform: translate(-40%, 0px);
+      padding: 15px;
+      width: 160px;
+      transform: translate(-40%, 0px);
       li {
         display: block;
         padding-left: 0 !important;
         margin-right: 0 !important;
         line-height: 40px;
-        a{
+        a {
           opacity: 0.9;
           font-size: 15px;
           font-weight: 400;
           line-height: 3.13;
           text-align: center;
           color: #0d1a34;
-          text-transform:uppercase;
-          transition:0.2s;
-          display:block;
+          text-transform: uppercase;
+          transition: 0.2s;
+          display: block;
         }
-        a:hover{
+        a:hover {
           opacity: 0.6;
           background-color: #8bbcc7;
         }
@@ -134,13 +136,14 @@
     }
   }
   @media screen and (min-width: $screen-l) {
-    ul{
-      li{
+    ul {
+      li {
         margin-right: 92px;
       }
     }
   }
 }
-#menu_transparent{
-  background-color: rgba(23,64,132,0.8);
+
+#menu_transparent {
+  background-color: rgba(23, 64, 132, 0.8);
 }
