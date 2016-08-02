@@ -3,41 +3,45 @@
 .c-pagination-blog {
   padding: 65px 290px;
   background-color: $color8;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 90px;
-  img {
-    width: 40px;
-  }
-  .right-triangle {}
-  .left-triangle {
-    transform: rotate(180deg);
-    opacity: 0.5;
-  }
-  ul {
-    list-style: none;
-    li {
-      display: inline-block;
-      font-size: $font-size-small;
-      font-family: $font-family-primary;
-      cursor: pointer;
-      color: $color6;
-      margin-right: 20px;
-      &:after {
-        margin-right: 0;
+  div {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    img {
+      width: 40px;
+    }
+    .right-triangle {}
+    .left-triangle {
+      transform: rotate(180deg);
+      opacity: 0.5;
+    }
+    ul {
+      list-style: none;
+      li {
+        display: inline-block;
+        font-size: $font-size-small;
+        font-family: $font-family-primary;
+        cursor: pointer;
+        color: $color6;
+        margin-right: 20px;
+        &:after {
+          margin-right: 0;
+        }
       }
     }
-  }
-  .page-selected {
-    &:after {
-      content: "";
-      display: block;
-      height: 4px;
-      margin: 0 auto;
-      margin-top: 4px;
-      border-radius: 100px;
-      background-color: red;
+    .page-selected {
+      &:after {
+        content: "";
+        display: block;
+        height: 4px;
+        margin: 4px auto 0;
+        border-radius: 100px;
+        background-color: red;
+      }
     }
   }
 }
