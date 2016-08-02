@@ -1,0 +1,17 @@
+// Colors
+$color-1:  #011137;
+$color-2:  #021236;
+$color-3:  #8abbc7;
+$color-4:  #fff;
+
+// Breakpoints
+$breakpoint-mobile-small:  320px;
+$breakpoint-mobile-large:  425px;
+$breakpoint-tablet:        768px;
+$breakpoint-laptop:       1024px;
+
+// Media queries
+$mq-mobile-small: 'screen and (min-width: #{$breakpoint-mobile-small})';
+$mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
+$mq-tablet:       'screen and (min-width: #{$breakpoint-tablet})';
+$mq-laptop:       'screen and (min-width: #{$breakpoint-laptop})';
