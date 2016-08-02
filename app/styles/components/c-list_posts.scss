@@ -1,0 +1,40 @@
+@import '../base/text.scss';
+@import '../base/colors.scss';
+@import '../base/screen.scss';
+.c-list-posts {
+  font-family: $font-family-primary;
+  article {
+    h2 {
+      font-size: $font-size-large;
+      font-weight: $font-weight-regular;
+      line-height: 1.05;
+      color: $color7;
+      display: block;
+      padding: 0px 290px;
+      margin: 60px auto 0;
+    }
+    span {
+      p {
+        font-size: $font-size-normal;
+        font-family: $font-family-secondary;
+        font-weight: $font-weight-regular;
+        line-height: 1.63;
+        color: $color7;
+        display: block;
+        padding: 0px 290px;
+        margin: 18px auto 0;
+      }
+    }
+    div {
+      width: initial !important;
+    }
+    img {
+      margin: 0 auto;
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 1060px;
+      margin-bottom: 18px;
+    }
+  }
+}

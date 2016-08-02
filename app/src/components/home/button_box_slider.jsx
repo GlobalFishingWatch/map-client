@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {Component} from "react";
-import cover_page from "../../../styles/components/c_cover_page.scss";
+import cover_page from "../../../styles/components/c-cover_page.scss";
 
 class ButtonBoxSlider extends Component {
 

@@ -2,8 +2,11 @@
 
 import React, {Component} from "react";
 import home from "../../styles/index.scss";
+import listposts from "../../styles/components/c-list_posts.scss";
 import Header from "../containers/header";
 import Footer from "./shared/footer";
+import CoverBlog from "./blog/cover_blog";
+import PaginationBlog from "./blog/pagination";
 
 class Blog extends Component {
 
@@ -27,15 +30,11 @@ class Blog extends Component {
 
     return <div>
       <Header></Header>
-      <section className={home.header_home}>
-        <h1>
-          Blog
-        </h1>
-
-      </section>
-      <section>
+      <CoverBlog></CoverBlog>
+      <section className={listposts['c-list-posts']}>
         {articles}
       </section>
+      <PaginationBlog></PaginationBlog>
       <Footer></Footer>
     </div>
 
