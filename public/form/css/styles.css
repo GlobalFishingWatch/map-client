@@ -353,19 +353,9 @@ section {
 }
 
 section.pwd,
-section.reg {
+section.reg,
+section.ty {
   padding: 60px 30px 0 30px;
-}
-
-h1 {
-  font-weight: bold;
-  font-size: 70px;
-  text-align: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
 }
 
 h1 {
@@ -374,6 +364,16 @@ h1 {
   text-align: left;
   display: block;
   width: 100%;
+}
+
+
+.ty h1 {
+  margin-bottom: 30px;
+}
+
+.ty p {
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /*FORM STYLES*/
@@ -433,7 +433,6 @@ textarea {
   padding: 6px;
   height: 100px;
 }
-
 
 input[type="submit"] {
   background-color: rgb(140, 187, 198);
@@ -610,10 +609,6 @@ section.reg form {
 
 .bg.ty section {
   height: calc(100% - 140px);
-}
-
-.bg.ty h1 {
-  margin-bottom: 30px;
 }
 
 .bg.al {
