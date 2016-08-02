@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import map from '../../../styles/index.scss';
 
 class DatePicker extends Component {
@@ -18,11 +18,21 @@ class DatePicker extends Component {
       <div className={map.date_inputs}>
         <label htmlFor="inner_extent_start">
         Start date
-          <input type="date" id="inner_extent_start" value={this.props.start.toISOString().slice(0, 10)} onChange={this.onDatePickerChange}/>
+          <input
+            type="date"
+            id="inner_extent_start"
+            value={this.props.start.toISOString().slice(0, 10)}
+            onChange={this.onDatePickerChange}
+          />
         </label>
         <label htmlFor="inner_extent_end">
           End date
-          <input type="date" id="inner_extent_end" value={this.props.end.toISOString().slice(0, 10)} onChange={this.onDatePickerChange}/>
+          <input
+            type="date"
+            id="inner_extent_end"
+            value={this.props.end.toISOString().slice(0, 10)}
+            onChange={this.onDatePickerChange}
+          />
         </label>
       </div>
     );

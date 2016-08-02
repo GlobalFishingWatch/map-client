@@ -11,6 +11,8 @@ const height = 200 - margin.top - margin.bottom;
 const x = d3.scaleTime().range([0, width]);
 const y = d3.scaleLinear().range([height, 0]);
 const xAxis = d3.axisBottom().scale(x);
+
+// define the way the timeline chart is going to be drawn
 const area = d3.area()
   .x(d => x(d.date))
   .y0(height)
@@ -66,7 +68,7 @@ class Timeline extends Component {
 
       for (let m = startMonth; m <= endMonth; m++) {
         dummyData.push({
-          date: new Date(y, m, 1),
+          date: new Date(year, m, 1),
           price: Math.random()
         });
       }
@@ -167,7 +169,6 @@ class Timeline extends Component {
 
     // disable default d3 brush events
     this.outerBrush.on('.brush', null);
-    //
 
     this.innerBrush = this.group.append('g')
         .attr('class', css.c_timeline_outer_brush)
