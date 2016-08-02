@@ -1,11 +1,12 @@
-'use strict';
+require('dotenv').config({ silent: true });
 
-require('dotenv').config({silent: true});
+process.env.BROWSERSLIST_CONFIG = 'browserslist';
 
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const packageJSON = require('../package.json');
 
 const rootPath = process.cwd();
 const envVariables = process.env;
@@ -39,7 +40,7 @@ const webpackConfig = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
-      VERSION: JSON.stringify(require('../package.json').version),
+      VERSION: JSON.stringify(packageJSON.version)
     })
   ],
 
@@ -51,17 +52,17 @@ const webpackConfig = {
         loader: 'babel'
       },
       {
-         test: /\.(jpe?g|png|gif|svg)$/i,
-         loaders: [
-             'file?hash=sha512&digest=hex&name=[hash].[ext]',
-             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-         ]
-       },
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: [
+          'file?hash=sha512&digest=hex&name=[hash].[ext]',
+          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+        ]
+      },
       {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!sass?sourceMap')
       }
-    ],
+    ]
   },
 
   resolve: {
