@@ -4,7 +4,7 @@
   "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
   "main": "server.js",
   "scripts": {
-    "test": "eslint -c .eslintrc app",
+    "test": "sass-lint -v -q 'app/**/*.scss' && eslint -c .eslintrc app",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build"
   },
