@@ -64,6 +64,9 @@ header {
   font-size: 16px;
   line-height: 30px;
   text-transform: capitalize;
+}
+
+.menu {
   background-color: #2b4f93;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
 }
@@ -72,7 +75,8 @@ header {
   .menu {
     justify-content: space-between;
     padding: 0 40px;
-    box-shadow: 0 0 0 0 rgba(0, 0, 0, .5);
+    background: none;
+    box-shadow: none;
   }
 }
 
@@ -415,6 +419,13 @@ select {
   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDEzIDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPlRyaWFuZ2xlIDEgQ29weTwvdGl0bGU+PHBhdGggZD0iTTEyIDFMNi41IDYuNyAxIDEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjNTU1IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=") center right 20px no-repeat, #fff;
 }
 
+/* We can't hide the default arrows on FF so we just don't use our arrows */
+@supports (-moz-appearance:meterbar) {
+  select {
+    background: #fff;
+  }
+}
+
 input[type="checkbox"] {
   -webkit-appearance: checkbox;
   width: 21px;
@@ -510,14 +521,12 @@ hr {
 
 .login_buttons a.fb {
   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAxMSAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+U2hhcGU8L3RpdGxlPjxwYXRoIGQ9Ik03LjA4OCAyMkgyLjgzNlYxMUgwVjcuMjFsMi44MzYtLjAwMi0uMDA0LTIuMjMzQzIuODMyIDEuODgyIDMuNjk3IDAgNy40NTQgMGgzLjEyOHYzLjc5Mkg4LjYyN2MtMS40NjQgMC0xLjUzMy41My0xLjUzMyAxLjUxOGwtLjAwNiAxLjg5OGgzLjUxN2wtLjQxNCAzLjc5TDcuMDkyIDExIDcuMDkgMjJ6IiBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=") no-repeat, #3b5998;
-  background-position-x: calc(50% - 50px);
-  background-position-y: center;
+  background-position: calc(50% - 50px) center;
 }
 
 .login_buttons a.go {
   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMTciIHZpZXdCb3g9IjAgMCAyMiAxNyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+U2hhcGU8L3RpdGxlPjxwYXRoIGQ9Ik0xMS42MDQgMEg2LjA0MkMzLjU1IDAgMS4yMDMgMS43ODcgMS4yMDMgMy44NTZjMCAyLjExNCAxLjcgMy44MjIgNC4yMzYgMy44MjIuMTc3IDAgLjM0OC0uMDA0LjUxNi0uMDE2LS4xNjUuMjk4LS4yODMuNjM1LS4yODMuOTgzIDAgLjU4OC4zMzQgMS4wNjQuNzU3IDEuNDU0LS4zMiAwLS42MjkuMDA4LS45NjUuMDA4LTMuMDg4IDAtNS40NjQgMS44NjEtNS40NjQgMy43OSAwIDEuOSAyLjYwNiAzLjA4OCA1LjY5MyAzLjA4OCAzLjUyIDAgNS40NjQtMS44OSA1LjQ2NC0zLjc5IDAtMS41MjMtLjQ3NS0yLjQzNi0xLjk0NC0zLjQxOEM4LjcxIDkuNDQgNy43NDkgOC42MjIgNy43NDkgOC4xNGMwLS41NjQuMTctLjg0MiAxLjA2OC0xLjUwNS45Mi0uNjggMS41Ny0xLjYzNiAxLjU3LTIuNzQ2IDAtMS4zMjMtLjYyMy0yLjYxNC0xLjc5My0zLjAzOGgxLjc2MmwxLjI0NS0uODUuMDAzLS4wMDJ6TTkuNjYyIDEyLjg2OGMuMDQ0LjE3NS4wNjcuMzU2LjA2Ny41NDIgMCAxLjUzNi0xLjA0NSAyLjczNS00LjA0NSAyLjczNS0yLjEzNSAwLTMuNjc2LTEuMjc3LTMuNjc2LTIuODEzIDAtMS41MDUgMS45MTItMi43NTYgNC4wNDYtMi43MzUuNDk4LjAwNS45NjIuMDggMS4zODQuMjEgMS4xNTguNzYzIDEuOTkgMS4xOTIgMi4yMjUgMi4wNjJsLS4wMDEtLjAwMXpNNi4yNDQgNy4xNGMtMS40MzMtLjA0LTIuNzk1LTEuNTE2LTMuMDQyLTMuMjk1LS4yNDctMS43OC43MTQtMy4xNDIgMi4xNDYtMy4xMDIgMS40MzEuMDQgMi43OTQgMS40NjggMy4wNDEgMy4yNDcuMjQ3IDEuNzgtLjcxMyAzLjE4OS0yLjE0NiAzLjE0OWwuMDAxLjAwMXpNMTcuMjcgMy43N1YwSDE1Ljk0djMuNzdoLTMuOTg0djEuMjU1aDMuOTg0djMuNzdoMS4zMjl2LTMuNzdoMy45ODRWMy43N0gxNy4yN3oiIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==") no-repeat, #db3236;
-  background-position-x: calc(50% - 42px);
-  background-position-y: center;
+  background-position: calc(50% - 42px) center;
 }
 
 section.reg form {
@@ -616,6 +625,7 @@ section.reg form {
 
 .bg.al {
   background-image: url('../img/ship3.png');
+  min-height: 100vh;
 }
 
 .bg.al::before, .bg.log::before, .bg.reg::before, .bg.res::before, .bg.ty::before {
@@ -826,7 +836,6 @@ section.reg form {
   }
 
   .allow {
-    padding: 0px;
     display: flex;
   }
 
@@ -866,11 +875,6 @@ section.reg form {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-  .allow {
-    padding: 0px;
-    z-index: 1;
   }
 
   .dropdown {
