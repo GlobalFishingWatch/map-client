@@ -7,6 +7,7 @@ class PaginationBlog extends Component {
 
   render() {
     return <section className={pagination['c-pagination-blog']}>
+      <div>
       <img className={pagination['left-triangle']} src={boxtriangle}></img>
       <ul>
         <li className={pagination['page-selected']}>1</li>
@@ -18,6 +19,7 @@ class PaginationBlog extends Component {
         <li>23</li>
       </ul>
       <img className={pagination['right-triangle']} src={boxtriangle}></img>
+      </div>
     </section>
   }
 }
