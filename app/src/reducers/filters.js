@@ -1,9 +1,15 @@
-import {UPDATE_FILTERS, TIMELINE_DEFAULT_START_DATE, TIMELINE_DEFAULT_END_DATE, SET_TIMELINE_DATES,TIMELINE_OUTER_EXTENT,TIMELINE_INNER_EXTENT} from "../constants";
+import {
+  UPDATE_FILTERS,
+  TIMELINE_DEFAULT_START_DATE,
+  TIMELINE_DEFAULT_END_DATE,
+  SET_TIMELINE_DATES,
+  TIMELINE_INNER_EXTENT
+} from '../constants';
 
 const initialState = {
   startDate: TIMELINE_DEFAULT_START_DATE,
   endDate: TIMELINE_DEFAULT_END_DATE,
-  innerExtent: TIMELINE_INNER_EXTENT,
+  timelineInnerExtent: TIMELINE_INNER_EXTENT,
   flag: ''
 };
 
@@ -19,4 +25,4 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-};
+}
