@@ -10,8 +10,8 @@
       line-height: 1.05;
       color: $color7;
       display: block;
-      padding: 0px 290px;
-      margin: 60px auto 0;
+      padding: 0 290px;
+      margin: 60px auto 18px;
     }
     span {
       p {
@@ -21,8 +21,8 @@
         line-height: 1.63;
         color: $color7;
         display: block;
-        padding: 0px 290px;
-        margin: 18px auto 0;
+        padding: 0 290px;
+        margin: 0px auto 18px;
       }
     }
     div {
@@ -36,5 +36,31 @@
       max-width: 1060px;
       margin-bottom: 18px;
     }
+  }
+  .button-more {
+    padding: 0 290px;
+    a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      font-family: $font-family-primary;
+      font-weight: $font-weight-bold;
+      line-height: 0.4;
+      letter-spacing: -0.1px;
+      font-size: $font-size-small;
+      color: $color6;
+      margin-top: 45px;
+      img {
+        width: 35px;
+        margin-right: 7px;
+        margin-left: -5px;
+        margin-bottom: 0;
+      }
+    }
+  }
+  hr{
+    height: 2px;
+    background-color: $color8;
+    margin-top: 65px;
   }
 }

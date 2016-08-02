@@ -7,6 +7,7 @@ import Header from "../containers/header";
 import Footer from "./shared/footer";
 import CoverBlog from "./blog/cover_blog";
 import PaginationBlog from "./blog/pagination";
+import boxtriangle from "../../assets/icons/box_triangle.svg";
 
 class Blog extends Component {
 
@@ -17,16 +18,21 @@ class Blog extends Component {
   render() {
     let articles = [];
     if (this.props.recentPost) {
-      articles = this.props.recentPost.posts.map(function (article) {
+      articles = this.props.recentPost.posts.map(function(article) {
         return (
           <article>
             <h2>{article.title}</h2>
-            <span dangerouslySetInnerHTML={{__html: article.content}}/>
+            <span dangerouslySetInnerHTML={{
+              __html: article.content
+            }}/>
+          <p className={listposts['button-more']}>
+              <a href="#"><img src={boxtriangle}></img>FIND OUT MORE</a>
+            </p>
+            <hr></hr>
           </article>
         );
       });
     }
-
 
     return <div>
       <Header></Header>
