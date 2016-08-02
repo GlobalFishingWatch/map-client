@@ -11,6 +11,7 @@ import VesselPanel from "./map/vessel_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 import Modal from './shared/Modal';
+import Share from '../containers/map/Share';
 
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -617,7 +618,7 @@ class Map extends Component {
   render() {
     return <div>
       <Modal opened={this.state.shareModalOpened} close={() => this.onShareModalClose()}>
-        Share modal
+        <Share />
       </Modal>
       <Header></Header>
       <div className={map.map_container} ref="mapContainer">
