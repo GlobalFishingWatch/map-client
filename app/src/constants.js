@@ -33,8 +33,8 @@ export const TIMELINE_MAX_DATE = 1451516400000; // 31/12/2015 //NEVER USED
 export const TIMELINE_DEFAULT_START_DATE = 1420070400000; // 01/01/2015
 export const TIMELINE_DEFAULT_END_DATE = 1451516400000; // 31/12/2015
 
-export const TIMELINE_TOTAL_DATE_EXTENT = [new Date(Date.UTC(2004, 0, 1)), new Date(Date.UTC(2015, 0, 1))];
-export const TIMELINE_INNER_EXTENT = [new Date(Date.UTC(2005, 0, 1)), new Date(Date.UTC(2006, 0, 1))];
+export const TIMELINE_TOTAL_DATE_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(Date.UTC(2016, 0, 1))];
+export const TIMELINE_INNER_EXTENT = [new Date(Date.UTC(2015, 5, 1)), new Date(Date.UTC(2015, 7, 1))];
 
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;

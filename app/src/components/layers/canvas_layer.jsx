@@ -202,8 +202,9 @@ class CanvasLayer {
    */
   drawTimeRange(start, end) {
     const canvasKeys = Object.keys(this.playbackData);
-    this.frameStartDate = start;
-    this.frameEndDate = end;
+    this.frameStartDate = CanvasLayer.getTimestampIndex(start);
+    this.frameEndDate = CanvasLayer.getTimestampIndex(end);
+
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
       const canvas = document.getElementById(canvasKeys[index]);
@@ -212,10 +213,12 @@ class CanvasLayer {
       }
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let timestamp = start; timestamp < end; timestamp += TIMELINE_STEP) {
+      for (let timestamp = this.frameStartDate; timestamp < this.frameEndDate; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
+        } else {
+          // TODO: a lot of missing timestamp indexes here, check why
         }
       }
     }
@@ -359,7 +362,10 @@ class CanvasLayer {
         continue;
       }
 
-      const time = vectorArray.datetime[index] - (vectorArray.datetime[index] % TIMELINE_STEP);
+      const time = CanvasLayer.getTimestampIndex(vectorArray.datetime[index]);
+      // using timestamps as array indexes might cause a performance issue
+      // see sparse arrays/contiguous keys
+      // http://www.html5rocks.com/en/tutorials/speed/v8/?redirect_from_locale=es
       if (!this.playbackData[tileId][time]) {
         this.playbackData[tileId][time] = {
           category: [],
@@ -384,6 +390,10 @@ class CanvasLayer {
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
       timestamp.sigma.push(vectorArray.sigma[index]);
     }
+  }
+
+  static getTimestampIndex(timestamp) {
+    return timestamp - (timestamp % TIMELINE_STEP);
   }
 
   /**

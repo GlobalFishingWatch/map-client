@@ -11,6 +11,7 @@ import map from '../../styles/index.scss';
 import Timeline from '../containers/timeline';
 import Modal from './shared/Modal';
 import Share from '../containers/map/Share';
+import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
@@ -290,9 +291,15 @@ class Map extends Component {
     if (!nextProps.map) {
       return;
     }
-    this.updateLayersState(nextProps);
-    this.updateFiltersState(nextProps);
-    this.updateTrackLayer(nextProps);
+
+    const newInnerExtent = nextProps.filters.timelineInnerExtent;
+    if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
+      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
+    } else {
+      this.updateLayersState(nextProps);
+      this.updateFiltersState(nextProps);
+      this.updateTrackLayer(nextProps);
+    }
   }
 
   updateTrackLayer(nextProps) {
@@ -394,6 +401,7 @@ class Map extends Component {
    * @param layerSettings
    */
   addVesselLayer(layerSettings) {
+    console.log('addVesselLayer')
     const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
     this.setState({ overlay: canvasLayer });
     this.state.addedLayers[layerSettings.title] = canvasLayer;
