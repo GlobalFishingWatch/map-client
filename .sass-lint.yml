@@ -1,3 +1,5 @@
 rules:
   property-sort-order:
     - 2
+  force-element-nesting:
+    - 0

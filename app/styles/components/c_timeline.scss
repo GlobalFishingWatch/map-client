@@ -1,0 +1,28 @@
+@import '../base/colors';
+
+.c-timeline {
+
+  .c-timeline-area {
+    fill: $bluedark;
+  }
+
+  .c-timeline-x-axis {
+    line,
+    path {
+      stroke: $white;
+    }
+
+    text {
+      fill: $white;
+    }
+  }
+
+
+  .c-timeline-inner-brush .selection {
+    stroke: $redprimary;
+  }
+
+  .c-timeline-outer-brush .selection {
+    stroke: $blueprimary;
+  }
+}
