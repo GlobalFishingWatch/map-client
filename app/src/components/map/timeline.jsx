@@ -96,16 +96,16 @@ class Timeline extends Component {
       .attr('height', height + margin.top + margin.bottom);
 
     this.group = this.svg.append('g')
-      .attr('class', css.c_timeline)
+      .attr('class', css['c-timeline'])
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     this.group.append('path')
         .datum(dummyData)
-        .attr('class', css.c_timeline_area)
+        .attr('class', css['c-timeline-area'])
         .attr('d', area);
 
     this.group.append('g')
-        .attr('class', css.c_timeline_x_axis)
+        .attr('class', css['c-timeline-x-axis'])
         .attr('transform', `translate(0, ${height + 15})`)
         .call(xAxis);
 
@@ -114,14 +114,14 @@ class Timeline extends Component {
     this.outerBrushFunc = brush();
 
     this.outerBrush = this.group.append('g')
-        .attr('class', css.c_timeline_outer_brush)
+        .attr('class', css['c-timeline-outer-brush'])
         .call(this.outerBrushFunc);
 
     // disable default d3 brush events for the outer brush
     this.outerBrush.on('.brush', null);
 
     this.innerBrush = this.group.append('g')
-        .attr('class', css.c_timeline_outer_brush)
+        .attr('class', css['c-timeline-inner-brush'])
         .call(this.innerBrushFunc);
 
     // mmove both brushes to initial position
@@ -247,8 +247,8 @@ class Timeline extends Component {
     x.domain(newOuterTimeExtent);
 
     // redraw components
-    this.group.select(`.${css.c_timeline_area}`).attr('d', area);
-    this.group.select(`.${css.c_timeline_x_axis}`).call(xAxis);
+    this.group.select(`.${css['c-timeline-area']}`).attr('d', area);
+    this.group.select(`.${css['c-timeline-x-axis']}`).call(xAxis);
 
     // calculate new inner extent, using old inner extent on new x scale
     currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
