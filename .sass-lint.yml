@@ -1,0 +1,3 @@
+rules:
+  property-sort-order:
+    - 2
