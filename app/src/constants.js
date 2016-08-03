@@ -14,6 +14,7 @@ export const LOGOUT = 'LOGOUT';
 export const TOKEN_SESSION = 'TOKEN_SESSION';
 
 export const GET_RECENT_POST = 'GET_RECENT_POST';
+export const GET_POST_BY_ID = 'GET_POST_BY_ID';
 
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';

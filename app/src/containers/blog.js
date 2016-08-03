@@ -3,6 +3,7 @@
 import {connect} from "react-redux";
 import Blog from "../components/blog";
 import {getRecentPost} from "../actions/blog";
+import {getPostById} from "../actions/blog";
 
 const mapStateToProps = (state) => {
   return {
@@ -15,4 +16,5 @@ const mapDispatchToProps = (dispatch) => {
     getRecentPost: () => dispatch(getRecentPost())
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);
