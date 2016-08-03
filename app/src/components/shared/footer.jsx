@@ -1,11 +1,11 @@
-import React from "react";
-import {Link} from "react-router";
-import "../../../styles/components/c_footer.scss";
-import navfooter from "../../../styles/components/c_nav_footer.scss";
-import logosfooter from "../../../styles/components/c_logos_footer.scss";
-import logooceana from "../../../assets/logos/oceana_logo.png";
-import logosky from "../../../assets/logos/skytruth_logo.jpg";
-import logogoogle from "../../../assets/logos/google_logo.png";
+import React from 'react';
+import { Link } from 'react-router';
+import '../../../styles/components/c_footer.scss';
+import navfooter from '../../../styles/components/c_nav_footer.scss';
+import logosfooter from '../../../styles/components/c_logos_footer.scss';
+import logooceana from '../../../assets/logos/oceana_logo.png';
+import logosky from '../../../assets/logos/skytruth_logo.jpg';
+import logogoogle from '../../../assets/logos/google_logo.png';
 
 export default function (props) {
   return (
@@ -45,5 +45,5 @@ export default function (props) {
         </ul>
       </div>
     </footer>
-  )
-};
+  );
+}

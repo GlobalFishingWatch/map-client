@@ -1,12 +1,8 @@
-'use strict';
+import { connect } from 'react-redux';
+import Home from '../components/home';
 
-import {connect} from "react-redux";
-import Home from "../components/home";
-
-const mapStateToProps = (state) => {
-  return {
-    map: state.map,
-    menuVisible: state.appearence.menuVisible
-  };
-};
+const mapStateToProps = (state) => ({
+  map: state.map,
+  menuVisible: state.appearance.menuVisible
+});
 export default connect(mapStateToProps)(Home);

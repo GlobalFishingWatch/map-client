@@ -1,15 +1,13 @@
-'use strict';
-
-import React, {Component} from "react";
-import home from "../../styles/index.scss";
-import Header from "../containers/header";
-import Footer from "./shared/footer";
+import React, { Component } from 'react';
+import home from '../../styles/index.scss';
+import Header from '../containers/header';
+import Footer from './shared/footer';
 
 class ArticlesPublications extends Component {
 
   render() {
-    return <div>
-      <Header></Header>
+    return (<div>
+      <Header />
       <section className={home.header_home}>
         <div>
           <h1>
@@ -17,11 +15,9 @@ class ArticlesPublications extends Component {
           </h1>
         </div>
       </section>
-      <Footer></Footer>
-    </div>
-
+      <Footer />
+    </div>);
   }
-
 }
 
 export default ArticlesPublications;

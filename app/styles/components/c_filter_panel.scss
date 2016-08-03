@@ -1,17 +1,18 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
+
 .filtersPanel {
   input {
     display: block;
   }
-  select{
+  select {
     width: 260px;
     height: 40px;
     background-color: $color13;
     border: solid 1px $color14;
     color: $color9;
     font-weight: $font-weight-regular;
-    font-size:$font-size-xsmall;
+    font-size: $font-size-xsmall;
     outline: 0;
     display: block;
     margin: 0 auto;

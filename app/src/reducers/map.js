@@ -5,33 +5,43 @@ const initialState = {
   center: [0, 0],
   vessel: null
 };
-import {VESSEL_INIT, SHOW_LOADING, TOGGLE_LAYER_VISIBILITY, SET_LAYERS, GET_SERIESGROUP, SET_ZOOM, SET_CENTER} from "../constants";
+import {
+  VESSEL_INIT,
+  SHOW_LOADING,
+  TOGGLE_LAYER_VISIBILITY,
+  SET_LAYERS,
+  GET_SERIESGROUP,
+  SET_ZOOM,
+  SET_CENTER
+} from '../constants';
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case VESSEL_INIT:
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
-      return Object.assign({}, state, {loading: action.payload.data});
+      return Object.assign({}, state, { loading: action.payload.data });
     case SET_LAYERS:
-      return Object.assign({}, state, {layers: action.payload});
+      return Object.assign({}, state, { layers: action.payload });
     case GET_SERIESGROUP:
-      return Object.assign({}, state, {track: action.payload});
+      return Object.assign({}, state, { track: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-    case TOGGLE_LAYER_VISIBILITY:
+    case TOGGLE_LAYER_VISIBILITY: {
       const layers = state.layers.slice(0);
+      const newState = Object.assign({}, state, { zoom: action.payload });
       for (let i = 0, length = layers.length; i < length; i++) {
         if (layers[i].title === action.payload.title) {
-          action.payload.visible = !action.payload.visible
+          newState.payload.visible = !action.payload.visible;
           layers[i] = action.payload;
           break;
         }
       }
-      return Object.assign({}, state, {layers});
+      return newState;
+    }
     default:
       return state;
   }
-};
+}

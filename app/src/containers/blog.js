@@ -1,18 +1,13 @@
-'use strict';
+import { connect } from 'react-redux';
+import Blog from '../components/blog';
+import { getRecentPost } from '../actions/blog';
 
-import {connect} from "react-redux";
-import Blog from "../components/blog";
-import {getRecentPost} from "../actions/blog";
+const mapStateToProps = (state) => ({
+  recentPost: state.blog.recentPost
+});
 
-const mapStateToProps = (state) => {
-  return {
-    recentPost: state.blog.recentPost
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  getRecentPost: () => dispatch(getRecentPost())
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getRecentPost: () => dispatch(getRecentPost())
-  };
-};
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);

@@ -76,11 +76,11 @@
     text-transform: uppercase;
     padding-bottom: 30px;
   }
-  .list_checkbox{
+  .list_checkbox {
     padding-left: 30px;
   }
   input[type="checkbox"] {
-    background-image: -webkit-linear-gradient(hsla(0,0%,0%,.1), hsla(0,0%,100%,.1)), -webkit-linear-gradient(left, #c7c7c7 50%, #ef4323 50%);
+    background-image: -webkit-linear-gradient(hsla(0, 0%, 0%, .1), hsla(0, 0%, 100%, .1)), -webkit-linear-gradient(left, #c7c7c7 50%, #ef4323 50%);
     background-size: 100% 100%, 200% 100%;
     background-position: 0 0, 5px 0;
     border-radius: 25px;
@@ -96,7 +96,7 @@
   }
   input[type="checkbox"]:after {
     background-color: #eee;
-    background-image: -webkit-linear-gradient(hsla(0,0%,100%,.1), hsla(0,0%,0%,.1));
+    background-image: -webkit-linear-gradient(hsla(0, 0%, 100%, .1), hsla(0, 0%, 0%, .1));
     border-radius: 25px;
     content: '';
     display: block;
@@ -175,7 +175,7 @@
     display: block;
     font-family: $font-family-primary;
     font-size: $font-size-xsmall;
-    font-weight:$font-weight-regular;
+    font-weight: $font-weight-regular;
     font-style: italic;
     text-align: right;
     padding-right: 30px;
@@ -185,6 +185,7 @@
     cursor: pointer;
   }
 }
+
 .accordion_item {
   color: $color9;
   font-weight: $font-weight-bold;
