@@ -1,3 +1,5 @@
+@import 'settings';
+
 *, *:before, *:after {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -10,4 +12,9 @@ html, body {
   font-weight: $font-weight-normal;
   margin: 0;
   padding: 0;
+}
+
+.full-height-container,
+body > div > div > div { // FIXME: add .full-height-container to each page root div
+  height: 100%;
 }

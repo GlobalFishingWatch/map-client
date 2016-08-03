@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import css from '../../styles/index.scss';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-\_]*)(&[a-z=])?/g;
 
@@ -18,7 +19,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className={css['full-height-container']}>
         {this.props.loading && <div>Loading....</div>}
         {this.props.children}
       </div>
