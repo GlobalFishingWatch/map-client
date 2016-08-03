@@ -46,14 +46,9 @@ class Timeline extends Component {
 
   componentWillReceiveProps(nextProps) {
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
-    console.log(newInnerExtent,this.props.filters.timelineInnerExtent )
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       console.log('receive props')
-      currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
-      // prevent d3 from dispatching brush events that are not user -initiated
-      this.disableInnerBrush();
-      this.redrawInnerBrush(currentInnerPxExtent);
-      this.enableInnerBrush();
+      this.redrawInnerBrush(newInnerExtent);
     }
   }
 
@@ -132,7 +127,8 @@ class Timeline extends Component {
 
     // mmove both brushes to initial position
     this.outerBrushFunc.move(this.outerBrush, [0, width]);
-    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
+
 
     // no need to keep brush overlays (the invisible interactive zone outside of the brush)
     this.outerBrush.select('.overlay').remove();
@@ -284,8 +280,12 @@ class Timeline extends Component {
     });
   }
 
-  redrawInnerBrush(newInnerPxExtent) {
-    this.innerBrushFunc.move(this.innerBrush, newInnerPxExtent);
+  redrawInnerBrush(newInnerExtent) {
+    currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
+    // prevent d3 from dispatching brush events that are not user -initiated
+    this.disableInnerBrush();
+    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    this.enableInnerBrush();
   }
 
   onDatePickerChange(outerExtent) {

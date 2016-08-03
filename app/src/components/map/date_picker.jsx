@@ -8,8 +8,6 @@ class DatePicker extends Component {
   }
 
   onDatePickerChange(e) {
-    console.log('onDatePickerChange')
-    // TODO CHECK If value changed here
     const start = (e.target.id === 'inner_extent_start') ? new Date(e.target.value) : this.props.start;
     const end = (e.target.id === 'inner_extent_end') ? new Date(e.target.value) : this.props.end;
     this.props.onDatePickerChange([start, end]);
