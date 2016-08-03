@@ -6,29 +6,29 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onKeyPress = e => {
+    this.onKeyDown = e => {
       if (e.keyCode !== 27) return;
       e.preventDefault();
       this.props.close();
     };
 
-    /* If the modal is opened at instantiation, we want the keypress handler to be active */
+    /* If the modal is opened at instantiation, we want the keydown handler to be active */
     if (props.opened) {
-      document.addEventListener('keypress', this.onKeyPress);
+      document.addEventListener('keydown', this.onKeyDown);
     }
   }
 
   shouldComponentUpdate(nextProps) {
-    /* We attach the keypress handler only if the modal gets to be visible */
+    /* We attach the keydown handler only if the modal gets to be visible */
     if (!this.props.opened && nextProps.opened) {
-      document.addEventListener('keypress', this.onKeyPress);
+      document.addEventListener('keydown', this.onKeyDown);
     }
 
     return true;
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keypress', this.onKeyPress);
+    document.removeEventListener('keydown', this.onKeyDown);
   }
 
   onClickOverlay(e) {
