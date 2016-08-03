@@ -43,10 +43,12 @@
     "jquery": "^3.1.0",
     "json-loader": "^0.5.4",
     "lodash": "^4.13.1",
+    "moment": "^2.14.1",
     "morgan": "^1.7.0",
     "node-sass": "^3.7.0",
     "pretty-error": "^2.0.0",
     "react": "^15.0.2",
+    "react-datepicker": "^0.28.2",
     "react-dom": "^15.0.2",
     "react-draggable": "^2.1.2",
     "react-google-maps": "^4.11.0",
@@ -65,12 +67,14 @@
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
+    "css-loader": "^0.23.1",
     "eslint": "^3.2.0",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^5.2.2",
     "sass-lint": "^1.8.2",
+    "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7"
   },
   "engines": {

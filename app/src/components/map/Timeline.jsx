@@ -34,7 +34,8 @@ class Timeline extends Component {
 
   constructor(props) {
     super(props);
-    this.onDatePickerChange = this.onDatePickerChange.bind(this);
+    this.onStartDatePickerChange = this.onStartDatePickerChange.bind(this);
+    this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
     this.state = {
       outerExtent: TIMELINE_TOTAL_DATE_EXTENT
     };
@@ -287,9 +288,15 @@ class Timeline extends Component {
     this.enableInnerBrush();
   }
 
-  onDatePickerChange(outerExtent) {
+  onStartDatePickerChange(startDate) {
     this.setState({
-      outerExtent
+      outerExtent: [startDate, this.state.outerExtent[1]]
+    });
+  }
+
+  onEndDatePickerChange(endDate) {
+    this.setState({
+      outerExtent: [this.state.outerExtent[0], endDate]
     });
   }
 
@@ -297,13 +304,16 @@ class Timeline extends Component {
     return (
       <div>
         <DatePicker
-          onDatePickerChange={this.onDatePickerChange}
-          start={this.state.outerExtent[0]}
-          end={this.state.outerExtent[1]}
-          startMin={TIMELINE_TOTAL_DATE_EXTENT[0]}
-          startMax={this.props.filters.timelineInnerExtent[0]}
-          endMin={this.props.filters.timelineInnerExtent[1]}
-          endMax={TIMELINE_TOTAL_DATE_EXTENT[1]}
+          selected={this.state.outerExtent[0]}
+          minDate={TIMELINE_TOTAL_DATE_EXTENT[0]}
+          maxDate={this.props.filters.timelineInnerExtent[0]}
+          onChange={this.onStartDatePickerChange}
+        />
+        <DatePicker
+          selected={this.state.outerExtent[1]}
+          minDate={this.props.filters.timelineInnerExtent[1]}
+          maxDate={TIMELINE_TOTAL_DATE_EXTENT[1]}
+          onChange={this.onEndDatePickerChange}
         />
         <div id="timeline_svg_container" />
       </div>
