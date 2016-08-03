@@ -85,6 +85,7 @@
     font-weight: $font-weight-semi;
     line-height: 1.37;
     text-transform: uppercase;
+
     &:after{
       content: "";
       display: block;
@@ -102,6 +103,7 @@
     line-height: 1.12;
     letter-spacing: -1.5px;
     max-width: initial;
+    max-width: 1000px;
   }
 
 }

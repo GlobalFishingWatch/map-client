@@ -18,9 +18,16 @@ class BlogDetail extends Component {
   render() {
     return <div>
       <Header></Header>
-      <CoverBlogDetail title={this.props.post ? this.props.post.title : null}></CoverBlogDetail>
+      <CoverBlogDetail title={this.props.post
+        ? this.props.post.title
+        : null}></CoverBlogDetail>
       <section className={listposts['c-list-posts']}>
-        <article>
+        <article className={listposts['article-post']}>
+          <span dangerouslySetInnerHTML={{
+            __html: this.props.post
+              ? this.props.post.content
+              : null
+          }}></span>
         </article>
       </section>
       <Footer></Footer>
