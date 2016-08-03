@@ -3,8 +3,7 @@ import menuMobile from '../../../styles/components/c_mobile_menu.scss';
 
 class MenuMobile extends Component {
   render() {
-
-    return <div className={menuMobile.c_mobile_menu}>
+    return (<div className={menuMobile.c_mobile_menu}>
       <ul>
         <li>Map</li>
         <li>News</li>
@@ -29,7 +28,7 @@ class MenuMobile extends Component {
       </ul>
       <span className={menuMobile.button_login}>LOG IN</span>
       <p className={menuMobile.forgot_text}>Forgot your password? Not a member</p>
-    </div>
+    </div>);
   }
 }
 

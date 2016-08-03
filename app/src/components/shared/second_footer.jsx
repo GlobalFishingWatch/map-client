@@ -7,5 +7,5 @@ export default function (props) {
     <div className={footerblack.c_second_footer}>
       <img src={logogfwhor}></img>
     </div>
-  )
-};
+  );
+}

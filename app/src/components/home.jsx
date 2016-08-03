@@ -14,7 +14,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      menuVisible: false,
+      menuVisible: false
     };
   }
 
@@ -22,8 +22,8 @@ class Home extends Component {
   }
 
   render() {
-    return <div>
-      {this.props.menuVisible && <div className={back_mobile.menu_back}></div> }
+    return (<div>
+      {this.props.menuVisible && <div className={back_mobile.menu_back}></div>}
       <MenuMobile></MenuMobile>
       <Header />
       <CoverPage></CoverPage>
@@ -39,7 +39,7 @@ class Home extends Component {
       </section>
       <Footer />
       <FooterSecond></FooterSecond>
-    </div>
+    </div>);
   }
 
 }

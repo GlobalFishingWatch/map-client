@@ -7,12 +7,12 @@ import SupportForm from './contact_us/support_form';
 class ContactUs extends Component {
 
   render() {
-    return <div>
+    return (<div>
       <Header />
       <ContactUsForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus}></ContactUsForm>
       <SupportForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus}></SupportForm>
       <Footer />
-    </div>
+    </div>);
   }
 }
 

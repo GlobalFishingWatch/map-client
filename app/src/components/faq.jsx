@@ -6,7 +6,7 @@ import Footer from './shared/footer';
 class FAQ extends Component {
 
   render() {
-    return <div>
+    return (<div>
       <Header />
       <section className={home.header_home}>
         <div>
@@ -16,8 +16,7 @@ class FAQ extends Component {
         </div>
       </section>
       <Footer />
-    </div>
-
+    </div>);
   }
 
 }

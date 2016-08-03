@@ -168,8 +168,7 @@ class Map extends Component {
         this.drawVesselFrame(initialTimestamp + mDay);
       }
     }.bind(this));
-    this.setState({ 'animationID': animationID, currentTimestamp: initialTimestamp });
-
+    this.setState({ animationID, currentTimestamp: initialTimestamp });
   }
 
   /**
@@ -199,7 +198,7 @@ class Map extends Component {
    * @param data Data returned by the API
    */
   handleAdditionalVesselDetails(data) {
-    let currentVesselInfo = this.state.currentVesselInfo;
+    const currentVesselInfo = this.state.currentVesselInfo;
 
     data = JSON.parse(data.target.response);
     currentVesselInfo.callsign = data.callsign;
@@ -208,7 +207,7 @@ class Map extends Component {
     currentVesselInfo.mmsi = data.mmsi;
     currentVesselInfo.name = data.vesselname;
 
-    this.setState({ currentVesselInfo: currentVesselInfo })
+    this.setState({ currentVesselInfo });
   }
 
   /**
@@ -229,7 +228,7 @@ class Map extends Component {
         strokeOpacity: 1.0,
         strokeWeight: 2
       })
-    })
+    });
     this.state.trajectory.setMap(this.map);
   }
 
@@ -247,8 +246,8 @@ class Map extends Component {
       throw 'XMLHttpRequest is disabled';
     }
     this.request.open('GET', 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=' + seriesGroup + '/info', true);
-    this.request.setRequestHeader("Authorization", `Bearer ${this.props.token}`);
-    this.request.responseType = "application/json";
+    this.request.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
+    this.request.responseType = 'application/json';
     this.request.onload = this.handleAdditionalVesselDetails.bind(this);
     this.request.send(null);
   }
@@ -269,8 +268,8 @@ class Map extends Component {
       timestamp: vesselInfo.timestamp
     };
 
-    this.setState({ currentVesselInfo: currentVesselInfo })
-    this.loadAdditionalVesselDetails(vesselInfo.seriesgroup)
+    this.setState({ currentVesselInfo });
+    this.loadAdditionalVesselDetails(vesselInfo.seriesgroup);
   }
 
   /**
@@ -295,7 +294,7 @@ class Map extends Component {
       this.showVesselDetails(vesselInfo);
       this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
     } else if (this.state.trajectory) {
-      this.setState({ currentVesselInfo: {} })
+      this.setState({ currentVesselInfo: {} });
     }
   }
 
@@ -310,11 +309,11 @@ class Map extends Component {
 
   updateTrackLayer(nextProps) {
     if (this.props.map.track !== nextProps.map.track) {
-      var trackLayer = this.state.trackLayer;
+      let trackLayer = this.state.trackLayer;
       if (!trackLayer) {
-        var Overlay = createTrackLayer(google);
+        const Overlay = createTrackLayer(google);
         trackLayer = new Overlay(this.refs.map.props.map, this.refs.mapContainer.offsetWidth, this.refs.mapContainer.offsetHeight);
-        this.setState({ trackLayer: trackLayer });
+        this.setState({ trackLayer });
       }
       trackLayer.regenerate();
       trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
@@ -337,7 +336,7 @@ class Map extends Component {
     }
 
     if (currentTimestamp !== this.state.currentTimestamp) {
-      this.setState({ currentTimestamp: currentTimestamp });
+      this.setState({ currentTimestamp });
     }
 
     this.updatePlaybackBar(nextProps.filters.startDate, nextProps.filters.endDate, currentTimestamp, this.state.playbackRange);
@@ -359,12 +358,12 @@ class Map extends Component {
     const currentLayers = this.props.map.layers;
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
-    let promises = [];
+    const promises = [];
 
     let callAddVesselLayer = null;
     if (newLayers !== currentLayers) {
       for (let index = 0, length = newLayers.length; index < length; index++) {
-        let newLayer = newLayers[index];
+        const newLayer = newLayers[index];
         if (!addedLayers[newLayer.title]) {
           if (!newLayer.visible) {
             continue;
@@ -384,7 +383,7 @@ class Map extends Component {
       if (callAddVesselLayer) {
         callAddVesselLayer();
       }
-      this.setState({ addedLayers: addedLayers });
+      this.setState({ addedLayers });
     }.bind(this));
   }
 
@@ -411,7 +410,7 @@ class Map extends Component {
   addCartoLayer(layerSettings) {
     const addedLayers = this.state.addedLayers;
 
-    let promise = new Promise(function (resolve, reject) {
+    const promise = new Promise(function (resolve, reject) {
       cartodb.createLayer(map, layerSettings.source.args.url).addTo(map, layerSettings.zIndex).done(function (layer, cartoLayer) {
         addedLayers[layer.title] = cartoLayer;
         resolve();
@@ -470,7 +469,6 @@ class Map extends Component {
       return;
     }
     if (this.state.trackLayer) {
-
       this.state.trackLayer.recalculatePosition();
       this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
     }
@@ -540,7 +538,7 @@ class Map extends Component {
    * @param playbackRange
    */
   updatePlaybackRange(playbackRange) {
-    this.setState({ playbackRange: playbackRange });
+    this.setState({ playbackRange });
 
     if (this.state.running === 'pause') {
       this.drawVesselFrame(this.state.currentTimestamp, playbackRange);
@@ -569,7 +567,7 @@ class Map extends Component {
    * @param vesselLayerTransparency
    */
   updateVesselLayerDensity(vesselLayerTransparency) {
-    this.setState({ vesselLayerTransparency: vesselLayerTransparency });
+    this.setState({ vesselLayerTransparency });
     this.state.overlay.vesselLayerTransparency = vesselLayerTransparency;
 
     if (this.state.running !== 'play') {
@@ -599,7 +597,7 @@ class Map extends Component {
   changeZoomLevel(event) {
     const newZoomLevel = (event.target.id === 'zoom_up')
       ? this.map.getZoom() + 1
-      : this.map.getZoom() - 1
+      : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
     if (this.state.trackLayer) {
@@ -634,13 +632,13 @@ class Map extends Component {
           <div className={map.time_controls}>
             <button onClick={this.playbackStart.bind(this)} className={map.timeline}>
               {this.state.running !== 'play'
-                ? "Play ►"
-                : "Pause ||"}
+                ? 'Play ►'
+                : 'Pause ||'}
             </button>
             <button onClick={this.playbackStop.bind(this)} className={map.timelineStop}>Stop</button>
           </div>
           <div className={map.date_inputs}>
-            <label for="mindate">
+            <label htmlFor="mindate">
               Start date
               <input
                 type="date"
@@ -702,14 +700,15 @@ class Map extends Component {
           </div>
         </div>
         <LayerPanel layers={this.props.map.layers} onLayerToggle={this.props.toggleLayerVisibility.bind(this)}
-                    onFilterChange={this.updateFilters.bind(this)}
-                    onTimeStepChange={this.updatePlaybackRange.bind(this)}
-                    onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
-                    startDate={this.props.filters.startDate} endDate={this.props.filters.endDate} />
+          onFilterChange={this.updateFilters.bind(this)}
+          onTimeStepChange={this.updatePlaybackRange.bind(this)}
+          onDrawDensityChange={this.updateVesselLayerDensity.bind(this)}
+          startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}
+        />
         <VesselPanel vesselInfo={this.state.currentVesselInfo} />
         <GoogleMapLoader
           containerElement={
-            <div className={map.map} style={{ height: "100%", }} />
+            <div className={map.map} style={{ height: '100%' }} />
           }
           googleMapElement={
             <GoogleMap
@@ -730,7 +729,8 @@ class Map extends Component {
               onDragend={this.onDragEnd.bind(this)}
               onIdle={this.onMapIdle.bind(this)}
             />
-          }>
+          }
+        >
         </GoogleMapLoader>
       </div>
     </div>);

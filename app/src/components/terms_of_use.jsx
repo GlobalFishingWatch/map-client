@@ -6,7 +6,7 @@ import Footer from './shared/footer';
 class TermsOfUse extends Component {
 
   render() {
-    return <div>
+    return (<div>
       <Header />
       <section className={home.header_home}>
         <div>
@@ -16,8 +16,7 @@ class TermsOfUse extends Component {
         </div>
       </section>
       <Footer />
-    </div>
-
+    </div>);
   }
 
 }

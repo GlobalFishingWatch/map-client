@@ -8,9 +8,9 @@ const createTrackLayer = function (google) {
     this.offset = {
       x: 0,
       y: 0
-    }
+    };
 
-    var canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas');
     canvas.style.border = '1px solid black';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
@@ -21,7 +21,7 @@ const createTrackLayer = function (google) {
     canvas.height = height;
 
     this.canvas = canvas;
-    var ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d');
     canvas.style.left = 0 + 'px';
     canvas.style.top = 0 + 'px';
     ctx.width = canvas.width = width;
@@ -36,41 +36,41 @@ const createTrackLayer = function (google) {
   TrackLayer.prototype = new google.maps.OverlayView();
   TrackLayer.prototype.regenerate = function () {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  }
+  };
 
   TrackLayer.prototype.recalculatePosition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    var map = this.getMap();
+    const map = this.getMap();
 
     // topLeft can't be calculated from map.getBounds(), because bounds are
     // clamped to -180 and 180 when completely zoomed out. Instead, calculate
     // left as an offset from the center, which is an unwrapped LatLng.
-    var top = map.getBounds().getNorthEast().lat();
-    var center = map.getCenter();
-    var scale = Math.pow(2, map.getZoom());
-    var left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
+    const top = map.getBounds().getNorthEast().lat();
+    const center = map.getCenter();
+    const scale = Math.pow(2, map.getZoom());
+    const left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
     this.topLeft_ = new google.maps.LatLng(top, left);
 
     // Canvas position relative to draggable map's container depends on
     // overlayView's projection, not the map's. Have to use the center of the
     // map for this, not the top left, for the same reason as above.
-    var projection = this.getProjection();
-    var divCenter = projection.fromLatLngToDivPixel(center);
-    var offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
-    var offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
+    const projection = this.getProjection();
+    const divCenter = projection.fromLatLngToDivPixel(center);
+    const offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
+    const offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
     this.offset = {
       x: offsetX,
       y: offsetY
-    }
+    };
     this.canvas.style[TrackLayer.CSS_TRANSFORM_] = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
   };
 
   TrackLayer.CSS_TRANSFORM_ = (function () {
-    var div = document.createElement('div');
-    var transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-    for (var i = 0; i < transformProps.length; i++) {
-      var prop = transformProps[i];
+    const div = document.createElement('div');
+    const transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+    for (let i = 0; i < transformProps.length; i++) {
+      const prop = transformProps[i];
       if (div.style[prop] !== undefined) {
         return prop;
       }
@@ -94,17 +94,17 @@ const createTrackLayer = function (google) {
       return false;
     }
     return true;
-  }
+  };
 
   TrackLayer.prototype.drawTile = function (data, series, filters, timestamp) {
     this.regenerate();
-    var overlayProjection = this.getProjection();
+    const overlayProjection = this.getProjection();
     let nextPoint = null;
     let first = true;
-    for (var i = 0, length = data.latitude.length; i < length; i++) {
+    for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (this.checkFilter(data, i, series, timestamp, filters)) {
         var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
-        var weight = data.weight[i];
+        const weight = data.weight[i];
         if (i + 1 < length) {
           nextPoint = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i + 1], data.longitude[i + 1]));
         }
@@ -132,7 +132,6 @@ const createTrackLayer = function (google) {
           this.ctx.strokeStyle = 'rgba(255,0,0, 1)';
           this.ctx.lineTo(~~nextPoint.x - this.offset.x, ~~nextPoint.y - this.offset.y);
         }
-
       }
     }
     if (!timestamp) {
@@ -140,9 +139,9 @@ const createTrackLayer = function (google) {
       this.ctx.stroke();
     }
     //
-  }
+  };
   TrackLayer.prototype.onAdd = function () {
-    var panes = this.getPanes();
+    const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);
   };
 
@@ -160,6 +159,6 @@ const createTrackLayer = function (google) {
   };
 
   return TrackLayer;
-}
+};
 
 export default createTrackLayer;

@@ -45,5 +45,5 @@ export default function (props) {
         </ul>
       </div>
     </footer>
-  )
-};
+  );
+}
