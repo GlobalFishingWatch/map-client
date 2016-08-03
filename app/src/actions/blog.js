@@ -18,3 +18,12 @@ export function getRecentPost() {
     });
   };
 };
+
+export function getPostById(id) {
+  return (dispatch, getState) => {
+    let state = getState();
+    if(state.blog.recentPost){
+     
+    }
+  };
+};
