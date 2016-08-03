@@ -1,107 +1,120 @@
-@import '../base/text.scss';
-@import '../base/colors.scss';
+@import '../_settings.scss';
 
 .c-cover-page {
-  background-color: $bluesecondary;
+  background-color: $color-9;
   padding-top: 100px;
+
   h1 {
-    font-family: $font-family-primary;
-    font-size: $font-size-xlarge;
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-huge;
     font-weight: $font-weight-bold;
-    line-height: 0.85;
     letter-spacing: -1.5px;
-    color: $color9;
-    max-width: 870px;
-    padding-left: 124px;
+    line-height: .85;
     margin-bottom: 0;
     margin-top: 0;
-    &:after {
-      content: "";
+    max-width: 870px;
+    padding-left: 124px;
+
+    &::after {
+      background-color: $color-10;
+      content: '';
       display: block;
       height: 5px;
-      background-color: $color3;
-      margin-top: 18px;
       margin-bottom: 10px;
+      margin-top: 18px;
       width: 174px;
     }
   }
-  .title_cover_blog{
-    &:after{
-      content: "";
+
+  .title_cover_blog {
+
+    &::after {
+      background-color: $color-10;
+      content: '';
       display: block;
       height: 5px;
-      background-color: $color3;
-      margin-top: 18px;
       margin-bottom: 20px;
+      margin-top: 18px;
       width: 210px;
     }
   }
+
   p {
-    padding-left: 124px;
-    color: $color9;
-    font-family: $font-family-primary;
+    color: $color-4;
+    font-family: $font-family-1;
     font-size: $font-size-medium;
     font-weight: $font-weight-bold;
-    letter-spacing: -0.1px;
-    max-width: 668px;
+    letter-spacing: -.1px;
     margin-bottom: 170px;
+    max-width: 668px;
+    padding-left: 124px;
   }
+
   .footer_header {
+    align-items: center;
+    color: $color-4;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-right: 170px;
-    padding-left: 140px;
-    color: $white;
     padding-bottom: 40px;
+    padding-left: 140px;
+    padding-right: 170px;
+
     svg {
-      fill: $color9;
-      stroke-width: 3;
-      stroke: $color9;
-      transform: rotate(45deg);
+      fill: $color-4;
       margin-right: 15px;
-      &last-child {
+      stroke: $color-4;
+      stroke-width: 3;
+      transform: rotate(45deg);
+
+      &:last-child {
         margin-right: 0;
       }
     }
+
     #selected_box {
-      fill: $color4;
+      fill: $color-3;
+      stroke: $color-3;
       stroke-width: 3;
-      stroke: $color4;
     }
   }
-  .footer_header_blog{
+
+  .footer_header_blog {
+    align-items: center;
+    color: $color-4;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    padding-right: 170px;
-    padding-left: 140px;
-    color: $white;
     padding-bottom: 40px;
+    padding-left: 140px;
+    padding-right: 170px;
   }
-  .title-cover-blog-detail{
-    font-family: $font-family-primary;
+
+  .title-cover-blog-detail {
+    font-family: $font-family-1;
     font-size: $font-size-medium;
-    font-weight: $font-weight-semi;
+    font-weight: $font-weight-bold;
     line-height: 1.37;
     text-transform: uppercase;
-    &:after{
-      content: "";
+
+    &::after {
+      background-color: $color-10;
+      content: '';
       display: block;
-      width: 210px;
       height: 5px;
-      background-color: $color3;
-      margin-top: 15px;
       margin-bottom: 10px;
+      margin-top: 15px;
+      width: 210px;
     }
   }
+
   .title-post-detail{
-    font-family: $font-family-primary;
-    font-size: $font-size-xlarge;
-    font-weight: $font-weight-semi;
+    font-family: $font-family-1;
+    font-size: $font-size-huge;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.5px;
     line-height: 1.12;
-    letter-spacing: -1.5px;
     max-width: initial;
+
   }
 
 }

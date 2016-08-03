@@ -1,10 +1,22 @@
-*, *:before, *:after {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import '_settings';
+
+* { box-sizing: border-box;
+
+  &::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  &::before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
 }
 
-html, body {
+body,
+html {
   font-family: $font-family-1;
   font-size: $font-size-normal;
   font-weight: $font-weight-normal;
