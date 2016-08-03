@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint-js || npm run lint-sass",
     "lint-sass": "sass-lint -v -q 'app/**/*.scss'",
-    "lint-js": "eslint -c .eslintrc app",
+    "lint-js": "eslint -c .eslintrc --ext .jsx,.js app",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build"
   },
