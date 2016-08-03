@@ -1,0 +1,39 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);
+
+// Font families
+$font-family-1: 'Roboto', sans-serif;
+
+// Font sizes
+$font-size-tiny:      10px;
+$font-size-x-small:   12px;
+$font-size-small:     14px;
+$font-size-normal:    16px;
+$font-size-medium:    20px;
+$font-size-x-medium:  25px;
+$font-size-big:       30px;
+$font-size-x-big:     34px;
+$font-size-huge:     100px;
+
+// Font weights
+$font-weight-light:  300;
+$font-weight-normal: 400;
+$font-weight-bold:   700;
+
+// Colors
+$color-1:  #011137;
+$color-2:  #021236;
+$color-3:  #8abbc7;
+$color-4:  #fff;
+$color-5:  #b8b8b8;
+
+// Breakpoints
+$breakpoint-mobile-small:  320px;
+$breakpoint-mobile-large:  425px;
+$breakpoint-tablet:        768px;
+$breakpoint-laptop:       1024px;
+
+// Media queries
+$mq-mobile-small: 'screen and (min-width: #{$breakpoint-mobile-small})';
+$mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
+$mq-tablet:       'screen and (min-width: #{$breakpoint-tablet})';
+$mq-laptop:       'screen and (min-width: #{$breakpoint-laptop})';

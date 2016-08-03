@@ -1,3 +1,7 @@
 rules:
   property-sort-order:
     - 2
+  no-color-literals:
+    - 2
+    -
+      allow-rgba: true

@@ -1,0 +1,74 @@
+import React from 'react';
+import styles from '../../../styles/components/shared/c-modal.scss';
+// eslint-disable-next-line import/no-unresolved
+import Icon from 'babel!svg-react!../../../assets/icons/close.svg?name=Icon';
+
+class Modal extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.onKeyDown = e => {
+      if (e.keyCode !== 27) return;
+      e.preventDefault();
+      this.props.close();
+    };
+
+    /* If the modal is opened at instantiation, we want the keydown handler to be active */
+    if (props.opened) {
+      document.addEventListener('keydown', this.onKeyDown);
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    /* We attach the keydown handler only if the modal gets to be visible */
+    if (!this.props.opened && nextProps.opened) {
+      document.addEventListener('keydown', this.onKeyDown);
+    }
+
+    return true;
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onClickOverlay(e) {
+    if (e.target === e.currentTarget) this.props.close();
+  }
+
+  render() {
+    if (!this.props.opened) return null;
+
+    return (
+      <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
+        <div className={styles.content}>
+          <button className={styles['close-button']} onClick={() => this.props.close()}>
+            <Icon className={styles.icon} title="Close this modal" />
+          </button>
+          {this.props.children}
+        </div>
+      </div>
+    );
+  }
+
+}
+
+Modal.propTypes = {
+  /**
+   * The callback method when closing the modal
+   */
+  close: React.PropTypes.func.isRequired,
+  /**
+   * Define whether the modal is opened or not
+   */
+  opened: React.PropTypes.bool.isRequired,
+  /**
+   * Define the content of the modal
+   * Required
+   */
+  children: React.PropTypes.any
+};
+
+
+export default Modal;
