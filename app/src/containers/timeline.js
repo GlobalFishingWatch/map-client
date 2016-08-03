@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Timeline from '../components/map/timeline';
+import Timeline from '../components/map/Timeline';
 import { updateFilters } from '../actions/filters';
 
 const mapStateToProps = state => {
