@@ -1,6 +1,7 @@
 'use strict';
 
 import React, {Component} from "react";
+import {Link} from "react-router";
 import home from "../../styles/index.scss";
 import listposts from "../../styles/components/c-list_posts.scss";
 import Header from "../containers/header";
@@ -26,7 +27,7 @@ class Blog extends Component {
               __html: article.content
             }}/>
           <p className={listposts['button-more']}>
-              <a href={'/blog/'+article.id}><img src={boxtriangle}></img>FIND OUT MORE</a>
+              <Link to={'/blog-detail/'+article.id}><img src={boxtriangle}></img>FIND OUT MORE</Link>
             </p>
             <hr></hr>
           </article>

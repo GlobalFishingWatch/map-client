@@ -79,4 +79,29 @@
     color: $white;
     padding-bottom: 40px;
   }
+  .title-cover-blog-detail{
+    font-family: $font-family-primary;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-semi;
+    line-height: 1.37;
+    text-transform: uppercase;
+    &:after{
+      content: "";
+      display: block;
+      width: 210px;
+      height: 5px;
+      background-color: $color3;
+      margin-top: 15px;
+      margin-bottom: 10px;
+    }
+  }
+  .title-post-detail{
+    font-family: $font-family-primary;
+    font-size: $font-size-xlarge;
+    font-weight: $font-weight-semi;
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+    max-width: initial;
+  }
+
 }

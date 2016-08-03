@@ -5,42 +5,25 @@ import home from "../../styles/index.scss";
 import listposts from "../../styles/components/c-list_posts.scss";
 import Header from "../containers/header";
 import Footer from "./shared/footer";
-import CoverBlog from "./blog/cover_blog";
+import CoverBlogDetail from "./blog/cover_blog_detail";
 import PaginationBlog from "./blog/pagination";
 import boxtriangle from "../../assets/icons/box_triangle.svg";
 
-class Blog extends Component {
+class BlogDetail extends Component {
 
   componentDidMount() {
-    this.props.getRecentPost();
+    this.props.getPostById(this.props.params.id);
   }
 
   render() {
-    let articles = [];
-    if (this.props.recentPost) {
-      articles = this.props.recentPost.posts.map(function(article) {
-        return (
-          <article>
-            <h2>{article.title}</h2>
-            <span dangerouslySetInnerHTML={{
-              __html: article.content
-            }}/>
-          <p className={listposts['button-more']}>
-              <a href="#"><img src={boxtriangle}></img>FIND OUT MORE</a>
-            </p>
-            <hr></hr>
-          </article>
-        );
-      });
-    }
-
     return <div>
       <Header></Header>
-      <CoverBlog></CoverBlog>
+      <CoverBlogDetail title={this.props.post ? this.props.post.title : null}></CoverBlogDetail>
       <section className={listposts['c-list-posts']}>
-        {articles}
+        <article>
+
+        </article>
       </section>
-      <PaginationBlog></PaginationBlog>
       <Footer></Footer>
     </div>
 
@@ -48,4 +31,4 @@ class Blog extends Component {
 
 }
 
-export default Blog;
+export default BlogDetail;

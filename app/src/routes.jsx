@@ -3,7 +3,7 @@ import AppContainer from './containers/app';
 import HomeContainer from './containers/home';
 import MapContainer from './containers/map';
 import BlogContainer from './containers/blog';
-import BlogDetailContainer from './containers/blog_detail';
+import BlogDetail from './containers/blog_detail';
 import ArticlesPublications from './components/articles_publications';
 import FAQ from './components/faq';
 import Tutorials from './components/tutorials';
@@ -23,7 +23,7 @@ class Routes extends Component {
         <IndexRoute component={HomeContainer}/>
 
         <Route path="blog" component={BlogContainer}/>
-        <Route path="blog-detail" component={BlogDetailContainer}/>
+        <Route path="blog-detail/:id" component={BlogDetail}/>
         <Route path="articles-publications" component={ArticlesPublications}/>
 
         <Route path="faq" component={FAQ}/>
