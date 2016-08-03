@@ -3,6 +3,10 @@
 @import '../base/screen.scss';
 .c-list-posts {
   font-family: $font-family-primary;
+  .article-post{
+    margin-top: 60px;
+    margin-bottom: 110px;
+  }
   article {
     h2 {
       font-size: $font-size-large;
