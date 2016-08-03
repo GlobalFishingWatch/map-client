@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from '../../../styles/components/shared/c-modal.scss';
+// eslint-disable-next-line import/no-unresolved
+import Icon from 'babel!svg-react!../../../assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
 
@@ -42,11 +44,7 @@ class Modal extends React.Component {
       <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
         <div className={styles.content}>
           <button className={styles['close-button']} onClick={() => this.props.close()}>
-            <svg className={styles.icon} title="Close this modal">
-              <g strokeWidth="3" stroke="#43649C" fill="none" fillRule="evenodd" strokeLinecap="square">
-                <path d="M2.627 2.627L13.43 13.43M13.373 2.627L2.57 13.43" />
-              </g>
-            </svg>
+            <Icon className={styles.icon} title="Close this modal" />
           </button>
           {this.props.children}
         </div>
