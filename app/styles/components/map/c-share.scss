@@ -1,0 +1,44 @@
+@import '../../settings';
+
+.c-share {
+  text-align: center;
+
+  > .title {
+    font-size: $font-size-medium;
+    font-weight: $font-weight-normal;
+    margin-bottom: 10px;
+  }
+
+  > .intro {
+    margin: 0;
+  }
+
+  > form {
+    display: inline-block;
+    margin: 10px 0 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .url-input {
+    background-color: transparent;
+    border: 1px solid $color-5;
+    color: rgba($color-4, .5);
+    height: 40px;
+    padding: 0 90px 0 20px;
+  }
+
+  .copy-button {
+    background-color: $color-3;
+    border: 0;
+    color: $color-4;
+    cursor: pointer;
+    font-weight: $font-weight-bold;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+    top: 0;
+    width: 70px;
+  }
+}

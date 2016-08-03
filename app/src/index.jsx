@@ -14,7 +14,7 @@ import userReducer from './reducers/user';
 import blogReducer from './reducers/blog';
 import filtersReducer from './reducers/filters';
 import appearenceReducer from './reducers/appearence';
-import '../styles/index.scss';
+import '../styles/application.scss';
 import contactReducer from './reducers/contact';
 
 /**

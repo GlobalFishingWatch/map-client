@@ -1,0 +1,62 @@
+@import '../../settings';
+
+.c-modal {
+  align-items: center;
+  background-color: rgba($color-1, .7);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+
+  > .content {
+    background-color: $color-2;
+    border: 1px solid rgba($color-3, .3);
+    color: $color-4;
+    height: calc(100% - 60px);
+    max-width: 860px;
+    padding: 40px;
+    position: relative;
+    width: calc(100% - 60px);
+
+    @media #{$mq-mobile-large} {
+      height: auto;
+      min-width: 370px;
+      width: auto;
+    }
+
+    @media #{$mq-tablet} {
+      min-width: 620px;
+    }
+
+    @media #{$mq-laptop} {
+      width: 860px;
+    }
+  }
+
+  .close-button {
+    background-color: $color-4;
+    border: 0;
+    border-radius: 100%;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    transform: translateX(50%);
+    width: 40px;
+
+    > .icon {
+      display: block;
+      height: 16px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+    }
+  }
+
+}

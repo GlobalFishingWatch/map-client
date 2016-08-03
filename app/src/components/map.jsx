@@ -11,6 +11,8 @@ import VesselPanel from "./map/vessel_panel";
 import Header from "../containers/header";
 import map from "../../styles/index.scss";
 import Timeline from "../containers/timeline";
+import Modal from './shared/Modal';
+import Share from '../containers/map/Share';
 
 const mDay = 86400000;
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -30,7 +32,8 @@ class Map extends Component {
       leftHandlerPosition: 0,
       rightHandlerPosition: 0,
       timeBarWidth: 0,
-      running: 'stop'
+      running: 'stop',
+      shareModalOpened: false
     };
   }
 
@@ -577,8 +580,18 @@ class Map extends Component {
     }
   }
 
-  shareMap(event) {
-    alert('TODO: share map');
+  /**
+   * Open the modal to share the map
+   */
+  shareMap() {
+    this.setState({ shareModalOpened: true });
+  }
+
+  /**
+   * Callback called when the share modal is closed
+   */
+  onShareModalClose() {
+    this.setState({ shareModalOpened: false });
   }
 
   /**
@@ -606,6 +619,9 @@ class Map extends Component {
    */
   render() {
     return <div>
+      <Modal opened={this.state.shareModalOpened} close={() => this.onShareModalClose()}>
+        <Share />
+      </Modal>
       <Header></Header>
       <div className={map.map_container} ref="mapContainer">
 

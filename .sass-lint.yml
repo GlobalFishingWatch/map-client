@@ -3,3 +3,7 @@ rules:
     - 2
   force-element-nesting:
     - 0
+  no-color-literals:
+    - 2
+    -
+      allow-rgba: true
