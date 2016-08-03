@@ -1,8 +1,6 @@
 import PelagosClient from '../lib/pelagosClient';
 import _ from 'lodash';
 import {
-  VESSEL_INIT,
-  SHOW_LOADING,
   SET_LAYERS,
   SET_ZOOM,
   SET_CENTER,

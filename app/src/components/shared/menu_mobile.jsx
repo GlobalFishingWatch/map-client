@@ -1,4 +1,4 @@
-import React, { Component, Image } from 'react';
+import React, { Component } from 'react';
 import menuMobile from '../../../styles/components/c_mobile_menu.scss';
 
 class MenuMobile extends Component {

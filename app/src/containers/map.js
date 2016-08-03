@@ -1,12 +1,6 @@
 import { connect } from 'react-redux';
 import Map from '../components/map';
-import {
-  getWorkspace,
-  toggleLayerVisibility,
-  getSeriesGroup,
-  setZoom,
-  setCenter
-} from '../actions/map';
+import { getWorkspace, toggleLayerVisibility, getSeriesGroup, setZoom, setCenter } from '../actions/map';
 import { updateFilters } from '../actions/filters';
 
 const mapStateToProps = (state) => ({

@@ -7,15 +7,15 @@ import logooceana from '../../../assets/logos/oceana_logo.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 
-export default function (props) {
+export default function () {
   return (
     <footer>
       <div className={logosfooter.c_logos_footer}>
         <div className={logosfooter.partner_footer}>
           <span>Founding Partners</span>
-          <img className={logosfooter.first_partner} src={logooceana} alt="oceana logo"></img>
-          <img src={logosky} alt="skytruth logo"></img>
-          <img src={logogoogle}></img>
+          <img className={logosfooter.first_partner} src={logooceana} alt="oceana logo" />
+          <img src={logosky} alt="skytruth logo" />
+          <img src={logogoogle} alt="google logo" />
         </div>
         <div className={logosfooter.sponsor_footer}>
           <span>Lead Sponsor</span>

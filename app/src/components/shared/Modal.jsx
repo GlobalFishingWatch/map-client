@@ -9,7 +9,9 @@ class Modal extends React.Component {
     super(props);
 
     this.onKeyDown = e => {
-      if (e.keyCode !== 27) return;
+      if (e.keyCode !== 27) {
+        return;
+      }
       e.preventDefault();
       this.props.close();
     };
@@ -34,11 +36,15 @@ class Modal extends React.Component {
   }
 
   onClickOverlay(e) {
-    if (e.target === e.currentTarget) this.props.close();
+    if (e.target === e.currentTarget) {
+      this.props.close();
+    }
   }
 
   render() {
-    if (!this.props.opened) return null;
+    if (!this.props.opened) {
+      return null;
+    }
 
     return (
       <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>

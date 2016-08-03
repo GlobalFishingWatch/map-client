@@ -52,16 +52,16 @@ var byname = {
 var writeStringToArrayBuffer = function (str, start, end, buf, bufstart) {
   if (end == undefined) {
     end = str.length;
-    }
+  }
   if (start == undefined) {
     start = 0;
-    }
+  }
   if (bufstart == undefined) {
     bufstart = start;
-    }
+  }
   for (var i = start; i < end; i++) {
     buf[i - start + bufstart] = str.charCodeAt(i) & 0xff;
-    }
+  }
 };
 
 var stringToArrayBuffer = function (str, start, end) {
@@ -69,10 +69,10 @@ var stringToArrayBuffer = function (str, start, end) {
 
   if (end == undefined) {
     end = str.length;
-    }
+  }
   if (start == undefined) {
     start = 0;
-    }
+  }
   var res = new Uint8ClampedArray(end - start);
   writeStringToArrayBuffer(str, start, end, res, 0);
   return res.buffer;

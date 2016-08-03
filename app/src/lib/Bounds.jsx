@@ -66,7 +66,7 @@ class Bounds {
 
   intersectsBounds(bounds, options) {
     if (typeof options === "boolean") {
-      options = {inclusive: options};
+      options = { inclusive: options };
     }
     options = options || {};
     if (options.worldBounds) {
@@ -117,10 +117,10 @@ class Bounds {
       var boundsCrosses = !world.containsBounds(bounds);
       if (selfCrosses && !boundsCrosses) {
         bounds = bounds.add(-width, 0);
-        intersects = self.intersectsBounds(bounds, {inclusive: options.inclusive});
+        intersects = self.intersectsBounds(bounds, { inclusive: options.inclusive });
       } else if (boundsCrosses && !selfCrosses) {
         self = self.add(-width, 0);
-        intersects = bounds.intersectsBounds(self, {inclusive: options.inclusive});
+        intersects = bounds.intersectsBounds(self, { inclusive: options.inclusive });
       }
     }
     return intersects;
@@ -164,10 +164,10 @@ class Bounds {
      * return values from this function are unique */
     if (res.left == 180) {
       res.left = -180;
-      }
+    }
     if (res.right == -180) {
       res.right = 180;
-      }
+    }
     return res;
   }
 
@@ -273,7 +273,7 @@ class Bounds {
 
   toJSON() {
     var self = this;
-    return {left: self.left, right: self.right, top: self.top, bottom: self.bottom}
+    return { left: self.left, right: self.right, top: self.top, bottom: self.bottom }
   }
 }
 

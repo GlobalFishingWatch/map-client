@@ -1,6 +1,6 @@
 import { TIMELINE_STEP } from '../../constants';
 
-const createTrackLayer = function (google) {
+const createTrackLayer = (google) => {
   function TrackLayer(map, width, height) {
     this.map = map;
     // Explicitly call setMap on this overlay.
@@ -22,8 +22,8 @@ const createTrackLayer = function (google) {
 
     this.canvas = canvas;
     const ctx = canvas.getContext('2d');
-    canvas.style.left = 0 + 'px';
-    canvas.style.top = 0 + 'px';
+    canvas.style.left = '0px';
+    canvas.style.top = '0px';
     ctx.width = canvas.width = width;
     ctx.height = canvas.height = height;
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
@@ -34,11 +34,11 @@ const createTrackLayer = function (google) {
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
-  TrackLayer.prototype.regenerate = function () {
+  TrackLayer.prototype.regenerate = () => {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  TrackLayer.prototype.recalculatePosition = function () {
+  TrackLayer.prototype.recalculatePosition = () => {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const map = this.getMap();
@@ -63,10 +63,10 @@ const createTrackLayer = function (google) {
       x: offsetX,
       y: offsetY
     };
-    this.canvas.style[TrackLayer.CSS_TRANSFORM_] = 'translate(' + offsetX + 'px,' + offsetY + 'px)';
+    this.canvas.style[TrackLayer.CSS_TRANSFORM_] = `translate(${offsetX}px,${offsetY}px)`;
   };
 
-  TrackLayer.CSS_TRANSFORM_ = (function () {
+  TrackLayer.CSS_TRANSFORM_ = (() => {
     const div = document.createElement('div');
     const transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
     for (let i = 0; i < transformProps.length; i++) {
@@ -80,7 +80,7 @@ const createTrackLayer = function (google) {
     return transformProps[0];
   })();
 
-  TrackLayer.prototype.checkFilter = function (data, index, series, timestamp, filters) {
+  TrackLayer.prototype.checkFilter = (data, index, series, timestamp, filters) => {
     if (series && data.series[index] === series) {
       return false;
     }
@@ -96,29 +96,32 @@ const createTrackLayer = function (google) {
     return true;
   };
 
-  TrackLayer.prototype.drawTile = function (data, series, filters, timestamp) {
+  TrackLayer.prototype.drawTile = (data, series, filters, timestamp) => {
+    let coords;
     this.regenerate();
     const overlayProjection = this.getProjection();
     let nextPoint = null;
     let first = true;
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       if (this.checkFilter(data, i, series, timestamp, filters)) {
-        var coords = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i], data.longitude[i]));
+        coords = overlayProjection.fromLatLngToDivPixel(
+          new google.maps.LatLng(data.latitude[i], data.longitude[i])
+        );
         const weight = data.weight[i];
         if (i + 1 < length) {
-          nextPoint = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(data.latitude[i + 1], data.longitude[i + 1]));
+          nextPoint = overlayProjection.fromLatLngToDivPixel(
+            new google.maps.LatLng(data.latitude[i + 1], data.longitude[i + 1])
+          );
         }
         if (weight > 0.75) {
           this.ctx.fillStyle = this.pointStyles[0];
           this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2, 2);
           continue;
-        }
-        else if (weight > 0.50) {
+        } else if (weight > 0.50) {
           this.ctx.fillStyle = this.pointStyles[1];
           this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
           continue;
-        }
-        else {
+        } else {
           this.ctx.fillStyle = this.pointStyles[2];
           this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
         }
@@ -140,7 +143,7 @@ const createTrackLayer = function (google) {
     }
     //
   };
-  TrackLayer.prototype.onAdd = function () {
+  TrackLayer.prototype.onAdd = () => {
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);
   };
@@ -148,12 +151,12 @@ const createTrackLayer = function (google) {
   // We use the south-west and north-east
   // coordinates of the overlay to peg it to the correct position and size.
   // To do this, we need to retrieve the projection from the overlay.
-  TrackLayer.prototype.draw = function () {
+  TrackLayer.prototype.draw = () => {
   };
 
   // The onRemove() method will be called automatically from the API if
   // we ever set the overlay's map property to 'null'.
-  TrackLayer.prototype.onRemove = function () {
+  TrackLayer.prototype.onRemove = () => {
     this.canvas.parentNode.removeChild(this.canvas);
     this.canvas = null;
   };
