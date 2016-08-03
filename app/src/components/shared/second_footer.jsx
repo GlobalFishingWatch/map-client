@@ -1,11 +1,11 @@
 import React from 'react';
-import footerblack from '../../../styles/components/c_second_footer.scss';
-import logogfwhor from '../../../assets/logos/gfw_logo_hor_white.png';
+import footerBlack from '../../../styles/components/c_second_footer.scss';
+import logoGFWHorizontal from '../../../assets/logos/gfw_logo_hor_white.png';
 
-export default function (props) {
+export default function () {
   return (
-    <div className={footerblack.c_second_footer}>
-      <img src={logogfwhor}></img>
+    <div className={footerBlack.c_second_footer}>
+      <img src={logoGFWHorizontal} alt="GFW logo" />
     </div>
   );
 }

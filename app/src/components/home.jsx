@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import home from '../../styles/index.scss';
-import back_mobile from '../../styles/components/c_mobile_menu.scss';
+import backMobile from '../../styles/components/c_mobile_menu.scss';
 import Header from '../containers/header';
 import Footer from './shared/footer';
 import FooterSecond from './shared/second_footer';
@@ -18,30 +18,31 @@ class Home extends Component {
     };
   }
 
-  togglemenu() {
-  }
-
   render() {
     return (<div>
-      {this.props.menuVisible && <div className={back_mobile.menu_back}></div>}
-      <MenuMobile></MenuMobile>
+      {this.props.menuVisible && <div className={backMobile.menu_back}></div>}
+      <MenuMobile />
       <Header />
-      <CoverPage></CoverPage>
+      <CoverPage />
       <section id="case_study" className={home.infostudy}>
-        <CaseStudySlider></CaseStudySlider>
+        <CaseStudySlider />
       </section>
       <section className={home.infomap}>
-        <InfoMap></InfoMap>
+        <InfoMap />
       </section>
       <section className={home.success_story}>
         <h2>Success Stories</h2>
-        <SuccessStoryGallery></SuccessStoryGallery>
+        <SuccessStoryGallery />
       </section>
       <Footer />
-      <FooterSecond></FooterSecond>
+      <FooterSecond />
     </div>);
   }
 
 }
+
+Home.propTypes = {
+  menuVisible: React.PropTypes.bool
+};
 
 export default Home;

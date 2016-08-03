@@ -4,7 +4,7 @@ class Format {
 
   static initialize(args) {
     var self = this;
-    self.header = {length: 0, colsByName: {}};
+    self.header = { length: 0, colsByName: {} };
     self.data = {};
     self.rowcount = 0;
     self.seriescount = 0;
@@ -15,7 +15,7 @@ class Format {
 
     if (args) {
       _.extend(self, args);
-      }
+    }
   }
 }
 

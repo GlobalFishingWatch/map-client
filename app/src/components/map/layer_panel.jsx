@@ -17,6 +17,9 @@ class LayerPanel extends Component {
 
     this.fakeSearchResults = this.fakeSearchResults.bind(this);
     this.toggleVisibleAdvancedSearch = this.toggleVisibleAdvancedSearch.bind(this);
+    this.onFilterChange = this.props.onFilterChange.bind(this);
+    this.onTimeStepChange = this.props.onTimeStepChange.bind(this);
+    this.onDrawDensityChange = this.props.onDrawDensityChange.bind(this);
   }
 
   fakeSearchResults(event) {
@@ -83,7 +86,7 @@ class LayerPanel extends Component {
           <div className={layerPanel.content_accordion}>
             <div>
               <FiltersPanel
-                onChange={this.props.onFilterChange.bind(this)}
+                onChange={this.onFilterChange}
               />
               <span className={layerPanel.button_advanced_search}>SEARCH</span>
             </div>
@@ -117,7 +120,7 @@ class LayerPanel extends Component {
         className={layerPanel.accordion_item}
       >
         <div className={layerPanel.content_accordion}>
-          <p></p>
+          <p />
         </div>
       </AccordionItem>);
 
@@ -139,8 +142,8 @@ class LayerPanel extends Component {
       >
         <div className={layerPanel.content_accordion}>
           <ControlPanel
-            onTimeStepChange={this.props.onTimeStepChange.bind(this)}
-            onDrawDensityChange={this.props.onDrawDensityChange.bind(this)}
+            onTimeStepChange={this.onTimeStepChange}
+            onDrawDensityChange={this.onDrawDensityChange}
             startDate={this.props.startDate} endDate={this.props.endDate}
           />
         </div>

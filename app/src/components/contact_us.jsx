@@ -9,11 +9,16 @@ class ContactUs extends Component {
   render() {
     return (<div>
       <Header />
-      <ContactUsForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus}></ContactUsForm>
-      <SupportForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus}></SupportForm>
+      <ContactUsForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
+      <SupportForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
       <Footer />
     </div>);
   }
 }
+
+ContactUs.propTypes = {
+  contactStatus: React.PropTypes.number,
+  submitForm: React.PropTypes.func
+};
 
 export default ContactUs;

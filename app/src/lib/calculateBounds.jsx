@@ -90,7 +90,7 @@ TileBounds.tileBoundsForRegion = function (args) {
 
 
 const getTiles = function (bounds) {
-  return TileBounds.tileBoundsForRegion({bounds: bounds, tilesPerScreen: 32});
+  return TileBounds.tileBoundsForRegion({ bounds: bounds, tilesPerScreen: 32 });
 }
 
 const getUrls = function (map) {

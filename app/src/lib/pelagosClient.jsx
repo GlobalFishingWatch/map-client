@@ -30,10 +30,10 @@ class PelagosClient {
     var self = this;
     if (!this.request) {
       return;
-      }
+    }
     if (this.error) {
       return true;
-      }
+    }
 
     if (this.request.readyState == 4) {
       /* HTTP reports success with a 200 status. The file protocol
@@ -50,14 +50,14 @@ class PelagosClient {
 
     if (!this.request.response) {
       return;
-      }
+    }
     var length = this.request.response.byteLength;
     var response = this.request.response;
     var dataView = new DataView(response);
 
     if (length < 4 + 4) {
       return;
-      }
+    }
     if (self.headerLen == null) {
       var cookie = Pack.arrayBufferToString(response.slice(0, 4));
       if (cookie != this.MAGIC_COOKIE) {
@@ -71,7 +71,7 @@ class PelagosClient {
     }
     if (length < self.offset + self.headerLen) {
       return;
-      }
+    }
     if (!self.headerIsLoaded) {
       self.header = JSON.parse(Pack.arrayBufferToString(response.slice(self.offset, self.offset + self.headerLen)));
       self.rowLen = 0;
