@@ -7,3 +7,5 @@ rules:
     - 2
     -
       allow-rgba: true
+  no-url-protocols:
+    - 0

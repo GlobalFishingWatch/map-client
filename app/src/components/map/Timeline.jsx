@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import { TIMELINE_TOTAL_DATE_EXTENT } from '../../constants';
 import css from '../../../styles/index.scss';
-import DatePicker from './date_picker';
+import DatePicker from './DatePicker';
 
 const margin = { top: 10, right: 50, bottom: 40, left: 50 };
 const width = 800 - margin.left - margin.right;

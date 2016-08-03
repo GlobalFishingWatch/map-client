@@ -304,7 +304,6 @@ class Map extends Component {
     if (!nextProps.map) {
       return;
     }
-    console.log(nextProps.filters.endDate, this.props.filters.endDate)
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);

@@ -45,11 +45,29 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
   onDatePickerChange: React.PropTypes.func,
+  /**
+   * Current start date set (a Date object)
+   */
   start: React.PropTypes.object,
+  /**
+   * Current end date set (a Date object)
+   */
   end: React.PropTypes.object,
+  /**
+   * Minimum allowed start date (a Date object).
+   */
   startMin: React.PropTypes.object,
+  /**
+   * Maximum allowed start date (a Date object). Depends on the inner extent start date.
+   */
   startMax: React.PropTypes.object,
+  /**
+   * Minimum allowed end date (a Date object). Depends on the inner extent end date.
+   */
   endMin: React.PropTypes.object,
+  /**
+   * Maximum allowed end date (a Date object).
+   */
   endMax: React.PropTypes.object
 };
 
