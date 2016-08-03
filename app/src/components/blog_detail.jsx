@@ -21,7 +21,6 @@ class BlogDetail extends Component {
       <CoverBlogDetail title={this.props.post ? this.props.post.title : null}></CoverBlogDetail>
       <section className={listposts['c-list-posts']}>
         <article>
-          
         </article>
       </section>
       <Footer></Footer>
