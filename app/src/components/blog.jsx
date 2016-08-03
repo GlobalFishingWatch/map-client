@@ -26,7 +26,7 @@ class Blog extends Component {
               __html: article.content
             }}/>
           <p className={listposts['button-more']}>
-              <a href="#"><img src={boxtriangle}></img>FIND OUT MORE</a>
+              <a href={'/blog/'+article.id}><img src={boxtriangle}></img>FIND OUT MORE</a>
             </p>
             <hr></hr>
           </article>

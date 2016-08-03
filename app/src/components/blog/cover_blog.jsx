@@ -10,7 +10,8 @@ class CoverBlog extends Component {
         <h1 className={cover_page.title_cover_blog}>
           Blog
         </h1>
-        <p>Lorem ipsum donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Curabitur blandit tempus porttitor. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+        <p>Lorem ipsum donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Curabitur
+           blandit tempus porttitor. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
         <div className={cover_page.footer_header_blog}>
           <div>Brought to you by:</div>
         </div>
