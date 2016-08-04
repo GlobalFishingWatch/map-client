@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-\_]*)(&[a-z=])?/g;
+const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
 class App extends Component {
 

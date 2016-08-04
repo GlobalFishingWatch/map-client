@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 import PelagosClient from '../../lib/pelagosClient';
 import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';

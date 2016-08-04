@@ -68,8 +68,6 @@ class LayerPanel extends Component {
           <div className={layerPanel.box_image_basemap}></div>
         </div>
       </div>);
-    let layersAccordionTitle = (<span className={layerPanel.title_accordion}>Layers</span>);
-    let controlAccordionTitle = (<span className={layerPanel.title_accordion}>Control</span>);
     let advancedSearchAccordionTitle = (
       <span
         onClick={this.toggleVisibleAdvancedSearch}
@@ -78,7 +76,8 @@ class LayerPanel extends Component {
         {this.state.visibleAdvancedSearch ? 'hide advanced search' : 'advanced search'}
       </span>);
 
-
+    // TODO sending a component for the accordion title value raise an Invalid prop error.
+    // This might be fixed by this
     let advancedSearchAccordion = (
       <Accordion allowMultiple={false} activeItems={6}>
         <AccordionItem title={advancedSearchAccordionTitle} key="advancedsearch">
@@ -125,9 +124,11 @@ class LayerPanel extends Component {
 
     let layersAccordion = (
       <AccordionItem
-        title={layersAccordionTitle}
+        title="Layers"
         key="layers"
         className={layerPanel.accordion_item}
+        titleClassName={layerPanel.title_accordion}
+
       >
         <div className={layerPanel.content_accordion}>
           <ul>{layers}</ul>
@@ -136,8 +137,10 @@ class LayerPanel extends Component {
 
     let controlAccordion = (
       <AccordionItem
-        title={controlAccordionTitle} key="control"
+        title="Controls"
+        key="control"
         className={layerPanel.accordion_item}
+        titleClassName={layerPanel.title_accordion}
       >
         <div className={layerPanel.content_accordion}>
           <ControlPanel

@@ -216,13 +216,6 @@ class Map extends Component {
       this.setState({ currentTimestamp });
     }
 
-    this.updatePlaybackBar(
-      nextProps.filters.startDate,
-      nextProps.filters.endDate,
-      currentTimestamp,
-      this.state.playbackRange
-    );
-
     if (this.state.overlay && this.props.filters !== nextProps.filters) {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
