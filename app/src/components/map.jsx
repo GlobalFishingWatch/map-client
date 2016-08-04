@@ -38,7 +38,7 @@ class Map extends Component {
     this.onMapIdle = this.onMapIdle.bind(this);
     this.shareMap = this.shareMap.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.toggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
+    this.propsToggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
   }
 
   /**
@@ -61,7 +61,9 @@ class Map extends Component {
     }
     this.setState({ zoom });
     this.props.setZoom(zoom);
-    this.state.overlay.resetPlaybackData();
+    if (this.state.overlay) {
+      this.state.overlay.resetPlaybackData();
+    }
   }
 
   /**
@@ -275,8 +277,8 @@ class Map extends Component {
     const addedLayers = this.state.addedLayers;
 
     const promise = new Promise(((resolve) => {
-      cartodb.createLayer(map, layerSettings.source.args.url)
-        .addTo(map, layerSettings.zIndex)
+      cartodb.createLayer(this.map, layerSettings.source.args.url)
+        .addTo(this.map, layerSettings.zIndex)
         .done(((layer, cartoLayer) => {
           addedLayers[layer.title] = cartoLayer;
           resolve();
@@ -456,7 +458,7 @@ class Map extends Component {
         </div>
         <LayerPanel
           layers={this.props.map.layers}
-          onLayerToggle={this.toggleLayerVisibility}
+          onLayerToggle={this.propsToggleLayerVisibility}
           onFilterChange={this.updateFilters}
           onDrawDensityChange={this.updateVesselLayerDensity}
           startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}

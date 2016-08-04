@@ -31,15 +31,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { center: action.payload });
     case TOGGLE_LAYER_VISIBILITY: {
       const layers = state.layers.slice(0);
-      const newState = Object.assign({}, state, { zoom: action.payload });
       for (let i = 0, length = layers.length; i < length; i++) {
         if (layers[i].title === action.payload.title) {
-          newState.payload.visible = !action.payload.visible;
+          action.payload.visible = !action.payload.visible
           layers[i] = action.payload;
           break;
         }
       }
-      return newState;
+      return Object.assign({}, state, { layers });
     }
     default:
       return state;
