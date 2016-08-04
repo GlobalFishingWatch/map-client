@@ -1,6 +1,7 @@
 /* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
+import classnames from 'classnames';
 import { TIMELINE_TOTAL_DATE_EXTENT } from '../../constants';
 import css from '../../../styles/index.scss';
 import DatePicker from './DatePicker';
@@ -80,12 +81,15 @@ class Timeline extends Component {
     x.domain(TIMELINE_TOTAL_DATE_EXTENT);
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
+    var h =  window.getComputedStyle(document.getElementById('timeline_svg_container')).height;
+    debugger
+
     this.svg = d3.select('#timeline_svg_container').append('svg')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom);
 
     this.group = this.svg.append('g')
-      .attr('class', css['c-timeline'])
+      // .attr('class', css['c-timeline'])
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
     this.group.append('path')
@@ -367,24 +371,35 @@ class Timeline extends Component {
 
   render() {
     return (
-      <div>
-        <DatePicker
-          selected={this.state.outerExtent[0]}
-          minDate={TIMELINE_TOTAL_DATE_EXTENT[0]}
-          maxDate={this.props.filters.timelineInnerExtent[0]}
-          onChange={this.onStartDatePickerChange}
+      <div className={css['c-timebar']}>
+        <div className={classnames(css['c-timebar-element'], css['c-timebar-datepicker'])}>
+          <DatePicker
+            selected={this.state.outerExtent[0]}
+            minDate={TIMELINE_TOTAL_DATE_EXTENT[0]}
+            maxDate={this.props.filters.timelineInnerExtent[0]}
+            onChange={this.onStartDatePickerChange}
+          />
+          Start Date
+        </div>
+        <div className={classnames(css['c-timebar-element'], css['c-timebar-datepicker'])}>
+          <DatePicker
+            selected={this.state.outerExtent[1]}
+            minDate={this.props.filters.timelineInnerExtent[1]}
+            maxDate={TIMELINE_TOTAL_DATE_EXTENT[1]}
+            onChange={this.onEndDatePickerChange}
+          />
+          End date
+        </div>
+        <div className={classnames(css['c-timebar-element'],css['c-timebar-playback'])}>
+          <TogglePauseButton
+            onToggle={this.onPauseToggle}
+            paused={this.state.paused}
+          />
+        </div>
+        <div
+          className={classnames(css['c-timebar-element'], css['c-timeline'])}
+          id="timeline_svg_container"
         />
-        <DatePicker
-          selected={this.state.outerExtent[1]}
-          minDate={this.props.filters.timelineInnerExtent[1]}
-          maxDate={TIMELINE_TOTAL_DATE_EXTENT[1]}
-          onChange={this.onEndDatePickerChange}
-        />
-        <TogglePauseButton
-          onToggle={this.onPauseToggle}
-          paused={this.state.paused}
-        />
-        <div id="timeline_svg_container" />
       </div>
     );
   }

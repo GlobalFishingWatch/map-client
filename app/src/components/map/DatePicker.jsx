@@ -18,6 +18,7 @@ class DatePicker extends Component {
   render() {
     return (
       <div>
+        {this.props.children}
         <ReactDatePicker
           selected={moment(this.props.selected)}
           minDate={moment(this.props.minDate)}
@@ -31,6 +32,7 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
   onChange: React.PropTypes.func,
+  children: React.PropTypes.object,
   /**
    * Current  date set (a Date object)
    */

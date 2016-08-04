@@ -451,7 +451,7 @@ class Map extends Component {
           <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map.timeline_container}>
+        <div className={map.timebar_container}>
           <Timeline />
         </div>
         <LayerPanel
