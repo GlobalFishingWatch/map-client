@@ -6,7 +6,10 @@ import {
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
   SET_TIMELINE_DATES,
-  GET_SERIESGROUP
+  GET_SERIESGROUP,
+  SHARE_MODAL_OPEN,
+  SET_WORKSPACE_ID,
+  DELETE_WORKSPACE_ID
 } from '../constants';
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 
@@ -192,5 +195,50 @@ export function getWorkspace(workspace) {
         }
       })
       .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
+  };
+}
+
+/**
+ * Open or close the share modal
+ *
+ * @export openShareModal
+ * @param {boolean} open - true to open, false to close
+ * @returns {object}
+ */
+export function openShareModal(open) {
+  return {
+    type: SHARE_MODAL_OPEN,
+    payload: open
+  };
+}
+
+/**
+ * Save the state of the map, the filters and the timeline and send it
+ * to the API. Get back the id of the workspace and save it in the store.
+ *
+ * @export saveWorkspace
+ * @returns {object}
+ */
+export function saveWorkspace() {
+  return (dispatch, getState) => {
+    setTimeout(() => {
+      // TODO: make the real request
+      dispatch({
+        type: SET_WORKSPACE_ID,
+        payload: 1
+      });
+    }, 1000);
+  };
+}
+
+/**
+ * Delete the workspace id from the store
+ *
+ * @export deleteWorkspace
+ * @returns {object}
+ */
+export function deleteWorkspace() {
+  return {
+    type: DELETE_WORKSPACE_ID
   };
 }

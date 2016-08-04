@@ -26,6 +26,10 @@ class Map extends Component {
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
       shareModalOpened: false
+      leftHandlerPosition: 0,
+      rightHandlerPosition: 0,
+      timeBarWidth: 0,
+      running: 'stop'
     };
 
     this.updateFilters = this.updateFilters.bind(this);
@@ -36,7 +40,6 @@ class Map extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
-    this.shareMap = this.shareMap.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
     this.propsToggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
   }
@@ -423,20 +426,6 @@ class Map extends Component {
   }
 
   /**
-   * Open the modal to share the map
-   */
-  shareMap() {
-    this.setState({ shareModalOpened: true });
-  }
-
-  /**
-   * Callback called when the share modal is closed
-   */
-  onShareModalClose() {
-    this.setState({ shareModalOpened: false });
-  }
-
-  /**
    * Handles clicks on the +/- buttons that manipulate the map zoom
    *
    * @param event
@@ -465,14 +454,14 @@ class Map extends Component {
    */
   render() {
     return (<div>
-      <Modal opened={this.state.shareModalOpened} close={() => this.onShareModalClose()}>
+      <Modal opened={this.props.shareModal.open} close={this.props.closeShareModal}>
         <Share />
       </Modal>
       <Header />
       <div className={map.map_container} ref="mapContainer">
 
         <div className={map.zoom_controls}>
-          <span id="share_map" onClick={this.shareMap}>S</span>
+          <span id="share_map" onClick={this.props.openShareModal}>S</span>
           <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
@@ -526,7 +515,19 @@ Map.propTypes = {
   updateFilters: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
-  map: React.PropTypes.object
+  map: React.PropTypes.object,
+  /**
+   * State of the share modal: { open, workspaceId }
+   */
+  shareModal: React.PropTypes.object,
+  /**
+   * Open the share modal
+   */
+  openShareModal: React.PropTypes.func,
+  /**
+   * Close the share modal
+   */
+  closeShareModal: React.PropTypes.func
 };
 
 export default Map;

@@ -3,19 +3,23 @@ import styles from '../../../styles/components/map/c-share.scss';
 
 class Share extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
-
   onCopy(e) {
     e.preventDefault();
     /* TODO */
   }
 
   render() {
+    if (!this.props.workspaceId) {
+      return (
+        <div className={styles['c-share']}>
+          <h2 className={styles.title}>Share this campaign</h2>
+          <p>
+            Saving your workspace...
+          </p>
+        </div>
+      );
+    }
+
     return (
       <div className={styles['c-share']}>
         <h2 className={styles.title}>Share this campaign</h2>
@@ -31,5 +35,12 @@ class Share extends Component {
   }
 
 }
+
+Share.propTypes = {
+  /**
+   * Id of the created workspace
+   */
+  workspaceId: React.PropTypes.number
+};
 
 export default Share;

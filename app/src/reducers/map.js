@@ -1,10 +1,3 @@
-const initialState = {
-  loading: false,
-  layers: [],
-  zoom: 3,
-  center: [0, 0],
-  vessel: null
-};
 import {
   VESSEL_INIT,
   SHOW_LOADING,
@@ -12,9 +5,32 @@ import {
   SET_LAYERS,
   GET_SERIESGROUP,
   SET_ZOOM,
-  SET_CENTER
+  SET_CENTER,
+  SHARE_MODAL_OPEN,
+  SET_WORKSPACE_ID,
+  DELETE_WORKSPACE_ID
 } from '../constants';
 
+const initialState = {
+  loading: false,
+  layers: [],
+  zoom: 3,
+  center: [0, 0],
+  vessel: null,
+  shareModal: {
+    open: false
+  },
+  workspaceId: null
+};
+
+/**
+ * Map reducer
+ *
+ * @export Map reducer
+ * @param {object} [state=initialState]
+ * @param {object} action
+ * @returns {object}
+ */
 export default function (state = initialState, action) {
   switch (action.type) {
     case VESSEL_INIT:
@@ -39,6 +55,16 @@ export default function (state = initialState, action) {
       }
       return Object.assign({}, state, { layers });
     }
+
+    case SHARE_MODAL_OPEN:
+      return Object.assign({}, state, { shareModal: { open: action.payload } });
+
+    case SET_WORKSPACE_ID:
+      return Object.assign({}, state, { workspaceId: action.payload });
+
+    case DELETE_WORKSPACE_ID:
+      return Object.assign({}, state, { workspaceId: null });
+
     default:
       return state;
   }
