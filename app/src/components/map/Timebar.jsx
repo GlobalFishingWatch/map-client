@@ -23,6 +23,8 @@ let dragging;
 let currentTimestamp;
 
 const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
+let innerBrushLeftCircle;
+let innerBrushRightCircle;
 
 class Timebar extends Component {
 
@@ -80,6 +82,8 @@ class Timebar extends Component {
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
     xAxis = d3.axisTop().scale(x);
+      // .tickFormat(1, d3.timeFormat("%B lala"));
+
     // define the way the timeline chart is going to be drawn
     area = d3.area()
       .x(d => x(d.date))
@@ -121,14 +125,21 @@ class Timebar extends Component {
       .attr('class', css['c-timeline-inner-brush'])
       .call(this.innerBrushFunc);
 
-    // mmove both brushes to initial position
-    this.outerBrushFunc.move(this.outerBrush, [0, width]);
-    this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
-
     // no need to keep brush overlays (the invisible interactive zone outside of the brush)
     this.outerBrush.select('.overlay').remove();
     this.outerBrush.select('.selection').attr('cursor', 'default');
+    this.outerBrush.selectAll('.selection').classed(css['c-timeline-outer-brush-selection'], true);
     this.innerBrush.select('.overlay').remove();
+    this.innerBrush.select('.selection').classed(css['c-timeline-inner-brush-selection'], true);
+    innerBrushLeftCircle = this.innerBrush.append('circle');
+    innerBrushRightCircle = this.innerBrush.append('circle');
+    this.innerBrush.selectAll('circle')
+      .attr('cy', height / 2)
+      .classed(css['c-timeline-outer-brush-circle'], true);
+
+    // move both brushes to initial position
+    this.outerBrushFunc.move(this.outerBrush, [0, width]);
+    this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
 
     // custom outer brush events
     this.outerBrush.selectAll('.handle').on('mousedown', () => {
@@ -220,8 +231,9 @@ class Timebar extends Component {
       .call(xAxis);
 
     // calculate new inner extent, using old inner extent on new x scale
-    currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
-    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    // currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
+    // this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    this.redrawInnerBrush(prevInnerTimeExtent);
 
     return newOuterTimeExtent;
   }
@@ -235,19 +247,31 @@ class Timebar extends Component {
     });
   }
 
+  onInnerBrushMoved() {
+    this.redrawInnerBrushCircles(d3.event.selection);
+  }
+
   redrawInnerBrush(newInnerExtent) {
     currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
     // prevent d3 from dispatching brush events that are not user -initiated
     this.disableInnerBrush();
     this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    this.redrawInnerBrushCircles(currentInnerPxExtent);
     this.enableInnerBrush();
   }
 
+  redrawInnerBrushCircles(newInnerPxExtent) {
+    innerBrushLeftCircle.attr('cx', newInnerPxExtent[0]);
+    innerBrushRightCircle.attr('cx', newInnerPxExtent[1]);
+  }
+
   disableInnerBrush() {
+    this.innerBrushFunc.on('brush', null);
     this.innerBrushFunc.on('end', null);
   }
 
   enableInnerBrush() {
+    this.innerBrushFunc.on('brush', this.onInnerBrushMoved.bind(this));
     this.innerBrushFunc.on('end', this.onInnerBrushed.bind(this));
   }
 
