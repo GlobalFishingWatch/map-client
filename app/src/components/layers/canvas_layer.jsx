@@ -16,8 +16,10 @@ class CanvasLayer {
     this.filters = filters;
     this.token = token;
     this.vesselLayerTransparency = vesselLayerTransparency;
-    this.frameStartDate = filters.startDate;
-    this.frameEndDate = filters.endDate;
+    this.outerStartDate = filters.startDate;
+    this.outerEndDate = filters.endDate;
+    this.innerStartDate = filters.startDate;
+    this.innerEndDate = filters.endDate;
     if (visible) {
       this.show();
     }
@@ -81,6 +83,8 @@ class CanvasLayer {
    */
   updateFilters(filters) {
     this.filters = filters;
+    this.outerStartDate = filters.startDate;
+    this.outerEndDate = filters.endDate;
     this.resetPlaybackData();
     this.refresh();
   }
@@ -116,39 +120,6 @@ class CanvasLayer {
 
     canvas.ctx = ctx;
     return canvas;
-  }
-
-  /**
-   * Given a series number, returns all matching points
-   * TODO: can probably be removed once the tracks are being drawn with the correct, detail data
-   *
-   * @param series
-   * @returns {Array}
-   */
-  getAllPositionsBySeries(series) {
-    const tiles = this.playbackData;
-    const positions = [];
-
-    const tileIds = Object.keys(tiles);
-    for (let tileIdIndex = 0; tileIdIndex < tileIds.length; tileIdIndex++) {
-      const tile = tiles[tileIds[tileIdIndex]];
-
-      const timestamps = Object.keys(tile);
-      for (let timestampIndex = 0; timestampIndex < timestamps.length; timestampIndex++) {
-        const frame = timestamps[timestamps[timestampIndex]];
-
-        for (let index = 0; index < frame.latitude.length; index++) {
-          if (frame.series[index] === series) {
-            positions.push({
-              lat: frame.latitude[index],
-              lng: frame.longitude[index]
-            });
-          }
-        }
-      }
-    }
-
-    return positions;
   }
 
   /**
@@ -203,8 +174,8 @@ class CanvasLayer {
    */
   drawTimeRange(start, end) {
     const canvasKeys = Object.keys(this.playbackData);
-    this.frameStartDate = CanvasLayer.getTimestampIndex(start);
-    this.frameEndDate = CanvasLayer.getTimestampIndex(end);
+    this.innerStartDate = CanvasLayer.getTimestampIndex(start);
+    this.innerEndDate = CanvasLayer.getTimestampIndex(end);
 
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
@@ -214,7 +185,7 @@ class CanvasLayer {
       }
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let timestamp = this.frameStartDate; timestamp < this.frameEndDate; timestamp += TIMELINE_STEP) {
+      for (let timestamp = this.innerStartDate; timestamp < this.innerEndDate; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
@@ -272,7 +243,7 @@ class CanvasLayer {
     const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      if (!this.passesFilters(vectorArray, index)) {
+      if (!this.passesFilters(vectorArray, index, true)) {
         continue;
       }
       this.drawVesselPoint(
@@ -292,14 +263,21 @@ class CanvasLayer {
    *
    * @param data
    * @param index
+   * @param useInnerDateFilter
    * @returns {boolean}
    */
-  passesFilters(data, index) {
+  passesFilters(data, index, useInnerDateFilter = false) {
     const filters = this.filters;
-    if (this.frameStartDate && data.datetime[index] < this.frameStartDate) {
+    if (!useInnerDateFilter && data.datetime[index] < this.outerStartDate) {
       return false;
     }
-    if (this.frameEndDate && data.datetime[index] > this.frameEndDate) {
+    if (!useInnerDateFilter && data.datetime[index] > this.outerEndDate) {
+      return false;
+    }
+    if (useInnerDateFilter && data.datetime[index] < this.innerStartDate) {
+      return false;
+    }
+    if (useInnerDateFilter && data.datetime[index] > this.innerEndDate) {
       return false;
     }
     if (!data.weight[index]) {
@@ -537,7 +515,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     const tileCoordinates = this.getTileCoordinates(coord, zoom);
     const promises = [];
     if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tileCoordinates, this.frameStartDate, this.frameEndDate);
+      const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
       }

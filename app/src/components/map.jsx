@@ -1,7 +1,7 @@
 /* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { TIMELINE_MIN_DATE, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
+import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import CanvasLayer from './layers/canvas_layer';
 import createTrackLayer from './layers/track_layer';
 import LayerPanel from './map/layer_panel';
@@ -22,7 +22,6 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
@@ -159,25 +158,9 @@ class Map extends Component {
       return;
     }
 
-    const newInnerExtent = nextProps.filters.timelineInnerExtent;
-    if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
-      // this.setState({ currentTimestamp: startDate });
-      // this.state.overlay.updateFilters(this.props.filters);
-      // paint track layer
-      // if (this.state.trackLayer) {
-      //   this.state.trackLayer.drawTile(
-      //     this.props.map.track.seriesGroupData,
-      //     this.props.map.track.selectedSeries,
-      //     this.props.filters,
-      //     this.state.currentTimestamp || this.props.filters.startDate
-      //   );
-      // }
-    } else {
-      this.updateLayersState(nextProps);
-      this.updateFiltersState(nextProps);
-      this.updateTrackLayer(nextProps);
-    }
+    this.updateLayersState(nextProps);
+    this.updateFiltersState(nextProps);
+    this.updateTrackLayer(nextProps);
   }
 
   updateTrackLayer(nextProps) {
@@ -203,20 +186,20 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
-    let currentTimestamp = this.state.currentTimestamp;
-
-    if (nextProps.filters.startDate > this.state.currentTimestamp) {
-      currentTimestamp = nextProps.filters.startDate;
-    }
-    if (nextProps.filters.endDate < this.state.currentTimestamp) {
-      currentTimestamp = nextProps.filters.endDate;
+    if (!this.state.overlay) {
+      return;
     }
 
-    if (currentTimestamp !== this.state.currentTimestamp) {
-      this.setState({ currentTimestamp });
+    const newInnerExtent = nextProps.filters.timelineInnerExtent;
+    if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
+      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
     }
 
-    if (this.state.overlay && this.props.filters !== nextProps.filters) {
+    if (
+      this.props.filters.startDate !== nextProps.filters.startDate
+      && this.props.filters.endDate !== nextProps.filters.endDate
+      && this.props.filters.flag !== nextProps.filters.flag
+    ) {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
         this.state.trackLayer.regenerate();
@@ -391,27 +374,8 @@ class Map extends Component {
    */
   updateFilters(target, value) {
     const filters = this.props.filters;
-    let filterValue = value;
 
-    if (target === 'startDate') {
-      filterValue = new Date(filterValue).getTime();
-      if (filterValue >= filters.endDate) {
-        return;
-      }
-      if (this.state.currentTimestamp < filterValue) {
-        this.setState({ currentTimestamp: filterValue });
-      }
-    } else if (target === 'endDate') {
-      filterValue = new Date(filterValue).getTime();
-      if (filterValue <= filters.startDate) {
-        return;
-      }
-      if (this.state.currentTimestamp > filterValue) {
-        this.setState({ currentTimestamp: filterValue });
-      }
-    }
-
-    filters[target] = filterValue;
+    filters[target] = value;
 
     this.props.updateFilters(filters);
     if (this.state.trackLayer) {
