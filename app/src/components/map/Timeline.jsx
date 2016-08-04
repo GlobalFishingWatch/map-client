@@ -1,3 +1,4 @@
+/* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { TIMELINE_TOTAL_DATE_EXTENT } from '../../constants';
@@ -38,7 +39,6 @@ class Timeline extends Component {
     super(props);
     this.onStartDatePickerChange = this.onStartDatePickerChange.bind(this);
     this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
-    this.onDatePickerChange = this.onDatePickerChange.bind(this);
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.state = {
       outerExtent: TIMELINE_TOTAL_DATE_EXTENT,
@@ -75,207 +75,6 @@ class Timeline extends Component {
     d3.select('body').on('mousemove', null);
     d3.select('body').on('mouseup', null);
     this.innerBrushFunc.on('end', null);
-  }
-
-  getDummyData() {
-    const dummyData = [];
-    const startDate = TIMELINE_TOTAL_DATE_EXTENT[0];
-    const endDate = TIMELINE_TOTAL_DATE_EXTENT[1];
-    for (let year = startDate.getFullYear(); year <= endDate.getFullYear(); year++) {
-      const startMonth = (year === startDate.getFullYear()) ? startDate.getMonth() : 0;
-      const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
-
-      for (let m = startMonth; m <= endMonth; m++) {
-        dummyData.push({
-          date: new Date(year, m, 1),
-          price: Math.random()
-        });
-      }
-    }
-    return dummyData;
-  }
-
-  setOuterExtent(outerExtentPx) {
-    const outerExtent = this.getNewOuterExtent(outerExtentPx);
-
-    this.setState({
-      outerExtent
-    });
-  }
-
-  // noinspection Eslint
-  onInnerBrushed() {
-    currentInnerPxExtent = d3.event.selection;
-    const innerExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
-
-    this.props.updateFilters({
-      timelineInnerExtent: innerExtent
-    });
-  }
-
-  getNewOuterExtent(newOuterPxExtent) {
-    // use the new x scale to compute new time values
-    // do not get out of total range for outer brush
-    const newOuterTimeLeft = x.invert(newOuterPxExtent[0]);
-    const newOuterTimeRight = x.invert(newOuterPxExtent[1]);
-    const isAfterStartDate = newOuterTimeLeft.getTime() > TIMELINE_TOTAL_DATE_EXTENT[0].getTime();
-    const isBeforeEndDate = newOuterTimeRight.getTime() < TIMELINE_TOTAL_DATE_EXTENT[1].getTime();
-    const newOuterTimeExtentLeft = isAfterStartDate ? newOuterTimeLeft : TIMELINE_TOTAL_DATE_EXTENT[0];
-    const newOuterTimeExtentRight = isBeforeEndDate ? newOuterTimeRight : TIMELINE_TOTAL_DATE_EXTENT[1];
-    return [newOuterTimeExtentLeft, newOuterTimeExtentRight];
-  }
-
-  getPlayStep(outerExtent) {
-    const outerExtentDelta = outerExtent[1].getTime() - outerExtent[0].getTime();
-    return outerExtentDelta / 5000000;
-  }
-
-  togglePause(pause) {
-    if (!pause) {
-      this.startTick();
-    }
-  }
-
-  redrawInnerBrush(newInnerExtent) {
-    currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
-    // prevent d3 from dispatching brush events that are not user -initiated
-    this.disableInnerBrush();
-    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
-    this.enableInnerBrush();
-  }
-
-  resetOuterBrush() {
-    currentOuterPxExtent = [0, width];
-    this.outerBrush.select('.selection').attr('width', width).attr('x', 0);
-  }
-
-  redrawOuterBrush(newOuterPxExtent) {
-    // grab inner time extent before changing x scale
-    const prevInnerTimeExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
-
-    const newOuterTimeExtent = this.getNewOuterExtent(newOuterPxExtent);
-    x.domain(newOuterTimeExtent);
-
-    // redraw components
-    this.group.select(`.${css['c-timeline-area']}`).attr('d', area);
-    this.group.select(`.${css['c-timeline-x-axis']}`).call(xAxis);
-
-    // calculate new inner extent, using old inner extent on new x scale
-    currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
-    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
-
-    return newOuterTimeExtent;
-  }
-
-  isZoomingIn(outerExtentPx) {
-    return outerExtentPx[0] >= 0 && outerExtentPx[1] <= width;
-  }
-
-  zoomIn(outerExtentPx) {
-    const extent = outerExtentPx;
-    // do not go within the inner brush
-    extent[0] = Math.min(currentInnerPxExtent[0] - innerOuterMarginPx, outerExtentPx[0]);
-    extent[1] = Math.max(currentInnerPxExtent[1] + innerOuterMarginPx, outerExtentPx[1]);
-
-    // move outer brush selection rect -- normally done by d3.brush by default,
-    // but we disabled all brush events
-    this.outerBrush.select('.selection').attr('x', extent[0]);
-    this.outerBrush.select('.selection').attr('width', extent[1] - extent[0]);
-  }
-
-  zoomOut(outerExtentPx, deltaTick) {
-    // get prev offset
-    const extent = [outerExtentPx[0], outerExtentPx[1]];
-
-    // get delta
-    let deltaOffset = (currentHandleIsWest) ? outerExtentPx[0] : outerExtentPx[1] - width;
-    deltaOffset *= deltaOffset * deltaTick * 0.000001;
-
-    if (currentHandleIsWest) {
-      extent[0] = -deltaOffset;
-    } else {
-      extent[1] = width + deltaOffset;
-    }
-
-    this.setOuterExtent(extent);
-  }
-
-  startTick() {
-    window.requestAnimationFrame(this.onTick.bind(this));
-  }
-
-  disableInnerBrush() {
-    this.innerBrushFunc.on('end', null);
-  }
-
-  enableInnerBrush() {
-    this.innerBrushFunc.on('end', this.onInnerBrushed.bind(this));
-  }
-
-  onStartDatePickerChange(startDate) {
-    this.setState({
-      outerExtent: [startDate, this.state.outerExtent[1]]
-    });
-  }
-
-  onTick(timestamp) {
-    if (!currentTimestamp) {
-      currentTimestamp = timestamp;
-    }
-    const deltaTick = timestamp - currentTimestamp;
-
-    if (!this.state.paused) {
-      this.playStep(deltaTick);
-    }
-
-    if (dragging) {
-      const outerExtentPx = currentOuterPxExtent;
-
-      if (this.isZoomingIn(outerExtentPx)) {
-        this.zoomIn(outerExtentPx);
-      } else {
-        this.zoomOut(outerExtentPx, deltaTick);
-      }
-    }
-
-    if (dragging || !this.state.paused) {
-      window.requestAnimationFrame(this.onTick.bind(this));
-    }
-  }
-
-  playStep(deltaTick) {
-    // compute new basePlayStep (used for playback), because we want it to depend on the zoom levels
-    const playStep = this.getPlayStep(this.state.outerExtent) * deltaTick;
-    // console.log(playStep);
-    const previousInnerExtent = this.props.filters.timelineInnerExtent;
-    let offsetedInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + playStep));
-    let offsetedOuterExtent = this.state.outerExtent.map(d => new Date(d.getTime() + playStep));
-    const endOfTime = TIMELINE_TOTAL_DATE_EXTENT[1];
-    const isAtEndOfTime = x(offsetedInnerExtent[1]) >= x(endOfTime);
-
-
-    // if we're at the end of time, just stop playing
-    if (isAtEndOfTime) {
-      const innerExtentDelta = offsetedInnerExtent[1].getTime() - offsetedInnerExtent[0].getTime();
-      const outerExtentDelta = offsetedOuterExtent[1].getTime() - offsetedOuterExtent[0].getTime();
-      offsetedInnerExtent = [new Date(endOfTime.getTime() - innerExtentDelta), endOfTime];
-      offsetedOuterExtent = [new Date(endOfTime.getTime() - outerExtentDelta), endOfTime];
-      this.setState({
-        paused: true,
-        outerExtent: offsetedOuterExtent
-      });
-    }
-
-    this.props.updateFilters({
-      timelineInnerExtent: offsetedInnerExtent
-    });
-
-    // if inner extent gets closer to outer extent right, also offset the outer extent to make the inner extent fit
-    if (!isAtEndOfTime && x(offsetedInnerExtent[1]) + innerOuterMarginPx > x(this.state.outerExtent[1])) {
-      this.setState({
-        outerExtent: offsetedOuterExtent
-      });
-    }
   }
 
   build() {
@@ -357,9 +156,203 @@ class Timeline extends Component {
     this.enableInnerBrush();
   }
 
-  onDatePickerChange(outerExtent) {
+  getDummyData() {
+    const dummyData = [];
+    const startDate = TIMELINE_TOTAL_DATE_EXTENT[0];
+    const endDate = TIMELINE_TOTAL_DATE_EXTENT[1];
+    for (let year = startDate.getFullYear(); year <= endDate.getFullYear(); year++) {
+      const startMonth = (year === startDate.getFullYear()) ? startDate.getMonth() : 0;
+      const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
+
+      for (let m = startMonth; m <= endMonth; m++) {
+        dummyData.push({
+          date: new Date(year, m, 1),
+          price: Math.random()
+        });
+      }
+    }
+    return dummyData;
+  }
+
+  setOuterExtent(outerExtentPx) {
+    const outerExtent = this.getNewOuterExtent(outerExtentPx);
+
     this.setState({
       outerExtent
+    });
+  }
+
+  getNewOuterExtent(newOuterPxExtent) {
+    // use the new x scale to compute new time values
+    // do not get out of total range for outer brush
+    const newOuterTimeLeft = x.invert(newOuterPxExtent[0]);
+    const newOuterTimeRight = x.invert(newOuterPxExtent[1]);
+    const isAfterStartDate = newOuterTimeLeft.getTime() > TIMELINE_TOTAL_DATE_EXTENT[0].getTime();
+    const isBeforeEndDate = newOuterTimeRight.getTime() < TIMELINE_TOTAL_DATE_EXTENT[1].getTime();
+    const newOuterTimeExtentLeft = isAfterStartDate ? newOuterTimeLeft : TIMELINE_TOTAL_DATE_EXTENT[0];
+    const newOuterTimeExtentRight = isBeforeEndDate ? newOuterTimeRight : TIMELINE_TOTAL_DATE_EXTENT[1];
+    return [newOuterTimeExtentLeft, newOuterTimeExtentRight];
+  }
+
+  resetOuterBrush() {
+    currentOuterPxExtent = [0, width];
+    this.outerBrush.select('.selection').attr('width', width).attr('x', 0);
+  }
+
+  redrawOuterBrush(newOuterPxExtent) {
+    // grab inner time extent before changing x scale
+    const prevInnerTimeExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
+
+    const newOuterTimeExtent = this.getNewOuterExtent(newOuterPxExtent);
+    x.domain(newOuterTimeExtent);
+
+    // redraw components
+    this.group.select(`.${css['c-timeline-area']}`).attr('d', area);
+    this.group.select(`.${css['c-timeline-x-axis']}`).call(xAxis);
+
+    // calculate new inner extent, using old inner extent on new x scale
+    currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
+    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+
+    return newOuterTimeExtent;
+  }
+
+  onInnerBrushed() {
+    currentInnerPxExtent = d3.event.selection;
+    const innerExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
+
+    this.props.updateFilters({
+      timelineInnerExtent: innerExtent
+    });
+  }
+
+  redrawInnerBrush(newInnerExtent) {
+    currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
+    // prevent d3 from dispatching brush events that are not user -initiated
+    this.disableInnerBrush();
+    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
+    this.enableInnerBrush();
+  }
+
+  disableInnerBrush() {
+    this.innerBrushFunc.on('end', null);
+  }
+
+  enableInnerBrush() {
+    this.innerBrushFunc.on('end', this.onInnerBrushed.bind(this));
+  }
+
+  isZoomingIn(outerExtentPx) {
+    return outerExtentPx[0] >= 0 && outerExtentPx[1] <= width;
+  }
+
+  zoomIn(outerExtentPx) {
+    const extent = outerExtentPx;
+    // do not go within the inner brush
+    extent[0] = Math.min(currentInnerPxExtent[0] - innerOuterMarginPx, outerExtentPx[0]);
+    extent[1] = Math.max(currentInnerPxExtent[1] + innerOuterMarginPx, outerExtentPx[1]);
+
+    // move outer brush selection rect -- normally done by d3.brush by default,
+    // but we disabled all brush events
+    this.outerBrush.select('.selection').attr('x', extent[0]);
+    this.outerBrush.select('.selection').attr('width', extent[1] - extent[0]);
+  }
+
+  zoomOut(outerExtentPx, deltaTick) {
+    // get prev offset
+    const extent = [outerExtentPx[0], outerExtentPx[1]];
+
+    // get delta
+    let deltaOffset = (currentHandleIsWest) ? outerExtentPx[0] : outerExtentPx[1] - width;
+    deltaOffset *= deltaOffset * deltaTick * 0.000001;
+
+    if (currentHandleIsWest) {
+      extent[0] = -deltaOffset;
+    } else {
+      extent[1] = width + deltaOffset;
+    }
+
+    this.setOuterExtent(extent);
+  }
+
+  startTick() {
+    window.requestAnimationFrame(this.onTick.bind(this));
+  }
+
+  onTick(timestamp) {
+    if (!currentTimestamp) {
+      currentTimestamp = timestamp;
+    }
+    const deltaTick = timestamp - currentTimestamp;
+
+    if (!this.state.paused) {
+      this.playStep(deltaTick);
+    }
+
+    if (dragging) {
+      const outerExtentPx = currentOuterPxExtent;
+
+      if (this.isZoomingIn(outerExtentPx)) {
+        this.zoomIn(outerExtentPx);
+      } else {
+        this.zoomOut(outerExtentPx, deltaTick);
+      }
+    }
+
+    if (dragging || !this.state.paused) {
+      window.requestAnimationFrame(this.onTick.bind(this));
+    }
+  }
+
+  getPlayStep(outerExtent) {
+    const outerExtentDelta = outerExtent[1].getTime() - outerExtent[0].getTime();
+    return outerExtentDelta / 5000000;
+  }
+
+  togglePause(pause) {
+    if (!pause) {
+      this.startTick();
+    }
+  }
+
+  playStep(deltaTick) {
+    // compute new basePlayStep (used for playback), because we want it to depend on the zoom levels
+    const playStep = this.getPlayStep(this.state.outerExtent) * deltaTick;
+    // console.log(playStep);
+    const previousInnerExtent = this.props.filters.timelineInnerExtent;
+    let offsetedInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + playStep));
+    let offsetedOuterExtent = this.state.outerExtent.map(d => new Date(d.getTime() + playStep));
+    const endOfTime = TIMELINE_TOTAL_DATE_EXTENT[1];
+    const isAtEndOfTime = x(offsetedInnerExtent[1]) >= x(endOfTime);
+
+
+    // if we're at the end of time, just stop playing
+    if (isAtEndOfTime) {
+      const innerExtentDelta = offsetedInnerExtent[1].getTime() - offsetedInnerExtent[0].getTime();
+      const outerExtentDelta = offsetedOuterExtent[1].getTime() - offsetedOuterExtent[0].getTime();
+      offsetedInnerExtent = [new Date(endOfTime.getTime() - innerExtentDelta), endOfTime];
+      offsetedOuterExtent = [new Date(endOfTime.getTime() - outerExtentDelta), endOfTime];
+      this.setState({
+        paused: true,
+        outerExtent: offsetedOuterExtent
+      });
+    }
+
+    this.props.updateFilters({
+      timelineInnerExtent: offsetedInnerExtent
+    });
+
+    // if inner extent gets closer to outer extent right, also offset the outer extent to make the inner extent fit
+    if (!isAtEndOfTime && x(offsetedInnerExtent[1]) + innerOuterMarginPx > x(this.state.outerExtent[1])) {
+      this.setState({
+        outerExtent: offsetedOuterExtent
+      });
+    }
+  }
+
+  onStartDatePickerChange(startDate) {
+    this.setState({
+      outerExtent: [startDate, this.state.outerExtent[1]]
     });
   }
 
