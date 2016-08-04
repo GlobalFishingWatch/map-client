@@ -170,10 +170,12 @@ class Timebar extends Component {
       const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
 
       for (let m = startMonth; m <= endMonth; m++) {
-        dummyData.push({
-          date: new Date(year, m, 1),
-          price: Math.random()
-        });
+        for (let d = 2; d <= 28; d += 4) {
+          dummyData.push({
+            date: new Date(year, m, d),
+            price: Math.random()
+          });
+        }
       }
     }
     return dummyData;
