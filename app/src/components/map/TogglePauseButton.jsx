@@ -12,11 +12,9 @@ class TogglePauseButton extends Component {
 
   render() {
     return (
-      <div>
-        <button onClick={this.onToggle}>
-          {this.props.paused ? '►' : '||'}
-        </button>
-      </div>
+      <button onClick={this.onToggle}>
+        {this.props.paused ? '►' : '❚❚'}
+      </button>
     );
   }
 }

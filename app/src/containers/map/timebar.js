@@ -8,7 +8,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateFilters: filters => {
-    // console.log('t:mapDispatchToProps', filters)
     dispatch(updateFilters(filters));
   }
 });

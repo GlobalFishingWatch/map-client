@@ -17,5 +17,18 @@
   .c-timebar-playback {
     text-align: center;
     width: 100px;
+
+    button {
+      background: none;
+      border: 0;
+      color: $color-3;
+      height: 100%;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
   }
 }

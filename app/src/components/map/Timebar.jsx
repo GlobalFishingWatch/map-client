@@ -410,8 +410,9 @@ class Timebar extends Component {
             minDate={TIMELINE_TOTAL_DATE_EXTENT[0]}
             maxDate={this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
-          />
-          Start Date
+          >
+            Start<br />Date
+          </DatePicker>
         </div>
         <div className={classnames(css['c-timebar-element'], css['c-timebar-datepicker'])}>
           <DatePicker
@@ -419,8 +420,9 @@ class Timebar extends Component {
             minDate={this.props.filters.timelineInnerExtent[1]}
             maxDate={TIMELINE_TOTAL_DATE_EXTENT[1]}
             onChange={this.onEndDatePickerChange}
-          />
-          End date
+          >
+            End<br />date
+          </DatePicker>
         </div>
         <div className={classnames(css['c-timebar-element'], css['c-timebar-playback'])}>
           <TogglePauseButton

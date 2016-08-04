@@ -17,9 +17,12 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <div>
-        {this.props.children}
+      <div className="c-datepicker">
+        <div className="c-datepicker-title">
+          {this.props.children}
+        </div>
         <ReactDatePicker
+          fixedHeight
           selected={moment(this.props.selected)}
           minDate={moment(this.props.minDate)}
           maxDate={moment(this.props.maxDate)}
