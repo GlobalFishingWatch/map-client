@@ -13,9 +13,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(login());
   },
   logout: () => {
-    const queryParams = location.query.workspace;
+    const queryParams = location.query;
+    const workspace = queryParams ? queryParams.workspace : null;
     dispatch(logout());
-    dispatch(getWorkspace(queryParams.workspace));
+    dispatch(getWorkspace(workspace));
   },
   setVisibleMenu: (visible) => {
     dispatch(setVisibleMenu(visible));
