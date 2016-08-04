@@ -18,7 +18,6 @@ class LayerPanel extends Component {
     this.fakeSearchResults = this.fakeSearchResults.bind(this);
     this.toggleVisibleAdvancedSearch = this.toggleVisibleAdvancedSearch.bind(this);
     this.onFilterChange = this.props.onFilterChange.bind(this);
-    this.onTimeStepChange = this.props.onTimeStepChange.bind(this);
     this.onDrawDensityChange = this.props.onDrawDensityChange.bind(this);
   }
 
@@ -142,7 +141,6 @@ class LayerPanel extends Component {
       >
         <div className={layerPanel.content_accordion}>
           <ControlPanel
-            onTimeStepChange={this.onTimeStepChange}
             onDrawDensityChange={this.onDrawDensityChange}
             startDate={this.props.startDate} endDate={this.props.endDate}
           />
@@ -167,7 +165,6 @@ LayerPanel.propTypes = {
   startDate: React.PropTypes.number,
   endDate: React.PropTypes.number,
   onLayerToggle: React.PropTypes.func,
-  onTimeStepChange: React.PropTypes.func,
   onDrawDensityChange: React.PropTypes.func,
   onFilterChange: React.PropTypes.func
 };

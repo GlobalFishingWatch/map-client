@@ -1,7 +1,7 @@
+/* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { TIMELINE_MIN_DATE, TIMELINE_STEP, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
-import Draggable from 'react-draggable';
+import { TIMELINE_MIN_DATE, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import CanvasLayer from './layers/canvas_layer';
 import createTrackLayer from './layers/track_layer';
 import LayerPanel from './map/layer_panel';
@@ -24,20 +24,12 @@ class Map extends Component {
       addedLayers: [],
       currentTimestamp: TIMELINE_MIN_DATE,
       lastCenter: null,
-      playbackRange: 1,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
-      leftHandlerPosition: 0,
-      rightHandlerPosition: 0,
-      timeBarWidth: 0,
-      running: 'stop',
       shareModalOpened: false
     };
 
-    this.playbackStop = this.playbackStop.bind(this);
-    this.playbackStart = this.playbackStart.bind(this);
     this.updateFilters = this.updateFilters.bind(this);
-    this.updatePlaybackRange = this.updatePlaybackRange.bind(this);
     this.updateVesselLayerDensity = this.updateVesselLayerDensity.bind(this);
     this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -74,140 +66,15 @@ class Map extends Component {
   }
 
   /**
-   * Handles drag+drop of the time slider handles
-   * TODO: review
-   *
-   * @param tick
-   */
-  handlerMoved(tick) {
-    let target = null;
-    let startDate = this.props.filters.startDate;
-    let endDate = this.props.filters.endDate;
-
-    const timelineScope = document.getElementById('timeline_handler').parentElement;
-    const absMaxMoment = new Date(endDate).getTime() - new Date(startDate).getTime();
-    if (tick === 1) {
-      target = document.getElementById('dateHandlerLeft');
-    } else {
-      target = document.getElementById('dateHandlerRight');
-    }
-    const percentage = ((target.getBoundingClientRect().left - timelineScope.getBoundingClientRect().left) * 100) / timelineScope.offsetWidth;
-
-    if (target.id === 'dateHandlerLeft') {
-      startDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
-
-      // UPDATE VISIBLE TIMESTAMP
-      timelineScope.childNodes[0].style.left = (target.getBoundingClientRect().left - target.parentElement.getBoundingClientRect().left - 15) + 'px';
-      timelineScope.childNodes[0].style.width = (document.getElementById('dateHandlerRight').getBoundingClientRect().left - target.getBoundingClientRect().left) + 'px';
-    } else if (target.id === 'dateHandlerRight') {
-      endDate = (percentage * absMaxMoment) / 100 + new Date(startDate).getTime();
-      // UPDATE VISIBLE TIMESTAMP
-      timelineScope.childNodes[0].style.width = (target.getBoundingClientRect().left - document.getElementById('dateHandlerLeft').getBoundingClientRect().left) + 'px';
-    }
-    // UPDATE DATES
-    this.setState({ currentTimestamp: startDate });
-    this.state.overlay.updateFilters(this.props.filters);
-    document.getElementById('mindate').value = new Date(startDate).toISOString().slice(0, 10);
-    document.getElementById('maxdate').value = new Date(endDate).toISOString().slice(0, 10);
-  }
-
-  /**
-   * Executed when the user presses the "Play" button
-   */
-  playbackStart() {
-    if (this.state.running === 'play') {
-      this.setState({ running: 'pause' });
-    } else {
-      this.setState({ running: 'play' });
-    }
-
-    requestAnimationFrame(function () {
-      this.drawVesselFrame(this.state.currentTimestamp || this.props.filters.startDate);
-    }.bind(this));
-  }
-
-  /**
-   * Draws a single frame during playback mode
-   * Each frame may represent multiple days of data
-   * Recursively calls itself to animate the following frames
-   *
-   * Handles time slider animation
-   * Calculates initial and final vessel timestamp, and calls vessel layer rendering.
-   *
-   * @param initialTimestamp Initial timestamp to be drawn
-   * @param playbackRange
-   */
-  drawVesselFrame(initialTimestamp, playbackRange) {
-    if (this.state.running === 'stop') {
-      return;
-    }
-    if (!this.state.overlay) {
-      return;
-    }
-
-    initialTimestamp = initialTimestamp || 0;
-
-    playbackRange = playbackRange || this.state.playbackRange;
-    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
-    const endDate = this.props.filters.endDate;
-
-    if (finalTimestamp > endDate) {
-      this.setState({ running: 'stop' });
-      this.playbackStop();
-      return;
-    }
-
-    this.updatePlaybackBar(this.props.filters.startDate, this.props.filters.endDate, initialTimestamp, playbackRange);
-    this.state.overlay.drawTimeRange(initialTimestamp, finalTimestamp);
-
-    // paint track layer
-    if (this.state.trackLayer) {
-      this.state.trackLayer.drawTile(
-        this.props.map.track.seriesGroupData,
-        this.props.map.track.selectedSeries,
-        this.props.filters,
-        this.state.currentTimestamp || this.props.filters.startDate
-      );
-    }
-
-    const animationID = requestAnimationFrame((() => {
-      if (this.state.running === 'play') {
-        this.drawVesselFrame(initialTimestamp + TIMELINE_STEP);
-      }
-    }).bind(this));
-    this.setState({ animationID, currentTimestamp: initialTimestamp });
-  }
-
-  /**
-   * Handles playback stop
-   * Called when playback ends or user interrupts it using the "Stop" button
-   */
-  playbackStop() {
-    const filters = this.props.filters;
-    cancelAnimationFrame(this.state.animationID);
-
-    this.state.overlay.updateFilters(filters);
-    this.state.overlay.drawTimeRange(filters.startDate, filters.endDate);
-
-    this.setState({ running: 'stop', currentTimestamp: filters.startDate });
-
-    this.updatePlaybackBar(filters.startDate, filters.endDate, filters.startDate, this.state.playbackRange);
-
-    if (this.state.trackLayer) {
-      this.state.trackLayer.drawTile(this.props.map.track.seriesGroupData, this.props.map.track.selectedSeries, this.props.filters);
-    }
-  }
-
-  /**
    * Called once additional vessel details are loaded
    * TODO: should probably be moved elsewhere
    *
    * @param data Data returned by the API
    */
-  handleAdditionalVesselDetails(data) {
+  handleAdditionalVesselDetails(incomingData) {
     const currentVesselInfo = this.state.currentVesselInfo;
 
-    data = JSON.parse(data.target.response);
+    const data = JSON.parse(incomingData.target.response);
     currentVesselInfo.callsign = data.callsign;
     currentVesselInfo.flag = data.flag;
     currentVesselInfo.imo = data.imo;
@@ -295,6 +162,17 @@ class Map extends Component {
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
       this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
+      // this.setState({ currentTimestamp: startDate });
+      // this.state.overlay.updateFilters(this.props.filters);
+      // paint track layer
+      // if (this.state.trackLayer) {
+      //   this.state.trackLayer.drawTile(
+      //     this.props.map.track.seriesGroupData,
+      //     this.props.map.track.selectedSeries,
+      //     this.props.filters,
+      //     this.state.currentTimestamp || this.props.filters.startDate
+      //   );
+      // }
     } else {
       this.updateLayersState(nextProps);
       this.updateFiltersState(nextProps);
@@ -392,7 +270,7 @@ class Map extends Component {
         callAddVesselLayer();
       }
       this.setState({ addedLayers });
-    }).bind(this));
+    }));
   }
 
   /**
@@ -401,8 +279,12 @@ class Map extends Component {
    * @param layerSettings
    */
   addVesselLayer(layerSettings) {
-    console.log('addVesselLayer')
-    const canvasLayer = new CanvasLayer(layerSettings.zIndex, this.map, this.props.token, this.props.filters, this.state.vesselLayerTransparency, layerSettings.visible);
+    const canvasLayer = new CanvasLayer(layerSettings.zIndex,
+      this.map,
+      this.props.token,
+      this.props.filters,
+      this.state.vesselLayerTransparency,
+      layerSettings.visible);
     this.setState({ overlay: canvasLayer });
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
@@ -423,7 +305,7 @@ class Map extends Component {
           addedLayers[layer.title] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
-    }).bind(this));
+    }));
     return promise;
   }
 
@@ -545,35 +427,6 @@ class Map extends Component {
   }
 
   /**
-   * Handles changes to the playback range
-   *
-   * @param playbackRange
-   */
-  updatePlaybackRange(playbackRange) {
-    this.setState({ playbackRange });
-
-    if (this.state.running === 'pause') {
-      this.drawVesselFrame(this.state.currentTimestamp, playbackRange);
-    }
-
-    this.updatePlaybackBar(this.props.filters.startDate, this.props.filters.endDate, this.state.currentTimestamp, playbackRange);
-  }
-
-  updatePlaybackBar(startDate, endDate, initialTimestamp, playbackRange) {
-    const finalTimestamp = initialTimestamp + (TIMELINE_STEP * playbackRange);
-
-    const leftHandlerPosition = (initialTimestamp - startDate) / (endDate - startDate) * 100;
-    const timeBarWidth = ((TIMELINE_STEP * playbackRange)) / (endDate - startDate) * 100;
-    const rightHandlerPosition = (finalTimestamp - startDate) / (endDate - startDate) * 100;
-
-    this.setState({
-      leftHandlerPosition: `${leftHandlerPosition}%`,
-      rightHandlerPosition: `${rightHandlerPosition}%`,
-      timeBarWidth: `${timeBarWidth}%`
-    });
-  }
-
-  /**
    * Handles changes
    *
    * @param vesselLayerTransparency
@@ -641,89 +494,13 @@ class Map extends Component {
           <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map.timeline2_container}>
-          <Timeline />
-        </div>
         <div className={map.timeline_container}>
-          <div className={map.time_controls}>
-            <button onClick={this.playbackStart} className={map.timeline}>
-              {this.state.running !== 'play'
-                ? 'Play ►'
-                : 'Pause ||'}
-            </button>
-            <button onClick={this.playbackStop} className={map.timelineStop}>Stop</button>
-          </div>
-          <div className={map.date_inputs}>
-            <label htmlFor="mindate">
-              Start date
-              <input
-                type="date"
-                id="mindate"
-                value={new Date(this.props.filters.startDate).toISOString().slice(0, 10)}
-                onChange={(e) => this.updateFilters('startDate', e.currentTarget.value)}
-              />
-            </label>
-            <label htmlFor="maxdate">
-              End date
-              <input
-                type="date"
-                id="maxdate"
-                value={new Date(this.props.filters.endDate).toISOString().slice(0, 10)}
-                onChange={(e) => this.updateFilters('endDate', e.currentTarget.value)}
-              />
-            </label>
-          </div>
-
-          <div className={map.range_container}>
-            <Draggable axis="x" zIndex={100} onStop={this.handlerMoved.bind(this, 1)}>
-              <span
-                className={map.handler_grab}
-                id="dateHandlerLeft"
-                style={{
-                  left: this.state.leftHandlerPosition
-                }}
-              >
-                <i />
-              </span>
-            </Draggable>
-            <span
-              className={map.tooltip}
-              id="timeline_tooltip"
-              style={{ left: this.state.rightHandlerPosition }}
-            >
-            {new Date(this.state.currentTimestamp).toISOString().slice(0, 10)}
-            </span>
-
-            <Draggable
-              axis="x"
-              zIndex={100}
-              onStop={this.handlerMoved.bind(this, 2)}
-            >
-              <span
-                className={[map.handler_grab, map.right].join(' ')}
-                id="dateHandlerRight"
-                style={{ left: this.state.rightHandlerPosition }}
-              >
-                <i />
-              </span>
-            </Draggable>
-            <span className={map.timeline_range}>
-              <span
-                className={map.handle}
-                id="timeline_handler"
-                style={{
-                  left: this.state.leftHandlerPosition,
-                  width: this.state.timeBarWidth
-                }}
-              />
-            </span>
-          </div>
+          <Timeline />
         </div>
         <LayerPanel
           layers={this.props.map.layers}
           onLayerToggle={this.toggleLayerVisibility}
           onFilterChange={this.updateFilters}
-          onTimeStepChange={this.updatePlaybackRange}
           onDrawDensityChange={this.updateVesselLayerDensity}
           startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}
         />

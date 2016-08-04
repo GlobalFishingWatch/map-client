@@ -11,8 +11,6 @@ $corporateColor: #233e76;
   z-index: 5;
 }
 
-.timeline,
-.timelineStop,
 .loginButton,
 .loggedUser {
   position: absolute !important;
@@ -48,129 +46,15 @@ $corporateColor: #233e76;
 
 .timeline_container {
   background-color: #021437;
-  height: 130px;
+  height: 250px;
   position: absolute;
   bottom: 0px;
+  left: 0px;
   width: 100%;
   z-index: 6;
-}
-
-.time_controls {
-  position: absolute !important;
-  button {
-    width: 50px;
-    left: 200px;
-    height: 40px;
-  }
-}
-
-.timeline {
-  top: 18px;
-}
-
-.timelineStop {
-  top: 61px;
-}
-
-.date_inputs {
-  position: absolute !important;
-  bottom: 50px;
-  left: 5px;
-  z-index: 10;
-  background-color: transparent;
-  label {
-    display: inline-block;
-    width: 95px;
-    text-align: center;
-    color: white;
-    font-size: 13px;
-    text-transform: uppercase;
-  }
-  input {
-    width: 111px;
-    font-size: 11px;
-    border: none;
-    position: relative;
-    background-color: transparent;
-    left: 17px;
-  }
-}
-
-.range_container {
-  position: absolute;
-  bottom: 35px;
-  left: 235px;
-  background: rgba(211, 211, 211, 0.6);
-  height: 70px;
-  width: 75%;
-  z-index: 6;
-  margin: 0 45px;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  box-sizing: border-box;
-  .timeline_range {
-    width: 100%;
-    background: $color9;
-    height: 3px;
-    .handle {
-      background: $color5;
-      width: 100%;
-      height: 70px;
-      display: block;
-      position: relative;
-      top: -35px;
-      opacity: 0.2;
-      left: 0px;
-      z-index: 0;
-    }
-  }
-  .tooltip {
-    background-color: $color9;
-    font-family: sans-serif;
-    font-size: 14px;
-    width: 75px;
-    position: absolute;
-    top: 1px;
-    transform: translate(-50%, -60%);
-    z-index: 1;
-  }
-  .handler_grab {
-    height: 100%;
-    width: 2px;
-    background: $color9;
-    cursor: e-resize;
-    position: relative;
-    left: 0;
-    z-index: 1;
-    &.right {
-      left: 100%;
-      cursor: w-resize;
-    }
-    i {
-      height: 10px;
-      width: 10px;
-      border-radius: 50%;
-      border: 1px solid $color9;
-      background-color: $color4;
-      position: absolute;
-      top: calc(50% - 5px);
-      left: -5px;
-    }
-  }
 }
 
 .map_container {
   height: calc(100% - 140px);;
   position: relative;
-}
-
-.timeline2_container {
-  position: absolute;
-  bottom: 200px;
-  left: 0px;
-  width: 800px;
-  height: 200px;
-  background: #000;
-  z-index: 6;
 }
