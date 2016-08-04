@@ -199,8 +199,8 @@ class Map extends Component {
 
     if (
       this.props.filters.startDate !== nextProps.filters.startDate
-      && this.props.filters.endDate !== nextProps.filters.endDate
-      && this.props.filters.flag !== nextProps.filters.flag
+      || this.props.filters.endDate !== nextProps.filters.endDate
+      || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
@@ -375,7 +375,7 @@ class Map extends Component {
    * @param value New value of the filter
    */
   updateFilters(target, value) {
-    const filters = this.props.filters;
+    const filters = Object.assign({}, this.props.filters);
 
     filters[target] = value;
 
