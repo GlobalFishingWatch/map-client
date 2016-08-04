@@ -54,7 +54,10 @@ class Timebar extends Component {
     if (extentChanged(this.state.outerExtent, nextState.outerExtent)) {
       // redraw
       const newOuterPxExtent = [x(nextState.outerExtent[0]), x(nextState.outerExtent[1])];
-      this.redrawOuterBrush(newOuterPxExtent);
+      const isLargerThanBefore =
+        newOuterPxExtent[0] < x(this.state.outerExtent[0]) ||
+        newOuterPxExtent[1] > x(this.state.outerExtent[1]);
+      this.redrawOuterBrush(newOuterPxExtent, isLargerThanBefore);
     }
     if (this.state.paused !== nextState.paused) {
       this.togglePause(nextState.paused);
@@ -201,7 +204,7 @@ class Timebar extends Component {
     this.outerBrush.select('.selection').attr('width', width).attr('x', 0);
   }
 
-  redrawOuterBrush(newOuterPxExtent) {
+  redrawOuterBrush(newOuterPxExtent, isLargerThanBefore) {
     // grab inner time extent before changing x scale
     const prevInnerTimeExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
 
@@ -209,8 +212,10 @@ class Timebar extends Component {
     x.domain(newOuterTimeExtent);
 
     // redraw components
-    this.group.select(`.${css['c-timeline-area']}`).attr('d', area);
-    this.group.select(`.${css['c-timeline-x-axis']}`).call(xAxis);
+    this.group.select(`.${css['c-timeline-area']}`).transition().duration(isLargerThanBefore ? 0 : 500)
+      .attr('d', area);
+    this.group.select(`.${css['c-timeline-x-axis']}`).transition().duration(isLargerThanBefore ? 0 : 500)
+      .call(xAxis);
 
     // calculate new inner extent, using old inner extent on new x scale
     currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
