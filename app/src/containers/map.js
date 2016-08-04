@@ -8,7 +8,8 @@ import {
   setCenter,
   openShareModal,
   saveWorkspace,
-  deleteWorkspace
+  deleteWorkspace,
+  setShareModalError
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
 
@@ -40,12 +41,13 @@ const mapDispatchToProps = (dispatch, { location }) => {
 
     openShareModal: () => {
       dispatch(openShareModal(true));
-      dispatch(saveWorkspace());
+      dispatch(saveWorkspace(setShareModalError));
     },
 
     closeShareModal: () => {
       dispatch(openShareModal(false));
       dispatch(deleteWorkspace());
+      dispatch(setShareModalError(null));
     }
   };
 };

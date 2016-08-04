@@ -9,7 +9,8 @@ import {
   GET_SERIESGROUP,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
-  DELETE_WORKSPACE_ID
+  DELETE_WORKSPACE_ID,
+  SET_SHARE_MODAL_ERROR
 } from '../constants';
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 
@@ -213,21 +214,58 @@ export function openShareModal(open) {
 }
 
 /**
- * Save the state of the map, the filters and the timeline and send it
- * to the API. Get back the id of the workspace and save it in the store.
+ * Set the error to display within the share modal
  *
- * @export saveWorkspace
+ * @export setShareModalError
+ * @param {string} error - message to display
  * @returns {object}
  */
-export function saveWorkspace() {
+export function setShareModalError(error) {
+  return {
+    type: SET_SHARE_MODAL_ERROR,
+    payload: error
+  };
+}
+
+/**
+ * Save the state of the map, the filters and the timeline and send it
+ * to the API. Get back the id of the workspace and save it in the store.
+ * In case of error, call the error action callback with the error string.
+ *
+ * @export saveWorkspace
+ * @param {function} errorAction - action to dispatch in case of error
+ * @returns {object}
+ */
+export function saveWorkspace(errorAction) {
   return (dispatch, getState) => {
-    setTimeout(() => {
-      // TODO: make the real request
-      dispatch({
-        type: SET_WORKSPACE_ID,
-        payload: 1
-      });
-    }, 1000);
+    const state = getState();
+    const headers = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    };
+
+    if (state.user.token) {
+      headers.Authorization = `Bearer ${state.user.token}`;
+    }
+
+    fetch(`${API_URL}/workspaces`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        workspace: {
+          test: 'Yeah!'
+        }
+        // TODO: add the content here
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: SET_WORKSPACE_ID,
+          payload: data.id
+        });
+      })
+      .catch(({ message }) => dispatch(errorAction(message)));
   };
 }
 

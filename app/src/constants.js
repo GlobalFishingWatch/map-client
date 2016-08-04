@@ -24,6 +24,7 @@ export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 // Appearance actions
 export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
 export const SHARE_MODAL_OPEN = 'SHARE_MODAL_OPEN';
+export const SET_SHARE_MODAL_ERROR = 'SET_SHARE_MODAL_ERROR';
 
 // Contact actions
 export const FORM_RESPONSE = 'FORM_RESPONSE';

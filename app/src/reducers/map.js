@@ -8,7 +8,8 @@ import {
   SET_CENTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
-  DELETE_WORKSPACE_ID
+  DELETE_WORKSPACE_ID,
+  SET_SHARE_MODAL_ERROR
 } from '../constants';
 
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
   center: [0, 0],
   vessel: null,
   shareModal: {
-    open: false
+    open: false,
+    error: null
   },
   workspaceId: null
 };
@@ -56,14 +58,23 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers });
     }
 
-    case SHARE_MODAL_OPEN:
-      return Object.assign({}, state, { shareModal: { open: action.payload } });
+    case SHARE_MODAL_OPEN: {
+      const newState = Object.assign({}, state);
+      newState.shareModal.open = action.payload;
+      return newState;
+    }
 
     case SET_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: action.payload });
 
     case DELETE_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: null });
+
+    case SET_SHARE_MODAL_ERROR: {
+      const newState = Object.assign({}, state);
+      newState.shareModal.error = action.payload;
+      return newState;
+    }
 
     default:
       return state;
