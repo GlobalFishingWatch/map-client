@@ -8,20 +8,13 @@ import DatePicker from './DatePicker';
 import extentChanged from '../../util/extentChanged';
 import TogglePauseButton from './TogglePauseButton';
 
-const margin = { top: 10, right: 50, bottom: 40, left: 50 };
-const width = 800 - margin.left - margin.right;
-const height = 200 - margin.top - margin.bottom;
+let width;
+let height;
+let x;
+let y;
+let xAxis;
+let area;
 const innerOuterMarginPx = 10;
-
-const x = d3.scaleTime().range([0, width]);
-const y = d3.scaleLinear().range([height, 0]);
-const xAxis = d3.axisBottom().scale(x);
-
-// define the way the timeline chart is going to be drawn
-const area = d3.area()
-  .x(d => x(d.date))
-  .y0(height)
-  .y1(d => y(d.price));
 
 let currentInnerPxExtent = [0, 1];
 let currentOuterPxExtent = [0, width];
@@ -31,7 +24,7 @@ let currentTimestamp;
 
 const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
 
-class Timeline extends Component {
+class Timebar extends Component {
 
   constructor(props) {
     super(props);
@@ -77,20 +70,28 @@ class Timeline extends Component {
 
   build() {
     const dummyData = this.getDummyData();
+    const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
+    width = parseInt(computedStyles.width, 10) - 30;
+    height = parseInt(computedStyles.height, 10);
 
+    x = d3.scaleTime().range([0, width]);
+    y = d3.scaleLinear().range([height, 0]);
+    xAxis = d3.axisTop().scale(x);
+    // define the way the timeline chart is going to be drawn
+    area = d3.area()
+      .x(d => x(d.date))
+      .y0(height)
+      .y1(d => y(d.price));
     x.domain(TIMELINE_TOTAL_DATE_EXTENT);
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
-    var h =  window.getComputedStyle(document.getElementById('timeline_svg_container')).height;
-    debugger
-
     this.svg = d3.select('#timeline_svg_container').append('svg')
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom);
+      .attr('width', width)
+      .attr('height', height);
 
-    this.group = this.svg.append('g')
+    this.group = this.svg.append('g');
       // .attr('class', css['c-timeline'])
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      // .attr('transform', `translate(${margin.left},${margin.top})`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -99,7 +100,7 @@ class Timeline extends Component {
 
     this.group.append('g')
       .attr('class', css['c-timeline-x-axis'])
-      .attr('transform', `translate(0, ${height + 15})`)
+      .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
 
     // set up brush generators
@@ -136,7 +137,7 @@ class Timeline extends Component {
 
     d3.select('body').on('mousemove', () => {
       if (dragging) {
-        const nx = d3.event.pageX - margin.left;
+        const nx = d3.event.pageX - document.getElementById('timeline_svg_container').offsetLeft;
         if (currentHandleIsWest) {
           currentOuterPxExtent[0] = nx;
         } else {
@@ -390,7 +391,7 @@ class Timeline extends Component {
           />
           End date
         </div>
-        <div className={classnames(css['c-timebar-element'],css['c-timebar-playback'])}>
+        <div className={classnames(css['c-timebar-element'], css['c-timebar-playback'])}>
           <TogglePauseButton
             onToggle={this.onPauseToggle}
             paused={this.state.paused}
@@ -405,9 +406,9 @@ class Timeline extends Component {
   }
 }
 
-Timeline.propTypes = {
+Timebar.propTypes = {
   updateFilters: React.PropTypes.func,
   filters: React.PropTypes.object
 };
 
-export default Timeline;
+export default Timebar;

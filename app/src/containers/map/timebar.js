@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import Timeline from '../components/map/Timeline';
-import { updateFilters } from '../actions/filters';
+import Timebar from '../../components/map/Timebar';
+import { updateFilters } from '../../actions/filters';
 
 const mapStateToProps = state => ({
   filters: state.filters
@@ -13,4 +13,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Timeline);
+export default connect(mapStateToProps, mapDispatchToProps)(Timebar);
