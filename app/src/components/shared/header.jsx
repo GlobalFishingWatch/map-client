@@ -22,14 +22,14 @@ class Header extends Component {
           <li><Link to="#">Profile</Link></li>
           <li>
             <a
-              href="javascript:;"
+              href="#"
               onClick={this.logout}
             >Logout</a></li>
         </ul>
       </li>);
     } else {
       userLinks = (<li><a
-        href="javascript:;"
+        href="#"
         onClick={this.login}
       >Login</a></li>);
     }

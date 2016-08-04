@@ -20,14 +20,6 @@ class ControlPanel extends Component {
     return (
       <div className={ControlPanelStyle.controlPanel}>
         <div>
-          <label htmlFor="timeStep">Playback range
-            <select id="timeStep" onChange={(e) => this.props.onTimeStepChange(e.target.value)} defaultValue={1}>
-              {options}
-            </select>
-          </label>
-        </div>
-
-        <div>
           <label htmlFor="drawIntensity">Vessel transparency
             <select
               id="drawIntensity"
@@ -45,7 +37,6 @@ class ControlPanel extends Component {
 ControlPanel.propTypes = {
   startDate: React.PropTypes.number,
   endDate: React.PropTypes.number,
-  onDrawDensityChange: React.PropTypes.func,
-  onTimeStepChange: React.PropTypes.func
+  onDrawDensityChange: React.PropTypes.func
 };
 export default ControlPanel;

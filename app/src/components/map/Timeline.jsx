@@ -1,10 +1,11 @@
 /* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
-import * as d3 from 'd3';
+import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import { TIMELINE_TOTAL_DATE_EXTENT } from '../../constants';
 import css from '../../../styles/index.scss';
 import DatePicker from './DatePicker';
-import TogglePauseButton from './TogglePauseButton'; // TODO: namespace and only do the necessary imports
+import extentChanged from '../../util/extentChanged';
+import TogglePauseButton from './TogglePauseButton';
 
 const margin = { top: 10, right: 50, bottom: 40, left: 50 };
 const width = 800 - margin.left - margin.right;
@@ -28,10 +29,6 @@ let dragging;
 let currentTimestamp;
 
 const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
-
-const extentChanged = (oldExtent, newExtent) =>
-oldExtent[0].getTime() !== newExtent[0].getTime() ||
-oldExtent[1].getTime() !== newExtent[1].getTime();
 
 class Timeline extends Component {
 
