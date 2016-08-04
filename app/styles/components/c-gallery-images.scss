@@ -1,0 +1,54 @@
+@import '../_settings.scss';
+
+
+.c-gallery-images {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  .image-text {
+    margin-right: 20px;
+    width: 316px;
+
+    .img {
+      background-color: $color-7;
+      height: 228px;
+      width: 316px;
+    }
+
+    .info-text {
+      color: $color-9;
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+      line-height: 2.08;
+      margin-top: 34px;
+
+      .title-info {
+        display: block;
+      }
+
+      .link-more {
+        align-items: center;
+        color: $color-8;
+        display: flex;
+        font-size: $font-size-small;
+        font-weight: $font-weight-bold;
+        letter-spacing: -.1px;
+        line-height: .4;
+        margin-top: 45px;
+        text-decoration: none;
+        text-transform: uppercase;
+
+        img {
+          margin-left: -5px;
+          margin-right: 7px;
+          width: 35px;
+        }
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

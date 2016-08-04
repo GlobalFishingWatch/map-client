@@ -61,7 +61,7 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
       },
       {
         test: /\.css$/,

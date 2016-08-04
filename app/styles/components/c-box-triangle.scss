@@ -1,0 +1,26 @@
+@import '../_settings.scss';
+
+.c-box-triangle {
+
+  border-bottom: 2px solid $color-4;
+  border-right: 2px solid $color-4;
+  cursor: pointer;
+  height: 52px;
+  left: 50%;
+  margin-bottom: -130px;
+  position: relative;
+  transform: translateX(-50%) rotate(-135deg);
+  width: 52px;
+
+  .triangle-min {
+    border-bottom: 2px solid $color-4;
+    border-right: 2px solid $color-4;
+    height: 12px;
+    margin-bottom: 0;
+    margin-left: 32px;
+    position: absolute;
+    top: 32px;
+    transform: rotate(-180deg);
+    width: 12px;
+  }
+}
