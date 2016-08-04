@@ -1,12 +1,13 @@
-.c_btn_primary {
-  background-color: $color4;
-  color: $color9;
+@import '../_settings.scss';
+.c-btn-primary {
+  background-color: $color-3;
+  color: $color-4;
+  display: inline-block;
+  font-family: $font-family-1;
+  font-size: $font-size-small;
+  font-weight: $font-weight-normal;
+  letter-spacing: -.1px;
+  line-height: .4;
   padding: 15px 40px;
   text-decoration: none;
-  display: inline-block;
-  font-family: $font-family-primary;
-  font-size: $font-size-small;
-  font-weight: $font-weight-regular;
-  letter-spacing: -0.1px;
-  line-height: 0.4;
 }

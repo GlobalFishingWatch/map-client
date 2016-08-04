@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import ButtonBoxSlider from './button_box_slider';
-import CoverPageStyle from '../../../styles/components/c_cover_page.scss';
-import BoxTriangleStyle from '../../../styles/components/c_box_triangle.scss';
+import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
+import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 
 class CoverPage extends Component {
   gosection() {
@@ -12,7 +12,7 @@ class CoverPage extends Component {
   }
 
   render() {
-    return (<section className={CoverPageStyle.c_cover_page}>
+    return (<section className={CoverPageStyle['c-cover-page']}>
       <div>
         <h1>
           The first global view of commercial fishing activity
@@ -22,10 +22,10 @@ class CoverPage extends Component {
           will hold our leaders accountable for maintaining abundant oceans and show consumers where - - and by whom --
           their fish is being caught.
         </p>
-        <div className={CoverPage.footer_header}>
+        <div className={CoverPageStyle['footer-header']}>
           <ButtonBoxSlider />
-          <div className={BoxTriangleStyle.c_box_triangle} onClick={this.gosection}>
-            <div className={BoxTriangleStyle.triangle_min}></div>
+          <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+            <div className={BoxTriangleStyle['triangle-min']}></div>
           </div>
           <div>Brought to you by:</div>
         </div>
