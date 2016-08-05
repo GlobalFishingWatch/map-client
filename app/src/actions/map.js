@@ -253,9 +253,16 @@ export function saveWorkspace(errorAction) {
       headers,
       body: JSON.stringify({
         workspace: {
-          test: 'Yeah!'
+          map: {
+            center: state.map.center,
+            zoom: state.map.zoom
+          },
+          timeline: {
+            // We store the timestamp
+            innerExtent: state.filters.timelineInnerExtent.map(e => +e)
+            // TODO: add the outer extent when in the store
+          }
         }
-        // TODO: add the content here
       })
     })
       .then(res => res.json())
