@@ -9,20 +9,19 @@
     padding-left: 110px;
     position: relative;
     top: 22px;
-    .slick-active{
-      background-color: red;
-    }
-    li{
+
+    li {
       display: inline-block;
-      button{
-        width: 14px;
-        height: 14px;
+
+      button {
         background: #fff;
-        transform: rotate(45deg);
-        outline: 0;
-        margin-right: 15px;
         border: 0;
         font-size: 0;
+        height: 14px;
+        margin-right: 15px;
+        outline: 0;
+        transform: rotate(45deg);
+        width: 14px;
       }
     }
   }
@@ -72,8 +71,8 @@
     padding-right: 110px;
 
     svg {
-      display: none;
       cursor: pointer;
+      display: none;
       fill: $color-4;
       margin-right: 15px;
       stroke: $color-4;
