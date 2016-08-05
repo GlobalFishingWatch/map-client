@@ -142,19 +142,21 @@ class Timebar extends Component {
 
     this.innerBrush.select('.overlay').remove();
     this.innerBrush.select('.selection')
+    .attr('y', - innerBrushFooterHeight)
+    .attr('height', height + innerBrushFooterHeight)
       .classed(css['c-timeline-inner-brush-selection'], true)
-      .attr('y', - innerBrushFooterHeight);
     innerBrushLeftCircle = this.innerBrush.append('circle');
     innerBrushRightCircle = this.innerBrush.append('circle');
     this.innerBrush.selectAll('circle')
       .attr('cy', height / 2)
       .attr('r', 5)
       .classed(css['c-timeline-outer-brush-circle'], true);
-    innerBrushFooter = this.innerBrush.append('g').classed(css['c-timeline-inner-brush-footer'], true);
-    innerBrushFooter
-      .append('rect')
-      .attr('y', -innerBrushFooterHeight)
-      .attr('height', innerBrushFooterHeight);
+    innerBrushFooter = d3.select(css['c-timeline-inner-brush-footer']);
+    console.log(innerBrushFooter)
+    // innerBrushFooter = d3.select('#timeline_svg_container').append('div').classed(css['c-timeline-inner-brush-footer'], true);
+    // innerBrushFooter
+    //   .style('top', -innerBrushFooterHeight)
+    //   .style('height', innerBrushFooterHeight);
 
     // move both brushes to initial position
     this.outerBrushFunc.move(this.outerBrush, [0, width]);
@@ -289,9 +291,9 @@ class Timebar extends Component {
   }
 
   redrawInnerBrushFooter(newInnerPxExtent) {
-    innerBrushFooter.select('rect')
-      .attr('width', newInnerPxExtent[1] - newInnerPxExtent[0])
-      .attr('x', newInnerPxExtent[0]);
+    innerBrushFooter
+      .style('width', newInnerPxExtent[1] - newInnerPxExtent[0] + 'px')
+      .style('left', newInnerPxExtent[0] + 'px');
   }
 
   disableInnerBrush() {
@@ -461,10 +463,17 @@ class Timebar extends Component {
             paused={this.state.paused}
           />
         </div>
+
         <div
           className={classnames(css['c-timebar-element'], css['c-timeline'])}
           id="timeline_svg_container"
-        />
+        >
+          <div
+            className={css['c-timeline-inner-brush-footer']}
+          >
+            lala
+          </div>
+        </div>
       </div>
     );
   }

@@ -3,6 +3,7 @@
 .c-timeline {
   flex: 1;
   margin-top: -20px;
+  position: relative;
 
   .c-timeline-area {
     fill: $color-8;
@@ -35,6 +36,8 @@
     fill: $color-4;
     fill-opacity: .2;
     stroke-width: 0;
+    y: -20px;
+    height: 999px;
   }
 
   .c-timeline-outer-brush-circle {
@@ -44,9 +47,11 @@
   }
 
   .c-timeline-inner-brush-footer {
-    rect {
-      fill: red;
-    }
+      background-color: red;
+      height: 20px;
+      left: 0;
+      position: absolute;
+      top: 0;
   }
 
 }
