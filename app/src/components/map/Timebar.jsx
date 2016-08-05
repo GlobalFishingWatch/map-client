@@ -184,7 +184,7 @@ class Timebar extends Component {
       const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
 
       for (let m = startMonth; m <= endMonth; m++) {
-        const endDay = (m === endDate.getMonth()) ? endDate.getDay() : 28;
+        const endDay = (m === endDate.getMonth()) ? endDate.getDate() : 28;
         for (let d = 2; d <= endDay; d += 4) {
           dummyData.push({
             date: new Date(year, m, d),
