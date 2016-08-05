@@ -1,5 +1,7 @@
-import PelagosClient from '../lib/pelagosClient';
 import _ from 'lodash';
+import PelagosClient from '../lib/pelagosClient';
+import { push } from 'react-router-redux';
+
 import {
   SET_LAYERS,
   SET_ZOOM,
@@ -12,6 +14,7 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR
 } from '../constants';
+
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
 
 export function toggleLayerVisibility(layer) {
@@ -206,6 +209,33 @@ export function setShareModalError(error) {
 }
 
 /**
+ * Save the workspace's ID in the store
+ *
+ * @export setWorkspaceId
+ * @param {string} workspaceId
+ * @returns {object}
+ */
+export function setWorkspaceId(workspaceId) {
+  return {
+    type: SET_WORKSPACE_ID,
+    payload: workspaceId
+  };
+}
+
+/**
+ * Update the URL according to the parameters present in the store
+ *
+ * @export updateURL
+ * @returns {object}
+ */
+export function updateURL() {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(push(`/map?workspace=${state.map.workspaceId}`));
+  };
+}
+
+/**
  * Save the state of the map, the filters and the timeline and send it
  * to the API. Get back the id of the workspace and save it in the store.
  * In case of error, call the error action callback with the error string.
@@ -246,10 +276,8 @@ export function saveWorkspace(errorAction) {
     })
       .then(res => res.json())
       .then(data => {
-        dispatch({
-          type: SET_WORKSPACE_ID,
-          payload: data.id
-        });
+        dispatch(setWorkspaceId(data.id));
+        dispatch(updateURL());
       })
       .catch(({ message }) => dispatch(errorAction(message)));
   };
