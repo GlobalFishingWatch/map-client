@@ -130,7 +130,7 @@ export function getWorkspace(workspaceId) {
     const state = getState();
 
     // If the user isn't logged, we load a local workspace
-    let url = '/workspace-logged.json';
+    let url = '/workspace.json';
 
     if (state.user.token && workspaceId) {
       url = `${API_URL}/workspaces/${workspaceId}`;
