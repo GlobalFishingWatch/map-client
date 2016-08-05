@@ -1,25 +1,25 @@
 /*HOME PAGE*/
-@import '../base/text.scss';
-@import '../base/colors.scss';
+@import '../_settings.scss';
 
 .infomap {
-  font-family: $font-family-primary;
-  height: 748px;
-  background-color: $bluesecondary;
-  display: flex;
   align-items: center;
-  padding-left: 168px;
+  background-color: $color-7;
+  display: flex;
+  font-family: $font-family-1;
+  height: 748px;
+  padding-left: 110px;
 }
 
-.success_story {
-  font-family: $font-family-primary;
-  background-color: $color8;
+.success-story {
+  background-color: $color-4;
+  font-family: $font-family-1;
   padding: 85px 155px 96px;
+
   h2 {
-    font-size: $font-size-large;
-    font-weight: $font-weight-regular;
+    color: $color-6;
+    font-size: $font-size-xx-big;
+    font-weight: $font-weight-normal;
     line-height: 1.05;
-    color: $font-color-1;
     margin-bottom: 20px;
   }
 }

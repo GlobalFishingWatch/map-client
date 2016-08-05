@@ -30,7 +30,7 @@ class Home extends Component {
       <section className={home.infomap}>
         <InfoMap />
       </section>
-      <section className={home.success_story}>
+      <section className={home['success-story']}>
         <h2>Success Stories</h2>
         <SuccessStoryGallery />
       </section>
