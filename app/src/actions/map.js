@@ -255,7 +255,8 @@ export function saveWorkspace(errorAction) {
         workspace: {
           map: {
             center: state.map.center,
-            zoom: state.map.zoom
+            zoom: state.map.zoom,
+            layers: state.map.layers
           },
           timeline: {
             // We store the timestamp
