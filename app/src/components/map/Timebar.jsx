@@ -137,6 +137,7 @@ class Timebar extends Component {
     innerBrushRightCircle = this.innerBrush.append('circle');
     this.innerBrush.selectAll('circle')
       .attr('cy', height / 2)
+      .attr('r', 5) // this would be better in the css but Safari is stupid
       .classed(css['c-timeline-outer-brush-circle'], true);
 
     // move both brushes to initial position
