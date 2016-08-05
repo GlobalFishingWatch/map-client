@@ -40,12 +40,18 @@ class LayerPanel extends Component {
     if (this.props.layers) {
       for (let i = 0, length = this.props.layers.length; i < length; i++) {
         layers.push(
-          <li className={layerPanel.list_checkbox} key={i}>
+          <li
+            className={layerPanel.list_checkbox}
+            key={i}
+          >
             <label>
               <input
                 type="checkbox"
                 checked={this.props.layers[i].visible}
                 onChange={() => this.props.onLayerToggle(this.props.layers[i])}
+                style={{
+                  color: this.props.layers[i].color
+                }}
               />
               {this.props.layers[i].title}
             </label>
