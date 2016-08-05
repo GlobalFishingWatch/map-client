@@ -4,7 +4,7 @@ import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import CanvasLayer from './layers/canvas_layer';
 import createTrackLayer from './layers/track_layer';
-import LayerPanel from './map/layer_panel';
+import AccordionPanel from './map/AccordionPanel';
 import VesselPanel from './map/vessel_panel';
 import Header from '../containers/header';
 import map from '../../styles/index.scss';
@@ -73,7 +73,7 @@ class Map extends Component {
    * Called once additional vessel details are loaded
    * TODO: should probably be moved elsewhere
    *
-   * @param data Data returned by the API
+   * @param incomingData Data returned by the API
    */
   handleAdditionalVesselDetails(incomingData) {
     const currentVesselInfo = this.state.currentVesselInfo;
@@ -468,7 +468,7 @@ class Map extends Component {
         <div className={map.timebar_container}>
           <Timebar />
         </div>
-        <LayerPanel
+        <AccordionPanel
           layers={this.props.map.layers}
           onLayerToggle={this.propsToggleLayerVisibility}
           onFilterChange={this.updateFilters}

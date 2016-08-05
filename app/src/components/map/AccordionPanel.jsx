@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import FiltersPanel from './filters_panel';
 import ControlPanel from './control_panel';
-import layerPanel from '../../../styles/components/c_layer_panel.scss';
+import LayerPanel from './LayerPanel';
+import layerPanelStyle from '../../../styles/components/c_layer_panel.scss';
 import { Accordion, AccordionItem } from 'react-sanfona';
 
-class LayerPanel extends Component {
+class AccordionPanel extends Component {
 
   constructor(props) {
     super(props);
@@ -36,48 +37,17 @@ class LayerPanel extends Component {
   }
 
   render() {
-    let layers = [];
-    if (this.props.layers) {
-      for (let i = 0, length = this.props.layers.length; i < length; i++) {
-        layers.push(
-          <li
-            className={layerPanel.list_checkbox}
-            key={i}
-          >
-            <label>
-              <input
-                type="checkbox"
-                checked={this.props.layers[i].visible}
-                onChange={() => this.props.onLayerToggle(this.props.layers[i])}
-                style={{
-                  color: this.props.layers[i].color
-                }}
-              />
-              {this.props.layers[i].title}
-            </label>
-          </li>
-        );
-      }
-    }
-
     let searchAccordionTitle = (
       <input
         onChange={this.fakeSearchResults}
-        className={layerPanel.input_accordion}
+        className={layerPanelStyle.input_accordion}
         placeholder="SEARCH VESSELS"
       />);
 
-    let baseMapAccordionTitle = (
-      <div className={layerPanel.title_accordion}>Basemap
-        <div className={layerPanel.content_box}>
-          <div className={layerPanel.box_basemap}></div>
-          <div className={layerPanel.box_image_basemap}></div>
-        </div>
-      </div>);
     let advancedSearchAccordionTitle = (
       <span
         onClick={this.toggleVisibleAdvancedSearch}
-        className={layerPanel.text_search}
+        className={layerPanelStyle.text_search}
       >
         {this.state.visibleAdvancedSearch ? 'hide advanced search' : 'advanced search'}
       </span>);
@@ -87,12 +57,12 @@ class LayerPanel extends Component {
     let advancedSearchAccordion = (
       <Accordion allowMultiple={false} activeItems={6}>
         <AccordionItem title={advancedSearchAccordionTitle} key="advancedsearch">
-          <div className={layerPanel.content_accordion}>
+          <div className={layerPanelStyle.content_accordion}>
             <div>
               <FiltersPanel
                 onChange={this.onFilterChange}
               />
-              <span className={layerPanel.button_advanced_search}>SEARCH</span>
+              <span className={layerPanelStyle.button_advanced_search}>SEARCH</span>
             </div>
           </div>
         </AccordionItem>
@@ -103,11 +73,11 @@ class LayerPanel extends Component {
       <AccordionItem
         title={searchAccordionTitle}
         key="search"
-        className={layerPanel.accordion_item}
+        className={layerPanelStyle.accordion_item}
       >
-        <div className={layerPanel.content_accordion}>
+        <div className={layerPanelStyle.content_accordion}>
           <div>{advancedSearchAccordion}
-            {this.state.visibleSearchResults && <ul className={layerPanel.list_results}>
+            {this.state.visibleSearchResults && <ul className={layerPanelStyle.list_results}>
               <li>JOVE,<span>MMSI012345</span>
               </li>
               <li>JOVE,<span>MMSI012345</span>
@@ -119,12 +89,16 @@ class LayerPanel extends Component {
 
     let baseMapAccordion = (
       <AccordionItem
-        title={baseMapAccordionTitle}
+        title="Basemap"
         key="basemap"
-        className={layerPanel.accordion_item}
+        className={layerPanelStyle.accordion_item}
+        titleClassName={layerPanelStyle.title_accordion}
       >
-        <div className={layerPanel.content_accordion}>
-          <p />
+        <div className={layerPanelStyle.content_accordion}>
+          <div className={layerPanelStyle.content_box}>
+            <div className={layerPanelStyle.box_basemap}></div>
+            <div className={layerPanelStyle.box_image_basemap}></div>
+          </div>
         </div>
       </AccordionItem>);
 
@@ -132,23 +106,23 @@ class LayerPanel extends Component {
       <AccordionItem
         title="Layers"
         key="layers"
-        className={layerPanel.accordion_item}
-        titleClassName={layerPanel.title_accordion}
-
+        className={layerPanelStyle.accordion_item}
+        titleClassName={layerPanelStyle.title_accordion}
       >
-        <div className={layerPanel.content_accordion}>
-          <ul>{layers}</ul>
-        </div>
+        <LayerPanel
+          layers={this.props.layers}
+          onLayerToggle={this.props.onLayerToggle}
+        />
       </AccordionItem>);
 
     let controlAccordion = (
       <AccordionItem
         title="Controls"
         key="control"
-        className={layerPanel.accordion_item}
-        titleClassName={layerPanel.title_accordion}
+        className={layerPanelStyle.accordion_item}
+        titleClassName={layerPanelStyle.title_accordion}
       >
-        <div className={layerPanel.content_accordion}>
+        <div className={layerPanelStyle.content_accordion}>
           <ControlPanel
             onDrawDensityChange={this.onDrawDensityChange}
             startDate={this.props.startDate} endDate={this.props.endDate}
@@ -157,7 +131,7 @@ class LayerPanel extends Component {
       </AccordionItem>);
 
     return (
-      <div className={layerPanel.layerPanel}>
+      <div className={layerPanelStyle.layerPanel}>
         <Accordion allowMultiple={false} activeItems={6}>
           {searchAccordion}
           {baseMapAccordion}
@@ -169,7 +143,7 @@ class LayerPanel extends Component {
   }
 }
 
-LayerPanel.propTypes = {
+AccordionPanel.propTypes = {
   layers: React.PropTypes.array,
   startDate: React.PropTypes.number,
   endDate: React.PropTypes.number,
@@ -178,5 +152,4 @@ LayerPanel.propTypes = {
   onFilterChange: React.PropTypes.func
 };
 
-
-export default LayerPanel;
+export default AccordionPanel;
