@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Blog from '../components/blog';
 import { getRecentPost } from '../actions/blog';
 
+
 const mapStateToProps = (state) => ({
   recentPost: state.blog.recentPost
 });

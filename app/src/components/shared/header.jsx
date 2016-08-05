@@ -67,7 +67,7 @@ class Header extends Component {
           <li className={home.dropdown}>
             <Link
               id={
-                (location.pathname === '/blog' || location.pathname === '/articles-publications')
+                (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
                   ? 'menu_selected' : null
               }
               to="#"

@@ -38,7 +38,7 @@ class Map extends Component {
     this.onMapIdle = this.onMapIdle.bind(this);
     this.shareMap = this.shareMap.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.toggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
+    this.propsToggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
   }
 
   /**
@@ -61,7 +61,9 @@ class Map extends Component {
     }
     this.setState({ zoom });
     this.props.setZoom(zoom);
-    this.state.overlay.resetPlaybackData();
+    if (this.state.overlay) {
+      this.state.overlay.resetPlaybackData();
+    }
   }
 
   /**
@@ -143,7 +145,7 @@ class Map extends Component {
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
     }
-    this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
+    // this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
 
     if (vesselInfo) {
       this.showVesselDetails(vesselInfo);
@@ -165,17 +167,7 @@ class Map extends Component {
 
   updateTrackLayer(nextProps) {
     if (this.props.map.track !== nextProps.map.track) {
-      let trackLayer = this.state.trackLayer;
-      if (!trackLayer) {
-        const Overlay = createTrackLayer(google);
-        trackLayer = new Overlay(
-          this.refs.map.props.map,
-          this.refs.mapContainer.offsetWidth,
-          this.refs.mapContainer.offsetHeight
-        );
-        this.setState({ trackLayer });
-      }
-      trackLayer.regenerate();
+      const trackLayer = this.state.trackLayer;
       trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
     }
   }
@@ -197,8 +189,8 @@ class Map extends Component {
 
     if (
       this.props.filters.startDate !== nextProps.filters.startDate
-      && this.props.filters.endDate !== nextProps.filters.endDate
-      && this.props.filters.flag !== nextProps.filters.flag
+      || this.props.filters.endDate !== nextProps.filters.endDate
+      || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.state.overlay.updateFilters(nextProps.filters);
       if (this.state.trackLayer) {
@@ -261,7 +253,14 @@ class Map extends Component {
       this.props.filters,
       this.state.vesselLayerTransparency,
       layerSettings.visible);
-    this.setState({ overlay: canvasLayer });
+    // Create track layer
+    const Overlay = createTrackLayer(google);
+    const trackLayer = new Overlay(
+      this.refs.map.props.map,
+      this.refs.mapContainer.offsetWidth,
+      this.refs.mapContainer.offsetHeight
+    );
+    this.setState({ overlay: canvasLayer, trackLayer });
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
@@ -275,8 +274,8 @@ class Map extends Component {
     const addedLayers = this.state.addedLayers;
 
     const promise = new Promise(((resolve) => {
-      cartodb.createLayer(map, layerSettings.source.args.url)
-        .addTo(map, layerSettings.zIndex)
+      cartodb.createLayer(this.map, layerSettings.source.args.url)
+        .addTo(this.map, layerSettings.zIndex)
         .done(((layer, cartoLayer) => {
           addedLayers[layer.title] = cartoLayer;
           resolve();
@@ -373,7 +372,7 @@ class Map extends Component {
    * @param value New value of the filter
    */
   updateFilters(target, value) {
-    const filters = this.props.filters;
+    const filters = Object.assign({}, this.props.filters);
 
     filters[target] = value;
 
@@ -456,7 +455,7 @@ class Map extends Component {
         </div>
         <LayerPanel
           layers={this.props.map.layers}
-          onLayerToggle={this.toggleLayerVisibility}
+          onLayerToggle={this.propsToggleLayerVisibility}
           onFilterChange={this.updateFilters}
           onDrawDensityChange={this.updateVesselLayerDensity}
           startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}
