@@ -48,7 +48,7 @@ class Share extends Component {
    * @returns {string} URL
    */
   getURLWithWorkspace() {
-    return `${location.origin}${location.pathname}?workspaceId=${this.props.workspaceId}`;
+    return `${location.origin}${location.pathname}?workspace=${this.props.workspaceId}`;
   }
 
   render() {

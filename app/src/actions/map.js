@@ -116,84 +116,62 @@ export function setCenter(center) {
     payload: center
   };
 }
-/*
- ** CartoDB layers:
- ** MPA
- ** EEZ
- ** High Seas Pockets
- ** RFMOs
+
+/**
+ * Retrieve the workspace according to its ID and sets the zoom and
+ * the center of the map, the timeline dates and the available layers
+ *
+ * @export getWorkspace
+ * @param {string} workspaceId - workspace's ID to load
+ * @returns {object}
  */
-export function getWorkspace(workspace) {
+export function getWorkspace(workspaceId) {
   return (dispatch, getState) => {
     const state = getState();
 
-    let path = '/workspace.json';
-    if (state.user.token) {
-      path = '/workspace-logged.json';
+    // If the user isn't logged, we load a local workspace
+    let url = '/workspace-logged.json';
+
+    if (state.user.token && workspaceId) {
+      url = `${API_URL}/workspaces/${workspaceId}`;
     }
 
-    if (!!~[1, 2].indexOf(+workspace)) {
-      path = `/workspace-${workspace}.json`;
-    }
-
-    fetch(path, {
-      method: 'GET',
+    fetch(url, {
       headers: {
         Authorization: `Bearer ${state.user.token}`
       }
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return null;
-    }).then((data) => {
-      const layers = [];
-      const allowedTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
+    }).then(res => res.json())
+      .then(data => {
+        const workspace = data.workspace;
 
-      for (let animationsIndex = 0, length = data.map.animations.length; animationsIndex < length; animationsIndex++) {
-        const animation = data.map.animations[animationsIndex];
-        if (allowedTypes.indexOf(animation.type) !== -1 && animation.args.source.args.url.indexOf('http') === 0) {
-          const layerDetails = animation.args;
-          layerDetails.type = animation.type;
-          layers.push(layerDetails);
-        }
-      }
+        // We update the zoom level
+        dispatch({
+          type: SET_ZOOM,
+          payload: workspace.map.zoom
+        });
 
-      return {
-        layers,
-        zoom: data.state.zoom,
-        center: [data.state.lat, data.state.lon],
-        timeline: [data.state.start_date, data.state.end_date]
-      };
-    })
-      .then(({
-        layers, zoom, center, timeline
-      }) => {
+        // We update the center of the map
+        dispatch({
+          type: SET_CENTER,
+          payload: workspace.map.center
+        });
+
+        // We update the dates of the timeline
+        dispatch({
+          type: SET_TIMELINE_DATES,
+          payload: workspace.timeline.innerExtent.map(d => new Date(d))
+        });
+
+        // We update the layers
+        const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
+        const layers = workspace.map.layers
+          .filter(l => !
+          !~allowedLayerTypes.indexOf(l.type));
+
         dispatch({
           type: SET_LAYERS,
           payload: layers
         });
-
-        if (zoom) {
-          dispatch({
-            type: SET_ZOOM,
-            payload: zoom
-          });
-        }
-
-        if (center) {
-          dispatch({
-            type: SET_CENTER,
-            payload: center
-          });
-        }
-
-        if (timeline) {
-          dispatch({
-            type: SET_TIMELINE_DATES,
-            payload: timeline
-          });
-        }
       })
       .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
   };
