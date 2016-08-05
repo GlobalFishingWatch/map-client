@@ -25,7 +25,7 @@ class Map extends Component {
       lastCenter: null,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
-      shareModalOpened: false
+      shareModalOpened: false,
       leftHandlerPosition: 0,
       rightHandlerPosition: 0,
       timeBarWidth: 0,
