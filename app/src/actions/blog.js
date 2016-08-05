@@ -1,4 +1,4 @@
-import { GET_RECENT_POST } from '../constants';
+import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../constants';
 import 'whatwg-fetch';
 
 const url = 'http://beta.globalfishingwatch.org/api';
@@ -11,6 +11,19 @@ export function getRecentPost() {
       dispatch({
         type: GET_RECENT_POST,
         payload: user
+      });
+    });
+  };
+}
+
+export function getPostBySlug(slug) {
+  return (dispatch) => {
+    fetch(`${url}/get_post/?post_slug=${slug}`, {
+      method: 'GET'
+    }).then((response) => response.json()).then((data) => {
+      dispatch({
+        type: GET_POST_BY_SLUG,
+        payload: data.post
       });
     });
   };

@@ -4,7 +4,7 @@
 
 .c_header_menu {
   background-color: $bluesecondary;
-  padding: 0 64px;
+  padding: 0 124px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   @media screen and (min-width: $screen-m) {
     box-shadow: 0;
@@ -97,7 +97,6 @@
     .dropdown_content {
       display: none;
       position: absolute;
-      width: 200px;
       background-color: $color9;
       z-index: 99;
       padding: 15px;
