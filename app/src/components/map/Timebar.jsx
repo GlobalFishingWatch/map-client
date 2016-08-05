@@ -10,6 +10,7 @@ import TogglePauseButton from './TogglePauseButton';
 
 let width;
 let height;
+let leftOffset;
 let x;
 let y;
 let xAxis;
@@ -76,6 +77,7 @@ class Timebar extends Component {
   build() {
     const dummyData = this.getDummyData();
     const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
+    leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
     width = parseInt(computedStyles.width, 10) - 30;
     height = parseInt(computedStyles.height, 10);
 
@@ -151,7 +153,7 @@ class Timebar extends Component {
 
     d3.select('body').on('mousemove', () => {
       if (dragging) {
-        const nx = d3.event.pageX - document.getElementById('timeline_svg_container').offsetLeft;
+        const nx = d3.event.pageX - leftOffset;
         if (currentHandleIsWest) {
           currentOuterPxExtent[0] = nx;
         } else {
