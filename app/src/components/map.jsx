@@ -8,7 +8,7 @@ import LayerPanel from './map/layer_panel';
 import VesselPanel from './map/vessel_panel';
 import Header from '../containers/header';
 import map from '../../styles/index.scss';
-import Timeline from '../containers/timeline';
+import Timebar from '../containers/map/timebar';
 import Modal from './shared/Modal';
 import Share from '../containers/map/Share';
 import extentChanged from '../util/extentChanged';
@@ -450,8 +450,8 @@ class Map extends Component {
           <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map.timeline_container}>
-          <Timeline />
+        <div className={map.timebar_container}>
+          <Timebar />
         </div>
         <LayerPanel
           layers={this.props.map.layers}

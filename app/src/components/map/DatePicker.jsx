@@ -17,8 +17,12 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <div>
+      <div className="c-datepicker">
+        <div className="c-datepicker-title">
+          {this.props.children}
+        </div>
         <ReactDatePicker
+          fixedHeight
           selected={moment(this.props.selected)}
           minDate={moment(this.props.minDate)}
           maxDate={moment(this.props.maxDate)}
@@ -31,6 +35,7 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
   onChange: React.PropTypes.func,
+  children: React.PropTypes.object,
   /**
    * Current  date set (a Date object)
    */

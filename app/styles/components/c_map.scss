@@ -44,9 +44,8 @@ $corporateColor: #233e76;
   }
 }
 
-.timeline_container {
-  background-color: #021437;
-  height: 250px;
+.timebar_container {
+  height: 70px;
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -55,6 +54,6 @@ $corporateColor: #233e76;
 }
 
 .map_container {
-  height: calc(100% - 140px);;
+  height: calc(100% - 140px);
   position: relative;
 }

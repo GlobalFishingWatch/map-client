@@ -1,0 +1,26 @@
+@import '../../settings';
+
+:global .c-datepicker {
+  height: 100%;
+  position: relative;
+
+  .c-datepicker-title {
+    color: $color-3;
+    font-size: $font-size-small;
+    position: absolute;
+    text-transform: uppercase;
+    top: 25%;
+    width: 100%;
+  }
+
+  .react-datepicker__input-container {
+    height: 100%;
+  }
+
+  input {
+    cursor: pointer;
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+  }
+}

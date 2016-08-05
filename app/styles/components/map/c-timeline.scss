@@ -1,6 +1,7 @@
 @import '../../settings';
 
 .c-timeline {
+  flex: 1;
 
   .c-timeline-area {
     fill: $color-8;
@@ -14,14 +15,27 @@
 
     text {
       fill: $color-4;
+      font-size: $font-size-x-small;
     }
   }
 
-  .c-timeline-inner-brush .selection {
-    stroke: $color-6;
+  .c-timeline-outer-brush-selection {
+    fill-opacity: 0;
+    stroke: $color-3;
+    stroke-alignment: inner;
+    stroke-width: 3px;
   }
 
-  .c-timeline-outer-brush .selection {
-    stroke: $color-3;
+  .c-timeline-inner-brush-selection {
+    fill: $color-4;
+    fill-opacity: .2;
+    stroke-width: 0;
   }
+
+  .c-timeline-outer-brush-circle {
+    cursor: ew-resize;
+    fill: $color-4;
+    pointer-events: none;
+  }
+
 }

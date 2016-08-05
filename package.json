@@ -30,6 +30,7 @@
     "babel-preset-react": "^6.5.0",
     "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.15.1",
+    "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.23.1",
     "d3": "^4.0.0-rc.2",

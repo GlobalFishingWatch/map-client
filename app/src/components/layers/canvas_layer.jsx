@@ -18,8 +18,8 @@ class CanvasLayer {
     this.vesselLayerTransparency = vesselLayerTransparency;
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
-    this.innerStartDate = filters.startDate;
-    this.innerEndDate = filters.endDate;
+    this.innerStartDate = filters.timelineInnerExtent[0];
+    this.innerEndDate = filters.timelineInnerExtent[1];
     if (visible) {
       this.show();
     }
