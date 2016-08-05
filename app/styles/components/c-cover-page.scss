@@ -49,6 +49,7 @@
     padding-right: 110px;
 
     svg {
+      cursor: pointer;
       fill: $color-4;
       margin-right: 15px;
       stroke: $color-4;
@@ -60,7 +61,7 @@
       }
     }
 
-    #selected_box {
+    .selected-box {
       fill: $color-3;
       stroke: $color-3;
       stroke-width: 3;
