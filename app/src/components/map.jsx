@@ -223,9 +223,11 @@ class Map extends Component {
             continue;
           }
           if (newLayer.type === 'ClusterAnimation') {
-            callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, nextProps.filters);
+            callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, index);
+          } else if (newLayer.type === 'CartoDBBasemap') {
+            promises.push(this.addCartoBasemap(newLayer, index));
           } else {
-            promises.push(this.addCartoLayer(newLayer));
+            promises.push(this.addCartoLayer(newLayer, index));
           }
         } else {
           this.toggleLayerVisibility(newLayer);
@@ -245,9 +247,11 @@ class Map extends Component {
    * Creates vessel track layer
    *
    * @param layerSettings
+   * @param position
    */
-  addVesselLayer(layerSettings) {
-    const canvasLayer = new CanvasLayer(layerSettings.zIndex,
+  addVesselLayer(layerSettings, position) {
+    const canvasLayer = new CanvasLayer(
+      position,
       this.map,
       this.props.token,
       this.props.filters,
@@ -269,13 +273,35 @@ class Map extends Component {
    *
    * @returns {Promise}
    * @param layerSettings
+   * @param index
    */
-  addCartoLayer(layerSettings) {
+  addCartoLayer(layerSettings, index) {
     const addedLayers = this.state.addedLayers;
 
     const promise = new Promise(((resolve) => {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
-        .addTo(this.map, layerSettings.zIndex)
+        .addTo(this.map, index)
+        .done(((layer, cartoLayer) => {
+          addedLayers[layer.title] = cartoLayer;
+          resolve();
+        }).bind(this, layerSettings));
+    }));
+    return promise;
+  }
+
+  /**
+   * Creates a Carto-based layer
+   *
+   * @returns {Promise}
+   * @param layerSettings
+   * @param index
+   */
+  addCartoBasemap(layerSettings, index) {
+    const addedLayers = this.state.addedLayers;
+
+    const promise = new Promise(((resolve) => {
+      cartodb.createLayer(this.map, layerSettings.source.args.url)
+        .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
           addedLayers[layer.title] = cartoLayer;
           resolve();

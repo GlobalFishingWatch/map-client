@@ -144,7 +144,7 @@ export function getWorkspace(workspace) {
       return null;
     }).then((data) => {
       const layers = [];
-      const allowedTypes = ['CartoDBAnimation', 'ClusterAnimation'];
+      const allowedTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
 
       for (let animationsIndex = 0, length = data.map.animations.length; animationsIndex < length; animationsIndex++) {
         const animation = data.map.animations[animationsIndex];

@@ -29,10 +29,65 @@
             }
           },
           "visible": true,
-          "color": "green",
-          "zIndex": 0
+          "color": "green"
         },
         "type": "ClusterAnimation"
+      },
+      {
+        "args": {
+          "title": "Basemap",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0"
+        },
+        "type": "CartoDBBasemap"
+      },
+      {
+        "args": {
+          "title": "Bathimetry",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/f11e563c-5b01-11e6-a589-0ecd1babdde5/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "Ports",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "Labels",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#da0ff0"
+        },
+        "type": "CartoDBAnimation"
       },
       {
         "args": {
@@ -45,8 +100,7 @@
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
           "visible": false,
-          "color": "#da0000",
-          "zIndex": 2
+          "color": "#da0000"
         },
         "type": "CartoDBAnimation"
       },
@@ -61,8 +115,7 @@
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
           "visible": false,
-          "color": "#c45e00",
-          "zIndex": 3
+          "color": "#c45e00"
         },
         "type": "CartoDBAnimation"
       },
@@ -76,8 +129,7 @@
             }
           },
           "visible": false,
-          "color": "blue",
-          "zIndex": 4
+          "color": "blue"
         },
         "type": "CartoDBAnimation"
       },
@@ -91,8 +143,7 @@
             }
           },
           "visible": false,
-          "color": "blue",
-          "zIndex": 5
+          "color": "blue"
         },
         "type": "CartoDBAnimation"
       },
@@ -106,8 +157,7 @@
             }
           },
           "visible": false,
-          "color": "blue",
-          "zIndex": 6
+          "color": "blue"
         },
         "type": "CartoDBAnimation"
       }
