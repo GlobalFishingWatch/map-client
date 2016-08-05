@@ -286,8 +286,11 @@ class Timebar extends Component {
   zoomIn(outerExtentPx) {
     const extent = outerExtentPx;
     // do not go within the inner brush
-    extent[0] = Math.min(currentInnerPxExtent[0] - innerOuterMarginPx, outerExtentPx[0]);
-    extent[1] = Math.max(currentInnerPxExtent[1] + innerOuterMarginPx, outerExtentPx[1]);
+    if (currentHandleIsWest) {
+      extent[0] = Math.min(currentInnerPxExtent[0] - innerOuterMarginPx, outerExtentPx[0]);
+    } else {
+      extent[1] = Math.max(currentInnerPxExtent[1] + innerOuterMarginPx, outerExtentPx[1]);
+    }
 
     // move outer brush selection rect -- normally done by d3.brush by default,
     // but we disabled all brush events
