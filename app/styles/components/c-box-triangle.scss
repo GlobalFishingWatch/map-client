@@ -1,0 +1,31 @@
+@import '../_settings.scss';
+
+.c-box-triangle {
+  -moz-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  border-bottom: 2px solid $color-4;
+  border-right: 2px solid $color-4;
+  cursor: pointer;
+  height: 52px;
+  margin: 0 auto;
+  margin-bottom: -100px;
+  transform: rotate(-135deg);
+  width: 52px;
+
+  .triangle-min {
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    -webkit-transform: rotate(-180deg);
+    border-bottom: 2px solid $color-4;
+    border-right: 2px solid $color-4;
+    height: 12px;
+    margin-bottom: 0;
+    margin-left: 32px;
+    margin-top: 32px;
+    transform: rotate(-180deg);
+    width: 12px;
+  }
+}

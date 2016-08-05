@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import home from '../../../styles/components/c_menu.scss';
+import home from '../../../styles/components/c-menu.scss';
 import logoimg from '../../../assets/logos/gfw_logo_hor_second.png';
 import logoimgSecond from '../../../assets/logos/gfw_logo_hor_white.png';
 import menuicon from '../../../assets/icons/menu_icon.svg';
@@ -35,7 +35,7 @@ class Header extends Component {
     }
 
 
-    return (<header className={home.c_header_menu} id={location.pathname === '/map' ? 'menu_transparent' : null}>
+    return (<header className={home['c-header-menu']} id={location.pathname === '/map' ? 'menu_transparent' : null}>
       <style
         dangerouslySetInnerHTML={{
           __html: `#menu_selected:after{
@@ -48,18 +48,18 @@ class Header extends Component {
         }`
         }}
       />
-      <nav className={home.c_menu}>
+    <nav className={home['c-menu']}>
         <img
           onClick={() => this.props.setVisibleMenu(true)}
-          className={home.icon_menu_mobile}
+          className={home['icon-menu-mobile']}
           src={menuicon}
           alt="Logo"
         />
         <Link to="/">
-          <img className={home.img_desktop} src={logoimg} alt="Logo" />
-          <img className={home.img_mobile} src={logoimgSecond} alt="Logo" />
+          <img className={home['img-desktop']} src={logoimg} alt="Logo" />
+          <img className={home['img-mobile']} src={logoimgSecond} alt="Logo" />
         </Link>
-        <span className={home.share_header}>Share</span>
+        <span className={home['share-header']}>Share</span>
         <ul>
           <li>
             <Link id={location.pathname === '/map' ? 'menu_selected' : null} to="/map">Map</Link>
@@ -72,7 +72,7 @@ class Header extends Component {
               }
               to="#"
             >News</Link>
-            <ul className={home.dropdown_content}>
+          <ul className={home['dropdown-content']}>
               <li><Link to="/blog">Blog</Link></li>
               <li><Link to="/articles-publications">Articles and Publications</Link></li>
             </ul>
@@ -88,7 +88,7 @@ class Header extends Component {
               }
               to="#"
             >How to</Link>
-            <ul className={home.dropdown_content}>
+            <ul className={home['dropdown-content']}>
               <li><Link to="/faq">FAQ</Link></li>
               <li><Link to="/tutorials">Tutorials</Link></li>
               <li><Link to="/definitions">Definitions</Link></li>
@@ -103,7 +103,7 @@ class Header extends Component {
                 || location.pathname === '/contact-us'
               ) ? 'menu_selected' : null}
             >About</Link>
-            <ul className={home.dropdown_content}>
+            <ul className={home['dropdown-content']}>
               <li><Link to="/the-project">The project</Link></li>
               <li><Link to="/partners">Partners</Link></li>
               <li><Link to="/contact-us">Contact us</Link></li>

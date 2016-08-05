@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import SliderCase from '../../../styles/components/c_slider_case.scss';
-import LinkBox from '../../../styles/components/c_link_box.scss';
+import SliderCase from '../../../styles/components/c-slider-case.scss';
+import LinkBox from '../../../styles/components/c-link-box.scss';
 import boxtriangle from '../../../assets/icons/box_triangle.svg';
 
 class CaseStudySlider extends Component {
@@ -13,8 +13,8 @@ class CaseStudySlider extends Component {
       speed={500}
       fade
     >
-      <div className={SliderCase.c_slider_case}>
-        <div className={SliderCase.c_slider_case_text}>
+      <div className={SliderCase['c-slider-case']}>
+        <div className={SliderCase['c-slider-case-text']}>
           <h2>CASE STUDY</h2>
           <h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </h3>
@@ -24,7 +24,7 @@ class CaseStudySlider extends Component {
             Ut posuere convallis consectetur. Nam.
           </p>
           <p>
-            <a className={LinkBox.c_link_box} href="#">
+            <a className={LinkBox['c-link-box']} href="#">
               <img
                 alt="find out more"
                 src={boxtriangle}
@@ -32,10 +32,10 @@ class CaseStudySlider extends Component {
             </a>
           </p>
         </div>
-        <div className={SliderCase.c_slider_case_img}></div>
+        <div className={SliderCase['c-slider-case-img']}></div>
       </div>
-      <div className={SliderCase.c_slider_case}>
-        <div className={SliderCase.c_slider_case_text}>
+      <div className={SliderCase['c-slider-case']}>
+        <div className={SliderCase['c-slider-case-text']}>
           <h2>CASE STUDY 2</h2>
           <h3>Vix id fabulas commune invidunt, ad his tollit detracto.
           </h3>
@@ -45,7 +45,7 @@ class CaseStudySlider extends Component {
             eos in apeirian contentiones. Ne vel perpetua accusamus, sed feugait noluisse id, vis illum eirmod
           </p>
           <p>
-            <a className={LinkBox.c_link_box} href="#">
+            <a className={LinkBox['c-link-box']} href="#">
               <img
                 alt="find out more"
                 src={boxtriangle}
@@ -53,7 +53,7 @@ class CaseStudySlider extends Component {
             </a>
           </p>
         </div>
-        <div className={SliderCase.c_slider_case_img}></div>
+        <div className={SliderCase['c-slider-case-img']}></div>
       </div>
     </Slider>);
   }
