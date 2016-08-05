@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
+import moment from 'moment';
 import { TIMELINE_TOTAL_DATE_EXTENT } from '../../constants';
 import css from '../../../styles/index.scss';
 import DatePicker from './DatePicker';
@@ -23,9 +24,12 @@ let currentHandleIsWest;
 let dragging;
 let currentTimestamp;
 
-const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
+let brush;
+let outerBrushHandleLeft;
+let outerBrushHandleRight;
 let innerBrushLeftCircle;
 let innerBrushRightCircle;
+let innerBrushFooter;
 
 class Timebar extends Component {
 
@@ -50,6 +54,9 @@ class Timebar extends Component {
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);
     }
+    this.setState({
+      innerDurationHumanized: this.getInnerDurationHumanized(this.props.filters.timelineInnerExtent)
+    })
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -80,6 +87,7 @@ class Timebar extends Component {
     leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
+    const innerBrushFooterHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -96,11 +104,10 @@ class Timebar extends Component {
 
     this.svg = d3.select('#timeline_svg_container').append('svg')
       .attr('width', width + 30)
-      .attr('height', height);
+      .attr('height', height + innerBrushFooterHeight);
 
-    this.group = this.svg.append('g');
-      // .attr('class', css['c-timeline'])
-      // .attr('transform', `translate(${margin.left},${margin.top})`);
+    this.group = this.svg.append('g')
+      .attr('transform', `translate(0,${innerBrushFooterHeight})`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -113,6 +120,7 @@ class Timebar extends Component {
       .call(xAxis);
 
     // set up brush generators
+    brush = () => d3.brushX().extent([[0, 0], [width, height]]);
     this.innerBrushFunc = brush();
     this.outerBrushFunc = brush();
 
@@ -130,18 +138,33 @@ class Timebar extends Component {
     // no need to keep brush overlays (the invisible interactive zone outside of the brush)
     this.outerBrush.select('.overlay').remove();
     this.outerBrush.select('.selection').attr('cursor', 'default');
-    this.outerBrush.selectAll('.selection').classed(css['c-timeline-outer-brush-selection'], true);
+    this.outerBrush.select('.selection').classed(css['c-timeline-outer-brush-selection'], true);
+    outerBrushHandleLeft = this.group.append('rect').classed(css['c-timeline-outer-brush-handle'], true)
+      .attr('height', height);
+    outerBrushHandleRight = this.group.append('rect').classed(css['c-timeline-outer-brush-handle'], true)
+      .attr('height', height);
+
     this.innerBrush.select('.overlay').remove();
-    this.innerBrush.select('.selection').classed(css['c-timeline-inner-brush-selection'], true);
+    this.innerBrush.select('.selection')
+    .attr('y', - innerBrushFooterHeight)
+    .attr('height', height + innerBrushFooterHeight)
+      .classed(css['c-timeline-inner-brush-selection'], true)
     innerBrushLeftCircle = this.innerBrush.append('circle');
     innerBrushRightCircle = this.innerBrush.append('circle');
     this.innerBrush.selectAll('circle')
       .attr('cy', height / 2)
       .attr('r', 5)
       .classed(css['c-timeline-outer-brush-circle'], true);
+    innerBrushFooter = d3.select('.'+css['c-timeline-inner-brush-footer']);
+    console.log(innerBrushFooter)
+    // innerBrushFooter = d3.select('#timeline_svg_container').append('div').classed(css['c-timeline-inner-brush-footer'], true);
+    // innerBrushFooter
+    //   .style('top', -innerBrushFooterHeight)
+    //   .style('height', innerBrushFooterHeight);
 
     // move both brushes to initial position
     this.outerBrushFunc.move(this.outerBrush, [0, width]);
+    this.resetOuterBrush();
     this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
 
     // custom outer brush events
@@ -219,6 +242,8 @@ class Timebar extends Component {
   resetOuterBrush() {
     currentOuterPxExtent = [0, width];
     this.outerBrush.select('.selection').attr('width', width).attr('x', 0);
+    outerBrushHandleLeft.attr('x', 0);
+    outerBrushHandleRight.attr('x', width - 2);
   }
 
   redrawOuterBrush(newOuterPxExtent, isLargerThanBefore) {
@@ -235,24 +260,23 @@ class Timebar extends Component {
       .call(xAxis);
 
     // calculate new inner extent, using old inner extent on new x scale
-    // currentInnerPxExtent = [x(prevInnerTimeExtent[0]), x(prevInnerTimeExtent[1])];
-    // this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
     this.redrawInnerBrush(prevInnerTimeExtent);
 
     return newOuterTimeExtent;
   }
 
   onInnerBrushed() {
-    currentInnerPxExtent = d3.event.selection;
-    const innerExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
-
     this.props.updateFilters({
-      timelineInnerExtent: innerExtent
+      timelineInnerExtent: this.getExtent(d3.event.selection)
     });
   }
 
   onInnerBrushMoved() {
+    this.setState({
+      innerDurationHumanized: this.getExtent(d3.event.selection)
+    })
     this.redrawInnerBrushCircles(d3.event.selection);
+    this.redrawInnerBrushFooter(d3.event.selection);
   }
 
   redrawInnerBrush(newInnerExtent) {
@@ -261,12 +285,19 @@ class Timebar extends Component {
     this.disableInnerBrush();
     this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
     this.redrawInnerBrushCircles(currentInnerPxExtent);
+    this.redrawInnerBrushFooter(currentInnerPxExtent);
     this.enableInnerBrush();
   }
 
   redrawInnerBrushCircles(newInnerPxExtent) {
     innerBrushLeftCircle.attr('cx', newInnerPxExtent[0]);
     innerBrushRightCircle.attr('cx', newInnerPxExtent[1]);
+  }
+
+  redrawInnerBrushFooter(newInnerPxExtent) {
+    innerBrushFooter
+      .style('width', newInnerPxExtent[1] - newInnerPxExtent[0] + 'px')
+      .style('left', newInnerPxExtent[0] + 'px');
   }
 
   disableInnerBrush() {
@@ -277,6 +308,16 @@ class Timebar extends Component {
   enableInnerBrush() {
     this.innerBrushFunc.on('brush', this.onInnerBrushMoved.bind(this));
     this.innerBrushFunc.on('end', this.onInnerBrushed.bind(this));
+  }
+
+  getExtent(extentPx) {
+    return [x.invert(extentPx[0]), x.invert(extentPx[1])]
+  }
+
+  getInnerDurationHumanized(innerExtent) {
+    const innerDelta = moment(innerExtent[1])
+      .diff(moment(innerExtent[0]));
+    return moment.duration(innerDelta).humanize();
   }
 
   isZoomingIn(outerExtentPx) {
@@ -293,6 +334,8 @@ class Timebar extends Component {
     // but we disabled all brush events
     this.outerBrush.select('.selection').attr('x', extent[0]);
     this.outerBrush.select('.selection').attr('width', extent[1] - extent[0]);
+    outerBrushHandleLeft.attr('x', extent[0]);
+    outerBrushHandleRight.attr('x', extent[1] - 2);
   }
 
   zoomOut(outerExtentPx, deltaTick) {
@@ -406,6 +449,7 @@ class Timebar extends Component {
   }
 
   render() {
+
     return (
       <div className={css['c-timebar']}>
         <div className={classnames(css['c-timebar-element'], css['c-timebar-datepicker'])}>
@@ -434,10 +478,17 @@ class Timebar extends Component {
             paused={this.state.paused}
           />
         </div>
+
         <div
           className={classnames(css['c-timebar-element'], css['c-timeline'])}
           id="timeline_svg_container"
-        />
+        >
+          <div
+            className={css['c-timeline-inner-brush-footer']}
+          >
+            {this.state.innerDurationHumanized}
+          </div>
+        </div>
       </div>
     );
   }

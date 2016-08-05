@@ -2,6 +2,8 @@
 
 .c-timeline {
   flex: 1;
+  margin-top: -24px;
+  position: relative;
 
   .c-timeline-area {
     fill: $color-8;
@@ -21,15 +23,21 @@
 
   .c-timeline-outer-brush-selection {
     fill-opacity: 0;
-    stroke: $color-3;
-    stroke-alignment: inner;
-    stroke-width: 3px;
+    stroke-width: 0;
+  }
+
+  .c-timeline-outer-brush-handle {
+    fill: $color-3;
+    pointer-events: none;
+    width: 4px;
   }
 
   .c-timeline-inner-brush-selection {
     fill: $color-4;
     fill-opacity: .2;
     stroke-width: 0;
+    y: -20px;
+    height: 999px;
   }
 
   .c-timeline-outer-brush-circle {
@@ -38,4 +46,19 @@
     pointer-events: none;
   }
 
+  .c-timeline-inner-brush-footer {
+    background-color: $color-1;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: $color-4;
+    height: 24px;
+    font-size: $font-size-x-small;
+    left: 0;
+    min-width: 100px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    z-index: 99;
+  }
 }
