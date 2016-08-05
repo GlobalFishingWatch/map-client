@@ -12,12 +12,17 @@ class CoverPage extends Component {
     }, 1000);
   }
 
+  alerte(){
+    alert("d");
+  }
+
   render() {
     return (
       <div className={CoverPageStyle['c-cover-page']}>
         <div>
           <Slider
             dots
+            dotsClass={CoverPageStyle['dots-cover']}
             arrows={false}
             draggable={false}
             infinite

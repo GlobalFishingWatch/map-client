@@ -4,6 +4,30 @@
   background-color: $color-9;
   padding-top: 100px;
 
+  .dots-cover {
+    list-style: none;
+    padding-left: 110px;
+    position: relative;
+    top: 22px;
+    .slick-active{
+      background-color: red;
+    }
+    li{
+      display: inline-block;
+      button{
+        width: 14px;
+        height: 14px;
+        background: #fff;
+        transform: rotate(45deg);
+        outline: 0;
+        border-radius: 0px;
+        margin-right: 15px;
+        border: 0;
+        font-size: 0;
+      }
+    }
+  }
+
   h1 {
     color: $color-4;
     font-family: $font-family-1;
@@ -49,6 +73,7 @@
     padding-right: 110px;
 
     svg {
+      display: none;
       cursor: pointer;
       fill: $color-4;
       margin-right: 15px;
