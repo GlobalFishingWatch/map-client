@@ -1,0 +1,23 @@
+@import '../_settings.scss';
+
+.c-btn-primary-arrow {
+  align-items: center;
+  background-color: $color-3;
+  color: $color-4;
+  display: flex;
+  font-family: $font-family-1;
+  font-size: $font-size-small;
+  font-weight: $font-weight-normal;
+  height: 40px;
+  justify-content: center;
+  letter-spacing: -.1px;
+  line-height: .4;
+  text-decoration: none;
+  width: 210px;
+
+  img {
+    margin-left: -5px;
+    margin-right: 7px;
+    width: 35px;
+  }
+}

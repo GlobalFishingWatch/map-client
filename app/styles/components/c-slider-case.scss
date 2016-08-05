@@ -2,7 +2,7 @@
 
 .c-slider-case {
   align-items: center;
-  display: flex;
+  display: flex !important;
   font-family: $font-family-1;
   justify-content: space-between;
   padding: 0 110px;
