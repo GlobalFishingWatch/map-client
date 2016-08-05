@@ -1,10 +1,6 @@
 @import '../_settings.scss';
 
 .c-box-triangle {
-  -moz-transform: rotate(-135deg);
-  -ms-transform: rotate(-135deg);
-  -o-transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
   border-bottom: 2px solid $color-4;
   border-right: 2px solid $color-4;
   cursor: pointer;
@@ -15,10 +11,6 @@
   width: 52px;
 
   .triangle-min {
-    -moz-transform: rotate(-180deg);
-    -ms-transform: rotate(-180deg);
-    -o-transform: rotate(-180deg);
-    -webkit-transform: rotate(-180deg);
     border-bottom: 2px solid $color-4;
     border-right: 2px solid $color-4;
     height: 12px;

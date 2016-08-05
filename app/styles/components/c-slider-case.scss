@@ -2,7 +2,7 @@
 
 .c-slider-case {
   align-items: center;
-  display: flex !important;
+  display: flex;
   font-family: $font-family-1;
   justify-content: space-between;
   padding: 0 110px;
@@ -17,7 +17,7 @@
 
     h2 {
       color: $color-10;
-      font-size: 14px;
+      font-size: $font-size-small;
       font-weight: $font-weight-bold;
       letter-spacing: -.1px;
       margin-bottom: 30px;

@@ -17,8 +17,8 @@
   }
   align-items: center;
   display: flex;
-  font-size: 16px;
-  font-weight: normal;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-normal;
   height: 80px;
   justify-content: space-between;
   line-height: 30px;
@@ -130,17 +130,17 @@
         padding-left: 0 !important;
 
         a {
-          color: #0d1a34;
+          color: $color-11;
           display: block;
-          font-size: 15px;
-          font-weight: 400;
+          font-size: $font-size-small;
+          font-weight: $font-weight-normal;
           line-height: 3.13;
           opacity: .9;
           text-align: center;
           text-transform: uppercase;
           transition: .2s;
           &:hover {
-            background-color: #8bbcc7;
+            background-color: $color-3;
             opacity: .6;
           }
         }
