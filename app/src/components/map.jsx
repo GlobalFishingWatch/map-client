@@ -224,6 +224,8 @@ class Map extends Component {
           }
           if (newLayer.type === 'ClusterAnimation') {
             callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, index);
+          } else if (newLayer.type === 'CartoDBBasemap') {
+            promises.push(this.addCartoBasemap(newLayer, index));
           } else {
             promises.push(this.addCartoLayer(newLayer, index));
           }
@@ -274,6 +276,27 @@ class Map extends Component {
    * @param index
    */
   addCartoLayer(layerSettings, index) {
+    const addedLayers = this.state.addedLayers;
+
+    const promise = new Promise(((resolve) => {
+      cartodb.createLayer(this.map, layerSettings.source.args.url)
+        .addTo(this.map, index)
+        .done(((layer, cartoLayer) => {
+          addedLayers[layer.title] = cartoLayer;
+          resolve();
+        }).bind(this, layerSettings));
+    }));
+    return promise;
+  }
+
+  /**
+   * Creates a Carto-based layer
+   *
+   * @returns {Promise}
+   * @param layerSettings
+   * @param index
+   */
+  addCartoBasemap(layerSettings, index) {
     const addedLayers = this.state.addedLayers;
 
     const promise = new Promise(((resolve) => {
