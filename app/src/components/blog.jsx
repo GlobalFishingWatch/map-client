@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
 import Header from '../containers/header';
 import Footer from './shared/footer';
+import { Link } from 'react-router';
+import listposts from '../../styles/components/c-list-posts.scss';
+import CoverBlog from './blog/cover_blog';
+import PaginationBlog from './blog/pagination';
+import boxtriangle from '../../assets/icons/box_triangle.svg';
 
 class Blog extends Component {
 
@@ -11,27 +15,42 @@ class Blog extends Component {
 
   render() {
     let articles = [];
+
     if (this.props.recentPost) {
       articles = this.props.recentPost.posts.map((article) => (
         <article>
-          <h2>{article.title}</h2>
-          <span dangerouslySetInnerHTML={{ __html: article.content }} />
+          <Link to={`/blog/${article.slug}`}>
+            <h2>{article.title}</h2>
+          </Link>
+          <span className={listposts.datapost}>{article.date.substr(0, 10)}</span>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: article.excerpt
+            }}
+          />
+          <p className={listposts['button-more']}>
+            <Link to={`/blog/${article.slug}`}>
+              <img
+                alt="Find out more"
+                src={boxtriangle}
+              />
+              FIND OUT MORE
+            </Link>
+          </p>
+          <hr />
         </article>
       ));
+    } else {
+      articles = (<div>Loading....</div>);
     }
-
 
     return (<div>
       <Header />
-      <section className={home.header_home}>
-        <h1>
-          Blog
-        </h1>
-
-      </section>
-      <section>
+      <CoverBlog />
+      <section className={listposts['c-list-posts']}>
         {articles}
       </section>
+      <PaginationBlog />
       <Footer />
     </div>);
   }

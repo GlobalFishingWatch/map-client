@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import ButtonBoxSlider from './button_box_slider';
-import CoverPageStyle from '../../../styles/components/c_cover_page.scss';
 import BoxTriangleStyle from '../../../styles/components/c_box_triangle.scss';
+import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 
 class CoverPage extends Component {
   gosection() {
@@ -12,7 +12,7 @@ class CoverPage extends Component {
   }
 
   render() {
-    return (<section className={CoverPageStyle.c_cover_page}>
+    return (<section className={CoverPageStyle['c-cover-page']}>
       <div>
         <h1>
           The first global view of commercial fishing activity
