@@ -22,13 +22,13 @@
 
   .c-timeline-outer-brush-selection {
     fill-opacity: 0;
-    stroke: $color-3;
-    stroke-alignment: inner;
-    stroke-width: 3px;
+    stroke-width: 0;
   }
 
   .c-timeline-outer-brush-handle {
-    // fill: $color-3;
+    fill: $color-3;
+    pointer-events: none;
+    width: 4px;
   }
 
   .c-timeline-inner-brush-selection {
@@ -41,6 +41,12 @@
     cursor: ew-resize;
     fill: $color-4;
     pointer-events: none;
+  }
+
+  .c-timeline-inner-brush-footer {
+    rect {
+      fill: red;
+    }
   }
 
 }
