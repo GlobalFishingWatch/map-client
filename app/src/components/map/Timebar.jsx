@@ -78,7 +78,7 @@ class Timebar extends Component {
     const dummyData = this.getDummyData();
     const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
     leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
-    width = parseInt(computedStyles.width, 10) - 30;
+    width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
 
     x = d3.scaleTime().range([0, width]);
@@ -95,7 +95,7 @@ class Timebar extends Component {
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
     this.svg = d3.select('#timeline_svg_container').append('svg')
-      .attr('width', width)
+      .attr('width', width + 30)
       .attr('height', height);
 
     this.group = this.svg.append('g');
@@ -184,7 +184,8 @@ class Timebar extends Component {
       const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
 
       for (let m = startMonth; m <= endMonth; m++) {
-        for (let d = 2; d <= 28; d += 4) {
+        const endDay = (m === endDate.getMonth()) ? endDate.getDay() : 28;
+        for (let d = 2; d <= endDay; d += 4) {
           dummyData.push({
             date: new Date(year, m, d),
             price: Math.random()
