@@ -2,6 +2,7 @@
 
 .c-timeline {
   flex: 1;
+  margin-top: -20px;
 
   .c-timeline-area {
     fill: $color-8;
@@ -24,6 +25,10 @@
     stroke: $color-3;
     stroke-alignment: inner;
     stroke-width: 3px;
+  }
+
+  .c-timeline-outer-brush-handle {
+    // fill: $color-3;
   }
 
   .c-timeline-inner-brush-selection {

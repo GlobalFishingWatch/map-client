@@ -23,7 +23,7 @@ let currentHandleIsWest;
 let dragging;
 let currentTimestamp;
 
-const brush = () => d3.brushX().extent([[0, -10], [width, height + 7]]);
+let brush;
 let innerBrushLeftCircle;
 let innerBrushRightCircle;
 
@@ -80,6 +80,9 @@ class Timebar extends Component {
     leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
+    const innerDurationBarHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
+    console.log(height)
+    console.log(innerDurationBarHeight)
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -96,11 +99,10 @@ class Timebar extends Component {
 
     this.svg = d3.select('#timeline_svg_container').append('svg')
       .attr('width', width + 30)
-      .attr('height', height);
+      .attr('height', height + innerDurationBarHeight);
 
-    this.group = this.svg.append('g');
-      // .attr('class', css['c-timeline'])
-      // .attr('transform', `translate(${margin.left},${margin.top})`);
+    this.group = this.svg.append('g')
+      .attr('transform', `translate(0,${innerDurationBarHeight})`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -113,6 +115,7 @@ class Timebar extends Component {
       .call(xAxis);
 
     // set up brush generators
+    brush = () => d3.brushX().extent([[0, 0], [width, height]]);
     this.innerBrushFunc = brush();
     this.outerBrushFunc = brush();
 
@@ -130,7 +133,8 @@ class Timebar extends Component {
     // no need to keep brush overlays (the invisible interactive zone outside of the brush)
     this.outerBrush.select('.overlay').remove();
     this.outerBrush.select('.selection').attr('cursor', 'default');
-    this.outerBrush.selectAll('.selection').classed(css['c-timeline-outer-brush-selection'], true);
+    this.outerBrush.select('.selection').classed(css['c-timeline-outer-brush-selection'], true);
+    // this.outerBrush.selectAll('.handle').classed(css['c-timeline-outer-brush-handle'], true);
     this.innerBrush.select('.overlay').remove();
     this.innerBrush.select('.selection').classed(css['c-timeline-inner-brush-selection'], true);
     innerBrushLeftCircle = this.innerBrush.append('circle');
