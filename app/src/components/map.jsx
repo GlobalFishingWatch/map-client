@@ -167,7 +167,7 @@ class Map extends Component {
 
   updateTrackLayer(nextProps) {
     if (this.props.map.track !== nextProps.map.track) {
-      let trackLayer = this.state.trackLayer;
+      const trackLayer = this.state.trackLayer;
       trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
     }
   }
