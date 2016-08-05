@@ -145,7 +145,7 @@ class Map extends Component {
     if (this.state.trajectory) {
       this.state.trajectory.setMap(null);
     }
-    this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
+    // this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
 
     if (vesselInfo) {
       this.showVesselDetails(vesselInfo);
@@ -168,16 +168,6 @@ class Map extends Component {
   updateTrackLayer(nextProps) {
     if (this.props.map.track !== nextProps.map.track) {
       let trackLayer = this.state.trackLayer;
-      if (!trackLayer) {
-        const Overlay = createTrackLayer(google);
-        trackLayer = new Overlay(
-          this.refs.map.props.map,
-          this.refs.mapContainer.offsetWidth,
-          this.refs.mapContainer.offsetHeight
-        );
-        this.setState({ trackLayer });
-      }
-      trackLayer.regenerate();
       trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
     }
   }
@@ -263,7 +253,14 @@ class Map extends Component {
       this.props.filters,
       this.state.vesselLayerTransparency,
       layerSettings.visible);
-    this.setState({ overlay: canvasLayer });
+    // Create track layer
+    const Overlay = createTrackLayer(google);
+    const trackLayer = new Overlay(
+      this.refs.map.props.map,
+      this.refs.mapContainer.offsetWidth,
+      this.refs.mapContainer.offsetHeight
+    );
+    this.setState({ overlay: canvasLayer, trackLayer });
     this.state.addedLayers[layerSettings.title] = canvasLayer;
   }
 
