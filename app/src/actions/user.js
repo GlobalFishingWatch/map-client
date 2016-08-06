@@ -20,6 +20,14 @@ export function getLoggedUser() {
       token = sessionStorage.getItem(TOKEN_SESSION);
       dispatch(setToken(token));
     }
+
+    if (!token) {
+      dispatch({
+        type: GET_USER,
+        payload: null
+      });
+    }
+
     fetch(`${url}/v1/me`, {
       method: 'GET',
       headers: {
@@ -40,13 +48,19 @@ export function getLoggedUser() {
 }
 
 export function logout() {
-  sessionStorage.removeItem(TOKEN_SESSION);
-  return {
-    type: LOGOUT
+  return (dispatch) => {
+    sessionStorage.removeItem(TOKEN_SESSION);
+    dispatch({
+      type: LOGOUT
+    });
   };
 }
 
 export function login() {
   window.location = `https://skytruth-pleuston.appspot.com/v1/authorize?\
 response_type=token&client_id=asddafd&redirect_uri=${window.location}`;
+}
+
+export function register() {
+  alert('Redirect to registration page');
 }

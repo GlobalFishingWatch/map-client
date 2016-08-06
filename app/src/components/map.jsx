@@ -11,6 +11,7 @@ import map from '../../styles/index.scss';
 import Timebar from '../containers/map/timebar';
 import Modal from './shared/Modal';
 import Share from '../containers/map/Share';
+import NoLogin from '../containers/map/NoLogin';
 import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -159,6 +160,10 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.token) {
+      return;
+    }
+
     if (!nextProps.map) {
       return;
     }
@@ -454,6 +459,9 @@ class Map extends Component {
    */
   render() {
     return (<div>
+      <Modal opened={!this.props.token} closeable={false}>
+        <NoLogin />
+      </Modal>
       <Modal opened={this.props.shareModal.open} close={this.props.closeShareModal}>
         <Share />
       </Modal>
