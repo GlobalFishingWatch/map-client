@@ -1,7 +1,7 @@
 @import '../base/text.scss';
 @import '../base/colors.scss';
 
-.controlPanel {
+.settingsPanel {
   input {
     display: block;
   }
@@ -15,11 +15,6 @@
     font-size: $font-size-medium;
     outline: 0;
     display: block;
-    margin: 0 auto;
     border-radius: 0;
-    margin-bottom: 7px;
-  }
-  label {
-    margin-left: 30px;
   }
 }

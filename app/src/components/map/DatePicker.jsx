@@ -35,7 +35,7 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
   onChange: React.PropTypes.func,
-  children: React.PropTypes.object,
+  children: React.PropTypes.array,
   /**
    * Current  date set (a Date object)
    */
