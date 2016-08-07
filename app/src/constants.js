@@ -10,6 +10,9 @@ export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 export const UPDATE_VESSEL_TRANSPARENCY = 'UPDATE_VESSEL_TRANSPARENCY';
 
+// Search
+export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
+
 // User actions
 export const GET_USER = 'GET_USER';
 export const SET_TOKEN = 'SET_TOKEN';

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import ControlPanel from '../../components/map/ControlPanel';
-import { updateFilters } from '../../actions/filters';
-import { toggleLayerVisibility, updateVesselTransparency } from '../../actions/map';
+import { updateVesselTransparency } from '../../actions/map';
 
 
 const mapStateToProps = (state) => ({
@@ -10,12 +9,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateFilters: () => {
-    dispatch(updateFilters());
-  },
-  toggleLayerVisibility: () => {
-    dispatch(toggleLayerVisibility());
-  },
   updateVesselTransparency: (visible) => {
     dispatch(updateVesselTransparency(visible));
   }

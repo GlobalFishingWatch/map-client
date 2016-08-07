@@ -33,11 +33,7 @@ class LayerPanel extends Component {
       }
     }
 
-    return (
-      <div className={controlPanelStyle.content_accordion}>
-        <ul>{layers}</ul>
-      </div>
-    );
+    return (<ul>{layers}</ul>);
   }
 }
 

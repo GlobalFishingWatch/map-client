@@ -21,7 +21,7 @@
   }
   .input_accordion {
     line-height: 3;
-    font-size: $font-size-xsmall;
+    font-size: $font-size-xxsmall;
     font-weight: $font-weight-bold;
     background-color: transparent;
     border: none;
@@ -29,10 +29,7 @@
     width: 100%;
     max-width: 260px;
     display: block;
-    margin: 10px auto;
-    &:focus {
-      border-bottom: 1px solid $color9;
-    }
+    border-bottom: 1px solid $color9;
   }
   ::-webkit-input-placeholder {
     /* Chrome/Opera/Safari */

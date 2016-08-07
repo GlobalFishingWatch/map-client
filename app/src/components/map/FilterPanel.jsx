@@ -27,6 +27,8 @@ class FilterPanel extends Component {
       }
       return 0;
     });
+
+    this.updateFilters = this.props.updateFilters.bind(this);
   }
 
   render() {
@@ -41,7 +43,7 @@ class FilterPanel extends Component {
 
     return (
       <div className={filtersPanel.filtersPanel}>
-        <select id="ISOfilter" onChange={(e) => this.props.onChange('flag', e.target.value)} defaultValue="">
+        <select id="ISOfilter" onChange={(e) => this.updateFilters({ flag: e.target.value })} defaultValue="">
           <option value="" key={-1}>Vessel flag (ISO code)</option>
           {countries}
         </select>
@@ -51,7 +53,7 @@ class FilterPanel extends Component {
 }
 
 FilterPanel.propTypes = {
-  onChange: React.PropTypes.func
+  updateFilters: React.PropTypes.func
 };
 
 export default FilterPanel;
