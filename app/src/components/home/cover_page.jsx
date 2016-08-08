@@ -7,12 +7,29 @@ import MenuMobile from '../shared/menu_mobile';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
+import imageLeo from '../../../assets/images/slider_2.jpg';
+import sliderOne from '../../../assets/images/ship_1.jpg';
 
 class CoverPage extends Component {
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      currentSlider: 0
+    };
+
+    this.onSliderChange = this.onSliderChange.bind(this);
+  }
+
   gosection() {
     $('html, body').animate({
       scrollTop: $('#case_study').offset().top
     }, 1000);
+  }
+
+  onSliderChange(currentSlider) {
+    console.log(arguments);
+    this.setState({ currentSlider });
   }
 
   render() {
@@ -23,15 +40,22 @@ class CoverPage extends Component {
       infinite: true,
       draggable: false,
       speed: 500,
-      afterChange: function(currentSlide){
-		    	console.log(currentSlide);
-          if(currentSlide==1){
-            $("#coverchange").css("background-image","url(../../../assets/images/slider_2.jpg)");
-          }
-		    }
+      afterChange: this.onSliderChange
+    };
+
+    let background;
+    switch (this.state.currentSlider) {
+      case 1:
+        background = imageLeo;
+        break;
+
+      default:
+        background = sliderOne;
+        break;
     }
+
     return (
-      <div className={CoverPageStyle['c-cover-page']} id={'coverchange'}>
+      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${background})` }}>
         <div className={CoverPageStyle['layer-cover']}>
         <MenuMobile />
         <Header />
