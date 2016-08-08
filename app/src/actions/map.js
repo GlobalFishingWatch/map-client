@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import PelagosClient from '../lib/pelagosClient';
 import { push } from 'react-router-redux';
-
 import {
   SET_LAYERS,
   SET_ZOOM,
@@ -12,7 +11,8 @@ import {
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
-  SET_SHARE_MODAL_ERROR
+  SET_SHARE_MODAL_ERROR,
+  UPDATE_VESSEL_TRANSPARENCY
 } from '../constants';
 
 const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
@@ -117,6 +117,13 @@ export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
+  };
+}
+
+export function updateVesselTransparency(density) {
+  return {
+    type: UPDATE_VESSEL_TRANSPARENCY,
+    payload: parseInt(density, 10)
   };
 }
 

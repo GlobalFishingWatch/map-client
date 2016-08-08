@@ -4,13 +4,14 @@ import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import CanvasLayer from './layers/canvas_layer';
 import createTrackLayer from './layers/track_layer';
-import LayerPanel from './map/layer_panel';
+import ControlPanel from '../containers/map/ControlPanel';
 import VesselPanel from './map/vessel_panel';
 import Header from '../containers/header';
 import map from '../../styles/index.scss';
 import Timebar from '../containers/map/timebar';
 import Modal from './shared/Modal';
 import Share from '../containers/map/Share';
+import NoLogin from '../containers/map/NoLogin';
 import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -25,14 +26,10 @@ class Map extends Component {
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
       shareModalOpened: false,
-      leftHandlerPosition: 0,
-      rightHandlerPosition: 0,
-      timeBarWidth: 0,
       running: 'stop'
     };
 
     this.updateFilters = this.updateFilters.bind(this);
-    this.updateVesselLayerDensity = this.updateVesselLayerDensity.bind(this);
     this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
@@ -40,7 +37,6 @@ class Map extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.propsToggleLayerVisibility = this.props.toggleLayerVisibility.bind(this);
   }
 
   /**
@@ -72,7 +68,7 @@ class Map extends Component {
    * Called once additional vessel details are loaded
    * TODO: should probably be moved elsewhere
    *
-   * @param data Data returned by the API
+   * @param incomingData Data returned by the API
    */
   handleAdditionalVesselDetails(incomingData) {
     const currentVesselInfo = this.state.currentVesselInfo;
@@ -158,6 +154,10 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.token) {
+      return;
+    }
+
     if (!nextProps.map) {
       return;
     }
@@ -165,6 +165,7 @@ class Map extends Component {
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
+    this.updateVesselTransparency(nextProps);
 
     if (nextProps.map.isWorkspaceUpdate) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
@@ -262,7 +263,7 @@ class Map extends Component {
       this.map,
       this.props.token,
       this.props.filters,
-      this.state.vesselLayerTransparency,
+      this.props.map.vesselTransparency,
       layerSettings.visible);
     // Create track layer
     const Overlay = createTrackLayer(google);
@@ -410,13 +411,19 @@ class Map extends Component {
   }
 
   /**
-   * Handles changes
+   * Handles vessel transparency changes
    *
-   * @param vesselLayerTransparency
+   * @param nextProps
    */
-  updateVesselLayerDensity(vesselLayerTransparency) {
-    this.setState({ vesselLayerTransparency });
-    this.state.overlay.vesselLayerTransparency = vesselLayerTransparency;
+  updateVesselTransparency(nextProps) {
+    if (this.props.map.vesselTransparency === nextProps.map.vesselTransparency) {
+      return;
+    }
+
+    if (!this.state.overlay) {
+      return;
+    }
+    this.state.overlay.vesselTransparency = nextProps.map.vesselTransparency;
 
     if (this.state.running !== 'play') {
       this.state.overlay.refresh();
@@ -452,6 +459,9 @@ class Map extends Component {
    */
   render() {
     return (<div>
+      <Modal opened={!this.props.token} closeable={false}>
+        <NoLogin />
+      </Modal>
       <Modal opened={this.props.shareModal.open} close={this.props.closeShareModal}>
         <Share />
       </Modal>
@@ -466,13 +476,7 @@ class Map extends Component {
         <div className={map.timebar_container}>
           <Timebar />
         </div>
-        <LayerPanel
-          layers={this.props.map.layers}
-          onLayerToggle={this.propsToggleLayerVisibility}
-          onFilterChange={this.updateFilters}
-          onDrawDensityChange={this.updateVesselLayerDensity}
-          startDate={this.props.filters.startDate} endDate={this.props.filters.endDate}
-        />
+        <ControlPanel />
         <VesselPanel vesselInfo={this.state.currentVesselInfo} />
         <GoogleMapLoader
           containerElement={

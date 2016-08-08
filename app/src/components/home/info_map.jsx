@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InfoMapContentStyle from '../../../styles/components/c_info_map_content.scss';
-import ButtonStyle from '../../../styles/components/c_button.scss';
+import ButtonStyle from '../../../styles/components/c-button.scss';
 import BoxTriangleWhiteStyle from '../../../assets/icons/box_triangle_white.svg';
 
 class InfoMap extends Component {

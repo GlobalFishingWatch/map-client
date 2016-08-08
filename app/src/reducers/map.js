@@ -9,7 +9,8 @@ import {
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
-  SET_SHARE_MODAL_ERROR
+  SET_SHARE_MODAL_ERROR,
+  UPDATE_VESSEL_TRANSPARENCY
 } from '../constants';
 
 const initialState = {
@@ -22,7 +23,8 @@ const initialState = {
     open: false,
     error: null
   },
-  workspaceId: null
+  workspaceId: null,
+  vesselTransparency: 5
 };
 
 /**
@@ -47,6 +49,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
+    case UPDATE_VESSEL_TRANSPARENCY:
+      return Object.assign({}, state, { vesselTransparency: action.payload });
     case TOGGLE_LAYER_VISIBILITY: {
       const layers = state.layers.slice(0);
       for (let i = 0, length = layers.length; i < length; i++) {

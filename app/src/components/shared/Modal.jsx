@@ -46,12 +46,18 @@ class Modal extends React.Component {
       return null;
     }
 
+    let closeButton;
+
+    if (this.props.closeable) {
+      closeButton = (<button className={styles['close-button']} onClick={() => this.props.close()}>
+        <Icon className={styles.icon} title="Close this modal" />
+      </button>);
+    }
+
     return (
       <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
         <div className={styles.content}>
-          <button className={styles['close-button']} onClick={() => this.props.close()}>
-            <Icon className={styles.icon} title="Close this modal" />
-          </button>
+          {closeButton}
           {this.props.children}
         </div>
       </div>
@@ -73,7 +79,12 @@ Modal.propTypes = {
    * Define the content of the modal
    * Required
    */
-  children: React.PropTypes.any
+  children: React.PropTypes.any,
+  /**
+   * Define the modal box can be closed by the user
+   * Required
+   */
+  closeable: React.PropTypes.bool
 };
 
 
