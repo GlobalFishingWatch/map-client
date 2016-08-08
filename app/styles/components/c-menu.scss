@@ -73,16 +73,16 @@
 
       li {
         display: inline-block;
-        margin-right: 50px;
+        margin-right: 40px;
 
         &:nth-last-child(2) {
-          margin-right: 46px;
+          margin-right: 45px;
         }
 
         &:last-child {
           border-left: 1px solid $color-4;
           margin-right: 0;
-          padding-left: 46px;
+          padding-left: 45px;
         }
 
         a {
