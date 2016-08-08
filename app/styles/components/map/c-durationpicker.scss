@@ -1,0 +1,24 @@
+@import '../../settings';
+@import '../../layout-settings';
+
+
+.c-durationpicker {
+  background-color: $color-1;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  color: $color-4;
+  font-size: $font-size-x-small;
+  height: $duration-picker-height;
+  left: 0;
+  min-width: 100px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  z-index: 99;
+
+  .c-durationpicker-text {
+    display: inline-block;
+    margin-top: 4px;;
+  }
+}

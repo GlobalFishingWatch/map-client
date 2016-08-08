@@ -1,7 +1,10 @@
 @import '../../settings';
+@import '../../layout-settings';
 
 .c-timeline {
   flex: 1;
+  margin-top: -$duration-picker-height;
+  position: relative;
 
   .c-timeline-area {
     fill: $color-8;
@@ -21,15 +24,21 @@
 
   .c-timeline-outer-brush-selection {
     fill-opacity: 0;
-    stroke: $color-3;
-    stroke-alignment: inner;
-    stroke-width: 3px;
+    stroke-width: 0;
+  }
+
+  .c-timeline-outer-brush-handle {
+    fill: $color-3;
+    pointer-events: none;
+    width: 4px;
   }
 
   .c-timeline-inner-brush-selection {
     fill: $color-4;
     fill-opacity: .2;
+    height: $timebar-height + $duration-picker-height;
     stroke-width: 0;
+    y: -$duration-picker-height;
   }
 
   .c-timeline-outer-brush-circle {
@@ -37,5 +46,6 @@
     fill: $color-4;
     pointer-events: none;
   }
+
 
 }
