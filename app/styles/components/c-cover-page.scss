@@ -6,6 +6,10 @@
   background-size: cover;
   background-position: center;
 
+  .c-header-menu {
+    background-color: transparent !important;
+  }
+
   .layer-cover{
     background-color: rgba(23, 64, 132, 0.8);
     top: 0;
@@ -41,7 +45,7 @@
     }
   }
   .leo-slider{
-
+    padding-top: 170px;
     blockquote{
         max-width: 460px;
         font-family: $font-family-1;
@@ -86,6 +90,7 @@
     margin-top: 0;
     max-width: 1280px;
     padding-left: 110px;
+    padding-top: 170px;
 
     &::after {
       background-color: $color-10;
@@ -104,7 +109,7 @@
     font-size: $font-size-medium;
     font-weight: $font-weight-normal;
     letter-spacing: -.1px;
-    margin-bottom: 170px;
+    margin-bottom: 240px;
     max-width: 668px;
     padding-left: 110px;
 

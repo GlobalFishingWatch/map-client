@@ -33,13 +33,10 @@ class CoverPage extends Component {
           >
             <div>
               <h1>
-                The first global view of commercial fishing activity
+                Introducing Global Fishing Watch
               </h1>
-              <p>Global Fishing Watch, a partnership of Oceana, SkyTruth and Google, enables anyone with an Internet
-                connection to see global fishing activity worldwide in near real-time
-                - for free. It s a powerful tool that
-                will hold our leaders accountable for maintaining abundant oceans and show consumers
-                where - - and by whom -- their fish is being caught.
+              <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
+                 activity anywhere in the ocean in near real-time — for free.
               </p>
             </div>
             <div className={CoverPageStyle['leo-slider']}>
