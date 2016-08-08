@@ -80,12 +80,40 @@ class CoverPage extends Component {
                 <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
                 <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
               </div>
+              <div>
+                <h1>
+                  Protect ocean ecosystems
+                </h1>
+                <p>
+                  Monitor fishing activity in marine protected areas to ensure
+                  proper management and oversight of these special places.
+                </p>
+              </div>
+              <div>
+                <h1>
+                  See where fishing is happening
+                </h1>
+                <p>
+                  Observe fishing patterns and activity based on vessel position, course and
+                  speed as revealed by Automatic Identification System broadcasts.
+                </p>
+              </div>
+              <div>
+                <h1>
+                  Improve fisheries management worldwide
+                </h1>
+                <p>
+                  Provide tools for governments, fishery management organizations,
+                  scientists, private industry, and NGOs to implement rules and
+                  regulations that will ensure a sustainable and abundant ocean.
+                </p>
+              </div>
             </Slider>
             <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
             <div className={CoverPageStyle['footer-header']}>
-              <div>Brought to you by:
+              <div>
                 <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
               </div>
             </div>
