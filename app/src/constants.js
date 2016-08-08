@@ -18,6 +18,8 @@ export const TOKEN_SESSION = 'TOKEN_SESSION';
 export const GET_RECENT_POST = 'GET_RECENT_POST';
 export const GET_POST_BY_SLUG = 'GET_POST_BY_SLUG';
 
+export const GET_FAQ_ENTRIES = 'GET_FAQ_ENTRIES';
+
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
 

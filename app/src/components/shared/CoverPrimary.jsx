@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 
-class CoverBlog extends Component {
+class CoverPrimary extends Component {
 
   render() {
     return (<section className={CoverPage['c-cover-page']}>
       <div>
-        <h1 className={CoverPage.title_cover_blog}>
-          Blog
+        <h1 className={CoverPage['cover-main-title']}>
+          {this.props.title}
         </h1>
         <p>
-            Latest news on Global Fishing Watch
+          {this.props.subtitle}
         </p>
-        <div className={CoverPage.footer_header_blog}>
+        <div className={CoverPage.footer_header}>
           <div>Brought to you by:</div>
         </div>
       </div>
@@ -20,4 +20,9 @@ class CoverBlog extends Component {
   }
 }
 
-export default CoverBlog;
+CoverPrimary.propTypes = {
+  title: React.PropTypes.any,
+  subtitle: React.PropTypes.any
+};
+
+export default CoverPrimary;

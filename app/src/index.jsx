@@ -8,6 +8,7 @@ import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-rou
 import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
+import faqReducer from './reducers/faq';
 import userReducer from './reducers/user';
 import blogReducer from './reducers/blog';
 import filtersReducer from './reducers/filters';
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   blog: blogReducer,
   filters: filtersReducer,
   appearance: appearanceReducer,
+  faqEntries: faqReducer,
   contactStatus: contactReducer
 });
 

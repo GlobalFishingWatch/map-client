@@ -3,7 +3,7 @@ import Header from '../containers/header';
 import Footer from './shared/footer';
 import { Link } from 'react-router';
 import listposts from '../../styles/components/c-list-posts.scss';
-import CoverBlog from './blog/cover_blog';
+import CoverPrimary from './shared/CoverPrimary';
 import PaginationBlog from './blog/pagination';
 import boxtriangle from '../../assets/icons/box_triangle.svg';
 
@@ -18,7 +18,7 @@ class Blog extends Component {
 
     if (this.props.recentPost) {
       articles = this.props.recentPost.posts.map((article) => (
-        <article>
+        <article key={article.id}>
           <Link to={`/blog/${article.slug}`}>
             <h2>{article.title}</h2>
           </Link>
@@ -46,7 +46,7 @@ class Blog extends Component {
 
     return (<div>
       <Header />
-      <CoverBlog />
+      <CoverPrimary title="Blog" subtitle="Latest news on Global Fishing Watch" />
       <section className={listposts['c-list-posts']}>
         {articles}
       </section>

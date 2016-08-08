@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import listposts from '../../styles/components/c-list-posts.scss';
 import Header from '../containers/header';
 import Footer from './shared/footer';
-import CoverBlogDetail from './blog/cover_blog_detail';
+import { Link } from 'react-router';
+import CoverSecondary from './shared/CoverSecondary';
 
 class BlogDetail extends Component {
 
@@ -26,10 +27,11 @@ class BlogDetail extends Component {
     } else {
       article = (<div>Loading....</div>);
     }
+    let coverTitle = (<Link to={'/blog'}>Blog</Link>);
 
     return (<div>
       <Header />
-      <CoverBlogDetail title={this.props.post ? this.props.post.title : null} />
+      <CoverSecondary title={coverTitle} subtitle={this.props.post ? this.props.post.title : null} />
       <section className={listposts['c-list-posts']}>
         {article}
       </section>
@@ -40,7 +42,7 @@ class BlogDetail extends Component {
 
 BlogDetail.propTypes = {
   post: React.PropTypes.object,
-  params: React.PropTypes.array,
+  params: React.PropTypes.object,
   getPostBySlug: React.PropTypes.func
 };
 
