@@ -8,11 +8,11 @@ class CaseStudySlider extends Component {
   render() {
     return (<Slider
       dots={false}
-      arrows={true}
+      arrows
       infinite
       speed={500}
       fade
-      afterChange={function (event, slick, currentSlide){
+      afterChange={function (event, slick) {
         alert(slick);
       }}
     >

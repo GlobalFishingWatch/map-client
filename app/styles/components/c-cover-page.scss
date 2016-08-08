@@ -40,17 +40,17 @@
       }
     }
   }
-  .leo-slider{
+  .leo-slider {
     padding-top: 170px;
     blockquote{
-        max-width: 460px;
-        font-family: $font-family-1;
-        font-size: $font-size-normal;
-        font-weight: $font-weight-normal;
-        font-style: italic;
-        letter-spacing: -.1px;
-        color: $color-4;
-        padding-left: 110px;
+      max-width: 460px;
+      font-family: $font-family-1;
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-normal;
+      font-style: italic;
+      letter-spacing: -.1px;
+      color: $color-4;
+      padding-left: 110px;
     }
 
     .author-quote {
@@ -64,7 +64,7 @@
       margin-bottom: 0;
 
       &::after {
-        content:'';
+        content: '';
         display: block;
         margin-top: 20px;
         height: 5px;
@@ -153,7 +153,7 @@
       stroke-width: 3;
     }
 
-    div{
+    div {
       &:last-child {
         z-index: 1;
       }

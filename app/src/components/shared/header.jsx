@@ -35,7 +35,8 @@ class Header extends Component {
     }
 
 
-    return (<header className={location.pathname === '/' ? home['c-header-menu-transparent'] : home['c-header-menu']} id={location.pathname === '/' ? 'menu_transparent' : null}>
+    return (<header className={location.pathname === '/' ? home['c-header-menu-transparent'] : home['c-header-menu']}
+                    id={location.pathname === '/' ? 'menu_transparent' : null}>
       <style
         dangerouslySetInnerHTML={{
           __html: `#menu_selected:after{
@@ -48,7 +49,7 @@ class Header extends Component {
         }`
         }}
       />
-    <nav className={home['c-menu']}>
+      <nav className={home['c-menu']}>
         <img
           onClick={() => this.props.setVisibleMenu(true)}
           className={home['icon-menu-mobile']}
@@ -72,7 +73,7 @@ class Header extends Component {
               }
               to="#"
             >News</Link>
-          <ul className={home['dropdown-content']}>
+            <ul className={home['dropdown-content']}>
               <li><Link to="/blog">Blog</Link></li>
               <li><Link to="/articles-publications">Articles and Publications</Link></li>
             </ul>

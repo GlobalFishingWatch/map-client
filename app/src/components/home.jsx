@@ -6,7 +6,6 @@ import FooterSecond from './shared/second_footer';
 import CaseStudySlider from './home/case_study_slider';
 import CoverPage from './home/cover_page';
 import InfoMap from './home/info_map';
-
 import SuccessStoryGallery from './home/success_story_gallery';
 
 class Home extends Component {
