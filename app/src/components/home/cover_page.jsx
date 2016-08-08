@@ -16,21 +16,27 @@ class CoverPage extends Component {
   }
 
   render() {
+    var settings = {
+    	dots: true,
+      fade: true,
+      dotsClass : CoverPageStyle['dots-cover'],
+      infinite: true,
+      draggable: false,
+      speed: 500,
+      afterChange: function(currentSlide){
+		    	console.log(currentSlide);
+          if(currentSlide==1){
+            $("#coverchange").css("background-image","url(../../../assets/images/slider_2.jpg)");
+          }
+		    }
+    }
     return (
-      <div className={CoverPageStyle['c-cover-page']}>
+      <div className={CoverPageStyle['c-cover-page']} id={'coverchange'}>
         <div className={CoverPageStyle['layer-cover']}>
         <MenuMobile />
         <Header />
         <div>
-          <Slider
-            dots
-            dotsClass={CoverPageStyle['dots-cover']}
-            arrows={false}
-            draggable={false}
-            infinite
-            speed={500}
-            fade
-          >
+          <Slider {...settings}>
             <div>
               <h1>
                 Introducing Global Fishing Watch
@@ -54,7 +60,7 @@ class CoverPage extends Component {
           </Slider>
           <div className={CoverPageStyle['footer-header']}>
             <ButtonBoxSlider />
-            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+            <div className={BoxTriangleStyle['c-box-triangle']} onck={this.gosection}>
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
             <div>Brought to you by:
