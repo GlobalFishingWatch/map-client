@@ -6,7 +6,7 @@ import _ from 'lodash';
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
 
 class CanvasLayer {
-  constructor(position, map, token, filters, vesselLayerTransparency, visible) {
+  constructor(position, map, token, filters, vesselTransparency, visible) {
     this.map = map;
     this.playbackData = {};
     this.position = position;
@@ -15,7 +15,7 @@ class CanvasLayer {
     this.visible = false;
     this.filters = filters;
     this.token = token;
-    this.vesselLayerTransparency = vesselLayerTransparency;
+    this.vesselTransparency = vesselTransparency;
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0];
@@ -388,8 +388,8 @@ class CanvasLayer {
    */
   drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
     const workCanvas = canvas;
-    const vesselLayerTransparency = this.vesselLayerTransparency;
-    const calculatedWeight = Math.min(weight / vesselLayerTransparency, 1);
+    const vesselTransparency = this.vesselTransparency;
+    const calculatedWeight = Math.min(weight / vesselTransparency, 1);
 
     workCanvas.ctx.fillStyle = `rgba(17,129,251,${calculatedWeight})`;
     workCanvas.ctx.fillRect(x, y, size, size);
