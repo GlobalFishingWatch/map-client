@@ -7,8 +7,8 @@ import boxtriangle from '../../../assets/icons/box_triangle.svg';
 class CaseStudySlider extends Component {
   render() {
     return (<Slider
-      dots
-      arrows={false}
+      dots={false}
+      arrows={true}
       infinite
       speed={500}
       fade
