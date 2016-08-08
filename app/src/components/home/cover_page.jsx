@@ -25,10 +25,9 @@ class CoverPage extends Component {
   }
 
   gosection() {
-    // $('html, body').animate({
-    //   scrollTop: $('#case_study').offset().top
-    // }, 1000);
-    document.body.scrollTop=300;
+    $('html, body').animate({
+      scrollTop: $('#case_study').offset().top
+    }, 1000);
   }
 
 
