@@ -19,8 +19,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SET_TIMELINE_DATES:
       return Object.assign({}, state, {
-        startDate: action.payload[0] || state.startDate,
-        endDate: action.payload[1] || state.endDate
+        timelineInnerExtent: action.payload
       });
     default:
       return state;

@@ -1,24 +1,13 @@
 {
-  "state": {
-    "title": "http://alpha-dev.globalfishingwatch.org/tile/temporal_2015_08_07_13_33_31",
-    "offset": 20,
-    "maxoffset": 100,
-    "lat": 0,
-    "lon": 0,
-    "zoom": 3,
-    "time": {
-      "__jsonclass__": [
-        "Date",
-        "2014-12-31T23:59:59.999Z"
-      ]
-    },
-    "timeExtent": 2842859650,
-    "paused": true
-  },
-  "map": {
-    "animations": [
-      {
-        "args": {
+  "workspace": {
+    "map": {
+      "center": [
+        0,
+        0
+      ],
+      "zoom": 3,
+      "layers": [
+        {
           "title": "Basemap",
           "source": {
             "type": "BinFormat",
@@ -27,12 +16,10 @@
             }
           },
           "visible": true,
-          "color": "#1a7ff0"
+          "color": "#1a7ff0",
+          "type": "CartoDBBasemap"
         },
-        "type": "CartoDBBasemap"
-      },
-      {
-        "args": {
+        {
           "title": "Bathimetry",
           "source": {
             "type": "BinFormat",
@@ -41,12 +28,10 @@
             }
           },
           "visible": true,
-          "color": "#1a7ff0"
+          "color": "#1a7ff0",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
+        {
           "title": "Ports",
           "source": {
             "type": "BinFormat",
@@ -55,12 +40,10 @@
             }
           },
           "visible": true,
-          "color": "#1a7ff0"
+          "color": "#1a7ff0",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
+        {
           "title": "Labels",
           "source": {
             "type": "BinFormat",
@@ -69,12 +52,22 @@
             }
           },
           "visible": true,
-          "color": "#da0ff0"
+          "color": "#da0ff0",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
+        {
+          "title": "VESSEL",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://storage.googleapis.com/vizzuality-staging/random/"
+            }
+          },
+          "visible": true,
+          "color": "green",
+          "type": "ClusterAnimation"
+        },
+        {
           "title": "MPA - No Take",
           "source": {
             "type": "BinFormat",
@@ -83,13 +76,11 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": true,
-          "color": "#da0000"
+          "visible": false,
+          "color": "#da0000",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
+        {
           "title": "MPA - Restricted Use",
           "source": {
             "type": "BinFormat",
@@ -98,13 +89,11 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
-          "visible": true,
-          "color": "#c45e00"
+          "visible": false,
+          "color": "#c45e00",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
+        {
           "title": "EEZ",
           "source": {
             "type": "BinFormat",
@@ -112,84 +101,49 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
-          "title": "High Seas Pockets",
+        {
+          "title": "High Seas Pocket",
           "source": {
             "type": "BinFormat",
             "args": {
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
         },
-        "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
-          "title": "RFMOs",
+        {
+          "title": "RFMO",
           "source": {
             "type": "BinFormat",
             "args": {
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
-          "visible": true,
-          "color": "blue"
-        },
-        "type": "CartoDBAnimation"
-      }
-    ],
-    "options": {
-      "mapTypeId": "roadmap",
-      "styles": [
-        {
-          "featureType": "poi",
-          "stylers": [
-            {
-              "visibility": "off"
-            }
-          ]
-        },
-        {
-          "featureType": "administrative",
-          "stylers": [
-            {
-              "visibility": "simplified"
-            }
-          ]
-        },
-        {
-          "featureType": "administrative.country",
-          "stylers": [
-            {
-              "visibility": "on"
-            }
-          ]
-        },
-        {
-          "featureType": "road",
-          "stylers": [
-            {
-              "visibility": "off"
-            }
-          ]
-        },
-        {
-          "featureType": "landscape.natural",
-          "stylers": [
-            {
-              "visibility": "off"
-            }
-          ]
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
         }
       ]
+    },
+    "timeline": {
+      "innerExtent": [
+        1420070400000,
+        1422576000000
+      ]
+    }
+  },
+  "metadata": {
+    "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+    "urls": {
+      "save": "https://skytruth-pleuston.appspot.com/v1/workspaces",
+      "load": "https://skytruth-pleuston.appspot.com/v1/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+      "visualization": "http://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
     }
   }
 }

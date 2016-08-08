@@ -40,7 +40,8 @@ const webpackConfig = {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
-      VERSION: JSON.stringify(packageJSON.version)
+      VERSION: JSON.stringify(packageJSON.version),
+      API_URL: JSON.stringify(envVariables.API_URL)
     })
   ],
 
