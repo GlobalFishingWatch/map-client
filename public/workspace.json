@@ -1,1 +1,149 @@
-{"workspace":{"map":{"center":[0,0],"zoom":3,"layers":[{"title":"Basemap","source":{"type":"BinFormat","args":{"url":"https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"}},"visible":true,"color":"#1a7ff0","type":"CartoDBBasemap"},{"title":"Bathimetry","source":{"type":"BinFormat","args":{"url":"https://simbiotica.carto.com/api/v2/viz/f11e563c-5b01-11e6-a589-0ecd1babdde5/viz.json"}},"visible":true,"color":"#1a7ff0","type":"CartoDBAnimation"},{"title":"Ports","source":{"type":"BinFormat","args":{"url":"https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json"}},"visible":true,"color":"#1a7ff0","type":"CartoDBAnimation"},{"title":"Labels","source":{"type":"BinFormat","args":{"url":"http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json"}},"visible":true,"color":"#da0ff0","type":"CartoDBAnimation"},{"title":"VESSEL","source":{"type":"BinFormat","args":{"url":"https://storage.googleapis.com/vizzuality-staging/random/"}},"visible":true,"color":"green","type":"ClusterAnimation"},{"title":"MPA - No Take","source":{"type":"BinFormat","args":{"url":"http://cartodb.skytruth.org/user/dev/api/v2/viz/2e169268-bde4-11e5-87b3-0242ac110002/viz.json"}},"descriptionUrl":"http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant","visible":false,"color":"#da0000","type":"CartoDBAnimation"},{"title":"MPA - Restricted Use","source":{"type":"BinFormat","args":{"url":"http://cartodb.skytruth.org/user/wmerten/api/v2/viz/bb870984-033f-11e6-bfbe-0242ac110006/viz.json"}},"descriptionUrl":"http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu","visible":false,"color":"#c45e00","type":"CartoDBAnimation"},{"title":"EEZ","source":{"type":"BinFormat","args":{"url":"http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"}},"visible":false,"color":"blue","type":"CartoDBAnimation"},{"title":"High Seas Pocket","source":{"type":"BinFormat","args":{"url":"http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"}},"visible":false,"color":"blue","type":"CartoDBAnimation"},{"title":"RFMO","source":{"type":"BinFormat","args":{"url":"http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"}},"visible":false,"color":"blue","type":"CartoDBAnimation"}]},"timeline":{"innerExtent":[1420070400000,1422576000000]}},"metadata":{"id":"pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c","urls":{"save":"https://skytruth-pleuston.appspot.com/v1/workspaces","load":"https://skytruth-pleuston.appspot.com/v1/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c","visualization":"http://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"}}}
+{
+  "workspace": {
+    "map": {
+      "center": [
+        0,
+        0
+      ],
+      "zoom": 3,
+      "layers": [
+        {
+          "title": "Basemap",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0",
+          "type": "CartoDBBasemap"
+        },
+        {
+          "title": "Bathimetry",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/f11e563c-5b01-11e6-a589-0ecd1babdde5/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "Ports",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#1a7ff0",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "Labels",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json"
+            }
+          },
+          "visible": true,
+          "color": "#da0ff0",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "VESSEL",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://storage.googleapis.com/vizzuality-staging/random/"
+            }
+          },
+          "visible": true,
+          "color": "green",
+          "type": "ClusterAnimation"
+        },
+        {
+          "title": "MPA - No Take",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2e169268-bde4-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
+          "visible": false,
+          "color": "#da0000",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "MPA - Restricted Use",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/wmerten/api/v2/viz/bb870984-033f-11e6-bfbe-0242ac110006/viz.json"
+            }
+          },
+          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
+          "visible": false,
+          "color": "#c45e00",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "EEZ",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "High Seas Pocket",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
+            }
+          },
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
+        },
+        {
+          "title": "RFMO",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
+            }
+          },
+          "visible": false,
+          "color": "blue",
+          "type": "CartoDBAnimation"
+        }
+      ]
+    },
+    "timeline": {
+      "innerExtent": [
+        1420070400000,
+        1422576000000
+      ]
+    }
+  },
+  "metadata": {
+    "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+    "urls": {
+      "save": "https://skytruth-pleuston.appspot.com/v1/workspaces",
+      "load": "https://skytruth-pleuston.appspot.com/v1/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+      "visualization": "http://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
+    }
+  }
+}

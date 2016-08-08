@@ -168,8 +168,7 @@ export function getWorkspace(workspaceId) {
         // We update the layers
         const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
-          .filter(l => !
-          !~allowedLayerTypes.indexOf(l.type));
+          .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
 
         dispatch({
           type: SET_LAYERS,
