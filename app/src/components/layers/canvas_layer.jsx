@@ -3,8 +3,6 @@ import PelagosClient from '../../lib/pelagosClient';
 import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
 
-const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
-
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, visible) {
     this.map = map;
@@ -444,7 +442,8 @@ class CanvasLayer {
     const endYear = new Date(endDate).getUTCFullYear();
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${url}${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;\
+      urls.push(`${API_URL}/tilesets/tms-format-2015-2016-v1/${year}-01-01T00:00:00.000Z,\
+${year + 1}-01-01T00:00:00.000Z;\
 ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     }
     return urls;

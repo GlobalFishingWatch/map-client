@@ -33,7 +33,7 @@ class SupportForm extends Component {
       submitted: true
     });
 
-    this.props.onFormSubmit(this.state, '/v1/contact/support');
+    this.props.onFormSubmit(this.state, '/contact/support');
   }
 
   render() {

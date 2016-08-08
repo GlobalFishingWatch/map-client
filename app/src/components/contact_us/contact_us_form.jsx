@@ -32,7 +32,7 @@ class ContactUsForm extends Component {
       submitted: true
     });
 
-    this.props.onFormSubmit(this.state, '/v1/contact/us');
+    this.props.onFormSubmit(this.state, '/contact/us');
   }
 
   render() {

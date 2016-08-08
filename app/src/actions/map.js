@@ -15,8 +15,6 @@ import {
   UPDATE_VESSEL_TRANSPARENCY
 } from '../constants';
 
-const urlVessel = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/';
-
 export function toggleLayerVisibility(layer) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
@@ -78,7 +76,8 @@ export function getSeriesGroup(seriesGroup, series, filters) {
     const endYear = new Date(filters.endDate).getUTCFullYear();
     const urls = [];
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${urlVessel}seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+      urls.push(`${API_URL}/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=\
+${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
     const promises = [];
     for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {

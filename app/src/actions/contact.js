@@ -1,14 +1,12 @@
 import { FORM_RESPONSE } from '../constants';
 
-const url = 'https://skytruth-pleuston.appspot.com';
-
 export function submitForm(data, endpoint) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
 
     const request = new XMLHttpRequest();
-    request.open('POST', url + endpoint, true);
+    request.open('POST', API_URL + endpoint, true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     if (token) {
       request.setRequestHeader('Authorization', `Bearer ${token}`);

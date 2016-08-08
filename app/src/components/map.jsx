@@ -101,7 +101,7 @@ class Map extends Component {
     }
     this.request.open(
       'GET',
-      `https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
+      `${API_URL}/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
     this.request.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
