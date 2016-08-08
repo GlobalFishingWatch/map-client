@@ -5,7 +5,7 @@ import MapContainer from './containers/map';
 import BlogContainer from './containers/blog';
 import BlogDetail from './containers/blog_detail';
 import ArticlesPublications from './components/articles_publications';
-import FAQ from './components/faq';
+import FAQContainer from './containers/faq';
 import Tutorials from './components/tutorials';
 import Definitions from './components/definitions';
 import TheProject from './components/the_project';
@@ -26,7 +26,7 @@ class Routes extends Component {
         <Route path="blog/:slug" component={BlogDetail} />
         <Route path="articles-publications" component={ArticlesPublications} />
 
-        <Route path="faq" component={FAQ} />
+        <Route path="faq" component={FAQContainer} />
         <Route path="tutorials" component={Tutorials} />
         <Route path="definitions" component={Definitions} />
 
