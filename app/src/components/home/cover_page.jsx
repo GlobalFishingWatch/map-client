@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import Slider from 'react-slick';
-import ButtonBoxSlider from './button_box_slider';
 import Header from '../../containers/header';
 import MenuMobile from '../shared/menu_mobile';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
@@ -22,14 +21,14 @@ class CoverPage extends Component {
   }
 
   onSliderChange(currentSlider) {
-    console.log(arguments);
     this.setState({ currentSlider });
   }
 
   gosection() {
-    $('html, body').animate({
-      scrollTop: $('#case_study').offset().top
-    }, 1000);
+    // $('html, body').animate({
+    //   scrollTop: $('#case_study').offset().top
+    // }, 1000);
+    document.body.scrollTop=300;
   }
 
 
@@ -81,11 +80,10 @@ class CoverPage extends Component {
                 <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
               </div>
             </Slider>
+            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+              <div className={BoxTriangleStyle['triangle-min']}></div>
+            </div>
             <div className={CoverPageStyle['footer-header']}>
-              <ButtonBoxSlider />
-              <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
-                <div className={BoxTriangleStyle['triangle-min']}></div>
-              </div>
               <div>Brought to you by:
                 <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
               </div>

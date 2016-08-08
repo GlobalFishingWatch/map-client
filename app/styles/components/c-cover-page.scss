@@ -19,7 +19,7 @@
     list-style: none;
     padding-left: 110px;
     position: relative;
-    top: 70px;
+    top: 25px;
 
     :global .slick-active {
       button {
@@ -114,10 +114,10 @@
   }
 
   .footer-header {
-    align-items: center;
+    align-items: flex-end;;
     color: $color-4;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     padding-bottom: 20px;
     padding-left: 110px;
     padding-right: 110px;
