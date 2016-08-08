@@ -10,11 +10,17 @@
     position: relative;
     top: 22px;
 
+    :global .slick-active {
+      button {
+        background-color: $color-3;
+      }
+    }
+
     li {
       display: inline-block;
 
       button {
-        background: #fff;
+        background: $color-4;
         border: 0;
         font-size: 0;
         height: 14px;
