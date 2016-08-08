@@ -37,7 +37,9 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: false,
       draggable: false,
-      afterChange: this.onSliderChange
+      afterChange: this.onSliderChange,
+      autoplay: true,
+      autoplaySpeed: 10000
     };
 
     let background;
