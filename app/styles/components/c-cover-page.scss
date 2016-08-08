@@ -2,13 +2,22 @@
 
 .c-cover-page {
   background-color: $color-9;
-  padding-top: 100px;
+  background-image: url('../../assets/images/ship_1.jpg');
+  background-size: cover;
+  background-position: center;
 
+  .layer-cover{
+    background-color: rgba(23, 64, 132, 0.8);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
   .dots-cover {
     list-style: none;
     padding-left: 110px;
     position: relative;
-    top: 22px;
+    top: 70px;
 
     :global .slick-active {
       button {
@@ -28,6 +37,40 @@
         outline: 0;
         transform: rotate(45deg);
         width: 14px;
+      }
+    }
+  }
+  .leo-slider{
+
+    blockquote{
+        max-width: 460px;
+        font-family: $font-family-1;
+        font-size: $font-size-x-normal;
+        font-weight: $font-weight-normal;
+        font-style: italic;
+        letter-spacing: -.1px;
+        color: $color-4;
+        padding-left: 110px;
+    }
+
+    .author-quote {
+      max-width: 460px;
+      font-family: $font-family-1;
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-normal;
+      letter-spacing: -.1px;
+      color: $color-4;
+      margin-top: 10px;
+      margin-bottom: 0;
+
+      &::after {
+        content:'';
+        display: block;
+        margin-top: 20px;
+        height: 5px;
+        background-color: $color-10;
+        margin-bottom: 20px;
+        width: 170px;
       }
     }
   }
@@ -72,7 +115,7 @@
     color: $color-4;
     display: flex;
     justify-content: space-between;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     padding-left: 110px;
     padding-right: 110px;
 
@@ -95,5 +138,17 @@
       stroke: $color-3;
       stroke-width: 3;
     }
+
+    div{
+      &:last-child {
+        z-index: 1;
+      }
+    }
+  }
+
+  .ldf-logo {
+    display: block;
+    width: 140px;
+    margin-top: 15px;
   }
 }

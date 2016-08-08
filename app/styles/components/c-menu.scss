@@ -1,12 +1,13 @@
 @import '../_settings.scss';
 
 .c-header-menu {
-  background-color: $color-9;
+  // background-color: rgba(23, 64, 132, 0.8);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   padding: 0 110px;
+  margin-bottom: 100px;
 
   @media screen and (min-width: $breakpoint-tablet) {
-    box-shadow: 0;
+    box-shadow: none;
   }
 }
 
