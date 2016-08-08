@@ -466,7 +466,7 @@ class Map extends Component {
       <Modal opened={!this.props.token} closeable={false}>
         <NoLogin />
       </Modal>
-      <Modal opened={this.props.shareModal.open} close={this.props.closeShareModal}>
+      <Modal opened={this.props.shareModal.open} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
       <Header />
