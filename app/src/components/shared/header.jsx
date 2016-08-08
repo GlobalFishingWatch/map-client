@@ -35,7 +35,7 @@ class Header extends Component {
     }
 
 
-    return (<header className={home['c-header-menu']} id={location.pathname === '/map' ? 'menu_transparent' : null}>
+    return (<header className={location.pathname === '/' ? home['c-header-menu-transparent'] : home['c-header-menu']} id={location.pathname === '/' ? 'menu_transparent' : null}>
       <style
         dangerouslySetInnerHTML={{
           __html: `#menu_selected:after{
