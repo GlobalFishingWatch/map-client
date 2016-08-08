@@ -12,7 +12,7 @@ import sliderOne from '../../../assets/images/ship_1.jpg';
 
 class CoverPage extends Component {
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       currentSlider: 0
@@ -21,25 +21,24 @@ class CoverPage extends Component {
     this.onSliderChange = this.onSliderChange.bind(this);
   }
 
+  onSliderChange(currentSlider) {
+    console.log(arguments);
+    this.setState({ currentSlider });
+  }
+
   gosection() {
     $('html, body').animate({
       scrollTop: $('#case_study').offset().top
     }, 1000);
   }
 
-  onSliderChange(currentSlider) {
-    console.log(arguments);
-    this.setState({ currentSlider });
-  }
 
   render() {
-    var settings = {
-    	dots: true,
-      fade: true,
-      dotsClass : CoverPageStyle['dots-cover'],
-      infinite: true,
+    const settings = {
+      dots: true,
+      dotsClass: CoverPageStyle['dots-cover'],
+      infinite: false,
       draggable: false,
-      speed: 500,
       afterChange: this.onSliderChange
     };
 
@@ -57,41 +56,41 @@ class CoverPage extends Component {
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${background})` }}>
         <div className={CoverPageStyle['layer-cover']}>
-        <MenuMobile />
-        <Header />
-        <div>
-          <Slider {...settings}>
-            <div>
-              <h1>
-                Introducing Global Fishing Watch
-              </h1>
-              <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
-                 activity anywhere in the ocean in near real-time — for free.
-              </p>
-            </div>
-            <div className={CoverPageStyle['leo-slider']}>
-              <blockquote>
-                “Welcome to Global Fishing Watch, the world’s first free,
-                interactive tool that enables anyone in the world to track
-                 commercial fishing activity, worldwide. Global Fishing Watch
-                  will shed light on what is happening on our oceans so that
-                  together, we can ensure the responsible and sustainable
-                   management of our fisheries.”
-              </blockquote>
-              <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-              <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
-            </div>
-          </Slider>
-          <div className={CoverPageStyle['footer-header']}>
-            <ButtonBoxSlider />
-            <div className={BoxTriangleStyle['c-box-triangle']} onck={this.gosection}>
-              <div className={BoxTriangleStyle['triangle-min']}></div>
-            </div>
-            <div>Brought to you by:
-              <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
+          <MenuMobile />
+          <Header />
+          <div>
+            <Slider {...settings}>
+              <div>
+                <h1>
+                  Introducing Global Fishing Watch
+                </h1>
+                <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
+                   activity anywhere in the ocean in near real-time — for free.
+                </p>
+              </div>
+              <div className={CoverPageStyle['leo-slider']}>
+                <blockquote>
+                  “Welcome to Global Fishing Watch, the world’s first free,
+                  interactive tool that enables anyone in the world to track
+                   commercial fishing activity, worldwide. Global Fishing Watch
+                    will shed light on what is happening on our oceans so that
+                    together, we can ensure the responsible and sustainable
+                     management of our fisheries.”
+                </blockquote>
+                <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
+                <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
+              </div>
+            </Slider>
+            <div className={CoverPageStyle['footer-header']}>
+              <ButtonBoxSlider />
+              <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+                <div className={BoxTriangleStyle['triangle-min']}></div>
+              </div>
+              <div>Brought to you by:
+                <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
+              </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     );
