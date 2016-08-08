@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle:0 */
+/* eslint func-names:0 */
 import { TIMELINE_STEP } from '../../constants';
 
 const createTrackLayer = function (google) {

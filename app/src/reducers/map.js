@@ -33,7 +33,7 @@ export default function (state = initialState, action) {
       const layers = state.layers.slice(0);
       for (let i = 0, length = layers.length; i < length; i++) {
         if (layers[i].title === action.payload.title) {
-          layers[i].visible = !action.payload.visible
+          layers[i].visible = !action.payload.visible;
           break;
         }
       }
