@@ -44,9 +44,9 @@ export default function (state = initialState, action) {
     case GET_SERIESGROUP:
       return Object.assign({}, state, { track: action.payload });
     case SET_ZOOM:
-      return Object.assign({}, state, { zoom: action.payload });
+      return Object.assign({}, state, { zoom: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
     case SET_CENTER:
-      return Object.assign({}, state, { center: action.payload });
+      return Object.assign({}, state, { center: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
     case TOGGLE_LAYER_VISIBILITY: {
       const layers = state.layers.slice(0);
       for (let i = 0, length = layers.length; i < length; i++) {

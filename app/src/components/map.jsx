@@ -22,7 +22,6 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      lastCenter: null,
       vesselLayerTransparency: 1,
       currentVesselInfo: {},
       shareModalOpened: false,
@@ -166,6 +165,11 @@ class Map extends Component {
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
+
+    if (nextProps.map.isWorkspaceUpdate) {
+      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+      this.map.setZoom(nextProps.map.zoom);
+    }
   }
 
   updateTrackLayer(nextProps) {
@@ -353,9 +357,6 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (this.state.lastCenter === null) {
-      this.lastValidCenter = this.map.getCenter();
-    }
   }
 
   onDragEnd() {
@@ -374,12 +375,9 @@ class Map extends Component {
     const center = this.map.getCenter();
 
     if (strictBounds.contains(center)) {
-      this.state.lastCenter = center;
       this.props.setCenter([center.lat(), center.lng()]);
       return;
     }
-    this.map.panTo(this.state.lastCenter);
-    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
   }
 
   /**
@@ -483,9 +481,9 @@ class Map extends Component {
           googleMapElement={
             <GoogleMap
               ref="map"
-              zoom={this.props.map.zoom}
+              defaultZoom={this.props.map.zoom}
+              defaultCenter={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
               defaultZoomControl={false}
-              center={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,

@@ -150,13 +150,15 @@ export function getWorkspace(workspaceId) {
         // We update the zoom level
         dispatch({
           type: SET_ZOOM,
-          payload: workspace.map.zoom
+          payload: workspace.map.zoom,
+          isWorkspaceUpdate: true
         });
 
         // We update the center of the map
         dispatch({
           type: SET_CENTER,
-          payload: workspace.map.center
+          payload: workspace.map.center,
+          isWorkspaceUpdate: true
         });
 
         // We update the dates of the timeline
