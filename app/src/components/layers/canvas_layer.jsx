@@ -133,7 +133,6 @@ class CanvasLayer {
     const filters = this.filters;
     const tiles = this.playbackData;
 
-
     const tileIds = Object.keys(tiles);
     for (let tileIdIndex = 0; tileIdIndex < tileIds.length; tileIdIndex++) {
       const tile = tiles[tileIds[tileIdIndex]];

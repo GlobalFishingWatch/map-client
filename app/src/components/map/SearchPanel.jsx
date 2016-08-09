@@ -52,6 +52,7 @@ class SearchPanel extends Component {
         searchResults.push(
           <li
             key={i}
+            onClick={() => this.props.drawVessel(this.props.search.entries[i])}
           >
             {this.props.search.entries[i].vesselname},<span>{this.props.search.entries[i].mmsi}</span>
           </li>
@@ -76,7 +77,8 @@ class SearchPanel extends Component {
 
 SearchPanel.propTypes = {
   search: React.PropTypes.object,
-  getSearchResults: React.PropTypes.func
+  getSearchResults: React.PropTypes.func,
+  drawVessel: React.PropTypes.func
 };
 
 

@@ -1,8 +1,6 @@
 import { GET_SEARCH_RESULTS } from '../constants';
 import 'whatwg-fetch';
 
-const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/search/';
-
 export function getSearchResults(searchTerm) {
   return (dispatch, getState) => {
     const state = getState();
@@ -14,7 +12,7 @@ export function getSearchResults(searchTerm) {
       });
     }
 
-    fetch(`${url}?query=${searchTerm}`, {
+    fetch(`${API_URL}/tilesets/tms-format-2015-2016-v1/search/?query=${searchTerm}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${state.user.token}`

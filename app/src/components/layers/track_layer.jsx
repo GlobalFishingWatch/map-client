@@ -100,7 +100,6 @@ const createTrackLayer = function (google) {
   TrackLayer.prototype.drawTile = function (data, series, filters, timestamp) {
     let coords;
     this.regenerate();
-    // debugger;
     const overlayProjection = this.getProjection();
     if (overlayProjection) {
       let nextPoint = null;

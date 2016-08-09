@@ -5,7 +5,7 @@ import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import CanvasLayer from './layers/canvas_layer';
 import createTrackLayer from './layers/track_layer';
 import ControlPanel from '../containers/map/ControlPanel';
-import VesselPanel from './map/vessel_panel';
+import VesselInfoPanel from '../containers/map/VesselInfoPanel';
 import Header from '../containers/header';
 import map from '../../styles/index.scss';
 import Timebar from '../containers/map/timebar';
@@ -23,8 +23,7 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      vesselLayerTransparency: 1,
-      currentVesselInfo: {},
+      lastCenter: null,
       shareModalOpened: false,
       running: 'stop'
     };
@@ -65,69 +64,6 @@ class Map extends Component {
   }
 
   /**
-   * Called once additional vessel details are loaded
-   * TODO: should probably be moved elsewhere
-   *
-   * @param incomingData Data returned by the API
-   */
-  handleAdditionalVesselDetails(incomingData) {
-    const currentVesselInfo = this.state.currentVesselInfo;
-
-    const data = JSON.parse(incomingData.target.response);
-    currentVesselInfo.callsign = data.callsign;
-    currentVesselInfo.flag = data.flag;
-    currentVesselInfo.imo = data.imo;
-    currentVesselInfo.mmsi = data.mmsi;
-    currentVesselInfo.name = data.vesselname;
-
-    this.setState({ currentVesselInfo });
-  }
-
-  /**
-   * Given a series group ID, loads additional info for that vessel
-   * Used to display additional data on the vessel details panel
-   * TODO: should probably be moved elsewhere
-   *
-   * @param seriesGroup
-   */
-  loadAdditionalVesselDetails(seriesGroup) {
-    if (typeof XMLHttpRequest !== 'undefined') {
-      this.request = new XMLHttpRequest();
-    } else {
-      throw new Error('XMLHttpRequest is disabled');
-    }
-    this.request.open(
-      'GET',
-      `https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
-      true
-    );
-    this.request.setRequestHeader('Authorization', `Bearer ${this.props.token}`);
-    this.request.responseType = 'application/json';
-    this.request.onload = this.handleAdditionalVesselDetails.bind(this);
-    this.request.send(null);
-  }
-
-  /**
-   * Displays the currently selected vessel details on the corresponding panel
-   * Triggers additional vessel details loading.
-   *
-   * @param vesselInfo
-   */
-  showVesselDetails(vesselInfo) {
-    const currentVesselInfo = {
-      series: vesselInfo.series,
-      seriesGroup: vesselInfo.seriesgroup,
-      latitude: vesselInfo.latitude,
-      longitude: vesselInfo.longitude,
-      weight: vesselInfo.weight,
-      timestamp: vesselInfo.timestamp
-    };
-
-    this.setState({ currentVesselInfo });
-    this.loadAdditionalVesselDetails(vesselInfo.seriesgroup);
-  }
-
-  /**
    * Detects and handles map clicks
    * Detects collisions with current vessel data
    * Draws tracks and loads vessel details
@@ -140,17 +76,7 @@ class Map extends Component {
 
     const vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
 
-    if (this.state.trajectory) {
-      this.state.trajectory.setMap(null);
-    }
-    // this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
-
-    if (vesselInfo) {
-      this.showVesselDetails(vesselInfo);
-      this.props.getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series, this.props.filters);
-    } else if (this.state.trajectory) {
-      this.setState({ currentVesselInfo: {} });
-    }
+    this.props.setCurrentVessel(vesselInfo);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -177,9 +103,12 @@ class Map extends Component {
   }
 
   updateTrackLayer(nextProps) {
-    if (this.props.map.track !== nextProps.map.track) {
+    if (nextProps.vesselInfo.track && this.props.vesselInfo.track !== nextProps.vesselInfo.track) {
       const trackLayer = this.state.trackLayer;
-      trackLayer.drawTile(nextProps.map.track.seriesGroupData, nextProps.map.track.selectedSeries, nextProps.filters);
+      trackLayer.drawTile(
+        nextProps.vesselInfo.track.seriesGroupData,
+        nextProps.vesselInfo.track.selectedSeries,
+        nextProps.filters);
     }
   }
 
@@ -207,8 +136,8 @@ class Map extends Component {
       if (this.isTrackLayerReady()) {
         this.state.trackLayer.regenerate();
         this.state.trackLayer.drawTile(
-          this.props.map.track.seriesGroupData,
-          this.props.map.track.selectedSeries,
+          this.props.vesselInfo.track.seriesGroupData,
+          this.props.vesselInfo.track.selectedSeries,
           nextProps.filters
         );
       }
@@ -371,8 +300,8 @@ class Map extends Component {
       this.state.trackLayer.recalculatePosition();
 
       this.state.trackLayer.drawTile(
-        this.props.map.track.seriesGroupData,
-        this.props.map.track.selectedSeries,
+        this.props.vesselInfo.track.seriesGroupData,
+        this.props.vesselInfo.track.selectedSeries,
         this.props.filters
       );
     }
@@ -413,7 +342,11 @@ class Map extends Component {
 
     this.props.updateFilters(filters);
     if (this.isTrackLayerReady()) {
-      this.props.getSeriesGroup(this.props.map.track.seriesgroup, this.props.map.track.selectedSeries, filters);
+      this.props.getSeriesGroup(
+        this.props.vesselInfo.track.seriesgroup,
+        this.props.vesselInfo.track.selectedSeries,
+        filters
+      );
     }
   }
 
@@ -451,8 +384,8 @@ class Map extends Component {
     if (this.isTrackLayerReady()) {
       this.state.trackLayer.regenerate();
       this.state.trackLayer.drawTile(
-        this.props.map.track.seriesGroupData,
-        this.props.map.track.selectedSeries,
+        this.props.vesselInfo.track.seriesGroupData,
+        this.props.vesselInfo.track.selectedSeries,
         this.props.filters
       );
     }
@@ -466,7 +399,11 @@ class Map extends Component {
    */
   render() {
     return (<div>
-      <Modal opened={!this.props.token} closeable={false}>
+      <Modal
+        opened={!this.props.token}
+        closeable={false}
+        close={() => {}}
+      >
         <NoLogin />
       </Modal>
       <Modal opened={this.props.shareModal.open} closeable close={this.props.closeShareModal}>
@@ -484,7 +421,7 @@ class Map extends Component {
           <Timebar />
         </div>
         <ControlPanel />
-        <VesselPanel vesselInfo={this.state.currentVesselInfo} />
+        <VesselInfoPanel />
         <GoogleMapLoader
           containerElement={
             <div className={map.map} style={{ height: '100%' }} />
@@ -521,10 +458,12 @@ Map.propTypes = {
   setZoom: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   getSeriesGroup: React.PropTypes.func,
+  setCurrentVessel: React.PropTypes.func,
   updateFilters: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   map: React.PropTypes.object,
+  vesselInfo: React.PropTypes.object,
   /**
    * State of the share modal: { open, workspaceId }
    */
