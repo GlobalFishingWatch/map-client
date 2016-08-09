@@ -75,7 +75,7 @@ class Header extends Component {
             >News</Link>
             <ul className={home['dropdown-content']}>
               <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/articles-publications">Articles and Publications</Link></li>
+              <li><Link to="/articles-publications" className={home['link-two']}>Articles and Publications</Link></li>
             </ul>
           </li>
           <li className={home.dropdown}>

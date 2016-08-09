@@ -5,7 +5,7 @@
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
   padding: 0 110px;
 
-  @media screen and (min-width: $breakpoint-tablet) {
+  @media #{$mq-tablet} {
     box-shadow: none;
   }
 }
@@ -15,7 +15,7 @@
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
   padding: 0 110px;
 
-  @media screen and (min-width: $breakpoint-tablet) {
+  @media #{$mq-tablet} {
     box-shadow: none;
   }
 }
@@ -65,7 +65,7 @@
   }
 
 
-  @media screen and (min-width: $breakpoint-tablet) {
+  @media #{$mq-tablet} {
     height: 140px;
 
     .img-mobile {
@@ -202,6 +202,11 @@
           padding-left: 0;
         }
       }
+
+      .link-two {
+        line-height: 1.07;
+        padding: 10px;
+      }
     }
   }
 
@@ -213,7 +218,7 @@
     }
   }
 
-  @media screen and (min-width: $breakpoint-laptop) {
+  @media #{$mq-laptop} {
 
     ul {
 
