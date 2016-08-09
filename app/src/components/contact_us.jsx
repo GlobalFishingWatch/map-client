@@ -9,7 +9,6 @@ class ContactUs extends Component {
 
   render() {
     return (<div>
-      <Header />
       <CoverPrimary
         title="Contact Us"
         subtitle="Let us know what you think! Submit your questions, suggestions for

@@ -8,7 +8,6 @@ class Tutorials extends Component {
 
   render() {
     return (<div>
-      <Header />
       <CoverPrimary
         title="Watch Our Tutorial"
         subtitle="View our tutorial video to see Global Fishing in action"
