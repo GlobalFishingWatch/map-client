@@ -35,14 +35,15 @@
   text-align: justify;
   text-transform: capitalize;
 
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-  }
+
 
   ul {
     display: none;
+
+    &::after {
+      content: '';
+      display: none;
+    }
   }
 
   .icon-menu-mobile {
@@ -64,6 +65,7 @@
     color: $color-4;
     display: block;
   }
+
 
   @media screen and (min-width: $breakpoint-tablet) {
     height: 140px;
@@ -92,12 +94,6 @@
       position: relative;
       text-align: right;
       vertical-align: middle;
-
-      &::after {
-        clear: both;
-        content: '';
-        display: block;
-      }
 
       li {
         display: inline-block;
