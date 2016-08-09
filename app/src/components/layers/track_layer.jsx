@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle:0 */
+/* eslint func-names:0 */
 
 const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
 const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
@@ -82,6 +83,16 @@ const createTrackLayer = function (google) {
     return transformProps[0];
   })();
 
+  /**
+   * Calculates the rendering style (color + alpha) to be drawn for the current vessel track/point
+   *
+   * @param data
+   * @param index
+   * @param filters
+   * @param series
+   * @param vesselTrackDisplayMode
+   * @returns {*}
+   */
   TrackLayer.prototype.getDrawStyle = function (data, index, filters, series, vesselTrackDisplayMode) {
     if (series && data.series[index] !== series) {
       if (vesselTrackDisplayMode !== 'all') {
@@ -105,6 +116,14 @@ const createTrackLayer = function (google) {
     return MATCH_COLOR;
   };
 
+  /**
+   * Draws a single vessel point of a track
+   * @param overlayProjection
+   * @param data
+   * @param i
+   * @param drawStyle
+   * @returns {*}
+   */
   TrackLayer.prototype.drawPoint = function (overlayProjection, data, i, drawStyle) {
     const point = overlayProjection.fromLatLngToDivPixel(
       new google.maps.LatLng(data.latitude[i], data.longitude[i])
@@ -124,7 +143,14 @@ const createTrackLayer = function (google) {
     return point;
   };
 
-
+  /**
+   * Draws the tile's content based on the provided vessel data
+   *
+   * @param data
+   * @param series
+   * @param filters
+   * @param vesselTrackDisplayMode
+   */
   TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode) {
     this.regenerate();
     const overlayProjection = this.getProjection();
