@@ -25,19 +25,30 @@
     padding-left: 110px;
     padding-right: 110px;
     padding-top: 170px;
+    position: relative;
+    top: 0;
 
-    &::after {
-      background-color: $color-6;
-      content: '';
-      display: block;
-      height: 5px;
-      margin-bottom: 10px;
-      margin-top: 20px;
-      width: 170px;
+    :global .slick-active {
+      button {
+        background-color: $color-3;
+      }
+    }
+
+    li {
+      display: inline-block;
+
+      &::after {
+        background-color: $color-6;
+        content: '';
+        display: block;
+        height: 5px;
+        margin-bottom: 10px;
+        margin-top: 20px;
+        width: 170px;
+      }
     }
   }
 
-  //Cover different with quote and different kind of text
   .leo-slider {
     padding-top: 170px;
 
@@ -84,7 +95,7 @@
   }
 
   //Style blog post detail
-  .cover-sub-title  {
+  .cover-sub-title {
     font-size: $font-size-medium;
     font-weight: $font-weight-bold;
     line-height: 1.37;
@@ -98,6 +109,7 @@
   }
 
   .cover-sub-subtitle {
+    font-family: $font-family-1;
     color: $color-4;
     font-size: $font-size-huge;
     font-weight: $font-weight-bold;
