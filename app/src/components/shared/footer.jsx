@@ -6,6 +6,7 @@ import logosfooter from '../../../styles/components/c_logos_footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
+import logoldf from '../../../assets/logos/ldf_logo.png';
 
 export default function () {
   return (
@@ -18,7 +19,7 @@ export default function () {
           <img src={logogoogle} alt="google logo" />
         </div>
         <div className={logosfooter.sponsor_footer}>
-          <span>Lead Sponsor</span>
+          <img className={logosfooter.first_partner} src={logoldf} alt="ldf logo" />
         </div>
       </div>
       <div className={navfooter.c_nav_footer}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
+import LogoLDF from '../../../assets/logos/ldf_logo.png';
 
 class CoverPrimary extends Component {
 
@@ -12,8 +13,10 @@ class CoverPrimary extends Component {
         <p>
           {this.props.subtitle}
         </p>
-        <div className={CoverPage.footer_header}>
-          <div>Brought to you by:</div>
+        <div className={CoverPage['footer-header']}>
+          <div>
+            <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo"></img>
+          </div>
         </div>
       </div>
     </section>);

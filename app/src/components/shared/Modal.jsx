@@ -36,7 +36,7 @@ class Modal extends React.Component {
   }
 
   onClickOverlay(e) {
-    if (e.target === e.currentTarget) {
+    if (this.props.closeable && e.target === e.currentTarget) {
       this.props.close();
     }
   }

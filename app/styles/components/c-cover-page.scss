@@ -1,8 +1,79 @@
 @import '../_settings.scss';
 
 .c-cover-page {
-  background-color: $color-7;
-  padding-top: 100px;
+  background: $color-7 url('../../assets/images/home_slider_1-1.png') center;
+  background-size: cover;
+  transition: background-image .2s ease-in-out;
+
+  .layer-cover {
+    background-color: rgba($color-7, .8);
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .dots-cover {
+    list-style: none;
+    padding-left: 110px;
+    position: relative;
+    top: 0px;
+
+    :global .slick-active {
+      button {
+        background-color: $color-3;
+      }
+    }
+
+    li {
+      display: inline-block;
+
+      button {
+        background: $color-4;
+        border: 0;
+        font-size: 0;
+        height: 14px;
+        margin-right: 15px;
+        outline: 0;
+        transform: rotate(45deg);
+        width: 14px;
+      }
+    }
+  }
+  .leo-slider {
+    padding-top: 170px;
+    blockquote{
+      max-width: 460px;
+      font-family: $font-family-1;
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-normal;
+      font-style: italic;
+      letter-spacing: -.1px;
+      color: $color-4;
+      padding-left: 110px;
+    }
+
+    .author-quote {
+      max-width: 460px;
+      font-family: $font-family-1;
+      font-size: $font-size-normal;
+      font-weight: $font-weight-normal;
+      letter-spacing: -.1px;
+      color: $color-4;
+      margin-top: 10px;
+      margin-bottom: 0;
+
+      &::after {
+        content: '';
+        display: block;
+        margin-top: 20px;
+        height: 5px;
+        background-color: $color-6;
+        margin-bottom: 20px;
+        width: 170px;
+      }
+    }
+  }
 
   h1 {
     color: $color-4;
@@ -13,8 +84,10 @@
     line-height: .85;
     margin-bottom: 0;
     margin-top: 0;
-    max-width: 870px;
-    padding-left: 124px;
+    max-width: 1280px;
+    padding-left: 110px;
+    padding-right: 110px;
+    padding-top: 170px;
 
     &::after {
       background-color: $color-6;
@@ -44,23 +117,25 @@
     color: $color-4;
     font-family: $font-family-1;
     font-size: $font-size-medium;
-    font-weight: $font-weight-bold;
+    font-weight: $font-weight-normal;
     letter-spacing: -.1px;
     margin-bottom: 170px;
     max-width: 668px;
     padding-left: 124px;
   }
 
-  .footer_header {
-    align-items: center;
+  .footer-header {
+    align-items: flex-end;;
     color: $color-4;
     display: flex;
-    justify-content: space-between;
-    padding-bottom: 40px;
-    padding-left: 140px;
-    padding-right: 170px;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    padding-left: 110px;
+    padding-right: 110px;
 
     svg {
+      cursor: pointer;
+      display: none;
       fill: $color-4;
       margin-right: 15px;
       stroke: $color-4;
@@ -72,54 +147,22 @@
       }
     }
 
-    #selected_box {
+    .selected-box {
       fill: $color-3;
       stroke: $color-3;
       stroke-width: 3;
     }
-  }
 
-  .footer_header {
-    align-items: center;
-    color: $color-4;
-    display: flex;
-    justify-content: flex-end;
-    padding-bottom: 40px;
-    padding-left: 140px;
-    padding-right: 170px;
-  }
-
-  .cover-sub-title {
-    font-family: $font-family-1;
-    font-size: $font-size-medium;
-    font-weight: $font-weight-bold;
-    line-height: 1.37;
-    text-transform: uppercase;
-
-    a{
-      color: $color-4;
-      text-decoration: none;
-    }
-
-    &::after {
-      background-color: $color-6;
-      content: '';
-      display: block;
-      height: 5px;
-      margin-bottom: 10px;
-      margin-top: 15px;
-      width: 210px;
+    div {
+      &:last-child {
+        z-index: 1;
+      }
     }
   }
 
-  .cover-sub-subtitle {
-    font-family: $font-family-1;
-    font-size: $font-size-huge;
-    font-weight: $font-weight-bold;
-    letter-spacing: -.5px;
-    line-height: 1.12;
-    max-width: 1280px;
-
+  .ldf-logo {
+    display: block;
+    width: 140px;
+    margin-top: 15px;
   }
-
 }

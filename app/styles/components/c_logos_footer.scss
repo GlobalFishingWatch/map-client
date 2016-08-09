@@ -6,7 +6,7 @@
   justify-content: space-between;
   padding-bottom: 54px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  .partner_footer {
+  .partner_footer, .sponsor_footer {
     span {
       color: $font-color-2;
       font-size: $font-size-normal;
@@ -23,9 +23,6 @@
     }
   }
   .sponsor_footer {
-    span {
-      color: $font-color-2;
-      font-size: $font-size-normal;
-    }
+    padding-top: 54px;
   }
 }
