@@ -41,7 +41,6 @@ class FAQ extends Component {
     }
 
     return (<div>
-      <Header />
       <CoverPrimary
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."
