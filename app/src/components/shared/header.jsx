@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
-import home from '../../../styles/components/c-menu.scss';
+import styles from '../../../styles/components/shared/c-header.scss';
 import logoimg from '../../../assets/logos/gfw_logo_hor_second.png';
 import logoimgSecond from '../../../assets/logos/gfw_logo_hor_white.png';
 import menuicon from '../../../assets/icons/menu_icon.svg';
@@ -19,9 +19,9 @@ class Header extends Component {
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (
-        <li className={home.dropdown}>
+        <li className={styles.dropdown}>
           <a>{this.props.loggedUser.displayName}</a>
-          <ul className={home['dropdown-content']}>
+          <ul className={styles['dropdown-content']}>
             <li><a>Profile</a></li>
             <li>
               <a onClick={this.logout}>
@@ -40,65 +40,69 @@ class Header extends Component {
     }
 
     return (
-      <nav className={classNames({ [home['c-header']]: true, [home['-no-background']]: location.pathname === '/' })}>
+      <nav
+        className={
+          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname === '/' })
+        }
+      >
         <img
           onClick={() => this.props.setVisibleMenu(true)}
-          className={home['icon-menu-mobile']}
+          className={styles['icon-menu-mobile']}
           src={menuicon}
           alt="Menu toggle icon"
         />
         <Link to="/">
-          <img className={home['img-desktop']} src={logoimg} alt="Logo" />
-          <img className={home['img-mobile']} src={logoimgSecond} alt="Logo" />
+          <img className={styles['img-desktop']} src={logoimg} alt="Logo" />
+          <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
         </Link>
-        <span className={home['share-header']}>Share</span>
-        <ul className={home.menu}>
+        <span className={styles['share-header']}>Share</span>
+        <ul className={styles.menu}>
           <li>
-            <Link className={location.pathname === '/map' ? home['-active'] : null} to="/map">Map</Link>
+            <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
           </li>
-          <li className={home.dropdown}>
+          <li className={styles.dropdown}>
             <a
               className={
                 (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
-                  ? home['-active'] : null
+                  ? styles['-active'] : null
               }
             >
               News
             </a>
-            <ul className={home['dropdown-content']}>
+            <ul className={styles['dropdown-content']}>
               <li><Link to="/blog">Blog</Link></li>
               <li><Link to="/articles-publications">Articles and Publications</Link></li>
             </ul>
           </li>
-          <li className={home.dropdown}>
+          <li className={styles.dropdown}>
             <a
               className={
                 (
                   location.pathname === '/faq'
                   || location.pathname === '/tutorials'
                   || location.pathname === '/definitions'
-                ) ? home['-active'] : null
+                ) ? styles['-active'] : null
               }
             >
               How to
             </a>
-            <ul className={home['dropdown-content']}>
+            <ul className={styles['dropdown-content']}>
               <li><Link to="/faq">FAQ</Link></li>
               <li><Link to="/tutorials">Tutorials</Link></li>
               <li><Link to="/definitions">Definitions</Link></li>
             </ul>
           </li>
-          <li className={home.dropdown}>
+          <li className={styles.dropdown}>
             <a
               className={(
                 location.pathname === '/the-project'
                 || location.pathname === '/partners'
                 || location.pathname === '/contact-us'
-              ) ? home['-active'] : null}
+              ) ? styles['-active'] : null}
             >
               About
             </a>
-            <ul className={home['dropdown-content']}>
+            <ul className={styles['dropdown-content']}>
               <li><Link to="/the-project">The project</Link></li>
               <li><Link to="/partners">Partners</Link></li>
               <li><Link to="/contact-us">Contact us</Link></li>
