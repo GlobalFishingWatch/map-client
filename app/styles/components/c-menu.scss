@@ -97,19 +97,19 @@
 
       li {
         display: inline-block;
-        margin-right: 20px;
+        margin-right: 15px;
         padding: 0 .6em;
         position: relative;
         white-space: nowrap;
 
         &:nth-last-child(2) {
-          margin-right: 20px;
+          margin-right: 15px;
         }
 
         &:last-child {
           border-left: 1px solid $color-4;
           margin-right: 0;
-          padding-left: 20px;
+          padding-left: 15px;
         }
 
         a {
@@ -211,7 +211,17 @@
     ul {
 
       li {
-        margin-right: 80px;
+        margin-right: 60px;
+
+        &:nth-last-child(2) {
+          margin-right: 80px;
+        }
+
+        &:last-child {
+          border-left: 1px solid $color-4;
+          margin-right: 0;
+          padding-left: 60px;
+        }
       }
     }
   }
