@@ -121,7 +121,7 @@
     letter-spacing: -.1px;
     margin-bottom: 170px;
     max-width: 668px;
-    padding-left: 124px;
+    padding-left: 110px;
   }
 
   .footer-header {
@@ -162,7 +162,16 @@
 
   .ldf-logo {
     display: block;
-    width: 140px;
     margin-top: 15px;
+    width: 140px;
+
+  }
+
+  .text-ldf-footer {
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    letter-spacing: -.1px;
+    margin-bottom: 0;
+    padding-left: 0;
   }
 }
