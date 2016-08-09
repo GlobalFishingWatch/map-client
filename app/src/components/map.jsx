@@ -204,7 +204,7 @@ class Map extends Component {
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.state.overlay.updateFilters(nextProps.filters);
-      if (this.state.trackLayer) {
+      if (this.isTrackLayerReady()) {
         this.state.trackLayer.regenerate();
         this.state.trackLayer.drawTile(
           this.props.map.track.seriesGroupData,
@@ -367,7 +367,7 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (this.state.trackLayer && this.props.map.track) {
+    if (this.isTrackLayerReady()) {
       this.state.trackLayer.recalculatePosition();
 
       this.state.trackLayer.drawTile(
@@ -395,6 +395,10 @@ class Map extends Component {
     }
   }
 
+  isTrackLayerReady() {
+    return this.state.trackLayer && this.props.map.track;
+  }
+
   /**
    * Triggered when the user updates the vessel data pickers
    * Has special handling for startDate/endDate
@@ -408,7 +412,7 @@ class Map extends Component {
     filters[target] = value;
 
     this.props.updateFilters(filters);
-    if (this.state.trackLayer) {
+    if (this.isTrackLayerReady()) {
       this.props.getSeriesGroup(this.props.map.track.seriesgroup, this.props.map.track.selectedSeries, filters);
     }
   }
@@ -444,7 +448,7 @@ class Map extends Component {
       : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
-    if (this.state.trackLayer) {
+    if (this.isTrackLayerReady()) {
       this.state.trackLayer.regenerate();
       this.state.trackLayer.drawTile(
         this.props.map.track.seriesGroupData,
