@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../containers/header';
 import Footer from './shared/footer';
 import { Link } from 'react-router';
 import listposts from '../../styles/components/c-list-posts.scss';
