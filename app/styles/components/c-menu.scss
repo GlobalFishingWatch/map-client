@@ -35,8 +35,6 @@
   text-align: justify;
   text-transform: capitalize;
 
-
-
   ul {
     display: none;
 
@@ -97,19 +95,27 @@
 
       li {
         display: inline-block;
-        margin-right: 15px;
-        padding: 0 .6em;
+        margin-right: 20px;
+        padding: 0;
         position: relative;
-        white-space: nowrap;
+        white-space: normal;
 
         &:nth-last-child(2) {
-          margin-right: 15px;
+          margin-right: 0px;
+          &::after{
+            content: '';
+            display: inline-block;
+            border-left: 1px solid #fff;
+            height: 25px;
+            position: relative;
+            top: 8px;
+            left: 20px;
+          }
         }
-
         &:last-child {
-          border-left: 1px solid $color-4;
           margin-right: 0;
-          padding-left: 15px;
+          padding-left: 0;
+          margin-left: 40px;
         }
 
         a {
@@ -125,14 +131,6 @@
           text-align: left;
           text-decoration: none;
           vertical-align: middle;
-
-          &::before  {
-            content: '';
-            display: inline-block;
-            height: 100%;
-            text-align: left;
-            vertical-align: middle;
-          }
         }
 
         #menu_selected {
@@ -157,16 +155,12 @@
       background-color: $color-4;
       display: none;
       left: 50%;
-      min-width: 160px;
       padding: 15px;
       position: absolute;
       top: 100%;
       transform: translateX(-50%);
+      width: 160px;
       z-index: 99;
-
-      &:last-child {
-        margin-left: 12px;
-      }
 
       li {
         display: block;
@@ -191,8 +185,17 @@
           }
         }
 
+        &:nth-last-child(2) {
+          &::after{
+            content: none;
+            display: none;
+          }
+        }
         &:last-child {
+          margin-right: 0;
+          padding-left: 0;
           border-left: 0;
+          margin-left: 0;
         }
       }
     }
@@ -211,16 +214,15 @@
     ul {
 
       li {
-        margin-right: 60px;
-
+        margin-right: 65px;
         &:nth-last-child(2) {
-          margin-right: 80px;
+          margin-right: 0px;
+          &::after{
+            left: 65px;
+          }
         }
-
         &:last-child {
-          border-left: 1px solid $color-4;
-          margin-right: 0;
-          padding-left: 60px;
+          margin-left: 130px;
         }
       }
     }
