@@ -6,8 +6,11 @@ import Header from '../../containers/header';
 import MenuMobile from '../shared/menu_mobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
-import imageLeo from '../../../assets/images/slider_2.jpg';
-import sliderOne from '../../../assets/images/ship_1.jpg';
+import sliderBackground1 from '../../../assets/images/home_slider_1-1.png';
+import sliderBackground2 from '../../../assets/images/home_slider_2.jpg';
+import sliderBackground3 from '../../../assets/images/home_slider_3-1.png';
+import sliderBackground4 from '../../../assets/images/home_slider_4-1.png';
+import sliderBackground5 from '../../../assets/images/home_slider_5-1.png';
 
 class CoverPage extends Component {
 
@@ -42,19 +45,17 @@ class CoverPage extends Component {
       autoplaySpeed: 10000
     };
 
-    let background;
-    switch (this.state.currentSlider) {
-      case 1:
-        background = imageLeo;
-        break;
-
-      default:
-        background = sliderOne;
-        break;
-    }
+    const sliderBackgrounds = [
+      sliderBackground1,
+      sliderBackground2,
+      sliderBackground3,
+      sliderBackground4,
+      sliderBackground5
+    ];
+    const sliderBackground = sliderBackgrounds[this.state.currentSlider];
 
     return (
-      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${background})` }}>
+      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
         <div className={CoverPageStyle['layer-cover']}>
           <MenuMobile />
           <Header />
