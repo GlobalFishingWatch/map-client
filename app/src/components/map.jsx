@@ -167,8 +167,11 @@ class Map extends Component {
     this.updateTrackLayer(nextProps);
     this.updateVesselTransparency(nextProps);
 
-    if (nextProps.map.isWorkspaceUpdate) {
+    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+    }
+
+    if (this.props.map.zoom !== nextProps.map.zoom) {
       this.map.setZoom(nextProps.map.zoom);
     }
   }

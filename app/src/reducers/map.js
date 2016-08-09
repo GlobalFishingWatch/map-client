@@ -46,9 +46,9 @@ export default function (state = initialState, action) {
     case GET_SERIESGROUP:
       return Object.assign({}, state, { track: action.payload });
     case SET_ZOOM:
-      return Object.assign({}, state, { zoom: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
+      return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
-      return Object.assign({}, state, { center: action.payload, isWorkspaceUpdate: action.isWorkspaceUpdate });
+      return Object.assign({}, state, { center: action.payload });
     case UPDATE_VESSEL_TRANSPARENCY:
       return Object.assign({}, state, { vesselTransparency: action.payload });
     case TOGGLE_LAYER_VISIBILITY: {
