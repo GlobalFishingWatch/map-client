@@ -45,7 +45,6 @@ class Blog extends Component {
     }
 
     return (<div>
-      <Header />
       <CoverPrimary title="Blog" subtitle="Latest news on Global Fishing Watch" />
       <section className={listposts['c-list-posts']}>
         {articles}
