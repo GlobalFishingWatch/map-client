@@ -149,7 +149,6 @@
     display: block;
     margin-top: 15px;
     width: 140px;
-
   }
 
   //dots control de slider at home
@@ -185,5 +184,13 @@
     fill: $color-3;
     stroke: $color-3;
     stroke-width: 3;
+  }
+
+  .text-ldf-footer {
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    letter-spacing: -.1px;
+    margin-bottom: 0;
+    padding-left: 0;
   }
 }
