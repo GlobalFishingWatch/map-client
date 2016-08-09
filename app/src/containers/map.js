@@ -11,12 +11,12 @@ import {
   setShareModalError
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
-import { getSeriesGroup, setCurrentVessel } from '../actions/vesselInfo';
+import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../constants';
 
 const mapStateToProps = (state) => ({
   map: state.map,
-  vesselInfo: state.vesselInfo,
+  vesselTrack: state.vesselInfo.track,
   filters: state.filters,
   loggedUser: state.user.loggedUser,
   token: state.user.token,
@@ -42,11 +42,8 @@ const mapDispatchToProps = (dispatch, { location }) => {
       });
       if (vesselInfo) {
         dispatch(setCurrentVessel(vesselInfo));
-        dispatch(getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series));
+        dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
       }
-    },
-    getSeriesGroup: (seriesgroup, series, filters) => {
-      dispatch(getSeriesGroup(seriesgroup, series, filters));
     },
     setZoom: zoom => dispatch(setZoom(zoom)),
     setCenter: center => dispatch(setCenter(center)),

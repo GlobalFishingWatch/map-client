@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import SearchPanel from '../../components/map/SearchPanel';
 import { updateFilters } from '../../actions/filters';
 import { getSearchResults } from '../../actions/search';
-import { getSeriesGroup } from '../../actions/vesselInfo';
+import { getVesselTrack } from '../../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../../constants';
 
 const mapStateToProps = (state) => ({
@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
       type: RESET_VESSEL_DETAILS,
       payload: vesselDetails
     });
-    dispatch(getSeriesGroup(vesselDetails.seriesgroup));
+    dispatch(getVesselTrack(vesselDetails.seriesgroup));
   }
 });
 
