@@ -18,7 +18,7 @@ class Header extends Component {
     if (this.props.loggedUser) {
       userLinks = (<li className={home.dropdown}>
         <Link to="#">{this.props.loggedUser.displayName}</Link>
-        <ul className={home.dropdown_content}>
+        <ul className={home['dropdown-content']}>
           <li><Link to="#">Profile</Link></li>
           <li>
             <a
