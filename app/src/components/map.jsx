@@ -365,7 +365,7 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (this.state.trackLayer) {
+    if (this.state.trackLayer && this.props.map.track) {
       this.state.trackLayer.recalculatePosition();
 
       this.state.trackLayer.drawTile(
