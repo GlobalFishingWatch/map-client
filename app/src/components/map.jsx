@@ -23,12 +23,9 @@ class Map extends Component {
     this.state = {
       overlay: null,
       addedLayers: [],
-      lastCenter: null,
+      vesselLayerTransparency: 1,
       currentVesselInfo: {},
       shareModalOpened: false,
-      leftHandlerPosition: 0,
-      rightHandlerPosition: 0,
-      timeBarWidth: 0,
       running: 'stop'
     };
 
@@ -169,6 +166,14 @@ class Map extends Component {
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
     this.updateVesselTransparency(nextProps);
+
+    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
+      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+    }
+
+    if (this.props.map.zoom !== nextProps.map.zoom) {
+      this.map.setZoom(nextProps.map.zoom);
+    }
   }
 
   updateTrackLayer(nextProps) {
@@ -199,7 +204,7 @@ class Map extends Component {
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.state.overlay.updateFilters(nextProps.filters);
-      if (this.state.trackLayer) {
+      if (this.isTrackLayerReady()) {
         this.state.trackLayer.regenerate();
         this.state.trackLayer.drawTile(
           this.props.map.track.seriesGroupData,
@@ -356,16 +361,13 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (this.state.lastCenter === null) {
-      this.lastValidCenter = this.map.getCenter();
-    }
   }
 
   onDragEnd() {
     if (!this.map) {
       return;
     }
-    if (this.state.trackLayer && this.props.map.track) {
+    if (this.isTrackLayerReady()) {
       this.state.trackLayer.recalculatePosition();
 
       this.state.trackLayer.drawTile(
@@ -377,12 +379,9 @@ class Map extends Component {
     const center = this.map.getCenter();
 
     if (strictBounds.contains(center)) {
-      this.state.lastCenter = center;
       this.props.setCenter([center.lat(), center.lng()]);
       return;
     }
-    this.map.panTo(this.state.lastCenter);
-    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
   }
 
   /**
@@ -394,6 +393,10 @@ class Map extends Component {
       this.map = this.refs.map.props.map;
       this.props.getWorkspace();
     }
+  }
+
+  isTrackLayerReady() {
+    return this.state.trackLayer && this.props.map.track;
   }
 
   /**
@@ -409,7 +412,7 @@ class Map extends Component {
     filters[target] = value;
 
     this.props.updateFilters(filters);
-    if (this.state.trackLayer) {
+    if (this.isTrackLayerReady()) {
       this.props.getSeriesGroup(this.props.map.track.seriesgroup, this.props.map.track.selectedSeries, filters);
     }
   }
@@ -445,7 +448,7 @@ class Map extends Component {
       : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
-    if (this.state.trackLayer) {
+    if (this.isTrackLayerReady()) {
       this.state.trackLayer.regenerate();
       this.state.trackLayer.drawTile(
         this.props.map.track.seriesGroupData,
@@ -489,9 +492,9 @@ class Map extends Component {
           googleMapElement={
             <GoogleMap
               ref="map"
-              zoom={this.props.map.zoom}
+              defaultZoom={this.props.map.zoom}
+              defaultCenter={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
               defaultZoomControl={false}
-              center={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
