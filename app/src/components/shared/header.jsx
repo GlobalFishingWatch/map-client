@@ -52,7 +52,7 @@ class Header extends Component {
           alt="Menu toggle icon"
         />
         <Link to="/">
-          <img className={styles['img-desktop']} src={logoimg} alt="Logo" />
+          <img className={styles['img-desktop']} src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo" />
           <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
         </Link>
         <span className={styles['share-header']}>Share</span>
