@@ -36,26 +36,16 @@
 
     li {
       display: inline-block;
+    }
 
-      &::after {
-        background-color: $color-6;
-        content: '';
-        display: block;
-        height: 5px;
-        margin-bottom: 10px;
-        margin-top: 20px;
-        width: 170px;
-      }
-
-      &::after {
-        background-color: $color-6;
-        content: '';
-        display: block;
-        height: 5px;
-        margin-bottom: 10px;
-        margin-top: 20px;
-        width: 170px;
-      }
+    &::after {
+      background-color: $color-6;
+      content: '';
+      display: block;
+      height: 5px;
+      margin-bottom: 10px;
+      margin-top: 20px;
+      width: 170px;
     }
   }
 
@@ -120,7 +110,6 @@
   }
 
   .cover-sub-subtitle {
-    font-family: $font-family-1;
     color: $color-4;
     font-size: $font-size-huge;
     font-weight: $font-weight-bold;
@@ -172,41 +161,6 @@
     display: block;
     margin-top: 15px;
     width: 140px;
-  }
-
-  //dots control de slider at home
-  .dots-cover {
-    list-style: none;
-    padding-left: 110px;
-    position: relative;
-    top: 0;
-
-    :global .slick-active {
-      button {
-        background-color: $color-3;
-      }
-    }
-
-    li {
-      display: inline-block;
-
-      button {
-        background: $color-4;
-        border: 0;
-        font-size: 0;
-        height: 14px;
-        margin-right: 15px;
-        outline: 0;
-        transform: rotate(45deg);
-        width: 14px;
-      }
-    }
-  }
-
-  .selected-box {
-    fill: $color-3;
-    stroke: $color-3;
-    stroke-width: 3;
   }
 
   //dots control de slider at home

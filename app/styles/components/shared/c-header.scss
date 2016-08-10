@@ -34,7 +34,7 @@
 
   .img-mobile {
     display: block;
-    height: 50px;
+    height: 100px;
     margin-right: 10px;
 
     @media #{$mq-tablet} {
@@ -42,9 +42,19 @@
     }
   }
 
-  .img-desktop {
+  .img-home {
     display: none;
     height: 70px;
+    margin-right: 10px;
+
+    @media #{$mq-tablet} {
+      display: block;
+    }
+  }
+
+  .img-sub-page {
+    display: none;
+    height: 50px;
     margin-right: 10px;
 
     @media #{$mq-tablet} {
