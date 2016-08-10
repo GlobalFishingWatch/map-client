@@ -1,8 +1,16 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from '../../components/map/VesselInfoPanel';
+import { changeVesselTrackDisplayMode } from '../../actions/map';
 
 const mapStateToProps = (state) => ({
-  vesselInfoDetails: state.vesselInfo.details
+  vesselTrackDisplayMode: state.map.vesselTrackDisplayMode,
+  vesselInfo: state.vesselInfo.details
 });
 
-export default connect(mapStateToProps)(VesselInfoPanel);
+const mapDispatchToProps = dispatch => ({
+  changeVesselTrackDisplayMode: vesselTrackDisplayMode => {
+    dispatch(changeVesselTrackDisplayMode(vesselTrackDisplayMode));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VesselInfoPanel);

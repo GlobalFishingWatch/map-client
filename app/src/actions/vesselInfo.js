@@ -89,14 +89,14 @@ function groupData(vectorArray) {
   return data;
 }
 
-export function getSeriesGroup(seriesGroup, series = null) {
+export function getVesselTrack(seriesGroup, series = null) {
   return (dispatch, getState) => {
     const state = getState();
-
     const filters = state.filters;
     const startYear = new Date(filters.startDate).getUTCFullYear();
     const endYear = new Date(filters.endDate).getUTCFullYear();
     const urls = [];
+
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${API_URL}/tilesets/tms-format-2015-2016-v1/\
 sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);

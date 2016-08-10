@@ -1,5 +1,9 @@
 /* eslint no-underscore-dangle:0 */
-import { TIMELINE_STEP } from '../../constants';
+/* eslint func-names:0 */
+
+const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
+const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
+const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
 
 const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {
@@ -30,8 +34,6 @@ const createTrackLayer = function (google) {
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
-    // this.pointStyles = ['rgba(0,101,193,0.7)','rgba(255,207,59,0.5)','rgba(0,255,242,1)'];
-    this.pointStyles = ['rgba(255, 0, 0,1)', 'rgba(255, 0, 0,1)', 'rgba(255, 0, 0,1)'];
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
@@ -81,70 +83,112 @@ const createTrackLayer = function (google) {
     return transformProps[0];
   })();
 
-  TrackLayer.prototype.checkFilter = function (data, index, series, timestamp, filters) {
-    if (series && data.series[index] === series) {
-      return false;
-    }
-    if (timestamp && (data.datetime[index] - (data.datetime[index] % TIMELINE_STEP)) !== timestamp) {
-      return false;
+  /**
+   * Calculates the rendering style (color + alpha) to be drawn for the current vessel track/point
+   *
+   * @param data
+   * @param index
+   * @param filters
+   * @param series
+   * @param vesselTrackDisplayMode
+   * @returns {*}
+   */
+  TrackLayer.prototype.getDrawStyle = function (data, index, filters, series, vesselTrackDisplayMode) {
+    if (series && data.series[index] !== series) {
+      if (vesselTrackDisplayMode !== 'all') {
+        return false;
+      }
+      const green = 100 + (data.series[index] % 155);
+      return `rgba(0, ${green}, 0, 1)`;
     }
     if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
-      return false;
+      return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
     if (filters && filters.endDate && data.datetime[index] > filters.endDate) {
-      return false;
+      return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
-    return true;
+    if (filters && filters.timelineInnerExtent[0] && data.datetime[index] < filters.timelineInnerExtent[0]) {
+      return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
+    }
+    if (filters && filters.timelineInnerExtent[1] && data.datetime[index] > filters.timelineInnerExtent[1]) {
+      return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
+    }
+    return MATCH_COLOR;
   };
 
-  TrackLayer.prototype.drawTile = function (data, series, filters, timestamp) {
-    let coords;
+  /**
+   * Draws a single vessel point of a track
+   * @param overlayProjection
+   * @param data
+   * @param i
+   * @param drawStyle
+   * @returns {*}
+   */
+  TrackLayer.prototype.drawPoint = function (overlayProjection, data, i, drawStyle) {
+    const point = overlayProjection.fromLatLngToDivPixel(
+      new google.maps.LatLng(data.latitude[i], data.longitude[i])
+    );
+
+    const weight = data.weight[i];
+    if (weight > 0.75) {
+      this.ctx.fillStyle = drawStyle;
+      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 2, 2);
+    } else if (weight > 0.50) {
+      this.ctx.fillStyle = drawStyle;
+      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
+    } else {
+      this.ctx.fillStyle = drawStyle;
+      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
+    }
+    return point;
+  };
+
+  /**
+   * Draws the tile's content based on the provided vessel data
+   *
+   * @param data
+   * @param series
+   * @param filters
+   * @param vesselTrackDisplayMode
+   */
+  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode) {
     this.regenerate();
     const overlayProjection = this.getProjection();
-    if (overlayProjection) {
-      let nextPoint = null;
-      let first = true;
-      for (let i = 0, length = data.latitude.length; i < length; i++) {
-        if (this.checkFilter(data, i, series, timestamp, filters)) {
-          coords = overlayProjection.fromLatLngToDivPixel(
-            new google.maps.LatLng(data.latitude[i], data.longitude[i])
-          );
-          const weight = data.weight[i];
-          if (i + 1 < length) {
-            nextPoint = overlayProjection.fromLatLngToDivPixel(
-              new google.maps.LatLng(data.latitude[i + 1], data.longitude[i + 1])
-            );
-          }
-          if (weight > 0.75) {
-            this.ctx.fillStyle = this.pointStyles[0];
-            this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 2, 2);
-            continue;
-          } else if (weight > 0.50) {
-            this.ctx.fillStyle = this.pointStyles[1];
-            this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
-            continue;
-          } else {
-            this.ctx.fillStyle = this.pointStyles[2];
-            this.ctx.fillRect(~~coords.x - this.offset.x, ~~coords.y - this.offset.y, 1, 1);
-          }
-        }
-        if (nextPoint && !timestamp) {
-          if (first) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(~~coords.x - this.offset.x, ~~coords.y - this.offset.y);
-            first = false;
-          } else {
-            this.ctx.strokeStyle = 'rgba(255,0,0, 1)';
-            this.ctx.lineTo(~~nextPoint.x - this.offset.x, ~~nextPoint.y - this.offset.y);
-          }
-        }
-      }
-      if (!timestamp) {
-        this.ctx.closePath();
-        this.ctx.stroke();
-      }
+    if (!overlayProjection) {
+      return;
     }
+
+    let point = null;
+    let previousPoint = null;
+    let drawStyle = null;
+    let previousDrawStyle = null;
+
+
+    for (let i = 0, length = data.latitude.length; i < length; i++) {
+      previousDrawStyle = drawStyle;
+      previousPoint = point;
+      drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
+      if (!drawStyle) {
+        continue;
+      }
+
+      point = this.drawPoint(overlayProjection, data, i, drawStyle);
+
+      if (previousDrawStyle !== drawStyle || (i > 0 && data.series[i - 1] !== data.series[i])) {
+        if (previousDrawStyle) {
+          this.ctx.stroke();
+        }
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = drawStyle;
+        if ((i > 0 && data.series[i - 1] === data.series[i]) && previousPoint) {
+          this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
+        }
+      }
+      this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
+    }
+    this.ctx.stroke();
   };
+
   TrackLayer.prototype.onAdd = function () {
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);

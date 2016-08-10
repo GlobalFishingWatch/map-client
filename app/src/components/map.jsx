@@ -56,11 +56,13 @@ class Map extends Component {
       zoom = MAX_ZOOM_LEVEL;
       this.map.setZoom(MAX_ZOOM_LEVEL);
     }
+
     this.setState({ zoom });
     this.props.setZoom(zoom);
     if (this.state.overlay) {
       this.state.overlay.resetPlaybackData();
     }
+    this.updateTrackLayer();
   }
 
   /**
@@ -102,16 +104,6 @@ class Map extends Component {
     }
   }
 
-  updateTrackLayer(nextProps) {
-    if (nextProps.vesselInfo.track && this.props.vesselInfo.track !== nextProps.vesselInfo.track) {
-      const trackLayer = this.state.trackLayer;
-      trackLayer.drawTile(
-        nextProps.vesselInfo.track.seriesGroupData,
-        nextProps.vesselInfo.track.selectedSeries,
-        nextProps.filters);
-    }
-  }
-
   /**
    * Handles and propagates filters changes
    *
@@ -133,15 +125,24 @@ class Map extends Component {
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.state.overlay.updateFilters(nextProps.filters);
-      if (this.isTrackLayerReady()) {
-        this.state.trackLayer.regenerate();
-        this.state.trackLayer.drawTile(
-          this.props.vesselInfo.track.seriesGroupData,
-          this.props.vesselInfo.track.selectedSeries,
-          nextProps.filters
-        );
-      }
+      this.updateTrackLayer();
     }
+  }
+
+  updateTrackLayer(props = null) {
+    const workProps = props || this.props;
+
+    if (!this.isTrackLayerReady() || !workProps || !workProps.vesselTrack) {
+      return;
+    }
+    this.state.trackLayer.recalculatePosition();
+
+    this.state.trackLayer.drawTile(
+      workProps.vesselTrack.seriesGroupData,
+      workProps.vesselTrack.selectedSeries,
+      workProps.filters,
+      workProps.map.vesselTrackDisplayMode
+    );
   }
 
   /**
@@ -296,21 +297,15 @@ class Map extends Component {
     if (!this.map) {
       return;
     }
-    if (this.isTrackLayerReady()) {
-      this.state.trackLayer.recalculatePosition();
-
-      this.state.trackLayer.drawTile(
-        this.props.vesselInfo.track.seriesGroupData,
-        this.props.vesselInfo.track.selectedSeries,
-        this.props.filters
-      );
-    }
     const center = this.map.getCenter();
 
     if (strictBounds.contains(center)) {
       this.props.setCenter([center.lat(), center.lng()]);
       return;
     }
+    this.map.panTo(this.state.lastCenter);
+    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
+    this.updateTrackLayer();
   }
 
   /**
@@ -325,7 +320,7 @@ class Map extends Component {
   }
 
   isTrackLayerReady() {
-    return this.state.trackLayer && this.props.map.track;
+    return this.state.trackLayer && this.props.vesselTrack;
   }
 
   /**
@@ -341,13 +336,6 @@ class Map extends Component {
     filters[target] = value;
 
     this.props.updateFilters(filters);
-    if (this.isTrackLayerReady()) {
-      this.props.getSeriesGroup(
-        this.props.vesselInfo.track.seriesgroup,
-        this.props.vesselInfo.track.selectedSeries,
-        filters
-      );
-    }
   }
 
   /**
@@ -381,14 +369,7 @@ class Map extends Component {
       : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
-    if (this.isTrackLayerReady()) {
-      this.state.trackLayer.regenerate();
-      this.state.trackLayer.drawTile(
-        this.props.vesselInfo.track.seriesGroupData,
-        this.props.vesselInfo.track.selectedSeries,
-        this.props.filters
-      );
-    }
+    this.updateTrackLayer();
   }
 
   /**
@@ -457,13 +438,12 @@ Map.propTypes = {
   token: React.PropTypes.string,
   setZoom: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
-  getSeriesGroup: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
   updateFilters: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   map: React.PropTypes.object,
-  vesselInfo: React.PropTypes.object,
+  vesselTrack: React.PropTypes.object,
   /**
    * State of the share modal: { open, workspaceId }
    */
@@ -475,7 +455,8 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
-  closeShareModal: React.PropTypes.func
+  closeShareModal: React.PropTypes.func,
+  vesselTrackDisplayMode: React.PropTypes.string
 };
 
 export default Map;

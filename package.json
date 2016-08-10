@@ -4,8 +4,8 @@
   "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
   "main": "server.js",
   "scripts": {
-    "test": "npm run lint-js || npm run lint-sass",
-    "lint-sass": "sass-lint -v -q 'app/**/*.scss'",
+    "test": "npm run lint-js && npm run lint-sass",
+    "lint-sass": "sass-lint -v -q `./scripts/get-scss-files-to-push.sh`",
     "lint-js": "eslint -c .eslintrc --ext .jsx,.js app",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build"
@@ -56,6 +56,7 @@
     "react-google-maps": "^4.11.0",
     "react-native-accordion": "^1.0.0",
     "react-paginate": "^2.1.3",
+    "react-radio-group": "^3.0.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.1",
     "react-router-redux": "^4.0.4",

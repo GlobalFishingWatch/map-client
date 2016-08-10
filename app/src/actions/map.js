@@ -9,13 +9,21 @@ import {
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
-  UPDATE_VESSEL_TRANSPARENCY
+  UPDATE_VESSEL_TRANSPARENCY,
+  CHANGE_VESSEL_TRACK_DISPLAY_MODE
 } from '../constants';
 
 export function toggleLayerVisibility(layer) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
     payload: layer
+  };
+}
+
+export function changeVesselTrackDisplayMode(vesselTrackDisplayMode) {
+  return {
+    type: CHANGE_VESSEL_TRACK_DISPLAY_MODE,
+    payload: vesselTrackDisplayMode
   };
 }
 
