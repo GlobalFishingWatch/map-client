@@ -14,7 +14,7 @@ class CoverPrimary extends Component {
         <h1 className={CoverPage['cover-main-title']}>
           {this.props.title}
         </h1>
-        <p>
+        <p className={CoverPage['cover-main-subtitle']}>
           {this.props.subtitle}
         </p>
         <div className={CoverPage['footer-header']}>
