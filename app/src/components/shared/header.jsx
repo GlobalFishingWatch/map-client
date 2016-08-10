@@ -41,7 +41,7 @@ class Header extends Component {
     return (
       <nav
         className={
-          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname === '/' })
+          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname !== '/map' })
         }
       >
         <img
