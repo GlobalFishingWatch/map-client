@@ -73,11 +73,11 @@
 
     > li {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 12px;
       position: relative;
 
       @media #{$mq-laptop} {
-        padding: 10px 35px;
+        padding: 10px 30px;
       }
 
       &:last-of-type {

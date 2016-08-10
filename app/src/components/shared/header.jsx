@@ -38,11 +38,10 @@ class Header extends Component {
         </li>
       );
     }
-
     return (
       <nav
         className={
-          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname === '/' })
+          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname !== '/map' })
         }
       >
         <img
@@ -52,7 +51,7 @@ class Header extends Component {
           alt="Menu toggle icon"
         />
         <Link to="/">
-          <img className={styles['img-desktop']} src={logoimg} alt="Logo" />
+          <img className={styles['img-desktop']} src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo" />
           <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
         </Link>
         <span className={styles['share-header']}>Share</span>

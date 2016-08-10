@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
+import Header from '../../containers/header';
+import MenuMobile from '../shared/menu_mobile';
 
 class CoverPrimary extends Component {
 
   render() {
     return (<section className={CoverPage['c-cover-page']}>
-      <div>
+      <div className={CoverPage['layer-cover']}>
+        <MenuMobile />
+        <Header />
         <h1 className={CoverPage['cover-main-title']}>
           {this.props.title}
         </h1>
-        <p>
+        <p className={CoverPage['cover-main-subtitle']}>
           {this.props.subtitle}
         </p>
         <div className={CoverPage['footer-header']}>

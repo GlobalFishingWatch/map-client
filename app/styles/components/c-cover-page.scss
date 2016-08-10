@@ -13,71 +13,8 @@
     width: 100%;
   }
 
-  .dots-cover {
-    list-style: none;
-    padding-left: 110px;
-    position: relative;
-    top: 0px;
-
-    :global .slick-active {
-      button {
-        background-color: $color-3;
-      }
-    }
-
-    li {
-      display: inline-block;
-
-      button {
-        background: $color-4;
-        border: 0;
-        font-size: 0;
-        height: 14px;
-        margin-right: 15px;
-        outline: 0;
-        transform: rotate(45deg);
-        width: 14px;
-      }
-    }
-  }
-  .leo-slider {
-    padding-top: 170px;
-    blockquote{
-      max-width: 460px;
-      font-family: $font-family-1;
-      font-size: $font-size-x-normal;
-      font-weight: $font-weight-normal;
-      font-style: italic;
-      letter-spacing: -.1px;
-      color: $color-4;
-      padding-left: 110px;
-    }
-
-    .author-quote {
-      max-width: 460px;
-      font-family: $font-family-1;
-      font-size: $font-size-normal;
-      font-weight: $font-weight-normal;
-      letter-spacing: -.1px;
-      color: $color-4;
-      margin-top: 10px;
-      margin-bottom: 0;
-
-      &::after {
-        content: '';
-        display: block;
-        margin-top: 20px;
-        height: 5px;
-        background-color: $color-6;
-        margin-bottom: 20px;
-        width: 170px;
-      }
-    }
-  }
-
   h1 {
     color: $color-4;
-    font-family: $font-family-1;
     font-size: $font-size-huge;
     font-weight: $font-weight-bold;
     letter-spacing: -1.5px;
@@ -95,33 +32,87 @@
       display: block;
       height: 5px;
       margin-bottom: 10px;
-      margin-top: 18px;
-      width: 174px;
+      margin-top: 20px;
+      width: 170px;
     }
   }
 
-  .cover-main-title {
+  //Cover different with quote and different kind of text
+  .leo-slider {
+    padding-top: 170px;
 
-    &::after {
-      background-color: $color-6;
-      content: '';
-      display: block;
-      height: 5px;
-      margin-bottom: 20px;
-      margin-top: 18px;
-      width: 210px;
+    blockquote {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-x-normal;
+      font-style: italic;
+      font-weight: $font-weight-normal;
+      letter-spacing: -.1px;
+      max-width: 460px;
+      padding-left: 110px;
     }
+
+    .author-quote {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-normal;
+      font-weight: $font-weight-normal;
+      letter-spacing: -.1px;
+      margin-bottom: 0;
+      margin-top: 10px;
+      max-width: 460px;
+
+      &::after {
+        background-color: $color-6;
+        content: '';
+        display: block;
+        height: 5px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+        width: 170px;
+      }
+    }
+  }
+
+  //Style cover sub-pages
+  .cover-main-title {
+    padding-top: 50px;
+  }
+
+  .cover-main-subtitle {
+    margin-bottom: 20px;
+  }
+
+  //Style blog post detail
+  .cover-sub-title  {
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    line-height: 1.37;
+    padding-top: 50px;
+    text-transform: uppercase;
+
+    a {
+      color: $color-4;
+      text-decoration: none;
+    }
+  }
+
+  .cover-sub-subtitle {
+    color: $color-4;
+    font-size: $font-size-huge;
+    font-weight: $font-weight-bold;
+    letter-spacing: -1.5px;
+    line-height: 1.12;
+    margin-bottom: 20px;
+    max-width: 1000px;
   }
 
   p {
     color: $color-4;
-    font-family: $font-family-1;
-    font-size: $font-size-medium;
-    font-weight: $font-weight-normal;
     letter-spacing: -.1px;
     margin-bottom: 170px;
     max-width: 668px;
-    padding-left: 124px;
+    padding-left: 110px;
   }
 
   .footer-header {
@@ -147,12 +138,6 @@
       }
     }
 
-    .selected-box {
-      fill: $color-3;
-      stroke: $color-3;
-      stroke-width: 3;
-    }
-
     div {
       &:last-child {
         z-index: 1;
@@ -162,7 +147,43 @@
 
   .ldf-logo {
     display: block;
-    width: 140px;
     margin-top: 15px;
+    width: 140px;
+
+  }
+
+  //dots control de slider at home
+  .dots-cover {
+    list-style: none;
+    padding-left: 110px;
+    position: relative;
+    top: 0;
+
+    :global .slick-active {
+      button {
+        background-color: $color-3;
+      }
+    }
+
+    li {
+      display: inline-block;
+
+      button {
+        background: $color-4;
+        border: 0;
+        font-size: 0;
+        height: 14px;
+        margin-right: 15px;
+        outline: 0;
+        transform: rotate(45deg);
+        width: 14px;
+      }
+    }
+  }
+
+  .selected-box {
+    fill: $color-3;
+    stroke: $color-3;
+    stroke-width: 3;
   }
 }
