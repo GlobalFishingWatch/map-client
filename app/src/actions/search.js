@@ -1,4 +1,4 @@
-import { GET_SEARCH_RESULTS } from '../constants';
+import { GET_SEARCH_RESULTS } from '../actions';
 import 'whatwg-fetch';
 
 export function getSearchResults(searchTerm) {

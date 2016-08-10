@@ -1,4 +1,4 @@
-import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../constants';
+import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../actions';
 import 'whatwg-fetch';
 
 const url = 'http://beta.globalfishingwatch.org/api';

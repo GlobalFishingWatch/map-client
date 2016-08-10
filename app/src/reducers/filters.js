@@ -4,7 +4,7 @@ import {
   TIMELINE_DEFAULT_END_DATE,
   TIMELINE_INNER_EXTENT,
   SET_TIMELINE_DATES
-} from '../constants';
+} from '../actions';
 
 const initialState = {
   startDate: TIMELINE_DEFAULT_START_DATE,

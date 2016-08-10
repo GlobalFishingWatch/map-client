@@ -2,7 +2,7 @@ const initialState = {
   track: {},
   details: {}
 };
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, RESET_VESSEL_DETAILS } from '../constants';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, RESET_VESSEL_DETAILS } from '../actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

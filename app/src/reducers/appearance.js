@@ -1,5 +1,5 @@
 const initialState = { menuVisible: false };
-import { SET_VISIBLE_MENU } from '../constants';
+import { SET_VISIBLE_MENU } from '../actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

@@ -11,7 +11,7 @@ import {
   SET_SHARE_MODAL_ERROR,
   UPDATE_VESSEL_TRANSPARENCY,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE
-} from '../constants';
+} from '../actions';
 
 export function toggleLayerVisibility(layer) {
   return {

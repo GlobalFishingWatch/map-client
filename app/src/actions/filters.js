@@ -1,4 +1,4 @@
-import { UPDATE_FILTERS } from '../constants';
+import { UPDATE_FILTERS } from '../actions';
 
 export function updateFilters(filters) {
   return {

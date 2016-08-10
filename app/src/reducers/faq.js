@@ -1,5 +1,5 @@
 const initialState = null;
-import { GET_FAQ_ENTRIES } from '../constants';
+import { GET_FAQ_ENTRIES } from '../actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {
