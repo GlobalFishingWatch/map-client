@@ -9,3 +9,7 @@ rules:
       allow-rgba: true
   no-url-protocols:
     - 0
+  nesting-depth:
+    - 2
+    -
+      max-depth: 3
