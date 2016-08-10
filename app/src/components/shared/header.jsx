@@ -38,7 +38,6 @@ class Header extends Component {
         </li>
       );
     }
-
     return (
       <nav
         className={
