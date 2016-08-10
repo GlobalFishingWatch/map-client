@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Header from '../containers/header';
 import CoverPrimary from './shared/CoverPrimary';
 import Footer from './shared/footer';
 

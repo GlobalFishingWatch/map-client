@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
-import Header from './shared/header';
+import CoverPrimary from './shared/CoverPrimary';
 import Footer from './shared/footer';
 
 class PrivacyPolicy extends Component {
 
   render() {
     return (<div>
-      <Header />
-      <section className={home.header_home}>
-        <div>
-          <h1>
-            Privacy Policy
-          </h1>
-        </div>
+      <CoverPrimary
+        title="Privacy Policy"
+        subtitle="lorem ipsum"
+      />
+      <section>
       </section>
       <Footer />
     </div>);

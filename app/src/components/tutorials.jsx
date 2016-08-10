@@ -12,7 +12,7 @@ class Tutorials extends Component {
         title="Watch Our Tutorial"
         subtitle="View our tutorial video to see Global Fishing in action"
       />
-      <section className={home.header_home}>
+      <section>
       </section>
       <Footer />
     </div>);

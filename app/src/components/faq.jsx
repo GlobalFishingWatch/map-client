@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../containers/header';
 import Footer from './shared/footer';
 import CoverPrimary from './shared/CoverPrimary';
 import { Accordion, AccordionItem } from 'react-sanfona';
