@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../containers/header';
 import Footer from './shared/footer';
 import CoverPrimary from './shared/CoverPrimary';
 import { Accordion, AccordionItem } from 'react-sanfona';
@@ -41,7 +40,6 @@ class FAQ extends Component {
     }
 
     return (<div>
-      <Header />
       <CoverPrimary
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."

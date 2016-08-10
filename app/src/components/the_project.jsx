@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Header from '../containers/header';
 import CoverPrimary from './shared/CoverPrimary';
 import Footer from './shared/footer';
 
@@ -9,7 +8,6 @@ class TheProject extends Component {
   render() {
     return (
       <div>
-        <Header />
         <CoverPrimary
           title="The Project"
           subtitle="Global Fishing Watch enables anyone with an Internet connection to see

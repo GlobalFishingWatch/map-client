@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
-import Header from '../containers/header';
+import CoverPrimary from './shared/CoverPrimary';
 import Footer from './shared/footer';
 
 class ArticlesPublications extends Component {
 
   render() {
     return (<div>
-      <Header />
-      <section className={home.header_home}>
-        <div>
-          <h1>
-            Articles and Publications
-          </h1>
-        </div>
+      <CoverPrimary
+        title="Articles and Publications"
+        subtitle="lorem ipsum"
+      />
+      <section>
       </section>
       <Footer />
     </div>);

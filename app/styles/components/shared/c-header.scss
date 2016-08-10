@@ -42,9 +42,19 @@
     }
   }
 
-  .img-desktop {
+  .img-home {
     display: none;
     height: 70px;
+    margin-right: 10px;
+
+    @media #{$mq-tablet} {
+      display: block;
+    }
+  }
+
+  .img-sub-page {
+    display: none;
+    height: 50px;
     margin-right: 10px;
 
     @media #{$mq-tablet} {
@@ -73,11 +83,11 @@
 
     > li {
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 12px;
       position: relative;
 
       @media #{$mq-laptop} {
-        padding: 10px 35px;
+        padding: 10px 30px;
       }
 
       &:last-of-type {

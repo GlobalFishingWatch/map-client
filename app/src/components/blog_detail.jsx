@@ -30,7 +30,6 @@ class BlogDetail extends Component {
     let coverTitle = (<Link to={'/blog'}>Blog</Link>);
 
     return (<div>
-      <Header />
       <CoverSecondary title={coverTitle} subtitle={this.props.post ? this.props.post.title : null} />
       <section className={listposts['c-list-posts']}>
         {article}

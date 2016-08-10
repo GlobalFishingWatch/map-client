@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
-import Header from '../containers/header';
+import CoverPrimary from './shared/CoverPrimary';
 import Footer from './shared/footer';
 
 class TermsOfUse extends Component {
 
   render() {
     return (<div>
-      <Header />
-      <section className={home.header_home}>
-        <div>
-          <h1>
-            Terms Of Use
-          </h1>
-        </div>
+      <CoverPrimary
+        title="Terms Of Use"
+        subtitle="lorem ipsum"
+      />
+      <section>
       </section>
       <Footer />
     </div>);
