@@ -3,7 +3,6 @@ import {
   SHOW_LOADING,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYERS,
-  GET_SERIESGROUP,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -18,7 +17,6 @@ const initialState = {
   layers: [],
   zoom: 3,
   center: [0, 0],
-  vessel: null,
   shareModal: {
     open: false,
     error: null
@@ -43,8 +41,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { loading: action.payload.data });
     case SET_LAYERS:
       return Object.assign({}, state, { layers: action.payload });
-    case GET_SERIESGROUP:
-      return Object.assign({}, state, { track: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:

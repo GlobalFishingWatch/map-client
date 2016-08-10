@@ -3,7 +3,6 @@ import Map from '../components/map';
 import {
   getWorkspace,
   toggleLayerVisibility,
-  getSeriesGroup,
   setZoom,
   setCenter,
   openShareModal,
@@ -12,9 +11,12 @@ import {
   setShareModalError
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
+import { getSeriesGroup, setCurrentVessel } from '../actions/vesselInfo';
+import { RESET_VESSEL_DETAILS } from '../constants';
 
 const mapStateToProps = (state) => ({
   map: state.map,
+  vesselInfo: state.vesselInfo,
   filters: state.filters,
   loggedUser: state.user.loggedUser,
   token: state.user.token,
@@ -33,6 +35,16 @@ const mapDispatchToProps = (dispatch, { location }) => {
     updateFilters: (filters) => {
       dispatch(updateFilters(filters));
     },
+    setCurrentVessel: (vesselInfo) => {
+      dispatch({
+        type: RESET_VESSEL_DETAILS,
+        payload: vesselInfo
+      });
+      if (vesselInfo) {
+        dispatch(setCurrentVessel(vesselInfo));
+        dispatch(getSeriesGroup(vesselInfo.seriesgroup, vesselInfo.series));
+      }
+    },
     getSeriesGroup: (seriesgroup, series, filters) => {
       dispatch(getSeriesGroup(seriesgroup, series, filters));
     },
@@ -43,7 +55,6 @@ const mapDispatchToProps = (dispatch, { location }) => {
       dispatch(openShareModal(true));
       dispatch(saveWorkspace(setShareModalError));
     },
-
     closeShareModal: () => {
       dispatch(openShareModal(false));
       dispatch(deleteWorkspace());

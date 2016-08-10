@@ -15,6 +15,8 @@ import filtersReducer from './reducers/filters';
 import '../styles/application.scss';
 import appearanceReducer from './reducers/appearance';
 import contactReducer from './reducers/contact';
+import searchReducer from './reducers/search';
+import vesselInfoReducer from './reducers/vesselInfo';
 
 /**
  * Reducers
@@ -29,7 +31,9 @@ const reducer = combineReducers({
   filters: filtersReducer,
   appearance: appearanceReducer,
   faqEntries: faqReducer,
-  contactStatus: contactReducer
+  contactStatus: contactReducer,
+  search: searchReducer,
+  vesselInfo: vesselInfoReducer
 });
 
 
