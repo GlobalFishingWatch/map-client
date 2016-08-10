@@ -8,13 +8,12 @@ class InfoMap extends Component {
   render() {
     return (<div className={InfoMapContentStyle['c-info-map-content']}>
       <h2>THE MAP</h2>
-      <h3>Lorem ipsum dolor sit amet</h3>
-      <p>Morbi porttitor massa id bibendum varius. Etiam vitae pulvinar nisi, vel fringilla libero. Nulla consequat
-        sodales lectus.
+      <h3>Explore the Map Now</h3>
+      <p>Track commercial fishing activity worldwide on the free, user-friendly, interactive Global Fishing Watch Map.
       </p>
       <p>
         <a href="map" className={ButtonStyle['c-btn-primary-arrow']}>
-          <img src={BoxTriangleWhiteStyle} alt="Explore map" />EXPLORE MAP</a>
+          <img src={BoxTriangleWhiteStyle} alt="Explore map" />START HERE</a>
       </p>
     </div>);
   }
