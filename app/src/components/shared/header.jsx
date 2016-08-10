@@ -57,7 +57,7 @@ class Header extends Component {
           alt="Logo"
         />
         <Link to="/">
-          <img className={home['img-desktop']} src={logoimg} alt="Logo" />
+          <img className={home['img-desktop']} src={location.pathname === '/' ? logoimg : logoimgSecond } alt="Logo"/>
           <img className={home['img-mobile']} src={logoimgSecond} alt="Logo" />
         </Link>
         <span className={home['share-header']}>Share</span>
