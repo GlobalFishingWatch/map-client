@@ -1,6 +1,5 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
-
 const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
 const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
 const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
