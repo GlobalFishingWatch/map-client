@@ -1,0 +1,25 @@
+@import '../settings';
+
+.c_nav_footer {
+  padding-top: 38px;
+  padding-bottom: 45px;
+  display: flex;
+  justify-content: space-between;
+  ul {
+    list-style: none;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-padding-start: 0;
+    li {
+      text-transform: uppercase;
+      color: $color-16;
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+      line-height: 2.27;
+      a {
+        color: $color-16;
+        text-decoration: none;
+      }
+    }
+  }
+}

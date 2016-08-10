@@ -1,0 +1,12 @@
+@import '../settings';
+
+footer {
+  font-family: $font-family-1;
+  background-color: $color-7;
+  padding-top: 56px;
+  padding-left: 170px;
+  padding-right: 170px;
+  .project_name_footer {
+    background-color: $color-17;
+  }
+}
