@@ -10,8 +10,8 @@ class ContactUs extends Component {
     return (<div>
       <CoverPrimary
         title="Contact Us"
-        subtitle="Let us know what you think! Submit your questions, suggestions for
-        improvement or general feedback using the form below."
+        subtitle="Let us know what you think! Submit your questions, suggestions
+        for improvement or general feedback using the form below"
       />
       <ContactUsForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
       <SupportForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
