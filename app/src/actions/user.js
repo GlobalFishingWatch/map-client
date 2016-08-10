@@ -1,4 +1,4 @@
-import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../constants';
+import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
 import 'whatwg-fetch';
 
 const url = 'https://skytruth-pleuston.appspot.com';

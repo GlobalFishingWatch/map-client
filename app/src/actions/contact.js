@@ -1,4 +1,4 @@
-import { FORM_RESPONSE } from '../constants';
+import { FORM_RESPONSE } from '../actions';
 
 const url = 'https://skytruth-pleuston.appspot.com';
 

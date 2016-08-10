@@ -1,4 +1,4 @@
-import { SET_VISIBLE_MENU } from '../constants';
+import { SET_VISIBLE_MENU } from '../actions';
 
 export function setVisibleMenu(visible) {
   return {

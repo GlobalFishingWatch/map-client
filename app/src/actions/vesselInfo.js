@@ -1,4 +1,4 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK } from '../constants';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK } from '../actions';
 import _ from 'lodash';
 import PelagosClient from '../lib/pelagosClient';
 

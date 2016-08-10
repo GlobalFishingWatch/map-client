@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
 import CoverPrimary from './shared/CoverPrimary';
-import Header from '../containers/header';
 import Footer from './shared/footer';
 
 class Tutorials extends Component {

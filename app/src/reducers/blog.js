@@ -1,5 +1,5 @@
 const initialState = {};
-import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../constants';
+import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

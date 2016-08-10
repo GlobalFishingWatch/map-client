@@ -1,4 +1,4 @@
-import { GET_FAQ_ENTRIES } from '../constants';
+import { GET_FAQ_ENTRIES } from '../actions';
 import 'whatwg-fetch';
 
 export function getFAQEntries() {
