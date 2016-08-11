@@ -17,7 +17,7 @@ class Partners extends Component {
         <h2>Founding Partners</h2>
         <ul>
           <li>
-            <Link to="#">Oceana</Link>
+            <a href="#">Oceana</a>
             <p>
             Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
             Oceana is
@@ -29,7 +29,7 @@ class Partners extends Component {
             </p>
           </li>
           <li>
-            <Link to="#">SkyTruth</Link>
+            <a href="#">SkyTruth</a>
             <p>
               If you can see it, you can change it. SkyTruth hopes this illustration of global fishing activity,
               made available
@@ -40,21 +40,21 @@ class Partners extends Component {
               people that live in it. We’re driven by the belief that better transparency
               leads to better management and better
               outcomes for people and the environment. Check out what we do and how we work at
-              <Link to="www.skytruth.org">www.skytruth.org</Link>.
+              <a href="www.skytruth.org">www.skytruth.org</a>.
             </p>
           </li>
           <li>
-            <Link to="#">Google</Link>
+            <a href="#">Google</a>
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s
               infrastructure to address environmental and humanitarian issues through partnerships
               with non-profits, educational institutions, and research groups. To learn more, visit
-              <Link to="earth.google.com/outreach">earth.google.com/outreach</Link>.
+              <a href="earth.google.com/outreach"> earth.google.com/outreach</a>.
             </p>
           </li>
         </ul>
         <h2>Founding Funders</h2>
-        <Link>The Leonardo DiCaprio Foundation</Link>
+        <a href="#">The Leonardo DiCaprio Foundation</a>
         <p>
           The Leonardo DiCaprio Foundation is dedicated to the long-term health and wellbeing of all Earth’s
           inhabitants. Through collaborative partnerships, we support innovative projects that protect vulnerable
