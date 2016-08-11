@@ -1,9 +1,9 @@
-@import '../_settings.scss';
+@import '../settings';
 
 .c-list-posts {
   font-family: $font-family-1;
   padding: 0 20px;
-  @media screen and (min-width: $breakpoint-tablet) {
+  @media #{$mq-tablet} {
     padding: 0;
   }
   a{

@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import AppContainer from './containers/app';
-import HomeContainer from './containers/home';
-import MapContainer from './containers/map';
-import BlogContainer from './containers/blog';
-import BlogDetail from './containers/blog_detail';
-import ArticlesPublications from './components/articles_publications';
-import FAQContainer from './containers/faq';
-import Tutorials from './components/tutorials';
-import Definitions from './components/definitions';
-import TheProject from './components/the_project';
-import Partners from './components/partners';
-import TermsOfUse from './components/terms_of_use';
-import PrivacyPolicy from './components/privacy_policy';
+import AppContainer from './containers/App';
+import HomeContainer from './containers/Home';
+import MapContainer from './containers/Map';
+import BlogContainer from './containers/Blog';
+import BlogDetail from './containers/BlogDetail';
+import ArticlesPublications from './components/ArticlesPublications';
+import FAQContainer from './containers/FAQ';
+import Tutorials from './components/Tutorials';
+import Definitions from './components/Definitions';
+import TheProject from './components/TheProject';
+import Partners from './components/Partners';
+import TermsOfUse from './components/TermsOfUse';
+import PrivacyPolicy from './components/PrivacyPolicy';
 import { Router, Route, IndexRoute } from 'react-router';
-import ContactUsContainer from './containers/contact_us';
+import ContactUsContainer from './containers/ContactUs';
 
 class Routes extends Component {
   render() {
