@@ -1,7 +1,7 @@
 [
   {
     "question": "Can’t fishing vessels turn off their AIS?",
-    "answer": "<p>Yes. Soon, Global Fishing Watch can help detect when this appears to occur. When a vessel turns off its AIS, we can notice that and we will share that information publicly. We will also be able to flag activities such as ships disappearing or appearing suddenly, jumping 1,000 miles at once, or appearing to fish on land.</p>"
+    "answer": "<p>Yes. Soon, Global Fishing Watch can help detect when this appears to occur. When a vessel turns off its AIS, we can notice that and we will share that information publicly.   We will also be able to flag activities such as ships disappearing or appearing suddenly, jumping 1,000 miles at once, or appearing to fish on land.</p>"
   },
   {
     "question": "Can’t vessels just broadcast a false location in their AIS signals?",
@@ -57,7 +57,7 @@
   },
   {
     "question": "Can scientists and researchers get access to the raw data in Global Fishing Watch?",
-    "answer": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a href=\"/contact-us\">contact us</a> if you are interested</p>"
+    "answer": "<p>We have several ways of collaborating with scientists and researchers, , including allowing them access to the underlying AIS data. Please <a href=\"/contact-us\">contact us</a> if you are interested</p>"
   },
   {
     "question": "How do I reach Global Fishing Watch with a press inquiry?",

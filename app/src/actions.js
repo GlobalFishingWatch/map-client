@@ -23,6 +23,7 @@ export const GET_RECENT_POST = 'GET_RECENT_POST';
 export const GET_POST_BY_SLUG = 'GET_POST_BY_SLUG';
 
 export const GET_FAQ_ENTRIES = 'GET_FAQ_ENTRIES';
+export const GET_DEFINITION_ENTRIES = 'GET_DEFINITION_ENTRIES';
 
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';

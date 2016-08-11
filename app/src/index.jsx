@@ -9,6 +9,7 @@ import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
+import definitionReducer from './reducers/definitions';
 import userReducer from './reducers/user';
 import blogReducer from './reducers/blog';
 import filtersReducer from './reducers/filters';
@@ -33,7 +34,8 @@ const reducer = combineReducers({
   faqEntries: faqReducer,
   contactStatus: contactReducer,
   search: searchReducer,
-  vesselInfo: vesselInfoReducer
+  vesselInfo: vesselInfoReducer,
+  definitions: definitionReducer
 });
 
 
