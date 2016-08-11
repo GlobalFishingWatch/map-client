@@ -8,9 +8,10 @@ class Tutorials extends Component {
     return (<div>
       <CoverPrimary
         title="Watch Our Tutorial"
-        subtitle="View our tutorial video to see Global Fishing in action"
+        subtitle="View our tutorial video to see Global Fishing in action."
       />
       <section>
+        <p>Click on the video below to watch a brief tutorial of how Global Fishing Watch works. </p>
       </section>
       <Footer />
     </div>);

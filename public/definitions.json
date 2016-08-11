@@ -1,9 +1,5 @@
 [
   {
-    "term": "Can’t fishing vessels turn off their AIS?",
-    "definition": "<p>Yes. Soon, Global Fishing Watch can help detect when this appears to occur. When a vessel turns off its AIS, we can notice that and we will share that information publicly. We will also be able to flag activities such as ships disappearing or appearing suddenly, jumping 1,000 miles at once, or appearing to fish on land.</p>"
-  },
-  {
     "term": "AIS",
     "definition": "<p>The Automatic Identification System is a maritime navigation safety communications system standardized by the International Telecommunication Union (ITU) and adopted by the International Maritime Organization (IMO) that provides vessel information, including the vessel’s identity, type, position, course, speed, navigational status and other safety-related information automatically to appropriately equipped shore stations, other ships and aircraft; receives automatically such information from similarly fitted ships; monitors and tracks ships; and exchanges data with shore-based facilities.</p>"
   },

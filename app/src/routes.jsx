@@ -7,7 +7,8 @@ import BlogDetail from './containers/BlogDetail';
 import ArticlesPublications from './components/ArticlesPublications';
 import FAQContainer from './containers/FAQ';
 import Tutorials from './components/Tutorials';
-import Definitions from './components/Definitions';
+import Orbcomm from './components/Orbcomm';
+import Definitions from './containers/Definitions';
 import TheProject from './components/TheProject';
 import Partners from './components/Partners';
 import TermsOfUse from './components/TermsOfUse';
@@ -36,6 +37,8 @@ class Routes extends Component {
 
         <Route path="terms-of-use" component={TermsOfUse} />
         <Route path="privacy-policy" component={PrivacyPolicy} />
+
+        <Route path="orbcomm" component={Orbcomm} />
       </Route>
     </Router>);
   }
