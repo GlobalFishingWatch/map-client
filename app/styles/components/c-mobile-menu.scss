@@ -1,73 +1,75 @@
 @import '../settings';
 
-.c_mobile_menu {
-  font-family: $font-family-1;
+.c-mobile-menu {
+  background-color: $color-11;
+  bottom: 0;
+  box-shadow: 0 2px 4px 0 rgba($color-12, .5);
+  left: 0;
+  padding: 25px 30px;
   position: fixed;
   top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  width: 90%;
-  max-width: 290px;
-  background-color: $color-7;
-  transition: all 0.3s ease-in 0.2s;
   transform: translatex(-100%);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  background-color: $color-11;
-  padding: 25px 30px;
+  transition: .3s ease-in .2s;
+  width: 90%;
+  z-index: 100;
+
   ul {
     list-style: none;
+
     li {
-      display: block;
       color: $color-4;
+      display: block;
       font-size: $font-size-x-normal;
       font-weight: $font-weight-bold;
       line-height: 2.58;
     }
   }
-  .submenu_mobile {
+
+  .submenu-mobile {
     list-style: none;
     padding-left: 30px;
+
     li {
-      display: block;
       color: $color-4;
+      display: block;
       font-size: $font-size-x-normal;
-      font-weight: $font-weight-normal;
       line-height: 2.58;
     }
   }
-  .button_login {
-    background-color: #92b9c6;
-    font-size: $font-size-small;
-    font-weight: $font-weight-bold;
-    line-height: 1.29;
-    letter-spacing: 1px;
-    text-align: center;
-    padding: 22px 60px;
-    text-transform: uppercase;
-    display: block;
-    width: 100%;
-    max-width: 234px;
-    margin-top: 15px;
-    margin-bottom: 15px;
+
+  .button-login {
+    background-color: $color-3;
     color: $color-4;
     cursor: pointer;
+    display: block;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: 1px;
+    line-height: 1.29;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    max-width: 234px;
+    padding: 22px 60px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
   }
-  .forgot_text {
+
+  .forgot-text {
     color: $color-4;
     font-size: $font-size-small;
-    font-weight: $font-weight-normal;
+    padding-left: 0;
   }
 }
 
-.menu_back {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
+.menu-back {
+  background-color: rgba($color-12, .8);
   bottom: 0;
+  left: 0;
+  opacity: .9;
+  position: fixed;
+  right: 0;
+  top: 0;
   z-index: 20;
-  opacity: 0.9;
-  background-color: rgba(0, 0, 0, 0.8);
   // display: none;/*change*/
 }

@@ -18,7 +18,7 @@ class Home extends Component {
 
   render() {
     return (<div>
-      {this.props.menuVisible && <div className={backMobile.menu_back}></div>}
+      {this.props.menuVisible && <div className={backMobile['menu-back']}></div>}
       <CoverPage />
       <section id="case_study" className={home.infostudy}>
         <CaseStudySlider />
