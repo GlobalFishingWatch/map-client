@@ -94,6 +94,7 @@ class Map extends Component {
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
     this.updateVesselTransparency(nextProps);
+    this.updateVesselColor(nextProps);
 
     if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
@@ -197,6 +198,7 @@ class Map extends Component {
       this.props.token,
       this.props.filters,
       this.props.map.vesselTransparency,
+      this.props.map.vesselColor,
       layerSettings.visible);
     // Create track layer
     const Overlay = createTrackLayer(google);
@@ -352,6 +354,27 @@ class Map extends Component {
       return;
     }
     this.state.overlay.vesselTransparency = nextProps.map.vesselTransparency;
+
+    if (this.state.running !== 'play') {
+      this.state.overlay.refresh();
+    }
+  }
+
+  /**
+   * Handles vessel color changes
+   *
+   * @param nextProps
+   */
+  updateVesselColor(nextProps) {
+    if (this.props.map.vesselColor === nextProps.map.vesselColor) {
+      return;
+    }
+
+    if (!this.state.overlay) {
+      return;
+    }
+
+    this.state.overlay.setVesselColor(nextProps.map.vesselColor);
 
     if (this.state.running !== 'play') {
       this.state.overlay.refresh();

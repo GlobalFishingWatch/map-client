@@ -64,6 +64,9 @@ class ControlPanel extends Component {
         <div className={controlPanelStyle.content_accordion}>
           <SettingsPanel
             updateVesselTransparency={this.props.updateVesselTransparency}
+            vesselTransparency={this.props.vesselTransparency}
+            updateVesselColor={this.props.updateVesselColor}
+            vesselColor={this.props.vesselColor}
           />
         </div>
       </AccordionItem>);
@@ -85,8 +88,10 @@ class ControlPanel extends Component {
 
 ControlPanel.propTypes = {
   layers: React.PropTypes.array,
+  updateVesselTransparency: React.PropTypes.func,
   vesselTransparency: React.PropTypes.number,
-  updateVesselTransparency: React.PropTypes.func
+  updateVesselColor: React.PropTypes.func,
+  vesselColor: React.PropTypes.string
 };
 
 
