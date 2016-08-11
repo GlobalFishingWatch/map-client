@@ -1,12 +1,12 @@
 const initialState = {
   entries: [],
-  count: 0
+  count: -1 // To differentiate the cases when not searched yet and search with no result
 };
-import { GET_SEARCH_RESULTS } from '../actions';
+import { SET_SEARCH_RESULTS } from '../actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_SEARCH_RESULTS:
+    case SET_SEARCH_RESULTS:
       return Object.assign({}, state, action.payload);
     default:
       return state;

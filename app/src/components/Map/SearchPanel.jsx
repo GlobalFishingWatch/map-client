@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FiltersPanel from '../../containers/Map/FilterPanel';
-import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
-import { Accordion, AccordionItem } from 'react-sanfona';
+import styles from '../../../styles/components/map/c-search-panel.scss';
 
 class SearchPanel extends Component {
 
@@ -9,17 +8,36 @@ class SearchPanel extends Component {
     super(props);
 
     this.state = {
-      visibleAdvancedSearch: false
+      visibleAdvancedSearch: false,
+      search: '' // Current search i.e. what's inside the input
     };
 
     this.toggleVisibleAdvancedSearch = this.toggleVisibleAdvancedSearch.bind(this);
-    this.onSearchInputChange = this.onSearchInputChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
-  onSearchInputChange(event) {
-    this.props.getSearchResults(event.target.value);
+  /**
+   * Handler called when the form is submitted i.e. when the user made a search
+   *
+   * @param {Object} e - event
+   */
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.getSearchResults(this.state.search);
   }
 
+  /**
+   * Empty the search input and reset the search results
+   */
+  onClear() {
+    this.setState({ search: '' });
+    this.props.resetSearchResults();
+  }
+
+  /**
+   * Toggle the advanced search filters
+   */
   toggleVisibleAdvancedSearch() {
     this.setState({
       visibleAdvancedSearch: !this.state.visibleAdvancedSearch
@@ -27,57 +45,92 @@ class SearchPanel extends Component {
   }
 
   render() {
-    let advancedSearchAccordion = (
-      <Accordion
-        allowMultiple={false}
-        activeItems={6}
-        onChange={this.toggleVisibleAdvancedSearch}
-      >
-        <AccordionItem
-          title={this.state.visibleAdvancedSearch ? 'hide advanced search' : 'advanced search'}
-          key="advancedsearch"
-          titleClassName={controlPanelStyle.text_search}
+    const advancedSearch = (
+      <div className={styles['advanced-search']}>
+        <FiltersPanel />
+        <button
+          type="submit"
+          className={styles['search-button']}
         >
-          <div>
-            <FiltersPanel />
-            <span className={controlPanelStyle.button_advanced_search}>SEARCH</span>
-          </div>
-        </AccordionItem>
-      </Accordion>
+          Search
+        </button>
+      </div>
     );
 
-    let searchResults = [];
-    if (this.props.search && !this.state.visibleAdvancedSearch) {
-      for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
+    const searchResults = [];
+    if (this.props.searchResults.count === 0) {
+      searchResults.push(<li key={0}>No result</li>);
+    } else if (this.props.searchResults.count > 0) {
+      for (let i = 0, length = this.props.searchResults.entries.length; i < length; i++) {
         searchResults.push(
           <li
             key={i}
-            onClick={() => this.props.drawVessel(this.props.search.entries[i])}
+            onClick={() => this.props.drawVessel(this.props.searchResults.entries[i])}
           >
-            {this.props.search.entries[i].vesselname},<span>{this.props.search.entries[i].mmsi}</span>
+            <span>{this.props.searchResults.entries[i].vesselname}</span>, {this.props.searchResults.entries[i].mmsi}
           </li>
         );
       }
     }
 
     return (
-      <div>
+      <form
+        className={styles['c-search-panel']}
+        onSubmit={this.onSubmit}
+      >
         <input
-          onChange={this.onSearchInputChange}
-          className={controlPanelStyle.input_accordion}
-          placeholder="Type your search query"
+          className={styles['search-input']}
+          placeholder="Type your search criteria"
+          value={this.state.search}
+          onInput={e => this.setState({ search: e.currentTarget.value })}
         />
-        {advancedSearchAccordion}
-        <ul className={controlPanelStyle.list_results}>
+        <button
+          className={styles['search-icon-button']}
+          type="submit"
+        >
+          Search
+        </button>
+        <div className={styles['search-options']}>
+          <button
+            type="button"
+            className={styles.option}
+            onClick={this.onClear}
+          >
+            clear
+          </button>
+          <button
+            type="button"
+            className={styles.option}
+            onClick={this.toggleVisibleAdvancedSearch}
+          >
+            {`${this.state.visibleAdvancedSearch ? 'hide' : ''} advanced search`}
+          </button>
+        </div>
+        {this.state.visibleAdvancedSearch ? advancedSearch : null}
+        <ul className={styles['search-results']}>
           {searchResults}
         </ul>
-      </div>);
+      </form>);
   }
 }
 
 SearchPanel.propTypes = {
-  search: React.PropTypes.object,
+  /**
+   * Results of the search
+   * { count: Number, entries: Array }
+   */
+  searchResults: React.PropTypes.object,
+  /**
+   * Get the results of a search
+   */
   getSearchResults: React.PropTypes.func,
+  /**
+   * Reset the search results
+   */
+  resetSearchResults: React.PropTypes.func,
+  /**
+   * Draw a vessel on the map
+   */
   drawVessel: React.PropTypes.func
 };
 
