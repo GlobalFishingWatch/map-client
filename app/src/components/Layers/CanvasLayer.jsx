@@ -118,6 +118,7 @@ class CanvasLayer {
     ctx.width = canvas.width = this.tileSize.width;
     ctx.height = canvas.height = this.tileSize.height;
 
+
     canvas.ctx = ctx;
     return canvas;
   }
@@ -187,7 +188,7 @@ class CanvasLayer {
       for (let timestamp = this.innerStartDate; timestamp < this.innerEndDate; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
-          this.drawTileFromPlaybackData(canvas, playbackData, false);
+          this.drawTileFromPlaybackData(canvas, playbackData);
         } else {
           // TODO: a lot of missing timestamp indexes here, check why
         }
@@ -202,21 +203,23 @@ class CanvasLayer {
    * @param playbackData
    * @param drawTrail
    */
-  drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
+  drawTileFromPlaybackData(canvas, playbackData) {
     if (!canvas) {
       return;
     }
     const size = canvas.zoom > 6 ? 3 : 2;
 
+    const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalCompositeOperation = 'lighter';
+
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       this.drawVesselPoint(
-        canvas,
+        compositeCanvas,
         playbackData.x[index],
         playbackData.y[index],
         size,
         playbackData.weight[index],
-        playbackData.sigma[index],
-        drawTrail
+        playbackData.sigma[index]
       );
     }
   }
@@ -241,6 +244,9 @@ class CanvasLayer {
     }
     const size = canvas.zoom > 6 ? 3 : 2;
 
+    const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalCompositeOperation = 'lighter';
+
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       if (!this.passesFilters(vectorArray, index, true)) {
         continue;
@@ -252,7 +258,7 @@ class CanvasLayer {
         size,
         vectorArray.weight[index],
         vectorArray.sigma[index],
-        false
+        compositeCanvas
       );
     }
   }
@@ -385,29 +391,15 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
+  drawVesselPoint(canvas, x, y, size, weight, sigma) {
     const workCanvas = canvas;
     const vesselTransparency = this.vesselTransparency;
     const calculatedWeight = Math.min(weight / vesselTransparency, 1);
 
-    workCanvas.ctx.fillStyle = `rgba(17,129,251,${calculatedWeight})`;
-    workCanvas.ctx.fillRect(x, y, size, size);
-
-    if (calculatedWeight > 0.5) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
-    }
-
-    if (drawTrail) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 2, y + 1, size, size);
-      workCanvas.ctx.fillRect(x + 2, y + 2, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 1, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 2, size, size);
-    }
+    workCanvas.ctx.fillStyle = `rgba(242, 254, 254, ${calculatedWeight})`;
+    workCanvas.ctx.beginPath();
+    workCanvas.ctx.arc(x, y, 2, 0, Math.PI * 2, false);
+    workCanvas.ctx.fill();
   }
 
   /**
