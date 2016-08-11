@@ -395,10 +395,11 @@ class CanvasLayer {
     const workCanvas = canvas;
     const vesselTransparency = this.vesselTransparency;
     const calculatedWeight = Math.min(weight / vesselTransparency, 1);
+    const r = Math.max(1, 10 * Math.sqrt(sigma / Math.PI));
 
     workCanvas.ctx.fillStyle = `rgba(242, 254, 254, ${calculatedWeight})`;
     workCanvas.ctx.beginPath();
-    workCanvas.ctx.arc(x, y, 2, 0, Math.PI * 2, false);
+    workCanvas.ctx.arc(x, y, r, 0, Math.PI * 2, false);
     workCanvas.ctx.fill();
   }
 
