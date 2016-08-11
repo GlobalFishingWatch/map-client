@@ -128,18 +128,28 @@ const createTrackLayer = function (google) {
       new google.maps.LatLng(data.latitude[i], data.longitude[i])
     );
 
-    const weight = data.weight[i];
-    if (weight > 0.75) {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 2, 2);
-    } else if (weight > 0.50) {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    } else {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    }
+    // const weight = data.weight[i];
+    // this.ctx.fillStyle = drawStyle;
+    //
+    // this.ctx.beginPath();
+    // this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, 3, 0, Math.PI * 2, false);
+    // this.ctx.fill();
+    // this.ctx.closePath()
+
+    // if (weight > 0.75) {
+    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 2, 2);
+    // } else if (weight > 0.50) {
+    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
+    // } else {
+    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
+    // }
     return point;
+  };
+
+  TrackLayer.prototype.getPointAt = function (overlayProjection, data, i) {
+    return overlayProjection.fromLatLngToDivPixel(
+      new google.maps.LatLng(data.latitude[i], data.longitude[i])
+    );
   };
 
   /**
@@ -160,32 +170,30 @@ const createTrackLayer = function (google) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
-    let previousDrawStyle = null;
-
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
-      previousDrawStyle = drawStyle;
       previousPoint = point;
       drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
       if (!drawStyle) {
         continue;
       }
 
-      point = this.drawPoint(overlayProjection, data, i, drawStyle);
+      point = this.getPointAt(overlayProjection, data, i);
 
-      if (previousDrawStyle !== drawStyle || (i > 0 && data.series[i - 1] !== data.series[i])) {
-        if (previousDrawStyle) {
-          this.ctx.stroke();
-        }
-        this.ctx.beginPath();
+      this.ctx.fillStyle = drawStyle;
+      this.ctx.beginPath();
+      this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, 3, 0, Math.PI * 2, false);
+      this.ctx.fill();
+      this.ctx.closePath();
+
+      if (previousPoint) {
         this.ctx.strokeStyle = drawStyle;
-        if ((i > 0 && data.series[i - 1] === data.series[i]) && previousPoint) {
-          this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
-        }
+        this.ctx.beginPath();
+        this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
+        this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
+        this.ctx.stroke();
       }
-      this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
-    this.ctx.stroke();
   };
 
   TrackLayer.prototype.onAdd = function () {
