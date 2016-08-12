@@ -17,6 +17,8 @@ export const CANVAS_LAYER_DIM = 0.8;
 export const CANVAS_POINT_MIN_RADIUS = 2;
 export const CANVAS_POINT_MIN_ALPHA = 0.5;
 
+export const DEFAULT_VESSEL_COLOR = '#1181FB';
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

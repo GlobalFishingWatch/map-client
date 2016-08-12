@@ -12,6 +12,7 @@ import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
 import NoLogin from '../containers/Map/NoLogin';
+import MapFooter from './Map/MapFooter';
 import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -94,6 +95,7 @@ class Map extends Component {
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
     this.updateVesselTransparency(nextProps);
+    this.updateVesselColor(nextProps);
 
     if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
@@ -199,6 +201,7 @@ class Map extends Component {
       this.props.token,
       this.props.filters,
       this.props.map.vesselTransparency,
+      this.props.map.vesselColor,
       layerSettings.visible);
     // Create track layer
     const Overlay = createTrackLayer(google);
@@ -362,6 +365,27 @@ class Map extends Component {
   }
 
   /**
+   * Handles vessel color changes
+   *
+   * @param nextProps
+   */
+  updateVesselColor(nextProps) {
+    if (this.props.map.vesselColor === nextProps.map.vesselColor) {
+      return;
+    }
+
+    if (!this.state.overlay) {
+      return;
+    }
+
+    this.state.overlay.setVesselColor(nextProps.map.vesselColor);
+
+    if (this.state.running !== 'play') {
+      this.state.overlay.refresh();
+    }
+  }
+
+  /**
    * Handles clicks on the +/- buttons that manipulate the map zoom
    *
    * @param event
@@ -432,6 +456,7 @@ class Map extends Component {
           }
         />
       </div>
+      <MapFooter />
     </div>);
   }
 }

@@ -1,16 +1,18 @@
 @charset "utf-8";
+
 /*Base*/
 @import 'base';
 @import 'base/normalize';
 @import 'base/slick';
-@import 'base/slick';
 @import 'base/slick-theme';
+
 /*Components*/
 @import 'components/c-cover-page';
 @import 'components/c-map';
 @import 'components/map/c-timebar';
 @import 'components/map/c-timeline';
 @import 'components/map/c-datepicker';
+
 /*Layout*/
 @import 'layout/l-homepage';
 

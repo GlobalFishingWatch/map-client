@@ -7,7 +7,7 @@ import canvasPointRendering from '../../util/canvasPointRendering';
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
 
 class CanvasLayer {
-  constructor(position, map, token, filters, vesselTransparency, visible) {
+  constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
     this.map = map;
     this.playbackData = {};
     this.position = position;
@@ -17,6 +17,8 @@ class CanvasLayer {
     this.filters = filters;
     this.token = token;
     this.vesselTransparency = vesselTransparency;
+    this.setVesselColor(vesselColor);
+
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0];
@@ -25,6 +27,15 @@ class CanvasLayer {
       this.show();
     }
   }
+
+  setVesselColor(vesselColor) {
+    this.vesselColor = {
+      r: parseInt(vesselColor.slice(1, 3), 16),
+      g: parseInt(vesselColor.slice(3, 5), 16),
+      b: parseInt(vesselColor.slice(5, 7), 16)
+    }
+  }
+
 
   /**
    * Hides the layer
@@ -400,7 +411,7 @@ class CanvasLayer {
     const radius = canvasPointRendering.getRadius(weight, zoom);
     const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
 
-    workCanvas.ctx.fillStyle = `rgba(191, 66, 0, ${alpha})`;
+    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r},${this.vesselColor.g},${this.vesselColor.b}, ${alpha})`;
     workCanvas.ctx.beginPath();
     workCanvas.ctx.arc(~~x, ~~y, radius, 0, Math.PI * 2, false);
     workCanvas.ctx.fill();

@@ -10,8 +10,10 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   UPDATE_VESSEL_TRANSPARENCY,
+  UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE
 } from '../actions';
+import { DEFAULT_VESSEL_COLOR } from '../constants';
 
 const initialState = {
   loading: false,
@@ -24,6 +26,7 @@ const initialState = {
   },
   workspaceId: null,
   vesselTransparency: 5,
+  vesselColor: DEFAULT_VESSEL_COLOR,
   vesselTrackDisplayMode: 'current'
 };
 
@@ -49,6 +52,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { center: action.payload });
     case UPDATE_VESSEL_TRANSPARENCY:
       return Object.assign({}, state, { vesselTransparency: action.payload });
+    case UPDATE_VESSEL_COLOR:
+      return Object.assign({}, state, { vesselColor: action.payload });
     case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
       return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
     case TOGGLE_LAYER_VISIBILITY: {

@@ -9,7 +9,7 @@ export default {
     return radius;
   },
   getAlpha: (weight, vesselTransparency) =>
-    Math.min(1, weight * (vesselTransparency / 50))
+    Math.max(CANVAS_POINT_MIN_ALPHA, Math.min(1, weight * (vesselTransparency / 50)))
     // should we have a minimum alpha value
     // Math.max(CANVAS_POINT_MIN_ALPHA, Math.min(1, weight / vesselTransparency))
 };
