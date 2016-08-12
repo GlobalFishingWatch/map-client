@@ -11,7 +11,7 @@ class ContentAccordion extends Component {
       isOpen: false
     };
 
-    this.toggleItemBinded = this.toggleItem.bind(this);
+    this.toggleItemBound = this.toggleItem.bind(this);
   }
 
   getAccordionItems() {
@@ -22,14 +22,14 @@ class ContentAccordion extends Component {
       accordionItems.push(
         <AccordionItem
           key={index}
-          title={entries[index].question}
+          title={entries[index].title}
           className={AccordionStyles['accordion-item']}
           titleClassName={AccordionStyles['item-title']}
         >
           <article className={AccordionStyles['item-answer']}>
             <p
               dangerouslySetInnerHTML={{
-                __html: entries[index].answer
+                __html: entries[index].content
               }}
             />
           </article>
@@ -53,7 +53,7 @@ class ContentAccordion extends Component {
         allowMultiple={false}
         activeItems={[-1]}
         className={AccordionStyles['c-content-accordion']}
-        onChange={this.toggleItemBinded}
+        onChange={this.toggleItemBound}
       >
         {this.getAccordionItems()}
       </Accordion>
