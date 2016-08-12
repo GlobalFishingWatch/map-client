@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
 import CoverPrimary from './Shared/CoverPrimary';
-import Accordion from './FAQ/Accordion';
+import ContentAccordion from './Shared/ContentAccordion';
 
 import AppStyles from '../../styles/application.scss';
 
@@ -12,6 +12,14 @@ class FAQ extends Component {
   }
 
   render() {
+    let accordionContent = (<div>Loading....</div>);
+
+    if (!!this.props.faqEntries && this.props.faqEntries.length > 0) {
+      accordionContent = (<ContentAccordion
+        entries={this.props.faqEntries}
+      />);
+    }
+
     return (<div>
       <CoverPrimary
         title="Frequently Asked Questions"
@@ -19,14 +27,11 @@ class FAQ extends Component {
       />
       {this.props.faqEntries &&
         <div className={AppStyles.wrap}>
-          <Accordion
-            entries={this.props.faqEntries}
-          />
+          {accordionContent}
         </div>}
       <Footer />
     </div>);
   }
-
 }
 
 FAQ.propTypes = {
