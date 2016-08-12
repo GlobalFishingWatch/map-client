@@ -145,7 +145,7 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let drawStyleAlpha = null;
 
-    this.ctx.lineWidth = (zoom >= 6) ? 2.5 : 1;
+    this.ctx.lineWidth = (zoom >= 6) ? 1.5 : 1;
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousPoint = point;
@@ -162,7 +162,7 @@ const createTrackLayer = function (google) {
       drawStyleAlpha = `rgba(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b}, ${alpha})`;
       drawStyle = `rgb(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b})`;
 
-      this.ctx.fillStyle = drawStyleAlpha;
+      this.ctx.fillStyle = drawStyle;
       this.ctx.beginPath();
       this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, radius, 0, Math.PI * 2, false);
       this.ctx.fill();
