@@ -133,7 +133,7 @@ const createTrackLayer = function (google) {
    * @param filters
    * @param vesselTrackDisplayMode
    */
-  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode, weight, zoom) {
+  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode, zoom) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -157,9 +157,8 @@ const createTrackLayer = function (google) {
 
       point = this.getPointAt(overlayProjection, data, i);
 
-      // I would love to use weight here but I don't know how
-      const radius = canvasPointRendering.getRadius(weight, zoom);
-      const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
+      const radius = canvasPointRendering.getRadius(data.weight[i], zoom);
+      const alpha = canvasPointRendering.getAlpha(data.weight[i], this.vesselTransparency);
       drawStyleAlpha = `rgb(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b})`;
       drawStyle = `rgba(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b}, ${alpha})`;
 

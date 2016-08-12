@@ -141,9 +141,6 @@ class Map extends Component {
       workProps.vesselTrack.selectedSeries,
       workProps.filters,
       workProps.map.vesselTrackDisplayMode,
-      // I don't understand why this array has way more points than it should
-      // workProps.vesselTrack.seriesGroupData.weight,
-      1,
       this.state.zoom
     );
     // this shouldn't be called when no apparent track shows up, which I don't know how to test
