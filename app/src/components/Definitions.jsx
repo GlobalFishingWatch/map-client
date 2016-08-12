@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
+import ContentAccordion from './Shared/ContentAccordion';
+import AppStyles from '../../styles/application.scss';
 
 class Definitions extends Component {
 
@@ -8,30 +10,22 @@ class Definitions extends Component {
     this.props.getDefinitionEntries();
   }
   render() {
-    let definitionContent = [];
-    const definitionEntries = this.props.definitionEntries;
-    if (!!definitionEntries && definitionEntries.length > 0) {
-      for (let index = 0; index < definitionEntries.length; index++) {
-        definitionContent.push(
-          <li>
-            <h2>{definitionEntries[index].term}</h2>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: definitionEntries[index].definition
-              }}
-            />
-          </li>
-        );
-      }
+    let accordionContent = (<div>Loading....</div>);
+
+    if (this.props.definitionEntries && this.props.definitionEntries.length > 0) {
+      accordionContent = (<ContentAccordion
+        entries={this.props.definitionEntries}
+      />);
     }
+
     return (<div>
       <CoverPrimary
         title="Glossary of Terms"
         subtitle="Review definitions of terms you will find across our site and as you explore the Map."
       />
-      <section>
-        {definitionContent}
-      </section>
+      <div className={AppStyles.wrap}>
+        {accordionContent}
+      </div>
       <Footer />
     </div>);
   }
