@@ -8,6 +8,8 @@
   height: 95px;
   justify-content: space-between;
   padding: 0 30px;
+  position: relative;
+  z-index: 2;
 
   @media #{$mq-tablet} {
     box-shadow: none;
