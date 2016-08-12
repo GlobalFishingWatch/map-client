@@ -146,6 +146,8 @@ class Map extends Component {
       1,
       this.state.zoom
     );
+    // this shouldn't be called when no apparent track shows up, which I don't know how to test
+    this.state.overlay.dim();
   }
 
   /**

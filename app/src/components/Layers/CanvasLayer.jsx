@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP } from '../../constants';
+import { TIMELINE_STEP, CANVAS_LAYER_DIM } from '../../constants';
 import _ from 'lodash';
 import canvasPointRendering from '../../util/canvasPointRendering';
 
@@ -119,6 +119,9 @@ class CanvasLayer {
     ctx.width = canvas.width = this.tileSize.width;
     ctx.height = canvas.height = this.tileSize.height;
 
+    if (this.dimmed) {
+      canvas.style.opacity = CANVAS_LAYER_DIM;
+    }
 
     canvas.ctx = ctx;
     return canvas;
@@ -521,6 +524,19 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     });
 
     return canvas;
+  }
+
+  /**
+   * Dim canvas globally, used when track is selected
+   */
+  dim() {
+    this.dimmed = true;
+
+    const canvasKeys = Object.keys(this.playbackData);
+    for (let index = 0, length = canvasKeys.length; index < length; index++) {
+      const canvas = document.getElementById(canvasKeys[index]);
+      if (canvas) canvas.style.opacity = CANVAS_LAYER_DIM;
+    }
   }
 }
 
