@@ -18,13 +18,13 @@ class Partners extends Component {
           <li>
             <a href="#">Oceana</a>
             <p>
-            Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
-            Oceana is
-            rebuilding abundant and biodiverse oceans by winning science-based policies in countries that control one
-            third of the world’s wild fish catch. With over 100 victories that stop overfishing, habitat destruction,
-            pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
-            results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
-            forever. Together, we can save the oceans and help feed the world. Visit www.oceana.org to learn more.
+              Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
+              Oceana is
+              rebuilding abundant and biodiverse oceans by winning science-based policies in countries that control one
+              third of the world’s wild fish catch. With over 100 victories that stop overfishing, habitat destruction,
+              pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
+              results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
+              forever. Together, we can save the oceans and help feed the world. Visit www.oceana.org to learn more.
             </p>
           </li>
           <li>
