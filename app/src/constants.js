@@ -13,6 +13,8 @@ export const TIMELINE_INNER_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(D
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 
+export const DEFAULT_VESSEL_COLOR = '#1181FB';
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

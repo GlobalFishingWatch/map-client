@@ -10,6 +10,7 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   UPDATE_VESSEL_TRANSPARENCY,
+  UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE
 } from '../actions';
 
@@ -40,10 +41,17 @@ export function setCenter(center) {
   };
 }
 
-export function updateVesselTransparency(density) {
+export function updateVesselTransparency(transparency) {
   return {
     type: UPDATE_VESSEL_TRANSPARENCY,
-    payload: parseInt(density, 10)
+    payload: parseInt(transparency, 10)
+  };
+}
+
+export function updateVesselColor(color) {
+  return {
+    type: UPDATE_VESSEL_COLOR,
+    payload: color
   };
 }
 
