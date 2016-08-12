@@ -10,9 +10,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateFilters: (filters) => {
-    dispatch(updateFilters(filters));
-  },
+  updateFilters: filters => dispatch(updateFilters(filters)),
   getSearchResults: (searchTerm) => {
     dispatch(getSearchResults(searchTerm));
   },

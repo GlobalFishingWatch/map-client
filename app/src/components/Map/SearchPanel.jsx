@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import FiltersPanel from '../../containers/Map/FilterPanel';
+import iso3311a2 from 'iso-3166-1-alpha-2';
+import { FLAGS } from '../../constants';
 import styles from '../../../styles/components/map/c-search-panel.scss';
 
 class SearchPanel extends Component {
@@ -9,12 +10,27 @@ class SearchPanel extends Component {
 
     this.state = {
       visibleAdvancedSearch: false,
-      search: '' // Current search i.e. what's inside the input
+      search: '', // Current search i.e. what's inside the input
+      flag: '' // Current selected flag
     };
+
+    /* Map indexes to country names */
+    this.countryNames = Object.keys(FLAGS).map(index => ({
+      name: iso3311a2.getCountry(FLAGS[index]),
+      id: index
+    }))
+      .filter(country => country.name)
+      .sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
 
     this.toggleVisibleAdvancedSearch = this.toggleVisibleAdvancedSearch.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onClear = this.onClear.bind(this);
+    this.renderSearchResults = this.renderSearchResults.bind(this);
+    this.renderAdvancedSearch = this.renderAdvancedSearch.bind(this);
   }
 
   /**
@@ -25,14 +41,16 @@ class SearchPanel extends Component {
   onSubmit(e) {
     e.preventDefault();
     this.props.getSearchResults(this.state.search);
+    this.props.updateFilters({ flag: this.state.flag });
   }
 
   /**
    * Empty the search input and reset the search results
    */
   onClear() {
-    this.setState({ search: '' });
+    this.setState({ search: '', flag: '' });
     this.props.resetSearchResults();
+    this.props.updateFilters({ flag: '' });
   }
 
   /**
@@ -44,21 +62,9 @@ class SearchPanel extends Component {
     });
   }
 
-  render() {
-    const advancedSearch = (
-      <div className={styles['advanced-search']}>
-        <FiltersPanel />
-        <button
-          type="submit"
-          className={styles['search-button']}
-        >
-          Search
-        </button>
-      </div>
-    );
-
+  renderSearchResults() {
     const searchResults = [];
-    if (this.props.searchResults.count === 0) {
+    if (this.props.searchResults.count === 0 && this.state.search.length) {
       searchResults.push(<li key={0}>No result</li>);
     } else if (this.props.searchResults.count > 0) {
       for (let i = 0, length = this.props.searchResults.entries.length; i < length; i++) {
@@ -73,6 +79,46 @@ class SearchPanel extends Component {
       }
     }
 
+    return (
+      <ul className={styles['search-results']}>
+        {searchResults}
+      </ul>
+    );
+  }
+
+  renderAdvancedSearch() {
+    if (!this.state.visibleAdvancedSearch) return null;
+
+    const countries = Object.keys(this.countryNames).map(index =>
+      <option
+        value={this.countryNames[index].id}
+        key={this.countryNames[index].id}
+      >
+        {this.countryNames[index].name}
+      </option>
+    );
+
+    return (
+      <div className={styles['advanced-search']}>
+        <select
+          id="ISOfilter"
+          onChange={(e) => this.setState({ flag: e.target.value })}
+          value={this.state.flag}
+        >
+          <option value="" key={-1}>Vessel flag (ISO code)</option>
+          {countries}
+        </select>
+        <button
+          type="submit"
+          className={styles['search-button']}
+        >
+          Search
+        </button>
+      </div>
+    );
+  }
+
+  render() {
     return (
       <form
         className={styles['c-search-panel']}
@@ -106,10 +152,8 @@ class SearchPanel extends Component {
             {`${this.state.visibleAdvancedSearch ? 'hide' : ''} advanced search`}
           </button>
         </div>
-        {this.state.visibleAdvancedSearch ? advancedSearch : null}
-        <ul className={styles['search-results']}>
-          {searchResults}
-        </ul>
+        {this.renderAdvancedSearch()}
+        {this.renderSearchResults()}
       </form>);
   }
 }
@@ -131,7 +175,11 @@ SearchPanel.propTypes = {
   /**
    * Draw a vessel on the map
    */
-  drawVessel: React.PropTypes.func
+  drawVessel: React.PropTypes.func,
+  /**
+   * Update the filters
+   */
+  updateFilters: React.PropTypes.func
 };
 
 

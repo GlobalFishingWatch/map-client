@@ -44,6 +44,23 @@
 
   .advanced-search {
     margin-bottom: 10px;
+
+    > select {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background: url('../../../assets/icons/select_arrow.svg') no-repeat center right 14px;
+      background-color: transparent;
+      border: 1px solid $color-7;
+      border-radius: 0;
+      color: $color-4;
+      display: block;
+      font-size: $font-size-small;
+      height: 40px;
+      line-height: 40px;
+      margin: 7px 0;
+      padding: 0 34px 0 14px;
+      width: 100%;
+    }
   }
 
   .search-button {
