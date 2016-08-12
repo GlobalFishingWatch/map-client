@@ -64,7 +64,7 @@ class SearchPanel extends Component {
 
   renderSearchResults() {
     const searchResults = [];
-    if (this.props.searchResults.count === 0 && this.state.search.length) {
+    if (this.props.searchResults.count === 0) {
       searchResults.push(<li key={0}>No result</li>);
     } else if (this.props.searchResults.count > 0) {
       for (let i = 0, length = this.props.searchResults.entries.length; i < length; i++) {

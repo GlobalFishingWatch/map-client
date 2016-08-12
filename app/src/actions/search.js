@@ -23,7 +23,7 @@ export function getSearchResults(searchTerm) {
 
     if (!state.user.token) {
       dispatch(resetSearchResults());
-    } else {
+    } else if (searchTerm) {
       fetch(`${API_URL}/tilesets/tms-format-2015-2016-v1/search/?query=${searchTerm}`, {
         method: 'GET',
         headers: {
