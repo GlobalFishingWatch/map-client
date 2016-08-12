@@ -14,6 +14,8 @@ export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 
 export const CANVAS_LAYER_DIM = 0.8;
+export const CANVAS_POINT_MIN_RADIUS = 2;
+export const CANVAS_POINT_MIN_ALPHA = 0.5;
 
 export const FLAGS = {
   0: 'AD',
