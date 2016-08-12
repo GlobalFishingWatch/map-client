@@ -1,11 +1,13 @@
+import canvasPointRendering from '../../util/canvasPointRendering';
+
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
-const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
-const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
-const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
+const OUT_OF_INNER_BOUNDS_COLOR = { r: 255, g: 128, b: 0 };
+const OUT_OF_OUTER_BOUNDS_COLOR = { r: 255, g: 255, b: 0 };
+const MATCH_COLOR = { r: 255, g: 0, b: 0 };
 
 const createTrackLayer = function (google) {
-  function TrackLayer(map, width, height) {
+  function TrackLayer(map, width, height, vesselTransparency) {
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
@@ -13,6 +15,8 @@ const createTrackLayer = function (google) {
       x: 0,
       y: 0
     };
+
+    this.vesselTransparency = vesselTransparency;
 
     const canvas = document.createElement('canvas');
     canvas.style.border = '1px solid black';
@@ -98,7 +102,7 @@ const createTrackLayer = function (google) {
         return false;
       }
       const green = 100 + (data.series[index] % 155);
-      return `rgba(0, ${green}, 0, 1)`;
+      return { r: 0, g: green, b: 0 };
     }
     if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
@@ -115,37 +119,6 @@ const createTrackLayer = function (google) {
     return MATCH_COLOR;
   };
 
-  /**
-   * Draws a single vessel point of a track
-   * @param overlayProjection
-   * @param data
-   * @param i
-   * @param drawStyle
-   * @returns {*}
-   */
-  TrackLayer.prototype.drawPoint = function (overlayProjection, data, i, drawStyle) {
-    const point = overlayProjection.fromLatLngToDivPixel(
-      new google.maps.LatLng(data.latitude[i], data.longitude[i])
-    );
-
-    // const weight = data.weight[i];
-    // this.ctx.fillStyle = drawStyle;
-    //
-    // this.ctx.beginPath();
-    // this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, 3, 0, Math.PI * 2, false);
-    // this.ctx.fill();
-    // this.ctx.closePath()
-
-    // if (weight > 0.75) {
-    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 2, 2);
-    // } else if (weight > 0.50) {
-    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    // } else {
-    //   this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    // }
-    return point;
-  };
-
   TrackLayer.prototype.getPointAt = function (overlayProjection, data, i) {
     return overlayProjection.fromLatLngToDivPixel(
       new google.maps.LatLng(data.latitude[i], data.longitude[i])
@@ -160,7 +133,7 @@ const createTrackLayer = function (google) {
    * @param filters
    * @param vesselTrackDisplayMode
    */
-  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode) {
+  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode, weight, zoom) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -170,9 +143,13 @@ const createTrackLayer = function (google) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
+    let drawStyleAlpha = null;
+
+    this.ctx.lineWidth = (zoom >= 6) ? 2.5 : 1;
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousPoint = point;
+
       drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
       if (!drawStyle) {
         continue;
@@ -180,9 +157,15 @@ const createTrackLayer = function (google) {
 
       point = this.getPointAt(overlayProjection, data, i);
 
-      this.ctx.fillStyle = drawStyle;
+      // I would love to use weight here but I don't know how
+      const radius = canvasPointRendering.getRadius(weight, zoom);
+      const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
+      drawStyleAlpha = `rgb(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b})`;
+      drawStyle = `rgba(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b}, ${alpha})`;
+
+      this.ctx.fillStyle = drawStyleAlpha;
       this.ctx.beginPath();
-      this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, 3, 0, Math.PI * 2, false);
+      this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, radius, 0, Math.PI * 2, false);
       this.ctx.fill();
       this.ctx.closePath();
 

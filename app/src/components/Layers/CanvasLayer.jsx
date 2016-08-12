@@ -2,6 +2,7 @@
 import PelagosClient from '../../lib/pelagosClient';
 import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
+import canvasPointRendering from '../../util/canvasPointRendering';
 
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
 
@@ -172,7 +173,7 @@ class CanvasLayer {
    * @param start
    * @param end
    */
-  drawTimeRange(start, end) {
+  drawTimeRange(start, end, zoom) {
     const canvasKeys = Object.keys(this.playbackData);
     this.innerStartDate = CanvasLayer.getTimestampIndex(start);
     this.innerEndDate = CanvasLayer.getTimestampIndex(end);
@@ -188,7 +189,7 @@ class CanvasLayer {
       for (let timestamp = this.innerStartDate; timestamp < this.innerEndDate; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
-          this.drawTileFromPlaybackData(canvas, playbackData);
+          this.drawTileFromPlaybackData(canvas, playbackData, zoom);
         } else {
           // TODO: a lot of missing timestamp indexes here, check why
         }
@@ -203,13 +204,13 @@ class CanvasLayer {
    * @param playbackData
    * @param drawTrail
    */
-  drawTileFromPlaybackData(canvas, playbackData) {
+  drawTileFromPlaybackData(canvas, playbackData, zoom) {
     if (!canvas) {
       return;
     }
-    const size = canvas.zoom > 6 ? 3 : 2;
 
     const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalAlpha = 0.6;
     compositeCanvas.ctx.globalCompositeOperation = 'lighter';
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
@@ -217,9 +218,9 @@ class CanvasLayer {
         compositeCanvas,
         playbackData.x[index],
         playbackData.y[index],
-        size,
         playbackData.weight[index],
-        playbackData.sigma[index]
+        playbackData.sigma[index],
+        zoom
       );
     }
   }
@@ -233,7 +234,7 @@ class CanvasLayer {
    * @param canvas
    * @param vectorArray
    */
-  drawTileFromVectorArray(canvas, vectorArray) {
+  drawTileFromVectorArray(canvas, vectorArray, zoom) {
     if (!canvas) {
       return;
     }
@@ -242,9 +243,9 @@ class CanvasLayer {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
-    const size = canvas.zoom > 6 ? 3 : 2;
 
     const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalAlpha = 0.6;
     compositeCanvas.ctx.globalCompositeOperation = 'lighter';
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
@@ -252,13 +253,12 @@ class CanvasLayer {
         continue;
       }
       this.drawVesselPoint(
-        canvas,
+        compositeCanvas,
         vectorArray.x[index],
         vectorArray.y[index],
-        size,
         vectorArray.weight[index],
         vectorArray.sigma[index],
-        compositeCanvas
+        zoom
       );
     }
   }
@@ -391,15 +391,15 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(canvas, x, y, size, weight, sigma) {
+  drawVesselPoint(canvas, x, y, weight, sigma, zoom) {
     const workCanvas = canvas;
-    const vesselTransparency = this.vesselTransparency;
-    const calculatedWeight = Math.min(weight / vesselTransparency, 1);
-    const r = Math.max(1, 10 * Math.sqrt(sigma / Math.PI));
 
-    workCanvas.ctx.fillStyle = `rgba(242, 254, 254, ${calculatedWeight})`;
+    const radius = canvasPointRendering.getRadius(weight, zoom);
+    const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
+
+    workCanvas.ctx.fillStyle = `rgba(242, 254, 254, ${alpha})`;
     workCanvas.ctx.beginPath();
-    workCanvas.ctx.arc(x, y, r, 0, Math.PI * 2, false);
+    workCanvas.ctx.arc(~~x, ~~y, radius, 0, Math.PI * 2, false);
     workCanvas.ctx.fill();
   }
 
@@ -515,7 +515,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     Promise.all(promises).then((rawTileData) => {
       if (tileCoordinates && rawTileData[0]) {
         const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        this.drawTileFromVectorArray(canvas, vectorArray);
+        this.drawTileFromVectorArray(canvas, vectorArray, zoom);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
       }
     });
