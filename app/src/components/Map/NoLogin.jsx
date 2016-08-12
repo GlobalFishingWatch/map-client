@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import styles from '../../../styles/components/map/c-share.scss';
-import button from '../../../styles/components/c-button.scss';
+import styles from '../../../styles/components/map/c-no-login.scss';
 
 class NoLogin extends Component {
 
@@ -10,11 +9,13 @@ class NoLogin extends Component {
       <div className={styles['c-share']}>
         <h2 className={styles.title}>Login required</h2>
         <p className={styles.intro}>
-          In order to access the map, you first need to login.
+          You must log in to view the Map. If you are a registered user,&nbsp;
+          <a className={styles.link_underline} onClick={this.props.login}>log in here</a>
         </p>
-        <a className={button.c_btn_primary} onClick={this.props.login}>Login</a>
-        <a className={button.c_btn_primary} onClick={this.props.register}>Register</a>
-        <Link to="/">Back to homepage</Link>
+        <p>
+          If you are not a registered user, learn more about Global Fishing Watch&nbsp;
+          <Link className={styles.link_underline} to="/">here</Link>
+        </p>
       </div>
     );
   }
