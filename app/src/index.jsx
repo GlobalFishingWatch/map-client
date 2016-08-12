@@ -18,6 +18,7 @@ import appearanceReducer from './reducers/appearance';
 import contactReducer from './reducers/contact';
 import searchReducer from './reducers/search';
 import vesselInfoReducer from './reducers/vesselInfo';
+import articlesPublicationsReducer from './reducers/articlesPublications';
 
 /**
  * Reducers
@@ -35,7 +36,8 @@ const reducer = combineReducers({
   contactStatus: contactReducer,
   search: searchReducer,
   vesselInfo: vesselInfoReducer,
-  definitions: definitionReducer
+  definitions: definitionReducer,
+  articlesPublications: articlesPublicationsReducer
 });
 
 

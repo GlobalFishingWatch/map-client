@@ -24,13 +24,11 @@ export const GET_RECENT_POST = 'GET_RECENT_POST';
 export const GET_POST_BY_SLUG = 'GET_POST_BY_SLUG';
 
 export const GET_FAQ_ENTRIES = 'GET_FAQ_ENTRIES';
+export const GET_ARTICLES_PUBLICATIONS_ENTRIES = 'GET_ARTICLES_PUBLICATIONS_ENTRIES';
 export const GET_DEFINITION_ENTRIES = 'GET_DEFINITION_ENTRIES';
 
 // Filters actions
 export const UPDATE_FILTERS = 'UPDATE_FILTERS';
-
-// Vessel actions
-export const LOAD_VESSEL_INFO = 'LOAD_VESSEL_INFO';
 
 // Appearance actions
 export const SET_VISIBLE_MENU = 'SET_VISIBLE_MENU';
