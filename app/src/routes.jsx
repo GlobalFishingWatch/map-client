@@ -4,7 +4,7 @@ import HomeContainer from './containers/Home';
 import MapContainer from './containers/Map';
 import BlogContainer from './containers/Blog';
 import BlogDetail from './containers/BlogDetail';
-import ArticlesPublications from './components/ArticlesPublications';
+import ArticlesPublications from './containers/ArticlesPublications';
 import FAQContainer from './containers/FAQ';
 import Tutorials from './components/Tutorials';
 import Orbcomm from './components/Orbcomm';
