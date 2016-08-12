@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LinkTo from './../Shared/LinkTo';
 import { Accordion, AccordionItem } from 'react-sanfona';
 
 import AccordionStyles from '../../../styles/components/FAQ/c-accordion.scss';
@@ -41,6 +40,9 @@ class FAQAccordion extends Component {
     return accordionItems;
   }
 
+  // changes arrow's direction when open and close
+  // we are not using it right now because we are not
+  // implementing the arrows. We'll do in a nerby future.
   toggleItem() {
     this.setState({ isOpen: !this.state.isOpen });
   }
