@@ -18,10 +18,8 @@ class FAQAccordion extends Component {
   getAccordionItems() {
     const entries = this.props.entries;
     const accordionItems = [];
-    const direction = this.state.isOpen ? '-down' : '-left';
 
     for (let index = 0; index < entries.length; index++) {
-
       accordionItems.push(
         <AccordionItem
           key={index}

@@ -41,10 +41,10 @@
   &.-white {
     > .rhombus {
       border-color: $color-4;
-    }
 
-    > .rhombus::after {
-      border-color: $color-4;
+      &::after {
+        border-color: $color-4;
+      }
     }
 
     > .text  {
@@ -52,15 +52,21 @@
     }
   }
 
-  &.-left > .rhombus::after {
-    transform: translate(calc(-50% + 2px), calc(-50% - 1px));
+  &.-left > .rhombus {
+    &::after {
+      transform: translate(calc(-50% + 2px), calc(-50% - 1px));
+    }
   }
 
-  &.-right > .rhombus::after {
-    transform: translate(calc(-50% - 2px), calc(-50% - 1px)) rotate(180deg);
+  &.-right > .rhombus {
+    &::after {
+      transform: translate(calc(-50% - 2px), calc(-50% - 1px)) rotate(180deg);
+    }
   }
 
-  &.-down > .rhombus::after {
-    transform: translate(calc(-50%), calc(-50% - 2px)) rotate(-90deg);
+  &.-down > .rhombus {
+    &::after {
+      transform: translate(calc(-50%), calc(-50% - 2px)) rotate(-90deg);
+    }
   }
 }

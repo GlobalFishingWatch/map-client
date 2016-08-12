@@ -1,0 +1,70 @@
+@import '../../settings';
+
+.c-accordion {
+  padding: 100px 0 95px;
+
+
+  > .accordion-item {
+    display: block;
+    padding-bottom: 60px;
+    position: relative;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+
+  :global .react-sanfona-item-expanded {
+    border-bottom: 2px solid $color-10;
+    border-top: 2px solid $color-10;
+    margin-bottom: 60px;
+    padding-top: 60px;
+
+    &:last-child {
+      padding-bottom: 60px;
+    }
+  }
+
+  .accordion-item .item-title {
+    color: $color-19;
+    font-size: 19px;
+    margin-bottom: 20px;
+    position: relative;
+    width: 100%;
+  }
+
+  .accordion-item .item-answer {
+    color: $color-9;
+    font-size: $font-size-normal;
+    line-height: 1.6;
+    margin-top: 20px;
+
+    > p + p {
+      margin-top: 15px;
+    }
+
+    ul {
+      margin-top: 15px;
+      padding-left: 30px;
+    }
+
+    a {
+      color: $color-12;
+      font-weight: $font-weight-bold;
+      position: relative;
+      text-decoration: none;
+
+      &::after {
+        background-color: $color-6;
+        bottom: 0;
+        content: '';
+        display: inline-block;
+        height: 1px;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: auto;
+      }
+    }
+  }
+}
