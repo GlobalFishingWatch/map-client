@@ -25,3 +25,20 @@
     color: $color-18;
   }
 }
+
+.trackMode {
+  padding: 7px 30px;
+  width: 90%;
+  margin: 0 auto;
+
+  label {
+    display: inline-block;
+    float: left;
+    clear: left;
+    text-align: left;
+  }
+  input {
+    display: inline-block;
+    float: left;
+  }
+}

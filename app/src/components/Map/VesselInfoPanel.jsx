@@ -54,14 +54,23 @@ class VesselInfoPanel extends Component {
         <p>MMSI: <span id="vesselPanelMmsi">{this.props.vesselInfo.mmsi}</span></p>
         <p>Name: <span id="vesselPanelName">{this.props.vesselInfo.vesselname}</span></p>
         <p>More info: <span id="vesselPanelMarineTraffic">{marineTrafficLink}</span></p>
+
+        <h3>Vessel track display mode:</h3>
         <RadioGroup
           name="vesselTrackDisplayStatus"
           selectedValue={this.props.vesselTrackDisplayMode}
           onChange={this.changeVesselTrackDisplayMode}
+          className={vesselPanel.trackMode}
         >
-          <Radio value="current" />Current time scope
-          <Radio value="full" />Full track
-          <Radio value="all" />All tracks
+          <label>
+            <Radio value="current" />Current time scope
+          </label>
+          <label>
+            <Radio value="full" />Full track
+          </label>
+          <label>
+            <Radio value="all" />All tracks
+          </label>
         </RadioGroup>
       </div>
     );
