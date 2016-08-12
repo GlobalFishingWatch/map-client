@@ -15,7 +15,7 @@
               "url": "https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "#1a7ff0",
           "type": "CartoDBBasemap"
         },
@@ -24,10 +24,10 @@
           "source": {
             "type": "BinFormat",
             "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/f11e563c-5b01-11e6-a589-0ecd1babdde5/viz.json"
+              "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "#1a7ff0",
           "type": "CartoDBAnimation"
         },
@@ -39,7 +39,7 @@
               "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "#1a7ff0",
           "type": "CartoDBAnimation"
         },
@@ -51,7 +51,7 @@
               "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json"
             }
           },
-          "visible": true,
+          "visible": false,
           "color": "#da0ff0",
           "type": "CartoDBAnimation"
         },
@@ -101,7 +101,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/2cf0043c-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": false,
+          "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation"
         },
@@ -113,7 +113,7 @@
               "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/90467e80-97ba-11e5-87b3-0242ac110002/viz.json"
             }
           },
-          "visible": false,
+          "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation"
         },

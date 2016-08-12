@@ -7,12 +7,10 @@ class SettingsPanel extends Component {
   render() {
     const colors = [
       DEFAULT_VESSEL_COLOR,
-      '#e41ccc',
-      '#fe5f07',
-      '#a73c8a',
-      '#9e7854',
-      '#61c200',
-      '#c7ad23'
+      '#FFC861',
+      '#FFD485',
+      '#e8f4f9',
+      '#ef4323'
     ];
     const colorOptions = [];
     for (let colorIndex = 0; colorIndex <= colors.length; colorIndex += 1) {
