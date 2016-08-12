@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Accordion, AccordionItem } from 'react-sanfona';
 
-import AccordionStyles from '../../../styles/components/FAQ/c-accordion.scss';
+import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 
-class FAQAccordion extends Component {
+class ContentAccordion extends Component {
 
   constructor(props) {
     super(props);
@@ -52,7 +52,7 @@ class FAQAccordion extends Component {
       <Accordion
         allowMultiple={false}
         activeItems={[-1]}
-        className={AccordionStyles['c-accordion']}
+        className={AccordionStyles['c-content-accordion']}
         onChange={this.toggleItemBinded}
       >
         {this.getAccordionItems()}
@@ -61,8 +61,8 @@ class FAQAccordion extends Component {
   }
 }
 
-FAQAccordion.propTypes = {
+ContentAccordion.propTypes = {
   entries: React.PropTypes.array
 };
 
-export default FAQAccordion;
+export default ContentAccordion;
