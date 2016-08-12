@@ -42,8 +42,10 @@ export default function () {
           <li><Link to="/terms-of-use">Terms of Use</Link></li>
           <li><Link to="/privacy-policy">Privacy Policy</Link></li>
           <li><Link to="#">Follow us</Link></li>
-          <li><Link to="#">SUBSCRIBE TO NEWS</Link></li>
         </ul>
+        <div>
+          <a className={navfooter['subscribe-button']} href="">SUBSCRIBE TO NEWS</a>
+        </div>
       </div>
     </footer>
   );

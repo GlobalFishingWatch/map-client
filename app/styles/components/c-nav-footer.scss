@@ -22,4 +22,12 @@
       }
     }
   }
+
+  .subscribe-button {
+    background-color: $color-6;
+    color: $color-4;
+    font-size: $font-size-x-small;
+    padding: 10px 15px;
+    text-decoration: none;
+  }
 }
