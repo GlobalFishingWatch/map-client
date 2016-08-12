@@ -6,14 +6,14 @@ class SettingsPanel extends Component {
   render() {
     const intensities = [];
 
-    for (let intensity = 5; intensity <= 50; intensity += 5) {
-      intensities.push(<option value={intensity} key={intensity}>{intensity}</option>);
+    for (let intensity = 10; intensity >= 0; intensity --) {
+      intensities.push(<option value={intensity} key={intensity}>{intensity * 10}%</option>);
     }
 
     return (
       <div className={SettingsPanelStyle.settingsPanel}>
         <div>
-          <label htmlFor="drawIntensity">Vessel transparency
+          <label htmlFor="drawIntensity">Vessel opacity
             <select
               id="drawIntensity"
               onChange={(e) => this.props.updateVesselTransparency(e.target.value)}

@@ -213,8 +213,8 @@ class CanvasLayer {
     }
 
     const compositeCanvas = canvas;
-    compositeCanvas.ctx.globalAlpha = 0.6;
-    compositeCanvas.ctx.globalCompositeOperation = 'lighter';
+    compositeCanvas.ctx.globalAlpha = 0.5;
+    compositeCanvas.ctx.globalCompositeOperation = 'screen';
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       this.drawVesselPoint(
@@ -248,8 +248,8 @@ class CanvasLayer {
     }
 
     const compositeCanvas = canvas;
-    compositeCanvas.ctx.globalAlpha = 0.6;
-    compositeCanvas.ctx.globalCompositeOperation = 'lighter';
+    compositeCanvas.ctx.globalAlpha = 0.5;
+    compositeCanvas.ctx.globalCompositeOperation = 'screen';
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       if (!this.passesFilters(vectorArray, index, true)) {
@@ -400,7 +400,7 @@ class CanvasLayer {
     const radius = canvasPointRendering.getRadius(weight, zoom);
     const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
 
-    workCanvas.ctx.fillStyle = `rgba(242, 254, 254, ${alpha})`;
+    workCanvas.ctx.fillStyle = `rgba(191, 66, 0, ${alpha})`;
     workCanvas.ctx.beginPath();
     workCanvas.ctx.arc(~~x, ~~y, radius, 0, Math.PI * 2, false);
     workCanvas.ctx.fill();
