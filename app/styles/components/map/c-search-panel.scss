@@ -1,0 +1,120 @@
+@import '../../settings';
+
+.c-search-panel {
+  position: relative;
+
+  .search-input {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid $color-4;
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    padding: 7px 23px 7px 0;
+    width: 100%;
+
+    // Please note we can't group the placeholder styles together otherwise they will stop working
+    &::-webkit-input-placeholder {
+      color: rgba($color-4, .3);
+      text-transform: uppercase;
+    }
+
+    &::-moz-placeholder {
+      color: rgba($color-4, .3);
+      text-transform: uppercase;
+    }
+
+    &:-ms-input-placeholder {
+      color: rgba($color-4, .3);
+      text-transform: uppercase;
+    }
+  }
+
+  .search-icon-button {
+    background: url('../../../assets/icons/search_icon.svg') no-repeat center center;
+    background-color: none;
+    border: 0;
+    height: 19px;
+    position: absolute;
+    right: 0;
+    text-indent: -100000px;
+    top: 8px;
+    width: 18px;
+  }
+
+  .advanced-search {
+    margin-bottom: 10px;
+
+    > select {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      background: url('../../../assets/icons/select_arrow.svg') no-repeat center right 14px;
+      background-color: transparent;
+      border: 1px solid $color-7;
+      border-radius: 0;
+      color: $color-4;
+      display: block;
+      font-size: $font-size-small;
+      height: 40px;
+      line-height: 40px;
+      margin: 7px 0;
+      padding: 0 34px 0 14px;
+      width: 100%;
+    }
+  }
+
+  .search-button {
+    background-color: $color-3;
+    border: 0;
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    height: 40px;
+    text-transform: uppercase;
+    width: 100%;
+  }
+
+  .search-options {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    > .option {
+      background-color: transparent;
+      border: 0;
+      font-size: $font-size-small;
+      font-style: italic;
+      font-weight: $font-weight-normal;
+      text-decoration: underline;
+      text-transform: initial;
+    }
+  }
+
+  .search-results {
+    color: rgba($color-4, .7);
+    font-size: $font-size-small;
+    margin: 0 -30px; // Used to make the background full width
+    max-height: 145px; // A bit less than 4 results so the user understands they can scroll
+    overflow-x: visible;
+    overflow-y: auto;
+    text-transform: uppercase;
+
+    li {
+      cursor: pointer;
+      height: 40px;
+      line-height: 40px;
+      padding: 0 30px;
+      transition: background-color .3s;
+
+      &:hover {
+        background-color: rgba($color-3, .2);
+      }
+    }
+
+    span {
+      color: $color-4;
+      font-weight: $font-weight-bold;
+    }
+  }
+
+}
