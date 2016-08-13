@@ -8,7 +8,12 @@
   "globals": {
     "google": true,
     "cartodb": true,
-    "API_URL": true
+    "EMBED_MAP_URL": true,
+    "MAP_API_ENDPOINT": true,
+    "BLOG_API_ENDPOINT": true,
+    "FAQ_JSON_URL": true,
+    "DEFINITIONS_JSON_URL": true,
+    "ART_PUB_JSON_URL": true
   },
   "parserOptions": {
     "ecmaVersion": 7,

@@ -98,7 +98,7 @@ export function getVesselTrack(seriesGroup, series = null) {
     const urls = [];
 
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${API_URL}/tilesets/tms-format-2015-2016-v1/\
+      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/\
 sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
     const promises = [];

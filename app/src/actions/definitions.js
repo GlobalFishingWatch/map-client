@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 export function getDefinitionEntries() {
   return (dispatch) => {
-    fetch('/definitions.json', {
+    fetch(DEFINITIONS_JSON_URL, {
       method: 'GET'
     }).then((response) => response.json()).then((data) => {
       dispatch({

@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 export function getFAQEntries() {
   return (dispatch) => {
-    fetch('/faq.json', {
+    fetch(FAQ_JSON_URL, {
       method: 'GET'
     }).then((response) => response.json()).then((data) => {
       dispatch({
