@@ -82,7 +82,7 @@ export function getWorkspace(workspaceId) {
     let url = '/workspace.json';
 
     if (workspaceId) {
-      url = `${API_URL}/workspaces/${workspaceId}`;
+      url = `${MAP_API_ENDPOINT}/v1/workspaces/${workspaceId}`;
     }
 
     fetch(url, {
@@ -201,7 +201,7 @@ export function saveWorkspace(errorAction) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
 
-    fetch(`${API_URL}/workspaces`, {
+    fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
       body: JSON.stringify({

@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 export function getArticlesPublicationsEntries() {
   return (dispatch) => {
-    fetch('/articles-publications.json', {
+    fetch(ART_PUB_JSON_URL, {
       method: 'GET'
     }).then((response) => response.json()).then((data) => {
       dispatch({
