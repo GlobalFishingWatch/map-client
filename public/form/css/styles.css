@@ -71,7 +71,7 @@ header {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .menu {
     justify-content: space-between;
     padding: 0 40px;
@@ -90,7 +90,7 @@ header {
   transform: translateY(-50%);
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .menu .hamburger-icon {
     display: none;
   }
@@ -106,7 +106,7 @@ header {
   width: 100vw;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .menu .logo {
     height: 51px;
     max-width: 208px;
@@ -119,7 +119,7 @@ header {
   display: none;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .desktop-menu {
     display: block;
     list-style: none;
@@ -356,14 +356,19 @@ section {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 730px;
   padding: 0 30px;
+}
+
+@media screen and (min-width: 768px) {
+  section {
+    min-height: 730px;
+  }
 }
 
 section.pwd,
 section.reg,
 section.ty {
-  padding: 60px 30px 0 30px;
+  padding: 60px 30px;
 }
 
 h1 {
@@ -413,21 +418,11 @@ input, textarea, select {
   flex-shrink: 0;
 }
 
-input:required {
-  box-shadow: inset -6px 0px 0px #ef4323;
-}
-
 select {
+  -moz-appearance: none;
   cursor: pointer;
   color: #a9a9a9;
   background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iOSIgdmlld0JveD0iMCAwIDEzIDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPlRyaWFuZ2xlIDEgQ29weTwvdGl0bGU+PHBhdGggZD0iTTEyIDFMNi41IDYuNyAxIDEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlPSIjNTU1IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=") center right 20px no-repeat, #fff;
-}
-
-/* We can't hide the default arrows on FF so we just don't use our arrows */
-@supports (-moz-appearance:meterbar) {
-  select {
-    background: #fff;
-  }
 }
 
 input[type="checkbox"] {
@@ -438,10 +433,6 @@ input[type="checkbox"] {
   border-radius: 3px;
   border: 1px solid #ccc;
   margin: 0;
-}
-
-input[type="checkbox"]:required {
-  box-shadow: none;
 }
 
 textarea {
@@ -495,6 +486,39 @@ hr {
   border-top: 1px solid #fff;
 }
 
+.separator {
+  color: #fff;
+  font-size: 14px;
+  height: 20px;
+  line-height: 22px;
+  margin: 40px 0;
+  position: relative;
+  border: none;
+  text-align: center;
+}
+
+.separator:before {
+  background-color: #fff;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(50% - 42px);
+}
+
+.separator:after {
+  background-color: #fff;
+  content: '';
+  height: 1px;
+  right: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(50% - 42px);
+}
+
 .login_buttons {
   width: 100%;
   display: flex;
@@ -514,7 +538,7 @@ hr {
   margin-bottom: 30px;
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .login_buttons a {
     flex-basis: calc(50% - 7px);
   }
@@ -535,20 +559,13 @@ section.reg form {
 }
 
 .reg-form {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .reg-form .item {
-  flex-basis: 100%;
   margin-bottom: 25px;
-}
-
-@media only screen and (min-width: 768px) {
-  .reg-form .item {
-    flex-basis: calc(50% - 10px);
-  }
 }
 
 .reg-form .item:first-of-type {
@@ -572,27 +589,30 @@ section.reg form {
 }
 
 .tos {
+  align-items: flex-start;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 40px 0 0 0;
+  justify-content: space-between;
+  max-width: 480px;
+  margin: 40px auto 0 auto;
+  width: 100%;
+}
+
+.tos input {
+  margin-top: 4px;
 }
 
 .tos label {
+  flex-basis: calc(100% - 30px);
+  height: auto;
+  letter-spacing: normal;
+  margin: 0;
   text-transform: none;
-  margin: 0 0 0 16px;
-  flex-basis: calc(100% - 37px);
-}
-
-@media only screen and (min-width: 768px) {
-  .tos label {
-    flex-basis: calc(50% - 37px);
-  }
 }
 
 .tos a {
   color: #fff;
   text-decoration: none;
+  text-transform: capitalize;
   border-bottom: 1px solid #db3236;
 }
 
@@ -604,20 +624,50 @@ section.reg form {
   background-image: url('../img/ship.png');
 }
 
+@media only screen and (min-width: 768px) {
+  .bg.reg {
+    background-image: url('../img/ship@2x.png');
+  }
+}
+
 .bg.con {
   background-image: url('../img/ship2.png');
+}
+
+@media only screen and (min-width: 768px) {
+  .bg.con {
+    background-image: url('../img/ship2@2x.png');
+  }
 }
 
 .bg.log {
   background-image: url('../img/sky.png');
 }
 
+@media only screen and (min-width: 768px) {
+  .bg.log {
+    background-image: url('../img/sky@2x.png');
+  }
+}
+
 .bg.res {
   background-image: url('../img/ship3.png');
 }
 
+@media only screen and (min-width: 768px) {
+  .bg.res {
+    background-image: url('../img/ship3@2x.png');
+  }
+}
+
 .bg.ty {
   background-image: url('../img/man.png');
+}
+
+@media only screen and (min-width: 768px) {
+  .bg.ty {
+    background-image: url('../img/man@2x.png');
+  }
 }
 
 .bg.ty section {
@@ -627,6 +677,12 @@ section.reg form {
 .bg.al {
   background-image: url('../img/ship3.png');
   min-height: 100vh;
+}
+
+@media only screen and (min-width: 768px) {
+  .bg.al {
+    background-image: url('../img/ship3@2x.png');
+  }
 }
 
 .bg.al::before, .bg.log::before, .bg.reg::before, .bg.res::before, .bg.ty::before {
@@ -657,10 +713,6 @@ section.reg form {
 @media only screen and (max-device-width: 768px) {
   .res .pwd p {
     width: 80%;
-  }
-
-  .cancel {
-    font-size: 23px;
   }
 }
 
@@ -790,7 +842,7 @@ section.reg form {
 
 /*TABLET STYLES*/
 
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 768px) {
   form {
     max-width: 450px;
     margin: 0 auto;
@@ -852,7 +904,7 @@ section.reg form {
 
 /*HEADER MENU STYLES*/
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .bg.al {
     display: flex;
     align-items: center;
@@ -868,9 +920,6 @@ section.reg form {
 }
 
 @media all and (-ms-high-contrast: none) {
-  input:required {
-    border: 1px solid transparent;
-  }
 
   select {
     color: #767676;

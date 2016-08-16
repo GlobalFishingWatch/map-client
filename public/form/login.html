@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-	<title>Login</title>
+	<title>Login - Global Fishing Watch</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./css/styles.min.css">
@@ -76,16 +76,18 @@
 	<section class="pwd">
 		<form method="post" action="#">
 			<h1>Login</h1>
-			<label for="gfw_email">email</label>
+			<label for="gfw_email">Email *</label>
 			<input type="email" id="gfw_email" placeholder="Your email" required />
-			<label for="gfw_password">Password</label>
+			<label for="gfw_password">Password *</label>
 			<input type="password" id="gfw_password" placeholder="********" required />
 			<input type="submit" value="Login" />
 			<div class="other-links">
 				<a href="#" class="cancel link_underline">Forgot  your password?</a>
 				<a href="#" class="cancel link_underline">Not a member?</a>
 			</div>
-			<hr>
+			<div class="separator">
+        or
+      </div>
 			<p id="login_p">Sign in with</p>
 			<div class="login_buttons">
 				<a href="#" class="fb">facebook</a>
