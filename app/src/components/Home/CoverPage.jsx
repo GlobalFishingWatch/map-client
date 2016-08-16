@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
-import Slider from 'react-slick';
+import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
 import MenuMobile from '../Shared/MenuMobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
@@ -18,8 +18,16 @@ class CoverPage extends Component {
     super(props);
     this.state = {
       currentSlider: 0,
-      autoPlaySlider: true
+      autoPlaySlider: true,
+      speedPlaySlider: 10000
     };
+  }
+
+  componentDidUpdate() {
+    $(`.${CoverPageStyle['dots-cover']}`).click(() => {
+      this.setState({ autoPlaySlider: false });
+      this.setState({ speedPlaySlider: 0 });
+    });
   }
 
   onSliderChange(currentSlider) {
@@ -39,8 +47,8 @@ class CoverPage extends Component {
       infinite: true,
       draggable: false,
       afterChange: (currentSlider) => (this.onSliderChange(currentSlider)),
-      autoplay: true,
-      autoplaySpeed: 10000
+      autoplay: this.state.autoPlaySlider,
+      autoplaySpeed: this.state.speedPlaySlider
     };
 
     const sliderBackgrounds = [
