@@ -13,3 +13,8 @@ rules:
     - 2
     -
       max-depth: 3
+files:
+  ignore:
+    - 'node_modules/**/*.scss'
+    - 'node_modules/**/*.sass'
+    - 'app/styles/base/**/*'

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "npm run lint-js && npm run lint-sass",
-    "lint-sass": "sass-lint -v -q `./scripts/get-scss-files-to-push.sh`",
+    "lint-sass": "sass-lint -v -q",
     "lint-js": "eslint -c .eslintrc --ext .jsx,.js app",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
     "postinstall": "npm run build"
