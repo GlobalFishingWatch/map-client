@@ -23,8 +23,7 @@ class NoLogin extends Component {
 }
 
 NoLogin.propTypes = {
-  login: React.PropTypes.func,
-  register: React.PropTypes.func
+  login: React.PropTypes.func
 };
 
 

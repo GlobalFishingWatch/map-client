@@ -32,7 +32,7 @@ class CanvasLayer {
       r: parseInt(vesselColor.slice(1, 3), 16),
       g: parseInt(vesselColor.slice(3, 5), 16),
       b: parseInt(vesselColor.slice(5, 7), 16)
-    }
+    };
   }
 
 
@@ -401,7 +401,8 @@ class CanvasLayer {
     const vesselTransparency = this.vesselTransparency;
     const calculatedWeight = Math.min(weight / vesselTransparency, 1);
 
-    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r},${this.vesselColor.g},${this.vesselColor.b},${calculatedWeight})`;
+    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r}\
+,${this.vesselColor.g},${this.vesselColor.b},${calculatedWeight})`;
     workCanvas.ctx.fillRect(x, y, size, size);
 
     if (calculatedWeight > 0.5) {

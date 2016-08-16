@@ -12,9 +12,6 @@ class CaseStudySlider extends Component {
       infinite
       speed={500}
       fade
-      afterChange={function (event, slick) {
-        alert(slick);
-      }}
     >
       <div className={SliderCase['c-slider-case']}>
         <div className={SliderCase['c-slider-case-text']}>

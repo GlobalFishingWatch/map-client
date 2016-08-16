@@ -1,15 +1,12 @@
 import { connect } from 'react-redux';
 import NoLogin from '../../components/Map/NoLogin';
-import { login, register } from '../../actions/user';
+import { login } from '../../actions/user';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   login: () => {
     dispatch(login());
-  },
-  register: () => {
-    dispatch(register());
   }
 });
 
