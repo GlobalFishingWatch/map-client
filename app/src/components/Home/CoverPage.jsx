@@ -17,14 +17,20 @@ class CoverPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentSlider: 0
+      currentSlider: 0,
+      autoPlaySlider: true
     };
 
     this.onSliderChange = this.onSliderChange.bind(this);
+    this.onDotClick = this.onDotClick.bind(this);
   }
 
   onSliderChange(currentSlider) {
     this.setState({ currentSlider });
+  }
+
+  onDotClick(autoPlaySlider) {
+    this.setState({ autoPlaySlider });
   }
 
   gosection() {
@@ -33,15 +39,15 @@ class CoverPage extends Component {
     }, 1000);
   }
 
-
   render() {
     const settings = {
       dots: true,
       dotsClass: CoverPageStyle['dots-cover'],
-      infinite: false,
+      infinite: true,
       draggable: false,
+      pauseOnHover: false,
       afterChange: this.onSliderChange,
-      autoplay: true,
+      autoplay: this.state.autoPlaySlider,
       autoplaySpeed: 10000
     };
 
