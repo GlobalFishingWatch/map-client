@@ -19,7 +19,7 @@ class CoverPage extends Component {
     this.state = {
       currentSlider: 0,
       autoPlaySlider: true,
-      speedPlaySlider: 0
+      speedPlaySlider: 10000
     };
   }
 
