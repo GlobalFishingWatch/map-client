@@ -118,7 +118,7 @@ class Map extends Component {
 
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
+      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime(), this.state.zoom);
     }
 
     if (
@@ -138,13 +138,15 @@ class Map extends Component {
       return;
     }
     this.state.trackLayer.recalculatePosition();
-
     this.state.trackLayer.drawTile(
       workProps.vesselTrack.seriesGroupData,
       workProps.vesselTrack.selectedSeries,
       workProps.filters,
-      workProps.map.vesselTrackDisplayMode
+      workProps.map.vesselTrackDisplayMode,
+      this.state.zoom
     );
+    // this shouldn't be called when no apparent track shows up, which I don't know how to test
+    this.state.overlay.dim();
   }
 
   /**
@@ -206,7 +208,8 @@ class Map extends Component {
     const trackLayer = new Overlay(
       this.refs.map.props.map,
       this.refs.mapContainer.offsetWidth,
-      this.refs.mapContainer.offsetHeight
+      this.refs.mapContainer.offsetHeight,
+      this.props.map.vesselTransparency
     );
     this.setState({ overlay: canvasLayer, trackLayer });
     this.state.addedLayers[layerSettings.title] = canvasLayer;

@@ -1,11 +1,13 @@
+import canvasPointRendering from '../../util/canvasPointRendering';
+
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
-const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
-const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
-const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
+const OUT_OF_INNER_BOUNDS_COLOR = { r: 255, g: 128, b: 0 };
+const OUT_OF_OUTER_BOUNDS_COLOR = { r: 255, g: 255, b: 0 };
+const MATCH_COLOR = { r: 255, g: 0, b: 0 };
 
 const createTrackLayer = function (google) {
-  function TrackLayer(map, width, height) {
+  function TrackLayer(map, width, height, vesselTransparency) {
     this.map = map;
     // Explicitly call setMap on this overlay.
     this.setMap(map);
@@ -13,6 +15,8 @@ const createTrackLayer = function (google) {
       x: 0,
       y: 0
     };
+
+    this.vesselTransparency = vesselTransparency;
 
     const canvas = document.createElement('canvas');
     canvas.style.border = '1px solid black';
@@ -98,7 +102,7 @@ const createTrackLayer = function (google) {
         return false;
       }
       const green = 100 + (data.series[index] % 155);
-      return `rgba(0, ${green}, 0, 1)`;
+      return { r: 0, g: green, b: 0 };
     }
     if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
@@ -115,31 +119,10 @@ const createTrackLayer = function (google) {
     return MATCH_COLOR;
   };
 
-  /**
-   * Draws a single vessel point of a track
-   * @param overlayProjection
-   * @param data
-   * @param i
-   * @param drawStyle
-   * @returns {*}
-   */
-  TrackLayer.prototype.drawPoint = function (overlayProjection, data, i, drawStyle) {
-    const point = overlayProjection.fromLatLngToDivPixel(
+  TrackLayer.prototype.getPointAt = function (overlayProjection, data, i) {
+    return overlayProjection.fromLatLngToDivPixel(
       new google.maps.LatLng(data.latitude[i], data.longitude[i])
     );
-
-    const weight = data.weight[i];
-    if (weight > 0.75) {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 2, 2);
-    } else if (weight > 0.50) {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    } else {
-      this.ctx.fillStyle = drawStyle;
-      this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
-    }
-    return point;
   };
 
   /**
@@ -150,7 +133,7 @@ const createTrackLayer = function (google) {
    * @param filters
    * @param vesselTrackDisplayMode
    */
-  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode) {
+  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode, zoom) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -160,32 +143,39 @@ const createTrackLayer = function (google) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
-    let previousDrawStyle = null;
+    let drawStyleAlpha = null;
 
+    this.ctx.lineWidth = (zoom >= 6) ? 1.5 : 1;
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
-      previousDrawStyle = drawStyle;
       previousPoint = point;
+
       drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
       if (!drawStyle) {
         continue;
       }
 
-      point = this.drawPoint(overlayProjection, data, i, drawStyle);
+      point = this.getPointAt(overlayProjection, data, i);
 
-      if (previousDrawStyle !== drawStyle || (i > 0 && data.series[i - 1] !== data.series[i])) {
-        if (previousDrawStyle) {
-          this.ctx.stroke();
-        }
-        this.ctx.beginPath();
+      const radius = canvasPointRendering.getRadius(data.weight[i], zoom);
+      const alpha = canvasPointRendering.getAlpha(data.weight[i], this.vesselTransparency);
+      drawStyleAlpha = `rgba(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b}, ${alpha})`;
+      drawStyle = `rgb(${drawStyle.r}, ${drawStyle.g}, ${drawStyle.b})`;
+
+      this.ctx.fillStyle = drawStyle;
+      this.ctx.beginPath();
+      this.ctx.arc(~~point.x - this.offset.x, ~~point.y - this.offset.y, radius, 0, Math.PI * 2, false);
+      this.ctx.fill();
+      this.ctx.closePath();
+
+      if (previousPoint) {
         this.ctx.strokeStyle = drawStyle;
-        if ((i > 0 && data.series[i - 1] === data.series[i]) && previousPoint) {
-          this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
-        }
+        this.ctx.beginPath();
+        this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
+        this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
+        this.ctx.stroke();
       }
-      this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
-    this.ctx.stroke();
   };
 
   TrackLayer.prototype.onAdd = function () {

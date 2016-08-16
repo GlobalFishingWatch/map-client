@@ -1,7 +1,8 @@
 /* eslint no-underscore-dangle:0 */
 import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP } from '../../constants';
+import { TIMELINE_STEP, CANVAS_LAYER_DIM } from '../../constants';
 import _ from 'lodash';
+import canvasPointRendering from '../../util/canvasPointRendering';
 
 const url = 'https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/';
 
@@ -129,6 +130,10 @@ class CanvasLayer {
     ctx.width = canvas.width = this.tileSize.width;
     ctx.height = canvas.height = this.tileSize.height;
 
+    if (this.dimmed) {
+      canvas.style.opacity = CANVAS_LAYER_DIM;
+    }
+
     canvas.ctx = ctx;
     return canvas;
   }
@@ -182,7 +187,7 @@ class CanvasLayer {
    * @param start
    * @param end
    */
-  drawTimeRange(start, end) {
+  drawTimeRange(start, end, zoom) {
     const canvasKeys = Object.keys(this.playbackData);
     this.innerStartDate = CanvasLayer.getTimestampIndex(start);
     this.innerEndDate = CanvasLayer.getTimestampIndex(end);
@@ -198,7 +203,7 @@ class CanvasLayer {
       for (let timestamp = this.innerStartDate; timestamp < this.innerEndDate; timestamp += TIMELINE_STEP) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
-          this.drawTileFromPlaybackData(canvas, playbackData, false);
+          this.drawTileFromPlaybackData(canvas, playbackData, zoom);
         } else {
           // TODO: a lot of missing timestamp indexes here, check why
         }
@@ -213,21 +218,23 @@ class CanvasLayer {
    * @param playbackData
    * @param drawTrail
    */
-  drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
+  drawTileFromPlaybackData(canvas, playbackData, zoom) {
     if (!canvas) {
       return;
     }
-    const size = canvas.zoom > 6 ? 3 : 2;
+
+    const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalAlpha = 0.5;
+    compositeCanvas.ctx.globalCompositeOperation = 'screen';
 
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       this.drawVesselPoint(
-        canvas,
+        compositeCanvas,
         playbackData.x[index],
         playbackData.y[index],
-        size,
         playbackData.weight[index],
         playbackData.sigma[index],
-        drawTrail
+        zoom
       );
     }
   }
@@ -241,7 +248,7 @@ class CanvasLayer {
    * @param canvas
    * @param vectorArray
    */
-  drawTileFromVectorArray(canvas, vectorArray) {
+  drawTileFromVectorArray(canvas, vectorArray, zoom) {
     if (!canvas) {
       return;
     }
@@ -250,20 +257,22 @@ class CanvasLayer {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
-    const size = canvas.zoom > 6 ? 3 : 2;
+
+    const compositeCanvas = canvas;
+    compositeCanvas.ctx.globalAlpha = 0.5;
+    compositeCanvas.ctx.globalCompositeOperation = 'screen';
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       if (!this.passesFilters(vectorArray, index, true)) {
         continue;
       }
       this.drawVesselPoint(
-        canvas,
+        compositeCanvas,
         vectorArray.x[index],
         vectorArray.y[index],
-        size,
         vectorArray.weight[index],
         vectorArray.sigma[index],
-        false
+        zoom
       );
     }
   }
@@ -396,29 +405,16 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
+  drawVesselPoint(canvas, x, y, weight, sigma, zoom) {
     const workCanvas = canvas;
-    const vesselTransparency = this.vesselTransparency;
-    const calculatedWeight = Math.min(weight / vesselTransparency, 1);
 
-    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r},${this.vesselColor.g},${this.vesselColor.b},${calculatedWeight})`;
-    workCanvas.ctx.fillRect(x, y, size, size);
+    const radius = canvasPointRendering.getRadius(weight, zoom);
+    const alpha = canvasPointRendering.getAlpha(weight, this.vesselTransparency);
 
-    if (calculatedWeight > 0.5) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
-    }
-
-    if (drawTrail) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 2, y + 1, size, size);
-      workCanvas.ctx.fillRect(x + 2, y + 2, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 1, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 2, size, size);
-    }
+    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r},${this.vesselColor.g},${this.vesselColor.b}, ${alpha})`;
+    workCanvas.ctx.beginPath();
+    workCanvas.ctx.arc(~~x, ~~y, radius, 0, Math.PI * 2, false);
+    workCanvas.ctx.fill();
   }
 
   /**
@@ -533,12 +529,25 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     Promise.all(promises).then((rawTileData) => {
       if (tileCoordinates && rawTileData[0]) {
         const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        this.drawTileFromVectorArray(canvas, vectorArray);
+        this.drawTileFromVectorArray(canvas, vectorArray, zoom);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
       }
     });
 
     return canvas;
+  }
+
+  /**
+   * Dim canvas globally, used when track is selected
+   */
+  dim() {
+    this.dimmed = true;
+
+    const canvasKeys = Object.keys(this.playbackData);
+    for (let index = 0, length = canvasKeys.length; index < length; index++) {
+      const canvas = document.getElementById(canvasKeys[index]);
+      if (canvas) canvas.style.opacity = CANVAS_LAYER_DIM;
+    }
   }
 }
 

@@ -17,14 +17,14 @@ class SettingsPanel extends Component {
       colorOptions.push(<option value={colors[colorIndex]} key={colorIndex}>{colors[colorIndex]}</option>);
     }
     const intensities = [];
-    for (let intensity = 5; intensity <= 50; intensity += 5) {
-      intensities.push(<option value={intensity} key={intensity}>{intensity}</option>);
+    for (let intensity = 10; intensity >= 0; intensity --) {
+      intensities.push(<option value={intensity} key={intensity}>{intensity * 10}%</option>);
     }
 
     return (
       <div className={SettingsPanelStyle.settingsPanel}>
         <div>
-          <label htmlFor="vesselTransparency">Vessel transparency
+          <label htmlFor="vesselTransparency">Vessel opacity
             <select
               id="vesselTransparency"
               onChange={(e) => this.props.updateVesselTransparency(e.target.value)}
