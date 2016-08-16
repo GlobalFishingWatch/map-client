@@ -60,7 +60,3 @@ export function login() {
   window.location = `https://skytruth-pleuston.appspot.com/v1/authorize?\
 response_type=token&client_id=asddafd&redirect_uri=${window.location}`;
 }
-
-export function register() {
-  alert('Redirect to registration page');
-}

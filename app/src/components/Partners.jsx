@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 

@@ -13,14 +13,15 @@ class PrivacyPolicy extends Component {
       <section>
         <p>Last Modified: April 18, 2016</p>
         <p>
-          Thank you for exploring the Global Fishing Watch Beta release. SkyTruth respects your privacy rights and recognizes the importance
-          of protecting the information we collect about you. This policy statement tells you how we collect information from you and how we use it.
+          Thank you for exploring the Global Fishing Watch Beta release. SkyTruth respects your privacy
+          rights and recognizes the importance of protecting the information we collect about you.
+          This policy statement tells you how we collect information from you and how we use it.
         </p>
         <p>
-          Personal Information Defined.  SkyTruth considers “Personal Information”
+          Personal Information Defined. SkyTruth considers “Personal Information”
           to include information that alone or when in combination with
           other information may be used to readily identify, contact or locate
-          you, such as: name, address, email address or phone number.  SkyTruth
+          you, such as: name, address, email address or phone number. SkyTruth
           does not consider Personal Information to include information that has been
           anonymized so that it does not allow a third party to easily identify a specific individual.
         </p>
@@ -31,11 +32,11 @@ class PrivacyPolicy extends Component {
           Beta release, SkyTruth will only collect further Personal Information from you
           when you voluntarily:
         </p>
-          <ul>
-            <li>submit feedback and comments;</li>
-            <li>complete surveys; or</li>
-            <li>sign up for our newsletter.</li>
-          </ul>
+        <ul>
+          <li>submit feedback and comments;</li>
+          <li>complete surveys; or</li>
+          <li>sign up for our newsletter.</li>
+        </ul>
         <p>
           When you submit Personal Information under
           these circumstances, you will receive a confirmation email that will
@@ -48,12 +49,12 @@ class PrivacyPolicy extends Component {
         </p>
         <h2>USAGE TRACKING</h2>
         <p>
-          We track website usage data to improve our website.  We collect user traffic patterns throughout our website
-          using web logs, cookies and similar technologies.  This information is collected to
+          We track website usage data to improve our website. We collect user traffic patterns throughout our website
+          using web logs, cookies and similar technologies. This information is collected to
           help improve website
-          flow and usability.  In addition, when we send emails to our members and supporters,
+          flow and usability. In addition, when we send emails to our members and supporters,
           we track information on clicks-through to our
-          website, including IP addresses.  This is done to gauge the effectiveness of our marketing
+          website, including IP addresses. This is done to gauge the effectiveness of our marketing
           campaigns and to discourage fraudulent use.
         </p>
         <h2>COOKIES</h2>
@@ -61,14 +62,14 @@ class PrivacyPolicy extends Component {
           We may place a text file called a “cookie” in the browser files of your computer.
           The cookie itself does not contain Personal Information, although it will enable
           us to relate your use of this website to information that you have specifically and
-          knowingly provided.  But the only Personal Information a cookie can contain is
-          information you supply yourself.  A cookie cannot read data off your hard disk or
-          read cookie files created by other websites.  SkyTruth may use cookies to track user
-          traffic patterns (as described above).  In addition, SkyTruth uses encrypted cookies
-          to authenticate the user on each page after the user logs onto the website.  You can
-          refuse cookies by turning them off in your browser.  If you have set your browser
+          knowingly provided. But the only Personal Information a cookie can contain is
+          information you supply yourself. A cookie cannot read data off your hard disk or
+          read cookie files created by other websites. SkyTruth may use cookies to track user
+          traffic patterns (as described above). In addition, SkyTruth uses encrypted cookies
+          to authenticate the user on each page after the user logs onto the website. You can
+          refuse cookies by turning them off in your browser. If you have set your browser
           to warn you before accepting cookies, you will receive the warning message with each
-          cookie.  Some SkyTruth website features and services may not function properly if your
+          cookie. Some SkyTruth website features and services may not function properly if your
           cookies are disabled.
         </p>
         <h2>
@@ -77,7 +78,7 @@ class PrivacyPolicy extends Component {
         <p>
           This website is not intended for children under 13 years of age and SkyTruth
           does not knowingly collect, maintain or use any Personal Information from
-          children under 13 years of age.  If we become aware that we have collected
+          children under 13 years of age. If we become aware that we have collected
           any Personal Information from children under 13, we will promptly delete
           such information from our databases. If you are a parent or guardian and
           discover that your child under the age of
@@ -88,11 +89,11 @@ class PrivacyPolicy extends Component {
         <p>
           We make a good faith effort to provide you with access to your Personal
           Information to correct data that may be inaccurate or delete data
-          at your request.  If you would like to review the information in
+          at your request. If you would like to review the information in
           our files, correct it, or ask SkyTruth to refrain from sending
           you information in the future, please contact us by e-mail at
           info@skytruth.org, by calling Teri Biebel at (304) 885-4581,
-          or by writing to the postal address listed below.  We may decline
+          or by writing to the postal address listed below. We may decline
           to process requests that are unreasonably repetitive or systematic,
           require disproportionate technical effort, jeopardize the privacy of
           others, would be extremely impractical, or where information is
@@ -133,7 +134,7 @@ class PrivacyPolicy extends Component {
           link to or view as part of a frame on a page on this website.
           These other sites may place their own cookies or other files on
           your computer, collect data, or solicit Personal Information
-          from you.  We are not responsible for the actions or policies
+          from you. We are not responsible for the actions or policies
           of such third parties.
           You should check the applicable privacy policies of
           those third parties when providing information on a
@@ -144,7 +145,7 @@ class PrivacyPolicy extends Component {
           By choosing to visit the website or otherwise provide information to SkyTruth,
           you agree that any dispute over privacy or the terms contained in this Privacy
           Policy will be governed by the law of Virginia.
-          This website is hosted in the United States.  If you are visiting from the
+          This website is hosted in the United States. If you are visiting from the
           European Union or other regions with laws governing data
           collection and use that may differ from U.S. law please
           note that you are transferring your personal data to the
@@ -158,21 +159,21 @@ class PrivacyPolicy extends Component {
         <h2>SECURITY</h2>
         <p>
           We take steps to ensure that your information is treated securely and in
-          accordance with this Privacy Policy.  No data transmissions over
+          accordance with this Privacy Policy. No data transmissions over
           the Internet can be guaranteed to be completely secure.
           Consequently, we cannot ensure or warrant the security of
           any information you transmit to us and you do so at your own
-          risk.  Once we receive your transmission, we make reasonable
+          risk. Once we receive your transmission, we make reasonable
           efforts to ensure security on our systems.
           If SkyTruth learns of a security systems breach we may attempt
           to notify you electronically so that you can take appropriate
-          protective steps.  By using this website or providing Personal
+          protective steps. By using this website or providing Personal
           Information to us you agree that we can communicate with you
           electronically regarding security, privacy and administrative
-          issues relating to your use of this website.  SkyTruth may post
-          a notice on our website if a security breach occurs.  SkyTruth
+          issues relating to your use of this website. SkyTruth may post
+          a notice on our website if a security breach occurs. SkyTruth
           may also send an email to you at the email address you have provided
-          to us in these circumstances.  Depending on where you live, you may
+          to us in these circumstances. Depending on where you live, you may
           have a legal right to receive notice of a security breach in writing.
           To receive free written notice of a security breach (or to withdraw
           your consent from receiving electronic notice) you should notify us
@@ -180,13 +181,13 @@ class PrivacyPolicy extends Component {
         </p>
         <h2>CHANGES AND UPDATES</h2>
         <p>
-          We may occasionally update this Privacy Policy.  When we do, we will also revise
-          the “effective date” on the Privacy Policy.  For changes to this Privacy Policy
+          We may occasionally update this Privacy Policy. When we do, we will also revise
+          the “effective date” on the Privacy Policy. For changes to this Privacy Policy
           that may be materially less restrictive on our use or disclosure of Personal
           Information you have provided to us, we will attempt to obtain your consent
-          before implementing the change.  We encourage you to periodically review this
+          before implementing the change. We encourage you to periodically review this
           Privacy Policy to stay informed about how we are protecting
-          the Personal Information we collect.  Your continued use of this website
+          the Personal Information we collect. Your continued use of this website
           constitutes your agreement to this Privacy Policy and any updates.
         </p>
         <h2>CONTACTING SKYTRUTH</h2>
@@ -200,7 +201,7 @@ class PrivacyPolicy extends Component {
             Postal Mail Address:
             SkyTruth
             P.O. Box 3283
-            Shepherdstown, WV  25443-3283
+            Shepherdstown, WV 25443-3283
           </address>
         </p>
         <h2>YOUR ACCEPTANCE OF THESE TERMS</h2>
