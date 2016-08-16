@@ -1,9 +1,6 @@
 import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
 import 'whatwg-fetch';
 
-const url = 'https://skytruth-pleuston.appspot.com';
-
-
 export function setToken(token) {
   sessionStorage.setItem(TOKEN_SESSION, token);
   return {
@@ -28,7 +25,7 @@ export function getLoggedUser() {
       });
     }
 
-    fetch(`${url}/v1/me`, {
+    fetch(`${MAP_API_ENDPOINT}/v1/me`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`
@@ -57,6 +54,6 @@ export function logout() {
 }
 
 export function login() {
-  window.location = `https://skytruth-pleuston.appspot.com/v1/authorize?\
+  window.location = `${MAP_API_ENDPOINT}/v1/authorize?\
 response_type=token&client_id=asddafd&redirect_uri=${window.location}`;
 }

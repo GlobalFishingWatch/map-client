@@ -23,7 +23,7 @@ export function setCurrentVessel(vesselDetails) {
     }
     request.open(
       'GET',
-      `https://skytruth-pleuston.appspot.com/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
+      `${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
