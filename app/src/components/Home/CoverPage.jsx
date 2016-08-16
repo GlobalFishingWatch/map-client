@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
-import Slider from 'react-slick';
+import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
 import MenuMobile from '../Shared/MenuMobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
@@ -18,19 +18,23 @@ class CoverPage extends Component {
     super(props);
     this.state = {
       currentSlider: 0,
-      autoPlaySlider: true
+      autoPlaySlider: true,
+      speedPlaySlider: 10000
     };
 
     this.onSliderChange = this.onSliderChange.bind(this);
-    this.onDotClick = this.onDotClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    $(`.${CoverPageStyle['dots-cover']}`).click(() => {
+      console.log('hello');
+      this.setState({ autoPlaySlider: false });
+      this.setState({ speedPlaySlider: 0 });
+    });
   }
 
   onSliderChange(currentSlider) {
     this.setState({ currentSlider });
-  }
-
-  onDotClick(autoPlaySlider) {
-    this.setState({ autoPlaySlider });
   }
 
   gosection() {
@@ -45,10 +49,9 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
       draggable: false,
-      pauseOnHover: false,
       afterChange: this.onSliderChange,
       autoplay: this.state.autoPlaySlider,
-      autoplaySpeed: 10000
+      autoplaySpeed: this.state.speedPlaySlider
     };
 
     const sliderBackgrounds = [
