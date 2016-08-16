@@ -6,8 +6,12 @@ $font-family-1: 'Roboto', sans-serif;
 $font-family-2: 'Roboto Slab', serif;
 
 // Layout
-$max-width-wrap: 1060px;
-$wrap-xl: 112px;
+$max-width: 1280px;
+$wrap-mobile: 25px;
+// $wrap-tablet is random. Feel free to change it if you know
+// what size should have wraps in tablet.
+$wrap-tablet: 55px;
+$wrap-desktop: 115px;
 
 
 // Font sizes
