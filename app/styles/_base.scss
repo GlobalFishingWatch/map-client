@@ -36,7 +36,26 @@ body > div > div > div { // FIXME: add .full-height-container to each page root 
 
 .wrap {
   margin: 0 auto;
-  max-width: $max-width-wrap;
-  padding: 0 $wrap-xl;
+  max-width: $max-width;
+  padding: 0 $wrap-mobile;
   width: 100%;
+
+  @media #{$mq-tablet} {
+    padding: 0 $wrap-tablet;
+  }
+
+  @media #{$mq-laptop} {
+    padding: 0 $wrap-desktop;
+  }
+}
+
+p {
+  color: $color-9;
+  font-family: $font-family-2;
+  font-size: $font-size-normal;
+  line-height: 1.6;
+
+  & + p {
+    margin-top: 15px;
+  }
 }
