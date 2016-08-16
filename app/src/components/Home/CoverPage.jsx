@@ -19,8 +19,6 @@ class CoverPage extends Component {
     this.state = {
       currentSlider: 0
     };
-
-    this.onSliderChange = this.onSliderChange.bind(this);
   }
 
   onSliderChange(currentSlider) {
@@ -40,7 +38,7 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: false,
       draggable: false,
-      afterChange: this.onSliderChange,
+      afterChange: (currentSlider) => (this.onSliderChange(currentSlider)),
       autoplay: true,
       autoplaySpeed: 10000
     };
