@@ -17,7 +17,8 @@ class CoverPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentSlider: 0
+      currentSlider: 0,
+      autoPlaySlider: true
     };
   }
 
@@ -31,12 +32,11 @@ class CoverPage extends Component {
     }, 1000);
   }
 
-
   render() {
     const settings = {
       dots: true,
       dotsClass: CoverPageStyle['dots-cover'],
-      infinite: false,
+      infinite: true,
       draggable: false,
       afterChange: (currentSlider) => (this.onSliderChange(currentSlider)),
       autoplay: true,
