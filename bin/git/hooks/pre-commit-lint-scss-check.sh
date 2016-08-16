@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-changed_files="$(././../../get-modified-scss-files.sh)"
+BASEDIR=$(dirname "$0")
+
+changed_files="$($BASEDIR/../../get-modified-scss-files.sh)"
 
 if [[ -z $changed_files ]]; then
   echo ""
