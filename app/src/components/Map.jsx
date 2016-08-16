@@ -82,6 +82,12 @@ class Map extends Component {
     this.props.setCurrentVessel(vesselInfo);
   }
 
+  componentWillMount() {
+    if (!this.props.token && this.props.location.query && this.props.location.query.redirect_login) {
+      this.props.login();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!nextProps.token) {
       return;
@@ -459,6 +465,8 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  location: React.PropTypes.object,
+  login: React.PropTypes.func,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
   setZoom: React.PropTypes.func,

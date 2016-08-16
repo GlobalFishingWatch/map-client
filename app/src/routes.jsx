@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AppContainer from './containers/App';
 import HomeContainer from './containers/Home';
 import MapContainer from './containers/Map';
-import StubMapContainer from './components/MapIFrame';
+import MapIFrameContainer from './containers/MapIFrame';
 import BlogContainer from './containers/Blog';
 import BlogDetail from './containers/BlogDetail';
 import ArticlesPublications from './containers/ArticlesPublications';
@@ -23,7 +23,7 @@ class Routes extends Component {
       <Route path="/" component={AppContainer}>
         <IndexRoute component={HomeContainer} />
         {!EMBED_MAP_URL && <Route path="map" component={MapContainer} />}
-        {EMBED_MAP_URL && <Route path="map" component={StubMapContainer} />}
+        {EMBED_MAP_URL && <Route path="map" component={MapIFrameContainer} />}
 
         <Route path="blog" component={BlogContainer} />
         <Route path="blog/:slug" component={BlogDetail} />

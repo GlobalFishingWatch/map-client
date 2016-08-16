@@ -12,13 +12,13 @@ import {
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
+import { login } from '../actions/user';
 import { RESET_VESSEL_DETAILS } from '../actions';
 
 const mapStateToProps = (state) => ({
   map: state.map,
   vesselTrack: state.vesselInfo.track,
   filters: state.filters,
-  loggedUser: state.user.loggedUser,
   token: state.user.token,
   shareModal: state.map.shareModal
 });
@@ -26,6 +26,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, { location }) => {
   const queryParams = location.query;
   return {
+    login: () => {
+      dispatch(login());
+    },
     getWorkspace: () => {
       dispatch(getWorkspace(queryParams.workspace));
     },
