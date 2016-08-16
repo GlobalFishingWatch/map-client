@@ -1,12 +1,12 @@
 @import '../settings';
 
 .c-cover-page {
-  background: $color-7 url('../../assets/images/background_1.png') center;
+  background: $color-8 url('../../assets/images/home_slider_1-1.png') center;
   background-size: cover;
   transition: background-image .2s ease-in-out;
 
   .layer-cover {
-    background-color: rgba($color-7, .8);
+    background-color: rgba($color-8, .8);
     height: 100%;
     left: 0;
     top: 0;
@@ -174,6 +174,10 @@
       button {
         background-color: $color-3;
       }
+
+      &::after {
+        border-bottom: 1px solid $color-3;
+      }
     }
 
     li {
@@ -188,6 +192,25 @@
         outline: 0;
         transform: rotate(45deg);
         width: 14px;
+      }
+
+      &::after {
+        border-bottom: 1.5px solid $color-4;
+        content: '';
+        height: 5px;
+        margin-left: -15px;
+        margin-top: 10px;
+        position: absolute;
+        top: 0;
+        width: 15px;
+      }
+
+      &:last-child {
+
+        &::after {
+          content: '';
+          display: none;
+        }
       }
     }
   }
