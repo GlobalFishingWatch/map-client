@@ -1,0 +1,38 @@
+@import '../settings';
+
+// rename this to use it with defintions page too
+.c-faq {
+  position: relative;
+
+  > .c-accordion {
+    padding: 100px 0 90px;
+
+    .accordion-item {
+      border-bottom: 2px solid $color-10;
+      padding: 30px 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      .accordion-item-head {
+        color: $color-2;
+        font-size: 19px;
+        position: relative;
+
+        .c-rhombus {
+          position: absolute;
+          right: 0;
+          top 50%;
+          transform: translate(0, -50%);
+        }
+      }
+
+      .accordion-item-body {
+        margin-top: 20px;
+
+        font-size: 16px;
+      }
+    }
+  }
+}

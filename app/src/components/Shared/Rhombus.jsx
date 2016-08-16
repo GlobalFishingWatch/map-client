@@ -9,7 +9,7 @@ class Rhombus extends Component {
     const direction = this.props.direction ? RhombusStyles[this.props.direction] : '';
     const color = this.props.color ? RhombusStyles[this.props.color] : '';
 
-    return `${RhombusStyles['c-link-to']} ${direction} ${color}`;
+    return `${RhombusStyles['c-rhombus']} ${direction} ${color}`;
   }
 
   render() {
