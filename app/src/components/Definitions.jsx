@@ -22,6 +22,7 @@ class Definitions extends Component {
       <CoverPrimary
         title="Glossary of Terms"
         subtitle="Review definitions of terms you will find across our site and as you explore the Map."
+        backgroundImageIndex={3}
       />
       <div className={AppStyles.wrap}>
         {accordionContent}

@@ -55,6 +55,7 @@ class ArticlesPublications extends Component {
       <CoverPrimary
         title="Articles and Publications"
         subtitle="lorem ipsum"
+        backgroundImageIndex={2}
       />
       <section>
         {pageContent}

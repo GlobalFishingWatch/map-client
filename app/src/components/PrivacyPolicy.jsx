@@ -9,6 +9,7 @@ class PrivacyPolicy extends Component {
       <CoverPrimary
         title="Privacy Policy"
         subtitle=""
+        backgroundImageIndex={6}
       />
       <section>
         <p>Last Modified: April 18, 2016</p>
