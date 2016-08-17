@@ -1,15 +1,49 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
-import listposts from '../../styles/components/c-list-posts.scss';
+import listPosts from '../../styles/components/c-list-posts.scss';
 import CoverPrimary from './Shared/CoverPrimary';
 import PaginationBlog from './Blog/Pagination';
 import boxtriangle from '../../assets/icons/box_triangle.svg';
 
 class Blog extends Component {
 
+  constructor(props) {
+    super(props);
+
+    let currentPage = 1;
+    if (props.queryParams && props.queryParams.page) {
+      currentPage = parseInt(props.queryParams.page, 10);
+    }
+
+    this.state = {
+      totalPageCount: 0,
+      currentPage
+    };
+
+    this.onPageChange = this.onPageChange.bind(this);
+  }
+
   componentDidMount() {
-    this.props.getRecentPost();
+    this.props.getRecentPost(this.state.currentPage);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const newState = {};
+    if (nextProps.recentPost && nextProps.recentPost.pages >= 1) {
+      newState.totalPageCount = nextProps.recentPost.pages;
+    }
+    if (nextProps.queryParams && nextProps.queryParams.page) {
+      newState.currentPage = parseInt(nextProps.queryParams.page, 10);
+    } else {
+      newState.currentPage = 1;
+    }
+
+    this.setState(newState);
+  }
+
+  onPageChange(event) {
+    this.props.getRecentPost(event.selected + 1);
   }
 
   render() {
@@ -21,13 +55,13 @@ class Blog extends Component {
           <Link to={`/blog/${article.slug}`}>
             <h2>{article.title}</h2>
           </Link>
-          <span className={listposts.datapost}>{article.date.substr(0, 10)}</span>
+          <span className={listPosts.datapost}>{article.date.substr(0, 10)}</span>
           <span
             dangerouslySetInnerHTML={{
               __html: article.excerpt
             }}
           />
-          <p className={listposts['button-more']}>
+          <p className={listPosts['button-more']}>
             <Link to={`/blog/${article.slug}`}>
               <img
                 alt="Find out more"
@@ -45,16 +79,22 @@ class Blog extends Component {
 
     return (<div>
       <CoverPrimary title="Blog" subtitle="Latest news on Global Fishing Watch" />
-      <section className={listposts['c-list-posts']}>
+      <section className={listPosts['c-list-posts']}>
         {articles}
       </section>
-      <PaginationBlog />
+      <PaginationBlog
+        pages={this.state.totalPageCount}
+        onPageChange={this.onPageChange}
+        initialPage={this.state.currentPage}
+      />
       <Footer />
     </div>);
   }
 }
 
 Blog.propTypes = {
+  queryParams: React.PropTypes.object,
+  initialPage: React.PropTypes.number,
   recentPost: React.PropTypes.object,
   getRecentPost: React.PropTypes.func
 };

@@ -1,14 +1,31 @@
-import { GET_RECENT_POST, GET_POST_BY_SLUG } from '../actions';
+import { push } from 'react-router-redux';
+import { GET_RECENT_POSTS, GET_POST_BY_SLUG } from '../actions';
 import 'whatwg-fetch';
 
-export function getRecentPost() {
+export function updateURL(page) {
   return (dispatch) => {
-    fetch(`${BLOG_API_ENDPOINT}/api/get_recent_posts/`, {
+    if (page === 1) {
+      dispatch(push('/blog'));
+    } else {
+      dispatch(push(`/blog?page=${page}`));
+    }
+  };
+}
+
+export function getRecentPost(page) {
+  return (dispatch) => {
+    dispatch({
+      type: GET_RECENT_POSTS,
+      payload: null
+    });
+
+    fetch(`${BLOG_API_ENDPOINT}/api/get_recent_posts/?page=${page}`, {
       method: 'GET'
-    }).then((response) => response.json()).then((user) => {
+    }).then((response) => response.json()).then((posts) => {
+      dispatch(updateURL(page));
       dispatch({
-        type: GET_RECENT_POST,
-        payload: user
+        type: GET_RECENT_POSTS,
+        payload: posts
       });
     });
   };
