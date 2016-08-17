@@ -58,7 +58,7 @@ class CoverPrimary extends Component {
           </p>
           <div className={CoverPage['footer-header']}>
             <div>
-              <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo" />
+              <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="Leonardo Dicaprio Foundation" />
             </div>
           </div>
         </div>
