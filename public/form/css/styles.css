@@ -554,13 +554,19 @@ hr {
   background-position: calc(50% - 42px) center;
 }
 
-section.reg form {
+.reg form {
+  max-width: 480px;
+  margin: 0 auto;
   width: 100%;
 }
 
+@media screen and (min-width: 768px) {
+  .reg form {
+    max-width: 730px;
+  }
+}
+
 .reg-form {
-  max-width: 480px;
-  margin: 0 auto;
   width: 100%;
 }
 
@@ -699,6 +705,18 @@ section.reg form {
 #login_p {
   text-align: center;
   font-size: 25px;
+}
+
+.pwd {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .pwd {
+    max-width: none;
+  }
 }
 
 .pwd p {
@@ -846,10 +864,6 @@ section.reg form {
   form {
     max-width: 450px;
     margin: 0 auto;
-  }
-
-  .reg form {
-    max-width: 730px;
   }
 
   input[type='submit'] {
