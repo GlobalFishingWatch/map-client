@@ -3,7 +3,9 @@
 
 .infomap {
   align-items: center;
-  background-color: $color-8;
+  background-image: url('../../assets/images/background_the_map.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   font-family: $font-family-1;
   height: 748px;
