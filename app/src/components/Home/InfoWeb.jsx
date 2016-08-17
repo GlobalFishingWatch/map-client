@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import infoWebStyle from '../../../styles/components/c-info-web.scss';
-import LinkBox from '../../../styles/components/c-link-box.scss';
-import boxtriangle from '../../../assets/icons/box_triangle.svg';
 
 class InfoWeb extends Component {
   render() {
@@ -9,7 +7,7 @@ class InfoWeb extends Component {
       <section className={infoWebStyle['c-info-web']}>
         <div className={infoWebStyle['image-info-web']}></div>
         <div className={infoWebStyle['text-info-web']}>
-        <p>
+          <p>
           The Global Fishing Watch Research Program works closely
           with scientific experts to develop the tools and
           analyses that will help us address some of the
@@ -19,7 +17,7 @@ class InfoWeb extends Component {
           that will be critical to ocean conservation. Moreover,
           the Global Fishing Watch aims to support the entire scientific
           community by making many of our datasets publicly available.
-        </p>
+          </p>
         </div>
       </section>);
   }
