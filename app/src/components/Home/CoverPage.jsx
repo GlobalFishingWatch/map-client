@@ -33,7 +33,6 @@ class CoverPage extends Component {
   }
 
   onSliderChange(currentSlider) {
-    console.log(currentSlider);
     this.setState({ currentSlider });
   }
 
