@@ -1,28 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router';
-import '../../../styles/components/c-footer.scss';
-import navfooter from '../../../styles/components/c-nav-footer.scss';
-import logosfooter from '../../../styles/components/c-logos-footer.scss';
+import footerStyle from '../../../styles/components/c-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import logoldf from '../../../assets/logos/ldf_logo.png';
+import logoGFWHorizontal from '../../../assets/logos/gfw_logo_hor_white.png';
 
 export default function () {
   return (
     <footer>
-      <div className={logosfooter.c_logos_footer}>
-        <div className={logosfooter.partner_footer}>
+      <div className={footerStyle['logos-footer']}>
+        <div className={footerStyle['partner-footer']}>
           <span>Founding Partners</span>
-          <img className={logosfooter.first_partner} src={logooceana} alt="oceana logo" />
+          <img className={footerStyle['first-partner']} src={logooceana} alt="oceana logo" />
           <img src={logosky} alt="skytruth logo" />
           <img src={logogoogle} alt="google logo" />
         </div>
-        <div className={logosfooter.sponsor_footer}>
-          <img className={logosfooter.first_partner} src={logoldf} alt="ldf logo" />
+        <div className={footerStyle['sponsor-footer']}>
+          <img className={footerStyle['first-partner']} src={logoldf} alt="ldf logo" />
         </div>
       </div>
-      <div className={navfooter.c_nav_footer}>
+      <div className={footerStyle['nav-footer']}>
         <ul>
           <li><Link to="/map">Map</Link></li>
           <li><Link to="/blog">Blog</Link></li>
@@ -42,8 +41,13 @@ export default function () {
           <li><Link to="/terms-of-use">Terms of Use</Link></li>
           <li><Link to="/privacy-policy">Privacy Policy</Link></li>
           <li><Link to="#">Follow us</Link></li>
-          <li><Link to="#">SUBSCRIBE TO NEWS</Link></li>
         </ul>
+        <div>
+          <a className={footerStyle['subscribe-button']} href="">SUBSCRIBE TO NEWS</a>
+        </div>
+      </div>
+      <div className={footerStyle['second-footer']}>
+        <img src={logoGFWHorizontal} alt="GFW logo" />
       </div>
     </footer>
   );

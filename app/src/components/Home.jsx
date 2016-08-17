@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import home from '../../styles/index.scss';
 import backMobile from '../../styles/components/c-mobile-menu.scss';
 import Footer from './Shared/Footer';
-import FooterSecond from './Shared/SecondFooter';
 import CaseStudySlider from './Home/CaseStudySlider';
 import CoverPage from './Home/CoverPage';
 import InfoMap from './Home/InfoMap';
@@ -31,7 +30,6 @@ class Home extends Component {
         <SuccessStoryGallery />
       </section>
       <Footer />
-      <FooterSecond />
     </div>);
   }
 
