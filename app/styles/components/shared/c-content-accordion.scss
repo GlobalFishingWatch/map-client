@@ -7,8 +7,16 @@
     padding: 30px 0;
     position: relative;
 
-    & + .accordion-item {
-      border-top: 2px solid $color-10;
+    &::after {
+      background-color: $color-10;
+      bottom: 0;
+      content: '';
+      height: 2px;
+      left: 50%;
+      position: absolute;
+      top: auto;
+      transform: translate(-50%, 0);
+      width: 100vw;
     }
   }
 
