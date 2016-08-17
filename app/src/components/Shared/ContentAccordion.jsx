@@ -51,7 +51,7 @@ class ContentAccordion extends Component {
     return (
       <Accordion
         allowMultiple={false}
-        activeItems={0}
+        activeItems={-1}
         className={AccordionStyles['c-content-accordion']}
         onChange={this.toggleItemBound}
       >
