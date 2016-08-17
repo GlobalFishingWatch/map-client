@@ -16,6 +16,7 @@ class CoverPage extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       currentSlider: 0,
       autoPlaySlider: true,
@@ -24,11 +25,12 @@ class CoverPage extends Component {
   }
 
   componentDidUpdate() {
-    $(`.${CoverPageStyle['dots-cover']}`).click(() => {
-      this.setState({
-        autoPlaySlider: false,
-        speedPlaySlider: 0
-      });
+    $(`.${CoverPageStyle['dots-cover']}`).off('click').on('click', () => {
+      if (!this.state.autoPlaySlider) return;
+
+      this.state = {
+        autoPlaySlider: false
+      };
     });
   }
 
@@ -48,7 +50,7 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
       draggable: false,
-      afterChange: (currentSlider) => (this.onSliderChange(currentSlider)),
+      afterChange: () => { this.onSliderChange(); },
       autoplay: this.state.autoPlaySlider,
       autoplaySpeed: this.state.speedPlaySlider
     };
