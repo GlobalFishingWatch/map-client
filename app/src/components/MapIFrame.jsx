@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class MapIFrame extends Component {
-
   render() {
     return (
       <iframe
@@ -16,5 +15,10 @@ class MapIFrame extends Component {
     );
   }
 }
+
+MapIFrame.propTypes = {
+  token: React.PropTypes.string,
+  location: React.PropTypes.object
+};
 
 export default MapIFrame;

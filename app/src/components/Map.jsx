@@ -459,6 +459,7 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  location: React.PropTypes.object,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
   setZoom: React.PropTypes.func,

@@ -18,7 +18,6 @@ const mapStateToProps = (state) => ({
   map: state.map,
   vesselTrack: state.vesselInfo.track,
   filters: state.filters,
-  loggedUser: state.user.loggedUser,
   token: state.user.token,
   shareModal: state.map.shareModal
 });
