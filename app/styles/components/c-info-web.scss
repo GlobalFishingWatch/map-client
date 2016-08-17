@@ -1,0 +1,28 @@
+@import '../settings';
+
+.c-info-web {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 100px 0;
+
+  .image-info-web {
+    background-image: url('../../assets/images/background_8.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 355px;
+    width: 520px;
+  }
+
+  .text-info-web {
+    margin-left: 110px;
+    max-width: 430px;
+
+    p {
+      //change with p application .scss
+      color: $color-9;
+      font-family: $font-family-2;
+      line-height: 1.63;
+    }
+  }
+}
