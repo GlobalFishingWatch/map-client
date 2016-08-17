@@ -1,0 +1,44 @@
+@import '../base';
+
+.c-partner-section {
+  padding-bottom: 90px;
+  padding-top: 80px;
+
+  .img-logo-partners {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 70px;
+    width: 200px;
+  }
+
+  h2 {
+    color: $color-9;
+    font-size: $font-size-xx-big;
+    font-weight: $font-weight-normal;
+    line-height: 1.05;
+    margin-bottom: 90px;
+  }
+
+  ul {
+    align-content: center;
+    align-items: flex-start;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+
+    li {
+      display: inline-block;
+      min-width: 340px;
+      padding-right: 22px;
+
+      p {
+        font-size: $font-size-small;
+        line-height: 1.6;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
