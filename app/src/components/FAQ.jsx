@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
 import CoverPrimary from './Shared/CoverPrimary';
-import ContentAccordion from './Shared/ContentAccordion';
+import Accordion from './Shared/Accordion/Accordion';
+
 import AppStyles from '../../styles/application.scss';
+import FAQStyles from '../../styles/components/c-faq.scss';
 
 class FAQ extends Component {
 
@@ -10,11 +12,15 @@ class FAQ extends Component {
     this.props.getFAQEntries();
   }
 
+  getClassName() {
+    return `${AppStyles.wrap} ${FAQStyles['c-faq']}`;
+  }
+
   render() {
     let accordionContent = (<div>Loading....</div>);
 
     if (this.props.faqEntries && this.props.faqEntries.length > 0) {
-      accordionContent = (<ContentAccordion
+      accordionContent = (<Accordion
         entries={this.props.faqEntries}
       />);
     }
@@ -24,7 +30,7 @@ class FAQ extends Component {
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."
       />
-      <div className={AppStyles.wrap}>
+      <div className={this.getClassName()}>
         {accordionContent}
       </div>
       <Footer />

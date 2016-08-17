@@ -1,0 +1,25 @@
+@import '../../settings';
+
+:global {
+  .c-accordion {
+    list-style: none;
+
+    > .accordion-item {
+
+      &.-expanded .accordion-item-body {
+        max-height: 400px;
+        visibility: visible;
+      }
+
+      .accordion-item-head {
+        cursor: pointer;
+      }
+
+      .accordion-item-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .3s ease-in-out;
+      }
+    }
+  }
+}
