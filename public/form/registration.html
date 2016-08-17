@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-	<title>Registration</title>
+	<title>Registration - Global Fishing Watch</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./css/styles.min.css">
@@ -80,8 +80,16 @@
 					<input type="text" id="gfw_firstname" placeholder="First name" />
 				</div>
 				 <div class="item">
-					<label for="gfw_lastname">last name</label>
+					<label for="gfw_lastname">last name *</label>
 					<input type="text" id="gfw_lastname" placeholder="Last name" required />
+				</div>
+        <div class="item">
+					<label for="gfw_email">Email *</label>
+					<input type="email" id="gfw_email" placeholder="Email address" required />
+				</div>
+				 <div class="item">
+					<label for="gfw_phone">Phone number</label>
+					<input type="tel" id="gfw_phone" placeholder="Phone number" />
 				</div>
 				 <div class="item">
 					<label for="gfw_questiontype">Type of organization</label>
@@ -105,22 +113,12 @@
 					<label for="gfw_zip">Zip code</label>
 					<input type="text" id="gfw_zip" placeholder="Zip code" />
 				</div>
-				 <div class="item">
-					<label for="gfw_email">Email</label>
-					<input type="email" id="gfw_email" placeholder="Email address" required />
-				</div>
-				 <div class="item">
-					<label for="gfw_phone">Phone number</label>
-					<input type="text" id="gfw_phone" placeholder="Phone number" />
-				</div>
 			</div>
 			<div class="tos">
-				<input type="checkbox" id="gfw_tos" required />
-				<label for="gfw_tos">Accept <a href="/terms-of-use">terms of use</a></label>
-				<input type="checkbox" id="gfw_privacy" required />
-				<label for="gfw_privacy">Accept <a href="/privacy-policy">private policy</a></label>
+				<input type="checkbox" id="gfw_tos_privacy" required />
+				<label for="gfw_tos_privacy">I agree to the Global Fishing Watch <a href="/terms-of-use">terms of use</a> and <a href="/privacy-policy">private policy</a></label>
 			</div>
-			<input type="submit" value="SEND"/>
+			<input type="submit" value="REGISTER"/>
 		</form>
 	</section>
 	<script>
