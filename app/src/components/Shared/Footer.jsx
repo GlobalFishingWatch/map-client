@@ -1,59 +1,105 @@
 import React from 'react';
 import { Link } from 'react-router';
-import footerStyle from '../../../styles/components/c-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import logoldf from '../../../assets/logos/ldf_logo.png';
-import logoGFWHorizontal from '../../../assets/logos/gfw_logo_hor_white.png';
+import logoGFW from '../../../assets/logos/gfw_logo.png';
+
+import AppStyles from '../../../styles/application.scss';
+import footerStyle from '../../../styles/components/c-footer.scss';
+
+import SubscribeSVG from '../../../assets/icons/subscribe.svg';
 
 export default function () {
   return (
-    <footer>
-      <div className={footerStyle['logos-footer']}>
-        <div className={footerStyle['partner-footer']}>
-          <span>Founding Partners</span>
-          <img className={footerStyle['first-partner']} src={logooceana} alt="oceana logo" />
-          <img src={logosky} alt="skytruth logo" />
-          <img src={logogoogle} alt="google logo" />
+    <footer className={footerStyle['c-footer']}>
+      <div className={AppStyles.wrap}>
+        <div className={footerStyle['logos-footer']}>
+          <div className={footerStyle['partner-footer']}>
+            <span className={footerStyle['partner-text']}>Founding Partners</span>
+            <ul className={footerStyle['logo-list']}>
+              <li className={footerStyle['logo-item']}>
+                <img className={footerStyle.logo} src={logooceana} alt="oceana logo" />
+              </li>
+              <li className={footerStyle['logo-item']}>
+                <img className={footerStyle.logo} src={logosky} alt="skytruth logo" />
+              </li>
+              <li className={footerStyle['logo-item']}>
+                <img className={footerStyle.logo} src={logogoogle} alt="google logo" />
+              </li>
+            </ul>
+          </div>
+          <div className={footerStyle['sponsor-footer']}>
+            <ul className={footerStyle['logo-list']}>
+              <li className={footerStyle['logo-item']}>
+                <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className={footerStyle['sponsor-footer']}>
-          <img className={footerStyle['first-partner']} src={logoldf} alt="ldf logo" />
-        </div>
-      </div>
-      <div className={footerStyle['nav-footer']}>
-        <ul>
-          <li><Link to="/map">Map</Link></li>
-          <li><Link to="/blog">Blog</Link></li>
-          <li><Link to="/articles-publications">Articles and Publications</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/faq">FAQ</Link></li>
-          <li><Link to="/tutorials">Tutorials</Link></li>
-          <li><Link to="/definitions">Definitions</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/the-project">The project</Link></li>
-          <li><Link to="/partners">Partners</Link></li>
-          <li><Link to="/contact-us">Contact us</Link></li>
-        </ul>
-        <ul>
-          <li><Link to="/terms-of-use">Terms of Use</Link></li>
-          <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-          <li><Link to="#">Follow us</Link></li>
-        </ul>
-        <div>
-          <a
-            className={footerStyle['subscribe-button']}
-            href="http://info.globalfishingwatch.org/catch_signup"
-            target="_blank"
-          >
-            SIGN UP FOR EMAIL UPDATES!
-          </a>
+        <div className={footerStyle['nav-footer']}>
+          <ul className={footerStyle['nav-section']}>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/map">Map</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/blog">Blog</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/articles-publications">Articles and Publications</Link>
+            </li>
+          </ul>
+          <ul className={footerStyle['nav-section']}>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/faq">FAQ</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/definitions">Glossary of terms</Link>
+            </li>
+          </ul>
+          <ul className={footerStyle['nav-section']}>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/the-project">The project</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/partners">Partners</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/contact-us">Contact us</Link>
+            </li>
+          </ul>
+
+          <div className={footerStyle['social-section']}>
+            <a
+              className={footerStyle['subscribe-button']}
+              href="http://info.globalfishingwatch.org/catch_signup"
+              target="_blank"
+            >
+              subscribe for news
+              <img
+                className={footerStyle['email-subscribe']}
+                src={SubscribeSVG} alt="subscribe news"
+              />
+            </a>
+
+            <div className={footerStyle['social-links']}>
+              <span className={footerStyle['social-text']}>Follow us</span>
+              <ul className={footerStyle['social-list']}>
+                <li className={footerStyle['social-item']}><a href=""></a></li>
+                <li className={footerStyle['social-item']}><a href=""></a></li>
+              </ul>
+            </div>
+          </div>
+
         </div>
       </div>
       <div className={footerStyle['second-footer']}>
-        <img src={logoGFWHorizontal} alt="GFW logo" />
+        <img className={footerStyle['gfw-logo']} src={logoGFW} alt="Global Fishing Watch logo" />
+        <span className={footerStyle['gfw-text']}>Global Fishing Watch</span>
       </div>
     </footer>
   );
