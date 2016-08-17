@@ -6,11 +6,11 @@ import Header from '../../containers/Header';
 import MenuMobile from '../Shared/MenuMobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
-import sliderBackground1 from '../../../assets/images/home_slider_1-1.png';
-import sliderBackground2 from '../../../assets/images/home_slider_2.jpg';
-import sliderBackground3 from '../../../assets/images/home_slider_3-1.png';
-import sliderBackground4 from '../../../assets/images/home_slider_4-1.png';
-import sliderBackground5 from '../../../assets/images/home_slider_5-1.png';
+import sliderBackground1 from '../../../assets/images/background_1.png';
+import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
+import sliderBackground2 from '../../../assets/images/background_2.png';
+import sliderBackground3 from '../../../assets/images/background_3.png';
+import sliderBackground4 from '../../../assets/images/background_4.png';
 
 class CoverPage extends Component {
 
@@ -19,8 +19,6 @@ class CoverPage extends Component {
     this.state = {
       currentSlider: 0
     };
-
-    this.onSliderChange = this.onSliderChange.bind(this);
   }
 
   onSliderChange(currentSlider) {
@@ -40,17 +38,17 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: false,
       draggable: false,
-      afterChange: this.onSliderChange,
+      afterChange: (currentSlider) => (this.onSliderChange(currentSlider)),
       autoplay: true,
       autoplaySpeed: 10000
     };
 
     const sliderBackgrounds = [
       sliderBackground1,
+      sliderBackgroundLDF,
       sliderBackground2,
       sliderBackground3,
-      sliderBackground4,
-      sliderBackground5
+      sliderBackground4
     ];
     const sliderBackground = sliderBackgrounds[this.state.currentSlider];
 
