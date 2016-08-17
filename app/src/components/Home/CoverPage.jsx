@@ -25,8 +25,10 @@ class CoverPage extends Component {
 
   componentDidUpdate() {
     $(`.${CoverPageStyle['dots-cover']}`).click(() => {
-      this.setState({ autoPlaySlider: false });
-      this.setState({ speedPlaySlider: 0 });
+      this.setState({
+        autoPlaySlider: false,
+        speedPlaySlider: 0
+      });
     });
   }
 
