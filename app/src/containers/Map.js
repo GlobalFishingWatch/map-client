@@ -12,7 +12,6 @@ import {
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
-import { login } from '../actions/user';
 import { RESET_VESSEL_DETAILS } from '../actions';
 
 const mapStateToProps = (state) => ({
@@ -26,9 +25,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch, { location }) => {
   const queryParams = location.query;
   return {
-    login: () => {
-      dispatch(login());
-    },
     getWorkspace: () => {
       dispatch(getWorkspace(queryParams.workspace));
     },

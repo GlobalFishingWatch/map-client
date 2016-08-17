@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 
 class MapIFrame extends Component {
-
-  componentWillMount() {
-    if (!this.props.token && this.props.location.query && this.props.location.query.redirect_login) {
-      this.props.login();
-    }
-  }
-
   render() {
     return (
       <iframe
@@ -20,8 +13,7 @@ class MapIFrame extends Component {
 
 MapIFrame.propTypes = {
   token: React.PropTypes.string,
-  location: React.PropTypes.object,
-  login: React.PropTypes.func
+  location: React.PropTypes.object
 };
 
 export default MapIFrame;
