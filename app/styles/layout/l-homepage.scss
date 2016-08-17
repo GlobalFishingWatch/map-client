@@ -3,7 +3,8 @@
 
 .infomap {
   align-items: center;
-  background-image: url('../../assets/images/background_the_map.png');
+  background-color: $color-8;
+  // background-image: url('../../assets/images/background_the_map.png');
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
