@@ -20,8 +20,11 @@
     }
 
     .left-triangle {
-      opacity: .3;
       transform: rotate(180deg);
+    }
+
+    .disabled-triangle {
+      opacity: .3;
     }
 
     ul {

@@ -2,13 +2,13 @@ import { connect } from 'react-redux';
 import Blog from '../components/Blog';
 import { getRecentPost } from '../actions/blog';
 
-
-const mapStateToProps = (state) => ({
-  recentPost: state.blog.recentPost
+const mapStateToProps = (state, { location }) => ({
+  recentPost: state.blog.recentPost,
+  queryParams: location.query
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getRecentPost: () => dispatch(getRecentPost())
+  getRecentPost: (page) => dispatch(getRecentPost(page))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);

@@ -70,7 +70,7 @@ class CoverPrimary extends Component {
 CoverPrimary.propTypes = {
   title: React.PropTypes.any,
   subtitle: React.PropTypes.any,
-  backgroundImageIndex: React.PropTypes.number.optional
+  backgroundImageIndex: React.PropTypes.number
 };
 
 export default CoverPrimary;
