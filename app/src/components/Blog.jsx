@@ -78,7 +78,11 @@ class Blog extends Component {
     }
 
     return (<div>
-      <CoverPrimary title="Blog" subtitle="Latest news on Global Fishing Watch" />
+      <CoverPrimary
+        title="Blog"
+        subtitle="Latest news on Global Fishing Watch"
+        backgroundImageIndex={9}
+      />
       <section className={listPosts['c-list-posts']}>
         {articles}
       </section>

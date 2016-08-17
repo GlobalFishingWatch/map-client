@@ -9,6 +9,7 @@ class Tutorials extends Component {
       <CoverPrimary
         title="Watch Our Tutorial"
         subtitle="View our tutorial video to see Global Fishing in action."
+        backgroundImageIndex={7}
       />
       <section>
         <p>Click on the video below to watch a brief tutorial of how Global Fishing Watch works. </p>
