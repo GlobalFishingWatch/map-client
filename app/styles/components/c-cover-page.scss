@@ -206,10 +206,8 @@
       }
 
       &:last-child {
-
         &::after {
-          content: '';
-          display: none;
+          content: none;
         }
       }
     }
