@@ -43,7 +43,13 @@ export default function () {
           <li><Link to="#">Follow us</Link></li>
         </ul>
         <div>
-          <a className={footerStyle['subscribe-button']} href="">SUBSCRIBE TO NEWS</a>
+          <a
+            className={footerStyle['subscribe-button']}
+            href="http://info.globalfishingwatch.org/catch_signup"
+            target="_blank"
+          >
+            SIGN UP FOR EMAIL UPDATES!
+          </a>
         </div>
       </div>
       <div className={footerStyle['second-footer']}>
