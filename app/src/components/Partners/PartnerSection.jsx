@@ -24,7 +24,11 @@ class PartnerSection extends Component {
               pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
               results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
               forever. Together, we can save the oceans and help feed the world.
-              Visit <a href="http://oceana.org/" target="_blank"> www.oceana.org</a> to learn more.
+              Visit <a
+                className={PartnerSectionStyle['link-underline']}
+                href="http://oceana.org/"
+                target="_blank"
+              >www.oceana.org</a> to learn more.
             </p>
           </li>
           <li>
@@ -40,8 +44,12 @@ class PartnerSection extends Component {
               is to make the world visible to the
               people that live in it. We’re driven by the belief that better transparency
               leads to better management and better
-              outcomes for people and the environment. Check out what we do and how we work at
-              <a href="www.skytruth.org" target="_blank">www.skytruth.org</a>.
+              outcomes for people and the environment. Check out what we do and how we work
+              at <a
+                className={PartnerSectionStyle['link-underline']}
+                href="http://skytruth.org/"
+                target="_blank"
+              > www.skytruth.org</a> to learn more.
             </p>
           </li>
           <li>
@@ -51,8 +59,12 @@ class PartnerSection extends Component {
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s
               infrastructure to address environmental and humanitarian issues through partnerships
-              with non-profits, educational institutions, and research groups. To learn more, visit
-              <a href="earth.google.com/outreach" target="_blank"> earth.google.com/outreach</a>.
+              with non-profits, educational institutions, and research groups. To learn more,
+              visit <a
+                className={PartnerSectionStyle['link-underline']}
+                href="https://www.google.com/earth/outreach/index.html"
+                target="_blank"
+              >earth.google.com/outreach</a> to learn more.
             </p>
           </li>
         </ul>
