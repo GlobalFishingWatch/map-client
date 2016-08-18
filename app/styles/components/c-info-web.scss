@@ -1,10 +1,11 @@
-@import '../settings';
+@import '../application';
 
 .c-info-web {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 100px 0;
+  padding-top: 100px;
+  padding-bottom: 100px;
 
   .image-info-web {
     background-image: url('../../assets/images/background_8.png');
@@ -17,12 +18,5 @@
   .text-info-web {
     margin-left: 110px;
     max-width: 430px;
-
-    p {
-      //change with p application .scss
-      color: $color-9;
-      font-family: $font-family-2;
-      line-height: 1.63;
-    }
   }
 }
