@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import logooceana from '../../../assets/logos/oceana_logo.png';
+import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import logoldf from '../../../assets/logos/ldf_logo.png';
