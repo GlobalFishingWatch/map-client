@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
+import Modal from './Shared/Modal';
+import NoLogin from '../containers/Map/NoLogin';
 
 class MapIFrame extends Component {
   render() {
-    if (!this.props.token) {
-      return (
-        <div>Modal to propose login / sign up</div>
-      );
-    }
-
     /* URL params */
     const headers = encodeURIComponent(JSON.stringify({ Authentication: `bearer ${this.props.token}` }));
 
     return (
-      <iframe
+      <div
         style={{
-          border: 0,
           width: '100%',
-          height: '100%',
-          display: 'block'
+          height: '100%'
         }}
-        src={`${EMBED_MAP_URL}?headers=${headers}`}
-      />
+      >
+        <Modal
+          opened={!this.props.token}
+          closeable={false}
+          close={() => {}}
+        >
+          <NoLogin />
+        </Modal>
+        <iframe
+          style={{
+            border: 0,
+            width: '100%',
+            height: '100%',
+            display: 'block'
+          }}
+          src={`${EMBED_MAP_URL}?headers=${headers}`}
+        />
+      </div>
     );
   }
 }
