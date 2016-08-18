@@ -4,8 +4,9 @@
 .infomap {
   align-items: center;
   background-color: $color-8;
-  background-repeat: no-repeat;
-  background-size: cover;
+  //No delete, here will be an image background
+  //background-repeat: no-repeat;
+  //background-size: cover;
   display: flex;
   font-family: $font-family-1;
   height: 748px;
