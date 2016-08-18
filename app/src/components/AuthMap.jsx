@@ -11,7 +11,8 @@ class AuthMap extends Component {
   }
 
   render() {
-    return (EMBED_MAP_URL) ? <MapIFrameContainer /> : <MapContainer location={this.props.location} />;
+    return (EMBED_MAP_URL) ? <MapIFrameContainer location={this.props.location} /> :
+      <MapContainer location={this.props.location} />;
   }
 }
 
