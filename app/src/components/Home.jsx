@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import home from '../../styles/index.scss';
-import baseStyle from '../../styles/_base.scss';
 import backMobile from '../../styles/components/c-mobile-menu.scss';
 import Footer from './Shared/Footer';
 import InfoWeb from './Home/InfoWeb';
@@ -23,7 +22,7 @@ class Home extends Component {
         <CaseStudySlider />
       </section>*/}
       <InfoWeb />
-      <section className={[home.infomap, baseStyle.wrap].join(' ')}>
+      <section className={home.infomap}>
         <InfoMap />
       </section>
       {/*<section className={home['success-story']}>
