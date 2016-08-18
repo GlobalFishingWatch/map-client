@@ -20,3 +20,16 @@
     width: 35px;
   }
 }
+
+.c-button-contact {
+  background-color: $color-3;
+  border: 0;
+  color: $color-4;
+  display: block;
+  font-size: $font-size-normal;
+  margin: 50px auto 0;
+  max-width: 250px;
+  padding: 20px 0;
+  text-transform: uppercase;
+  width: 100%;
+}

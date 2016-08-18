@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import home from '../../../styles/index.scss';
+import formStyle from '../../../styles/components/c-contact-form.scss';
+import buttonStyle from '../../../styles/components/c-button.scss';
 
 class ContactUsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       submitted: false,
-      showFormResponse: false
+      showFormResponse: false,
+      classSelect: '',
+      disabledOption: false
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -21,6 +24,12 @@ class ContactUsForm extends Component {
   }
 
   handleChange(event) {
+    if (event.target.name === 'selectCompany') {
+      this.setState({
+        classSelect: 'select-selected',
+        disabledOption: true
+      });
+    }
     this.setState({
       [event.target.id.substr(8)]: event.target.value
     });
@@ -43,34 +52,40 @@ class ContactUsForm extends Component {
       } else {
         message = 'There was a problem submitting your contact request. Please try again later';
       }
-      return (<section className={home.c_contact_form}>
+      return (<section className={[formStyle['c-contact-form'], formStyle['message-after']].join(' ')}>
         <h1>{message}</h1>
       </section>);
     }
 
-    return (<section className={home.c_contact_form}>
+    return (<section className={formStyle['c-contact-form']}>
       <h1>
         Contact Us
       </h1>
+      <p>
+        Let us know what you think! Submit your questions,
+        suggestions for improvement or general feedback using the form below
+      </p>
       <form
         action=""
         method="POST"
         onSubmit={this.handleFormSubmit}
       >
-        <label htmlFor="name">Name</label>
+        <label htmlFor="name">Name *</label>
         <input
           type="name"
           id="contact_name"
-          placeholder="Name"
+          placeholder="Your name"
+          className={formStyle['input-text']}
           required
           onChange={this.handleChange}
         />
 
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Email *</label>
         <input
           type="email"
           id="contact_email"
-          placeholder="email"
+          placeholder="john.sample@globalfishingwatch.org"
+          className={formStyle['input-text']}
           required
           onChange={this.handleChange}
         />
@@ -79,15 +94,22 @@ class ContactUsForm extends Component {
         <input
           type="text"
           id="contact_company"
-          placeholder="company"
+          placeholder="Your company's name"
+          className={formStyle['input-text']}
           onChange={this.handleChange}
         />
 
 
-        <label htmlFor="type">Type</label>
-        <div className={home.select_container}>
-          <select id="contact_type" onChange={this.handleChange} required>
-            <option>Select an option...</option>
+        <label htmlFor="type">Type *</label>
+        <div className={formStyle['select-container']}>
+          <select
+            id="contact_type"
+            onChange={this.handleChange}
+            name="selectCompany"
+            className={formStyle[this.state.classSelect]}
+            required
+          >
+            <option disabled={this.state.disabledOption}>Select a question type</option>
             <option value="Map">Map</option>
             <option value="Collaboration">Collaboration</option>
             <option value="Press">Press</option>
@@ -96,25 +118,29 @@ class ContactUsForm extends Component {
           </select>
         </div>
 
-        <label htmlFor="subject">Subject</label>
+        <label htmlFor="subject">Subject *</label>
         <input
-          type="text" id="contact_subject"
-          placeholder="subject"
+          type="text"
+          id="contact_subject"
+          placeholder="Tell us the subject of your contact"
+          className={formStyle['input-text']}
           required
           onChange={this.handleChange}
         />
 
-        <label htmlFor="description">description</label>
-        <input
-          type="textarea"
+        <label htmlFor="description">Message *</label>
+        <textarea
           id="contact_description"
-          placeholder="description"
+          placeholder="Give us more details"
+          className={formStyle['textarea-form']}
           required
           onChange={this.handleChange}
         />
 
         <input
           type="submit"
+          value="SEND"
+          className={buttonStyle['c-button-contact']}
           disabled={this.state.submitted}
         />
       </form>
