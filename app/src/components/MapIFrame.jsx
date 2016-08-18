@@ -9,7 +9,7 @@ class MapIFrame extends Component {
      * the key being the name of the param
      */
     const urlParams = {
-      headers: encodeURIComponent(JSON.stringify({ Authentication: `bearer ${this.props.token}` })),
+      headers: this.props.token && encodeURIComponent(JSON.stringify({ Authentication: `bearer ${this.props.token}` })),
       // This is the real workspace ID
       workspace_id: this.props.workspaceId,
       // This is a temporal workspace parameter for SkyTruth's map
