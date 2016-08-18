@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
-import PartnerSection from './Partners/PartnerSection'
+import PartnerSection from './Partners/PartnerSection';
+import FunderSection from './Partners/FunderSection';
+import ResearchSection from './Partners/ResearchSection';
+import OtherSection from './Partners/OtherSection';
 
 class Partners extends Component {
 
@@ -13,16 +16,10 @@ class Partners extends Component {
         with a growing number of organizations that contribute data, expertise
         and funding to make global fishing activity more transparent."
       />
-      <section>
-        <PartnerSection />
-        <h2>Founding Funders</h2>
-        <a href="#">The Leonardo DiCaprio Foundation</a>
-        <p>
-          The Leonardo DiCaprio Foundation is dedicated to the long-term health and wellbeing of all Earth’s
-          inhabitants. Through collaborative partnerships, we support innovative projects that protect vulnerable
-          wildlife from extinction, while restoring balance to threatened ecosystems and communities.
-        </p>
-      </section>
+      <PartnerSection />
+      <FunderSection />
+      <ResearchSection />
+      <OtherSection />
       <Footer />
     </div>);
   }

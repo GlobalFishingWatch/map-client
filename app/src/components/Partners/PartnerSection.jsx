@@ -8,7 +8,7 @@ import googleLogo from '../../../assets/logos/google_logo.png';
 class PartnerSection extends Component {
 
   render() {
-    return (<div className={[BaseStyle.wrap, PartnerSectionStyle['c-partner-section']].join(' ')}>
+    return (<section className={[BaseStyle.wrap, PartnerSectionStyle['c-partner-section']].join(' ')}>
       <h2>Founding Partners</h2>
       <ul>
         <li>
@@ -20,7 +20,8 @@ class PartnerSection extends Component {
             third of the world’s wild fish catch. With over 100 victories that stop overfishing, habitat destruction,
             pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
             results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
-            forever. Together, we can save the oceans and help feed the world. Visit www.oceana.org to learn more.
+            forever. Together, we can save the oceans and help feed the world.
+            Visit <a href="http://oceana.org/">www.oceana.org</a> to learn more.
           </p>
         </li>
         <li>
@@ -48,7 +49,7 @@ class PartnerSection extends Component {
           </p>
         </li>
       </ul>
-    </div>);
+    </section>);
   }
 }
 

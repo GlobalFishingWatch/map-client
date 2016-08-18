@@ -1,0 +1,43 @@
+@import '../base';
+
+.c-funder-section {
+  background-color: $color-10;
+  padding-bottom: 100px;
+  padding-top: 85px;
+
+  h2 {
+    color: $color-9;
+    font-size: $font-size-xx-big;
+    font-weight: $font-weight-normal;
+    line-height: 1.05;
+    margin-bottom: 70px;
+  }
+
+  .ldf-information {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 90px;
+    padding-right: 90px;
+
+    img {
+      width: 280px;
+    }
+
+    p {
+      font-size: $font-size-small;
+      max-width: 520px;
+    }
+  }
+
+  .funder-logos {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 110px;
+
+    img {
+      max-width: 200px;
+    }
+  }
+}

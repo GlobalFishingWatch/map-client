@@ -1,0 +1,23 @@
+@import '../base';
+
+.c-other-section {
+  padding-bottom: 90px;
+  padding-top: 75px;
+
+  h2 {
+    color: $color-9;
+    font-size: $font-size-xx-big;
+    font-weight: $font-weight-normal;
+    line-height: 1.05;
+    margin-bottom: 60px;
+  }
+
+  .other-logos {
+    padding-left: 90px;
+    padding-right: 90px;
+
+    img {
+      max-width: 200px;
+    }
+  }
+}
