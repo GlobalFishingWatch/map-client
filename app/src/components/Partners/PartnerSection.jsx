@@ -3,7 +3,7 @@ import BaseStyle from '../../../styles/_base.scss';
 import PartnerSectionStyle from '../../../styles/components/c-partner-section.scss';
 import oceanaLogo from '../../../assets/logos/oceana_logo.png';
 import skyLogo from '../../../assets/logos/skytruth_logo.jpg';
-import googleLogo from '../../../assets/logos/google_logo.png';
+import googleLogo from '../../../assets/logos/google_logo_color.png';
 
 class PartnerSection extends Component {
 
@@ -13,7 +13,9 @@ class PartnerSection extends Component {
         <h2>Founding Partners</h2>
         <ul>
           <li>
-            <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
+            <div className={PartnerSectionStyle['contain-img-logo']}>
+              <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
+            </div>
             <p>
               Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
               Oceana is
@@ -22,11 +24,13 @@ class PartnerSection extends Component {
               pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
               results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
               forever. Together, we can save the oceans and help feed the world.
-              Visit <a href="http://oceana.org/">www.oceana.org</a> to learn more.
+              Visit <a href="http://oceana.org/" target="_blank"> www.oceana.org</a> to learn more.
             </p>
           </li>
           <li>
-            <img src={skyLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo SkyTruth  "></img>
+            <div className={PartnerSectionStyle['contain-img-logo']}>
+              <img src={skyLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo SkyTruth  "></img>
+            </div>
             <p>
               If you can see it, you can change it. SkyTruth hopes this illustration of global fishing activity,
               made available
@@ -37,16 +41,18 @@ class PartnerSection extends Component {
               people that live in it. We’re driven by the belief that better transparency
               leads to better management and better
               outcomes for people and the environment. Check out what we do and how we work at
-              <a href="www.skytruth.org">www.skytruth.org</a>.
+              <a href="www.skytruth.org" target="_blank">www.skytruth.org</a>.
             </p>
           </li>
           <li>
-            <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
+            <div className={PartnerSectionStyle['contain-img-logo']}>
+              <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
+            </div>
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s
               infrastructure to address environmental and humanitarian issues through partnerships
               with non-profits, educational institutions, and research groups. To learn more, visit
-              <a href="earth.google.com/outreach"> earth.google.com/outreach</a>.
+              <a href="earth.google.com/outreach" target="_blank"> earth.google.com/outreach</a>.
             </p>
           </li>
         </ul>

@@ -4,11 +4,17 @@
   padding-bottom: 90px;
   padding-top: 80px;
 
-  .img-logo-partners {
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 70px;
-    width: 200px;
+  .contain-img-logo {
+    align-items: center;
+    display: flex;
+    height: 90px;
+    margin-bottom: 40px;
+
+    .img-logo-partners {
+      display: block;
+      margin: 0 auto;
+      width: 220px;
+    }
   }
 
   h2 {
@@ -28,8 +34,8 @@
 
     li {
       display: inline-block;
-      min-width: 340px;
       padding-right: 22px;
+      width: calc(100% / 3);
 
       p {
         font-size: $font-size-small;

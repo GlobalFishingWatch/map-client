@@ -16,7 +16,7 @@
   .ldf-information {
     align-items: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding-left: 90px;
     padding-right: 90px;
 
@@ -26,6 +26,7 @@
 
     p {
       font-size: $font-size-small;
+      margin-left: 80px;
       max-width: 520px;
     }
   }
