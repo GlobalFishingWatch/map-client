@@ -2,14 +2,16 @@ import React from 'react';
 import CoverPrimary from './CoverPrimary';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import Header from '../../containers/Header';
 import MenuMobile from './MenuMobile';
 
 class CoverSecondary extends CoverPrimary {
 
   render() {
-    return (<section className={CoverPage['c-cover-page']} style={{ backgroundImage: `url(${this.getBackground()})` }}>
+    return (<section
+      className={CoverPage['c-cover-page']}
+      style={{ backgroundImage: `url(${this.getBackground()})` }}
+    >
       <div className={CoverPage['layer-cover']}>
         <MenuMobile />
         <Header />
@@ -20,11 +22,6 @@ class CoverSecondary extends CoverPrimary {
           <p className={CoverPage['cover-sub-subtitle']}>
             {this.props.subtitle}
           </p>
-          <div className={CoverPage['footer-header']}>
-            <div>
-              <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="Leonardo Dicaprio Foundation" />
-            </div>
-          </div>
         </div>
       </div>
     </section>);
