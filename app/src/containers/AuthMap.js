@@ -1,28 +1,16 @@
-import React, { Component } from 'react';
-import MapContainer from './Map';
-import MapIFrame from '../components/MapIFrame';
+import { connect } from 'react-redux';
+import AuthMap from '../components/AuthMap';
 import { login } from '../actions/user';
 
-class AuthMap extends Component {
-  componentWillMount() {
-    const { store } = this.context;
-    const state = store.getState();
-    if (!state.user.token && this.props.location.query && this.props.location.query.redirect_login) {
-      store.dispatch(login());
-    }
-  }
+const mapStateToProps = (state, { location }) => ({
+  token: state.user.token,
+  canRedirect: location.query && !!location.query.redirect_login,
+  location
+});
 
-  render() {
-    return (EMBED_MAP_URL) ? <MapIFrame /> : <MapContainer location={this.props.location} />;
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  login: () => dispatch(login())
+});
 
-AuthMap.propTypes = {
-  location: React.PropTypes.object
-};
+export default connect(mapStateToProps, mapDispatchToProps)(AuthMap);
 
-AuthMap.contextTypes = {
-  store: React.PropTypes.object
-};
-
-export default AuthMap;

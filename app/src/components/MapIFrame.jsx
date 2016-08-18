@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 
 class MapIFrame extends Component {
   render() {
+    if (!this.props.token) {
+      return (
+        <div>Modal to propose login / sign up</div>
+      );
+    }
+
+    /* URL params */
+    const headers = encodeURIComponent(JSON.stringify({ Authentication: `bearer ${this.props.token}` }));
+
     return (
       <iframe
         style={{
@@ -10,15 +19,17 @@ class MapIFrame extends Component {
           height: '100%',
           display: 'block'
         }}
-        src={EMBED_MAP_URL}
+        src={`${EMBED_MAP_URL}?headers=${headers}`}
       />
     );
   }
 }
 
 MapIFrame.propTypes = {
-  token: React.PropTypes.string,
-  location: React.PropTypes.object
+  /**
+   * User token for the map
+   */
+  token: React.PropTypes.string
 };
 
 export default MapIFrame;
