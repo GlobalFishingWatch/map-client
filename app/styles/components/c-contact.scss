@@ -1,8 +1,7 @@
 @import '../settings';
 
 .c-contact {
-  background: $color-7 url('../../../assets/images/background_1.png') center;
-  background-repeat: no-repeat;
+  background: url('../../assets/images/background_1.png') no-repeat center;
   background-size: cover;
   min-height: 100%;
   padding-bottom: 100px;
