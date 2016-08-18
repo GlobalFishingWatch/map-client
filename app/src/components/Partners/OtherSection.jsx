@@ -6,10 +6,12 @@ import orbcommLogo from '../../../assets/logos/orbcomm_logo.jpg';
 class OtherSection extends Component {
 
   render() {
-    return (<section className={[BaseStyle.wrap, OtherSectionStyle['c-other-section']].join(' ')}>
-      <h2>Other Partners</h2>
-      <div className={OtherSectionStyle['other-logos']}>
-        <img src={orbcommLogo} alt="orbcomm logo"></img>
+    return (<section className={OtherSectionStyle['c-other-section']}>
+      <div className={BaseStyle.wrap}>
+        <h2>Other Partners</h2>
+        <div className={OtherSectionStyle['other-logos']}>
+          <img src={orbcommLogo} alt="orbcomm logo"></img>
+        </div>
       </div>
     </section>);
   }

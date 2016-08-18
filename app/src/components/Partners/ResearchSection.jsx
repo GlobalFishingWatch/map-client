@@ -9,8 +9,10 @@ import dalhouseLogo from '../../../assets/logos/dalhouse_logo.png';
 class ResearchSection extends Component {
 
   render() {
-    return (<section className={[BaseStyle.wrap, ResearchSectionStyle['c-research-section']].join(' ')}>
-      <h2>Research Partners</h2>
+    return (<section className={ResearchSectionStyle['c-research-section']}>
+      <div className={BaseStyle.wrap}>
+        <h2>Research Partners</h2>
+      </div>
     </section>);
   }
 }
