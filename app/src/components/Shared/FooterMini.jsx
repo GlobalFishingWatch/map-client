@@ -19,18 +19,15 @@ class FooterMini extends Component {
   }
 
   render() {
-    /**
-     * TODO:
-     * Need to review the link and the legal terms
-     */
-
     let expandedFooter;
     if (this.state.footerExpanded) {
       expandedFooter = (
         <div
           style={{
             position: 'absolute',
-            bottom: '38px' }}
+            bottom: '38px',
+            width: '100%'
+          }}
         >
           <Footer />
         </div>
@@ -40,7 +37,7 @@ class FooterMini extends Component {
     let toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
-      <div>
+      <div className={styles['c-footer-mini-container']}>
         {expandedFooter}
         <footer className={styles['c-footer-mini']}>
           <div className={styles.partners}>
@@ -51,9 +48,6 @@ class FooterMini extends Component {
 
           <ul className={styles.links}>
             <li><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
-            <li>CARTO</li>
-            <li>Map data ©2016 Google, INEGI</li>
-            <li>Terms of Use</li>
           </ul>
         </footer>
       </div>
