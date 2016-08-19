@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import Header from '../../containers/Header';
 import MenuMobile from './MenuMobile';
 import sliderBackground1 from '../../../assets/images/background_1.png';
@@ -47,7 +46,10 @@ class CoverPrimary extends Component {
 
   render() {
     return (
-      <section className={CoverPage['c-cover-page']} style={{ backgroundImage: `url(${this.backgroundImage})` }}>
+      <section
+        className={CoverPage['c-cover-page']}
+        style={{ backgroundImage: `url(${this.backgroundImage})` }}
+      >
         <div className={CoverPage['layer-cover']}>
           <MenuMobile />
           <Header />
@@ -58,11 +60,6 @@ class CoverPrimary extends Component {
             <p className={CoverPage['cover-main-subtitle']}>
               {this.props.subtitle}
             </p>
-            <div className={CoverPage['footer-header']}>
-              <div>
-                <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="Leonardo Dicaprio Foundation" />
-              </div>
-            </div>
           </div>
         </div>
       </section>
