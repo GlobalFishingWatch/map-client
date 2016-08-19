@@ -1,36 +1,46 @@
 @import '../settings';
 
-footer {
-  background-color: $color-7;
+.c-footer {
+  background-color: $color-19;
+  padding-top: 55px;
 
   //Section Founding Logos on footer
   .logos-footer {
-    border-bottom: 1px solid rgba($color-12, .2);
+    border-bottom: 2px solid rgba($color-4, .2);
     display: flex;
     justify-content: space-between;
-    padding: 55px 110px 54px;
+    padding: 0 50px 55px 0;
 
     .partner-footer,
     .sponsor-footer {
-      span {
+      > .logo-list {
+        align-items: center;
+        display: flex;
+
+        justify-content: space-between;
+        list-style: none;
+      }
+
+      .logo-item > .logo {
+        max-width: 130px;
+        width: 100%;
+      }
+    }
+
+    .partner-footer {
+      flex-basis: 50%;
+
+      > .partner-text {
         color: $color-16;
         display: block;
+        font-size: $font-size-normal;
         margin-bottom: 35px;
-      }
-
-      img {
-        display: inline-block;
-        margin-left: 75px;
-        width: 130px;
-      }
-
-      .first-partner {
-        margin-left: 0;
       }
     }
 
     .sponsor-footer {
-      padding-top: 54px;
+      align-items: flex-end;
+      display: flex;
     }
   }
 
@@ -38,32 +48,105 @@ footer {
   .nav-footer {
     display: flex;
     justify-content: space-between;
-    padding: 40px 110px;
+    padding: 55px 50px 60px 0;
 
-    ul {
+    .nav-section {
+      display: flex;
+      flex-direction: column;
       list-style: none;
-      margin-after: 0;
-      margin-before: 0;
-      padding-start: 0;
 
-      li {
-        color: $color-4;
-        line-height: 2.27;
-        text-transform: uppercase;
+      & + .nav-section {
+        padding-left: 20px;
+      }
 
-        a {
-          color: $color-4;
+      .nav-item  {
+        & + .nav-item {
+          margin-top: 20px;
+        }
+
+        > .nav-link {
+          color: $color-16;
+          font-size: 15px;
+          font-weight: $font-weight-light;
           text-decoration: none;
+          text-transform: uppercase;
         }
       }
     }
 
-    .subscribe-button {
-      background-color: $color-6;
-      color: $color-4;
-      font-size: $font-size-x-small;
-      padding: 10px 15px;
-      text-decoration: none;
+    > .social-section {
+      position: relative;
+
+      // Get rid of this, this is a button component
+      .subscribe-button {
+        background-color: $color-6;
+        border-radius: 1px;
+        color: $color-4;
+        display: flex;
+        font-size: $font-size-x-small;
+        font-weight: $font-weight-light;
+        padding: 10px 15px;
+        text-decoration: none;
+        text-transform: uppercase;
+
+        > .email-subscribe {
+          margin-left: 10px;
+        }
+      }
+
+      > .social-links {
+        align-items: center;
+        display: flex;
+        margin-top: 35px;
+
+
+        > .social-text {
+          color: $color-16;
+          font-weight: $font-weight-light;
+          text-transform: uppercase;
+        }
+
+        > .social-list {
+          align-items: center;
+          display: flex;
+          margin-left: 15px;
+
+          > .social-item {
+            align-items: center;
+            border: solid 1px $color-4;
+            border-radius: 100%;
+            display: inline-flex;
+            height: 32px;
+            justify-content: center;
+            width: 32px;
+
+            & + .social-item {
+              margin-left: 10px;
+            }
+
+            > a {
+              align-items: center;
+              border-radius: 50%;
+              display: inline-flex;
+              height: 100%;
+              justify-content: center;
+              width: 100%;
+            }
+
+            &:first-child {
+              img {
+                width: 16px;
+              }
+            }
+
+            &:last-child {
+              img {
+                width: 10px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -74,9 +157,17 @@ footer {
     display: flex;
     height: 40px;
     justify-content: center;
+    padding: 5px 0;
 
-    img {
-      width: 100px;
+    > .gfw-logo {
+      height: 100%;
+    }
+
+    > .gfw-text {
+      color: $color-4;
+      font-size: $font-size-x-small;
+      font-weight: $font-weight-light;
+      margin-left: 10px;
     }
   }
 }
