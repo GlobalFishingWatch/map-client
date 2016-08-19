@@ -9,6 +9,7 @@ class Orbcomm extends Component {
       <CoverPrimary
         title="Orbcomm Data Sublicensee License Agreement Page"
         subtitle="Orbcomm Data Sublicensee License Agreement"
+        backgroundImageIndex={5}
       />
       <section>
         <ol>

@@ -18,17 +18,10 @@ class Home extends Component {
     return (<div>
       {this.props.menuVisible && <div className={backMobile['menu-back']}></div>}
       <CoverPage />
-      {/*<section id="case_study" className={home.infostudy}>
-        <CaseStudySlider />
-      </section>*/}
       <InfoWeb />
       <section className={home.infomap}>
         <InfoMap />
       </section>
-      {/*<section className={home['success-story']}>
-        <h2>Success Stories</h2>
-        <SuccessStoryGallery />
-      </section>*/}
       <Footer />
     </div>);
   }

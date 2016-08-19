@@ -11,7 +11,8 @@ class TheProject extends Component {
         <CoverPrimary
           title="About the Project "
           subtitle="Global Fishing Watch enables anyone with an Internet connection
-           to see fishing activity anywhere in the ocean in near real-time, for free. "
+           to see fishing activity anywhere in the ocean in near real-time, for free."
+          backgroundImageIndex={5}
         />
         <section>
           <p>

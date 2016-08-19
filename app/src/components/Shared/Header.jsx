@@ -22,7 +22,6 @@ class Header extends Component {
         <li className={styles.dropdown}>
           <a>{this.props.loggedUser.displayName}</a>
           <ul className={styles['dropdown-content']}>
-            <li><a>Profile</a></li>
             <li>
               <a onClick={this.logout}>
                 Logout

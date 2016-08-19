@@ -9,7 +9,8 @@ class TermsOfUse extends Component {
     return (<div>
       <CoverPrimary
         title="Terms Of Use"
-        subtitle="Review definitions of terms you will find across our site and as you explore the Map. "
+        subtitle=""
+        backgroundImageIndex={1}
       />
       <section>
         <p>Last Modified: August 3, 2016</p>

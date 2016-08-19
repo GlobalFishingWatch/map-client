@@ -23,6 +23,7 @@ class FAQ extends Component {
       <CoverPrimary
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."
+        backgroundImageIndex={4}
       />
       <div className={AppStyles.wrap}>
         {accordionContent}
