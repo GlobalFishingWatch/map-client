@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import listposts from '../../styles/components/c-list-posts.scss';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
 import { Link } from 'react-router';
 import CoverSecondary from './Shared/CoverSecondary';
 
@@ -24,7 +25,7 @@ class BlogDetail extends Component {
         />
       </article>);
     } else {
-      article = (<div>Loading....</div>);
+      article = (<Loader />);
     }
     let coverTitle = (<Link to={'/blog'}>Blog</Link>);
 

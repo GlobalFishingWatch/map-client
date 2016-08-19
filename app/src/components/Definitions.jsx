@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
 
@@ -10,7 +11,7 @@ class Definitions extends Component {
     this.props.getDefinitionEntries();
   }
   render() {
-    let accordionContent = (<div>Loading....</div>);
+    let accordionContent = (<Loader />);
 
     if (this.props.definitionEntries && this.props.definitionEntries.length > 0) {
       accordionContent = (<ContentAccordion

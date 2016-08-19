@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
 
 class ArticlesPublications extends Component {
 
@@ -48,7 +49,7 @@ class ArticlesPublications extends Component {
     }
 
     if (!pageContent.length) {
-      pageContent = (<div>Loading....</div>);
+      pageContent = (<Loader />);
     }
 
     return (<div>
