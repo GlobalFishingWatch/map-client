@@ -6,15 +6,14 @@ class NoLogin extends Component {
 
   render() {
     return (
-      <div className={styles['c-share']}>
+      <div className={styles['c-no-login']}>
         <h2 className={styles.title}>Login required</h2>
-        <p className={styles.intro}>
+        <p className={styles.content}>
           You must log in to view the Map. If you are a registered user,&nbsp;
-          <a className={styles.link_underline} onClick={this.props.login}>log in here</a>
+          <a onClick={this.props.login}>log in here</a>
         </p>
-        <p>
-          If you are not a registered user, learn more about Global Fishing Watch&nbsp;
-          <Link className={styles.link_underline} to="/">here</Link>
+        <p className={styles.content}>
+          If you are not a registered user, <Link to="/">sign-up here</Link> to view the Map.
         </p>
       </div>
     );
