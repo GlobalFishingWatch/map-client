@@ -1,0 +1,60 @@
+@import '../base';
+
+.c-research-section {
+  padding-top: 85px;
+
+  h2 {
+    color: $color-9;
+    font-size: $font-size-xx-big;
+    font-weight: $font-weight-normal;
+    line-height: 1.05;
+    margin-bottom: 60px;
+  }
+
+  .image-slider {
+    margin: 0 auto;
+    max-width: 140px;
+  }
+
+  .slider-logos {
+    padding-left: 135px;
+    padding-right: 135px;
+  }
+
+  :global .slick-track {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  :global .slick-next,
+  :global .slick-prev {
+    width: 0;
+
+    &::before {
+      background: transparent;
+      border-bottom: rgba($color-9, .6) 2px solid;
+      border-left: rgba($color-9, .6) 2px solid;
+      content: '';
+      height: 15px;
+      position: absolute;
+      top: 0;
+      width: 15px;
+     }
+  }
+
+  :global .slick-next {
+
+    &::before {
+      transform: rotate(-135deg);
+    }
+  }
+
+  :global .slick-prev {
+
+    &::before {
+      transform: rotate(45deg);
+    }
+  }
+}
