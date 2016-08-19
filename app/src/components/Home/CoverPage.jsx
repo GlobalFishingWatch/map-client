@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
+import baseStyle from '../../../styles/application.scss';
 import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
 import MenuMobile from '../Shared/MenuMobile';
@@ -44,6 +45,7 @@ class CoverPage extends Component {
   render() {
     const settings = {
       dots: true,
+      arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
       draggable: false,
@@ -66,7 +68,7 @@ class CoverPage extends Component {
         <div className={CoverPageStyle['layer-cover']}>
           <MenuMobile />
           <Header />
-          <div>
+          <div className={baseStyle.wrap}>
             <Slider {...settings}>
               <div>
                 <h1>
