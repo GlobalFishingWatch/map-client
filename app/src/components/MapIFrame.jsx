@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from './Shared/Modal';
 import NoLogin from '../containers/Map/NoLogin';
+import FooterMini from './Shared/FooterMini';
 
 class MapIFrame extends Component {
   render() {
@@ -31,7 +32,7 @@ class MapIFrame extends Component {
       <div
         style={{
           width: '100%',
-          height: '100%'
+          height: 'calc(100% - 38px)'
         }}
       >
         <Modal
@@ -50,6 +51,7 @@ class MapIFrame extends Component {
           }}
           src={url}
         />
+        <FooterMini />
       </div>
     );
   }

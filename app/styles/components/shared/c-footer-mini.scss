@@ -1,0 +1,36 @@
+@import '../../settings';
+
+.c-footer-mini {
+  align-items: center;
+  background-color: $color-1;
+  display: flex;
+  height: 38px;
+  justify-content: space-between;
+  padding: 0 20px;
+
+  > .partners {
+    list-style: none;
+
+    li {
+      display: inline-block;
+      margin-right: 15px;
+    }
+  }
+
+  > .links {
+    list-style: none;
+
+    li {
+      color: $color-20;
+      display: inline-block;
+      font-size: $font-size-tiny;
+      margin-left: 15px;
+    }
+
+    a {
+      color: $color-20;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}
