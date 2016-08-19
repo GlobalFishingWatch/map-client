@@ -1,23 +1,20 @@
 @import '../../settings';
 
 .c-header {
-  align-items: center;
   background-color: $color-13;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
-  display: flex;
-  height: 95px;
-  justify-content: space-between;
-  padding: 0 30px;
   position: relative;
   z-index: 2;
 
-  @media #{$mq-tablet} {
-    box-shadow: none;
-    padding: 0 70px;
+  .contain-nav {
+    align-items: center;
+    display: flex;
+    height: 95px;
+    justify-content: space-between;
   }
 
-  @media #{$mq-laptop} {
-    padding: 0 110px;
+  @media #{$mq-tablet} {
+    box-shadow: none;
   }
 
   &.-no-background {
@@ -93,6 +90,8 @@
       }
 
       &:last-of-type {
+        padding-right: 0;
+
         &::before {
           background-color: $color-4;
           content: '';

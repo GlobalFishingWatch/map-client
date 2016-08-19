@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
 import styles from '../../../styles/components/shared/c-header.scss';
+import baseStyle from '../../../styles/_base.scss';
 import logoimg from '../../../assets/logos/gfw_logo_hor_second.png';
 import logoimgSecond from '../../../assets/logos/gfw_logo_hor_white.png';
 import menuicon from '../../../assets/icons/menu_icon.svg';
@@ -44,74 +45,78 @@ class Header extends Component {
           classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname !== '/map' })
         }
       >
-        <img
-          onClick={() => this.props.setVisibleMenu(true)}
-          className={styles['icon-menu-mobile']}
-          src={menuicon}
-          alt="Menu toggle icon"
-        />
-        <Link to="/">
-          <img
-            className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
-            src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
-          />
-          <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
-        </Link>
-        <span className={styles['share-header']}>Share</span>
-        <ul className={styles.menu}>
-          <li>
-            <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={
-                (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
-                  ? styles['-active'] : null
-              }
-            >
-              News
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/articles-publications">Articles and Publications</Link></li>
+        <div className={baseStyle.wrap}>
+          <div className={styles['contain-nav']}>
+            <img
+              onClick={() => this.props.setVisibleMenu(true)}
+              className={styles['icon-menu-mobile']}
+              src={menuicon}
+              alt="Menu toggle icon"
+            />
+            <Link to="/">
+              <img
+                className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
+                src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
+              />
+              <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
+            </Link>
+            <span className={styles['share-header']}>Share</span>
+            <ul className={styles.menu}>
+              <li>
+                <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
+              </li>
+              <li className={styles.dropdown}>
+                <a
+                  className={
+                  (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
+                    ? styles['-active'] : null
+                }
+                >
+                News
+                </a>
+                <ul className={styles['dropdown-content']}>
+                  <li><Link to="/blog">Blog</Link></li>
+                  <li><Link to="/articles-publications">Articles and Publications</Link></li>
+                </ul>
+              </li>
+              <li className={styles.dropdown}>
+                <a
+                  className={
+                    (
+                      location.pathname === '/faq'
+                      || location.pathname === '/tutorials'
+                      || location.pathname === '/definitions'
+                    ) ? styles['-active'] : null
+                  }
+                >
+                How to
+                </a>
+                <ul className={styles['dropdown-content']}>
+                  <li><Link to="/faq">FAQ</Link></li>
+                  <li><Link to="/tutorials">Tutorials</Link></li>
+                  <li><Link to="/definitions">Definitions</Link></li>
+                </ul>
+              </li>
+              <li className={styles.dropdown}>
+                <a
+                  className={(
+                    location.pathname === '/the-project'
+                    || location.pathname === '/partners'
+                    || location.pathname === '/contact-us'
+                  ) ? styles['-active'] : null}
+                >
+                  About
+                </a>
+                <ul className={styles['dropdown-content']}>
+                  <li><Link to="/the-project">The project</Link></li>
+                  <li><Link to="/partners">Partners</Link></li>
+                  <li><Link to="/contact-us">Contact us</Link></li>
+                </ul>
+              </li>
+              {userLinks}
             </ul>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={
-                (
-                  location.pathname === '/faq'
-                  || location.pathname === '/tutorials'
-                  || location.pathname === '/definitions'
-                ) ? styles['-active'] : null
-              }
-            >
-              How to
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/tutorials">Tutorials</Link></li>
-              <li><Link to="/definitions">Definitions</Link></li>
-            </ul>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={(
-                location.pathname === '/the-project'
-                || location.pathname === '/partners'
-                || location.pathname === '/contact-us'
-              ) ? styles['-active'] : null}
-            >
-              About
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/the-project">The project</Link></li>
-              <li><Link to="/partners">Partners</Link></li>
-              <li><Link to="/contact-us">Contact us</Link></li>
-            </ul>
-          </li>
-          {userLinks}
-        </ul>
+          </div>
+        </div>
       </nav>
     );
   }
