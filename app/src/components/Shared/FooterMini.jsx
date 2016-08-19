@@ -37,7 +37,7 @@ class FooterMini extends Component {
     let toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
-      <div className={styles['c-footer-mini-container']}>
+      <div>
         {expandedFooter}
         <footer className={styles['c-footer-mini']}>
           <div className={styles.partners}>
