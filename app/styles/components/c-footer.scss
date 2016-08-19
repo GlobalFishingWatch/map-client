@@ -95,7 +95,10 @@
       }
 
       > .social-links {
+        align-items: center;
+        display: flex;
         margin-top: 35px;
+
 
         > .social-text {
           color: $color-16;
@@ -105,8 +108,41 @@
 
         // TO-DO
         > .social-list {
+          display: inline-block;
           list-style: none;
-          > .social-item {};
+
+          > .social-item {
+            border: solid 1px $color-4;
+            border-radius: 100%;
+            display: inline-block;
+            height: 32px;
+            margin-left: 15px;
+            position: relative;
+            width: 32px;
+
+            a {
+              left: 50%;
+              position: absolute;
+              top: 50%;
+              transform: translate(-50%, -50%);
+
+              img {
+                width: 16px;
+              }
+            }
+
+            &:last-child {
+              margin-left: 10px;
+
+              a {
+                height: 21px;
+
+                img {
+                  width: 10px;
+                }
+              }
+            }
+          }
         }
       }
     }

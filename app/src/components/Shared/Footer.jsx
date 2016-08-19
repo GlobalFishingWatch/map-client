@@ -5,6 +5,8 @@ import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import logoldf from '../../../assets/logos/ldf_logo.png';
 import logoGFW from '../../../assets/logos/gfw_logo.png';
+import iconFacebook from '../../../assets/icons/facebook.svg';
+import iconTwitter from '../../../assets/icons/twitter.svg';
 
 import AppStyles from '../../../styles/application.scss';
 import footerStyle from '../../../styles/components/c-footer.scss';
@@ -89,8 +91,8 @@ export default function () {
             <div className={footerStyle['social-links']}>
               <span className={footerStyle['social-text']}>Follow us</span>
               <ul className={footerStyle['social-list']}>
-                <li className={footerStyle['social-item']}><a href=""></a></li>
-                <li className={footerStyle['social-item']}><a href=""></a></li>
+                <li className={footerStyle['social-item']}><a href=""><img src={iconTwitter} alt="twitter"></img></a></li>
+                <li className={footerStyle['social-item']}><a href=""><img src={iconFacebook} alt="facebook"></img></a></li>
               </ul>
             </div>
           </div>
