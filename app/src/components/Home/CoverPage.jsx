@@ -57,8 +57,8 @@ class CoverPage extends Component {
     const sliderBackgrounds = [
       sliderBackground1,
       sliderBackgroundLDF,
-      sliderBackground2,
       sliderBackground3,
+      sliderBackground2,
       sliderBackground4
     ];
     const sliderBackground = sliderBackgrounds[this.state.currentSlider];
