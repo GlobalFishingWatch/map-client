@@ -91,8 +91,16 @@ export default function () {
             <div className={footerStyle['social-links']}>
               <span className={footerStyle['social-text']}>Follow us</span>
               <ul className={footerStyle['social-list']}>
-                <li className={footerStyle['social-item']}><a href=""><img src={iconTwitter} alt="twitter"></img></a></li>
-                <li className={footerStyle['social-item']}><a href=""><img src={iconFacebook} alt="facebook"></img></a></li>
+                <li className={footerStyle['social-item']}>
+                  <a href="https://twitter.com/globalfishwatch" target="_blank">
+                    <img src={iconTwitter} alt="Global Fishing Watch Twitter" />
+                  </a>
+                </li>
+                <li className={footerStyle['social-item']}>
+                  <a href="https://www.facebook.com/GlobalFishingWatch/" target="_blank">
+                    <img src={iconFacebook} alt="Global Fishing Watch Facebook" />
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

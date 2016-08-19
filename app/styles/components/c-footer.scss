@@ -106,40 +106,42 @@
           text-transform: uppercase;
         }
 
-        // TO-DO
         > .social-list {
-          display: inline-block;
-          list-style: none;
+          align-items: center;
+          display: flex;
+          margin-left: 15px;
 
           > .social-item {
+            align-items: center;
             border: solid 1px $color-4;
             border-radius: 100%;
-            display: inline-block;
+            display: inline-flex;
             height: 32px;
-            margin-left: 15px;
-            position: relative;
+            justify-content: center;
             width: 32px;
 
-            a {
-              left: 50%;
-              position: absolute;
-              top: 50%;
-              transform: translate(-50%, -50%);
+            & + .social-item {
+              margin-left: 10px;
+            }
 
+            > a {
+              align-items: center;
+              border-radius: 50%;
+              display: inline-flex;
+              height: 100%;
+              justify-content: center;
+              width: 100%;
+            }
+
+            &:first-child {
               img {
                 width: 16px;
               }
             }
 
             &:last-child {
-              margin-left: 10px;
-
-              a {
-                height: 21px;
-
-                img {
-                  width: 10px;
-                }
+              img {
+                width: 10px;
               }
             }
           }
