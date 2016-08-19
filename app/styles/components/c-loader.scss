@@ -19,14 +19,14 @@
       border-radius: 100%;
       content: '';
       display: block;
-      height: 20%;
+      height: 10px;
       margin: 0 auto;
-      width: 20%;
+      width: 10px;
     }
   }
 
   .sk-circle2 {
-    transform: rotate(30deg);
+    transform: rotate(45deg);
 
     &::before {
       animation-delay: -1.1s;
@@ -34,7 +34,7 @@
   }
 
   .sk-circle3 {
-    transform: rotate(60deg);
+    transform: rotate(90deg);
 
     &::before {
       animation-delay: -1s;
@@ -42,7 +42,7 @@
   }
 
   .sk-circle4 {
-    transform: rotate(90deg);
+    transform: rotate(135deg);
 
     &::before {
       animation-delay: -.9s;
@@ -50,7 +50,7 @@
   }
 
   .sk-circle5 {
-    transform: rotate(120deg);
+    transform: rotate(180deg);
 
     &::before {
       animation-delay: -.8s;
@@ -58,7 +58,7 @@
   }
 
   .sk-circle6 {
-    transform: rotate(150deg);
+    transform: rotate(225deg);
 
     &::before {
       animation-delay: -.7s;
@@ -66,7 +66,7 @@
   }
 
   .sk-circle7 {
-    transform: rotate(180deg);
+    transform: rotate(270deg);
 
     &::before {
       animation-delay: -.6s;
@@ -74,42 +74,10 @@
   }
 
   .sk-circle8 {
-    transform: rotate(210deg);
+    transform: rotate(315deg);
 
     &::before {
       animation-delay: -.5s;
-    }
-  }
-
-  .sk-circle9 {
-    transform: rotate(240deg);
-
-    &::before {
-      animation-delay: -.4s;
-    }
-  }
-
-  .sk-circle10 {
-    transform: rotate(270deg);
-
-    &::before {
-      animation-delay: -.3s;
-    }
-  }
-
-  .sk-circle11 {
-    transform: rotate(300deg);
-
-    &::before {
-      animation-delay: -.2s;
-    }
-  }
-
-  .sk-circle12 {
-    transform: rotate(330deg);
-
-    &::before {
-      animation-delay: -.1s;
     }
   }
 }

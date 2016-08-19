@@ -13,10 +13,6 @@ class Loader extends Component {
       <div className={[loaderStyle['sk-circle6'], loaderStyle['sk-child']].join(' ')}></div>
       <div className={[loaderStyle['sk-circle7'], loaderStyle['sk-child']].join(' ')}></div>
       <div className={[loaderStyle['sk-circle8'], loaderStyle['sk-child']].join(' ')}></div>
-      <div className={[loaderStyle['sk-circle9'], loaderStyle['sk-child']].join(' ')}></div>
-      <div className={[loaderStyle['sk-circle10'], loaderStyle['sk-child']].join(' ')}></div>
-      <div className={[loaderStyle['sk-circle11'], loaderStyle['sk-child']].join(' ')}></div>
-      <div className={[loaderStyle['sk-circle12'], loaderStyle['sk-child']].join(' ')}></div>
     </div>);
   }
 }
