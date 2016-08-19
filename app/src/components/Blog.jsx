@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
 import { Link } from 'react-router';
 import listPosts from '../../styles/components/c-list-posts.scss';
 import CoverPrimary from './Shared/CoverPrimary';
@@ -74,7 +75,7 @@ class Blog extends Component {
         </article>
       ));
     } else {
-      articles = (<div>Loading....</div>);
+      articles = (<Loader />);
     }
 
     return (<div>

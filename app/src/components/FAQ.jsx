@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
 import CoverPrimary from './Shared/CoverPrimary';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
@@ -11,7 +12,7 @@ class FAQ extends Component {
   }
 
   render() {
-    let accordionContent = (<div>Loading....</div>);
+    let accordionContent = (<Loader />);
 
     if (this.props.faqEntries && this.props.faqEntries.length > 0) {
       accordionContent = (<ContentAccordion
