@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
+import logooceana from '../../../assets/logos/oceana_logo.png';
+import logosky from '../../../assets/logos/skytruth_logo.jpg';
+import logogoogle from '../../../assets/logos/google_logo.png';
 
 class FooterMini extends Component {
 
@@ -29,11 +32,11 @@ class FooterMini extends Component {
 
     return (
       <footer className={styles['c-footer-mini']}>
-        <ul className={styles.partners}>
-          <li>Partner 1</li>
-          <li>Partner 2</li>
-          <li>Partner 3</li>
-        </ul>
+        <div className={styles.partners}>
+          <img className={styles.partner} src={logooceana} alt="oceana logo" />
+          <img className={styles.partner} src={logosky} alt="skytruth logo" />
+          <img className={styles.partner} src={logogoogle} alt="google logo" />
+        </div>
 
         <ul className={styles.links}>
           <li><a onClick={() => this.toggleFooter()}>Show Footer</a></li>
