@@ -51,27 +51,33 @@ export default function () {
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/articles-publications">Articles and Publications</Link>
             </li>
-          </ul>
-          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/faq">FAQ</Link>
             </li>
+          </ul>
+          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
             </li>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/definitions">Glossary of terms</Link>
             </li>
-          </ul>
-          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/the-project">The project</Link>
             </li>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/partners">Partners</Link>
             </li>
+          </ul>
+          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/contact-us">Contact us</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/terms-of-use">Terms of use</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/privacy-policy">Privacy policy</Link>
             </li>
           </ul>
 
@@ -81,7 +87,7 @@ export default function () {
               href="http://info.globalfishingwatch.org/catch_signup"
               target="_blank"
             >
-              subscribe for news
+              SIGN UP FOR EMAIL UPDATES!
               <img
                 className={footerStyle['email-subscribe']}
                 src={SubscribeSVG} alt="subscribe news"
