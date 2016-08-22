@@ -13,7 +13,7 @@ class MapIFrame extends Component {
     const workspace = this.props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
     const urlParams = {
       headers: this.props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${this.props.token}` })),
-      workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/${workspace}`)
+      workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/v1/workspaces/${workspace}`)
     };
 
     /**
