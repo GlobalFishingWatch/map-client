@@ -23,6 +23,7 @@ export function getLoggedUser() {
         type: GET_USER,
         payload: null
       });
+      return;
     }
 
     fetch(`${MAP_API_ENDPOINT}/v1/me`, {
