@@ -9,7 +9,9 @@ class ContactUsForm extends Component {
       submitted: false,
       showFormResponse: false,
       classSelect: '',
-      disabledOption: false
+      disabledOption: false,
+      name: '',
+      email: ''
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -19,7 +21,9 @@ class ContactUsForm extends Component {
   componentWillReceiveProps(nextProps) {
     const showThankYou = !!(!this.props.contactStatus && nextProps.contactStatus);
     this.setState({
-      showFormResponse: showThankYou
+      showFormResponse: showThankYou,
+      name: nextProps.defaultUserName,
+      email: nextProps.defaultUserEmail
     });
   }
 
@@ -78,6 +82,7 @@ class ContactUsForm extends Component {
           className={formStyle['input-text']}
           required
           onChange={this.handleChange}
+          value={this.state.name}
         />
 
         <label htmlFor="email">Email *</label>
@@ -88,6 +93,7 @@ class ContactUsForm extends Component {
           className={formStyle['input-text']}
           required
           onChange={this.handleChange}
+          value={this.state.email}
         />
 
         <label htmlFor="company">Company</label>
@@ -149,7 +155,9 @@ class ContactUsForm extends Component {
 }
 ContactUsForm.propTypes = {
   contactStatus: React.PropTypes.number,
-  onFormSubmit: React.PropTypes.func
+  onFormSubmit: React.PropTypes.func,
+  defaultUserName: React.PropTypes.string,
+  defaultUserEmail: React.PropTypes.string
 };
 
 export default ContactUsForm;
