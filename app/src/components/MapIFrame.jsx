@@ -10,12 +10,12 @@ class MapIFrame extends Component {
      * the key being the name of the param
      */
     const urlParams = {
-      headers: this.props.token && encodeURIComponent(JSON.stringify({ Authentication: `bearer ${this.props.token}` })),
+      headers: this.props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${this.props.token}` })),
       // This is the real workspace ID
       workspace_id: this.props.workspaceId,
       // This is a temporal workspace parameter for SkyTruth's map
       /* eslint max-len:0 */
-      workspace: 'http%3A%2F%2Fstorage.googleapis.com%2Fworld-fishing-827%2Fpelagos%2Fdata%2Fsf-sso-test%2Fsandbox%2Fpelagos-client%2Fpelagos-api-test-worldfishing.json'
+      workspace: 'http%3A%2F%2Fstorage.googleapis.com%2Fworld-fishing-827%2Fpelagos%2Fdata%2Fworkspaces%2Fvizzuality-gfw-integration-default_v1.json'
     };
 
     /**
