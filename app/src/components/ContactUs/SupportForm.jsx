@@ -75,17 +75,17 @@ class SupportForm extends Component {
             onChange={this.handleChange}
           />
 
-          <label htmlFor="email">Email</label>
+          <label htmlFor="support_email">Email</label>
           <input
             className={supportFormStyle['input-text']}
-            type="email"
+            type="Email"
             id="support_email"
             placeholder="email"
             required
             onChange={this.handleChange}
           />
 
-          <label htmlFor="type_support">Type</label>
+          <label htmlFor="support_type">Type</label>
           <div className={supportFormStyle['select-container']}>
             <select
               id="support_type"
@@ -103,21 +103,21 @@ class SupportForm extends Component {
             </select>
           </div>
 
-          <label htmlFor="subject">Subject</label>
+          <label htmlFor="support_subject">Subject</label>
           <input
             className={supportFormStyle['input-text']}
             type="text"
             id="support_subject"
-            placeholder="subject"
+            placeholder="Subject"
             required
             onChange={this.handleChange}
           />
         </div>
         <div className={supportFormStyle['container-textarea']}>
-          <label htmlFor="description">description</label>
+          <label htmlFor="support_description">description</label>
           <textarea
             id="support_description"
-            placeholder="description"
+            placeholder="Description"
             className={supportFormStyle['textarea-form']}
             required
             onChange={this.handleChange}
