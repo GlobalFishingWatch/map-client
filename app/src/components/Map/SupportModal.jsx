@@ -25,6 +25,9 @@ class SupportModal extends Component {
   render() {
     return (
       <div className={supportModalStyle['c-support-modal']}>
+        <div className={supportModalStyle['close-modal-button']}>
+          <div className={supportModalStyle.cross}></div>
+        </div>
         <form>
           <h1>Support</h1>
           <div className={supportModalStyle['container-inputs']}>
