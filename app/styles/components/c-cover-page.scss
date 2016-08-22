@@ -14,7 +14,9 @@
   }
 
   .contain-text-cover {
-    max-width: 870px;
+    @media #{$mq-tablet} {
+      max-width: 870px;
+    }
   }
 
   h1 {
