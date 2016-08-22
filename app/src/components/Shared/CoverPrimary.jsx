@@ -54,12 +54,14 @@ class CoverPrimary extends Component {
           <MenuMobile />
           <Header />
           <div className={baseStyle.wrap}>
-            <h1 className={CoverPage['cover-main-title']}>
-              {this.props.title}
-            </h1>
-            <p className={CoverPage['cover-main-subtitle']}>
-              {this.props.subtitle}
-            </p>
+            <div className={CoverPage['contain-text-cover']}>
+              <h1 className={CoverPage['cover-main-title']}>
+                {this.props.title}
+              </h1>
+              <p className={CoverPage['cover-main-subtitle']}>
+                {this.props.subtitle}
+              </p>
+            </div>
           </div>
         </div>
       </section>

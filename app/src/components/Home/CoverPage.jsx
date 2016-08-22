@@ -71,52 +71,62 @@ class CoverPage extends Component {
           <div className={baseStyle.wrap}>
             <Slider {...settings}>
               <div>
-                <h1>
-                  Introducing Global Fishing Watch
-                </h1>
-                <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
-                  activity anywhere in the ocean in near real-time — for free.
-                </p>
+                <div className={CoverPageStyle['contain-text-cover']}>
+                  <h1>
+                    Introducing Global Fishing Watch
+                  </h1>
+                  <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
+                    activity anywhere in the ocean in near real-time — for free.
+                  </p>
+                </div>
               </div>
               <div className={CoverPageStyle['leo-slider']}>
-                <blockquote>
-                  “Welcome to Global Fishing Watch, the world’s first free,
-                  interactive tool that enables anyone in the world to track
-                  commercial fishing activity, worldwide. Global Fishing Watch
-                  will shed light on what is happening on our oceans so that
-                  together, we can ensure the responsible and sustainable
-                  management of our fisheries.”
-                </blockquote>
-                <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-                <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
+                <div className={CoverPageStyle['contain-quote-text']}>
+                  <blockquote>
+                    “Welcome to Global Fishing Watch, the world’s first free,
+                    interactive tool that enables anyone in the world to track
+                    commercial fishing activity, worldwide. Global Fishing Watch
+                    will shed light on what is happening on our oceans so that
+                    together, we can ensure the responsible and sustainable
+                    management of our fisheries.”
+                  </blockquote>
+                  <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
+                  <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
+                </div>
               </div>
               <div>
-                <h1>
-                  Protect ocean ecosystems
-                </h1>
-                <p>
-                  Monitor fishing activity in marine protected areas to ensure
-                  proper management and oversight of these special places.
-                </p>
+                <div className={CoverPageStyle['contain-text-cover']}>
+                  <h1>
+                    Protect ocean ecosystems
+                  </h1>
+                  <p>
+                    Monitor fishing activity in marine protected areas to ensure
+                    proper management and oversight of these special places.
+                  </p>
+                </div>
               </div>
               <div>
-                <h1>
-                  See where fishing is happening
-                </h1>
-                <p>
-                  Observe fishing patterns and activity based on vessel position, course and
-                  speed as revealed by Automatic Identification System broadcasts.
-                </p>
+                <div className={CoverPageStyle['contain-text-cover']}>
+                  <h1>
+                    See where fishing is happening
+                  </h1>
+                  <p>
+                    Observe fishing patterns and activity based on vessel position, course and
+                    speed as revealed by Automatic Identification System broadcasts.
+                  </p>
+                </div>
               </div>
               <div>
-                <h1>
-                  Improve fisheries management worldwide
-                </h1>
-                <p>
-                  Provide tools for governments, fishery management organizations,
-                  scientists, private industry, and NGOs to implement rules and
-                  regulations that will ensure a sustainable and abundant ocean.
-                </p>
+                <div className={CoverPageStyle['contain-text-cover']}>
+                  <h1>
+                    Improve fisheries management worldwide
+                  </h1>
+                  <p>
+                    Provide tools for governments, fishery management organizations,
+                    scientists, private industry, and NGOs to implement rules and
+                    regulations that will ensure a sustainable and abundant ocean.
+                  </p>
+                </div>
               </div>
             </Slider>
             <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>

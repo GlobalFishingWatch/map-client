@@ -16,12 +16,14 @@ class CoverSecondary extends CoverPrimary {
         <MenuMobile />
         <Header />
         <div className={baseStyle.wrap}>
-          <h1 className={CoverPage['cover-sub-title']}>
-            {this.props.title}
-          </h1>
-          <p className={CoverPage['cover-sub-subtitle']}>
-            {this.props.subtitle}
-          </p>
+          <div className={CoverPage['contain-text-cover']}>
+            <h1 className={CoverPage['cover-sub-title']}>
+              {this.props.title}
+            </h1>
+            <p className={CoverPage['cover-sub-subtitle']}>
+              {this.props.subtitle}
+            </p>
+          </div>
         </div>
       </div>
     </section>);
