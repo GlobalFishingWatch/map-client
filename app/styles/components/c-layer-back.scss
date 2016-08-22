@@ -1,0 +1,19 @@
+@import '../settings';
+.c-layer-back {//use menu mobile layer
+  bottom: 0;
+  left: 0;
+  opacity: .9;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+
+  &.-menu {
+    // display: none;/*change*/
+    background-color: rgba($color-12, .8);
+  }
+
+  &.-support-modal {
+    background-color: rgba($color-1, .9);
+  }
+}
