@@ -50,7 +50,7 @@ class ArticlesPublications extends Component {
     const articlesPublications = this.props.articlesPublications;
     let pageContent = [];
 
-    if (articlesPublications && articlesPublications.articles) {
+    if (articlesPublications && articlesPublications.publications) {
       const publications = articlesPublications.publications.map(this.renderElement);
 
       if (!!publications && publications.length) {
@@ -70,12 +70,12 @@ class ArticlesPublications extends Component {
       }
     }
 
-    if (articlesPublications && articlesPublications.publications) {
+    if (articlesPublications && articlesPublications.articles) {
       const articles = articlesPublications.articles.map(this.renderElement);
 
       if (!!articles && articles.length) {
         pageContent.push(
-          <section key="news">
+          <section key="articles">
             <h2
               className={classnames(AppStyles['section-title'],
               PubsArticlesLayoutStyles['section-title'])}
