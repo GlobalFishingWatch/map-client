@@ -34,10 +34,27 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
++
 
 @font-face {
   font-family: 'roboto';
-  src: url('roboto/Roboto-Regular.ttf') format('truetype'), url('roboto/Roboto-Bold.ttf') format('truetype'), url('roboto/Roboto-Light.ttf') format('truetype');
+  src: url('roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'roboto';
+  src: url('roboto/Roboto-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
 }
 
 body {
@@ -401,6 +418,42 @@ section.ty {
     max-width: 850px;
     width: 80%;
   }
+}
+
+/* New password */
+
+.reg h2 {
+  margin: 20px 0 30px;
+
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.7;
+  text-align: left;
+}
+
+@media screen and (min-width: 768px) {
+  .reg h2 {
+    text-align: center;
+  }
+}
+
+/* Password hint */
+.password-hint {
+  margin-bottom: 20px;
+
+  font-size: 14px;
+  text-align: left;
+  line-height: 2;
+}
+
+@media screen and (min-width: 768px) {
+  .password-hint {
+    text-align: center;
+  }
+}
+
+.password-hint span {
+  display: block;
 }
 
 /*FORM STYLES*/
