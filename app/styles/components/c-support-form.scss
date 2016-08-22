@@ -1,0 +1,136 @@
+@import '../settings';
+
+.c-support-form {
+  h1 {
+    color: $color-4;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-bold;
+    line-height: 2.21;
+    margin-bottom: 20px;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  form {
+
+    div {
+      float: left;
+
+      label {
+        color: $color-4;
+        display: block;
+        font-size: $font-size-small;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+
+      &.container-submit {
+        display: block;
+        width: 100%;
+      }
+
+      &.container-inputs {
+        padding-right: 20px;
+        width: 50%;
+
+        .input-text {
+          background-color: transparent;
+          border: solid 1px $color-14;
+          color: $color-4;
+          display: block;
+          font-size: $font-size-small;
+          font-weight: $font-weight-normal;
+          margin-bottom: 10px;
+          outline: 0;
+          padding: 10px;
+          width: 100%;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        .select-container {
+          margin-bottom: 10px;
+          position: relative;
+          width: 100%;
+
+          &::after {
+            background: transparent;
+            border-bottom: $color-4 2px solid;
+            border-left: $color-4 2px solid;
+            content: '';
+            height: 10px;
+            position: absolute;
+            right: 15px;
+            top: 12px;
+            transform: rotate(-45deg);
+            width: 10px;
+          }
+
+          select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: solid 1px $color-14;
+            border-radius: 0;
+            color: rgba($color-4, .3);
+            cursor: pointer;
+            display: block;
+            font-size: $font-size-small;
+            outline: 0;
+            padding: 10px;
+            width: 100%;
+
+            option {
+              color: $color-12;
+            }
+
+            &::-ms-expand {
+              display: none;
+            }
+          }
+
+          .select-selected {
+            color: $color-4;
+          }
+        }
+    }
+
+      &.container-textarea {
+        padding-left: 20px;
+        width: 50%;
+
+        .textarea-form {
+          background-color: transparent;
+          border: solid 1px $color-14;
+          color: $color-4;
+          display: block;
+          min-height: 240px;
+          outline: 0;
+          padding: 10px;
+          resize: none;
+          width: 100%;
+        }
+      }
+    }
+
+    ::-webkit-input-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+
+    ::-moz-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+
+    :-ms-input-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+  }
+}
