@@ -3,6 +3,13 @@
 .c-no-login {
   text-align: center;
 
+  > .back {
+    font-size: $font-size-x-small;
+    left: 12px;
+    position: absolute;
+    top: 12px;
+  }
+
   > .title {
     font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
