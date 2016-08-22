@@ -13,6 +13,12 @@
     width: 100%;
   }
 
+  .contain-text-cover {
+    @media #{$mq-tablet} {
+      max-width: 870px;
+    }
+  }
+
   h1 {
     color: $color-4;
     font-size: $font-size-huge;
@@ -21,10 +27,7 @@
     line-height: .85;
     margin-bottom: 0;
     margin-top: 0;
-    max-width: 1280px;
     padding-top: 170px;
-    position: relative;
-    top: 0;
 
     :global .slick-active {
       button {
@@ -51,34 +54,36 @@
   .leo-slider {
     padding-top: 170px;
 
-    blockquote {
-      color: $color-4;
-      font-family: $font-family-1;
-      font-size: $font-size-x-normal;
-      font-style: italic;
-      font-weight: $font-weight-normal;
-      letter-spacing: -.1px;
-      max-width: 460px;
-    }
-
-    .author-quote {
-      color: $color-4;
-      font-family: $font-family-1;
-      font-size: $font-size-normal;
-      font-weight: $font-weight-normal;
-      letter-spacing: -.1px;
-      margin-bottom: 0;
-      margin-top: 10px;
+    .contain-quote-text {
       max-width: 460px;
 
-      &::after {
-        background-color: $color-6;
-        content: '';
-        display: block;
-        height: 5px;
-        margin-bottom: 20px;
-        margin-top: 20px;
-        width: 170px;
+      blockquote {
+        color: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-x-normal;
+        font-style: italic;
+        font-weight: $font-weight-normal;
+        letter-spacing: -.1px;
+      }
+
+      .author-quote {
+        color: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-normal;
+        font-weight: $font-weight-normal;
+        letter-spacing: -.1px;
+        margin-bottom: 0;
+        margin-top: 10px;
+
+        &::after {
+          background-color: $color-6;
+          content: '';
+          display: block;
+          height: 5px;
+          margin-bottom: 20px;
+          margin-top: 20px;
+          width: 170px;
+        }
       }
     }
   }
@@ -113,14 +118,12 @@
     letter-spacing: -1.5px;
     line-height: 1.12;
     margin-bottom: 60px;
-    max-width: 1000px;
   }
 
   p {
     color: $color-4;
     letter-spacing: -.1px;
     margin-bottom: 170px;
-    max-width: 668px;
   }
 
   .footer-header {
@@ -190,7 +193,7 @@
         margin-left: -13px;
         margin-top: 10px;
         position: absolute;
-        top: 0.5px;
+        top: .5px;
         width: 11px;
       }
 
