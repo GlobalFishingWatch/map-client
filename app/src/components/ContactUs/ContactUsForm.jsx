@@ -116,11 +116,11 @@ class ContactUsForm extends Component {
             required
           >
             <option disabled={this.state.disabledOption}>Select a question type</option>
-            <option value="Map">Map</option>
-            <option value="Collaboration">Collaboration</option>
-            <option value="Press">Press</option>
-            <option value="Feedback">Feedback</option>
-            <option value="General">General</option>
+            <option value="Map">I have a question about the map</option>
+            <option value="Collaboration">I have a question about collaboration opportunities</option>
+            <option value="Press">I would like to speak to someone about a media or press opportunity</option>
+            <option value="Feedback">I want to provide feedback.</option>
+            <option value="General">I have a general question.</option>
           </select>
         </div>
 
@@ -128,7 +128,7 @@ class ContactUsForm extends Component {
         <input
           type="text"
           id="contact_subject"
-          placeholder="Tell us the subject of your contact"
+          placeholder="Please let us know how we can help"
           className={formStyle['input-text']}
           required
           onChange={this.handleChange}
