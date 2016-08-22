@@ -1,0 +1,44 @@
+@import '../settings';
+
+.c-publication-article {
+  flex-basis: 100%;
+  margin-bottom: 30px;
+
+
+  @media #{$mq-tablet} {
+    flex-basis: calc(50% - 10px);
+    margin-bottom: 50px;
+
+    &:nth-child(even) {
+      padding-left: 20px;
+    }
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  > .title a {
+    color: $color-9;
+    font-family: $font-family-1;
+    font-size: $font-size-x-medium;
+    font-weight: $font-weight-light;
+    line-height: 1.4;
+  }
+
+  > .description p {
+    font-family: $font-family-2;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    margin: 0;
+  }
+
+  > .link-container {
+    margin-top: 20px;
+
+    a {
+      color: $color-8;
+    }
+  }
+}
