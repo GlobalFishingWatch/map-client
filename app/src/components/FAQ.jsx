@@ -12,12 +12,19 @@ class FAQ extends Component {
   }
 
   render() {
-    let accordionContent = (<Loader />);
+    let faqSections = (<Loader />);
 
     if (this.props.faqEntries && this.props.faqEntries.length > 0) {
-      accordionContent = (<ContentAccordion
-        entries={this.props.faqEntries}
-      />);
+      const sections = [];
+      this.props.faqEntries.forEach(faqSection => {
+        sections.push(<div>
+          <h2 className={AppStyles['section-title']}>{faqSection.title}</h2>
+          <ContentAccordion
+            entries={faqSection.questions}
+          />
+        </div>);
+        faqSections = <div>{sections}</div>;
+      });
     }
 
     return (<div>
@@ -27,7 +34,7 @@ class FAQ extends Component {
         backgroundImageIndex={4}
       />
       <div className={AppStyles.wrap}>
-        {accordionContent}
+        {faqSections}
       </div>
       <Footer />
     </div>);
