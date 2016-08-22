@@ -446,16 +446,6 @@ section.ty {
   line-height: 2;
 }
 
-@media screen and (min-width: 768px) {
-  .password-hint {
-    text-align: center;
-  }
-}
-
-.password-hint span {
-  display: block;
-}
-
 /*FORM STYLES*/
 
 form {
