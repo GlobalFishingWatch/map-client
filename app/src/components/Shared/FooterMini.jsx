@@ -6,24 +6,19 @@ import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
-import SupportModal from '../../components/Map/SupportModal';
+import SupportModal from '../../containers/Map/SupportModal';
 
 class FooterMini extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      footerExpanded: false,
-      showSupport: false
+      footerExpanded: false
     };
   }
 
   toggleFooter() {
     this.setState({ footerExpanded: !this.state.footerExpanded });
-  }
-
-  showSupportModal() {
-    this.setState({ showSupport: !this.state.showSupport });
   }
 
   render() {
@@ -44,13 +39,16 @@ class FooterMini extends Component {
         </div>
       );
     }
-
-    if (this.state.showSupport) {
+    if (this.props.supportModalVisible) {
       layerModal = (
-        <div className={[layerStyle['c-layer-back'], layerStyle['-support-modal']].join(' ')}></div>
+        <div
+          className={[layerStyle['c-layer-back'], layerStyle['-support-modal']].join(' ')}
+          onClick={() => this.showSupportModal()}
+        >
+        </div>
       );
       supportModal = (
-        <SupportModal />
+        <SupportModal close={() => this.showSupportModal()} />
       );
     }
 
@@ -73,12 +71,17 @@ class FooterMini extends Component {
             <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             <li><span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span></li>
             <li><Link to="/terms-of-use">Terms of use</Link></li>
-            <li><a onClick={() => this.showSupportModal()}>Support</a></li>
+            <li><a onClick={() => this.props.setVisibleSupportModal(true)}>Support</a></li>
           </ul>
         </footer>
       </div>
     );
   }
 }
+
+FooterMini.propTypes = {
+  setVisibleSupportModal: React.PropTypes.func,
+  supportModalVisible: React.PropTypes.bool
+};
 
 export default FooterMini;

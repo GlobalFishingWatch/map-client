@@ -1,6 +1,9 @@
 @import '../settings';
 
 .c-support-form {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
   h1 {
     color: $color-4;
     font-size: $font-size-x-normal;
@@ -106,7 +109,7 @@
           border: solid 1px $color-14;
           color: $color-4;
           display: block;
-          min-height: 240px;
+          min-height: 245px;
           outline: 0;
           padding: 10px;
           resize: none;

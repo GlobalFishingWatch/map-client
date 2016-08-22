@@ -25,13 +25,20 @@ class SupportModal extends Component {
   render() {
     return (
       <div className={supportModalStyle['c-support-modal']}>
-        <div className={supportModalStyle['close-modal-button']}>
+        <div
+          className={supportModalStyle['close-modal-button']}
+          onClick={() => this.props.setVisibleSupportModal(false)}
+        >
           <div className={supportModalStyle.cross}></div>
         </div>
         <FormSupport />
       </div>);
   }
 }
+
+SupportModal.propTypes = {
+  setVisibleSupportModal: React.PropTypes.func
+};
 
 
 export default SupportModal;
