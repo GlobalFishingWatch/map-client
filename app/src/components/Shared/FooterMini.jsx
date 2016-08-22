@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
@@ -53,7 +54,7 @@ class FooterMini extends Component {
             <li><a href="#" target="_blank">
               500km <div className={styles['bar-hor']}></div>
             </a></li>
-            <li><a href="#" target="_blank">Terms of Use</a></li>
+            <li><Link to="/terms-of-use">Terms of use</Link></li>
           </ul>
         </footer>
       </div>
