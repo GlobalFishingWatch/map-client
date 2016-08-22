@@ -19,10 +19,11 @@ export function getRecentPost(page) {
       payload: null
     });
 
+    dispatch(updateURL(page));
+
     fetch(`${BLOG_API_ENDPOINT}/api/get_recent_posts/?page=${page}`, {
       method: 'GET'
     }).then((response) => response.json()).then((posts) => {
-      dispatch(updateURL(page));
       dispatch({
         type: GET_RECENT_POSTS,
         payload: posts
