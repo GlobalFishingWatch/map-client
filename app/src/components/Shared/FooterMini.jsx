@@ -50,7 +50,7 @@ class FooterMini extends Component {
           <ul className={styles.links}>
             <li><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
             <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
-            <li><span>Map data ©2016 Google, INEGI</span></li>
+            <li><span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span></li>
             <li><Link to="/terms-of-use">Terms of use</Link></li>
           </ul>
         </footer>
