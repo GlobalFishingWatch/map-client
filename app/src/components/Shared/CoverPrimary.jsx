@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Header from '../../containers/Header';
-import MenuMobile from './MenuMobile';
 import sliderBackground1 from '../../../assets/images/background_1.png';
 import sliderBackground2 from '../../../assets/images/background_2.png';
 import sliderBackground3 from '../../../assets/images/background_3.png';
@@ -51,7 +50,6 @@ class CoverPrimary extends Component {
         style={{ backgroundImage: `url(${this.backgroundImage})` }}
       >
         <div className={CoverPage['layer-cover']}>
-          <MenuMobile />
           <Header />
           <div className={baseStyle.wrap}>
             <div className={CoverPage['contain-text-cover']}>

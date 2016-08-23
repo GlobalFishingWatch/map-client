@@ -4,7 +4,6 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
-import MenuMobile from '../../containers/MenuMobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.png';
@@ -66,7 +65,6 @@ class CoverPage extends Component {
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
         <div className={CoverPageStyle['layer-cover']}>
-          <MenuMobile />
           <Header />
           <div className={baseStyle.wrap}>
             <Slider {...settings}>

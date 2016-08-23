@@ -3,7 +3,6 @@ import CoverPrimary from './CoverPrimary';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Header from '../../containers/Header';
-import MenuMobile from './MenuMobile';
 
 class CoverSecondary extends CoverPrimary {
 
@@ -13,7 +12,6 @@ class CoverSecondary extends CoverPrimary {
       style={{ backgroundImage: `url(${this.getBackground()})` }}
     >
       <div className={CoverPage['layer-cover']}>
-        <MenuMobile />
         <Header />
         <div className={baseStyle.wrap}>
           <div className={CoverPage['contain-text-cover']}>

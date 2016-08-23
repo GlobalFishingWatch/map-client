@@ -19,8 +19,4 @@ class Home extends Component {
 
 }
 
-Home.propTypes = {
-  menuVisible: React.PropTypes.bool
-};
-
 export default Home;

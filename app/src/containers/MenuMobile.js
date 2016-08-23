@@ -1,14 +1,21 @@
 import { connect } from 'react-redux';
 import MenuMobile from '../components/Shared/MenuMobile';
-import { setVisibleMenu } from '../actions/appearence';
+import { login, logout } from '../actions/user';
+import { getWorkspace } from '../actions/map';
 
 const mapStateToProps = (state) => ({
-  menuVisible: state.appearance.menuVisible
+  loggedUser: state.user.loggedUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setVisibleMenu: (visible) => {
-    dispatch(setVisibleMenu(visible));
+  login: () => {
+    dispatch(login());
+  },
+  logout: () => {
+    const queryParams = location.query;
+    const workspace = queryParams ? queryParams.workspace : null;
+    dispatch(logout());
+    dispatch(getWorkspace(workspace));
   }
 });
 
