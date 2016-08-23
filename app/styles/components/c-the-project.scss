@@ -1,18 +1,30 @@
 @import '../application';
 
 .c-the-project {
+  -webkit-font-smoothing: antialiased;
+
+  li {
+    color: $color-9;
+    font-family: $font-family-2;
+    font-size: $font-size-normal;
+    line-height: 1.6;
+  }
 
   .container-the-project {
     padding: 85px 0 90px;
   }
 
-  ul {
+  .list-info {
+    list-style: none;
 
     li {
-      color: $color-9;
-      font-family: $font-family-2;
-      font-size: $font-size-normal;
-      line-height: 1.6;
+      padding-left: 30px;
+      position: relative;
+
+      div {
+        padding-left: 60px;
+        padding-right: 30px;
+      }
 
       &:first-child {
         margin-top: 15px;
@@ -21,7 +33,26 @@
       & + li {
         margin-top: 15px;
        }
-     }
+
+      &::after {
+        background: $color-19;
+        content: '';
+        display: block;
+        height: 7px;
+        position: absolute;
+        top: 8px;
+        vertical-align: middle;
+        width: 7px;
+      }
+
+      &:first-child {
+        margin-top: 40px;
+      }
+
+      &:last-child {
+        margin-bottom: 50px;
+      }
+    }
   }
 
   .steps-list {
@@ -32,6 +63,60 @@
     li {
       padding-right: 20px;
       width: calc(100% / 3);
+
+      h2 {
+        color: $color-9;
+        font-family: $font-family-1;
+        font-size: $font-size-xx-big;
+        font-weight: $font-weight-normal;
+        line-height: 1.05;
+        text-align: center;
+        text-transform: uppercase;
+
+        span {
+          display: block;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          letter-spacing: -.1px;
+        }
+      }
+
+      .image-steps {
+        background-image: url('../../assets/images/background_3.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        height: 170px;
+        justify-content: center;
+        margin: 60px 0 20px;
+        position: relative;
+        width: 100%;
+
+        &::after {
+          background-color: rgba($color-7, .8);
+          bottom: 0;
+          content: '';
+          left: 0;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 0;
+        }
+
+        img {
+          width: 45px;
+          z-index: 1;
+        }
+      }
+
+      h3 {
+        color: $color-9;
+        font-family: $font-family-1;
+        font-size: $font-size-x-medium;
+        font-weight: $font-weight-normal;
+        line-height: 1.44;
+        margin-bottom: 25px;
+      }
     }
   }
 
@@ -39,5 +124,9 @@
     background-color: $color-10;
     border: 0;
     height: 2px;
+  }
+
+  .contain-contact {
+    margin-bottom: 90px;
   }
 }
