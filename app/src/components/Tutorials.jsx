@@ -31,7 +31,6 @@ class Tutorials extends Component {
       <Footer />
     </div>);
   }
-
 }
 
 export default Tutorials;
