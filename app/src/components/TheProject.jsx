@@ -23,7 +23,6 @@ class TheProject extends Component {
             sustainability depends on action by governments, fishery management
             organizations, citizens and the fishing industry itself.
           </p>
-
           <p>
             This public beta version of Global Fishing Watch is available to anyone
             with an Internet connection and allows users to monitor when and where
