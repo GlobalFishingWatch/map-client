@@ -4,7 +4,7 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
-import MenuMobile from '../Shared/MenuMobile';
+import MenuMobile from '../../containers/MenuMobile';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.png';
