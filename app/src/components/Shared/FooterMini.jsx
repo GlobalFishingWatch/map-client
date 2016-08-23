@@ -43,12 +43,11 @@ class FooterMini extends Component {
       layerModal = (
         <div
           className={[layerStyle['c-layer-back'], layerStyle['-support-modal']].join(' ')}
-          onClick={() => this.showSupportModal()}
         >
         </div>
       );
       supportModal = (
-        <SupportModal close={() => this.showSupportModal()} />
+        <SupportModal />
       );
     }
 
