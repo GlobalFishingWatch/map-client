@@ -9,8 +9,8 @@
   position: fixed;
   top: 0;
   transform: translatex(-100%);
-  transition: 'transform' ease-in .2s;
-  width: 90%;
+  transition: transform ease-in .2s;
+  width: 300px;
   z-index: 100;
 
   &.-show {
@@ -23,7 +23,7 @@
     li {
       color: $color-4;
       display: block;
-      font-size: $font-size-x-normal;
+      font-size: 19px;
       font-weight: $font-weight-bold;
       line-height: 2.58;
     }
@@ -38,6 +38,11 @@
       display: block;
       font-size: $font-size-x-normal;
       line-height: 2.58;
+
+      > a {
+        color: $color-4;
+        font-weight: $font-weight-light;
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 @import '../../settings';
 
 .c-header {
-  background-color: $color-13;
+  background-color: transparent;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
   position: relative;
   z-index: 2;
@@ -17,10 +17,6 @@
     box-shadow: none;
   }
 
-  &.-no-background {
-    background-color: transparent;
-  }
-
   .icon-menu-mobile {
     cursor: pointer;
     display: block;
@@ -34,7 +30,6 @@
   .img-mobile {
     display: block;
     height: 50px;
-    margin-right: 10px;
 
     @media #{$mq-tablet} {
       display: none;
@@ -44,7 +39,6 @@
   .img-home {
     display: none;
     height: 70px;
-    margin-right: 10px;
 
     @media #{$mq-tablet} {
       display: block;
@@ -54,7 +48,6 @@
   .img-sub-page {
     display: none;
     height: 50px;
-    margin-right: 10px;
 
     @media #{$mq-tablet} {
       display: block;
@@ -166,6 +159,35 @@
           display: block;
         }
       }
+    }
+  }
+
+  &.-map {
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 6;
+
+    .contain-nav {
+
+      > .logo-menu {
+        align-items: center;
+        display: flex;
+      }
+    }
+
+    .icon-menu-mobile {
+      display: block;
+      margin-left: 30px;
+      order: 2;
+    }
+
+    .share-header {
+      order: 3;
+    }
+
+    .menu {
+      display: none;
     }
   }
 }
