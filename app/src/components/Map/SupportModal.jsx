@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FormSupport from '../ContactUs/SupportForm';
+import FormSupport from './../../containers/Map/SupportForm';
 import supportModalStyle from '../../../styles/components/map/c-support-modal.scss';
 import layerSupportModalStyle from '../../../styles/components/c-layer-back.scss';
 
@@ -29,6 +29,5 @@ class SupportModal extends Component {
 SupportModal.propTypes = {
   close: React.PropTypes.func
 };
-
 
 export default SupportModal;

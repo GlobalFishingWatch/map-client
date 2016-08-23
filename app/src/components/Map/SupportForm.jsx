@@ -11,7 +11,9 @@ class SupportForm extends Component {
       submitted: false,
       showFormResponse: false,
       classSelect: '',
-      disabledOption: false
+      disabledOption: false,
+      name: props.defaultUserName,
+      email: props.defaultUserEmail
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -74,6 +76,7 @@ class SupportForm extends Component {
               placeholder="Name"
               required
               onChange={this.handleChange}
+              value={this.props.defaultUserName}
             />
 
             <label htmlFor="support_email">Email</label>
@@ -81,9 +84,10 @@ class SupportForm extends Component {
               className={supportFormStyle['input-text']}
               type="Email"
               id="support_email"
-              placeholder="email"
+              placeholder="Email"
               required
               onChange={this.handleChange}
+              value={this.props.defaultUserEmail}
             />
 
             <label htmlFor="support_type">Type</label>
@@ -95,7 +99,7 @@ class SupportForm extends Component {
                 className={supportFormStyle[this.state.classSelect]}
                 required
               >
-                <option disabled={this.state.disabledOption}>Select an ...</option>
+                <option disabled={this.state.disabledOption}>Select an option</option>
                 <option value="Error">Error</option>
                 <option value="Question">Question</option>
                 <option value="Feature">Feature</option>
@@ -145,7 +149,9 @@ class SupportForm extends Component {
 
 SupportForm.propTypes = {
   contactStatus: React.PropTypes.number,
-  onFormSubmit: React.PropTypes.func
+  onFormSubmit: React.PropTypes.func,
+  defaultUserName: React.PropTypes.string,
+  defaultUserEmail: React.PropTypes.string
 };
 
 
