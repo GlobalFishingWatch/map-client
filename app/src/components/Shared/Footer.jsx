@@ -22,7 +22,10 @@ export default function () {
             <span className={footerStyle['partner-text']}>Founding Partners</span>
             <ul className={footerStyle['logo-list']}>
               <li className={footerStyle['logo-item']}>
-                <img className={footerStyle.logo} src={logooceana} alt="oceana logo" />
+                <img
+                  className={[footerStyle.logo, footerStyle['-oceana']].join(' ')}
+                  src={logooceana} alt="oceana logo"
+                />
               </li>
               <li className={footerStyle['logo-item']}>
                 <img className={footerStyle.logo} src={logosky} alt="skytruth logo" />

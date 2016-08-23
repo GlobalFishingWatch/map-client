@@ -24,6 +24,10 @@
       .logo-item > .logo {
         max-width: 130px;
         width: 100%;
+
+        &.-oceana {
+          max-width: 175px;
+        }
       }
     }
 
