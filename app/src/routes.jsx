@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AppContainer from './containers/App';
-import HomeContainer from './containers/Home';
+import HomeContainer from './components/Home';
 import AuthMapContainer from './containers/AuthMap';
 import BlogContainer from './containers/Blog';
 import BlogDetail from './containers/BlogDetail';

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Header from '../components/Shared/Header';
+import MenuMobile from '../components/Shared/MenuMobile';
 import { login, logout } from '../actions/user';
 import { getWorkspace } from '../actions/map';
 
@@ -19,4 +19,4 @@ const mapDispatchToProps = (dispatch) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuMobile);
