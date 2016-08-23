@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Modal from './Shared/Modal';
 import NoLogin from '../containers/Map/NoLogin';
-import FooterMini from '../containers/Shared/FooterMini';
+import FooterMini from '../components/Shared/FooterMini';
 
 class MapIFrame extends Component {
   render() {
