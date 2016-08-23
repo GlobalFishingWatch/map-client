@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
+import theProjectStyle from '../../styles/components/c-the-project.scss';
 
 class TheProject extends Component {
 
   render() {
     return (
-      <div>
+      <div className={theProjectStyle['c-the-project']}>
         <CoverPrimary
           title="About the Project "
           subtitle="Global Fishing Watch enables anyone with an Internet connection
@@ -28,7 +29,6 @@ class TheProject extends Component {
             with an Internet connection and allows users to monitor when and where
             commercial fishing is occurring around the world.
           </p>
-
           <ul>
             <li>
               Citizens can see for themselves how their fisheries are being effectively

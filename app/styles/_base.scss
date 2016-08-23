@@ -46,6 +46,10 @@ body > div > div > div { // FIXME: add .full-height-container to each page root 
 
   @media #{$mq-laptop} {
     padding: 0 $wrap-desktop;
+
+    &.-big {
+      padding: 0 290px;
+    }
   }
 }
 
