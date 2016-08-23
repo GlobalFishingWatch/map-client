@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import home from '../../../styles/index.scss';
+import supportFormStyle from '../../../styles/components/c-support-form.scss';
+import buttonStyle from '../../../styles/components/c-button.scss';
 
 class SupportForm extends Component {
   constructor(props) {
@@ -7,7 +9,9 @@ class SupportForm extends Component {
     this.state = {
       url: window.location,
       submitted: false,
-      showFormResponse: false
+      showFormResponse: false,
+      classSelect: '',
+      disabledOption: false
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -22,6 +26,12 @@ class SupportForm extends Component {
   }
 
   handleChange(event) {
+    if (event.target.name === 'selectCompany') {
+      this.setState({
+        classSelect: 'select-selected',
+        disabledOption: true
+      });
+    }
     this.setState({
       [event.target.id.substr(8)]: event.target.value
     });
@@ -49,61 +59,70 @@ class SupportForm extends Component {
       </section>);
     }
 
-    return (<section>
+    return (<section className={supportFormStyle['c-support-form']}>
       <h1>
         Support
       </h1>
       <form action="" method="POST" onSubmit={this.handleFormSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="name"
-          id="support_name"
-          placeholder="Name"
-          required
-          onChange={this.handleChange}
-        />
+        <div className={supportFormStyle['contain-form']}>
+          <div className={supportFormStyle['container-inputs']}>
+            <label htmlFor="name">Name</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="name"
+              id="support_name"
+              placeholder="Name"
+              required
+              onChange={this.handleChange}
+            />
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="support_email"
-          placeholder="email"
-          required
-          onChange={this.handleChange}
-        />
+            <label htmlFor="support_email">Email</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="Email"
+              id="support_email"
+              placeholder="email"
+              required
+              onChange={this.handleChange}
+            />
 
-        <label htmlFor="type">Type</label>
-        <div className={home.select_container}>
-          <select
-            id="support_type"
-            required
-            onChange={this.handleChange}
-          >
-            <option>Select an option...</option>
-            <option value="Error">Error</option>
-            <option value="Question">Question</option>
-            <option value="Feature">Feature</option>
-          </select>
+            <label htmlFor="support_type">Type</label>
+            <div className={supportFormStyle['select-container']}>
+              <select
+                id="support_type"
+                onChange={this.handleChange}
+                name="selectCompany"
+                className={supportFormStyle[this.state.classSelect]}
+                required
+              >
+                <option disabled={this.state.disabledOption}>Select an ...</option>
+                <option value="Error">Error</option>
+                <option value="Question">Question</option>
+                <option value="Feature">Feature</option>
+              </select>
+            </div>
+
+            <label htmlFor="support_subject">Subject</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="text"
+              id="support_subject"
+              placeholder="Subject"
+              required
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className={supportFormStyle['container-textarea']}>
+            <label htmlFor="support_description">description</label>
+            <textarea
+              id="support_description"
+              placeholder="Description"
+              className={supportFormStyle['textarea-form']}
+              required
+              onChange={this.handleChange}
+            />
+          </div>
         </div>
-
-        <label htmlFor="subject">Subject</label>
-        <input
-          type="text"
-          id="support_subject"
-          placeholder="subject"
-          required
-          onChange={this.handleChange}
-        />
-
-        <label htmlFor="description">description</label>
-        <input
-          type="textarea"
-          id="support_description"
-          placeholder="description"
-          required
-          onChange={this.handleChange}
-        />
-
         <input
           type="hidden"
           name="url"
@@ -111,11 +130,14 @@ class SupportForm extends Component {
           value={window.location}
           onChange={this.handleChange}
         />
-
-        <input
-          type="submit"
-          disabled={this.state.submitted}
-        />
+        <div className={supportFormStyle['container-submit']}>
+          <input
+            type="submit"
+            value="Send"
+            disabled={this.state.submitted}
+            className={buttonStyle['c-button-submit-small']}
+          />
+        </div>
       </form>
     </section>);
   }

@@ -5,13 +5,15 @@ import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
+import SupportModal from '../../components/Map/SupportModal';
 
 class FooterMini extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      footerExpanded: false
+      footerExpanded: false,
+      showSupport: false
     };
   }
 
@@ -19,8 +21,14 @@ class FooterMini extends Component {
     this.setState({ footerExpanded: !this.state.footerExpanded });
   }
 
+  showSupportModal() {
+    this.setState({ showSupport: !this.state.showSupport });
+  }
+
   render() {
     let expandedFooter;
+    let supportModal;
+
     if (this.state.footerExpanded) {
       expandedFooter = (
         <div
@@ -34,11 +42,17 @@ class FooterMini extends Component {
         </div>
       );
     }
+    if (this.state.showSupport) {
+      supportModal = (
+        <SupportModal close={() => this.showSupportModal()} />
+      );
+    }
 
     let toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
       <div>
+        {supportModal}
         {expandedFooter}
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
@@ -52,11 +66,17 @@ class FooterMini extends Component {
             <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             <li><span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span></li>
             <li><Link to="/terms-of-use">Terms of use</Link></li>
+            <li><a onClick={() => this.showSupportModal()}>Support</a></li>
           </ul>
         </footer>
       </div>
     );
   }
 }
+
+FooterMini.propTypes = {
+  setVisibleSupportModal: React.PropTypes.func,
+  supportModalVisible: React.PropTypes.bool
+};
 
 export default FooterMini;
