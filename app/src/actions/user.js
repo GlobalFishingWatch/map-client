@@ -2,7 +2,7 @@ import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
 import 'whatwg-fetch';
 
 export function setToken(token) {
-  sessionStorage.setItem(TOKEN_SESSION, token);
+  localStorage.setItem(TOKEN_SESSION, token);
   return {
     type: SET_TOKEN,
     payload: token
@@ -13,8 +13,8 @@ export function getLoggedUser() {
   return (dispatch, getState) => {
     const state = getState();
     let token = state.user.token;
-    if ((!state.user || !state.user.token) && (sessionStorage.getItem(TOKEN_SESSION))) {
-      token = sessionStorage.getItem(TOKEN_SESSION);
+    if ((!state.user || !state.user.token) && (localStorage.getItem(TOKEN_SESSION))) {
+      token = localStorage.getItem(TOKEN_SESSION);
       dispatch(setToken(token));
     }
 
@@ -47,7 +47,7 @@ export function getLoggedUser() {
 
 export function logout() {
   return (dispatch) => {
-    sessionStorage.removeItem(TOKEN_SESSION);
+    localStorage.removeItem(TOKEN_SESSION);
     dispatch({
       type: LOGOUT
     });
