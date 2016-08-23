@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
-import layerStyle from '../../../styles/components/c-layer-back.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
 import SupportModal from '../../containers/Map/SupportModal';
+import LayerSupportModal from '../../containers/Map/LayerSupportModal';
 
 class FooterMini extends Component {
 
@@ -41,10 +41,7 @@ class FooterMini extends Component {
     }
     if (this.props.supportModalVisible) {
       layerModal = (
-        <div
-          className={[layerStyle['c-layer-back'], layerStyle['-support-modal']].join(' ')}
-        >
-        </div>
+        <LayerSupportModal />
       );
       supportModal = (
         <SupportModal />
