@@ -4,6 +4,8 @@ import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
+import definitionsBackgroundImage from '../../assets/images/definitions.png';
+
 
 class Definitions extends Component {
 
@@ -23,7 +25,7 @@ class Definitions extends Component {
       <CoverPrimary
         title="Definitions"
         subtitle="Review definitions of terms you will find across our site and as you explore the Map."
-        backgroundImageIndex={3}
+        backgroundImage={definitionsBackgroundImage}
       />
       <div className={AppStyles.wrap}>
         {accordionContent}

@@ -3,6 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
+import termsBackgroundImage from '../../assets/images/terms.png';
 
 class Orbcomm extends Component {
 
@@ -10,7 +11,7 @@ class Orbcomm extends Component {
     return (<div>
       <CoverPrimary
         title="Orbcomm Data Sublicensee License Agreement"
-        backgroundImageIndex={5}
+        backgroundImage={termsBackgroundImage}
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

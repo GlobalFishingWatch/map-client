@@ -5,6 +5,7 @@ import PartnerSection from './Partners/PartnerSection';
 import FunderSection from './Partners/FunderSection';
 import ResearchSection from './Partners/ResearchSection';
 import OtherSection from './Partners/OtherSection';
+import partnersBackgroundImage from '../../assets/images/partners.jpg';
 
 class Partners extends Component {
 
@@ -15,7 +16,7 @@ class Partners extends Component {
         subtitle="Global Fishing Watch was created by Oceana, SkyTruth and Google, and works in partnership
         with a growing number of organizations that contribute data, expertise
         and funding to make global fishing activity more transparent."
-        backgroundImageIndex={2}
+        backgroundImage={partnersBackgroundImage}
       />
       <PartnerSection />
       <FunderSection />

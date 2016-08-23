@@ -15,32 +15,8 @@ import sliderBackground10 from '../../../assets/images/background_10.png';
 
 class CoverPrimary extends Component {
 
-  constructor(props) {
-    super(props);
-    this.images = [
-      sliderBackground1,
-      sliderBackground2,
-      sliderBackground3,
-      sliderBackground4,
-      sliderBackground5,
-      sliderBackground6,
-      sliderBackground7,
-      sliderBackground8,
-      sliderBackground9,
-      sliderBackground10
-    ];
-  }
-
   componentWillMount() {
-    this.backgroundImage = this.getBackground(this.props.backgroundImageIndex);
-  }
-
-  getBackground(index = null) {
-    if (!index) {
-      return this.images[Math.floor(Math.random() * this.images.length)];
-    }
-
-    return this.images[index - 1];
+    this.backgroundImage = this.props.backgroundImage;
   }
 
   render() {
@@ -70,7 +46,7 @@ class CoverPrimary extends Component {
 CoverPrimary.propTypes = {
   title: React.PropTypes.any,
   subtitle: React.PropTypes.any,
-  backgroundImageIndex: React.PropTypes.number
+  backgroundImage: React.PropTypes.object
 };
 
 export default CoverPrimary;

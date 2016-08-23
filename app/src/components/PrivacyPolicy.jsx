@@ -3,6 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
+import privacyPolicyBackgroundImage from '../../assets/images/privacy_policy.png';
 
 class PrivacyPolicy extends Component {
 
@@ -11,7 +12,7 @@ class PrivacyPolicy extends Component {
       <CoverPrimary
         title="Privacy Policy"
         subtitle=""
-        backgroundImageIndex={6}
+        backgroundImage={privacyPolicyBackgroundImage}
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import AppStyles from '../../styles/application.scss';
 import PubsArticlesLayoutStyles from '../../styles/layout/l-publications-articles.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
+import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.png';
 
 class ArticlesPublications extends Component {
 
@@ -28,9 +29,9 @@ class ArticlesPublications extends Component {
         </h4>
         <div className={PubArticleStyle.description}>
           {articlePublication &&
-            <p>{articlePublication.author}</p>}
+          <p>{articlePublication.author}</p>}
           {articlePublication.date &&
-            <p>{articlePublication.date}</p>}
+          <p>{articlePublication.date}</p>}
         </div>
         <div className={PubArticleStyle['link-container']}>
           <Rhombus direction="-right">
@@ -58,7 +59,7 @@ class ArticlesPublications extends Component {
           <section key="publications">
             <h2
               className={classnames(AppStyles['section-title'],
-              PubsArticlesLayoutStyles['section-title'])}
+                PubsArticlesLayoutStyles['section-title'])}
             >
               Publications
             </h2>
@@ -78,7 +79,7 @@ class ArticlesPublications extends Component {
           <section key="articles">
             <h2
               className={classnames(AppStyles['section-title'],
-              PubsArticlesLayoutStyles['section-title'])}
+                PubsArticlesLayoutStyles['section-title'])}
             >
               Articles
             </h2>
@@ -98,7 +99,7 @@ class ArticlesPublications extends Component {
       <CoverPrimary
         title="Articles and Publications"
         subtitle="Read about Global Fishing Watch in the media."
-        backgroundImageIndex={2}
+        backgroundImage={articlesPublicationsBackgroundImage}
       />
       <div className={PubsArticlesLayoutStyles['l-publications-news']}>
         <div className={AppStyles.wrap}>
