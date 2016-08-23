@@ -64,64 +64,64 @@ class SupportForm extends Component {
         Support
       </h1>
       <form action="" method="POST" onSubmit={this.handleFormSubmit}>
-        <div className={supportFormStyle['container-inputs']}>
-          <label htmlFor="name">Name</label>
-          <input
-            className={supportFormStyle['input-text']}
-            type="name"
-            id="support_name"
-            placeholder="Name"
-            required
-            onChange={this.handleChange}
-          />
-
-          <label htmlFor="support_email">Email</label>
-          <input
-            className={supportFormStyle['input-text']}
-            type="Email"
-            id="support_email"
-            placeholder="email"
-            required
-            onChange={this.handleChange}
-          />
-
-          <label htmlFor="support_type">Type</label>
-          <div className={supportFormStyle['select-container']}>
-            <select
-              id="support_type"
-              onChange={this.handleChange}
-              name="selectCompany"
-              className={supportFormStyle[this.state.classSelect]}
+        <div className={supportFormStyle['contain-form']}>
+          <div className={supportFormStyle['container-inputs']}>
+            <label htmlFor="name">Name</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="name"
+              id="support_name"
+              placeholder="Name"
               required
-            >
-              <option disabled={this.state.disabledOption}>Select an option</option>
-              <option value="Type1">Type 1</option>
-              <option value="Type2">Type 2</option>
-              <option value="Type3">Type 3</option>
-              <option value="Type4">Type 4</option>
-              <option value="Type5">Type 5</option>
-            </select>
-          </div>
+              onChange={this.handleChange}
+            />
 
-          <label htmlFor="support_subject">Subject</label>
-          <input
-            className={supportFormStyle['input-text']}
-            type="text"
-            id="support_subject"
-            placeholder="Subject"
-            required
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className={supportFormStyle['container-textarea']}>
-          <label htmlFor="support_description">description</label>
-          <textarea
-            id="support_description"
-            placeholder="Description"
-            className={supportFormStyle['textarea-form']}
-            required
-            onChange={this.handleChange}
-          />
+            <label htmlFor="support_email">Email</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="Email"
+              id="support_email"
+              placeholder="email"
+              required
+              onChange={this.handleChange}
+            />
+
+            <label htmlFor="support_type">Type</label>
+            <div className={supportFormStyle['select-container']}>
+              <select
+                id="support_type"
+                onChange={this.handleChange}
+                name="selectCompany"
+                className={supportFormStyle[this.state.classSelect]}
+                required
+              >
+                <option disabled={this.state.disabledOption}>Select an ...</option>
+                <option value="Error">Error</option>
+                <option value="Question">Question</option>
+                <option value="Feature">Feature</option>
+              </select>
+            </div>
+
+            <label htmlFor="support_subject">Subject</label>
+            <input
+              className={supportFormStyle['input-text']}
+              type="text"
+              id="support_subject"
+              placeholder="Subject"
+              required
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className={supportFormStyle['container-textarea']}>
+            <label htmlFor="support_description">description</label>
+            <textarea
+              id="support_description"
+              placeholder="Description"
+              className={supportFormStyle['textarea-form']}
+              required
+              onChange={this.handleChange}
+            />
+          </div>
         </div>
         <input
           type="hidden"

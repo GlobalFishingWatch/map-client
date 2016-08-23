@@ -16,8 +16,9 @@
 
   form {
 
-    div {
-      float: left;
+    .contain-form {
+      display: flex;
+      justify-content: center;
 
       label {
         color: $color-4;
@@ -27,14 +28,9 @@
         text-transform: uppercase;
       }
 
-      &.container-submit {
-        display: block;
-        width: 100%;
-      }
-
-      &.container-inputs {
+      .container-inputs {
         padding-right: 20px;
-        width: 50%;
+        width: 100%;
 
         .input-text {
           background-color: transparent;
@@ -100,9 +96,9 @@
         }
     }
 
-      &.container-textarea {
+      .container-textarea {
         padding-left: 20px;
-        width: 50%;
+        width: 100%;
 
         .textarea-form {
           background-color: transparent;
@@ -117,6 +113,11 @@
           width: 100%;
         }
       }
+    }
+
+    .container-submit {
+      display: block;
+      width: 100%;
     }
 
     ::-webkit-input-placeholder {

@@ -1,5 +1,5 @@
 @import '../settings';
-.c-layer-back {//use menu mobile layer
+.c-layer-back {
   bottom: 0;
   left: 0;
   opacity: .9;
@@ -7,13 +7,13 @@
   right: 0;
   top: 0;
 
-  &.-menu {
+  &.-menu {//mobile menu background
     // display: none;/*change*/
     background-color: rgba($color-12, .8);
     z-index: 1;
   }
 
-  &.-support-modal {
+  &.-support-modal {//support modal window background
     background-color: rgba($color-1, .9);
     z-index: 10;
   }
