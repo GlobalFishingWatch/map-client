@@ -43,7 +43,7 @@ const webpackConfig = {
       VERSION: JSON.stringify(packageJSON.version),
       EMBED_MAP_URL: JSON.stringify(envVariables.EMBED_MAP_URL),
       MAP_API_ENDPOINT: JSON.stringify(envVariables.MAP_API_ENDPOINT),
-      BLOG_API_ENDPOINT: JSON.stringify(envVariables.BLOG_API_ENDPOINT),
+      BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
       FAQ_JSON_URL: JSON.stringify(envVariables.FAQ_JSON_URL),
       DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
       ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL)

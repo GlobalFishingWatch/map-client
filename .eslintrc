@@ -10,7 +10,7 @@
     "cartodb": true,
     "EMBED_MAP_URL": true,
     "MAP_API_ENDPOINT": true,
-    "BLOG_API_ENDPOINT": true,
+    "BLOG_URL": true,
     "FAQ_JSON_URL": true,
     "DEFINITIONS_JSON_URL": true,
     "ART_PUB_JSON_URL": true

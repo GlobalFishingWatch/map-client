@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import AppContainer from './containers/App';
 import HomeContainer from './components/Home';
 import AuthMapContainer from './containers/AuthMap';
-import BlogContainer from './containers/Blog';
-import BlogDetail from './containers/BlogDetail';
 import ArticlesPublications from './containers/ArticlesPublications';
 import FAQContainer from './containers/FAQ';
 import Tutorials from './components/Tutorials';
@@ -24,8 +22,6 @@ class Routes extends Component {
 
         <Route path="map" component={AuthMapContainer} />
 
-        <Route path="blog" component={BlogContainer} />
-        <Route path="blog/:slug" component={BlogDetail} />
         <Route path="articles-publications" component={ArticlesPublications} />
 
         <Route path="faq" component={FAQContainer} />

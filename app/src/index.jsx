@@ -11,7 +11,6 @@ import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
 import definitionReducer from './reducers/definitions';
 import userReducer from './reducers/user';
-import blogReducer from './reducers/blog';
 import filtersReducer from './reducers/filters';
 import '../styles/application.scss';
 import contactReducer from './reducers/contact';
@@ -28,7 +27,6 @@ const reducer = combineReducers({
   routing: routerReducer,
   map: mapReducer,
   user: userReducer,
-  blog: blogReducer,
   filters: filtersReducer,
   faqEntries: faqReducer,
   contactStatus: contactReducer,

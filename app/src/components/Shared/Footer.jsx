@@ -49,7 +49,7 @@ export default function () {
               <Link className={footerStyle['nav-link']} to="/map">Map</Link>
             </li>
             <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/blog">Blog</Link>
+              <a href={BLOG_URL} target="_blank" className={footerStyle['nav-link']}>Blog</a>
             </li>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/articles-publications">Articles and Publications</Link>
