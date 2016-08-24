@@ -53,7 +53,7 @@ class SupportForm extends Component {
       }
       return (<section className={supportFormStyle['c-support-form']}>
         <h1 className={supportFormStyle['message-after']}>{message}</h1>
-        <a href="" className={buttonStyle['c-button-submit-small']} onClick={() => this.props.close()}>Close</a>
+        <button className={buttonStyle['c-button-submit-small']} onClick={() => this.props.close()}>Close</button>
       </section>);
     }
 
