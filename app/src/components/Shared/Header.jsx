@@ -55,24 +55,29 @@ class Header extends Component {
         />
         <nav
           className={
-            classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname !== '/map' })
+            classNames({ [styles['c-header']]: true, [styles['-map']]: location.pathname === '/map' })
           }
         >
-          <div className={baseStyle.wrap}>
+          <div
+            className={
+              classNames({ [baseStyle.wrap]: true, [baseStyle['-map']]: location.pathname === '/map' })
+            }
+          >
             <div className={styles['contain-nav']}>
-              <img
-                onClick={() => this.setState({ mobileMenuVisible: true })}
-                className={styles['icon-menu-mobile']}
-                src={menuicon}
-                alt="Menu toggle icon"
-              />
-              <Link to="/">
+              <div className={styles['logo-menu']}>
                 <img
-                  className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
-                  src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
+                  onClick={() => this.setState({ mobileMenuVisible: true })}
+                  className={styles['icon-menu-mobile']}
+                  src={menuicon}
+                  alt="Menu toggle icon"
                 />
-                <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
-              </Link>
+                <Link to="/">
+                  <img
+                    className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
+                    src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
+                  />
+                </Link>
+              </div>
               <span className={styles['share-header']}>Share</span>
               <ul className={styles.menu}>
                 <li>

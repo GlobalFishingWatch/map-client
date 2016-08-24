@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from './Shared/Modal';
 import NoLogin from '../containers/Map/NoLogin';
+import Header from '../containers/Header';
 import FooterMini from './Shared/FooterMini';
 
 class MapIFrame extends Component {
@@ -33,6 +34,7 @@ class MapIFrame extends Component {
           height: 'calc(100% - 38px)'
         }}
       >
+        <Header />
         <Modal
           opened={!this.props.token}
           closeable={false}

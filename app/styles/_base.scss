@@ -47,6 +47,11 @@ body > div > div > div { // FIXME: add .full-height-container to each page root 
   @media #{$mq-laptop} {
     padding: 0 $wrap-desktop;
   }
+
+  &.-map {
+    margin: 0;
+    padding: 0 35px;
+  }
 }
 
 p {
@@ -62,6 +67,10 @@ p {
 
 a {
   text-decoration: none;
+
+  &:visited {
+    color: currentColor;
+  }
 
   &.-underline {
     color: $color-12;

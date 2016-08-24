@@ -28,9 +28,9 @@ $corporateColor: #233e76;
 }
 
 .zoom_controls {
+  left: 35px;
   position: absolute;
   bottom: 135px;
-  left: 10px;
   z-index: 6;
   span {
     background-color: $corporateColor;
@@ -56,6 +56,6 @@ $corporateColor: #233e76;
 }
 
 .map_container {
-  height: calc(100% - 140px);
+  height: 100%;
   position: relative;
 }
