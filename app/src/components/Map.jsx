@@ -12,7 +12,7 @@ import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
 import NoLogin from '../containers/Map/NoLogin';
-import MapFooter from './Map/MapFooter';
+import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -453,7 +453,7 @@ class Map extends Component {
           }
         />
       </div>
-      <MapFooter />
+      <FooterMini />
     </div>);
   }
 }
