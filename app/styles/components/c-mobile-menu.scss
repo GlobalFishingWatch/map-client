@@ -23,7 +23,7 @@
     li {
       color: $color-4;
       display: block;
-      font-size: 19px;
+      font-size: $font-size-x-normal;
       font-weight: $font-weight-bold;
       line-height: 2.58;
     }
@@ -69,6 +69,10 @@
     color: $color-4;
     font-size: $font-size-small;
     padding-left: 0;
+
+    .forgot-password {
+      color: $color-4;
+    }
 
     > .register {
       background: none;
