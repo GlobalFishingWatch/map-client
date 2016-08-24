@@ -1,0 +1,45 @@
+@import '../application';
+
+.c-the-project {
+  -webkit-font-smoothing: antialiased;
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 85px 0 90px;
+
+  .list-info {
+    list-style: none;
+
+    li {
+      padding-left: 30px;
+      position: relative;
+
+      p {
+        padding-left: 60px;
+        padding-right: 30px;
+      }
+
+      & + li {
+        margin-top: 15px;
+       }
+
+      &::after {
+        background: $color-19;
+        content: '';
+        display: block;
+        height: 7px;
+        position: absolute;
+        top: 8px;
+        vertical-align: middle;
+        width: 7px;
+      }
+
+      &:first-child {
+        margin-top: 40px;
+      }
+
+      &:last-child {
+        margin-bottom: 50px;
+      }
+    }
+  }
+}
