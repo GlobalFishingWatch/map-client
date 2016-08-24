@@ -87,14 +87,14 @@ class Header extends Component {
                 <li className={styles.dropdown}>
                   <a
                     className={
-                      (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
+                      location.pathname.startsWith('/articles-publications')
                         ? styles['-active'] : null
                     }
                   >
                     News
                   </a>
                   <ul className={styles['dropdown-content']}>
-                    <li><Link to="/blog">Blog</Link></li>
+                    <li><a href={BLOG_URL} target="_blank">Blog</a></li>
                     <li><Link to="/articles-publications">Articles and Publications</Link></li>
                   </ul>
                 </li>

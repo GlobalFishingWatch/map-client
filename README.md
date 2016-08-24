@@ -64,9 +64,9 @@ If set, the given URL will be loaded using an iframe element, instead of the bui
 
 Endpoint of the API (vessel tiles, workspace, contact, etc)
 
-#### BLOG_API_ENDPOINT
+#### BLOG_URL
 
-Endpoint of the blog API
+URL of the blog
 
 #### FAQ_JSON_URL
 

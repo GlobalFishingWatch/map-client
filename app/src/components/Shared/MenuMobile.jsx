@@ -55,7 +55,7 @@ class MenuMobile extends Component {
           <li><Link to="/map">Map</Link></li>
           <li>News</li>
           <ul className={menuMobile['submenu-mobile']}>
-            <li><Link to="/blog">Blog</Link></li>
+            <li><a href={BLOG_URL} target="_blank">Blog</a></li>
             <li><Link to="/articles-publications">Articles and Publications</Link></li>
           </ul>
           <li>How to</li>
