@@ -35,6 +35,10 @@ export function getLoggedUser() {
       if (response.ok) {
         return response.json();
       }
+      dispatch({
+        type: SET_TOKEN,
+        payload: null
+      });
       return null;
     }).then((user) => {
       dispatch({
