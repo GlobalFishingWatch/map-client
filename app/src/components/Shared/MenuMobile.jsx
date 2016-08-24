@@ -11,31 +11,36 @@ class MenuMobile extends Component {
     const backClass = this.props.visible ?
       `${menuMobile['menu-back']} ${menuMobile['-show']}` : `${menuMobile['menu-back']}`;
 
-    // there's no design when user is logged so I commented this part
-    // until there's design.
-
-    // let userLinks;
-    // if (this.props.loggedUser) {
-    //   userLinks = (
-    //     <li>
-    //       <a>{this.props.loggedUser.displayName}</a>
-    //       <ul>
-    //         <li>
-    //           <a onClick={this.logout}>
-    //             Logout
-    //           </a>
-    //         </li>
-    //       </ul>
-    //     </li>
-    //   );
-    // } else {
-    //   userLinks = (
-    //     <div>
-    //       <span className={menuMobile['button-login']} onClick={this.props.login}>LOG IN</span>
-    //       <p className={menuMobile['forgot-text']}>Forgot your password? Not a member</p>
-    //     </div>
-    //   );
-    // }
+    let userLinks;
+    if (this.props.loggedUser) {
+      userLinks = (
+        <div>
+          <span
+            className={menuMobile['button-login']}
+            onClick={this.props.logout}
+          >
+          log out
+          </span>
+        </div>
+      );
+    } else {
+      userLinks = (
+        <div>
+          <span
+            className={menuMobile['button-login']}
+            onClick={this.props.login}
+          >
+          log in
+          </span>
+          <p className={menuMobile['forgot-text']}>
+            <a href="https://trial-globalfishingwatch.cs43.force.com/gfw/GFWResetPassword">
+              Forgot your password?
+            </a>
+            <span className={menuMobile.register} onClick={this.props.login}> Not a member?</span>
+          </p>
+        </div>
+      );
+    }
 
     return (<div>
       <div
@@ -63,7 +68,7 @@ class MenuMobile extends Component {
             <li><Link to="/contact-us">Contact us</Link></li>
           </ul>
         </ul>
-        {/* userLinks */}
+        {userLinks}
       </div>
     </div>);
   }

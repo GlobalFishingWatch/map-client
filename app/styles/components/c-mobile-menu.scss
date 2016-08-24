@@ -10,7 +10,7 @@
   top: 0;
   transform: translatex(-100%);
   transition: transform ease-in .2s;
-  width: 300px;
+  width: 325px;
   z-index: 100;
 
   &.-show {
@@ -68,6 +68,10 @@
     color: $color-4;
     font-size: $font-size-small;
     padding-left: 0;
+
+    > .register {
+      cursor: pointer;
+    }
   }
 }
 
