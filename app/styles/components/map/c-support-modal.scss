@@ -28,11 +28,29 @@
     width: 40px;
 
     .cross {
-      background: linear-gradient(to bottom, transparent 35%, $color-7 35%, $color-7 65%,  transparent 65%),
-      linear-gradient(to right, transparent 35%, $color-7 35%, $color-7 65%, transparent 65%);
-      height: 16px;
-      transform: rotate(45deg);
-      width: 16px;
+      &::before {
+        background: $color-7;
+        content: '';
+        display: inline-block;
+        height: 3px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+        width: 15px;
+      }
+
+      &::after {
+        background: $color-7;
+        content: '';
+        display: inline-block;
+        height: 3px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        width: 15px;
+      }
     }
   }
 }
