@@ -37,15 +37,6 @@
     }
   }
 
-  .img-home {
-    display: none;
-    height: 70px;
-
-    @media #{$mq-tablet} {
-      display: block;
-    }
-  }
-
   .img-sub-page {
     display: none;
     height: 50px;

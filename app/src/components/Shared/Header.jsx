@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 import classNames from 'classnames';
 import styles from '../../../styles/components/shared/c-header.scss';
 import baseStyle from '../../../styles/_base.scss';
-import homeLogo from '../../../assets/logos/gfw_logo_ver.svg';
 import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
 import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
@@ -30,10 +29,6 @@ class Header extends Component {
     let logoClass;
 
     switch (location.pathname) {
-      case '/':
-        GFWLogo = homeLogo;
-        logoClass = styles['img-home'];
-        break;
       case '/map':
         GFWLogo = betaLogo;
         logoClass = styles['img-sub-page'];
