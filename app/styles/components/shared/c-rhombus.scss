@@ -60,7 +60,7 @@
 
   &.-right > .rhombus {
     &::after {
-      transform: translate(calc(-50% - 2px), calc(-50% - 1px)) rotate(180deg);
+      transform: translate(calc(-50% - 2px), calc(-50%)) rotate(180deg);
     }
   }
 

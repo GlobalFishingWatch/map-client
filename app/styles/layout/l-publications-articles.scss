@@ -1,0 +1,45 @@
+@import '../settings';
+
+.section-title {
+  margin-top: 0;
+}
+
+.l-publications-news {
+
+  .section-title {
+    margin: 0  0 30px;
+
+    @media #{$mq-tablet} {
+      margin: 0  0 60px;
+    }
+  }
+
+  section {
+    padding: 55px 0 65px;
+    position: relative;
+
+    &::after {
+      background-color: $color-10;
+      bottom: 0;
+      content: '';
+      display: inline-block;
+      height: 2px;
+      left: 50%;
+      position: absolute;
+      top: auto;
+      transform: translate(-50%, 0);
+      width: 100vw;
+    }
+
+    &:last-child {
+      &::after {
+        content: none;
+      }
+    }
+
+    > .grid {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}

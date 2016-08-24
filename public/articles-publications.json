@@ -3,89 +3,106 @@
     {
       "title": "Palau vs. the Poachers",
       "link": "http://www.nytimes.com/2016/02/21/magazine/palau-vs-the-poachers.html",
-      "subtitle": "Ian Urbina, New York Times, February 17, 2016"
+      "author": "Ian Urbina, New York Times",
+      "date": "February 17, 2016"
     },
     {
       "title": "OPEN DATASET OF THE WEEK: ILLEGAL FISHING IN INDONESIA",
       "link": "https://govinsider.asia/inclusive-gov/open-dataset-of-the-week-illegal-fishing-in-indonesia/",
-      "subtitle": "Medha Basu, GovInsider, November 10, 2015"
+      "author": "Medha Basu, GovInsider",
+      "date": "November 10, 2015"
     },
     {
       "title": "GOVERNMENT SET TO IMPROVE COMMERCIAL FISHING TRANSPARENCY",
       "link": "http://www.thejakartapost.com/news/2015/10/30/government-set-improve-commercial-fishing-transparency.html",
-      "subtitle": "Ayomi Amindoni, Jakarta Post, October 30, 2015"
+      "author": "Ayomi Amindoni, Jakarta Post",
+      "date": "October 30, 2015"
     },
     {
       "title": "TINY TEAM USES SATELLITES TO BUST ILLEGAL FISHING WORLDWIDE",
       "link": "http://news.nationalgeographic.com/2015/06/150615-skytruth-pirate-fishing-illegal-big-data-ocean-conservation/",
-      "subtitle": "Brian Clark Edward, National Geographic, June 15, 2015"
+      "author": "Brian Clark Edward, National Geographic",
+      "date": "June 15, 2015"
     },
     {
       "title": "HOW GLOBAL FISHING WATCH CAN COMBAT SLAVERY IN THAILAND’S FISHING INDUSTRY",
       "link": "http://oceana.org/blog/how-global-fishing-watch-can-combat-slavery-thailand%E2%80%99s-fishing-industry",
-      "subtitle": "Taylor Witkin, Oceana, March 31, 2015"
+      "author": "Taylor Witkin, Oceana",
+      "date": "March 31, 2015"
     },
     {
       "title": "INSIDE THE SATELLITE DETECTIVE AGENCIES THAT CATCH THE COMPANIES DESTROYING THE PLANET—FROM SPACE",
       "link": "http://www.fastcoexist.com/3040829/world-changing-ideas/inside-the-satellite-detective-agencies-catch-the-companies-destroying-",
-      "subtitle": "Ariel Schwarz, Fast Company, March 16, 2015"
+      "author": "Ariel Schwarz, Fast Company",
+      "date": "March 16, 2015"
     },
     {
       "title": "MAPPING THE WORLD’S PROBLEMS",
       "link": "http://www.nytimes.com/2015/01/09/business/international/mapping-the-worlds-problems.html",
-      "subtitle": "Kate Galbraigth, New York Times, Jan. 8, 2015"
+      "author": "Kate Galbraigth, New York Times",
+      "date": "Jan. 8, 2015"
     },
     {
       "title": "TRACKING FISHY BEHAVIOR, FROM SPACE",
       "link": "http://www.theatlantic.com/technology/archive/2014/11/tracking-fishy-behavior-from-space/382797/",
-      "subtitle": "Christopher Pala, The Atlantic, November 16, 2014"
+      "author": "Christopher Pala, The Atlantic",
+      "date": "November 16, 2014"
     },
     {
       "title": "GOOGLE-BACKED INITIATIVE WILL PINPOINT ILLEGAL FISHING IN NEAR-REAL-TIME",
       "link": "http://www.theverge.com/2014/11/14/7219261/global-fishing-watch-map-tracks-illegal-fishing-across-the-globe",
-      "subtitle": "Amar Toor, The Verge, November 14, 2014"
+      "author": "Amar Toor, The Verge",
+      "date": "November 14, 2014"
     },
     {
       "title": "GOOGLE, OCEANA LINK UP IN BATTLE AGAINST ILLEGAL FISHING",
       "link": "http://www.nbcnews.com/science/environment/google-oceana-link-battle-against-illegal-fishing-n248711",
-      "subtitle": "NBC News, November 14, 2014"
+      "author": "NBC News",
+      "date": "November 14, 2014"
     },
     {
       "title": "MAPPING GLOBAL FISHING ACTIVITY FOR ANYONE TO SEE",
       "link": "http://voices.nationalgeographic.com/2014/11/14/mapping-global-fishing-activity-for-anyone-to-see/",
-      "subtitle": "Shah Selbe, National Geographic, November 14, 2014"
+      "author": "Shah Selbe, National Geographic",
+      "date": "November 14, 2014"
     },
     {
       "title": "GOOGLE-BACKED SATELLITE PROJECT AIMS TO TRACK, ELIMINATE ILLEGAL FISHING AROUND THE WORLD",
       "link": "http://www.ibtimes.com/google-backed-satellite-project-aims-track-eliminate-illegal-fishing-around-world-1723971",
-      "subtitle": "Jeff Stone, International Business Times, November 14, 2014"
+      "author": "Jeff Stone, International Business Times",
+      "date": "November 14, 2014"
     },
     {
       "title": "THE PLAN TO MAP ILLEGAL FISHING FROM SPACE",
       "link": "http://www.wired.com/2014/11/plan-map-illegal-fishing-space/",
-      "subtitle": "W. Wayt Gibbs, Wired, November 13, 2014"
+      "author": "W. Wayt Gibbs, Wired",
+      "date": "November 13, 2014"
     }
   ],
   "publications": [
     {
       "title": "ENDING HIDE AND SEEK AT SEA",
       "link": "http://science.sciencemag.org/content/351/6278/1148",
-      "subtitle": "Douglas J. McCauley, Paul Woods, Brian Sullivan, Bjorn Bergman, Caroline Jablonicky, Aaron Roan, Michael Hirshfield, Kristina Boerder, Boris Worm, , March 11, 2016"
+      "author": "Douglas J. McCauley, Paul Woods, Brian Sullivan, Bjorn Bergman, Caroline Jablonicky, Aaron Roan, Michael Hirshfield, Kristina Boerder, Boris Worm",
+      "date": "March 11, 2016"
     },
     {
       "title": "GLOBAL FISHING WATCH REVEALS A FISHERIES MANAGEMENT SUCCESS IN THE PHOENIX ISLANDS",
-      "link": "http://usa.oceana.org/sites/default/files/pipa_report_final_low_res_3_7_16.pdf",
-      "subtitle": "Oceana, March 2016"
+      "link": "http://science.sciencemag.org/content/351/6278/1148",
+      "author": "Oceana",
+      "date": "March 2016"
     },
     {
       "title": "GLOBAL FISHING WATCH REPORT",
       "link": "http://oceana.org/sites/default/files/global_fishing_watch_report_final.pdf",
-      "subtitle": "Oceana, 2014"
+      "author": "Oceana",
+      "date": "2014"
     },
     {
       "title": "THE STATE OF WORLD FISHERIES AND AQUACULTURE",
       "link": "http://www.fao.org/3/a-i3720e.pdf",
-      "subtitle": "Food and Agriculture Organization (FAO) of the United Nations, 2014"
+      "author": "Food and Agriculture Organization (FAO) of the United Nations",
+      "date": "2014"
     }
   ]
 }
