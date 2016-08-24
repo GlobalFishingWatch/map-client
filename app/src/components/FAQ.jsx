@@ -4,6 +4,7 @@ import Loader from './Shared/Loader';
 import CoverPrimary from './Shared/CoverPrimary';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
+import faqBackgroundImage from '../../assets/images/faq.png';
 
 class FAQ extends Component {
 
@@ -31,7 +32,8 @@ class FAQ extends Component {
       <CoverPrimary
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."
-        backgroundImageIndex={4}
+        backgroundImage={faqBackgroundImage}
+        attribution="© Bento Viana"
       />
       <div className={AppStyles.wrap}>
         {faqSections}

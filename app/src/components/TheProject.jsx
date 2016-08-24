@@ -3,6 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import baseStyle from '../../styles/_base.scss';
 import theProjectStyle from '../../styles/components/c-the-project.scss';
+import projectBackgroundImage from '../../assets/images/project.png';
 
 class TheProject extends Component {
 
@@ -13,7 +14,8 @@ class TheProject extends Component {
           title="About the Project "
           subtitle="Global Fishing Watch enables anyone with an Internet connection
            to see fishing activity anywhere in the ocean in near real-time, for free."
-          backgroundImageIndex={5}
+          backgroundImage={projectBackgroundImage}
+          attribution="© OCEANA / Keith Ellenbogen"
         />
         <div className={baseStyle.wrap}>
           <section className={theProjectStyle['c-the-project']}>

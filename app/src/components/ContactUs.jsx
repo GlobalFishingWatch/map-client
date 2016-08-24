@@ -4,6 +4,7 @@ import Footer from './Shared/Footer';
 import ContactUsForm from './ContactUs/ContactUsForm';
 import contactStyle from '../../styles/components/c-contact.scss';
 import baseStyle from '../../styles/_base.scss';
+import ImageAttribution from './Shared/ImageAttribution';
 
 class ContactUs extends Component {
 
@@ -19,6 +20,9 @@ class ContactUs extends Component {
             defaultUserEmail={this.props.defaultUserEmail}
           />
         </div>
+        <ImageAttribution>
+          Photo: © OCEANA / Xavier Mas
+        </ImageAttribution>
       </div>
       <Footer />
     </div>);

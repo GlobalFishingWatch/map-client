@@ -1,0 +1,16 @@
+@import '../../settings';
+
+.c-image-attribution {
+  bottom: 0;
+  position: absolute;
+  right: 5px;
+  top: auto;
+  z-index: 1;
+
+  > .author {
+    color: $color-4;
+    font-family: $font-family-2;
+    font-size: $font-size-xs-small;
+    line-height: 1.6;
+  }
+}

@@ -6,6 +6,7 @@ import listPosts from '../../styles/components/c-list-posts.scss';
 import CoverPrimary from './Shared/CoverPrimary';
 import PaginationBlog from './Blog/Pagination';
 import boxtriangle from '../../assets/icons/box_triangle.svg';
+import blogBackgroundImage from '../../assets/images/blog.png';
 
 class Blog extends Component {
 
@@ -82,7 +83,8 @@ class Blog extends Component {
       <CoverPrimary
         title="Global Fishing Watch Blog"
         subtitle="Get the latest news on Global Fishing Watch."
-        backgroundImageIndex={9}
+        attribution="© OCEANA / Carlos Minguell"
+        backgroundImage={blogBackgroundImage}
       />
       <section className={listPosts['c-list-posts']}>
         {articles}

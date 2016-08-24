@@ -8,9 +8,10 @@ import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.png';
 import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
-import sliderBackground2 from '../../../assets/images/background_2.png';
 import sliderBackground3 from '../../../assets/images/background_3.png';
 import sliderBackground4 from '../../../assets/images/background_4.png';
+import sliderBackground5 from '../../../assets/images/background_5.png';
+import ImageAttribution from '../Shared/ImageAttribution';
 
 class CoverPage extends Component {
 
@@ -57,10 +58,19 @@ class CoverPage extends Component {
       sliderBackground1,
       sliderBackgroundLDF,
       sliderBackground3,
-      sliderBackground2,
-      sliderBackground4
+      sliderBackground4,
+      sliderBackground5
     ];
     const sliderBackground = sliderBackgrounds[this.state.currentSlider];
+
+    const sliderAttributions = [
+      '© OCEANA / Juan Cuetos',
+      null,
+      '© OCEANA / Eduardo Sorensen',
+      '© OCEANA / Eduardo Sorensen',
+      'Hoatzinexp/iStock/Thinkstock'
+    ];
+    const sliderAttribution = sliderAttributions[this.state.currentSlider];
 
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
@@ -136,6 +146,10 @@ class CoverPage extends Component {
               </div>
             </div>
           </div>
+
+          {sliderAttribution && <ImageAttribution>
+            {sliderAttribution && `Photo: ${sliderAttribution}`}
+          </ImageAttribution>}
         </div>
       </div>
     );

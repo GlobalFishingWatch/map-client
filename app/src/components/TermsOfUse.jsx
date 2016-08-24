@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
-
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
+import termsBackgroundImage from '../../assets/images/terms.png';
 
 class TermsOfUse extends Component {
 
@@ -13,7 +13,8 @@ class TermsOfUse extends Component {
       <CoverPrimary
         title="Terms Of Use"
         subtitle=""
-        backgroundImageIndex={1}
+        backgroundImage={termsBackgroundImage}
+        attribution="© OCEANA / Melissa Forsyth"
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

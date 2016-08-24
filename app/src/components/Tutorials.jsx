@@ -3,6 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import baseStyle from '../../styles/_base.scss';
 import tutorialStyle from '../../styles/components/c-tutorial-page.scss';
+import tutorialBackgroundImage from '../../assets/images/tutorial.png';
 
 class Tutorials extends Component {
 
@@ -11,7 +12,8 @@ class Tutorials extends Component {
       <CoverPrimary
         title="Watch Our Tutorial"
         subtitle="View our tutorial video to see Global Fishing in action."
-        backgroundImageIndex={7}
+        backgroundImage={tutorialBackgroundImage}
+        attribution="© OCEANA / Juan Cuetos"
       />
       <div className={baseStyle.wrap}>
         <section className={tutorialStyle['c-tutorial-page']}>

@@ -1,15 +1,18 @@
 import React from 'react';
-import CoverPrimary from './CoverPrimary';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Header from '../../containers/Header';
+import CoverPrimary from './CoverPrimary';
+import ImageAttribution from './ImageAttribution';
 
 class CoverSecondary extends CoverPrimary {
 
   render() {
+    const attribution = this.props.attribution ? `Photo: ${this.props.attribution}` : null;
+
     return (<section
       className={CoverPage['c-cover-page']}
-      style={{ backgroundImage: `url(${this.getBackground()})` }}
+      style={{ backgroundImage: `url(${this.backgroundImage})` }}
     >
       <div className={CoverPage['layer-cover']}>
         <Header />
@@ -23,6 +26,9 @@ class CoverSecondary extends CoverPrimary {
             </p>
           </div>
         </div>
+        {attribution && <ImageAttribution>
+          {attribution}
+        </ImageAttribution>}
       </div>
     </section>);
   }
@@ -30,8 +36,7 @@ class CoverSecondary extends CoverPrimary {
 
 CoverSecondary.propTypes = {
   title: React.PropTypes.any,
-  subtitle: React.PropTypes.any,
-  backgroundImageIndex: React.PropTypes.number.optional
+  subtitle: React.PropTypes.any
 };
 
 export default CoverSecondary;

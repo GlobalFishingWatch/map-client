@@ -1,8 +1,9 @@
 @import '../settings';
 
 .c-cover-page {
-  background: $color-19 url('../../assets/images/background_1.png') center;
+  background: $color-19 url('../../assets/images/contact_us.png') center;
   background-size: cover;
+  position: relative;
   transition: background-image .2s ease-in-out;
 
   .layer-cover {
