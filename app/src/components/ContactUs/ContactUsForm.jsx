@@ -52,9 +52,9 @@ class ContactUsForm extends Component {
     if (this.state.showFormResponse) {
       let message;
       if (this.props.contactStatus === 200) {
-        message = 'Thank you for your contact';
+        message = 'Thank you for your inquiry.';
       } else {
-        message = 'There was a problem submitting your contact request. Please try again later';
+        message = 'There was a problem submitting your inquiry. Please try again later.';
       }
       return (<section className={[formStyle['c-contact-form'], formStyle['message-after']].join(' ')}>
         <h1>{message}</h1>
@@ -67,7 +67,7 @@ class ContactUsForm extends Component {
       </h1>
       <p>
         Let us know what you think! Submit your questions,
-        suggestions for improvement or general feedback using the form below
+        suggestions for improvement or general feedback using the form below.
       </p>
       <form
         action=""
