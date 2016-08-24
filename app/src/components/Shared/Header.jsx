@@ -3,8 +3,9 @@ import { Link } from 'react-router';
 import classNames from 'classnames';
 import styles from '../../../styles/components/shared/c-header.scss';
 import baseStyle from '../../../styles/_base.scss';
-import logoimg from '../../../assets/logos/gfw_logo_hor_second.png';
-import logoimgSecond from '../../../assets/logos/gfw_logo_hor_white.png';
+import homeLogo from '../../../assets/logos/gfw_logo_ver.svg';
+import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
+import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
 import MenuMobile from './../../containers/MenuMobile';
 
@@ -25,6 +26,24 @@ class Header extends Component {
   }
 
   render() {
+    let GFWLogo;
+    let logoClass;
+
+    switch (location.pathname) {
+      case '/':
+        GFWLogo = homeLogo;
+        logoClass = styles['img-home'];
+        break;
+      case '/map':
+        GFWLogo = betaLogo;
+        logoClass = styles['img-sub-page'];
+        break;
+
+      default:
+        GFWLogo = defaultLogo;
+        logoClass = styles['img-sub-page'];
+    }
+
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (
@@ -73,8 +92,9 @@ class Header extends Component {
                 />
                 <Link to="/">
                   <img
-                    className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
-                    src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
+                    className={logoClass}
+                    src={GFWLogo}
+                    alt="Global Fishing Watch"
                   />
                 </Link>
               </div>

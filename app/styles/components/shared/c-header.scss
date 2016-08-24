@@ -20,6 +20,7 @@
   .icon-menu-mobile {
     cursor: pointer;
     display: block;
+    margin-right: 20px;
     width: 21px;
 
     @media #{$mq-tablet} {
