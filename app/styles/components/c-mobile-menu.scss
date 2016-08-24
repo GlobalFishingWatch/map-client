@@ -48,6 +48,7 @@
 
   .button-login {
     background-color: $color-3;
+    border: 0;
     color: $color-4;
     cursor: pointer;
     display: block;
@@ -70,7 +71,15 @@
     padding-left: 0;
 
     > .register {
+      background: none;
+      border: 0;
       cursor: pointer;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 5px;
+      }
     }
   }
 }
