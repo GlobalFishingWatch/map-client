@@ -47,7 +47,7 @@ class SupportForm extends Component {
     if (this.state.showFormResponse) {
       let message;
       if (this.props.contactStatus === 200) {
-        message = 'Thank you for your contact';
+        message = 'Thank you for your inquiry';
       } else {
         message = 'There was a problem submitting your contact request. Please try again later';
       }
