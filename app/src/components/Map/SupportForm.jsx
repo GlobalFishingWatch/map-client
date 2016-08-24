@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import home from '../../../styles/index.scss';
 import supportFormStyle from '../../../styles/components/c-support-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
 
@@ -12,12 +11,9 @@ class SupportForm extends Component {
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
-      name: props.defaultUserName,
-      email: props.defaultUserEmail
+      name: this.props.defaultUserName,
+      email: this.props.defaultUserEmail
     };
-
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,7 +40,6 @@ class SupportForm extends Component {
     this.setState({
       submitted: true
     });
-
     this.props.onFormSubmit(this.state, '/v1/contact/support');
   }
 
@@ -56,8 +51,9 @@ class SupportForm extends Component {
       } else {
         message = 'There was a problem submitting your contact request. Please try again later';
       }
-      return (<section className={home.c_contact_form}>
-        <h1>{message}</h1>
+      return (<section className={supportFormStyle['c-support-form']}>
+        <h1 className={supportFormStyle['message-after']}>{message}</h1>
+        <a href="" className={buttonStyle['c-button-submit-small']} onClick={() => this.props.close()}>Close</a>
       </section>);
     }
 
@@ -65,7 +61,7 @@ class SupportForm extends Component {
       <h1>
         Support
       </h1>
-      <form action="" method="POST" onSubmit={this.handleFormSubmit}>
+      <form action="" method="POST" onSubmit={(event) => { this.handleFormSubmit(event); }}>
         <div className={supportFormStyle['contain-form']}>
           <div className={supportFormStyle['container-inputs']}>
             <label htmlFor="name">Name</label>
@@ -75,26 +71,26 @@ class SupportForm extends Component {
               id="support_name"
               placeholder="Name"
               required
-              onChange={this.handleChange}
-              value={this.props.defaultUserName}
+              onChange={(event) => { this.handleChange(event); }}
+              value={this.state.name}
             />
 
             <label htmlFor="support_email">Email</label>
             <input
               className={supportFormStyle['input-text']}
-              type="Email"
+              type="email"
               id="support_email"
               placeholder="Email"
-              required
-              onChange={this.handleChange}
-              value={this.props.defaultUserEmail}
+              disabled
+              onChange={(event) => { this.handleChange(event); }}
+              value={this.state.email}
             />
 
             <label htmlFor="support_type">Type</label>
             <div className={supportFormStyle['select-container']}>
               <select
                 id="support_type"
-                onChange={this.handleChange}
+                onChange={(event) => { this.handleChange(event); }}
                 name="selectCompany"
                 className={supportFormStyle[this.state.classSelect]}
                 required
@@ -113,17 +109,17 @@ class SupportForm extends Component {
               id="support_subject"
               placeholder="Subject"
               required
-              onChange={this.handleChange}
+              onChange={(event) => { this.handleChange(event); }}
             />
           </div>
           <div className={supportFormStyle['container-textarea']}>
             <label htmlFor="support_description">description</label>
             <textarea
               id="support_description"
-              placeholder="Description"
+              placeholder="Please let us know how we can help!"
               className={supportFormStyle['textarea-form']}
               required
-              onChange={this.handleChange}
+              onChange={(event) => { this.handleChange(event); }}
             />
           </div>
         </div>
@@ -132,7 +128,7 @@ class SupportForm extends Component {
           name="url"
           id="support_url"
           value={window.location}
-          onChange={this.handleChange}
+          onChange={(event) => { this.handleChange(event); }}
         />
         <div className={supportFormStyle['container-submit']}>
           <input
@@ -151,7 +147,8 @@ SupportForm.propTypes = {
   contactStatus: React.PropTypes.number,
   onFormSubmit: React.PropTypes.func,
   defaultUserName: React.PropTypes.string,
-  defaultUserEmail: React.PropTypes.string
+  defaultUserEmail: React.PropTypes.string,
+  close: React.PropTypes.func
 };
 
 

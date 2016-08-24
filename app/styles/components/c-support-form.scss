@@ -14,6 +14,13 @@
     text-align: center;
   }
 
+  .message-after {
+    color: $color-4;
+    font-size: $font-size-big;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
   form {
 
     .contain-form {
@@ -47,6 +54,11 @@
           &:last-child {
             margin-bottom: 0;
           }
+
+          &:required {
+            box-shadow: none;
+          }
+
         }
 
         .select-container {
@@ -82,11 +94,15 @@
             width: 100%;
 
             option {
-              color: $color-12;
+              color: $color-4;
             }
 
             &::-ms-expand {
               display: none;
+            }
+
+            &:required {
+              box-shadow: none;
             }
           }
 
@@ -111,6 +127,10 @@
           padding: 10px;
           resize: none;
           width: 100%;
+
+          &:required {
+            box-shadow: none;
+          }
         }
       }
     }

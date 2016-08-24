@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import FormSupport from './../../containers/Map/SupportForm';
 import supportModalStyle from '../../../styles/components/map/c-support-modal.scss';
 import layerSupportModalStyle from '../../../styles/components/c-layer-back.scss';
@@ -8,8 +9,7 @@ class SupportModal extends Component {
   render() {
     return (<div>
       <div
-        className={[layerSupportModalStyle['c-layer-back'],
-        layerSupportModalStyle['-support-modal']].join(' ')}
+        className={classnames(layerSupportModalStyle['c-layer-back'], layerSupportModalStyle['-support-modal'])}
         onClick={() => this.props.close()}
       >
       </div>)
@@ -20,7 +20,7 @@ class SupportModal extends Component {
         >
           <div className={supportModalStyle.cross}></div>
         </div>
-        <FormSupport />
+        <FormSupport close={() => this.props.close()} />
       </div>
     </div>);
   }

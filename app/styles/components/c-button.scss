@@ -41,11 +41,13 @@
   color: $color-4;
   display: block;
   font-size: $font-size-small;
+  font-weight: $font-weight-bold;
   letter-spacing: -.1px;
   margin: 45px auto 0;
   max-width: 115px;
   outline: 0;
   padding: 10px 0;
+  text-align: center;
   text-transform: uppercase;
   width: 100%;
 }
