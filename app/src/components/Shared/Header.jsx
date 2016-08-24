@@ -25,20 +25,6 @@ class Header extends Component {
   }
 
   render() {
-    let GFWLogo;
-    let logoClass;
-
-    switch (location.pathname) {
-      case '/map':
-        GFWLogo = betaLogo;
-        logoClass = styles['img-sub-page'];
-        break;
-
-      default:
-        GFWLogo = defaultLogo;
-        logoClass = styles['img-sub-page'];
-    }
-
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (
@@ -87,8 +73,8 @@ class Header extends Component {
                 />
                 <Link to="/">
                   <img
-                    className={logoClass}
-                    src={GFWLogo}
+                    className={styles['app-logo']}
+                    src={location.pathname === '/map' ? betaLogo : defaultLogo}
                     alt="Global Fishing Watch"
                   />
                 </Link>
