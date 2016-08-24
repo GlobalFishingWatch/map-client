@@ -94,6 +94,7 @@
             width: 100%;
 
             option {
+              background-color: rgba($color-2, .9);
               color: $color-4;
             }
 
@@ -103,6 +104,10 @@
 
             &:required {
               box-shadow: none;
+            }
+
+            &:focus {
+              background-color: rgba($color-2, 1);
             }
           }
 
