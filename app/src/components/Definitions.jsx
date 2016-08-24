@@ -26,6 +26,7 @@ class Definitions extends Component {
         title="Definitions"
         subtitle="Review definitions of terms you will find across our site and as you explore the Map."
         backgroundImage={definitionsBackgroundImage}
+        attribution="© OCEANA /A. Ellis"
       />
       <div className={AppStyles.wrap}>
         {accordionContent}

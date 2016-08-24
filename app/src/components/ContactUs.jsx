@@ -19,6 +19,9 @@ class ContactUs extends Component {
             defaultUserEmail={this.props.defaultUserEmail}
           />
         </div>
+        <span className={contactStyle['image-attribution']}>
+          Photo: © OCEANA / Xavier Mas
+        </span>
       </div>
       <Footer />
     </div>);

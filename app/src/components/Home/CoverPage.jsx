@@ -8,9 +8,9 @@ import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.png';
 import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
-import sliderBackground2 from '../../../assets/images/background_2.png';
 import sliderBackground3 from '../../../assets/images/background_3.png';
 import sliderBackground4 from '../../../assets/images/background_4.png';
+import sliderBackground5 from '../../../assets/images/background_5.png';
 
 class CoverPage extends Component {
 
@@ -57,10 +57,19 @@ class CoverPage extends Component {
       sliderBackground1,
       sliderBackgroundLDF,
       sliderBackground3,
-      sliderBackground2,
-      sliderBackground4
+      sliderBackground4,
+      sliderBackground5
     ];
     const sliderBackground = sliderBackgrounds[this.state.currentSlider];
+
+    const sliderAttributions = [
+      '© OCEANA / Juan Cuetos',
+      null,
+      '© OCEANA / Eduardo Sorensen',
+      '© OCEANA / Eduardo Sorensen',
+      'Hoatzinexp/iStock/Thinkstock'
+    ];
+    const sliderAttribution = sliderAttributions[this.state.currentSlider];
 
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
@@ -135,6 +144,11 @@ class CoverPage extends Component {
                 <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
               </div>
             </div>
+          </div>
+          <div className={CoverPageStyle['cover-attribution']}>
+            <span>
+              {sliderAttribution && `Photo: ${sliderAttribution}`}
+            </span>
           </div>
         </div>
       </div>

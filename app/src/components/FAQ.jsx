@@ -33,6 +33,7 @@ class FAQ extends Component {
         title="Frequently Asked Questions"
         subtitle="Get answers to commonly asked questions about Global Fishing Watch and commercial fishing."
         backgroundImage={faqBackgroundImage}
+        attribution="© Bento Viana"
       />
       <div className={AppStyles.wrap}>
         {faqSections}

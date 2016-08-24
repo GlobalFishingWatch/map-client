@@ -4,7 +4,6 @@
   background: url('../../assets/images/contact_us.png') no-repeat center;
   background-size: cover;
   min-height: 100%;
-  padding-bottom: 100px;
   position: relative;
 
   &::after {
@@ -16,5 +15,14 @@
     right: 0;
     top: 0;
     z-index: 0;
+  }
+
+  .image-attribution {
+    color: $color-4;
+    font-size: $font-size-x-small;
+    position: absolute;
+    right: 6px;
+    bottom: 1px;
+    z-index: 1;
   }
 }

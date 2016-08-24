@@ -83,6 +83,7 @@ class Blog extends Component {
       <CoverPrimary
         title="Global Fishing Watch Blog"
         subtitle="Get the latest news on Global Fishing Watch."
+        attribution="© OCEANA / Carlos Minguell"
         backgroundImage={blogBackgroundImage}
       />
       <section className={listPosts['c-list-posts']}>

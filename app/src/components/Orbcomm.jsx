@@ -3,7 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
-import termsBackgroundImage from '../../assets/images/terms.png';
+import orbcommBackgroundImage from '../../assets/images/orbcomm.png';
 
 class Orbcomm extends Component {
 
@@ -11,7 +11,8 @@ class Orbcomm extends Component {
     return (<div>
       <CoverPrimary
         title="Orbcomm Data Sublicensee License Agreement"
-        backgroundImage={termsBackgroundImage}
+        backgroundImage={orbcommBackgroundImage}
+        attribution="© OCEANA / Melissa Forsyth"
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

@@ -15,6 +15,7 @@ class TheProject extends Component {
           subtitle="Global Fishing Watch enables anyone with an Internet connection
            to see fishing activity anywhere in the ocean in near real-time, for free."
           backgroundImage={projectBackgroundImage}
+          attribution="© OCEANA / Keith Ellenbogen"
         />
         <div className={baseStyle.wrap}>
           <section className={theProjectStyle['c-the-project']}>

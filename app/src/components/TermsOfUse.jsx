@@ -14,6 +14,7 @@ class TermsOfUse extends Component {
         title="Terms Of Use"
         subtitle=""
         backgroundImage={termsBackgroundImage}
+        attribution="© OCEANA / Melissa Forsyth"
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

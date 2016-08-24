@@ -13,6 +13,7 @@ class PrivacyPolicy extends Component {
         title="Privacy Policy"
         subtitle=""
         backgroundImage={privacyPolicyBackgroundImage}
+        attribution="© OCEANA / Keith Ellenbogen"
       />
       <div className={AppStyles.wrap}>
         <section className={TextPages['c-text-pages']}>

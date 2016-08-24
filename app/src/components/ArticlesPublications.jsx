@@ -28,10 +28,8 @@ class ArticlesPublications extends Component {
           </a>
         </h4>
         <div className={PubArticleStyle.description}>
-          {articlePublication &&
-          <p>{articlePublication.author}</p>}
-          {articlePublication.date &&
-          <p>{articlePublication.date}</p>}
+          {articlePublication && <p>{articlePublication.author}</p>}
+          {articlePublication.date && <p>{articlePublication.date}</p>}
         </div>
         <div className={PubArticleStyle['link-container']}>
           <Rhombus direction="-right">
@@ -100,6 +98,7 @@ class ArticlesPublications extends Component {
         title="Articles and Publications"
         subtitle="Read about Global Fishing Watch in the media."
         backgroundImage={articlesPublicationsBackgroundImage}
+        attribution="© Bento Viana"
       />
       <div className={PubsArticlesLayoutStyles['l-publications-news']}>
         <div className={AppStyles.wrap}>

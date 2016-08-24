@@ -4,6 +4,7 @@ import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import { Link } from 'react-router';
 import CoverSecondary from './Shared/CoverSecondary';
+import blogBackgroundImage from '../../assets/images/blog.png';
 
 class BlogDetail extends Component {
 
@@ -30,7 +31,12 @@ class BlogDetail extends Component {
     let coverTitle = (<Link to={'/blog'}>Blog</Link>);
 
     return (<div>
-      <CoverSecondary title={coverTitle} subtitle={this.props.post ? this.props.post.title : null} />
+      <CoverSecondary
+        title={coverTitle}
+        subtitle={this.props.post ? this.props.post.title : null}
+        attribution="© OCEANA / Carlos Minguell"
+        backgroundImage={blogBackgroundImage}
+      />
       <section className={listposts['c-list-posts']}>
         {article}
       </section>
