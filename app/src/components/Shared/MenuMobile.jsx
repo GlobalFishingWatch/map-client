@@ -15,28 +15,31 @@ class MenuMobile extends Component {
     if (this.props.loggedUser) {
       userLinks = (
         <div>
-          <span
+          <button
             className={menuMobile['button-login']}
             onClick={this.props.logout}
           >
           log out
-          </span>
+          </button>
         </div>
       );
     } else {
       userLinks = (
         <div>
-          <span
+          <button
             className={menuMobile['button-login']}
             onClick={this.props.login}
           >
           log in
-          </span>
+          </button>
           <p className={menuMobile['forgot-text']}>
-            <a href="https://trial-globalfishingwatch.cs43.force.com/gfw/GFWResetPassword">
+            <a
+              href="https://trial-globalfishingwatch.cs43.force.com/gfw/GFWResetPassword"
+              className={menuMobile['forgot-password']}
+            >
               Forgot your password?
             </a>
-            <span className={menuMobile.register} onClick={this.props.login}> Not a member?</span>
+            <button className={menuMobile.register} onClick={this.props.login}>Not a member?</button>
           </p>
         </div>
       );
