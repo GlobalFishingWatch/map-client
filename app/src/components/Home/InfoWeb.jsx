@@ -10,15 +10,24 @@ class InfoWeb extends Component {
           <div className={infoWebStyle['image-info-web']}></div>
           <div className={infoWebStyle['text-info-web']}>
             <p>
-              The Global Fishing Watch Research Program works closely
-              with scientific experts to develop the tools and
-              analyses that will help us address some of the
-              biggest challenges facing the ocean. Our research
-              partnerships are helping us improve the accuracy
-              of our core algorithms and enabling new discoveries
-              that will be critical to ocean conservation. Moreover,
-              the Global Fishing Watch aims to support the entire scientific
-              community by making many of our datasets publicly available.
+              Global Fishing Watch uses public broadcast data from the Automatic Identification System (AIS), collected
+              by satellite and terrestrial receivers, to show the movement of vessels over time.
+            </p>
+            <h3>STEP 1: SATELLITES</h3>
+            <p>
+              Over the course of the year, more than 200,000 different vessels, including more than 30,000 known or
+              likely commercial fishing vessels, broadcast their position, course and speed through AIS. Every day, a
+              fleet of satellites records these broadcasts and beams the information down to Earth.
+            </p>
+            <h3>STEP 2: DATA PROCESSING</h3>
+            <p>
+              Each day, more than 20 million data points are added to the system. Using cloud computing and machine
+              learning, Global Fishing Watch processes these data, identifying which vessels are fishing boats, and when
+              and where they are fishing.
+            </p>
+            <h3>STEP 3: YOU</h3>
+            <p>
+              Once the data is visualized on Global Fishing Watch, anyone can track fishing activity across the globe.
             </p>
           </div>
         </div>

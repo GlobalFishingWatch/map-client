@@ -63,7 +63,7 @@ export default function () {
               <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
             </li>
             <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/definitions">Glossary of terms</Link>
+              <Link className={footerStyle['nav-link']} to="/definitions">Definitions</Link>
             </li>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/the-project">The project</Link>

@@ -55,7 +55,7 @@ class ArticlesPublications extends Component {
     return (<div>
       <CoverPrimary
         title="Articles and Publications"
-        subtitle="Read about Global Fishing Watch in the media"
+        subtitle="Read about Global Fishing Watch in the media."
         backgroundImageIndex={2}
       />
       <section>

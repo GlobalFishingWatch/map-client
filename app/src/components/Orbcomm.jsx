@@ -9,8 +9,7 @@ class Orbcomm extends Component {
   render() {
     return (<div>
       <CoverPrimary
-        title="Orbcomm Data Sublicensee License Agreement Page"
-        subtitle="Orbcomm Data Sublicensee License Agreement"
+        title="Orbcomm Data Sublicensee License Agreement"
         backgroundImageIndex={5}
       />
       <div className={AppStyles.wrap}>
