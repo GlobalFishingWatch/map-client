@@ -1,0 +1,47 @@
+@import '../application';
+
+.c-tooltip-info {
+  display: inline;
+  position: relative;
+
+  span {
+    background: $color-19;
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-small;
+    line-height: 1.4;
+    min-height: 21px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    position: absolute;
+    text-align: center;
+    visibility: hidden;
+    width: 200px;
+
+    &::after {
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid $color-19;
+      content: '';
+      height: 0;
+      left: 50%;
+      margin-left: -8px;
+      position: absolute;
+      top: 100%;
+      width: 0;
+
+  }
+}
+
+  &:hover {
+
+    span {
+      bottom: 30px;
+      left: 50%;
+      margin-left: -100px;
+      opacity: .8;
+      visibility: visible;
+      z-index: 999;
+    }
+  }
+}
