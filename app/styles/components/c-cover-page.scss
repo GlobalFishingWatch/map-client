@@ -3,6 +3,7 @@
 .c-cover-page {
   background: $color-19 url('../../assets/images/contact_us.png') center;
   background-size: cover;
+  position: relative;
   transition: background-image .2s ease-in-out;
 
   .layer-cover {
@@ -95,18 +96,6 @@
 
   .cover-main-subtitle {
     margin-bottom: 60px;
-  }
-
-  .cover-attribution {
-    position: relative;
-    color: $color-4;
-    font-size: $font-size-x-small;
-
-    span {
-      position: absolute;
-      right: 6px;
-      bottom: 1px;
-    }
   }
 
   //Style blog post detail

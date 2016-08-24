@@ -3,10 +3,13 @@ import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Header from '../../containers/Header';
 import CoverPrimary from './CoverPrimary';
+import ImageAttribution from './ImageAttribution';
 
 class CoverSecondary extends CoverPrimary {
 
   render() {
+    const attribution = this.props.attribution ? `Photo: ${this.props.attribution}` : null;
+
     return (<section
       className={CoverPage['c-cover-page']}
       style={{ backgroundImage: `url(${this.backgroundImage})` }}
@@ -23,11 +26,9 @@ class CoverSecondary extends CoverPrimary {
             </p>
           </div>
         </div>
-        <div className={CoverPage['cover-attribution']}>
-          <span>
-            Photo: {this.props.attribution}
-          </span>
-        </div>
+        {attribution && <ImageAttribution>
+          {attribution}
+        </ImageAttribution>}
       </div>
     </section>);
   }

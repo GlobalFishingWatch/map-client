@@ -11,6 +11,7 @@ import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
 import sliderBackground3 from '../../../assets/images/background_3.png';
 import sliderBackground4 from '../../../assets/images/background_4.png';
 import sliderBackground5 from '../../../assets/images/background_5.png';
+import ImageAttribution from '../Shared/ImageAttribution';
 
 class CoverPage extends Component {
 
@@ -145,11 +146,10 @@ class CoverPage extends Component {
               </div>
             </div>
           </div>
-          <div className={CoverPageStyle['cover-attribution']}>
-            <span>
-              {sliderAttribution && `Photo: ${sliderAttribution}`}
-            </span>
-          </div>
+
+          {sliderAttribution && <ImageAttribution>
+            {sliderAttribution && `Photo: ${sliderAttribution}`}
+          </ImageAttribution>}
         </div>
       </div>
     );
