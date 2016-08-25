@@ -10,6 +10,11 @@
     display: inline-block;;
   }
 
+  &::after {
+    content: '\00a0 ';
+    display: inline-block;;
+  }
+
   .content-tooltip {
     -webkit-font-smoothing: antialiased;
     background: $color-19;
