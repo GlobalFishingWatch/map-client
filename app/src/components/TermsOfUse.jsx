@@ -41,8 +41,8 @@ class TermsOfUse extends Component {
                     these Terms at any time without notice to You by posting the changed Terms on the Site. All
                     changes shall be effective
                     immediately upon posting. Please check these Terms periodically
-                    for changes. Your continued use of the Services after the posting of changes constitutes Your binding
-                    acceptance of such changes.
+                    for changes. Your continued use of the Services after the posting of
+                    changes constitutes Your binding acceptance of such changes.
                   </p>
                 </li>
                 <li>
@@ -50,8 +50,8 @@ class TermsOfUse extends Component {
                   <ol className={TextPages['second-level-list']}>
                     <li>
                       <p>
-                        Prohibited Uses. As a condition of Your use of the Site and the Services, You warrant to SkyTruth
-                        that You will only use the Services for a lawful purpose and
+                        Prohibited Uses. As a condition of Your use of the Site and the Services,
+                        You warrant to SkyTruth that You will only use the Services for a lawful purpose and
                         one that is not prohibited by these terms, conditions
                         or notices. You may not use the Services in any manner which could
                         damage, disable, overburden or impair the
@@ -67,22 +67,23 @@ class TermsOfUse extends Component {
                       Sole Responsibility. You are solely responsible for any and all acts and
                       omissions that occur under Your account, and You agree not to engage in
                       unacceptable use of the Site or the Services, which includes, without
-                      limitation, use of the Site or the Services to:
-                        <ol className={TextPages['third-level-ordered-list']}>
-                          <li>
-                            <p>interfere, disrupt, or attempt to gain unauthorized access to
-                            other accounts or any other computer network;</p>
-                          </li>
-                          <li>
-                            <p>disseminate, store or transmit viruses, trojan horses, or any
-                            other malicious code or program; or</p>
-                          </li>
-                          <li>
-                            <p>engage in any other activity deemed by SkyTruth to be in conflict
-                            with these Terms (including any Third Party Provider terms referenced in Section 2 below).</p>
-                          </li>
-                        </ol>
-                      </p>
+                      limitation, use of the Site or the Services to:</p>
+                      <ol className={TextPages['third-level-ordered-list']}>
+                        <li>
+                          <p>interfere, disrupt, or attempt to gain unauthorized access to
+                          other accounts or any other computer network;</p>
+                        </li>
+                        <li>
+                          <p>disseminate, store or transmit viruses, trojan horses, or any
+                          other malicious code or program; or</p>
+                        </li>
+                        <li>
+                          <p>engage in any other activity deemed by SkyTruth to be in conflict
+                            with these Terms (including any Third Party Provider terms referenced
+                            in Section 2 below).
+                          </p>
+                        </li>
+                      </ol>
                     </li>
                     <li>
                       <p>Indemnity. You agree to indemnify, hold harmless and, at SkyTruth’s request, defend
