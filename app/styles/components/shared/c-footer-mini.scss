@@ -12,9 +12,14 @@
     align-items: center;
     display: flex;
 
-    .partner {
+    .google, .skytruth {
       margin-right: 15px;
       max-width: 70px;
+    }
+
+    .oceana {
+      margin-right: 15px;
+      max-width: 90px;
     }
   }
 
