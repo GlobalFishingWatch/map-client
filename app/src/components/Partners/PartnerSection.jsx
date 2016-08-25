@@ -61,7 +61,7 @@ class PartnerSection extends Component {
               infrastructure to address environmental and humanitarian issues through partnerships
               with non-profits, educational institutions, and research groups. To learn more,
               visit <a
-                className={PartnerSectionStyle['link-underline']}
+                className={PartnerSectionStyle['-underline']}
                 href="https://www.google.com/earth/outreach/index.html"
                 target="_blank"
               >earth.google.com/outreach</a> to learn more.
