@@ -178,10 +178,10 @@ class TermsOfUse extends Component {
                     <li>
                       <a
                         className={AppStyles['-underline']}
-                        href="http://cartodb.com/terms"
+                        href="https://carto.com/terms"
                         target="_blank"
                       >
-                        CartoDB
+                        CARTO
                       </a>
                     </li>
                     <li>
