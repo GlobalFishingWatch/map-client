@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
+import ToolTip from './.././../components/Shared/ToolTip';
 import infoWebStyle from '../../../styles/components/c-info-web.scss';
 import baseStyle from '../../../styles/application.scss';
-import infoIconBlack from '../../../assets/icons/info_black.svg';
-import tooltipStyle from '../../../styles/components/c-tooltip-info.scss';
 
 class InfoWeb extends Component {
   render() {
@@ -29,14 +28,11 @@ class InfoWeb extends Component {
             </p>
             <h3>STEP 3: YOU</h3>
             <p>
-              Once the data is visualized on Global Fishing Watch, anyone can track fishing activity
-              <a
-                className={tooltipStyle['c-tooltip-info']} href="#"
-              >
-                <img src={infoIconBlack} alt="info icon"></img>
-                <span>Apparent fishing activity</span>
-              </a>
-              across the globe.
+              Once the data is visualized on Global Fishing Watch, anyone can track
+              fishing
+              <ToolTip iconColor={'black'} >
+                Apparent fishing
+              </ToolTip>
             </p>
           </div>
         </div>
