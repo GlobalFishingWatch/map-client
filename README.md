@@ -40,11 +40,15 @@ Note that as of now, before we fix all errors on the existing codebase, the push
 
 # Production
 
-To compile the project to production environment, you need change the NODE_ENV variable to `production` value and execute the next command.
+To compile the project to production environment, you need set the NODE_ENV variable value to `production` and 
+execute the following command.
 ```
 npm run build
 ```
-This command generate a dist folder with the files needed to run application in a nginx or apache server. You need configure apache or nginx to serve static files and configure the push state mode.
+
+This command generates a `dist` folder with the files needed to run application in a nginx or apache server. Your 
+server needs to be configured to serve all routers from a static `index.html` file.
+
 ### nginx
 Example nginx config
 ```
@@ -75,7 +79,7 @@ RewriteRule (.*) index.html
 
 #### PORT
 
-Port in which the node server will listen for incmming connections
+Port in which the node server will listen for incoming connections
 
 #### GOOGLE_API_KEY
 
