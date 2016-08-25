@@ -2,21 +2,6 @@
 
 .c-partner-section {
   padding-bottom: 90px;
-  padding-top: 80px;
-
-  .link-underline {
-    color: $color-12;
-    display: inline-block;
-    font-weight: $font-weight-bold;
-    text-decoration: none;
-
-    &::after {
-      background-color: $color-6;
-      content: ' ';
-      display: block;
-      height: 1px;
-    }
-  }
 
   .contain-img-logo {
     align-items: center;

@@ -5,6 +5,7 @@ import PartnerSection from './Partners/PartnerSection';
 import FunderSection from './Partners/FunderSection';
 import ResearchSection from './Partners/ResearchSection';
 import OtherSection from './Partners/OtherSection';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import partnersBackgroundImage from '../../assets/images/partners.png';
 
 class Partners extends Component {
@@ -19,10 +20,12 @@ class Partners extends Component {
         backgroundImage={partnersBackgroundImage}
         attribution="US Coast Guard"
       />
-      <PartnerSection />
-      <FunderSection />
-      <ResearchSection />
-      <OtherSection />
+      <div className={StaticPageStyles['l-static-page']}>
+        <PartnerSection />
+        <FunderSection />
+        <ResearchSection />
+        <OtherSection />
+      </div>
       <Footer />
     </div>);
   }
