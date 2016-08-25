@@ -336,7 +336,7 @@ class TermsOfUse extends Component {
                     SkyTruth Tel: <a className={AppStyles['-underline']} href="tel:1 (304) 885-4581">
                     +1 (304) 885-4581</a> Email: <a
                       className={AppStyles['-underline']}
-                      href="dmcaagent@skytruth.org"
+                      href="mailto:dmcaagent@skytruth.org"
                     >
                       dmcaagent@skytruth.org
                     </a>.
