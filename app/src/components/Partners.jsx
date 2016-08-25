@@ -6,7 +6,7 @@ import FunderSection from './Partners/FunderSection';
 import ResearchSection from './Partners/ResearchSection';
 import OtherSection from './Partners/OtherSection';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import partnersBackgroundImage from '../../assets/images/partners.png';
+import partnersBackgroundImage from '../../assets/images/partners.jpg';
 
 class Partners extends Component {
 

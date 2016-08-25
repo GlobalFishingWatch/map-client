@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
-import termsBackgroundImage from '../../assets/images/terms.png';
+import termsBackgroundImage from '../../assets/images/terms.jpg';
 
 class TermsOfUse extends Component {
 

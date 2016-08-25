@@ -6,11 +6,11 @@ import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
-import sliderBackground1 from '../../../assets/images/background_1.png';
+import sliderBackground1 from '../../../assets/images/background_1.jpg';
 import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
-import sliderBackground3 from '../../../assets/images/background_3.png';
-import sliderBackground4 from '../../../assets/images/background_4.png';
-import sliderBackground5 from '../../../assets/images/background_5.png';
+import sliderBackground3 from '../../../assets/images/background_3.jpg';
+import sliderBackground4 from '../../../assets/images/background_4.jpg';
+import sliderBackground5 from '../../../assets/images/background_5.jpg';
 import ImageAttribution from '../Shared/ImageAttribution';
 
 class CoverPage extends Component {

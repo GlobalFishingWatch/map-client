@@ -4,7 +4,7 @@ import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
 import tutorialStyle from '../../styles/components/c-tutorial-page.scss';
-import tutorialBackgroundImage from '../../assets/images/tutorial.png';
+import tutorialBackgroundImage from '../../assets/images/tutorial.jpg';
 
 class Tutorials extends Component {
 

@@ -4,7 +4,7 @@ import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
-import orbcommBackgroundImage from '../../assets/images/orbcomm.png';
+import orbcommBackgroundImage from '../../assets/images/orbcomm.jpg';
 
 class Orbcomm extends Component {
 

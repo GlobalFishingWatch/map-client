@@ -5,7 +5,7 @@ import Loader from './Shared/Loader';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import definitionsBackgroundImage from '../../assets/images/definitions.png';
+import definitionsBackgroundImage from '../../assets/images/definitions.jpg';
 
 
 class Definitions extends Component {

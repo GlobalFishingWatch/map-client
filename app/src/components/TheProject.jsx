@@ -4,7 +4,7 @@ import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
 import theProjectStyle from '../../styles/components/c-the-project.scss';
-import projectBackgroundImage from '../../assets/images/project.png';
+import projectBackgroundImage from '../../assets/images/project.jpg';
 
 class TheProject extends Component {
 
