@@ -99,6 +99,7 @@ class Orbcomm extends Component {
                 </p>
               </li>
               <li>
+                <p>
                 ORBCOMM AIS LLC is not liable for any unauthorized
                 use of the AIS Data. Sublicensee shall remain
                 liable for all confidential or proprietary information
@@ -110,8 +111,10 @@ class Orbcomm extends Component {
                 an unauthorized person, in any manner inconsistent with
                 this sublicense agreement or for other reasons deemed
                 appropriate by ORBCOMM AIS LLC in its sole discretion.
+                </p>
               </li>
               <li>
+                <p>
                 Sublicensee acknowledges and agrees that nothing
                 in this sublicense agreement constitutes an undertaking
                 by Company and/or ORBCOMM AIS LLC to provide the AIS
@@ -120,6 +123,7 @@ class Orbcomm extends Component {
                 absolute discretion may from time to time make additions
                 to, deletions from, modifications to, or change the format
                 of the AIS Data.
+                </p>
               </li>
               <li>
                 <p>

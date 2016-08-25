@@ -25,7 +25,11 @@ class FunderSection extends Component {
             philanthropists to identify and support innovative, results-driven projects in the world’s most
             wild and threatened ecosystems. LDF has supported over 128 high-impact projects in more than 46
             countries around the world. For more information visit:&nbsp;
-            <a href="http://www.ldcfoundation.org" target="_blank">www.ldcfoundation.org</a>.
+            <a
+              href="http://www.ldcfoundation.org"
+              className={BaseStyle['-underline']}
+              target="_blank"
+            >www.ldcfoundation.org</a>.
           </p>
         </div>
         <div className={FunderSectionStyle['funder-logos']}>
