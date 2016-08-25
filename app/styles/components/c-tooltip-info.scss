@@ -3,14 +3,25 @@
 .c-tooltip-info {
   display: inline;
   position: relative;
+  top: 2px;
 
-  span {
+  &::before {
+    content: '\00a0 ';
+    display: inline-block;;
+  }
+
+  .content-tooltip {
+    -webkit-font-smoothing: antialiased;
     background: $color-19;
+    bottom: 30px;
+    box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
     font-family: $font-family-1;
-    font-size: $font-size-small;
+    font-size: $font-size-normal;
+    left: 50%;
     line-height: 1.4;
-    min-height: 21px;
+    margin-left: -100px;
+    min-height: 20px;
     padding-bottom: 15px;
     padding-top: 15px;
     position: absolute;
@@ -19,29 +30,27 @@
     width: 200px;
 
     &::after {
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 8px solid $color-19;
+      border: 6px solid;
+      border-color: transparent transparent $color-19 $color-19;
+      box-shadow: -1px 1px 4px 0 rgba($color-12, .4);
       content: '';
       height: 0;
       left: 50%;
       margin-left: -8px;
       position: absolute;
       top: 100%;
+      transform: rotate(-45deg);
+      transform-origin: 0 0;
       width: 0;
-
   }
 }
 
   &:hover {
 
-    span {
-      bottom: 30px;
-      left: 50%;
-      margin-left: -100px;
-      opacity: .8;
+    .content-tooltip {
+      opacity: .95;
       visibility: visible;
-      z-index: 999;
+      z-index: 2;
     }
   }
 }
