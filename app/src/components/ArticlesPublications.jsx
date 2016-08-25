@@ -9,7 +9,7 @@ import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import PubsArticlesLayoutStyles from '../../styles/layout/l-publications-articles.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
-import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.png';
+import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.jpg';
 
 class ArticlesPublications extends Component {
 
