@@ -56,6 +56,6 @@ $corporateColor: #233e76;
 }
 
 .map_container {
-  height: 100%;
+  height: calc(100% - 38px);
   position: relative;
 }
