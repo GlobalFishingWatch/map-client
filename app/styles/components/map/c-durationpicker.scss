@@ -1,6 +1,4 @@
 @import '../../settings';
-@import '../../layout-settings';
-
 
 .c-durationpicker {
   background-color: $color-1;
@@ -19,6 +17,6 @@
 
   .c-durationpicker-text {
     display: inline-block;
-    margin-top: 4px;;
+    margin-top: 4px;
   }
 }
