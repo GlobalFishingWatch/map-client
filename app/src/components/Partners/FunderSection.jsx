@@ -12,13 +12,20 @@ class FunderSection extends Component {
   render() {
     return (<section className={FunderSectionStyle['c-funder-section']}>
       <div className={BaseStyle.wrap}>
-        <h2>Founding Funders</h2>
+        <h2>Funding Partners</h2>
         <div className={FunderSectionStyle['ldf-information']}>
           <img src={ldfLogo} alt="Leonardo Dicaprio Foundation logo"></img>
           <p>
-          The Leonardo DiCaprio Foundation is dedicated to the long-term health and wellbeing of all Earth’s
-          inhabitants. Through collaborative partnerships, we support innovative projects that protect vulnerable
-          wildlife from extinction, while restoring balance to threatened ecosystems and communities.
+            Since 1998, Leonardo DiCaprio Foundation (LDF) has been on a mission to protect the Earth’s last wild
+            places, implementing solutions that restore balance to threatened ecosystems, and ensure the long-term
+            health and wellbeing of all its inhabitants. Through grant making, public campaigns and media
+            initiatives, LDF brings attention and needed funding to three areas: protecting biodiversity,
+            ocean & forest conservation, and climate change. The Foundation works in close collaboration with a
+            broad network of environmental leaders and experts, effective organizations, and committed
+            philanthropists to identify and support innovative, results-driven projects in the world’s most
+            wild and threatened ecosystems. LDF has supported over 128 high-impact projects in more than 46
+            countries around the world. For more information visit:&nbsp;
+            <a href="http://www.ldcfoundation.org" target="_blank">www.ldcfoundation.org</a>.
           </p>
         </div>
         <div className={FunderSectionStyle['funder-logos']}>

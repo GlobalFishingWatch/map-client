@@ -99,7 +99,7 @@ class CoverPage extends Component {
                     management of our fisheries.”
                   </blockquote>
                   <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-                  <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
+                  <p>The Leonardo DiCaprio Foundation is Proud to be a Funding Partner of Global Fishing Watch</p>
                 </div>
               </div>
               <div>
