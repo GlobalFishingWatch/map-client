@@ -1,13 +1,12 @@
 @import '../application';
 
 .c-tooltip-info {
-  display: inline;
+  display: inline-flex;
   position: relative;
-  top: 2px;
 
   &::before {
     content: '\00a0 ';
-    display: inline-block;;
+    display: inline-block;
   }
 
   &::after {
@@ -16,44 +15,35 @@
   }
 
   .content-tooltip {
-    -webkit-font-smoothing: antialiased;
-    background: $color-19;
+    background: rgba($color-19, .95);
     bottom: 30px;
     box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
     font-family: $font-family-1;
-    font-size: $font-size-normal;
     left: 50%;
-    line-height: 1.4;
-    margin-left: -100px;
-    min-height: 20px;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    padding: 15px 0;
     position: absolute;
     text-align: center;
+    transform: translate(-50%, 0);
     visibility: hidden;
     width: 200px;
 
-    &::after {
+    &::before {
       border: 6px solid;
       border-color: transparent transparent $color-19 $color-19;
+      bottom: 0;
       box-shadow: -1px 1px 4px 0 rgba($color-12, .4);
       content: '';
       height: 0;
       left: 50%;
-      margin-left: -8px;
       position: absolute;
-      top: 100%;
-      transform: rotate(-45deg);
-      transform-origin: 0 0;
+      transform: translate(-50%, 50%) rotate(-45deg);
       width: 0;
+    }
   }
-}
 
   &:hover {
-
     .content-tooltip {
-      opacity: .95;
       visibility: visible;
       z-index: 2;
     }
