@@ -56,9 +56,9 @@ class FooterMini extends Component {
         {expandedFooter}
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
-            <img className={styles.oceana} src={logooceana} alt="oceana logo" />
-            <img className={styles.skytruth} src={logosky} alt="skytruth logo" />
-            <img className={styles.google} src={logogoogle} alt="google logo" />
+            <img className={styles.partner} src={logooceana} alt="oceana logo" />
+            <img className={styles.partner} src={logosky} alt="skytruth logo" />
+            <img className={styles.partner} src={logogoogle} alt="google logo" />
           </div>
 
           <ul className={styles.links}>
