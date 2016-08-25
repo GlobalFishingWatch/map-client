@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Accordion, AccordionItem } from 'react-sanfona';
+import { AccordionItem } from 'react-sanfona';
+import AccordionGF from '../../lib/AccordionGF';
 
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 
@@ -10,8 +11,6 @@ class ContentAccordion extends Component {
     this.state = {
       isOpen: false
     };
-
-    this.toggleItemBound = this.toggleItem.bind(this);
   }
 
   getAccordionItems() {
@@ -40,29 +39,60 @@ class ContentAccordion extends Component {
     return accordionItems;
   }
 
+  // returns position in entries array if found
+  getIndexActiveItem() {
+    const term = this.props.activeItem;
+    const entries = this.props.entries;
+    let index = -1;
+
+    if (!term) return index;
+
+    index = entries.findIndex((entry) =>
+      entry.slug === term.toLowerCase()
+    );
+
+    return [index];
+  }
+
   // changes arrow's direction when open and close
   // we are not using it right now because we are not
   // implementing the arrows. We'll do in a nerby future.
-  toggleItem() {
-    this.setState({ isOpen: !this.state.isOpen });
+  toggleItem(e) {
+    const entries = this.props.entries;
+    const indexEntry = e.activeItems[0];
+
+    const titleEntry = entries[indexEntry] ?
+      entries[indexEntry].slug : null;
+
+    if (!titleEntry) return;
+
+    // updates url with new entry title selected
+    this.props.push(titleEntry);
+
+    // not working right now
+    // this.setState({ isOpen: !this.state.isOpen });
   }
 
   render() {
     return (
-      <Accordion
-        allowMultiple={false}
-        activeItems={-1}
-        className={AccordionStyles['c-content-accordion']}
-        onChange={this.toggleItemBound}
-      >
+      <div>
+        <AccordionGF
+          allowMultiple={false}
+          activeItems={this.getIndexActiveItem()}
+          className={AccordionStyles['c-content-accordion']}
+          onChange={(e) => this.toggleItem(e)}
+        >
         {this.getAccordionItems()}
-      </Accordion>
+        </AccordionGF>
+      </div>
     );
   }
 }
 
 ContentAccordion.propTypes = {
-  entries: React.PropTypes.array
+  activeItem: React.PropTypes.string,
+  entries: React.PropTypes.array,
+  push: React.PropTypes.func
 };
 
 export default ContentAccordion;

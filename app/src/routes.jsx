@@ -26,7 +26,9 @@ class Routes extends Component {
 
         <Route path="faq" component={FAQContainer} />
         <Route path="tutorials" component={Tutorials} />
-        <Route path="definitions" component={Definitions} />
+        <Route path="definitions" component={Definitions}>
+          <Route path=":term" component={Definitions} />
+        </Route>
 
         <Route path="the-project" component={TheProject} />
         <Route path="partners" component={Partners} />
