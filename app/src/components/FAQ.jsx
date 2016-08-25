@@ -4,6 +4,7 @@ import Loader from './Shared/Loader';
 import CoverPrimary from './Shared/CoverPrimary';
 import ContentAccordion from './Shared/ContentAccordion';
 import AppStyles from '../../styles/application.scss';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import faqBackgroundImage from '../../assets/images/faq.png';
 
 class FAQ extends Component {
@@ -35,8 +36,11 @@ class FAQ extends Component {
         backgroundImage={faqBackgroundImage}
         attribution="© Bento Viana"
       />
-      <div className={AppStyles.wrap}>
-        {faqSections}
+      <div className={StaticPageStyles['l-static-page']}>
+        <div className={AppStyles.wrap}>
+          <p className={StaticPageStyles.intro}>Click on the FAQ below to see the answer:</p>
+          {faqSections}
+        </div>
       </div>
       <Footer />
     </div>);
