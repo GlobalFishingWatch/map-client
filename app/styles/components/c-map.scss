@@ -1,61 +1,51 @@
-@import '../layout-settings';
-
-$corporateColor: #233e76;
+@import '../settings';
 
 .map {
-  position: absolute !important;
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
-  width: 100%;
   height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
   z-index: 5;
 }
 
-.loginButton,
-.loggedUser {
-  position: absolute !important;
-  top: 50px;
-  left: 10px;
-  z-index: 10;
-}
-
-.loginButton,
-.loggedUser {
-  right: 10px;
-  left: inherit;
-}
-
-.zoom_controls {
+.zoom-controls {
+  bottom: 135px;
   left: 35px;
   position: absolute;
-  bottom: 135px;
   z-index: 6;
-  span {
-    background-color: $corporateColor;
-    height: 35px;
-    width: 35px;
-    display: block;
+
+  > .control {
+    background-color: $color-19;
+    border: 1px solid $color-21;
     border-radius: 50%;
-    color: white;
-    line-height: 35px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 8px 0 $color-22;
+    color: $color-4;
     cursor: pointer;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 40px;
+
+    & + .control {
+      margin-top: 5px;
+    }
   }
 }
 
-.timebar_container {
+.timebar-container {
+  bottom: 0;
   height: $timebar-height;
+  left: 0;
   position: absolute;
-  bottom: 0px;
-  left: 0px;
   width: 100%;
   z-index: 6;
 }
 
-.map_container {
-  height: 100%;
+.map-container {
+  height: calc(100% - 38px);
   position: relative;
 }

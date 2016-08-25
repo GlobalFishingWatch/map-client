@@ -415,14 +415,14 @@ class Map extends Component {
         <Share />
       </Modal>
       <Header />
-      <div className={map.map_container} ref="mapContainer">
+      <div className={map['map-container']} ref="mapContainer">
 
-        <div className={map.zoom_controls}>
-          <span id="share_map" onClick={this.props.openShareModal}>S</span>
-          <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
-          <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
+        <div className={map['zoom-controls']}>
+          <span className={map.control} id="share_map" onClick={this.props.openShareModal}>S</span>
+          <span className={map.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
+          <span className={map.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map.timebar_container}>
+        <div className={map['timebar-container']}>
           <Timebar />
         </div>
         <ControlPanel />
