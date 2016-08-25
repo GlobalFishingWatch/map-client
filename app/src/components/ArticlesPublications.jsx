@@ -5,6 +5,7 @@ import Loader from './Shared/Loader';
 import { Link } from 'react-router';
 import Rhombus from './Shared/Rhombus';
 import classnames from 'classnames';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import PubsArticlesLayoutStyles from '../../styles/layout/l-publications-articles.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
@@ -100,9 +101,11 @@ class ArticlesPublications extends Component {
         backgroundImage={articlesPublicationsBackgroundImage}
         attribution="© Bento Viana"
       />
-      <div className={PubsArticlesLayoutStyles['l-publications-news']}>
-        <div className={AppStyles.wrap}>
-          {pageContent}
+      <div className={StaticPageStyles['l-static-page']}>
+        <div className={PubsArticlesLayoutStyles['l-publications-news']}>
+          <div className={AppStyles.wrap}>
+            {pageContent}
+          </div>
         </div>
       </div>
       <Footer />
