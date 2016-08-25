@@ -4,6 +4,7 @@ import Footer from './Shared/Footer';
 import baseStyle from '../../styles/_base.scss';
 import theProjectStyle from '../../styles/components/c-the-project.scss';
 import projectBackgroundImage from '../../assets/images/project.png';
+import ToolTip from '../components/Shared/ToolTip';
 
 class TheProject extends Component {
 
@@ -23,7 +24,11 @@ class TheProject extends Component {
               Hundreds of millions of people depend on the ocean for their livelihoods
               and many more rely on the ocean for
               food. However, the world’s oceans are threatened by global overfishing,
-              illegal fishing and habitat destruction. Their
+              illegal fishing
+              <ToolTip iconColor={'black'} >
+                Apparent fishing
+              </ToolTip>
+              and habitat destruction. Their
               sustainability depends on action by governments, fishery management
               organizations, citizens and the fishing industry itself.
             </p>
