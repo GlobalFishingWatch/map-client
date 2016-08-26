@@ -77,7 +77,9 @@ function shouldUpdateScroll(prevRouterProps, { location }) {
   /* Here we define all the routes for which we don't want to scroll to top if
    * both the old path and the new one match (i.e. if the global regex and the
    * regex params match the two paths) */
-  const regexes = [];
+  const regexes = [
+    /\/definitions(?:\/(?:[A-z]|[1-9]|-)+)?/
+  ];
 
   for (let i = 0, j = regexes.length; i < j; i++) {
     if (isSamePage(regexes[i])) {
