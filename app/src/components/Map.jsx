@@ -405,7 +405,7 @@ class Map extends Component {
   render() {
     return (<div>
       <Modal
-        opened={!this.props.token}
+        opened={!this.props.token && REQUIRE_MAP_LOGIN}
         closeable={false}
         close={() => {}}
       >

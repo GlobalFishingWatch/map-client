@@ -13,7 +13,8 @@
     "BLOG_URL": true,
     "FAQ_JSON_URL": true,
     "DEFINITIONS_JSON_URL": true,
-    "ART_PUB_JSON_URL": true
+    "ART_PUB_JSON_URL": true,
+    "REQUIRE_MAP_LOGIN": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
