@@ -9,7 +9,7 @@ import HomepageStyles from '../../styles/layout/l-homepage.scss';
 class Home extends Component {
   render() {
     return (
-      <div classsName={HomepageStyles['l-homepage']}>
+      <div className={HomepageStyles['l-homepage']}>
         <CoverPage />
         <Steps />
         <section className={home.infomap}>
