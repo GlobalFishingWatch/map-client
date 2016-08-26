@@ -33,11 +33,7 @@ class Steps extends Component {
               <div className={StepsStyle.content}>
                 <h3 className={StepsStyle.name}>Step 1: Satellites</h3>
                 <p>Over the course of the year, more than 200,000 different vessels,
-                  including more than 30,000 known or likely commercial fishing
-                  <ToolTip iconColor={'black'} >
-                    Apparent fishing
-                  </ToolTip>
-                  vessels,
+                  including more than 30,000 known or likely commercial fishing vessels,
                   broadcast their position, course and speed through AIS. Every day, a fleet
                   of satellites records these broadcasts and beams the information down to Earth
                 </p>
@@ -59,7 +55,11 @@ class Steps extends Component {
                 <h3 className={StepsStyle.name}>Step 2: Data processing</h3>
                 <p>Each day, more than 20 million data points are added to the system. Using cloud
                   computing and machine learning, Global Fishing Watch processes this data, identifying
-                  which vessels are fishing boats, and when and where they are likely fishing.
+                  which vessels are fishing boats, and when and where they are fishing
+                  <ToolTip iconColor={'black'} >
+                    Apparent fishing
+                  </ToolTip>
+                  .
                 </p>
               </div>
             </li>
