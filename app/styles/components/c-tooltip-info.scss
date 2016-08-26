@@ -29,13 +29,14 @@
     width: 200px;
 
     &::before {
+      -webkit-filter: drop-shadow(-1px 1px 1px rgba($color-12, .5));
       border: 6px solid;
-      border-color: transparent transparent $color-19 $color-19;
+      border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
       bottom: 0;
-      box-shadow: -1px 1px 4px 0 rgba($color-12, .4);
       content: '';
       height: 0;
       left: 50%;
+      opacity: .95;
       position: absolute;
       transform: translate(-50%, 50%) rotate(-45deg);
       width: 0;
