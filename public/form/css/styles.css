@@ -51,6 +51,14 @@ a {
 
 
 @font-face {
+  font-family: 'roboto-slab';
+  src: url('roboto/RobotoSlab-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+@font-face {
   font-family: 'roboto';
   src: url('roboto/Roboto-Light.ttf') format('truetype');
   font-weight: 300;
@@ -76,6 +84,25 @@ body {
   font-family: 'roboto', Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: 400;
+}
+
+.wrap {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 25px;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .wrap{
+    padding: 0 55px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .wrap{
+    padding: 0 115px;
+  }
 }
 
 .wrap {
@@ -147,8 +174,8 @@ header {
 }
 
 .menu .logo {
-  height: 50px;
-  max-width: 175px;
+  height: 57px;
+  max-width: 245px;
   margin: 0;
   text-indent: -10000px;
   background: url("../img/gfw_logo_hor.svg") no-repeat center center;
@@ -158,8 +185,8 @@ header {
 
 @media screen and (min-width: 768px) {
   .menu .logo {
-    height: 51px;
-    max-width: 208px;
+    height: 57px;
+    max-width: 245px;
     background: url("../img/gfw_logo_hor.svg") no-repeat center center;
     background-size: contain;
   }
@@ -170,6 +197,10 @@ header {
 }
 
 
+<<<<<<< 910a95fa16fbc758228f2dae6c3e6f39cb3040f1
+=======
+
+>>>>>>> update public pages styles
 @media screen and (min-width: 768px) {
   .desktop-menu {
     display: block;
@@ -185,6 +216,7 @@ header {
 
   .desktop-menu > li {
     display: inline-block;
+<<<<<<< 910a95fa16fbc758228f2dae6c3e6f39cb3040f1
     padding: 10px 10px;
     position: relative;
   }
@@ -204,6 +236,12 @@ header {
 
 
   /*.desktop-menu > li:nth-last-child(2) {
+=======
+    margin-right: 24px;
+  }
+
+  .desktop-menu > li:nth-last-child(2) {
+>>>>>>> update public pages styles
     margin-right: 24px;
   }
 
@@ -223,7 +261,10 @@ header {
     letter-spacing: -0.1px;
     cursor: pointer;
     font-weight: bold;
+<<<<<<< 910a95fa16fbc758228f2dae6c3e6f39cb3040f1
     position:relative;
+=======
+>>>>>>> update public pages styles
   }
 
   .desktop-menu .selected:after {
@@ -288,6 +329,7 @@ header {
 
 @media screen and (min-width: 1024px) {
   .desktop-menu > li {
+<<<<<<< 910a95fa16fbc758228f2dae6c3e6f39cb3040f1
     padding: 10px 28px;
   }
 
@@ -297,6 +339,17 @@ header {
 
   .desktop-menu > li:last-child {
 
+=======
+    margin-right: 60px;
+  }
+
+  .desktop-menu > li:nth-last-child(2) {
+    margin-right: 30px;
+  }
+
+  .desktop-menu > li:last-child {
+    padding-left: 30px;
+>>>>>>> update public pages styles
   }
 }
 
@@ -756,19 +809,11 @@ hr {
 }
 
 .bg.log {
-<<<<<<< 98312824619953a1bfbd566866c758515090ea96
   background-image: url('../img/background1.jpg');
 }
 
 .bg.res {
   background-image: url('../img/background2.jpg');
-=======
-  background-image: url('../img/login.jpg');
-}
-
-.bg.res {
-  background-image: url('../img/registration.jpg');
->>>>>>> new backgorund images on login and register page and update logo
 }
 
 .bg.ty {
