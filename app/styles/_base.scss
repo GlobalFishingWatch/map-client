@@ -67,6 +67,13 @@ p {
   }
 }
 
+address {
+  color: $color-9;
+  font-family: $font-family-2;
+  font-size: $font-size-normal;
+  line-height: 1.6;
+}
+
 a {
   text-decoration: none;
 
