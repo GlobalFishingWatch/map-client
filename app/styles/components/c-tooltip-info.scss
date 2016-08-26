@@ -34,6 +34,7 @@
       border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
       bottom: 0;
       content: '';
+      filter: drop-shadow(-1px 1px 1px rgba($color-12, .5));
       height: 0;
       left: 50%;
       opacity: .95;
