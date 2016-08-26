@@ -4,6 +4,7 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
+import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.jpg';
@@ -36,10 +37,10 @@ class CoverPage extends Component {
     this.setState({ currentSlider });
   }
 
-  gosection() {
-    $('html, body').animate({
-      scrollTop: $('#case_study').offset().top
-    }, 1000);
+  scrollPage() {
+    const el = document.getElementById('steps');
+    if (!el) return;
+    scrollTo(el);
   }
 
   render() {
@@ -66,7 +67,7 @@ class CoverPage extends Component {
     const sliderAttributions = [
       '© OCEANA / Juan Cuetos',
       null,
-      '© Steve De Neef ',
+      '© OCEANA / Eduardo Sorensen',
       '© OCEANA / Eduardo Sorensen',
       'Hoatzinexp/iStock/Thinkstock'
     ];
@@ -137,7 +138,7 @@ class CoverPage extends Component {
                 </div>
               </div>
             </Slider>
-            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.scrollPage}>
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
             <div className={CoverPageStyle['footer-header']}>

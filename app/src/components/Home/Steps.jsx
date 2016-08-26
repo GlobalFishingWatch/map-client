@@ -10,7 +10,7 @@ class Steps extends Component {
   render() {
     return (
       <section className={baseStyle.wrap}>
-        <div className={StepsStyle['c-steps']}>
+        <div className={StepsStyle['c-steps']} id="steps">
           <div className={StepsStyle.intro}>
             <p>Global Fishing Watch uses public broadcast data from the Automatic Identification System (AIS),
             collected by satellite and terrestrial receivers, to show the movement of vessels over time.</p>

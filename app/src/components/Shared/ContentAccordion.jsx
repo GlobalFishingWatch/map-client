@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { AccordionItem } from 'react-sanfona';
 import AccordionGF from '../../lib/AccordionGF';
-
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 
 class ContentAccordion extends Component {
