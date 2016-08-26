@@ -11,10 +11,13 @@
   .contain-partners {
     align-items: center;
     display: flex;
+    justify-content: center;
 
-    .google, .skytruth {
+    .partner {
+      height: auto;
       margin-right: 15px;
       max-width: 70px;
+      width: 100%;
     }
 
     .oceana {
