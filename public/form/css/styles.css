@@ -117,7 +117,7 @@ header {
   max-width: 175px;
   margin: 0;
   text-indent: -10000px;
-  background: url("../img/logo-mobile@2x.png") no-repeat center center;
+  background: url("../img/gfw_logo_hor.svg") no-repeat center center;
   background-size: contain;
   width: 100vw;
 }
@@ -126,7 +126,7 @@ header {
   .menu .logo {
     height: 51px;
     max-width: 208px;
-    background: url("../img/logo@2x.png") no-repeat center center;
+    background: url("../img/gfw_logo_hor.svg") no-repeat center center;
     background-size: contain;
   }
 }
@@ -616,6 +616,17 @@ hr {
   width: 100%;
 }
 
+.attribution-picture{
+  text-align:right;
+}
+
+.attribution-picture span{
+    color: #fff;
+    font-family: "Roboto Slab", serif;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 @media screen and (min-width: 768px) {
   .reg form {
     max-width: 730px;
@@ -705,23 +716,11 @@ hr {
 }
 
 .bg.log {
-  background-image: url('../img/sky.png');
-}
-
-@media only screen and (min-width: 768px) {
-  .bg.log {
-    background-image: url('../img/sky@2x.png');
-  }
+  background-image: url('../img/login.jpg');
 }
 
 .bg.res {
-  background-image: url('../img/ship3.png');
-}
-
-@media only screen and (min-width: 768px) {
-  .bg.res {
-    background-image: url('../img/ship3@2x.png');
-  }
+  background-image: url('../img/registration.jpg');
 }
 
 .bg.ty {
