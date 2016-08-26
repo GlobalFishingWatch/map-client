@@ -116,3 +116,7 @@ Endpoint of the Definitions section content
 #### ART_PUB_JSON_URL
 
 Endpoint of the Articles & publications section content
+
+#### REQUIRE_MAP_LOGIN
+
+Boolean value to determine if the user needs to be logged in to access the map (setting to false is experimental)

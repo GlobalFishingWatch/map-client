@@ -46,7 +46,8 @@ const webpackConfig = {
       BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
       FAQ_JSON_URL: JSON.stringify(envVariables.FAQ_JSON_URL),
       DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
-      ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL)
+      ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
+      REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN
     })
   ],
 
