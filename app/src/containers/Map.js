@@ -22,41 +22,38 @@ const mapStateToProps = (state) => ({
   shareModal: state.map.shareModal
 });
 
-const mapDispatchToProps = (dispatch, { location }) => {
-  const queryParams = location.query;
-  return {
-    getWorkspace: () => {
-      dispatch(getWorkspace(queryParams.workspace));
-    },
-    toggleLayerVisibility: (layer) => {
-      dispatch(toggleLayerVisibility(layer));
-    },
-    updateFilters: (filters) => {
-      dispatch(updateFilters(filters));
-    },
-    setCurrentVessel: (vesselInfo) => {
-      dispatch({
-        type: RESET_VESSEL_DETAILS,
-        payload: vesselInfo
-      });
-      if (vesselInfo) {
-        dispatch(setCurrentVessel(vesselInfo));
-        dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
-      }
-    },
-    setZoom: zoom => dispatch(setZoom(zoom)),
-    setCenter: center => dispatch(setCenter(center)),
-
-    openShareModal: () => {
-      dispatch(openShareModal(true));
-      dispatch(saveWorkspace(setShareModalError));
-    },
-    closeShareModal: () => {
-      dispatch(openShareModal(false));
-      dispatch(deleteWorkspace());
-      dispatch(setShareModalError(null));
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  getWorkspace: () => {
+    dispatch(getWorkspace(ownProps.workspaceId));
+  },
+  toggleLayerVisibility: (layer) => {
+    dispatch(toggleLayerVisibility(layer));
+  },
+  updateFilters: (filters) => {
+    dispatch(updateFilters(filters));
+  },
+  setCurrentVessel: (vesselInfo) => {
+    dispatch({
+      type: RESET_VESSEL_DETAILS,
+      payload: vesselInfo
+    });
+    if (vesselInfo) {
+      dispatch(setCurrentVessel(vesselInfo));
+      dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
     }
-  };
-};
+  },
+  setZoom: zoom => dispatch(setZoom(zoom)),
+  setCenter: center => dispatch(setCenter(center)),
+
+  openShareModal: () => {
+    dispatch(openShareModal(true));
+    dispatch(saveWorkspace(setShareModalError));
+  },
+  closeShareModal: () => {
+    dispatch(openShareModal(false));
+    dispatch(deleteWorkspace());
+    dispatch(setShareModalError(null));
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

@@ -11,8 +11,8 @@ class AuthMap extends Component {
   }
 
   render() {
-    return (EMBED_MAP_URL) ? <MapIFrameContainer location={this.props.location} /> :
-      <MapContainer location={this.props.location} />;
+    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.props.params.workspace} /> :
+      <MapContainer workspaceId={this.props.params.workspace} />;
   }
 }
 
@@ -32,7 +32,11 @@ AuthMap.propTypes = {
   /**
    * Method to redirect the user to SalesForce to login and get the token
    */
-  login: React.PropTypes.func
+  login: React.PropTypes.func,
+  /**
+   * Params from the route
+   */
+  params: React.PropTypes.object
 };
 
 export default AuthMap;
