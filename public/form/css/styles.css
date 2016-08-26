@@ -147,7 +147,22 @@ header {
 }
 
 .menu .logo {
-  height: 61px;
+  height: 50px;
+  max-width: 175px;
+  margin: 0;
+  text-indent: -10000px;
+  background: url("../img/gfw_logo_hor.svg") no-repeat center center;
+  background-size: contain;
+  width: 100vw;
+}
+
+@media screen and (min-width: 768px) {
+  .menu .logo {
+    height: 51px;
+    max-width: 208px;
+    background: url("../img/gfw_logo_hor.svg") no-repeat center center;
+    background-size: contain;
+  }
 }
 
 .desktop-menu {
@@ -656,7 +671,6 @@ hr {
 }
 
 .attribution-picture span{
-  margin-right: 5px;
   color: #fff;
   font-family: 'roboto-slab', serif;
   font-size: 13px;
@@ -742,11 +756,19 @@ hr {
 }
 
 .bg.log {
+<<<<<<< 98312824619953a1bfbd566866c758515090ea96
   background-image: url('../img/background1.jpg');
 }
 
 .bg.res {
   background-image: url('../img/background2.jpg');
+=======
+  background-image: url('../img/login.jpg');
+}
+
+.bg.res {
+  background-image: url('../img/registration.jpg');
+>>>>>>> new backgorund images on login and register page and update logo
 }
 
 .bg.ty {
