@@ -113,12 +113,17 @@ class PrivacyPolicy extends Component {
                 follows. We may share user information with our Global
                 Fishing Watch founding partners Oceana Inc. and Google
                 Inc., subject to their respective privacy policies, which
-                can be found at <a className={AppStyles['-underline']} href="http://oceana.org/privacy-policy">
-                Oceana</a> and <a
+                can be found at&nbsp;
+                <a
                   className={AppStyles['-underline']}
+                  target="_blank"
+                  href="http://oceana.org/privacy-policy"
+                >Oceana</a> and&nbsp;
+                <a
+                  className={AppStyles['-underline']}
+                  target="_blank"
                   href="https://www.google.com/intl/en/policies/privacy/"
-                >
-                Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
+                >Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
                 Information by vendors and service providers who are contracted
                 to help us administer this website. These service providers may
                 process Personal Information on our behalf or use Personal
@@ -203,20 +208,18 @@ class PrivacyPolicy extends Component {
               <h2>CONTACTING SKYTRUTH</h2>
               <p>
                 If you have any questions, comments or concerns about SkyTruth or
-                this Privacy Policy, please email us at <a
-                  className={AppStyles['-underline']}
-                  href="mailto:info@skytruth.org"
-                >
+                this Privacy Policy, please email us at&nbsp;
+                <a className={AppStyles['-underline']} href="mailto:info@skytruth.org">
                 info@skytruth.org</a>. In the event
                 that we are still unable to resolve your concerns, SkyTruth is committed to
                 cooperating to achieve a proper resolution of your privacy concerns.
-                <address>
-                  Postal Mail Address:<br />
-                  SkyTruth <br />
-                  P.O. Box 3283 <br />
-                  Shepherdstown, WV 25443-3283
-                </address>
               </p>
+              <address>
+                Postal Mail Address:<br />
+                SkyTruth <br />
+                P.O. Box 3283 <br />
+                Shepherdstown, WV 25443-3283
+              </address>
               <h2>YOUR ACCEPTANCE OF THESE TERMS</h2>
               <p>
                 By using this site, you signify your assent to this Privacy Policy.
