@@ -67,10 +67,11 @@ class CoverPage extends Component {
     const sliderAttributions = [
       '© OCEANA / Juan Cuetos',
       null,
-      '© OCEANA / Eduardo Sorensen',
+      '© Steve De Neef',
       '© OCEANA / Eduardo Sorensen',
       'Hoatzinexp/iStock/Thinkstock'
     ];
+
     const sliderAttribution = sliderAttributions[this.state.currentSlider];
 
     return (
