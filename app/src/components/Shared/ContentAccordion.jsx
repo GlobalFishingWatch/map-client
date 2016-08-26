@@ -44,7 +44,7 @@ class ContentAccordion extends Component {
     const entries = this.props.entries;
     let index = -1;
 
-    if (!term) return index;
+    if (!term) return [index];
 
     index = entries.findIndex((entry) =>
       entry.slug === term.toLowerCase()
