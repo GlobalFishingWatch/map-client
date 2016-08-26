@@ -113,10 +113,17 @@ class PrivacyPolicy extends Component {
                 follows. We may share user information with our Global
                 Fishing Watch founding partners Oceana Inc. and Google
                 Inc., subject to their respective privacy policies, which
-                can be found at <a className={AppStyles['-underline']} href="http://oceana.org/privacy-policy">
-                Oceana</a> and&nbsp;
-                <a className={AppStyles['-underline']} href="https://www.google.com/intl/en/policies/privacy/">
-                Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
+                can be found at&nbsp;
+                <a
+                  className={AppStyles['-underline']}
+                  target="_blank"
+                  href="http://oceana.org/privacy-policy"
+                >Oceana</a> and&nbsp;
+                <a
+                  className={AppStyles['-underline']}
+                  target="_blank"
+                  href="https://www.google.com/intl/en/policies/privacy/"
+                >Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
                 Information by vendors and service providers who are contracted
                 to help us administer this website. These service providers may
                 process Personal Information on our behalf or use Personal
