@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
+import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import Header from '../../containers/Header';
 import ImageAttribution from './ImageAttribution';
 
@@ -12,6 +13,14 @@ class CoverPrimary extends Component {
 
   render() {
     const attribution = this.props.attribution ? `Photo: ${this.props.attribution}` : null;
+
+    const ldfLogo = (
+      <div className={CoverPage['footer-header']}>
+        <div>
+          <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo"></img>
+        </div>
+      </div>
+    );
 
     return (
       <section
@@ -29,6 +38,7 @@ class CoverPrimary extends Component {
                 {this.props.subtitle}
               </p>
             </div>
+            {this.props.showLDFLogo && ldfLogo}
           </div>
           {attribution && <ImageAttribution>
             {attribution}
@@ -46,7 +56,8 @@ CoverPrimary.propTypes = {
   backgroundImage: React.PropTypes.oneOfType([
     React.PropTypes.object,
     React.PropTypes.string
-  ])
+  ]),
+  showLDFLogo: React.PropTypes.bool
 };
 
 export default CoverPrimary;
