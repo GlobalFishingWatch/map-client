@@ -98,7 +98,7 @@ class Routes extends Component {
         <Route path="/" component={AppContainer}>
           <IndexRoute component={HomeContainer} />
 
-          <Route path="map" component={AuthMapContainer} />
+          <Route path="map(/workspace/:workspace)" component={AuthMapContainer} />
 
           <Route path="articles-publications" component={ArticlesPublications} />
 
