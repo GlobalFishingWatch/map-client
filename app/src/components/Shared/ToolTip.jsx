@@ -9,7 +9,7 @@ class ToolTip extends Component {
   render() {
     return (
       <Link
-        to="/definitions/fishing"
+        to="/definitions/fishing-effort"
         className={ToolTipStyle['c-tooltip-info']}
       >
         <img src={this.props.iconColor === 'black' ? ImgBlack : ImgWhite} alt="info icon"></img>
