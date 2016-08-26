@@ -1,0 +1,53 @@
+@import '../../settings';
+
+.c-status-page {
+  background-repeat: no-repeat;
+  background-size: cover;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+
+  &.-not-found {
+    background-image: url('../../../assets/images/errors/not-found.png');
+  }
+
+  &.-error {
+    background-image: url('../../../assets/images/errors/internal-error.png');
+  }
+
+  &::after {
+    background-color: rgba($color-19, .8);
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+
+  .message {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    > .title-status {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-xxx-big;
+      font-weight: $font-weight-bold;
+      letter-spacing: -1px;
+    }
+
+    > .description {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-x-medium;
+      margin-top: 35px;
+    }
+  }
+}
