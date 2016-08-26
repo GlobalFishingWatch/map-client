@@ -43,7 +43,10 @@ CoverPrimary.propTypes = {
   title: React.PropTypes.any,
   subtitle: React.PropTypes.any,
   attribution: React.PropTypes.any,
-  backgroundImage: React.PropTypes.object
+  backgroundImage: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.string
+  ])
 };
 
 export default CoverPrimary;
