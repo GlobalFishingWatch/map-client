@@ -36,6 +36,10 @@ table {
   border-spacing: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 
 @font-face {
   font-family: 'roboto-slab';
@@ -553,17 +557,12 @@ select::-ms-expand {
 }
 
 .log .other-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
+  text-align: center;
 }
 
 .log .other-links > a {
   font-size: 14px;
-  font-weight: 500;
-  width: auto;
-  margin-bottom: 10px;
+  color: #fff;
 }
 
 hr {
@@ -882,18 +881,6 @@ hr {
 #advise_email > a {
   display: inline-block;
   width: 100%;
-}
-
-.link_underline {
-  display: inline-block;
-}
-
-.link_underline:after {
-  content: "";
-  display: block;
-  height: 1px;
-  background-color: #f04323;
-  margin-top: 1px;
 }
 
 #button_allow {
