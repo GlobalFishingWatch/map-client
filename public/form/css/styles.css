@@ -173,112 +173,119 @@ header {
 }
 
 @media screen and (min-width: 768px) {
-  .desktop-menu {
-    display: block;
-    list-style: none;
-    /* The next rule is used to prevent the underline of the login element to go outside
-     * of the grid but prokoves the menu to not be centered if the highlighted element isn't the login.
-     * This is a temporal fix. */
-  }
+ .desktop-menu {
+   display: block;
+   list-style: none;
+   /* The next rule is used to prevent the underline of the login element to go outside
+    * of the grid but prokoves the menu to not be centered if the highlighted element isn't the login.
+    * This is a temporal fix. */
+ }
 
-  .desktop-menu img {
-    height: 70px;
-  }
+ .desktop-menu img {
+   height: 70px;
+ }
 
-  .desktop-menu > li {
-    display: inline-block;
-  }
+ .desktop-menu > li {
+   display: inline-block;
+   padding: 10px 10px;
+   position: relative;
+ }
+ .desktop-menu > li:last-of-type {
+   padding-right: 0;
+ }
+ .desktop-menu > li:last-of-type::before {
+   background-color: #fff;
+   content: '';
+   height: 25px;
+   left: -2px;
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   width: 1px;
+ }
 
-  .desktop-menu > li > a {
-    color: #FFF;
-    text-decoration: none;
-    font-size: 16px;
-    letter-spacing: -0.1px;
-    cursor: pointer;
-    font-weight: bold;
-    position:relative;
-  }
+ .desktop-menu > li > a {
+   color: #FFF;
+   text-decoration: none;
+   font-size: 16px;
+   letter-spacing: -0.1px;
+   cursor: pointer;
+   font-weight: bold;
+   position:relative;
+ }
 
-  .desktop-menu .selected:after {
-    background-color: #fff;
-    border-radius: 2px;
-    bottom: -7px;
-    content: '';
-    display: block;
-    height: 4px;
-    left: -12px;
-    position: absolute;
-    width: calc(100% + 24px);
-  }
+ .desktop-menu .selected:after {
+   background-color: #fff;
+   border-radius: 2px;
+   bottom: -7px;
+   content: '';
+   display: block;
+   height: 4px;
+   left: -12px;
+   position: absolute;
+   width: calc(100% + 24px);
+ }
 
-  .dropdown {
-    display: inline-block;
-    position: relative;
-  }
+ .dropdown {
+   display: inline-block;
+   position: relative;
+ }
 
-  .dropdown_content {
-    background-color: #FFF;
-    display: none;
-    left: 50%;
-    list-style: none;
-    padding: 12px;
-    position: absolute;
-    top: 100%;
-    transform: translateX(-50%);
-    width: 200px;
-    z-index: 20;
-  }
+ .dropdown_content {
+   background-color: #FFF;
+   display: none;
+   left: 50%;
+   list-style: none;
+   padding: 12px;
+   position: absolute;
+   top: 100%;
+   transform: translateX(-50%);
+   width: 200px;
+   z-index: 20;
+ }
 
-  .dropdown_content li > a {
-    color: #0d1a34;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
-    padding: 12px;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: background-color .3s;
-    line-height: 1.07;
-  }
+ .dropdown_content li > a {
+   color: #0d1a34 ;
+   cursor: pointer;
+   display: block;
+   font-size: 14px;
+   padding: 12px;
+   text-align: center;
+   text-decoration: none;
+   text-transform: uppercase;
+   transition: background-color .3s;
+   line-height: 1.07;
+ }
 
-  .dropdown_content li > a:hover {
-    background-color: rgba(138,187,199, .6);
-  }
+ .dropdown_content li > a:hover {
+   background-color: rgba(138,187,199, .6);
+ }
 
-  .dropdown_content li:first-child {
-    margin-top: 0;
-  }
+ .dropdown_content li:first-child {
+   margin-top: 0;
+ }
 
-  .dropdown_content li:last-child {
-    border-left: 0;
-  }
+ .dropdown_content li:last-child {
+   border-left: 0;
+ }
 
-  .dropdown:hover > ul {
-    display: block;
-  }
+ .dropdown:hover > ul {
+   display: block;
+ }
 }
 
 @media screen and (min-width: 1024px) {
-  .desktop-menu > li {
-    padding: 10px 28px;
-  }
+ .desktop-menu > li {
+   padding: 10px 28px;
+ }
 
-  .desktop-menu > li:nth-last-child(2) {
+ .desktop-menu > li:nth-last-child(2) {
 
-  }
+ }
 
-  .desktop-menu > li:last-child {
-    padding: 10px 28px;
-  }
+ .desktop-menu > li:last-child {
 
-  .desktop-menu > li:nth-last-child(2) {
-
-  }
-
-  .desktop-menu > li:last-child {
-    padding-left: 30px;
-  }
+ }
 }
 
 /* Mobile menu */
