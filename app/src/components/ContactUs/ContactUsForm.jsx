@@ -16,7 +16,6 @@ class ContactUsForm extends Component {
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.onSubmitClicked = this.onSubmitClicked.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -168,7 +167,7 @@ class ContactUsForm extends Component {
           value="SEND"
           className={buttonStyle['c-button-contact']}
           disabled={this.state.submitted}
-          onClick={this.onSubmitClicked}
+          onClick={() => { this.onSubmitClicked(); }}
         />
       </form>
     </section>);
