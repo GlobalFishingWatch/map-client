@@ -652,7 +652,7 @@ hr {
   position: absolute;
   bottom: 0;
   right: 5px;
-  top: auto;
+  top: auto
 }
 
 .attribution-picture span{
@@ -714,8 +714,9 @@ hr {
 .tos label {
   flex-basis: calc(100% - 30px);
   height: auto;
-  letter-spacing: normal;
   margin: 0;
+  letter-spacing: normal;
+  line-height: 1.6;
   text-transform: none;
 }
 
