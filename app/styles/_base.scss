@@ -98,7 +98,27 @@ a {
       top: auto;
     }
   }
+
+  :global &.-underline {
+    color: $color-12;
+    font-weight: $font-weight-bold;
+    position: relative;
+
+    &::after {
+      background-color: $color-6;
+      bottom: 0;
+      content: '';
+      display: inline-block;
+      height: 1px;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: auto;
+    }
+  }
+
 }
+
 
 ul {
   list-style: none;
