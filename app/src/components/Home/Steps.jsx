@@ -20,7 +20,7 @@ class Steps extends Component {
           <ul className={StepsStyle['steps-list']}>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <h2 className={StepsStyle.amount}>35,000</h2>
+                <h2 className={StepsStyle.amount}>65,000</h2>
                 <span className={StepsStyle.definition}>fishing vessels tracked</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-satellite'])}>
@@ -35,7 +35,7 @@ class Steps extends Component {
                 <p>Over the course of the year, more than 200,000 different vessels,
                   including more than 30,000 known or likely commercial fishing vessels,
                   broadcast their position, course and speed through AIS. Every day, a fleet
-                  of satellites records these broadcasts and beams the information down to Earth
+                  of satellites records these broadcasts and beams the information down to Earth.
                 </p>
               </div>
             </li>
@@ -65,7 +65,7 @@ class Steps extends Component {
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>2</span>
+                <span className={StepsStyle.amount}>4.5</span>
                 <span className={StepsStyle.definition}>years of data</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-you'])}>

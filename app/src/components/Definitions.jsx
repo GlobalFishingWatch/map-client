@@ -34,7 +34,7 @@ class Definitions extends Component {
       />
       <div className={StaticPageStyles['l-static-page']}>
         <div className={AppStyles.wrap}>
-          <p className={StaticPageStyles.intro}>Click on the term below to see the definition:</p>
+          <p className={StaticPageStyles.intro}>Click on the term below to see the definition.</p>
           {accordionContent}
         </div>
       </div>

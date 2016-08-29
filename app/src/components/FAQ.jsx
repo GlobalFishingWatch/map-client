@@ -38,7 +38,7 @@ class FAQ extends Component {
       />
       <div className={StaticPageStyles['l-static-page']}>
         <div className={AppStyles.wrap}>
-          <p className={StaticPageStyles.intro}>Click on the FAQ below to see the answer:</p>
+          <p className={StaticPageStyles.intro}>Click on the FAQ below to see the answer.</p>
           {faqSections}
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
+import ToolTip from '../components/Shared/ToolTip';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
@@ -32,44 +33,49 @@ class TheProject extends Component {
               <p>
                 This public beta version of Global Fishing Watch is available to anyone
                 with an Internet connection and allows users to monitor when and where
-                commercial fishing is occurring around the world.
+                commercial fishing
+                <ToolTip iconColor={'black'}>
+                  Apparent fishing
+                </ToolTip>
+                is occurring around the world.
               </p>
               <ul className={theProjectStyle['list-info']}>
                 <li>
                   <p>
-                  Citizens can see for themselves how their fisheries are being effectively
-                  managed and hold leaders accountable for long-term sustainability.
+                    Citizens can see for themselves how their fisheries are being effectively
+                    managed and hold leaders accountable for long-term sustainability.
                   </p>
                 </li>
                 <li>
                   <p>
-                  Seafood suppliers can monitor the vessels they buy fish from.
+                    Seafood suppliers can monitor the vessels they buy fish from.
                   </p>
                 </li>
                 <li>
                   <p>
-                  Journalists and the public can act as watchdogs to
-                  improve the sustainable management of global fisheries.
+                    Journalists and the public can act as watchdogs to
+                    improve the sustainable management of global fisheries.
                   </p>
                 </li>
                 <li>
                   <p>
-                  Responsible fishermen can show they are adhering to the law.
+                    Responsible fishermen can show they are adhering to the law.
                   </p>
                 </li>
                 <li>
                   <p>
-                  Researchers can address important fishery management questions.
+                    Researchers can address important fishery management questions.
                   </p>
                 </li>
               </ul>
               <p>
                 For media or press inquiries, please contact Dustin Cranor at
                 954.348.1314 or via email
-                at <a
+                at&nbsp;
+                <a
                   href="mailto:dcranor@oceana.org"
                   className={baseStyle['-underline']}
-                >dcranor@oceana.org</a>
+                >dcranor@oceana.org</a>.
               </p>
             </section>
           </div>
