@@ -64,22 +64,22 @@ class Header extends Component {
             }
           >
             <div className={styles['contain-nav']}>
-              <div className={styles['logo-menu']}>
+              <img
+                onClick={() => this.setState({ mobileMenuVisible: true })}
+                className={styles['icon-menu-mobile']}
+                src={menuicon}
+                alt="Menu toggle icon"
+              />
+              <Link
+                to="/"
+                className={styles['app-logo']}
+              >
                 <img
-                  onClick={() => this.setState({ mobileMenuVisible: true })}
-                  className={styles['icon-menu-mobile']}
-                  src={menuicon}
-                  alt="Menu toggle icon"
+                  src={location.pathname === '/map' ? betaLogo : defaultLogo}
+                  alt="Global Fishing Watch"
                 />
-                <Link to="/">
-                  <img
-                    className={styles['app-logo']}
-                    src={location.pathname === '/map' ? betaLogo : defaultLogo}
-                    alt="Global Fishing Watch"
-                  />
-                </Link>
-              </div>
-              <span className={styles['share-header']}>Share</span>
+              </Link>
+              {location.pathname === '/map' && <span className={styles['share-header']}>Share</span>}
               <ul className={styles.menu}>
                 <li>
                   <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>

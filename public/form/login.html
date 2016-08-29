@@ -1,6 +1,7 @@
 <html lang="en">
 
 <head>
+	<meta charset="utf-8">
 	<title>Login - Global Fishing Watch</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,20 +32,20 @@
 				</ul>
 			</ul>
 			<a href="#" class="button_login">LOG IN</a>
-			<p class="forgot_text">
-				<a href="#">Forgot your password?</a>
-				<a href="#">Not a member</a>
-			</p>
+      <div class="other-links">
+				<a href="resetpassword.html">Remember password</a>
+				<a href="registration.html">Sign up</a>
+			</div>
 		</div>
 	</div>
 
-	<header class="menu">
+	<header class="menu wrap">
 		<svg class="hamburger-icon js-hamburger-menu" viewBox="0 0 25 25">
 			<path d="M0 2h25v4H0V2zm0 8h25v4H0v-4zm0 8h25v4H0v-4z" fill="#FFF" fill-rule="evenodd"/>
 		</svg>
 
-		<a href="/">
-			<h1 class="logo">Global Fishing Watch</h1>
+		<a class="logo" href="/">
+			<img src="img/gfw_logo_hor.svg" alt="logo global fishing watch">
 		</a>
 
 		<ul class="desktop-menu">
@@ -82,8 +83,8 @@
 			<input type="password" id="gfw_password" placeholder="********" required />
 			<input type="submit" value="Login" />
 			<div class="other-links">
-				<a href="#" class="cancel link_underline">Forgot  your password?</a>
-				<a href="#" class="cancel link_underline">Not a member?</a>
+				<a href="resetpassword.html">Forgot  your password?</a>
+				<a href="registration.html">&nbsp;Not a member?</a>
 			</div>
 			<div class="separator">
         or
@@ -95,7 +96,9 @@
 			</div>
 		</form>
 	</section>
-
+	<div class="attribution-picture">
+		<span>Photo: © OCEANA / Keith Ellenbogen</span>
+	</div>
 	<script>
 		var mobileMenu = document.querySelector('.mobile-menu');
 
