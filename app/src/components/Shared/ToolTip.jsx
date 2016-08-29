@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 import ImgWhite from '../../../assets/icons/info_white.svg';
 import ImgBlack from '../../../assets/icons/info_black.svg';

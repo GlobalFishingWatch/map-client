@@ -18,11 +18,15 @@ class ToolTipJSON extends Component {
       <p
         dangerouslySetInnerHTML={{
           __html: this.props.html
-        }} ref={(c) => this.c = c}>
-      </p>
+        }}
+        ref={(c) => (this.c = c)}
+      />
     );
   }
-
 }
+
+ToolTipJSON.propTypes = {
+  html: React.PropTypes.string
+};
 
 export default ToolTipJSON;
