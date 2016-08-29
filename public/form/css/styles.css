@@ -678,6 +678,7 @@ hr {
 }
 
 .attribution-picture span{
+  margin-right: 5px;
   color: #fff;
   font-family: 'roboto-slab', serif;
   font-size: 13px;
