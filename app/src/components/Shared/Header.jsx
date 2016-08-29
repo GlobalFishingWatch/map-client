@@ -121,6 +121,7 @@ class Header extends Component {
                     className={(
                       location.pathname === '/the-project'
                       || location.pathname === '/partners'
+                      || location.pathname === '/research-program'
                       || location.pathname === '/contact-us'
                     ) ? styles['-active'] : null}
                   >
@@ -129,6 +130,7 @@ class Header extends Component {
                   <ul className={styles['dropdown-content']}>
                     <li><Link to="/the-project">The project</Link></li>
                     <li><Link to="/partners">Partners</Link></li>
+                    <li><Link to="/research-program">Research program</Link></li>
                     <li><Link to="/contact-us">Contact us</Link></li>
                   </ul>
                 </li>
