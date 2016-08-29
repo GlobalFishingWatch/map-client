@@ -19,7 +19,7 @@ class FAQ extends Component {
     if (this.props.faqEntries && this.props.faqEntries.length > 0) {
       const sections = [];
       this.props.faqEntries.forEach(faqSection => {
-        sections.push(<div>
+        sections.push(<div key={faqSection.title}>
           <h2 className={AppStyles['section-title']}>{faqSection.title}</h2>
           <ContentAccordion
             entries={faqSection.questions}

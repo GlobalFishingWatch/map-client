@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { AccordionItem } from 'react-sanfona';
 import AccordionGF from '../../lib/AccordionGF';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
+import ToolTipJSON from './ToolTipJSON';
 
 class ContentAccordion extends Component {
 
@@ -25,11 +26,7 @@ class ContentAccordion extends Component {
           titleClassName={AccordionStyles['item-title']}
         >
           <article className={AccordionStyles['item-answer']}>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: entries[index].content
-              }}
-            />
+            <ToolTipJSON html={entries[index].content} />
           </article>
         </AccordionItem>
       );
