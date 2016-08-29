@@ -251,9 +251,16 @@ header {
    content: '';
    display: block;
    height: 4px;
-   left: -12px;
+   left: 0;
    position: absolute;
-   width: calc(100% + 24px);
+   width: 100%;
+ }
+
+ @media screen and (min-width: 1024px) {
+  .desktop-menu .selected:after {
+    left: -12px;
+    width: calc(100% + 24px);
+  }
  }
 
  .dropdown {
@@ -308,14 +315,6 @@ header {
  .desktop-menu > li {
    padding: 10px 28px;
  }
-
- .desktop-menu > li:nth-last-child(2) {
-
- }
-
- .desktop-menu > li:last-child {
-
- }
 }
 
 /* Mobile menu */
@@ -365,8 +364,10 @@ header {
   transition: transform .3s ease-in-out;
   will-change: transform;
   background-color: #0D1A34;
+}
 
-  @media #{$mq-tablet} {
+@media screen and (min-width: 768px) {
+  .mobile-menu .drawer {
     left: -325px;
     width: 325px;
   }

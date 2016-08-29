@@ -109,9 +109,14 @@
             content: '';
             display: block;
             height: 4px;
-            left: -12px;
+            left: 0;
             position: absolute;
-            width: calc(100% + 24px);
+            width: 100%;
+
+            @media #{$mq-laptop} {
+              left: -12px;
+              width: calc(100% + 24px);
+            }
           }
         }
       }
