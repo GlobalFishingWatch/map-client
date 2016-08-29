@@ -25,7 +25,7 @@ class PartnerSection extends Component {
               results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
               forever. Together, we can save the oceans and help feed the world.
               Visit <a
-                className={PartnerSectionStyle['link-underline']}
+                className={PartnerSectionStyle['-underline']}
                 href="http://oceana.org/"
                 target="_blank"
               >www.oceana.org</a> to learn more.
@@ -46,7 +46,7 @@ class PartnerSection extends Component {
               leads to better management and better
               outcomes for people and the environment. Check out what we do and how we work
               at <a
-                className={PartnerSectionStyle['link-underline']}
+                className={PartnerSectionStyle['-underline']}
                 href="http://skytruth.org/"
                 target="_blank"
               > www.skytruth.org</a> to learn more.

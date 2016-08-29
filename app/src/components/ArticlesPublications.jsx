@@ -50,26 +50,6 @@ class ArticlesPublications extends Component {
     const articlesPublications = this.props.articlesPublications;
     let pageContent = [];
 
-    if (articlesPublications && articlesPublications.publications) {
-      const publications = articlesPublications.publications.map(this.renderElement);
-
-      if (!!publications && publications.length) {
-        pageContent.push(
-          <section key="publications">
-            <h2
-              className={classnames(AppStyles['section-title'],
-                PubsArticlesLayoutStyles['section-title'])}
-            >
-              Publications
-            </h2>
-            <div className={PubsArticlesLayoutStyles.grid}>
-              {publications}
-            </div>
-          </section>
-        );
-      }
-    }
-
     if (articlesPublications && articlesPublications.articles) {
       const articles = articlesPublications.articles.map(this.renderElement);
 
@@ -84,6 +64,26 @@ class ArticlesPublications extends Component {
             </h2>
             <div className={PubsArticlesLayoutStyles.grid}>
               {articles}
+            </div>
+          </section>
+        );
+      }
+    }
+
+    if (articlesPublications && articlesPublications.publications) {
+      const publications = articlesPublications.publications.map(this.renderElement);
+
+      if (!!publications && publications.length) {
+        pageContent.push(
+          <section key="publications">
+            <h2
+              className={classnames(AppStyles['section-title'],
+                PubsArticlesLayoutStyles['section-title'])}
+            >
+              Publications
+            </h2>
+            <div className={PubsArticlesLayoutStyles.grid}>
+              {publications}
             </div>
           </section>
         );
