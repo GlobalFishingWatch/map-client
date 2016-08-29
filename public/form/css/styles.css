@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
@@ -36,6 +37,14 @@ table {
 }
 
 @font-face {
+  font-family: 'roboto-slab';
+  src: url('roboto/RobotoSlab-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+@font-face {
   font-family: 'roboto';
   src: url('roboto/Roboto-Light.ttf') format('truetype');
   font-weight: 300;
@@ -63,6 +72,25 @@ body {
   font-weight: 100;
 }
 
+.wrap {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 25px;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .wrap{
+    padding: 0 55px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .wrap{
+    padding: 0 115px;
+  }
+}
+
 /* Header */
 
 .menu {
@@ -85,12 +113,12 @@ header {
 .menu {
   background-color: #2b4f93;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
+  height: 95px;
 }
 
 @media screen and (min-width: 768px) {
   .menu {
     justify-content: space-between;
-    padding: 0 40px;
     background: none;
     box-shadow: none;
   }
@@ -113,20 +141,20 @@ header {
 }
 
 .menu .logo {
-  height: 50px;
-  max-width: 175px;
+  height: 57px;
+  max-width: 245px;
   margin: 0;
   text-indent: -10000px;
-  background: url("../img/logo-mobile@2x.png") no-repeat center center;
+  background: url("../img/gfw_logo_hor.svg") no-repeat center center;
   background-size: contain;
   width: 100vw;
 }
 
 @media screen and (min-width: 768px) {
   .menu .logo {
-    height: 51px;
-    max-width: 208px;
-    background: url("../img/logo@2x.png") no-repeat center center;
+    height: 57px;
+    max-width: 245px;
+    background: url("../img/gfw_logo_hor.svg") no-repeat center center;
     background-size: contain;
   }
 }
@@ -135,6 +163,8 @@ header {
   display: none;
 }
 
+
+
 @media screen and (min-width: 768px) {
   .desktop-menu {
     display: block;
@@ -142,7 +172,6 @@ header {
     /* The next rule is used to prevent the underline of the login element to go outside
      * of the grid but prokoves the menu to not be centered if the highlighted element isn't the login.
      * This is a temporal fix. */
-    padding-right: 15px;
   }
 
   .desktop-menu img {
@@ -151,16 +180,17 @@ header {
 
   .desktop-menu > li {
     display: inline-block;
-    margin-right: 40px;
+    margin-right: 24px;
   }
 
   .desktop-menu > li:nth-last-child(2) {
-    margin-right: 46px;
+    margin-right: 24px;
   }
+
 
   .desktop-menu > li:last-child {
     border-left: 1px solid #FFF;
-    padding-left: 46px;
+    padding-left: 24px;
     margin-right: 0;
   }
 
@@ -168,9 +198,9 @@ header {
     color: #FFF;
     text-decoration: none;
     font-size: 16px;
-    font-weight: normal;
     letter-spacing: -0.1px;
     cursor: pointer;
+    font-weight: bold;
   }
 
   .desktop-menu .selected:after {
@@ -245,7 +275,15 @@ header {
 
 @media screen and (min-width: 1024px) {
   .desktop-menu > li {
-    margin-right: 92px;
+    margin-right: 60px;
+  }
+
+  .desktop-menu > li:nth-last-child(2) {
+    margin-right: 30px;
+  }
+
+  .desktop-menu > li:last-child {
+    padding-left: 30px;
   }
 }
 
@@ -616,6 +654,17 @@ hr {
   width: 100%;
 }
 
+.attribution-picture{
+  text-align:right;
+}
+
+.attribution-picture span{
+    color: #fff;
+    font-family: 'roboto-slab', serif;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 @media screen and (min-width: 768px) {
   .reg form {
     max-width: 730px;
@@ -705,23 +754,11 @@ hr {
 }
 
 .bg.log {
-  background-image: url('../img/sky.png');
-}
-
-@media only screen and (min-width: 768px) {
-  .bg.log {
-    background-image: url('../img/sky@2x.png');
-  }
+  background-image: url('../img/login.jpg');
 }
 
 .bg.res {
-  background-image: url('../img/ship3.png');
-}
-
-@media only screen and (min-width: 768px) {
-  .bg.res {
-    background-image: url('../img/ship3@2x.png');
-  }
+  background-image: url('../img/registration.jpg');
 }
 
 .bg.ty {
