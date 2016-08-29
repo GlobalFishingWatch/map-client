@@ -170,6 +170,12 @@ header {
   justify-content: flex-end;
 }
 
+@media screen and (min-width: 320px) {
+  .menu {
+    justify-content: center;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .menu {
     justify-content: space-between;
