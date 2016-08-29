@@ -14,10 +14,6 @@
     background-image: url('../../../assets/images/errors/not-found.png');
   }
 
-  &.-error {
-    background-image: url('../../../assets/images/errors/internal-error.png');
-  }
-
   &::after {
     background-color: rgba($color-19, .8);
     bottom: 0;
