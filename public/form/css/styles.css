@@ -189,32 +189,6 @@ header {
     display: inline-block;
   }
 
-
-  /*.desktop-menu > li:nth-last-child(2) {
-=======
-    margin-right: 24px;
-  }
-
-  .desktop-menu > li:nth-last-child(2) {
->>>>>>> update public pages styles
-=======
-  }
-
-
-  /*.desktop-menu > li:nth-last-child(2) {
->>>>>>> update header dropdown menu on static pages
-    margin-right: 24px;
-  }
-
-
-  .desktop-menu > li:last-child {
-    border-left: 1px solid #FFF;
-    padding-left: 24px;
-    margin-right: 0;
-  }*/
-
-
-
   .desktop-menu > li > a {
     color: #FFF;
     text-decoration: none;
