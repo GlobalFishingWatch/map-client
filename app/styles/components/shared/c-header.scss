@@ -35,6 +35,11 @@
     display: flex;
     justify-content: center;
     width: 100%;
+
+    @media #{$mq-tablet} {
+      display: inline-block;
+      width: auto;
+    }
   }
 
   .share-header {
