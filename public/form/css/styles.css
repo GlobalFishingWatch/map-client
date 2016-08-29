@@ -828,6 +828,10 @@ hr {
   margin-top: 20px;
 }
 
+.pwd .other-links {
+  justify-content: center;
+}
+
 @media only screen and (max-device-width: 768px) {
   .res .pwd p {
     width: 80%;
