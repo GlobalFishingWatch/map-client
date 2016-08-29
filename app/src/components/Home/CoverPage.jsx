@@ -4,6 +4,7 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from '../../lib/react-slick.min';
 import Header from '../../containers/Header';
+import CoverPagePreloader from './CoverPagePreloader';
 import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
@@ -76,6 +77,7 @@ class CoverPage extends Component {
 
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
+        <CoverPagePreloader images={sliderBackgrounds} />
         <div className={CoverPageStyle['layer-cover']}>
           <Header />
           <div className={baseStyle.wrap}>
