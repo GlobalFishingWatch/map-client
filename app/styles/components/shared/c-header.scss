@@ -31,6 +31,12 @@
     }
   }
 
+  .app-logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
   .share-header {
     color: $color-4;
     display: block;
