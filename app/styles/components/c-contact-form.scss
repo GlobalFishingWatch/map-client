@@ -130,4 +130,10 @@
     color: $color-5;
     font-size: $font-size-small;
   }
+
+  &.validated {
+    input:invalid, textarea:invalid, select:invalid {
+      border: 1px solid $color-6;
+    }
+  }
 }
