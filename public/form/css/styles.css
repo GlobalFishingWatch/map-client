@@ -41,7 +41,6 @@ a {
   text-decoration: none;
 }
 
-
 @font-face {
   font-family: 'roboto-slab';
   src: url('roboto/RobotoSlab-Regular.ttf') format('truetype');
@@ -76,6 +75,25 @@ body {
   font-family: 'roboto', Helvetica, Arial, sans-serif;
   font-size: 12px;
   font-weight: 400;
+}
+
+.wrap {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 25px;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .wrap{
+    padding: 0 55px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .wrap{
+    padding: 0 115px;
+  }
 }
 
 .wrap {
@@ -154,7 +172,6 @@ header {
   display: none;
 }
 
-
 @media screen and (min-width: 768px) {
   .desktop-menu {
     display: block;
@@ -170,36 +187,7 @@ header {
 
   .desktop-menu > li {
     display: inline-block;
-    padding: 10px 10px;
-    position: relative;
   }
-  .desktop-menu > li:last-of-type {
-    padding-right: 0;
-  }
-  .desktop-menu > li:last-of-type::before {
-    background-color: #fff;
-    content: '';
-    height: 25px;
-    left: -2px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-  }
-
-
-  /*.desktop-menu > li:nth-last-child(2) {
-    margin-right: 24px;
-  }
-
-
-  .desktop-menu > li:last-child {
-    border-left: 1px solid #FFF;
-    padding-left: 24px;
-    margin-right: 0;
-  }*/
-
-
 
   .desktop-menu > li > a {
     color: #FFF;
@@ -281,7 +269,15 @@ header {
   }
 
   .desktop-menu > li:last-child {
+    padding: 10px 28px;
+  }
 
+  .desktop-menu > li:nth-last-child(2) {
+
+  }
+
+  .desktop-menu > li:last-child {
+    padding-left: 30px;
   }
 }
 
@@ -307,7 +303,7 @@ header {
   height: 100%;
   opacity: 0;
   transition: opacity .3s ease-out;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, .8);
   will-change: opacity;
 }
 
@@ -323,8 +319,8 @@ header {
 .mobile-menu .drawer {
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 75%;
+  left: -325px;
+  width: 325px;
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -394,7 +390,7 @@ header {
   margin: 15px 0;
 }
 
-.mobile-menu .drawer .forgot_text > a {
+/*.mobile-menu .drawer .forgot_text > a {
   display: inline-block;
   margin-bottom: 5px;
   color: #FFF;
@@ -402,7 +398,7 @@ header {
   font-weight: 400;
   text-decoration: none;
   border-bottom: 1px solid #ef4323;
-}
+}*/
 
 section {
   justify-content: center;
@@ -557,12 +553,14 @@ select::-ms-expand {
   font-size: 15px;
 }
 
-.log .other-links {
-  text-align: center;
+.other-links {
+  display: flex;
+  justify-content: space-between;
 }
 
-.log .other-links > a {
-  font-size: 14px;
+.other-links > a {
+  font-family: 'roboto-slab', serif;
+  font-size: 13px;
   color: #fff;
 }
 
@@ -802,6 +800,10 @@ hr {
 
 .pwd p:first-of-type {
   margin-top: 20px;
+}
+
+.pwd .other-links {
+  justify-content: center;
 }
 
 @media only screen and (max-device-width: 768px) {

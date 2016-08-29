@@ -58,7 +58,6 @@
     line-height: 1.29;
     margin-bottom: 15px;
     margin-top: 15px;
-    max-width: 234px;
     padding: 22px 60px;
     text-align: center;
     text-transform: uppercase;
@@ -67,7 +66,9 @@
 
   .forgot-text {
     color: $color-4;
-    font-size: $font-size-small;
+    display: flex;
+    font-size: 13px;
+    justify-content: space-between;
     padding-left: 0;
 
     .forgot-password {

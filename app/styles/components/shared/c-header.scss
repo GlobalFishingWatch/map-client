@@ -10,11 +10,9 @@
     align-items: center;
     display: flex;
     height: 95px;
-    justify-content: space-between;
 
-    > .logo-menu {
-      align-items: center;
-      display: flex;
+    @media #{$mq-tablet} {
+      justify-content: space-between;
     }
   }
 
@@ -30,6 +28,17 @@
 
     @media #{$mq-tablet} {
       display: none;
+    }
+  }
+
+  .app-logo {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      display: inline-block;
+      width: auto;
     }
   }
 
@@ -145,21 +154,38 @@
   &.-map {
     left: 0;
     position: absolute;
-    width: auto;
+    width: 100%;
     z-index: 6;
 
+    @media #{$mq-tablet} {
+      width: auto;
+    }
+
     .icon-menu-mobile {
-      display: block;
-      margin-left: 30px;
+      order: 1;
+      @media #{$mq-tablet} {
+        display: block;
+      }
+    }
+
+    .app-logo {
       order: 2;
+      @media #{$mq-tablet} {
+        order: 1;
+      }
     }
 
     .share-header {
       order: 3;
+      @media #{$mq-tablet} {
+        display: none;
+      }
     }
 
     .menu {
-      display: none;
+      @media #{$mq-tablet} {
+        display: none;
+      }
     }
   }
 }
