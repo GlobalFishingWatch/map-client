@@ -329,7 +329,7 @@ header {
   height: 100%;
   opacity: 0;
   transition: opacity .3s ease-out;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, .8);
   will-change: opacity;
 }
 
