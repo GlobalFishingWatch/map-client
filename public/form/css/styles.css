@@ -345,8 +345,8 @@ header {
 .mobile-menu .drawer {
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 75%;
+  left: -325px;
+  width: 325px;
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -416,7 +416,7 @@ header {
   margin: 15px 0;
 }
 
-.mobile-menu .drawer .forgot_text > a {
+/*.mobile-menu .drawer .forgot_text > a {
   display: inline-block;
   margin-bottom: 5px;
   color: #FFF;
@@ -424,7 +424,7 @@ header {
   font-weight: 400;
   text-decoration: none;
   border-bottom: 1px solid #ef4323;
-}
+}*/
 
 section {
   justify-content: center;
@@ -579,12 +579,14 @@ select::-ms-expand {
   font-size: 15px;
 }
 
-.log .other-links {
-  text-align: center;
+.other-links {
+  display: flex;
+  justify-content: space-between;
 }
 
-.log .other-links > a {
-  font-size: 14px;
+.other-links > a {
+  font-family: 'roboto-slab', serif;
+  font-size: 13px;
   color: #fff;
 }
 
