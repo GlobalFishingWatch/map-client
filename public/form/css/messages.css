@@ -39,16 +39,31 @@ body {
   z-index: 1;
 }
 
-  .c-status-page .message > .title-status {
-    color: #fff;
-    font-size: 70px;
-    font-weight: 700;
-    letter-spacing: -1px;
-    text-align: center;
-  }
+.c-status-page .message > .title-status {
+  color: #fff;
+  font-size: 70px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  text-align: center;
+}
 
-  .c-status-page .message > .description {
-    color: #fff;
-    font-size: 25;
-    margin-top: 35px;
-  }
+.c-status-page .message > .description {
+  color: #fff;
+  font-size: 25;
+  margin-top: 35px;
+}
+
+.attribution {
+  position: absolute;
+  top: auto;
+  right: 5px;
+  bottom: 0;
+  z-index: 3;
+}
+
+.attribution > .author {
+  font-family: 'roboto-slab', serif;
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.6;
+}
