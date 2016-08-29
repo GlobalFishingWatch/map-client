@@ -41,14 +41,6 @@ a {
   text-decoration: none;
 }
 
-
-@font-face {
-  font-family: 'roboto-slab';
-  src: url('roboto/RobotoSlab-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
 @font-face {
   font-family: 'roboto-slab';
   src: url('roboto/RobotoSlab-Regular.ttf') format('truetype');
