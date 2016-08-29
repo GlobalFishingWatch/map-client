@@ -18,6 +18,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 body {
   line-height: 1;
   position: relative;
+  min-height: 100vh;
 }
 
 ol, ul {
@@ -735,6 +736,8 @@ hr {
 
 .bg {
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .bg.reg {
