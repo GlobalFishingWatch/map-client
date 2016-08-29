@@ -3,6 +3,7 @@
 .c-contact-form {
   margin: 0 auto;
   max-width: 480px;
+  padding-bottom: 85px;
   position: relative;
   width: 100%;
   z-index: 1;
@@ -129,5 +130,11 @@
   :-ms-input-placeholder {
     color: $color-5;
     font-size: $font-size-small;
+  }
+
+  &.validated {
+    input:invalid, textarea:invalid, select:invalid {
+      border: 1px solid $color-6;
+    }
   }
 }

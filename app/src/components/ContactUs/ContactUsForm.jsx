@@ -27,6 +27,12 @@ class ContactUsForm extends Component {
     });
   }
 
+  onSubmitClicked() {
+    this.setState({
+      validated: true
+    });
+  }
+
   handleChange(event) {
     if (event.target.name === 'selectCompany') {
       this.setState({
@@ -41,11 +47,18 @@ class ContactUsForm extends Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
+    // Safari triggers form submit even if checkValidity returns false,
+    // see http://blueashes.com/2013/web-development/html5-form-validation-fallback/
+    if (this.form.checkValidity() === false) {
+      return false;
+    }
+
     this.setState({
       submitted: true
     });
 
     this.props.onFormSubmit(this.state, '/v1/contact/us');
+    return true;
   }
 
   render() {
@@ -61,7 +74,12 @@ class ContactUsForm extends Component {
       </section>);
     }
 
-    return (<section className={formStyle['c-contact-form']}>
+    const classNames = [formStyle['c-contact-form']];
+    if (this.state.validated) {
+      classNames.push(formStyle.validated);
+    }
+
+    return (<section className={classNames.join(' ')}>
       <h1>
         Contact Us
       </h1>
@@ -73,6 +91,7 @@ class ContactUsForm extends Component {
         action=""
         method="POST"
         onSubmit={this.handleFormSubmit}
+        ref={(ref) => { this.form = ref; }}
       >
         <label htmlFor="name">Name *</label>
         <input
@@ -115,7 +134,7 @@ class ContactUsForm extends Component {
             className={formStyle[this.state.classSelect]}
             required
           >
-            <option disabled={this.state.disabledOption}>Select a question type</option>
+            <option value="" disabled={this.state.disabledOption}>Select a question type</option>
             <option value="Map">I have a question about the map</option>
             <option value="Collaboration">I have a question about collaboration opportunities</option>
             <option value="Press">I would like to speak to someone about a media or press opportunity</option>
@@ -148,6 +167,7 @@ class ContactUsForm extends Component {
           value="SEND"
           className={buttonStyle['c-button-contact']}
           disabled={this.state.submitted}
+          onClick={() => { this.onSubmitClicked(); }}
         />
       </form>
     </section>);
