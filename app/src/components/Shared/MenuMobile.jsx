@@ -19,7 +19,7 @@ class MenuMobile extends Component {
             className={menuMobile['button-login']}
             onClick={this.props.logout}
           >
-          log out
+            log out
           </button>
         </div>
       );
@@ -30,7 +30,7 @@ class MenuMobile extends Component {
             className={menuMobile['button-login']}
             onClick={this.props.login}
           >
-          log in
+            log in
           </button>
           <p className={menuMobile['forgot-text']}>
             <a
@@ -68,6 +68,7 @@ class MenuMobile extends Component {
           <ul className={menuMobile['submenu-mobile']}>
             <li><Link to="/the-project">The project</Link></li>
             <li><Link to="/partners">Partners</Link></li>
+            <li><Link to="/research-program">Research program</Link></li>
             <li><Link to="/contact-us">Contact us</Link></li>
           </ul>
         </ul>

@@ -74,6 +74,9 @@ export default function () {
           </ul>
           <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
+              <Link className={footerStyle['nav-link']} to="/research-program">Research program</Link>
+            </li>
+            <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/contact-us">Contact us</Link>
             </li>
             <li className={footerStyle['nav-item']}>

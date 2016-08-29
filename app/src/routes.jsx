@@ -9,6 +9,7 @@ import Tutorials from './components/Tutorials';
 import Orbcomm from './components/Orbcomm';
 import Definitions from './containers/Definitions';
 import TheProject from './components/TheProject';
+import ResearchProgram from './components/ResearchProgram';
 import Partners from './components/Partners';
 import TermsOfUse from './components/TermsOfUse';
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -112,6 +113,7 @@ class Routes extends Component {
 
           <Route path="the-project" component={TheProject} />
           <Route path="partners" component={Partners} />
+          <Route path="research-program" component={ResearchProgram} />
           <Route path="contact-us" component={ContactUsContainer} />
 
           <Route path="terms-of-use" component={TermsOfUse} />
