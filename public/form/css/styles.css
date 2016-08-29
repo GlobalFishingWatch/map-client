@@ -651,10 +651,11 @@ hr {
 }
 
 .attribution-picture span{
-    color: #fff;
-    font-family: 'roboto-slab', serif;
-    font-size: 13px;
-    line-height: 1.6;
+  margin-right: 5px;
+  color: #fff;
+  font-family: 'roboto-slab', serif;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 @media screen and (min-width: 768px) {
@@ -709,8 +710,9 @@ hr {
 .tos label {
   flex-basis: calc(100% - 30px);
   height: auto;
-  letter-spacing: normal;
   margin: 0;
+  letter-spacing: normal;
+  line-height: 1.6;
   text-transform: none;
 }
 
