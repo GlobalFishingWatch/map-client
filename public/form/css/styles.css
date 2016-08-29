@@ -165,8 +165,31 @@ header {
   }
 }
 
+.menu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (min-width: 768px) {
+  .menu {
+    justify-content: space-between;
+  }
+}
+
 .menu .logo {
-  height: 61px;
+  /*height: 61px;*/
+  width: 200px;
+}
+
+@media screen and (min-width: 768px) {
+  .menu .logo {
+    height: 61px;
+    width: auto;
+  }
+}
+
+.logo > img {
+  width: 100%;
 }
 
 .desktop-menu {
@@ -327,8 +350,8 @@ header {
 .mobile-menu .drawer {
   position: absolute;
   top: 0;
-  left: -325px;
-  width: 325px;
+  left: -300px;
+  width: 300px;
   height: 100%;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -336,6 +359,11 @@ header {
   transition: transform .3s ease-in-out;
   will-change: transform;
   background-color: #0D1A34;
+
+  @media #{$mq-tablet} {
+    left: -325px;
+    width: 325px;
+  }
 }
 
 .mobile-menu.-opened .drawer {
