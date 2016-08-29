@@ -49,7 +49,7 @@
         "content": "<p>Yes - and Global Fishing Watch can help detect when this appears to occur. We will notice when a vessel appears to turn off its AIS and plan to share that information publicly.  We will also be able to flag activities such as ships disappearing or appearing suddenly, jumping 1,000 miles at once, or appearing to fish on land. AIS was primarily designed as a safety mechanism to help avoid collisions at sea, so turning off AIS to avoid being tracked can put a vessel and its crew at risk of being hit by another ship.</p>"
       },
       {
-        "title": "Can’t vessels just broadcast Fta false location in their AIS signals?",
+        "title": "Can’t vessels just broadcast a false location in their AIS signals?",
         "content": "<p>We have seen vessel tracks that appear in impossible places such as the Himalayan Mountains or over Antarctica. We can’t say for sure whether the AIS has been tampered with or is faulty, but the errors have followed regular patterns—varying from a vessel’s true location by a constant amount, or flipping a coordinate from the Southern Hemisphere to the Northern Hemisphere, for example. Once we identify the patterns, we can often correct apparently false locations.</p>"
       },
       {
