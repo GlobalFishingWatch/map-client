@@ -17,6 +17,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 body {
   line-height: 1;
+  position: relative;
 }
 
 ol, ul {
@@ -647,15 +648,18 @@ hr {
 }
 
 .attribution-picture{
-  text-align:right;
+  vertical-align: baseline;
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  top: auto;
 }
 
 .attribution-picture span{
-  margin-right: 5px;
-  color: #fff;
-  font-family: 'roboto-slab', serif;
-  font-size: 13px;
-  line-height: 1.6;
+    color: #fff;
+    font-family: 'roboto-slab', serif;
+    font-size: 13px;
+    line-height: 1.6;
 }
 
 @media screen and (min-width: 768px) {
@@ -746,7 +750,6 @@ hr {
 
 .bg.ty {
   background-image: url('../img/background1.jpg');
-}
 }
 
 .bg.ty section {
