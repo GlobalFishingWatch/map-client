@@ -20,7 +20,7 @@ class Steps extends Component {
           <ul className={StepsStyle['steps-list']}>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <h2 className={StepsStyle.amount}>65,000</h2>
+                <h2 className={StepsStyle.amount}>35,000</h2>
                 <span className={StepsStyle.definition}>fishing vessels tracked</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-satellite'])}>
@@ -41,7 +41,7 @@ class Steps extends Component {
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>1 billion</span>
+                <span className={StepsStyle.amount}>20 billions</span>
                 <span className={StepsStyle.definition}>ais points of apparent fishing</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-data'])}>
@@ -65,7 +65,7 @@ class Steps extends Component {
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>4.5</span>
+                <span className={StepsStyle.amount}>5</span>
                 <span className={StepsStyle.definition}>years of data</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-you'])}>
