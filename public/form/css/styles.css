@@ -329,6 +329,7 @@ body {
 
 /* Mobile menu */
 .c-mobile-menu {
+  overflow: auto;
   background-color: #0d1a34;
   bottom: 0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
