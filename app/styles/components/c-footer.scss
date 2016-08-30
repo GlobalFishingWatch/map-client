@@ -52,10 +52,6 @@
           margin-right: 55px;
         }
 
-        &:last-child {
-          margin-right: 0;
-        }
-
         .logo-ldf {
           width: calc(100%/3);
 
@@ -67,6 +63,7 @@
       }
 
       .logo-item > .logo {
+        display: block;
         max-width: 100px;
         width: 100%;
 
@@ -88,7 +85,6 @@
     }
 
     .partner-footer {
-      flex-basis: 50%;
 
       > .partner-text {
         color: $color-16;
