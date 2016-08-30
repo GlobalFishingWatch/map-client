@@ -41,41 +41,50 @@
     </div>
   </div>
 
-  <header class="menu wrap">
-		<svg class="hamburger-icon js-hamburger-menu" viewBox="0 0 25 25">
-			<path d="M0 2h25v4H0V2zm0 8h25v4H0v-4zm0 8h25v4H0v-4z" fill="#FFF" fill-rule="evenodd"/>
-		</svg>
-
-		<a class="logo" href="/">
-			<img src="img/gfw_logo_hor.svg" alt="logo global fishing watch">
-		</a>
-
-		<ul class="desktop-menu">
-			<li><a href="/map">Map</a></li>
-			<li class="dropdown"><a href="#">News</a>
-				<ul class="dropdown_content">
-					<li><a href="/blog">Blog</a></li>
-					<li><a href="/articles-publications">Articles and Publications</a></li>
-				</ul>
-			</li>
-			<li class="dropdown"><a href="#">How To</a>
-				<ul class="dropdown_content">
-					<li><a href="/faq">FAQ</a></li>
-					<li><a href="/tutorials">Tutorials</a></li>
-					<li><a href="/definitions">Definitions</a></li>
-				</ul>
-			</li>
-			<li class="dropdown"><a href="#">About</a>
-				<ul class="dropdown_content">
-					<li><a href="/the-project">The Project</a></li>
-					<li><a href="/partners">Partners</a></li>
-          <li><a href="/research-program">Research program</a></li>
-          <li><a href="/contact-us">Contact Us</a></li>
-				</ul>
-			</li>
-			<li><a href="#">Login</a></li>
-		</ul>
-	</header>
+  <nav class="c-header">
+    <div class="wrap">
+      <div class="contain-nav">
+        <img class="icon-menu-mobile" src="img/menu_icon.svg" alt="Menu toggle icon">
+        <a class="app-logo" href="/">
+          <img src="img/gfw_logo_hor.svg" alt="Global Fishing Watch">
+        </a>
+        <ul class="menu">
+          <li>
+            <a href="/map">Map</a>
+          </li>
+          <li class="dropdown">
+            <a class="-no-cursor">News</a>
+            <ul class="dropdown-content">
+              <li>
+                <a href="http://skytruth.org/blogger_import_test/global-fishing-watch-blog" target="_blank">Blog</a>
+              </li>
+              <li>
+                <a href="/articles-publications">Articles and Publications</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="-no-cursor">How to</a>
+            <ul class="dropdown-content">
+              <li><a href="/faq">FAQ</a></li>
+              <li><a href="/tutorials">Tutorials</a></li>
+              <li><a href="/definitions">Definitions</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="-no-cursor">About</a>
+            <ul class="dropdown-content">
+              <li><a href="/the-project">The project</a></li>
+              <li><a href="/partners">Partners</a></li>
+              <li><a href="/research-program">Research program</a></li>
+              <li><a href="/contact-us">Contact us</a></li>
+            </ul>
+          </li>
+          <li><a>Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
 	<section class="reg">
 		<form method="post" action="#">
@@ -135,7 +144,7 @@
 		var mobileMenu = document.querySelector('.c-mobile-menu'),
       menuBack = document.querySelector('.menu-back');
 
-		document.querySelector('.js-hamburger-menu').addEventListener('click', function() {
+		document.querySelector('.icon-menu-mobile').addEventListener('click', function() {
 			mobileMenu.classList.toggle('-show');
       menuBack.classList.toggle('-show');
 		});
