@@ -24,6 +24,27 @@
         list-style: none;
       }
 
+      >.logo-list-funding {
+        display: block;
+        list-style: none;
+        width: 100%;
+
+        li {
+          width: 100%;
+        }
+      }
+
+      .funding-text {
+        color: $color-16;
+        display: block;
+        font-size: $font-size-normal;
+        margin-bottom: 15px;
+
+        @media #{$mq-tablet} {
+          display: none;
+        }
+      }
+
       .logo-item {
         margin-right: 15px;
 
@@ -36,10 +57,9 @@
         }
 
         .logo-ldf {
-          max-width: 170px;
-          width: 100%;
+          width: calc(100%/3);
 
-          @media #{$mq-tablet} {
+          @media #{$mq-mobile-large} {
             max-width: none;
             width: 170px;
           }
@@ -137,9 +157,22 @@
       }
     }
 
+    .content-nav-section-mobile{
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        display: none;
+      }
+    }
+
     .nav-section-mobile {
       display: block;
-      margin-right: 30px;
+
+      &:last-child {
+        margin-right: 0;
+      }
 
       @media #{$mq-tablet} {
         display: none;
@@ -157,7 +190,7 @@
   }
 
   .social-section {
-    align-items: center;
+    align-items: flex-start;
     border-top: 2px solid rgba($color-4, .2);;
     display: flex;
     padding-bottom: 60px;
@@ -165,6 +198,7 @@
     position: relative;
 
     @media #{$mq-tablet} {
+      align-items: center;
       border-top: 0;
       display: none;
       padding-bottom: 0;

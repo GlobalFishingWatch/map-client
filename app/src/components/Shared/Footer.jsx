@@ -35,8 +35,9 @@ export default function () {
             </ul>
           </div>
           <div className={footerStyle['sponsor-footer']}>
-            <ul className={footerStyle['logo-list']}>
+            <ul className={footerStyle['logo-list-funding']}>
               <li className={footerStyle['logo-item']}>
+                <span className={footerStyle['funding-text']}>Funding Partners</span>
                 <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
               </li>
             </ul>
@@ -85,48 +86,49 @@ export default function () {
               <Link className={footerStyle['nav-link']} to="/privacy-policy">Privacy policy</Link>
             </li>
           </ul>
+          <div className={footerStyle['content-nav-section-mobile']}>
+            <ul className={footerStyle['nav-section-mobile']}>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/map">Map</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <a href={BLOG_URL} target="_blank" className={footerStyle['nav-link']}>Blog</a>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/articles-publications">Articles and Publications</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/faq">FAQ</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/research-program">Research program</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/contact-us">Contact us</Link>
+              </li>
+            </ul>
 
-          <ul className={footerStyle['nav-section-mobile']}>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/map">Map</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <a href={BLOG_URL} target="_blank" className={footerStyle['nav-link']}>Blog</a>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/articles-publications">Articles and Publications</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/faq">FAQ</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/research-program">Research program</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/contact-us">Contact us</Link>
-            </li>
-          </ul>
-
-          <ul className={footerStyle['nav-section-mobile']}>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/definitions">Definitions</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/the-project">The project</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/partners">Partners</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/terms-of-use">Terms of use</Link>
-            </li>
-            <li className={footerStyle['nav-item']}>
-              <Link className={footerStyle['nav-link']} to="/privacy-policy">Privacy policy</Link>
-            </li>
-          </ul>
+            <ul className={footerStyle['nav-section-mobile']}>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/definitions">Definitions</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/the-project">The project</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/partners">Partners</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/terms-of-use">Terms of use</Link>
+              </li>
+              <li className={footerStyle['nav-item']}>
+                <Link className={footerStyle['nav-link']} to="/privacy-policy">Privacy policy</Link>
+              </li>
+            </ul>
+          </div>
           <SocialFooter />
         </div>
         <SocialFooter />
