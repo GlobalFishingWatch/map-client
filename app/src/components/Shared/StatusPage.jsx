@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import StatusPageStyles from '../../../styles/components/shared/c-status-page.scss';
+import ImageAttribution from './ImageAttribution';
 
 class StatusPage extends Component {
 
@@ -19,12 +20,16 @@ class StatusPage extends Component {
           {this.props.description &&
             <p className={StatusPageStyles.description}>{this.props.description}</p>}
         </div>
+         {this.props.attribution && <ImageAttribution>
+          {this.props.attribution}
+         </ImageAttribution>}
       </div>
     );
   }
 }
 
 StatusPage.propTypes = {
+  attribution: React.PropTypes.string,
   title: React.PropTypes.string,
   description: React.PropTypes.string,
   styles: React.PropTypes.string

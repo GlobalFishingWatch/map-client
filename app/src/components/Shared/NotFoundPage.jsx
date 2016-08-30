@@ -12,6 +12,7 @@ class NotFoundPage extends Component {
           styles="-not-found"
           title="404"
           description="The content requested hasn't been found."
+          attribution="Photo: © OCEANA / Eduardo Sorensen"
         />
       </div>
     );
