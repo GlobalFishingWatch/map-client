@@ -14,6 +14,7 @@ import Partners from './components/Partners';
 import TermsOfUse from './components/TermsOfUse';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import { Router, Route, IndexRoute, applyRouterMiddleware } from 'react-router';
+import NotFoundPage from './components/Shared/NotFoundPage';
 import ContactUsContainer from './containers/ContactUs';
 
 /**
@@ -120,6 +121,7 @@ class Routes extends Component {
           <Route path="privacy-policy" component={PrivacyPolicy} />
 
           <Route path="orbcomm" component={Orbcomm} />
+          <Route path="*" component={NotFoundPage} />
         </Route>
       </Router>
     );

@@ -75,6 +75,11 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (.*) index.html
 ```
+
+## Error page
+
+On server error, the `/public/500.html` page should be displayed.
+
 # Environment variables description
 
 #### PORT

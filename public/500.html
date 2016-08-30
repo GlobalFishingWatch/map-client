@@ -1,12 +1,13 @@
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>Change password - Global Fishing Watch</title>
+	<title>500 - Internal Server Error - Global Fishing Watch</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="./css/styles.min.css">
+	<link rel="stylesheet" type="text/css" href="form/css/styles.min.css">
+  <link rel="stylesheet" type="text/css" href="form/css/messages.css">
 </head>
-<body class="bg reg">
+<body>
+
   <div class="menu-back"></div>
   <div class="c-mobile-menu">
     <ul>
@@ -41,12 +42,12 @@
     </div>
   </div>
 
-  </nav><nav class="c-header">
+  <nav class="c-header">
     <div class="wrap">
       <div class="contain-nav">
-        <img class="icon-menu-mobile" src="img/menu_icon.svg" alt="Menu toggle icon">
+        <img class="icon-menu-mobile" src="form/img/menu_icon.svg" alt="Menu toggle icon">
         <a class="app-logo" href="/">
-          <img src="img/gfw_logo_hor.svg" alt="Global Fishing Watch">
+          <img src="form/img/gfw_logo_hor.svg" alt="Global Fishing Watch">
         </a>
         <ul class="menu">
           <li>
@@ -86,36 +87,18 @@
     </div>
   </nav>
 
-	<section class="reg">
-		<form method="post" action="#">
-			<h1>Change password</h1>
-      <h2>Enter a new password</h2>
-      <div class="password-hint">
-        <p>Your password must have at least:</p>
-        <p>8 characters, 1 letter, 1 number</p>
-      </div>
-			<div class="reg-form">
-        <div class="item">
-					<label for="gfw_old_password">Old Password *</label>
-					<input type="text" id="gfw_old_password" placeholder="********" required />
-        </div>
-        <div class="item">
-          <label for="gfw_password">New Password *</label>
-          <input type="text" id="gfw_password" placeholder="********" required />
-        </div>
-        <div class="item">
-          <label for="gfw_repeat_password">Repeat New Password *</label>
-          <input type="text" id="gfw_repeat_password" placeholder="********" required />
-        </div>
-			</div>
-			<input type="submit" value="set password"/>
-		</form>
-	</section>
-  <div class="attribution-picture">
-    <span>Photo: Aysunbk/iStock/Thinkstock</span>
+  <div class="c-status-page -error">
+    <div class="message">
+      <h2 class="title-status">500</h2>
+      <p class="description">Internal server error</p>
+    </div>
+    <div class="attribution">
+      <span class="author">Photo: © OCEANA / Keith Ellenbogen</span>
+    </div>
   </div>
 
-  <script>
+
+	<script>
 		var mobileMenu = document.querySelector('.c-mobile-menu'),
       menuBack = document.querySelector('.menu-back');
 

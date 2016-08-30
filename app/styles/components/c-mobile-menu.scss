@@ -5,13 +5,18 @@
   bottom: 0;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
   left: 0;
+  overflow: auto;
   padding: 25px 30px;
   position: fixed;
   top: 0;
   transform: translatex(-100%);
   transition: transform ease-in .2s;
-  width: 325px;
+  width: 300px;
   z-index: 100;
+
+  @media #{$mq-tablet} {
+    width: 325px;
+  }
 
   &.-show {
     transform: translatex(0);
