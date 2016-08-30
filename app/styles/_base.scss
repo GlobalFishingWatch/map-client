@@ -96,12 +96,19 @@ ul {
 .section-title {
   color: $color-9;
   display: block;
-  font-size: $font-size-xx-big;
+  font-size: $font-size-x-medium;
   font-weight: $font-weight-normal;
-  line-height: 1.05;
-  margin: 60px 0 18px;
+  line-height: 1.44;
+  margin: 20px 0 25px;
+
   max-width: 700px;
   width: 100%;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xx-big;
+    line-height: 1.05;
+    margin: 60px 0 18px;
+  }
 }
 
 :global .section-title {
