@@ -99,6 +99,10 @@
         text-decoration: none;
         text-transform: capitalize;
 
+        &.-no-cursor {
+          cursor: default;
+        }
+
         &.-active {
           position: relative;
 
