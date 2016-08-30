@@ -105,7 +105,7 @@ class Header extends Component {
                         location.pathname === '/faq'
                         || location.pathname === '/tutorials'
                         || location.pathname === '/definitions'
-                      ) ? styles['-active'] : null
+                      ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
                     How to
@@ -123,7 +123,7 @@ class Header extends Component {
                       || location.pathname === '/partners'
                       || location.pathname === '/research-program'
                       || location.pathname === '/contact-us'
-                    ) ? styles['-active'] : null}
+                    ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
                   >
                     About
                   </a>

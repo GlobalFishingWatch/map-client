@@ -100,8 +100,12 @@
 
   p {
     color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-bold;
     letter-spacing: -.1px;
     margin-bottom: 170px;
+
   }
 
   .footer-header {
@@ -152,27 +156,29 @@
 
     li {
       display: inline-block;
+      position: relative;
 
       button {
         background: $color-4;
         border: 0;
         font-size: 0;
-        height: 14px;
+        height: 16px;
         margin-right: 15px;
         outline: 0;
+        position: relative;
         transform: rotate(45deg);
-        width: 14px;
+        width: 16px;
+        z-index: 2;
       }
 
       &::after {
-        border-bottom: 1.5px solid $color-4;
+        height: 2px;
+        background-color: $color-4;
         content: '';
-        height: 5px;
-        margin-left: -13px;
-        margin-top: 10px;
         position: absolute;
-        top: .5px;
-        width: 11px;
+        width: 12px;
+        top: 60%;
+        left: 55%;
       }
 
       &:last-child {
