@@ -7,26 +7,62 @@
   //Section Founding Logos on footer
   .logos-footer {
     border-bottom: 2px solid rgba($color-4, .2);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 50px 55px 0;
+    display: block;
+    padding: 0 0 30px;
+
+    @media #{$mq-tablet} {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 50px 55px 0;
+    }
 
     .partner-footer,
     .sponsor-footer {
       > .logo-list {
         align-items: center;
         display: flex;
-
-        justify-content: space-between;
         list-style: none;
       }
 
+      .logo-item {
+        margin-right: 15px;
+
+        @media #{$mq-laptop} {
+          margin-right: 55px;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .logo-ldf {
+          max-width: 170px;
+          width: 100%;
+
+          @media #{$mq-tablet} {
+            max-width: none;
+            width: 170px;
+          }
+        }
+      }
+
       .logo-item > .logo {
-        max-width: 130px;
+        max-width: 100px;
         width: 100%;
 
+        @media #{$mq-tablet} {
+          max-width: none;
+          width: 130px;
+        }
+
         &.-oceana {
-          max-width: 175px;
+          max-width: 100px;
+          width: 100%;
+
+          @media #{$mq-tablet} {
+            max-width: none;
+            width: 175px;
+          }
         }
       }
     }
@@ -38,23 +74,38 @@
         color: $color-16;
         display: block;
         font-size: $font-size-normal;
-        margin-bottom: 35px;
+        margin-bottom: 15px;
+
+        @media #{$mq-laptop} {
+          margin-bottom: 35px;
+        }
       }
     }
 
     .sponsor-footer {
       align-items: flex-end;
       display: flex;
+      margin-top: 45px;
+
+      @media #{$mq-tablet} {
+        margin-top: 0;
+      }
     }
   }
 
   //Section Navigation footer
   .nav-footer {
     display: flex;
-    justify-content: space-between;
-    padding: 55px 50px 60px 0;
+    justify-content: flex-start;
+    padding: 30px 0;
 
-    .nav-section {
+    @media #{$mq-tablet} {
+      justify-content: space-between;
+      padding: 55px 50px 60px 0;
+    }
+
+    .nav-section,
+    .nav-section-mobile {
       display: flex;
       flex-direction: column;
       list-style: none;
@@ -78,75 +129,131 @@
       }
     }
 
-    > .social-section {
-      position: relative;
+    .nav-section {
+      display: none;
 
-      // Get rid of this, this is a button component
-      .subscribe-button {
-        background-color: $color-6;
-        border-radius: 1px;
-        color: $color-4;
-        display: flex;
-        font-size: $font-size-x-small;
-        font-weight: $font-weight-light;
+      @media #{$mq-tablet} {
+        display: block;
+      }
+    }
+
+    .nav-section-mobile {
+      display: block;
+      margin-right: 30px;
+
+      @media #{$mq-tablet} {
+        display: none;
+        margin-right: 0;
+      }
+    }
+
+    .social-section {
+      display: none;
+
+      @media #{$mq-tablet} {
+        display: block;
+      }
+    }
+  }
+
+  .social-section {
+    align-items: center;
+    border-top: 2px solid rgba($color-4, .2);;
+    display: flex;
+    padding-bottom: 60px;
+    padding-top: 30px;
+    position: relative;
+
+    @media #{$mq-tablet} {
+      border-top: 0;
+      display: none;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+
+    // Get rid of this, this is a button component
+    .subscribe-button {
+      background-color: $color-6;
+      border-radius: 1px;
+      color: $color-4;
+      display: flex;
+      font-size: $font-size-x-small;
+      font-weight: $font-weight-light;
+      margin-right: 15px;
+      max-width: 150px;
+      padding: 14px 15px;
+      text-decoration: none;
+      text-transform: uppercase;
+
+      @media #{$mq-tablet} {
+        margin-right: 0;
+        max-width: none;
         padding: 10px 15px;
-        text-decoration: none;
-        text-transform: uppercase;
-
-        > .email-subscribe {
-          margin-left: 10px;
-        }
       }
 
-      > .social-links {
-        align-items: center;
+      > .email-subscribe {
+        margin-left: 10px;
+      }
+    }
+
+    > .social-links {
+      align-items: center;
+      display: block;
+      margin-top: 0;
+
+      @media #{$mq-tablet} {
         display: flex;
         margin-top: 35px;
+      }
 
+      > .social-text {
+        color: $color-16;
+        font-weight: $font-weight-light;
+        text-transform: uppercase;
+      }
 
-        > .social-text {
-          color: $color-16;
-          font-weight: $font-weight-light;
-          text-transform: uppercase;
+      > .social-list {
+        align-items: center;
+        display: flex;
+        margin-left: 0;
+        margin-top: 10px;
+
+        @media #{$mq-tablet} {
+          margin-left: 15px;
+          margin-top: 0;
         }
 
-        > .social-list {
+        > .social-item {
           align-items: center;
-          display: flex;
-          margin-left: 15px;
+          border: solid 1px $color-4;
+          border-radius: 100%;
+          display: inline-flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
 
-          > .social-item {
+          & + .social-item {
+            margin-left: 10px;
+          }
+
+          > a {
             align-items: center;
-            border: solid 1px $color-4;
-            border-radius: 100%;
+            border-radius: 50%;
             display: inline-flex;
-            height: 32px;
+            height: 100%;
             justify-content: center;
-            width: 32px;
+            width: 100%;
+          }
 
-            & + .social-item {
-              margin-left: 10px;
+          &:first-child {
+            img {
+              width: 16px;
             }
+          }
 
-            > a {
-              align-items: center;
-              border-radius: 50%;
-              display: inline-flex;
-              height: 100%;
-              justify-content: center;
-              width: 100%;
-            }
-
-            &:first-child {
-              img {
-                width: 16px;
-              }
-            }
-
-            &:last-child {
-              img {
-                width: 10px;
-              }
+          &:last-child {
+            img {
+              width: 10px;
             }
           }
         }
