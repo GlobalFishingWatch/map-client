@@ -27,22 +27,37 @@
   .icon-menu-mobile {
     cursor: pointer;
     display: block;
-    margin-right: 20px;
+    margin-right: 21px;
     width: 21px;
+
+    @media #{$mq-mobile-large} {
+      margin-right: 0;
+    }
 
     @media #{$mq-tablet} {
       display: none;
+      margin-right: 0;
     }
   }
 
   .app-logo {
     display: flex;
     justify-content: center;
+    margin-right: 21px;
     width: 100%;
 
     @media #{$mq-tablet} {
       display: inline-block;
+      margin-right: 0;
       width: auto;
+    }
+
+    img {
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        width: auto;
+      }
     }
   }
 
