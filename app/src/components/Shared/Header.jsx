@@ -88,7 +88,7 @@ class Header extends Component {
                   <a
                     className={
                       location.pathname.indexOf('/articles-publications') !== -1
-                        ? styles['-active'] : null
+                        ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
                     News
