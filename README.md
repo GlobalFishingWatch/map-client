@@ -40,13 +40,13 @@ Note that as of now, before we fix all errors on the existing codebase, the push
 
 # Production
 
-To compile the project to production environment, you need set the NODE_ENV variable value to `production` and 
+To compile the project to production environment, you need set the NODE_ENV variable value to `production` and
 execute the following command.
 ```
 npm run build
 ```
 
-This command generates a `dist` folder with the files needed to run application in a nginx or apache server. Your 
+This command generates a `dist` folder with the files needed to run application in a nginx or apache server. Your
 server needs to be configured to serve all routers from a static `index.html` file.
 
 ### nginx
@@ -125,3 +125,7 @@ Endpoint of the Articles & publications section content
 #### REQUIRE_MAP_LOGIN
 
 Boolean value to determine if the user needs to be logged in to access the map (setting to false is experimental)
+
+#### GA_TRACKING_CODE
+
+Google Analytics tracking code.
