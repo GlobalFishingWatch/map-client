@@ -6,13 +6,12 @@ import FooterMini from './Shared/FooterMini';
 import mapStyles from '../../styles/components/c-map.scss';
 
 function MapIFrame(props) {
+  const imageIframe = !props.token && REQUIRE_MAP_LOGIN;
+
   /**
    * To add any new param to the URL, add a new entry to the following object with
    * the key being the name of the param
    */
-
-  const imageIframe = !props.token && REQUIRE_MAP_LOGIN;
-
   const workspace = props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
   const urlParams = {
     headers: props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${props.token}` })),
