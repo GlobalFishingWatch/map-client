@@ -6,7 +6,7 @@ class SupportForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      url: window.location,
+      url: EMBED_MAP_URL,
       submitted: false,
       showFormResponse: false,
       classSelect: '',
@@ -14,6 +14,14 @@ class SupportForm extends Component {
       name: this.props.defaultUserName,
       email: this.props.defaultUserEmail
     };
+  }
+
+  getInitialState() {
+    if (EMBED_MAP_URL === '') {
+      this.setState({
+        url: window.location
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -127,7 +135,7 @@ class SupportForm extends Component {
           type="hidden"
           name="url"
           id="support_url"
-          value={window.location}
+          value={this.state.url}
           onChange={(event) => { this.handleChange(event); }}
         />
         <div className={supportFormStyle['container-submit']}>
