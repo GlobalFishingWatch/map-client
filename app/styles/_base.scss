@@ -147,3 +147,33 @@ ul {
   max-width: 700px;
   width: 100%;
 }
+
+:global .section-page {
+  padding: 55px 0 65px;
+  position: relative;
+
+  &::after {
+    background-color: $color-10;
+    bottom: 0;
+    content: '';
+    display: inline-block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    top: auto;
+    transform: translate(-50%, 0);
+    width: 100vw;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+
+    &::after {
+      content: none;
+    }
+  }
+}

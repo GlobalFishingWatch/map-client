@@ -3,34 +3,10 @@
 .l-static-page {
   padding: 85px 0 0;
 
-  .section-page {
+  :global .section-page {
     margin: 0 auto;
     max-width: 700px;
     padding: 85px 0;
-    position: relative;
-
-    &::after {
-      background-color: $color-10;
-      bottom: 0;
-      content: '';
-      display: inline-block;
-      height: 2px;
-      left: 50%;
-      position: absolute;
-      top: auto;
-      transform: translate(-50%, 0);
-      width: 100vw;
-    }
-
-    &:first-child {
-      padding-top: 0;
-    }
-
-    &:last-child {
-      &::after {
-        content: none;
-      }
-    }
 
     :global .section-title {
       margin: 0 0 30px;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
@@ -29,7 +28,7 @@ class ResearchProgram extends Component {
         />
         <div className={StaticPageStyles['l-static-page']}>
           <div className={baseStyle.wrap}>
-            <section className={classnames(StaticPageStyles['section-page'], StaticPageStyles['-intro'])}>
+            <section className="section-page">
               <p>
                 Scientists play a key role in identifying and understanding the complex challenges facing our oceans,
                 which is why we are working closely with some of the world’s leading researchers to extend
@@ -47,7 +46,7 @@ class ResearchProgram extends Component {
                 initiatives and more impact.
               </p>
             </section>
-            <section className={StaticPageStyles['section-page']}>
+            <section className="section-page">
               <h2 className="section-title">Research Partners & Projects</h2>
               <article className={StaticPageStyles['section-item']}>
                 <img
@@ -170,7 +169,7 @@ class ResearchProgram extends Component {
                 </p>
               </article>
             </section>
-            <section className={StaticPageStyles['section-page']}>
+            <section className="section-page">
               <h2 className="section-title">Researcher Testimonials and Videos</h2>
               <article className={StaticPageStyles.testimonial}>
                 <iframe
@@ -242,7 +241,7 @@ marine-ecologist-boris-worm.html"
 
               </article>
             </section>
-            <section className={StaticPageStyles['section-page']}>
+            <section className="section-page">
               <h2 className="section-title">Access to Global Fishing Watch Data</h2>
               <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
                 are publishing daily, detailed, global rasters of fishing effort, which will be available to research
@@ -268,7 +267,7 @@ marine-ecologist-boris-worm.html"
                 &nbsp;if interested in these datasets.
               </p>
             </section>
-            <section className={StaticPageStyles['section-page']}>
+            <section className="section-page">
               <h2 className="section-title">Research Program Publications</h2>
               <p>McCauley, D., P. Woods, B. Sullivan, B. Bergman, C. Jablonicky, A. Roan,
                 M. Hirshfield, K. Boerder,

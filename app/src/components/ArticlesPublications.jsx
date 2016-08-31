@@ -4,9 +4,8 @@ import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import { Link } from 'react-router';
 import Rhombus from './Shared/Rhombus';
-import classnames from 'classnames';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import PubsArticlesLayoutStyles from '../../styles/layout/l-publications-articles.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
 import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.jpg';
@@ -55,14 +54,11 @@ class ArticlesPublications extends Component {
 
       if (!!articles && articles.length) {
         pageContent.push(
-          <section key="articles">
-            <h2
-              className={classnames(AppStyles['section-title'],
-                PubsArticlesLayoutStyles['section-title'])}
-            >
+          <section className="section-page" key="articles">
+            <h2 className="section-title">
               Articles
             </h2>
-            <div className={PubsArticlesLayoutStyles.grid}>
+            <div className="section-page grid">
               {articles}
             </div>
           </section>
@@ -75,14 +71,11 @@ class ArticlesPublications extends Component {
 
       if (!!publications && publications.length) {
         pageContent.push(
-          <section key="publications">
-            <h2
-              className={classnames(AppStyles['section-title'],
-                PubsArticlesLayoutStyles['section-title'])}
-            >
+          <section className="section-page" key="publications">
+            <h2 className="section-title">
               Publications
             </h2>
-            <div className={PubsArticlesLayoutStyles.grid}>
+            <div className="section-page grid">
               {publications}
             </div>
           </section>
