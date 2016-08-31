@@ -10,10 +10,15 @@
     display: block;
     padding: 0 0 30px;
 
-    @media #{$mq-tablet} {
+    @media #{$mq-mobile-large} {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       padding: 0 50px 55px 0;
+    }
+
+    @media #{$mq-tablet} {
+      flex-wrap: nowrap;;
     }
 
     .partner-footer,
@@ -39,8 +44,9 @@
         display: block;
         font-size: $font-size-normal;
         margin-bottom: 15px;
+        margin-top: 45px;
 
-        @media #{$mq-tablet} {
+        @media screen and (min-width: 675px) {
           display: none;
         }
       }
@@ -56,7 +62,12 @@
           width: calc(100%/3);
 
           @media #{$mq-mobile-large} {
-            width: 170px;
+            min-width: 130px;
+            width: calc(100%/3);
+          }
+
+          @media #{$mq-tablet} {
+            width: 180px;
           }
         }
       }
@@ -66,6 +77,7 @@
         max-width: 100px;
         width: 100%;
 
+
         @media #{$mq-tablet} {
           max-width: none;
           width: 130px;
@@ -73,7 +85,6 @@
 
         &.-oceana {
           max-width: 100px;
-          width: 100%;
 
           @media #{$mq-tablet} {
             max-width: none;
@@ -100,9 +111,8 @@
     .sponsor-footer {
       align-items: flex-end;
       display: flex;
-      margin-top: 45px;
 
-      @media #{$mq-tablet} {
+      @media #{$mq-mobile-large} {
         margin-top: 0;
       }
     }
@@ -122,6 +132,7 @@
     }
 
     .nav-section {
+      -moz-column-count: 2;
       column-count: 2;
       list-style: none;
       margin-bottom: 30px;
@@ -146,6 +157,7 @@
       }
 
       @media #{$mq-tablet} {
+        -moz-column-count: 3;
         column-count: 3;
         margin-bottom: 0;
         width: inherit;
@@ -187,8 +199,8 @@
   .social-section {
     align-items: flex-start;
     border-top: 2px solid rgba($color-4, .2);;
-    display: flex;
-    padding-bottom: 60px;
+    display: block;
+    padding-bottom: 45px;
     padding-top: 30px;
     position: relative;
 
@@ -205,31 +217,36 @@
       background-color: $color-6;
       border-radius: 1px;
       color: $color-4;
-      display: flex;
-      font-size: $font-size-normal;
-      font-weight: $font-weight-normal;
-      margin-right: 15px;
-      max-width: 150px;
-      padding: 14px 15px;
+      display: block;
+      font-size: $font-size-x-small;
+      font-weight: 400;
+      margin: 0 auto;
+      max-width: 230px;
+      padding: 8px 15px;
       text-decoration: none;
       text-transform: uppercase;
+      width: 100%;
+
 
       @media #{$mq-tablet} {
+        display: flex;
         font-size: $font-size-x-small;
-        margin-right: 0;
-        max-width: none;
+        margin: inherit;
+        max-width: 175px;
         padding: 10px 15px;
       }
 
       > .email-subscribe {
         margin-left: 10px;
+        width: 18px;
       }
     }
 
     > .social-links {
       align-items: center;
-      display: block;
-      margin-top: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 35px;
 
       @media #{$mq-tablet} {
         display: flex;
@@ -246,11 +263,11 @@
         align-items: center;
         display: flex;
         margin-left: 0;
-        margin-top: 10px;
+        margin-top: 0;
 
         @media #{$mq-tablet} {
-          margin-left: 15px;
-          margin-top: 0;
+          align-items: center;
+          display: flex;
         }
 
         > .social-item {
@@ -260,7 +277,12 @@
           display: inline-flex;
           height: 32px;
           justify-content: center;
+          margin-left: 20px;
           width: 32px;
+
+          @media #{$mq-tablet} {
+            margin-left: 15px;
+          }
 
           & + .social-item {
             margin-left: 10px;
