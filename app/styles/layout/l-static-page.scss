@@ -2,4 +2,69 @@
 
 .l-static-page {
   padding: 85px 0 90px;
+
+  .section-page {
+
+    &::after {
+      background-color: $color-10;
+      bottom: 0;
+      content: '';
+      display: inline-block;
+      height: 2px;
+      left: 50%;
+      position: relative;
+      top: auto;
+      transform: translate(-50%, 0);
+      width: 100vw;
+    }
+
+    &:last-child {
+      &::after {
+        content: none;
+      }
+    }
+  }
+
+  .intro {
+    margin-bottom: 40px;
+
+    @media #{$mq-tablet} {
+      margin-bottom: 85px;
+    }
+  }
+
+  .section-item {
+    margin: 40px 0;
+
+    &:last-child {
+      margin-bottom: 85px;
+    }
+  }
+
+  .subtitle {
+    font-size: $font-size-x-medium;
+    font-weight: $font-weight-normal;
+    line-height: 1.44;
+    margin: 20px 0 15px;
+  }
+
+  .testimonial {
+    margin-top: 30px;
+
+    &:last-child {
+      margin-bottom: 85px;
+    }
+  }
+
+  .testimonial > iframe {
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      width: 560px;
+    }
+  }
+
+  .testimonial > .video-quote {
+    margin: 30px 0 35px;
+  }
 }
