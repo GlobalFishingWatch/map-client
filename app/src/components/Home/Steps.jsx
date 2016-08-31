@@ -42,7 +42,7 @@ class Steps extends Component {
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
                 <span className={StepsStyle.amount}>20 billions</span>
-                <span className={StepsStyle.definition}>ais points of apparent fishing</span>
+                <span className={StepsStyle.definition}>ais messages processed</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-data'])}>
                 <img
@@ -54,7 +54,7 @@ class Steps extends Component {
               <div className={StepsStyle.content}>
                 <h3 className={StepsStyle.name}>Step 2: Data processing</h3>
                 <p>Each day, more than 20 million data points are added to the system. Using cloud
-                  computing and machine learning, Global Fishing Watch processes this data, identifying
+                  computing and machine learning, Global Fishing Watch processes these data, identifying
                   which vessels are fishing boats, and when and where they are&nbsp;
                   <ToolTip text="Apparent fishing">fishing</ToolTip>.
                 </p>
@@ -74,7 +74,7 @@ class Steps extends Component {
               </div>
               <div className={StepsStyle.content}>
                 <h3 className={StepsStyle.name}>Step 3: You</h3>
-                <p>Once the data is visualized on Global Fishing Watch, anyone can track fishing activity
+                <p>Once the data are visualized on Global Fishing Watch, anyone can track fishing activity
                 across the globe.</p>
               </div>
             </li>

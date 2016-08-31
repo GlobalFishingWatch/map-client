@@ -29,7 +29,9 @@ class CoverPage extends Component {
 
   componentDidUpdate() {
     $(`.${CoverPageStyle['dots-cover']}`).off('click').on('click', () => {
-      if (!this.state.autoPlaySlider) return;
+      if (!this.state.autoPlaySlider) {
+        return;
+      }
       this.setState({ autoPlaySlider: false });
     });
   }
@@ -40,7 +42,9 @@ class CoverPage extends Component {
 
   scrollPage() {
     const el = document.getElementById('steps');
-    if (!el) return;
+    if (!el) {
+      return;
+    }
     scrollTo(el);
   }
 
@@ -51,7 +55,9 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
       draggable: false,
-      beforeChange: (currentSlider, nextSlider) => { this.onSliderChange(nextSlider); },
+      beforeChange: (currentSlider, nextSlider) => {
+        this.onSliderChange(nextSlider);
+      },
       autoplay: this.state.autoPlaySlider,
       autoplaySpeed: this.state.speedPlaySlider
     };
@@ -94,15 +100,12 @@ class CoverPage extends Component {
               <div className={CoverPageStyle['leo-slider']}>
                 <div className={CoverPageStyle['contain-quote-text']}>
                   <blockquote>
-                    “Welcome to Global Fishing Watch, the world’s first free,
-                    interactive tool that enables anyone in the world to track
-                    commercial fishing activity, worldwide. Global Fishing Watch
-                    will shed light on what is happening on our oceans so that
-                    together, we can ensure the responsible and sustainable
-                    management of our fisheries.”
+                    “Global Fishing Watch is the first effective tool to track commercial fishing around the world. Now
+                    anyone can help put an end to the massive overfishing that is decimating fisheries everywhere and
+                    help authorities protect our precious marine ecosystems before it’s too late.”
                   </blockquote>
                   <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-                  <p>The Leonardo DiCaprio Foundation is Proud to be a Funding Partner of Global Fishing Watch</p>
+                  <p>The Leonardo DiCaprio Foundation is proud to be a Funding Partner of Global Fishing Watch</p>
                 </div>
               </div>
               <div>
