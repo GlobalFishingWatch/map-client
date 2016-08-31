@@ -87,7 +87,7 @@ class Header extends Component {
                 <li className={styles.dropdown}>
                   <a
                     className={
-                      location.pathname.startsWith('/articles-publications')
+                      location.pathname.indexOf('/articles-publications') !== -1
                         ? styles['-active'] : null
                     }
                   >

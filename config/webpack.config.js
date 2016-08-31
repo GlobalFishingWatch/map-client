@@ -16,6 +16,7 @@ const webpackConfig = {
 
   entry: [
     'whatwg-fetch',
+    path.join(rootPath, 'app/src/util/assignPolyfill.js'),
     path.join(rootPath, 'app/src/index.jsx')
   ],
 
