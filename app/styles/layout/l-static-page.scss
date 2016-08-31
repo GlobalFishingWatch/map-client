@@ -1,9 +1,13 @@
 @import '../settings';
 
 .l-static-page {
-  padding: 85px 0 90px;
+  padding: 85px 0 0;
 
   .section-page {
+    margin: 0 auto;
+    max-width: 700px;
+    padding: 85px 0;
+    position: relative;
 
     &::after {
       background-color: $color-10;
@@ -12,10 +16,14 @@
       display: inline-block;
       height: 2px;
       left: 50%;
-      position: relative;
+      position: absolute;
       top: auto;
       transform: translate(-50%, 0);
       width: 100vw;
+    }
+
+    &:first-child {
+      padding-top: 0;
     }
 
     &:last-child {
@@ -23,21 +31,17 @@
         content: none;
       }
     }
-  }
 
-  .intro {
-    margin-bottom: 40px;
-
-    @media #{$mq-tablet} {
-      margin-bottom: 85px;
+    :global .section-title {
+      margin: 0 0 30px;
     }
   }
 
   .section-item {
-    margin: 40px 0;
+    margin: 60px 0 55px;
 
     &:last-child {
-      margin-bottom: 85px;
+      margin-bottom: 0;
     }
   }
 
@@ -45,23 +49,18 @@
     font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
     line-height: 1.44;
-    margin: 20px 0 15px;
+    margin: 20px 0 5px;
   }
 
   .testimonial {
-    margin-top: 30px;
-
-    &:last-child {
-      margin-bottom: 85px;
+    & + .testimonial {
+      margin-top: 65px;
     }
   }
 
   .testimonial > iframe {
+    height: 390px;
     width: 100%;
-
-    @media #{$mq-tablet} {
-      width: 560px;
-    }
   }
 
   .testimonial > .video-quote {

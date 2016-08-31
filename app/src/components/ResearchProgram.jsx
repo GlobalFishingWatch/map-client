@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
 import Rhombus from './Shared/Rhombus';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import researchProgramBackgroundImage from '../../assets/images/research-program.jpg';
 import AncorsLogo from '../../assets/research-partners/ancors.svg';
 import CSIROLogo from '../../assets/research-partners/csiro.svg';
@@ -28,30 +29,31 @@ class ResearchProgram extends Component {
         />
         <div className={StaticPageStyles['l-static-page']}>
           <div className={baseStyle.wrap}>
-            <section className={StaticPageStyles['section-page']}>
-              <div className={StaticPageStyles.intro}>
-                <p>
-                  Scientists play a key role in identifying and understanding the complex challenges facing our oceans,
-                  which is why we are working closely with some of the world’s leading researchers to extend
-                  the value of our dataset. Our collaborations contribute to discoveries and solutions critical
-                  to marine conservation,
-                  global economics, and human welfare. The partnerships we are forging will help us understand the role
-                  fishing plays in the physical, biological, economic, and political factors facing the oceans. The
-                  Research Program also aims to support the entire scientific community by making additional datasets
-                  publicly available to enable future works.
-                </p>
-                <p>
-                  Core principles of Global Fishing Watch include transparency and collaboration, and the Research
-                  Program is based on these same principles. Research partners are committed to sharing datasets,
-                  ideas, and techniques, with the belief that broader access to information leads to future
-                  initiatives and more impact.
-                </p>
-              </div>
+            <section className={classnames(StaticPageStyles['section-page'], StaticPageStyles['-intro'])}>
+              <p>
+                Scientists play a key role in identifying and understanding the complex challenges facing our oceans,
+                which is why we are working closely with some of the world’s leading researchers to extend
+                the value of our dataset. Our collaborations contribute to discoveries and solutions critical
+                to marine conservation,
+                global economics, and human welfare. The partnerships we are forging will help us understand the role
+                fishing plays in the physical, biological, economic, and political factors facing the oceans. The
+                Research Program also aims to support the entire scientific community by making additional datasets
+                publicly available to enable future works.
+              </p>
+              <p>
+                Core principles of Global Fishing Watch include transparency and collaboration, and the Research
+                Program is based on these same principles. Research partners are committed to sharing datasets,
+                ideas, and techniques, with the belief that broader access to information leads to future
+                initiatives and more impact.
+              </p>
             </section>
             <section className={StaticPageStyles['section-page']}>
-              <h2 className={baseStyle['section-title']}>Research Partners & Projects</h2>
+              <h2 className="section-title">Research Partners & Projects</h2>
               <article className={StaticPageStyles['section-item']}>
-                <img src={CSIROLogo} alt="Commonwealth Scientific and Industrial Research Organisation (CSIRO)" />
+                <img
+                  className={StaticPageStyles['logo-partner']} src={CSIROLogo}
+                  alt="Commonwealth Scientific and Industrial Research Organisation (CSIRO)"
+                />
                 <h4 className={StaticPageStyles.subtitle}>
                   Commonwealth Scientific and Industrial Research Organisation (CSIRO): MCS Analytics
                 </h4>
@@ -67,7 +69,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={WormLabLogo} alt="Worm Lab" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={WormLabLogo}
+                  alt="Worm Lab"
+                />
                 <h4 className={StaticPageStyles.subtitle}>Dalhousie University: Worm Lab</h4>
                 <p>
                   The Worm Lab includes students and postdoctoral fellows engaged in the study of marine biodiversity,
@@ -80,7 +86,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={MarineGeospatialLogo} alt="Marine Geospatial Ecology Lab" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={MarineGeospatialLogo}
+                  alt="Marine Geospatial Ecology Lab"
+                />
                 <h4 className={StaticPageStyles.subtitle}>Duke University: Marine Geospatial Ecology Lab</h4>
                 <p>
                   The Marine Geospatial Ecology Lab at Duke University applies geospatial technologies to issues in
@@ -92,7 +102,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={StanfordLogo} alt="Stanford University: Block Lab" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={StanfordLogo}
+                  alt="Stanford University: Block Lab"
+                />
                 <h4 className={StaticPageStyles.subtitle}>Stanford University: Block Lab</h4>
                 <p>
                   The Block lab focus on how large pelagic fishes utilize the open ocean, and draws on innovative
@@ -105,7 +119,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={McCauleyLogo} alt="McCauley Lab" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={McCauleyLogo}
+                  alt="McCauley Lab"
+                />
                 <h4 className={StaticPageStyles.subtitle}>University of California, Santa Barbara: McCauley Lab</h4>
                 <p>
                   The McCauley Lab is a consortium of broadly trained ecologists that focus on understanding how we
@@ -116,7 +134,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={SustainableFisheries} alt="Sustainable Fisheries Group" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={SustainableFisheries}
+                  alt="Sustainable Fisheries Group"
+                />
                 <h4 className={StaticPageStyles.subtitle}>
                   University of California, Santa Barbara: Sustainable Fisheries Group
                 </h4>
@@ -131,7 +153,11 @@ class ResearchProgram extends Component {
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
-                <img src={AncorsLogo} alt="Australian National Centre for Ocean Resources and Security (ANCORS)" />
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={AncorsLogo}
+                  alt="Australian National Centre for Ocean Resources and Security (ANCORS)"
+                />
                 <h4 className={StaticPageStyles.subtitle}>
                   University of Wollongong: Australian National Centre for Ocean Resources and Security (ANCORS)
                 </h4>
@@ -145,11 +171,9 @@ class ResearchProgram extends Component {
               </article>
             </section>
             <section className={StaticPageStyles['section-page']}>
-              <h2 className={baseStyle['section-title']}>Researcher Testimonials and Videos</h2>
+              <h2 className="section-title">Researcher Testimonials and Videos</h2>
               <article className={StaticPageStyles.testimonial}>
                 <iframe
-                  width="560"
-                  height="315"
                   src="https://www.youtube.com/embed/jT_XhUiiUaE"
                   frameBorder="0"
                   allowFullScreen
@@ -173,8 +197,6 @@ class ResearchProgram extends Component {
               </article>
               <article className={StaticPageStyles.testimonial}>
                 <iframe
-                  width="560"
-                  height="315"
                   src="https://www.youtube.com/embed/7cMVTLKNozI"
                   frameBorder="0"
                   allowFullScreen
@@ -198,8 +220,6 @@ marine-ecologist-boris-worm.html"
               </article>
               <article className={StaticPageStyles.testimonial}>
                 <iframe
-                  width="560"
-                  height="315"
                   src="https://www.youtube.com/embed/c-Yubmdk1hQ"
                   frameBorder="0"
                   allowFullScreen
@@ -223,35 +243,33 @@ marine-ecologist-boris-worm.html"
               </article>
             </section>
             <section className={StaticPageStyles['section-page']}>
-              <h2 className={baseStyle['section-title']}>Access to Global Fishing Watch Data</h2>
-              <article className={StaticPageStyles['section-item']}>
-                <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
-                  are publishing daily, detailed, global rasters of fishing effort, which will be available to research
-                  partners via <a
-                    className={baseStyle['-underline']}
-                    href="http://earthengine.google.com/"
-                    target="_blank"
-                  >
-                  Google’s Earth Engine
-                  </a>
-                  &nbsp; platform. Earth Engine provides incredibly powerful cloud spatial
-                  analytics alongside the world’s largest public data catalog with over five petabytes of imagery at
-                  your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
-                  dataset we have licensed for the project. While our agreement does not allow for redistribution of the
-                  raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
-                  more easily acquire a license. Please contact&nbsp;
-                  <a
-                    className={baseStyle['-underline']}
-                    href="mailto:research@globalfishingatch.org"
-                  >
-                  research@globalfishingatch.org
-                  </a>
-                  &nbsp;if interested in these datasets.
-                </p>
-              </article>
+              <h2 className="section-title">Access to Global Fishing Watch Data</h2>
+              <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
+                are publishing daily, detailed, global rasters of fishing effort, which will be available to research
+                partners via <a
+                  className={baseStyle['-underline']}
+                  href="http://earthengine.google.com/"
+                  target="_blank"
+                >
+                Google’s Earth Engine
+                </a>
+                &nbsp; platform. Earth Engine provides incredibly powerful cloud spatial
+                analytics alongside the world’s largest public data catalog with over five petabytes of imagery at
+                your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
+                dataset we have licensed for the project. While our agreement does not allow for redistribution of the
+                raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
+                more easily acquire a license. Please contact&nbsp;
+                <a
+                  className={baseStyle['-underline']}
+                  href="mailto:research@globalfishingatch.org"
+                >
+                research@globalfishingatch.org
+                </a>
+                &nbsp;if interested in these datasets.
+              </p>
             </section>
             <section className={StaticPageStyles['section-page']}>
-              <h2 className={baseStyle['section-title']}>Research Program Publications</h2>
+              <h2 className="section-title">Research Program Publications</h2>
               <p>McCauley, D., P. Woods, B. Sullivan, B. Bergman, C. Jablonicky, A. Roan,
                 M. Hirshfield, K. Boerder,
                 and B. Worm. 2016.

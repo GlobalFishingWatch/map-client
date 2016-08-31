@@ -136,3 +136,14 @@ ul {
   max-width: 700px;
   width: 100%;
 }
+
+:global .section-title {
+  color: $color-9;
+  display: block;
+  font-size: $font-size-xx-big;
+  font-weight: $font-weight-normal;
+  line-height: 1.05;
+  margin: 60px 0 18px;
+  max-width: 700px;
+  width: 100%;
+}
