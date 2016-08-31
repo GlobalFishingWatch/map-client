@@ -13,7 +13,6 @@ const envVariables = process.env;
 
 
 const webpackConfig = {
-  devtool: 'inline-source-map',
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
