@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
-import Slider from '../../lib/react-slick.min';
+import Slider from 'react-slick';
 import Header from '../../containers/Header';
 import CoverPagePreloader from './CoverPagePreloader';
 import { scrollTo } from '../../lib/Utils';
@@ -51,7 +51,7 @@ class CoverPage extends Component {
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
       draggable: false,
-      afterChange: (currentSlider) => { this.onSliderChange(currentSlider); },
+      beforeChange: (currentSlider, nextSlider) => { this.onSliderChange(nextSlider); },
       autoplay: this.state.autoPlaySlider,
       autoplaySpeed: this.state.speedPlaySlider
     };

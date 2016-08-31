@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Slider from '../../lib/react-slick.min';
+import Slider from 'react-slick';
 import BaseStyle from '../../../styles/_base.scss';
 import ResearchSectionStyle from '../../../styles/components/c-research-section.scss';
 import ucsbLogo from '../../../assets/logos/ucsb_logo.png';
