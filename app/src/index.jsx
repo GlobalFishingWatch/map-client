@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import ga from 'ga-react-router';
 import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
@@ -56,6 +57,11 @@ const store = createStore(
  * @type {Object}
  */
 const history = syncHistoryWithStore(browserHistory, store);
+
+history.listen(location => {
+  ga('set', 'page', location.pathname);
+  ga('send', 'pageview');
+});
 
 render(
   <Provider store={store}>
