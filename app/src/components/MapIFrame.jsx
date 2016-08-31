@@ -20,8 +20,6 @@ class MapIFrame extends Component {
      * the key being the name of the param
      */
 
-    const imgUrl = '../../../assets/images/iframe_image.png';
-
     const workspace = this.props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
     const urlParams = {
       headers: this.props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${this.props.token}` })),
