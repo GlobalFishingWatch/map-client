@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
-import ImgWhite from '../../../assets/icons/info_white.svg';
-import ImgBlack from '../../../assets/icons/info_black.svg';
 
 class ToolTip extends Component {
 
   render() {
     return (
-      <a
-        href="/definitions/fishing-effort"
-        className={ToolTipStyle['c-tooltip-info']}
+      <abbr
+        title={this.props.text}
+        className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'black'}`])}
       >
-        <img src={this.props.iconColor === 'black' ? ImgBlack : ImgWhite} alt="info icon"></img>
-        <span className={ToolTipStyle['content-tooltip']}>{this.props.children}</span>
-      </a>
+        {this.props.children}
+        <i />
+      </abbr>
     );
   }
 }
 
 ToolTip.propTypes = {
   iconColor: React.PropTypes.string,
+  text: React.PropTypes.string,
   children: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.element

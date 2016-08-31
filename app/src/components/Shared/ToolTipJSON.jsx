@@ -8,7 +8,7 @@ class ToolTipJSON extends Component {
     const tooltips = this.c.getElementsByTagName('tooltip');
     if (tooltips) {
       for (let i = 0, length = tooltips.length; i < length; i++) {
-        render(<ToolTip iconColor={'black'}>{tooltips[i].innerHTML}</ToolTip>, tooltips[i]);
+        render(<ToolTip text="{tooltips[i].innerHTML}">&nbsp;</ToolTip>, tooltips[i]);
       }
     }
   }
