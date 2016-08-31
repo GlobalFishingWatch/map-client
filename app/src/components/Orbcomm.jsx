@@ -14,7 +14,7 @@ class Orbcomm extends Component {
       <CoverPrimary
         title="Orbcomm Data Sublicensee License Agreement"
         backgroundImage={orbcommBackgroundImage}
-        attribution="© OCEANA / Melissa Forsyth"
+        attribution="© OCEANA / Keith Ellenbogen"
       />
       <div className={StaticPageStyles['l-static-page']}>
         <div className={AppStyles.wrap}>

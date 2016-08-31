@@ -64,7 +64,7 @@ class PartnerSection extends Component {
                 className={PartnerSectionStyle['-underline']}
                 href="https://www.google.com/earth/outreach/index.html"
                 target="_blank"
-              >earth.google.com/outreach</a> to learn more.
+              >earth.google.com/outreach</a>.
             </p>
           </li>
         </ul>

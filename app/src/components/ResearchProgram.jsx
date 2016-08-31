@@ -12,7 +12,8 @@ class ResearchProgram extends Component {
       <div>
         <CoverPrimary
           title="Research Program"
-          subtitle=""
+          subtitle="The Research Program is an interdisciplinary collaboration
+          that strives to improve fisheries management and science through shared data and cooperation."
           backgroundImage={researchProgramBackgroundImage}
           attribution="earl_of_omaha/iStock/Thinkstock"
         />
@@ -34,7 +35,7 @@ class ResearchProgram extends Component {
                 techniques, with the belief that broader access to information leads to future initiatives and more
                 impact.
               </p>
-              <h2>Research Partners & Projects</h2>
+              <h2>Research Program Publications</h2>
               <article>
                 <h4>Commonwealth Scientific and Industrial Research Organisation (CSIRO): MCS Analytics</h4>
                 <p>
@@ -183,9 +184,9 @@ marine-ecologist-dr-doug-mccauley.html"
                   your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
                   dataset we have licensed for the project. While our agreement does not allow for redistribution of the
                   raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
-                  more easily acquire a license. Please contact
-                  <a href="mailto:research@globalfishingatch.org">research@globalfishingatch.org</a>
-                  if interested in these datasets.
+                  more easily acquire a license. Please contact&nbsp;
+                  <a href="mailto:research@globalfishingatch.org">research@globalfishingatch.org</a> if
+                  interested in these datasets.
                 </p>
               </article>
               <h2>Access to Global Fishing Watch Data</h2>

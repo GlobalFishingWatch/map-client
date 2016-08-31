@@ -13,7 +13,7 @@ class Partners extends Component {
   render() {
     return (<div>
       <CoverPrimary
-        title="Global Fishing Watch Partners"
+        title="Partners"
         subtitle="Global Fishing Watch was created by Oceana, SkyTruth and Google. Its Funding Partners are:
         Leonardo DiCaprio Foundation, Marisla Foundation, The Wyss Foundation, The Waterloo Foundation and Adessium
         Foundation. Global Fishing Watch works in partnership with a growing number of organizations that contribute

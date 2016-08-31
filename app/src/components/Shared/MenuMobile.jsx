@@ -66,10 +66,10 @@ class MenuMobile extends Component {
           </ul>
           <li>About</li>
           <ul className={menuMobile['submenu-mobile']}>
-            <li><Link to="/the-project">The project</Link></li>
+            <li><Link to="/the-project">The Project</Link></li>
             <li><Link to="/partners">Partners</Link></li>
-            <li><Link to="/research-program">Research program</Link></li>
-            <li><Link to="/contact-us">Contact us</Link></li>
+            <li><Link to="/research-program">Research Program</Link></li>
+            <li><Link to="/contact-us">Contact Us</Link></li>
           </ul>
         </ul>
         {userLinks}
