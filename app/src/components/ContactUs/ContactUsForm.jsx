@@ -80,13 +80,6 @@ class ContactUsForm extends Component {
     }
 
     return (<section className={classNames.join(' ')}>
-      <h1>
-        Contact Us
-      </h1>
-      <p>
-        Let us know what you think! Submit your questions,
-        suggestions for improvement or general feedback using the form below.
-      </p>
       <form
         action=""
         method="POST"
