@@ -29,11 +29,8 @@ class Orbcomm extends Component {
                     orbit satellites and other AIS data sources (the “AIS Data”) for
                     (1) non-commercial purposes including, but not limited to, research
                     and educating the public concerning illegal fishing activity, including
-                    for publishing visualizations of fishing activity
-                    <ToolTip iconColor={'black'}>
-                      Apparent fishing activity
-                    </ToolTip>
-                    and related information; (2) to provide a limited license to unaffiliated
+                    for publishing visualizations of <ToolTip text="Apparent fishing activity">fishing
+                    activity</ToolTip> and related information; (2) to provide a limited license to unaffiliated
                     media organizations, including without limitation newspapers,
                     periodicals, broadcast media, and internet publishers, to reproduce,
                     retransmit and/or display the AIS Data for purposes of news coverage

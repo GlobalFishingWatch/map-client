@@ -55,11 +55,8 @@ class Steps extends Component {
                 <h3 className={StepsStyle.name}>Step 2: Data processing</h3>
                 <p>Each day, more than 20 million data points are added to the system. Using cloud
                   computing and machine learning, Global Fishing Watch processes this data, identifying
-                  which vessels are fishing boats, and when and where they are fishing
-                  <ToolTip iconColor={'black'} >
-                    Apparent fishing
-                  </ToolTip>
-                  .
+                  which vessels are fishing boats, and when and where they are&nbsp;
+                  <ToolTip text="Apparent fishing">fishing</ToolTip>.
                 </p>
               </div>
             </li>

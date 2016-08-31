@@ -1,53 +1,49 @@
 @import '../application';
 
 .c-tooltip-info {
-  display: inline-flex;
+  border: 0 !important;
+  cursor: pointer;
   position: relative;
 
-  &::before {
-    content: '\00a0 ';
-    display: inline-block;
-  }
-
   &::after {
-    content: '\00a0 ';
+    background: url('../../assets/icons/info_black.svg');
+    background-repeat: no-repeat;
+    content: '';
     display: inline-block;
+    height: 15px;
+    margin-left: 4px;
+    width: 15px;
   }
 
-  .content-tooltip {
+  &.-white::after {
+    background: url('../../assets/icons/info_white.svg');
+  }
+
+  &:hover:before,
+  &:focus:before {
     background: rgba($color-19, .95);
-    bottom: 30px;
     box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
-    font-family: $font-family-1;
-    left: 50%;
+    content: attr(title);
+    margin-left: 100px;
     padding: 15px 0;
     position: absolute;
+    right: -100px;
     text-align: center;
-    transform: translate(-50%, 0);
-    visibility: hidden;
+    top: 33px;
     width: 200px;
-
-    &::before {
-      -webkit-filter: drop-shadow(-1px 1px 1px rgba($color-12, .5));
-      border: 6px solid;
-      border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
-      bottom: 0;
-      content: '';
-      filter: drop-shadow(-1px 1px 1px rgba($color-12, .5));
-      height: 0;
-      left: 50%;
-      opacity: .95;
-      position: absolute;
-      transform: translate(-50%, 50%) rotate(-45deg);
-      width: 0;
-    }
   }
 
-  &:hover {
-    .content-tooltip {
-      visibility: visible;
-      z-index: 2;
-    }
+  &:hover i,
+  &:focus i {
+    border: 6px solid;
+    border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
+    content: '';
+    height: 0;
+    position: absolute;
+    right: 0;
+    top: 28px;
+    transform: scale(1, -1) rotate(-45deg);
+    width: 0;
   }
 }
