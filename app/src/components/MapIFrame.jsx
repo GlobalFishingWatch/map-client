@@ -35,10 +35,10 @@ function MapIFrame(props) {
         height: 'calc(100% - 38px)'
       }}
     >
+      <Header />
       {imageIframe
         ? <div className={mapStyles['image-iframe']}></div>
         : (<div style={{ height: '100%' }}>
-          <Header />
           <iframe
             style={{
               border: 0,
