@@ -6,7 +6,7 @@ import baseStyle from '../../../styles/_base.scss';
 import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
 import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
-import share from '../../../assets/icons/share_icon.svg';
+import shareIcon from '../../../assets/icons/share_icon.svg';
 import MenuMobile from './../../containers/MenuMobile';
 
 class Header extends Component {
@@ -81,7 +81,7 @@ class Header extends Component {
                 />
               </Link>
               {location.pathname === '/map' && <span className={styles['share-header']}>
-                <img src={share} alt="share icon"></img></span>}
+                <img src={shareIcon} alt="share icon"></img></span>}
               <ul className={styles.menu}>
                 <li>
                   <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
