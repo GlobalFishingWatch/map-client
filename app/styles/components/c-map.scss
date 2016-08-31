@@ -49,3 +49,11 @@
   height: calc(100% - 38px);
   position: relative;
 }
+
+.image-iframe {
+  background-image: url('../../../assets/images/iframe_image.png');
+  background-size: cover;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
