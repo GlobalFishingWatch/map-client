@@ -51,6 +51,10 @@
     }
   }
 
+  .stub::after{
+    height: 0px;
+  }
+
   //Cover different with quote and different kind of text
   .leo-slider {
     padding-top: 170px;

@@ -9,10 +9,6 @@ import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import sliderBackground1 from '../../../assets/images/background_1.jpg';
-import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
-import sliderBackground3 from '../../../assets/images/background_3.jpg';
-import sliderBackground4 from '../../../assets/images/background_4.jpg';
-import sliderBackground5 from '../../../assets/images/background_5.jpg';
 import ImageAttribution from '../Shared/ImageAttribution';
 
 class CoverPage extends Component {
@@ -25,6 +21,10 @@ class CoverPage extends Component {
       autoPlaySlider: true,
       speedPlaySlider: 10000
     };
+  }
+
+  componentDidMount() {
+    this.props.getCoverPageEntries();
   }
 
   componentDidUpdate() {
@@ -48,9 +48,40 @@ class CoverPage extends Component {
     scrollTo(el);
   }
 
+  renderQuoteSlide(coverPageEntry) {
+    return (
+      <div key={coverPageEntry.quote} className={CoverPageStyle['leo-slider']}>
+        <div className={CoverPageStyle['contain-quote-text']}>
+          <blockquote>
+            {coverPageEntry.quote}
+          </blockquote>
+          <p className={CoverPageStyle['author-quote']}>– {coverPageEntry.author}</p>
+          <p>{coverPageEntry.subtitle}</p>
+        </div>
+      </div>
+    );
+  }
+
+  renderStandardSlide(coverPageEntry) {
+    return (
+      <div key={coverPageEntry.title}>
+        <div className={CoverPageStyle['contain-text-cover']}>
+          <h1>
+            {coverPageEntry.title}
+          </h1>
+          <p>
+            {coverPageEntry.subtitle}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   render() {
+    const loadedEntries = (this.props.coverPageEntries && this.props.coverPageEntries.length > 0);
+
     const settings = {
-      dots: true,
+      dots: loadedEntries,
       arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
@@ -58,27 +89,43 @@ class CoverPage extends Component {
       beforeChange: (currentSlider, nextSlider) => {
         this.onSliderChange(nextSlider);
       },
-      autoplay: this.state.autoPlaySlider,
+      autoplay: loadedEntries && this.state.autoPlaySlider,
       autoplaySpeed: this.state.speedPlaySlider
     };
 
-    const sliderBackgrounds = [
-      sliderBackground1,
-      sliderBackgroundLDF,
-      sliderBackground3,
-      sliderBackground4,
-      sliderBackground5
-    ];
-    const sliderBackground = sliderBackgrounds[this.state.currentSlider];
+    let coverEntriesContent = (
+      <div>
+        <div key={-1}>
+          <div className={CoverPageStyle['contain-text-cover']}>
+            <h1 className={CoverPageStyle.stub}>&nbsp;<br />&nbsp;</h1>
+            <p>&nbsp;<br />&nbsp;</p>
+          </div>
+        </div>
+      </div>
+    );
 
-    const sliderAttributions = [
-      '© OCEANA / Juan Cuetos',
-      null,
-      '© Steve De Neef ',
-      '© OCEANA / Eduardo Sorensen',
-      'Hoatzinexp/iStock/Thinkstock'
-    ];
-    const sliderAttribution = sliderAttributions[this.state.currentSlider];
+    const sliderBackgrounds = [];
+    const sliderAttributions = [];
+    if (loadedEntries) {
+      const slides = [];
+
+      this.props.coverPageEntries.forEach(coverPageEntry => {
+        if (coverPageEntry.type === 'quote') {
+          slides.push(this.renderQuoteSlide(coverPageEntry));
+        } else {
+          slides.push(this.renderStandardSlide(coverPageEntry));
+        }
+
+        sliderBackgrounds.push(coverPageEntry.background);
+        sliderAttributions.push(coverPageEntry.attribution);
+      });
+
+      coverEntriesContent = <Slider {...settings}>{slides}</Slider>;
+    }
+
+    const sliderBackground = sliderBackgrounds.length ? sliderBackgrounds[this.state.currentSlider] : sliderBackground1;
+    const sliderAttribution = (sliderBackgrounds.length ?
+      sliderAttributions[this.state.currentSlider] : '© OCEANA / Juan Cuetos');
 
     return (
       <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
@@ -86,63 +133,7 @@ class CoverPage extends Component {
         <div className={CoverPageStyle['layer-cover']}>
           <Header />
           <div className={baseStyle.wrap}>
-            <Slider {...settings}>
-              <div>
-                <div className={CoverPageStyle['contain-text-cover']}>
-                  <h1>
-                    Introducing Global Fishing Watch
-                  </h1>
-                  <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
-                    activity anywhere in the ocean in near real-time — for free.
-                  </p>
-                </div>
-              </div>
-              <div className={CoverPageStyle['leo-slider']}>
-                <div className={CoverPageStyle['contain-quote-text']}>
-                  <blockquote>
-                    “Global Fishing Watch is the first effective tool to track commercial fishing around the world. Now
-                    anyone can help put an end to the massive overfishing that is decimating fisheries everywhere and
-                    help authorities protect our precious marine ecosystems before it’s too late.”
-                  </blockquote>
-                  <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-                  <p>The Leonardo DiCaprio Foundation is proud to be a Funding Partner of Global Fishing Watch</p>
-                </div>
-              </div>
-              <div>
-                <div className={CoverPageStyle['contain-text-cover']}>
-                  <h1>
-                    Protect ocean ecosystems
-                  </h1>
-                  <p>
-                    Monitor fishing activity in marine protected areas to ensure
-                    proper management and oversight of these special places.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div className={CoverPageStyle['contain-text-cover']}>
-                  <h1>
-                    See where fishing is happening
-                  </h1>
-                  <p>
-                    Observe fishing patterns and activity based on vessel position, course and
-                    speed as revealed by Automatic Identification System broadcasts.
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div className={CoverPageStyle['contain-text-cover']}>
-                  <h1>
-                    Improve fisheries management worldwide
-                  </h1>
-                  <p>
-                    Provide tools for governments, fishery management organizations,
-                    scientists, private industry, and NGOs to implement rules and
-                    regulations that will ensure a sustainable and abundant ocean.
-                  </p>
-                </div>
-              </div>
-            </Slider>
+            {coverEntriesContent}
             <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.scrollPage}>
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
@@ -161,5 +152,10 @@ class CoverPage extends Component {
     );
   }
 }
+
+CoverPage.propTypes = {
+  coverPageEntries: React.PropTypes.array,
+  getCoverPageEntries: React.PropTypes.func
+};
 
 export default CoverPage;
