@@ -3,13 +3,24 @@ import Modal from './Shared/Modal';
 import NoLogin from '../containers/Map/NoLogin';
 import Header from '../containers/Header';
 import FooterMini from './Shared/FooterMini';
+import mapStyles from '../../styles/components/c-map.scss';
 
 class MapIFrame extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      imageIframe: !this.props.token && REQUIRE_MAP_LOGIN
+    };
+  }
+
   render() {
     /**
      * To add any new param to the URL, add a new entry to the following object with
      * the key being the name of the param
      */
+
+    const imgUrl = '../../../assets/images/iframe_image.png';
 
     const workspace = this.props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
     const urlParams = {
@@ -34,16 +45,15 @@ class MapIFrame extends Component {
           height: 'calc(100% - 38px)'
         }}
       >
-        <Header />
+        {!this.state.imageIframe && <Header />}
         <Modal
           opened={!this.props.token && REQUIRE_MAP_LOGIN}
           closeable={false}
-          close={() => {
-          }}
+          close={() => {}}
         >
           <NoLogin />
         </Modal>
-        <iframe
+        {!this.state.imageIframe && <iframe
           style={{
             border: 0,
             width: '100%',
@@ -51,7 +61,11 @@ class MapIFrame extends Component {
             display: 'block'
           }}
           src={url}
-        />
+        />}
+        {this.state.imageIframe && <div
+          className={mapStyles['image-iframe']}
+        >
+        </div>}
         <FooterMini />
       </div>
     );
