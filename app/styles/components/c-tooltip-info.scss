@@ -25,12 +25,12 @@
     box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
     content: attr(title);
-    left: 50%;
-    margin-left: -100px;
+    margin-left: 100px;
     padding: 15px 0;
     position: absolute;
+    right: -100px;
     text-align: center;
-    top: 34px;
+    top: 33px;
     width: 200px;
   }
 
@@ -40,8 +40,8 @@
     border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
     content: '';
     height: 0;
-    left: 50%;
     position: absolute;
+    right: 0;
     top: 28px;
     transform: scale(1, -1) rotate(-45deg);
     width: 0;
