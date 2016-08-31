@@ -63,7 +63,7 @@
     "react-router-redux": "^4.0.4",
     "react-router-scroll": "^0.3.2",
     "react-sanfona": "0.0.14",
-    "react-slick": "^0.12.2",
+    "react-slick": "^0.13.3",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "resolve-url-loader": "1.6.0",
