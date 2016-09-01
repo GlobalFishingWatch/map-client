@@ -198,18 +198,16 @@
 
   .social-section {
     align-items: flex-start;
-    border-top: 1px solid rgba($color-4, .2);;
+    border-top: 1px solid rgba($color-4, .2);
     display: block;
-    padding-bottom: 35px;
-    padding-top: 35px;
+    padding: 35px 0;
     position: relative;
 
     @media #{$mq-tablet} {
       align-items: center;
       border-top: 0;
       display: block;
-      padding-bottom: 0;
-      padding-top: 0;
+      padding: 0;
     }
 
     // Get rid of this, this is a button component
