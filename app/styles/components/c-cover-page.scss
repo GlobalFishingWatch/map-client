@@ -38,13 +38,20 @@
 
   h1 {
     color: $color-4;
-    font-size: $font-size-huge;
+    font-size: $font-size-x-big;
     font-weight: $font-weight-bold;
-    letter-spacing: -1.5px;
-    line-height: .85;
+    letter-spacing: -1px;
+    line-height: 1.12;
     margin-bottom: 0;
     margin-top: 0;
-    padding-top: 170px;
+    padding-top: 25px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-huge;
+      letter-spacing: -1.5px;
+      line-height: .85;
+      padding-top: 170px;
+    }
 
     :global .slick-active {
       button {
@@ -61,9 +68,15 @@
       content: '';
       display: block;
       height: 5px;
-      margin-bottom: 10px;
-      margin-top: 20px;
-      width: 170px;
+      margin-bottom: 18px;
+      margin-top: 15px;
+      width: 100px;
+
+      @media #{$mq-tablet} {
+        margin-bottom: 10px;
+        margin-top: 20px;
+        width: 170px;
+      }
     }
   }
 
