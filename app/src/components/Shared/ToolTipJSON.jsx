@@ -6,9 +6,11 @@ class ToolTipJSON extends Component {
 
   componentDidMount() {
     const tooltips = this.c.getElementsByTagName('tooltip');
-    if (tooltips) {
+    if (tooltips && tooltips.length) {
       for (let i = 0, length = tooltips.length; i < length; i++) {
-        render(<ToolTip text="{tooltips[i].innerHTML}">&nbsp;</ToolTip>, tooltips[i]);
+        const text = tooltips[i].getAttribute('text');
+        const href = tooltips[i].getAttribute('href');
+        render(<ToolTip text={text} href={href}>{tooltips[i].innerHTML}</ToolTip>, tooltips[i]);
       }
     }
   }
