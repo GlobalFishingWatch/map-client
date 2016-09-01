@@ -6,7 +6,7 @@
 
   //Section Founding Logos on footer
   .logos-footer {
-    border-bottom: 2px solid rgba($color-4, .2);
+    border-bottom: 1px solid rgba($color-4, .2);
     display: block;
     padding: 0 0 30px;
 
@@ -198,10 +198,10 @@
 
   .social-section {
     align-items: flex-start;
-    border-top: 2px solid rgba($color-4, .2);;
+    border-top: 1px solid rgba($color-4, .2);;
     display: block;
-    padding-bottom: 45px;
-    padding-top: 30px;
+    padding-bottom: 35px;
+    padding-top: 35px;
     position: relative;
 
     @media #{$mq-tablet} {
@@ -246,7 +246,7 @@
       align-items: center;
       display: flex;
       justify-content: center;
-      margin-top: 35px;
+      margin-top: 25px;
 
       @media #{$mq-tablet} {
         display: flex;
@@ -285,7 +285,7 @@
           }
 
           & + .social-item {
-            margin-left: 10px;
+            margin-left: 15px;
           }
 
           > a {
