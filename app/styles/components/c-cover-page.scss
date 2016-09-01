@@ -22,6 +22,12 @@
 
     @media #{$mq-tablet} {
       max-width: 870px;
+      min-height: 756px;
+    }
+
+    :global .c-rhombus {
+      margin-top: 30px;
+      transform: translate(3px, 0);
     }
   }
 
@@ -109,8 +115,6 @@
     font-size: $font-size-x-normal;
     font-weight: $font-weight-bold;
     letter-spacing: -.1px;
-    margin-bottom: 170px;
-
   }
 
   .footer-header {
