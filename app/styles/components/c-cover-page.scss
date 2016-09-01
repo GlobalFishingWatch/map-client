@@ -14,20 +14,25 @@
     width: 100%;
   }
 
-  .contain-text-cover {
+  &.-is-home {
+    .contain-text-cover {
+      min-height: 686px;
 
-    &.-is-empty {
-      min-height: 586px;
-    }
-
-    @media #{$mq-tablet} {
-      max-width: 870px;
-      min-height: 756px;
+      &.-is-empty {
+        min-height: 586px;
+      }
     }
 
     :global .c-rhombus {
       margin-top: 30px;
       transform: translate(3px, 0);
+    }
+  }
+
+  .contain-text-cover {
+
+    @media #{$mq-tablet} {
+      max-width: 870px;
     }
   }
 

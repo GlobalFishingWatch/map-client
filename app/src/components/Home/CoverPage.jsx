@@ -135,7 +135,10 @@ class CoverPage extends Component {
       sliderAttributions[this.state.currentSlider] : '© OCEANA / Juan Cuetos');
 
     return (
-      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
+      <div
+        className={classnames(CoverPageStyle['c-cover-page'], CoverPageStyle['-is-home'])}
+        style={{ backgroundImage: `url(${sliderBackground})` }}
+      >
         <CoverPagePreloader images={sliderBackgrounds} />
         <div className={CoverPageStyle['layer-cover']}>
           <Header />
