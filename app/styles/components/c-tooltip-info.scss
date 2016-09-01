@@ -1,11 +1,12 @@
 @import '../application';
+@import '../settings';
 
 .c-tooltip-info {
   border: 0 !important;
   cursor: pointer;
   position: relative;
 
-  &::after {
+  > .c-tooltip-info-title::after {
     background: url('../../assets/icons/info_black.svg');
     background-repeat: no-repeat;
     content: '';
@@ -15,35 +16,40 @@
     width: 15px;
   }
 
-  &.-white::after {
+  > .c-tooltip-info-title.-white::after {
     background: url('../../assets/icons/info_white.svg');
   }
 
-  &:hover:before,
-  &:focus:before {
-    background: rgba($color-19, .95);
+  > .c-tooltip-info-content {
+    background: $color-19;
     box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
-    content: attr(title);
     margin-left: 100px;
     padding: 15px 0;
     position: absolute;
-    right: -100px;
+    right: -90px;
     text-align: center;
     top: 33px;
     width: 200px;
+    z-index: 99;
+
+    &:after {
+      border: 6px solid;
+      border-color: transparent transparent $color-19 $color-19;
+      content: '';
+      height: 0;
+      left: 95px;
+      position: absolute;
+      right: 0;
+      top: -4px;
+      transform: scale(1, -1) rotate(-45deg);
+      width: 0;
+    }
   }
 
-  &:hover i,
-  &:focus i {
-    border: 6px solid;
-    border-color: transparent transparent rgba($color-19, .95) rgba($color-19, .95);
-    content: '';
-    height: 0;
-    position: absolute;
-    right: 0;
-    top: 28px;
-    transform: scale(1, -1) rotate(-45deg);
-    width: 0;
+  .c-tooltip-info-link {
+    color: $color-6;
+    display: block;
+    font-weight: $font-weight-bold;
   }
 }
