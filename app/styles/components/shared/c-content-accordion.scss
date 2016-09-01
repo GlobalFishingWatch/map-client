@@ -2,10 +2,6 @@
 
 .c-content-accordion {
 
-  @media #{$mq-tablet} {
-    padding: 25px 0;
-  }
-
   &:last-child {
     padding-bottom: 0;
   }
@@ -38,12 +34,6 @@
 
     @media #{$mq-tablet} {
       padding: 30px 0;
-
-      &::after {
-        left: 50%;
-        transform: translate(-50%, 0);
-        width: 100vw;
-      }
     }
   }
 

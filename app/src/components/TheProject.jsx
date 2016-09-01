@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import ToolTip from '../components/Shared/ToolTip';
 import Footer from './Shared/Footer';
@@ -19,7 +20,7 @@ class TheProject extends Component {
           backgroundImage={projectBackgroundImage}
           attribution="© OCEANA / Keith Ellenbogen"
         />
-        <div className={StaticPageStyles['l-static-page']}>
+        <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-about'])}>
           <div className={baseStyle.wrap}>
             <section className={theProjectStyle['c-the-project']}>
               <p>

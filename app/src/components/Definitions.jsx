@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
@@ -32,10 +33,12 @@ class Definitions extends Component {
         backgroundImage={definitionsBackgroundImage}
         attribution="© OCEANA /A. Ellis"
       />
-      <div className={StaticPageStyles['l-static-page']}>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-definitions'])}>
         <div className={AppStyles.wrap}>
           <p className={StaticPageStyles.intro}>Click on the term below to see the definition.</p>
-          {accordionContent}
+          <div className="section-page">
+            {accordionContent}
+          </div>
         </div>
       </div>
       <Footer />

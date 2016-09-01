@@ -1,11 +1,14 @@
 @import '../settings';
 
 .l-static-page {
-  padding: 85px 0;
+  padding: 35px 0 60px;
+
+  @media #{$mq-tablet} {
+    padding: 85px 0;
+  }
 
   :global .section-page {
     margin: 0 auto;
-    max-width: 700px;
     padding: 85px 0;
 
     :global .section-title {
@@ -13,33 +16,100 @@
     }
   }
 
-  .section-item {
-    margin: 60px 0 55px;
+  &.-faq {
+    .question-group {
+      :global .section-title {
+        margin: 60px 0 0;
+        padding: 60px 0;
+        position: relative;
 
-    &:last-child {
-      margin-bottom: 0;
+        &::after {
+          background-color: $color-10;
+          content: '';
+          display: inline-block;
+          height: 2px;
+          left: 50%;
+          position: absolute;
+          top: 0;
+          transform: translate(-50%, 0);
+          width: 100vw;
+        }
+      }
+
+      &:first-child {
+        :global .section-title {
+          margin: 0;
+
+          &::after {
+            content: none;
+          }
+        }
+      }
     }
   }
 
-  .subtitle {
-    font-size: $font-size-x-medium;
-    font-weight: $font-weight-normal;
-    line-height: 1.44;
-    margin: 20px 0 5px;
-  }
+  &.-articles-pubs {
 
-  .testimonial {
-    & + .testimonial {
-      margin-top: 65px;
+    :global .section-page {
+      padding: 0;
+    }
+
+    :global .section-title {
+      margin: 0 0 5px;
+
+      @media #{$mq-tablet} {
+        margin: 0 0 60px;
+      }
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 
-  .testimonial > iframe {
-    height: 390px;
-    width: 100%;
+  &.-definitions {
+    :global .section-page {
+      padding: 25px 0 0;
+
+      @media #{$mq-tablet} {
+        padding: 80px 0 0;
+      }
+    }
   }
 
-  .testimonial > .video-quote {
-    margin: 30px 0 35px;
+  &.-tutorials {}
+
+  &.-about {}
+
+  &.-research-program {
+    max-width: 700px;
+
+    .section-item {
+      margin: 60px 0 55px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    :global .section-subtitle {
+      margin: 20px 0 5px;
+    }
+
+    .testimonial {
+      & + .testimonial {
+        margin-top: 65px;
+      }
+    }
+
+    .testimonial > iframe {
+      height: 390px;
+      width: 100%;
+    }
+
+    .testimonial > .video-quote {
+      margin: 30px 0 35px;
+    }
   }
 }

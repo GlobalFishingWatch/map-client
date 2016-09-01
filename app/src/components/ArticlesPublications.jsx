@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
@@ -6,7 +7,6 @@ import { Link } from 'react-router';
 import Rhombus from './Shared/Rhombus';
 import AppStyles from '../../styles/application.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import PubsArticlesLayoutStyles from '../../styles/layout/l-publications-articles.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
 import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.jpg';
 
@@ -58,7 +58,7 @@ class ArticlesPublications extends Component {
             <h2 className="section-title">
               Articles
             </h2>
-            <div className="section-page grid">
+            <div className={`section-page ${StaticPageStyles.grid}`}>
               {articles}
             </div>
           </section>
@@ -75,7 +75,7 @@ class ArticlesPublications extends Component {
             <h2 className="section-title">
               Publications
             </h2>
-            <div className="section-page grid">
+            <div className={`section-page ${StaticPageStyles.grid}`}>
               {publications}
             </div>
           </section>
@@ -94,11 +94,9 @@ class ArticlesPublications extends Component {
         backgroundImage={articlesPublicationsBackgroundImage}
         attribution="© Bento Viana"
       />
-      <div className={StaticPageStyles['l-static-page']}>
-        <div className={PubsArticlesLayoutStyles['l-publications-news']}>
-          <div className={AppStyles.wrap}>
-            {pageContent}
-          </div>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-articles-pubs'])}>
+        <div className={AppStyles.wrap}>
+          {pageContent}
         </div>
       </div>
       <Footer />

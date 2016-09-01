@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
@@ -26,7 +27,7 @@ class ResearchProgram extends Component {
           backgroundImage={researchProgramBackgroundImage}
           attribution="earl_of_omaha/iStock/Thinkstock"
         />
-        <div className={StaticPageStyles['l-static-page']}>
+        <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-research-program'])}>
           <div className={baseStyle.wrap}>
             <section className="section-page">
               <p>
@@ -53,7 +54,7 @@ class ResearchProgram extends Component {
                   className={StaticPageStyles['logo-partner']} src={CSIROLogo}
                   alt="Commonwealth Scientific and Industrial Research Organisation (CSIRO)"
                 />
-                <h4 className={StaticPageStyles.subtitle}>
+                <h4 className="section-subtitle">
                   Commonwealth Scientific and Industrial Research Organisation (CSIRO): MCS Analytics
                 </h4>
                 <p>
@@ -73,7 +74,7 @@ class ResearchProgram extends Component {
                   src={WormLabLogo}
                   alt="Worm Lab"
                 />
-                <h4 className={StaticPageStyles.subtitle}>Dalhousie University: Worm Lab</h4>
+                <h4 className="section-subtitle">Dalhousie University: Worm Lab</h4>
                 <p>
                   The Worm Lab includes students and postdoctoral fellows engaged in the study of marine biodiversity,
                   its causes, consequences of change, and conservation. The lab focuses on how marine biodiversity is
@@ -90,7 +91,7 @@ class ResearchProgram extends Component {
                   src={MarineGeospatialLogo}
                   alt="Marine Geospatial Ecology Lab"
                 />
-                <h4 className={StaticPageStyles.subtitle}>Duke University: Marine Geospatial Ecology Lab</h4>
+                <h4 className="section-subtitle">Duke University: Marine Geospatial Ecology Lab</h4>
                 <p>
                   The Marine Geospatial Ecology Lab at Duke University applies geospatial technologies to issues in
                   marine ecology, resource management and ocean conservation. The lab contributes ecological analysis,
@@ -106,7 +107,7 @@ class ResearchProgram extends Component {
                   src={StanfordLogo}
                   alt="Stanford University: Block Lab"
                 />
-                <h4 className={StaticPageStyles.subtitle}>Stanford University: Block Lab</h4>
+                <h4 className="section-subtitle">Stanford University: Block Lab</h4>
                 <p>
                   The Block lab focus on how large pelagic fishes utilize the open ocean, and draws on innovative
                   telemetry devices to track the movement of pelagic predators. The research in the lab is
@@ -123,7 +124,7 @@ class ResearchProgram extends Component {
                   src={McCauleyLogo}
                   alt="McCauley Lab"
                 />
-                <h4 className={StaticPageStyles.subtitle}>University of California, Santa Barbara: McCauley Lab</h4>
+                <h4 className="section-subtitle">University of California, Santa Barbara: McCauley Lab</h4>
                 <p>
                   The McCauley Lab is a consortium of broadly trained ecologists that focus on understanding how we
                   influence the oceans and how the oceans influence us. The lab is using Global Fishing Watch data to
@@ -138,7 +139,7 @@ class ResearchProgram extends Component {
                   src={SustainableFisheries}
                   alt="Sustainable Fisheries Group"
                 />
-                <h4 className={StaticPageStyles.subtitle}>
+                <h4 className="section-subtitle">
                   University of California, Santa Barbara: Sustainable Fisheries Group
                 </h4>
                 <p>
@@ -157,7 +158,7 @@ class ResearchProgram extends Component {
                   src={AncorsLogo}
                   alt="Australian National Centre for Ocean Resources and Security (ANCORS)"
                 />
-                <h4 className={StaticPageStyles.subtitle}>
+                <h4 className="section-subtitle">
                   University of Wollongong: Australian National Centre for Ocean Resources and Security (ANCORS)
                 </h4>
                 <p>
