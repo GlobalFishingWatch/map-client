@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 
 class ToolTip extends Component {
@@ -38,7 +37,7 @@ class ToolTip extends Component {
     return (
       <abbr
         title={this.props.text}
-        className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'black'}`])}
+        className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
       >
         <span
           className={ToolTipStyle['c-tooltip-info-title']}

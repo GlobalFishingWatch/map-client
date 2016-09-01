@@ -7,7 +7,7 @@
   position: relative;
 
   > .c-tooltip-info-title::after {
-    background: url('../../assets/icons/info_black.svg');
+    background: url('../../assets/icons/info_gray.svg');
     background-repeat: no-repeat;
     content: '';
     display: inline-block;
@@ -18,6 +18,10 @@
 
   > .c-tooltip-info-title.-white::after {
     background: url('../../assets/icons/info_white.svg');
+  }
+
+  > .c-tooltip-info-title.-black::after {
+    background: url('../../assets/icons/info_black.svg');
   }
 
   > .c-tooltip-info-content {
