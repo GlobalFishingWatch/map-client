@@ -8,7 +8,7 @@ import Header from '../../containers/Header';
 import CoverPagePreloader from './CoverPagePreloader';
 import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo.png';
+import LogoLDF from '../../../assets/logos/ldf_logo_white.svg';
 import sliderBackground1 from '../../../assets/images/background_1.jpg';
 import ImageAttribution from '../Shared/ImageAttribution';
 

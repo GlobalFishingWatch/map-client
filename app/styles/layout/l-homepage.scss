@@ -2,16 +2,27 @@
 
 .infomap {
   align-items: center;
-  background-color: $color-8;
-  //No delete, here will be an image background
-  //background-repeat: no-repeat;
-  //background-size: cover;
+  background-image: url('../../assets/images/iframe_image.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   font-family: $font-family-1;
   height: 520px;
+  position: relative;
 
   @media #{$mq-tablet} {
     height: 748px;
+  }
+
+  &::after {
+    background-color: rgba($color-21, .8);
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 0;
   }
 }
 
