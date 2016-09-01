@@ -5,6 +5,8 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from 'react-slick';
 import Header from '../../containers/Header';
+import { Link } from 'react-router';
+import Rhombus from '../Shared/Rhombus';
 import CoverPagePreloader from './CoverPagePreloader';
 import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
@@ -58,7 +60,28 @@ class CoverPage extends Component {
           </blockquote>
           <p className={CoverPageStyle['author-quote']}>– {coverPageEntry.author}</p>
           <p>{coverPageEntry.subtitle}</p>
+          {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
+            <Link
+              to={coverPageEntry.linkHref}
+            >
+              {coverPageEntry.linkText}
+            </Link>
+          </Rhombus>}
         </div>
+      </div>
+    );
+  }
+
+  renderSliderLink(coverPageEntry) {
+    return (
+      <div>
+        {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
+          <Link
+            to={coverPageEntry.linkHref}
+          >
+            {coverPageEntry.linkText}
+          </Link>
+        </Rhombus>}
       </div>
     );
   }
@@ -73,6 +96,7 @@ class CoverPage extends Component {
           <p>
             {coverPageEntry.subtitle}
           </p>
+          {coverPageEntry.linkHref && this.renderSliderLink(coverPageEntry)}
         </div>
       </div>
     );
@@ -125,7 +149,10 @@ class CoverPage extends Component {
       sliderAttributions[this.state.currentSlider] : '© OCEANA / Juan Cuetos');
 
     return (
-      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
+      <div
+        className={classnames(CoverPageStyle['c-cover-page'], CoverPageStyle['-is-home'])}
+        style={{ backgroundImage: `url(${sliderBackground})` }}
+      >
         <CoverPagePreloader images={sliderBackgrounds} />
         <div className={CoverPageStyle['layer-cover']}>
           <Header />

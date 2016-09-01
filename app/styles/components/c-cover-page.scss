@@ -14,11 +14,22 @@
     width: 100%;
   }
 
-  .contain-text-cover {
+  &.-is-home {
+    .contain-text-cover {
+      min-height: 686px;
 
-    &.-is-empty {
-      min-height: 586px;
+      &.-is-empty {
+        min-height: 586px;
+      }
     }
+
+    :global .c-rhombus {
+      margin-top: 30px;
+      transform: translate(4px, 0);
+    }
+  }
+
+  .contain-text-cover {
 
     @media #{$mq-tablet} {
       max-width: 870px;
@@ -109,8 +120,6 @@
     font-size: $font-size-x-normal;
     font-weight: $font-weight-bold;
     letter-spacing: -.1px;
-    margin-bottom: 170px;
-
   }
 
   .footer-header {
