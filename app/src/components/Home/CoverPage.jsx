@@ -5,6 +5,8 @@ import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from 'react-slick';
 import Header from '../../containers/Header';
+import { Link } from 'react-router';
+import Rhombus from '../Shared/Rhombus';
 import CoverPagePreloader from './CoverPagePreloader';
 import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
@@ -73,6 +75,14 @@ class CoverPage extends Component {
           <p>
             {coverPageEntry.subtitle}
           </p>
+
+          {coverPageEntry.link && <Rhombus direction="-right" color="-white">
+            <Link
+              to={coverPageEntry.link}
+            >
+              explore map
+            </Link>
+          </Rhombus>}
         </div>
       </div>
     );
