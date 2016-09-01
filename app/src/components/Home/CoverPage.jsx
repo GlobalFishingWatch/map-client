@@ -60,6 +60,13 @@ class CoverPage extends Component {
           </blockquote>
           <p className={CoverPageStyle['author-quote']}>– {coverPageEntry.author}</p>
           <p>{coverPageEntry.subtitle}</p>
+          {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
+            <Link
+              to={coverPageEntry.linkHref}
+            >
+              {coverPageEntry.linkText}
+            </Link>
+          </Rhombus>}
         </div>
       </div>
     );
@@ -75,12 +82,11 @@ class CoverPage extends Component {
           <p>
             {coverPageEntry.subtitle}
           </p>
-
-          {coverPageEntry.link && <Rhombus direction="-right" color="-white">
+          {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
             <Link
-              to={coverPageEntry.link}
+              to={coverPageEntry.linkHref}
             >
-              explore map
+              {coverPageEntry.linkText}
             </Link>
           </Rhombus>}
         </div>
