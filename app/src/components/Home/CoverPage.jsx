@@ -72,6 +72,20 @@ class CoverPage extends Component {
     );
   }
 
+  renderSliderLink(coverPageEntry) {
+    return (
+      <div>
+        {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
+          <Link
+            to={coverPageEntry.linkHref}
+          >
+            {coverPageEntry.linkText}
+          </Link>
+        </Rhombus>}
+      </div>
+    );
+  }
+
   renderStandardSlide(coverPageEntry) {
     return (
       <div key={coverPageEntry.title}>
@@ -82,13 +96,7 @@ class CoverPage extends Component {
           <p>
             {coverPageEntry.subtitle}
           </p>
-          {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
-            <Link
-              to={coverPageEntry.linkHref}
-            >
-              {coverPageEntry.linkText}
-            </Link>
-          </Rhombus>}
+          {coverPageEntry.linkHref && this.renderSliderLink(coverPageEntry)}
         </div>
       </div>
     );
