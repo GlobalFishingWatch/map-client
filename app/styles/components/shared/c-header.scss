@@ -200,6 +200,7 @@
     .app-logo {
       order: 2;
       @media #{$mq-tablet} {
+        margin-left: 25px;
         order: 1;
       }
     }
