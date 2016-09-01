@@ -9,7 +9,7 @@ class OtherSection extends Component {
     return (<section className={style['c-contact-us-section']}>
       <div className={BaseStyle.wrap}>
         If you would like to become involved, please&nbsp;
-        <Link to="contact-us" className={BaseStyle['-underline']}>contact us</Link>.
+        <Link to="contact-us" className="gfw-link">contact us</Link>.
       </div>
     </section>);
   }

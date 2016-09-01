@@ -75,11 +75,11 @@
     "questions": [
       {
         "title": "Can scientists and researchers get access to the raw data in Global Fishing Watch?",
-        "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a class=\"-underline\" href=\"/contact-us\">contact us</a> if you are interested</p>"
+        "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a class=\"gfw-link\" href=\"/contact-us\">contact us</a> if you are interested</p>"
       },
       {
         "title": "How do I reach Global Fishing Watch with a press inquiry?",
-        "content": "<p>Please complete the contact form <a class=\"-underline\" href=\"/contact-us\">here</a> if you are interested or contact Dustin Cranor at (954) 348-1314 or via email at <a class=\"-underline\" href=\"mailto:dcranor@oceana.org\">dcranor@oceana.org</a>.</p>"
+        "content": "<p>Please complete the contact form <a class=\"gfw-link\" href=\"/contact-us\">here</a> if you are interested or contact Dustin Cranor at (954) 348-1314 or via email at <a class=\"gfw-link\" href=\"mailto:dcranor@oceana.org\">dcranor@oceana.org</a>.</p>"
       }
     ]
   }

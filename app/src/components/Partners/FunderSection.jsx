@@ -27,7 +27,7 @@ class FunderSection extends Component {
             countries around the world. For more information visit:&nbsp;
             <a
               href="http://www.ldcfoundation.org"
-              className={BaseStyle['-underline']}
+              className="gfw-link"
               target="_blank"
             >www.ldcfoundation.org</a>.
           </p>

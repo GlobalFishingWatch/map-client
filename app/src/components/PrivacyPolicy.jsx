@@ -115,12 +115,12 @@ class PrivacyPolicy extends Component {
                 Inc., subject to their respective privacy policies, which
                 can be found at&nbsp;
                 <a
-                  className={AppStyles['-underline']}
+                  className="gfw-link"
                   target="_blank"
                   href="http://oceana.org/privacy-policy"
                 >Oceana</a> and&nbsp;
                 <a
-                  className={AppStyles['-underline']}
+                  className="gfw-link"
                   target="_blank"
                   href="https://www.google.com/intl/en/policies/privacy/"
                 >Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
@@ -192,7 +192,7 @@ class PrivacyPolicy extends Component {
                 have a legal right to receive notice of a security breach in writing.
                 To receive free written notice of a security breach (or to withdraw
                 your consent from receiving electronic notice) you should notify us
-                at <a className={AppStyles['-underline']} href="mailto:info@skytruth.org">info@skytruth.org</a>.
+                at <a className="gfw-link" href="mailto:info@skytruth.org">info@skytruth.org</a>.
               </p>
               <h2>CHANGES AND UPDATES</h2>
               <p>
@@ -209,7 +209,7 @@ class PrivacyPolicy extends Component {
               <p>
                 If you have any questions, comments or concerns about SkyTruth or
                 this Privacy Policy, please email us at&nbsp;
-                <a className={AppStyles['-underline']} href="mailto:info@skytruth.org">
+                <a className="gfw-link" href="mailto:info@skytruth.org">
                 info@skytruth.org</a>. In the event
                 that we are still unable to resolve your concerns, SkyTruth is committed to
                 cooperating to achieve a proper resolution of your privacy concerns.
