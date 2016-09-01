@@ -1,45 +1,19 @@
 @import '../settings';
 
-.section-title {
-  margin-top: 0;
-}
-
 .l-publications-news {
+  padding-bottom: 85px;
 
-  .section-title {
-    margin: 0  0 30px;
 
-    @media #{$mq-tablet} {
-      margin: 0  0 60px;
-    }
-  }
-
-  section {
+  :global .section-page {
+    margin: 0;
+    max-width: 100%;
     padding: 55px 0 65px;
-    position: relative;
 
-    &::after {
-      background-color: $color-10;
-      bottom: 0;
-      content: '';
-      display: inline-block;
-      height: 2px;
-      left: 50%;
-      position: absolute;
-      top: auto;
-      transform: translate(-50%, 0);
-      width: 100vw;
-    }
+    :global .section-title {
+      margin: 0 0 5px;
 
-    &:first-child {
-      padding-top: 0;
-    }
-
-    &:last-child {
-      padding-bottom: 0;
-
-      &::after {
-        content: none;
+      @media #{$mq-tablet} {
+        margin: 0 0 5px;
       }
     }
 

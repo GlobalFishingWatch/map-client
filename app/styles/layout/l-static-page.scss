@@ -1,5 +1,45 @@
 @import '../settings';
 
 .l-static-page {
-  padding: 85px 0 90px;
+  padding: 85px 0;
+
+  :global .section-page {
+    margin: 0 auto;
+    max-width: 700px;
+    padding: 85px 0;
+
+    :global .section-title {
+      margin: 0 0 30px;
+    }
+  }
+
+  .section-item {
+    margin: 60px 0 55px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .subtitle {
+    font-size: $font-size-x-medium;
+    font-weight: $font-weight-normal;
+    line-height: 1.44;
+    margin: 20px 0 5px;
+  }
+
+  .testimonial {
+    & + .testimonial {
+      margin-top: 65px;
+    }
+  }
+
+  .testimonial > iframe {
+    height: 390px;
+    width: 100%;
+  }
+
+  .testimonial > .video-quote {
+    margin: 30px 0 35px;
+  }
 }

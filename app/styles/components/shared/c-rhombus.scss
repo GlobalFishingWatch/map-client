@@ -36,6 +36,10 @@
     line-height: .4;
     margin-left: 15px;
     text-transform: uppercase;
+
+    > a {
+      color: $color-14;
+    }
   }
 
   &.-white {
