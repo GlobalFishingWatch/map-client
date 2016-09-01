@@ -8,7 +8,11 @@
   //background-size: cover;
   display: flex;
   font-family: $font-family-1;
-  height: 748px;
+  height: 520px;
+
+  @media #{$mq-tablet} {
+    height: 748px;
+  }
 }
 
 .success-story {
