@@ -1,6 +1,6 @@
 [
   {
-    "title": "Global Fishing Watch Map How-To’s",
+    "title": "Map How-To’s",
     "questions": [
       {
         "title": "How can I save or share my workspace?",
@@ -8,7 +8,7 @@
       },
       {
         "title": "How can I vary the amount of time I’m looking at?",
-        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing effort' href='/definitions/fishing-effort'>effort</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time;</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</li><li>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows</li></ul>"
+        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing effort' href='/definitions/fishing-effort'>effort</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</li><li>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</li></ul>"
       },
       {
         "title": "How do I search for a specific vessel?",
@@ -17,7 +17,7 @@
     ]
   },
   {
-    "title": "Explaining Map Features",
+    "title": "Map Features",
     "questions": [
       {
         "title": "Is the information I’m seeing in the map in real-time?",
@@ -29,7 +29,7 @@
       },
       {
         "title": "What is the significance of the EEZs?",
-        "content": "<p>An Exclusive Economic Zone (EEZ) is a zone in the ocean in which the adjacent nation has jurisdiction. These generally include waters extending 200 nautical miles from a nation’s coastline but are also drawn closer in where multiple nation’s jurisdictions would otherwise overlap. Each country has special rights regarding exploration and use of resources within its EEZ. For example if a country establishes that its fishing resources are being fully exploited by domestic fleets, it can exclude foreign vessels. A country can also allow foreign vessels to fish in its EEZ and can sell them fishing licenses. </p>"
+        "content": "<p>An Exclusive Economic Zone (EEZ) is a zone in the ocean in which the adjacent nation has jurisdiction. These generally include waters extending 200 nautical miles from a nation’s coastline but are also drawn closer in where multiple nation’s jurisdictions would otherwise overlap. Each country has special rights regarding exploration and use of resources within its EEZ. For example, if a country establishes that its fishing resources are being fully exploited by domestic fleets, it can exclude foreign vessels. A country can also allow foreign vessels to fish in its EEZ and can sell them fishing licenses. </p>"
       },
       {
         "title": "Why are there large circles in which there is no apparent fishing?",
@@ -61,7 +61,7 @@
         "content": "<p>Although not all of them do, we have seen vessels broadcasting AIS that appear to be fishing illegally. More importantly, by consistently using AIS, fishing vessel operators could (potentially) command a better price for their catch or gain access to markets that someday could be closed to vessels that don’t make themselves “visible” with AIS. As more vessels voluntarily use AIS to show they are operating legitimately, the size of the “dark fleet” will shrink, allowing authorities to focus their attention and resources more effectively on those vessels that continue to operate in the shadows.</p>"
       },
       {
-        "title": "Is monitoring AIS signals an invasion of privacy?",
+        "title": "Is monitoring AIS signals an invasion of trade secrets privacy?",
         "content": "<p>No. Monitoring a vessel activity through satellite AIS is already a well-established practice in the shipping, insurance and commodities industries, and AIS data is already publicly available. AIS was designed to be an open, public communications tool. Vessels that use AIS are intentionally making themselves trackable to everyone around them. Global Fishing Watch shows apparent commercial resource extraction that takes place on the open ocean, not on private property. Our fisheries are a common resource, whether on the high seas that belong to everyone or in the sovereign waters of individual nations.</p>"
       },
       {
@@ -75,7 +75,7 @@
     "questions": [
       {
         "title": "Can scientists and researchers get access to the raw data in Global Fishing Watch?",
-        "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a class=\"gfw-link\" href=\"/contact-us\">contact us</a> if you are interested</p>"
+        "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a class=\"gfw-link\" href=\"/contact-us\">contact us</a> if you are interested.</p>"
       },
       {
         "title": "How do I reach Global Fishing Watch with a press inquiry?",
