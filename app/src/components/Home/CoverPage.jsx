@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import classnames from 'classnames';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import Slider from 'react-slick';
@@ -94,14 +95,10 @@ class CoverPage extends Component {
     };
 
     let coverEntriesContent = (
-      <div>
-        <div key={-1}>
-          <div className={CoverPageStyle['contain-text-cover']}>
-            <h1 className={CoverPageStyle.stub}>&nbsp;<br />&nbsp;</h1>
-            <p>&nbsp;<br />&nbsp;</p>
-          </div>
-        </div>
-      </div>
+      <div
+        className={classnames(CoverPageStyle['contain-text-cover'], CoverPageStyle['-is-empty'])}
+        key={-1}
+      />
     );
 
     const sliderBackgrounds = [];
