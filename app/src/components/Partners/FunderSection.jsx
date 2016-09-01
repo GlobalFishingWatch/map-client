@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import BaseStyle from '../../../styles/_base.scss';
 import FunderSectionStyle from '../../../styles/components/c-funder-section.scss';
 import ldfLogo from '../../../assets/logos/ldf_logo_color.png';
@@ -6,6 +7,7 @@ import adessiumLogo from '../../../assets/logos/adessium_logo.png';
 import marislaLogo from '../../../assets/logos/marisla_logo.png';
 import waterlooLogo from '../../../assets/logos/waterloo_logo.png';
 import wyssLogo from '../../../assets/logos/wyss_logo.png';
+import bloombergLogo from '../../../assets/logos/bloomberg_logo.png';
 
 class FunderSection extends Component {
 
@@ -33,10 +35,21 @@ class FunderSection extends Component {
           </p>
         </div>
         <div className={FunderSectionStyle['funder-logos']}>
-          <img src={marislaLogo} alt="marisla foundation logo"></img>
-          <img src={wyssLogo} alt="the wyss foundation logo"></img>
-          <img src={waterlooLogo} alt="the waterloo foundation logo"></img>
-          <img src={adessiumLogo} alt="adessium foundation logo"></img>
+          <div className={FunderSectionStyle['funder-logo']}>
+            <img src={marislaLogo} alt="marisla foundation logo"></img>
+          </div>
+          <div className={classnames(FunderSectionStyle['funder-logo'], FunderSectionStyle['funder-logo-padding'])}>
+            <div><img src={bloombergLogo} alt="bloomberg philantropies logo"></img></div>
+          </div>
+          <div className={FunderSectionStyle['funder-logo']}>
+            <img src={wyssLogo} alt="the wyss foundation logo"></img>
+          </div>
+          <div className={FunderSectionStyle['funder-logo']}>
+            <img src={waterlooLogo} alt="the waterloo foundation logo"></img>
+          </div>
+          <div className={FunderSectionStyle['funder-logo']}>
+            <img src={adessiumLogo} alt="adessium foundation logo"></img>
+          </div>
         </div>
       </div>
     </section>);
