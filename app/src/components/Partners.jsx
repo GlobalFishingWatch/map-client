@@ -21,7 +21,6 @@ class Partners extends Component {
         provides the tools to allow people to visualize fishing activity and to analyze its effects."
         backgroundImage={partnersBackgroundImage}
         attribution="US Coast Guard"
-        showLDFLogo
       />
       <div>
         <PartnerSection />

@@ -2,43 +2,90 @@
 
 .c-funder-section {
   background-color: $color-10;
-  padding-bottom: 100px;
-  padding-top: 85px;
+  padding-bottom: 60px;
+  padding-top: 20px;
+
+  @media #{$mq-tablet} {
+    padding-bottom: 100px;
+    padding-top: 85px;
+  }
 
   h2 {
     color: $color-9;
-    font-size: $font-size-xx-big;
+    font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
     line-height: 1.05;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-xx-big;
+      line-height: 1.05;
+      margin-bottom: 70px;
+    }
   }
 
   .ldf-information {
     align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    padding-left: 90px;
-    padding-right: 90px;
+
+    @media #{$mq-tablet} {
+      padding-left: 90px;
+      padding-right: 90px;
+    }
+
+    @media #{$mq-tablet} {
+      flex-direction: row;
+    }
 
     img {
+      margin-bottom: 95px;
       width: 280px;
+
+      @media #{$mq-tablet} {
+        margin-bottom: 0;
+      }
     }
 
     p {
-      font-size: $font-size-small;
-      margin-left: 80px;
-      max-width: 520px;
+      font-size: $font-size-xs-small;
+      line-height: 1.6;
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-small;
+        margin-left: 80px;
+        max-width: 520px;
+      }
     }
   }
 
   .funder-logos {
     align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    margin-top: 110px;
+    margin-top: 50px;
+
+    @media #{$mq-tablet} {
+      flex-direction: row;
+      margin-top: 110px;
+    }
 
     img {
-      max-width: 200px;
+      margin-bottom: 50px;
+      max-width: 180px;
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @media #{$mq-tablet} {
+        margin-bottom: 0;
+        max-width: 200px;
+      }
     }
   }
 }

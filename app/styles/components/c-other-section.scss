@@ -5,15 +5,23 @@
 
   h2 {
     color: $color-9;
-    font-size: $font-size-xx-big;
+    font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
     line-height: 1.05;
-    margin-bottom: 60px;
+    margin-bottom: 15px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-xx-big;
+      line-height: 1.05;
+      margin-bottom: 70px;
+    }
   }
 
   .other-logos {
-    padding-left: 90px;
-    padding-right: 90px;
+    @media #{$mq-tablet} {
+      padding-left: 90px;
+      padding-right: 90px;
+    }
 
     img {
       max-width: 200px;
