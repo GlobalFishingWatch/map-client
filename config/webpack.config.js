@@ -13,7 +13,7 @@ const envVariables = process.env;
 
 
 const webpackConfig = {
-
+  
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
@@ -70,7 +70,7 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
       },
       {
         test: /\.css$/,
