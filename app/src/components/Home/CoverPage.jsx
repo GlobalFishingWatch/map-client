@@ -20,7 +20,8 @@ class CoverPage extends Component {
     this.state = {
       currentSlider: 0,
       autoPlaySlider: true,
-      speedPlaySlider: 10000
+      speedPlaySlider: 10000,
+      windowWidth: window.innerWidth
     };
   }
 
@@ -35,10 +36,15 @@ class CoverPage extends Component {
       }
       this.setState({ autoPlaySlider: false });
     });
+    window.addEventListener('resize', () => this.handleResize());
   }
 
   onSliderChange(currentSlider) {
     this.setState({ currentSlider });
+  }
+
+  handleResize() {
+    this.setState({ windowWidth: window.innerWidth });
   }
 
   scrollPage() {
@@ -80,18 +86,18 @@ class CoverPage extends Component {
 
   render() {
     const loadedEntries = (this.props.coverPageEntries && this.props.coverPageEntries.length > 0);
-
     const settings = {
       dots: loadedEntries,
       arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
       infinite: true,
-      draggable: false,
+      draggable: this.state.windowWidth <= 768,
       beforeChange: (currentSlider, nextSlider) => {
         this.onSliderChange(nextSlider);
       },
-      autoplay: loadedEntries && this.state.autoPlaySlider,
-      autoplaySpeed: this.state.speedPlaySlider
+      autoplay: this.state.windowWidth > 768 ? this.state.autoPlaySlider : false,
+      autoplaySpeed: this.state.windowWidth > 768 ? this.state.speedPlaySlider : 0,
+      adaptiveHeight: this.state.windowWidth <= 768
     };
 
     let coverEntriesContent = (
@@ -135,7 +141,8 @@ class CoverPage extends Component {
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
             <div className={CoverPageStyle['footer-header']}>
-              <div>
+              <div className={CoverPageStyle['contain-ldf']}>
+                <span className={CoverPageStyle['brought-text']}>Brought to you by:</span>
                 <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
               </div>
             </div>
