@@ -1,10 +1,12 @@
 import { Accordion } from 'react-sanfona';
 import { scrollTo } from './Utils';
 
+const arrayify = obj => [].concat(obj);
+
 class AccordionGF extends Accordion {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeItems !== this.state.activeItems) {
-      this.setState({ activeItems: nextProps.activeItems });
+    if ((JSON.stringify(arrayify(nextProps.activeItems).sort()) !== JSON.stringify(arrayify(this.state.activeItems).sort()))) {
+      this.handleClick(nextProps.activeItems);
     }
   }
 

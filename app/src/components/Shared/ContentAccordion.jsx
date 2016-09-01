@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AccordionItem } from 'react-sanfona';
+import { Accordion, AccordionItem } from 'react-sanfona';
 import AccordionGF from '../../lib/AccordionGF';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 import ToolTipJSON from './ToolTipJSON';
@@ -14,11 +14,15 @@ class ContentAccordion extends Component {
     };
   }
 
+  componentWillMount() {
+    this.setState({ currentOpened: this.getIndexActiveItem()[0] });
+  }
+
   getAccordionItems() {
     return this.props.entries.map((entry, index) => {
       let rhombus;
       if (this.props.showRhombus) {
-        const currentOpened = this.state.currentOpened || this.getIndexActiveItem()[0];
+        const currentOpened = this.state.currentOpened;
         const rhombusDirection = (index === currentOpened) ? '-down' : '-right';
         rhombus = (<div className={AccordionStyles['item-rhombus']}>
           <Rhombus direction={rhombusDirection} />
@@ -56,29 +60,24 @@ class ContentAccordion extends Component {
   }
 
   // changes arrow's direction when open and close
-  // we are not using it right now because we are not
-  // implementing the arrows. We'll do in a nerby future.
   toggleItem(e) {
     const entries = this.props.entries;
     const indexEntry = e.activeItems[0];
     const titleEntry = entries[indexEntry] ?
       entries[indexEntry].slug : null;
 
-    if (!titleEntry) return;
-
-    // updates url with new entry title selected
-    this.props.push(titleEntry);
-
+    if (titleEntry) {
+      // updates url with new entry title selected
+      this.props.push(titleEntry);
+    }
     this.setState({ currentOpened: indexEntry });
-
   }
 
   render() {
+    console.log(this.getIndexActiveItem()[0])
     return (
       <div>
         <AccordionGF
-          allowMultiple={false}
-          activeItems={this.getIndexActiveItem()}
           className={AccordionStyles['c-content-accordion']}
           onChange={(e) => this.toggleItem(e)}
         >
