@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import BaseStyle from '../../../styles/_base.scss';
 import FunderSectionStyle from '../../../styles/components/c-funder-section.scss';
 import ldfLogo from '../../../assets/logos/ldf_logo_color.png';
@@ -38,7 +37,7 @@ class FunderSection extends Component {
           <div className={FunderSectionStyle['funder-logo']}>
             <img src={marislaLogo} alt="marisla foundation logo"></img>
           </div>
-          <div className={classnames(FunderSectionStyle['funder-logo'], FunderSectionStyle['funder-logo-padding'])}>
+          <div className={FunderSectionStyle['funder-logo']}>
             <div><img src={bloombergLogo} alt="bloomberg philantropies logo"></img></div>
           </div>
           <div className={FunderSectionStyle['funder-logo']}>
