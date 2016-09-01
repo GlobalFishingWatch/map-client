@@ -41,7 +41,7 @@ class Steps extends Component {
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>20 billions</span>
+                <span className={StepsStyle.amount}>20 billion</span>
                 <span className={StepsStyle.definition}>ais messages processed</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-data'])}>
