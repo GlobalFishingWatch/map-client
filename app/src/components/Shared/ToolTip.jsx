@@ -31,7 +31,7 @@ class ToolTip extends Component {
         link = <a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href}>read more...</a>;
       }
       content = (<span className={ToolTipStyle['c-tooltip-info-content']}>
-        {this.props.text}
+        {this.props.text}<br />
         {link}
       </span>);
     }

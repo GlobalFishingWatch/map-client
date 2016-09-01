@@ -6,58 +6,137 @@
 
   //Section Founding Logos on footer
   .logos-footer {
-    border-bottom: 2px solid rgba($color-4, .2);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 50px 55px 0;
+    border-bottom: 1px solid rgba($color-4, .2);
+    display: block;
+    padding: 0 0 30px;
+
+    @media #{$mq-mobile-large} {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 0 50px 55px 0;
+    }
+
+    @media #{$mq-tablet} {
+      flex-wrap: nowrap;;
+    }
 
     .partner-footer,
     .sponsor-footer {
       > .logo-list {
         align-items: center;
         display: flex;
-
-        justify-content: space-between;
         list-style: none;
       }
 
-      .logo-item > .logo {
-        max-width: 130px;
+      >.logo-list-funding {
+        display: block;
+        list-style: none;
         width: 100%;
 
+        li {
+          width: 100%;
+        }
+      }
+
+      .funding-text {
+        color: $color-16;
+        display: block;
+        font-size: $font-size-normal;
+        margin-bottom: 15px;
+        margin-top: 45px;
+
+        @media screen and (min-width: 675px) {
+          display: none;
+        }
+      }
+
+      .logo-item {
+        margin-right: 15px;
+
+        @media #{$mq-laptop} {
+          margin-right: 55px;
+        }
+
+        .logo-ldf {
+          width: calc(100%/3);
+
+          @media #{$mq-mobile-large} {
+            min-width: 130px;
+            width: calc(100%/3);
+          }
+
+          @media #{$mq-tablet} {
+            width: 180px;
+          }
+        }
+      }
+
+      .logo-item > .logo {
+        display: block;
+        max-width: 100px;
+        width: 100%;
+
+
+        @media #{$mq-tablet} {
+          max-width: none;
+          width: 130px;
+        }
+
         &.-oceana {
-          max-width: 175px;
+          max-width: 100px;
+
+          @media #{$mq-tablet} {
+            max-width: none;
+            width: 175px;
+          }
         }
       }
     }
 
     .partner-footer {
-      flex-basis: 50%;
 
       > .partner-text {
         color: $color-16;
         display: block;
         font-size: $font-size-normal;
-        margin-bottom: 35px;
+        margin-bottom: 15px;
+
+        @media #{$mq-laptop} {
+          margin-bottom: 35px;
+        }
       }
     }
 
     .sponsor-footer {
       align-items: flex-end;
       display: flex;
+
+      @media #{$mq-mobile-large} {
+        margin-top: 0;
+      }
     }
   }
 
   //Section Navigation footer
   .nav-footer {
     display: flex;
-    justify-content: space-between;
-    padding: 55px 50px 60px 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 30px 0 0;
+
+    @media #{$mq-tablet} {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      padding: 55px 50px 60px 0;
+    }
 
     .nav-section {
-      display: flex;
-      flex-direction: column;
+      -moz-column-count: 2;
+      column-count: 2;
       list-style: none;
+      margin-bottom: 30px;
+      width: 100%;
 
       & + .nav-section {
         padding-left: 20px;
@@ -71,82 +150,160 @@
         > .nav-link {
           color: $color-16;
           font-size: 15px;
-          font-weight: $font-weight-light;
+          font-weight: $font-weight-normal;
           text-decoration: none;
           text-transform: uppercase;
         }
       }
+
+      @media #{$mq-tablet} {
+        -moz-column-count: 3;
+        column-count: 3;
+        margin-bottom: 0;
+        width: inherit;
+      }
     }
 
-    > .social-section {
-      position: relative;
+    .content-nav-section-mobile {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
 
-      // Get rid of this, this is a button component
-      .subscribe-button {
-        background-color: $color-6;
-        border-radius: 1px;
-        color: $color-4;
-        display: flex;
-        font-size: $font-size-x-small;
-        font-weight: $font-weight-light;
-        padding: 10px 15px;
-        text-decoration: none;
-        text-transform: uppercase;
+      @media #{$mq-tablet} {
+        display: none;
+      }
+    }
 
-        > .email-subscribe {
-          margin-left: 10px;
-        }
+    .nav-section-mobile {
+      display: block;
+
+      &:last-child {
+        margin-right: 0;
       }
 
-      > .social-links {
-        align-items: center;
+      @media #{$mq-tablet} {
+        display: none;
+        margin-right: 0;
+      }
+    }
+
+    .social-section {
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        width: inherit;
+      }
+    }
+  }
+
+  .social-section {
+    align-items: flex-start;
+    border-top: 1px solid rgba($color-4, .2);
+    display: block;
+    padding: 35px 0;
+    position: relative;
+
+    @media #{$mq-tablet} {
+      align-items: center;
+      border-top: 0;
+      display: block;
+      padding: 0;
+    }
+
+    // Get rid of this, this is a button component
+    .subscribe-button {
+      background-color: $color-6;
+      border-radius: 1px;
+      color: $color-4;
+      display: block;
+      font-size: $font-size-x-small;
+      font-weight: 400;
+      margin: 0 auto;
+      max-width: 230px;
+      padding: 8px 15px;
+      text-decoration: none;
+      text-transform: uppercase;
+      width: 100%;
+
+
+      @media #{$mq-tablet} {
+        display: flex;
+        font-size: $font-size-x-small;
+        margin: inherit;
+        max-width: 175px;
+        padding: 10px 15px;
+      }
+
+      > .email-subscribe {
+        margin-left: 10px;
+        width: 18px;
+      }
+    }
+
+    > .social-links {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin-top: 25px;
+
+      @media #{$mq-tablet} {
         display: flex;
         margin-top: 35px;
+      }
 
+      > .social-text {
+        color: $color-16;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
+      }
 
-        > .social-text {
-          color: $color-16;
-          font-weight: $font-weight-light;
-          text-transform: uppercase;
-        }
+      > .social-list {
+        align-items: center;
+        display: flex;
+        margin-left: 0;
+        margin-top: 0;
 
-        > .social-list {
+        @media #{$mq-tablet} {
           align-items: center;
           display: flex;
-          margin-left: 15px;
+        }
 
-          > .social-item {
+        > .social-item {
+          align-items: center;
+          border: solid 1px $color-4;
+          border-radius: 100%;
+          display: inline-flex;
+          height: 32px;
+          justify-content: center;
+          margin-left: 20px;
+          width: 32px;
+
+          @media #{$mq-tablet} {
+            margin-left: 15px;
+          }
+
+          & + .social-item {
+            margin-left: 15px;
+          }
+
+          > a {
             align-items: center;
-            border: solid 1px $color-4;
-            border-radius: 100%;
+            border-radius: 50%;
             display: inline-flex;
-            height: 32px;
+            height: 100%;
             justify-content: center;
-            width: 32px;
+            width: 100%;
+          }
 
-            & + .social-item {
-              margin-left: 10px;
+          &:first-child {
+            img {
+              width: 16px;
             }
+          }
 
-            > a {
-              align-items: center;
-              border-radius: 50%;
-              display: inline-flex;
-              height: 100%;
-              justify-content: center;
-              width: 100%;
-            }
-
-            &:first-child {
-              img {
-                width: 16px;
-              }
-            }
-
-            &:last-child {
-              img {
-                width: 10px;
-              }
+          &:last-child {
+            img {
+              width: 10px;
             }
           }
         }

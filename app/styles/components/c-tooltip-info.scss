@@ -48,8 +48,8 @@
   }
 
   .c-tooltip-info-link {
-    color: $color-6;
-    display: block;
+    border-bottom: 1px solid $color-6;
+    color: $color-4;
     font-weight: $font-weight-bold;
   }
 }
