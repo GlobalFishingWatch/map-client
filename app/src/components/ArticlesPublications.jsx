@@ -58,7 +58,7 @@ class ArticlesPublications extends Component {
             <h2 className="section-title">
               Articles
             </h2>
-            <div className={`section-page ${StaticPageStyles.grid}`}>
+            <div className={StaticPageStyles.grid}>
               {articles}
             </div>
           </section>
@@ -75,7 +75,7 @@ class ArticlesPublications extends Component {
             <h2 className="section-title">
               Publications
             </h2>
-            <div className={`section-page ${StaticPageStyles.grid}`}>
+            <div className={StaticPageStyles.grid}>
               {publications}
             </div>
           </section>
