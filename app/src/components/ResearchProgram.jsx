@@ -27,8 +27,8 @@ class ResearchProgram extends Component {
           backgroundImage={researchProgramBackgroundImage}
           attribution="earl_of_omaha/iStock/Thinkstock"
         />
-        <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-research-program'])}>
-          <div className={baseStyle.wrap}>
+        <div className={baseStyle.wrap}>
+          <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-research-program'])}>
             <section className="section-page">
               <p>
                 Scientists play a key role in identifying and understanding the complex challenges facing our oceans,
