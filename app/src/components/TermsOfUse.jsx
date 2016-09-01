@@ -151,7 +151,7 @@ class TermsOfUse extends Component {
                   <ul className={TextPages['third-level-list']}>
                     <li>
                       <a
-                        className={AppStyles['-underline']}
+                        className="gfw-link"
                         href="http://earthengine.google.org/terms" target="_blank"
                       >
                         Google Earth Engine
@@ -159,7 +159,7 @@ class TermsOfUse extends Component {
                     </li>
                     <li>
                       <a
-                        className={AppStyles['-underline']}
+                        className="gfw-link"
                         href="http://www.google.com/intl/en_US/help/terms_maps.html"
                         target="_blank"
                       >
@@ -168,7 +168,7 @@ class TermsOfUse extends Component {
                     </li>
                     <li>
                       <a
-                        className={AppStyles['-underline']}
+                        className="gfw-link"
                         href="https://cloud.google.com/terms/service-terms"
                         target="_blank"
                       >
@@ -177,7 +177,7 @@ class TermsOfUse extends Component {
                     </li>
                     <li>
                       <a
-                        className={AppStyles['-underline']}
+                        className="gfw-link"
                         href="https://carto.com/terms"
                         target="_blank"
                       >
@@ -185,7 +185,7 @@ class TermsOfUse extends Component {
                       </a>
                     </li>
                     <li>
-                      <Link className={AppStyles['-underline']} to="/orbcomm">Orbcomm</Link>
+                      <Link className="gfw-link" to="/orbcomm">Orbcomm</Link>
                     </li>
                   </ul>
                 </li>
@@ -333,9 +333,9 @@ class TermsOfUse extends Component {
                   </ol>
                   <p>
                     The designated Copyright Agent to receive notifications of claimed infringement is:
-                    SkyTruth Tel: <a className={AppStyles['-underline']} href="tel:1 (304) 885-4581">
+                    SkyTruth Tel: <a className="gfw-link" href="tel:1 (304) 885-4581">
                     +1 (304) 885-4581</a> Email: <a
-                      className={AppStyles['-underline']}
+                      className="gfw-link"
                       href="mailto:dmcaagent@skytruth.org"
                     >
                       dmcaagent@skytruth.org
@@ -412,7 +412,7 @@ class TermsOfUse extends Component {
                     The Site is operated by SkyTruth, P.O. Box 3283, Shepherdstown, WV 25443. All feedback,
                     comments, requests for technical support, and other communications relating to the
                     Site should be directed
-                    to <a className={AppStyles['-underline']} href="mailto:info@skytruth.org">info@skytruth.org</a>.
+                    to <a className="gfw-link" href="mailto:info@skytruth.org">info@skytruth.org</a>.
                   </p>
                 </li>
               </ol>

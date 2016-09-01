@@ -71,7 +71,7 @@ class TheProject extends Component {
                 at&nbsp;
                 <a
                   href="mailto:dcranor@oceana.org"
-                  className={baseStyle['-underline']}
+                  className="gfw-link"
                 >dcranor@oceana.org</a>.
               </p>
             </section>
