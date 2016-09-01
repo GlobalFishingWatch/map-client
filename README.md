@@ -122,6 +122,10 @@ Endpoint of the Definitions section content
 
 Endpoint of the Articles & publications section content
 
+#### HOME_SLIDER_JSON_URL
+
+Endpoint of the homepage slider section content
+
 #### REQUIRE_MAP_LOGIN
 
 Boolean value to determine if the user needs to be logged in to access the map (setting to false is experimental)

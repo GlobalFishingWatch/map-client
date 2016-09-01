@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import home from '../../styles/index.scss';
 import Footer from './Shared/Footer';
 import Steps from './Home/Steps';
-import CoverPage from './Home/CoverPage';
+import CoverPage from '../containers/CoverPage';
 import InfoMap from './Home/InfoMap';
 import HomepageStyles from '../../styles/layout/l-homepage.scss';
 
