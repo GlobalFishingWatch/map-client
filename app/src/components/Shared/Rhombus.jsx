@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../../../styles/components/shared/c-rhombus.scss';
 
 // This component is used to replace the rhombus element around the website.
 // Feel free to customize it and improve it if need.
