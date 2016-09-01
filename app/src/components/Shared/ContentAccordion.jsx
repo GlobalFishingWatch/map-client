@@ -3,36 +3,41 @@ import { AccordionItem } from 'react-sanfona';
 import AccordionGF from '../../lib/AccordionGF';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 import ToolTipJSON from './ToolTipJSON';
+import Rhombus from '../Shared/Rhombus';
 
 class ContentAccordion extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      currentOpened: null
     };
   }
 
   getAccordionItems() {
-    const entries = this.props.entries;
-    const accordionItems = [];
-
-    for (let index = 0; index < entries.length; index++) {
-      accordionItems.push(
-        <AccordionItem
-          key={index}
-          title={entries[index].title}
-          className={AccordionStyles['accordion-item']}
-          titleClassName={AccordionStyles['item-title']}
-        >
-          <article className={AccordionStyles['item-answer']}>
-            <ToolTipJSON html={entries[index].content} />
-          </article>
-        </AccordionItem>
-      );
-    }
-
-    return accordionItems;
+    return this.props.entries.map((entry, index) => {
+      let rhombus;
+      if (this.props.showRhombus) {
+        const currentOpened = this.state.currentOpened || this.getIndexActiveItem()[0];
+        const rhombusDirection = (index === currentOpened) ? '-down' : '-right';
+        rhombus = (<div className={AccordionStyles['item-rhombus']}>
+          <Rhombus direction={rhombusDirection} />
+        </div>);
+      }
+      const title = (<div className={AccordionStyles['item-title']}>
+        {entry.title}
+        {rhombus}
+      </div>);
+      return (<AccordionItem
+        key={index}
+        title={title}
+        className={AccordionStyles['accordion-item']}
+      >
+        <article className={AccordionStyles['item-answer']}>
+          <ToolTipJSON html={entry.content} />
+        </article>
+      </AccordionItem>);
+    });
   }
 
   // returns position in entries array if found
@@ -56,7 +61,6 @@ class ContentAccordion extends Component {
   toggleItem(e) {
     const entries = this.props.entries;
     const indexEntry = e.activeItems[0];
-
     const titleEntry = entries[indexEntry] ?
       entries[indexEntry].slug : null;
 
@@ -65,8 +69,8 @@ class ContentAccordion extends Component {
     // updates url with new entry title selected
     this.props.push(titleEntry);
 
-    // not working right now
-    // this.setState({ isOpen: !this.state.isOpen });
+    this.setState({ currentOpened: indexEntry });
+
   }
 
   render() {
@@ -88,7 +92,8 @@ class ContentAccordion extends Component {
 ContentAccordion.propTypes = {
   activeItem: React.PropTypes.string,
   entries: React.PropTypes.array,
-  push: React.PropTypes.func
+  push: React.PropTypes.func,
+  showRhombus: React.PropTypes.bool
 };
 
 export default ContentAccordion;

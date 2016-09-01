@@ -22,11 +22,16 @@
 
   > .accordion-item .item-title {
     color: $color-19;
+    cursor: pointer;
     font-size: 19px;
     font-weight: $font-weight-bold;
     margin-bottom: 20px;
     position: relative;
     width: 100%;
+  }
+
+  > .accordion-item .item-rhombus {
+    float: right;
   }
 
   > .accordion-item .item-answer {

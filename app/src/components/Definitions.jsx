@@ -22,6 +22,7 @@ class Definitions extends Component {
       accordionContent = (<ContentAccordion
         entries={this.props.definitionEntries}
         activeItem={activeItem}
+        showRhombus
       />);
     }
     return (<div>

@@ -23,6 +23,7 @@ class FAQ extends Component {
           <h2 className={AppStyles['section-title']}>{faqSection.title}</h2>
           <ContentAccordion
             entries={faqSection.questions}
+            showRhombus
           />
         </div>);
         faqSections = <div>{sections}</div>;
