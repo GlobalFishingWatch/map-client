@@ -5,7 +5,8 @@
     "subtitle": "Global Fishing Watch enables anyone with an Internet connection to see fishing activity anywhere in the ocean in near real-time — for free",
     "background": "/background_1.jpg",
     "attribution": "© OCEANA / Juan Cuetos",
-    "link": "/map"
+    "linkText": "explore the map",
+    "linkHref": "/map"
   },
   {
     "type": "quote",
@@ -14,7 +15,8 @@
     "subtitle": "The Leonardo DiCaprio Foundation is proud to be a Funding Partner of Global Fishing Watch",
     "background": "/background_ldf.jpg",
     "attribution": "",
-    "link": ""
+    "linkText": "see our partners",
+    "linkHref": "/partners"
   },
   {
     "type": "standard",
@@ -22,7 +24,8 @@
     "subtitle": "Monitor fishing activity in marine protected areas to ensure proper management and oversight of these special places.",
     "background": "/background_3.jpg",
     "attribution": "© Steve De Neef",
-    "link": "/map"
+    "linkText": "explore the map",
+    "linkHref": "/map"
   },
   {
     "type": "standard",
@@ -30,7 +33,8 @@
     "subtitle": "Observe fishing patterns and activity based on vessel position, course and speed as revealed by Automatic Identification System broadcasts.",
     "background": "/background_4.jpg",
     "attribution": "© OCEANA / Eduardo Sorensen",
-    "link": "/map"
+    "linkText": "explore the map",
+    "linkHref": "/map"
   },
   {
     "type": "standard",
@@ -38,6 +42,7 @@
     "subtitle": "Provide tools for governments, fishery management organizations, scientists, private industry, and NGOs to implement rules and regulations that will ensure a sustainable and abundant ocean.",
     "background": "/background_5.jpg",
     "attribution": "Hoatzinexp/iStock/Thinkstock",
-    "link": "/map"
+    "linkText": "explore the map",
+    "linkHref": "/map"
   }
 ]
