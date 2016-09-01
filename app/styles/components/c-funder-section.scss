@@ -73,15 +73,6 @@
       margin-top: 110px;
     }
 
-    @media #{$mq-tablet} {
-      flex-direction: row;
-    }
-  }
-
-  .funder-logo {
-    flex: 1 1 auto;
-    margin: 15px;
-
     img {
       margin-bottom: 50px;
       max-width: 180px;
