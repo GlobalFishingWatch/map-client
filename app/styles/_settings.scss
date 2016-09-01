@@ -7,10 +7,10 @@ $font-family-2: 'Roboto Slab', serif;
 
 // Layout
 $max-width: 1280px;
-$wrap-mobile: 25px;
-// $wrap-tablet is random. Feel free to change it if you know
-// what size should have wraps in tablet.
-$wrap-tablet: 55px;
+$content-width: 700px;
+
+$wrap-mobile: 20px;
+$wrap-tablet: 55px; // ask Dani
 $wrap-desktop: 115px;
 
 // Map
