@@ -1,24 +1,44 @@
 @import '../base';
 
 .c-research-section {
-  padding-top: 85px;
+  padding-top: 50px;
+
+  @media #{$mq-tablet} {
+    padding-top: 85px;
+  }
 
   h2 {
     color: $color-9;
-    font-size: $font-size-xx-big;
+    font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
     line-height: 1.05;
-    margin-bottom: 60px;
+    margin-bottom: 15px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-xx-big;
+      line-height: 1.05;
+      margin-bottom: 70px;
+    }
   }
 
   .image-slider {
     margin: 0 auto;
     max-width: 140px;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      margin-right: 10px;
+    }
   }
 
   .slider-logos {
-    padding-left: 135px;
-    padding-right: 135px;
+    padding-left: 28px;
+    padding-right: 43px;
+
+    @media #{$mq-tablet} {
+      padding-left: 135px;
+      padding-right: 135px;
+    }
   }
 
   :global .slick-track {
@@ -26,6 +46,10 @@
     align-items: center;
     display: flex;
     justify-content: center;
+  }
+
+  :global .slick-slide {
+    padding: 5px;
   }
 
   :global .slick-next,
