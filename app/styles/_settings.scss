@@ -7,10 +7,10 @@ $font-family-2: 'Roboto Slab', serif;
 
 // Layout
 $max-width: 1280px;
-$wrap-mobile: 25px;
-// $wrap-tablet is random. Feel free to change it if you know
-// what size should have wraps in tablet.
-$wrap-tablet: 55px;
+$content-width: 700px;
+
+$wrap-mobile: 20px;
+$wrap-tablet: 55px; // ask Dani
 $wrap-desktop: 115px;
 
 // Map
@@ -51,21 +51,17 @@ $color-9: #4a4a4a; // UI kit
 $color-10: #e8f4f9;
 $color-11: #0d1a34;
 $color-12: #000;
-$color-13: #2b4f93;
 $color-19: #174084;
 $color-20: #bfbfbf;
 $color-21: #121a2a; // UI kit map
 $color-22: rgba(7, 51, 56, .3); // UI kit map
 $color-23: #032044; // used for gradient at homepage
 $color-24: rgba(3, 32, 68, 0); // used for gradient at homepage
+$color-25: rgba($color-4, .9);
 
 // Colors to review
 $color-14: #2d3a57;
 $color-15: #0d1d3f;
-$color-16: rgba(255, 255, 255, 0.9);
-$color-17: #111;
-$color-18: rgba(255, 255, 255, 0.9);
-
 
 // Breakpoints
 $breakpoint-mobile-small: 320px;
