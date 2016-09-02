@@ -59,15 +59,7 @@
     }
   }
 
-  &.-definitions {
-    :global .section-page {
-      padding: 25px 0 0;
-
-      @media #{$mq-tablet} {
-        padding: 80px 0 0;
-      }
-    }
-  }
+  &.-definitions {}
 
   &.-tutorials {}
 
