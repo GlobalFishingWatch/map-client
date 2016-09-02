@@ -2,25 +2,10 @@
 
 .infomap {
   align-items: center;
-  background-color: $color-8;
-  //No delete, here will be an image background
-  //background-repeat: no-repeat;
-  //background-size: cover;
+  background:
+  linear-gradient(to right, $color-23, $color-24),
+  url('../../../assets/images/iframe_image.jpg');
+  background-size: cover;
   display: flex;
-  font-family: $font-family-1;
   height: 748px;
-}
-
-.success-story {
-  background-color: $color-4;
-  font-family: $font-family-1;
-  padding: 85px 110px 96px;
-
-  h2 {
-    color: $color-9;
-    font-size: $font-size-xx-big;
-    font-weight: $font-weight-normal;
-    line-height: 1.05;
-    margin-bottom: 20px;
-  }
 }
