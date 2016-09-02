@@ -1,18 +1,21 @@
 @import '../settings';
 
 .l-static-page {
-  padding: 35px 0 60px;
+  padding: 25px 0 65px;
 
   @media #{$mq-tablet} {
-    padding: 85px 0;
+    padding: 85px 0 90px;
   }
 
   :global .section-page {
     margin: 0 auto;
-    padding: 85px 0;
 
     :global .section-title {
-      margin: 0 0 30px;
+      margin: 0 0 25px;
+
+      @media #{$mq-tablet} {
+        margin: 0 0 60px;
+      }
     }
   }
 
@@ -49,14 +52,6 @@
   }
 
   &.-articles-pubs {
-
-    :global .section-title {
-      margin: 0 0 5px;
-
-      @media #{$mq-tablet} {
-        margin: 0 0 60px;
-      }
-    }
 
     .grid {
       display: flex;
