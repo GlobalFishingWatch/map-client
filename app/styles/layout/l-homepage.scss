@@ -15,7 +15,7 @@
   }
 
   &::after {
-    background-color: rgba($color-21, .8);
+    background: linear-gradient(to right, $color-11, rgba($color-2, 0));
     bottom: 0;
     content: '';
     left: 0;
