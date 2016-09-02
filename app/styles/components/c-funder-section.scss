@@ -34,11 +34,21 @@
   .funder-logos {
     align-items: center;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin-top: 110px;
 
+    @media #{$mq-tablet} {
+      flex-direction: row;
+    }
+  }
+
+  .funder-logo {
+    flex: 1 1 auto;
+    margin: 15px;
+
     img {
-      max-width: 200px;
+      width: 100%;
     }
   }
 }
