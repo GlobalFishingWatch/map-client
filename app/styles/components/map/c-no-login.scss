@@ -8,6 +8,22 @@
     left: 12px;
     position: absolute;
     top: 12px;
+
+    a {
+      color: $color-4;
+      cursor: pointer;
+      display: inline-block;
+      font-family: $font-family-1;
+      text-decoration: none;
+
+      &::after {
+        background-color: $color-6;
+        content: '';
+        display: block;
+        height: 1px;
+        margin-top: 1px;
+      }
+    }
   }
 
   > .title {
