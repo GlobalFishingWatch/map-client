@@ -96,7 +96,7 @@ class ResearchProgram extends Component {
                   marine ecology, resource management and ocean conservation. The lab contributes ecological analysis,
                   statistical models, geospatial tools, and open-access data to marine policy and management processes
                   from local to international scales. In partnership with Global Fishing Watch, the lab is working to
-                  better characterize fishing effort in the Pacific Ocean and understand how Global Fishing Watch data
+                  better characterize fishing activity in the Pacific Ocean and understand how Global Fishing Watch data
                   can assist with management challenges in the high seas.
                 </p>
               </article>
@@ -112,7 +112,7 @@ class ResearchProgram extends Component {
                   telemetry devices to track the movement of pelagic predators. The research in the lab is
                   interdisciplinary, combining physiology, ecology, and genetics with oceanography and engineering.
                   Working with Global Fishing Watch, the lab is undertaking a few projects related to understanding
-                  patterns of high-seas fishing effort across the globe and how global fishing fleets interact with
+                  patterns of high-seas fishing activity across the globe and how global fishing fleets interact with
                   large pelagic fish and sharks. This work will be applied to inform marine spatial planning and
                   fisheries management for areas outside national jurisdictions.
                 </p>
@@ -244,8 +244,8 @@ marine-ecologist-boris-worm.html"
             <section className="section-page">
               <h2 className="section-title">Access to Global Fishing Watch Data</h2>
               <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
-                are publishing daily, detailed, global rasters of fishing effort, which will be available to research
-                partners via <a
+                will be publishing daily, detailed, global rasters of fishing activity, which will be available to
+                research partners via <a
                   className="gfw-link"
                   href="http://earthengine.google.com/"
                   target="_blank"

@@ -27,7 +27,9 @@ class ToolTip extends Component {
     if (this.state.shown) {
       let link;
       if (this.props.href) {
-        link = <a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href}>read more...</a>;
+        link = (<a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href} target="_blank">
+          read more...
+        </a>);
       }
       content = (<span className={ToolTipStyle['c-tooltip-info-content']}>
         {this.props.text}<br />
