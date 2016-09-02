@@ -4,6 +4,7 @@ import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
+import '../../styles/components/shared/c-item-list.scss';
 import privacyPolicyBackgroundImage from '../../assets/images/privacy_policy.jpg';
 
 class PrivacyPolicy extends Component {
@@ -41,7 +42,7 @@ class PrivacyPolicy extends Component {
                 Beta release, SkyTruth will only collect further Personal Information from you
                 when you voluntarily:
               </p>
-              <ul className={TextPages['second-level-list']}>
+              <ul className="c-item-list">
                 <li><p>submit feedback and comments;</p></li>
                 <li><p>complete surveys; or</p></li>
                 <li><p>sign up for our newsletter.</p></li>

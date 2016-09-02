@@ -6,6 +6,7 @@ import Accordion from './Shared/Accordion';
 import CoverPrimary from './Shared/CoverPrimary';
 import AppStyles from '../../styles/application.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
+import '../../styles/components/shared/c-item-list.scss';
 import faqBackgroundImage from '../../assets/images/faq.jpg';
 
 class FAQ extends Component {
