@@ -109,7 +109,6 @@ class CoverPage extends Component {
   }
 
   render() {
-    console.log(!this.state.windowWidth <= 768);
     const loadedEntries = (this.props.coverPageEntries && this.props.coverPageEntries.length > 0);
     const settings = {
       dots: loadedEntries,
