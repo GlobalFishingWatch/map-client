@@ -30,7 +30,7 @@
   {
     "type": "standard",
     "title": "See where fishing is happening",
-    "subtitle": "Observe fishing patterns and activity based on vessel position, course and speed as revealed by Automatic Identification System broadcasts.",
+    "subtitle": "Observe fishing patterns and activity determined by Global Fishing Watch based on vessel position, course and speed as derived from Automatic Identification System broadcasts.",
     "background": "/background_4.jpg",
     "attribution": "© OCEANA / Eduardo Sorensen",
     "linkText": "explore the map",
