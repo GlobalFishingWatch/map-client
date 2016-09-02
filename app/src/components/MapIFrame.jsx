@@ -11,7 +11,7 @@ function MapIFrame(props) {
    * To add any new param to the URL, add a new entry to the following object with
    * the key being the name of the param
    */
-  const workspace = props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
+  const workspace = props.workspaceId || DEFAULT_WORKSPACE;
   const urlParams = {
     headers: props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${props.token}` })),
     workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/v1/workspaces/${workspace}`)
