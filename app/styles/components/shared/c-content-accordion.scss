@@ -34,12 +34,21 @@
     float: right;
   }
 
-  > .accordion-item .item-answer {
+  > .accordion-item .item-content {
     margin-top: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0s;
 
     ul {
       margin-top: 15px;
       padding-left: 30px;
     }
+  }
+
+  > .accordion-item .-opened {
+    max-height: 3000px;
+    transition: max-height 1.5s;
+
   }
 }

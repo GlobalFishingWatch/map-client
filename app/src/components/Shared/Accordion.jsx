@@ -1,0 +1,60 @@
+import React, { Component } from 'react';
+import ToolTipJSON from './ToolTipJSON';
+import Rhombus from './Rhombus';
+import Loader from './Loader';
+import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
+import { scrollTo } from '../../lib/Utils';
+
+class Accordion extends Component {
+  componentDidUpdate() {
+    if (this.scrolled) return;
+
+    const el = document.getElementsByClassName(AccordionStyles['-opened']);
+    if (!el.length > 0) return;
+    scrollTo(el);
+    this.scrolled = true;
+  }
+
+  render() {
+    let entries = (<Loader />);
+    if (this.props.entries && this.props.entries.length > 0) {
+      entries = this.props.entries.map((entry, index) => {
+        let classNames = AccordionStyles['item-content'];
+        const rhombusDirection = (index === this.props.currentAccordionIndex) ? '-down' : '-right';
+
+        if (index === this.props.currentAccordionIndex) {
+          classNames += ` ${AccordionStyles['-opened']}`;
+        }
+        return (
+          <div
+            className={AccordionStyles['accordion-item']}
+            key={index}
+          >
+            <div
+              className={AccordionStyles['item-title']}
+              onClick={() => { this.props.onAccordionItemClick(index, entry.slug, this.props.accordionId); }}
+            >
+              {entry.title}
+              <div className={AccordionStyles['item-rhombus']}>
+                <Rhombus direction={rhombusDirection} />
+              </div>
+            </div>
+            <article className={classNames}>
+              <ToolTipJSON html={entry.content} />
+            </article>
+          </div>
+        );
+      });
+    }
+    return <div className={AccordionStyles['c-content-accordion']}>{entries}</div>;
+  }
+}
+
+Accordion.propTypes = {
+  accordionId: React.PropTypes.number,
+  entries: React.PropTypes.array,
+  onAccordionItemClick: React.PropTypes.func,
+  currentAccordionIndex: React.PropTypes.number
+};
+
+export default Accordion;
