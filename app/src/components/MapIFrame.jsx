@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import Modal from './Shared/Modal';
 import NoLogin from '../containers/Map/NoLogin';
 import Header from '../containers/Header';
@@ -6,13 +7,11 @@ import FooterMini from './Shared/FooterMini';
 import mapStyles from '../../styles/components/c-map.scss';
 
 function MapIFrame(props) {
-  const imageIframe = !props.token && REQUIRE_MAP_LOGIN;
-
   /**
    * To add any new param to the URL, add a new entry to the following object with
    * the key being the name of the param
    */
-  const workspace = props.workspaceId || 'vizzuality-gfw-integration-default_v1.json';
+  const workspace = props.workspaceId || DEFAULT_WORKSPACE;
   const urlParams = {
     headers: props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${props.token}` })),
     workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/v1/workspaces/${workspace}`)
@@ -28,28 +27,10 @@ function MapIFrame(props) {
       .map(key => `${key}=${urlParams[key]}`)
       .reduce((res, param, index) => (index === 0 ? `${res}${param}` : `${res}&${param}`), '?');
 
-  return (
-    <div
-      style={{
-        width: '100%',
-        height: 'calc(100% - 38px)'
-      }}
-    >
-      <Header />
-      {imageIframe
-        ? <div className={mapStyles['image-iframe']}></div>
-        : (<div style={{ height: '100%' }}>
-          <iframe
-            style={{
-              border: 0,
-              width: '100%',
-              height: '100%',
-              display: 'block'
-            }}
-            src={url}
-          />
-        </div>)
-      }
+  let content = <iframe src={url} />;
+  const showModal = !props.token && REQUIRE_MAP_LOGIN;
+  if (showModal) {
+    content = (
       <Modal
         opened={!props.token && REQUIRE_MAP_LOGIN}
         closeable={false}
@@ -57,6 +38,13 @@ function MapIFrame(props) {
       >
         <NoLogin />
       </Modal>
+    );
+  }
+
+  return (
+    <div className={classnames({ [mapStyles['map-iframe-container']]: true, [mapStyles['-placeholder']]: showModal })}>
+      <Header />
+      {content}
       <FooterMini />
     </div>
   );

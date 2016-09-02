@@ -3,15 +3,16 @@ import { Link } from 'react-router';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
-import logoldf from '../../../assets/logos/ldf_logo.png';
+import logoldf from '../../../assets/logos/ldf_logo_white.svg';
 import logoGFW from '../../../assets/logos/gfw_logo.png';
 import iconFacebook from '../../../assets/icons/facebook.svg';
 import iconTwitter from '../../../assets/icons/twitter.svg';
+import SubscribeSVG from '../../../assets/icons/subscribe.svg';
+
 
 import AppStyles from '../../../styles/application.scss';
 import footerStyle from '../../../styles/components/c-footer.scss';
 
-import SubscribeSVG from '../../../assets/icons/subscribe.svg';
 
 export default function () {
   return (
@@ -36,8 +37,9 @@ export default function () {
             </ul>
           </div>
           <div className={footerStyle['sponsor-footer']}>
-            <ul className={footerStyle['logo-list']}>
+            <ul className={footerStyle['logo-list-funding']}>
               <li className={footerStyle['logo-item']}>
+                <span className={footerStyle['funding-text']}>Funding Partners</span>
                 <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
               </li>
             </ul>
@@ -57,8 +59,6 @@ export default function () {
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/faq">FAQ</Link>
             </li>
-          </ul>
-          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/tutorials">Tutorials</Link>
             </li>
@@ -71,8 +71,6 @@ export default function () {
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/partners">Partners</Link>
             </li>
-          </ul>
-          <ul className={footerStyle['nav-section']}>
             <li className={footerStyle['nav-item']}>
               <Link className={footerStyle['nav-link']} to="/research-program">Research program</Link>
             </li>
@@ -86,7 +84,6 @@ export default function () {
               <Link className={footerStyle['nav-link']} to="/privacy-policy">Privacy policy</Link>
             </li>
           </ul>
-
           <div className={footerStyle['social-section']}>
             <a
               className={footerStyle['subscribe-button']}
@@ -116,7 +113,6 @@ export default function () {
               </ul>
             </div>
           </div>
-
         </div>
       </div>
       <div className={footerStyle['second-footer']}>

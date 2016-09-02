@@ -33,7 +33,7 @@ class TheProject extends Component {
               <p>
                 This public beta version of Global Fishing Watch is available to anyone
                 with an Internet connection and allows users to monitor when and where
-                commercial <ToolTip text="Apparent fishing">fishing</ToolTip> is
+                commercial <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">fishing</ToolTip> is
                  occurring around the world.
               </p>
               <ul className={theProjectStyle['list-info']}>

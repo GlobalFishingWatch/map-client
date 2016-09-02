@@ -6,6 +6,7 @@ import baseStyle from '../../../styles/_base.scss';
 import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
 import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
+import shareIcon from '../../../assets/icons/share_icon.svg';
 import MenuMobile from './../../containers/MenuMobile';
 
 class Header extends Component {
@@ -22,6 +23,17 @@ class Header extends Component {
 
   closeMobileMenu() {
     this.setState({ mobileMenuVisible: false });
+  }
+
+  /**
+   * Return whether the route starts with the passed string
+   *
+   * @param {String} route
+   * @returns {Boolean}
+   */
+  doesPathStartsWith(route) {
+    const regex = new RegExp(route.replace('/', '\\/'));
+    return regex.test(location.pathname);
   }
 
   render() {
@@ -55,12 +67,12 @@ class Header extends Component {
         />
         <nav
           className={
-            classNames({ [styles['c-header']]: true, [styles['-map']]: location.pathname === '/map' })
+            classNames({ [styles['c-header']]: true, [styles['-map']]: this.doesPathStartsWith('/map') })
           }
         >
           <div
             className={
-              classNames({ [baseStyle.wrap]: true, [baseStyle['-map']]: location.pathname === '/map' })
+              classNames({ [baseStyle.wrap]: true, [baseStyle['-map']]: this.doesPathStartsWith('/map') })
             }
           >
             <div className={styles['contain-nav']}>
@@ -75,19 +87,20 @@ class Header extends Component {
                 className={styles['app-logo']}
               >
                 <img
-                  src={location.pathname === '/map' ? betaLogo : defaultLogo}
+                  src={this.doesPathStartsWith('/map') ? betaLogo : defaultLogo}
                   alt="Global Fishing Watch"
                 />
               </Link>
-              {location.pathname === '/map' && <span className={styles['share-header']}>Share</span>}
+              {this.doesPathStartsWith('/map') && <span className={styles['share-header']}>
+                <img src={shareIcon} alt="share icon"></img></span>}
               <ul className={styles.menu}>
                 <li>
-                  <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
+                  <Link className={this.doesPathStartsWith('/map') && styles['-active']} to="/map">Map</Link>
                 </li>
                 <li className={styles.dropdown}>
                   <a
                     className={
-                      location.pathname.indexOf('/articles-publications') !== -1
+                      /\/articles-publications/.test(location.pathname)
                         ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
@@ -102,9 +115,9 @@ class Header extends Component {
                   <a
                     className={
                       (
-                        location.pathname === '/faq'
-                        || location.pathname === '/tutorials'
-                        || location.pathname === '/definitions'
+                        this.doesPathStartsWith('/faq')
+                        || this.doesPathStartsWith('/tutorials')
+                        || this.doesPathStartsWith('/definitions')
                       ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
@@ -119,10 +132,10 @@ class Header extends Component {
                 <li className={styles.dropdown}>
                   <a
                     className={(
-                      location.pathname === '/the-project'
-                      || location.pathname === '/partners'
-                      || location.pathname === '/research-program'
-                      || location.pathname === '/contact-us'
+                      this.doesPathStartsWith('/the-project')
+                      || this.doesPathStartsWith('/partners')
+                      || this.doesPathStartsWith('/research-program')
+                      || this.doesPathStartsWith('/contact-us')
                     ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
                   >
                     About

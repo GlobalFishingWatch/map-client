@@ -96,7 +96,7 @@ class ResearchProgram extends Component {
                   marine ecology, resource management and ocean conservation. The lab contributes ecological analysis,
                   statistical models, geospatial tools, and open-access data to marine policy and management processes
                   from local to international scales. In partnership with Global Fishing Watch, the lab is working to
-                  better characterize fishing effort in the Pacific Ocean and understand how Global Fishing Watch data
+                  better characterize fishing activity in the Pacific Ocean and understand how Global Fishing Watch data
                   can assist with management challenges in the high seas.
                 </p>
               </article>
@@ -112,7 +112,7 @@ class ResearchProgram extends Component {
                   telemetry devices to track the movement of pelagic predators. The research in the lab is
                   interdisciplinary, combining physiology, ecology, and genetics with oceanography and engineering.
                   Working with Global Fishing Watch, the lab is undertaking a few projects related to understanding
-                  patterns of high-seas fishing effort across the globe and how global fishing fleets interact with
+                  patterns of high-seas fishing activity across the globe and how global fishing fleets interact with
                   large pelagic fish and sharks. This work will be applied to inform marine spatial planning and
                   fisheries management for areas outside national jurisdictions.
                 </p>
@@ -244,9 +244,9 @@ marine-ecologist-boris-worm.html"
             <section className="section-page">
               <h2 className="section-title">Access to Global Fishing Watch Data</h2>
               <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
-                are publishing daily, detailed, global rasters of fishing effort, which will be available to research
-                partners via <a
-                  className={baseStyle['-underline']}
+                will be publishing daily, detailed, global rasters of fishing activity, which will be available to
+                research partners via <a
+                  className="gfw-link"
                   href="http://earthengine.google.com/"
                   target="_blank"
                 >
@@ -259,7 +259,7 @@ marine-ecologist-boris-worm.html"
                 raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
                 more easily acquire a license. Please contact&nbsp;
                 <a
-                  className={baseStyle['-underline']}
+                  className="gfw-link"
                   href="mailto:research@globalfishingatch.org"
                 >
                 research@globalfishingatch.org
@@ -271,27 +271,27 @@ marine-ecologist-boris-worm.html"
               <h2 className="section-title">Research Program Publications</h2>
               <p>McCauley, D., P. Woods, B. Sullivan, B. Bergman, C. Jablonicky, A. Roan,
                 M. Hirshfield, K. Boerder,
-                and B. Worm. 2016.
+                and B. Worm. 2016.&nbsp;
                 <a
-                  className={baseStyle['-underline']}
+                  className="gfw-link"
                   href="http://science.sciencemag.org/content/351/6278/1148"
                   target="_blank"
                 >
-                  Ending hide and seek in the oceans. Science.
-                </a>
+                  Ending hide and seek in the oceans.
+                </a> Science.
               </p>
-              <p>Souza, E. N. de, Boerder, K., Matwin, S. and Worm, B. 2016.
+              <p>Souza, E. N. de, Boerder, K., Matwin, S. and Worm, B. 2016.&nbsp;
                 <a
-                  className={baseStyle['-underline']}
+                  className="gfw-link"
                   href="http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0158248"
                   target="_blank"
                 >
                   Improving Fishing Pattern Detection from Satellite AIS Using Data Mining and Machine Learning
                 </a>. PLOS ONE 11, e0158248.
               </p>
-              <p>Robards, M., Silber, G., Adams, J., Arroyo, J., Lorenzini, D., Schwehr, K., and Amos, J. 2016.
+              <p>Robards, M., Silber, G., Adams, J., Arroyo, J., Lorenzini, D., Schwehr, K., and Amos, J. 2016.&nbsp;
                 <a
-                  className={baseStyle['-underline']}
+                  className="gfw-link"
                   href="http://vislab-ccom.unh.edu/~schwehr/papers/2016-RobardsEtAl-AIS-conservation.pdf"
                   target="_blank"
                 >

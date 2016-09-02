@@ -1,6 +1,6 @@
 @import '../../settings';
 
-.c-rhombus {
+:global .c-rhombus {
   align-items: center;
   cursor: pointer;
   display: inline-flex;
@@ -26,6 +26,16 @@
 
       width: 6px;
     }
+
+    &.-white {
+      border-color: $color-4;
+
+      &::after {
+        border-color: $color-4;
+        border-right-color: transparent;
+        border-top-color: transparent;
+      }
+    }
   }
 
   > .text {
@@ -38,21 +48,15 @@
     text-transform: uppercase;
 
     > a {
-      color: $color-14;
-    }
-  }
-
-  &.-white {
-    > .rhombus {
-      border-color: $color-4;
-
-      &::after {
-        border-color: $color-4;
-      }
+      color: currentColor;
     }
 
-    > .text  {
+    &.-white {
       color: $color-4;
+
+      > a {
+        color: currentColor;
+      }
     }
   }
 

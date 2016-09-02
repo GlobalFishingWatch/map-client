@@ -9,13 +9,28 @@ import dalhouseLogo from '../../../assets/logos/dalhouse_logo.png';
 
 class ResearchSection extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      windowWidth: window.innerWidth
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', () => this.handleResize());
+  }
+
+  handleResize() {
+    this.setState({ windowWidth: window.innerWidth });
+  }
+
   render() {
     const settings = {
       arrows: true,
       infinite: true,
       draggable: false,
       autoplay: false,
-      slidesToShow: 4,
+      slidesToShow: this.state.windowWidth > 768 ? 4 : 2,
       slidesToScroll: 1
     };
     return (<section className={ResearchSectionStyle['c-research-section']}>

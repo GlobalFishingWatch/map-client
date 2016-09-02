@@ -5,26 +5,46 @@
 
   > .intro {
     margin: 0 auto;
-    max-width: 675px;
+    max-width: none;
+
+    @media #{$mq-tablet} {
+      max-width: 675px;
+    }
   }
 
   > .steps-list {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-around;
-    margin-top: 80px;
+    margin-top: 35px;
+
+    @media #{$mq-tablet} {
+      flex-direction: row;
+      margin-top: 80px;
+    }
   }
 
   .step {
     flex-basis: calc(33.33% - 10px);
 
     & + .step {
-      padding-left: 20px;
+      margin-top: 80px;
+      padding-left: 0;
+
+      @media #{$mq-tablet} {
+        margin-top: 0;
+        padding-left: 20px;
+      }
     }
 
     .step-intro {
-      margin-bottom: 60px;
+      margin-bottom: 25px;
       text-align: center;
+
+      @media #{$mq-tablet} {
+        margin-bottom: 60px;
+      }
 
       > .amount {
         color: $color-9;
@@ -83,7 +103,11 @@
       > .name {
         font-size: $font-size-x-medium;
         font-weight: $font-weight-normal;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
+
+        @media #{$mq-tablet} {
+          margin-bottom: 25px;
+        }
       }
     }
   }

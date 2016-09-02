@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import formStyle from '../../../styles/components/c-contact-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
+import contactStyle from '../../../styles/components/c-contact.scss';
 
 class ContactUsForm extends Component {
   constructor(props) {
@@ -79,91 +80,100 @@ class ContactUsForm extends Component {
       classNames.push(formStyle.validated);
     }
 
-    return (<section className={classNames.join(' ')}>
-      <form
-        action=""
-        method="POST"
-        onSubmit={this.handleFormSubmit}
-        ref={(ref) => { this.form = ref; }}
-      >
-        <label htmlFor="name">Name *</label>
-        <input
-          type="name"
-          id="contact_name"
-          placeholder="Your name"
-          className={formStyle['input-text']}
-          required
-          onChange={this.handleChange}
-          value={this.state.name}
-        />
-
-        <label htmlFor="email">Email *</label>
-        <input
-          type="email"
-          id="contact_email"
-          placeholder="john.sample@globalfishingwatch.org"
-          className={formStyle['input-text']}
-          required
-          onChange={this.handleChange}
-          value={this.state.email}
-        />
-
-        <label htmlFor="company">Company</label>
-        <input
-          type="text"
-          id="contact_company"
-          placeholder="Your company's name"
-          className={formStyle['input-text']}
-          onChange={this.handleChange}
-        />
-
-
-        <label htmlFor="type">Type *</label>
-        <div className={formStyle['select-container']}>
-          <select
-            id="contact_type"
-            onChange={this.handleChange}
-            name="selectCompany"
-            className={formStyle[this.state.classSelect]}
+    return (<div className={contactStyle['contain-text-contact']}>
+      <h1>
+        Contact Us
+      </h1>
+      <p>
+        Let us know what you think! Submit your questions,
+        suggestions for improvement or general feedback using the form below.
+      </p>
+      <section className={classNames.join(' ')}>
+        <form
+          action=""
+          method="POST"
+          onSubmit={this.handleFormSubmit}
+          ref={(ref) => { this.form = ref; }}
+        >
+          <label htmlFor="name">Name *</label>
+          <input
+            type="name"
+            id="contact_name"
+            placeholder="Your name"
+            className={formStyle['input-text']}
             required
-          >
-            <option value="" disabled={this.state.disabledOption}>Select a question type</option>
-            <option value="Map">I have a question about the map</option>
-            <option value="Collaboration">I have a question about collaboration opportunities</option>
-            <option value="Press">I would like to speak to someone about a media or press opportunity</option>
-            <option value="Feedback">I want to provide feedback.</option>
-            <option value="General">I have a general question.</option>
-          </select>
-        </div>
+            onChange={this.handleChange}
+            value={this.state.name}
+          />
 
-        <label htmlFor="subject">Subject *</label>
-        <input
-          type="text"
-          id="contact_subject"
-          placeholder="Please let us know how we can help"
-          className={formStyle['input-text']}
-          required
-          onChange={this.handleChange}
-        />
+          <label htmlFor="email">Email *</label>
+          <input
+            type="email"
+            id="contact_email"
+            placeholder="john.sample@globalfishingwatch.org"
+            className={formStyle['input-text']}
+            required
+            onChange={this.handleChange}
+            value={this.state.email}
+          />
 
-        <label htmlFor="description">Message *</label>
-        <textarea
-          id="contact_description"
-          placeholder="Give us more details"
-          className={formStyle['textarea-form']}
-          required
-          onChange={this.handleChange}
-        />
+          <label htmlFor="company">Company</label>
+          <input
+            type="text"
+            id="contact_company"
+            placeholder="Your company's name"
+            className={formStyle['input-text']}
+            onChange={this.handleChange}
+          />
 
-        <input
-          type="submit"
-          value="SEND"
-          className={buttonStyle['c-button-contact']}
-          disabled={this.state.submitted}
-          onClick={() => { this.onSubmitClicked(); }}
-        />
-      </form>
-    </section>);
+
+          <label htmlFor="type">Type *</label>
+          <div className={formStyle['select-container']}>
+            <select
+              id="contact_type"
+              onChange={this.handleChange}
+              name="selectCompany"
+              className={formStyle[this.state.classSelect]}
+              required
+            >
+              <option value="" disabled={this.state.disabledOption}>Select a question type</option>
+              <option value="Map">I have a question about the map</option>
+              <option value="Collaboration">I have a question about collaboration opportunities</option>
+              <option value="Press">I would like to speak to someone about a media or press opportunity</option>
+              <option value="Feedback">I want to provide feedback.</option>
+              <option value="General">I have a general question.</option>
+            </select>
+          </div>
+
+          <label htmlFor="subject">Subject *</label>
+          <input
+            type="text"
+            id="contact_subject"
+            placeholder="Please let us know how we can help"
+            className={formStyle['input-text']}
+            required
+            onChange={this.handleChange}
+          />
+
+          <label htmlFor="description">Message *</label>
+          <textarea
+            id="contact_description"
+            placeholder="Give us more details"
+            className={formStyle['textarea-form']}
+            required
+            onChange={this.handleChange}
+          />
+
+          <input
+            type="submit"
+            value="SEND"
+            className={buttonStyle['c-button-contact']}
+            disabled={this.state.submitted}
+            onClick={() => { this.onSubmitClicked(); }}
+          />
+        </form>
+      </section>
+    </div>);
   }
 }
 ContactUsForm.propTypes = {

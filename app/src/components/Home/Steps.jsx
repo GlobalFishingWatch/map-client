@@ -13,8 +13,11 @@ class Steps extends Component {
       <section className={baseStyle.wrap}>
         <div className={StepsStyle['c-steps']} id="steps">
           <div className={StepsStyle.intro}>
-            <p>Global Fishing Watch uses public broadcast data from the Automatic Identification System (AIS),
-            collected by satellite and terrestrial receivers, to show the movement of vessels over time.</p>
+            <p>Global Fishing Watch analyzes data from the Automatic Identification System (AIS), which is
+              collected by satellites and terrestrial receivers, to identify&nbsp;
+              <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">apparent fishing</ToolTip> behavior
+              based on the movement of vessels over time.
+            </p>
           </div>
 
           <ul className={StepsStyle['steps-list']}>
@@ -41,7 +44,7 @@ class Steps extends Component {
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>20 billions</span>
+                <span className={StepsStyle.amount}>20 billion</span>
                 <span className={StepsStyle.definition}>ais messages processed</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-data'])}>
@@ -52,17 +55,17 @@ class Steps extends Component {
                 />
               </div>
               <div className={StepsStyle.content}>
-                <h3 className={StepsStyle.name}>Step 2: Data processing</h3>
+                <h3 className={StepsStyle.name}>Step 2: Data Processing</h3>
                 <p>Each day, more than 20 million data points are added to the system. Using cloud
                   computing and machine learning, Global Fishing Watch processes these data, identifying
                   which vessels are fishing boats, and when and where they are&nbsp;
-                  <ToolTip text="Apparent fishing">fishing</ToolTip>.
+                  <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">fishing</ToolTip>.
                 </p>
               </div>
             </li>
             <li className={StepsStyle.step}>
               <div className={StepsStyle['step-intro']}>
-                <span className={StepsStyle.amount}>5</span>
+                <span className={StepsStyle.amount}>4.5</span>
                 <span className={StepsStyle.definition}>years of data</span>
               </div>
               <div className={classnames(StepsStyle.thumbnail, StepsStyle['-you'])}>

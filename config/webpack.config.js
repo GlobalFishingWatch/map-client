@@ -49,7 +49,9 @@ const webpackConfig = {
       DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
       ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
       REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,
-      GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE)
+      DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
+      GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
+      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL)
     })
   ],
 
@@ -69,7 +71,7 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
       },
       {
         test: /\.css$/,

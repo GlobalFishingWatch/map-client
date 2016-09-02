@@ -1,6 +1,7 @@
 @import '../../settings';
 
 .c-no-login {
+  font-family: $font-family-1;
   text-align: center;
 
   > .back {
@@ -8,6 +9,10 @@
     left: 12px;
     position: absolute;
     top: 12px;
+
+    > a  {
+      color: $color-4;
+    }
   }
 
   > .title {
@@ -25,7 +30,6 @@
     color: $color-4;
     cursor: pointer;
     display: inline-block;
-    text-decoration: none;
 
     &::after {
       background-color: $color-6;
@@ -35,5 +39,4 @@
       margin-top: 1px;
     }
   }
-
 }

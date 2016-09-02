@@ -1,0 +1,48 @@
+[
+  {
+    "type": "standard",
+    "title": "Introducing Global Fishing Watch",
+    "subtitle": "Global Fishing Watch enables anyone with an Internet connection to see fishing activity anywhere in the ocean in near real-time — for free",
+    "background": "/background_1.jpg",
+    "attribution": "© OCEANA / Juan Cuetos",
+    "linkText": "explore the map",
+    "linkHref": "/map"
+  },
+  {
+    "type": "quote",
+    "quote": "“Global Fishing Watch is the first effective tool to track commercial fishing around the world. Now anyone can help put an end to the massive overfishing that is decimating fisheries everywhere and help authorities protect our precious marine ecosystems before it’s too late.”",
+    "author": "Leonardo DiCaprio",
+    "subtitle": "The Leonardo DiCaprio Foundation is proud to be a Funding Partner of Global Fishing Watch.",
+    "background": "/background_ldf.jpg",
+    "attribution": "",
+    "linkText": "see our partners",
+    "linkHref": "/partners"
+  },
+  {
+    "type": "standard",
+    "title": "Protect ocean ecosystems",
+    "subtitle": "Monitor fishing activity in marine protected areas to ensure proper management and oversight of these special places.",
+    "background": "/background_3.jpg",
+    "attribution": "© Steve De Neef",
+    "linkText": "explore the map",
+    "linkHref": "/map"
+  },
+  {
+    "type": "standard",
+    "title": "See where fishing is happening",
+    "subtitle": "Observe fishing patterns and activity determined by Global Fishing Watch based on vessel position, course and speed as derived from Automatic Identification System broadcasts.",
+    "background": "/background_4.jpg",
+    "attribution": "© OCEANA / Eduardo Sorensen",
+    "linkText": "explore the map",
+    "linkHref": "/map"
+  },
+  {
+    "type": "standard",
+    "title": "Improve fisheries management worldwide",
+    "subtitle": "Provide tools for governments, fishery management organizations, scientists, private industry, and NGOs to implement rules and regulations that will ensure a sustainable and abundant ocean.",
+    "background": "/background_5.jpg",
+    "attribution": "Hoatzinexp/iStock/Thinkstock",
+    "linkText": "explore the map",
+    "linkHref": "/map"
+  }
+]

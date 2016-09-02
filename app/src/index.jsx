@@ -10,6 +10,7 @@ import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
+import coverPageReducer from './reducers/coverPage';
 import definitionReducer from './reducers/definitions';
 import userReducer from './reducers/user';
 import filtersReducer from './reducers/filters';
@@ -30,6 +31,7 @@ const reducer = combineReducers({
   user: userReducer,
   filters: filtersReducer,
   faqEntries: faqReducer,
+  coverPageEntries: coverPageReducer,
   contactStatus: contactReducer,
   search: searchReducer,
   vesselInfo: vesselInfoReducer,
