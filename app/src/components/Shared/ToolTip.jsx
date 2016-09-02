@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import _ from 'lodash';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 
 class ToolTip extends Component {
@@ -8,17 +9,24 @@ class ToolTip extends Component {
     this.state = {
       shown: false
     };
+    this.onMouseOutDebounced = _.debounce(this.onMouseOut, 500);
   }
 
   onClick() {
     this.setState({
-      shown: !this.state.shown
+      shown: true
     });
   }
 
-  onHover() {
+  onMouseOver() {
+    this.onMouseOutDebounced.cancel();
     this.setState({
       shown: true
+    });
+  }
+  onMouseOut() {
+    this.setState({
+      shown: false
     });
   }
 
@@ -38,11 +46,13 @@ class ToolTip extends Component {
       <abbr
         title={this.props.text}
         className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
+        onClick={() => { this.onClick(); }}
+        onMouseOver={() => { this.onMouseOver(); }}
+        onMouseOut={() => { this.onMouseOutDebounced(); }}
       >
         <span
           className={ToolTipStyle['c-tooltip-info-title']}
-          onClick={() => { this.onClick(); }}
-          onMouseOver={() => { this.onHover(); }}
+
         >
           {this.props.children}
         </span>
