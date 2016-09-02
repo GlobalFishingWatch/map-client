@@ -4,14 +4,16 @@ import Rhombus from './Rhombus';
 import Loader from './Loader';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 import { scrollTo } from '../../lib/Utils';
+import $ from 'jquery';
 
 class Accordion extends Component {
   componentDidUpdate() {
     if (this.scrolled) return;
 
-    const el = document.getElementsByClassName(AccordionStyles['-opened']);
-    if (!el.length > 0) return;
-    scrollTo(el);
+    const $el = $(`.${AccordionStyles['-opened']}`).parent();
+    if ($el.length) {
+      scrollTo($el);
+    }
     this.scrolled = true;
   }
 
