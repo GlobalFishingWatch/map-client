@@ -133,3 +133,7 @@ Boolean value to determine if the user needs to be logged in to access the map (
 #### GA_TRACKING_CODE
 
 Google Analytics tracking code.
+
+#### DEFAULT_WORKSPACE
+
+Name/ID of the default workspace to be loaded on the map

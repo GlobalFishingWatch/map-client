@@ -13,7 +13,7 @@ const envVariables = process.env;
 
 
 const webpackConfig = {
-  
+
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
@@ -49,8 +49,9 @@ const webpackConfig = {
       DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
       ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
       REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,
+      DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
-      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL),
+      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL)
     })
   ],
 
