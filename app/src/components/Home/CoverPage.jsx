@@ -109,12 +109,13 @@ class CoverPage extends Component {
   }
 
   render() {
+    console.log(!this.state.windowWidth <= 768);
     const loadedEntries = (this.props.coverPageEntries && this.props.coverPageEntries.length > 0);
     const settings = {
       dots: loadedEntries,
       arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
-      infinite: true,
+      infinite: this.state.windowWidth >= 768,
       draggable: this.state.windowWidth <= 768,
       beforeChange: (currentSlider, nextSlider) => {
         this.onSliderChange(nextSlider);

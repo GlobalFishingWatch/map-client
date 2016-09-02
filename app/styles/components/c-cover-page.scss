@@ -16,7 +16,10 @@
 
   &.-is-home {
     .contain-text-cover {
-      min-height: 686px;
+
+      @media #{$mq-tablet} {
+        min-height: 686px;
+      }
 
       &.-is-empty {
         min-height: 586px;
