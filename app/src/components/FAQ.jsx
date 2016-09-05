@@ -15,6 +15,17 @@ class FAQ extends Component {
   }
 
   onAccordionItemClick(currentAccordionIndex, accordionId) {
+    // close accordion item if clicked again
+    if (this.state &&
+        this.state.accordionId === accordionId &&
+        this.state.currentAccordionIndex === currentAccordionIndex) {
+      this.setState({
+        currentAccordionIndex: null,
+        accordionId: null
+      });
+      return;
+    }
+
     this.setState({
       currentAccordionIndex,
       accordionId

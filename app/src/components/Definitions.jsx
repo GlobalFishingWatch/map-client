@@ -19,11 +19,16 @@ class Definitions extends Component {
   }
 
   onAccordionItemClick(index, slug) {
-    this.props.push((index !== null) ? slug : '');
+    this.props.push(slug);
   }
 
   openAccordionItem(definitionEntries, slug) {
-    const currentAccordionIndex = _.findIndex(definitionEntries, entry => entry.slug === slug);
+    let currentAccordionIndex = _.findIndex(definitionEntries, entry => entry.slug === slug);
+
+    // close accordion item if clicked again
+    if (this.state && this.state.currentAccordionIndex === currentAccordionIndex) {
+      currentAccordionIndex = null;
+    }
 
     this.setState({
       currentAccordionIndex

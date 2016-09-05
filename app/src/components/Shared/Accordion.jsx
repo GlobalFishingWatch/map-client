@@ -18,8 +18,7 @@ class Accordion extends Component {
   }
 
   onItemClick(index, slug) {
-    this.index = (index === this.index) ? null : index;
-    this.props.onAccordionItemClick(this.index, slug, this.props.accordionId);
+    this.props.onAccordionItemClick(index, slug, this.props.accordionId);
   }
 
   render() {
@@ -58,10 +57,15 @@ class Accordion extends Component {
 }
 
 Accordion.propTypes = {
+  // give a unique id to this accordion (useful in callback to sort out active accordion)
   accordionId: React.PropTypes.number,
+  // content used in accordion, each entry contains a title, a content and optionally a slug
   entries: React.PropTypes.array,
+  // callback called on accordion item click, will send index and slug of the clicked item, an the accordionId
   onAccordionItemClick: React.PropTypes.func,
+  // update this prop to open on a particular item
   currentAccordionIndex: React.PropTypes.number,
+  // autoscroll to currentAccordionIndex when component mounts
   autoscroll: React.PropTypes.bool
 };
 
