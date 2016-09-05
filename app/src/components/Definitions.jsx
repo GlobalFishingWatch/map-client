@@ -18,7 +18,7 @@ class Definitions extends Component {
   }
 
   onAccordionItemClick(index, slug) {
-    this.props.push(slug);
+    this.props.push(index ? slug : '');
   }
 
   openAccordionItem(definitionEntries, slug) {

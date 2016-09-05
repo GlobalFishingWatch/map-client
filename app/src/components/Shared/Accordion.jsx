@@ -17,6 +17,11 @@ class Accordion extends Component {
     this.scrolled = true;
   }
 
+  onItemClick(index, slug) {
+    this.index = (index === this.index) ? null : index;
+    this.props.onAccordionItemClick(this.index, slug, this.props.accordionId);
+  }
+
   render() {
     let entries = (<Loader />);
     if (this.props.entries && this.props.entries.length > 0) {
@@ -34,7 +39,7 @@ class Accordion extends Component {
           >
             <div
               className={AccordionStyles['item-title']}
-              onClick={() => { this.props.onAccordionItemClick(index, entry.slug, this.props.accordionId); }}
+              onClick={() => { this.onItemClick(index, entry.slug); }}
             >
               {entry.title}
               <div className={AccordionStyles['item-rhombus']}>
