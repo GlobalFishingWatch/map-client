@@ -28,11 +28,15 @@
   color: $color-4;
   display: block;
   font-size: $font-size-normal;
-  margin: 50px auto 0;
-  max-width: 250px;
+  margin: 30px auto 0;
   padding: 20px 0;
   text-transform: uppercase;
   width: 100%;
+
+  @media #{$mq-tablet} {
+    margin: 50px auto 0;
+    max-width: 250px;
+  }
 }
 
 .c-button-submit-small {
