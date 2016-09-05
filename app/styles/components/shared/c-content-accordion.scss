@@ -7,7 +7,8 @@
   }
 
   > .accordion-item {
-    padding: 25px 0 30px;
+    border-bottom: 2px solid $color-10;
+    padding: 25px 0;
     position: relative;
 
     &:first-child {
@@ -15,21 +16,8 @@
     }
 
     &:last-child {
+      border-bottom: 0;
       padding-bottom: 0;
-
-      &::after {
-        content: none;
-      }
-    }
-
-    &::after {
-      background-color: $color-10;
-      bottom: 0;
-      content: '';
-      height: 2px;
-      position: absolute;
-      top: auto;
-      width: 100%;
     }
 
     @media #{$mq-tablet} {
@@ -42,17 +30,19 @@
     cursor: pointer;
     font-size: 19px;
     font-weight: $font-weight-bold;
-    margin-bottom: 20px;
+    padding-right: 50px;
     position: relative;
     width: 100%;
   }
 
   > .accordion-item .item-rhombus {
-    float: right;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   > .accordion-item .item-content {
-    margin-top: 20px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0s;
@@ -64,8 +54,8 @@
   }
 
   > .accordion-item .-opened {
+    margin-top: 20px;
     max-height: 3000px;
     transition: max-height 1.5s;
-
   }
 }
