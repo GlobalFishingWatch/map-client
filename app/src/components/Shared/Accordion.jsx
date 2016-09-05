@@ -26,7 +26,7 @@ class Accordion extends Component {
     if (this.props.entries && this.props.entries.length > 0) {
       entries = this.props.entries.map((entry, index) => {
         let classNames = AccordionStyles['item-content'];
-        const rhombusDirection = (index === this.props.currentAccordionIndex) ? '-down' : '-right';
+        const rhombusDirection = (index === this.props.currentAccordionIndex) ? '-down' : '-left';
 
         if (index === this.props.currentAccordionIndex) {
           classNames += ` ${AccordionStyles['-opened']}`;
