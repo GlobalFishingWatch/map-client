@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import ga from 'ga-react-router';
+import _ from 'lodash';
 import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
@@ -63,6 +64,11 @@ const history = syncHistoryWithStore(browserHistory, store);
 history.listen(location => {
   ga('set', 'page', location.pathname);
   ga('send', 'pageview');
+
+  const title = ['Global Fishing Watch'];
+  const pageTitle = _.capitalize(location.pathname.replace('/', '').replace('-', ' '));
+  if (pageTitle !== '') title.push(pageTitle);
+  document.title = title.join(' - ');
 });
 
 render(

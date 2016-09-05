@@ -1,5 +1,6 @@
 import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
 import 'whatwg-fetch';
+import { browserHistory } from 'react-router';
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_SESSION, token);
@@ -56,6 +57,9 @@ export function logout() {
       type: LOGOUT
     });
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
+    if (window.location.pathname.match('/map')) {
+      browserHistory.push('/');
+    }
   };
 }
 

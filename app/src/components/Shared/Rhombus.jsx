@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import '../../../styles/components/shared/c-rhombus.scss';
 
 // This component is used to replace the rhombus element around the website.
@@ -8,12 +9,26 @@ class Rhombus extends Component {
   render() {
     return (
       <div
-        className={`c-rhombus ${this.props.direction} ${this.props.color}`}
+        className={classnames({
+          'c-rhombus': true,
+          [this.props.direction]: !!this.props.direction,
+          [this.props.color]: !!this.props.color
+        })}
         onClick={this.props.onClick}
       >
-        <span className={`rhombus ${this.props.color}`}></span>
+        <span
+          className={classnames({
+            rhombus: true,
+            [this.props.color]: !!this.props.color
+          })}
+        ></span>
         {this.props.children &&
-          <span className={`text ${this.props.color}`}>
+          <span
+            className={classnames({
+              text: true,
+              [this.props.color]: !!this.props.color
+            })}
+          >
             {this.props.children}
           </span>}
       </div>

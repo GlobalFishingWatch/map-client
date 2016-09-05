@@ -8,10 +8,10 @@
   > .rhombus {
     border: 2px solid $color-14;
     display: inline-block;
-    height: 17px;
+    height: 18px;
     position: relative;
-    transform: rotate(45deg);
-    width: 17px;
+    transform: rotate(135deg); // By default oriented to the top
+    width: 18px;
 
     &::after {
       border: 2px solid $color-14;
@@ -23,7 +23,7 @@
       left: 50%;
       position: absolute;
       top: 50%;
-
+      transform: translate(-2px, -4px); // Fixed to avoid subpixel issues
       width: 6px;
     }
 
@@ -60,21 +60,15 @@
     }
   }
 
-  &.-left > .rhombus {
-    &::after {
-      transform: translate(calc(-50% + 2px), calc(-50% - 1px));
-    }
+  &.-down > .rhombus {
+    transform: rotate(-45deg);
   }
 
   &.-right > .rhombus {
-    &::after {
-      transform: translate(calc(-50% - 2px), calc(-50%)) rotate(180deg);
-    }
+    transform: rotate(-135deg);
   }
 
-  &.-down > .rhombus {
-    &::after {
-      transform: translate(calc(-50%), calc(-50% - 2px)) rotate(-90deg);
-    }
+  &.-left > .rhombus {
+    transform: rotate(45deg);
   }
 }

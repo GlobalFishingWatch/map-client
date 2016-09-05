@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
@@ -48,7 +49,7 @@ class FooterMini extends Component {
       );
     }
 
-    let toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
+    const toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
       <div>
@@ -56,7 +57,7 @@ class FooterMini extends Component {
         {expandedFooter}
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
-            <img className={styles.partner} src={logooceana} alt="oceana logo" />
+            <img className={classnames(styles.partner, styles.oceana)} src={logooceana} alt="oceana logo" />
             <img className={styles.partner} src={logosky} alt="skytruth logo" />
             <img className={styles.partner} src={logogoogle} alt="google logo" />
           </div>
