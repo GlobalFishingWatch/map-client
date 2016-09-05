@@ -57,7 +57,7 @@ export function logout() {
       type: LOGOUT
     });
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
-    if (window.location.pathname.match('^\/map')) {
+    if (window.location.pathname.match('/map')) {
       browserHistory.push('/');
     }
   };
