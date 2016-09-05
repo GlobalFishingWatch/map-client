@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import Accordion from './Shared/Accordion';
@@ -28,8 +29,8 @@ class FAQ extends Component {
           ? this.state.currentAccordionIndex
           : null;
         return (
-          <div key={faqSection.title}>
-            <h2 className={AppStyles['section-title']}>{faqSection.title}</h2>
+          <div key={faqSection.title} className={StaticPageStyles['question-group']}>
+            <h2 className="section-title">{faqSection.title}</h2>
             <Accordion
               accordionId={accordionId}
               entries={faqSection.questions}
@@ -38,7 +39,6 @@ class FAQ extends Component {
             />
           </div>
         );
-      });
     }
 
     return (<div>
@@ -48,7 +48,7 @@ class FAQ extends Component {
         backgroundImage={faqBackgroundImage}
         attribution="© Bento Viana"
       />
-      <div className={StaticPageStyles['l-static-page']}>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-faq'])}>
         <div className={AppStyles.wrap}>
           <p className={StaticPageStyles.intro}>Click on the FAQ below to see the answer.</p>
           {accordions}

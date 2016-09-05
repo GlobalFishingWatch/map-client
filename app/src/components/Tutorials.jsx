@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
@@ -16,7 +17,7 @@ class Tutorials extends Component {
         backgroundImage={tutorialBackgroundImage}
         attribution="© OCEANA / Juan Cuetos"
       />
-      <div className={StaticPageStyles['l-static-page']}>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-tutorials'])}>
         <div className={baseStyle.wrap}>
           <section className={tutorialStyle['c-tutorial-page']}>
             <p>Click on the video below to watch a brief tutorial of how Global Fishing Watch works. </p>

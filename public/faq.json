@@ -8,7 +8,7 @@
       },
       {
         "title": "How can I vary the amount of time I’m looking at?",
-        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing activity' href='/definitions/fishing-activity'>activity</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</li><li>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</li></ul>"
+        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</li><li>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</li></ul>"
       },
       {
         "title": "How do I search for a specific vessel?",
