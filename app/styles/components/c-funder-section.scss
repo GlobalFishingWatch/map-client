@@ -31,12 +31,12 @@
     justify-content: center;
 
     @media #{$mq-tablet} {
-      padding-left: 90px;
-      padding-right: 90px;
+      flex-direction: row;
     }
 
-    @media #{$mq-tablet} {
-      flex-direction: row;
+    @media #{$mq-laptop} {
+      padding-left: 90px;
+      padding-right: 90px;
     }
 
     img {
@@ -73,27 +73,23 @@
       margin-top: 110px;
     }
 
-    @media #{$mq-tablet} {
-      flex-direction: row;
-    }
-  }
+    .funder-logo {
+      flex: 1 1 auto;
+      margin: 15px;
 
-  .funder-logo {
-    flex: 1 1 auto;
-    margin: 15px;
+      img {
+        margin-bottom: 50px;
+        max-width: 180px;
+        width: 100%;
 
-    img {
-      margin-bottom: 50px;
-      max-width: 180px;
-      width: 100%;
+        &:last-child {
+          margin-bottom: 0;
+        }
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      @media #{$mq-tablet} {
-        margin-bottom: 0;
-        max-width: 200px;
+        @media #{$mq-tablet} {
+          margin-bottom: 0;
+          max-width: 200px;
+        }
       }
     }
   }
