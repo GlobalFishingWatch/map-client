@@ -18,7 +18,7 @@ class Definitions extends Component {
   }
 
   onAccordionItemClick(index, slug) {
-    this.props.push(index ? slug : '');
+    this.props.push((index !== null) ? slug : '');
   }
 
   openAccordionItem(definitionEntries, slug) {
@@ -34,6 +34,7 @@ class Definitions extends Component {
       entries={this.props.definitionEntries}
       onAccordionItemClick={(index, slug) => { this.onAccordionItemClick(index, slug); }}
       currentAccordionIndex={(this.state) ? this.state.currentAccordionIndex : null}
+      autoscroll
     />);
 
     return (<div>

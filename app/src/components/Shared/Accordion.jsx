@@ -8,7 +8,7 @@ import $ from 'jquery';
 
 class Accordion extends Component {
   componentDidUpdate() {
-    if (this.scrolled) return;
+    if (!this.props.autoscroll || this.scrolled) return;
 
     const $el = $(`.${AccordionStyles['-opened']}`).parent();
     if ($el.length) {
@@ -61,7 +61,8 @@ Accordion.propTypes = {
   accordionId: React.PropTypes.number,
   entries: React.PropTypes.array,
   onAccordionItemClick: React.PropTypes.func,
-  currentAccordionIndex: React.PropTypes.number
+  currentAccordionIndex: React.PropTypes.number,
+  autoscroll: React.PropTypes.bool
 };
 
 export default Accordion;
