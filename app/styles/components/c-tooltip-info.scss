@@ -37,7 +37,7 @@
     width: 200px;
     z-index: 99;
 
-    &:after {
+    &::after {
       border: 6px solid;
       border-color: transparent transparent $color-19 $color-19;
       content: '';
@@ -48,6 +48,40 @@
       top: -4px;
       transform: scale(1, -1) rotate(-45deg);
       width: 0;
+    }
+
+    &.left {
+      right: 25px;
+      top: -33px;
+
+      &::after {
+        border: 6px solid;
+        border-color: transparent transparent $color-19 $color-19;
+        content: '';
+        height: 0;
+        left: 194px;
+        right: 0;
+        top: 35px;
+        transform: scale(1, -1) rotate(-135deg);
+        width: 0;
+      }
+    }
+
+    &.right {
+      right: 25px;
+      top: -33px;
+
+      &::after {
+        border: 6px solid;
+        border-color: transparent transparent $color-19 $color-19;
+        content: '';
+        height: 0;
+        left: 194px;
+        right: 0;
+        top: 35px;
+        transform: scale(1, -1) rotate(-135deg);
+        width: 0;
+      }
     }
   }
 

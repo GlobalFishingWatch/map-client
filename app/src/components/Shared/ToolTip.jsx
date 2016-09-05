@@ -7,7 +7,10 @@ class ToolTip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shown: false
+      shown: false,
+      leftShow: false,
+      rightShow: false,
+      position: 0
     };
     this.onMouseOutDebounced = _.debounce(this.onMouseOut, 500);
   }
@@ -19,35 +22,53 @@ class ToolTip extends Component {
   }
 
   onMouseOver() {
+    this.showToolTip();
     this.onMouseOutDebounced.cancel();
-    this.setState({
-      shown: true
-    });
   }
+
   onMouseOut() {
     this.setState({
       shown: false
     });
   }
 
+  showToolTip() {
+    const rect = this.refs.info.getBoundingClientRect();
+    const checkleft = -100 + (rect.left + window.scrollX);
+    const checkright = 100 + (rect.right + window.scrollX);
+
+    this.setState({
+      rightShow: checkleft <= 0,
+      leftShow: checkright >= window.innerWidth,
+      shown: true
+    });
+  }
+
   render() {
     let content;
-    if (this.state.shown) {
+    if (!this.state.shown) {
       let link;
       if (this.props.href) {
         link = (<a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href} target="_blank">
           read more...
         </a>);
       }
-      content = (<span className={ToolTipStyle['c-tooltip-info-content']}>
+      content = (
+        <span
+          className={classnames(ToolTipStyle['c-tooltip-info-content'],
+          this.state.leftShow ? ToolTipStyle.left : null,
+          this.state.rightShow ? ToolTipStyle.left : null)}
+          style={this.state.rightShow ? {} : null}
+        >
         {this.props.text}<br />
         {link}
-      </span>);
+        </span>);
     }
     return (
       <abbr
         title={this.props.text}
         className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
+        ref="info"
         onClick={() => { this.onClick(); }}
         onMouseOver={() => { this.onMouseOver(); }}
         onMouseOut={() => { this.onMouseOutDebounced(); }}
