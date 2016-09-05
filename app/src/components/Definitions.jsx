@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import _ from 'lodash';
-=======
 import classnames from 'classnames';
->>>>>>> 2d496ce105a1f3982ec82535604ee89417d36902
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import AppStyles from '../../styles/application.scss';

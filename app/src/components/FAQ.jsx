@@ -39,6 +39,7 @@ class FAQ extends Component {
             />
           </div>
         );
+      });
     }
 
     return (<div>
