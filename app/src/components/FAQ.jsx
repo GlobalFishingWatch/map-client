@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import CoverPrimary from './Shared/CoverPrimary';
@@ -19,8 +20,8 @@ class FAQ extends Component {
     if (this.props.faqEntries && this.props.faqEntries.length > 0) {
       const sections = [];
       this.props.faqEntries.forEach(faqSection => {
-        sections.push(<div key={faqSection.title}>
-          <h2 className={AppStyles['section-title']}>{faqSection.title}</h2>
+        sections.push(<div className={StaticPageStyles['question-group']} key={faqSection.title}>
+          <h2 className="section-title">{faqSection.title}</h2>
           <ContentAccordion
             entries={faqSection.questions}
           />
@@ -36,7 +37,7 @@ class FAQ extends Component {
         backgroundImage={faqBackgroundImage}
         attribution="© Bento Viana"
       />
-      <div className={StaticPageStyles['l-static-page']}>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-faq'])}>
         <div className={AppStyles.wrap}>
           <p className={StaticPageStyles.intro}>Click on the FAQ below to see the answer.</p>
           {faqSections}
