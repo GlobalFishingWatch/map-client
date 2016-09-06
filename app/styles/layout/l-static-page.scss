@@ -30,10 +30,23 @@
 
   &.-faq {
     .question-group {
+
       :global .section-title {
         margin: 20px 0 0;
         padding: 20px 0;
         position: relative;
+
+        &::after {
+          background-color: $color-10;
+          content: '';
+          display: inline-block;
+          height: 2px;
+          left: 50%;
+          position: absolute;
+          top: 0;
+          transform: translate(-50%, 0);
+          width: 100vw;
+         }
 
         @media #{$mq-tablet} {
           margin: 50px 0 0;
@@ -41,9 +54,13 @@
         }
       }
 
-      &:first-child {
+      &:first-of-type {
         :global .section-title {
           margin: 0;
+          padding: 20px 0;
+          @media #{$mq-tablet} {
+            padding: 50px 0 60px;
+          }
 
           &::after {
             content: none;
