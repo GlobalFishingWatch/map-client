@@ -5,7 +5,6 @@ import ToolTip from '../components/Shared/ToolTip';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
-import '../../styles/components/shared/c-item-list.scss';
 import projectBackgroundImage from '../../assets/images/project.jpg';
 
 class TheProject extends Component {
