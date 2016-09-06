@@ -117,11 +117,11 @@ class ContactUsForm extends Component {
             value={this.state.email}
           />
 
-          <label htmlFor="company">Company</label>
+          <label htmlFor="company">Organization</label>
           <input
             type="text"
             id="contact_company"
-            placeholder="Your company's name"
+            placeholder="Your organization's name"
             className={formStyle['input-text']}
             onChange={this.handleChange}
           />
