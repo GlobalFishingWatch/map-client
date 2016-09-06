@@ -253,26 +253,26 @@ marine-ecologist-boris-worm.html"
                 >
                 Google’s Earth Engine
                 </a>
-                &nbsp; platform. Earth Engine provides incredibly powerful cloud spatial
+                {' '} platform. Earth Engine provides incredibly powerful cloud spatial
                 analytics alongside the world’s largest public data catalog with over five petabytes of imagery at
                 your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
                 dataset we have licensed for the project. While our agreement does not allow for redistribution of the
                 raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
-                more easily acquire a license. Please contact&nbsp;
+                more easily acquire a license. Please contact{' '}
                 <a
                   className="gfw-link"
                   href="mailto:research@globalfishingatch.org"
                 >
                 research@globalfishingatch.org
                 </a>
-                &nbsp;if interested in these datasets.
+                {' '}if interested in these datasets.
               </p>
             </section>
             <section className="section-page">
               <h2 className="section-title">Research Program Publications</h2>
               <p>McCauley, D., P. Woods, B. Sullivan, B. Bergman, C. Jablonicky, A. Roan,
                 M. Hirshfield, K. Boerder,
-                and B. Worm. 2016.&nbsp;
+                and B. Worm. 2016.{' '}
                 <a
                   className="gfw-link"
                   href="http://science.sciencemag.org/content/351/6278/1148"
@@ -281,7 +281,7 @@ marine-ecologist-boris-worm.html"
                   Ending hide and seek in the oceans.
                 </a> Science.
               </p>
-              <p>Souza, E. N. de, Boerder, K., Matwin, S. and Worm, B. 2016.&nbsp;
+              <p>Souza, E. N. de, Boerder, K., Matwin, S. and Worm, B. 2016.{' '}
                 <a
                   className="gfw-link"
                   href="http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0158248"
@@ -290,7 +290,7 @@ marine-ecologist-boris-worm.html"
                   Improving Fishing Pattern Detection from Satellite AIS Using Data Mining and Machine Learning
                 </a>. PLOS ONE 11, e0158248.
               </p>
-              <p>Robards, M., Silber, G., Adams, J., Arroyo, J., Lorenzini, D., Schwehr, K., and Amos, J. 2016.&nbsp;
+              <p>Robards, M., Silber, G., Adams, J., Arroyo, J., Lorenzini, D., Schwehr, K., and Amos, J. 2016.{' '}
                 <a
                   className="gfw-link"
                   href="http://vislab-ccom.unh.edu/~schwehr/papers/2016-RobardsEtAl-AIS-conservation.pdf"

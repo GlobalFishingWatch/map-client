@@ -114,12 +114,12 @@ class PrivacyPolicy extends Component {
                 follows. We may share user information with our Global
                 Fishing Watch founding partners Oceana Inc. and Google
                 Inc., subject to their respective privacy policies, which
-                can be found at&nbsp;
+                can be found at{' '}
                 <a
                   className="gfw-link"
                   target="_blank"
                   href="http://oceana.org/privacy-policy"
-                >Oceana</a> and&nbsp;
+                >Oceana</a> and{' '}
                 <a
                   className="gfw-link"
                   target="_blank"
@@ -209,7 +209,7 @@ class PrivacyPolicy extends Component {
               <h2>CONTACTING SKYTRUTH</h2>
               <p>
                 If you have any questions, comments or concerns about SkyTruth or
-                this Privacy Policy, please email us at&nbsp;
+                this Privacy Policy, please email us at{' '}
                 <a className="gfw-link" href="mailto:info@skytruth.org">
                 info@skytruth.org</a>. In the event
                 that we are still unable to resolve your concerns, SkyTruth is committed to

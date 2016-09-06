@@ -68,7 +68,7 @@ class TheProject extends Component {
               <p>
                 For media or press inquiries, please contact Dustin Cranor at
                 954.348.1314 or via email
-                at&nbsp;
+                at{' '}
                 <a
                   href="mailto:dcranor@oceana.org"
                   className="gfw-link"

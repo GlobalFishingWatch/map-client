@@ -14,7 +14,7 @@ class Steps extends Component {
         <div className={StepsStyle['c-steps']} id="steps">
           <div className={StepsStyle.intro}>
             <p>Global Fishing Watch analyzes data from the Automatic Identification System (AIS), which is
-              collected by satellites and terrestrial receivers, to identify&nbsp;
+              collected by satellites and terrestrial receivers, to identify{' '}
               <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">apparent fishing</ToolTip> behavior
               based on the movement of vessels over time.
             </p>
@@ -58,7 +58,7 @@ class Steps extends Component {
                 <h3 className={StepsStyle.name}>Step 2: Data Processing</h3>
                 <p>Each day, more than 20 million data points are added to the system. Using cloud
                   computing and machine learning, Global Fishing Watch processes these data, identifying
-                  which vessels are fishing boats, and when and where they are&nbsp;
+                  which vessels are fishing boats, and when and where they are{' '}
                   <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">fishing</ToolTip>.
                 </p>
               </div>
