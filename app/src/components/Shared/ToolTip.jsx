@@ -18,7 +18,7 @@ class ToolTip extends Component {
 
   onClick() {
     this.setState({
-      visible: true
+      visible: !this.state.visible
     });
   }
 
@@ -95,8 +95,8 @@ class ToolTip extends Component {
         title={this.props.text}
         className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
         onClick={() => { this.onClick(); }}
-        onMouseOver={() => { this.onMouseOver(); }}
-        onMouseOut={() => { this.onMouseOutDebounced(); }}
+        onMouseEnter={() => { this.onMouseOver(); }}
+        onMouseLeave={() => { this.onMouseOutDebounced(); }}
       >
         <span
           className={ToolTipStyle['c-tooltip-info-title']}
