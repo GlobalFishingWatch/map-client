@@ -134,6 +134,11 @@ ul {
     font-size: $font-size-xx-big;
     margin-bottom: 70px;
   }
+
+  &.article-page {
+    font-size: $font-size-xx-big;
+    margin-bottom: 0;
+  }
 }
 
 :global .section-subtitle {

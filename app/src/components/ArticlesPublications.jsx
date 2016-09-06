@@ -55,7 +55,7 @@ class ArticlesPublications extends Component {
       if (!!articles && articles.length) {
         pageContent.push(
           <section className="section-page" key="articles">
-            <h2 className="section-title">
+            <h2 className="section-title article-page">
               Articles
             </h2>
             <div className={StaticPageStyles.grid}>
