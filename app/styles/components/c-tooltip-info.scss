@@ -6,23 +6,29 @@
   cursor: pointer;
   position: relative;
 
-  > .c-tooltip-info-title::after {
-    background: url('../../assets/icons/info_gray.svg');
-    background-repeat: no-repeat;
-    content: '';
-    display: inline-block;
+  .image-icon {
     height: 15px;
     margin-left: 4px;
     width: 15px;
   }
 
-  > .c-tooltip-info-title.-white::after {
-    background: url('../../assets/icons/info_white.svg');
-  }
+  // > .c-tooltip-info-title::after {
+  //   background: url('../../assets/icons/info_gray.svg');
+  //   background-repeat: no-repeat;
+  //   content: '';
+  //   display: inline-block;
+  //   height: 15px;
+  //   margin-left: 4px;
+  //   width: 15px;
+  // }
 
-  > .c-tooltip-info-title.-black::after {
-    background: url('../../assets/icons/info_black.svg');
-  }
+  // > .c-tooltip-info-title.-white::after {
+  //   background: url('../../assets/icons/info_white.svg');
+  // }
+  //
+  // > .c-tooltip-info-title.-black::after {
+  //   background: url('../../assets/icons/info_black.svg');
+  // }
 
   > .c-tooltip-info-content {
     background: $color-19;
@@ -50,7 +56,7 @@
       width: 0;
     }
 
-    &.left {
+    &.right {
       right: 25px;
       top: -33px;
 
@@ -67,19 +73,17 @@
       }
     }
 
-    &.right {
-      right: 25px;
-      top: -33px;
+    &.left {
+      top: -7px;
 
       &::after {
         border: 6px solid;
         border-color: transparent transparent $color-19 $color-19;
         content: '';
         height: 0;
-        left: 194px;
-        right: 0;
+        left: -6px;
         top: 35px;
-        transform: scale(1, -1) rotate(-135deg);
+        transform: scale(1, -1) rotate(45deg);
         width: 0;
       }
     }
