@@ -4,21 +4,24 @@ import Rhombus from './Rhombus';
 import Loader from './Loader';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 import { scrollTo } from '../../lib/Utils';
-import $ from 'jquery';
 
 class Accordion extends Component {
   componentDidUpdate() {
     if (!this.props.autoscroll || this.scrolled) return;
-
-    const $el = $(`.${AccordionStyles['-opened']}`).parent();
-    if ($el.length) {
-      scrollTo($el);
-    }
     this.scrolled = true;
   }
 
-  onItemClick(index, slug) {
-    this.props.onAccordionItemClick(index, slug, this.props.accordionId);
+  onItemClick(index, slug, id) {
+    if (window.innerWidth <= 768) {
+      this.props.onAccordionItemClick(index, slug, this.props.accordionId);
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) {
+          return;
+        }
+        scrollTo(el);
+      }, 10);
+    }
   }
 
   render() {
@@ -36,10 +39,12 @@ class Accordion extends Component {
           <div
             className={AccordionStyles['accordion-item']}
             key={index}
+            href={index}
           >
             <div
               className={AccordionStyles['item-title']}
-              onClick={() => { this.onItemClick(index, entry.slug); }}
+              id={entry.title.replace(/\s/g, '')}
+              onClick={() => { this.onItemClick(index, entry.slug, entry.title.replace(/\s/g, '')); }}
             >
               {entry.title}
               <div className={classRhombus}>
