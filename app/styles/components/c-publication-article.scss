@@ -2,7 +2,17 @@
 
 .c-publication-article {
   flex-basis: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
+
+  &:first-child {
+    margin-top: 30px;
+  }
+
+  @media #{$mq-tablet} {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 
 
   @media #{$mq-tablet} {
