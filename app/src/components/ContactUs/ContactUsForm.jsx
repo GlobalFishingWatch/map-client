@@ -8,7 +8,6 @@ class ContactUsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submitted: false,
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
@@ -26,12 +25,6 @@ class ContactUsForm extends Component {
       showFormResponse: showThankYou,
       name: nextProps.defaultUserName,
       email: nextProps.defaultUserEmail
-    });
-  }
-
-  onSubmitClicked() {
-    this.setState({
-      validated: true
     });
   }
 
@@ -63,10 +56,6 @@ class ContactUsForm extends Component {
       return false;
     }
 
-    this.setState({
-      submitted: true
-    });
-
     this.props.onFormSubmit(this.state, '/v1/contact/us');
     return true;
   }
@@ -85,11 +74,6 @@ class ContactUsForm extends Component {
       </section>);
     }
 
-    const classNames = [formStyle['c-contact-form']];
-    if (this.state.validated) {
-      classNames.push(formStyle.validated);
-    }
-
     return (<div className={contactStyle['contain-text-contact']}>
       <h1>
         Contact Us
@@ -98,7 +82,7 @@ class ContactUsForm extends Component {
         Let us know what you think! Submit your questions,
         suggestions for improvement or general feedback using the form below.
       </p>
-      <section className={classNames.join(' ')}>
+      <section className={formStyle['c-contact-form']}>
         <form
           action=""
           method="POST"
@@ -174,13 +158,10 @@ class ContactUsForm extends Component {
             onChange={this.handleChange}
           />
 
-          <input
+          <button
             type="submit"
-            value="SEND"
             className={buttonStyle['c-button-contact']}
-            disabled={this.state.submitted}
-            onClick={() => { this.onSubmitClicked(); }}
-          />
+          >SEND</button>
         </form>
       </section>
     </div>);
