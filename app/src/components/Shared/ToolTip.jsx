@@ -1,48 +1,94 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
+import iconInfoBlack from '../../../assets/icons/info_black.svg';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 
 class ToolTip extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shown: false
+      visible: false,
+      arrowLeft: false,
+      arrowRight: false,
+      positionX: 0
     };
     this.onMouseOutDebounced = _.debounce(this.onMouseOut, 500);
   }
 
   onClick() {
     this.setState({
-      shown: true
+      visible: true
     });
   }
 
   onMouseOver() {
+    this.showToolTip();
     this.onMouseOutDebounced.cancel();
-    this.setState({
-      shown: true
-    });
   }
+
   onMouseOut() {
     this.setState({
-      shown: false
+      visible: false
+    });
+  }
+
+  showToolTip() {
+    const bounds = this.refs.info.getBoundingClientRect();
+
+    const left = bounds.left; // Horizontal position relative to the screen
+    const height = bounds.height;
+    const width = bounds.width;
+
+    // Position relative to the abbr element
+    const offsetTop = this.refs.info.offsetTop;
+
+    // If true, the arrow is on the right of the tooltip
+    const arrowRight = left + 100 >= window.innerWidth;
+    // If true, the arrow is on the left of the tooltip
+    const arrowLeft = left - 100 <= 0;
+
+    // Offset between the tip and the button
+    const offset = 10;
+
+    let transform = `translate(calc(50% - ${width / 2}px), calc(${height}px + ${offset}px))`;
+    if (arrowLeft) {
+      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + height / 2}px - 50%))`;
+    } else if (arrowRight) {
+      transform = `translate(-${width / 2 + offset}px, calc(${offsetTop + height / 2}px - 50%))`;
+    }
+
+    this.setState({
+      arrowRight,
+      arrowLeft,
+      visible: true,
+      transform
     });
   }
 
   render() {
     let content;
-    if (this.state.shown) {
+    if (this.state.visible) {
       let link;
       if (this.props.href) {
         link = (<a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href} target="_blank">
           read more...
         </a>);
       }
-      content = (<span className={ToolTipStyle['c-tooltip-info-content']}>
+      content = (
+        <span
+          className={classnames({
+            [ToolTipStyle['c-tooltip-info-content']]: true,
+            [ToolTipStyle['-right']]: !!this.state.arrowRight,
+            [ToolTipStyle['-left']]: !!this.state.arrowLeft
+          })}
+          style={{
+            transform: this.state.transform
+          }}
+        >
         {this.props.text}<br />
         {link}
-      </span>);
+        </span>);
     }
     return (
       <abbr
@@ -57,6 +103,7 @@ class ToolTip extends Component {
 
         >
           {this.props.children}
+          <img ref="info" src={iconInfoBlack} className={ToolTipStyle['image-icon']} alt="icon info"></img>
         </span>
         {content}
       </abbr>
