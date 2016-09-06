@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { scrollTo } from '../../lib/Utils';
 import formStyle from '../../../styles/components/c-contact-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
 import contactStyle from '../../../styles/components/c-contact.scss';
@@ -46,6 +47,14 @@ class ContactUsForm extends Component {
     });
   }
 
+  scrollPage() {
+    const el = document.getElementsByTagName('BODY');
+    if (!el) {
+      return;
+    }
+    scrollTo(el);
+  }
+
   handleFormSubmit(event) {
     event.preventDefault();
     // Safari triggers form submit even if checkValidity returns false,
@@ -64,6 +73,7 @@ class ContactUsForm extends Component {
 
   render() {
     if (this.state.showFormResponse) {
+      this.scrollPage();
       let message;
       if (this.props.contactStatus === 200) {
         message = 'Thank you for your inquiry.';
