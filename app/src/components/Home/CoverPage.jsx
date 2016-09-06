@@ -66,13 +66,13 @@ class CoverPage extends Component {
           </blockquote>
           <p className={CoverPageStyle['author-quote']}>– {coverPageEntry.author}</p>
           <p>{coverPageEntry.subtitle}</p>
-          {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
-            <Link
-              to={coverPageEntry.linkHref}
-            >
-              {coverPageEntry.linkText}
-            </Link>
-          </Rhombus>}
+          {coverPageEntry.linkHref && coverPageEntry.linkText && <Link
+            className={CoverPageStyle['links-home-page']}
+            to={coverPageEntry.linkHref}
+          >
+            <Rhombus color="white" />
+            <span>See our partners</span>
+          </Link>}
         </div>
       </div>
     );
@@ -81,13 +81,13 @@ class CoverPage extends Component {
   renderSliderLink(coverPageEntry) {
     return (
       <div>
-        {coverPageEntry.linkHref && coverPageEntry.linkText && <Rhombus direction="-right" color="-white">
-          <Link
-            to={coverPageEntry.linkHref}
-          >
-            {coverPageEntry.linkText}
-          </Link>
-        </Rhombus>}
+        {coverPageEntry.linkHref && coverPageEntry.linkText && <Link
+          className={CoverPageStyle['links-home-page']}
+          to={coverPageEntry.linkHref}
+        >
+          <Rhombus color="white" />
+          <span>Explore The Map</span>
+        </Link>}
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import InfoMapContentStyle from '../../../styles/components/c-info-map-content.scss';
 import baseStyle from '../../../styles/application.scss';
 import ButtonStyle from '../../../styles/components/c-button-arrow.scss';
-import BoxTriangleWhiteStyle from '../../../assets/icons/box_triangle_white.svg';
+import Rhombus from '../Shared/Rhombus';
 
 class InfoMap extends Component {
 
@@ -15,7 +15,7 @@ class InfoMap extends Component {
         </p>
         <p>
           <a href="map" className={ButtonStyle['c-btn-primary-arrow']}>
-            <img src={BoxTriangleWhiteStyle} alt="Explore map" />START HERE</a>
+            <Rhombus color="white" />START HERE</a>
         </p>
       </div>
     </div>);
