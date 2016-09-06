@@ -187,7 +187,8 @@ class ResearchProgram extends Component {
 
                 <Rhombus direction="-right">
                   <Link
-                    to="#"
+                    to="http://blog.globalfishingwatch.org/2016/08/interview-with-chris-costello-
+environmental-economist.html"
                     target="_blank"
                   >
                     read full article
@@ -209,8 +210,8 @@ class ResearchProgram extends Component {
 
                 <Rhombus direction="-right">
                   <Link
-                    to="http://skytruth.org/blogger_import_test/2016/07/interview-with-renowned-
-marine-ecologist-boris-worm.html"
+                    to="http://blog.globalfishingwatch.org/2016/07/interview-with-renowned-marine-
+ecologist-boris-worm.html"
                     target="_blank"
                   >
                     read full article
@@ -232,8 +233,8 @@ marine-ecologist-boris-worm.html"
 
                 <Rhombus direction="-right">
                   <Link
-                    to="http://skytruth.org/blogger_import_test/2016/07/interview-with-
-  marine-ecologist-dr-doug-mccauley.html"
+                    to="http://blog.globalfishingwatch.org/2016/07/interview-with-marine-ecologist-
+dr-doug-mccauley.html"
                     target="_blank"
                   >
                     read full article
