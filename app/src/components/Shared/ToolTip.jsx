@@ -14,20 +14,26 @@ class ToolTip extends Component {
       positionX: 0
     };
     this.onMouseOutDebounced = _.debounce(this.onMouseOut, 500);
+    this.onMouseOutBound = this.onMouseOut.bind(this);
   }
 
-  onClick() {
+  onClick(e) {
+    e.stopPropagation();
     this.setState({
-      visible: !this.state.visible
+      visible: true
     });
   }
 
   onMouseOver() {
     this.showToolTip();
     this.onMouseOutDebounced.cancel();
+    document.addEventListener('click', this.onMouseOutBound);
   }
 
   onMouseOut() {
+    document.removeEventListener('click', this.onMouseOutBound);
+    this.onMouseOutDebounced.cancel();
+
     this.setState({
       visible: false
     });
@@ -94,7 +100,7 @@ class ToolTip extends Component {
       <abbr
         title={this.props.text}
         className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
-        onClick={() => { this.onClick(); }}
+        onClick={e => { this.onClick(e); }}
         onMouseEnter={() => { this.onMouseOver(); }}
         onMouseLeave={() => { this.onMouseOutDebounced(); }}
       >
@@ -103,7 +109,12 @@ class ToolTip extends Component {
 
         >
           {this.props.children}
-          <img ref="info" src={iconInfoBlack} className={ToolTipStyle['image-icon']} alt="icon info"></img>
+          <img
+            ref="info"
+            src={iconInfoBlack}
+            className={ToolTipStyle['image-icon']}
+            alt="icon info"
+          />
         </span>
         {content}
       </abbr>
