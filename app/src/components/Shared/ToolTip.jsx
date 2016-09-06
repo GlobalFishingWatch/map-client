@@ -34,23 +34,41 @@ class ToolTip extends Component {
   }
 
   showToolTip() {
-    const abbr = this.refs.info.getBoundingClientRect();
-    const xRight = abbr.right + 8; // 8 is half of the size of the icon
-    const xLeft = abbr.right - 8; // 8 is half of the size of the icon
-        // const y = window.scrollY + abbr.top + abbr.height / 2;
+    const bounds = this.refs.info.getBoundingClientRect();
 
-        // 100 is half of the size of the tooltip
+    const left = bounds.left; // Horizontal position relative to the screen
+    const height = bounds.height;
+    const width = bounds.width;
+
+    // Position relative to the abbr element
+    const offsetTop = this.refs.info.offsetTop;
+
+    // If true, the arrow is on the right of the tooltip
+    const arrowRight = left + 100 >= window.innerWidth;
+    // If true, the arrow is on the left of the tooltip
+    const arrowLeft = left - 100 <= 0;
+
+    // Offset between the tip and the button
+    const offset = 10;
+
+    let transform = `translate(calc(50% - ${width / 2}px), calc(${height}px + ${offset}px))`;
+    if (arrowLeft) {
+      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + height / 2}px - 50%))`;
+    } else if (arrowRight) {
+      transform = `translate(-${width / 2 + offset}px, calc(${offsetTop + height / 2}px - 50%))`;
+    }
+
     this.setState({
-      arrowRight: xRight + 100 >= window.innerWidth,
-      arrowLeft: xLeft - 100 <= 0,
+      arrowRight,
+      arrowLeft,
       visible: true,
-      position: xLeft - 32
+      transform
     });
   }
 
   render() {
     let content;
-    if (!this.state.visible) {
+    if (this.state.visible) {
       let link;
       if (this.props.href) {
         link = (<a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href} target="_blank">
@@ -59,10 +77,14 @@ class ToolTip extends Component {
       }
       content = (
         <span
-          className={classnames(ToolTipStyle['c-tooltip-info-content'],
-          this.state.arrowRight ? ToolTipStyle.right : null,
-          this.state.arrowLeft ? ToolTipStyle.left : null)}
-          style={this.state.arrowLeft ? { right: this.state.position } : null}
+          className={classnames({
+            [ToolTipStyle['c-tooltip-info-content']]: true,
+            [ToolTipStyle['-right']]: !!this.state.arrowRight,
+            [ToolTipStyle['-left']]: !!this.state.arrowLeft
+          })}
+          style={{
+            transform: this.state.transform
+          }}
         >
         {this.props.text}<br />
         {link}
