@@ -32,14 +32,14 @@ class ArticlesPublications extends Component {
           {articlePublication.date && <p>{articlePublication.date}</p>}
         </div>
         <div className={PubArticleStyle['link-container']}>
-          <Rhombus direction="-right">
-            <Link
-              to={articlePublication.link}
-              target="_blank"
-            >
-              find out more
-            </Link>
-          </Rhombus>
+          <Link
+            to={articlePublication.link}
+            target="_blank"
+            className="link-rhombus"
+          >
+            <Rhombus color="blue" />
+            find out more
+          </Link>
         </div>
       </article>
     );

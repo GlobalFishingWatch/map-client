@@ -26,10 +26,11 @@ class Accordion extends Component {
     if (this.props.entries && this.props.entries.length > 0) {
       entries = this.props.entries.map((entry, index) => {
         let classNames = AccordionStyles['item-content'];
-        const rhombusDirection = (index === this.props.currentAccordionIndex) ? '-down' : '-left';
+        let classRhombus = AccordionStyles['item-rhombus'];
 
         if (index === this.props.currentAccordionIndex) {
           classNames += ` ${AccordionStyles['-opened']}`;
+          classRhombus += ` ${AccordionStyles['rhombus-opened']}`;
         }
         return (
           <div
@@ -41,8 +42,8 @@ class Accordion extends Component {
               onClick={() => { this.onItemClick(index, entry.slug); }}
             >
               {entry.title}
-              <div className={AccordionStyles['item-rhombus']}>
-                <Rhombus direction={rhombusDirection} />
+              <div className={classRhombus}>
+                <Rhombus color="blue" />
               </div>
             </div>
             <article className={classNames}>
