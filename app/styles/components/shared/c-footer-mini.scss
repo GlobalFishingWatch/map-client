@@ -1,53 +1,5 @@
 @import '../../settings';
 
-.contain-responsive-buttons {
-  align-items: center;
-  background-color: $color-13;
-  display: flex;
-  height: 30px;
-  justify-content: space-around;
-
-  span {
-    color: $color-4;
-    cursor: pointer;
-    font-family: $font-family-1;
-    font-size: $font-size-xs-small;
-    font-weight: $font-weight-bold;
-  }
-}
-
-.contain-responsive-attributions {
-  background-color: rgba($color-9, .5);
-  padding: 0 4px;
-
-  @media screen and (min-width: 900px) {
-    display: none;
-  }
-
-  ul {
-    align-items: center;
-    display: flex;
-    height: 20px;
-    justify-content: space-between;
-    list-style: none;
-
-    div {
-      display: flex;
-
-      li {
-        color: $color-4;
-        display: inline-block;
-        font-size: $font-size-tiny;
-
-        a {
-          color: $color-4;
-          font-size: $font-size-tiny;
-        }
-      }
-    }
-  }
-}
-
 .c-footer-mini {
   align-items: center;
   background-color: $color-1;

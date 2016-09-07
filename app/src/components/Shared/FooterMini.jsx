@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
+import ContainerFooterStyle from '../../../styles/components/shared/c-container-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
@@ -32,15 +33,7 @@ class FooterMini extends Component {
 
     if (this.state.footerExpanded) {
       expandedFooter = (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '68px',
-            width: '100%',
-            height: 'calc(100% - 68px - 95px)',
-            overflow: 'auto'
-          }}
-        >
+        <div className={ContainerFooterStyle['footer-expanded']}>
           <Footer />
         </div>
       );
@@ -55,9 +48,10 @@ class FooterMini extends Component {
 
     return (
       <div>
-          {expandedFooter}
           {supportModal}
-        {!this.state.footerExpanded && <div className={styles['contain-responsive-attributions']}>
+        <div className={ContainerFooterStyle['c-container-footer']}>
+          {expandedFooter}
+        {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
           <ul>
             <div>
               <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
@@ -69,14 +63,15 @@ class FooterMini extends Component {
             </div>
           </ul>
         </div>}
-        <div
-          className={styles['contain-responsive-buttons']}
-          style={this.state.footerExpanded ? {
-            marginTop: '20px'
-          } : null}
-        >
-          <span onClick={() => this.toggleFooter()} >{toggleLabel}</span>
-          <span onClick={() => this.showSupportModal()} >Support</span>
+          <div
+            className={ContainerFooterStyle['contain-responsive-buttons']}
+            style={this.state.footerExpanded ? {
+              marginTop: '20px'
+            } : null}
+          >
+            <span onClick={() => this.toggleFooter()} >{toggleLabel}</span>
+            <span onClick={() => this.showSupportModal()} >Support</span>
+          </div>
         </div>
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
