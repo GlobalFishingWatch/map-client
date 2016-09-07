@@ -25,7 +25,6 @@ class Map extends Component {
       overlay: null,
       addedLayers: [],
       lastCenter: null,
-      shareModalOpened: false,
       running: 'stop'
     };
 
