@@ -46,13 +46,21 @@
 }
 
 .map-container {
-  height: calc(100% - 38px);
+  height: calc(100% - 88px);
   position: relative;
+
+  @media screen and (min-width: 900px) {
+    height: calc(100% - 38px);
+  }
 }
 
 .map-iframe-container {
-  height: calc(100% - 38px);
+  height: calc(100% - 88px);
   width: 100%;
+
+  @media screen and (min-width: 900px) {
+    height: calc(100% - 38px);
+  }
 
   &.-placeholder {
     background-image: url('../../../assets/images/iframe_image.jpg');

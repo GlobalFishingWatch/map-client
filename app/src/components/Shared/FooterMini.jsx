@@ -35,8 +35,10 @@ class FooterMini extends Component {
         <div
           style={{
             position: 'absolute',
-            bottom: '38px',
-            width: '100%'
+            bottom: '68px',
+            width: '100%',
+            height: 'calc(100% - 68px - 95px)',
+            overflow: 'auto'
           }}
         >
           <Footer />
@@ -53,8 +55,29 @@ class FooterMini extends Component {
 
     return (
       <div>
-        {supportModal}
-        {expandedFooter}
+          {expandedFooter}
+          {supportModal}
+        {!this.state.footerExpanded && <div className={styles['contain-responsive-attributions']}>
+          <ul>
+            <div>
+              <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
+            </div>
+            <div>
+              <li>
+                <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+              </li>
+            </div>
+          </ul>
+        </div>}
+        <div
+          className={styles['contain-responsive-buttons']}
+          style={this.state.footerExpanded ? {
+            marginTop: '20px'
+          } : null}
+        >
+          <span onClick={() => this.toggleFooter()} >{toggleLabel}</span>
+          <span onClick={() => this.showSupportModal()} >Support</span>
+        </div>
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
             <img className={classnames(styles.partner, styles.oceana)} src={logooceana} alt="oceana logo" />
@@ -63,11 +86,13 @@ class FooterMini extends Component {
           </div>
 
           <ul className={styles.links}>
-            <li><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
-            <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
-            <li><span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span></li>
-            <li><Link to="/terms-of-use">Terms of use</Link></li>
-            <li><a onClick={() => this.showSupportModal()}>Support</a></li>
+            <li className={styles.attributions}><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
+            <li className={styles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
+            <li className={styles.attributions}>
+              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+            </li>
+            <li className={styles.attributions}><Link to="/terms-of-use">Terms of use</Link></li>
+            <li className={styles.attributions}><a onClick={() => this.showSupportModal()}>Support</a></li>
           </ul>
         </footer>
       </div>
