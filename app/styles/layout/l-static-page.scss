@@ -129,9 +129,8 @@
 
     .testimonial > iframe {
       display: block;
-      height: 280px;
-      margin: 0 auto;
-      max-width: 500px;
+      height: 100%;
+      min-height: 250px;
       width: 100%;
 
       @media #{$mq-tablet} {
