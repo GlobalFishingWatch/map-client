@@ -1,8 +1,8 @@
 @import '../settings';
 
 .c-info-map-content {
+  max-width: 360px;
   position: relative;
-  width: 360px;
   z-index: 1;
 
   h2 {
