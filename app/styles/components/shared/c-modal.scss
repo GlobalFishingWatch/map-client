@@ -16,16 +16,14 @@
     background-color: $color-2;
     border: 1px solid rgba($color-3, .3);
     color: $color-4;
-    height: calc(100% - 60px);
-    max-width: 860px;
+    height: initial;
     padding: 40px;
     position: relative;
     width: calc(100% - 60px);
 
     @media #{$mq-mobile-large} {
-      height: auto;
+      max-width: 860px;
       min-width: 370px;
-      width: auto;
     }
 
     @media #{$mq-tablet} {
