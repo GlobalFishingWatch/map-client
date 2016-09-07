@@ -26,7 +26,11 @@
   }
 
   .step {
-    flex-basis: calc(33.33% - 10px);
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      flex-basis: calc(33.33% - 10px);
+    }
 
     & + .step {
       margin-top: 80px;
