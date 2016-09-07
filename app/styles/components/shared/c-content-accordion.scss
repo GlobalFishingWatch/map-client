@@ -42,6 +42,7 @@
     transform: translateY(-50%);
 
     img {
+      transform: rotate(180deg);
       transition: transform .5s;
     }
 
