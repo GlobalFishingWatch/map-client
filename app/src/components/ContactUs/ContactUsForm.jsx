@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { scrollTo } from '../../lib/Utils';
 import formStyle from '../../../styles/components/c-contact-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
@@ -12,7 +13,8 @@ class ContactUsForm extends Component {
       classSelect: '',
       disabledOption: false,
       name: '',
-      email: ''
+      email: '',
+      validated: false // If the form has been submitted yet and thus validated
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -52,7 +54,10 @@ class ContactUsForm extends Component {
     event.preventDefault();
     // Safari triggers form submit even if checkValidity returns false,
     // see http://blueashes.com/2013/web-development/html5-form-validation-fallback/
-    if (this.form.checkValidity() === false) {
+    if (!this.form.checkValidity()) {
+      this.setState({
+        validated: true
+      });
       return false;
     }
 
@@ -82,7 +87,12 @@ class ContactUsForm extends Component {
         Let us know what you think! Submit your questions,
         suggestions for improvement or general feedback using the form below.
       </p>
-      <section className={formStyle['c-contact-form']}>
+      <section
+        className={classnames({
+          [formStyle['c-contact-form']]: true,
+          [formStyle.validated]: this.state.validated
+        })}
+      >
         <form
           action=""
           method="POST"
