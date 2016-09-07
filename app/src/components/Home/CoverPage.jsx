@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import _ from 'lodash';
 import classnames from 'classnames';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
@@ -25,6 +26,8 @@ class CoverPage extends Component {
       speedPlaySlider: 10000,
       windowWidth: window.innerWidth
     };
+
+    this.handleResize = _.debounce(this.handleResize.bind(this), 50);
   }
 
   componentDidMount() {
@@ -38,7 +41,7 @@ class CoverPage extends Component {
       }
       this.setState({ autoPlaySlider: false });
     });
-    window.addEventListener('resize', () => this.handleResize());
+    window.addEventListener('resize', this.handleResize);
   }
 
   onSliderChange(currentSlider) {
