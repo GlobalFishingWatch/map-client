@@ -33,7 +33,7 @@
 
       :global .section-title {
         margin: 20px 0 0;
-        padding: 20px 0;
+        padding: 25px 0;
         position: relative;
 
         &::after {
@@ -78,7 +78,7 @@
     }
   }
 
-  &.-definitions {}
+
 
   &.-tutorials {
     .video-container {
@@ -128,8 +128,16 @@
     }
 
     .testimonial > iframe {
-      height: 390px;
+      display: block;
+      height: 280px;
+      margin: 0 auto;
+      max-width: 500px;
       width: 100%;
+
+      @media #{$mq-tablet} {
+        height: 390px;
+        width: 100%;
+      }
     }
 
     .testimonial > .video-quote {

@@ -38,6 +38,8 @@
   }
 
   .input-text {
+    -moz-appearance: none;
+    -webkit-appearance: none;
     background-color: $color-4;
     border: solid 1px $color-10;
     border-radius: 0;
@@ -95,6 +97,8 @@
   }
 
   textarea {
+    -moz-appearance: none;
+    -webkit-appearance: none;
     background-color: $color-4;
     border: solid 1px $color-10;
     border-radius: 0;
