@@ -7,7 +7,9 @@ import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
-import SupportModal from '../../components/Map/SupportModal';
+// import SupportModal from '../../components/Map/SupportModal';
+import FormSupport from '../../containers/Map/SupportForm';
+import Modal from '../Shared/Modal';
 
 class FooterMini extends Component {
 
@@ -40,7 +42,13 @@ class FooterMini extends Component {
     }
     if (this.state.showSupport) {
       supportModal = (
-        <SupportModal close={() => this.showSupportModal()} />
+        <Modal
+          opened
+          closeable
+          close={() => {}}
+        >
+          <FormSupport />
+        </Modal>
       );
     }
 

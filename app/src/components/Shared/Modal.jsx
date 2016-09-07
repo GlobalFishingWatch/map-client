@@ -8,12 +8,16 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      openModal: true
+    };
+
     this.onKeyDown = e => {
       if (e.keyCode !== 27) {
         return;
       }
       e.preventDefault();
-      this.props.close();
+      this.close();
     };
 
     /* If the modal is opened at instantiation, we want the keydown handler to be active */
@@ -37,9 +41,16 @@ class Modal extends React.Component {
 
   onClickOverlay(e) {
     if (this.props.closeable && e.target === e.currentTarget) {
-      this.props.close();
+      this.close();
     }
   }
+
+  close() {
+    this.state = {
+      openModal: false
+    };
+  }
+
 
   render() {
     if (!this.props.opened) {
@@ -49,7 +60,7 @@ class Modal extends React.Component {
     let closeButton;
 
     if (this.props.closeable) {
-      closeButton = (<button className={styles['close-button']} onClick={() => this.props.close()}>
+      closeButton = (<button className={styles['close-button']} onClick={() => this.close()}>
         <Icon className={styles.icon} title="Close this modal" />
       </button>);
     }
