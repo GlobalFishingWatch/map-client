@@ -12,7 +12,7 @@ class NoLogin extends Component {
         </p>
         <h2 className={styles.title}>Login required</h2>
         <p className={styles.content}>
-          To view the Map, you must have a user account. Click&nbsp;
+          To view the Map, you must have a user account. Click{' '}
           <a onClick={this.props.login}>here</a> to login or register.
         </p>
       </div>

@@ -5,9 +5,13 @@
   article {
 
     h2 {
-      font-size: $font-size-xx-big;
+      font-size: $font-size-x-medium;
       font-weight: $font-weight-normal;
       margin: 30px 0 18px;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-xx-big;
+      }
     }
 
     .first-level-list,
@@ -31,8 +35,12 @@
       > li {
 
         &::before {
-          font-size: $font-size-xx-big;
+          font-size: $font-size-x-medium;
           line-height: 1.2;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-xx-big;
+          }
         }
       }
 

@@ -4,6 +4,7 @@ import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import AppStyles from '../../styles/application.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
+import '../../styles/components/shared/c-item-list.scss';
 import privacyPolicyBackgroundImage from '../../assets/images/privacy_policy.jpg';
 
 class PrivacyPolicy extends Component {
@@ -41,7 +42,7 @@ class PrivacyPolicy extends Component {
                 Beta release, SkyTruth will only collect further Personal Information from you
                 when you voluntarily:
               </p>
-              <ul className={TextPages['second-level-list']}>
+              <ul className="c-item-list">
                 <li><p>submit feedback and comments;</p></li>
                 <li><p>complete surveys; or</p></li>
                 <li><p>sign up for our newsletter.</p></li>
@@ -113,12 +114,12 @@ class PrivacyPolicy extends Component {
                 follows. We may share user information with our Global
                 Fishing Watch founding partners Oceana Inc. and Google
                 Inc., subject to their respective privacy policies, which
-                can be found at&nbsp;
+                can be found at{' '}
                 <a
                   className="gfw-link"
                   target="_blank"
                   href="http://oceana.org/privacy-policy"
-                >Oceana</a> and&nbsp;
+                >Oceana</a> and{' '}
                 <a
                   className="gfw-link"
                   target="_blank"
@@ -208,7 +209,7 @@ class PrivacyPolicy extends Component {
               <h2>CONTACTING SKYTRUTH</h2>
               <p>
                 If you have any questions, comments or concerns about SkyTruth or
-                this Privacy Policy, please email us at&nbsp;
+                this Privacy Policy, please email us at{' '}
                 <a className="gfw-link" href="mailto:info@skytruth.org">
                 info@skytruth.org</a>. In the event
                 that we are still unable to resolve your concerns, SkyTruth is committed to

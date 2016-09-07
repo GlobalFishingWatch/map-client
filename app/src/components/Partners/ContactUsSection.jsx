@@ -8,7 +8,7 @@ class OtherSection extends Component {
   render() {
     return (<section className={style['c-contact-us-section']}>
       <div className={BaseStyle.wrap}>
-        If you would like to become involved, please&nbsp;
+        If you would like to become involved, please{' '}
         <Link to="contact-us" className="gfw-link">contact us</Link>.
       </div>
     </section>);

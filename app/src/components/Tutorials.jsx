@@ -4,7 +4,6 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
-import tutorialStyle from '../../styles/components/c-tutorial-page.scss';
 import tutorialBackgroundImage from '../../assets/images/tutorial.jpg';
 
 class Tutorials extends Component {
@@ -19,9 +18,9 @@ class Tutorials extends Component {
       />
       <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-tutorials'])}>
         <div className={baseStyle.wrap}>
-          <section className={tutorialStyle['c-tutorial-page']}>
+          <section>
             <p>Click on the video below to watch a brief tutorial of how Global Fishing Watch works. </p>
-            <div className={tutorialStyle['video-container']}>
+            <div className={StaticPageStyles['video-container']}>
               <iframe
                 width="560"
                 height="315"

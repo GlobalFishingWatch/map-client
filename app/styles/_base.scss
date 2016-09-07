@@ -125,14 +125,29 @@ ul {
 
 :global .section-title {
   color: $color-9;
-  font-size: $font-size-xx-big;
+  font-size: $font-size-x-medium;
   font-weight: $font-weight-normal;
-  line-height: 1;
+  line-height: 1.05;
+  margin-bottom: 30px;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xx-big;
+    margin-bottom: 70px;
+  }
+
+  &.article-page {
+    font-size: $font-size-xx-big;
+    margin-bottom: 0;
+  }
 }
 
 :global .section-subtitle {
   color: $color-9;
-  font-size: $font-size-x-medium;
+  font-size: $font-size-medium;
   font-weight: $font-weight-normal;
   line-height: 1.4;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-x-medium;
+  }
 }

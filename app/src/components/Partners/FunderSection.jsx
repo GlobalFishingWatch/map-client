@@ -25,7 +25,7 @@ class FunderSection extends Component {
             broad network of environmental leaders and experts, effective organizations, and committed
             philanthropists to identify and support innovative, results-driven projects in the world’s most
             wild and threatened ecosystems. LDF has supported over 128 high-impact projects in more than 46
-            countries around the world. For more information visit:&nbsp;
+            countries around the world. For more information visit:{' '}
             <a
               href="http://www.ldcfoundation.org"
               className="gfw-link"

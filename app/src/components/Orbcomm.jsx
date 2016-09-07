@@ -30,9 +30,9 @@ class Orbcomm extends Component {
                     (1) non-commercial purposes including, but not limited to, research
                     and educating the public concerning illegal fishing activity, including
                     for publishing visualizations of fishing
-                    &nbsp;<ToolTip text="Apparent fishing" href="/definitions/fishing-effort">
+                    {' '}<ToolTip text="Apparent fishing" href="/definitions/fishing-effort">
                     activity
-                    </ToolTip>&nbsp;
+                    </ToolTip>{' '}
                     and related information; (2) to provide a limited license to unaffiliated
                     media organizations, including without limitation newspapers,
                     periodicals, broadcast media, and internet publishers, to reproduce,
