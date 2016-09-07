@@ -1,6 +1,7 @@
 @import '../settings';
 
 .c-mobile-menu {
+  -webkit-overflow-scrolling: touch;
   background-color: $color-11;
   bottom: 0;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
