@@ -5,6 +5,7 @@
   .footer-expanded {
     -webkit-overflow-scrolling: touch;
     bottom: 68px;
+    max-height: calc(100% - 68px - 95px);
     overflow: auto;
     position: absolute;
     width: 100%;
