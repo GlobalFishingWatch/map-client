@@ -40,6 +40,16 @@
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+
+    img {
+      transition: transform .5s;
+    }
+
+    &.rhombus-opened {
+      img {
+        transform: rotate(90deg);
+      }
+    }
   }
 
   > .accordion-item .item-content {

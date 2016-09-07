@@ -16,6 +16,21 @@
     }
   }
 
+  :global .link-rhombus {
+    align-items: center;
+    color: $color-8;
+    display: flex;
+    font-family: $font-family-1;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    line-height: 1;
+    text-transform: uppercase;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
   &.-faq {
     .question-group {
       :global .section-title {

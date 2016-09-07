@@ -35,6 +35,7 @@ class ArticlesPublications extends Component {
           <Link
             to={articlePublication.link}
             target="_blank"
+            className="link-rhombus"
           >
             <Rhombus color="blue" />
             find out more

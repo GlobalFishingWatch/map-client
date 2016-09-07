@@ -185,15 +185,14 @@ class ResearchProgram extends Component {
                   -- Dr. Chris Costello
                 </p>
 
-                <Rhombus direction="-right">
-                  <Link
-                    to="http://blog.globalfishingwatch.org/2016/08/interview-with-chris-costello-
-environmental-economist.html"
-                    target="_blank"
-                  >
-                    read full article
-                  </Link>
-                </Rhombus>
+                <Link
+                  to="#"
+                  target="_blank"
+                  className="link-rhombus"
+                >
+                  <Rhombus color="blue" />
+                  read full article
+                </Link>
 
               </article>
               <article className={StaticPageStyles.testimonial}>
@@ -208,15 +207,15 @@ environmental-economist.html"
                   --Dr. Boris Worm
                 </p>
 
-                <Rhombus direction="-right">
-                  <Link
-                    to="http://blog.globalfishingwatch.org/2016/07/interview-with-renowned-marine-
-ecologist-boris-worm.html"
-                    target="_blank"
-                  >
-                    read full article
-                  </Link>
-                </Rhombus>
+                <Link
+                  to="http://skytruth.org/blogger_import_test/2016/07/interview-with-renowned-
+marine-ecologist-boris-worm.html"
+                  target="_blank"
+                  className="link-rhombus"
+                >
+                  <Rhombus color="blue" />
+                  read full article
+                </Link>
 
               </article>
               <article className={StaticPageStyles.testimonial}>
@@ -231,15 +230,15 @@ ecologist-boris-worm.html"
                   --Dr. Douglas McCauley
                 </p>
 
-                <Rhombus direction="-right">
-                  <Link
-                    to="http://blog.globalfishingwatch.org/2016/07/interview-with-marine-ecologist-
-dr-doug-mccauley.html"
-                    target="_blank"
-                  >
-                    read full article
-                  </Link>
-                </Rhombus>
+                <Link
+                  to="http://skytruth.org/blogger_import_test/2016/07/interview-with-
+marine-ecologist-dr-doug-mccauley.html"
+                  target="_blank"
+                  className="link-rhombus"
+                >
+                  <Rhombus color="blue" />
+                  read full article
+                </Link>
 
               </article>
             </section>
