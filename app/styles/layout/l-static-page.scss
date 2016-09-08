@@ -132,6 +132,10 @@
     .section-item {
       margin: 60px 0 55px;
 
+      img {
+        max-width: 200px;
+      }
+
       &:last-child {
         margin-bottom: 0;
       }
