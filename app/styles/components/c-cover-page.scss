@@ -67,6 +67,10 @@
       font-size: $font-size-huge;
       letter-spacing: -1.5px;
       line-height: .85;
+      padding-top: 120px;
+    }
+
+    @media #{$mq-laptop} {
       padding-top: 170px;
     }
 
@@ -103,6 +107,10 @@
 
     @media #{$mq-tablet} {
       padding-top: 170px;
+    }
+
+    @media #{$mq-laptop} {
+      padding-top: 120px;
     }
 
     .contain-quote-text {
