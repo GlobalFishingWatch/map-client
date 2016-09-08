@@ -35,8 +35,9 @@ class Steps extends Component {
               </div>
               <div className={StepsStyle.content}>
                 <h3 className={StepsStyle.name}>Step 1: Satellites</h3>
-                <p>Over the course of the year, more than 200,000 different vessels,
-                  including more than 35,000 known or likely commercial fishing vessels,
+                <p>
+                  Over the course of the year, more than 200,000 different vessels,
+                  including more than 35,000 (and counting) known or likely commercial fishing vessels,
                   broadcast their position, course and speed through AIS. Every day, a fleet
                   of satellites records these broadcasts and beams the information down to Earth.
                 </p>
