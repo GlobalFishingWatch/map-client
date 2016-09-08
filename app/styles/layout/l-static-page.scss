@@ -107,10 +107,15 @@
 
       iframe {
         height: 100%;
-        left: 0;
+        left: 25px;
         position: absolute;
         top: 0;
-        width: 100%;
+        width: calc(100% - 50px);
+
+        @media #{$mq-tablet} {
+          left: 0;
+          width: 100%;
+        }
       }
     }
   }
