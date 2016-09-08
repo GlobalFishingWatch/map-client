@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import iconInfoBlack from '../../../assets/icons/info_black.svg';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 
@@ -108,9 +109,9 @@ class ToolTip extends Component {
     if (this.state.visible) {
       let link;
       if (this.props.href) {
-        link = (<a className={ToolTipStyle['c-tooltip-info-link']} href={this.props.href} target="_blank">
+        link = (<Link className={ToolTipStyle['c-tooltip-info-link']} to={this.props.href}>
           read more...
-        </a>);
+        </Link>);
       }
       content = (
         <span
