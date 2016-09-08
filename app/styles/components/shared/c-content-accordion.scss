@@ -56,7 +56,7 @@
   > .accordion-item .item-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0s;
+    transition: max-height 1s;
 
     ul {
       margin-top: 15px;
@@ -65,8 +65,8 @@
   }
 
   > .accordion-item .-opened {
-    margin-top: 20px;
     max-height: 3000px;
-    transition: max-height 1.5s;
+    transition: max-height 1s;
+    transition-delay: 1.5s;
   }
 }

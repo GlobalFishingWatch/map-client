@@ -11,6 +11,7 @@ class Accordion extends Component {
     this.scrolled = true;
   }
 
+
   onItemClick(index, slug, id) {
     if (window.innerWidth <= 768) {
       this.props.onAccordionItemClick(index, slug, this.props.accordionId);
@@ -20,7 +21,9 @@ class Accordion extends Component {
           return;
         }
         scrollTo(el);
-      }, 10);
+      }, 1100);
+    } else {
+      this.props.onAccordionItemClick(index, slug, this.props.accordionId);
     }
   }
 
