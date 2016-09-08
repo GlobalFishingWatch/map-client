@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
 import iconInfoBlack from '../../../assets/icons/info_black.svg';
 import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
 
@@ -13,30 +12,46 @@ class ToolTip extends Component {
       arrowRight: false,
       positionX: 0
     };
-    this.onMouseOutDebounced = _.debounce(this.onMouseOut, 500);
-    this.onMouseOutBound = this.onMouseOut.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.isTouchDevice()) {
+      this.attachTouchEndListener();
+    }
   }
 
   onClick(e) {
-    e.stopPropagation();
-    this.setState({
-      visible: true
-    });
+    if (!this.isTouchDevice()) return;
+
+    if (this.state.visible) {
+      // We don't want the tooltip to close when touching it
+      if (!(this.refs.tooltip && this.refs.tooltip.contains(e.target))) {
+        this.hideTooltip();
+      }
+    } else {
+      this.showToolTip();
+    }
   }
 
-  onMouseOver() {
+  onMouseEnter() {
+    if (this.isTouchDevice()) return;
     this.showToolTip();
-    this.onMouseOutDebounced.cancel();
-    document.addEventListener('click', this.onMouseOutBound);
   }
 
-  onMouseOut() {
-    document.removeEventListener('click', this.onMouseOutBound);
-    this.onMouseOutDebounced.cancel();
+  onMouseLeave() {
+    if (this.isTouchDevice()) return;
+    this.hideTooltip();
+  }
 
-    this.setState({
-      visible: false
-    });
+  /**
+   * Detect if the user's device is touch-based
+   *
+   * @returns {Boolean} true if touch-based
+   */
+  isTouchDevice() {
+    return (('ontouchstart' in window)
+      || (navigator.maxTouchPoints > 0)
+      || (navigator.msMaxTouchPoints > 0));
   }
 
   showToolTip() {
@@ -72,6 +87,22 @@ class ToolTip extends Component {
     });
   }
 
+  hideTooltip() {
+    this.setState({
+      visible: false
+    });
+  }
+
+  attachTouchEndListener() {
+    document.body.addEventListener('touchend', e => {
+      if (!this.state.visible) return;
+      // We just want to hide the tooltip when touching anything else but the tooltip or the abbr
+      if (!(this.refs.el && this.refs.el.contains(e.target))) {
+        this.hideTooltip();
+      }
+    });
+  }
+
   render() {
     let content;
     if (this.state.visible) {
@@ -91,6 +122,7 @@ class ToolTip extends Component {
           style={{
             transform: this.state.transform
           }}
+          ref="tooltip"
         >
         {this.props.text}<br />
         {link}
@@ -100,9 +132,10 @@ class ToolTip extends Component {
       <abbr
         title={this.props.text}
         className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
-        onClick={e => { this.onClick(e); }}
-        onMouseEnter={() => { this.onMouseOver(); }}
-        onMouseLeave={() => { this.onMouseOutDebounced(); }}
+        onClick={e => this.onClick(e)}
+        onMouseEnter={() => this.onMouseEnter()}
+        onMouseLeave={() => this.onMouseLeave()}
+        ref="el"
       >
         <span
           className={ToolTipStyle['c-tooltip-info-title']}
