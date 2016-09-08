@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
+import ContainerFooterStyle from '../../../styles/components/shared/c-container-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_logo.jpg';
 import logogoogle from '../../../assets/logos/google_logo.png';
@@ -32,13 +33,7 @@ class FooterMini extends Component {
 
     if (this.state.footerExpanded) {
       expandedFooter = (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '38px',
-            width: '100%'
-          }}
-        >
+        <div className={ContainerFooterStyle['footer-expanded']}>
           <Footer />
         </div>
       );
@@ -53,8 +48,31 @@ class FooterMini extends Component {
 
     return (
       <div>
-        {supportModal}
-        {expandedFooter}
+          {supportModal}
+        <div className={ContainerFooterStyle['c-container-footer']}>
+          {expandedFooter}
+        {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
+          <ul>
+            <div>
+              <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
+            </div>
+            <div>
+              <li>
+                <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+              </li>
+            </div>
+          </ul>
+        </div>}
+          <div
+            className={ContainerFooterStyle['contain-responsive-buttons']}
+            style={this.state.footerExpanded ? {
+              marginTop: '20px'
+            } : null}
+          >
+            <span onClick={() => this.toggleFooter()} >{toggleLabel}</span>
+            <span onClick={() => this.showSupportModal()} >Support</span>
+          </div>
+        </div>
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
             <img className={classnames(styles.partner, styles.oceana)} src={logooceana} alt="oceana logo" />
@@ -63,11 +81,13 @@ class FooterMini extends Component {
           </div>
 
           <ul className={styles.links}>
-            <li><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
-            <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
-            <li><span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span></li>
-            <li><Link to="/terms-of-use">Terms of use</Link></li>
-            <li><a onClick={() => this.showSupportModal()}>Support</a></li>
+            <li className={styles.attributions}><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
+            <li className={styles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
+            <li className={styles.attributions}>
+              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+            </li>
+            <li className={styles.attributions}><Link to="/terms-of-use">Terms of use</Link></li>
+            <li className={styles.attributions}><a onClick={() => this.showSupportModal()}>Support</a></li>
           </ul>
         </footer>
       </div>
