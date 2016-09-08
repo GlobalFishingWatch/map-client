@@ -24,18 +24,29 @@
 
     h1 {
       color: $color-4;
-      font-size: $font-size-xxx-big;
+      font-size: $font-size-x-big;
       font-weight: $font-weight-bold;
       letter-spacing: -1px;
-      margin: 40px 0 30px;
-      text-align: center;
+      margin: 30px 0 20px;
+      text-align: left;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-xxx-big;
+        margin: 40px 0 30px;
+        text-align: center;
+      }
     }
 
     p {
       color: $color-4;
-      font-size: $font-size-x-medium;
+      font-size: $font-size-normal;
       line-height: 1.68;
-      text-align: center;
+      text-align: left;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-x-medium;
+        text-align: center;
+      }
     }
   }
 }

@@ -5,7 +5,6 @@ import ToolTip from '../components/Shared/ToolTip';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import baseStyle from '../../styles/_base.scss';
-import theProjectStyle from '../../styles/components/c-the-project.scss';
 import projectBackgroundImage from '../../assets/images/project.jpg';
 
 class TheProject extends Component {
@@ -20,9 +19,9 @@ class TheProject extends Component {
           backgroundImage={projectBackgroundImage}
           attribution="© OCEANA / Keith Ellenbogen"
         />
-        <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-about'])}>
-          <div className={baseStyle.wrap}>
-            <section className={theProjectStyle['c-the-project']}>
+        <div className={baseStyle.wrap}>
+          <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-about'])}>
+            <section>
               <p>
                 Hundreds of millions of people depend on the ocean for their livelihoods
                 and many more rely on the ocean for
@@ -37,7 +36,7 @@ class TheProject extends Component {
                 commercial <ToolTip text="Apparent fishing" href="/definitions/fishing-activity">fishing</ToolTip> is
                  occurring around the world.
               </p>
-              <ul className={theProjectStyle['list-info']}>
+              <ul className="c-item-list">
                 <li>
                   <p>
                     Citizens can see for themselves how their fisheries are being effectively
@@ -69,7 +68,7 @@ class TheProject extends Component {
               <p>
                 For media or press inquiries, please contact Dustin Cranor at
                 954.348.1314 or via email
-                at&nbsp;
+                at{' '}
                 <a
                   href="mailto:dcranor@oceana.org"
                   className="gfw-link"

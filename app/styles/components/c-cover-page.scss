@@ -6,6 +6,20 @@
   position: relative;
   transition: background-image .2s ease-in-out;
 
+  .links-home-page {
+    align-items: center;
+    color: $color-4;
+    display: flex;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    margin-top: 40px;
+    text-transform: uppercase;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
   .layer-cover {
     background-color: rgba($color-19, .8);
     height: 100%;
@@ -53,6 +67,10 @@
       font-size: $font-size-huge;
       letter-spacing: -1.5px;
       line-height: .85;
+      padding-top: 120px;
+    }
+
+    @media #{$mq-laptop} {
       padding-top: 170px;
     }
 
@@ -89,6 +107,10 @@
 
     @media #{$mq-tablet} {
       padding-top: 170px;
+    }
+
+    @media #{$mq-laptop} {
+      padding-top: 120px;
     }
 
     .contain-quote-text {

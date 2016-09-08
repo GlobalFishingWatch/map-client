@@ -8,7 +8,7 @@
       },
       {
         "title": "How can I vary the amount of time I’m looking at?",
-        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</li><li>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</li></ul>"
+        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li><p>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</p></li><li><p>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</p></li><li><p>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</p></li></ul>"
       },
       {
         "title": "How do I search for a specific vessel?",
@@ -54,7 +54,7 @@
       },
       {
         "title": "Are all vessels required to use AIS?",
-        "content": "<p>No, but many of the largest vessels that catch a disproportionately large amount of the fish are required to do so by the IMO. In addition, many countries and intergovernmental agencies like Regional Fisheries Management Organizations (RFMOs) are creating AIS requirements within their waters, so we expect an increase in AIS use in the coming years. For example, as of May 31, 2014, all European Union flagged fishing vessels over 15 meters in length are required to use AIS in EU waters, and as of March 1, 2016, all U.S. flagged vessels over 65 feet in length are required to use AIS in U.S. waters.</p>"
+        "content": "<p>No, but many of the largest vessels that catch a disproportionately large amount of the fish are required to do so by the IMO. In addition, many countries and intergovernmental agencies like Regional Fisheries Management Organizations (RFMOs) are creating AIS requirements within their waters, so we expect an increase in AIS use in the coming years.  For example, as of May 31, 2014, all European Union flagged fishing vessels over 15 meters in length are required to be equipped with AIS and as of March 1, 2016, all commercial U.S. flagged fishing vessels over 65 feet in length are required to be equipped with AIS.</p>"
       },
       {
         "title": "Do “pirate” fishing vessels that engage in Illegal, Unreported and Unregulated (IUU) fishing even use AIS?",

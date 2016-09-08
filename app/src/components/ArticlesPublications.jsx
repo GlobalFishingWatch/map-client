@@ -32,14 +32,14 @@ class ArticlesPublications extends Component {
           {articlePublication.date && <p>{articlePublication.date}</p>}
         </div>
         <div className={PubArticleStyle['link-container']}>
-          <Rhombus direction="-right">
-            <Link
-              to={articlePublication.link}
-              target="_blank"
-            >
-              find out more
-            </Link>
-          </Rhombus>
+          <Link
+            to={articlePublication.link}
+            target="_blank"
+            className="link-rhombus"
+          >
+            <Rhombus color="blue" />
+            find out more
+          </Link>
         </div>
       </article>
     );
@@ -55,7 +55,7 @@ class ArticlesPublications extends Component {
       if (!!articles && articles.length) {
         pageContent.push(
           <section className="section-page" key="articles">
-            <h2 className="section-title">
+            <h2 className="section-title article-page">
               Articles
             </h2>
             <div className={StaticPageStyles.grid}>
@@ -72,7 +72,7 @@ class ArticlesPublications extends Component {
       if (!!publications && publications.length) {
         pageContent.push(
           <section className="section-page" key="publications">
-            <h2 className="section-title">
+            <h2 className="section-title article-page">
               Publications
             </h2>
             <div className={StaticPageStyles.grid}>

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
+import { scrollTo } from '../../lib/Utils';
 import formStyle from '../../../styles/components/c-contact-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
 import contactStyle from '../../../styles/components/c-contact.scss';
@@ -7,12 +9,12 @@ class ContactUsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      submitted: false,
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
       name: '',
-      email: ''
+      email: '',
+      validated: false // If the form has been submitted yet and thus validated
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -28,12 +30,6 @@ class ContactUsForm extends Component {
     });
   }
 
-  onSubmitClicked() {
-    this.setState({
-      validated: true
-    });
-  }
-
   handleChange(event) {
     if (event.target.name === 'selectCompany') {
       this.setState({
@@ -46,17 +42,24 @@ class ContactUsForm extends Component {
     });
   }
 
+  scrollPage() {
+    const el = document.getElementsByTagName('BODY');
+    if (!el) {
+      return;
+    }
+    scrollTo(el);
+  }
+
   handleFormSubmit(event) {
     event.preventDefault();
     // Safari triggers form submit even if checkValidity returns false,
     // see http://blueashes.com/2013/web-development/html5-form-validation-fallback/
-    if (this.form.checkValidity() === false) {
+    if (!this.form.checkValidity()) {
+      this.setState({
+        validated: true
+      });
       return false;
     }
-
-    this.setState({
-      submitted: true
-    });
 
     this.props.onFormSubmit(this.state, '/v1/contact/us');
     return true;
@@ -64,6 +67,7 @@ class ContactUsForm extends Component {
 
   render() {
     if (this.state.showFormResponse) {
+      this.scrollPage();
       let message;
       if (this.props.contactStatus === 200) {
         message = 'Thank you for your inquiry.';
@@ -75,11 +79,6 @@ class ContactUsForm extends Component {
       </section>);
     }
 
-    const classNames = [formStyle['c-contact-form']];
-    if (this.state.validated) {
-      classNames.push(formStyle.validated);
-    }
-
     return (<div className={contactStyle['contain-text-contact']}>
       <h1>
         Contact Us
@@ -88,7 +87,12 @@ class ContactUsForm extends Component {
         Let us know what you think! Submit your questions,
         suggestions for improvement or general feedback using the form below.
       </p>
-      <section className={classNames.join(' ')}>
+      <section
+        className={classnames({
+          [formStyle['c-contact-form']]: true,
+          [formStyle.validated]: this.state.validated
+        })}
+      >
         <form
           action=""
           method="POST"
@@ -117,11 +121,11 @@ class ContactUsForm extends Component {
             value={this.state.email}
           />
 
-          <label htmlFor="company">Company</label>
+          <label htmlFor="company">Organization</label>
           <input
             type="text"
             id="contact_company"
-            placeholder="Your company's name"
+            placeholder="Your organization's name"
             className={formStyle['input-text']}
             onChange={this.handleChange}
           />
@@ -164,13 +168,10 @@ class ContactUsForm extends Component {
             onChange={this.handleChange}
           />
 
-          <input
+          <button
             type="submit"
-            value="SEND"
             className={buttonStyle['c-button-contact']}
-            disabled={this.state.submitted}
-            onClick={() => { this.onSubmitClicked(); }}
-          />
+          >SEND</button>
         </form>
       </section>
     </div>);

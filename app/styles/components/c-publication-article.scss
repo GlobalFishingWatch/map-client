@@ -2,12 +2,20 @@
 
 .c-publication-article {
   flex-basis: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
 
+  &:first-child {
+    margin-top: 30px;
+  }
+
+  @media #{$mq-tablet} {
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 
   @media #{$mq-tablet} {
     flex-basis: calc(50% - 10px);
-    margin-bottom: 50px;
 
     &:nth-child(even) {
       padding-left: 20px;
@@ -36,9 +44,5 @@
 
   > .link-container {
     margin-top: 20px;
-
-    a {
-      color: $color-8;
-    }
   }
 }

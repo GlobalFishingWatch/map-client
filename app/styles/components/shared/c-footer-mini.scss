@@ -11,13 +11,22 @@
   .contain-partners {
     align-items: center;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @media screen and (min-width: 900px) {
+      justify-content: center;
+      width: inherit;
+    }
 
     .partner {
       height: auto;
-      margin-right: 15px;
       max-width: 70px;
       width: 100%;
+
+      @media screen and (min-width: 900px) {
+        margin-right: 15px;
+      }
     }
 
     .oceana {
@@ -35,6 +44,14 @@
       display: inline-block;
       font-size: $font-size-tiny;
       margin-left: 15px;
+    }
+
+    .attributions {
+      display: none;
+
+      @media screen and (min-width: 900px) {
+        display: inline-block;
+      }
     }
 
     a {

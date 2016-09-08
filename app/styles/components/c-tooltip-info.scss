@@ -4,40 +4,29 @@
 .c-tooltip-info {
   border: 0 !important;
   cursor: pointer;
+  display: inline-block; // Don't change to inline otherwise the tooltip will be broken
   position: relative;
 
-  > .c-tooltip-info-title::after {
-    background: url('../../assets/icons/info_gray.svg');
-    background-repeat: no-repeat;
-    content: '';
-    display: inline-block;
+  .image-icon {
     height: 15px;
     margin-left: 4px;
     width: 15px;
   }
 
-  > .c-tooltip-info-title.-white::after {
-    background: url('../../assets/icons/info_white.svg');
-  }
-
-  > .c-tooltip-info-title.-black::after {
-    background: url('../../assets/icons/info_black.svg');
-  }
-
   > .c-tooltip-info-content {
     background: $color-19;
+    bottom: auto;
     box-shadow: 0 2px 4px 0 rgba($color-12, .5);
     color: $color-4;
-    margin-left: 100px;
     padding: 15px 0;
     position: absolute;
-    right: -90px;
+    right: 0;
     text-align: center;
-    top: 33px;
+    top: 0;
     width: 200px;
     z-index: 99;
 
-    &:after {
+    &::after {
       border: 6px solid;
       border-color: transparent transparent $color-19 $color-19;
       content: '';
@@ -48,6 +37,24 @@
       top: -4px;
       transform: scale(1, -1) rotate(-45deg);
       width: 0;
+    }
+
+    &.-right {
+      right: 10px;
+
+      &::after {
+        left: 194px;
+        top: 35px;
+        transform: scale(1, -1) rotate(-135deg);
+      }
+    }
+
+    &.-left {
+      &::after {
+        left: -6px;
+        top: 35px;
+        transform: scale(1, -1) rotate(45deg);
+      }
     }
   }
 

@@ -8,11 +8,11 @@
 
   > .accordion-item {
     border-bottom: 2px solid $color-10;
-    padding: 25px 0;
+    padding: 25px 0 30px;
     position: relative;
 
     &:first-child {
-      padding-top: 0;
+      padding-top: 5px;
     }
 
     &:last-child {
@@ -40,6 +40,17 @@
     right: 0;
     top: 50%;
     transform: translateY(-50%);
+
+    img {
+      transform: rotate(180deg);
+      transition: transform .5s;
+    }
+
+    &.rhombus-opened {
+      img {
+        transform: rotate(90deg);
+      }
+    }
   }
 
   > .accordion-item .item-content {
