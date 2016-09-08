@@ -1,7 +1,12 @@
-const scrollTo = function(el) {
+const scrollTo = function(el, v) {
+  var fast = 0;
+  if(v === null){
+    fast=500;
+  }
+  fast = v;
   $('html, body').animate({
     scrollTop: $(el).offset().top
-  }, 500);
+  }, fast);
 }
 
 export { scrollTo };

@@ -20,8 +20,8 @@ class Accordion extends Component {
         if (!el) {
           return;
         }
-        scrollTo(el);
-      }, 1100);
+        scrollTo(el, 50);
+      }, 1000);
     } else {
       this.props.onAccordionItemClick(index, slug, this.props.accordionId);
     }
