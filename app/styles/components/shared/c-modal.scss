@@ -13,10 +13,12 @@
   z-index: 1000;
 
   > .content {
+    -webkit-overflow-scrolling: touch;
     background-color: $color-2;
     border: 1px solid rgba($color-3, .3);
     color: $color-4;
-    height: initial;
+    max-height: calc(100% - 60px);
+    overflow-y: auto;
     padding: 40px;
     position: relative;
     width: calc(100% - 60px);
