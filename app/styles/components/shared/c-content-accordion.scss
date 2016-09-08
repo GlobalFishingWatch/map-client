@@ -57,6 +57,9 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 1s;
+    @media #{$mq-tablet} {
+      transition: max-height 0s;
+    }
 
     ul {
       margin-top: 15px;
@@ -68,5 +71,10 @@
     max-height: 3000px;
     transition: max-height 1s;
     transition-delay: 1.5s;
+
+    @media #{$mq-tablet} {
+      transition: max-height 1.5s;
+      transition-delay: 0s;
+    }
   }
 }
