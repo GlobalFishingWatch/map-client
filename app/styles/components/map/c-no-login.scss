@@ -4,6 +4,32 @@
   font-family: $font-family-1;
   text-align: center;
 
+  button {
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+    max-width: 400px;
+    width: 100%;
+
+
+
+    &:last-of-type {
+      margin-bottom: 40px;
+      margin-top: 20px;
+
+    }
+
+    @media #{$mq-tablet} {
+      display: inline-block;
+      margin: 30px 20px 40px 0;
+      max-width: 200px;
+
+      &:last-of-type {
+        margin: 30px 0 40px;
+      }
+    }
+  }
+
   > .back {
     font-size: $font-size-x-small;
     left: 12px;
@@ -23,6 +49,12 @@
 
   > .content {
     color: $color-4;
+    margin: 10px 0;
+  }
+
+  .content-home {
+    color: $color-4;
+    font-size: $font-size-x-small;
     margin: 10px 0;
   }
 
