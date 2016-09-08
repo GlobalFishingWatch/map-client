@@ -8,11 +8,11 @@ import baseStyle from '../../styles/_base.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import researchProgramBackgroundImage from '../../assets/images/research-program.jpg';
 import AncorsLogo from '../../assets/research-partners/ancors-logo.png';
-import CSIROLogo from '../../assets/research-partners/csiro.svg';
-import StanfordLogo from '../../assets/research-partners/stanford.svg';
+import CSIROLogo from '../../assets/research-partners/csiro-logo.png';
+import StanfordLogo from '../../assets/research-partners/stanford-logo.png';
 import McCauleyLogo from '../../assets/research-partners/mccauley-logo.png';
-import MarineGeospatialLogo from '../../assets/research-partners/marine-geospatial-ecology-lab.svg';
-import SustainableFisheries from '../../assets/research-partners/sustainable-fisheries-group.svg';
+import MarineGeospatialLogo from '../../assets/research-partners/marine-logo.png';
+import SustainableFisheries from '../../assets/research-partners/sustainable-logo.png';
 import WormLabLogo from '../../assets/research-partners/worm-lab.svg';
 
 class ResearchProgram extends Component {
@@ -51,7 +51,7 @@ class ResearchProgram extends Component {
               <h2 className="section-title">Research Partners & Projects</h2>
               <article className={StaticPageStyles['section-item']}>
                 <img
-                  className={StaticPageStyles['logo-partner']} src={CSIROLogo}
+                  className={classnames(StaticPageStyles['logo-partner'], StaticPageStyles['-small'])} src={CSIROLogo}
                   alt="Commonwealth Scientific and Industrial Research Organisation (CSIRO)"
                 />
                 <h4 className="section-subtitle">
@@ -135,7 +135,7 @@ class ResearchProgram extends Component {
               </article>
               <article className={StaticPageStyles['section-item']}>
                 <img
-                  className={StaticPageStyles['logo-partner']}
+                  className={classnames(StaticPageStyles['logo-partner'], StaticPageStyles['-small'])}
                   src={SustainableFisheries}
                   alt="Sustainable Fisheries Group"
                 />

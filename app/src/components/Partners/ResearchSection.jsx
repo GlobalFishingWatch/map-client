@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import Slider from 'react-slick';
 import BaseStyle from '../../../styles/_base.scss';
 import ResearchSectionStyle from '../../../styles/components/c-research-section.scss';
@@ -45,7 +46,11 @@ class ResearchSection extends Component {
               <img src={dalhousieLogo} alt="dalhousie logo" className={ResearchSectionStyle['image-slider']}></img>
             </div>
             <div>
-              <img src={csiroLogo} alt="csiro logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img
+                src={csiroLogo}
+                alt="csiro logo"
+                className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
+              ></img>
             </div>
             <div>
               <img src={stanfordLogo} alt="stanford logo" className={ResearchSectionStyle['image-slider']}></img>
@@ -60,7 +65,11 @@ class ResearchSection extends Component {
               <img src={mccauleyLogo} alt="mccauley logo" className={ResearchSectionStyle['image-slider']}></img>
             </div>
             <div>
-              <img src={sustainableLogo} alt="sustainable logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img
+                src={sustainableLogo}
+                alt="sustainable logo"
+                className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
+              ></img>
             </div>
           </Slider>
         </div>

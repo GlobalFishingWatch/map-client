@@ -134,6 +134,10 @@
 
       img {
         max-width: 200px;
+
+        &.-small {
+          max-width: 90px;
+        }
       }
 
       &:last-child {
