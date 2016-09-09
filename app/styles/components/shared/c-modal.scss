@@ -14,6 +14,7 @@
 
   > .content {
     height: auto;
+    margin-left: 10px;
     position: relative;
     width: calc(100 - 60px);
 
@@ -39,6 +40,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       padding: 40px;
+      width: calc(100% - 10px);
     }
   }
 
@@ -53,7 +55,7 @@
     transform: translateX(50%);
     width: 40px;
 
-    @media screen and (min-width: 500px) {
+    @media screen and (min-width: 550px) {
       left: -40px;
       top: 20px;
     }
