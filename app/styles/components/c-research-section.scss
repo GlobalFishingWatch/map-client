@@ -28,6 +28,10 @@
 
     @media #{$mq-tablet} {
       margin-right: 10px;
+
+      &.-small {
+        max-width: 90px;
+      }
     }
   }
 

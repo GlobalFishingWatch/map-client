@@ -26,6 +26,10 @@
     left: 0;
     top: 0;
     width: 100%;
+
+    &.-sub-page {
+      padding-bottom: 60px;
+    }
   }
 
   &.-is-home {
@@ -152,9 +156,9 @@
     padding-top: 50px;
   }
 
-  .cover-main-subtitle {
-    margin-bottom: 60px;
-  }
+  // .cover-main-subtitle {
+  //   margin-bottom: 60px;
+  // }
 
   p {
     color: $color-4;
