@@ -8,14 +8,13 @@ import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-rou
 import ga from 'ga-react-router';
 import _ from 'lodash';
 import Routes from './routes';
-import '../styles/index.scss';
 import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
 import coverPageReducer from './reducers/coverPage';
 import definitionReducer from './reducers/definitions';
 import userReducer from './reducers/user';
 import filtersReducer from './reducers/filters';
-import '../styles/application.scss';
+import '../styles/global.scss';
 import contactReducer from './reducers/contact';
 import searchReducer from './reducers/search';
 import vesselInfoReducer from './reducers/vesselInfo';
