@@ -62,9 +62,17 @@ const store = createStore(
 const history = syncHistoryWithStore(browserHistory, store);
 
 history.listen(location => {
+  // google analytics
   ga('set', 'page', location.pathname);
   ga('send', 'pageview');
 
+  // SF Pardot
+  const absoluteURL = `http://globalfishingwatch.org${location.pathname}`;
+  if (window.piTracker) {
+    window.piTracker(absoluteURL);
+  }
+
+  // attach page name to title
   const title = ['Global Fishing Watch'];
   const pageTitle = _.capitalize(location.pathname.replace('/', '').replace('-', ' '));
   if (pageTitle !== '') title.push(pageTitle);

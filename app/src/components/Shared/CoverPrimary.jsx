@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
 import baseStyle from '../../../styles/application.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
@@ -27,7 +28,7 @@ class CoverPrimary extends Component {
         className={CoverPage['c-cover-page']}
         style={{ backgroundImage: `url(${this.backgroundImage})` }}
       >
-        <div className={CoverPage['layer-cover']}>
+        <div className={classnames(CoverPage['layer-cover'], CoverPage['-sub-page'])}>
           <Header />
           <div className={baseStyle.wrap}>
             <div className={CoverPage['contain-text-cover']}>

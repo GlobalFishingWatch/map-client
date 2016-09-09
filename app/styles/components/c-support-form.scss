@@ -25,7 +25,12 @@
 
     .contain-form {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
+
+      @media #{$mq-tablet} {
+        flex-wrap: nowrap;
+      }
 
       label {
         color: $color-4;
@@ -36,8 +41,11 @@
       }
 
       .container-inputs {
-        padding-right: 20px;
         width: 100%;
+
+        @media #{$mq-tablet} {
+          padding-right: 20px;
+        }
 
         .input-text {
           background-color: transparent;
@@ -118,8 +126,12 @@
     }
 
       .container-textarea {
-        padding-left: 20px;
+        margin-top: 20px;
         width: 100%;
+
+        @media #{$mq-tablet} {
+          padding-left: 20px;
+        }
 
         .textarea-form {
           background-color: transparent;
