@@ -2,25 +2,31 @@ import React, { Component } from 'react';
 import ToolTipJSON from './ToolTipJSON';
 import Rhombus from './Rhombus';
 import Loader from './Loader';
+import $ from 'jquery';
 import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
-import { scrollTo } from '../../lib/Utils';
 
 class Accordion extends Component {
-  componentDidUpdate() {
-    if (!this.props.autoscroll || this.scrolled) return;
-    this.scrolled = true;
-  }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      first: false
+    };
+  }
 
   onItemClick(index, slug, id) {
     if (window.innerWidth <= 768) {
       this.props.onAccordionItemClick(index, slug, this.props.accordionId);
       setTimeout(() => {
-        const el = document.getElementById(id);
-        if (!el) {
-          return;
+        const secondAfter = document.getElementById(id).getBoundingClientRect().top;
+        if (window.scrollY >= -0) {
+          $('html, body').animate({
+            scrollTop: $(window).scrollTop() + secondAfter
+          }, 500); } else {
+          $('html, body').animate({
+            scrollTop: secondAfter
+          }, 500);
         }
-        scrollTo(el, 50);
       }, 1000);
     } else {
       this.props.onAccordionItemClick(index, slug, this.props.accordionId);

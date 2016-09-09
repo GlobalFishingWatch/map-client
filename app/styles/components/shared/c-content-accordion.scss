@@ -56,9 +56,9 @@
   > .accordion-item .item-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 1s;
+    transition: max-height .5s;
     @media #{$mq-tablet} {
-      transition: max-height 0s;
+      transition: max-height 1s;
     }
 
     ul {
@@ -70,11 +70,11 @@
   > .accordion-item .-opened {
     max-height: 3000px;
     transition: max-height 1s;
-    transition-delay: 1.5s;
+    transition-delay: 2s;
 
     @media #{$mq-tablet} {
       transition: max-height 1.5s;
-      transition-delay: 0s;
+
     }
   }
 }
