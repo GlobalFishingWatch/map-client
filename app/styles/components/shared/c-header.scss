@@ -1,64 +1,64 @@
 @import '../../settings';
 
 .c-header {
-  align-items: center;
   background-color: $color-13;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
-  display: flex;
-  height: 95px;
-  justify-content: space-between;
-  padding: 0 30px;
+  position: relative;
+  z-index: 11;
+
+  @media #{$mq-tablet} {
+    background-color: transparent;
+  }
+
+  .contain-nav {
+    align-items: center;
+    display: flex;
+    height: 95px;
+
+    @media #{$mq-tablet} {
+      justify-content: space-between;
+    }
+  }
 
   @media #{$mq-tablet} {
     box-shadow: none;
-    padding: 0 70px;
-  }
-
-  @media #{$mq-laptop} {
-    padding: 0 110px;
-  }
-
-  &.-no-background {
-    background-color: transparent;
   }
 
   .icon-menu-mobile {
     cursor: pointer;
     display: block;
+    margin-right: 21px;
     width: 21px;
 
-    @media #{$mq-tablet} {
-      display: none;
+    @media #{$mq-mobile-large} {
+      margin-right: 0;
     }
-  }
-
-  .img-mobile {
-    display: block;
-    height: 50px;
-    margin-right: 10px;
 
     @media #{$mq-tablet} {
       display: none;
+      margin-right: 0;
     }
   }
 
-  .img-home {
-    display: none;
-    height: 70px;
-    margin-right: 10px;
+  .app-logo {
+    display: flex;
+    justify-content: center;
+    margin-right: 21px;
+    width: 100%;
 
     @media #{$mq-tablet} {
-      display: block;
+      display: inline-block;
+      margin-right: 0;
+      width: auto;
     }
-  }
 
-  .img-sub-page {
-    display: none;
-    height: 50px;
-    margin-right: 10px;
+    img {
+      max-width: 250px;
+      width: 100%;
 
-    @media #{$mq-tablet} {
-      display: block;
+      @media #{$mq-tablet} {
+        width: auto;
+      }
     }
   }
 
@@ -91,6 +91,8 @@
       }
 
       &:last-of-type {
+        padding-right: 0;
+
         &::before {
           background-color: $color-4;
           content: '';
@@ -107,10 +109,15 @@
         color: $color-4;
         cursor: pointer;
         display: inline-block;
+        font-weight: $font-weight-bold;
         height: 100%;
         letter-spacing: -.1px;
         text-decoration: none;
         text-transform: capitalize;
+
+        &.-no-cursor {
+          cursor: default;
+        }
 
         &.-active {
           position: relative;
@@ -122,9 +129,14 @@
             content: '';
             display: block;
             height: 4px;
-            left: -12px;
+            left: 0;
             position: absolute;
-            width: calc(100% + 24px);
+            width: 100%;
+
+            @media #{$mq-laptop} {
+              left: -12px;
+              width: calc(100% + 24px);
+            }
           }
         }
       }
@@ -164,6 +176,45 @@
         &:hover > .dropdown-content {
           display: block;
         }
+      }
+    }
+  }
+
+  &.-map {
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 6;
+
+    @media #{$mq-tablet} {
+      width: auto;
+    }
+
+    .icon-menu-mobile {
+      order: 1;
+      @media #{$mq-tablet} {
+        display: block;
+      }
+    }
+
+    .app-logo {
+      order: 2;
+      @media #{$mq-tablet} {
+        margin-left: 25px;
+        order: 1;
+      }
+    }
+
+    .share-header {
+      order: 3;
+      @media #{$mq-tablet} {
+        display: none;
+      }
+    }
+
+    .menu {
+      @media #{$mq-tablet} {
+        display: none;
       }
     }
   }

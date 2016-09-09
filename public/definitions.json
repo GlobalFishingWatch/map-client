@@ -1,58 +1,72 @@
 [
   {
     "title": "AIS",
-    "content": "<p>The Automatic Identification System is a maritime navigation safety communications system standardized by the International Telecommunication Union (ITU) and adopted by the International Maritime Organization (IMO) that provides vessel information, including the vessel’s identity, type, position, course, speed, navigational status and other safety-related information automatically to appropriately equipped shore stations, other ships and aircraft; receives automatically such information from similarly fitted ships; monitors and tracks ships; and exchanges data with shore-based facilities.</p>"
+    "slug": "ais",
+    "content": "<p>“AIS” stands for the Automatic Identification System. It is a maritime navigation safety communications system standardized by the International Telecommunication Union (ITU) and adopted by the International Maritime Organization (IMO) that provides vessel information, including the vessel’s identity, type, position, course, speed, navigational status and other safety-related information automatically to appropriately equipped shore stations, other ships and aircraft; automatically receives such information from similarly fitted ships; monitors and tracks ships; and exchanges data with shore-based facilities.</p>"
   },
   {
     "title": "BATHYMETRY",
+    "slug": "bathymetry",
     "content": "<p>The depth and topography of the seafloor.</p>"
   },
   {
     "title": "CALLSIGN",
-    "content": "<p>  The unique identification of a Vessel’s radio transmissions assigned to it by its national licensing authority.</p>"
+    "slug": "callsign",
+    "content": "<p>The unique identification of a vessel’s radio transmissions assigned to it by its national licensing authority.</p>"
   },
   {
     "title": "CLASS",
+    "slug": "class",
     "content": "<p>The type of AIS transponder a vessel uses – Class A transponders are the most expensive and transmit at 12.5 watts. There are two types of Class B transponders – Class B/SO, which transmits at 5 watts (2 watts @ low power) and Class B/CS receiver, which transmits at 2 watts.</p>"
   },
   {
     "title": "EEZ",
-    "content": "<p>An Exclusive Economic Zone is a state’s sovereign waters, which extend 200 nautical miles from the coast.</p>"
+    "slug": "eez",
+    "content": "<p>“EEZ” stands for Exclusive Economic Zone and is a state’s sovereign waters, which extend 200 nautical miles from the coast.</p>"
   },
   {
-    "title": "FISHING EFFORT",
-    "content": "<p>Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial fishing vessels, and applies a fishing detection algorithm to determine “apparent fishing effort” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the GFW fishing effort heat map. AIS data varies in completeness, accuracy and quality, and the GFW fishing detection algorithms are not 100 percent accurate, so we qualify all our designations of vessel fishing effort or activity as “apparent,” since we cannot verify that a vessel was, in fact, fishing. Therefore, any/all GFW information about apparent fishing effort or activity must be relied upon solely at your own risk.</p><p>Our fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. We also collaborate extensively with academic researchers through our research partner program to share fishing event classification data and automated classification techniques.</p>"
+    "title": "FISHING ACTIVITY",
+    "slug": "fishing-activity",
+    "content": "<p>Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>fishing</tooltip> vessels, and applies a fishing detection algorithm to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. AIS data as broadcast may vary in completeness, accuracy and quality. Also, data collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data. Global Fishing Watch’s fishing detection algorithm is a best effort mathematically to identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity,” such as “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is taking steps to make sure fishing activity designations are as accurate as possible. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.</p>"
   },
   {
     "title": "FLAG",
-    "content": "<p>The state under whose laws the vessel is registered or licensed.</p>"
+    "slug": "flag",
+    "content": "<p>The state a vessel is registered or licensed under.</p>"
   },
   {
     "title": "HIGH SEAS POCKETS",
-    "content": "<p>The High Seas are any area of the ocean beyond Exclusive Economic Zones (EEZ). High Seas pockets are areas totally enclosed by EEZs. These pockets can be hard to distinguish from the multiple EEZ jurisdictions that surround them.</p>"
+    "slug": "high-seas-pockets",
+    "content": "<p>The High Seas are any area of the ocean beyond Exclusive Economic Zones (EEZ). High Seas pockets are areas totally enclosed by EEZs. These pockets can be hard to distinguish from the multiple EEZ jurisdictions that surround them, thus, we have a layer that highlights them.</p>"
   },
   {
     "title": "IMO",
-    "content": "<p>The International Maritime Organization is the United Nations specialized agency with responsibility for the safety and security of shipping and the prevention of marine pollution by ships. The IMO number is a unique vessel identification number assigned by the IMO to sea-going ships under the International Convention for the Safety of Life at Sea (SOLAS). The IMO also  requires Automatic Identification System (AIS) to be used by all ships of 500 gross tonnage and upwards, all ships of 300 gross tonnage and upwards engaged on international voyages, and all passenger ships irrespective of size.</p>"
+    "slug": "imo",
+    "content": "<p>The IMO number is a unique vessel identification number assigned by the International Maritime Organization (IMO) to sea-going ships under the International Convention for the Safety of Life at Sea (SOLAS). Fishing vessels of 300 gross tonnage or more engaged in international voyages are required to broadcast AIS by the the IMO.</p>"
   },
   {
     "title": "MMSI",
-    "content": "<p>Maritime Mobile Service Identity (MMSI) is a unique nine-digit number assigned to  every Automatic Identification System (AIS) transmission made by a vessel.</p>"
+    "slug": "mmsi",
+    "content": "<p>MMSI stands for Maritime Mobile Service Identity. It is a unique nine-digit number assigned to every Automatic Identification System (AIS) transmission made by a vessel.</p>"
   },
   {
     "title": "MPA – NO TAKE",
-    "content": "<p>A No-Take Marine Protected Area is a protected area of ocean that prohibits the extraction or significant destruction of natural cultural resources, including fish.</p>"
+    "slug": "mpa-no-take",
+    "content": "<p>MPA stands for Marine Protected Area. A No-Take Marine Protected Area is an area of ocean in which the extraction or significant destruction of natural cultural resources, including fish, is prohibited.</p>"
   },
   {
     "title": "MPA – RESTRICTED USE",
-    "content": "<p>A Restricted Use Marine Protected Area is a protected area of ocean that restricts the extraction or significant destruction of natural cultural resources, including fish, by prohibiting fishing in certain areas or certain times of year.</p>"
+    "slug": "map-restricted-use",
+    "content": "<p>MPA stands for Marine Protected Area. A Restricted Use Marine Protected Area is an area of ocean in which the extraction or significant destruction of natural cultural resources, including fish, is restricted by prohibition of fishing in certain areas or during certain times of year.</p>"
   },
   {
     "title": "NAME",
-    "content": "<p>A vessel’s name. Vessel names can change without notice, and are often used by multiple vessels, so the name alone is not a robust form of identity.</p>"
+    "slug": "name",
+    "content": "<p>A vessel’s name. Vessel names can be changed without notice, and are often used by multiple vessels so the name alone is not a robust form of identity.</p>"
   },
   {
     "title": "RFMO",
-    "content": "<p>Regional Fishery Management Organizations are international organizations formed by countries with a shared interest in managing or conserving an area’s fish stock. Some RFMOs manage all the fish stocks found in a specific area, while others focus on particular highly migratory species, notably tuna, throughout vast geographical areas. The RFMOs Layer on the Global Fishing Watch map currently incl</p>"
+    "slug": "rfmo",
+    "content": "<p>RFMO stands for Regional Fishery Management Organization. These organizations are international organizations formed by countries with a shared interest in managing or conserving an area’s fish stock. Some RFMOs manage all the fish stocks found in a specific area, while others focus on particular highly migratory species, notably tuna, throughout vast geographical areas. The RFMOs Layer on the Global Fishing Watch map currently includes the five tuna RFMOs.</p>"
   }
 ]

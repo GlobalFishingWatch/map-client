@@ -1,0 +1,66 @@
+@import '../application';
+@import '../settings';
+
+.c-tooltip-info {
+  border: 0 !important;
+  cursor: pointer;
+  display: inline-block; // Don't change to inline otherwise the tooltip will be broken
+  position: relative;
+
+  .image-icon {
+    height: 15px;
+    margin-left: 4px;
+    width: 15px;
+  }
+
+  > .c-tooltip-info-content {
+    background: $color-19;
+    bottom: auto;
+    box-shadow: 0 2px 4px 0 rgba($color-12, .5);
+    color: $color-4;
+    padding: 15px 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: 200px;
+    z-index: 99;
+
+    &::after {
+      border: 6px solid;
+      border-color: transparent transparent $color-19 $color-19;
+      content: '';
+      height: 0;
+      left: 95px;
+      position: absolute;
+      right: 0;
+      top: -4px;
+      transform: scale(1, -1) rotate(-45deg);
+      width: 0;
+    }
+
+    &.-right {
+      right: 10px;
+
+      &::after {
+        left: 194px;
+        top: 35px;
+        transform: scale(1, -1) rotate(-135deg);
+      }
+    }
+
+    &.-left {
+      &::after {
+        left: -6px;
+        top: 35px;
+        transform: scale(1, -1) rotate(45deg);
+      }
+    }
+  }
+
+  .c-tooltip-info-link {
+    border-bottom: 1px solid $color-6;
+    color: $color-4;
+    font-weight: $font-weight-bold;
+  }
+}

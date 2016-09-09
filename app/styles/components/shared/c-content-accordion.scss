@@ -1,70 +1,72 @@
 @import '../../settings';
 
 .c-content-accordion {
-  padding: 100px 0 95px;
 
+  &:last-child {
+    padding-bottom: 0;
+  }
 
   > .accordion-item {
-    display: block;
-    padding-bottom: 60px;
+    border-bottom: 2px solid $color-10;
+    padding: 25px 0 30px;
     position: relative;
 
+    &:first-child {
+      padding-top: 5px;
+    }
+
     &:last-child {
+      border-bottom: 0;
       padding-bottom: 0;
     }
-  }
 
-  :global .react-sanfona-item-expanded {
-    border-bottom: 2px solid $color-10;
-    border-top: 2px solid $color-10;
-    margin-bottom: 60px;
-    padding-top: 60px;
-
-    &:last-child {
-      padding-bottom: 60px;
+    @media #{$mq-tablet} {
+      padding: 30px 0;
     }
   }
 
-  .accordion-item .item-title {
+  > .accordion-item .item-title {
     color: $color-19;
+    cursor: pointer;
     font-size: 19px;
-    margin-bottom: 20px;
+    font-weight: $font-weight-bold;
+    padding-right: 50px;
     position: relative;
     width: 100%;
   }
 
-  .accordion-item .item-answer {
-    color: $color-9;
-    font-size: $font-size-normal;
-    line-height: 1.6;
-    margin-top: 20px;
+  > .accordion-item .item-rhombus {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 
-    > p + p {
-      margin-top: 15px;
+    img {
+      transform: rotate(180deg);
+      transition: transform .5s;
     }
+
+    &.rhombus-opened {
+      img {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  > .accordion-item .item-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0s;
 
     ul {
       margin-top: 15px;
       padding-left: 30px;
     }
+  }
 
-    a {
-      color: $color-12;
-      font-weight: $font-weight-bold;
-      position: relative;
-      text-decoration: none;
-
-      &::after {
-        background-color: $color-6;
-        bottom: 0;
-        content: '';
-        display: inline-block;
-        height: 1px;
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: auto;
-      }
-    }
+  > .accordion-item .-opened {
+    margin-top: 20px;
+    max-height: 3000px;
+    transition: max-height 1.5s;
   }
 }

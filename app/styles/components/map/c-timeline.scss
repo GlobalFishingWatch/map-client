@@ -1,5 +1,4 @@
 @import '../../settings';
-@import '../../layout-settings';
 
 .c-timeline {
   flex: 1;
@@ -46,5 +45,4 @@
     fill: $color-4;
     pointer-events: none;
   }
-
 }

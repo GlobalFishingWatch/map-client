@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
-import RhombusStyles from '../../../styles/components/shared/c-rhombus.scss';
+import iconBlueBox from '../../../assets/icons/arrow_box.svg';
+import iconWhiteBox from '../../../assets/icons/arrow_box_white.svg';
 
 // This component is used to replace the rhombus element around the website.
 // Feel free to customize it and improve it if need.
 class Rhombus extends Component {
 
-  getClassName() {
-    const direction = this.props.direction ? RhombusStyles[this.props.direction] : '';
-    const color = this.props.color ? RhombusStyles[this.props.color] : '';
-
-    return `${RhombusStyles['c-link-to']} ${direction} ${color}`;
-  }
-
   render() {
     return (
-      <div className={this.getClassName()} onClick={this.props.onClick}>
-        <span className={RhombusStyles.rhombus}></span>
-        {this.props.children &&
-          <span className={RhombusStyles.text}>{this.props.children}</span>}
-      </div>
+      <img src={this.props.color === 'blue' ? iconBlueBox : iconWhiteBox} alt="icon"></img>
     );
   }
 }

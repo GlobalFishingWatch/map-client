@@ -1,8 +1,9 @@
 import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
 import 'whatwg-fetch';
+import { browserHistory } from 'react-router';
 
 export function setToken(token) {
-  sessionStorage.setItem(TOKEN_SESSION, token);
+  localStorage.setItem(TOKEN_SESSION, token);
   return {
     type: SET_TOKEN,
     payload: token
@@ -13,8 +14,8 @@ export function getLoggedUser() {
   return (dispatch, getState) => {
     const state = getState();
     let token = state.user.token;
-    if ((!state.user || !state.user.token) && (sessionStorage.getItem(TOKEN_SESSION))) {
-      token = sessionStorage.getItem(TOKEN_SESSION);
+    if ((!state.user || !state.user.token) && (localStorage.getItem(TOKEN_SESSION))) {
+      token = localStorage.getItem(TOKEN_SESSION);
       dispatch(setToken(token));
     }
 
@@ -23,6 +24,7 @@ export function getLoggedUser() {
         type: GET_USER,
         payload: null
       });
+      return;
     }
 
     fetch(`${MAP_API_ENDPOINT}/v1/me`, {
@@ -34,6 +36,10 @@ export function getLoggedUser() {
       if (response.ok) {
         return response.json();
       }
+      dispatch({
+        type: SET_TOKEN,
+        payload: null
+      });
       return null;
     }).then((user) => {
       dispatch({
@@ -46,10 +52,14 @@ export function getLoggedUser() {
 
 export function logout() {
   return (dispatch) => {
-    sessionStorage.removeItem(TOKEN_SESSION);
+    localStorage.removeItem(TOKEN_SESSION);
     dispatch({
       type: LOGOUT
     });
+    window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
+    if (window.location.pathname.match('^/map')) {
+      browserHistory.push('/');
+    }
   };
 }
 

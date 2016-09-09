@@ -1,0 +1,134 @@
+@import '../settings';
+
+.c-contact-form {
+  margin: 30px auto 0;
+  padding-bottom: 60px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+
+  @media #{$mq-tablet} {
+    margin: 35px auto 0;
+    max-width: 480px;
+    padding-bottom: 100px;
+  }
+
+  &.message-after {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  label,
+  textarea,
+  select,
+  .input-text {
+    color: $color-12;
+    display: block;
+    font-size: $font-size-small;
+    width: 100%;
+  }
+
+  label {
+    color: $color-4;
+    font-size: $font-size-small;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+
+  .input-text {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: $color-4;
+    border: solid 1px $color-10;
+    border-radius: 0;
+    margin-bottom: 10px;
+    outline: 0;
+    padding: 10px;
+
+    &:required {
+      box-shadow: none;
+    }
+  }
+
+  .select-container {
+    position: relative;
+
+    &::after {
+      background: transparent;
+      border-bottom: $color-9 2px solid;
+      border-left: $color-9 2px solid;
+      content: '';
+      height: 10px;
+      position: absolute;
+      right: 15px;
+      top: 12px;
+      transform: rotate(-45deg);
+      width: 10px;
+    }
+
+    select {
+      -moz-appearance: none;
+      -webkit-appearance:none;
+      background-color: $color-4;
+      border: solid 1px $color-10;
+      border-radius: 0;
+      color: $color-5;
+      cursor: pointer;
+      font-size: $font-size-small;
+      height: 40px;
+      margin-bottom: 10px;
+      outline: 0;
+      padding: 10px;
+
+      option{
+        color: $color-12;
+      }
+
+      &::-ms-expand {
+        display: none;
+      }
+    }
+
+    .select-selected {
+      color: $color-12;
+    }
+  }
+
+  textarea {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-color: $color-4;
+    border: solid 1px $color-10;
+    border-radius: 0;
+    height: 200px;
+    outline: 0;
+    padding: 10px;
+
+    &:required {
+      box-shadow: none;
+    }
+  }
+
+  ::-webkit-input-placeholder {
+    color: $color-5;
+    font-size: $font-size-small;
+  }
+
+  ::-moz-placeholder {
+    color: $color-5;
+    font-size: $font-size-small;
+  }
+
+  :-ms-input-placeholder {
+    color: $color-5;
+    font-size: $font-size-small;
+  }
+
+  &.validated {
+    input:invalid, textarea:invalid, select:invalid {
+      border: 1px solid $color-6;
+    }
+  }
+}

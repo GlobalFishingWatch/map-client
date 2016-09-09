@@ -1,0 +1,23 @@
+@import '../application';
+
+.c-info-web {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 100px;
+  padding-top: 100px;
+
+  .image-info-web {
+    background-image: url('../../assets/images/homepage.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 355px;
+    width: 50%;
+  }
+
+  .text-info-web {
+    margin-left: 110px;
+    max-width: 430px;
+    width: 50%;
+  }
+}

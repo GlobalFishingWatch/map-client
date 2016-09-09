@@ -1,7 +1,19 @@
 @import '../../settings';
 
-.c-share {
+.c-no-login {
+  font-family: $font-family-1;
   text-align: center;
+
+  > .back {
+    font-size: $font-size-x-small;
+    left: 12px;
+    position: absolute;
+    top: 12px;
+
+    > a  {
+      color: $color-4;
+    }
+  }
 
   > .title {
     font-size: $font-size-x-medium;
@@ -9,56 +21,22 @@
     margin-bottom: 10px;
   }
 
-  > .intro {
-    margin: 0;
+  > .content {
+    color: $color-4;
+    margin: 10px 0;
   }
 
-  .link_underline{
+  a {
     color: $color-4;
-    display: inline-block;
-    text-decoration: none;
     cursor: pointer;
+    display: inline-block;
 
-    &:after {
-      content: "";
+    &::after {
+      background-color: $color-6;
+      content: '';
       display: block;
       height: 1px;
-      background-color: #f04323;
       margin-top: 1px;
     }
-  }
-
-  > form {
-    display: inline-block;
-    margin: 10px 0 0;
-    padding: 0;
-    position: relative;
-  }
-
-  .url-input {
-    background-color: transparent;
-    border: 1px solid $color-5;
-    color: rgba($color-4, .5);
-    height: 40px;
-    padding: 0 90px 0 20px;
-  }
-
-  .copy-button {
-    background-color: $color-3;
-    border: 0;
-    color: $color-4;
-    cursor: pointer;
-    font-weight: $font-weight-bold;
-    height: 40px;
-    position: absolute;
-    right: 0;
-    text-transform: uppercase;
-    top: 0;
-    width: 70px;
-  }
-
-  .copy-error {
-    color: $color-6;
-    margin-top: 20px;
   }
 }

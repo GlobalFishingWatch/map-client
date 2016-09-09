@@ -1,0 +1,52 @@
+@import '../settings';
+
+.c-contact {
+  background: url('../../assets/images/contact_us.jpg') no-repeat center;
+  background-size: cover;
+  min-height: 100%;
+  position: relative;
+
+  &::after {
+    background-color: rgba($color-7, .8);
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 0;
+  }
+
+  .contain-text-contact {
+    font-family: $font-family-1;
+    position: relative;
+    z-index: 1;
+
+    h1 {
+      color: $color-4;
+      font-size: $font-size-x-big;
+      font-weight: $font-weight-bold;
+      letter-spacing: -1px;
+      margin: 30px 0 20px;
+      text-align: left;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-xxx-big;
+        margin: 40px 0 30px;
+        text-align: center;
+      }
+    }
+
+    p {
+      color: $color-4;
+      font-size: $font-size-normal;
+      line-height: 1.68;
+      text-align: left;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-x-medium;
+        text-align: center;
+      }
+    }
+  }
+}

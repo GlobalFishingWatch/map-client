@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import _ from 'lodash';
+import classnames from 'classnames';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
-import Slider from '../../lib/react-slick.min';
+import baseStyle from '../../../styles/application.scss';
+import Slider from 'react-slick';
 import Header from '../../containers/Header';
-import MenuMobile from '../Shared/MenuMobile';
+import { Link } from 'react-router';
+import Rhombus from '../Shared/Rhombus';
+import CoverPagePreloader from './CoverPagePreloader';
+import { scrollTo } from '../../lib/Utils';
 import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo.png';
-import sliderBackground1 from '../../../assets/images/background_1.png';
-import sliderBackgroundLDF from '../../../assets/images/background_ldf.jpg';
-import sliderBackground2 from '../../../assets/images/background_2.png';
-import sliderBackground3 from '../../../assets/images/background_3.png';
-import sliderBackground4 from '../../../assets/images/background_4.png';
+import LogoLDF from '../../../assets/logos/ldf_logo_white.svg';
+import sliderBackground1 from '../../../assets/images/background_1.jpg';
+import ImageAttribution from '../Shared/ImageAttribution';
 
 class CoverPage extends Component {
 
@@ -20,116 +23,173 @@ class CoverPage extends Component {
     this.state = {
       currentSlider: 0,
       autoPlaySlider: true,
-      speedPlaySlider: 10000
+      speedPlaySlider: 10000,
+      windowWidth: window.innerWidth
     };
+
+    this.handleResize = _.debounce(this.handleResize.bind(this), 50);
+  }
+
+  componentDidMount() {
+    this.props.getCoverPageEntries();
   }
 
   componentDidUpdate() {
     $(`.${CoverPageStyle['dots-cover']}`).off('click').on('click', () => {
-      if (!this.state.autoPlaySlider) return;
+      if (!this.state.autoPlaySlider) {
+        return;
+      }
       this.setState({ autoPlaySlider: false });
     });
+    window.addEventListener('resize', this.handleResize);
   }
 
   onSliderChange(currentSlider) {
     this.setState({ currentSlider });
   }
 
-  gosection() {
-    $('html, body').animate({
-      scrollTop: $('#case_study').offset().top
-    }, 1000);
+  handleResize() {
+    this.setState({ windowWidth: window.innerWidth });
+  }
+
+  scrollPage() {
+    const el = document.getElementById('steps');
+    if (!el) {
+      return;
+    }
+    scrollTo(el);
+  }
+
+  renderQuoteSlide(coverPageEntry) {
+    return (
+      <div key={coverPageEntry.quote} className={CoverPageStyle['leo-slider']}>
+        <div className={CoverPageStyle['contain-quote-text']}>
+          <blockquote>
+            {coverPageEntry.quote}
+          </blockquote>
+          <p className={CoverPageStyle['author-quote']}>– {coverPageEntry.author}</p>
+          <p>{coverPageEntry.subtitle}</p>
+          {coverPageEntry.linkHref && coverPageEntry.linkText && <Link
+            className={CoverPageStyle['links-home-page']}
+            to={coverPageEntry.linkHref}
+          >
+            <Rhombus color="white" />
+            <span>See our partners</span>
+          </Link>}
+        </div>
+      </div>
+    );
+  }
+
+  renderSliderLink(coverPageEntry) {
+    return (
+      <div>
+        {coverPageEntry.linkHref && coverPageEntry.linkText && <Link
+          className={CoverPageStyle['links-home-page']}
+          to={coverPageEntry.linkHref}
+        >
+          <Rhombus color="white" />
+          <span>Explore The Map</span>
+        </Link>}
+      </div>
+    );
+  }
+
+  renderStandardSlide(coverPageEntry) {
+    return (
+      <div key={coverPageEntry.title}>
+        <div className={CoverPageStyle['contain-text-cover']}>
+          <h1>
+            {coverPageEntry.title}
+          </h1>
+          <p>
+            {coverPageEntry.subtitle}
+          </p>
+          {coverPageEntry.linkHref && this.renderSliderLink(coverPageEntry)}
+        </div>
+      </div>
+    );
   }
 
   render() {
+    const loadedEntries = (this.props.coverPageEntries && this.props.coverPageEntries.length > 0);
     const settings = {
-      dots: true,
+      dots: loadedEntries,
+      arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
-      infinite: true,
-      draggable: false,
-      afterChange: (currentSlider) => { this.onSliderChange(currentSlider); },
-      autoplay: this.state.autoPlaySlider,
-      autoplaySpeed: this.state.speedPlaySlider
+      infinite: this.state.windowWidth >= 768,
+      draggable: this.state.windowWidth <= 768,
+      beforeChange: (currentSlider, nextSlider) => {
+        this.onSliderChange(nextSlider);
+      },
+      autoplay: this.state.windowWidth > 768 ? this.state.autoPlaySlider : false,
+      autoplaySpeed: this.state.windowWidth > 768 ? this.state.speedPlaySlider : 0,
+      adaptiveHeight: this.state.windowWidth <= 768
     };
 
-    const sliderBackgrounds = [
-      sliderBackground1,
-      sliderBackgroundLDF,
-      sliderBackground2,
-      sliderBackground3,
-      sliderBackground4
-    ];
-    const sliderBackground = sliderBackgrounds[this.state.currentSlider];
+    let coverEntriesContent = (
+      <div
+        className={classnames(CoverPageStyle['contain-text-cover'], CoverPageStyle['-is-empty'])}
+        key={-1}
+      />
+    );
+
+    const sliderBackgrounds = [];
+    const sliderAttributions = [];
+    if (loadedEntries) {
+      const slides = [];
+
+      this.props.coverPageEntries.forEach(coverPageEntry => {
+        if (coverPageEntry.type === 'quote') {
+          slides.push(this.renderQuoteSlide(coverPageEntry));
+        } else {
+          slides.push(this.renderStandardSlide(coverPageEntry));
+        }
+
+        sliderBackgrounds.push(coverPageEntry.background);
+        sliderAttributions.push(coverPageEntry.attribution);
+      });
+
+      coverEntriesContent = <Slider {...settings}>{slides}</Slider>;
+    }
+
+    const sliderBackground = sliderBackgrounds.length ? sliderBackgrounds[this.state.currentSlider] : sliderBackground1;
+    const sliderAttribution = (sliderBackgrounds.length ?
+      sliderAttributions[this.state.currentSlider] : '© OCEANA / Juan Cuetos');
 
     return (
-      <div className={CoverPageStyle['c-cover-page']} style={{ backgroundImage: `url(${sliderBackground})` }}>
+      <div
+        className={classnames(CoverPageStyle['c-cover-page'], CoverPageStyle['-is-home'])}
+        style={{ backgroundImage: `url(${sliderBackground})` }}
+      >
+        <CoverPagePreloader images={sliderBackgrounds} />
         <div className={CoverPageStyle['layer-cover']}>
-          <MenuMobile />
           <Header />
-          <div>
-            <Slider {...settings}>
-              <div>
-                <h1>
-                  Introducing Global Fishing Watch
-                </h1>
-                <p>Global Fishing Watch enables anyone with an Internet connection to see fishing
-                  activity anywhere in the ocean in near real-time — for free.
-                </p>
-              </div>
-              <div className={CoverPageStyle['leo-slider']}>
-                <blockquote>
-                  “Welcome to Global Fishing Watch, the world’s first free,
-                  interactive tool that enables anyone in the world to track
-                  commercial fishing activity, worldwide. Global Fishing Watch
-                  will shed light on what is happening on our oceans so that
-                  together, we can ensure the responsible and sustainable
-                  management of our fisheries.”
-                </blockquote>
-                <p className={CoverPageStyle['author-quote']}>– Leonardo DiCaprio</p>
-                <p>The Leonardo DiCaprio Foundation is Proud to be a Founding Funder of Global Fishing Watch</p>
-              </div>
-              <div>
-                <h1>
-                  Protect ocean ecosystems
-                </h1>
-                <p>
-                  Monitor fishing activity in marine protected areas to ensure
-                  proper management and oversight of these special places.
-                </p>
-              </div>
-              <div>
-                <h1>
-                  See where fishing is happening
-                </h1>
-                <p>
-                  Observe fishing patterns and activity based on vessel position, course and
-                  speed as revealed by Automatic Identification System broadcasts.
-                </p>
-              </div>
-              <div>
-                <h1>
-                  Improve fisheries management worldwide
-                </h1>
-                <p>
-                  Provide tools for governments, fishery management organizations,
-                  scientists, private industry, and NGOs to implement rules and
-                  regulations that will ensure a sustainable and abundant ocean.
-                </p>
-              </div>
-            </Slider>
-            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.gosection}>
+          <div className={baseStyle.wrap}>
+            {coverEntriesContent}
+            <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.scrollPage}>
               <div className={BoxTriangleStyle['triangle-min']}></div>
             </div>
             <div className={CoverPageStyle['footer-header']}>
-              <div>
+              <div className={CoverPageStyle['contain-ldf']}>
+                <span className={CoverPageStyle['brought-text']}>Brought to you by:</span>
                 <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
               </div>
             </div>
           </div>
+
+          {sliderAttribution && <ImageAttribution>
+            {sliderAttribution && `Photo: ${sliderAttribution}`}
+          </ImageAttribution>}
         </div>
       </div>
     );
   }
 }
+
+CoverPage.propTypes = {
+  coverPageEntries: React.PropTypes.array,
+  getCoverPageEntries: React.PropTypes.func
+};
 
 export default CoverPage;

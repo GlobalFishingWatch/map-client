@@ -1,20 +1,29 @@
 import React, { Component } from 'react';
-import CoverPrimary from './Shared/CoverPrimary';
+import Header from '../containers/Header';
 import Footer from './Shared/Footer';
 import ContactUsForm from './ContactUs/ContactUsForm';
-import SupportForm from './ContactUs/SupportForm';
+import contactStyle from '../../styles/components/c-contact.scss';
+import baseStyle from '../../styles/_base.scss';
+import ImageAttribution from './Shared/ImageAttribution';
 
 class ContactUs extends Component {
 
   render() {
     return (<div>
-      <CoverPrimary
-        title="Contact Us"
-        subtitle="Let us know what you think! Submit your questions, suggestions
-        for improvement or general feedback using the form below"
-      />
-      <ContactUsForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
-      <SupportForm onFormSubmit={this.props.submitForm} contactStatus={this.props.contactStatus} />
+      <div className={contactStyle['c-contact']}>
+        <Header />
+        <div className={baseStyle.wrap}>
+          <ContactUsForm
+            onFormSubmit={this.props.submitForm}
+            contactStatus={this.props.contactStatus}
+            defaultUserName={this.props.defaultUserName}
+            defaultUserEmail={this.props.defaultUserEmail}
+          />
+        </div>
+        <ImageAttribution>
+          Photo: © OCEANA / Xavier Mas
+        </ImageAttribution>
+      </div>
       <Footer />
     </div>);
   }
@@ -22,7 +31,9 @@ class ContactUs extends Component {
 
 ContactUs.propTypes = {
   contactStatus: React.PropTypes.number,
-  submitForm: React.PropTypes.func
+  submitForm: React.PropTypes.func,
+  defaultUserName: React.PropTypes.string,
+  defaultUserEmail: React.PropTypes.string
 };
 
 export default ContactUs;

@@ -1,0 +1,174 @@
+@import '../settings';
+
+.l-static-page {
+  padding: 25px 0 60px;
+
+  @media #{$mq-tablet} {
+    padding: 85px 0 90px;
+  }
+
+  :global .section-page {
+    margin: 0 auto;
+
+    :global .section-title {
+      margin: 0 0 25px;
+
+      &.article-page {
+        margin-bottom: 0;
+
+        @media #{$mq-tablet} {
+          margin: 0 0 60px;
+        }
+      }
+
+      @media #{$mq-tablet} {
+        margin: 0 0 60px;
+      }
+
+    }
+  }
+
+  :global .link-rhombus {
+    align-items: center;
+    color: $color-8;
+    display: flex;
+    font-family: $font-family-1;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    line-height: 1;
+    text-transform: uppercase;
+
+    img {
+      margin-right: 10px;
+    }
+  }
+
+  &.-faq {
+    .question-group {
+
+      :global .section-title {
+        margin: 20px 0 0;
+        padding: 25px 0;
+        position: relative;
+
+        &::after {
+          background-color: $color-10;
+          content: '';
+          display: inline-block;
+          height: 2px;
+          left: 50%;
+          position: absolute;
+          top: 0;
+          transform: translate(-50%, 0);
+          width: 100vw;
+         }
+
+        @media #{$mq-tablet} {
+          margin: 50px 0 0;
+          padding: 60px 0;
+        }
+      }
+
+      &:first-of-type {
+        :global .section-title {
+          margin: 0;
+          padding: 20px 0;
+          @media #{$mq-tablet} {
+            padding: 50px 0 60px;
+          }
+
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+  }
+
+  &.-articles-pubs {
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+
+
+  &.-tutorials {
+    .video-container {
+      margin: 30px -25px 0;
+      padding-bottom: 56.25%;
+      position: relative;
+
+      @media #{$mq-tablet} {
+        margin: 30px 0 0;
+      }
+
+      iframe {
+        height: 100%;
+        left: 25px;
+        position: absolute;
+        top: 0;
+        width: calc(100% - 50px);
+
+        @media #{$mq-tablet} {
+          left: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  &.-about {
+    margin: 0 auto;
+    max-width: 700px;
+  }
+
+  &.-research-program {
+    margin: 0 auto;
+    max-width: 700px;
+
+    .section-item {
+      margin: 60px 0 55px;
+
+      img {
+        max-width: 200px;
+
+        &.-small {
+          max-width: 90px;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    :global .section-subtitle {
+      margin: 20px 0 5px;
+    }
+
+    .testimonial {
+      & + .testimonial {
+        margin-top: 65px;
+      }
+    }
+
+    .testimonial > iframe {
+      display: block;
+      height: 100%;
+      min-height: 250px;
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        height: 390px;
+        width: 100%;
+      }
+    }
+
+    .testimonial > .video-quote {
+      margin: 30px 0 35px;
+    }
+  }
+}

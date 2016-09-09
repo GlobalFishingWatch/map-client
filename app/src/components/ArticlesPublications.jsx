@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
+import Loader from './Shared/Loader';
+import { Link } from 'react-router';
+import Rhombus from './Shared/Rhombus';
+import AppStyles from '../../styles/application.scss';
+import StaticPageStyles from '../../styles/layout/l-static-page.scss';
+import PubArticleStyle from '../../styles/components/c-publication-article.scss';
+import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.jpg';
 
 class ArticlesPublications extends Component {
 
@@ -10,9 +18,29 @@ class ArticlesPublications extends Component {
 
   renderElement(articlePublication) {
     return (
-      <article key={articlePublication.link}>
-        <h4><a href={articlePublication.link} target="_blank">{articlePublication.title}</a></h4>
-        <span>{articlePublication.subtitle}</span>
+      <article
+        className={PubArticleStyle['c-publication-article']}
+        key={articlePublication.link}
+      >
+        <h4 className={PubArticleStyle.title}>
+          <a href={articlePublication.link} target="_blank">
+            {articlePublication.title}
+          </a>
+        </h4>
+        <div className={PubArticleStyle.description}>
+          {articlePublication && <p>{articlePublication.author}</p>}
+          {articlePublication.date && <p>{articlePublication.date}</p>}
+        </div>
+        <div className={PubArticleStyle['link-container']}>
+          <Link
+            to={articlePublication.link}
+            target="_blank"
+            className="link-rhombus"
+          >
+            <Rhombus color="blue" />
+            find out more
+          </Link>
+        </div>
       </article>
     );
   }
@@ -24,11 +52,15 @@ class ArticlesPublications extends Component {
     if (articlesPublications && articlesPublications.articles) {
       const articles = articlesPublications.articles.map(this.renderElement);
 
-      if (articles && articles.length) {
+      if (!!articles && articles.length) {
         pageContent.push(
-          <section key="articles">
-            <h2>Articles</h2>
-            {articles}
+          <section className="section-page" key="articles">
+            <h2 className="section-title article-page">
+              Articles
+            </h2>
+            <div className={StaticPageStyles.grid}>
+              {articles}
+            </div>
           </section>
         );
       }
@@ -37,28 +69,36 @@ class ArticlesPublications extends Component {
     if (articlesPublications && articlesPublications.publications) {
       const publications = articlesPublications.publications.map(this.renderElement);
 
-      if (publications && publications.length) {
+      if (!!publications && publications.length) {
         pageContent.push(
-          <section key="publications">
-            <h2>Publications</h2>
-            {publications}
+          <section className="section-page" key="publications">
+            <h2 className="section-title article-page">
+              Publications
+            </h2>
+            <div className={StaticPageStyles.grid}>
+              {publications}
+            </div>
           </section>
         );
       }
     }
 
     if (!pageContent.length) {
-      pageContent = (<div>Loading....</div>);
+      pageContent = (<Loader />);
     }
 
     return (<div>
       <CoverPrimary
         title="Articles and Publications"
-        subtitle="lorem ipsum"
+        subtitle="Read about Global Fishing Watch in the media."
+        backgroundImage={articlesPublicationsBackgroundImage}
+        attribution="© Bento Viana"
       />
-      <section>
-        {pageContent}
-      </section>
+      <div className={classnames(StaticPageStyles['l-static-page'], StaticPageStyles['-articles-pubs'])}>
+        <div className={AppStyles.wrap}>
+          {pageContent}
+        </div>
+      </div>
       <Footer />
     </div>);
   }

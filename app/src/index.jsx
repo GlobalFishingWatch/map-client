@@ -5,16 +5,17 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import ga from 'ga-react-router';
+import _ from 'lodash';
 import Routes from './routes';
 import '../styles/index.scss';
 import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
+import coverPageReducer from './reducers/coverPage';
 import definitionReducer from './reducers/definitions';
 import userReducer from './reducers/user';
-import blogReducer from './reducers/blog';
 import filtersReducer from './reducers/filters';
 import '../styles/application.scss';
-import appearanceReducer from './reducers/appearance';
 import contactReducer from './reducers/contact';
 import searchReducer from './reducers/search';
 import vesselInfoReducer from './reducers/vesselInfo';
@@ -29,10 +30,9 @@ const reducer = combineReducers({
   routing: routerReducer,
   map: mapReducer,
   user: userReducer,
-  blog: blogReducer,
   filters: filtersReducer,
-  appearance: appearanceReducer,
   faqEntries: faqReducer,
+  coverPageEntries: coverPageReducer,
   contactStatus: contactReducer,
   search: searchReducer,
   vesselInfo: vesselInfoReducer,
@@ -60,6 +60,16 @@ const store = createStore(
  * @type {Object}
  */
 const history = syncHistoryWithStore(browserHistory, store);
+
+history.listen(location => {
+  ga('set', 'page', location.pathname);
+  ga('send', 'pageview');
+
+  const title = ['Global Fishing Watch'];
+  const pageTitle = _.capitalize(location.pathname.replace('/', '').replace('-', ' '));
+  if (pageTitle !== '') title.push(pageTitle);
+  document.title = title.join(' - ');
+});
 
 render(
   <Provider store={store}>

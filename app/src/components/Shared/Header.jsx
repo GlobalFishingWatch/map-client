@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classNames from 'classnames';
 import styles from '../../../styles/components/shared/c-header.scss';
-import logoimg from '../../../assets/logos/gfw_logo_hor_second.png';
-import logoimgSecond from '../../../assets/logos/gfw_logo_hor_white.png';
+import baseStyle from '../../../styles/_base.scss';
+import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
+import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
-
+import shareIcon from '../../../assets/icons/share_icon.svg';
+import MenuMobile from './../../containers/MenuMobile';
 
 class Header extends Component {
 
@@ -13,6 +15,25 @@ class Header extends Component {
     super(props);
     this.login = this.props.login.bind(this);
     this.logout = this.props.logout.bind(this);
+    this.state = {
+      mobileMenuVisible: false
+    };
+    this.closeMobileMenu = this.closeMobileMenu.bind(this);
+  }
+
+  closeMobileMenu() {
+    this.setState({ mobileMenuVisible: false });
+  }
+
+  /**
+   * Return whether the route starts with the passed string
+   *
+   * @param {String} route
+   * @returns {Boolean}
+   */
+  doesPathStartsWith(route) {
+    const regex = new RegExp(route.replace('/', '\\/'));
+    return regex.test(location.pathname);
   }
 
   render() {
@@ -22,7 +43,6 @@ class Header extends Component {
         <li className={styles.dropdown}>
           <a>{this.props.loggedUser.displayName}</a>
           <ul className={styles['dropdown-content']}>
-            <li><a>Profile</a></li>
             <li>
               <a onClick={this.logout}>
                 Logout
@@ -30,7 +50,7 @@ class Header extends Component {
             </li>
           </ul>
         </li>
-        );
+      );
     } else {
       userLinks = (
         <li>
@@ -40,80 +60,99 @@ class Header extends Component {
     }
 
     return (
-      <nav
-        className={
-          classNames({ [styles['c-header']]: true, [styles['-no-background']]: location.pathname !== '/map' })
-        }
-      >
-        <img
-          onClick={() => this.props.setVisibleMenu(true)}
-          className={styles['icon-menu-mobile']}
-          src={menuicon}
-          alt="Menu toggle icon"
+      <div>
+        <MenuMobile
+          visible={this.state.mobileMenuVisible}
+          onClose={this.closeMobileMenu}
         />
-        <Link to="/">
-          <img
-            className={location.pathname === '/' ? styles['img-home'] : styles['img-sub-page']}
-            src={location.pathname === '/' ? logoimg : logoimgSecond} alt="Logo"
-          />
-          <img className={styles['img-mobile']} src={logoimgSecond} alt="Logo" />
-        </Link>
-        <span className={styles['share-header']}>Share</span>
-        <ul className={styles.menu}>
-          <li>
-            <Link className={location.pathname === '/map' ? styles['-active'] : null} to="/map">Map</Link>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={
-                (location.pathname.startsWith('/blog') || location.pathname.startsWith('/articles-publications'))
-                  ? styles['-active'] : null
-              }
-            >
-              News
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/blog">Blog</Link></li>
-              <li><Link to="/articles-publications">Articles and Publications</Link></li>
-            </ul>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={
-                (
-                  location.pathname === '/faq'
-                  || location.pathname === '/tutorials'
-                  || location.pathname === '/definitions'
-                ) ? styles['-active'] : null
-              }
-            >
-              How to
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/faq">FAQ</Link></li>
-              <li><Link to="/tutorials">Tutorials</Link></li>
-              <li><Link to="/definitions">Definitions</Link></li>
-            </ul>
-          </li>
-          <li className={styles.dropdown}>
-            <a
-              className={(
-                location.pathname === '/the-project'
-                || location.pathname === '/partners'
-                || location.pathname === '/contact-us'
-              ) ? styles['-active'] : null}
-            >
-              About
-            </a>
-            <ul className={styles['dropdown-content']}>
-              <li><Link to="/the-project">The project</Link></li>
-              <li><Link to="/partners">Partners</Link></li>
-              <li><Link to="/contact-us">Contact us</Link></li>
-            </ul>
-          </li>
-          {userLinks}
-        </ul>
-      </nav>
+        <nav
+          className={
+            classNames({ [styles['c-header']]: true, [styles['-map']]: this.doesPathStartsWith('/map') })
+          }
+        >
+          <div
+            className={
+              classNames({ [baseStyle.wrap]: true, [baseStyle['-map']]: this.doesPathStartsWith('/map') })
+            }
+          >
+            <div className={styles['contain-nav']}>
+              <img
+                onClick={() => this.setState({ mobileMenuVisible: true })}
+                className={styles['icon-menu-mobile']}
+                src={menuicon}
+                alt="Menu toggle icon"
+              />
+              <Link
+                to="/"
+                className={styles['app-logo']}
+              >
+                <img
+                  src={this.doesPathStartsWith('/map') ? betaLogo : defaultLogo}
+                  alt="Global Fishing Watch"
+                />
+              </Link>
+              {this.doesPathStartsWith('/map') && <span className={styles['share-header']}>
+                <img src={shareIcon} alt="share icon"></img></span>}
+              <ul className={styles.menu}>
+                <li>
+                  <Link className={this.doesPathStartsWith('/map') && styles['-active']} to="/map">Map</Link>
+                </li>
+                <li className={styles.dropdown}>
+                  <a
+                    className={
+                      /\/articles-publications/.test(location.pathname)
+                        ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
+                    }
+                  >
+                    News
+                  </a>
+                  <ul className={styles['dropdown-content']}>
+                    <li><a href={BLOG_URL} target="_blank">Blog</a></li>
+                    <li><Link to="/articles-publications">Articles and Publications</Link></li>
+                  </ul>
+                </li>
+                <li className={styles.dropdown}>
+                  <a
+                    className={
+                      (
+                        this.doesPathStartsWith('/faq')
+                        || this.doesPathStartsWith('/tutorials')
+                        || this.doesPathStartsWith('/definitions')
+                      ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
+                    }
+                  >
+                    How to
+                  </a>
+                  <ul className={styles['dropdown-content']}>
+                    <li><Link to="/faq">FAQ</Link></li>
+                    <li><Link to="/tutorials">Tutorials</Link></li>
+                    <li><Link to="/definitions">Definitions</Link></li>
+                  </ul>
+                </li>
+                <li className={styles.dropdown}>
+                  <a
+                    className={(
+                      this.doesPathStartsWith('/the-project')
+                      || this.doesPathStartsWith('/partners')
+                      || this.doesPathStartsWith('/research-program')
+                      || this.doesPathStartsWith('/contact-us')
+                    ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
+                  >
+                    About
+                  </a>
+                  <ul className={styles['dropdown-content']}>
+                    <li><Link to="/the-project">The project</Link></li>
+                    <li><Link to="/partners">Partners</Link></li>
+                    <li><Link to="/research-program">Research program</Link></li>
+                    <li><Link to="/contact-us">Contact us</Link></li>
+                  </ul>
+                </li>
+                {userLinks}
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
     );
   }
 }

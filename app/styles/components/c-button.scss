@@ -10,13 +10,50 @@
   justify-content: center;
   letter-spacing: -.1px;
   line-height: .4;
+  max-width: 180px;
+  min-height: 50px;
   padding: 15px 40px;
   text-decoration: none;
-  width: 210px;
 
   img {
     margin-left: -5px;
     margin-right: 7px;
     width: 35px;
   }
+}
+
+.c-button-contact { //will be .c-button-submit-large
+  background-color: $color-3;
+  border: 0;
+  border-radius: 0;
+  color: $color-4;
+  display: block;
+  font-size: $font-size-normal;
+  margin: 30px auto 0;
+  padding: 20px 0;
+  text-transform: uppercase;
+  width: 100%;
+
+  @media #{$mq-tablet} {
+    margin: 50px auto 0;
+    max-width: 250px;
+  }
+}
+
+.c-button-submit-small {
+  background-color: $color-3;
+  border: 0;
+  color: $color-4;
+  cursor: pointer;
+  display: block;
+  font-size: $font-size-small;
+  font-weight: $font-weight-bold;
+  letter-spacing: -.1px;
+  margin: 45px auto 0;
+  max-width: 115px;
+  outline: 0;
+  padding: 10px 0;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
 }

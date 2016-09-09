@@ -7,17 +7,19 @@
   display: flex;
   font-family: $font-family-1;
   font-size: $font-size-small;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-bold;
   height: 40px;
   justify-content: center;
   letter-spacing: -.1px;
   line-height: .4;
+  max-width: 180px;
+  min-height: 50px;
   text-decoration: none;
+  text-transform: uppercase;
   width: 210px;
 
   img {
     margin-left: -5px;
     margin-right: 7px;
-    width: 35px;
   }
 }

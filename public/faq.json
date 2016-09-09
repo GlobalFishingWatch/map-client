@@ -1,66 +1,86 @@
 [
   {
-    "title": "Can’t fishing vessels turn off their AIS?",
-    "content": "<p>Yes. Soon, Global Fishing Watch can help detect when this appears to occur. When a vessel turns off its AIS, we can notice that and we will share that information publicly. We will also be able to flag activities such as ships disappearing or appearing suddenly, jumping 1,000 miles at once, or appearing to fish on land.</p>"
+    "title": "Map How-To’s",
+    "questions": [
+      {
+        "title": "How can I save or share my workspace?",
+        "content": "<p>You may share your workspace by clicking on the share arrow at the bottom left of the map above the play button. This will bring up a unique url for your workspace, which you can copy and share with someone. The recipient will need to be registered for Global Fishing Watch in order to access your shared workspace.</p>"
+      },
+      {
+        "title": "How can I vary the amount of time I’m looking at?",
+        "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider:<ul><li><p>Click on the left or right edge of the Time Slider, hold and drag to change the start or end time.</p></li><li><p>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see a shorter or longer time window.</p></li><li><p>Click on the + or - icon to the left of the Time Slider indicating shorter or longer time windows.</p></li></ul>"
+      },
+      {
+        "title": "How do I search for a specific vessel?",
+        "content": "<p>Click on the Info dropdown menu in the legend on the right edge of the map. Then click on the magnifying glass which brings up a search box where you can search by vessel MMSI number, IMO number, callsign, ship name or port name.</p>"
+      }
+    ]
   },
   {
-    "title": "Can’t vessels just broadcast a false location in their AIS signals?",
-    "content": "<p>We have seen vessel tracks that appear in impossible places such as the Himalayan Mountains or over Antarctica. We can’t say for sure whether the AIS has been tampered with or is faulty, but the errors have followed regular patterns—varying from a vessel’s true location by a constant amount, or flipping a coordinate from the Southern Hemisphere to the Northern Hemisphere, for example. Once we identify the patterns, we can often correct apparently false locations.</p>"
+    "title": "Map Features",
+    "questions": [
+      {
+        "title": "Is the information I’m seeing in the map in real-time?",
+        "content": "<p>The data you see spans from January 1, 2012 to near real-time. This means that the most recent data shown have a 72 hour time lag.</p>"
+      },
+      {
+        "title": "What is the difference between MPA – No Take and MPA – Restricted Use?",
+        "content": "<p>MPA - No Take includes protected areas where all fishing is prohibited. MPA - Restricted Use contains areas that allow some fishing but impose restrictions such as catch quotas, seasonal closures, or limits on certain types of fishing gear or fishing sectors (commercial vs. recreational, or industrial vs. small-scale).</p>"
+      },
+      {
+        "title": "What is the significance of the EEZs?",
+        "content": "<p>An Exclusive Economic Zone (EEZ) is a zone in the ocean in which the adjacent nation has jurisdiction. These generally include waters extending 200 nautical miles from a nation’s coastline but are also drawn closer in where multiple nation’s jurisdictions would otherwise overlap. Each country has special rights regarding exploration and use of resources within its EEZ. For example, if a country establishes that its fishing resources are being fully exploited by domestic fleets, it can exclude foreign vessels. A country can also allow foreign vessels to fish in its EEZ and can sell them fishing licenses. </p>"
+      },
+      {
+        "title": "Why are there large circles in which there is no apparent fishing?",
+        "content": "<p>The large circles without fishing are almost always EEZs around islands that heavily restrict or prohibit fishing (if you turn on the EEZ Layer in the Global Fishing Watch Map, you will see that they often line up with these blank areas). The circles could also be Marine Protected Areas that prohibit fishing (you can turn on the MPA layers to see if that’s the case).</p>"
+      },
+      {
+        "title": "Why is there fishing in an area marked as an MPA?",
+        "content": "<p>In such areas you may see fishing. In no take Marine Protected Areas there should not be fishing, and any apparent fishing in such an area should be subjected to further scrutiny.</p>"
+      }
+    ]
   },
   {
-    "title": "AIS requirements don’t cover all vessels, right?",
-    "content": "<p>That’s right, but many of the largest vessels that catch most of the fish are covered. So this is a good start. In addition, many countries are creating AIS requirements within their waters, so we expect an increase in AIS use in the coming years. For example, as of May 31, 2014, all European Union flagged fishing vessels over 15 meters in length are required to use AIS in EU waters, and as of March 1, 2016, all U.S. flagged vessels over 65 feet in length are required to use AIS in U.S. waters. AIS was primarily designed as a safety mechanism to help avoid collisions at sea, so turning off AIS to avoid being tracked can put a vessel and its crew at risk of being hit by another ship.</p>"
+    "title": "Automatic Identification System (AIS)",
+    "questions": [
+      {
+        "title": "Can’t fishing vessels turn off their AIS?",
+        "content": "<p>Yes - and Global Fishing Watch can help detect when this appears to occur. We can see when a vessel appears to turn off its AIS and we can share that information publicly. Then we will also be able to flag instances where ships disappear or appear suddenly, jump 1,000 miles at once, or appear to fish on land. AIS was primarily designed as a safety mechanism to help avoid collisions at sea, so turning off AIS to avoid being tracked can put a vessel and its crew at risk of being hit by another ship.</p>"
+      },
+      {
+        "title": "Can’t vessels just broadcast a false location in their AIS signals?",
+        "content": "<p>We have seen vessel tracks that appear in impossible places such as the Himalayan Mountains or over Antarctica. We can’t say for sure whether the AIS has been tampered with or is faulty, but the errors have followed regular patterns—varying from a vessel’s true location by a constant amount, or flipping a coordinate from the Southern Hemisphere to the Northern Hemisphere, for example. Once we identify the patterns, we can often correct apparently false locations.</p>"
+      },
+      {
+        "title": "Are all vessels required to use AIS?",
+        "content": "<p>No, but many of the largest vessels that catch a disproportionately large amount of the fish are required to do so by the IMO. In addition, many countries and intergovernmental agencies like Regional Fisheries Management Organizations (RFMOs) are creating AIS requirements within their waters, so we expect an increase in AIS use in the coming years.  For example, as of May 31, 2014, all European Union flagged fishing vessels over 15 meters in length are required to be equipped with AIS and as of March 1, 2016, all commercial U.S. flagged fishing vessels over 65 feet in length are required to be equipped with AIS.</p>"
+      },
+      {
+        "title": "Do “pirate” fishing vessels that engage in Illegal, Unreported and Unregulated (IUU) fishing even use AIS?",
+        "content": "<p>Although not all of them do, we have seen vessels broadcasting AIS that appear to be fishing illegally.</p>"
+      },
+      {
+        "title": "Is monitoring AIS signals an invasion of trade secrets privacy?",
+        "content": "<p>No. Monitoring a vessel activity through satellite AIS is already a well-established practice in the shipping, insurance and commodities industries, and AIS data is already publicly available. AIS was designed to be an open, public communications tool. Vessels that use AIS are intentionally making themselves trackable to everyone around them. Global Fishing Watch shows apparent commercial resource extraction that takes place on the open ocean, not on private property. Our fisheries are a common resource, whether on the high seas that belong to everyone or in the sovereign waters of individual nations.</p>"
+      },
+      {
+        "title": "Won’t this tip off the fishing industry to where all the fish are?",
+        "content": "<p>No. Commercial fishing fleets are already using sophisticated technology like helicopters, tracking beacons, fish-finding sonar, and even fish forecasts based on satellite data to find and catch fish. Global Fishing Watch shows where fishing activity has apparently occurred; it doesn’t predict where fish are likely to be in the future. The 72-hour time lag also limits the use of Global Fishing Watch as a “fish tracking” tool.</p>"
+      }
+    ]
   },
   {
-    "title": "Do “pirate” fishing vessels that engage in Illegal, Unreported and Unregulated (IUU) fishing even use AIS?",
-    "content": "<p>Although not all of them do, we have seen vessels broadcasting AIS that appear to be fishing illegally. More importantly, by consistently using AIS, fishing vessel operators could (potentially) command a better price for their catch or gain access to markets that someday could be closed to vessels that don’t make themselves “visible” with AIS. As more vessels voluntarily use AIS to show they are operating legitimately, the size of the “dark fleet” will shrink, allowing authorities to focus their attention and resources more effectively on those vessels that continue to operate in the shadows.</p>"
-  },
-  {
-    "title": "How can I save or share my workspace?",
-    "content": "<p>You may share your workspace by clicking on the share arrow at the bottom left of the map above the play button. This will bring up a unique url for your workspace, which you can copy and share with someone (the recipient will need to be registered for Global Fishing Watch in order to access your shared workspace, however).</p>"
-  },
-  {
-    "title": "How can I vary the amount of time I’m looking at?",
-    "content": "<p>The Global Fishing Watch Time Slider at the bottom of the map determines the time period of the fishing effort heat map or vessel tracks you are viewing. There are several ways to manipulate the Time Slider, including the following:</p><ul><li>Click on the left or right edge of the Time Slider, hold and drag/extend the start or end time;</li><li>Click anywhere on the Time Slider and use your mouse scroll wheel or touchpad to see more (i.e. smaller) or fewer (i.e. larger) increments of time.</li><li>Click on the icon to the left of the Time Slider indicating more (i.e. smaller) or fewer (i.e. larger) increments of time.</li></ul>"
-  },
-  {
-    "title": "How do I search for a specific vessel?",
-    "content": "<p>Click on the Info dropdown menu in the legend on the right edge of the map. Then click on the magnifying glass which brings up a search box where you can search by vessel MMSI number, IMO number, callsign, ship name or port name.</p>"
-  },
-  {
-    "title": "Is monitoring AIS signals an invasion of privacy?",
-    "content": "<p>No. Monitoring vessel activity through satellite AIS is already a well-established practice in the shipping, insurance and commodities industries, and AIS data is already publicly available. AIS was designed to be an open, public communications tool. Vessels that use AIS are intentionally making themselves trackable to everyone around them. Global Fishing Watch shows apparent commercial resource extraction that takes place on the open ocean, not on private property. Our fisheries are a common resource, whether on the high seas that belong to everyone, or in the sovereign waters of individual nations.</p>"
-  },
-  {
-    "title": "Is the information I’m seeing in the map in real-time?",
-    "content": "<p>The data you see on the Global Fishing Watch map is available in “near real-time,” typically within 72 hours.</p>"
-  },
-  {
-    "title": "What is the difference between MPA – No Take and MPA – Restricted Use?",
-    "content": "<p>An MPA – No Take prohibits all fishing and other extraction measures within its boundaries. An MPA – Restricted Use allows fishing but imposes restrictions such as quotas, seasonal closures, or limits on certain types of fishing gear, methods or fishing sections (commercial vs. recreational).</p>"
-  },
-  {
-    "title": "What is the significance of the EEZs?",
-    "content": "<p>An Exclusive Economic Zone (EEZ) is a sea zone extending 200 nautical miles from each nation’s coastline. Each country has special rights regarding exploration and use of resources within its EEZ. For example, if a country establishes that its fishing resources are being fully exploited by domestic fleets, it can exclude foreign vessels. A country can also allow foreign vessels to fish in its EEZ and can sell them fishing licenses, generating revenue.</p>"
-  },
-  {
-    "title": "Won’t this tip off the fishing industry to where all the fish are?",
-    "content": "<p>Not really. Commercial fishing fleets are already using sophisticated technology like helicopters, tracking beacons, fish-finding sonar, and even fish forecasts based on satellite data to find and catch every fish they can. Global Fishing Watch shows where fishing activity has apparently occurred; it doesn’t predict where fish are likely to be in the future. The 72-hour time lag also limits the use of Global Fishing Watch as a “fish tracking” tool.</p>"
-  },
-  {
-    "title": "Why are there large circles in which there is no apparent fishing?",
-    "content": "<p>The large circles without fishing are almost always EEZs around islands that heavily restrict or prohibit fishing (if you turn on the EEZ Layer in the Global Fishing Watch Map, you will see that they often line up with these blank areas). The circles could also be Marine Protected Areas that prohibit fishing (you can turn on the MPA layers to see if that’s the case).</p>"
-  },
-  {
-    "title": "Why is there fishing in an area marked as an MPA?",
-    "content": "<p>Many Marine Protected Areas manage or restrict fishing within their borders but do not prohibit all fishing.</p>"
-  },
-  {
-    "title": "Can scientists and researchers get access to the raw data in Global Fishing Watch?",
-    "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a href=\"/contact-us\">contact us</a> if you are interested</p>"
-  },
-  {
-    "title": "How do I reach Global Fishing Watch with a press inquiry?",
-    "content": "<p>Please fill out our <a href=\"/contact-us\">contact us</a> if you are interested or contact Dustin Cranor at (954) 348-1314 or via email at <a href=\"mailto:dcranor@oceana.org.\">dcranor@oceana.org</a>.</p>"
+    "title": "Contact Global Fishing Watch",
+    "questions": [
+      {
+        "title": "Can scientists and researchers get access to the raw data in Global Fishing Watch?",
+        "content": "<p>We have several ways of collaborating with scientists and researchers, including allowing them access to the underlying AIS data. Please <a class=\"gfw-link\" href=\"/contact-us\">contact us</a> if you are interested.</p>"
+      },
+      {
+        "title": "How do I reach Global Fishing Watch with a press inquiry?",
+        "content": "<p>Please complete the contact form <a class=\"gfw-link\" href=\"/contact-us\">here</a> if you are interested or contact Dustin Cranor at (954) 348-1314 or via email at <a class=\"gfw-link\" href=\"mailto:dcranor@oceana.org\">dcranor@oceana.org</a>.</p>"
+      }
+    ]
   }
 ]

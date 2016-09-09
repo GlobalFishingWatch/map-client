@@ -16,6 +16,7 @@ const webpackConfig = {
 
   entry: [
     'whatwg-fetch',
+    path.join(rootPath, 'app/src/util/assignPolyfill.js'),
     path.join(rootPath, 'app/src/index.jsx')
   ],
 
@@ -43,10 +44,14 @@ const webpackConfig = {
       VERSION: JSON.stringify(packageJSON.version),
       EMBED_MAP_URL: JSON.stringify(envVariables.EMBED_MAP_URL),
       MAP_API_ENDPOINT: JSON.stringify(envVariables.MAP_API_ENDPOINT),
-      BLOG_API_ENDPOINT: JSON.stringify(envVariables.BLOG_API_ENDPOINT),
+      BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
       FAQ_JSON_URL: JSON.stringify(envVariables.FAQ_JSON_URL),
       DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
-      ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL)
+      ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
+      REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,
+      DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
+      GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
+      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL)
     })
   ],
 
@@ -66,7 +71,7 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localI‌​dentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
       },
       {
         test: /\.css$/,

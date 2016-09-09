@@ -12,7 +12,7 @@ import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
 import NoLogin from '../containers/Map/NoLogin';
-import MapFooter from './Map/MapFooter';
+import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -25,7 +25,6 @@ class Map extends Component {
       overlay: null,
       addedLayers: [],
       lastCenter: null,
-      shareModalOpened: false,
       running: 'stop'
     };
 
@@ -405,7 +404,7 @@ class Map extends Component {
   render() {
     return (<div>
       <Modal
-        opened={!this.props.token}
+        opened={!this.props.token && REQUIRE_MAP_LOGIN}
         closeable={false}
         close={() => {}}
       >
@@ -415,14 +414,14 @@ class Map extends Component {
         <Share />
       </Modal>
       <Header />
-      <div className={map.map_container} ref="mapContainer">
+      <div className={map['map-container']} ref="mapContainer">
 
-        <div className={map.zoom_controls}>
-          <span id="share_map" onClick={this.props.openShareModal}>S</span>
-          <span id="zoom_up" onClick={this.changeZoomLevel}>+</span>
-          <span id="zoom_down" onClick={this.changeZoomLevel}>-</span>
+        <div className={map['zoom-controls']}>
+          <span className={map.control} id="share_map" onClick={this.props.openShareModal}>S</span>
+          <span className={map.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
+          <span className={map.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map.timebar_container}>
+        <div className={map['timebar-container']}>
           <Timebar />
         </div>
         <ControlPanel />
@@ -453,13 +452,12 @@ class Map extends Component {
           }
         />
       </div>
-      <MapFooter />
+      <FooterMini />
     </div>);
   }
 }
 
 Map.propTypes = {
-  location: React.PropTypes.object,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
   setZoom: React.PropTypes.func,

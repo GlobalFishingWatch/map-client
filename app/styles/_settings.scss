@@ -1,26 +1,36 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,700);
-@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700);
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700');
 
 // Font families
 $font-family-1: 'Roboto', sans-serif;
 $font-family-2: 'Roboto Slab', serif;
 
 // Layout
-$max-width-wrap: 1060px;
-$wrap-xl: 112px;
+$max-width: 1280px;
+$wrap-mobile: 25px;
+// $wrap-tablet is random. Feel free to change it if you know
+// what size should have wraps in tablet.
+$wrap-tablet: 55px;
+$wrap-desktop: 115px;
+
+// Map
+$timebar-height: 70px;
+$duration-picker-height: 24px;
 
 
 // Font sizes
 $font-size-tiny: 10px;
 $font-size-x-small: 12px;
-$font-size-small: 14px;
+$font-size-xs-small: 13px;
+$font-size-small: 14px; // UI kit
 $font-size-normal: 16px;
 $font-size-x-normal: 18px;
 $font-size-medium: 20px;
-$font-size-x-medium: 25px;
+$font-size-x-medium: 25px; // UI kit
 $font-size-big: 30px;
 $font-size-x-big: 34px;
-$font-size-xx-big: 40px;
+$font-size-xx-big: 40px; // UI kit
+$font-size-xxx-big: 70px; // UI kit
 $font-size-huge: 100px;
 
 // Font weights
@@ -37,19 +47,25 @@ $color-5: #b8b8b8;
 $color-6: #ef4323;
 $color-7: #294480;
 $color-8: #18306d;
-$color-9: #4a4a4a;
+$color-9: #4a4a4a; // UI kit
 $color-10: #e8f4f9;
 $color-11: #0d1a34;
 $color-12: #000;
 $color-13: #2b4f93;
 $color-19: #174084;
+$color-20: #bfbfbf;
+$color-21: #121a2a; // UI kit map
+$color-22: rgba(7, 51, 56, .3); // UI kit map
+$color-23: #032044; // used for gradient at homepage
+$color-24: rgba(3, 32, 68, 0); // used for gradient at homepage
+$color-25: rgba(255, 255, 255, .7); // image attribution
 
 // Colors to review
 $color-14: #2d3a57;
 $color-15: #0d1d3f;
-$color-16: rgba(255, 255, 255, 0.9);
+$color-16: rgba(255, 255, 255, .9);
 $color-17: #111;
-$color-18: rgba(255, 255, 255, 0.9);
+$color-18: rgba(255, 255, 255, .9);
 
 
 // Breakpoints

@@ -1,66 +1,49 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import CoverPage from '../../../styles/components/c-cover-page.scss';
+import baseStyle from '../../../styles/application.scss';
 import LogoLDF from '../../../assets/logos/ldf_logo.png';
 import Header from '../../containers/Header';
-import MenuMobile from './MenuMobile';
-import sliderBackground1 from '../../../assets/images/background_1.png';
-import sliderBackground2 from '../../../assets/images/background_2.png';
-import sliderBackground3 from '../../../assets/images/background_3.png';
-import sliderBackground4 from '../../../assets/images/background_4.png';
-import sliderBackground5 from '../../../assets/images/background_5.png';
-import sliderBackground6 from '../../../assets/images/background_6.png';
-import sliderBackground7 from '../../../assets/images/background_7.png';
-import sliderBackground8 from '../../../assets/images/background_8.png';
-import sliderBackground9 from '../../../assets/images/background_9.png';
-import sliderBackground10 from '../../../assets/images/background_10.png';
+import ImageAttribution from './ImageAttribution';
 
 class CoverPrimary extends Component {
 
-  constructor(props) {
-    super(props);
-    this.images = [
-      sliderBackground1,
-      sliderBackground2,
-      sliderBackground3,
-      sliderBackground4,
-      sliderBackground5,
-      sliderBackground6,
-      sliderBackground7,
-      sliderBackground8,
-      sliderBackground9,
-      sliderBackground10
-    ];
-  }
-
   componentWillMount() {
-    this.backgroundImage = this.getBackground(this.props.backgroundImageIndex);
-  }
-
-  getBackground(index = null) {
-    if (!index) {
-      return this.images[Math.floor(Math.random() * this.images.length)];
-    }
-
-    return this.images[index - 1];
+    this.backgroundImage = this.props.backgroundImage;
   }
 
   render() {
+    const attribution = this.props.attribution ? `Photo: ${this.props.attribution}` : null;
+
+    const ldfLogo = (
+      <div className={CoverPage['footer-header']}>
+        <div>
+          <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo"></img>
+        </div>
+      </div>
+    );
+
     return (
-      <section className={CoverPage['c-cover-page']} style={{ backgroundImage: `url(${this.backgroundImage})` }}>
-        <div className={CoverPage['layer-cover']}>
-          <MenuMobile />
+      <section
+        className={CoverPage['c-cover-page']}
+        style={{ backgroundImage: `url(${this.backgroundImage})` }}
+      >
+        <div className={classnames(CoverPage['layer-cover'], CoverPage['-sub-page'])}>
           <Header />
-          <h1 className={CoverPage['cover-main-title']}>
-            {this.props.title}
-          </h1>
-          <p className={CoverPage['cover-main-subtitle']}>
-            {this.props.subtitle}
-          </p>
-          <div className={CoverPage['footer-header']}>
-            <div>
-              <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="Leonardo Dicaprio Foundation" />
+          <div className={baseStyle.wrap}>
+            <div className={CoverPage['contain-text-cover']}>
+              <h1 className={CoverPage['cover-main-title']}>
+                {this.props.title}
+              </h1>
+              <p className={CoverPage['cover-main-subtitle']}>
+                {this.props.subtitle}
+              </p>
             </div>
+            {this.props.showLDFLogo && ldfLogo}
           </div>
+          {attribution && <ImageAttribution>
+            {attribution}
+          </ImageAttribution>}
         </div>
       </section>
     );
@@ -70,7 +53,12 @@ class CoverPrimary extends Component {
 CoverPrimary.propTypes = {
   title: React.PropTypes.any,
   subtitle: React.PropTypes.any,
-  backgroundImageIndex: React.PropTypes.number.optional
+  attribution: React.PropTypes.any,
+  backgroundImage: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.string
+  ]),
+  showLDFLogo: React.PropTypes.bool
 };
 
 export default CoverPrimary;

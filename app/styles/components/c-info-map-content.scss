@@ -1,7 +1,9 @@
 @import '../settings';
 
 .c-info-map-content {
-  width: 360px;
+  max-width: 360px;
+  position: relative;
+  z-index: 1;
 
   h2 {
     color: $color-4;
