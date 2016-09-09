@@ -26,8 +26,11 @@
     max-width: 140px;
     width: 100%;
 
+    &.-small {
+      max-width: 90px;
+    }
+
     @media #{$mq-tablet} {
-      margin-right: 10px;
 
       &.-small {
         max-width: 90px;
