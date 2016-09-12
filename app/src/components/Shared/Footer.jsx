@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_white.png';
 import logogoogle from '../../../assets/logos/google_logo.png';
@@ -38,7 +39,7 @@ export default function () {
           </div>
           <div className={footerStyle['sponsor-footer']}>
             <ul className={footerStyle['logo-list-funding']}>
-              <li className={footerStyle['logo-item']}>
+              <li className={classnames(footerStyle['logo-item'], footerStyle['-funding-logo'])}>
                 <span className={footerStyle['funding-text']}>Funding Partners</span>
                 <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
               </li>

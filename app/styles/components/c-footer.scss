@@ -12,7 +12,7 @@
 
     @media #{$mq-mobile-large} {
       justify-content: space-between;
-      padding: 0 0 50px;
+      padding: 0 0 30px;
     }
 
     @media screen and (min-width: 845px) {
@@ -51,7 +51,7 @@
         display: block;
         font-size: $font-size-normal;
         margin-bottom: 15px;
-        margin-top: 45px;
+        margin-top: 0;
 
         @media screen and (min-width: 845px) {
           display: none;
@@ -87,13 +87,26 @@
             top: 12px;
           }
         }
+
+        &.-funding-logo {
+          border-top: 1px solid rgba($color-4, .2);
+          margin-top: 30px;
+          max-width: 100%;
+          padding-top: 30px;
+
+          @media screen and (min-width: 845px) {
+            border-top: 0;
+            margin-top: 0;
+            max-width: none;
+            padding-top: 0;
+          }
+        }
       }
 
       .logo-item > .logo {
         display: block;
         max-width: 130px;
         width: 100%;
-
 
         &.-oceana {
           max-width: 130px;
