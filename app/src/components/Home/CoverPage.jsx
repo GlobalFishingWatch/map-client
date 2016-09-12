@@ -117,14 +117,14 @@ class CoverPage extends Component {
       dots: loadedEntries,
       arrows: false,
       dotsClass: CoverPageStyle['dots-cover'],
-      infinite: this.state.windowWidth >= 768,
-      draggable: this.state.windowWidth <= 768,
+      infinite: this.state.windowWidth > 768,
+      draggable: this.state.windowWidth < 768,
       beforeChange: (currentSlider, nextSlider) => {
         this.onSliderChange(nextSlider);
       },
       autoplay: this.state.windowWidth > 768 ? this.state.autoPlaySlider : false,
       autoplaySpeed: this.state.windowWidth > 768 ? this.state.speedPlaySlider : 0,
-      adaptiveHeight: this.state.windowWidth <= 768
+      adaptiveHeight: this.state.windowWidth < 768
     };
 
     let coverEntriesContent = (
