@@ -53,6 +53,7 @@
     position: absolute;
     top: 10px;
     width: 40px;
+    z-index: 1;
 
     @media screen and (min-width: 550px) {
       left: 0;
