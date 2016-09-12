@@ -107,8 +107,12 @@
 
   //Cover different with quote and different kind of text
   .leo-slider {
-    min-height: 500px;
     padding-top: 25px;
+
+    @media #{$mq-mobile-large} {
+      min-height: 500px;
+      padding-top: 120px;
+    }
 
     @media #{$mq-tablet} {
       padding-top: 120px;
