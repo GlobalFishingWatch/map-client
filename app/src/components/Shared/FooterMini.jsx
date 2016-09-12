@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
 import ContainerFooterStyle from '../../../styles/components/shared/c-container-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
-import logosky from '../../../assets/logos/skytruth_logo.jpg';
+import logosky from '../../../assets/logos/skytruth_white.png';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
 // import SupportModal from '../../components/Map/SupportModal';

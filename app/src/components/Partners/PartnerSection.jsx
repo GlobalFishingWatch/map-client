@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import BaseStyle from '../../../styles/_base.scss';
 import PartnerSectionStyle from '../../../styles/components/c-partner-section.scss';
 import oceanaLogo from '../../../assets/logos/oceana_logo.png';
-import skyLogo from '../../../assets/logos/skytruth_logo.jpg';
+import skyLogo from '../../../assets/logos/skytruth_blue.png';
 import googleLogo from '../../../assets/logos/google_logo_color.png';
 
 class PartnerSection extends Component {
