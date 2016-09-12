@@ -14,6 +14,9 @@ import McCauleyLogo from '../../assets/research-partners/mccauley-logo.png';
 import MarineGeospatialLogo from '../../assets/research-partners/marine-logo.png';
 import SustainableFisheries from '../../assets/research-partners/sustainable-logo.png';
 import WormLabLogo from '../../assets/research-partners/worm-lab.svg';
+import UbcLogo from '../../assets/research-partners/ubc_logo.jpg';
+import PristineLogo from '../../assets/research-partners/pristine_logo.gif';
+import FaoLogo from '../../assets/research-partners/fao_logo.png';
 
 class ResearchProgram extends Component {
 
@@ -103,6 +106,46 @@ class ResearchProgram extends Component {
               </article>
               <article className={StaticPageStyles['section-item']}>
                 <img
+                  className={classnames(StaticPageStyles['logo-partner'], StaticPageStyles['-small'])}
+                  src={FaoLogo}
+                  alt="Food and Agriculture Organization of the United Nations"
+                />
+                <h4 className="section-subtitle">Food and Agriculture Organization of the United Nations (FAO)</h4>
+                <p>
+                FAO plays a leading role in international fisheries policy working with
+                a wide range of partners, including Governments, Regional Fisheries
+                Bodies, cooperatives, fishing communities and more. UN-FAO
+                will collaborate on new platforms and research methodologies
+                that will build on Global Fishing Watch and global vessel r
+                egistries for understanding and reporting high resolution spatial
+                fishery statistics, and proposing transparency tools to support
+                States in improving their monitoring, control and surveillance
+                of fishing activities.
+                </p>
+              </article>
+              <article className={StaticPageStyles['section-item']}>
+                <img
+                  className={StaticPageStyles['logo-partner']}
+                  src={PristineLogo}
+                  alt="National Geographic: Pristine Seas"
+                />
+                <h4 className="section-subtitle">National Geographic: Pristine Seas</h4>
+                <p>
+                  The National Geographic Society´s Explorer-in-Residence Dr. Enric
+                  Sala launched the Pristine Seas project in 2008 to identify,
+                  survey, document, and protect the last truly wild places
+                  in the ocean. Through exploration, scientific research,
+                  economic and policy analysis, and outreach, they have
+                  worked to help establish protected areas covering more
+                  than three million square kilometers of ocean
+                  territory. Working with Global Fishing Watch,
+                  new models are being developed to identify
+                  regions of the high seas that are ecologically u
+                  nique and economically viable for protection.
+                </p>
+              </article>
+              <article className={StaticPageStyles['section-item']}>
+                <img
                   className={StaticPageStyles['logo-partner']}
                   src={StanfordLogo}
                   alt="Stanford University: Block Lab"
@@ -116,6 +159,26 @@ class ResearchProgram extends Component {
                   patterns of high-seas fishing activity across the globe and how global fishing fleets interact with
                   large pelagic fish and sharks. This work will be applied to inform marine spatial planning and
                   fisheries management for areas outside national jurisdictions.
+                </p>
+              </article>
+              <article className={StaticPageStyles['section-item']}>
+                <img
+                  className={classnames(StaticPageStyles['logo-partner'], StaticPageStyles['-small'])}
+                  src={UbcLogo}
+                  alt="University of British Columbia: Institute for Oceans and Fisheries"
+                />
+                <h4 className="section-subtitle">University of British Columbia: Institute for Oceans and Fisheries</h4>
+                <p>
+                  Within the Institute for Oceans and Fisheries, Global
+                  Fishing Watch is collaborating with three specific
+                  programs: the Sea Around Us, the Fisheries Economics
+                  Research Unit & the OceanCanada Partnership, and
+                  the Changing Ocean Research Unit & NF Nereus Program.
+                  These programs bring a wealth of expertise in catch
+                  reconstruction and fleet distributions, economic fishery
+                  modeling, and environmental and climate implications for
+                  fisheries. We are excited to blend their proven methodologies
+                  with new global data sources from AIS analysis.
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
