@@ -76,6 +76,7 @@
   }
 
   :global .slick-next {
+    min-width: 20px;
 
     &::before {
       transform: rotate(-135deg);
@@ -83,6 +84,7 @@
   }
 
   :global .slick-prev {
+    min-width: 20px;
 
     &::before {
       transform: rotate(45deg);
