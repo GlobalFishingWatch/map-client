@@ -173,6 +173,18 @@ class ContactUsForm extends Component {
             className={buttonStyle['c-button-contact']}
           >SEND</button>
         </form>
+        <div className={contactStyle['emails-text']}>
+          For media or press inquiries, please contact:
+          <ul>
+            <li>Oceana: Dustin Cranor, <a href="mailto:youremailaddress">dcranor@oceana.org</a>, 954.348.1314</li>
+            <li>SkyTruth: Jenny Allen, <a href="mailto:youremailaddress">jenny@skytruth.org</a>, 304.582.2031</li>
+            <li>Google: Mara Harris, <a href="mailto:youremailaddress">press@google.com</a></li>
+          </ul>
+        </div>
+        <div className={contactStyle['emails-text']}>
+          For Research Program related inquiries, please contact
+          <a href="mailto:youremailaddress">research@globalfishingwatch.org</a>.
+        </div>
       </section>
     </div>);
   }
