@@ -6,6 +6,15 @@
   position: relative;
   transition: background-image .2s ease-in-out;
 
+  :global .slick-slider {
+    position: static;
+
+    @media #{$mq-tablet} {
+      position: relative;
+    }
+
+  }
+
   .links-home-page {
     align-items: center;
     color: $color-4;
@@ -220,21 +229,30 @@
     .ldf-logo {
       display: block;
       margin-top: 15px;
-      width: 140px;
+      width: 100px;
+
+      @media #{$mq-tablet} {
+        width: 140px;
+      }
     }
   }
 
   //dots control de slider at home
   .dots-cover {
+    bottom: 30px;
+    left: 0;
     line-height: 0;
     list-style: none;
-    position: relative;
+    position: absolute;
+    right: 0;
     text-align: center;
-    top: 140px;
 
     @media #{$mq-tablet} {
+      bottom: 0;
+      position: relative;
       text-align: inherit;
       top: 0;
+
     }
 
     :global .slick-active {
@@ -289,6 +307,14 @@
         }
       }
     }
+
+    .-small{
+      top: 110px;
+    }
+  }
+
+  :global .dots-cover-small{
+    top: 110px;
   }
 
   .selected-box {
