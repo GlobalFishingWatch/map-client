@@ -39,7 +39,9 @@ class CoverPage extends Component {
       if (!this.state.autoPlaySlider) {
         return;
       }
-      this.setState({ autoPlaySlider: false });
+      this.setState({
+        autoPlaySlider: false
+      });
     });
     window.addEventListener('resize', this.handleResize);
   }
@@ -156,8 +158,8 @@ class CoverPage extends Component {
     const sliderBackground = sliderBackgrounds.length ? sliderBackgrounds[this.state.currentSlider] : sliderBackground1;
     const sliderAttribution = (sliderBackgrounds.length ?
       sliderAttributions[this.state.currentSlider] : '© OCEANA / Juan Cuetos');
-
     return (
+
       <div
         className={classnames(CoverPageStyle['c-cover-page'], CoverPageStyle['-is-home'])}
         style={{ backgroundImage: `url(${sliderBackground})` }}
@@ -172,8 +174,11 @@ class CoverPage extends Component {
             </div>
             <div className={CoverPageStyle['footer-header']}>
               <div className={CoverPageStyle['contain-ldf']}>
-                <span className={CoverPageStyle['brought-text']}>Brought to you by:</span>
-                <img className={CoverPageStyle['ldf-logo']} src={LogoLDF} alt="logo"></img>
+                <img
+                  className={CoverPageStyle['ldf-logo']}
+                  src={LogoLDF} alt="logo"
+                >
+                </img>
               </div>
             </div>
           </div>
