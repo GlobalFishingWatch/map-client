@@ -79,6 +79,7 @@
     min-width: 20px;
 
     &::before {
+      right: 5px;
       transform: rotate(-135deg);
     }
   }
