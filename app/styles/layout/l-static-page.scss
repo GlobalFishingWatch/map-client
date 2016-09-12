@@ -43,6 +43,36 @@
     }
   }
 
+  .testimonial {
+    & + .testimonial {
+      margin-top: 65px;
+    }
+  }
+
+  .testimonial > iframe {
+    display: block;
+    height: 100%;
+    min-height: 250px;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      height: 390px;
+      width: 100%;
+    }
+  }
+
+  .testimonial > .video-quote {
+    margin: 30px 0 35px;
+
+    &.-big-author {
+      margin: 30px 0 0;
+    }
+  }
+
+  .testimonial > .autor-quote {
+    font-weight: $font-weight-bold;
+  }
+
   &.-faq {
     .question-group {
 
@@ -123,6 +153,8 @@
   &.-about {
     margin: 0 auto;
     max-width: 700px;
+
+
   }
 
   &.-research-program {
@@ -147,28 +179,6 @@
 
     :global .section-subtitle {
       margin: 20px 0 5px;
-    }
-
-    .testimonial {
-      & + .testimonial {
-        margin-top: 65px;
-      }
-    }
-
-    .testimonial > iframe {
-      display: block;
-      height: 100%;
-      min-height: 250px;
-      width: 100%;
-
-      @media #{$mq-tablet} {
-        height: 390px;
-        width: 100%;
-      }
-    }
-
-    .testimonial > .video-quote {
-      margin: 30px 0 35px;
     }
   }
 }
