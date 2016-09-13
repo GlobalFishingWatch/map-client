@@ -61,10 +61,10 @@ class FooterMini extends Component {
           {expandedFooter}
         {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
           <ul>
-            <div>
+            <div className={ContainerFooterStyle.cartodb}>
               <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             </div>
-            <div>
+            <div className={ContainerFooterStyle['other-attributions']}>
               <li>
                 <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
               </li>

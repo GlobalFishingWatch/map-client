@@ -51,6 +51,30 @@
       justify-content: space-between;
       list-style: none;
 
+      .cartodb {
+        left: 18px;
+        margin-bottom: 12px;
+        position: relative;
+
+        @media screen and (min-width: 380px) {
+          left: 0;
+          margin-bottom: 0;
+          position: inherit;
+        }
+      }
+
+      .other-attributions {
+        position: relative;
+        right: 20px;
+        text-indent: 40px;
+
+        @media screen and (min-width: 380px) {
+          position: inherit;
+          right: 0;
+          text-indent: 0;
+        }
+      }
+
       div {
         display: flex;
 
