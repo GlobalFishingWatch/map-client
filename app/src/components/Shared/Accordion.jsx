@@ -12,17 +12,46 @@ class Accordion extends Component {
     super(props);
     this.state = {
       // This attribute will contain array of strings being the height of each item in px
-      maxHeights: null
+      maxHeights: null,
+      // Whether the heights of the content of the items have been computed
+      initialized: false
     };
   }
 
   componentDidMount() {
-    const itemsContent = [...this.refs.items.querySelectorAll(`.${AccordionStyles['item-content']}`)];
+    // Usually, the entries should be available at time of instanciation but sometimes they are loaded
+    // asynchronously. In that case, we compute the max-height in componentDidUpdate.
+    if (this.props.entries && this.props.entries.length) {
+      const itemsContent = [...this.refs.items.querySelectorAll(`.${AccordionStyles['item-content']}`)];
 
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      maxHeights: itemsContent.map(content => `${content.getBoundingClientRect().height}px`)
-    });
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({
+        maxHeights: itemsContent.map(content => `${content.getBoundingClientRect().height}px`),
+        initialized: true
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // If the entries are loaded asynchronously, we compute the max-height at this stage
+    if ((!prevProps.entries || !prevProps.entries.length) && this.props.entries && this.props.entries.length) {
+      const itemsContent = [...this.refs.items.querySelectorAll(`.${AccordionStyles['item-content']}`)];
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        maxHeights: itemsContent.map(content => `${content.getBoundingClientRect().height}px`),
+        initialized: true
+      });
+    }
+
+    // Once the component is initialized (the max-height have been computed) and the DOM has been rendered,
+    // if this.props.autoscroll is true, then we scroll down to the active item
+    if (!prevState.initialized && this.state.initialized && this.props.autoscroll && this.props.currentAccordionIndex) {
+      const items = [...this.refs.items.querySelectorAll(`.${AccordionStyles['accordion-item']}`)];
+      const item = items[this.props.currentAccordionIndex];
+      const topPosition = window.scrollY + item.getBoundingClientRect().top;
+      $('html, body').animate({ scrollTop: topPosition }, 500);
+    }
   }
 
   onItemClick(index, slug) {
@@ -45,7 +74,7 @@ class Accordion extends Component {
       const needsDelay = !this.props.currentAccordionIndex || this.props.currentAccordionIndex < index;
       const delay = 500; // The delay depends on the CSS transitions, please make sure to update both of them at once
       const scrollAndExpand = () => requestAnimationFrame(() => {
-        const topPosition = clickedItem.offsetTop;
+        const topPosition = window.scrollY + clickedItem.getBoundingClientRect().top;
         $('html, body').animate({ scrollTop: topPosition }, 500);
       });
       // We need a double rAF here so we make sure the layout has been updated by the browser
@@ -68,7 +97,7 @@ class Accordion extends Component {
         // After that, or the height of each item is 0 (collapsed) or the value store in the state
         // (expanded).
         let maxHeight = 'auto';
-        if (this.state.maxHeights) {
+        if (this.state.initialized) {
           if (isItemExpanded) maxHeight = this.state.maxHeights[index];
           else maxHeight = 0;
         }

@@ -10,28 +10,40 @@ import Accordion from './Shared/Accordion';
 
 class Definitions extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentAccordionIndex: null
+    };
+  }
+
   componentDidMount() {
     this.props.getDefinitionEntries();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.openAccordionItem(nextProps.definitionEntries, nextProps.params.term);
+    const urlSlug = this.props.params.term;
+
+    // If we just got the entries and we have a slug in the URL, we expand the corresponding item
+    if (!this.props.definitionEntries && nextProps.definitionEntries && urlSlug) {
+      const currentAccordionIndex = _.findIndex(nextProps.definitionEntries, entry => entry.slug === urlSlug);
+      this.setState({ currentAccordionIndex });
+    }
   }
 
   onAccordionItemClick(index, slug) {
     this.props.push(slug);
-  }
-
-  openAccordionItem(definitionEntries, slug) {
-    let currentAccordionIndex = _.findIndex(definitionEntries, entry => entry.slug === slug);
 
     // close accordion item if clicked again
-    if (this.state && this.state.currentAccordionIndex === currentAccordionIndex) {
-      currentAccordionIndex = null;
+    if (this.state.currentAccordionIndex === index) {
+      this.setState({
+        currentAccordionIndex: null
+      });
+      return;
     }
 
     this.setState({
-      currentAccordionIndex
+      currentAccordionIndex: index
     });
   }
 
@@ -39,7 +51,7 @@ class Definitions extends Component {
     const accordion = (<Accordion
       entries={this.props.definitionEntries}
       onAccordionItemClick={(index, slug) => { this.onAccordionItemClick(index, slug); }}
-      currentAccordionIndex={(this.state) ? this.state.currentAccordionIndex : null}
+      currentAccordionIndex={this.state.currentAccordionIndex}
       autoscroll
     />);
 
