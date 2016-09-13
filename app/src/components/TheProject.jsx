@@ -94,10 +94,10 @@ class TheProject extends Component {
                   Fishing Watch is going to change that, because now somebody
                   can be watching, purely and simply. We can see what they
                   are doing and that’s going to make a big difference.”</i>
-                  <span>– Dr. Jane Lubchenco, U.S. Science Envoy for the Ocean,
+                  – Dr. Jane Lubchenco, U.S. Science Envoy for the Ocean,
                   U.S. Department of State; Distinguished University Professor,
                   Oregon State University; former Administrator at the National
-                  Oceanic and Atmospheric Association</span>
+                  Oceanic and Atmospheric Association
                 </p>
               </article>
 
@@ -113,7 +113,7 @@ class TheProject extends Component {
                     global and publicly available. This is the beginning
                     of the end of illegal fishing.”
                   </i>
-                  <span>– Dr. Enric Sala, Explorer-in-Residence, National Geographic Society</span>
+                  – Dr. Enric Sala, Explorer-in-Residence, National Geographic Society
                 </p>
               </article>
 
@@ -136,7 +136,7 @@ class TheProject extends Component {
                   could turn on or turn off their AIS systems
                   and nobody really noticed. But now, it’s going
                   o be a lot harder.”</i>
-                  <span>– Chris Pala, Freelance Journalist</span>
+                  – Chris Pala, Freelance Journalist
                 </p>
               </article>
 
@@ -145,7 +145,7 @@ class TheProject extends Component {
                   <i>“Global Fishing Watch is a transformative tool
                   to identify fishing activity and verify
                   fleets are fishing both sustainably and responsibly.”</i>
-                  <span>– Alexandra Cousteau, Ocean Advocate</span>
+                  – Alexandra Cousteau, Ocean Advocate
                 </p>
               </article>
 
@@ -156,7 +156,7 @@ class TheProject extends Component {
                   to ensure that all fishing efforts in our waters are seen
                   and recorded. Once Global Fishing Watch kicks in,
                   no fishing boat will be able to hide.”</i>
-                  <span>– Susi Pudjiastuti, Minister of Maritime Affairs and Fisheries, Indonesia</span>
+                  – Susi Pudjiastuti, Minister of Maritime Affairs and Fisheries, Indonesia
                 </p>
               </article>
 
@@ -168,9 +168,9 @@ class TheProject extends Component {
                   scientist, government and ocean advocate will be
                   well equipped with information to help reverse
                   current trends and rebuild ocean abundance.”</i>
-                  <span>– Dr. Daniel Pauly, Professor, Institute for the Oceans
+                  – Dr. Daniel Pauly, Professor, Institute for the Oceans
                   and Fisheries & Department of Zoology, The University
-                  of British Columbia</span>
+                  of British Columbia
                 </p>
               </article>
             </section>

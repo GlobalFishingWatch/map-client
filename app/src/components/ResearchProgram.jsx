@@ -250,7 +250,7 @@ class ResearchProgram extends Component {
                     everything we don in fisheries could
                     be revolutionized by Global Fishing Watch.”
                   </i>
-                  <span>– Dr. Chris Costello</span>
+                  – Dr. Chris Costello
                 </p>
 
                 <Link
@@ -272,7 +272,7 @@ class ResearchProgram extends Component {
                 <p className={StaticPageStyles['video-quote']}>
                   <i>“I think Global Fishing Watch could play a key role in making human use of the
                   ocean transparent to everybody.”</i>
-                  <span>– Dr. Boris Worm</span>
+                  – Dr. Boris Worm
                 </p>
 
                 <Link
@@ -295,7 +295,7 @@ marine-ecologist-boris-worm.html"
                 <p className={StaticPageStyles['video-quote']}>
                   <i>“Until Global Fishing Watch came online, there was not a publicly available source of
                   information about where fishing was happening.”</i>
-                  <span>– Dr. Douglas McCauley</span>
+                  – Dr. Douglas McCauley
                 </p>
 
                 <Link
