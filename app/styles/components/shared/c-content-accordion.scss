@@ -55,10 +55,10 @@
 
   > .accordion-item .item-content {
     overflow: hidden;
-    transition: margin-top 750ms, max-height 750ms;
+    transition: margin-top 500ms, max-height 500ms;
 
     @media #{$mq-tablet} {
-      transition: margin-top 500ms, max-height 500ms;
+      transition: margin-top 300ms, max-height 300ms;
     }
 
     ul {
@@ -69,10 +69,10 @@
 
   > .accordion-item .-opened {
     margin-top: 20px;
-    transition: margin-top 1s, max-height 1s;
+    transition: margin-top 750ms, max-height 750ms;
 
     @media #{$mq-tablet} {
-      transition: margin-top 750ms, max-height 750ms;
+      transition: margin-top 300ms, max-height 300ms;
 
     }
   }

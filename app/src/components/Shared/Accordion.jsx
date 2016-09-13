@@ -43,7 +43,7 @@ class Accordion extends Component {
       // Finally, the first time an item is expanded, we shouldn't need a delay but because several accordions can
       // be present on the same page, we don't want an offset when a previous accordion collapses
       const needsDelay = !this.props.currentAccordionIndex || this.props.currentAccordionIndex < index;
-      const delay = 750; // The delay depends on the CSS transitions, please make sure to update both of them at once
+      const delay = 500; // The delay depends on the CSS transitions, please make sure to update both of them at once
       const scrollAndExpand = () => requestAnimationFrame(() => {
         const topPosition = clickedItem.offsetTop;
         $('html, body').animate({ scrollTop: topPosition }, 500);
