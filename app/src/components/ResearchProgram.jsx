@@ -171,8 +171,8 @@ class ResearchProgram extends Component {
                 <p>
                   Within the Institute for Oceans and Fisheries, Global
                   Fishing Watch is collaborating with three specific
-                  programs: the Sea Around Us, the Fisheries Economics
-                  Research Unit & the OceanCanada Partnership, and
+                  programs: the <i>Sea Around Us</i>, the Fisheries Economics
+                  Research Unit & the <i>OceanCanada</i> Partnership, and
                   the Changing Ocean Research Unit & NF Nereus Program.
                   These programs bring a wealth of expertise in catch
                   reconstruction and fleet distributions, economic fishery
