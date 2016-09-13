@@ -13,10 +13,13 @@
   z-index: 1000;
 
   > .content {
-    height: auto;
+    align-items: center;
+    display: flex;
+    height: 100%;
     margin-left: 10px;
+    max-height: calc(100% - 60px);
     position: relative;
-    width: calc(100 - 60px);
+    width: calc(100% - 60px);
 
     @media #{$mq-mobile-large} {
       max-width: 860px;
@@ -36,11 +39,19 @@
       background-color: $color-2;
       border: 1px solid rgba($color-3, .3);
       color: $color-4;
-      max-height: calc(100vh - 60px);
+      max-height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 40px;
       width: calc(100% - 10px);
+
+      .contain-button {
+        position: absolute;
+      }
+
+      .contain-padding {
+        padding: 40px;
+      }
+
     }
   }
 
