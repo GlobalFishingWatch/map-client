@@ -13,7 +13,7 @@ class CanvasLayer {
     this.visible = false;
     this.filters = filters;
     this.token = token;
-    this.vesselTransparency = vesselTransparency;
+    this.setVesselTransparency(vesselTransparency);
     this.setVesselColor(vesselColor);
 
     this.outerStartDate = filters.startDate;
@@ -31,8 +31,25 @@ class CanvasLayer {
       g: parseInt(vesselColor.slice(3, 5), 16),
       b: parseInt(vesselColor.slice(5, 7), 16)
     };
+    this._computeVesselColor();
   }
 
+  setVesselTransparency(vesselTransparency) {
+    this.vesselTransparency = vesselTransparency;
+    this._computeVesselColor();
+  }
+
+  _computeVesselColor() {
+    if (!this.vesselColor || !this.vesselTransparency) return;
+    // for now does not allows for varying levels of opacity
+    // by doing this we can batch drawing commands (fill called only once) - see drawVesselPoint
+    // and we don't have to do string interpolation for each point
+    // TODO check if varying levels of opacity are really needed.
+    // If so, sort values into 3-4 distinguishable opacity values into arrays
+    const finalOpacity = (100 - this.vesselTransparency) / 100;
+    this.precomputedVesselColor = `rgba(${this.vesselColor.r}\
+,${this.vesselColor.g},${this.vesselColor.b},${finalOpacity})`;
+  }
 
   /**
    * Hides the layer
@@ -217,9 +234,12 @@ class CanvasLayer {
     }
     const size = canvas.zoom > 6 ? 3 : 2;
 
+    const ctx = canvas.ctx;
+    ctx.fillStyle = this.precomputedVesselColor;
+
     for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
       this.drawVesselPoint(
-        canvas,
+        ctx,
         playbackData.x[index],
         playbackData.y[index],
         size,
@@ -248,6 +268,8 @@ class CanvasLayer {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
+    const ctx = canvas.ctx;
+    ctx.fillStyle = this.precomputedVesselColor;
     const size = canvas.zoom > 6 ? 3 : 2;
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
@@ -255,7 +277,7 @@ class CanvasLayer {
         continue;
       }
       this.drawVesselPoint(
-        canvas,
+        ctx,
         vectorArray.x[index],
         vectorArray.y[index],
         size,
@@ -394,30 +416,8 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(canvas, x, y, size, weight, sigma, drawTrail) {
-    const workCanvas = canvas;
-    const vesselTransparency = this.vesselTransparency;
-    const calculatedWeight = Math.min(weight / vesselTransparency, 1);
-
-    workCanvas.ctx.fillStyle = `rgba(${this.vesselColor.r}\
-,${this.vesselColor.g},${this.vesselColor.b},${calculatedWeight})`;
-    workCanvas.ctx.fillRect(x, y, size, size);
-
-    if (calculatedWeight > 0.5) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x + 1, y + 1, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y, size + 1, size + 1);
-      workCanvas.ctx.fillRect(x - 1, y - 1, size + 1, size + 1);
-    }
-
-    if (drawTrail) {
-      workCanvas.ctx.fillStyle = 'rgba(255,255,255,0.1)';
-      workCanvas.ctx.fillRect(x + 2, y + 1, size, size);
-      workCanvas.ctx.fillRect(x + 2, y + 2, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 1, size, size);
-      workCanvas.ctx.fillRect(x - 2, y - 2, size, size);
-    }
+  drawVesselPoint(ctx, x, y, size, weight, sigma, drawTrail) {
+    ctx.fillRect(x, y, size, size);
   }
 
   /**
