@@ -39,7 +39,12 @@
     .img-logo-partners {
       display: block;
       margin: 0 auto;
-      width: 200px;
+      max-width: 200px;
+      width: 100%;
+
+      &.-skytruth-logo {
+        max-width: 280px;
+      }
     }
   }
 
