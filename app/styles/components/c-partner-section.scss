@@ -16,7 +16,8 @@
 
     li {
       display: block;
-      font-size: $font-size-normal; //or $font-size-small
+      font-size: $font-size-small;
+      font-weight: $font-weight-bold;
       line-height: 1.5;
       margin-bottom: 0;
       width: 100%;
