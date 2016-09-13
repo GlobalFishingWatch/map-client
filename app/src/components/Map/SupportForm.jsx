@@ -131,12 +131,13 @@ class SupportForm extends Component {
           onChange={(event) => { this.handleChange(event); }}
         />
         <div className={supportFormStyle['container-submit']}>
-          <input
+          <button
             type="submit"
-            value="Send"
             disabled={this.state.submitted}
             className={buttonStyle['c-button-submit-small']}
-          />
+          >
+          Send
+          </button>
         </div>
       </form>
     </section>);
