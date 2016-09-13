@@ -9,7 +9,7 @@ import ImageAttribution from './Shared/ImageAttribution';
 class ContactUs extends Component {
 
   render() {
-    return (<div>
+    return (<div className="full-height-container">
       <div className={contactStyle['c-contact']}>
         <Header />
         <div className={baseStyle.wrap}>
