@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP } from '../../constants';
+import { TIMELINE_STEP, API_RETURNED_KEYS } from '../../constants';
 import _ from 'lodash';
 
 class CanvasLayer {
@@ -450,53 +450,28 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
   }
 
   /**
-   * TODO: clarify exactly what this does
+   * As data will come in multiple arrays (1 per year basically), they need to be merged here
    *
-   * @param vectorArray
+   * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
    * @returns {*}
    */
-  groupData(vectorArray) {
-    const data = vectorArray[0];
-    if (vectorArray && vectorArray.length > 1) {
-      for (let index = 1, length = vectorArray.length; index < length; index++) {
-        if (vectorArray[index] !== null) {
-          if (index === 1) {
-            data.category = Array.prototype.slice.call(data.category).concat(
-              Array.prototype.slice.call(vectorArray[index].category)
-            );
-            data.datetime = Array.prototype.slice.call(data.datetime).concat(
-              Array.prototype.slice.call(vectorArray[index].datetime)
-            );
-            data.latitude = Array.prototype.slice.call(data.latitude).concat(
-              Array.prototype.slice.call(vectorArray[index].latitude)
-            );
-            data.longitude = Array.prototype.slice.call(data.longitude).concat(
-              Array.prototype.slice.call(vectorArray[index].longitude)
-            );
-            data.series = Array.prototype.slice.call(data.series).concat(
-              Array.prototype.slice.call(vectorArray[index].series)
-            );
-            data.seriesgroup = Array.prototype.slice.call(data.seriesgroup).concat(
-              Array.prototype.slice.call(vectorArray[index].seriesgroup)
-            );
-            data.sigma = Array.prototype.slice.call(data.sigma).concat(
-              Array.prototype.slice.call(vectorArray[index].sigma)
-            );
-            data.weight = Array.prototype.slice.call(data.weight).concat(
-              Array.prototype.slice.call(vectorArray[index].weight)
-            );
-          } else {
-            data.category = data.category.concat(Array.prototype.slice.call(vectorArray[index].category));
-            data.datetime = data.datetime.concat(Array.prototype.slice.call(vectorArray[index].datetime));
-            data.latitude = data.latitude.concat(Array.prototype.slice.call(vectorArray[index].latitude));
-            data.longitude = data.longitude.concat(Array.prototype.slice.call(vectorArray[index].longitude));
-            data.series = data.series.concat(Array.prototype.slice.call(vectorArray[index].series));
-            data.seriesgroup = data.seriesgroup.concat(Array.prototype.slice.call(vectorArray[index].seriesgroup));
-            data.sigma = data.sigma.concat(Array.prototype.slice.call(vectorArray[index].sigma));
-            data.weight = data.weight.concat(Array.prototype.slice.call(vectorArray[index].weight));
-          }
-        }
-      }
+  groupData(vectorArrays) {
+    if (!vectorArrays || vectorArrays.length === 0) return null;
+    const data = {};
+
+    const cleanVectorArrays = vectorArrays.filter(vectorArray => vectorArray !== null);
+    const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
+
+    API_RETURNED_KEYS.forEach((key) => {
+      data[key] = new Float32Array(totalVectorArraysLength);
+    });
+
+    for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
+      const currentArray = cleanVectorArrays[index];
+      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
+      API_RETURNED_KEYS.forEach((key) => {
+        data[key].set(currentArray[key], offset);
+      });
     }
     return data;
   }
