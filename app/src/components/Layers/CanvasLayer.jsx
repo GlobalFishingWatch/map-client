@@ -306,18 +306,16 @@ class CanvasLayer {
     data.x = new Int32Array(data.latitude.length);
     data.y = new Int32Array(data.latitude.length);
 
-    for (let index = 0; index < data.latitude.length; index++) {
-      const pointLatLong = overlayProjection.fromLatLngToPoint(
-        new google.maps.LatLng(data.latitude[index], data.longitude[index])
-      );
+    for (let index = 0, length = data.latitude.length; index < length; index++) {
+      const lat = data.latitude[index];
+      const lng = data.longitude[index];
+      let x = (lng + 180) / 360 * 256;
+      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
+      x *= scale;
+      y *= scale;
 
-      const pointCoordinates = new google.maps.Point(
-        Math.floor(pointLatLong.x * scale),
-        Math.floor(pointLatLong.y * scale)
-      );
-
-      data.x[index] = ~~((pointCoordinates.x - tileBaseX) << zoomDiff);
-      data.y[index] = ~~((pointCoordinates.y - tileBaseY) << zoomDiff);
+      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
+      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
     }
     return data;
   }
