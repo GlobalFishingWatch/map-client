@@ -16,6 +16,11 @@ class PartnerSection extends Component {
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
             </div>
+            <ul className={PartnerSectionStyle['name-list']}>
+              <li>Andy Sharpless. Chief Executive Officer</li>
+              <li>Jackie Savitz. Vice President</li>
+              <li>Adam Reyer. Project Director</li>
+            </ul>
             <p>
               Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
               Oceana is
@@ -35,6 +40,11 @@ class PartnerSection extends Component {
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img src={skyLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo SkyTruth  "></img>
             </div>
+            <ul className={PartnerSectionStyle['name-list']}>
+              <li>John Amos. President</li>
+              <li>Paul Woods. Chief Technology Officer</li>
+              <li>David Kroodsma. Research Program Manager</li>
+            </ul>
             <p>
               If you can see it, you can change it. SkyTruth hopes this illustration of global fishing activity,
               made available
@@ -56,6 +66,10 @@ class PartnerSection extends Component {
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
             </div>
+            <ul className={PartnerSectionStyle['name-list']}>
+              <li>Brian Sullivan. Senior Program Manager</li>
+              <li>Alex Wilson. Machine Learning Engineer</li>
+            </ul>
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s
               infrastructure to address environmental and humanitarian issues through partnerships
