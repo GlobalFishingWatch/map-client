@@ -34,7 +34,7 @@
         list-style: none;
         width: 100%;
 
-        @media #{$mq-tablet} {
+        @media screen and (min-width: 845px) {
           width: 200px;
         }
 
@@ -59,14 +59,14 @@
       }
 
       .logo-item {
-        margin-right: 15px;
+        margin-right: 20px;
 
         &:last-child {
           margin-right: 0;
         }
 
         @media #{$mq-laptop} {
-          margin-right: 55px;
+          margin-right: 50px;
 
           &:last-child {
             margin-right: 0;
@@ -111,6 +111,10 @@
         &.-oceana {
           max-width: 130px;
 
+        }
+
+        &.-skytruth-logo {
+          max-width: 190px;
         }
       }
     }

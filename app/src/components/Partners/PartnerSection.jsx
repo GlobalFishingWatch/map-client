@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import BaseStyle from '../../../styles/_base.scss';
 import PartnerSectionStyle from '../../../styles/components/c-partner-section.scss';
 import oceanaLogo from '../../../assets/logos/oceana_logo.png';
@@ -38,7 +39,11 @@ class PartnerSection extends Component {
           </li>
           <li>
             <div className={PartnerSectionStyle['contain-img-logo']}>
-              <img src={skyLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo SkyTruth  "></img>
+              <img
+                src={skyLogo}
+                className={classnames(PartnerSectionStyle['img-logo-partners'], PartnerSectionStyle['-skytruth-logo'])}
+                alt="logo SkyTruth"
+              ></img>
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
               <li>John Amos. President</li>
