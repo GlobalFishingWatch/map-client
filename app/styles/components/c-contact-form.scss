@@ -16,8 +16,14 @@
   &.message-after {
     left: 50%;
     position: absolute;
+    text-align: center;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    h1 {
+      color: $color-4;
+      font-size: $font-size-xxx-big;
+    }
   }
 
   label,
