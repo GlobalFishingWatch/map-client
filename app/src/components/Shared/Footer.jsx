@@ -40,7 +40,6 @@ export default function () {
           <div className={footerStyle['sponsor-footer']}>
             <ul className={footerStyle['logo-list-funding']}>
               <li className={classnames(footerStyle['logo-item'], footerStyle['-funding-logo'])}>
-                <span className={footerStyle['funding-text']}>Funding Partners</span>
                 <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
               </li>
             </ul>
