@@ -17,6 +17,7 @@ class CanvasLayer {
     this.setVesselColor(vesselColor);
 
     this.outerStartDate = filters.startDate;
+    this.outerStartDateDayOffset = Math.floor(this.outerStartDate / 86400000);
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0];
     this.innerEndDate = filters.timelineInnerExtent[1];
@@ -197,10 +198,8 @@ class CanvasLayer {
    * @param start
    * @param end
    */
-  drawTimeRange(start, end) {
+  drawTimeRange(startDayIndex, endDayIndex) {
     const canvasKeys = Object.keys(this.playbackData);
-    this.innerStartDate = CanvasLayer.getTimestampIndex(start);
-    this.innerEndDate = CanvasLayer.getTimestampIndex(end);
 
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
@@ -210,7 +209,7 @@ class CanvasLayer {
       }
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let timestamp = this.innerStartDate; timestamp < this.innerEndDate; timestamp += TIMELINE_STEP) {
+      for (let timestamp = startDayIndex; timestamp < endDayIndex; timestamp ++) {
         if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
           const playbackData = this.playbackData[canvasKey][timestamp];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
@@ -329,6 +328,7 @@ class CanvasLayer {
   storeAsPlaybackData(vectorArray, tileCoordinates) {
     const tileId = this.getTileId(tileCoordinates.x, tileCoordinates.y, tileCoordinates.zoom);
 
+
     if (!this.playbackData[tileId]) {
       this.playbackData[tileId] = {};
     } else {
@@ -340,24 +340,24 @@ class CanvasLayer {
         continue;
       }
 
-      const time = CanvasLayer.getTimestampIndex(vectorArray.datetime[index]);
-      // using timestamps as array indexes might cause a performance issue
-      // see sparse arrays/contiguous keys
-      // http://www.html5rocks.com/en/tutorials/speed/v8/?redirect_from_locale=es
-      if (!this.playbackData[tileId][time]) {
-        this.playbackData[tileId][time] = {
-          category: [],
-          latitude: [],
-          longitude: [],
-          weight: [],
-          x: [],
-          y: [],
-          series: [],
-          seriesgroup: [],
-          sigma: []
+      const dayIndex = Math.floor(vectorArray.datetime[index] / 86400000) - this.outerStartDateDayOffset;
+
+
+      if (!this.playbackData[tileId][dayIndex]) {
+        this.playbackData[tileId][dayIndex] = {
+          category: [vectorArray.category[index]],
+          latitude: [vectorArray.latitude[index]],
+          longitude: [vectorArray.longitude[index]],
+          weight: [vectorArray.weight[index]],
+          x: [vectorArray.x[index]],
+          y: [vectorArray.y[index]],
+          series: [vectorArray.series[index]],
+          seriesgroup: [vectorArray.seriesgroup[index]],
+          sigma: [vectorArray.sigma[index]]
         };
+        continue;
       }
-      const timestamp = this.playbackData[tileId][time];
+      const timestamp = this.playbackData[tileId][dayIndex];
       timestamp.category.push(vectorArray.category[index]);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
@@ -513,6 +513,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     const canvas = this._getCanvas(coord, zoom, ownerDocument);
     const tileCoordinates = this.getTileCoordinates(coord, zoom);
     const promises = [];
+
     if (tileCoordinates) {
       const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
