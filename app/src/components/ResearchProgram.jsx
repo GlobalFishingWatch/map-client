@@ -242,10 +242,15 @@ class ResearchProgram extends Component {
                   allowFullScreen
                 />
                 <p className={StaticPageStyles['video-quote']}>
-                  “I think Global Fishing Watch is poised to completely revolutionize the way fisheries are managed, the
-                  way fisheries are assessed, the way fisheries are monitored and evaluated. So I think pretty much
-                  everything we don in fisheries could be revolutionized by Global Fishing Watch.”
-                  -- Dr. Chris Costello
+                  <i>
+                    “I think Global Fishing Watch is poised to completely
+                    revolutionize the way fisheries are managed, the
+                    way fisheries are assessed, the way fisheries are
+                    monitored and evaluated. So I think pretty much
+                    everything we don in fisheries could
+                    be revolutionized by Global Fishing Watch.”
+                  </i>
+                  – Dr. Chris Costello
                 </p>
 
                 <Link
@@ -265,9 +270,9 @@ class ResearchProgram extends Component {
                   allowFullScreen
                 />
                 <p className={StaticPageStyles['video-quote']}>
-                  “I think Global Fishing Watch could play a key role in making human use of the
-                  ocean transparent to everybody.”
-                  --Dr. Boris Worm
+                  <i>“I think Global Fishing Watch could play a key role in making human use of the
+                  ocean transparent to everybody.”</i>
+                  – Dr. Boris Worm
                 </p>
 
                 <Link
@@ -288,9 +293,9 @@ marine-ecologist-boris-worm.html"
                   allowFullScreen
                 />
                 <p className={StaticPageStyles['video-quote']}>
-                  “Until Global Fishing Watch came online, there was not a publicly available source of
-                  information about where fishing was happening.”
-                  --Dr. Douglas McCauley
+                  <i>“Until Global Fishing Watch came online, there was not a publicly available source of
+                  information about where fishing was happening.”</i>
+                  – Dr. Douglas McCauley
                 </p>
 
                 <Link
