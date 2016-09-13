@@ -30,7 +30,10 @@ export default function () {
                 />
               </li>
               <li className={footerStyle['logo-item']}>
-                <img className={footerStyle.logo} src={logosky} alt="skytruth logo" />
+                <img
+                  className={classnames(footerStyle.logo, footerStyle['-skytruth-logo'])}
+                  src={logosky} alt="skytruth logo"
+                />
               </li>
               <li className={footerStyle['logo-item']}>
                 <img className={footerStyle.logo} src={logogoogle} alt="google logo" />
