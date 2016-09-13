@@ -228,26 +228,13 @@ class CanvasLayer {
    * @param playbackData
    * @param drawTrail
    */
-  drawTileFromPlaybackData(canvas, playbackData, drawTrail) {
+  drawTileFromPlaybackData(canvas, playbackData) {
     if (!canvas) {
       return;
     }
-    const size = canvas.zoom > 6 ? 3 : 2;
+    // const size = canvas.zoom > 6 ? 3 : 2;
 
-    const ctx = canvas.ctx;
-    ctx.fillStyle = this.precomputedVesselColor;
-
-    for (let index = 0, lengthData = playbackData.latitude.length; index < lengthData; index++) {
-      this.drawVesselPoint(
-        ctx,
-        playbackData.x[index],
-        playbackData.y[index],
-        size,
-        playbackData.weight[index],
-        playbackData.sigma[index],
-        drawTrail
-      );
-    }
+    this.drawVesselPoints(canvas.ctx, playbackData);
   }
 
   /**
@@ -268,24 +255,8 @@ class CanvasLayer {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
-    const ctx = canvas.ctx;
-    ctx.fillStyle = this.precomputedVesselColor;
-    const size = canvas.zoom > 6 ? 3 : 2;
-
-    for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      if (!this.passesFilters(vectorArray, index, true)) {
-        continue;
-      }
-      this.drawVesselPoint(
-        ctx,
-        vectorArray.x[index],
-        vectorArray.y[index],
-        size,
-        vectorArray.weight[index],
-        vectorArray.sigma[index],
-        false
-      );
-    }
+    // const size = canvas.zoom > 6 ? 3 : 2;
+    this.drawVesselPoints(canvas.ctx, vectorArray, true);
   }
 
   /**
@@ -405,6 +376,24 @@ class CanvasLayer {
     return timestamp - (timestamp % TIMELINE_STEP);
   }
 
+  drawVesselPoints(ctx, points, testFilters) {
+    ctx.fillStyle = this.precomputedVesselColor;
+    ctx.beginPath();
+    for (let index = 0, len = points.latitude.length; index < len; index++) {
+      if (testFilters && !this.passesFilters(points, index, true)) {
+        continue;
+      }
+      this.drawVesselPoint(
+        ctx,
+        points.x[index],
+        points.y[index],
+        points.weight[index] /* ,
+        vectorArray.sigma[index] */
+      );
+    }
+    ctx.fill();
+  }
+
   /**
    * Draws a single point representing a vessel
    *
@@ -416,8 +405,10 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(ctx, x, y, size, weight, sigma, drawTrail) {
-    ctx.fillRect(x, y, size, size);
+  drawVesselPoint(ctx, x, y, weight /*, sigma */) {
+    const radius = Math.max(1, weight / 50);
+    ctx.moveTo(x, y);
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
 
   /**
