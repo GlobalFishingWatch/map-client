@@ -50,6 +50,7 @@
         .input-text {
           background-color: transparent;
           border: solid 1px $color-14;
+          border-radius: 0;
           color: $color-4;
           display: block;
           font-size: $font-size-small;
@@ -136,6 +137,7 @@
         .textarea-form {
           background-color: transparent;
           border: solid 1px $color-14;
+          border-radius: 0;
           color: $color-4;
           display: block;
           font-size: $font-size-small;
@@ -155,6 +157,10 @@
     .container-submit {
       display: block;
       width: 100%;
+
+      button {
+        border-radius: 0;
+      }
     }
 
     ::-webkit-input-placeholder {
