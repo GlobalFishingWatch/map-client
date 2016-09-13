@@ -55,7 +55,7 @@ class Modal extends React.Component {
     }
 
     return (
-      <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
+      <div className={styles['c-modal']} onClick={() => this.props.close()}>
         <div className={styles.content}>
           <div className={styles['contain-content']}>
             <div className={styles['contain-button']}>
