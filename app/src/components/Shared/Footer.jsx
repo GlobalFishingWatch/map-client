@@ -11,7 +11,7 @@ import iconTwitter from '../../../assets/icons/twitter.svg';
 import SubscribeSVG from '../../../assets/icons/subscribe.svg';
 
 
-import AppStyles from '../../../styles/application.scss';
+import AppStyles from '../../../styles/_base.scss';
 import footerStyle from '../../../styles/components/c-footer.scss';
 
 

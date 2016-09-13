@@ -3,7 +3,7 @@ import $ from 'jquery';
 import _ from 'lodash';
 import classnames from 'classnames';
 import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
-import baseStyle from '../../../styles/application.scss';
+import baseStyle from '../../../styles/_base.scss';
 import Slider from 'react-slick';
 import Header from '../../containers/Header';
 import { Link } from 'react-router';

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
-import AppStyles from '../../styles/application.scss';
+import AppStyles from '../../styles/_base.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import definitionsBackgroundImage from '../../assets/images/definitions.jpg';
 import Accordion from './Shared/Accordion';

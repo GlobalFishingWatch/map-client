@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import home from '../../styles/index.scss';
 import Footer from './Shared/Footer';
 import Steps from './Home/Steps';
 import CoverPage from '../containers/CoverPage';
@@ -12,7 +11,7 @@ class Home extends Component {
       <div className={HomepageStyles['l-homepage']}>
         <CoverPage />
         <Steps />
-        <section className={home.infomap}>
+        <section className={HomepageStyles.infomap}>
           <InfoMap />
         </section>
         <Footer />

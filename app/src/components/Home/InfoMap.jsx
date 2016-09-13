@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import InfoMapContentStyle from '../../../styles/components/c-info-map-content.scss';
-import baseStyle from '../../../styles/application.scss';
+import baseStyle from '../../../styles/_base.scss';
 import ButtonStyle from '../../../styles/components/c-button-arrow.scss';
 import Rhombus from '../Shared/Rhombus';
 
