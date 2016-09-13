@@ -9,6 +9,21 @@
     padding-bottom: 90px;
   }
 
+  .name-list {
+    display: block;
+    margin-bottom: 20px;
+    //or a line separator? ask daniel
+
+    li {
+      display: block;
+      font-size: $font-size-normal; //or $font-size-small
+      line-height: 1.5;
+      margin-bottom: 0;
+      width: 100%;
+
+    }
+  }
+
   .contain-img-logo {
     align-items: center;
     display: flex;
@@ -38,6 +53,19 @@
       font-size: $font-size-xx-big;
       line-height: 1.05;
       margin-bottom: 70px;
+    }
+  }
+
+  h3 {
+    color: $color-9;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-normal;
+    line-height: 1.05;
+    margin-bottom: 10px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-x-big;
+      line-height: 1.05;
     }
   }
 
