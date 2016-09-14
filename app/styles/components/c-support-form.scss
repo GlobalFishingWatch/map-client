@@ -196,9 +196,11 @@
         }
       }
 
-      select {
-        &:invalid {
-          border: 1px solid $color-6;
+      .select-container {
+        select {
+          &:invalid {
+            border: 1px solid $color-6;
+          }
         }
       }
     }
