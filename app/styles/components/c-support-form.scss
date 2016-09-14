@@ -68,6 +68,10 @@
             box-shadow: none;
           }
 
+          &:disabled {
+            opacity: 1; //neccesary on IOS
+          }
+
         }
 
         .select-container {
