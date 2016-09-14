@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import ga from 'ga-react-router';
 import _ from 'lodash';
+import Promise from 'promise-polyfill';
 import Routes from './routes';
 import mapReducer from './reducers/map';
 import faqReducer from './reducers/faq';
@@ -21,7 +22,7 @@ import vesselInfoReducer from './reducers/vesselInfo';
 import articlesPublicationsReducer from './reducers/articlesPublications';
 
 // Polyfill for older browsers (IE11 for example)
-window.Promise = window.Promise || require('promise-polyfill');
+window.Promise = window.Promise || Promise;
 
 /**
  * Reducers
