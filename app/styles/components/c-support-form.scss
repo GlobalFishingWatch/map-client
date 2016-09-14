@@ -181,4 +181,10 @@
       font-weight: $font-weight-normal;
     }
   }
+
+  &.validated {
+    input:invalid, textarea:invalid, select:invalid {
+      border: 1px solid $color-6;
+    }
+  }
 }

@@ -17,7 +17,9 @@ export function submitForm(data, endpoint) {
       }
       dispatch({
         type: FORM_RESPONSE,
-        payload: request.status
+        payload: {
+          status: request.status
+        }
       });
     };
 
