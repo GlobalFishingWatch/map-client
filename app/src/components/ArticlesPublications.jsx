@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
-import { Link } from 'react-router';
-import Rhombus from './Shared/Rhombus';
 import AppStyles from '../../styles/_base.scss';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import PubArticleStyle from '../../styles/components/c-publication-article.scss';
@@ -30,16 +28,6 @@ class ArticlesPublications extends Component {
         <div className={PubArticleStyle.description}>
           {articlePublication && <p>{articlePublication.author}</p>}
           {articlePublication.date && <p>{articlePublication.date}</p>}
-        </div>
-        <div className={PubArticleStyle['link-container']}>
-          <Link
-            to={articlePublication.link}
-            target="_blank"
-            className="link-rhombus"
-          >
-            <Rhombus color="blue" />
-            find out more
-          </Link>
         </div>
       </article>
     );

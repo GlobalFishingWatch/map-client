@@ -18,9 +18,9 @@ class PartnerSection extends Component {
               <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
-              <li>Andy Sharpless. Chief Executive Officer</li>
-              <li>Jackie Savitz. Vice President</li>
-              <li>Adam Reyer. Project Director</li>
+              <li><span className={PartnerSectionStyle.name}>Andy Sharpless.</span> Chief Executive Officer</li>
+              <li><span className={PartnerSectionStyle.name}>Jackie Savitz.</span> Vice President</li>
+              <li><span className={PartnerSectionStyle.name}>Adam Reyer.</span> Project Director</li>
             </ul>
             <p>
               Oceana is the largest international advocacy organization dedicated solely to ocean conservation.
@@ -30,11 +30,11 @@ class PartnerSection extends Component {
               pollution and killing of threatened species like turtles and sharks, Oceana’s campaigns are delivering
               results. A restored ocean means that one billion people can enjoy a healthy seafood meal, every day,
               forever. Together, we can save the oceans and help feed the world.
-              Visit <a
+              To learn more, visit <a
                 className="gfw-link"
                 href="http://oceana.org/"
                 target="_blank"
-              >www.oceana.org</a> to learn more.
+              >www.oceana.org</a>.
             </p>
           </li>
           <li>
@@ -46,9 +46,9 @@ class PartnerSection extends Component {
               ></img>
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
-              <li>John Amos. President</li>
-              <li>Paul Woods. Chief Technology Officer</li>
-              <li>David Kroodsma. Research Program Manager</li>
+              <li><span className={PartnerSectionStyle.name}>John Amos.</span> President</li>
+              <li><span className={PartnerSectionStyle.name}>Paul Woods.</span> Chief Technology Officer</li>
+              <li><span className={PartnerSectionStyle.name}>David Kroodsma.</span> Research Program Manager</li>
             </ul>
             <p>
               If you can see it, you can change it. SkyTruth hopes this illustration of global fishing activity,
@@ -59,12 +59,12 @@ class PartnerSection extends Component {
               is to make the world visible to the
               people that live in it. We’re driven by the belief that better transparency
               leads to better management and better
-              outcomes for people and the environment. Check out what we do and how we work
+              outcomes for people and the environment. To learn more, check out what we do and how we work
               at <a
                 className="gfw-link"
                 href="http://skytruth.org/"
                 target="_blank"
-              > www.skytruth.org</a> to learn more.
+              > www.skytruth.org</a>.
             </p>
           </li>
           <li>
@@ -72,8 +72,8 @@ class PartnerSection extends Component {
               <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
-              <li>Brian Sullivan. Senior Program Manager</li>
-              <li>Alex Wilson. Machine Learning Engineer</li>
+              <li><span className={PartnerSectionStyle.name}>Brian Sullivan.</span> Senior Program Manager</li>
+              <li><span className={PartnerSectionStyle.name}>Alex Wilson.</span> Machine Learning Engineer</li>
             </ul>
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s

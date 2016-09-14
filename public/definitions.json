@@ -22,12 +22,12 @@
   {
     "title": "EEZ",
     "slug": "eez",
-    "content": "<p>“EEZ” stands for Exclusive Economic Zone and is a state’s sovereign waters, which extend 200 nautical miles from the coast.</p>"
+    "content": "<p>“EEZ” stands for <a href='http://blog.globalfishingwatch.org/2016/07/who-owns-the-fish-high-seas-and-the-eezs.html' target='_blank' class='gfw-link'>Exclusive Economic Zone</a> and is a state’s sovereign waters, which extend 200 nautical miles from the coast.</p>"
   },
   {
     "title": "FISHING ACTIVITY",
     "slug": "fishing-activity",
-    "content": "<p>Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial fishing vessels, and applies a fishing detection algorithm to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. AIS data as broadcast may vary in completeness, accuracy and quality. Also, data collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data. Global Fishing Watch’s fishing detection algorithm is a best effort mathematically to identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity,” such as “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is taking steps to make sure fishing activity designations are as accurate as possible. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.</p>"
+    "content": "<p>Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial fishing vessels, and applies a fishing detection algorithm to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. AIS data as broadcast may vary in completeness, accuracy and quality. Also, data collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data. Global Fishing Watch’s fishing detection algorithm is a best effort mathematically to identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity,” such as “fishing” or “fishing effort,” as “apparent” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is taking steps to make sure fishing activity designations are as accurate as possible. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.</p>"
   },
   {
     "title": "FLAG",
@@ -35,9 +35,9 @@
     "content": "<p>The state a vessel is registered or licensed under.</p>"
   },
   {
-    "title": "HIGH SEAS POCKETS",
+    "title": "HIGH SEAS POCKET",
     "slug": "high-seas-pockets",
-    "content": "<p>The High Seas are any area of the ocean beyond Exclusive Economic Zones (EEZ). High Seas pockets are areas totally enclosed by EEZs. These pockets can be hard to distinguish from the multiple EEZ jurisdictions that surround them, thus, we have a layer that highlights them.</p>"
+    "content": "<p>The <a href='http://blog.globalfishingwatch.org/2016/07/who-owns-the-fish-high-seas-and-the-eezs.html' target='_blank' class='gfw-link'>High Seas</a> are any area of the ocean beyond Exclusive Economic Zones (EEZ). High Seas pockets are areas totally enclosed by EEZs. These pockets can be hard to distinguish from the multiple EEZ jurisdictions that surround them, thus, we have a layer that highlights them.</p>"
   },
   {
     "title": "IMO",
@@ -47,7 +47,7 @@
   {
     "title": "MMSI",
     "slug": "mmsi",
-    "content": "<p>MMSI stands for Maritime Mobile Service Identity. It is a unique nine-digit number assigned to every Automatic Identification System (AIS) transmission made by a vessel.</p>"
+    "content": "<p>MMSI stands for <a href='http://blog.globalfishingwatch.org/2016/08/clarifying-identity-matching-broadcasts-to-vessel-registries.html' target='_blank' class='gfw-link'>Maritime Mobile Service Identity</a>. It is a unique nine-digit number assigned to every Automatic Identification System (AIS) transmission made by a vessel.</p>"
   },
   {
     "title": "MPA – NO TAKE",
@@ -67,6 +67,6 @@
   {
     "title": "RFMO",
     "slug": "rfmo",
-    "content": "<p>RFMO stands for Regional Fishery Management Organization. These organizations are international organizations formed by countries with a shared interest in managing or conserving an area’s fish stock. Some RFMOs manage all the fish stocks found in a specific area, while others focus on particular highly migratory species, notably tuna, throughout vast geographical areas. The RFMOs Layer on the Global Fishing Watch map currently includes the five tuna RFMOs.</p>"
+    "content": "<p>RFMO stands for Regional Fishery Management Organization. These organizations are international organizations formed by countries with a shared interest in managing or conserving an area’s fish stock. Some RFMOs manage all the fish stocks found in a specific area, while others focus on particular highly migratory species, notably tuna, throughout vast geographical areas. The RFMO Layer on the Global Fishing Watch map currently includes the five tuna RFMOs.</p>"
   }
 ]
