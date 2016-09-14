@@ -47,7 +47,7 @@ class FooterMini extends Component {
           closeable
           close={() => this.showSupportModal()}
         >
-          <FormSupport />
+          <FormSupport close={() => this.showSupportModal()} />
         </Modal>
       );
     }
