@@ -22,7 +22,7 @@ class ContactUsForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const showThankYou = !!(!this.props.contactStatus && nextProps.contactStatus);
+    const showThankYou = this.props.contactStatus !== nextProps.contactStatus;
     this.setState({
       showFormResponse: showThankYou,
       name: nextProps.defaultUserName,
@@ -69,7 +69,7 @@ class ContactUsForm extends Component {
     if (this.state.showFormResponse) {
       this.scrollPage();
       let message;
-      if (this.props.contactStatus === 200) {
+      if (this.props.contactStatus && this.props.contactStatus.status === 200) {
         message = 'Thank you for your inquiry.';
       } else {
         message = 'There was a problem submitting your inquiry. Please try again later.';
