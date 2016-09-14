@@ -12,8 +12,8 @@ class ContactUsForm extends Component {
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
-      name: '',
-      email: '',
+      name: props.defaultUserName ? props.defaultUserName : '',
+      email: props.defaultUserEmail ? props.defaultUserEmail : '',
       validated: false // If the form has been submitted yet and thus validated
     };
 
