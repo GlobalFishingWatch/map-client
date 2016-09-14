@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP, API_RETURNED_KEYS } from '../../constants';
+import { TIMELINE_STEP, API_RETURNED_KEYS, PLAYBACK_PRECISION } from '../../constants';
 import _ from 'lodash';
 
 class CanvasLayer {
@@ -17,7 +17,7 @@ class CanvasLayer {
     this.setVesselColor(vesselColor);
 
     this.outerStartDate = filters.startDate;
-    this.outerStartDateDayOffset = Math.floor(this.outerStartDate / 86400000);
+    this.outerStartDateOffset = this._getTimeAtPrecision(this.outerStartDate);
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0];
     this.innerEndDate = filters.timelineInnerExtent[1];
@@ -192,14 +192,34 @@ class CanvasLayer {
   }
 
   /**
+   * From a timestamp in ms returns a time with the precision set in Constants.
+   * @param timestamp
+   */
+  _getTimeAtPrecision(timestamp) {
+    return Math.floor(timestamp / PLAYBACK_PRECISION);
+  }
+
+  /**
+   * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
+   * beginning of avaliable time (outerStart)
+   * @param timestamp
+   */
+  _getOffsetedTimeAtPrecision(timestamp) {
+    return this._getTimeAtPrecision(timestamp) - this.outerStartDateOffset;
+  }
+
+  /**
    * Draws all data in between the given start and end times
    *
    *
-   * @param start
-   * @param end
+   * @param start start timstamp (ms)
+   * @param end   end timestamp (ms)
    */
-  drawTimeRange(startDayIndex, endDayIndex) {
+  drawTimeRange(start, end) {
     const canvasKeys = Object.keys(this.playbackData);
+
+    const startIndex = this._getOffsetedTimeAtPrecision(start);
+    const endIndex = this._getOffsetedTimeAtPrecision(end);
 
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
@@ -209,9 +229,9 @@ class CanvasLayer {
       }
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      for (let timestamp = startDayIndex; timestamp < endDayIndex; timestamp ++) {
-        if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timestamp]) {
-          const playbackData = this.playbackData[canvasKey][timestamp];
+      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+        if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timeIndex]) {
+          const playbackData = this.playbackData[canvasKey][timeIndex];
           this.drawTileFromPlaybackData(canvas, playbackData, false);
         } else {
           // TODO: a lot of missing timestamp indexes here, check why
@@ -340,11 +360,10 @@ class CanvasLayer {
         continue;
       }
 
-      const dayIndex = Math.floor(vectorArray.datetime[index] / 86400000) - this.outerStartDateDayOffset;
+      const timeIndex = this._getOffsetedTimeAtPrecision(vectorArray.datetime[index]);
 
-
-      if (!this.playbackData[tileId][dayIndex]) {
-        this.playbackData[tileId][dayIndex] = {
+      if (!this.playbackData[tileId][timeIndex]) {
+        this.playbackData[tileId][timeIndex] = {
           category: [vectorArray.category[index]],
           latitude: [vectorArray.latitude[index]],
           longitude: [vectorArray.longitude[index]],
@@ -357,7 +376,7 @@ class CanvasLayer {
         };
         continue;
       }
-      const timestamp = this.playbackData[tileId][dayIndex];
+      const timestamp = this.playbackData[tileId][timeIndex];
       timestamp.category.push(vectorArray.category[index]);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
