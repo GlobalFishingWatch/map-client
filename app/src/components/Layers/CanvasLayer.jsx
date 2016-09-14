@@ -21,6 +21,9 @@ class CanvasLayer {
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0];
     this.innerEndDate = filters.timelineInnerExtent[1];
+    this.currentInnerStartIndex = this._getOffsetedTimeAtPrecision(this.innerStartDate.getTime());
+    this.currentInnerEndIndex = this._getOffsetedTimeAtPrecision(this.innerEndDate.getTime());
+
     if (visible) {
       this.show();
     }
@@ -205,7 +208,7 @@ class CanvasLayer {
    * @param timestamp
    */
   _getOffsetedTimeAtPrecision(timestamp) {
-    return this._getTimeAtPrecision(timestamp) - this.outerStartDateOffset;
+    return Math.max(0, this._getTimeAtPrecision(timestamp) - this.outerStartDateOffset);
   }
 
   /**
@@ -214,8 +217,6 @@ class CanvasLayer {
    * @param end   end timestamp (ms)
    */
   drawTimeRange(start, end) {
-    const canvasKeys = Object.keys(this.playbackData);
-
     const startIndex = this._getOffsetedTimeAtPrecision(start);
     const endIndex = this._getOffsetedTimeAtPrecision(end);
 
@@ -225,6 +226,12 @@ class CanvasLayer {
 
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
+
+    this._drawTimeRangeAtIndexes(startIndex, endIndex);
+  }
+
+  _drawTimeRangeAtIndexes(startIndex, endIndex) {
+    const canvasKeys = Object.keys(this.playbackData);
 
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
@@ -257,30 +264,12 @@ class CanvasLayer {
       return;
     }
     // const size = canvas.zoom > 6 ? 3 : 2;
-
-    this.drawVesselPoints(canvas.ctx, playbackData);
-  }
-
-  /**
-   * Draws a tile using VectorArray data
-   * Used only immediately after data is loaded.
-   *
-   * @see drawTileFromPlaybackData
-   *
-   * @param canvas
-   * @param vectorArray
-   */
-  drawTileFromVectorArray(canvas, vectorArray) {
-    if (!canvas) {
-      return;
-    }
-
-    if (!vectorArray) {
+    if (!playbackData) {
       canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
       return;
     }
-    // const size = canvas.zoom > 6 ? 3 : 2;
-    this.drawVesselPoints(canvas.ctx, vectorArray, true);
+
+    this.drawVesselPoints(canvas.ctx, playbackData);
   }
 
   /**
@@ -522,8 +511,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     Promise.all(promises).then((rawTileData) => {
       if (tileCoordinates && rawTileData[0]) {
         const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        this.drawTileFromVectorArray(canvas, vectorArray);
+        // this.drawTileFromVectorArray(canvas, vectorArray);
         this.storeAsPlaybackData(vectorArray, tileCoordinates);
+        this._drawTimeRangeAtIndexes(this.currentInnerStartIndex, this.currentInnerEndIndex);
       }
     });
 
