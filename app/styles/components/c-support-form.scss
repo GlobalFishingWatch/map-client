@@ -182,9 +182,25 @@
     }
   }
 
-  &.validated {
-    input:invalid, textarea:invalid, select:invalid {
-      border: 1px solid $color-6;
+  .contain-form {
+    &.validated {
+      input {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      textarea {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      select {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
     }
   }
 }

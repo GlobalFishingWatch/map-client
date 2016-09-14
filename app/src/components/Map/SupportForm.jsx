@@ -8,7 +8,6 @@ class SupportForm extends Component {
     super(props);
     this.state = {
       url: window.location,
-      submitted: false,
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
@@ -39,10 +38,6 @@ class SupportForm extends Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    this.setState({
-      submitted: true
-    });
-
     if (!this.form.checkValidity()) {
       this.setState({
         validated: true
@@ -84,7 +79,12 @@ class SupportForm extends Component {
           onSubmit={(event) => { this.handleFormSubmit(event); }}
           ref={(ref) => { this.form = ref; }}
         >
-          <div className={supportFormStyle['contain-form']}>
+          <div
+            className={classnames({
+              [supportFormStyle['contain-form']]: true,
+              [supportFormStyle.validated]: this.state.validated
+            })}
+          >
             <div className={supportFormStyle['container-inputs']}>
               <label htmlFor="name">Name</label>
               <input
@@ -155,7 +155,6 @@ class SupportForm extends Component {
           <div className={supportFormStyle['container-submit']}>
             <button
               type="submit"
-              disabled={this.state.submitted}
               className={buttonStyle['c-button-submit-small']}
             >
             Send
