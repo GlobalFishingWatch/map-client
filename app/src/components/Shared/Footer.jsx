@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
-import logosky from '../../../assets/logos/skytruth_logo.jpg';
+import logosky from '../../../assets/logos/skytruth_white.png';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import logoldf from '../../../assets/logos/ldf_logo_white.svg';
 import logoGFW from '../../../assets/logos/gfw_logo.png';
@@ -10,7 +11,7 @@ import iconTwitter from '../../../assets/icons/twitter.svg';
 import SubscribeSVG from '../../../assets/icons/subscribe.svg';
 
 
-import AppStyles from '../../../styles/application.scss';
+import AppStyles from '../../../styles/_base.scss';
 import footerStyle from '../../../styles/components/c-footer.scss';
 
 
@@ -29,7 +30,10 @@ export default function () {
                 />
               </li>
               <li className={footerStyle['logo-item']}>
-                <img className={footerStyle.logo} src={logosky} alt="skytruth logo" />
+                <img
+                  className={classnames(footerStyle.logo, footerStyle['-skytruth-logo'])}
+                  src={logosky} alt="skytruth logo"
+                />
               </li>
               <li className={footerStyle['logo-item']}>
                 <img className={footerStyle.logo} src={logogoogle} alt="google logo" />
@@ -38,8 +42,7 @@ export default function () {
           </div>
           <div className={footerStyle['sponsor-footer']}>
             <ul className={footerStyle['logo-list-funding']}>
-              <li className={footerStyle['logo-item']}>
-                <span className={footerStyle['funding-text']}>Funding Partners</span>
+              <li className={classnames(footerStyle['logo-item'], footerStyle['-funding-logo'])}>
                 <img className={footerStyle['logo-ldf']} src={logoldf} alt="ldf logo" />
               </li>
             </ul>

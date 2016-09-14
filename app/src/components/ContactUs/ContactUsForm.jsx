@@ -12,8 +12,8 @@ class ContactUsForm extends Component {
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
-      name: '',
-      email: '',
+      name: props.defaultUserName ? props.defaultUserName : '',
+      email: props.defaultUserEmail ? props.defaultUserEmail : '',
       validated: false // If the form has been submitted yet and thus validated
     };
 
@@ -22,7 +22,7 @@ class ContactUsForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const showThankYou = !!(!this.props.contactStatus && nextProps.contactStatus);
+    const showThankYou = this.props.contactStatus !== nextProps.contactStatus;
     this.setState({
       showFormResponse: showThankYou,
       name: nextProps.defaultUserName,
@@ -69,7 +69,7 @@ class ContactUsForm extends Component {
     if (this.state.showFormResponse) {
       this.scrollPage();
       let message;
-      if (this.props.contactStatus === 200) {
+      if (this.props.contactStatus && this.props.contactStatus.status === 200) {
         message = 'Thank you for your inquiry.';
       } else {
         message = 'There was a problem submitting your inquiry. Please try again later.';
@@ -173,6 +173,18 @@ class ContactUsForm extends Component {
             className={buttonStyle['c-button-contact']}
           >SEND</button>
         </form>
+        <div className={contactStyle['emails-text']}>
+          For media or press inquiries, please contact:
+          <ul>
+            <li>Oceana: Dustin Cranor, <a href="mailto:dcranor@oceana.org">dcranor@oceana.org</a>, 954.348.1314</li>
+            <li>SkyTruth: Jenny Allen, <a href="mailto:jenny@skytruth.org">jenny@skytruth.org</a>, 304.582.2031</li>
+            <li>Google: Mara Harris, <a href="mailto:press@google.com">press@google.com</a></li>
+          </ul>
+        </div>
+        <div className={contactStyle['emails-text']}>
+          For Research Program related inquiries, please contact{' '}
+          <a href="mailto:research@globalfishingwatch.org">research@globalfishingwatch.org</a>.
+        </div>
       </section>
     </div>);
   }

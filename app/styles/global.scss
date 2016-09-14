@@ -1,0 +1,137 @@
+@import 'settings';
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  &::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  &::before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+}
+
+body,
+html {
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-normal;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+:global .full-height-container { // FIXME: add .full-height-container to each page root div
+  height: 100%;
+}
+
+:global .section-page {
+  padding: 55px 0 65px;
+  position: relative;
+
+  &::after {
+    background-color: $color-10;
+    bottom: 0;
+    content: '';
+    display: inline-block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    top: auto;
+    transform: translate(-50%, 0);
+    width: 100vw;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+
+    &::after {
+      content: none;
+    }
+  }
+}
+
+:global .section-title {
+  color: $color-9;
+  font-size: $font-size-x-medium;
+  font-weight: $font-weight-normal;
+  line-height: 1.05;
+  margin-bottom: 30px;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xx-big;
+    margin-bottom: 70px;
+  }
+
+  &.article-page {
+    font-size: $font-size-xx-big;
+    margin-bottom: 0;
+  }
+}
+
+:global .section-subtitle {
+  color: $color-9;
+  font-size: $font-size-medium;
+  font-weight: $font-weight-normal;
+  line-height: 1.4;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-x-medium;
+  }
+}
+
+
+p {
+  color: $color-9;
+  font-family: $font-family-2;
+  font-size: $font-size-normal;
+  line-height: 1.6;
+
+  & + p {
+    margin-top: 15px;
+  }
+}
+
+address {
+  color: $color-9;
+  font-family: $font-family-2;
+  font-size: $font-size-normal;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+
+  &:visited {
+    color: currentColor;
+  }
+
+  :global &.gfw-link {
+    color: $color-19;
+    font-weight: $font-weight-bold;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

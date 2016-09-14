@@ -1,6 +1,11 @@
 {
   "articles": [
     {
+      "title": "Oceana, SkyTruth and Google Launch Global Fishing Watch, First Free, Online Tool to Reveal Commercial Fishing Activity Worldwide",
+      "link": "http://usa.oceana.org/press-releases/oceana-skytruth-and-google-launch-global-fishing-watch-first-free-online-tool-reveal",
+      "date": "September 15, 2016"
+    },
+    {
       "title": "The fight to save the world’s seas from China’s bloated fishing industry",
       "link": "http://time.com/4463943/japan-china-fishing-marine-iuu-environment-google-skytruth/",
       "author": "Charlie Campbell, Time Magazine",
@@ -21,7 +26,7 @@
     {
       "title": "Most sushi in the US isn't what you think it is and new technology could help fix that",
       "link": "http://www.businessinsider.com/most-sushi-isnt-what-you-think-it-is-2016-8",
-      "author": "Kate Taylor",
+      "author": "Kate Taylor, Business Insider",
       "date": "August 15, 2016"
     },
     {
@@ -120,12 +125,6 @@
       "title": "Global Fishing Watch report",
       "link": "http://oceana.org/sites/default/files/global_fishing_watch_report_final.pdf",
       "author": "Oceana",
-      "date": "2014"
-    },
-    {
-      "title": "The state of world fisheries and aquaculture",
-      "link": "http://www.fao.org/3/a-i3720e.pdf",
-      "author": "Food and Agriculture Organization (FAO) of the United Nations",
       "date": "2014"
     }
   ]

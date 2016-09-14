@@ -54,9 +54,12 @@
   }
 
   > .accordion-item .item-content {
-    max-height: 0;
     overflow: hidden;
-    transition: max-height 0s;
+    transition: margin-top 500ms, max-height 500ms;
+
+    @media #{$mq-tablet} {
+      transition: margin-top 300ms, max-height 300ms;
+    }
 
     ul {
       margin-top: 15px;
@@ -66,7 +69,11 @@
 
   > .accordion-item .-opened {
     margin-top: 20px;
-    max-height: 3000px;
-    transition: max-height 1.5s;
+    transition: margin-top 750ms, max-height 750ms;
+
+    @media #{$mq-tablet} {
+      transition: margin-top 300ms, max-height 300ms;
+
+    }
   }
 }

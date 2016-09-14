@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import styles from '../../../styles/components/shared/c-footer-mini.scss';
 import ContainerFooterStyle from '../../../styles/components/shared/c-container-footer.scss';
 import logooceana from '../../../assets/logos/oceana_logo_white.png';
-import logosky from '../../../assets/logos/skytruth_logo.jpg';
+import logosky from '../../../assets/logos/skytruth_white.png';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
 // import SupportModal from '../../components/Map/SupportModal';
@@ -47,7 +47,7 @@ class FooterMini extends Component {
           closeable
           close={() => this.showSupportModal()}
         >
-          <FormSupport />
+          <FormSupport close={() => this.showSupportModal()} />
         </Modal>
       );
     }
@@ -84,7 +84,7 @@ class FooterMini extends Component {
         <footer className={styles['c-footer-mini']}>
           <div className={styles['contain-partners']}>
             <img className={classnames(styles.partner, styles.oceana)} src={logooceana} alt="oceana logo" />
-            <img className={styles.partner} src={logosky} alt="skytruth logo" />
+            <img className={classnames(styles.partner, styles['-skytruth-logo'])} src={logosky} alt="skytruth logo" />
             <img className={styles.partner} src={logogoogle} alt="google logo" />
           </div>
 

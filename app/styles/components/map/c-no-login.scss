@@ -2,13 +2,14 @@
 
 .c-no-login {
   font-family: $font-family-1;
+  position: relative;
   text-align: center;
 
   > .back {
     font-size: $font-size-x-small;
-    left: 12px;
+    left: -30px;
     position: absolute;
-    top: 12px;
+    top: -30px;
 
     > a  {
       color: $color-4;

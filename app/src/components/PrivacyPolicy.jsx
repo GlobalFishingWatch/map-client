@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import AppStyles from '../../styles/application.scss';
+import AppStyles from '../../styles/_base.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
 import '../../styles/components/shared/c-item-list.scss';
 import privacyPolicyBackgroundImage from '../../assets/images/privacy_policy.jpg';

@@ -7,7 +7,7 @@ import createTrackLayer from './Layers/TrackLayer';
 import ControlPanel from '../containers/Map/ControlPanel';
 import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import Header from '../containers/Header';
-import map from '../../styles/index.scss';
+import mapCss from '../../styles/components/c-map.scss';
 import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
@@ -402,7 +402,7 @@ class Map extends Component {
    * @returns {XML}
    */
   render() {
-    return (<div>
+    return (<div className="full-height-container">
       <Modal
         opened={!this.props.token && REQUIRE_MAP_LOGIN}
         closeable={false}
@@ -414,21 +414,21 @@ class Map extends Component {
         <Share />
       </Modal>
       <Header />
-      <div className={map['map-container']} ref="mapContainer">
+      <div className={mapCss['map-container']} ref="mapContainer">
 
-        <div className={map['zoom-controls']}>
-          <span className={map.control} id="share_map" onClick={this.props.openShareModal}>S</span>
-          <span className={map.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
-          <span className={map.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
+        <div className={mapCss['zoom-controls']}>
+          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>S</span>
+          <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
+          <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
-        <div className={map['timebar-container']}>
+        <div className={mapCss['timebar-container']}>
           <Timebar />
         </div>
         <ControlPanel />
         <VesselInfoPanel />
         <GoogleMapLoader
           containerElement={
-            <div className={map.map} style={{ height: '100%' }} />
+            <div className={mapCss.map} style={{ height: '100%' }} />
           }
           googleMapElement={
             <GoogleMap

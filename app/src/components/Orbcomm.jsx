@@ -3,7 +3,7 @@ import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import StaticPageStyles from '../../styles/layout/l-static-page.scss';
 import ToolTip from './../components/Shared/ToolTip';
-import AppStyles from '../../styles/application.scss';
+import AppStyles from '../../styles/_base.scss';
 import TextPages from '../../styles/components/c-text-pages.scss';
 import orbcommBackgroundImage from '../../assets/images/orbcomm.jpg';
 
