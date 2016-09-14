@@ -7,6 +7,26 @@
   width: 100%;
   z-index: 1;
 
+  &.validated {
+    input {
+      &:invalid {
+        border: 1px solid $color-6;
+      }
+    }
+
+    textarea {
+      &:invalid {
+        border: 1px solid $color-6;
+      }
+    }
+
+    select {
+      &:invalid {
+        border: 1px solid $color-6;
+      }
+    }
+  }
+
   @media #{$mq-tablet} {
     margin: 35px auto 0;
     max-width: 480px;
@@ -108,6 +128,8 @@
     background-color: $color-4;
     border: solid 1px $color-10;
     border-radius: 0;
+    font-family: $font-family-1;
+    font-size: $font-size-small;
     height: 200px;
     outline: 0;
     padding: 10px;
@@ -130,11 +152,5 @@
   :-ms-input-placeholder {
     color: $color-5;
     font-size: $font-size-small;
-  }
-
-  &.validated {
-    input:invalid, textarea:invalid, select:invalid {
-      border: 1px solid $color-6;
-    }
   }
 }

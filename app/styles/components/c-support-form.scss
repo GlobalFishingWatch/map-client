@@ -149,6 +149,7 @@
           border-radius: 0;
           color: $color-4;
           display: block;
+          font-family: $font-family-1;
           font-size: $font-size-small;
           min-height: 245px;
           outline: 0;
@@ -188,6 +189,30 @@
       color: rgba($color-4, .3);
       font-size: $font-size-small;
       font-weight: $font-weight-normal;
+    }
+  }
+
+  .contain-form {
+    &.validated {
+      input {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      textarea {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      .select-container {
+        select {
+          &:invalid {
+            border: 1px solid $color-6;
+          }
+        }
+      }
     }
   }
 }
