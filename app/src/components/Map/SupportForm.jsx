@@ -11,8 +11,8 @@ class SupportForm extends Component {
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
-      name: this.props.defaultUserName,
-      email: this.props.defaultUserEmail,
+      name: props.defaultUserName ? props.defaultUserName : '',
+      email: props.defaultUserEmail ? props.defaultUserEmail : '',
       validated: false
     };
   }
@@ -103,7 +103,6 @@ class SupportForm extends Component {
                 type="email"
                 id="support_email"
                 placeholder="Email"
-                disabled
                 onChange={(event) => { this.handleChange(event); }}
                 value={this.state.email}
               />
