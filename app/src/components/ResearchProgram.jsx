@@ -15,7 +15,7 @@ import MarineGeospatialLogo from '../../assets/research-partners/marine-logo.png
 import SustainableFisheries from '../../assets/research-partners/sustainable-logo.png';
 import WormLabLogo from '../../assets/research-partners/worm-lab.svg';
 import UbcLogo from '../../assets/research-partners/ubc_logo.jpg';
-import PristineLogo from '../../assets/research-partners/pristine_logo.gif';
+import PristineLogo from '../../assets/research-partners/pristine_logo.png';
 import FaoLogo from '../../assets/research-partners/fao_logo.png';
 
 class ResearchProgram extends Component {
