@@ -210,8 +210,6 @@ class CanvasLayer {
 
   /**
    * Draws all data in between the given start and end times
-   *
-   *
    * @param start start timstamp (ms)
    * @param end   end timestamp (ms)
    */
@@ -220,6 +218,13 @@ class CanvasLayer {
 
     const startIndex = this._getOffsetedTimeAtPrecision(start);
     const endIndex = this._getOffsetedTimeAtPrecision(end);
+
+    if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
+      return;
+    }
+
+    this.currentInnerStartIndex = startIndex;
+    this.currentInnerEndIndex = endIndex;
 
     for (let index = 0, length = canvasKeys.length; index < length; index++) {
       const canvasKey = canvasKeys[index];
