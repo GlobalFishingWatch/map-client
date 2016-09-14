@@ -86,7 +86,7 @@ class SupportForm extends Component {
             })}
           >
             <div className={supportFormStyle['container-inputs']}>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="support_name">Name</label>
               <input
                 className={supportFormStyle['input-text']}
                 type="name"
