@@ -105,6 +105,7 @@ class SupportForm extends Component {
                 placeholder="Email"
                 onChange={(event) => { this.handleChange(event); }}
                 value={this.state.email}
+                required
               />
 
               <label htmlFor="support_type">Type</label>
