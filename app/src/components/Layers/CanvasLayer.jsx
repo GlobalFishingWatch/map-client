@@ -212,6 +212,49 @@ class CanvasLayer {
   }
 
   /**
+   * Creates and loads data for each tile
+   *
+   * @param coord
+   * @param zoom
+   * @param ownerDocument
+   * @returns {*}
+   */
+  getTile(coord, zoom, ownerDocument) {
+    const canvas = this._getCanvas(coord, zoom, ownerDocument);
+    const tileCoordinates = this.getTileCoordinates(coord, zoom);
+    const promises = [];
+
+    canvas.ctx.fillStyle = 'red';
+    canvas.ctx.fillRect(0,0,10,10);
+
+    if (tileCoordinates) {
+      const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
+      for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+        promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
+      }
+    }
+    Promise.all(promises).then((rawTileData) => {
+      canvas.ctx.fillStyle = 'brown';
+      canvas.ctx.fillRect(0,0,10,10);
+      if (tileCoordinates && rawTileData[0]) {
+        canvas.ctx.fillStyle = 'green';
+        canvas.ctx.fillRect(0,0,10,10);
+        const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
+        const tilePlaybackData = this.storeAsPlaybackData(vectorArray, tileCoordinates);
+        // this._drawTimeRangeAtIndexes(this.currentInnerStartIndex, this.currentInnerEndIndex, true);
+        // this.drawTileFromPlaybackData(canvas, )
+        this._drawTimeRangeCanvasAtIndexes(
+          this.currentInnerStartIndex,
+          this.currentInnerEndIndex,
+          canvas,
+          tilePlaybackData);
+      }
+    });
+
+    return canvas;
+  }
+
+  /**
    * Draws all data in between the given start and end times
    * @param start start timstamp (ms)
    * @param end   end timestamp (ms)
@@ -230,6 +273,11 @@ class CanvasLayer {
     this._drawTimeRangeAtIndexes(startIndex, endIndex);
   }
 
+  /**
+   * Draws all data in between the given start and end times
+   * @param startIndex frame index (at precision set in constants.PLAYBACK_PRECISION) to draw
+   * @param endIndex
+   */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
     const canvasKeys = Object.keys(this.playbackData);
 
@@ -239,15 +287,18 @@ class CanvasLayer {
       if (!canvas) {
         return;
       }
-      canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, this.playbackData[canvasKey]);
+    }
+  }
 
-      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-        if (this.playbackData[canvasKey] && this.playbackData[canvasKey][timeIndex]) {
-          const playbackData = this.playbackData[canvasKey][timeIndex];
-          this.drawTileFromPlaybackData(canvas, playbackData, false);
-        } else {
-          // TODO: a lot of missing timestamp indexes here, check why
-        }
+  _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData) {
+    canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      if (tilePlaybackData && tilePlaybackData[timeIndex]) {
+        const playbackData = tilePlaybackData[timeIndex];
+        this.drawTileFromPlaybackData(canvas, playbackData, false);
+      } else {
+        // TODO: a lot of missing timestamp indexes here, check why
       }
     }
   }
@@ -381,6 +432,8 @@ class CanvasLayer {
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
       timestamp.sigma.push(vectorArray.sigma[index]);
     }
+
+    return this.playbackData[tileId];
   }
 
   static getTimestampIndex(timestamp) {
@@ -489,36 +542,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     return data;
   }
 
-  /**
-   * Creates and loads data for each tile
-   *
-   * @param coord
-   * @param zoom
-   * @param ownerDocument
-   * @returns {*}
-   */
-  getTile(coord, zoom, ownerDocument) {
-    const canvas = this._getCanvas(coord, zoom, ownerDocument);
-    const tileCoordinates = this.getTileCoordinates(coord, zoom);
-    const promises = [];
 
-    if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
-      for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-        promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
-      }
-    }
-    Promise.all(promises).then((rawTileData) => {
-      if (tileCoordinates && rawTileData[0]) {
-        const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        // this.drawTileFromVectorArray(canvas, vectorArray);
-        this.storeAsPlaybackData(vectorArray, tileCoordinates);
-        this._drawTimeRangeAtIndexes(this.currentInnerStartIndex, this.currentInnerEndIndex);
-      }
-    });
-
-    return canvas;
-  }
 }
 
 export default CanvasLayer;
