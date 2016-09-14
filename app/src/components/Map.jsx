@@ -59,9 +59,6 @@ class Map extends Component {
 
     this.setState({ zoom });
     this.props.setZoom(zoom);
-    if (this.state.overlay) {
-      this.state.overlay.resetPlaybackData();
-    }
     this.updateTrackLayer();
   }
 
