@@ -2,36 +2,106 @@ import React, { Component } from 'react';
 import ToolTipJSON from './ToolTipJSON';
 import Rhombus from './Rhombus';
 import Loader from './Loader';
-import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
-import { scrollTo } from '../../lib/Utils';
 import $ from 'jquery';
+import classnames from 'classnames';
+import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
 
 class Accordion extends Component {
-  componentDidUpdate() {
-    if (!this.props.autoscroll || this.scrolled) return;
 
-    const $el = $(`.${AccordionStyles['-opened']}`).parent();
-    if ($el.length) {
-      scrollTo($el);
+  constructor(props) {
+    super(props);
+    this.state = {
+      // This attribute will contain array of strings being the height of each item in px
+      maxHeights: null,
+      // Whether the heights of the content of the items have been computed
+      initialized: false
+    };
+  }
+
+  componentDidMount() {
+    // Usually, the entries should be available at time of instanciation but sometimes they are loaded
+    // asynchronously. In that case, we compute the max-height in componentDidUpdate.
+    if (this.props.entries && this.props.entries.length) {
+      const itemsContent = [...this.refs.items.querySelectorAll(`.${AccordionStyles['item-content']}`)];
+
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({
+        maxHeights: itemsContent.map(content => `${content.getBoundingClientRect().height}px`),
+        initialized: true
+      });
     }
-    this.scrolled = true;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // If the entries are loaded asynchronously, we compute the max-height at this stage
+    if ((!prevProps.entries || !prevProps.entries.length) && this.props.entries && this.props.entries.length) {
+      const itemsContent = [...this.refs.items.querySelectorAll(`.${AccordionStyles['item-content']}`)];
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        maxHeights: itemsContent.map(content => `${content.getBoundingClientRect().height}px`),
+        initialized: true
+      });
+    }
+
+    // Once the component is initialized (the max-height have been computed) and the DOM has been rendered,
+    // if this.props.autoscroll is true, then we scroll down to the active item
+    if (!prevState.initialized && this.state.initialized && this.props.autoscroll && this.props.currentAccordionIndex) {
+      const items = [...this.refs.items.querySelectorAll(`.${AccordionStyles['accordion-item']}`)];
+      const item = items[this.props.currentAccordionIndex];
+      const topPosition = window.scrollY + item.getBoundingClientRect().top;
+      $('html, body').animate({ scrollTop: topPosition }, 500);
+    }
   }
 
   onItemClick(index, slug) {
+    // We execute the callback to collapse the previous item
     this.props.onAccordionItemClick(index, slug, this.props.accordionId);
+
+    // We want to scroll to the clicked item on smaller device and only it the user is not closing it
+    const isClosingItem = this.props.currentAccordionIndex === index;
+    if (window.innerWidth <= 768 && !isClosingItem) {
+      // We retrieve the clicked item to get its position from the top of the page
+      const items = [...this.refs.items.querySelectorAll(`.${AccordionStyles['accordion-item']}`)];
+      const clickedItem = items[index];
+
+      // Before scrolling, we need to make sure that if a previous item was expanded, we wait for it to
+      // collapse otherwise there will be an offset of the height of the collapsing item
+      // Also, if the previous expanded item is below the clicked one, we don't need to wait because it
+      // won't affect the scrolling behavior
+      // Finally, the first time an item is expanded, we shouldn't need a delay but because several accordions can
+      // be present on the same page, we don't want an offset when a previous accordion collapses
+      const needsDelay = !this.props.currentAccordionIndex || this.props.currentAccordionIndex < index;
+      const delay = 500; // The delay depends on the CSS transitions, please make sure to update both of them at once
+      const scrollAndExpand = () => requestAnimationFrame(() => {
+        const topPosition = window.scrollY + clickedItem.getBoundingClientRect().top;
+        $('html, body').animate({ scrollTop: topPosition }, 500);
+      });
+      // We need a double rAF here so we make sure the layout has been updated by the browser
+      requestAnimationFrame(() => {
+        if (needsDelay) setTimeout(scrollAndExpand, delay);
+        else scrollAndExpand();
+      });
+    }
   }
 
   render() {
     let entries = (<Loader />);
     if (this.props.entries && this.props.entries.length > 0) {
       entries = this.props.entries.map((entry, index) => {
-        let classNames = AccordionStyles['item-content'];
-        let classRhombus = AccordionStyles['item-rhombus'];
+        const isItemExpanded = this.props.currentAccordionIndex === index;
 
-        if (index === this.props.currentAccordionIndex) {
-          classNames += ` ${AccordionStyles['-opened']}`;
-          classRhombus += ` ${AccordionStyles['rhombus-opened']}`;
+        // By default, the max-height of all the elements is set to default so they
+        // are all expanded and we can measure their height: this.state.maxHeights will contains
+        // an array of strings (the heights in px).
+        // After that, or the height of each item is 0 (collapsed) or the value store in the state
+        // (expanded).
+        let maxHeight = 'auto';
+        if (this.state.initialized) {
+          if (isItemExpanded) maxHeight = this.state.maxHeights[index];
+          else maxHeight = 0;
         }
+
         return (
           <div
             className={AccordionStyles['accordion-item']}
@@ -39,21 +109,32 @@ class Accordion extends Component {
           >
             <div
               className={AccordionStyles['item-title']}
-              onClick={() => { this.onItemClick(index, entry.slug); }}
+              onClick={() => this.onItemClick(index, entry.slug)}
             >
               {entry.title}
-              <div className={classRhombus}>
+              <div
+                className={classnames({
+                  [AccordionStyles['item-rhombus']]: true,
+                  [AccordionStyles['rhombus-opened']]: isItemExpanded
+                })}
+              >
                 <Rhombus color="blue" />
               </div>
             </div>
-            <article className={classNames}>
+            <article
+              className={classnames({
+                [AccordionStyles['item-content']]: true,
+                [AccordionStyles['-opened']]: isItemExpanded
+              })}
+              style={{ maxHeight }}
+            >
               <ToolTipJSON html={entry.content} />
             </article>
           </div>
         );
       });
     }
-    return <div className={AccordionStyles['c-content-accordion']}>{entries}</div>;
+    return <div className={AccordionStyles['c-content-accordion']} ref="items">{entries}</div>;
   }
 }
 
