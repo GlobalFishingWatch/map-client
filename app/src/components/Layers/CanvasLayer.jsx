@@ -11,7 +11,6 @@ class CanvasLayer {
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
     this.visible = false;
-    this.filters = filters;
     this.token = token;
     this.setVesselTransparency(vesselTransparency);
     this.setVesselColor(vesselColor);
@@ -19,10 +18,12 @@ class CanvasLayer {
     this.outerStartDate = filters.startDate;
     this.outerStartDateOffset = this._getTimeAtPrecision(this.outerStartDate);
     this.outerEndDate = filters.endDate;
-    this.innerStartDate = filters.timelineInnerExtent[0];
-    this.innerEndDate = filters.timelineInnerExtent[1];
+    this.innerStartDate = filters.timelineInnerExtent[0]; // deprecated
+    this.innerEndDate = filters.timelineInnerExtent[1]; // deprecated
     this.currentInnerStartIndex = this._getOffsetedTimeAtPrecision(this.innerStartDate.getTime());
     this.currentInnerEndIndex = this._getOffsetedTimeAtPrecision(this.innerEndDate.getTime());
+
+    this._setFlag(filters);
 
     if (visible) {
       this.show();
@@ -53,6 +54,16 @@ class CanvasLayer {
     const finalOpacity = (100 - this.vesselTransparency) / 100;
     this.precomputedVesselColor = `rgba(${this.vesselColor.r}\
 ,${this.vesselColor.g},${this.vesselColor.b},${finalOpacity})`;
+  }
+
+  _setFlag(filters) {
+    if (!!filters) {
+      if (filters.flag !== '') {
+        this.flag = parseInt(filters.flag, 10);
+      } else {
+        this.flag = null;
+      }
+    }
   }
 
   /**
@@ -112,9 +123,9 @@ class CanvasLayer {
    * @param filters
    */
   updateFilters(filters) {
-    this.filters = filters;
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
+    this._setFlag(filters);
     this.resetPlaybackData();
     this.refresh();
   }
@@ -324,39 +335,6 @@ class CanvasLayer {
   }
 
   /**
-   * Validates if the vessel point matches the current filter state
-   *
-   * @param data
-   * @param index
-   * @param useInnerDateFilter
-   * @returns {boolean}
-   */
-  passesFilters(data, index, useInnerDateFilter = false) {
-    const filters = this.filters;
-    if (!useInnerDateFilter && data.datetime[index] < this.outerStartDate) {
-      return false;
-    }
-    if (!useInnerDateFilter && data.datetime[index] > this.outerEndDate) {
-      return false;
-    }
-    if (useInnerDateFilter && data.datetime[index] < this.innerStartDate) {
-      return false;
-    }
-    if (useInnerDateFilter && data.datetime[index] > this.innerEndDate) {
-      return false;
-    }
-    if (!data.weight[index]) {
-      return false;
-    }
-    if (!!filters) {
-      if (filters.flag !== '' && data.category[index] !== parseInt(filters.flag, 10)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
    * Add projected lat/long values transformed as x/y coordinates
    */
   addTileCoordinates(tileCoordinates, vectorArray) {
@@ -401,15 +379,25 @@ class CanvasLayer {
     }
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      if (!this.passesFilters(vectorArray, index)) {
+      const datetime = vectorArray.datetime[index];
+
+      if (datetime < this.outerStartDate || datetime > this.outerEndDate) {
+        continue;
+      }
+      // keep?
+      // if (!data.weight[index]) {
+      //   return false;
+      // }
+      const category = vectorArray.category[index];
+      if (this.flag && this.flag !== category) {
         continue;
       }
 
-      const timeIndex = this._getOffsetedTimeAtPrecision(vectorArray.datetime[index]);
+      const timeIndex = this._getOffsetedTimeAtPrecision(datetime);
 
       if (!this.playbackData[tileId][timeIndex]) {
         this.playbackData[tileId][timeIndex] = {
-          category: [vectorArray.category[index]],
+          category: [category],
           latitude: [vectorArray.latitude[index]],
           longitude: [vectorArray.longitude[index]],
           weight: [vectorArray.weight[index]],
@@ -422,7 +410,7 @@ class CanvasLayer {
         continue;
       }
       const timestamp = this.playbackData[tileId][timeIndex];
-      timestamp.category.push(vectorArray.category[index]);
+      timestamp.category.push(category);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
       timestamp.weight.push(vectorArray.weight[index]);
@@ -440,13 +428,10 @@ class CanvasLayer {
     return timestamp - (timestamp % TIMELINE_STEP);
   }
 
-  drawVesselPoints(ctx, points, testFilters) {
+  drawVesselPoints(ctx, points) {
     ctx.fillStyle = this.precomputedVesselColor;
     ctx.beginPath();
     for (let index = 0, len = points.latitude.length; index < len; index++) {
-      if (testFilters && !this.passesFilters(points, index, true)) {
-        continue;
-      }
       this.drawVesselPoint(
         ctx,
         points.x[index],
