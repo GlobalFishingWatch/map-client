@@ -40,7 +40,7 @@ class Header extends Component {
     if (this.props.loggedUser) {
       userLinks = (
         <li className={styles.dropdown}>
-          <a>{this.props.loggedUser.displayName}</a>
+          <a className={styles['login-link']}>{this.props.loggedUser.displayName}</a>
           <ul className={styles['dropdown-content']}>
             <li>
               <a onClick={this.logout}>
