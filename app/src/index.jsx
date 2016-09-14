@@ -20,6 +20,9 @@ import searchReducer from './reducers/search';
 import vesselInfoReducer from './reducers/vesselInfo';
 import articlesPublicationsReducer from './reducers/articlesPublications';
 
+// Polyfill for older browsers (IE11 for example)
+window.Promise = window.Promise || require('promise-polyfill');
+
 /**
  * Reducers
  * @info(http://redux.js.org/docs/basics/Reducers.html)
