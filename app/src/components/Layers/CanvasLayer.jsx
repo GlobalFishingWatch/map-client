@@ -258,7 +258,7 @@ class CanvasLayer {
   }
 
   releaseTile(canvas) {
-    console.log('release tile', canvas.index, this.playbackData.length);
+    // console.log('release tile', canvas.index);
     if (canvas.index === undefined) {
       console.warn('unknown tile relased');
       return;
@@ -315,7 +315,7 @@ class CanvasLayer {
       }
     }
 
-    this._showDebugInfo(canvas.ctx, startIndex);
+    this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
 
   }
 
@@ -466,7 +466,7 @@ class CanvasLayer {
    * @param drawTrail
    */
   drawVesselPoint(ctx, x, y, weight /*, sigma */) {
-    const radius = Math.max(1, weight / 50);
+    const radius = Math.min(5, Math.max(1, Math.round(weight / 10)));
     ctx.moveTo(x, y);
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
