@@ -12,16 +12,19 @@
   .name-list {
     display: block;
     margin-bottom: 20px;
-    //or a line separator? ask daniel
+    color: $color-9;
+    font-family: $font-family-2;
 
     li {
       display: block;
       font-size: $font-size-small;
-      font-weight: $font-weight-bold;
       line-height: 1.5;
       margin-bottom: 0;
       width: 100%;
 
+      .name {
+        font-weight: $font-weight-bold;
+      }
     }
   }
 

@@ -35,19 +35,18 @@ class ResearchProgram extends Component {
             <section className="section-page">
               <p>
                 Scientists play a key role in identifying and understanding the complex challenges facing our oceans,
-                which is why we are working closely with some of the world’s leading researchers to extend
-                the value of our dataset. Our collaborations contribute to discoveries and solutions critical
-                to marine conservation,
+                which is why we are working closely with some of the world’s leading researchers to extend the value of
+                our dataset. Our collaborations contribute to discoveries and solutions critical to marine conservation,
                 global economics, and human welfare. The partnerships we are forging will help us understand the role
-                fishing plays in the physical, biological, economic, and political factors facing the oceans. The
-                Research Program also aims to support the entire scientific community by making additional datasets
-                publicly available to enable future works.
+                fishing plays in the physical, biological, economic, and political factors of the oceans. The Research
+                Program aims to support the entire scientific community by making additional datasets publicly available
+                to enable future works.
               </p>
               <p>
-                Core principles of Global Fishing Watch include transparency and collaboration, and the Research
-                Program is based on these same principles. Research partners are committed to sharing datasets,
-                ideas, and techniques, with the belief that broader access to information leads to future
-                initiatives and more impact.
+                <i>Transparency</i> and <i>collaboration</i> are core principles of Global Fishing Watch, and the
+                Research Program is based on these same pillars. Research partners are committed to sharing datasets,
+                ideas, and methodologies, with the belief that broader access to information leads to future initiatives
+                and greater impact.
               </p>
             </section>
             <section className="section-page">
@@ -187,13 +186,13 @@ class ResearchProgram extends Component {
                   src={McCauleyLogo}
                   alt="McCauley Lab"
                 />
-                <h4 className="section-subtitle">University of California, Santa Barbara: McCauley Lab</h4>
+                <h4 className="section-subtitle">University of California, Santa Barbara: Marine Science Institute</h4>
                 <p>
-                  The McCauley Lab is a consortium of broadly trained ecologists that focus on understanding how we
-                  influence the oceans and how the oceans influence us. The lab is using Global Fishing Watch data to
-                  evaluate the efficacy of large marine protected areas; to strengthen emerging commitments by the
-                  United Nations to protect biodiversity of the high seas; and to better understand how fishing shapes
-                  global patterns of environmental justice.
+                  The McCauley Lab, within the Marine Science Institute, is a consortium of broadly trained ecologists
+                  that focus on understanding how we influence the oceans and how the oceans influence us. The lab is
+                  using Global Fishing Watch data to evaluate the efficacy of large marine protected areas; to
+                  strengthen emerging commitments by the United Nations to protect biodiversity of the high seas;
+                  and to better understand how fishing shapes global patterns of environmental justice.
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
@@ -247,14 +246,15 @@ class ResearchProgram extends Component {
                     revolutionize the way fisheries are managed, the
                     way fisheries are assessed, the way fisheries are
                     monitored and evaluated. So I think pretty much
-                    everything we don in fisheries could
+                    everything we do in fisheries could
                     be revolutionized by Global Fishing Watch.”
                   </i>
                   – Dr. Chris Costello
                 </p>
 
                 <Link
-                  to="#"
+                  to="http://blog.globalfishingwatch.org/2016/08/interview-with-chris-
+costello-environmental-economist.html"
                   target="_blank"
                   className="link-rhombus"
                 >
@@ -276,8 +276,8 @@ class ResearchProgram extends Component {
                 </p>
 
                 <Link
-                  to="http://skytruth.org/blogger_import_test/2016/07/interview-with-renowned-
-marine-ecologist-boris-worm.html"
+                  to="http://blog.globalfishingwatch.org/2016/07/interview-with-
+renowned-marine-ecologist-boris-worm.html"
                   target="_blank"
                   className="link-rhombus"
                 >
@@ -299,8 +299,7 @@ marine-ecologist-boris-worm.html"
                 </p>
 
                 <Link
-                  to="http://skytruth.org/blogger_import_test/2016/07/interview-with-
-marine-ecologist-dr-doug-mccauley.html"
+                  to="http://blog.globalfishingwatch.org/2016/07/interview-with-marine-ecologist-dr-doug-mccauley.html"
                   target="_blank"
                   className="link-rhombus"
                 >
@@ -311,9 +310,9 @@ marine-ecologist-dr-doug-mccauley.html"
               </article>
             </section>
             <section className="section-page">
-              <h2 className="section-title">Access to Global Fishing Watch Data</h2>
-              <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We
-                will be publishing daily, detailed, global rasters of fishing activity, which will be available to
+              <h2 className="section-title">Global Fishing Watch Research Data</h2>
+              <p>Global Fishing Watch is committed to making as much of its data freely available as possible. We are
+                publishing daily, detailed, global rasters of fishing effort, which will be available to existing
                 research partners via <a
                   className="gfw-link"
                   href="http://earthengine.google.com/"
@@ -321,19 +320,18 @@ marine-ecologist-dr-doug-mccauley.html"
                 >
                 Google’s Earth Engine
                 </a>
-                {' '} platform. Earth Engine provides incredibly powerful cloud spatial
-                analytics alongside the world’s largest public data catalog with over five petabytes of imagery at
-                your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
-                dataset we have licensed for the project. While our agreement does not allow for redistribution of the
-                raw data, as that would adversely affect our providers, we are seeking arrangements for researchers to
-                more easily acquire a license. Please contact{' '}
+                {' '} Earth Engine provides incredibly powerful cloud spatial analytics alongside the world’s largest
+                public data catalog with over five petabytes of imagery and remotely sensed environmental monitoring
+                data at your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
+                dataset we have licensed for the project. Our agreement does not allow for redistribution of the raw
+                data, as that would adversely affect our providers. Please contact{' '}
                 <a
                   className="gfw-link"
                   href="mailto:research@globalfishingatch.org"
                 >
                 research@globalfishingatch.org
                 </a>
-                {' '}if interested in these datasets.
+                {' '}with questions.
               </p>
             </section>
             <section className="section-page">

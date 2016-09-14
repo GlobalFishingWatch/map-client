@@ -10,7 +10,7 @@ class InfoMap extends Component {
     return (<div className={baseStyle.wrap}>
       <div className={InfoMapContentStyle['c-info-map-content']}>
         <h2>THE MAP</h2>
-        <h3>Explore the Map Now</h3>
+        <h3>Explore Now</h3>
         <p>Track commercial fishing activity worldwide on the free, user-friendly, interactive Global Fishing Watch Map.
         </p>
         <p>

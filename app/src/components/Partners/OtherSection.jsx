@@ -8,7 +8,7 @@ class OtherSection extends Component {
   render() {
     return (<section className={OtherSectionStyle['c-other-section']}>
       <div className={BaseStyle.wrap}>
-        <h2>Other Partners</h2>
+        <h2>Data Providers</h2>
         <div className={OtherSectionStyle['other-logos']}>
           <img src={orbcommLogo} alt="orbcomm logo"></img>
         </div>
