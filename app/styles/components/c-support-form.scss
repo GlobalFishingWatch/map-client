@@ -23,6 +23,15 @@
 
   form {
 
+    input,
+    textarea,
+    select {
+
+      &:disabled {
+        opacity: 1; //neccesary on IOS
+      }
+    }
+
     .contain-form {
       display: flex;
       flex-wrap: wrap;
@@ -66,10 +75,6 @@
 
           &:required {
             box-shadow: none;
-          }
-
-          &:disabled {
-            opacity: 1; //neccesary on IOS
           }
 
         }
