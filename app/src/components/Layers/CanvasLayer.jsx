@@ -6,7 +6,7 @@ import _ from 'lodash';
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
     this.map = map;
-    this.playbackData = {};
+    this.playbackData = [];
     this.position = position;
     this.tileSize = new google.maps.Size(256, 256);
     this.options = _.extend({}, this.defaults, this.options || {});
@@ -100,18 +100,6 @@ class CanvasLayer {
     }
   }
 
-  /**
-   * Calculates a tile ID/key based on their x/y/zoom coordinates
-   *
-   * @param x
-   * @param y
-   * @param z
-   * @returns {*}
-   */
-  getTileId(x, y, z) {
-    return (x * 1000000000) + (y * 100) + z;
-  }
-
   isVisible() {
     return this.visible;
   }
@@ -131,13 +119,6 @@ class CanvasLayer {
   }
 
   /**
-   * Resets playback data
-   */
-  resetPlaybackData() {
-    this.playbackData = {};
-  }
-
-  /**
    * Creates a canvas element
    *
    * @param coord
@@ -146,13 +127,12 @@ class CanvasLayer {
    * @returns {*}
    * @private
    */
-  _getCanvas(coord, zoom, ownerDocument) {
+  _getCanvas(ownerDocument) {
     // create canvas and reset style
     const canvas = ownerDocument.createElement('canvas');
     canvas.style.border = 'none';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
-    canvas.id = this.getTileId(coord.x, coord.y, zoom);
 
     // prepare canvas and context sizes
     const ctx = canvas.getContext('2d');
@@ -231,12 +211,19 @@ class CanvasLayer {
    * @returns {*}
    */
   getTile(coord, zoom, ownerDocument) {
-    const canvas = this._getCanvas(coord, zoom, ownerDocument);
+    const canvas = this._getCanvas(ownerDocument);
+    const ctx = canvas.ctx;
     const tileCoordinates = this.getTileCoordinates(coord, zoom);
     const promises = [];
 
-    canvas.ctx.fillStyle = 'red';
-    canvas.ctx.fillRect(0,0,10,10);
+    const canvasPlaybackData = {
+      canvas,
+      tilePlaybackData: null
+    };
+    canvas.index = this.playbackData.length;
+    this.playbackData.push(canvasPlaybackData);
+
+    this._showDebugInfo(ctx, 'L', Math.random());
 
     if (tileCoordinates) {
       const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
@@ -245,24 +232,38 @@ class CanvasLayer {
       }
     }
     Promise.all(promises).then((rawTileData) => {
-      canvas.ctx.fillStyle = 'brown';
-      canvas.ctx.fillRect(0,0,10,10);
-      if (tileCoordinates && rawTileData[0]) {
-        canvas.ctx.fillStyle = 'green';
-        canvas.ctx.fillRect(0,0,10,10);
-        const vectorArray = this.addTileCoordinates(tileCoordinates, this.groupData(rawTileData));
-        const tilePlaybackData = this.storeAsPlaybackData(vectorArray, tileCoordinates);
-        // this._drawTimeRangeAtIndexes(this.currentInnerStartIndex, this.currentInnerEndIndex, true);
-        // this.drawTileFromPlaybackData(canvas, )
-        this._drawTimeRangeCanvasAtIndexes(
-          this.currentInnerStartIndex,
-          this.currentInnerEndIndex,
-          canvas,
-          tilePlaybackData);
+      if (!rawTileData || rawTileData.length === 0) {
+        this._showDebugInfo(ctx, 'E');
+        return null;
       }
+      const cleanVectorArrays = rawTileData.filter(vectorArray => vectorArray !== null);
+      if (cleanVectorArrays.length !== rawTileData.length) {
+        this._showDebugInfo(ctx, 'PE');
+      }
+
+      this._showDebugInfo(ctx, 'OK');
+      const vectorArray = this.addTilePixelCoordinates(tileCoordinates, this.groupData(cleanVectorArrays));
+      const tilePlaybackData = this.getTilePlaybackData(vectorArray);
+      canvasPlaybackData.tilePlaybackData = tilePlaybackData;
+
+      this._drawTimeRangeCanvasAtIndexes(
+        this.currentInnerStartIndex,
+        this.currentInnerEndIndex,
+        canvas,
+        tilePlaybackData
+      );
     });
 
     return canvas;
+  }
+
+  releaseTile(canvas) {
+    console.log('release tile', canvas.index, this.playbackData.length);
+    if (canvas.index === undefined) {
+      console.warn('unknown tile relased');
+      return;
+    }
+    this.playbackData.splice(canvas.index, 1);
   }
 
   /**
@@ -275,13 +276,18 @@ class CanvasLayer {
     const endIndex = this._getOffsetedTimeAtPrecision(end);
 
     if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
-      return;
+      // TODO: check only startIndex to avoid bypassing when current is 10-20 and next is 10-21 (rounding issue)
+      // and force drawing when innerDelta changed
+      return -1;
     }
 
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
 
+    // console.log(startIndex)
     this._drawTimeRangeAtIndexes(startIndex, endIndex);
+
+    return startIndex;
   }
 
   /**
@@ -290,20 +296,16 @@ class CanvasLayer {
    * @param endIndex
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
-    const canvasKeys = Object.keys(this.playbackData);
-
-    for (let index = 0, length = canvasKeys.length; index < length; index++) {
-      const canvasKey = canvasKeys[index];
-      const canvas = document.getElementById(canvasKeys[index]);
-      if (!canvas) {
-        return;
-      }
-      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, this.playbackData[canvasKey]);
-    }
+    this.playbackData.forEach((canvasPlaybackData) => {
+      const canvas = canvasPlaybackData.canvas;
+      const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData);
+    });
   }
 
   _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData) {
     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       if (tilePlaybackData && tilePlaybackData[timeIndex]) {
         const playbackData = tilePlaybackData[timeIndex];
@@ -312,6 +314,23 @@ class CanvasLayer {
         // TODO: a lot of missing timestamp indexes here, check why
       }
     }
+
+    this._showDebugInfo(canvas.ctx, startIndex);
+
+  }
+
+  _showDebugInfo(ctx, ...text) {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0, 250, 20);
+    ctx.font = '10px Verdana bold';
+    ctx.fillStyle = 'black';
+    if (!ctx.debug) {
+      ctx.debug = text;
+    }
+    else {
+      ctx.debug += ' ' + text;
+    }
+    ctx.fillText(text, 5, 10);
   }
 
   /**
@@ -337,9 +356,8 @@ class CanvasLayer {
   /**
    * Add projected lat/long values transformed as x/y coordinates
    */
-  addTileCoordinates(tileCoordinates, vectorArray) {
+  addTilePixelCoordinates(tileCoordinates, vectorArray) {
     const data = vectorArray;
-    const overlayProjection = this.map.getProjection();
     const scale = 1 << tileCoordinates.zoom;
     const tileBaseX = tileCoordinates.x * 256;
     const tileBaseY = tileCoordinates.y * 256;
@@ -368,15 +386,8 @@ class CanvasLayer {
    * @param vectorArray
    * @param tileCoordinates
    */
-  storeAsPlaybackData(vectorArray, tileCoordinates) {
-    const tileId = this.getTileId(tileCoordinates.x, tileCoordinates.y, tileCoordinates.zoom);
-
-
-    if (!this.playbackData[tileId]) {
-      this.playbackData[tileId] = {};
-    } else {
-      return;
-    }
+  getTilePlaybackData(vectorArray) {
+    const tilePlaybackData = [];
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
@@ -395,8 +406,8 @@ class CanvasLayer {
 
       const timeIndex = this._getOffsetedTimeAtPrecision(datetime);
 
-      if (!this.playbackData[tileId][timeIndex]) {
-        this.playbackData[tileId][timeIndex] = {
+      if (!tilePlaybackData[timeIndex]) {
+        tilePlaybackData[timeIndex] = {
           category: [category],
           latitude: [vectorArray.latitude[index]],
           longitude: [vectorArray.longitude[index]],
@@ -409,7 +420,7 @@ class CanvasLayer {
         };
         continue;
       }
-      const timestamp = this.playbackData[tileId][timeIndex];
+      const timestamp = tilePlaybackData[timeIndex];
       timestamp.category.push(category);
       timestamp.latitude.push(vectorArray.latitude[index]);
       timestamp.longitude.push(vectorArray.longitude[index]);
@@ -421,7 +432,7 @@ class CanvasLayer {
       timestamp.sigma.push(vectorArray.sigma[index]);
     }
 
-    return this.playbackData[tileId];
+    return tilePlaybackData;
   }
 
   static getTimestampIndex(timestamp) {
@@ -506,11 +517,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
    * @returns {*}
    */
-  groupData(vectorArrays) {
-    if (!vectorArrays || vectorArrays.length === 0) return null;
+  groupData(cleanVectorArrays) {
     const data = {};
 
-    const cleanVectorArrays = vectorArrays.filter(vectorArray => vectorArray !== null);
     const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
 
     API_RETURNED_KEYS.forEach((key) => {
