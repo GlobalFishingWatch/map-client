@@ -111,15 +111,15 @@ class ResearchProgram extends Component {
                 />
                 <h4 className="section-subtitle">Food and Agriculture Organization of the United Nations (FAO)</h4>
                 <p>
-                FAO plays a leading role in international fisheries policy working with
-                a wide range of partners, including Governments, Regional Fisheries
-                Bodies, cooperatives, fishing communities and more. UN-FAO
-                will collaborate on new platforms and research methodologies
-                that will build on Global Fishing Watch and global vessel r
-                egistries for understanding and reporting high resolution spatial
-                fishery statistics, and proposing transparency tools to support
-                States in improving their monitoring, control and surveillance
-                of fishing activities.
+                  FAO plays a leading role in international fisheries policy working with
+                  a wide range of partners, including Governments, Regional Fisheries
+                  Bodies, cooperatives, fishing communities and more. UN-FAO
+                  will collaborate on new platforms and research methodologies
+                  that will build on Global Fishing Watch and global vessel registries for
+                  understanding and reporting high resolution spatial
+                  fishery statistics, and proposing transparency tools to support
+                  States in improving their monitoring, control and surveillance
+                  of fishing activities.
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
@@ -139,8 +139,8 @@ class ResearchProgram extends Component {
                   than three million square kilometers of ocean
                   territory. Working with Global Fishing Watch,
                   new models are being developed to identify
-                  regions of the high seas that are ecologically u
-                  nique and economically viable for protection.
+                  regions of the high seas that are ecologically
+                  unique and economically viable for protection.
                 </p>
               </article>
               <article className={StaticPageStyles['section-item']}>
@@ -271,7 +271,8 @@ costello-environmental-economist.html"
                 />
                 <p className={StaticPageStyles['video-quote']}>
                   <i>“I think Global Fishing Watch could play a key role in making human use of the
-                  ocean transparent to everybody.”</i>
+                    ocean transparent to everybody.”
+                  </i>
                   – Dr. Boris Worm
                 </p>
 
@@ -294,7 +295,8 @@ renowned-marine-ecologist-boris-worm.html"
                 />
                 <p className={StaticPageStyles['video-quote']}>
                   <i>“Until Global Fishing Watch came online, there was not a publicly available source of
-                  information about where fishing was happening.”</i>
+                    information about where fishing was happening.”
+                  </i>
                   – Dr. Douglas McCauley
                 </p>
 
@@ -318,8 +320,8 @@ renowned-marine-ecologist-boris-worm.html"
                   href="http://earthengine.google.com/"
                   target="_blank"
                 >
-                Google’s Earth Engine
-                </a>
+                  Google’s Earth Engine platform
+                </a>.
                 {' '} Earth Engine provides incredibly powerful cloud spatial analytics alongside the world’s largest
                 public data catalog with over five petabytes of imagery and remotely sensed environmental monitoring
                 data at your fingertips. The underlying AIS data, with positions of individual vessels, is a commercial
@@ -329,7 +331,7 @@ renowned-marine-ecologist-boris-worm.html"
                   className="gfw-link"
                   href="mailto:research@globalfishingatch.org"
                 >
-                research@globalfishingatch.org
+                  research@globalfishingatch.org
                 </a>
                 {' '}with questions.
               </p>
