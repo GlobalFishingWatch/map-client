@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BaseStyle from '../../../styles/_base.scss';
 import OtherSectionStyle from '../../../styles/components/c-other-section.scss';
 import orbcommLogo from '../../../assets/logos/orbcomm_logo.jpg';
+import atlasLogo from '../../../assets/logos/atlas_logo.png';
 
 class OtherSection extends Component {
 
@@ -11,6 +12,7 @@ class OtherSection extends Component {
         <h2>Data Providers</h2>
         <div className={OtherSectionStyle['other-logos']}>
           <img src={orbcommLogo} alt="orbcomm logo"></img>
+          <img className={OtherSectionStyle['img-small']} src={atlasLogo} alt="atlas logo"></img>
         </div>
       </div>
     </section>);

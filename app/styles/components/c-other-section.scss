@@ -18,13 +18,36 @@
   }
 
   .other-logos {
-    @media #{$mq-tablet} {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    @media #{$mq-mobile-large} {
+      flex-direction: row;
       padding-left: 90px;
       padding-right: 90px;
     }
 
     img {
+      margin-bottom: 20px;
       max-width: 200px;
+      width: 100%;
+
+      @media #{$mq-mobile-large} {
+        margin-right: 20px;
+      }
+
+      &.img-small {
+        max-width: 100px;
+      }
+
+      &:last-of-type {
+        margin-bottom: 0;
+
+        @media #{$mq-mobile-large} {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
