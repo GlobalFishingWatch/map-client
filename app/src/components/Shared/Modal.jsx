@@ -57,10 +57,8 @@ class Modal extends React.Component {
     return (
       <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
         <div className={styles.content} onClick={(e) => this.onClickOverlay(e)}>
+          {closeButton}
           <div className={styles['contain-content']}>
-            <div className={styles['contain-button']}>
-              {closeButton}
-            </div>
             <div className={styles['contain-padding']}>
               {this.props.children}
             </div>
