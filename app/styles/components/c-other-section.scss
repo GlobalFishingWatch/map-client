@@ -8,7 +8,7 @@
     font-size: $font-size-x-medium;
     font-weight: $font-weight-normal;
     line-height: 1.05;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
 
     @media #{$mq-tablet} {
       font-size: $font-size-xx-big;
@@ -18,23 +18,25 @@
   }
 
   .other-logos {
-    align-items: center;
     display: flex;
     flex-direction: column;
 
     @media #{$mq-mobile-large} {
+      align-items: center;
       flex-direction: row;
       padding-left: 90px;
       padding-right: 90px;
     }
 
     img {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       max-width: 200px;
       width: 100%;
 
       @media #{$mq-mobile-large} {
+        margin-bottom: 0;
         margin-right: 20px;
+
       }
 
       &.img-small {
