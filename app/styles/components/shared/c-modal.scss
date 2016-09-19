@@ -37,10 +37,14 @@
       background-color: $color-2;
       border: 1px solid rgba($color-3, .3);
       color: $color-4;
-      max-height: 520px;
+      max-height: 420px;
       overflow-x: hidden;
       overflow-y: auto;
       width: calc(100% - 10px);
+
+      @media #{$mq-mobile-large} {
+        max-height: 520px;
+      }
 
       .contain-button {
         position: absolute;
