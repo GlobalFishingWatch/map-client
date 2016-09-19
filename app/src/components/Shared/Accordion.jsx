@@ -56,7 +56,6 @@ class Accordion extends Component {
       const items = [...this.refs.items.querySelectorAll(`.${AccordionStyles['accordion-item']}`)];
       const item = items[this.props.currentAccordionIndex];
       const topPosition = window.scrollY + item.getBoundingClientRect().top;
-      console.log(topPosition);
       $('html, body').animate({ scrollTop: topPosition }, 500);
     }
   }
