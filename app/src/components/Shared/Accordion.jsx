@@ -106,6 +106,7 @@ class Accordion extends Component {
           <div
             className={AccordionStyles['accordion-item']}
             key={index}
+            ref={entry.slug}
             id={entry.slug}
           >
             <div

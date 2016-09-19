@@ -35,7 +35,7 @@ class Definitions extends Component {
         firstAccordion: true
       };
       this.setState({ currentAccordionIndex });
-      const linkaccordion = document.getElementById('fishing-activity');
+      const linkaccordion = document.getElementById(urlSlug);
       const topPosition = window.scrollY + linkaccordion.getBoundingClientRect().top;
       $('html, body').animate({ scrollTop: topPosition }, 500);
     }
