@@ -29,14 +29,21 @@
     }
 
     img {
-      margin-bottom: 25px;
+      margin: 20px auto 25px;
       max-width: 200px;
       width: 100%;
 
-      @media #{$mq-mobile-large} {
-        margin-bottom: 0;
-        margin-right: 20px;
+      &:first-of-type {
+        margin-top: 0;
+      }
 
+      @media screen and (min-width: 425px) {
+        margin-bottom: 0;
+      }
+
+      @media screen and (min-width: 460px) {
+        margin: 0;
+        margin-right: 20px;
       }
 
       &.img-small {
@@ -45,10 +52,6 @@
 
       &:last-of-type {
         margin-bottom: 0;
-
-        @media #{$mq-mobile-large} {
-          margin-right: 0;
-        }
       }
     }
   }
