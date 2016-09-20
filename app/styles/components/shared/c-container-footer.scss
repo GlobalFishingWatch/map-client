@@ -45,24 +45,37 @@
     }
 
     ul {
-      align-items: center;
-      display: flex;
-      height: 20px;
-      justify-content: space-between;
       list-style: none;
+      margin: 0;
+      padding: 0;
 
-      div {
+      @media screen and (min-width: 350px) {
+        align-items: center;
         display: flex;
+        height: 20px;
+        justify-content: space-between;
+      }
 
-        li {
-          color: $color-4;
-          display: inline-block;
-          font-size: $font-size-tiny;
+      li {
+        color: $color-4;
+        display: inline;
+        font-size: $font-size-tiny;
 
-          a {
-            color: $color-4;
-            font-size: $font-size-tiny;
+        &:first-of-type {
+
+          &::after {
+            content: ' ';
+            display: inline;
+
+            @media screen and (min-width: 350px) {
+              display: none;
+            }
           }
+        }
+
+        a {
+          color: $color-4;
+          font-size: $font-size-tiny;
         }
       }
     }

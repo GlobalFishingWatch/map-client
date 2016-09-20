@@ -329,9 +329,9 @@ renowned-marine-ecologist-boris-worm.html"
                 data, as that would adversely affect our providers. Please contact{' '}
                 <a
                   className="gfw-link"
-                  href="mailto:research@globalfishingatch.org"
+                  href="mailto:research@globalfishingwatch.org"
                 >
-                  research@globalfishingatch.org
+                  research@globalfishingwatch.org
                 </a>
                 {' '}with questions.
               </p>

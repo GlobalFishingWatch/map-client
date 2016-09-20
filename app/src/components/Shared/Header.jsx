@@ -38,9 +38,10 @@ class Header extends Component {
   render() {
     let userLinks;
     if (this.props.loggedUser) {
+      const name = this.props.loggedUser.displayName.split(' ');
       userLinks = (
         <li className={styles.dropdown}>
-          <a className={styles['login-link']}>{this.props.loggedUser.displayName}</a>
+          <a className={styles['login-link']}>{name[0]}</a>
           <ul className={styles['dropdown-content']}>
             <li>
               <a onClick={this.logout}>
