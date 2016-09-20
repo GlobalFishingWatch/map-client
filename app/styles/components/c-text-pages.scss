@@ -76,24 +76,22 @@
 
       > li {
         padding-left: 25px;
-        position: relative;
-
-        &::before {
-          content: counter(counter) '.';
-          counter-increment: counter;
-          font-size: $font-size-xx-big;
-          left: 0;
-          line-height: 1.6;
-          position: absolute;
-        }
+        // position: relative;
       }
 
       &.-orbcomm {
         > li {
           margin-bottom: 20px;
-
-          &::before {
-            font-size: $font-size-normal;
+          p {
+            &::before {
+              content: counter(counter) '.';
+              counter-increment: counter;
+              font-size: $font-size-normal;
+              line-height: 1.6;
+              margin-right: -10px;
+              position: relative;
+              right: 20px;
+            }
           }
         }
       }
