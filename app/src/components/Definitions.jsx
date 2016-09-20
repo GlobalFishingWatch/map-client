@@ -19,15 +19,13 @@ class Definitions extends Component {
 
   componentDidMount() {
     this.props.getDefinitionEntries();
+
+    this.handleAutoScroll(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    const urlSlug = this.props.params.term;
-
-    // If we just got the entries and we have a slug in the URL, we expand the corresponding item
-    if (!this.props.definitionEntries && nextProps.definitionEntries && urlSlug) {
-      const currentAccordionIndex = _.findIndex(nextProps.definitionEntries, entry => entry.slug === urlSlug);
-      this.setState({ currentAccordionIndex });
+    if (!this.props.definitionEntries) {
+      this.handleAutoScroll(nextProps);
     }
   }
 
@@ -47,10 +45,21 @@ class Definitions extends Component {
     });
   }
 
+  handleAutoScroll(props) {
+    const urlSlug = this.props.params.term;
+    // If we just got the entries and we have a slug in the URL, we expand the corresponding item
+    if (props.definitionEntries && urlSlug) {
+      const currentAccordionIndex = _.findIndex(props.definitionEntries, entry => entry.slug === urlSlug);
+      this.setState({ currentAccordionIndex });
+    }
+  }
+
   render() {
     const accordion = (<Accordion
       entries={this.props.definitionEntries}
-      onAccordionItemClick={(index, slug) => { this.onAccordionItemClick(index, slug); }}
+      onAccordionItemClick={(index, slug) => {
+        this.onAccordionItemClick(index, slug);
+      }}
       currentAccordionIndex={this.state.currentAccordionIndex}
       autoscroll
     />);
