@@ -18,28 +18,18 @@
   }
 
   .other-logos {
+    align-items: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
     @media screen and (min-width: 600px) {
-      align-items: center;
-      flex-direction: row;
       padding-left: 90px;
       padding-right: 90px;
     }
 
     img {
-      margin: 20px auto 25px;
       max-width: 200px;
       width: 100%;
-
-      &:first-of-type {
-        margin-top: 0;
-      }
-
-      @media screen and (min-width: 425px) {
-        margin-bottom: 0;
-      }
 
       @media screen and (min-width: 600px) {
         margin: 0;
@@ -48,14 +38,6 @@
 
       &.img-small {
         max-width: 100px;
-      }
-
-      &:last-of-type {
-        margin: 20px auto 0;
-
-        @media screen and (min-width: 600px) {
-          margin: 0;
-        }
       }
     }
   }
