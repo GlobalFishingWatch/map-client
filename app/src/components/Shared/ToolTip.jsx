@@ -58,27 +58,31 @@ class ToolTip extends Component {
   showToolTip() {
     const bounds = this.refs.info.getBoundingClientRect();
     const left = bounds.left; // Horizontal position relative to the screen
-    const height = bounds.height;
-    const width = bounds.width;
-    const offset = 10;
-    const top = bounds.top + window.scrollY + height + offset;
-    const topRight = bounds.top + window.scrollY - 40 + (height / 2);
-    const topLeft = bounds.top + window.scrollY - 40 + (height / 2);
-    const leftP = left - 100 + (width / 2);
-    const leftRight = left - 200 - width;
-    const leftLeft = left + width + offset;
+    const height = bounds.height; // Height icon
+    const width = bounds.width; // Width icon
+    const offset = 10; // Distance between tooltip and icon
+
+    const top = bounds.top + window.scrollY + height + offset; // Calc position top normal tooltip
+    const topRight = bounds.top + window.scrollY - 40 + (height / 2); // Calc position top tooltip with arrow at right
+    const topLeft = bounds.top + window.scrollY - 40 + (height / 2); // Calc position top tooltip with arrow at left
+    const leftP = left - 100 + (width / 2); // Calc position left normal tooltip
+    const leftRight = left - 200 - width; // Calc position left tooltip with arrow at right
+    const leftLeft = left + width + offset; // Calc position left tooltip with arrow at left
     const arrowRight = left + 100 >= window.innerWidth;
     const arrowLeft = left - 100 <= 0;
+
+    // FINAL CALC
     let topTooltip = `${top}px`;
     let leftTooltip = `${leftP}px`;
     const topRightToolTip = `${topRight}px`;
     const leftRightToolTip = `${leftRight}px`;
     const topLeftToolTip = `${topLeft}px`;
     const leftLefttToolTip = `${leftLeft}px`;
-    if (arrowLeft) {
+
+    if (arrowLeft) { // If tooltip out window
       topTooltip = topLeftToolTip;
       leftTooltip = leftLefttToolTip;
-    } else if (arrowRight) {
+    } else if (arrowRight) { // If tooltip out window
       topTooltip = topRightToolTip;
       leftTooltip = leftRightToolTip;
     }
