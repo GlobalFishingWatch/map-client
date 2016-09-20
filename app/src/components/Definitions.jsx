@@ -19,6 +19,13 @@ class Definitions extends Component {
 
   componentDidMount() {
     this.props.getDefinitionEntries();
+
+    const urlSlug = this.props.params.term;
+    if (this.props.definitionEntries) {
+      const currentAccordionIndex = _.findIndex(this.props.definitionEntries, entry => entry.slug === urlSlug);
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({ currentAccordionIndex });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
