@@ -57,34 +57,38 @@ class ToolTip extends Component {
 
   showToolTip() {
     const bounds = this.refs.info.getBoundingClientRect();
-
     const left = bounds.left; // Horizontal position relative to the screen
     const height = bounds.height;
     const width = bounds.width;
-
-    // Position relative to the abbr element
-    const offsetTop = this.refs.info.offsetTop;
-
-    // If true, the arrow is on the right of the tooltip
-    const arrowRight = left + 100 >= window.innerWidth;
-    // If true, the arrow is on the left of the tooltip
-    const arrowLeft = left - 100 <= 0;
-
-    // Offset between the tip and the button
     const offset = 10;
-
-    let transform = `translate(calc(50% - ${width / 2}px), calc(${height}px + ${offset}px))`;
+    const top = bounds.top + window.scrollY + height + offset;
+    const topRight = bounds.top + window.scrollY - 40 + (height / 2);
+    const topLeft = bounds.top + window.scrollY - 40 + (height / 2);
+    const leftP = left - 100 + (width / 2);
+    const leftRight = left - 200 - width;
+    const leftLeft = left + width + offset;
+    const arrowRight = left + 100 >= window.innerWidth;
+    const arrowLeft = left - 100 <= 0;
+    let topTooltip = `${top}px`;
+    let leftTooltip = `${leftP}px`;
+    const topRightToolTip = `${topRight}px`;
+    const leftRightToolTip = `${leftRight}px`;
+    const topLeftToolTip = `${topLeft}px`;
+    const leftLefttToolTip = `${leftLeft}px`;
     if (arrowLeft) {
-      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + height / 2}px - 50%))`;
+      topTooltip = topLeftToolTip;
+      leftTooltip = leftLefttToolTip;
     } else if (arrowRight) {
-      transform = `translate(-${width / 2 + offset}px, calc(${offsetTop + height / 2}px - 50%))`;
+      topTooltip = topRightToolTip;
+      leftTooltip = leftRightToolTip;
     }
 
     this.setState({
       arrowRight,
       arrowLeft,
       visible: true,
-      transform
+      topTooltip,
+      leftTooltip
     });
   }
 
@@ -121,7 +125,8 @@ class ToolTip extends Component {
             [ToolTipStyle['-left']]: !!this.state.arrowLeft
           })}
           style={{
-            transform: this.state.transform
+            top: this.state.topTooltip,
+            left: this.state.leftTooltip
           }}
           ref="tooltip"
         >
@@ -130,28 +135,30 @@ class ToolTip extends Component {
         </span>);
     }
     return (
-      <abbr
-        title={this.props.text}
-        className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
-        onClick={e => this.onClick(e)}
-        onMouseEnter={() => this.onMouseEnter()}
-        onMouseLeave={() => this.onMouseLeave()}
-        ref="el"
-      >
-        <span
-          className={ToolTipStyle['c-tooltip-info-title']}
-
+      <span>
+        <abbr
+          title={this.props.text}
+          className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
+          onClick={e => this.onClick(e)}
+          onMouseEnter={() => this.onMouseEnter()}
+          onMouseLeave={() => this.onMouseLeave()}
+          ref="el"
         >
-          {this.props.children}
-          <img
-            ref="info"
-            src={iconInfoBlack}
-            className={ToolTipStyle['image-icon']}
-            alt="icon info"
-          />
-        </span>
-        {content}
-      </abbr>
+          <span
+            className={ToolTipStyle['c-tooltip-info-title']}
+
+          >
+            {this.props.children}
+            <img
+              ref="info"
+              src={iconInfoBlack}
+              className={ToolTipStyle['image-icon']}
+              alt="icon info"
+            />
+          </span>
+          {content}
+        </abbr>
+      </span>
     );
   }
 }
