@@ -15,6 +15,21 @@ export const MAX_ZOOM_LEVEL = 12;
 
 export const DEFAULT_VESSEL_COLOR = '#1181FB';
 
+export const API_RETURNED_KEYS = [
+  'category',
+  'datetime',
+  'latitude',
+  'longitude',
+  'series',
+  'seriesgroup',
+  'sigma',
+  'weight'
+];
+
+// At which intervals should we consider showing a new frame. Impacts performance.
+// Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
+export const PLAYBACK_PRECISION = 86400000;
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

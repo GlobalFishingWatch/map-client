@@ -59,9 +59,6 @@ class Map extends Component {
 
     this.setState({ zoom });
     this.props.setZoom(zoom);
-    if (this.state.overlay) {
-      this.state.overlay.resetPlaybackData();
-    }
     this.updateTrackLayer();
   }
 
@@ -353,7 +350,8 @@ class Map extends Component {
     if (!this.state.overlay) {
       return;
     }
-    this.state.overlay.vesselTransparency = nextProps.map.vesselTransparency;
+    // this.state.overlay.vesselTransparency = nextProps.map.vesselTransparency;
+    this.state.overlay.setVesselTransparency(nextProps.map.vesselTransparency);
 
     if (this.state.running !== 'play') {
       this.state.overlay.refresh();
