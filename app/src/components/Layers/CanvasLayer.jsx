@@ -301,17 +301,42 @@ class CanvasLayer {
   _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData) {
     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    this.drawTilePixelsFromPlaybackData(startIndex, endIndex, canvas.ctx, tilePlaybackData);
+
+    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+    //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
+    //     const playbackData = tilePlaybackData[timeIndex];
+    //     this.drawTileFromPlaybackData(canvas, playbackData, false);
+    //   } else {
+    //     // TODO: a lot of missing timestamp indexes here, check why
+    //   }
+    // }
+    //
+    // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
+  }
+
+  drawTilePixelsFromPlaybackData(startIndex, endIndex, ctx, tilePlaybackData) {
+    const imageData = ctx.createImageData(256, 256);
+    const pixels = imageData.data;
+
+    if (!tilePlaybackData) return;
+
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-      if (tilePlaybackData && tilePlaybackData[timeIndex]) {
-        const playbackData = tilePlaybackData[timeIndex];
-        this.drawTileFromPlaybackData(canvas, playbackData, false);
-      } else {
-        // TODO: a lot of missing timestamp indexes here, check why
+      const points = tilePlaybackData[timeIndex];
+
+      if (!points) continue;
+
+      for (let index = 0, len = points.latitude.length; index < len; index++) {
+        const x = points.x[index];
+        const y = points.y[index];
+        const offset = y * 256 * 4 + x * 4;
+        pixels[offset] = 255;
+        pixels[offset + 3] += 80;
       }
     }
-
-    this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
+    ctx.putImageData(imageData, 0, 0);
   }
+
 
   _showDebugInfo(/* ctx, ...text */) {
     // ctx.fillStyle = 'white';
@@ -345,37 +370,7 @@ class CanvasLayer {
     }
 
     this.drawVesselPoints(canvas.ctx, playbackData);
-  }
-
-  /**
-   * Add projected lat/long values transformed as x/y coordinates
-   */
-  addTilePixelCoordinates(tileCoordinates, vectorArray) {
-    const data = vectorArray;
-    const scale = 1 << tileCoordinates.zoom;
-    const tileBaseX = tileCoordinates.x * 256;
-    const tileBaseY = tileCoordinates.y * 256;
-    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
-
-    data.x = new Int32Array(data.latitude.length);
-    data.y = new Int32Array(data.latitude.length);
-
-    for (let index = 0, length = data.latitude.length; index < length; index++) {
-      const lat = data.latitude[index];
-      const lng = data.longitude[index];
-      let x = (lng + 180) / 360 * 256;
-      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
-      x *= scale;
-      y *= scale;
-
-      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
-      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
-    }
-    return data;
-  }
-
-  static getTimestampIndex(timestamp) {
-    return timestamp - (timestamp % TIMELINE_STEP);
+    // this.drawVesselsPixels(canvas.ctx, playbackData);
   }
 
   drawVesselPoints(ctx, points) {
@@ -409,6 +404,39 @@ class CanvasLayer {
     ctx.moveTo(x, y);
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
+
+
+  /**
+   * Add projected lat/long values transformed as x/y coordinates
+   */
+  addTilePixelCoordinates(tileCoordinates, vectorArray) {
+    const data = vectorArray;
+    const scale = 1 << tileCoordinates.zoom;
+    const tileBaseX = tileCoordinates.x * 256;
+    const tileBaseY = tileCoordinates.y * 256;
+    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
+
+    data.x = new Int32Array(data.latitude.length);
+    data.y = new Int32Array(data.latitude.length);
+
+    for (let index = 0, length = data.latitude.length; index < length; index++) {
+      const lat = data.latitude[index];
+      const lng = data.longitude[index];
+      let x = (lng + 180) / 360 * 256;
+      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
+      x *= scale;
+      y *= scale;
+
+      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
+      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
+    }
+    return data;
+  }
+
+  static getTimestampIndex(timestamp) {
+    return timestamp - (timestamp % TIMELINE_STEP);
+  }
+
 }
 
 export default CanvasLayer;
