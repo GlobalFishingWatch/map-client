@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
-import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP, API_RETURNED_KEYS, PLAYBACK_PRECISION } from '../../constants';
+import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
+import CanvasLayerData from './CanvasLayerData';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
@@ -16,12 +16,18 @@ class CanvasLayer {
     this.setVesselColor(vesselColor);
 
     this.outerStartDate = filters.startDate;
-    this.outerStartDateOffset = this._getTimeAtPrecision(this.outerStartDate);
+    this.outerStartDateOffset = CanvasLayerData.getTimeAtPrecision(this.outerStartDate);
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0]; // deprecated
     this.innerEndDate = filters.timelineInnerExtent[1]; // deprecated
-    this.currentInnerStartIndex = this._getOffsetedTimeAtPrecision(this.innerStartDate.getTime());
-    this.currentInnerEndIndex = this._getOffsetedTimeAtPrecision(this.innerEndDate.getTime());
+    this.currentInnerStartIndex = CanvasLayerData.getOffsetedTimeAtPrecision(
+        this.innerStartDate.getTime(),
+        this.outerStartDateOffset
+    );
+    this.currentInnerEndIndex = CanvasLayerData.getOffsetedTimeAtPrecision(
+        this.innerEndDate.getTime(),
+        this.outerStartDateOffset
+    );
 
     this._setFlag(filters);
 
@@ -186,23 +192,6 @@ class CanvasLayer {
   }
 
   /**
-   * From a timestamp in ms returns a time with the precision set in Constants.
-   * @param timestamp
-   */
-  _getTimeAtPrecision(timestamp) {
-    return Math.floor(timestamp / PLAYBACK_PRECISION);
-  }
-
-  /**
-   * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
-   * beginning of avaliable time (outerStart)
-   * @param timestamp
-   */
-  _getOffsetedTimeAtPrecision(timestamp) {
-    return Math.max(0, this._getTimeAtPrecision(timestamp) - this.outerStartDateOffset);
-  }
-
-  /**
    * Creates and loads data for each tile
    *
    * @param coord
@@ -213,8 +202,6 @@ class CanvasLayer {
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
     const ctx = canvas.ctx;
-    const tileCoordinates = this.getTileCoordinates(coord, zoom);
-    const promises = [];
 
     const canvasPlaybackData = {
       canvas,
@@ -225,25 +212,33 @@ class CanvasLayer {
 
     this._showDebugInfo(ctx, 'L', Math.random());
 
-    if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
-      for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-        promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
-      }
-    }
-    Promise.all(promises).then((rawTileData) => {
+    const tileCoordinates = CanvasLayerData.getTileCoordinates(coord, zoom);
+    const pelagosPromises = CanvasLayerData.getTilePelagosPromises(tileCoordinates,
+      this.outerStartDate,
+      this.outerEndDate,
+      this.token
+    );
+
+    Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
         this._showDebugInfo(ctx, 'E');
-        return null;
+        return;
       }
-      const cleanVectorArrays = rawTileData.filter(vectorArray => vectorArray !== null);
+      const cleanVectorArrays = CanvasLayerData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
         this._showDebugInfo(ctx, 'PE');
       }
 
       this._showDebugInfo(ctx, 'OK');
-      const vectorArray = this.addTilePixelCoordinates(tileCoordinates, this.groupData(cleanVectorArrays));
-      const tilePlaybackData = this.getTilePlaybackData(vectorArray);
+      const groupedData = CanvasLayerData.groupData(cleanVectorArrays);
+      const vectorArray = this.addTilePixelCoordinates(tileCoordinates, groupedData);
+      const tilePlaybackData = CanvasLayerData.getTilePlaybackData(
+        vectorArray,
+        this.outerStartDate,
+        this.outerEndDate,
+        this.outerStartDateOffset,
+        this.flag
+      );
       canvasPlaybackData.tilePlaybackData = tilePlaybackData;
 
       this._drawTimeRangeCanvasAtIndexes(
@@ -272,8 +267,8 @@ class CanvasLayer {
    * @param end   end timestamp (ms)
    */
   drawTimeRange(start, end) {
-    const startIndex = this._getOffsetedTimeAtPrecision(start);
-    const endIndex = this._getOffsetedTimeAtPrecision(end);
+    const startIndex = CanvasLayerData.getOffsetedTimeAtPrecision(start, this.outerStartDateOffset);
+    const endIndex = CanvasLayerData.getOffsetedTimeAtPrecision(end, this.outerStartDateOffset);
 
     if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
       // TODO: check only startIndex to avoid bypassing when current is 10-20 and next is 10-21 (rounding issue)
@@ -320,6 +315,7 @@ class CanvasLayer {
   }
 
   _showDebugInfo(ctx, ...text) {
+    return
     ctx.fillStyle = 'white';
     ctx.fillRect(0,0, 250, 20);
     ctx.font = '10px Verdana bold';
@@ -380,61 +376,6 @@ class CanvasLayer {
     return data;
   }
 
-  /**
-   * Converts Vector Array data to Playback format and stores it locally
-   *
-   * @param vectorArray
-   * @param tileCoordinates
-   */
-  getTilePlaybackData(vectorArray) {
-    const tilePlaybackData = [];
-
-    for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      const datetime = vectorArray.datetime[index];
-
-      if (datetime < this.outerStartDate || datetime > this.outerEndDate) {
-        continue;
-      }
-      // keep?
-      // if (!data.weight[index]) {
-      //   return false;
-      // }
-      const category = vectorArray.category[index];
-      if (this.flag && this.flag !== category) {
-        continue;
-      }
-
-      const timeIndex = this._getOffsetedTimeAtPrecision(datetime);
-
-      if (!tilePlaybackData[timeIndex]) {
-        tilePlaybackData[timeIndex] = {
-          category: [category],
-          latitude: [vectorArray.latitude[index]],
-          longitude: [vectorArray.longitude[index]],
-          weight: [vectorArray.weight[index]],
-          x: [vectorArray.x[index]],
-          y: [vectorArray.y[index]],
-          series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]],
-          sigma: [vectorArray.sigma[index]]
-        };
-        continue;
-      }
-      const timestamp = tilePlaybackData[timeIndex];
-      timestamp.category.push(category);
-      timestamp.latitude.push(vectorArray.latitude[index]);
-      timestamp.longitude.push(vectorArray.longitude[index]);
-      timestamp.weight.push(vectorArray.weight[index]);
-      timestamp.x.push(vectorArray.x[index]);
-      timestamp.y.push(vectorArray.y[index]);
-      timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
-      timestamp.sigma.push(vectorArray.sigma[index]);
-    }
-
-    return tilePlaybackData;
-  }
-
   static getTimestampIndex(timestamp) {
     return timestamp - (timestamp % TIMELINE_STEP);
   }
@@ -465,78 +406,11 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(ctx, x, y, weight /*, sigma */) {
+  drawVesselPoint(ctx, x, y, weight /* , sigma */) {
     const radius = Math.min(5, Math.max(1, Math.round(weight / 10)));
     ctx.moveTo(x, y);
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
-
-  /**
-   * Generates tile coordinates in x/y/zoom
-   *
-   * @param coord
-   * @param zoom
-   * @returns {*}
-   */
-  getTileCoordinates(coord, zoom) {
-    const y = coord.y;
-    const x = coord.x;
-    const tileRange = 1 << zoom;
-    if (y < 0 || y >= tileRange) {
-      return null;
-    }
-    if (x < 0 || x >= tileRange) {
-      return null;
-    }
-    return { x, y, zoom };
-  }
-
-  /**
-   * Generates the URLs to load vessel track data
-   *
-   * @param tileCoordinates
-   * @param startDate
-   * @param endDate
-   * @returns {Array}
-   */
-  getTemporalTileURLs(tileCoordinates, startDate, endDate) {
-    const startYear = new Date(startDate).getUTCFullYear();
-    const endYear = new Date(endDate).getUTCFullYear();
-    const urls = [];
-    for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/\
-${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
-${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
-    }
-    return urls;
-  }
-
-  /**
-   * As data will come in multiple arrays (1 per year basically), they need to be merged here
-   *
-   * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
-   * @returns {*}
-   */
-  groupData(cleanVectorArrays) {
-    const data = {};
-
-    const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
-
-    API_RETURNED_KEYS.forEach((key) => {
-      data[key] = new Float32Array(totalVectorArraysLength);
-    });
-
-    for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
-      const currentArray = cleanVectorArrays[index];
-      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
-      API_RETURNED_KEYS.forEach((key) => {
-        data[key].set(currentArray[key], offset);
-      });
-    }
-    return data;
-  }
-
-
 }
 
 export default CanvasLayer;
