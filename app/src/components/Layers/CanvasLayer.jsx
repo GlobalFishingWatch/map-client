@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle:0 */
+/* eslint no-underscore-dangle:0 no-param-reassign: 0 */
 import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
@@ -311,22 +311,20 @@ class CanvasLayer {
     }
 
     this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
-
   }
 
-  _showDebugInfo(ctx, ...text) {
-    return
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0,0, 250, 20);
-    ctx.font = '10px Verdana bold';
-    ctx.fillStyle = 'black';
-    if (!ctx.debug) {
-      ctx.debug = text;
-    }
-    else {
-      ctx.debug += ' ' + text;
-    }
-    ctx.fillText(text, 5, 10);
+  _showDebugInfo(/* ctx, ...text */) {
+    // ctx.fillStyle = 'white';
+    // ctx.fillRect(0,0, 250, 20);
+    // ctx.font = '10px Verdana bold';
+    // ctx.fillStyle = 'black';
+    // if (!ctx.debug) {
+    //   ctx.debug = text;
+    // }
+    // else {
+    //   ctx.debug += ' ' + text;
+    // }
+    // ctx.fillText(text, 5, 10);
   }
 
   /**
@@ -366,7 +364,7 @@ class CanvasLayer {
       const lat = data.latitude[index];
       const lng = data.longitude[index];
       let x = (lng + 180) / 360 * 256;
-      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
+      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
       x *= scale;
       y *= scale;
 
