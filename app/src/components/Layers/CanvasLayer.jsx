@@ -143,6 +143,39 @@ class CanvasLayer {
     return canvas;
   }
 
+  getVesselAtPixelLocation(x, y) {
+    this.playbackData.forEach(canvasPlaybackData => {
+      const canvas = canvasPlaybackData.canvas;
+      const rect = canvas.getBoundingClientRect();
+      if (x > rect.left && y > rect.top && x <= rect.right && y <= rect.bottom) {
+        return this._getCanvasVesselAt(canvas, x - rect.left, y - rect.top);
+      }
+    });
+  }
+
+  _getCanvasVesselAt(canvas, x, y) {
+    console.log(x,y);
+    const vesselData = this.playbackData[canvas.index].vesselData;
+    console.log(vesselData)
+    return 'pouet';
+
+    var buffer = {
+      left: x - 5,
+      top: y - 5,
+      right: x + 5,
+      bottom: x + 5
+    }
+    var series = [];
+
+    for (let i = 0, length = vesselData.x.length; i < length; i++) {
+      const px = vesselData.x[i];
+      const py = vesselData.y[i];
+      if (px > buffer.left && px < buffer.right && py > buffer.top && py < buffer.bottom) {
+        console.log('win')
+      }
+    }
+  }
+
   /**
    * Loads the first matching vessel for the given lat/long pair
    * TODO: return and handle multiple vessels on the same coordinates
@@ -166,7 +199,7 @@ class CanvasLayer {
         if (!tile.hasOwnProperty(currentTimestamp)) {
           continue;
         }
-        for (let i = 0; i < tile[currentTimestamp].latitude.length; i++) {
+        for (let i = 0; i < tile[currentTimestamp].weight.length; i++) {
           if (~~tile[currentTimestamp].latitude[i] === lat && ~~tile[currentTimestamp].longitude[i] === long) {
             return {
               latitude: tile[currentTimestamp].latitude[i],
@@ -245,6 +278,12 @@ class CanvasLayer {
       const vectorArray = this.addTilePixelCoordinates(tileCoordinates, this.groupData(cleanVectorArrays));
       const tilePlaybackData = this.getTilePlaybackData(vectorArray);
       canvasPlaybackData.tilePlaybackData = tilePlaybackData;
+      canvasPlaybackData.vesselData = {
+        x: vectorArray.x,
+        y: vectorArray.y,
+        series: vectorArray.series,
+        seriesgroup: vectorArray.seriesgroup
+      };
 
       this._drawTimeRangeCanvasAtIndexes(
         this.currentInnerStartIndex,
@@ -320,6 +359,7 @@ class CanvasLayer {
   }
 
   _showDebugInfo(ctx, ...text) {
+    return;
     ctx.fillStyle = 'white';
     ctx.fillRect(0,0, 250, 20);
     ctx.font = '10px Verdana bold';
@@ -363,10 +403,11 @@ class CanvasLayer {
     const tileBaseY = tileCoordinates.y * 256;
     const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
 
-    data.x = new Int32Array(data.latitude.length);
-    data.y = new Int32Array(data.latitude.length);
+    const length = data.weight.length;
+    data.x = new Int32Array(length);
+    data.y = new Int32Array(length);
 
-    for (let index = 0, length = data.latitude.length; index < length; index++) {
+    for (let index = 0; index < length; index++) {
       const lat = data.latitude[index];
       const lng = data.longitude[index];
       let x = (lng + 180) / 360 * 256;
@@ -389,7 +430,7 @@ class CanvasLayer {
   getTilePlaybackData(vectorArray) {
     const tilePlaybackData = [];
 
-    for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
+    for (let index = 0, length = vectorArray.weight.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
       if (datetime < this.outerStartDate || datetime > this.outerEndDate) {
@@ -408,27 +449,27 @@ class CanvasLayer {
 
       if (!tilePlaybackData[timeIndex]) {
         tilePlaybackData[timeIndex] = {
-          category: [category],
-          latitude: [vectorArray.latitude[index]],
-          longitude: [vectorArray.longitude[index]],
+          // category: [category], // this is never needed afterwards
+          // latitude: [vectorArray.latitude[index]],
+          // longitude: [vectorArray.longitude[index]],
           weight: [vectorArray.weight[index]],
           x: [vectorArray.x[index]],
           y: [vectorArray.y[index]],
-          series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]],
+          // series: [vectorArray.series[index]],
+          // seriesgroup: [vectorArray.seriesgroup[index]],
           sigma: [vectorArray.sigma[index]]
         };
         continue;
       }
       const timestamp = tilePlaybackData[timeIndex];
-      timestamp.category.push(category);
-      timestamp.latitude.push(vectorArray.latitude[index]);
-      timestamp.longitude.push(vectorArray.longitude[index]);
+      // timestamp.category.push(category);
+      // timestamp.latitude.push(vectorArray.latitude[index]);
+      // timestamp.longitude.push(vectorArray.longitude[index]);
       timestamp.weight.push(vectorArray.weight[index]);
       timestamp.x.push(vectorArray.x[index]);
       timestamp.y.push(vectorArray.y[index]);
-      timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+      // timestamp.series.push(vectorArray.series[index]);
+      // timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
       timestamp.sigma.push(vectorArray.sigma[index]);
     }
 
@@ -442,7 +483,7 @@ class CanvasLayer {
   drawVesselPoints(ctx, points) {
     ctx.fillStyle = this.precomputedVesselColor;
     ctx.beginPath();
-    for (let index = 0, len = points.latitude.length; index < len; index++) {
+    for (let index = 0, len = points.weight.length; index < len; index++) {
       this.drawVesselPoint(
         ctx,
         points.x[index],
@@ -520,7 +561,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
   groupData(cleanVectorArrays) {
     const data = {};
 
-    const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
+    const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.weight.length);
 
     API_RETURNED_KEYS.forEach((key) => {
       data[key] = new Float32Array(totalVectorArraysLength);
@@ -528,7 +569,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
 
     for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
       const currentArray = cleanVectorArrays[index];
-      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
+      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].weight.length;
       API_RETURNED_KEYS.forEach((key) => {
         data[key].set(currentArray[key], offset);
       });
