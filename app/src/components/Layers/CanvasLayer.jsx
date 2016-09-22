@@ -31,9 +31,35 @@ class CanvasLayer {
 
     this._setFlag(filters);
 
+    // get circle/brush canvases that will be copied into the final canvases
+    this.vesselTemplates = [];
+    for (let i = 1; i < 20; i++) {
+      this.vesselTemplates[i] = this.getVesselTemplate(i, 1);
+    }
+
+    this.vesselTemplate = this.getVesselTemplate(4, 1);
+
     if (visible) {
       this.show();
     }
+  }
+
+  getVesselTemplate(radius, blurFactor) {
+    const tplCanvas = document.createElement('canvas');
+    const tplCtx = tplCanvas.getContext('2d');
+    const x = radius;
+    const y = radius;
+    tplCanvas.width = tplCanvas.height = radius * 2;
+
+    if (blurFactor === 1) {
+      tplCtx.beginPath();
+      tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = 'rgba(255,0,0,1)';
+      tplCtx.fill();
+    } else {
+      // return a radial gradient
+    }
+    return tplCanvas;
   }
 
   setVesselColor(vesselColor) {
@@ -201,10 +227,12 @@ class CanvasLayer {
    */
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
+    const shadowCanvas = this._getCanvas(ownerDocument);
     const ctx = canvas.ctx;
 
     const canvasPlaybackData = {
       canvas,
+      shadowCanvas,
       tilePlaybackData: null
     };
     canvas.index = this.playbackData.length;
@@ -244,8 +272,7 @@ class CanvasLayer {
       this._drawTimeRangeCanvasAtIndexes(
         this.currentInnerStartIndex,
         this.currentInnerEndIndex,
-        canvas,
-        tilePlaybackData
+        canvasPlaybackData
       );
     });
 
@@ -292,21 +319,20 @@ class CanvasLayer {
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
     this.playbackData.forEach((canvasPlaybackData) => {
-      const canvas = canvasPlaybackData.canvas;
-      const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
-      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData);
+      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
     });
   }
 
-  _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData) {
-    canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+  _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData) {
+    canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
 
-    this.drawTilePixelsFromPlaybackData(startIndex, endIndex, canvas.ctx, tilePlaybackData);
+    this.drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData);
 
     // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
     //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
     //     const playbackData = tilePlaybackData[timeIndex];
-    //     this.drawTileFromPlaybackData(canvas, playbackData, false);
+    //     this.drawTileFromPlaybackData(canvasPlaybackData.canvas, canvasPlaybackData.playbackData, false);
     //   } else {
     //     // TODO: a lot of missing timestamp indexes here, check why
     //   }
@@ -315,26 +341,44 @@ class CanvasLayer {
     // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
   }
 
-  drawTilePixelsFromPlaybackData(startIndex, endIndex, ctx, tilePlaybackData) {
-    const imageData = ctx.createImageData(256, 256);
-    const pixels = imageData.data;
+  drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData) {
+    // const imageData = ctx.createImageData(256, 256);
+    // const pixels = imageData.data;
+    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+    const ctx = canvasPlaybackData.canvas.ctx;
+    const shadowCtx = canvasPlaybackData.shadowCanvas.ctx;
 
     if (!tilePlaybackData) return;
+
+    let num = 0;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       const points = tilePlaybackData[timeIndex];
 
       if (!points) continue;
+      num += points.latitude.length;
 
-      for (let index = 0, len = points.latitude.length; index < len; index++) {
-        const x = points.x[index];
-        const y = points.y[index];
-        const offset = y * 256 * 4 + x * 4;
-        pixels[offset] = 255;
-        pixels[offset + 3] += 80;
-      }
+      this.drawTilePixelsFromFrame(points, shadowCtx);
     }
-    ctx.putImageData(imageData, 0, 0);
+    // console.log(num)
+    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
+    // const shadowImgData = shadowImg.data;
+
+    // colorize here?
+    ctx.putImageData(shadowImg, 0, 0);
+  }
+
+  drawTilePixelsFromFrame(points, shadowCtx) {
+    for (let index = 0, len = points.latitude.length; index < len; index++) {
+      const radius = 1 + Math.floor(Math.random() * 5);
+      const template = this.vesselTemplates[radius];
+      const x = points.x[index];
+      const y = points.y[index];
+      shadowCtx.drawImage(template, x, y);
+      // const offset = y * 256 * 4 + x * 4;
+      // pixels[offset] = 255;
+      // pixels[offset + 3] += 80;
+    }
   }
 
 
