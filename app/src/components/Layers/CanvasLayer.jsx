@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 no-param-reassign: 0 */
-import { TIMELINE_STEP } from '../../constants';
+import { TIMELINE_STEP, VESSEL_RESOLUTION, VESSEL_GRID_SIZE } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 
@@ -54,7 +54,7 @@ class CanvasLayer {
     if (blurFactor === 1) {
       tplCtx.beginPath();
       tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-      tplCtx.fillStyle = 'rgba(255,0,0,1)';
+      tplCtx.fillStyle = 'rgba(255,0,0,.5)';
       tplCtx.fill();
     } else {
       // return a radial gradient
@@ -318,16 +318,29 @@ class CanvasLayer {
    * @param endIndex
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
+    let num = 0;
     this.playbackData.forEach((canvasPlaybackData) => {
-      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
+      num += this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
     });
+    console.log(num);
   }
 
   _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData) {
+    if (!canvasPlaybackData.tilePlaybackData) {
+      return 0;
+    }
+
     canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
     canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
 
-    this.drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData);
+    canvasPlaybackData.tilePlaybackDataCompressed =
+      CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
+
+    return this.drawTilePixelsFromPlaybackDataGrid(
+      canvasPlaybackData.tilePlaybackDataCompressed,
+      canvasPlaybackData.shadowCanvas.ctx,
+      canvasPlaybackData.canvas.ctx
+    );
 
     // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
     //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
@@ -339,6 +352,21 @@ class CanvasLayer {
     // }
     //
     // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
+  }
+
+  drawTilePixelsFromPlaybackDataGrid(grid, shadowCtx, ctx) {
+    for (let i = 0, length = grid.xs.length; i < length; i++) {
+      const radius = 1 + Math.floor(Math.random() * 2);
+      const template = this.vesselTemplates[radius];
+      const x = grid.xs[i] * VESSEL_RESOLUTION;
+      const y = grid.ys[i] * VESSEL_RESOLUTION;
+      shadowCtx.drawImage(template, x, y);
+    }
+    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
+    // colorize here?
+    ctx.putImageData(shadowImg, 0, 0);
+
+    return grid.xs.length;
   }
 
   drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData) {
@@ -360,17 +388,18 @@ class CanvasLayer {
 
       this.drawTilePixelsFromFrame(points, shadowCtx);
     }
-    // console.log(num)
     const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
     // const shadowImgData = shadowImg.data;
 
     // colorize here?
     ctx.putImageData(shadowImg, 0, 0);
+
+    return num;
   }
 
   drawTilePixelsFromFrame(points, shadowCtx) {
     for (let index = 0, len = points.latitude.length; index < len; index++) {
-      const radius = 1 + Math.floor(Math.random() * 5);
+      const radius = 1 + Math.floor(Math.random() * 2);
       const template = this.vesselTemplates[radius];
       const x = points.x[index];
       const y = points.y[index];

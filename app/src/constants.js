@@ -30,6 +30,10 @@ export const API_RETURNED_KEYS = [
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
 
+// draw vessel point each VESSEL_RESOLUTION pixels. Use powers of two.
+export const VESSEL_RESOLUTION = 2;
+export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',
