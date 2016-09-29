@@ -31,7 +31,7 @@ export const API_RETURNED_KEYS = [
 export const PLAYBACK_PRECISION = 86400000;
 
 // draw vessel point each VESSEL_RESOLUTION pixels. Use powers of two.
-export const VESSEL_RESOLUTION = 2;
+export const VESSEL_RESOLUTION = 1;
 export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
 
 export const FLAGS = {

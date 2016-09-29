@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle:0 no-param-reassign: 0 */
-import { TIMELINE_STEP, VESSEL_RESOLUTION, VESSEL_GRID_SIZE } from '../../constants';
+import PIXI from 'pixi.js';
+import { TIMELINE_STEP, VESSEL_RESOLUTION } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 
@@ -33,11 +34,11 @@ class CanvasLayer {
 
     // get circle/brush canvases that will be copied into the final canvases
     this.vesselTemplates = [];
+    this.vesselTextures = [];
     for (let i = 1; i < 20; i++) {
       this.vesselTemplates[i] = this.getVesselTemplate(i, 1);
+      this.vesselTextures[i] = PIXI.Texture.fromCanvas(this.vesselTemplates[i]);
     }
-
-    this.vesselTemplate = this.getVesselTemplate(4, 1);
 
     if (visible) {
       this.show();
@@ -175,6 +176,18 @@ class CanvasLayer {
     return canvas;
   }
 
+  _getPixi() {
+    const renderer = new PIXI.WebGLRenderer(256, 256, { transparent: true });
+    const stageCanvas = renderer.view;
+    const stage = new PIXI.Container();
+
+    return {
+      stageCanvas,
+      renderer,
+      stage
+    };
+  }
+
   /**
    * Loads the first matching vessel for the given lat/long pair
    * TODO: return and handle multiple vessels on the same coordinates
@@ -225,20 +238,34 @@ class CanvasLayer {
    * @param ownerDocument
    * @returns {*}
    */
+
   getTile(coord, zoom, ownerDocument) {
-    const canvas = this._getCanvas(ownerDocument);
-    const shadowCanvas = this._getCanvas(ownerDocument);
-    const ctx = canvas.ctx;
+    // if (this.stageCanvas) return this.stageCanvas;
+    const { stageCanvas, renderer, stage } = this._getPixi(ownerDocument);
+    this.stageCanvas = stageCanvas;
+
+    const sprites = [];
+    for (let i = 0; i < 5000; i++) {
+      // const radius = 1 + Math.floor(Math.random() * 5);
+      const texture = this.vesselTextures[5];
+      const vessel = new PIXI.Sprite(texture);
+      sprites.push(vessel);
+      // vessel.position.x = playbackData.gridX[index];
+      // vessel.position.y = playbackData.gridY[index];
+      stage.addChild(vessel);
+    }
 
     const canvasPlaybackData = {
-      canvas,
-      shadowCanvas,
-      tilePlaybackData: null
+      stageCanvas,
+      renderer,
+      stage,
+      tilePlaybackData: null,
+      sprites
     };
-    canvas.index = this.playbackData.length;
+    stageCanvas.index = this.playbackData.length;
     this.playbackData.push(canvasPlaybackData);
 
-    this._showDebugInfo(ctx, 'L', Math.random());
+    // this._showDebugInfo(ctx, 'L', Math.random());
 
     const tileCoordinates = CanvasLayerData.getTileCoordinates(coord, zoom);
     const pelagosPromises = CanvasLayerData.getTilePelagosPromises(tileCoordinates,
@@ -249,15 +276,15 @@ class CanvasLayer {
 
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
-        this._showDebugInfo(ctx, 'E');
+        // this._showDebugInfo(ctx, 'E');
         return;
       }
       const cleanVectorArrays = CanvasLayerData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
-        this._showDebugInfo(ctx, 'PE');
+        // this._showDebugInfo(ctx, 'PE');
       }
 
-      this._showDebugInfo(ctx, 'OK');
+      // this._showDebugInfo(ctx, 'OK');
       const groupedData = CanvasLayerData.groupData(cleanVectorArrays);
       const vectorArray = this.addTilePixelCoordinates(tileCoordinates, groupedData);
       const tilePlaybackData = CanvasLayerData.getTilePlaybackData(
@@ -276,7 +303,7 @@ class CanvasLayer {
       );
     });
 
-    return canvas;
+    return stageCanvas;
   }
 
   releaseTile(canvas) {
@@ -330,17 +357,31 @@ class CanvasLayer {
       return 0;
     }
 
-    canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
-    canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    // canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    // canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
 
-    canvasPlaybackData.tilePlaybackDataCompressed =
-      CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
+    // canvasPlaybackData.tilePlaybackDataCompressed =
+    //   CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
 
-    return this.drawTilePixelsFromPlaybackDataGrid(
-      canvasPlaybackData.tilePlaybackDataCompressed,
-      canvasPlaybackData.shadowCanvas.ctx,
-      canvasPlaybackData.canvas.ctx
-    );
+    let num = 0;
+    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      if (tilePlaybackData && tilePlaybackData[timeIndex]) {
+        const playbackData = tilePlaybackData[timeIndex];
+        num += this.drawTileSpritesFromPlaybackData(
+          playbackData,
+          canvasPlaybackData.sprites
+        );
+      }
+    }
+    // canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
+    return num;
+
+    // return this.drawTilePixelsFromPlaybackDataGrid(
+    //   canvasPlaybackData.tilePlaybackDataCompressed,
+    //   canvasPlaybackData.shadowCanvas.ctx,
+    //   canvasPlaybackData.canvas.ctx
+    // );
 
     // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
     //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
@@ -354,10 +395,30 @@ class CanvasLayer {
     // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
   }
 
+  drawTileSpritesFromPlaybackData(playbackData, sprites) {
+    const numSprites = sprites.length;
+    const numVessels = playbackData.length;
+    if (numVessels > numSprites) {
+      console.log('too much vessels, not enough sprites', playbackData.latitude.length);
+    }
+    for (let i = 0, len = sprites.length; i < len; i++) {
+      // if (i >= numVessels) {
+      //   // move off canvas
+      //   sprites[i].position.x = 500;
+      //   sprites[i].position.y = 500;
+      // } else {
+      //   sprites[i].position.x = playbackData.gridX[i];
+      //   sprites[i].position.y = playbackData.gridY[i];
+      // }
+    }
+
+    return numSprites;
+  }
+
   drawTilePixelsFromPlaybackDataGrid(grid, shadowCtx, ctx) {
     for (let i = 0, length = grid.xs.length; i < length; i++) {
       const radius = 1 + Math.floor(Math.random() * 2);
-      const template = this.vesselTemplates[radius];
+      const template = this.vesselTemplates[3];
       const x = grid.xs[i] * VESSEL_RESOLUTION;
       const y = grid.ys[i] * VESSEL_RESOLUTION;
       shadowCtx.drawImage(template, x, y);
