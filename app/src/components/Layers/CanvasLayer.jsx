@@ -1,7 +1,8 @@
-/* eslint no-underscore-dangle:0 */
-import PelagosClient from '../../lib/pelagosClient';
-import { TIMELINE_STEP, API_RETURNED_KEYS, PLAYBACK_PRECISION } from '../../constants';
+/* eslint no-underscore-dangle:0 no-param-reassign: 0 */
+import PIXI from 'pixi.js';
+import { TIMELINE_STEP, VESSEL_RESOLUTION } from '../../constants';
 import _ from 'lodash';
+import CanvasLayerData from './CanvasLayerData';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
@@ -16,18 +17,50 @@ class CanvasLayer {
     this.setVesselColor(vesselColor);
 
     this.outerStartDate = filters.startDate;
-    this.outerStartDateOffset = this._getTimeAtPrecision(this.outerStartDate);
+    this.outerStartDateOffset = CanvasLayerData.getTimeAtPrecision(this.outerStartDate);
     this.outerEndDate = filters.endDate;
     this.innerStartDate = filters.timelineInnerExtent[0]; // deprecated
     this.innerEndDate = filters.timelineInnerExtent[1]; // deprecated
-    this.currentInnerStartIndex = this._getOffsetedTimeAtPrecision(this.innerStartDate.getTime());
-    this.currentInnerEndIndex = this._getOffsetedTimeAtPrecision(this.innerEndDate.getTime());
+    this.currentInnerStartIndex = CanvasLayerData.getOffsetedTimeAtPrecision(
+        this.innerStartDate.getTime(),
+        this.outerStartDateOffset
+    );
+    this.currentInnerEndIndex = CanvasLayerData.getOffsetedTimeAtPrecision(
+        this.innerEndDate.getTime(),
+        this.outerStartDateOffset
+    );
 
     this._setFlag(filters);
+
+    // get circle/brush canvases that will be copied into the final canvases
+    this.vesselTemplates = [];
+    this.vesselTextures = [];
+    for (let i = 1; i < 20; i++) {
+      this.vesselTemplates[i] = this.getVesselTemplate(i, 1);
+      this.vesselTextures[i] = PIXI.Texture.fromCanvas(this.vesselTemplates[i]);
+    }
 
     if (visible) {
       this.show();
     }
+  }
+
+  getVesselTemplate(radius, blurFactor) {
+    const tplCanvas = document.createElement('canvas');
+    const tplCtx = tplCanvas.getContext('2d');
+    const x = radius;
+    const y = radius;
+    tplCanvas.width = tplCanvas.height = radius * 2;
+
+    if (blurFactor === 1) {
+      tplCtx.beginPath();
+      tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = 'rgba(255,0,0,.5)';
+      tplCtx.fill();
+    } else {
+      // return a radial gradient
+    }
+    return tplCanvas;
   }
 
   setVesselColor(vesselColor) {
@@ -143,6 +176,18 @@ class CanvasLayer {
     return canvas;
   }
 
+  _getPixi() {
+    const renderer = new PIXI.WebGLRenderer(256, 256, { transparent: true });
+    const stageCanvas = renderer.view;
+    const stage = new PIXI.ParticleContainer(20000);
+
+    return {
+      stageCanvas,
+      renderer,
+      stage
+    };
+  }
+
   /**
    * Loads the first matching vessel for the given lat/long pair
    * TODO: return and handle multiple vessels on the same coordinates
@@ -186,23 +231,6 @@ class CanvasLayer {
   }
 
   /**
-   * From a timestamp in ms returns a time with the precision set in Constants.
-   * @param timestamp
-   */
-  _getTimeAtPrecision(timestamp) {
-    return Math.floor(timestamp / PLAYBACK_PRECISION);
-  }
-
-  /**
-   * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
-   * beginning of avaliable time (outerStart)
-   * @param timestamp
-   */
-  _getOffsetedTimeAtPrecision(timestamp) {
-    return Math.max(0, this._getTimeAtPrecision(timestamp) - this.outerStartDateOffset);
-  }
-
-  /**
    * Creates and loads data for each tile
    *
    * @param coord
@@ -210,51 +238,72 @@ class CanvasLayer {
    * @param ownerDocument
    * @returns {*}
    */
+
   getTile(coord, zoom, ownerDocument) {
-    const canvas = this._getCanvas(ownerDocument);
-    const ctx = canvas.ctx;
-    const tileCoordinates = this.getTileCoordinates(coord, zoom);
-    const promises = [];
+    // if (this.stageCanvas) return ownerDocument.createElement('canvas');
+    const { stageCanvas, renderer, stage } = this._getPixi(ownerDocument);
+    // this.stageCanvas = stageCanvas;
+
+    const sprites = [];
+    for (let i = 0; i < 20000; i++) {
+      // const radius = 1 + Math.floor(Math.random() * 5);
+      const texture = this.vesselTextures[2];
+      const vessel = new PIXI.Sprite(texture);
+      sprites.push(vessel);
+      // vessel.position.x = playbackData.gridX[index];
+      // vessel.position.y = playbackData.gridY[index];
+      stage.addChild(vessel);
+    }
 
     const canvasPlaybackData = {
-      canvas,
-      tilePlaybackData: null
+      stageCanvas,
+      renderer,
+      stage,
+      tilePlaybackData: null,
+      sprites
     };
-    canvas.index = this.playbackData.length;
+    stageCanvas.index = this.playbackData.length;
     this.playbackData.push(canvasPlaybackData);
 
-    this._showDebugInfo(ctx, 'L', Math.random());
+    // this._showDebugInfo(ctx, 'L', Math.random());
 
-    if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tileCoordinates, this.outerStartDate, this.outerEndDate);
-      for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-        promises.push(new PelagosClient().obtainTile(urls[urlIndex], this.token));
-      }
-    }
-    Promise.all(promises).then((rawTileData) => {
+    const tileCoordinates = CanvasLayerData.getTileCoordinates(coord, zoom);
+    const pelagosPromises = CanvasLayerData.getTilePelagosPromises(tileCoordinates,
+      this.outerStartDate,
+      this.outerEndDate,
+      this.token
+    );
+
+    Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
-        this._showDebugInfo(ctx, 'E');
-        return null;
+        // this._showDebugInfo(ctx, 'E');
+        return;
       }
-      const cleanVectorArrays = rawTileData.filter(vectorArray => vectorArray !== null);
+      const cleanVectorArrays = CanvasLayerData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
-        this._showDebugInfo(ctx, 'PE');
+        // this._showDebugInfo(ctx, 'PE');
       }
 
-      this._showDebugInfo(ctx, 'OK');
-      const vectorArray = this.addTilePixelCoordinates(tileCoordinates, this.groupData(cleanVectorArrays));
-      const tilePlaybackData = this.getTilePlaybackData(vectorArray);
+      // this._showDebugInfo(ctx, 'OK');
+      const groupedData = CanvasLayerData.groupData(cleanVectorArrays);
+      const vectorArray = this.addTilePixelCoordinates(tileCoordinates, groupedData);
+      const tilePlaybackData = CanvasLayerData.getTilePlaybackData(
+        vectorArray,
+        this.outerStartDate,
+        this.outerEndDate,
+        this.outerStartDateOffset,
+        this.flag
+      );
       canvasPlaybackData.tilePlaybackData = tilePlaybackData;
 
       this._drawTimeRangeCanvasAtIndexes(
         this.currentInnerStartIndex,
         this.currentInnerEndIndex,
-        canvas,
-        tilePlaybackData
+        canvasPlaybackData
       );
     });
 
-    return canvas;
+    return stageCanvas;
   }
 
   releaseTile(canvas) {
@@ -272,8 +321,8 @@ class CanvasLayer {
    * @param end   end timestamp (ms)
    */
   drawTimeRange(start, end) {
-    const startIndex = this._getOffsetedTimeAtPrecision(start);
-    const endIndex = this._getOffsetedTimeAtPrecision(end);
+    const startIndex = CanvasLayerData.getOffsetedTimeAtPrecision(start, this.outerStartDateOffset);
+    const endIndex = CanvasLayerData.getOffsetedTimeAtPrecision(end, this.outerStartDateOffset);
 
     if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
       // TODO: check only startIndex to avoid bypassing when current is 10-20 and next is 10-21 (rounding issue)
@@ -296,41 +345,159 @@ class CanvasLayer {
    * @param endIndex
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
+    let num = 0;
     this.playbackData.forEach((canvasPlaybackData) => {
-      const canvas = canvasPlaybackData.canvas;
-      const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
-      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData);
+      num += this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
     });
+    console.log(num);
   }
 
-  _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvas, tilePlaybackData) {
-    canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+  _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData) {
+    if (!canvasPlaybackData.tilePlaybackData) {
+      return 0;
+    }
+
+    // canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    // canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+
+    // canvasPlaybackData.tilePlaybackDataCompressed =
+    //   CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
+
+    let numVesselsTotal = 0;
+    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+    const sprites = canvasPlaybackData.sprites;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       if (tilePlaybackData && tilePlaybackData[timeIndex]) {
         const playbackData = tilePlaybackData[timeIndex];
-        this.drawTileFromPlaybackData(canvas, playbackData, false);
+
+        if (playbackData) {
+          const numVessels = playbackData.gridX.length;
+          // console.log(numVessels)
+          for (let i = 0, len = numVessels; i < len; i++) {
+            sprites[numVesselsTotal + i].position.x = playbackData.gridX[i];
+            sprites[numVesselsTotal + i].position.y = playbackData.gridY[i];
+            // if (i >= numVessels) {
+            //   // move off canvas
+            //   sprites[i].position.x = 500;
+            //   sprites[i].position.y = 500;
+            // } else {
+            // }
+          }
+          numVesselsTotal += numVessels;
+        }
+      }
+    }
+    canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
+    return numVesselsTotal;
+
+    // return this.drawTilePixelsFromPlaybackDataGrid(
+    //   canvasPlaybackData.tilePlaybackDataCompressed,
+    //   canvasPlaybackData.shadowCanvas.ctx,
+    //   canvasPlaybackData.canvas.ctx
+    // );
+
+    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+    //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
+    //     const playbackData = tilePlaybackData[timeIndex];
+    //     this.drawTileFromPlaybackData(canvasPlaybackData.canvas, canvasPlaybackData.playbackData, false);
+    //   } else {
+    //     // TODO: a lot of missing timestamp indexes here, check why
+    //   }
+    // }
+    //
+    // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
+  }
+
+  drawTileSpritesFromPlaybackData(playbackData, sprites) {
+    const numSprites = sprites.length;
+    const numVessels = playbackData.length;
+    if (numVessels > numSprites) {
+      console.log('too much vessels, not enough sprites', playbackData.latitude.length);
+    }
+    for (let i = 0, len = sprites.length; i < len; i++) {
+      if (i >= numVessels) {
+        // move off canvas
+        sprites[i].position.x = 500;
+        sprites[i].position.y = 500;
       } else {
-        // TODO: a lot of missing timestamp indexes here, check why
+        sprites[i].position.x = playbackData.gridX[i];
+        sprites[i].position.y = playbackData.gridY[i];
       }
     }
 
-    this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
-
+    return numSprites;
   }
 
-  _showDebugInfo(ctx, ...text) {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0,0, 250, 20);
-    ctx.font = '10px Verdana bold';
-    ctx.fillStyle = 'black';
-    if (!ctx.debug) {
-      ctx.debug = text;
+  drawTilePixelsFromPlaybackDataGrid(grid, shadowCtx, ctx) {
+    for (let i = 0, length = grid.xs.length; i < length; i++) {
+      const radius = 1 + Math.floor(Math.random() * 2);
+      const template = this.vesselTemplates[3];
+      const x = grid.xs[i] * VESSEL_RESOLUTION;
+      const y = grid.ys[i] * VESSEL_RESOLUTION;
+      shadowCtx.drawImage(template, x, y);
     }
-    else {
-      ctx.debug += ' ' + text;
+    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
+    // colorize here?
+    ctx.putImageData(shadowImg, 0, 0);
+
+    return grid.xs.length;
+  }
+
+  drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData) {
+    // const imageData = ctx.createImageData(256, 256);
+    // const pixels = imageData.data;
+    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+    const ctx = canvasPlaybackData.canvas.ctx;
+    const shadowCtx = canvasPlaybackData.shadowCanvas.ctx;
+
+    if (!tilePlaybackData) return;
+
+    let num = 0;
+
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      const points = tilePlaybackData[timeIndex];
+
+      if (!points) continue;
+      num += points.latitude.length;
+
+      this.drawTilePixelsFromFrame(points, shadowCtx);
     }
-    ctx.fillText(text, 5, 10);
+    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
+    // const shadowImgData = shadowImg.data;
+
+    // colorize here?
+    ctx.putImageData(shadowImg, 0, 0);
+
+    return num;
+  }
+
+  drawTilePixelsFromFrame(points, shadowCtx) {
+    for (let index = 0, len = points.latitude.length; index < len; index++) {
+      const radius = 1 + Math.floor(Math.random() * 2);
+      const template = this.vesselTemplates[radius];
+      const x = points.x[index];
+      const y = points.y[index];
+      shadowCtx.drawImage(template, x, y);
+      // const offset = y * 256 * 4 + x * 4;
+      // pixels[offset] = 255;
+      // pixels[offset + 3] += 80;
+    }
+  }
+
+
+  _showDebugInfo(/* ctx, ...text */) {
+    // ctx.fillStyle = 'white';
+    // ctx.fillRect(0,0, 250, 20);
+    // ctx.font = '10px Verdana bold';
+    // ctx.fillStyle = 'black';
+    // if (!ctx.debug) {
+    //   ctx.debug = text;
+    // }
+    // else {
+    //   ctx.debug += ' ' + text;
+    // }
+    // ctx.fillText(text, 5, 10);
   }
 
   /**
@@ -351,92 +518,7 @@ class CanvasLayer {
     }
 
     this.drawVesselPoints(canvas.ctx, playbackData);
-  }
-
-  /**
-   * Add projected lat/long values transformed as x/y coordinates
-   */
-  addTilePixelCoordinates(tileCoordinates, vectorArray) {
-    const data = vectorArray;
-    const scale = 1 << tileCoordinates.zoom;
-    const tileBaseX = tileCoordinates.x * 256;
-    const tileBaseY = tileCoordinates.y * 256;
-    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
-
-    data.x = new Int32Array(data.latitude.length);
-    data.y = new Int32Array(data.latitude.length);
-
-    for (let index = 0, length = data.latitude.length; index < length; index++) {
-      const lat = data.latitude[index];
-      const lng = data.longitude[index];
-      let x = (lng + 180) / 360 * 256;
-      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256;
-      x *= scale;
-      y *= scale;
-
-      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
-      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
-    }
-    return data;
-  }
-
-  /**
-   * Converts Vector Array data to Playback format and stores it locally
-   *
-   * @param vectorArray
-   * @param tileCoordinates
-   */
-  getTilePlaybackData(vectorArray) {
-    const tilePlaybackData = [];
-
-    for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-      const datetime = vectorArray.datetime[index];
-
-      if (datetime < this.outerStartDate || datetime > this.outerEndDate) {
-        continue;
-      }
-      // keep?
-      // if (!data.weight[index]) {
-      //   return false;
-      // }
-      const category = vectorArray.category[index];
-      if (this.flag && this.flag !== category) {
-        continue;
-      }
-
-      const timeIndex = this._getOffsetedTimeAtPrecision(datetime);
-
-      if (!tilePlaybackData[timeIndex]) {
-        tilePlaybackData[timeIndex] = {
-          category: [category],
-          latitude: [vectorArray.latitude[index]],
-          longitude: [vectorArray.longitude[index]],
-          weight: [vectorArray.weight[index]],
-          x: [vectorArray.x[index]],
-          y: [vectorArray.y[index]],
-          series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]],
-          sigma: [vectorArray.sigma[index]]
-        };
-        continue;
-      }
-      const timestamp = tilePlaybackData[timeIndex];
-      timestamp.category.push(category);
-      timestamp.latitude.push(vectorArray.latitude[index]);
-      timestamp.longitude.push(vectorArray.longitude[index]);
-      timestamp.weight.push(vectorArray.weight[index]);
-      timestamp.x.push(vectorArray.x[index]);
-      timestamp.y.push(vectorArray.y[index]);
-      timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
-      timestamp.sigma.push(vectorArray.sigma[index]);
-    }
-
-    return tilePlaybackData;
-  }
-
-  static getTimestampIndex(timestamp) {
-    return timestamp - (timestamp % TIMELINE_STEP);
+    // this.drawVesselsPixels(canvas.ctx, playbackData);
   }
 
   drawVesselPoints(ctx, points) {
@@ -465,77 +547,43 @@ class CanvasLayer {
    * @param sigma
    * @param drawTrail
    */
-  drawVesselPoint(ctx, x, y, weight /*, sigma */) {
+  drawVesselPoint(ctx, x, y, weight /* , sigma */) {
     const radius = Math.min(5, Math.max(1, Math.round(weight / 10)));
     ctx.moveTo(x, y);
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
 
-  /**
-   * Generates tile coordinates in x/y/zoom
-   *
-   * @param coord
-   * @param zoom
-   * @returns {*}
-   */
-  getTileCoordinates(coord, zoom) {
-    const y = coord.y;
-    const x = coord.x;
-    const tileRange = 1 << zoom;
-    if (y < 0 || y >= tileRange) {
-      return null;
-    }
-    if (x < 0 || x >= tileRange) {
-      return null;
-    }
-    return { x, y, zoom };
-  }
 
   /**
-   * Generates the URLs to load vessel track data
-   *
-   * @param tileCoordinates
-   * @param startDate
-   * @param endDate
-   * @returns {Array}
+   * Add projected lat/long values transformed as x/y coordinates
    */
-  getTemporalTileURLs(tileCoordinates, startDate, endDate) {
-    const startYear = new Date(startDate).getUTCFullYear();
-    const endYear = new Date(endDate).getUTCFullYear();
-    const urls = [];
-    for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/\
-${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
-${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
-    }
-    return urls;
-  }
+  addTilePixelCoordinates(tileCoordinates, vectorArray) {
+    const data = vectorArray;
+    const scale = 1 << tileCoordinates.zoom;
+    const tileBaseX = tileCoordinates.x * 256;
+    const tileBaseY = tileCoordinates.y * 256;
+    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
 
-  /**
-   * As data will come in multiple arrays (1 per year basically), they need to be merged here
-   *
-   * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
-   * @returns {*}
-   */
-  groupData(cleanVectorArrays) {
-    const data = {};
+    data.x = new Int32Array(data.latitude.length);
+    data.y = new Int32Array(data.latitude.length);
 
-    const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
+    for (let index = 0, length = data.latitude.length; index < length; index++) {
+      const lat = data.latitude[index];
+      const lng = data.longitude[index];
+      let x = (lng + 180) / 360 * 256;
+      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
+      x *= scale;
+      y *= scale;
 
-    API_RETURNED_KEYS.forEach((key) => {
-      data[key] = new Float32Array(totalVectorArraysLength);
-    });
-
-    for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
-      const currentArray = cleanVectorArrays[index];
-      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
-      API_RETURNED_KEYS.forEach((key) => {
-        data[key].set(currentArray[key], offset);
-      });
+      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
+      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
     }
     return data;
   }
 
+  static getTimestampIndex(timestamp) {
+    return timestamp - (timestamp % TIMELINE_STEP);
+  }
 
 }
 
