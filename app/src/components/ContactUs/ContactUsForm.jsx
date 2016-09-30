@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router';
 import { scrollTo } from '../../lib/Utils';
 import formStyle from '../../../styles/components/c-contact-form.scss';
 import buttonStyle from '../../../styles/components/c-button.scss';
@@ -83,9 +84,15 @@ class ContactUsForm extends Component {
       <h1>
         Contact Us
       </h1>
-      <p>
-        Let us know what you think! Submit your questions,
-        suggestions for improvement or general feedback using the form below.
+      <p className={contactStyle['intro-contact']}>
+        Let us know what you think! Submit your questions, suggestions
+        for improvement or general feedback using the form below.
+        You may also find answers to your questions by reviewing our
+        FAQ page <Link to="/faq">here</Link> or viewing our tutorial
+        video <Link to="/tutorials">here</Link> .
+        Formatting/color of the font, etc. can remain the
+        same OR they may shrink it down to make everything fit
+        (right now, the text is pretty big to start with, so there's room)
       </p>
       <section
         className={classnames({

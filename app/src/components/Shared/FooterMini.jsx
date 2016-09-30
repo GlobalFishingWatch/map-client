@@ -63,7 +63,7 @@ class FooterMini extends Component {
           <ul>
             <li><a href="https://carto.com/" target="_blank">Carto</a></li>
             <li>
-              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs: <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs: <a href="http://mpatlas.org/">mpatlas.org</a></span>
             </li>
           </ul>
         </div>}
@@ -88,7 +88,7 @@ class FooterMini extends Component {
             <li className={styles.attributions}><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
             <li className={styles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             <li className={styles.attributions}>
-              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs: <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs: <a href="http://mpatlas.org/">mpatlas.org</a></span>
             </li>
             <li className={styles.attributions}><Link to="/terms-of-use">Terms of use</Link></li>
             <li className={styles.attributions}><a onClick={() => this.showSupportModal()}>Support</a></li>
