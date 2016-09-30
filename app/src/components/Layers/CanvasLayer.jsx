@@ -179,7 +179,7 @@ class CanvasLayer {
   _getPixi() {
     const renderer = new PIXI.WebGLRenderer(256, 256, { transparent: true });
     const stageCanvas = renderer.view;
-    const stage = new PIXI.Container();
+    const stage = new PIXI.ParticleContainer(20000);
 
     return {
       stageCanvas,
@@ -240,14 +240,14 @@ class CanvasLayer {
    */
 
   getTile(coord, zoom, ownerDocument) {
-    // if (this.stageCanvas) return this.stageCanvas;
+    // if (this.stageCanvas) return ownerDocument.createElement('canvas');
     const { stageCanvas, renderer, stage } = this._getPixi(ownerDocument);
-    this.stageCanvas = stageCanvas;
+    // this.stageCanvas = stageCanvas;
 
     const sprites = [];
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < 20000; i++) {
       // const radius = 1 + Math.floor(Math.random() * 5);
-      const texture = this.vesselTextures[5];
+      const texture = this.vesselTextures[2];
       const vessel = new PIXI.Sprite(texture);
       sprites.push(vessel);
       // vessel.position.x = playbackData.gridX[index];
@@ -363,19 +363,33 @@ class CanvasLayer {
     // canvasPlaybackData.tilePlaybackDataCompressed =
     //   CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
 
-    let num = 0;
+    let numVesselsTotal = 0;
     const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
+    const sprites = canvasPlaybackData.sprites;
+
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       if (tilePlaybackData && tilePlaybackData[timeIndex]) {
         const playbackData = tilePlaybackData[timeIndex];
-        num += this.drawTileSpritesFromPlaybackData(
-          playbackData,
-          canvasPlaybackData.sprites
-        );
+
+        if (playbackData) {
+          const numVessels = playbackData.gridX.length;
+          // console.log(numVessels)
+          for (let i = 0, len = numVessels; i < len; i++) {
+            sprites[numVesselsTotal + i].position.x = playbackData.gridX[i];
+            sprites[numVesselsTotal + i].position.y = playbackData.gridY[i];
+            // if (i >= numVessels) {
+            //   // move off canvas
+            //   sprites[i].position.x = 500;
+            //   sprites[i].position.y = 500;
+            // } else {
+            // }
+          }
+          numVesselsTotal += numVessels;
+        }
       }
     }
-    // canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
-    return num;
+    canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
+    return numVesselsTotal;
 
     // return this.drawTilePixelsFromPlaybackDataGrid(
     //   canvasPlaybackData.tilePlaybackDataCompressed,
@@ -402,14 +416,14 @@ class CanvasLayer {
       console.log('too much vessels, not enough sprites', playbackData.latitude.length);
     }
     for (let i = 0, len = sprites.length; i < len; i++) {
-      // if (i >= numVessels) {
-      //   // move off canvas
-      //   sprites[i].position.x = 500;
-      //   sprites[i].position.y = 500;
-      // } else {
-      //   sprites[i].position.x = playbackData.gridX[i];
-      //   sprites[i].position.y = playbackData.gridY[i];
-      // }
+      if (i >= numVessels) {
+        // move off canvas
+        sprites[i].position.x = 500;
+        sprites[i].position.y = 500;
+      } else {
+        sprites[i].position.x = playbackData.gridX[i];
+        sprites[i].position.y = playbackData.gridY[i];
+      }
     }
 
     return numSprites;
