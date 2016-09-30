@@ -89,10 +89,7 @@ class ContactUsForm extends Component {
         for improvement or general feedback using the form below.
         You may also find answers to your questions by reviewing our
         FAQ page <Link to="/faq">here</Link> or viewing our tutorial
-        video <Link to="/tutorials">here</Link> .
-        Formatting/color of the font, etc. can remain the
-        same OR they may shrink it down to make everything fit
-        (right now, the text is pretty big to start with, so there's room)
+        video <Link to="/tutorials">here</Link>.
       </p>
       <section
         className={classnames({

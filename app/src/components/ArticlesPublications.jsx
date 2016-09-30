@@ -20,10 +20,10 @@ class ArticlesPublications extends Component {
         className={PubArticleStyle['c-publication-article']}
         key={articlePublication.link}
       >
-        <div
+        {articlePublication.image && <div
           className={PubArticleStyle.image}
-          style={{ backgroundImage: 'url(' + articlePublication.image + ')' } }
-        ></div>
+          style={{ backgroundImage: `url(${articlePublication.image})` }}
+        ></div>}
         <h4 className={PubArticleStyle.title}>
           <a href={articlePublication.link} target="_blank">
             {articlePublication.title}
