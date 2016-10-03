@@ -74,6 +74,7 @@ class PartnerSection extends Component {
             <ul className={PartnerSectionStyle['name-list']}>
               <li><span className={PartnerSectionStyle.name}>Brian Sullivan.</span> Senior Program Manager</li>
               <li><span className={PartnerSectionStyle.name}>Alex Wilson.</span> Machine Learning Engineer</li>
+              <li>&nbsp;</li>
             </ul>
             <p>
               Google Earth Outreach is a team dedicated to leveraging and developing Google’s

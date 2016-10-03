@@ -10,7 +10,7 @@
     position: absolute;
     width: 100%;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       bottom: 38px;
     }
   }
@@ -23,7 +23,7 @@
     justify-content: space-between;
     padding: 0 20px;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       display: none;
     }
 
@@ -40,7 +40,7 @@
     background-color: rgba($color-9, .5);
     padding: 0 4px;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       display: none;
     }
 
@@ -49,7 +49,7 @@
       margin: 0;
       padding: 0;
 
-      @media screen and (min-width: 350px) {
+      @media screen and (min-width: 560px) {
         align-items: center;
         display: flex;
         height: 20px;
@@ -67,7 +67,7 @@
             content: ' ';
             display: inline;
 
-            @media screen and (min-width: 350px) {
+            @media screen and (min-width: 560px) {
               display: none;
             }
           }

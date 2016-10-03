@@ -6,6 +6,12 @@
   min-height: 100%;
   position: relative;
 
+  .intro-contact {
+    a {
+      border-bottom: 1px solid $color-6;
+    }
+  }
+
   &::after {
     background-color: rgba($color-7, .8);
     bottom: 0;

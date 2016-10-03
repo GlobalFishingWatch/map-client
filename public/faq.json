@@ -25,7 +25,7 @@
       },
       {
         "title": "Does the algorithm make mistakes?",
-        "content": "<p>Global Fishing Watch is an entirely new methodology to fully automate when a vessel is fishing vs. transiting by using machine learning at a global scale. It is based on thousands of “training segments” that humans with expertise in fishing have manually classified. Just like humans, the algorithm will make some mistakes. Overtime, this will continue to improve as we feed the algorithms more training data and correct the mistakes that are made. As stated in the “fishing activity” <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> definition, further scrutiny is required before any legal action or proof can be made.</p>"
+        "content": "<p>Global Fishing Watch is an entirely new methodology to fully automate when a vessel is fishing vs. transiting by using <a href='http://blog.globalfishingwatch.org/2016/09/teaching-machines-to-tell-us-about-fishing.html' class='gfw-link' target='_blank'>machine learning</a> at a global scale. It is based on thousands of “training segments” that humans with expertise in fishing have href='http://blog.globalfishingwatch.org/2016/06/reading-tracks-on-the-water-a-team-effort-for-humans-and-machines.html' class='gfw-link' target='_blank'>manually classified</a>. Just like humans, the algorithm will make some mistakes. Overtime, this will continue to improve as we feed the algorithms more training data and correct the mistakes that are made. As stated in the “fishing activity” <tooltip text='Apparent fishing' href='/definitions/fishing-activity'>activity</tooltip> definition, further scrutiny is required before any legal action or proof can be made.</p>"
       },
       {
         "title": "What is coming next?",
@@ -54,7 +54,7 @@
     "questions": [
       {
         "title": "Why are vessel names sometimes garbled or blank?",
-        "content": "<p>Vessel names are taken directly from the AIS message a vessel broadcasts. Transmitters sometimes have errors or are not always properly configured. In some cases, we are able to match vessels to fishing registries and will be the name from there.</p>"
+        "content": "<p>Vessel names are taken directly from the AIS message a vessel broadcasts. Transmitters sometimes have errors or are not always properly configured. In some cases, we are able to <a href='http://blog.globalfishingwatch.org/2016/08/clarifying-identity-matching-broadcasts-to-vessel-registries.html' class='gfw-link' target='_blank'>match vessels to fishing registries</a> and will be the name from there.</p>"
       },
       {
         "title": "Is coverage equal all over the world?",
@@ -78,7 +78,7 @@
       },
       {
         "title": "Do “pirate” fishing vessels that engage in Illegal, Unreported and Unregulated (IUU) fishing even use AIS?",
-        "content": "<p>Although not all of them do, we have seen vessels broadcasting AIS that appear to be fishing illegally.</p>"
+        "content": "<p>Although not all of them do, we have seen vessels broadcasting AIS that appear <a href=' http://blog.globalfishingwatch.org/category/gfw-in-action/success-story' class='gfw-link' target='_blank'>to be fishing</a> illegally.</p>"
       },
       {
         "title": "Is monitoring AIS signals an invasion of trade secrets privacy?",
@@ -87,6 +87,35 @@
       {
         "title": "Won’t this tip off the fishing industry to where all the fish are?",
         "content": "<p>No. Commercial fishing fleets are already using sophisticated technology like helicopters, tracking beacons, fish-finding sonar, and even fish forecasts based on satellite data to find and catch fish. Global Fishing Watch shows where fishing activity has apparently occurred; it doesn’t predict where fish are likely to be in the future. The 72-hour time lag also limits the use of Global Fishing Watch as a “fish tracking” tool.</p>"
+      }
+    ]
+  },
+  {
+    "title": "Website Help",
+    "questions": [
+      {
+        "title": "What browsers is Global Fishing Watch compatible with?",
+        "content": "<p>We recommend using Chrome or Firefox as your browser for viewing Global Fishing Watch. We do not yet recommend using Safari or Internet Explorer for viewing Global Fishing Watch, although we expect to optimize Global Fishing Watch for those browsers in the near future.</p>"
+      },
+      {
+        "title": "I registered, but am receiving an error message regarding a “nickname” when I try to log in. What should I do?",
+        "content": "<p>We suggest resetting your password to clear this issue. Go to the Login page and click on the “forgot your password?” link. You will asked to enter the email address you used to create your account and will receive an email with instructions to reset your password. After completing your password reset, please try logging in again.</p>"
+      },
+      {
+        "title": "What should I do if I receive a “page not found” error or see a blank page on the screen?",
+        "content": "<p>First, be sure you are using one of our recommended browsers such as Chrome or Firefox. Please check your internet connection to ensure that it has not been lost, as this is a common reason. If the error persists, please try closing your browser and restarting it or clearing your cache and then trying to access the website.</p>"
+      },
+      {
+        "title": "I’m trying to register, but I do not see my country listed on the drop down menu.",
+        "content": "<p>Please use our contact us form <a href='http://globalfishingwatch.org/contact-us' class='gfw-link' target='_blank'>here</a> to let us know.</p>"
+      },
+      {
+        "title": "Is your website mobile-friendly? Is it accessible on a phone or tablet?",
+        "content": "<p>Currently, the Global Fishing Watch Map is not optimized for use with mobile devices (phones or tablets), although we expect it to be so in the near future.</p>"
+      },
+      {
+        "title": "How do I opt out of receiving marketing communications?",
+        "content": "<p>We’ve made it easy for you to manage what types of emails you receive. Simply navigate to the bottom of the email you received and look for the “update subscription preference” link. From there, you may manage the types of marketing emails you receive. You may also opt out from receiving all marketing emails by using the “unsubscribe” option.</p><p>Please note: even if you opt out of receiving marketing emails, you may still receive administrative emails related to your account. These include replies to inquiries you make through our “Contact Us” page, password reset notifications or replies to requests for Map support.</p>"
       }
     ]
   }
