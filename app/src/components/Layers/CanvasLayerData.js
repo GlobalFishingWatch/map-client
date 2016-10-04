@@ -110,7 +110,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    */
   getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset, flag) {
     const tilePlaybackData = [];
-    // const tilePlaybackDataGrid = [];
+    const tilePlaybackDataValues = [];
+    // let totalWeight = 0;
+    // let totalValue = 0;
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
@@ -128,57 +130,54 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       }
 
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, outerStartDateOffset);
-
-      const gridX = Math.floor(vectorArray.x[index] / VESSEL_RESOLUTION);
-      const gridY = Math.floor(vectorArray.y[index] / VESSEL_RESOLUTION);
-      // const gridOffset = gridY * VESSEL_GRID_SIZE + gridX;
-
-      // if (!tilePlaybackDataGrid[timeIndex]) {
-      //   tilePlaybackDataGrid[timeIndex] = [];
-      // }
-      // if (!tilePlaybackDataGrid[timeIndex][gridOffset]) {
-      //   tilePlaybackDataGrid[timeIndex][gridOffset] = [];
-      // }
-      //
-      // tilePlaybackDataGrid[timeIndex][gridOffset].push({
-      //   weight: vectorArray.weight[index],
-      //   sigma: vectorArray.sigma[index],
-      //   category
-      // });
+      const x = vectorArray.x[index];
+      const y = vectorArray.y[index];
+      // sometimes the API returns x = 256 or y = 256 while it should never be beyound 255
+      const offset = Math.min(y, 255) * 256 + Math.min(x, 255);
+      const offset4bytes = offset * 4;
+      const weight = vectorArray.weight[index];
+      const value = Math.min(5, Math.max(1, Math.floor(weight / 2)));
+      // totalWeight += weight;
+      // totalValue += value;
 
       if (!tilePlaybackData[timeIndex]) {
         tilePlaybackData[timeIndex] = {
-          category: [category],
-          latitude: [vectorArray.latitude[index]],
-          longitude: [vectorArray.longitude[index]],
-          weight: [vectorArray.weight[index]],
-          // x: [vectorArray.x[index]],
-          // y: [vectorArray.y[index]],
-          gridX: [gridX],
-          gridY: [gridY],
-          series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]],
-          sigma: [vectorArray.sigma[index]]
+          // category: [category],
+          // latitude: [vectorArray.latitude[index]],
+          // longitude: [vectorArray.longitude[index]],
+          // weight: [vectorArray.weight[index]],
+          value: [value],
+          x: [vectorArray.x[index]],
+          y: [vectorArray.y[index]],
+          // offset: [offset],
+          offset4bytes: [offset4bytes]
+          // series: [vectorArray.series[index]],
+          // seriesgroup: [vectorArray.seriesgroup[index]],
+          // sigma: [vectorArray.sigma[index]]
         };
+
+
+        // tilePlaybackDataValues[timeIndex] = new Uint8ClampedArray(65536);
+        // tilePlaybackDataValues[timeIndex][offset] = 255;
         continue;
       }
       const timestamp = tilePlaybackData[timeIndex];
-      timestamp.category.push(category);
-      timestamp.latitude.push(vectorArray.latitude[index]);
-      timestamp.longitude.push(vectorArray.longitude[index]);
-      timestamp.weight.push(vectorArray.weight[index]);
-      // timestamp.x.push(vectorArray.x[index]);
-      // timestamp.y.push(vectorArray.y[index]);
-      timestamp.gridX.push(gridX);
-      timestamp.gridY.push(gridY);
-      timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
-      timestamp.sigma.push(vectorArray.sigma[index]);
+      // timestamp.category.push(category);
+      // timestamp.latitude.push(vectorArray.latitude[index]);
+      // timestamp.longitude.push(vectorArray.longitude[index]);
+      // timestamp.weight.push(vectorArray.weight[index]);
+      timestamp.value.push(value);
+      timestamp.x.push(vectorArray.x[index]);
+      timestamp.y.push(vectorArray.y[index]);
+      // timestamp.offset.push(offset);
+      timestamp.offset4bytes.push(offset4bytes);
+      // timestamp.series.push(vectorArray.series[index]);
+      // timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+      // timestamp.sigma.push(vectorArray.sigma[index]);
     }
+    // console.log(totalWeight/vectorArray.latitude.length);
+    // console.log(totalValue/vectorArray.latitude.length);
 
-    // console.log(tilePlaybackDataGrid)
-    // return tilePlaybackDataGrid;
-    // console.log(tilePlaybackData)
     return tilePlaybackData;
   },
 
@@ -244,7 +243,31 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       xs,
       ys,
       values
+    };
+  },
+
+  serializeFrames(tilePlaybackData, startIndex, endIndex) {
+    const xs = [];
+    const ys = [];
+    const values = [];
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      const frame = tilePlaybackData[timeIndex];
+      if (!frame) return null;
+
+      for (let index = 0, len = frame.x.length; index < len; index++) {
+        xs.push(frame.x[index]);
+        ys.push(frame.y[index]);
+        values.push(frame.weight[index]);
+      }
     }
+
+    return values
+
+    // return {
+    //   xs,
+    //   ys,
+    //   values
+    // };
   }
 
 

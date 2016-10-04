@@ -1,7 +1,8 @@
 /* eslint no-underscore-dangle:0 no-param-reassign: 0 */
-import { TIMELINE_STEP, VESSEL_RESOLUTION, VESSEL_GRID_SIZE } from '../../constants';
+import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
+import { scaleLinear as d3ScaleLinear } from 'd3-scale';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
@@ -38,6 +39,29 @@ class CanvasLayer {
     }
 
     this.vesselTemplate = this.getVesselTemplate(4, 1);
+
+    const colors = [
+      '#3095FF',
+      '#89FBFF',
+      '#FFF896',
+      '#FFDC2C',
+      // '#FFA21D'
+    ];
+    const domain = colors.map((c, i) => i * (10 / colors.length));
+    const gradientScale = d3ScaleLinear()
+      .domain(domain)
+      .range(colors);
+
+    this.gradient = [];
+    for (let i = 0; i < 10; i++) {
+      const channels = gradientScale(i).match(/\d+/g);
+      const color = {
+        r: channels[0],
+        g: channels[1],
+        b: channels[2]
+      };
+      this.gradient.push(color);
+    }
 
     if (visible) {
       this.show();
@@ -318,98 +342,76 @@ class CanvasLayer {
    * @param endIndex
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
-    let num = 0;
     this.playbackData.forEach((canvasPlaybackData) => {
-      num += this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
+      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
     });
-    console.log(num);
   }
 
   _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData) {
     if (!canvasPlaybackData.tilePlaybackData) {
-      return 0;
+      return;
     }
 
     canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
     canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
 
-    canvasPlaybackData.tilePlaybackDataCompressed =
-      CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
-
-    return this.drawTilePixelsFromPlaybackDataGrid(
-      canvasPlaybackData.tilePlaybackDataCompressed,
-      canvasPlaybackData.shadowCanvas.ctx,
-      canvasPlaybackData.canvas.ctx
-    );
-
-    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-    //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
-    //     const playbackData = tilePlaybackData[timeIndex];
-    //     this.drawTileFromPlaybackData(canvasPlaybackData.canvas, canvasPlaybackData.playbackData, false);
-    //   } else {
-    //     // TODO: a lot of missing timestamp indexes here, check why
-    //   }
-    // }
-    //
-    // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
-  }
-
-  drawTilePixelsFromPlaybackDataGrid(grid, shadowCtx, ctx) {
-    for (let i = 0, length = grid.xs.length; i < length; i++) {
-      const radius = 1 + Math.floor(Math.random() * 2);
-      const template = this.vesselTemplates[radius];
-      const x = grid.xs[i] * VESSEL_RESOLUTION;
-      const y = grid.ys[i] * VESSEL_RESOLUTION;
-      shadowCtx.drawImage(template, x, y);
+    const pixelMode = true;
+    if (pixelMode) {
+      // const values = CanvasLayerData.serializeFrames(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
+      // console.log(values)
+      this.drawPixelFrames(canvasPlaybackData, startIndex, endIndex);
+    } else {
+      // this.drawCircleFrames();
     }
-    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
-    // colorize here?
-    ctx.putImageData(shadowImg, 0, 0);
-
-    return grid.xs.length;
   }
 
-  drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData) {
-    // const imageData = ctx.createImageData(256, 256);
-    // const pixels = imageData.data;
+  drawPixelFrames(canvasPlaybackData, startIndex, endIndex) {
     const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
     const ctx = canvasPlaybackData.canvas.ctx;
-    const shadowCtx = canvasPlaybackData.shadowCanvas.ctx;
+    const imageData = ctx.createImageData(256, 256);
+    const pixels = imageData.data;
 
     if (!tilePlaybackData) return;
 
-    let num = 0;
+    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+    //   const frame = tilePlaybackData[timeIndex];
+    //   if (!frame) continue;
+    //
+    //   for (let i = 0; i < 65536; i++) {
+    //     const value = frame[i];
+    //     if (value > 0) {
+    //       const offset = i * 4;
+    //       pixels[offset] = 255;
+    //       pixels[offset + 3] = 255;
+    //     }
+    //   }
+    // }
+    // ctx.putImageData(imageData, 0, 0);
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-      const points = tilePlaybackData[timeIndex];
+      const frame = tilePlaybackData[timeIndex];
+      if (!frame) continue;
 
-      if (!points) continue;
-      num += points.latitude.length;
+      for (let index = 0, len = frame.x.length; index < len; index++) {
+        const offset = frame.offset4bytes[index];
+        const alphaOffset = offset + 3;
+        let alphaValue = pixels[alphaOffset];
+        if (alphaValue === 0) {
+          pixels[alphaOffset] = alphaValue = 246;
+        }
+        const pixelValue = -(246 - alphaValue);
+        const color = this.gradient[pixelValue];
 
-      this.drawTilePixelsFromFrame(points, shadowCtx);
+        pixels[offset] = color.r;
+        pixels[offset + 1] = color.g;
+        pixels[offset + 2] = color.b;
+
+        pixels[alphaOffset] = alphaValue + frame.value[index];
+      }
     }
-    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
-    // const shadowImgData = shadowImg.data;
 
-    // colorize here?
-    ctx.putImageData(shadowImg, 0, 0);
-
-    return num;
+    ctx.putImageData(imageData, 0, 0);
   }
-
-  drawTilePixelsFromFrame(points, shadowCtx) {
-    for (let index = 0, len = points.latitude.length; index < len; index++) {
-      const radius = 1 + Math.floor(Math.random() * 2);
-      const template = this.vesselTemplates[radius];
-      const x = points.x[index];
-      const y = points.y[index];
-      shadowCtx.drawImage(template, x, y);
-      // const offset = y * 256 * 4 + x * 4;
-      // pixels[offset] = 255;
-      // pixels[offset + 3] += 80;
-    }
-  }
-
 
   _showDebugInfo(/* ctx, ...text */) {
     // ctx.fillStyle = 'white';
@@ -423,59 +425,6 @@ class CanvasLayer {
     //   ctx.debug += ' ' + text;
     // }
     // ctx.fillText(text, 5, 10);
-  }
-
-  /**
-   * Draws a tile using playback data
-   *
-   * @param canvas
-   * @param playbackData
-   * @param drawTrail
-   */
-  drawTileFromPlaybackData(canvas, playbackData) {
-    if (!canvas) {
-      return;
-    }
-    // const size = canvas.zoom > 6 ? 3 : 2;
-    if (!playbackData) {
-      canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
-      return;
-    }
-
-    this.drawVesselPoints(canvas.ctx, playbackData);
-    // this.drawVesselsPixels(canvas.ctx, playbackData);
-  }
-
-  drawVesselPoints(ctx, points) {
-    ctx.fillStyle = this.precomputedVesselColor;
-    ctx.beginPath();
-    for (let index = 0, len = points.latitude.length; index < len; index++) {
-      this.drawVesselPoint(
-        ctx,
-        points.x[index],
-        points.y[index],
-        points.weight[index] /* ,
-        vectorArray.sigma[index] */
-      );
-    }
-    ctx.fill();
-  }
-
-  /**
-   * Draws a single point representing a vessel
-   *
-   * @param canvas
-   * @param x
-   * @param y
-   * @param size
-   * @param weight
-   * @param sigma
-   * @param drawTrail
-   */
-  drawVesselPoint(ctx, x, y, weight /* , sigma */) {
-    const radius = Math.min(5, Math.max(1, Math.round(weight / 10)));
-    ctx.moveTo(x, y);
-    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
   }
 
 
