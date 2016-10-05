@@ -71,6 +71,7 @@
     "resolve-url-loader": "1.6.0",
     "sass-loader": "^3.2.0",
     "slick-carousel": "^1.6.0",
+    "stackblur-canvas": "^1.2.1",
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7",
     "webpack": "^1.13.0",

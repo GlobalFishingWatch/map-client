@@ -3,6 +3,7 @@ import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 import { scaleLinear as d3ScaleLinear } from 'd3-scale';
+import StackBlur from 'stackblur-canvas';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
@@ -44,7 +45,7 @@ class CanvasLayer {
       '#3095FF',
       '#89FBFF',
       '#FFF896',
-      '#FFDC2C',
+      '#FFDC2C'
       // '#FFA21D'
     ];
     const domain = colors.map((c, i) => i * (10 / colors.length));
@@ -186,6 +187,9 @@ class CanvasLayer {
     canvas.style.border = 'none';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.position = 'absolute';
 
     // prepare canvas and context sizes
     const ctx = canvas.getContext('2d');
@@ -248,18 +252,21 @@ class CanvasLayer {
    */
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
-    const shadowCanvas = this._getCanvas(ownerDocument);
-    const ctx = canvas.ctx;
+    const trailCanvas = this._getCanvas(ownerDocument);
+    const div = ownerDocument.createElement('div');
+    div.appendChild(trailCanvas);
+    div.appendChild(canvas);
+    div.className = 'tile';
+    div.style.width = '256px';
+    div.style.height = '256px';
 
     const canvasPlaybackData = {
       canvas,
-      shadowCanvas,
+      trailCanvas,
       tilePlaybackData: null
     };
-    canvas.index = this.playbackData.length;
+    div.index = this.playbackData.length;
     this.playbackData.push(canvasPlaybackData);
-
-    this._showDebugInfo(ctx, 'L', Math.random());
 
     const tileCoordinates = CanvasLayerData.getTileCoordinates(coord, zoom);
     const pelagosPromises = CanvasLayerData.getTilePelagosPromises(tileCoordinates,
@@ -270,15 +277,10 @@ class CanvasLayer {
 
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
-        this._showDebugInfo(ctx, 'E');
         return;
       }
       const cleanVectorArrays = CanvasLayerData.getCleanVectorArrays(rawTileData);
-      if (cleanVectorArrays.length !== rawTileData.length) {
-        this._showDebugInfo(ctx, 'PE');
-      }
 
-      this._showDebugInfo(ctx, 'OK');
       const groupedData = CanvasLayerData.groupData(cleanVectorArrays);
       const vectorArray = this.addTilePixelCoordinates(tileCoordinates, groupedData);
       const tilePlaybackData = CanvasLayerData.getTilePlaybackData(
@@ -297,7 +299,7 @@ class CanvasLayer {
       );
     });
 
-    return canvas;
+    return div;
   }
 
   releaseTile(canvas) {
@@ -349,49 +351,78 @@ class CanvasLayer {
       return;
     }
 
-    canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
-    canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    // canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    // canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
 
     const pixelMode = true;
     if (pixelMode) {
       // const values = CanvasLayerData.serializeFrames(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
       // console.log(values)
-      this.drawPixelFrames(canvasPlaybackData, startIndex, endIndex);
+      this.drawPixelFrames(canvasPlaybackData.canvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
+      this.drawPixelFramesTrail(canvasPlaybackData.trailCanvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex);
     } else {
       // this.drawCircleFrames();
     }
   }
 
-  drawPixelFrames(canvasPlaybackData, startIndex, endIndex) {
-    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
-    const ctx = canvasPlaybackData.canvas.ctx;
+  drawPixelFramesTrail(ctx, tilePlaybackData, startIndex) {
+    if (!tilePlaybackData) return;
+    let imageData = ctx.createImageData(256, 256);
+    const pixels = imageData.data;
+
+    for (let trailFrame = 10; trailFrame >= 0; trailFrame--) {
+      const frameIndex = startIndex - (10 - trailFrame);
+      if (frameIndex < 0) break;
+
+      const frame = tilePlaybackData[frameIndex];
+      if (!frame) continue;
+
+      const alpha = 0 + trailFrame * 10;
+
+      for (let index = 0, len = frame.x.length; index < len; index++) {
+        const offset = frame.offset4bytes[index];
+
+        pixels[offset] = 68;
+        pixels[offset + 1] = 159;
+        pixels[offset + 2] = 255;
+        pixels[offset + 3] = alpha;
+        // right px
+        pixels[offset + 4] = 68;
+        pixels[offset + 5] = 159;
+        pixels[offset + 6] = 255;
+        pixels[offset + 7] = alpha;
+        // bottom px
+        pixels[offset + 1024] = 68;
+        pixels[offset + 1025] = 159;
+        pixels[offset + 1026] = 255;
+        pixels[offset + 1027] = alpha;
+        // right bottom px
+        pixels[offset + 1028] = 68;
+        pixels[offset + 1029] = 159;
+        pixels[offset + 1030] = 255;
+        pixels[offset + 1031] = alpha;
+      }
+    }
+    // imageData = StackBlur.imageDataRGBA(imageData, 0, 0, 256, 256, 2);
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  drawPixelFrames(ctx, tilePlaybackData, startIndex, endIndex) {
     const imageData = ctx.createImageData(256, 256);
     const pixels = imageData.data;
 
     if (!tilePlaybackData) return;
 
-    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-    //   const frame = tilePlaybackData[timeIndex];
-    //   if (!frame) continue;
-    //
-    //   for (let i = 0; i < 65536; i++) {
-    //     const value = frame[i];
-    //     if (value > 0) {
-    //       const offset = i * 4;
-    //       pixels[offset] = 255;
-    //       pixels[offset + 3] = 255;
-    //     }
-    //   }
-    // }
-    // ctx.putImageData(imageData, 0, 0);
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+
       const frame = tilePlaybackData[timeIndex];
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
         const offset = frame.offset4bytes[index];
         const alphaOffset = offset + 3;
+
         let alphaValue = pixels[alphaOffset];
         if (alphaValue === 0) {
           pixels[alphaOffset] = alphaValue = 246;
