@@ -256,7 +256,6 @@ class CanvasLayer {
     const div = ownerDocument.createElement('div');
     div.appendChild(trailCanvas);
     div.appendChild(canvas);
-    div.className = 'tile';
     div.style.width = '256px';
     div.style.height = '256px';
 
@@ -350,23 +349,31 @@ class CanvasLayer {
     if (!canvasPlaybackData.tilePlaybackData) {
       return;
     }
+    const dirty = {
+      x: 0,
+      y: 0,
+      width: 256,
+      height: 256
+    };
+    const rect = canvasPlaybackData.canvas.getBoundingClientRect();
 
-    // canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
-    // canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
+    if (rect.left < 0) dirty.x = Math.abs(rect.left);
+    if (rect.top < 0) dirty.y = Math.abs(rect.top);
+    if (rect.right > window.innerWidth) dirty.width = 256 - (rect.right - window.innerWidth);
+    if (rect.bottom > window.innerHeight) dirty.height = 256 - (rect.bottom - window.innerHeight);
 
     const pixelMode = true;
     if (pixelMode) {
       // const values = CanvasLayerData.serializeFrames(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
       // console.log(values)
-      this.drawPixelFrames(canvasPlaybackData.canvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
-      this.drawPixelFramesTrail(canvasPlaybackData.trailCanvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex);
+      this.drawPixelFrames(canvasPlaybackData.canvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex, endIndex, dirty);
+      this.drawPixelFramesTrail(canvasPlaybackData.trailCanvas.ctx, canvasPlaybackData.tilePlaybackData, startIndex, dirty);
     } else {
       // this.drawCircleFrames();
     }
   }
 
-  drawPixelFramesTrail(ctx, tilePlaybackData, startIndex) {
-    if (!tilePlaybackData) return;
+  drawPixelFramesTrail(ctx, tilePlaybackData, startIndex, dirty) {
     let imageData = ctx.createImageData(256, 256);
     const pixels = imageData.data;
 
@@ -377,7 +384,7 @@ class CanvasLayer {
       const frame = tilePlaybackData[frameIndex];
       if (!frame) continue;
 
-      const alpha = 0 + trailFrame * 10;
+      const alpha = 80 + trailFrame * 10;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
         const offset = frame.offset4bytes[index];
@@ -404,18 +411,14 @@ class CanvasLayer {
       }
     }
     // imageData = StackBlur.imageDataRGBA(imageData, 0, 0, 256, 256, 2);
-    ctx.putImageData(imageData, 0, 0);
+    ctx.putImageData(imageData, 0, 0, dirty.x, dirty.y, dirty.width, dirty.height);
   }
 
-  drawPixelFrames(ctx, tilePlaybackData, startIndex, endIndex) {
+  drawPixelFrames(ctx, tilePlaybackData, startIndex, endIndex, dirty) {
     const imageData = ctx.createImageData(256, 256);
     const pixels = imageData.data;
 
-    if (!tilePlaybackData) return;
-
-
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-
       const frame = tilePlaybackData[timeIndex];
       if (!frame) continue;
 
@@ -437,7 +440,7 @@ class CanvasLayer {
       }
     }
 
-    ctx.putImageData(imageData, 0, 0);
+    ctx.putImageData(imageData, 0, 0, dirty.x, dirty.y, dirty.width, dirty.height);
   }
 
   _showDebugInfo(/* ctx, ...text */) {
