@@ -52,15 +52,12 @@ class CanvasLayer {
       .domain(domain)
       .range(colors);
 
-    this.gradient = [];
+    this.gradient = new Uint8ClampedArray(10 * 3);
     for (let i = 0; i < 10; i++) {
       const channels = gradientScale(i).match(/\d+/g);
-      const color = {
-        r: channels[0],
-        g: channels[1],
-        b: channels[2]
-      };
-      this.gradient.push(color);
+      this.gradient[i * 3] = channels[0];
+      this.gradient[i * 3 + 1] = channels[1];
+      this.gradient[i * 3 + 2] = channels[2];
     }
 
     if (visible) {
@@ -400,11 +397,10 @@ class CanvasLayer {
           pixels[alphaOffset] = alphaValue = 246;
         }
         const pixelValue = -(246 - alphaValue);
-        const color = this.gradient[pixelValue];
 
-        pixels[offset] = color.r;
-        pixels[offset + 1] = color.g;
-        pixels[offset + 2] = color.b;
+        pixels[offset] = this.gradient[pixelValue * 3];
+        pixels[offset + 1] = this.gradient[pixelValue * 3 + 1];
+        pixels[offset + 2] = this.gradient[pixelValue * 3 + 2];
 
         pixels[alphaOffset] = alphaValue + frame.value[index];
       }
