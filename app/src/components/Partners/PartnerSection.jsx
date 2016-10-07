@@ -13,7 +13,7 @@ class PartnerSection extends Component {
       <div className={BaseStyle.wrap}>
         <h2>Founding Partners</h2>
         <ul>
-          <li>
+          <li className={PartnerSectionStyle['container-partner']}>
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
             </div>
@@ -37,7 +37,7 @@ class PartnerSection extends Component {
               >www.oceana.org</a>.
             </p>
           </li>
-          <li>
+          <li className={PartnerSectionStyle['container-partner']}>
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img
                 src={skyLogo}
@@ -67,7 +67,7 @@ class PartnerSection extends Component {
               > www.skytruth.org</a>.
             </p>
           </li>
-          <li>
+          <li className={PartnerSectionStyle['container-partner']}>
             <div className={PartnerSectionStyle['contain-img-logo']}>
               <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
             </div>

@@ -181,9 +181,10 @@
   }
 
   &.-map {
+    background-color: transparent;
+    box-shadow: none;
     left: 0;
     position: absolute;
-    width: 100%;
     z-index: 6;
 
     @media #{$mq-tablet} {
@@ -198,9 +199,9 @@
     }
 
     .app-logo {
+      margin-left: 25px;
       order: 2;
       @media #{$mq-tablet} {
-        margin-left: 25px;
         order: 1;
       }
     }

@@ -65,6 +65,12 @@ class TheProject extends Component {
                   </p>
                 </li>
               </ul>
+              <p>
+                We invite all fishery stakeholders to explore the Map.
+                Global Fishing Watch is not an advocacy or enforcement
+                agency, but a transparency tool to help enable awareness
+                and discussion around fishery issues.
+              </p>
             </section>
             <section className="section-page">
               <article className={StaticPageStyles.testimonial}>

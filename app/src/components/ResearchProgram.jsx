@@ -118,7 +118,7 @@ class ResearchProgram extends Component {
                   that will build on Global Fishing Watch and global vessel registries for
                   understanding and reporting high resolution spatial
                   fishery statistics, and proposing transparency tools to support
-                  States in improving their monitoring, control and surveillance
+                  states in improving their monitoring, control and surveillance
                   of fishing activities.
                 </p>
               </article>
