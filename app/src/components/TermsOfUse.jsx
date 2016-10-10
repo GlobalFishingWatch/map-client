@@ -21,16 +21,18 @@ class TermsOfUse extends Component {
         <div className={AppStyles.wrap}>
           <section className={TextPages['c-text-pages']}>
             <article>
-              <p>Last Modified: August 3, 2016</p>
+              <p>Last Modified: October 10, 2016</p>
               <p>
-                This Global Fishing Watch (“GFW”) Terms of Service (“Agreement” or “Terms”), is between SkyTruth,
-                a Virginia nonprofit organization qualifying for Federal tax exemption under Section 501(c)(3) of the
-                Internal Revenue Code of 1986, as amended, and you and your company organization (“You” or“Your”).
-                By clicking “I agree”, you are bound by the terms of this Agreement. If you choose not to click
-                on “I agree” you will be redirected from this website (“Site”).
-                Your use of any portion of the Site, any information or data
-                provided on the Site, or any services made available through the Site (the “Services”)
-                is subject to the terms and conditions set forth herein.
+                This Global Fishing Watch (“GFW”) Terms of Use Agreement (“Agreement” or “Terms”),
+                is between SkyTruth, a Virginia nonprofit organization qualifying for Federal
+                tax exemption under Section 501(c)(3) of the Internal Revenue Code of 1986,
+                as amended, and you and your company organization (“You” or“Your”).
+                By clicking “I agree” when you register, you are bound by the terms of
+                this Agreement. If you choose not to click on “I agree” you will be
+                redirected from this website (“Site”). Your use of any portion of
+                the Site, any information or data provided on the Site, or any services
+                made available through the Site (the “Services”) is subject to the
+                terms and conditions set forth herein.
               </p>
               <ol className={TextPages['first-level-list']}>
                 <li>
@@ -342,10 +344,8 @@ class TermsOfUse extends Component {
                     </a>.
                   </p>
                 </li>
-              </ol>
-              <ol className={TextPages['first-level-list']}>
                 <li>
-                  <h2>Additional Terms</h2>
+                  <h2 className={TextPages['more-list']}>Additional Terms</h2>
                   <ol className={TextPages['second-level-list']}>
                     <li>
                       <p>
@@ -407,7 +407,7 @@ class TermsOfUse extends Component {
                   </ol>
                 </li>
                 <li>
-                  <h2>Your Comments and Concerns</h2>
+                  <h2 className={TextPages['more-list']}>Your Comments and Concerns</h2>
                   <p>
                     The Site is operated by SkyTruth, P.O. Box 3283, Shepherdstown, WV 25443. All feedback,
                     comments, requests for technical support, and other communications relating to the
