@@ -33,6 +33,8 @@ export const PLAYBACK_PRECISION = 86400000;
 // draw vessel point each VESSEL_RESOLUTION pixels. Use powers of two.
 export const VESSEL_RESOLUTION = 1;
 export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
+export const VESSEL_MIN_RADIUS = 1;
+export const VESSEL_MAX_RADIUS = 5;
 
 export const FLAGS = {
   0: 'AD',

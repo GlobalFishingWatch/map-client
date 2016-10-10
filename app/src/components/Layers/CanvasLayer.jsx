@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 no-param-reassign: 0 */
 import PIXI from 'pixi.js';
-import { TIMELINE_STEP, VESSEL_RESOLUTION } from '../../constants';
+import { TIMELINE_STEP, VESSEL_MIN_RADIUS, VESSEL_MAX_RADIUS } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 
@@ -33,11 +33,10 @@ class CanvasLayer {
     this._setFlag(filters);
 
     // get circle/brush canvases that will be copied into the final canvases
-    this.vesselTemplates = [];
     this.vesselTextures = [];
-    for (let i = 1; i < 20; i++) {
-      this.vesselTemplates[i] = this.getVesselTemplate(i, 1);
-      this.vesselTextures[i] = PIXI.Texture.fromCanvas(this.vesselTemplates[i]);
+    for (let i = VESSEL_MIN_RADIUS; i <= VESSEL_MAX_RADIUS; i++) {
+      const template = this.getVesselTemplate(i, 1);
+      this.vesselTextures[i] = PIXI.Texture.fromCanvas(template);
     }
 
     if (visible) {
@@ -55,7 +54,7 @@ class CanvasLayer {
     if (blurFactor === 1) {
       tplCtx.beginPath();
       tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-      tplCtx.fillStyle = 'rgba(255,0,0,.5)';
+      tplCtx.fillStyle = 'rgba(255,255,201,.5)';
       tplCtx.fill();
     } else {
       // return a radial gradient
@@ -240,19 +239,18 @@ class CanvasLayer {
    */
 
   getTile(coord, zoom, ownerDocument) {
-    // if (this.stageCanvas) return ownerDocument.createElement('canvas');
     const { stageCanvas, renderer, stage } = this._getPixi(ownerDocument);
-    // this.stageCanvas = stageCanvas;
 
     const sprites = [];
-    for (let i = 0; i < 20000; i++) {
-      // const radius = 1 + Math.floor(Math.random() * 5);
-      const texture = this.vesselTextures[2];
-      const vessel = new PIXI.Sprite(texture);
-      sprites.push(vessel);
-      // vessel.position.x = playbackData.gridX[index];
-      // vessel.position.y = playbackData.gridY[index];
-      stage.addChild(vessel);
+    for (let r = VESSEL_MIN_RADIUS; r <= VESSEL_MAX_RADIUS; r++) {
+      const radiusSprites = [];
+      const texture = this.vesselTextures[r];
+      for (let i = 0; i < 2000; i++) {
+        const vessel = new PIXI.Sprite(texture);
+        radiusSprites.push(vessel);
+        stage.addChild(vessel);
+      }
+      sprites[r] = radiusSprites;
     }
 
     const canvasPlaybackData = {
@@ -345,144 +343,40 @@ class CanvasLayer {
    * @param endIndex
    */
   _drawTimeRangeAtIndexes(startIndex, endIndex) {
-    let num = 0;
     this.playbackData.forEach((canvasPlaybackData) => {
-      num += this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
+      this._drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData);
     });
-    console.log(num);
   }
 
   _drawTimeRangeCanvasAtIndexes(startIndex, endIndex, canvasPlaybackData) {
     if (!canvasPlaybackData.tilePlaybackData) {
-      return 0;
+      return;
     }
 
-    // canvasPlaybackData.canvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
-    // canvasPlaybackData.shadowCanvas.ctx.clearRect(0, 0, canvasPlaybackData.canvas.width, canvasPlaybackData.canvas.height);
-
-    // canvasPlaybackData.tilePlaybackDataCompressed =
-    //   CanvasLayerData.compressTilePlaybackData(canvasPlaybackData.tilePlaybackData, startIndex, endIndex);
-
-    let numVesselsTotal = 0;
     const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
     const sprites = canvasPlaybackData.sprites;
 
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-      if (tilePlaybackData && tilePlaybackData[timeIndex]) {
-        const playbackData = tilePlaybackData[timeIndex];
 
-        if (playbackData) {
-          const numVessels = playbackData.gridX.length;
-          // console.log(numVessels)
-          for (let i = 0, len = numVessels; i < len; i++) {
-            sprites[numVesselsTotal + i].position.x = playbackData.gridX[i];
-            sprites[numVesselsTotal + i].position.y = playbackData.gridY[i];
-            // if (i >= numVessels) {
-            //   // move off canvas
-            //   sprites[i].position.x = 500;
-            //   sprites[i].position.y = 500;
-            // } else {
-            // }
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      const playbackData = tilePlaybackData[timeIndex];
+
+      if (!playbackData) continue;
+
+      for (let r = VESSEL_MIN_RADIUS; r <= VESSEL_MAX_RADIUS; r++) {
+        const playbackDataForRadius = playbackData[r];
+        if (!playbackDataForRadius) continue;
+
+        for (let i = 0, len = playbackDataForRadius.x.length; i < len; i++) {
+          const sprite = sprites[r][i];
+
+          if (sprite) {
+            sprite.position.x = playbackDataForRadius.x[i];
+            sprite.position.y = playbackDataForRadius.y[i];
           }
-          numVesselsTotal += numVessels;
         }
       }
     }
     canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
-    return numVesselsTotal;
-
-    // return this.drawTilePixelsFromPlaybackDataGrid(
-    //   canvasPlaybackData.tilePlaybackDataCompressed,
-    //   canvasPlaybackData.shadowCanvas.ctx,
-    //   canvasPlaybackData.canvas.ctx
-    // );
-
-    // for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-    //   if (tilePlaybackData && tilePlaybackData[timeIndex]) {
-    //     const playbackData = tilePlaybackData[timeIndex];
-    //     this.drawTileFromPlaybackData(canvasPlaybackData.canvas, canvasPlaybackData.playbackData, false);
-    //   } else {
-    //     // TODO: a lot of missing timestamp indexes here, check why
-    //   }
-    // }
-    //
-    // this._showDebugInfo(canvas.ctx, startIndex, canvas.index);
-  }
-
-  drawTileSpritesFromPlaybackData(playbackData, sprites) {
-    const numSprites = sprites.length;
-    const numVessels = playbackData.length;
-    if (numVessels > numSprites) {
-      console.log('too much vessels, not enough sprites', playbackData.latitude.length);
-    }
-    for (let i = 0, len = sprites.length; i < len; i++) {
-      if (i >= numVessels) {
-        // move off canvas
-        sprites[i].position.x = 500;
-        sprites[i].position.y = 500;
-      } else {
-        sprites[i].position.x = playbackData.gridX[i];
-        sprites[i].position.y = playbackData.gridY[i];
-      }
-    }
-
-    return numSprites;
-  }
-
-  drawTilePixelsFromPlaybackDataGrid(grid, shadowCtx, ctx) {
-    for (let i = 0, length = grid.xs.length; i < length; i++) {
-      const radius = 1 + Math.floor(Math.random() * 2);
-      const template = this.vesselTemplates[3];
-      const x = grid.xs[i] * VESSEL_RESOLUTION;
-      const y = grid.ys[i] * VESSEL_RESOLUTION;
-      shadowCtx.drawImage(template, x, y);
-    }
-    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
-    // colorize here?
-    ctx.putImageData(shadowImg, 0, 0);
-
-    return grid.xs.length;
-  }
-
-  drawTilePixelsFromPlaybackData(startIndex, endIndex, canvasPlaybackData) {
-    // const imageData = ctx.createImageData(256, 256);
-    // const pixels = imageData.data;
-    const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
-    const ctx = canvasPlaybackData.canvas.ctx;
-    const shadowCtx = canvasPlaybackData.shadowCanvas.ctx;
-
-    if (!tilePlaybackData) return;
-
-    let num = 0;
-
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-      const points = tilePlaybackData[timeIndex];
-
-      if (!points) continue;
-      num += points.latitude.length;
-
-      this.drawTilePixelsFromFrame(points, shadowCtx);
-    }
-    const shadowImg = shadowCtx.getImageData(0, 0, 256, 256);
-    // const shadowImgData = shadowImg.data;
-
-    // colorize here?
-    ctx.putImageData(shadowImg, 0, 0);
-
-    return num;
-  }
-
-  drawTilePixelsFromFrame(points, shadowCtx) {
-    for (let index = 0, len = points.latitude.length; index < len; index++) {
-      const radius = 1 + Math.floor(Math.random() * 2);
-      const template = this.vesselTemplates[radius];
-      const x = points.x[index];
-      const y = points.y[index];
-      shadowCtx.drawImage(template, x, y);
-      // const offset = y * 256 * 4 + x * 4;
-      // pixels[offset] = 255;
-      // pixels[offset + 3] += 80;
-    }
   }
 
 
@@ -499,60 +393,6 @@ class CanvasLayer {
     // }
     // ctx.fillText(text, 5, 10);
   }
-
-  /**
-   * Draws a tile using playback data
-   *
-   * @param canvas
-   * @param playbackData
-   * @param drawTrail
-   */
-  drawTileFromPlaybackData(canvas, playbackData) {
-    if (!canvas) {
-      return;
-    }
-    // const size = canvas.zoom > 6 ? 3 : 2;
-    if (!playbackData) {
-      canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
-      return;
-    }
-
-    this.drawVesselPoints(canvas.ctx, playbackData);
-    // this.drawVesselsPixels(canvas.ctx, playbackData);
-  }
-
-  drawVesselPoints(ctx, points) {
-    ctx.fillStyle = this.precomputedVesselColor;
-    ctx.beginPath();
-    for (let index = 0, len = points.latitude.length; index < len; index++) {
-      this.drawVesselPoint(
-        ctx,
-        points.x[index],
-        points.y[index],
-        points.weight[index] /* ,
-        vectorArray.sigma[index] */
-      );
-    }
-    ctx.fill();
-  }
-
-  /**
-   * Draws a single point representing a vessel
-   *
-   * @param canvas
-   * @param x
-   * @param y
-   * @param size
-   * @param weight
-   * @param sigma
-   * @param drawTrail
-   */
-  drawVesselPoint(ctx, x, y, weight /* , sigma */) {
-    const radius = Math.min(5, Math.max(1, Math.round(weight / 10)));
-    ctx.moveTo(x, y);
-    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
-  }
-
 
   /**
    * Add projected lat/long values transformed as x/y coordinates

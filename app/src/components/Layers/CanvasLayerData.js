@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PelagosClient from '../../lib/pelagosClient';
-import { API_RETURNED_KEYS, PLAYBACK_PRECISION, VESSEL_RESOLUTION, VESSEL_GRID_SIZE } from '../../constants';
+import { API_RETURNED_KEYS, PLAYBACK_PRECISION, VESSEL_MIN_RADIUS, VESSEL_MAX_RADIUS } from '../../constants';
 
 export default {
   getTilePelagosPromises(tileCoordinates, outerStartDate, outerEndDate, token) {
@@ -128,124 +128,32 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       }
 
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, outerStartDateOffset);
-
-      const gridX = Math.floor(vectorArray.x[index] / VESSEL_RESOLUTION);
-      const gridY = Math.floor(vectorArray.y[index] / VESSEL_RESOLUTION);
-      // const gridOffset = gridY * VESSEL_GRID_SIZE + gridX;
-
-      // if (!tilePlaybackDataGrid[timeIndex]) {
-      //   tilePlaybackDataGrid[timeIndex] = [];
-      // }
-      // if (!tilePlaybackDataGrid[timeIndex][gridOffset]) {
-      //   tilePlaybackDataGrid[timeIndex][gridOffset] = [];
-      // }
-      //
-      // tilePlaybackDataGrid[timeIndex][gridOffset].push({
-      //   weight: vectorArray.weight[index],
-      //   sigma: vectorArray.sigma[index],
-      //   category
-      // });
+      const x = vectorArray.x[index];
+      const y = vectorArray.y[index];
+      const weight = vectorArray.weight[index];
+      const value = Math.min(VESSEL_MAX_RADIUS, Math.max(VESSEL_MIN_RADIUS, Math.floor(weight / 2)));
 
       if (!tilePlaybackData[timeIndex]) {
-        tilePlaybackData[timeIndex] = {
-          category: [category],
-          latitude: [vectorArray.latitude[index]],
-          longitude: [vectorArray.longitude[index]],
-          weight: [vectorArray.weight[index]],
-          // x: [vectorArray.x[index]],
-          // y: [vectorArray.y[index]],
-          gridX: [gridX],
-          gridY: [gridY],
-          series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]],
-          sigma: [vectorArray.sigma[index]]
-        };
-        continue;
+        const byValue = [];
+        for (let r = VESSEL_MIN_RADIUS; r <= VESSEL_MAX_RADIUS; r++) {
+          byValue[r] = { x: [], y: [] };
+        }
+        tilePlaybackData[timeIndex] = byValue;
+        // tilePlaybackData[timeIndex] = {
+        //   x: [x],
+        //   y: [y],
+        //   value: [value]
+        // };
+        // continue;
       }
-      const timestamp = tilePlaybackData[timeIndex];
-      timestamp.category.push(category);
-      timestamp.latitude.push(vectorArray.latitude[index]);
-      timestamp.longitude.push(vectorArray.longitude[index]);
-      timestamp.weight.push(vectorArray.weight[index]);
-      // timestamp.x.push(vectorArray.x[index]);
-      // timestamp.y.push(vectorArray.y[index]);
-      timestamp.gridX.push(gridX);
-      timestamp.gridY.push(gridY);
-      timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
-      timestamp.sigma.push(vectorArray.sigma[index]);
+      const byValue = tilePlaybackData[timeIndex][value];
+      byValue.x.push(x);
+      byValue.y.push(y);
     }
 
     // console.log(tilePlaybackDataGrid)
     // return tilePlaybackDataGrid;
     // console.log(tilePlaybackData)
     return tilePlaybackData;
-  },
-
-  // stacks all timestamps into one grid array
-  // aggregate weights values
-  // compressTilePlaybackData(tilePlaybackDataGrid, startIndex, endIndex) {
-  //   const tile = [];
-  //   for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-  //     if (!tilePlaybackDataGrid[timeIndex]) {
-  //       continue;
-  //     }
-  //     for (let gridOffset = 0, length = tilePlaybackDataGrid[timeIndex].length; gridOffset < length; gridOffset++) {
-  //       const grid = tilePlaybackDataGrid[timeIndex][gridOffset];
-  //       if (!grid) {
-  //         continue;
-  //       }
-  //       if (!tile[gridOffset]) {
-  //         add stacked points at same time, same x, and same y
-  //         tile[gridOffset] = grid.map(p => p.weight).reduce((pre, cur) => pre + cur);
-  //         tile[gridOffset] = 2;
-  //       }
-  //       else {
-  //         tile[gridOffset] += grid.map(p => p.weight).reduce((pre, cur) => pre + cur);
-  //       }
-  //     }
-  //   }
-  //   // console.log(tile);
-  //   return tile;
-  // }
-
-  //
-  compressTilePlaybackData(tilePlaybackData, startIndex, endIndex) {
-    const gridOffsets = [];
-    const xs = [];
-    const ys = [];
-    const values = [];
-    let initialNum = 0;
-    let finalNum = 0;
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
-      const points = tilePlaybackData[timeIndex];
-      if (!points) continue;
-      for (let index = 0, len = points.gridX.length; index < len; index++) {
-        initialNum++;
-        const x = points.gridX[index];
-        const y = points.gridY[index];
-        const value = points.weight[index];
-        const gridOffset = x * VESSEL_GRID_SIZE + y;
-        const ptIndex = gridOffsets.indexOf(gridOffset);
-        if (ptIndex > -1) {
-          values[ptIndex] += value;
-        } else {
-          finalNum++;
-          gridOffsets.push(gridOffset);
-          xs.push(x);
-          ys.push(y);
-          values.push(value);
-        }
-      }
-    }
-
-    // console.log(initialNum, '->', finalNum);
-    return {
-      xs,
-      ys,
-      values
-    }
   }
-
-
 };
