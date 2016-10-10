@@ -46,6 +46,10 @@
 
       > li > h2 {
         padding-left: 10px;
+
+        &.more-list {
+          padding-left: 35px;
+        }
       }
     }
 

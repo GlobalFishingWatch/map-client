@@ -11,7 +11,7 @@ class InfoMap extends Component {
       <div className={InfoMapContentStyle['c-info-map-content']}>
         <h2>THE MAP</h2>
         <h3>Explore Now</h3>
-        <p>Track commercial fishing activity worldwide on the free, user-friendly, interactive Global Fishing Watch Map.
+        <p>Track commercial fishing activity worldwide on the free, user-friendly, interactive Global Fishing Watch map.
         </p>
         <p>
           <a href="map" className={ButtonStyle['c-btn-primary-arrow']}>
