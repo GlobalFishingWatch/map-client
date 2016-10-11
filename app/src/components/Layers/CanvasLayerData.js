@@ -112,6 +112,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     const tilePlaybackData = [];
     // const tilePlaybackDataGrid = [];
 
+    let max = 0;
+    let min = Infinity;
+
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
@@ -131,7 +134,11 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
       const weight = vectorArray.weight[index];
-      const value = (Math.min(VESSEL_MAX_RADIUS, Math.max(VESSEL_MIN_RADIUS, Math.floor(weight / 2)))) / VESSEL_MAX_RADIUS;
+      const value = Math.sqrt(weight) * 0.2;
+
+      if (value > max) max = value;
+      if (value < min) min = value;
+
       // const value = Math.max(0.1, Math.min(1, weight / 2));
 
       if (!tilePlaybackData[timeIndex]) {
@@ -148,6 +155,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.value.push(value);
     }
 
+    console.log(min, max)
     // console.log(tilePlaybackDataGrid)
     // return tilePlaybackDataGrid;
     // console.log(tilePlaybackData)

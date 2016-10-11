@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 no-param-reassign: 0 */
 import PIXI from 'pixi.js';
-import { TIMELINE_STEP, VESSEL_MIN_RADIUS, VESSEL_MAX_RADIUS } from '../../constants';
+import { TIMELINE_STEP, VESSEL_MAX_RADIUS } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 
@@ -32,7 +32,7 @@ class CanvasLayer {
 
     this._setFlag(filters);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this.getVesselTemplate(VESSEL_MAX_RADIUS, 0.3));
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this.getVesselTemplate(5, 0.3));
 
     if (visible) {
       this.show();
@@ -253,6 +253,7 @@ class CanvasLayer {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
       vessel.anchor.x = vessel.anchor.y = 0.5;
       vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
+      vessel.visible = false;
       // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
       sprites.push(vessel);
       stage.addChild(vessel);
@@ -360,30 +361,33 @@ class CanvasLayer {
 
     const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
     const spritesPool = canvasPlaybackData.sprites;
-    const spritesPoolLength = spritesPool.length;
+    let spritesPoolLength = spritesPool.length;
     let numSprites = 0;
 
-    let allValues = 0;
+    // let allValues = 0;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       const playbackData = tilePlaybackData[timeIndex];
 
       if (!playbackData) continue;
 
-      for (let i = 0, len = playbackData.x.length; i < len; i++) {
+      for (let index = 0, len = playbackData.x.length; index < len; index++) {
         let sprite = spritesPool[numSprites];
-        const value = playbackData.value[i];
-        allValues += value;
+        // const weight = playbackData.weight[i];
+        const value = playbackData.value[index];
+        // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
+        // allValues += value;
 
         if (sprite === undefined) {
           // TODO : should we have a cleanup mechanism as well?
           this._addSprites(1000, canvasPlaybackData.stage, spritesPool);
           sprite = spritesPool[numSprites];
+          spritesPoolLength += 1000;
         }
 
         sprite.visible = true;
-        sprite.position.x = playbackData.x[i];
-        sprite.position.y = playbackData.y[i];
+        sprite.position.x = playbackData.x[index];
+        sprite.position.y = playbackData.y[index];
         sprite.scale.x = sprite.scale.y = value;
 
         numSprites++;
@@ -405,6 +409,7 @@ class CanvasLayer {
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
       vessel.anchor.x = vessel.anchor.y = 0.5;
+      vessel.visible = false;
       sprites.push(vessel);
       stage.addChild(vessel);
     }
