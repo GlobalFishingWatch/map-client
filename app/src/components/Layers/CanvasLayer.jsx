@@ -32,12 +32,7 @@ class CanvasLayer {
 
     this._setFlag(filters);
 
-    // get circle/brush canvases that will be copied into the final canvases
-    this.vesselTextures = [];
-    for (let i = VESSEL_MIN_RADIUS; i <= VESSEL_MAX_RADIUS; i++) {
-      const template = this.getVesselTemplate(i, 1);
-      this.vesselTextures[i] = PIXI.Texture.fromCanvas(template);
-    }
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this.getVesselTemplate(VESSEL_MAX_RADIUS, 0.3));
 
     if (visible) {
       this.show();
@@ -54,10 +49,20 @@ class CanvasLayer {
     if (blurFactor === 1) {
       tplCtx.beginPath();
       tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-      tplCtx.fillStyle = 'rgba(255,255,201,.5)';
+      tplCtx.fillStyle = 'rgba(255, 255, 237, 0.5)';
       tplCtx.fill();
     } else {
-      // return a radial gradient
+ //      'rgb(48, 149, 255)',
+ // +      'rgb(136, 251, 255)',
+ // +      'rgb(255, 248, 150)',
+ // +      'rgb(255, 220, 45)'
+      const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
+      gradient.addColorStop(0, 'rgba(255,255,255,1)');
+      gradient.addColorStop(0.1, 'rgba(136, 251, 255,1)');
+      gradient.addColorStop(0.2, 'rgba(255, 248, 150,1)');
+      gradient.addColorStop(1, 'rgba(48, 149, 255, 0)');
+      tplCtx.fillStyle = gradient;
+      tplCtx.fillRect(0, 0, 2 * radius, 2 * radius);
     }
     return tplCanvas;
   }
@@ -176,9 +181,11 @@ class CanvasLayer {
   }
 
   _getPixi() {
+    PIXI.utils._saidHello = true;
     const renderer = new PIXI.WebGLRenderer(256, 256, { transparent: true });
     const stageCanvas = renderer.view;
     const stage = new PIXI.ParticleContainer(20000);
+    stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     return {
       stageCanvas,
@@ -242,15 +249,13 @@ class CanvasLayer {
     const { stageCanvas, renderer, stage } = this._getPixi(ownerDocument);
 
     const sprites = [];
-    for (let r = VESSEL_MIN_RADIUS; r <= VESSEL_MAX_RADIUS; r++) {
-      const radiusSprites = [];
-      const texture = this.vesselTextures[r];
-      for (let i = 0; i < 2000; i++) {
-        const vessel = new PIXI.Sprite(texture);
-        radiusSprites.push(vessel);
-        stage.addChild(vessel);
-      }
-      sprites[r] = radiusSprites;
+    for (let i = 0; i < 5000; i++) {
+      const vessel = new PIXI.Sprite(this.mainVesselTexture);
+      vessel.anchor.x = vessel.anchor.y = 0.5;
+      vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
+      // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
+      sprites.push(vessel);
+      stage.addChild(vessel);
     }
 
     const canvasPlaybackData = {
@@ -354,29 +359,55 @@ class CanvasLayer {
     }
 
     const tilePlaybackData = canvasPlaybackData.tilePlaybackData;
-    const sprites = canvasPlaybackData.sprites;
+    const spritesPool = canvasPlaybackData.sprites;
+    const spritesPoolLength = spritesPool.length;
+    let numSprites = 0;
 
+    let allValues = 0;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       const playbackData = tilePlaybackData[timeIndex];
 
       if (!playbackData) continue;
 
-      for (let r = VESSEL_MIN_RADIUS; r <= VESSEL_MAX_RADIUS; r++) {
-        const playbackDataForRadius = playbackData[r];
-        if (!playbackDataForRadius) continue;
+      for (let i = 0, len = playbackData.x.length; i < len; i++) {
+        let sprite = spritesPool[numSprites];
+        const value = playbackData.value[i];
+        allValues += value;
 
-        for (let i = 0, len = playbackDataForRadius.x.length; i < len; i++) {
-          const sprite = sprites[r][i];
-
-          if (sprite) {
-            sprite.position.x = playbackDataForRadius.x[i];
-            sprite.position.y = playbackDataForRadius.y[i];
-          }
+        if (sprite === undefined) {
+          // TODO : should we have a cleanup mechanism as well?
+          this._addSprites(1000, canvasPlaybackData.stage, spritesPool);
+          sprite = spritesPool[numSprites];
         }
+
+        sprite.visible = true;
+        sprite.position.x = playbackData.x[i];
+        sprite.position.y = playbackData.y[i];
+        sprite.scale.x = sprite.scale.y = value;
+
+        numSprites++;
       }
     }
+
+    // hide unused sprites
+    for (let i = numSprites; i < spritesPoolLength; i++) {
+      spritesPool[i].visible = false;
+    }
+    // console.log(numSprites, numSpriteMissed, numSpriteOver)
+    // console.log(spritesPoolLength)
+    // console.log(allValues/numSprites)
+
     canvasPlaybackData.renderer.render(canvasPlaybackData.stage);
+  }
+
+  _addSprites(num, stage, sprites) {
+    for (let i = 0; i < num; i++) {
+      const vessel = new PIXI.Sprite(this.mainVesselTexture);
+      vessel.anchor.x = vessel.anchor.y = 0.5;
+      sprites.push(vessel);
+      stage.addChild(vessel);
+    }
   }
 
 
