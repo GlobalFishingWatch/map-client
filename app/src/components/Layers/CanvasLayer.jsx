@@ -3,7 +3,7 @@ import { TIMELINE_STEP } from '../../constants';
 import _ from 'lodash';
 import CanvasLayerData from './CanvasLayerData';
 import { scaleLinear as d3ScaleLinear } from 'd3-scale';
-import StackBlur from 'stackblur-canvas';
+// import StackBlur from 'stackblur-canvas';
 
 class CanvasLayer {
   constructor(position, map, token, filters, vesselTransparency, vesselColor, visible) {
