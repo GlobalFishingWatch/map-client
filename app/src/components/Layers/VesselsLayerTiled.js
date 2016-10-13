@@ -9,6 +9,8 @@ class CanvasLayer {
     this.visible = false;
     // this.token = token;
 
+    this.canvases = [];
+
     if (visible) {
       this.show();
     }
@@ -109,18 +111,29 @@ class CanvasLayer {
     // console.log(scale)
     const world = new google.maps.Point(coord.x * 256 / scale, coord.y * 256 / scale);
 
-    const unprojected = this.map.getProjection().fromPointToLatLng(world);
-    console.log(unprojected.lat())
-    console.log(unprojected.lng())
+    const pixel = new google.maps.Point(world.x * scale, world.y * scale);
 
-    this.tileCreatedCallback({});
+    const unprojected = this.map.getProjection().fromPointToLatLng(world);
+    // console.log(unprojected.lat())
+    // console.log(unprojected.lng())
+
+
+    // canvas.index = this.canvases.length;
+    this.canvases.push(canvas);
+
+    this.tileCreatedCallback();
 
     return canvas;
   }
 
   releaseTile(canvas) {
-    this.tileReleasedCallback('lala');
-
+    const index = this.canvases.indexOf(canvas);
+    if (index === -1) {
+      console.warn('unknown tile relased');
+      return;
+    }
+    this.canvases.splice(index, 1);
+    this.tileReleasedCallback();
   }
 
 
