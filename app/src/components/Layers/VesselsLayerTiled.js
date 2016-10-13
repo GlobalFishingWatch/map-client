@@ -1,83 +1,33 @@
 /* eslint no-param-reassign: 0 */
-import CanvasLayerData from './CanvasLayerData';
+import VesselsTileData from './VesselsTileData';
 
 class CanvasLayer {
-  constructor(position, map, visible) {
+  constructor(map, token, filters, outerStartDateOffset) {
     this.map = map;
-    this.position = position;
     this.tileSize = new google.maps.Size(256, 256);
-    this.visible = false;
-    // this.token = token;
+    this.token = token;
 
-    this.canvases = [];
+    this.tiles = [];
 
-    if (visible) {
-      this.show();
-    }
-  }
-
-
-  /**
-   * Hides the layer
-   */
-  hide() {
-    if (!this.visible) {
-      return;
-    }
-    this.visible = false;
-    this.map.overlayMapTypes.removeAt(this.position);
-  }
-
-  /**
-   * Shows the layer
-   */
-  show() {
-    if (this.visible) {
-      return;
-    }
-    this.visible = true;
-    this.map.overlayMapTypes.insertAt(this.position, this);
-  }
-
-  /**
-   * Forces a redraw of the layer
-   */
-  refresh() {
-    if (this.visible) {
-      if (this.map.overlayMapTypes.getAt(this.position)) {
-        this.map.overlayMapTypes.removeAt(this.position);
-      }
-      this.map.overlayMapTypes.insertAt(this.position, this);
-    }
-  }
-
-  isVisible() {
-    return this.visible;
-  }
-
-  /**
-   * Updates the filters info
-   * Clears playback data and redraws the layer
-   *
-   * @param filters
-   */
-  updateFilters(filters) {
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
+    this.outerStartDateOffset = outerStartDateOffset;
+
     this._setFlag(filters);
-    this.resetPlaybackData();
-    this.refresh();
+
+    this.map.overlayMapTypes.insertAt(0, this);
   }
 
-  /**
-   * Creates a canvas element
-   *
-   * @param coord
-   * @param zoom
-   * @param ownerDocument
-   * @returns {*}
-   * @private
-   */
+  _setFlag(filters) {
+    if (!!filters) {
+      if (filters.flag !== '') {
+        this.flag = parseInt(filters.flag, 10);
+      } else {
+        this.flag = null;
+      }
+    }
+  }
+
   _getCanvas(ownerDocument) {
     // create canvas and reset style
     const canvas = ownerDocument.createElement('canvas');
@@ -118,25 +68,80 @@ class CanvasLayer {
     // console.log(unprojected.lng())
 
 
-    // canvas.index = this.canvases.length;
-    this.canvases.push(canvas);
+    const tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
+    const pelagosPromises = VesselsTileData.getTilePelagosPromises(tileCoordinates,
+      this.outerStartDate,
+      this.outerEndDate,
+      this.token
+    );
 
-    this.tileCreatedCallback();
+    Promise.all(pelagosPromises).then((rawTileData) => {
+      if (!rawTileData || rawTileData.length === 0) {
+        // this._showDebugInfo(ctx, 'E');
+        return;
+      }
+      const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);
+      if (cleanVectorArrays.length !== rawTileData.length) {
+        // this._showDebugInfo(ctx, 'PE');
+      }
+
+      // this._showDebugInfo(ctx, 'OK');
+      const groupedData = VesselsTileData.groupData(cleanVectorArrays);
+      const vectorArray = this._addTilePixelCoordinates(tileCoordinates, groupedData);
+      const data = VesselsTileData.getTilePlaybackData(
+        vectorArray,
+        this.outerStartDate,
+        this.outerEndDate,
+        this.outerStartDateOffset,
+        this.flag
+      );
+      canvas.data = data;
+
+      this.tileCreatedCallback();
+    });
+
+    this.tiles.push(canvas);
 
     return canvas;
   }
 
   releaseTile(canvas) {
-    const index = this.canvases.indexOf(canvas);
+    const index = this.tiles.indexOf(canvas);
     if (index === -1) {
       console.warn('unknown tile relased');
       return;
     }
-    this.canvases.splice(index, 1);
+    this.tiles.splice(index, 1);
     this.tileReleasedCallback();
   }
 
 
+  /**
+   * Add projected lat/long values transformed as x/y coordinates
+   */
+  _addTilePixelCoordinates(tileCoordinates, vectorArray) {
+    const data = vectorArray;
+    const scale = 1 << tileCoordinates.zoom;
+    const tileBaseX = tileCoordinates.x * 256;
+    const tileBaseY = tileCoordinates.y * 256;
+    const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
+
+    data.x = new Int32Array(data.latitude.length);
+    data.y = new Int32Array(data.latitude.length);
+
+    for (let index = 0, length = data.latitude.length; index < length; index++) {
+      const lat = data.latitude[index];
+      const lng = data.longitude[index];
+      let x = (lng + 180) / 360 * 256;
+      let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
+      x *= scale;
+      y *= scale;
+
+      data.x[index] = ~~((x - tileBaseX) << zoomDiff);
+      data.y[index] = ~~((y - tileBaseY) << zoomDiff);
+    }
+    return data;
+  }
 }
 
 export default CanvasLayer;
