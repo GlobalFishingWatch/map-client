@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle:0 no-param-reassign: 0 */
+/* eslint no-param-reassign: 0 */
 import PIXI from 'pixi.js';
 import { TIMELINE_STEP, VESSEL_MAX_RADIUS } from '../../constants';
 import _ from 'lodash';
