@@ -56,6 +56,13 @@ class ToolTip extends Component {
   }
 
   showToolTip() {
+    // The height of tooltip is 80px -> 40px
+    // The width of tooltip is 200px
+
+    const tooltipWidth = 200;
+    const tooltipHeight = 80;
+
+
     const bounds = this.refs.info.getBoundingClientRect();
     const left = bounds.left; // Horizontal position relative to the screen
     const height = bounds.height; // Height icon
@@ -63,13 +70,13 @@ class ToolTip extends Component {
     const offset = 10; // Distance between tooltip and icon
 
     const top = bounds.top + window.scrollY + height + offset; // Calc position top normal tooltip
-    const topRight = bounds.top + window.scrollY - 40 + (height / 2); // Calc position top tooltip with arrow at right
-    const topLeft = bounds.top + window.scrollY - 40 + (height / 2); // Calc position top tooltip with arrow at left
-    const leftP = left - 100 + (width / 2); // Calc position left normal tooltip
-    const leftRight = left - 200 - width; // Calc position left tooltip with arrow at right
+    const topRight = bounds.top + window.scrollY - (tooltipHeight / 2) + (height / 2);
+    const topLeft = bounds.top + window.scrollY - (tooltipHeight / 2) + (height / 2);
+    const leftP = left - (tooltipWidth / 2) + (width / 2); // Calc position left normal tooltip
+    const leftRight = left - tooltipWidth - width; // Calc position left tooltip with arrow at right
     const leftLeft = left + width + offset; // Calc position left tooltip with arrow at left
-    const arrowRight = left + 100 >= window.innerWidth;
-    const arrowLeft = left - 100 <= 0;
+    const arrowRight = left + (tooltipWidth / 2) >= window.innerWidth;
+    const arrowLeft = left - (tooltipWidth / 2) <= 0;
 
     // FINAL CALC
     let topTooltip = `${top}px`;
@@ -139,30 +146,28 @@ class ToolTip extends Component {
         </span>);
     }
     return (
-      <span>
-        <abbr
-          title={this.props.text}
-          className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
-          onClick={e => this.onClick(e)}
-          onMouseEnter={() => this.onMouseEnter()}
-          onMouseLeave={() => this.onMouseLeave()}
-          ref="el"
-        >
-          <span
-            className={ToolTipStyle['c-tooltip-info-title']}
+      <abbr
+        title={this.props.text}
+        className={classnames(ToolTipStyle['c-tooltip-info'], ToolTipStyle[`-${this.props.iconColor || 'gray'}`])}
+        onClick={e => this.onClick(e)}
+        onMouseEnter={() => this.onMouseEnter()}
+        onMouseLeave={() => this.onMouseLeave()}
+        ref="el"
+      >
+        <span
+          className={ToolTipStyle['c-tooltip-info-title']}
 
-          >
-            {this.props.children}
-            <img
-              ref="info"
-              src={iconInfoBlack}
-              className={ToolTipStyle['image-icon']}
-              alt="icon info"
-            />
-          </span>
-          {content}
-        </abbr>
-      </span>
+        >
+          {this.props.children}
+          <img
+            ref="info"
+            src={iconInfoBlack}
+            className={ToolTipStyle['image-icon']}
+            alt="icon info"
+          />
+        </span>
+        {content}
+      </abbr>
     );
   }
 }
