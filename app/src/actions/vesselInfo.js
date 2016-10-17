@@ -1,4 +1,9 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK } from '../actions';
+import {
+  SET_VESSEL_DETAILS,
+  SET_VESSEL_TRACK,
+  SET_VESSEL_VISIBILITY,
+  SET_VESSEL_POSITION
+} from '../actions';
 import _ from 'lodash';
 import PelagosClient from '../lib/pelagosClient';
 
@@ -123,6 +128,29 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
           type: SET_VESSEL_TRACK,
           payload: null
         });
+      }
+    });
+  };
+}
+
+export function toggleVisibility(visibility) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_VESSEL_VISIBILITY,
+      payload: visibility
+    });
+  };
+}
+
+export function setVesselPosition(elem) {
+  const position = elem.getBoundingClientRect();
+
+  return (dispatch) => {
+    dispatch({
+      type: SET_VESSEL_POSITION,
+      payload: {
+        top: position.top,
+        left: position.left
       }
     });
   };

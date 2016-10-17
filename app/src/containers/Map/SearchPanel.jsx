@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 import SearchPanel from '../../components/Map/SearchPanel';
 import { updateFilters } from '../../actions/filters';
 import { getSearchResults } from '../../actions/search';
-import { getVesselTrack } from '../../actions/vesselInfo';
+import { getVesselTrack, toggleVisibility, setVesselPosition } from '../../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../../actions';
 
 const mapStateToProps = (state) => ({
-  search: state.search
+  search: state.search,
+  vesselVisibility: state.vesselInfo.vesselVisibility
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -16,12 +17,19 @@ const mapDispatchToProps = (dispatch) => ({
   getSearchResults: (searchTerm) => {
     dispatch(getSearchResults(searchTerm));
   },
-  drawVessel: (vesselDetails) => {
+  drawVessel: (elem, vesselDetails) => {
     dispatch({
       type: RESET_VESSEL_DETAILS,
       payload: vesselDetails
     });
     dispatch(getVesselTrack(vesselDetails.seriesgroup));
+    dispatch(setVesselPosition(elem));
+  },
+  toggleVisibility: (visibility) => {
+    dispatch(toggleVisibility(visibility));
+  },
+  setVesselPosition: (elem) => {
+    dispatch(setVesselPosition(elem));
   }
 });
 

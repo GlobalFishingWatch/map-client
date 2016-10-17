@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import FiltersPanel from '../../containers/Map/FilterPanel';
-import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
-import { Accordion, AccordionItem } from 'react-sanfona';
+import classnames from 'classnames';
+
+import SearchResult from './SearchResult';
+import iconsStyles from '../../../styles/icons.scss';
+import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
 
 class SearchPanel extends Component {
 
@@ -9,66 +11,85 @@ class SearchPanel extends Component {
     super(props);
 
     this.state = {
-      visibleAdvancedSearch: false
+      isEmpty: true,
+      search: this.props.search
     };
+  }
 
-    this.toggleVisibleAdvancedSearch = this.toggleVisibleAdvancedSearch.bind(this);
-    this.onSearchInputChange = this.onSearchInputChange.bind(this);
+  componentWillReceiveProps(nextProps) {
+    if (!!nextProps.search) {
+      Object.assign(this.state.search, nextProps.search);
+      this.setState(this.state);
+    }
   }
 
   onSearchInputChange(event) {
-    this.props.getSearchResults(event.target.value);
+    this.keyword = event.target.value;
+
+    Object.assign(this.state, {
+      isEmpty: !this.keyword.length > 0,
+      firsTime: false
+    });
+
+    this.setState(this.state);
+
+    if (this.keyword.length < 3) return;
+
+    this.props.getSearchResults(this.keyword);
   }
 
-  toggleVisibleAdvancedSearch() {
-    this.setState({
-      visibleAdvancedSearch: !this.state.visibleAdvancedSearch
-    });
+  cleanResults() {
+    this.state.search.entries = [];
+    this.setState(this.state);
   }
 
   render() {
-    let advancedSearchAccordion = (
-      <Accordion
-        allowMultiple={false}
-        activeItems={6}
-        onChange={this.toggleVisibleAdvancedSearch}
-      >
-        <AccordionItem
-          title={this.state.visibleAdvancedSearch ? 'hide advanced search' : 'advanced search'}
-          key="advancedsearch"
-          titleClassName={controlPanelStyle.text_search}
-        >
-          <div>
-            <FiltersPanel />
-            <span className={controlPanelStyle.button_advanced_search}>SEARCH</span>
-          </div>
-        </AccordionItem>
-      </Accordion>
-    );
+    const searchResults = [];
 
-    let searchResults = [];
-    if (this.props.search && !this.state.visibleAdvancedSearch) {
-      for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
+    if (this.state.search) {
+      for (let i = 0, length = this.state.search.entries.length; i < length; i++) {
         searchResults.push(
-          <li
+          <SearchResult
+            className={searchPanelStyles.result}
             key={i}
-            onClick={() => this.props.drawVessel(this.props.search.entries[i])}
-          >
-            {this.props.search.entries[i].vesselname},<span>{this.props.search.entries[i].mmsi}</span>
-          </li>
+            keyword={this.keyword}
+            drawVessel={this.props.drawVessel}
+            vesselInfo={this.state.search.entries[i]}
+            setVesselPosition={this.props.setVesselPosition}
+            toggleVisibility={this.props.toggleVisibility}
+            vesselVisibility={this.props.vesselVisibility}
+          />
         );
       }
     }
 
     return (
-      <div>
+      <div className={searchPanelStyles['c-search-panel']}>
         <input
-          onChange={this.onSearchInputChange}
-          className={controlPanelStyle.input_accordion}
-          placeholder="Type your search query"
+          id="search-vessels"
+          type="text"
+          onChange={(e) => this.onSearchInputChange(e)}
+          className={searchPanelStyles['search-accordion']}
+          placeholder="Type your search criteria"
         />
-        {advancedSearchAccordion}
-        <ul className={controlPanelStyle.list_results}>
+      {this.state.isEmpty &&
+        <svg
+          className={classnames(iconsStyles.icon, 'icon-search')}
+        >
+          <use xlinkHref="#icon-search"></use>
+        </svg>}
+
+      {!this.state.isEmpty &&
+        <svg
+          className={classnames(iconsStyles.icon, 'icon-filter')}
+          onClick={() => this.cleanResults()}
+        >
+          <use xlinkHref="#icon-filter"></use>
+        </svg>}
+        <ul
+          className={classnames(searchPanelStyles['result-list'],
+          searchResults.length ? searchPanelStyles['-open'] : '')}
+        >
           {searchResults}
         </ul>
       </div>);
@@ -76,9 +97,12 @@ class SearchPanel extends Component {
 }
 
 SearchPanel.propTypes = {
-  search: React.PropTypes.object,
+  drawVessel: React.PropTypes.func,
   getSearchResults: React.PropTypes.func,
-  drawVessel: React.PropTypes.func
+  search: React.PropTypes.object,
+  setVesselPosition: React.PropTypes.func,
+  toggleVisibility: React.PropTypes.func,
+  vesselVisibility: React.PropTypes.bool
 };
 
 
