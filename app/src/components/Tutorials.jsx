@@ -24,7 +24,7 @@ class Tutorials extends Component {
               <iframe
                 width="560"
                 height="315"
-                src="https://www.youtube.com/embed/AhhFJXwHs10"
+                src="https://www.youtube.com/embed/JrnZbx12FpQ"
                 frameBorder="0"
                 allowFullScreen
               >
