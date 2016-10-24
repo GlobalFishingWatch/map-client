@@ -97,10 +97,10 @@ class CanvasLayer {
       );
       canvas.data = data;
 
+      this.tiles.push(canvas);
       this.tileCreatedCallback();
     });
 
-    this.tiles.push(canvas);
 
     return canvas;
   }
@@ -113,6 +113,36 @@ class CanvasLayer {
     }
     this.tiles.splice(index, 1);
     this.tileReleasedCallback();
+  }
+
+  render(startIndex, endIndex) {
+    this.tiles.forEach(tile => {
+      this._dumpTileVessels(startIndex, endIndex, tile.ctx, tile.data);
+    });
+  }
+
+  _dumpTileVessels(startIndex, endIndex, ctx, data) {
+    if (!data) {
+      return;
+    }
+    ctx.clearRect(0, 0, 256, 256);
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255, 0, 255, 1)';
+
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+      const frame = data[timeIndex];
+
+      if (!frame) continue;
+
+      for (let index = 0, len = frame.x.length; index < len; index++) {
+        const x = frame.x[index];
+        const y = frame.y[index];
+        const value = 5 * frame.value[index];
+        ctx.moveTo(x, y);
+        ctx.arc(x, y, value, 0, 2 * Math.PI, false);
+      }
+    }
+    ctx.stroke();
   }
 
 

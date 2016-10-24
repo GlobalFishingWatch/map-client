@@ -32,7 +32,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
     this.container.appendChild(this.canvas);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.3));
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 1));
 
     this.spritesPool = [];
     this._addSprites(10000);
@@ -102,10 +102,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   draw() {}
 
-
-
   render(tiles, startIndex, endIndex) {
-    // console.log(startIndex, endIndex)
     if (!this.stage) return;
     this.debugTexts.forEach(text => {
       this.stage.removeChild(text);
@@ -125,7 +122,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 
-    //console.log(this.numSprites)
+    // console.log(this.numSprites)
 
     this.renderer.render(this.stage);
   }
@@ -141,24 +138,24 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
-          let sprite = this.spritesPool[this.numSprites];
-          // const weight = playbackData.weight[i];
-          const value = frame.value[index];
-          // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
-          // allValues += value;
+        let sprite = this.spritesPool[this.numSprites];
+        // const weight = playbackData.weight[i];
+        const value = frame.value[index];
+        // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
+        // allValues += value;
 
-          if (sprite === undefined) {
-            // TODO : should we have a cleanup mechanism as well?
-            this._addSprites(1000);
-            sprite = this.spritesPool[this.numSprites];
-          }
+        if (sprite === undefined) {
+          // TODO : should we have a cleanup mechanism as well?
+          this._addSprites(1000);
+          sprite = this.spritesPool[this.numSprites];
+        }
 
-          sprite.visible = true;
-          sprite.position.x = offsetX + frame.x[index];
-          sprite.position.y = offsetY + frame.y[index];
-          sprite.scale.x = sprite.scale.y = value;
+        sprite.visible = true;
+        sprite.position.x = offsetX + frame.x[index];
+        sprite.position.y = offsetY + frame.y[index];
+        sprite.scale.x = sprite.scale.y = value;
 
-          this.numSprites++;
+        this.numSprites++;
       }
     }
 
