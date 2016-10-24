@@ -27,7 +27,8 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.canvas.style.position = 'absolute';
     this.canvas.style.border = '1px solid green';
 
-    this.stage = new PIXI.ParticleContainer(50000);
+    this.stage = new PIXI.Container();
+    // this.stage = new PIXI.ParticleContainer(50000, { scale: true, position: true });
     // this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
@@ -35,7 +36,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 1));
 
     this.spritesPool = [];
-    this._addSprites(10000);
+    this._addSprites(200000);
 
     this.debugTexts = [];
   }
@@ -104,20 +105,21 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   render(tiles, startIndex, endIndex) {
     if (!this.stage) return;
-    this.debugTexts.forEach(text => {
-      this.stage.removeChild(text);
-    });
-    this.debugTexts = [];
+    // this.debugTexts.forEach(text => {
+    //   this.stage.removeChild(text);
+    // });
+    // this.debugTexts = [];
 
     this.numSprites = 0;
-
+    console.log('render')
     tiles.forEach(tile => {
+      // console.log('tile')
       const bounds = tile.getBoundingClientRect();
-      const text = new PIXI.Text('This is a pixi text', { fontFamily: 'Arial', fontSize: 10, fill: 0xff1010 });
-      text.position.x = bounds.left;
-      text.position.y = bounds.top;
-      this.stage.addChild(text);
-      this.debugTexts.push(text);
+      // const text = new PIXI.Text('This is a pixi text', { fontFamily: 'Arial', fontSize: 14, fill: 0xff1010 });
+      // text.position.x = bounds.left;
+      // text.position.y = bounds.top;
+      // this.stage.addChild(text);
+      // this.debugTexts.push(text);
 
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
@@ -138,22 +140,22 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
-        let sprite = this.spritesPool[this.numSprites];
+        const sprite = this.spritesPool[this.numSprites];
         // const weight = playbackData.weight[i];
         const value = frame.value[index];
         // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
         // allValues += value;
 
-        if (sprite === undefined) {
-          // TODO : should we have a cleanup mechanism as well?
-          this._addSprites(1000);
-          sprite = this.spritesPool[this.numSprites];
-        }
+        // if (sprite === undefined) {
+        //   // TODO : should we have a cleanup mechanism as well?
+        //   this._addSprites(1000);
+        //   sprite = this.spritesPool[this.numSprites];
+        // }
 
         sprite.visible = true;
         sprite.position.x = offsetX + frame.x[index];
         sprite.position.y = offsetY + frame.y[index];
-        sprite.scale.x = sprite.scale.y = value;
+        sprite.scale.set(value);
 
         this.numSprites++;
       }

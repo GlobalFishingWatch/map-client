@@ -155,6 +155,8 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.value.push(value);
     }
 
+
+
     // console.log(min, max)
     // console.log(tilePlaybackDataGrid)
     // return tilePlaybackDataGrid;

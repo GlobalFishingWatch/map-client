@@ -116,6 +116,7 @@ class CanvasLayer {
   }
 
   render(startIndex, endIndex) {
+    return
     this.tiles.forEach(tile => {
       this._dumpTileVessels(startIndex, endIndex, tile.ctx, tile.data);
     });

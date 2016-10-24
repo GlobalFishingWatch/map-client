@@ -49,7 +49,6 @@ export default class VesselsLayer {
   }
 
   render() {
-    // use this.currentInnerStartIndex...
     this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
     this.tiled.render(this.currentInnerStartIndex, this.currentInnerEndIndex);
   }
