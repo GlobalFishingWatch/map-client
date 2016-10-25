@@ -55,15 +55,19 @@ class CanvasLayer {
 
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
+    canvas.index = this.tiles.length;
+    this._showDebugInfo(canvas, 'S');
+
+    this.tiles.push(canvas);
     // console.log(coord);
 
-    const scale = 1 << this.map.getZoom();
+    // const scale = 1 << this.map.getZoom();
     // console.log(scale)
-    const world = new google.maps.Point(coord.x * 256 / scale, coord.y * 256 / scale);
+    // const world = new google.maps.Point(coord.x * 256 / scale, coord.y * 256 / scale);
 
-    const pixel = new google.maps.Point(world.x * scale, world.y * scale);
+    // const pixel = new google.maps.Point(world.x * scale, world.y * scale);
 
-    const unprojected = this.map.getProjection().fromPointToLatLng(world);
+    // const unprojected = this.map.getProjection().fromPointToLatLng(world);
     // console.log(unprojected.lat())
     // console.log(unprojected.lng())
 
@@ -77,15 +81,16 @@ class CanvasLayer {
 
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
-        // this._showDebugInfo(ctx, 'E');
+        this._showDebugInfo(canvas, 'E');
+        this.releaseTile(canvas);
         return;
       }
       const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
-        // this._showDebugInfo(ctx, 'PE');
+        this._showDebugInfo(canvas, 'PE');
       }
 
-      // this._showDebugInfo(ctx, 'OK');
+      // this._showDebugInfo(canvas, 'OK');
       const groupedData = VesselsTileData.groupData(cleanVectorArrays);
       const vectorArray = this._addTilePixelCoordinates(tileCoordinates, groupedData);
       const data = VesselsTileData.getTilePlaybackData(
@@ -97,10 +102,8 @@ class CanvasLayer {
       );
       canvas.data = data;
 
-      this.tiles.push(canvas);
       this.tileCreatedCallback();
     });
-
 
     return canvas;
   }
@@ -111,8 +114,18 @@ class CanvasLayer {
       console.warn('unknown tile relased');
       return;
     }
+    console.log('released tile #', index);
     this.tiles.splice(index, 1);
     this.tileReleasedCallback();
+  }
+
+  _showDebugInfo(canvas, text) {
+    const ctx = canvas.ctx;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 250, 20);
+    ctx.font = '10px Verdana bold';
+    ctx.fillStyle = 'black';
+    ctx.fillText(text + ' ' + canvas.index, 5, 10);
   }
 
   render(startIndex, endIndex) {

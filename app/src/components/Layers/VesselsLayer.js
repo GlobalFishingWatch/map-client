@@ -63,7 +63,7 @@ export default class VesselsLayer {
       // return -1;
     }
 
-    console.log('???', startIndex, endIndex)
+    // console.log('???', startIndex, endIndex)
 
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
