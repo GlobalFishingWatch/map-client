@@ -27,16 +27,16 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.canvas.style.position = 'absolute';
     this.canvas.style.border = '1px solid green';
 
-    this.stage = new PIXI.Container();
-    // this.stage = new PIXI.ParticleContainer(50000, { scale: true, position: true });
-    // this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
+    // this.stage = new PIXI.Container();
+    this.stage = new PIXI.ParticleContainer(120000, { scale: true, position: true });
+    this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 1));
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.5));
 
     this.spritesPool = [];
-    this._addSprites(200000);
+    this._addSprites(120000);
 
     this.debugTexts = [];
   }
@@ -111,7 +111,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     // this.debugTexts = [];
 
     this.numSprites = 0;
-    console.log('render')
     tiles.forEach(tile => {
       // console.log('tile')
       const bounds = tile.getBoundingClientRect();
@@ -121,6 +120,9 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       // this.stage.addChild(text);
       // this.debugTexts.push(text);
 
+      if (bounds.left === 0 && bounds.top === 0) {
+        console.log('tile at 0,0')
+      }
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 
@@ -154,7 +156,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
         sprite.visible = true;
         sprite.position.x = offsetX + frame.x[index];
-        sprite.position.y = offsetY + frame.y[index];
+        sprite.position.y = offsetY+ frame.y[index];
         sprite.scale.set(value);
 
         this.numSprites++;
@@ -162,9 +164,9 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
 
     // hide unused sprites
-    for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
-      this.spritesPool[i].visible = false;
-    }
+    // for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
+    //   this.spritesPool[i].visible = false;
+    // }
   }
 
   _addSprites(num) {
