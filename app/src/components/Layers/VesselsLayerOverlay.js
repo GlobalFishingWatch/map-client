@@ -156,7 +156,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
         sprite.visible = true;
         sprite.position.x = offsetX + frame.x[index];
-        sprite.position.y = offsetY+ frame.y[index];
+        sprite.position.y = offsetY + frame.y[index];
         sprite.scale.set(value);
 
         this.numSprites++;

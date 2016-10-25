@@ -5,7 +5,7 @@ import VesselsTileData from './VesselsTileData';
 
 export default class VesselsLayer {
 
-  constructor(map, token, filters) {
+  constructor(map, token, filters, debug = false) {
     this.map = map;
 
     const innerStartDate = filters.timelineInnerExtent[0];
@@ -21,12 +21,13 @@ export default class VesselsLayer {
         this.outerStartDateOffset
     );
 
-    this.overlay = new VesselsLayerOverlay(map);
+    this.overlay = new VesselsLayerOverlay(map, debug);
     this.tiled = new VesselsLayerTiled(
       this.map,
       token,
       filters,
-      this.outerStartDateOffset
+      this.outerStartDateOffset,
+      debug
     );
     this.tiled.tileCreatedCallback = this._onTileCreated.bind(this);
     this.tiled.tileReleasedCallback = this._onTileReleased.bind(this);

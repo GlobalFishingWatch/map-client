@@ -2,7 +2,7 @@
 import VesselsTileData from './VesselsTileData';
 
 class CanvasLayer {
-  constructor(map, token, filters, outerStartDateOffset) {
+  constructor(map, token, filters, outerStartDateOffset, debug = false) {
     this.map = map;
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
@@ -12,6 +12,8 @@ class CanvasLayer {
     this.outerStartDate = filters.startDate;
     this.outerEndDate = filters.endDate;
     this.outerStartDateOffset = outerStartDateOffset;
+
+    this.debug = debug;
 
     this._setFlag(filters);
 
@@ -31,7 +33,7 @@ class CanvasLayer {
   _getCanvas(ownerDocument) {
     // create canvas and reset style
     const canvas = ownerDocument.createElement('canvas');
-    canvas.style.border = '1px solid red';
+    if (this.debug) canvas.style.border = '1px solid red';
     canvas.style.margin = '0';
     canvas.style.padding = '0';
 
@@ -56,7 +58,7 @@ class CanvasLayer {
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
     canvas.index = this.tiles.length;
-    this._showDebugInfo(canvas, 'S');
+    if (this.debug) this._showDebugInfo(canvas, 'S');
 
     this.tiles.push(canvas);
     // console.log(coord);
@@ -81,13 +83,13 @@ class CanvasLayer {
 
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
-        this._showDebugInfo(canvas, 'E');
+        if (this.debug) this._showDebugInfo(canvas, 'E');
         this.releaseTile(canvas);
         return;
       }
       const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
-        this._showDebugInfo(canvas, 'PE');
+        if (this.debug) this._showDebugInfo(canvas, 'PE');
       }
 
       // this._showDebugInfo(canvas, 'OK');
