@@ -1,4 +1,7 @@
 import PIXI from 'pixi.js';
+import { TIMELINE_MAX_STEPS } from '../../constants';
+
+const MAX_SPRITES_PER_STEP = 1200;
 
 export default class VesselsOverlay extends google.maps.OverlayView {
 
@@ -28,7 +31,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.canvas.style.border = '1px solid green';
 
     // this.stage = new PIXI.Container();
-    this.stage = new PIXI.ParticleContainer(120000, { scale: true, position: true });
+    this.stage = new PIXI.ParticleContainer(TIMELINE_MAX_STEPS * MAX_SPRITES_PER_STEP, { scale: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
@@ -36,7 +39,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.5));
 
     this.spritesPool = [];
-    this._addSprites(120000);
+    this.timeIndexDelta = 0;
 
     this.debugTexts = [];
   }
@@ -110,6 +113,13 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     // });
     // this.debugTexts = [];
 
+    const newTimeIndexDelta = endIndex - startIndex;
+
+    if (this.timeIndexDelta !== newTimeIndexDelta) {
+      this._resizeSpritesPool(newTimeIndexDelta, this.timeIndexDelta);
+      this.timeIndexDelta = newTimeIndexDelta;
+    }
+
     this.numSprites = 0;
     tiles.forEach(tile => {
       // console.log('tile')
@@ -121,7 +131,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       // this.debugTexts.push(text);
 
       if (bounds.left === 0 && bounds.top === 0) {
-        console.log('tile at 0,0')
+        console.log('tile at 0,0');
       }
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
@@ -148,13 +158,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
         // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
         // allValues += value;
 
-        // if (sprite === undefined) {
-        //   // TODO : should we have a cleanup mechanism as well?
-        //   this._addSprites(1000);
-        //   sprite = this.spritesPool[this.numSprites];
-        // }
-
-        sprite.visible = true;
         sprite.position.x = offsetX + frame.x[index];
         sprite.position.y = offsetY + frame.y[index];
         sprite.scale.set(value);
@@ -170,14 +173,46 @@ export default class VesselsOverlay extends google.maps.OverlayView {
   }
 
   _addSprites(num) {
+    console.log('add' + num);
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
       vessel.anchor.x = vessel.anchor.y = 0.5;
-      vessel.visible = false;
+      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
+      vessel.x = -100;
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
       // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
       this.spritesPool.push(vessel);
       this.stage.addChild(vessel);
     }
+  }
+
+  _resizeSpritesPool(newTimeIndexDelta, prevTimeIndexDelta) {
+    console.log('resizing sprites pool')
+    const totalPoolSize = this.spritesPool.length;
+    const delta = newTimeIndexDelta - prevTimeIndexDelta;
+    const deltaSprites = Math.abs(delta) * MAX_SPRITES_PER_STEP;
+
+    if (delta > 0) {
+      const finalPoolSize = newTimeIndexDelta * MAX_SPRITES_PER_STEP;
+      const toAdd = finalPoolSize - totalPoolSize;
+      if (toAdd > 0) this._addSprites(toAdd);
+    } else {
+      const startRemovingAt = totalPoolSize - deltaSprites;
+      for (let i = startRemovingAt; i < totalPoolSize; i++) {
+        // this is actually insanely costly - keep this in RAM and be done with it
+        // this.stage.removeChild(this.spritesPool[i]);
+      }
+      // this.spritesPool.splice(- deltaSprites);
+    }
+
+    // disable all sprites
+    const newTotalPoolSize = this.spritesPool.length;
+
+    for (let i = 0; i < newTotalPoolSize; i++) {
+      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
+      this.spritesPool[i].x = -100;
+    }
+
+    return delta;
   }
 }
