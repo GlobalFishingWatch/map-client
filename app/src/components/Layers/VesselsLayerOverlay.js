@@ -1,7 +1,7 @@
 import PIXI from 'pixi.js';
 import { TIMELINE_MAX_STEPS } from '../../constants';
 
-const MAX_SPRITES_PER_STEP = 1200;
+const MAX_SPRITES_PER_STEP = 1500;
 
 export default class VesselsOverlay extends google.maps.OverlayView {
 
@@ -36,7 +36,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
     this.container.appendChild(this.canvas);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.5));
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.15));
 
     this.spritesPool = [];
     this.timeIndexDelta = 0;

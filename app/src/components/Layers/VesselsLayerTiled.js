@@ -79,11 +79,14 @@ class CanvasLayer {
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
         if (this.debug) this._showDebugInfo(canvas, 'E');
+        console.warn('empty dataset');
         this.releaseTile(canvas);
-        return;
+        return canvas;
       }
       const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
+        console.warn('partially empty dataset');
+
         if (this.debug) this._showDebugInfo(canvas, 'PE');
       }
 
