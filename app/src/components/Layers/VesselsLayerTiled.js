@@ -58,21 +58,16 @@ class CanvasLayer {
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
     canvas.index = this.tiles.length;
+    canvas.tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
+
+    // case where queried coors are not showable (beyond poles):
+    // just send back the DOM but don't try to fetch any data
+    if (canvas.tileCoordinates === null) {
+      return canvas;
+    }
 
     this.tiles.push(canvas);
 
-    // const scale = 1 << this.map.getZoom();
-    // console.log(scale)
-    // const world = new google.maps.Point(coord.x * 256 / scale, coord.y * 256 / scale);
-
-    // const pixel = new google.maps.Point(world.x * scale, world.y * scale);
-
-    // const unprojected = this.map.getProjection().fromPointToLatLng(world);
-    // console.log(unprojected.lat())
-    // console.log(unprojected.lng())
-
-
-    canvas.tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
     const pelagosPromises = VesselsTileData.getTilePelagosPromises(
       canvas.tileCoordinates,
       this.outerStartDate,

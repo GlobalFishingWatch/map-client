@@ -26,16 +26,19 @@ export default {
   getTileCoordinates(coord, zoom) {
     const tileRange = 1 << zoom;
 
-    // modulo: cycle through values of tileRange so x and y are never outside of [-tileRange, tileRange]
-    let y = coord.y % tileRange;
+    const y = coord.y;
+
+    // too close to the poles, GTFO
+    if (y < 0 || y >= tileRange) {
+      return null;
+    }
+
+    // modulo: cycle through values of tileRange so x is never outside of [-tileRange, tileRange]
     let x = coord.x % tileRange;
 
     // cycle through values of tileRange when crossing the antimeridian from east to west
     if (x < 0) {
       x += tileRange;
-    }
-    if (y < 0) {
-      y += tileRange;
     }
 
     return { x, y, zoom };
