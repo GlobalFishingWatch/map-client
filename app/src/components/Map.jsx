@@ -118,7 +118,6 @@ class Map extends Component {
 
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      // this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
       this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
     }
 

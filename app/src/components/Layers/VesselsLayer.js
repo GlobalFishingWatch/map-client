@@ -59,9 +59,7 @@ export default class VesselsLayer {
     const endIndex = VesselsTileData.getOffsetedTimeAtPrecision(end, this.outerStartDateOffset);
 
     if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
-      // TODO: check only startIndex to avoid bypassing when current is 10-20 and next is 10-21 (rounding issue)
-      // and force drawing when innerDelta changed
-      // return -1;
+      return;
     }
 
     // console.log('???', startIndex, endIndex)
@@ -72,8 +70,6 @@ export default class VesselsLayer {
     // // console.log(startIndex)
     // this.render(startIndex, endIndex);
     this.render();
-
-    return startIndex;
   }
 
   // drawTimeRange(start, end) {

@@ -187,10 +187,17 @@ export default class VesselsOverlay extends google.maps.OverlayView {
   }
 
   _resizeSpritesPool(newTimeIndexDelta, prevTimeIndexDelta) {
-    console.log('resizing sprites pool')
     const totalPoolSize = this.spritesPool.length;
     const delta = newTimeIndexDelta - prevTimeIndexDelta;
     const deltaSprites = Math.abs(delta) * MAX_SPRITES_PER_STEP;
+
+    if (Math.abs(delta) === 1) {
+      // because of the way dates are rounded, the range length can vary of one day even if the user didnt change range
+      // in that case skip resizing sprites pool, avoiding doing this in the middle of on animation
+      // console.log(delta, 'skip resizing sprites pool')
+      return;
+    }
+    // console.log(delta, 'resizing sprites pool')
 
     if (delta > 0) {
       const finalPoolSize = newTimeIndexDelta * MAX_SPRITES_PER_STEP;
