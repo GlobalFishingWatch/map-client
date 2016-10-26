@@ -23,7 +23,7 @@ let currentInnerPxExtent = [0, 1];
 let currentOuterPxExtent = [0, width];
 let currentHandleIsWest;
 let dragging;
-let currentTimestamp;
+let lastTimestamp;
 
 let brush;
 let outerBrushHandleLeft;
@@ -338,7 +338,7 @@ class Timebar extends Component {
 
     // get delta
     let deltaOffset = (currentHandleIsWest) ? outerExtentPx[0] : outerExtentPx[1] - width;
-    deltaOffset *= deltaOffset * deltaTick * 0.000001;
+    deltaOffset *= deltaOffset * deltaTick * 0.003;
 
     if (currentHandleIsWest) {
       extent[0] = -deltaOffset;
@@ -354,10 +354,11 @@ class Timebar extends Component {
   }
 
   onTick(timestamp) {
-    if (!currentTimestamp) {
-      currentTimestamp = timestamp;
+    if (!lastTimestamp) {
+      lastTimestamp = timestamp;
     }
-    const deltaTick = timestamp - currentTimestamp;
+    const deltaTick = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
 
     if (!this.state.paused) {
       this.playStep(deltaTick);
@@ -380,7 +381,7 @@ class Timebar extends Component {
 
   getPlayStep(outerExtent) {
     const outerExtentDelta = outerExtent[1].getTime() - outerExtent[0].getTime();
-    return outerExtentDelta / 5000000;
+    return outerExtentDelta / 50000;
   }
 
   togglePause(pause) {
