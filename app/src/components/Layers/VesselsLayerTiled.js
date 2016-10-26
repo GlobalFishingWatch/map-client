@@ -58,10 +58,8 @@ class CanvasLayer {
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
     canvas.index = this.tiles.length;
-    if (this.debug) this._showDebugInfo(canvas, 'S');
 
     this.tiles.push(canvas);
-    // console.log(coord);
 
     // const scale = 1 << this.map.getZoom();
     // console.log(scale)
@@ -74,12 +72,14 @@ class CanvasLayer {
     // console.log(unprojected.lng())
 
 
-    const tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
-    const pelagosPromises = VesselsTileData.getTilePelagosPromises(tileCoordinates,
+    canvas.tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
+    const pelagosPromises = VesselsTileData.getTilePelagosPromises(
+      canvas.tileCoordinates,
       this.outerStartDate,
       this.outerEndDate,
       this.token
     );
+    if (this.debug) this._showDebugInfo(canvas, 'S');
 
     Promise.all(pelagosPromises).then((rawTileData) => {
       if (!rawTileData || rawTileData.length === 0) {
@@ -94,7 +94,7 @@ class CanvasLayer {
 
       // this._showDebugInfo(canvas, 'OK');
       const groupedData = VesselsTileData.groupData(cleanVectorArrays);
-      const vectorArray = this._addTilePixelCoordinates(tileCoordinates, groupedData);
+      const vectorArray = this._addTilePixelCoordinates(canvas.tileCoordinates, groupedData);
       const data = VesselsTileData.getTilePlaybackData(
         vectorArray,
         this.outerStartDate,
@@ -122,12 +122,13 @@ class CanvasLayer {
   }
 
   _showDebugInfo(canvas, text) {
+    const coords = canvas.tileCoordinates
     const ctx = canvas.ctx;
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, 250, 20);
     ctx.font = '10px Verdana bold';
     ctx.fillStyle = 'black';
-    ctx.fillText(text + ' ' + canvas.index, 5, 10);
+    ctx.fillText(`${text} ${canvas.index} ${coords.zoom}/${coords.x}/${coords.y}`, 5, 10);
   }
 
   render(startIndex, endIndex) {
@@ -163,7 +164,7 @@ class CanvasLayer {
 
 
   /**
-   * Add projected lat/long values transformed as x/y coordinates
+   * Add projected lat/long values transformed as tile-relative x/y coordinates
    */
   _addTilePixelCoordinates(tileCoordinates, vectorArray) {
     const data = vectorArray;

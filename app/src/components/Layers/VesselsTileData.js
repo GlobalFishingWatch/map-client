@@ -24,15 +24,20 @@ export default {
    * @returns {*}
    */
   getTileCoordinates(coord, zoom) {
-    const y = coord.y;
-    const x = coord.x;
     const tileRange = 1 << zoom;
-    if (y < 0 || y >= tileRange) {
-      return null;
+
+    // modulo: cycle through values of tileRange so x and y are never outside of [-tileRange, tileRange]
+    let y = coord.y % tileRange;
+    let x = coord.x % tileRange;
+
+    // cycle through values of tileRange when crossing the antimeridian from east to west
+    if (x < 0) {
+      x += tileRange;
     }
-    if (x < 0 || x >= tileRange) {
-      return null;
+    if (y < 0) {
+      y += tileRange;
     }
+
     return { x, y, zoom };
   },
 
