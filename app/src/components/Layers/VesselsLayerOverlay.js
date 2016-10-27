@@ -1,4 +1,4 @@
-import PIXI from 'pixi.js';
+import 'pixi.js';
 import { TIMELINE_MAX_STEPS } from '../../constants';
 
 const MAX_SPRITES_PER_STEP = 1500;
