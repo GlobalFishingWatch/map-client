@@ -180,8 +180,8 @@ class ContactUsForm extends Component {
         <div className={contactStyle['emails-text']}>
           For media or press inquiries, please contact:
           <ul>
-            <li>Oceana: Dustin Cranor, <a href="mailto:dcranor@oceana.org">dcranor@oceana.org</a>, 954.348.1314</li>
-            <li>SkyTruth: Jenny Allen, <a href="mailto:jenny@skytruth.org">jenny@skytruth.org</a>, 304.582.2031</li>
+            <li>Oceana: Megan Jordan, <a href="mailto:mjordan@oceana.org">mjordan@oceana.org</a>, 202.868.4061</li>
+            <li>SkyTruth: Kimbra Cutlip, <a href="mailto:kimbra@skytruth.org">kimbra@skytruth.org</a>, 443.871.1632</li>
             <li>Google: Mara Harris, <a href="mailto:press@google.com">press@google.com</a></li>
           </ul>
         </div>
