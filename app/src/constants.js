@@ -10,6 +10,8 @@ export const TIMELINE_DEFAULT_END_DATE = new Date(Date.UTC(2016, 7, 1)).getTime(
 export const TIMELINE_TOTAL_DATE_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(Date.UTC(2016, 7, 1))];
 export const TIMELINE_INNER_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(Date.UTC(2015, 0, 30))];
 
+export const TIMELINE_MAX_STEPS = 190; // six months
+
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 
@@ -29,6 +31,12 @@ export const API_RETURNED_KEYS = [
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
+
+// draw vessel point each VESSEL_RESOLUTION pixels. Use powers of two.
+export const VESSEL_RESOLUTION = 1;
+export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
+export const VESSEL_MIN_RADIUS = 1;
+export const VESSEL_MAX_RADIUS = 4;
 
 export const FLAGS = {
   0: 'AD',

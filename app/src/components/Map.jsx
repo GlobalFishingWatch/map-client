@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
-import CanvasLayer from './Layers/CanvasLayer';
+// import CanvasLayer from './Layers/CanvasLayer';
+import VesselsLayer from './Layers/VesselsLayer';
 import createTrackLayer from './Layers/TrackLayer';
 import ControlPanel from '../containers/Map/ControlPanel';
 import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
@@ -70,6 +71,9 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
+    console.log('disabled for now')
+    return;
+
     const clickLat = ~~event.latLng.lat();
     const clickLong = ~~event.latLng.lng();
 
@@ -108,13 +112,13 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
-    if (!this.state.overlay) {
+    if (!this.vesselsLayer) {
       return;
     }
 
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      this.state.overlay.drawTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
+      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
     }
 
     if (
@@ -122,7 +126,8 @@ class Map extends Component {
       || this.props.filters.endDate !== nextProps.filters.endDate
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
-      this.state.overlay.updateFilters(nextProps.filters);
+      // TODO
+      // this.state.overlay.updateFilters(nextProps.filters);
       this.updateTrackLayer();
     }
   }
@@ -189,14 +194,19 @@ class Map extends Component {
    * @param position
    */
   addVesselLayer(layerSettings, position) {
-    const canvasLayer = new CanvasLayer(
-      position,
+    // const canvasLayer = new CanvasLayer(
+    //   position,
+    //   this.map,
+    //   this.props.token,
+    //   this.props.filters,
+    //   this.props.map.vesselTransparency,
+    //   this.props.map.vesselColor,
+    //   layerSettings.visible);
+    this.vesselsLayer = new VesselsLayer(
       this.map,
       this.props.token,
-      this.props.filters,
-      this.props.map.vesselTransparency,
-      this.props.map.vesselColor,
-      layerSettings.visible);
+      this.props.filters
+    );
     // Create track layer
     const Overlay = createTrackLayer(google);
     const trackLayer = new Overlay(
@@ -204,8 +214,9 @@ class Map extends Component {
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ overlay: canvasLayer, trackLayer });
-    this.state.addedLayers[layerSettings.title] = canvasLayer;
+    this.setState({ /*overlay:  canvasLayer, */ trackLayer });
+    // this.state.addedLayers[layerSettings.title] = canvasLayer;
+    this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
 
   /**
@@ -263,7 +274,8 @@ class Map extends Component {
         return;
       }
       if (layerSettings.type === 'ClusterAnimation') {
-        this.state.overlay.show();
+        // TODO
+        // this.state.overlay.show();
       } else {
         layers[layerSettings.title].show();
       }
@@ -272,7 +284,8 @@ class Map extends Component {
         return;
       }
       if (layerSettings.type === 'ClusterAnimation') {
-        this.state.overlay.hide();
+        // TODO
+        // this.state.overlay.hide();
       } else {
         layers[layerSettings.title].hide();
       }
@@ -350,15 +363,18 @@ class Map extends Component {
     if (!this.state.overlay) {
       return;
     }
-    // this.state.overlay.vesselTransparency = nextProps.map.vesselTransparency;
-    this.state.overlay.setVesselTransparency(nextProps.map.vesselTransparency);
 
-    if (this.state.running !== 'play') {
-      this.state.overlay.refresh();
-    }
+    // TODO
+    // this.state.overlay.setVesselTransparency(nextProps.map.vesselTransparency);
+
+    // TODO?
+    // if (this.state.running !== 'play') {
+    //   this.state.overlay.refresh();
+    // }
   }
 
   /**
+   * TODO
    * Handles vessel color changes
    *
    * @param nextProps

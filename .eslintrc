@@ -37,6 +37,7 @@
     }],
     "comma-dangle": ["error", "never"],
     "max-len": ["error", 120],
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "no-underscore-dangle": 0
   }
 }

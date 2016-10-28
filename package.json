@@ -73,7 +73,8 @@
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7",
     "webpack": "^1.13.0",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^1.0.0",
+    "pixi.js": "^4.1.0"
   },
   "devDependencies": {
     "eslint": "^3.2.0",
