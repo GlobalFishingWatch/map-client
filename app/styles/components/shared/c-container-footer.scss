@@ -10,7 +10,7 @@
     position: absolute;
     width: 100%;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       bottom: 38px;
     }
   }
@@ -23,7 +23,7 @@
     justify-content: space-between;
     padding: 0 20px;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       display: none;
     }
 
@@ -40,29 +40,42 @@
     background-color: rgba($color-9, .5);
     padding: 0 4px;
 
-    @media screen and (min-width: 900px) {
+    @media screen and (min-width: 1135px) {
       display: none;
     }
 
     ul {
-      align-items: center;
-      display: flex;
-      height: 20px;
-      justify-content: space-between;
       list-style: none;
+      margin: 0;
+      padding: 0;
 
-      div {
+      @media screen and (min-width: 560px) {
+        align-items: center;
         display: flex;
+        height: 20px;
+        justify-content: space-between;
+      }
 
-        li {
-          color: $color-4;
-          display: inline-block;
-          font-size: $font-size-tiny;
+      li {
+        color: $color-4;
+        display: inline;
+        font-size: $font-size-tiny;
 
-          a {
-            color: $color-4;
-            font-size: $font-size-tiny;
+        &:first-of-type {
+
+          &::after {
+            content: ' ';
+            display: inline;
+
+            @media screen and (min-width: 560px) {
+              display: none;
+            }
           }
+        }
+
+        a {
+          color: $color-4;
+          font-size: $font-size-tiny;
         }
       }
     }

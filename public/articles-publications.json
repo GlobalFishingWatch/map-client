@@ -1,6 +1,60 @@
 {
   "articles": [
     {
+      "title": "How Google is helping to crack down on illegal fishing – from space",
+      "link": "https://www.washingtonpost.com/news/energy-environment/wp/2016/09/15/from-space-a-new-effort-to-crack-down-on-illegal-fishing-across-the-globe/?utm_term=.8d8034194795",
+      "author": "Brady Dennis, The Washington Post",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "How digital tracking of rogue fishing can safeguard vast ocean reserves",
+      "link": "http://dotearth.blogs.nytimes.com/2016/09/15/how-digital-tracking-of-rogue-fishing-can-safeguard-vast-ocean-reserves/?_r=1",
+      "author": "Andrew C. Revkin, The New York Times",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "New public website offers detailed view of industrial fishing",
+      "link": "http://www.ipsnews.net/2016/09/new-public-website-offers-detailed-view-of-industrial-fishing/",
+      "author": "Christopher Pala, Inter Press Service",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "Activists open an online window onto the global fishing fleet",
+      "link": "http://www.scientificamerican.com/article/activists-open-an-online-window-onto-the-global-fishing-fleet/",
+      "author": "W. Wayt Gibbs, Scientific American",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "DiCaprio unveils free technology to spy on global fishing",
+      "link": "https://www.yahoo.com/tech/dicaprio-unveils-free-technology-spy-global-fishing-092316706.html",
+      "author": "Kerry Sheridan, AFP",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "Leonardo DiCaprio helps Oceana fight illegal fishing",
+      "link": "http://www.usatoday.com/story/news/nation-now/2016/09/14/oceana-fishing-leonardo-dicaprio/90393522/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatodaycomnation-topstories",
+      "author": "Jim Waymer, USA Today",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "Now you can watch every large fishing boat in the ocean (and a few illegal ones, too)",
+      "link": "http://www.vox.com/2016/9/16/12940708/global-fishing-watch",
+      "author": "Brad Plumer, Vox",
+      "date": "September 16, 2016"
+    },
+    {
+      "title": "Tracking the locations of the world’s fishermen can help save the oceans",
+      "link": "https://thinkprogress.org/data-and-overfishing-8637638e47a0#.g23glvoea",
+      "author": "Lauren C. Williams, Think Progress",
+      "date": "September 15, 2016"
+    },
+    {
+      "title": "Leonardo DiCaprio and Google unveil free technology that lets anyone spy on global illegal fishing from space",
+      "link": "http://www.dailymail.co.uk/sciencetech/article-3791593/DiCaprio-unveils-free-technology-spy-global-fishing.html",
+      "author": "Richard Gray, Daily Mail",
+      "date": "September 15, 2016"
+    },
+    {
       "title": "Oceana, SkyTruth and Google Launch Global Fishing Watch, First Free, Online Tool to Reveal Commercial Fishing Activity Worldwide",
       "link": "http://usa.oceana.org/press-releases/oceana-skytruth-and-google-launch-global-fishing-watch-first-free-online-tool-reveal",
       "date": "September 15, 2016"

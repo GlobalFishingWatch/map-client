@@ -7,9 +7,9 @@ import logooceana from '../../../assets/logos/oceana_logo_white.png';
 import logosky from '../../../assets/logos/skytruth_white.png';
 import logogoogle from '../../../assets/logos/google_logo.png';
 import Footer from './Footer';
-// import SupportModal from '../../components/Map/SupportModal';
 import FormSupport from '../../containers/Map/SupportForm';
 import Modal from '../Shared/Modal';
+// import SupportModal from '../../components/Map/SupportModal';
 
 class FooterMini extends Component {
 
@@ -56,29 +56,28 @@ class FooterMini extends Component {
 
     return (
       <div>
-          {supportModal}
+        {supportModal}
         <div className={ContainerFooterStyle['c-container-footer']}>
           {expandedFooter}
-        {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
-          <ul>
-            <div>
-              <li><a href="https://carto.com/" target="_blank">CartoDB</a></li>
-            </div>
-            <div>
+          {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
+            <ul>
+              <li><a href="https://carto.com/" target="_blank">Carto</a></li>
               <li>
-                <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+                <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
+                  <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs:{' '}
+                  <a href="http://mpatlas.org/">mpatlas.org</a>
+                </span>
               </li>
-            </div>
-          </ul>
-        </div>}
+            </ul>
+          </div>}
           <div
             className={ContainerFooterStyle['contain-responsive-buttons']}
             style={this.state.footerExpanded ? {
               marginTop: '20px'
             } : null}
           >
-            <span onClick={() => this.toggleFooter()} >{toggleLabel}</span>
-            <span onClick={() => this.showSupportModal()} >Support</span>
+            <span onClick={() => this.toggleFooter()}>{toggleLabel}</span>
+            <span onClick={() => this.showSupportModal()}>Support</span>
           </div>
         </div>
         <footer className={styles['c-footer-mini']}>
@@ -92,7 +91,10 @@ class FooterMini extends Component {
             <li className={styles.attributions}><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
             <li className={styles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             <li className={styles.attributions}>
-              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics</span>
+              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
+                <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs:{' '}
+                <a href="http://mpatlas.org/">mpatlas.org</a>
+              </span>
             </li>
             <li className={styles.attributions}><Link to="/terms-of-use">Terms of use</Link></li>
             <li className={styles.attributions}><a onClick={() => this.showSupportModal()}>Support</a></li>

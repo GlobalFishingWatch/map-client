@@ -10,10 +10,10 @@
   }
 
   .name-list {
-    display: block;
-    margin-bottom: 20px;
     color: $color-9;
+    display: block;
     font-family: $font-family-2;
+    margin-bottom: 20px;
 
     li {
       display: block;
@@ -104,16 +104,16 @@
       @media #{$mq-tablet} {
         display: inline-block;
         margin-bottom: 0;
-        padding-right: 22px;
+        padding: 0 20px;
         width: calc(100% / 3);
-
-        &:last-child {
-          padding-right: 0;
-        }
       }
 
       p {
         font-size: $font-size-small;
+      }
+
+      li {
+        padding: 0;
       }
     }
   }
