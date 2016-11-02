@@ -1,7 +1,7 @@
 import 'pixi.js';
 import { TIMELINE_MAX_STEPS } from '../../constants';
 
-const MAX_SPRITES_PER_STEP = 1500;
+const MAX_SPRITES_PER_STEP = 2000;
 
 export default class VesselsOverlay extends google.maps.OverlayView {
 
