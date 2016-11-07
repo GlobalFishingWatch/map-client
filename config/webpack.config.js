@@ -4,6 +4,7 @@ process.env.BROWSERSLIST_CONFIG = 'browserslist';
 
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJSON = require('../package.json');
@@ -71,13 +72,17 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!postcss-loader!sass?sourceMap')
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        loader: 'style-loader!css-loader!postcss-loader'
       }
     ]
+  },
+
+  postcss() {
+    return [autoprefixer];
   },
 
   resolve: {
