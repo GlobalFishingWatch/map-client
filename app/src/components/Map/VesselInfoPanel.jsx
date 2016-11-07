@@ -28,8 +28,7 @@ class VesselInfoPanel extends Component {
       }
     }
 
-    Object.assign(this.state, nextProps);
-    this.setState(this.state);
+    this.setState(nextProps);
   }
 
   setVars() {

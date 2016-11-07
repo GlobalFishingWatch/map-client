@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 import SearchResult from './SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
@@ -18,20 +19,17 @@ class SearchPanel extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!!nextProps.search) {
-      Object.assign(this.state.search, nextProps.search);
-      this.setState(this.state);
+      this.setState({ search: nextProps.search });
     }
   }
 
   onSearchInputChange(event) {
     this.keyword = event.target.value;
 
-    Object.assign(this.state, {
+    this.setState({
       isEmpty: !this.keyword.length > 0,
       firsTime: false
     });
-
-    this.setState(this.state);
 
     if (this.keyword.length < 3) return;
 
@@ -45,6 +43,7 @@ class SearchPanel extends Component {
 
   render() {
     const searchResults = [];
+    const throttleSearchEvent = _.throttle(this.onSearchInputChange, 50);
 
     if (this.state.search) {
       for (let i = 0, length = this.state.search.entries.length; i < length; i++) {
@@ -68,7 +67,7 @@ class SearchPanel extends Component {
         <input
           id="search-vessels"
           type="text"
-          onChange={(e) => this.onSearchInputChange(e)}
+          onChange={(e) => throttleSearchEvent.apply(this, [e])}
           className={searchPanelStyles['search-accordion']}
           placeholder="Type your search criteria"
         />

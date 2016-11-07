@@ -65,6 +65,8 @@ $color-24: rgba(3, 32, 68, 0); // used for gradient at homepage
 $color-25: rgba(255, 255, 255, .7); // image attribution
 $color-26: #eee;
 $color-27: #c7c7c7;
+$hsla-begin: hsla(0, 0%, 0%, .1);
+$hsla-end: hsla(0, 0%, 100%, .1);
 
 
 // Colors to review
@@ -86,7 +88,3 @@ $mq-mobile-small: 'screen and (min-width: #{$breakpoint-mobile-small})';
 $mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
-
-// miscellaneous
-$hsla-begin: hsla(0, 0%, 0%, .1);
-$hsla-end: hsla(0, 0%, 100%, .1);

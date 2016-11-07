@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import hightlightWord from '../../util/highlightWord';
+// import hightlightWord from '../../util/highlightWord';
 import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
 
 class SearchResult extends Component {
@@ -12,11 +12,18 @@ class SearchResult extends Component {
     this.props.toggleVisibility(!this.props.vesselVisibility);
   }
 
+  hightlightWord(strReplace, str, styleClass) {
+    const regX = new RegExp(strReplace, 'i');
+    const hightlight = `<span class="${styleClass}">${strReplace.toUpperCase()}</span>`;
+
+    return str.replace(regX, hightlight);
+  }
+
   render() {
     const vesselName = this.props.vesselInfo.vesselname;
     const MMSI = this.props.vesselInfo.mmsi;
-    const highlightName = hightlightWord(this.props.keyword, vesselName, searchPanelStyles.highlight);
-    const highlightMMSI = hightlightWord(this.props.keyword, MMSI, searchPanelStyles.highlight);
+    const highlightName = this.hightlightWord(this.props.keyword, vesselName, searchPanelStyles.highlight);
+    const highlightMMSI = this.hightlightWord(this.props.keyword, MMSI, searchPanelStyles.highlight);
 
     return (
       <li

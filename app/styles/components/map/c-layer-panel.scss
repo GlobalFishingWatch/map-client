@@ -16,8 +16,7 @@
       }
 
       .switcher {
-        -webkit-appearance: none;
-        -webkit-transition: .15s;
+        appearance: none;
         background: linear-gradient(to bottom, $hsla-begin, $hsla-end), linear-gradient(to right, $color-27 50%, currentColor 50%) 0 0, 5px 0;
         background-size: 100% 100%, 200% 100%;
         border-radius: 25px;
@@ -27,10 +26,11 @@
         outline: 0;
         padding: 0 10px 0 0;
         position: relative;
+        transition: .15s;
         width: 20px;
 
         &::after {
-          background: $color-26 -webkit-linear-gradient($hsla-end, $hsla-begin);
+          background: $color-26 linear-gradient($hsla-end, $hsla-begin);
           border-radius: 25px;
           content: '';
           display: block;
