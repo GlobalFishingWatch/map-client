@@ -429,14 +429,10 @@ class Map extends Component {
       </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
-
         <div className={mapCss['zoom-controls']}>
           <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>S</span>
           <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
-        </div>
-        <div className={mapCss['timebar-container']}>
-          <Timebar />
         </div>
         <ControlPanel />
         <VesselInfoPanel />
@@ -465,6 +461,9 @@ class Map extends Component {
             />
           }
         />
+      </div>
+      <div className={mapCss['timebar-container']}>
+        <Timebar />
       </div>
       <FooterMini />
     </div>);
