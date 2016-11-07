@@ -1,0 +1,27 @@
+@import '../../settings';
+@import '../../mixins';
+
+.c-selector {
+  background-color: transparent;
+  border: solid 1px $color-14;
+  padding: 10px 30px 10px 10px;
+  position: relative;
+
+  > select {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    color: $color-4;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-normal;
+    width: 100%;
+  }
+
+  &::after {
+    @include arrow(8px, 2px, $color-4, 'down');
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 4px);
+    transform: rotate(45deg) translate(0, -50%);
+  }
+}
