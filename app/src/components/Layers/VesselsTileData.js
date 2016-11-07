@@ -153,7 +153,10 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
         tilePlaybackData[timeIndex] = {
           x: [x],
           y: [y],
-          value: [value]
+          value: [value],
+          category: [vectorArray.category[index]],
+          series: [vectorArray.series[index]],
+          seriesgroup: [vectorArray.seriesgroup[index]]
         };
         continue;
       }
@@ -161,9 +164,10 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.x.push(x);
       timestamp.y.push(y);
       timestamp.value.push(value);
+      timestamp.category.push(vectorArray.category[index]);
+      timestamp.series.push(vectorArray.series[index]);
+      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
     }
-
-
 
     // console.log(min, max)
     // console.log(tilePlaybackDataGrid)

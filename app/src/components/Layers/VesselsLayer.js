@@ -1,6 +1,7 @@
 import VesselsLayerOverlay from './VesselsLayerOverlay';
 import VesselsLayerTiled from './VesselsLayerTiled';
 import VesselsTileData from './VesselsTileData';
+import { VESSEL_CLICK_TOLERANCE_PX } from '../../constants';
 
 
 export default class VesselsLayer {
@@ -70,6 +71,35 @@ export default class VesselsLayer {
     // // console.log(startIndex)
     // this.render(startIndex, endIndex);
     this.render();
+  }
+
+  selectVesselsAt(x, y) {
+    const tile = this.tiled.getTileAt(x, y);
+    if (tile === null || tile.data === null) return [];
+
+    const offsetedX = x - tile.box.left;
+    const offsetedY = y - tile.box.top;
+
+    const vessels = [];
+
+    for (let f = this.currentInnerStartIndex; f < this.currentInnerEndIndex; f++) {
+      const frame = tile.data[f];
+      if (frame === undefined) continue;
+      for (let i = 0; i < frame.x.length; i++) {
+        const vx = frame.x[i];
+        const vy = frame.y[i];
+        if (vx >= offsetedX - VESSEL_CLICK_TOLERANCE_PX && vx <= offsetedX + VESSEL_CLICK_TOLERANCE_PX &&
+            vy >= offsetedY - VESSEL_CLICK_TOLERANCE_PX && vy <= offsetedY + VESSEL_CLICK_TOLERANCE_PX) {
+          vessels.push({
+            value: frame.value[i],
+            category: frame.category[i],
+            series: frame.category[i],
+            seriesgroup: frame.category[i]
+          });
+        }
+      }
+    }
+    return vessels;
   }
 
   // drawTimeRange(start, end) {

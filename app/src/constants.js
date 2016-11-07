@@ -37,6 +37,7 @@ export const VESSEL_RESOLUTION = 1;
 export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
 export const VESSEL_MIN_RADIUS = 1;
 export const VESSEL_MAX_RADIUS = 4;
+export const VESSEL_CLICK_TOLERANCE_PX = 2;
 
 export const FLAGS = {
   0: 'AD',

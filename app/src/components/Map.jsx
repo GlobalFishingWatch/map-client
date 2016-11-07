@@ -71,15 +71,9 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-    console.log('disabled for now')
-    return;
-
-    const clickLat = ~~event.latLng.lat();
-    const clickLong = ~~event.latLng.lng();
-
-    const vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
-
-    this.props.setCurrentVessel(vesselInfo);
+    const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
+    // just get the 1st one for now
+    this.props.setCurrentVessel(vessels[0]);
   }
 
   componentWillReceiveProps(nextProps) {
