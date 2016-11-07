@@ -330,6 +330,7 @@ class Map extends Component {
     if (!this.map) {
       this.map = this.refs.map.props.map;
       const workpaceId = getWorkspaceURL();
+      if (!workpaceId) return;
       this.props.getWorkspace(workpaceId);
     }
   }

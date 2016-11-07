@@ -1,5 +1,5 @@
 export default () => {
-  let workspace = '';
+  let workspace = null;
   let url = window.location.search;
   url = url.slice(1);
 
