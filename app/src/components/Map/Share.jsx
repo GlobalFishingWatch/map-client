@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
+
+import facebookIcon from '../../../assets/icons/facebook.svg';
+import twitterIcon from '../../../assets/icons/twitter.svg';
+
 import styles from '../../../styles/components/map/c-share.scss';
+
 
 class Share extends Component {
 
@@ -51,6 +57,18 @@ class Share extends Component {
     return `${location.origin}${location.pathname}?workspace=${this.props.workspaceId}`;
   }
 
+  // openFacebook(e) {
+  //   console.log(e);
+  // }
+  //
+  // openGooglePlus(e) {
+  //   console.log(e);
+  // }
+  //
+  // openTwitter(e) {
+  //   console.log(e);
+  // }
+
   render() {
     if (this.props.error) {
       return (
@@ -94,6 +112,33 @@ class Share extends Component {
             {this.state.copied ? 'Copied!' : 'Copy'}
           </button>
         </form>
+        <div className={styles.separator}>
+          <span className={styles['word-separator']}>or</span>
+        </div>
+        <div className={styles['social-links']}>
+          <button
+            className={classnames(styles['social-button'], styles['-facebook'])}
+            onClick={e => this.openFacebook(e)}
+          >
+            <img src={facebookIcon} alt="Global Fishing Watch Facebook" />
+            <span className={styles['button-text']}>facebook</span>
+          </button>
+          <button
+            className={classnames(styles['social-button'], styles['-googleplus'])}
+            onClick={e => this.openGooglePlus(e)}
+          >
+            <img src={facebookIcon} alt="Global Fishing Watch Google+" />
+            <span className={styles['button-text']}>Google +</span>
+          </button>
+          <button
+            className={classnames(styles['social-button'], styles['-twitter'])}
+            onClick={e => this.openTwitter(e)}
+          >
+            <img src={twitterIcon} alt="Global Fishing Watch Twitter" />
+            <span className={styles['button-text']}>Twitter</span>
+          </button>
+        </div>
+
         {this.state.error && copyError}
       </div>
     );

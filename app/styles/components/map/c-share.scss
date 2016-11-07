@@ -22,8 +22,9 @@
 
   .url-input {
     background-color: transparent;
-    border: 1px solid $color-5;
-    color: rgba($color-4, .5);
+    border: 1px solid $color-14;
+    color: rgba($color-4, .3);
+    font-size: $font-size-small;
     height: 40px;
     padding: 0 90px 0 20px;
   }
@@ -40,6 +41,88 @@
     text-transform: uppercase;
     top: 0;
     width: 70px;
+  }
+
+  .separator {
+    margin: 45px 0 40px;
+
+    > .word-separator {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+
+      &::before,
+      &::after {
+        // border: 0;
+        border-top: 1px solid $color-14;
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        // transform: translate(0, -50%);
+        width: calc(50% - 34px);
+      }
+
+      &::before {
+        left: 0;
+      }
+
+      &::after {
+        right: 0;
+      }
+    }
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    > .social-button {
+      align-items: center;
+      border: 0;
+      cursor: pointer;
+      display: flex;
+      flex-basis: calc(33.33% - 18px);
+      justify-content: center;
+      padding: 24px 0;
+
+      > .button-text {
+        color: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-small;
+        font-weight: $font-weight-bold;
+        margin: 0 0 0 5px;
+        text-transform: uppercase;
+      }
+
+      &.-facebook {
+        background-color: $color-28;
+
+        > img {
+          height: 22px;
+          width: 10px;
+        }
+      }
+
+      &.-googleplus {
+        background-color: $color-29;
+
+        > img {
+          height: 17px;
+          width: 21px;
+        }
+      }
+
+      &.-twitter {
+        background-color: $color-30;
+
+        > img {
+          height: 15px;
+          width: 18px;
+        }
+      }
+    }
   }
 
   .copy-error {
