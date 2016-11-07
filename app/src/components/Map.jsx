@@ -37,6 +37,7 @@ class Map extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   /**
@@ -74,6 +75,22 @@ class Map extends Component {
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.onWindowResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResize);
+  }
+
+  onWindowResize() {
+    if (!this.vesselsLayer) {
+      return;
+    }
+    const box = this.refs.mapContainer.getBoundingClientRect();
+    this.vesselsLayer.updateViewportSize(box.width, box.height);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -196,10 +213,15 @@ class Map extends Component {
     //   this.props.map.vesselTransparency,
     //   this.props.map.vesselColor,
     //   layerSettings.visible);
+
+    const box = this.refs.mapContainer.getBoundingClientRect();
+
     this.vesselsLayer = new VesselsLayer(
       this.map,
       this.props.token,
-      this.props.filters
+      this.props.filters,
+      box.width,
+      box.height
     );
     // Create track layer
     const Overlay = createTrackLayer(google);
@@ -423,14 +445,10 @@ class Map extends Component {
       </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
-
         <div className={mapCss['zoom-controls']}>
           <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>S</span>
           <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
-        </div>
-        <div className={mapCss['timebar-container']}>
-          <Timebar />
         </div>
         <ControlPanel />
         <VesselInfoPanel />
@@ -459,6 +477,9 @@ class Map extends Component {
             />
           }
         />
+      </div>
+      <div className={mapCss['timebar-container']}>
+        <Timebar />
       </div>
       <FooterMini />
     </div>);
