@@ -1,12 +1,17 @@
+/* global PIXI */
+
 import 'pixi.js';
 import { TIMELINE_MAX_STEPS } from '../../constants';
 
-const MAX_SPRITES_PER_STEP = 2000;
+const MAX_SPRITES_FACTOR = 0.002;
 
 export default class VesselsOverlay extends google.maps.OverlayView {
 
-  constructor(map) {
+  constructor(map, viewportWidth, viewportHeight) {
     super();
+
+    this.viewportWidth = viewportWidth;
+    this.viewportHeight = viewportHeight;
 
     this.map = map;
     this.setMap(map);
@@ -31,7 +36,8 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.canvas.style.border = '1px solid green';
 
     // this.stage = new PIXI.Container();
-    this.stage = new PIXI.ParticleContainer(TIMELINE_MAX_STEPS * MAX_SPRITES_PER_STEP, { scale: true, position: true });
+    const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
+    this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
@@ -57,10 +63,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       tplCtx.fillStyle = 'rgba(255, 255, 237, 0.5)';
       tplCtx.fill();
     } else {
- //      'rgb(48, 149, 255)',
- // +      'rgb(136, 251, 255)',
- // +      'rgb(255, 248, 150)',
- // +      'rgb(255, 220, 45)'
       const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
       gradient.addColorStop(0, 'rgba(255,255,255,1)');
       gradient.addColorStop(0.1, 'rgba(136, 251, 255,1)');
@@ -87,6 +89,12 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.renderer.resize(rect.width, rect.height);
     this.canvas.style.width = `${rect.width}px`;
     this.canvas.style.height = `${rect.height}px`;
+  }
+
+  updateViewportSize(viewportWidth, viewportHeight) {
+    this.viewportWidth = viewportWidth;
+    this.viewportHeight = viewportHeight;
+    this._resizeSpritesPool();
   }
 
   _getCanvasRect() {
@@ -116,8 +124,13 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     const newTimeIndexDelta = endIndex - startIndex;
 
     if (this.timeIndexDelta !== newTimeIndexDelta) {
-      this._resizeSpritesPool(newTimeIndexDelta, this.timeIndexDelta);
-      this.timeIndexDelta = newTimeIndexDelta;
+      const delta = newTimeIndexDelta - this.timeIndexDelta;
+      // because of the way dates are rounded, the range length can vary of one day even if the user didnt change range
+      // in that case skip resizing sprites pool, avoiding doing this in the middle of on animation
+      if (Math.abs(delta) !== 1) {
+        this.timeIndexDelta = newTimeIndexDelta;
+        this._resizeSpritesPool();
+      }
     }
 
     this.numSprites = 0;
@@ -131,7 +144,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       // this.debugTexts.push(text);
 
       if (bounds.left === 0 && bounds.top === 0) {
-        console.log('tile at 0,0');
+        console.warn('tile at 0,0');
       }
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
@@ -172,8 +185,34 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     // }
   }
 
+  _resizeSpritesPool() {
+    // compute final pool size
+    const finalPoolSize = this.timeIndexDelta * this._getSpritesPerStep();
+    const currentPoolSize = this.spritesPool.length;
+    const poolDelta = finalPoolSize - currentPoolSize;
+
+    if (poolDelta > 0) {
+      this._addSprites(poolDelta);
+    } else {
+      const startRemovingAt = currentPoolSize - poolDelta;
+      for (let i = startRemovingAt; i < currentPoolSize; i++) {
+        // this is actually insanely costly - keep this in RAM and be done with it ?
+        // this.stage.removeChild(this.spritesPool[i]);
+      }
+      // this.spritesPool.splice(- deltaSprites);
+    }
+
+    // disable all sprites and let render take it from there
+    const newTotalPoolSize = this.spritesPool.length;
+
+    for (let i = 0; i < newTotalPoolSize; i++) {
+      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
+      this.spritesPool[i].x = -100;
+    }
+  }
+
   _addSprites(num) {
-    console.log('add' + num);
+    // console.log('add sprites: ', num);
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
       vessel.anchor.x = vessel.anchor.y = 0.5;
@@ -186,40 +225,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
   }
 
-  _resizeSpritesPool(newTimeIndexDelta, prevTimeIndexDelta) {
-    const totalPoolSize = this.spritesPool.length;
-    const delta = newTimeIndexDelta - prevTimeIndexDelta;
-    const deltaSprites = Math.abs(delta) * MAX_SPRITES_PER_STEP;
-
-    if (Math.abs(delta) === 1) {
-      // because of the way dates are rounded, the range length can vary of one day even if the user didnt change range
-      // in that case skip resizing sprites pool, avoiding doing this in the middle of on animation
-      // console.log(delta, 'skip resizing sprites pool')
-      return;
-    }
-    // console.log(delta, 'resizing sprites pool')
-
-    if (delta > 0) {
-      const finalPoolSize = newTimeIndexDelta * MAX_SPRITES_PER_STEP;
-      const toAdd = finalPoolSize - totalPoolSize;
-      if (toAdd > 0) this._addSprites(toAdd);
-    } else {
-      const startRemovingAt = totalPoolSize - deltaSprites;
-      for (let i = startRemovingAt; i < totalPoolSize; i++) {
-        // this is actually insanely costly - keep this in RAM and be done with it
-        // this.stage.removeChild(this.spritesPool[i]);
-      }
-      // this.spritesPool.splice(- deltaSprites);
-    }
-
-    // disable all sprites
-    const newTotalPoolSize = this.spritesPool.length;
-
-    for (let i = 0; i < newTotalPoolSize; i++) {
-      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.spritesPool[i].x = -100;
-    }
-
-    return delta;
+  _getSpritesPerStep() {
+    return Math.round(this.viewportWidth * this.viewportHeight * MAX_SPRITES_FACTOR);
   }
 }

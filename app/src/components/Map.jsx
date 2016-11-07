@@ -37,6 +37,7 @@ class Map extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   /**
@@ -80,6 +81,22 @@ class Map extends Component {
     const vesselInfo = this.state.overlay.getVesselAtLocation(clickLat, clickLong);
 
     this.props.setCurrentVessel(vesselInfo);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.onWindowResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResize);
+  }
+
+  onWindowResize() {
+    if (!this.vesselsLayer) {
+      return;
+    }
+    const box = this.refs.mapContainer.getBoundingClientRect();
+    this.vesselsLayer.updateViewportSize(box.width, box.height);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -202,10 +219,15 @@ class Map extends Component {
     //   this.props.map.vesselTransparency,
     //   this.props.map.vesselColor,
     //   layerSettings.visible);
+
+    const box = this.refs.mapContainer.getBoundingClientRect();
+
     this.vesselsLayer = new VesselsLayer(
       this.map,
       this.props.token,
-      this.props.filters
+      this.props.filters,
+      box.width,
+      box.height
     );
     // Create track layer
     const Overlay = createTrackLayer(google);

@@ -5,7 +5,7 @@ import VesselsTileData from './VesselsTileData';
 
 export default class VesselsLayer {
 
-  constructor(map, token, filters, debug = false) {
+  constructor(map, token, filters, viewportWidth, viewportHeight, debug = false) {
     this.map = map;
 
     const innerStartDate = filters.timelineInnerExtent[0];
@@ -21,7 +21,7 @@ export default class VesselsLayer {
         this.outerStartDateOffset
     );
 
-    this.overlay = new VesselsLayerOverlay(map, debug);
+    this.overlay = new VesselsLayerOverlay(map, viewportWidth, viewportHeight, debug);
     this.tiled = new VesselsLayerTiled(
       this.map,
       token,
@@ -70,6 +70,10 @@ export default class VesselsLayer {
     // // console.log(startIndex)
     // this.render(startIndex, endIndex);
     this.render();
+  }
+
+  updateViewportSize(width, height) {
+    this.overlay.updateViewportSize(width, height);
   }
 
   // drawTimeRange(start, end) {
