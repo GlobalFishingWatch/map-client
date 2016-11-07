@@ -16,6 +16,8 @@ import NoLogin from '../containers/Map/NoLogin';
 import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
 
+import getWorkspaceURL from '../util/workspaceURL';
+
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
 class Map extends Component {
@@ -327,7 +329,8 @@ class Map extends Component {
   onMapIdle() {
     if (!this.map) {
       this.map = this.refs.map.props.map;
-      this.props.getWorkspace();
+      const workpaceId = getWorkspaceURL();
+      this.props.getWorkspace(workpaceId);
     }
   }
 
