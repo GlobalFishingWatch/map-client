@@ -187,6 +187,18 @@ class CanvasLayer {
     }
     return data;
   }
+
+  getTileAt(x, y) {
+    for (let i = 0; i < this.tiles.length; i++) {
+      const tile = this.tiles[i];
+      const tileBox = tile.getBoundingClientRect();
+      if (y > tileBox.top && y < tileBox.top + 256 && x > tileBox.left && x < tileBox.left + 256) {
+        tile.box = tileBox;
+        return tile;
+      }
+    }
+    return null;
+  }
 }
 
 export default CanvasLayer;
