@@ -5,7 +5,7 @@ import { login } from '../actions/user';
 const mapStateToProps = (state, { location }) => ({
   token: state.user.token,
   canRedirect: location.query && !!location.query.redirect_login,
-  location
+  workspaceId: location.query && location.query.workspace
 });
 
 const mapDispatchToProps = (dispatch) => ({
