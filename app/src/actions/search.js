@@ -12,7 +12,7 @@ export function getSearchResults(searchTerm) {
       });
     }
 
-    fetch(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/search/?query=${searchTerm}`, {
+    fetch(`${MAP_API_ENDPOINT}/v1/tilesets/765-tileset-nz2-tms/search/?query=${searchTerm}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${state.user.token}`
