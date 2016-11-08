@@ -22,9 +22,9 @@ const mapStateToProps = (state) => ({
   shareModal: state.map.shareModal
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  getWorkspace: () => {
-    dispatch(getWorkspace(ownProps.workspaceId));
+const mapDispatchToProps = (dispatch) => ({
+  getWorkspace: (workspaceId) => {
+    dispatch(getWorkspace(workspaceId));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
