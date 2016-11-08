@@ -167,33 +167,45 @@ class Map extends Component {
     const currentLayers = this.props.map.layers;
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
-    const promises = [];
 
+    const layersChanged = newLayers.length !== currentLayers.length ||
+      !newLayers.every((l, i) => l.title === currentLayers[i].title && l.visible === currentLayers[i].visible);
+
+    // If the layers haven't changed, we have nothing to do
+    if (!layersChanged) return;
+
+    const promises = [];
     let callAddVesselLayer = null;
-    if (newLayers !== currentLayers) {
-      for (let index = 0, length = newLayers.length; index < length; index++) {
-        const newLayer = newLayers[index];
-        if (!addedLayers[newLayer.title]) {
-          if (!newLayer.visible) {
-            continue;
-          }
-          if (newLayer.type === 'ClusterAnimation') {
-            callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, index);
-          } else if (newLayer.type === 'CartoDBBasemap') {
-            promises.push(this.addCartoBasemap(newLayer, index));
-          } else {
-            promises.push(this.addCartoLayer(newLayer, index));
-          }
-        } else {
-          this.toggleLayerVisibility(newLayer);
-        }
+
+    for (let i = 0, j = newLayers.length; i < j; i++) {
+      const newLayer = newLayers[i];
+      const oldLayer = currentLayers[i];
+
+      // If the layer is already on the map and its visibility changed, we update it
+      if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
+        this.toggleLayerVisibility(newLayer);
+        continue;
+      }
+
+      // If the layer is not yet on the map and is invisible, we skip it
+      if (!newLayer.visible) continue;
+
+      switch (newLayer.type) {
+        case 'ClusterAnimation':
+          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i);
+          break;
+
+        case 'CartoDBBasemap':
+          promises.push(this.addCartoBasemap(newLayer, i));
+          break;
+
+        default:
+          promises.push(this.addCartoLayer(newLayer, i));
       }
     }
 
     Promise.all(promises).then((() => {
-      if (callAddVesselLayer) {
-        callAddVesselLayer();
-      }
+      if (callAddVesselLayer) callAddVesselLayer();
       this.setState({ addedLayers });
     }));
   }
