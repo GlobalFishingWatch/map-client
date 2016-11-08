@@ -57,14 +57,36 @@ export default function (state = initialState, action) {
     case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
       return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
     case TOGGLE_LAYER_VISIBILITY: {
-      const layers = state.layers.slice(0);
-      for (let i = 0, length = layers.length; i < length; i++) {
-        if (layers[i].title === action.payload.title) {
-          layers[i].visible = !action.payload.visible;
-          break;
+      // We get the index of the layer to update
+      const layerIndex = state.layers.reduce((res, l, i) => {
+        if (l.title === action.payload.title) {
+          return i;
         }
+        return res;
+      }, -1);
+
+      // If the layer couldn't be found, we don't make any change
+      if (layerIndex === -1) return state;
+
+      const newLayer = Object.assign({}, state.layers[layerIndex], {
+        visible: !state.layers[layerIndex].visible
+      });
+
+      let newLayers;
+      if (layerIndex === 0) {
+        if (state.layers.length === 1) {
+          newLayers = [newLayer];
+        } else {
+          newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
+        }
+      } else if (layerIndex === state.layers.length - 1) {
+        newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
+      } else {
+        newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
+          state.layers.slice(layerIndex + 1, state.layers.length));
       }
-      return Object.assign({}, state, { layers });
+
+      return Object.assign({}, state, { layers: newLayers });
     }
 
     case SHARE_MODAL_OPEN: {
