@@ -28,21 +28,23 @@ const createTrackLayer = function (google) {
     const ctx = canvas.getContext('2d');
     canvas.style.left = '0px';
     canvas.style.top = '0px';
+    canvas.classList.add('testtest')
     ctx.width = canvas.width = width;
     ctx.height = canvas.height = height;
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fillStyle = 'rgba(255,0,255,.1)';
+    ctx.fillRect(0,0, 999, 999)
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
   TrackLayer.prototype.regenerate = function () {
-    this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
   TrackLayer.prototype.recalculatePosition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const map = this.getMap();
 
     // topLeft can't be calculated from map.getBounds(), because bounds are
@@ -162,11 +164,11 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
-
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
       drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
+      console.log(drawStyle)
       if (!drawStyle) {
         continue;
       }
@@ -190,6 +192,7 @@ const createTrackLayer = function (google) {
 
   TrackLayer.prototype.onAdd = function () {
     const panes = this.getPanes();
+    console.log('add')
     panes.overlayLayer.appendChild(this.canvas);
   };
 
