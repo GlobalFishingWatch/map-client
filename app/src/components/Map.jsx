@@ -46,14 +46,15 @@ class Map extends Component {
    * Resets vessel layer data on change
    */
   onZoomChanged() {
-    if (!this.map) {
-      return;
-    }
+    if (!this.map) return;
+
     let zoom = this.map.getZoom();
+
     if (zoom < MIN_ZOOM_LEVEL) {
       zoom = MIN_ZOOM_LEVEL;
       this.map.setZoom(MIN_ZOOM_LEVEL);
     }
+
     if (zoom > MAX_ZOOM_LEVEL) {
       zoom = MAX_ZOOM_LEVEL;
       this.map.setZoom(MAX_ZOOM_LEVEL);
@@ -61,6 +62,12 @@ class Map extends Component {
 
     this.setState({ zoom });
     this.props.setZoom(zoom);
+
+    // We also need to update the center of the map as it can be changed
+    // when double clicking or scrolling on the map
+    const center = this.map.getCenter();
+    this.props.setCenter([center.lat(), center.lng()]);
+
     this.updateTrackLayer();
   }
 
