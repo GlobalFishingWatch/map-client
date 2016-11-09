@@ -56,35 +56,50 @@ class ToolTip extends Component {
   }
 
   showToolTip() {
+    // The height of tooltip is 80px -> 40px
+    // The width of tooltip is 200px
+
+    const tooltipWidth = 200;
+    const tooltipHeight = 80;
+
+
     const bounds = this.refs.info.getBoundingClientRect();
-
     const left = bounds.left; // Horizontal position relative to the screen
-    const height = bounds.height;
-    const width = bounds.width;
+    const height = bounds.height; // Height icon
+    const width = bounds.width; // Width icon
+    const offset = 10; // Distance between tooltip and icon
 
-    // Position relative to the abbr element
-    const offsetTop = this.refs.info.offsetTop;
+    const top = bounds.top + window.scrollY + height + offset; // Calc position top normal tooltip
+    const topRight = bounds.top + window.scrollY - (tooltipHeight / 2) + (height / 2);
+    const topLeft = bounds.top + window.scrollY - (tooltipHeight / 2) + (height / 2);
+    const leftP = left - (tooltipWidth / 2) + (width / 2); // Calc position left normal tooltip
+    const leftRight = left - tooltipWidth - width; // Calc position left tooltip with arrow at right
+    const leftLeft = left + width + offset; // Calc position left tooltip with arrow at left
+    const arrowRight = left + (tooltipWidth / 2) >= window.innerWidth;
+    const arrowLeft = left - (tooltipWidth / 2) <= 0;
 
-    // If true, the arrow is on the right of the tooltip
-    const arrowRight = left + 100 >= window.innerWidth;
-    // If true, the arrow is on the left of the tooltip
-    const arrowLeft = left - 100 <= 0;
+    // FINAL CALC
+    let topTooltip = `${top}px`;
+    let leftTooltip = `${leftP}px`;
+    const topRightToolTip = `${topRight}px`;
+    const leftRightToolTip = `${leftRight}px`;
+    const topLeftToolTip = `${topLeft}px`;
+    const leftLefttToolTip = `${leftLeft}px`;
 
-    // Offset between the tip and the button
-    const offset = 10;
-
-    let transform = `translate(calc(50% - ${width / 2}px), calc(${height}px + ${offset}px))`;
-    if (arrowLeft) {
-      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + height / 2}px - 50%))`;
-    } else if (arrowRight) {
-      transform = `translate(-${width / 2 + offset}px, calc(${offsetTop + height / 2}px - 50%))`;
+    if (arrowLeft) { // If tooltip out window
+      topTooltip = topLeftToolTip;
+      leftTooltip = leftLefttToolTip;
+    } else if (arrowRight) { // If tooltip out window
+      topTooltip = topRightToolTip;
+      leftTooltip = leftRightToolTip;
     }
 
     this.setState({
       arrowRight,
       arrowLeft,
       visible: true,
-      transform
+      topTooltip,
+      leftTooltip
     });
   }
 
@@ -121,7 +136,8 @@ class ToolTip extends Component {
             [ToolTipStyle['-left']]: !!this.state.arrowLeft
           })}
           style={{
-            transform: this.state.transform
+            top: this.state.topTooltip,
+            left: this.state.leftTooltip
           }}
           ref="tooltip"
         >
