@@ -75,14 +75,13 @@ export function getWorkspace(workspaceId) {
       return;
     }
 
-    /**
-     * If the user isn't logged, we load the default (local) workspace
-     * TODO: load default workspace from server
-     */
-    let url = '/workspace.json';
+    const ID = workspaceId || DEFAULT_WORKSPACE;
+    let url;
 
-    if (workspaceId) {
-      url = `${MAP_API_ENDPOINT}/v1/workspaces/${workspaceId}`;
+    if (!workspaceId && !!USE_LOCAL_WORKSPACE) {
+      url = '/workspace.json';
+    } else {
+      url = `${MAP_API_ENDPOINT}/v1/workspaces/${ID}`;
     }
 
     fetch(url, {
@@ -200,6 +199,7 @@ export function saveWorkspace(errorAction) {
     if (state.user.token) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
+
 
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',

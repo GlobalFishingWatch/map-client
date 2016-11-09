@@ -11,16 +11,12 @@ class AuthMap extends Component {
   }
 
   render() {
-    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.props.params.workspace} /> :
-      <MapContainer workspaceId={this.props.params.workspace} />;
+    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.props.workspaceId} /> :
+      <MapContainer workspaceId={this.props.workspaceId} />;
   }
 }
 
 AuthMap.propTypes = {
-  /**
-   * Location from React Router Redux
-   */
-  location: React.PropTypes.object,
   /**
    * User token for the map
    */
@@ -34,9 +30,9 @@ AuthMap.propTypes = {
    */
   login: React.PropTypes.func,
   /**
-   * Params from the route
+   * Workspace ID retrieved from the URL
    */
-  params: React.PropTypes.object
+  workspaceId: React.PropTypes.string
 };
 
 export default AuthMap;

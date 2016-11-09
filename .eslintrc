@@ -16,7 +16,8 @@
     "ART_PUB_JSON_URL": true,
     "HOME_SLIDER_JSON_URL": true,
     "DEFAULT_WORKSPACE": true,
-    "REQUIRE_MAP_LOGIN": true
+    "REQUIRE_MAP_LOGIN": true,
+    "USE_LOCAL_WORKSPACE": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
