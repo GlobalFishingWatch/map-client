@@ -12,10 +12,12 @@ class FiltersPanel extends Component {
       '#e8f4f9',
       '#ef4323'
     ];
+
     const colorOptions = [];
-    for (let colorIndex = 0; colorIndex <= colors.length; colorIndex += 1) {
+    for (let colorIndex = 0; colorIndex < colors.length; colorIndex++) {
       colorOptions.push(<option value={colors[colorIndex]} key={colorIndex}>{colors[colorIndex]}</option>);
     }
+
     const intensities = [];
     for (let intensity = 5; intensity <= 50; intensity += 5) {
       intensities.push(<option value={intensity} key={intensity}>{intensity}</option>);
