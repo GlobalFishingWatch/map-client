@@ -15,6 +15,7 @@
     line-height: 1.8;
 
     outline: 0;
+    padding-right: 30px;
     width: 100%;
   }
 
@@ -40,11 +41,10 @@
     }
 
     > .result {
+      color: rgba($color-4, .7);
       cursor: pointer;
-
       font-size: $font-size-small;
       line-height: 1.3;
-
       position: relative;
 
       .highlight {
@@ -54,11 +54,6 @@
 
       &:not(:first-child) {
         margin: 15px 0 0;
-      }
-
-      > .vessel-name,
-      > .mmsi {
-        color: rgba($color-4, .7);
       }
     }
   }

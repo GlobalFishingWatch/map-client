@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
 
 import SearchResult from './SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
@@ -12,15 +11,8 @@ class SearchPanel extends Component {
     super(props);
 
     this.state = {
-      isEmpty: true,
-      search: this.props.search
+      keyword: ''
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!!nextProps.search) {
-      this.setState({ search: nextProps.search });
-    }
   }
 
   componentDidUpdate(prevProps) {
@@ -30,61 +22,58 @@ class SearchPanel extends Component {
   }
 
   onSearchInputChange(event) {
-    this.keyword = event.target.value;
-
-    this.setState({
-      isEmpty: !this.keyword.length > 0,
-      firsTime: false
-    });
-
-    if (this.keyword.length < 3) return;
-
-    this.props.getSearchResults(this.keyword);
+    const keyword = event.target.value;
+    this.setState({ keyword });
+    this.props.getSearchResults(keyword, { immediate: !keyword.length });
   }
 
   cleanResults() {
-    this.state.search.entries = [];
-    this.setState(this.state);
+    this.setState({ keyword: '' });
+    this.props.getSearchResults('', { immediate: true });
   }
 
   render() {
-    const searchResults = [];
-    const throttleSearchEvent = _.throttle(this.onSearchInputChange, 50);
+    const isSearching = this.props.search.count || this.state.keyword.length > 3;
 
-    if (this.state.search) {
-      for (let i = 0, length = this.state.search.entries.length; i < length; i++) {
+    let searchResults;
+    if (this.props.search.count) {
+      searchResults = [];
+      for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
         searchResults.push(
           <SearchResult
             className={searchPanelStyles.result}
             key={i}
-            keyword={this.keyword}
+            keyword={this.state.keyword}
             drawVessel={this.props.drawVessel}
-            vesselInfo={this.state.search.entries[i]}
+            vesselInfo={this.props.search.entries[i]}
             setVesselPosition={this.props.setVesselPosition}
             toggleVisibility={this.props.toggleVisibility}
             vesselVisibility={this.props.vesselVisibility}
           />
         );
       }
+    } else {
+      searchResults = <li className={searchPanelStyles.result}>No result</li>;
     }
 
     return (
       <div className={searchPanelStyles['c-search-panel']}>
         <input
           type="text"
-          onChange={(e) => throttleSearchEvent.apply(this, [e])}
+          onChange={(e) => this.onSearchInputChange(e)}
           className={searchPanelStyles['search-accordion']}
           placeholder="Type your search criteria"
+          value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
-      {this.state.isEmpty &&
+      {!isSearching &&
         <svg
           className={classnames(iconsStyles.icon, 'icon-search')}
         >
           <use xlinkHref="#icon-search"></use>
         </svg>}
 
-      {!this.state.isEmpty &&
+      {!!isSearching &&
         <svg
           className={classnames(iconsStyles.icon, 'icon-filter')}
           onClick={() => this.cleanResults()}
@@ -92,8 +81,7 @@ class SearchPanel extends Component {
           <use xlinkHref="#icon-filter"></use>
         </svg>}
         <ul
-          className={classnames(searchPanelStyles['result-list'],
-          searchResults.length ? searchPanelStyles['-open'] : '')}
+          className={classnames(searchPanelStyles['result-list'], isSearching ? searchPanelStyles['-open'] : '')}
         >
           {searchResults}
         </ul>

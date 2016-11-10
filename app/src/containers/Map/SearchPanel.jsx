@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import SearchPanel from '../../components/Map/SearchPanel';
 import { updateFilters } from '../../actions/filters';
@@ -10,13 +11,28 @@ const mapStateToProps = (state) => ({
   vesselVisibility: state.vesselInfo.vesselVisibility
 });
 
+const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {
+  dispatch(getSearchResults(keyword));
+}, 200);
+
 const mapDispatchToProps = (dispatch) => ({
   updateFilters: (filters) => {
     dispatch(updateFilters(filters));
   },
-  getSearchResults: (searchTerm) => {
-    dispatch(getSearchResults(searchTerm));
+
+  /**
+   * Dispatch an action to search for the specified term
+   * @param {string} searchTerm - keyword
+   * @param {object} options - immediate: don't debounce the search
+   */
+  getSearchResults: (searchTerm, { immediate = false } = {}) => {
+    if (immediate) {
+      dispatch(getSearchResults(searchTerm));
+    } else {
+      getSearchResultsDebounced(dispatch, searchTerm);
+    }
   },
+
   drawVessel: (elem, vesselDetails) => {
     dispatch({
       type: RESET_VESSEL_DETAILS,
