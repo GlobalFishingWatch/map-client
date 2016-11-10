@@ -28,23 +28,21 @@ const createTrackLayer = function (google) {
     const ctx = canvas.getContext('2d');
     canvas.style.left = '0px';
     canvas.style.top = '0px';
-    canvas.classList.add('testtest')
     ctx.width = canvas.width = width;
     ctx.height = canvas.height = height;
-    ctx.fillStyle = 'rgba(255,0,255,.1)';
-    ctx.fillRect(0,0, 999, 999)
+    ctx.fillStyle = 'rgba(0,0,0,.4)';
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
   TrackLayer.prototype.regenerate = function () {
-    // this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
   TrackLayer.prototype.recalculatePosition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    // this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const map = this.getMap();
 
     // topLeft can't be calculated from map.getBounds(), because bounds are
@@ -103,15 +101,19 @@ const createTrackLayer = function (google) {
       return `rgba(0, ${green}, 0, 1)`;
     }
     if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
+      // console.log('before start date')
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
     if (filters && filters.endDate && data.datetime[index] > filters.endDate) {
+      // console.log('after end date')
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
     if (filters && filters.timelineInnerExtent[0] && data.datetime[index] < filters.timelineInnerExtent[0]) {
+      // console.log('in inner range')
       return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
     }
     if (filters && filters.timelineInnerExtent[1] && data.datetime[index] > filters.timelineInnerExtent[1]) {
+      // console.log('in inner range')
       return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
     }
     return MATCH_COLOR;
@@ -168,10 +170,10 @@ const createTrackLayer = function (google) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
       drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
-      console.log(drawStyle)
       if (!drawStyle) {
         continue;
       }
+      // console.log(drawStyle)
 
       point = this.drawPoint(overlayProjection, data, i, drawStyle);
 
@@ -192,7 +194,6 @@ const createTrackLayer = function (google) {
 
   TrackLayer.prototype.onAdd = function () {
     const panes = this.getPanes();
-    console.log('add')
     panes.overlayLayer.appendChild(this.canvas);
   };
 

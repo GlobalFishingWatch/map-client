@@ -157,7 +157,7 @@ class Map extends Component {
       return;
     }
     this.state.trackLayer.recalculatePosition();
-    console.log('draw track')
+
     this.state.trackLayer.drawTile(
       workProps.vesselTrack.seriesGroupData,
       workProps.vesselTrack.selectedSeries,
@@ -249,7 +249,7 @@ class Map extends Component {
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ /*overlay:  canvasLayer, */ trackLayer });
+    this.setState({ /* overlay:  canvasLayer, */ trackLayer });
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
 
