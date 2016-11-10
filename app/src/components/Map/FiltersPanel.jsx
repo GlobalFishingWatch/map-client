@@ -38,7 +38,7 @@ class FiltersPanel extends Component {
           <select
             id="vesselColor"
             onChange={(e) => this.props.updateVesselColor(e.target.value)}
-            defaultValue={DEFAULT_VESSEL_COLOR}
+            defaultValue={this.props.vesselColor}
           >
             {colorOptions}
           </select>
@@ -49,9 +49,13 @@ class FiltersPanel extends Component {
 }
 
 FiltersPanel.propTypes = {
+  // Update the transparency of the vessels
   updateVesselTransparency: React.PropTypes.func,
+  // Current transparency of the vessels
   vesselTransparency: React.PropTypes.number,
+  // Update the color of the vessels
   updateVesselColor: React.PropTypes.func,
+  // Current color of the vessels
   vesselColor: React.PropTypes.string
 };
 
