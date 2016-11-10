@@ -23,6 +23,12 @@ class SearchPanel extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (!prevProps.visible && this.props.visible) {
+      this.searchField.focus();
+    }
+  }
+
   onSearchInputChange(event) {
     this.keyword = event.target.value;
 
@@ -65,11 +71,11 @@ class SearchPanel extends Component {
     return (
       <div className={searchPanelStyles['c-search-panel']}>
         <input
-          id="search-vessels"
           type="text"
           onChange={(e) => throttleSearchEvent.apply(this, [e])}
           className={searchPanelStyles['search-accordion']}
           placeholder="Type your search criteria"
+          ref={ref => (this.searchField = ref)}
         />
       {this.state.isEmpty &&
         <svg
@@ -101,7 +107,9 @@ SearchPanel.propTypes = {
   search: React.PropTypes.object,
   setVesselPosition: React.PropTypes.func,
   toggleVisibility: React.PropTypes.func,
-  vesselVisibility: React.PropTypes.bool
+  vesselVisibility: React.PropTypes.bool,
+  // Whether the search panel is expanded or closed
+  visible: React.PropTypes.bool
 };
 
 

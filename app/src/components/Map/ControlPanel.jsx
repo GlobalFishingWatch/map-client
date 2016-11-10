@@ -7,8 +7,11 @@ import { Accordion, AccordionItem } from 'react-sanfona';
 
 class ControlPanel extends Component {
 
-  focusSearch() {
-    document.querySelector('#search-vessels').focus();
+  constructor() {
+    super();
+    this.state = {
+      searchVisible: false
+    };
   }
 
   closeVesselInfo() {
@@ -25,10 +28,11 @@ class ControlPanel extends Component {
         key="search"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
-        onExpand={() => this.focusSearch()}
+        onExpand={() => this.setState({ searchVisible: true })}
+        onClose={() => this.setState({ searchVisible: false })}
       >
         <div className={controlPanelStyle['content-accordion']}>
-          <SearchPanel />
+          <SearchPanel visible={this.state.searchVisible} />
         </div>
       </AccordionItem>);
   }
