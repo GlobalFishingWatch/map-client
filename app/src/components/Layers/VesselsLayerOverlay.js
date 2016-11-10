@@ -33,7 +33,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
     this.canvas = this.renderer.view;
     this.canvas.style.position = 'absolute';
-    this.canvas.style.border = '1px solid green';
 
     // this.stage = new PIXI.Container();
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
