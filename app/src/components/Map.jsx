@@ -249,8 +249,7 @@ class Map extends Component {
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ /*overlay:  canvasLayer, */ trackLayer });
-    // this.state.addedLayers[layerSettings.title] = canvasLayer;
+    this.setState({ /* overlay:  canvasLayer, */ trackLayer });
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
 

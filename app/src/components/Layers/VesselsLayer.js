@@ -97,8 +97,8 @@ export default class VesselsLayer {
           vessels.push({
             value: frame.value[i],
             category: frame.category[i],
-            series: frame.category[i],
-            seriesgroup: frame.category[i]
+            series: frame.series[i],
+            seriesgroup: frame.seriesgroup[i]
           });
         }
       }
