@@ -32,7 +32,7 @@ class FilterPanel extends Component {
   }
 
   render() {
-    let countries = Object.keys(this.countryNames).map((index) =>
+    const countries = Object.keys(this.countryNames).map((index) =>
       <option
         value={this.countryNames[index].id}
         key={this.countryNames[index].id}

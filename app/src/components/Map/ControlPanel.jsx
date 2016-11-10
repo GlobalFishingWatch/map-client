@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SettingsPanel from './SettingsPanel';
+import FiltersPanel from './FiltersPanel';
 import LayerPanel from '../../containers/Map/LayerPanel';
 import SearchPanel from '../../containers/Map/SearchPanel';
 import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
@@ -7,16 +7,32 @@ import { Accordion, AccordionItem } from 'react-sanfona';
 
 class ControlPanel extends Component {
 
+  constructor() {
+    super();
+    this.state = {
+      searchVisible: false
+    };
+  }
+
+  closeVesselInfo() {
+    // if it's already closed, do nothing
+    if (!this.props.vesselVisibility) return;
+
+    this.props.toggleVisibility(false);
+  }
+
   renderSearch() {
     return (
       <AccordionItem
         title="SEARCH VESSELS"
         key="search"
-        className={controlPanelStyle.accordion_item}
-        titleClassName={controlPanelStyle.title_accordion}
+        className={controlPanelStyle['accordion-item']}
+        titleClassName={controlPanelStyle['title-accordion']}
+        onExpand={() => this.setState({ searchVisible: true })}
+        onClose={() => this.setState({ searchVisible: false })}
       >
-        <div className={controlPanelStyle.content_accordion}>
-          <SearchPanel />
+        <div className={controlPanelStyle['content-accordion']}>
+          <SearchPanel visible={this.state.searchVisible} />
         </div>
       </AccordionItem>);
   }
@@ -26,14 +42,18 @@ class ControlPanel extends Component {
       <AccordionItem
         title="Basemap"
         key="basemap"
-        className={controlPanelStyle.accordion_item}
-        titleClassName={controlPanelStyle.title_accordion}
+        className={controlPanelStyle['accordion-item']}
+        titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={controlPanelStyle.content_accordion}>
-          <div className={controlPanelStyle.content_box}>
-            <div className={controlPanelStyle.box_basemap}></div>
-            <div className={controlPanelStyle.box_image_basemap}></div>
-          </div>
+        <div className={controlPanelStyle['content-accordion']}>
+          <ul className={controlPanelStyle['basemap-list']}>
+            <li className={controlPanelStyle.basemap}>
+              <img alt="basemap X" src="#" className="basemap-img" />
+            </li>
+            <li className={controlPanelStyle.basemap}>
+              <img alt="basemap Y" src="#" className="basemap-img" />
+            </li>
+          </ul>
         </div>
       </AccordionItem>);
   }
@@ -43,26 +63,47 @@ class ControlPanel extends Component {
       <AccordionItem
         title="Layers"
         key="layers"
-        className={controlPanelStyle.accordion_item}
-        titleClassName={controlPanelStyle.title_accordion}
+        className={controlPanelStyle['accordion-item']}
+        titleClassName={controlPanelStyle['title-accordion']}
 
       >
-        <div className={controlPanelStyle.content_accordion}>
+        <div className={controlPanelStyle['content-accordion']}>
           <LayerPanel />
         </div>
       </AccordionItem>);
   }
 
-  renderSettings() {
+  renderResume() {
+    return (
+      <div className={controlPanelStyle['resume-display']}>
+        <div className={controlPanelStyle['total-count']}>
+          <span className={controlPanelStyle['counter-description']}>vessel activity</span>
+          <span className={controlPanelStyle.total}>224,654</span>
+        </div>
+        <div className={controlPanelStyle['categories-display']}>
+          <div className={controlPanelStyle['vessel-display']}>
+            <span className={controlPanelStyle['counter-description']}>vessels</span>
+            <span className={controlPanelStyle.total}>224,654</span>
+          </div>
+          <div className={controlPanelStyle['activity-display']}>
+            <span className={controlPanelStyle['counter-description']}>activity</span>
+            <span className={controlPanelStyle.total}>224,654</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  renderFilters() {
     return (
       <AccordionItem
-        title="Settings"
-        key="settings"
-        className={controlPanelStyle.accordion_item}
-        titleClassName={controlPanelStyle.title_accordion}
+        title="Filters"
+        key="filters"
+        className={controlPanelStyle['accordion-item']}
+        titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={controlPanelStyle.content_accordion}>
-          <SettingsPanel
+        <div className={controlPanelStyle['content-accordion']}>
+          <FiltersPanel
             updateVesselTransparency={this.props.updateVesselTransparency}
             vesselTransparency={this.props.vesselTransparency}
             updateVesselColor={this.props.updateVesselColor}
@@ -74,12 +115,18 @@ class ControlPanel extends Component {
 
   render() {
     return (
-      <div className={controlPanelStyle.controlPanel}>
-        <Accordion allowMultiple={false} activeItems={6}>
+      <div className={controlPanelStyle.controlpanel}>
+        {this.renderResume()}
+        <Accordion
+          activeItems={6}
+          allowMultiple={false}
+          className={controlPanelStyle['map-options']}
+          onChange={() => this.closeVesselInfo()}
+        >
           {this.renderSearch()}
           {this.renderBasemap()}
           {this.renderLayerPicker()}
-          {this.renderSettings()}
+          {this.renderFilters()}
         </Accordion>
       </div>
     );
@@ -87,11 +134,13 @@ class ControlPanel extends Component {
 }
 
 ControlPanel.propTypes = {
+  toggleVisibility: React.PropTypes.func,
   layers: React.PropTypes.array,
   updateVesselTransparency: React.PropTypes.func,
   vesselTransparency: React.PropTypes.number,
   updateVesselColor: React.PropTypes.func,
-  vesselColor: React.PropTypes.string
+  vesselColor: React.PropTypes.string,
+  vesselVisibility: React.PropTypes.bool
 };
 
 

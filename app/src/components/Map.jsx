@@ -6,13 +6,13 @@ import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 import VesselsLayer from './Layers/VesselsLayer';
 import createTrackLayer from './Layers/TrackLayer';
 import ControlPanel from '../containers/Map/ControlPanel';
-import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import Header from '../containers/Header';
 import mapCss from '../../styles/components/c-map.scss';
 import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
 import NoLogin from '../containers/Map/NoLogin';
+import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
 

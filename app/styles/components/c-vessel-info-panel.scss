@@ -1,0 +1,105 @@
+@import '../settings';
+
+.c-vessel-info-panel {
+  background-color: $color-7;
+  box-shadow: 0 0 4px 0 rgba($color-12, .5);
+  color: $color-4;
+  display: block;
+  font-family: $font-family-1;
+  position: absolute;
+  width: 320px;
+
+  z-index: 10;
+
+  &.-hidden {
+    display: none;
+  }
+
+  &::before {
+    background-color: $color-7;
+    content: '';
+    display: inline-block;
+    height: 12px;
+    left: 30px;
+    position: absolute;
+    top: -6px;
+    transform: rotate(45deg);
+    width: 12px;
+  }
+
+  .vessel-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px 20px 15px;
+
+    > .row-info {
+      display: flex;
+      flex-basis: calc(50% - 10px);
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 2px 0;
+
+      &:nth-child(2n) {
+        margin: 0 0 0 5px;
+      }
+
+      > .key,
+      > .value {
+        color: $color-4;
+        font-size: $font-size-xxs-small;
+      }
+    }
+  }
+
+  .vessel-track-mode {
+    border-top: 1px solid rgba($color-4, .15);
+
+    padding: 10px 20px;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .radio {
+      display: none;
+
+      &:checked + .track-mode > .circle {
+        &::after {
+          background-color: $color-1;
+          border-radius: 50%;
+          content: '';
+          display: inline-block;
+
+          height: 4px;
+          left: 50%;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 4px;
+        }
+      }
+    }
+
+    .track-mode {
+      cursor: pointer;
+      font-size: $font-size-xxs-small;
+      padding: 0 0 0 15px;
+      position: relative;
+
+      > .circle {
+        background-color: $color-4;
+        border-radius: 50%;
+        display: inline-block;
+
+        height: 12px;
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        width: 12px;
+      }
+    }
+  }
+}

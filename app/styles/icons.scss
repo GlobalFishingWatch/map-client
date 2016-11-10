@@ -1,0 +1,24 @@
+.icon {
+  display: inline-block;
+  fill: currentColor;
+  height: 1em;
+  stroke: currentColor;
+  stroke-width: 0;
+  width: 1em;
+}
+
+:global .icon-search {
+  width: .9375em;
+}
+
+:global .icon-filter {
+  width: 1.154296875em;
+}
+
+.icon-layers-icon {
+  width: .89453125em;
+}
+
+.icon-report-icon {
+  width: .8125em;
+}

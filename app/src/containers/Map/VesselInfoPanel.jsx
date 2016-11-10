@@ -4,7 +4,9 @@ import { changeVesselTrackDisplayMode } from '../../actions/map';
 
 const mapStateToProps = (state) => ({
   vesselTrackDisplayMode: state.map.vesselTrackDisplayMode,
-  vesselInfo: state.vesselInfo.details
+  vesselInfo: state.vesselInfo.details,
+  vesselPosition: state.vesselInfo.vesselPosition,
+  vesselVisibility: state.vesselInfo.vesselVisibility
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -13,6 +13,8 @@ rules:
     - 2
     -
       max-depth: 3
+  no-vendor-prefixes:
+    - 0
 files:
   ignore:
     - 'node_modules/**/*.scss'

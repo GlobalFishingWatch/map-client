@@ -1,0 +1,60 @@
+@import '../../settings';
+
+.c-search-panel {
+  position: relative;
+
+  > .search-accordion {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid $color-4;
+    color: $color-4;
+    display: block;
+
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    line-height: 1.8;
+
+    outline: 0;
+    padding-right: 30px;
+    width: 100%;
+  }
+
+  :global .icon-search,
+  :global .icon-filter {
+    position: absolute;
+    right: 0;
+    top: 8px;
+  }
+
+  :global .icon-filter {
+    cursor: pointer;
+  }
+
+  > .result-list {
+    max-height: 0;
+    overflow-y: auto;
+    transition: max-height .25s ease;
+
+    &.-open {
+      margin: 10px 0 15px;
+      max-height: 200px;
+    }
+
+    > .result {
+      color: rgba($color-4, .7);
+      cursor: pointer;
+      font-size: $font-size-small;
+      line-height: 1.3;
+      position: relative;
+
+      .highlight {
+        color: $color-4;
+        font-weight: $font-weight-bold;
+      }
+
+      &:not(:first-child) {
+        margin: 15px 0 0;
+      }
+    }
+  }
+}
