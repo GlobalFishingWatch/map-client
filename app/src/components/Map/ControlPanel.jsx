@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import FiltersPanel from './FiltersPanel';
+import FilterPanel from '../../containers/Map/FilterPanel';
 import LayerPanel from '../../containers/Map/LayerPanel';
 import SearchPanel from '../../containers/Map/SearchPanel';
 import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
@@ -103,7 +103,7 @@ class ControlPanel extends Component {
         titleClassName={controlPanelStyle['title-accordion']}
       >
         <div className={controlPanelStyle['content-accordion']}>
-          <FiltersPanel
+          <FilterPanel
             updateVesselTransparency={this.props.updateVesselTransparency}
             vesselTransparency={this.props.vesselTransparency}
             updateVesselColor={this.props.updateVesselColor}
