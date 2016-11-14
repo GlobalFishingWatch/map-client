@@ -146,6 +146,8 @@ class Map extends Component {
     ) {
       // TODO
       // this.state.overlay.updateFilters(nextProps.filters);
+      this.vesselsLayer.updateFilters(nextProps.filters);
+      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
       this.updateTrackLayer();
     }
   }
@@ -223,7 +225,7 @@ class Map extends Component {
    * @param layerSettings
    * @param position
    */
-  addVesselLayer(layerSettings, position) {
+  addVesselLayer(layerSettings) {
     // const canvasLayer = new CanvasLayer(
     //   position,
     //   this.map,

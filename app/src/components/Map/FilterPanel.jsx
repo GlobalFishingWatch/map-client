@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import selectorStyles from '../../../styles/components/shared/c-selector.scss';
-
 import { FLAGS } from '../../constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 
@@ -34,6 +33,8 @@ class FilterPanel extends Component {
 
       return 0;
     });
+
+    countryOptions.push(<option key="" value="">All</option>);
 
     countryNames.forEach((country) => {
       countryOptions.push(<option key={country.id} value={country.id}>{country.name}</option>);

@@ -15,18 +15,18 @@ class CanvasLayer {
 
     this.debug = debug;
 
-    this._setFlag(filters);
+    if (!!filters) {
+      this.setFlag(filters.flag);
+    }
 
     this.map.overlayMapTypes.insertAt(0, this);
   }
 
-  _setFlag(filters) {
-    if (!!filters) {
-      if (filters.flag !== '') {
-        this.flag = parseInt(filters.flag, 10);
-      } else {
-        this.flag = null;
-      }
+  setFlag(flag) {
+    if (flag !== '') {
+      this.flag = parseInt(flag, 10);
+    } else {
+      this.flag = null;
     }
   }
 
@@ -121,7 +121,7 @@ class CanvasLayer {
       console.warn('unknown tile released', canvas);
       return;
     }
-    console.log('released tile #', index);
+    console.warn('released tile #', index);
     this.tiles.splice(index, 1);
     this.tileReleasedCallback();
   }
@@ -137,8 +137,7 @@ class CanvasLayer {
   }
 
   render(startIndex, endIndex) {
-    return
-    this.tiles.forEach(tile => {
+    return this.tiles.forEach(tile => {
       this._dumpTileVessels(startIndex, endIndex, tile.ctx, tile.data);
     });
   }
@@ -157,6 +156,9 @@ class CanvasLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
+        if (this.flag && this.flag !== frame.category[index]) {
+          continue;
+        }
         const x = frame.x[index];
         const y = frame.y[index];
         const value = 5 * frame.value[index];

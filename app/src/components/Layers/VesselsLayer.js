@@ -36,6 +36,12 @@ export default class VesselsLayer {
     this.centerListener = google.maps.event.addListener(this.map, 'center_changed', this._onCenterChanged.bind(this));
   }
 
+  updateFilters(filters) {
+    this.overlay.setFlag(filters.flag);
+    this.tiled.setFlag(filters.flag);
+    this.render();
+  }
+
   _onTileCreated() {
     // console.log(data)
     this.render();
@@ -52,7 +58,7 @@ export default class VesselsLayer {
 
   render() {
     this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
-    this.tiled.render(this.currentInnerStartIndex, this.currentInnerEndIndex);
+    // this.tiled.render(this.currentInnerStartIndex, this.currentInnerEndIndex);
   }
 
   renderTimeRange(start, end) {
