@@ -1,9 +1,4 @@
-import {
-  SET_VESSEL_DETAILS,
-  SET_VESSEL_TRACK,
-  SET_VESSEL_VISIBILITY,
-  SET_VESSEL_POSITION
-} from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -72,15 +67,15 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
         const cleanData = VesselsTileData.getCleanVectorArrays(rawTileData);
         const groupedData = VesselsTileData.groupData(cleanData);
         // if (rawTileData[0]) {
-          dispatch({
-            type: SET_VESSEL_TRACK,
-            payload: {
-              seriesgroup: seriesGroup,
-              seriesGroupData: groupedData,
-              series: _.uniq(groupedData.series),
-              selectedSeries: series
-            }
-          });
+        dispatch({
+          type: SET_VESSEL_TRACK,
+          payload: {
+            seriesgroup: seriesGroup,
+            seriesGroupData: groupedData,
+            series: _.uniq(groupedData.series),
+            selectedSeries: series
+          }
+        });
         // } else {
         //   dispatch({
         //     type: SET_VESSEL_TRACK,

@@ -17,6 +17,14 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     this.setMap(map);
   }
 
+  setFlag(flag) {
+    if (flag !== '') {
+      this.flag = parseInt(flag, 10);
+    } else {
+      this.flag = null;
+    }
+  }
+
   onAdd() {
     this._build();
     // Add the element to the "overlayLayer" pane.
@@ -176,8 +184,11 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
       if (!frame) continue;
 
-      numSprites += frame.x.length;
       for (let index = 0, len = frame.x.length; index < len; index++) {
+        if (this.flag && this.flag !== frame.category[index]) {
+          continue;
+        }
+        numSprites++;
         const sprite = this.spritesPool[this.numSprites];
         // const weight = playbackData.weight[i];
         const value = frame.value[index];
