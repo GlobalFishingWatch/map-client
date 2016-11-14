@@ -57,6 +57,8 @@ class CanvasLayer {
 
   getTile(coord, zoom, ownerDocument) {
     const canvas = this._getCanvas(ownerDocument);
+    canvas.ready = false;
+    canvas.error = false;
     canvas.index = this.tiles.length;
     canvas.tileCoordinates = VesselsTileData.getTileCoordinates(coord, zoom);
 
@@ -87,6 +89,8 @@ class CanvasLayer {
       if (cleanVectorArrays.length !== rawTileData.length) {
         console.warn('partially empty dataset');
 
+        canvas.error = true;
+
         if (this.debug) this._showDebugInfo(canvas, 'PE');
       }
 
@@ -101,8 +105,11 @@ class CanvasLayer {
         this.flag
       );
       canvas.data = data;
+      canvas.ready = true;
 
       this.tileCreatedCallback();
+    }, error => {
+      console.warn(error.message);
     });
 
     return canvas;
@@ -111,7 +118,7 @@ class CanvasLayer {
   releaseTile(canvas) {
     const index = this.tiles.indexOf(canvas);
     if (index === -1) {
-      console.warn('unknown tile relased');
+      console.warn('unknown tile released', canvas);
       return;
     }
     console.log('released tile #', index);
