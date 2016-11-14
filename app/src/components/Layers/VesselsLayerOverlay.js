@@ -38,6 +38,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
+    // this.stage = new PIXI.Container();
 
     this.container.appendChild(this.canvas);
 
@@ -133,36 +134,49 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
 
     this.numSprites = 0;
+
     tiles.forEach(tile => {
-      // console.log('tile')
-      const bounds = tile.getBoundingClientRect();
       // const text = new PIXI.Text('This is a pixi text', { fontFamily: 'Arial', fontSize: 14, fill: 0xff1010 });
       // text.position.x = bounds.left;
       // text.position.y = bounds.top;
       // this.stage.addChild(text);
       // this.debugTexts.push(text);
 
+      const bounds = tile.getBoundingClientRect();
+      if (!document.body.contains(tile)) {
+        console.warn('rendering tile that doesnt exist in the DOM', tile);
+      }
+
       if (bounds.left === 0 && bounds.top === 0) {
         console.warn('tile at 0,0');
       }
-      this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
+
+      if (tile.ready === true) {
+        this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top, tile.error);
+      }
     });
 
-    // console.log(this.numSprites)
+    // hide unused sprites
+    for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
+      this.spritesPool[i].x = -100;
+    }
 
     this.renderer.render(this.stage);
   }
 
   _dumpTileVessels(startIndex, endIndex, data, offsetX, offsetY) {
     if (!data) {
-      return;
+      return 0;
     }
+
+    let numSprites = 0;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       const frame = data[timeIndex];
 
       if (!frame) continue;
 
+      numSprites += frame.x.length;
       for (let index = 0, len = frame.x.length; index < len; index++) {
         const sprite = this.spritesPool[this.numSprites];
         // const weight = playbackData.weight[i];
@@ -178,10 +192,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       }
     }
 
-    // hide unused sprites
-    // for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
-    //   this.spritesPool[i].visible = false;
-    // }
+    return numSprites;
   }
 
   _resizeSpritesPool() {
