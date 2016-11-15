@@ -23,7 +23,7 @@ class LayerItem extends Component {
       minValue: 0,
       maxValue: 100,
       step: 10,
-      value: 50
+      value: this.props.layer.opacity
     };
 
     this.state = {

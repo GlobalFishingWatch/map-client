@@ -65,7 +65,8 @@
           },
           "visible": true,
           "color": "green",
-          "type": "ClusterAnimation"
+          "type": "ClusterAnimation",
+          "opacity": 0.6
         },
         {
           "title": "MPA - No Take",
@@ -78,7 +79,8 @@
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
           "visible": false,
           "color": "#da0000",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "opacity": 0.3
         },
         {
           "title": "MPA - Restricted Use",
@@ -91,7 +93,8 @@
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
           "visible": false,
           "color": "#c45e00",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "opacity": 0.1
         },
         {
           "title": "EEZ",
@@ -103,7 +106,8 @@
           },
           "visible": true,
           "color": "blue",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "opacity": 1
         },
         {
           "title": "High Seas Pocket",
@@ -115,7 +119,8 @@
           },
           "visible": true,
           "color": "blue",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "opacity": 1
         },
         {
           "title": "RFMO",
@@ -127,7 +132,8 @@
           },
           "visible": false,
           "color": "blue",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "opacity": 1
         }
       ]
     },

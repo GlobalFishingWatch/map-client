@@ -126,6 +126,14 @@ export function getWorkspace(workspaceId) {
         const layers = workspace.map.layers
           .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
 
+        // parses opacity attribute
+        layers.forEach((layer) => {
+          const l = layer;
+          if (!!layer.opacity) {
+            l.opacity = parseFloat(layer.opacity) * 100;
+          }
+        });
+
         dispatch({
           type: SET_LAYERS,
           payload: layers
