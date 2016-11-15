@@ -57,7 +57,7 @@ export default {
     const endYear = new Date(endDate).getUTCFullYear();
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/\
+      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/765-tileset-nz2-tms/\
 ${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
 ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     }
@@ -69,10 +69,10 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
   },
 
   /**
-   * As data will come in multiple arrays (1 per year basically), they need to be merged here
+   * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
    *
    * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
-   * @returns {*}
+   * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
    */
   groupData(cleanVectorArrays) {
     const data = {};
@@ -83,12 +83,14 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       data[key] = new Float32Array(totalVectorArraysLength);
     });
 
+    let cumulatedOffsets = 0;
+
     for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
       const currentArray = cleanVectorArrays[index];
-      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
-      API_RETURNED_KEYS.forEach((key) => {
-        data[key].set(currentArray[key], offset);
+      API_RETURNED_KEYS.forEach(key => {
+        data[key].set(currentArray[key], cumulatedOffsets);
       });
+      cumulatedOffsets += currentArray.longitude.length;
     }
     return data;
   },
