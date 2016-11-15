@@ -69,12 +69,21 @@
         display: flex;
         flex-basis: 100%;
         margin: 10px 0 5px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .25s ease;
+
+        &.-is-visible {
+          max-height: 40px;
+          overflow: visible;
+        }
 
         :global .opacity-range {
           appearance: none;
           background: transparent;
-          height: 30px;
+          height: 40px;
           position: relative;
+          top: 5px;
           width: 100%;
 
           :global .track-container {

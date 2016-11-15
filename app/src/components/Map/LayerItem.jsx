@@ -6,17 +6,51 @@ import iconsStyles from '../../../styles/icons.scss';
 
 class LayerItem extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.defaultConfig = {
+      classnames: {
+        component: 'opacity-range',
+        labelMax: 'label -max',
+        labelMin: 'label -min',
+        labelValue: 'label -current',
+        trackActive: 'track-active',
+        trackContainer: 'track-container',
+        sliderContainer: 'thumb-container',
+        slider: 'thumb'
+      },
+      minValue: 0,
+      maxValue: 100,
+      step: 10,
+      value: 50
+    };
+
+    this.state = {
+      rangeValue: this.defaultConfig.value
+    };
+  }
+
+  // mandatory callback for range element. Updates itself.
+  onChangeOpacity(component, value) {
+    this.setState({
+      rangeValue: value
+    });
+  }
+
   // onClickReport(event) {
   //   console.log(event);
   // }
-  //
-  // onClickOpacity(event) {
-  //   console.log(event);
-  // }
+
   //
   // onClickInfo(event) {
   //   console.log(event);
   // }
+
+
+  toggleOpacityMenu() {
+    this.opacityMenu.classList.toggle(layerPanelStyle['-is-visible']);
+  }
 
   render() {
     return (
@@ -48,7 +82,7 @@ class LayerItem extends Component {
           </li>
           <li
             className={layerPanelStyle['layer-options-item']}
-            onClick={this.onClickOpacity}
+            onClick={() => this.toggleOpacityMenu()}
           >
             <svg className={classnames(iconsStyles.icon, iconsStyles['icon-opacity-icon'])}>
               <use xlinkHref="#icon-opacity-icon"></use>
@@ -63,14 +97,14 @@ class LayerItem extends Component {
             </svg>
           </li>
         </ul>
-        <div className={layerPanelStyle['opacity-menu']}>
+        <div className={layerPanelStyle['opacity-menu']} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
           <InputRange
-            classNames={this.state.input}
-            maxValue={100}
-            minValue={0}
-            value={this.state.values}
+            classNames={this.defaultConfig.classnames}
+            value={this.state.rangeValue}
+            maxValue={this.defaultConfig.maxValue}
+            minValue={this.defaultConfig.minValue}
             onChange={(component, value) => this.onChangeOpacity(component, value)}
-            step={10}
+            step={this.defaultConfig.step}
           />
         </div>
       </li>
