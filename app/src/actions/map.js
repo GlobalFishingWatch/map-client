@@ -4,6 +4,7 @@ import {
   SET_ZOOM,
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
+  SET_LAYER_OPACITY,
   SET_TIMELINE_DATES,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
@@ -38,6 +39,16 @@ export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
+  };
+}
+
+export function setLayerOpacity(opacity, layer) {
+  return {
+    type: SET_LAYER_OPACITY,
+    payload: {
+      layer,
+      opacity: parseInt(opacity, 10)
+    }
   };
 }
 

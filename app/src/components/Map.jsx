@@ -181,6 +181,9 @@ class Map extends Component {
     const layersChanged = newLayers.length !== currentLayers.length ||
       !newLayers.every((l, i) => l.title === currentLayers[i].title && l.visible === currentLayers[i].visible);
 
+    // console.log(addedLayers);
+    // debugger
+
     // If the layers haven't changed, we have nothing to do
     if (!layersChanged) return;
 

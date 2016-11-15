@@ -33,9 +33,13 @@ class LayerItem extends Component {
 
   // mandatory callback for range element. Updates itself.
   onChangeOpacity(component, value) {
+    const transparency = parseInt(value, 10) / 100;
+
     this.setState({
       rangeValue: value
     });
+
+    this.props.setLayerOpacity(transparency, this.props.layer);
   }
 
   // onClickReport(event) {
@@ -114,7 +118,8 @@ class LayerItem extends Component {
 
 LayerItem.propTypes = {
   layer: React.PropTypes.object,
-  toggleLayerVisibility: React.PropTypes.func
+  toggleLayerVisibility: React.PropTypes.func,
+  setLayerOpacity: React.PropTypes.func
 };
 
 export default LayerItem;

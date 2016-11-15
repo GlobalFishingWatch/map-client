@@ -14,6 +14,7 @@ class LayerPanel extends Component {
             key={i}
             layer={this.props.layers[i]}
             toggleLayerVisibility={this.props.toggleLayerVisibility}
+            setLayerOpacity={this.props.setLayerOpacity}
           />
         );
       }
@@ -31,7 +32,8 @@ class LayerPanel extends Component {
 
 LayerPanel.propTypes = {
   layers: React.PropTypes.array,
-  toggleLayerVisibility: React.PropTypes.func
+  toggleLayerVisibility: React.PropTypes.func,
+  setLayerOpacity: React.PropTypes.func
 };
 
 
