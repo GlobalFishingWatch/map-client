@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 import facebookIcon from '../../../assets/icons/facebook.svg';
 import twitterIcon from '../../../assets/icons/twitter.svg';
+import googlePlusIcon from '../../../assets/icons/google-plus.svg';
 
 import styles from '../../../styles/components/map/c-share.scss';
 
@@ -127,8 +128,8 @@ class Share extends Component {
             className={classnames(styles['social-button'], styles['-googleplus'])}
             onClick={e => this.openGooglePlus(e)}
           >
-            <img src={facebookIcon} alt="Global Fishing Watch Google+" />
-            <span className={styles['button-text']}>Google +</span>
+            <img src={googlePlusIcon} alt="Global Fishing Watch Google+" />
+            <span className={styles['button-text']}>Google</span>
           </button>
           <button
             className={classnames(styles['social-button'], styles['-twitter'])}
