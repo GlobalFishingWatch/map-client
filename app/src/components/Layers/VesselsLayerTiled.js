@@ -83,7 +83,6 @@ class CanvasLayer {
         if (this.debug) this._showDebugInfo(canvas, 'E');
         console.warn('empty dataset');
         this.releaseTile(canvas);
-        return canvas;
       }
 
       const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);

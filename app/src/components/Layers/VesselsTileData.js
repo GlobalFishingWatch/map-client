@@ -83,13 +83,16 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       data[key] = new Float32Array(totalVectorArraysLength);
     });
 
+    let currentArray;
     let cumulatedOffsets = 0;
 
+    const appendValues = key => {
+      data[key].set(currentArray[key], cumulatedOffsets);
+    };
+
     for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
-      const currentArray = cleanVectorArrays[index];
-      API_RETURNED_KEYS.forEach(key => {
-        data[key].set(currentArray[key], cumulatedOffsets);
-      });
+      currentArray = cleanVectorArrays[index];
+      API_RETURNED_KEYS.forEach(appendValues);
       cumulatedOffsets += currentArray.longitude.length;
     }
     return data;
