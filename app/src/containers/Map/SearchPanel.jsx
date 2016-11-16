@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch) => ({
       type: RESET_VESSEL_DETAILS,
       payload: vesselDetails
     });
-    dispatch(getVesselTrack(vesselDetails.seriesgroup));
+    dispatch(getVesselTrack(vesselDetails.seriesgroup, null, true));
     dispatch(setVesselPosition(elem));
   },
   toggleVisibility: (visibility) => {
