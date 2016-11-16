@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import BasemapPanel from '../../components/Map/BasemapPanel';
-import { toggleVisibility } from '../../actions/vesselInfo';
+import { toggleLayerVisibility } from '../../actions/map';
 
 
 const mapStateToProps = (state) => ({
@@ -8,8 +8,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleVisibility: visibility => {
-    dispatch(toggleVisibility(visibility));
+  toggleLayerVisibility: layer => {
+    dispatch(toggleLayerVisibility(layer));
   }
 });
 

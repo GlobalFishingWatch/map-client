@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerListStyles from '../../../styles/components/map/c-layer-list.scss';
 import layerPanelStyle from '../../../styles/components/map/c-layer-panel.scss';
+import SwitcherStyles from '../../../styles/components/shared/c-switcher.scss';
 import iconsStyles from '../../../styles/icons.scss';
 
 class BasemapItem extends Component {
@@ -22,7 +23,7 @@ class BasemapItem extends Component {
         >
           <label>
             <input
-              className={layerPanelStyle.switcher}
+              className={SwitcherStyles['c-switcher']}
               type="checkbox"
               checked={basemapLayer.visible}
               onChange={() => this.props.toggleLayerVisibility(basemapLayer)}
