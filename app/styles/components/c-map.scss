@@ -51,6 +51,14 @@
   @media screen and (min-width: 900px) {
     height: calc(100% - #{$footer-mini-height + $timebar-height}); // footer mini height
   }
+
+
+  :global .gmnoprint,
+  :global .gmaps,
+  :global .cartodb-logo,
+  :global .gm-style a {
+    display: none !important; // sass-lint:disable-line no-important
+  }
 }
 
 .map-iframe-container {
