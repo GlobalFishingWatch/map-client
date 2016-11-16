@@ -21,6 +21,7 @@ class VesselInfoPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.vesselInfo) return;
     // new vessel selected
     if (this.state.vesselInfo.callsign !== nextProps.vesselInfo.callsign) {
       if (nextProps.vesselPosition) {

@@ -22,6 +22,14 @@ class CanvasLayer {
     this.map.overlayMapTypes.insertAt(0, this);
   }
 
+  show() {
+    this.map.overlayMapTypes.insertAt(0, this);
+  }
+
+  hide() {
+    this.map.overlayMapTypes.removeAt(0);
+  }
+
   setFlag(flag) {
     if (flag !== '') {
       this.flag = parseInt(flag, 10);

@@ -32,6 +32,8 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     panes.overlayLayer.appendChild(this.container);
   }
 
+  onRemove() {}
+
   _build() {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
@@ -82,10 +84,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     return tplCanvas;
   }
 
-  onRemove() {
-    this.container.parentNode.removeChild(this.div_);
-    this.container = null;
-  }
+
 
   repositionCanvas() {
     if (!this.container) return;
@@ -122,8 +121,18 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   draw() {}
 
+  show() {
+    this.hidden = false;
+    this.container.style.display = 'block';
+  }
+
+  hide() {
+    this.hidden = true;
+    this.container.style.display = 'none';
+  }
+
   render(tiles, startIndex, endIndex) {
-    if (!this.stage) return;
+    if (!this.stage || this.hidden) return;
     // this.debugTexts.forEach(text => {
     //   this.stage.removeChild(text);
     // });
