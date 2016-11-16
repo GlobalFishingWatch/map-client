@@ -1,6 +1,7 @@
 import { push } from 'react-router-redux';
 import {
   SET_LAYERS,
+  SET_BASEMAP_LAYERS,
   SET_ZOOM,
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
@@ -139,6 +140,11 @@ export function getWorkspace(workspaceId) {
         dispatch({
           type: SET_LAYERS,
           payload: layers
+        });
+
+        dispatch({
+          type: SET_BASEMAP_LAYERS,
+          payload: workspace.map.basemap_layers
         });
       })
       .catch(err => console.warn(`Unable to fetch the layers: ${err}`));

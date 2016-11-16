@@ -4,7 +4,7 @@ import { toggleVisibility } from '../../actions/vesselInfo';
 
 
 const mapStateToProps = (state) => ({
-  filters: state.map.layers
+  basemapLayers: state.map.basemapLayers
 });
 
 const mapDispatchToProps = (dispatch) => ({
