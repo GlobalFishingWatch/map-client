@@ -86,7 +86,7 @@ class Share extends Component {
     if (!this.props.workspaceId) {
       return (
         <div className={styles['c-share']}>
-          <h2 className={styles.title}>Share this campaign</h2>
+          <h2 className={styles.title}>Share this map</h2>
           <p>
             Saving your workspace...
           </p>
