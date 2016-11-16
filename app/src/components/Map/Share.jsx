@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
+
+import facebookIcon from '../../../assets/icons/facebook.svg';
+import twitterIcon from '../../../assets/icons/twitter.svg';
+import googlePlusIcon from '../../../assets/icons/google-plus.svg';
+
 import styles from '../../../styles/components/map/c-share.scss';
+
 
 class Share extends Component {
 
@@ -51,11 +58,23 @@ class Share extends Component {
     return `${location.origin}${location.pathname}?workspace=${this.props.workspaceId}`;
   }
 
+  openFacebook() {
+    console.info('Facebook share coming soon...');
+  }
+
+  openGooglePlus() {
+    console.info('Google Plus share coming soon...');
+  }
+
+  openTwitter() {
+    console.info('Twitter share coming soon...');
+  }
+
   render() {
     if (this.props.error) {
       return (
         <div className={styles['c-share']}>
-          <h2 className={styles.title}>Share this campaign</h2>
+          <h2 className={styles.title}>Share this map</h2>
           <p>
             Sorry, an error prevented the workspace to be saved. Try again.
           </p>
@@ -67,7 +86,7 @@ class Share extends Component {
     if (!this.props.workspaceId) {
       return (
         <div className={styles['c-share']}>
-          <h2 className={styles.title}>Share this campaign</h2>
+          <h2 className={styles.title}>Share this map</h2>
           <p>
             Saving your workspace...
           </p>
@@ -84,7 +103,7 @@ class Share extends Component {
 
     return (
       <div className={styles['c-share']}>
-        <h2 className={styles.title}>Share this campaign</h2>
+        <h2 className={styles.title}>Share this map</h2>
         <p className={styles.intro}>
           Copy and paste the link into an email or IM
         </p>
@@ -94,6 +113,39 @@ class Share extends Component {
             {this.state.copied ? 'Copied!' : 'Copy'}
           </button>
         </form>
+        <div className={styles.separator}>
+          <span className={styles['word-separator']}>or</span>
+        </div>
+        <div className={styles['social-links']}>
+          <button
+            className={classnames(styles['social-button'], styles['-facebook'])}
+            onClick={e => this.openFacebook(e)}
+          >
+            <span className={styles['button-container']}>
+              <img src={facebookIcon} alt="Global Fishing Watch Facebook" />
+              <span className={styles['button-text']}>facebook</span>
+            </span>
+          </button>
+          <button
+            className={classnames(styles['social-button'], styles['-googleplus'])}
+            onClick={e => this.openGooglePlus(e)}
+          >
+            <span className={styles['button-container']}>
+              <img src={googlePlusIcon} alt="Global Fishing Watch Google+" />
+              <span className={styles['button-text']}>Google</span>
+            </span>
+          </button>
+          <button
+            className={classnames(styles['social-button'], styles['-twitter'])}
+            onClick={e => this.openTwitter(e)}
+          >
+            <span className={styles['button-container']}>
+              <img src={twitterIcon} alt="Global Fishing Watch Twitter" />
+              <span className={styles['button-text']}>Twitter</span>
+            </span>
+          </button>
+        </div>
+
         {this.state.error && copyError}
       </div>
     );

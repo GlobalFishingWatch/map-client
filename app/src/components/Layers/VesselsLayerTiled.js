@@ -83,8 +83,8 @@ class CanvasLayer {
         if (this.debug) this._showDebugInfo(canvas, 'E');
         console.warn('empty dataset');
         this.releaseTile(canvas);
-        return canvas;
       }
+
       const cleanVectorArrays = VesselsTileData.getCleanVectorArrays(rawTileData);
       if (cleanVectorArrays.length !== rawTileData.length) {
         console.warn('partially empty dataset');
@@ -127,7 +127,7 @@ class CanvasLayer {
   }
 
   _showDebugInfo(canvas, text) {
-    const coords = canvas.tileCoordinates
+    const coords = canvas.tileCoordinates;
     const ctx = canvas.ctx;
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, 250, 20);

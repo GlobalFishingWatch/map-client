@@ -5,12 +5,17 @@
 
   > .title {
     font-size: $font-size-medium;
-    font-weight: $font-weight-normal;
+    font-weight: $font-weight-bold;
     margin-bottom: 10px;
   }
 
   > .intro {
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
     margin: 0;
+    text-transform: uppercase;
   }
 
   > form {
@@ -22,8 +27,9 @@
 
   .url-input {
     background-color: transparent;
-    border: 1px solid $color-5;
-    color: rgba($color-4, .5);
+    border: 1px solid $color-14;
+    color: rgba($color-4, .3);
+    font-size: $font-size-small;
     height: 40px;
     padding: 0 90px 0 20px;
   }
@@ -33,6 +39,7 @@
     border: 0;
     color: $color-4;
     cursor: pointer;
+    font-size: $font-size-small;
     font-weight: $font-weight-bold;
     height: 40px;
     position: absolute;
@@ -40,6 +47,92 @@
     text-transform: uppercase;
     top: 0;
     width: 70px;
+  }
+
+  .separator {
+    margin: 45px 0 40px;
+
+    > .word-separator {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+
+      &::before,
+      &::after {
+        // border: 0;
+        border-top: 1px solid $color-14;
+        content: '';
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        // transform: translate(0, -50%);
+        width: calc(50% - 34px);
+      }
+
+      &::before {
+        left: 0;
+      }
+
+      &::after {
+        right: 0;
+      }
+    }
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    > .social-button {
+      border: 0;
+      cursor: pointer;
+      flex-basis: calc(33.33% - 18px);
+      padding: 24px 0;
+
+      &.-facebook {
+        background-color: $color-28;
+
+        img {
+          height: 22px;
+          width: 10px;
+        }
+      }
+
+      &.-googleplus {
+        background-color: $color-29;
+
+        img {
+          height: 17px;
+          width: 21px;
+        }
+      }
+
+      &.-twitter {
+        background-color: $color-30;
+
+        img {
+          height: 15px;
+          width: 18px;
+        }
+      }
+
+      > .button-container {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+
+        > .button-text {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          margin: 0 0 0 5px;
+          text-transform: uppercase;
+        }
+      }
+    }
   }
 
   .copy-error {
