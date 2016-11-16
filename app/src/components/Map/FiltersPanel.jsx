@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import FiltersPanelStyle from '../../../styles/components/c-filters-panel.scss';
 import { DEFAULT_VESSEL_COLOR } from '../../constants';
 
 class FiltersPanel extends Component {
@@ -24,7 +23,7 @@ class FiltersPanel extends Component {
     }
 
     return (
-      <div className={FiltersPanelStyle['filters-panel']}>
+      <div>
         <label htmlFor="vesselTransparency">Vessel transparency
           <select
             id="vesselTransparency"
