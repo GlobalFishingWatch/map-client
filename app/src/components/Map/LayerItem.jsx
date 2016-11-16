@@ -20,7 +20,7 @@ class LayerItem extends Component {
         sliderContainer: 'thumb-container',
         slider: 'thumb'
       },
-      minValue: 0,
+      minValue: 10,
       maxValue: 100,
       step: 10,
       value: this.props.layer.opacity
@@ -57,6 +57,8 @@ class LayerItem extends Component {
   }
 
   render() {
+    if (!this.state.rangeValue) return null;
+
     return (
       <li
         className={layerPanelStyle['layer-item']}

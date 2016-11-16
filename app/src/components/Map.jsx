@@ -354,13 +354,12 @@ class Map extends Component {
 
     if (layerSettings.type === 'ClusterAnimation') return;
 
-    if (!!layerSettings.opacity) {
-      console.info(`setting opacity of: ${layerSettings.title}`);
-      const opacity = layerSettings.opacity > 1 ?
-        layerSettings.opacity / 100 : layerSettings.opacity;
+    const opacity = layerSettings.opacity > 1 ?
+      layerSettings.opacity / 100 : layerSettings.opacity;
 
-      addedLayers[layerSettings.title].setOpacity(opacity);
-    }
+    console.info(`setting opacity of: ${layerSettings.title} to ${opacity}`);
+
+    addedLayers[layerSettings.title].setOpacity(opacity);
   }
 
   onMouseMove() {
