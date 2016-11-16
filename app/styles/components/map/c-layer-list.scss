@@ -1,0 +1,50 @@
+@import '../../settings';
+
+.c-layer-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  .layer-item {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+    > .layer-info {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+
+      > .layer-thumbnail {
+        border-radius: 2px;
+        height: 30px;
+        margin: 0 10px 0 0;
+        width: 30px;
+      }
+    }
+
+    .layer-title {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      font-weight: $font-weight-normal;
+      line-height: 2;
+      text-transform: uppercase;
+    }
+
+    > .layer-option-list {
+      display: flex;
+
+      > .layer-option-item {
+        &:not(:first-child) {
+          margin: 0 0 0 10px;
+        }
+      }
+    }
+
+    > .sublayer-list {
+      flex-basis: 100%;
+    }
+  }
+}
