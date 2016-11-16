@@ -85,27 +85,15 @@
     width: 100%;
 
     > .social-button {
-      align-items: center;
       border: 0;
       cursor: pointer;
-      display: flex;
       flex-basis: calc(33.33% - 18px);
-      justify-content: center;
       padding: 24px 0;
-
-      > .button-text {
-        color: $color-4;
-        font-family: $font-family-1;
-        font-size: $font-size-small;
-        font-weight: $font-weight-bold;
-        margin: 0 0 0 5px;
-        text-transform: uppercase;
-      }
 
       &.-facebook {
         background-color: $color-28;
 
-        > img {
+        img {
           height: 22px;
           width: 10px;
         }
@@ -114,7 +102,7 @@
       &.-googleplus {
         background-color: $color-29;
 
-        > img {
+        img {
           height: 17px;
           width: 21px;
         }
@@ -123,9 +111,25 @@
       &.-twitter {
         background-color: $color-30;
 
-        > img {
+        img {
           height: 15px;
           width: 18px;
+        }
+      }
+
+      > .button-container {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+
+        > .button-text {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          margin: 0 0 0 5px;
+          text-transform: uppercase;
         }
       }
     }

@@ -121,22 +121,28 @@ class Share extends Component {
             className={classnames(styles['social-button'], styles['-facebook'])}
             onClick={e => this.openFacebook(e)}
           >
-            <img src={facebookIcon} alt="Global Fishing Watch Facebook" />
-            <span className={styles['button-text']}>facebook</span>
+            <span className={styles['button-container']}>
+              <img src={facebookIcon} alt="Global Fishing Watch Facebook" />
+              <span className={styles['button-text']}>facebook</span>
+            </span>
           </button>
           <button
             className={classnames(styles['social-button'], styles['-googleplus'])}
             onClick={e => this.openGooglePlus(e)}
           >
-            <img src={googlePlusIcon} alt="Global Fishing Watch Google+" />
-            <span className={styles['button-text']}>Google</span>
+            <span className={styles['button-container']}>
+              <img src={googlePlusIcon} alt="Global Fishing Watch Google+" />
+              <span className={styles['button-text']}>Google</span>
+            </span>
           </button>
           <button
             className={classnames(styles['social-button'], styles['-twitter'])}
             onClick={e => this.openTwitter(e)}
           >
-            <img src={twitterIcon} alt="Global Fishing Watch Twitter" />
-            <span className={styles['button-text']}>Twitter</span>
+            <span className={styles['button-container']}>
+              <img src={twitterIcon} alt="Global Fishing Watch Twitter" />
+              <span className={styles['button-text']}>Twitter</span>
+            </span>
           </button>
         </div>
 
