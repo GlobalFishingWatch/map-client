@@ -24,7 +24,7 @@ class Map extends Component {
     super(props);
     this.state = {
       overlay: null,
-      addedLayers: [],
+      addedLayers: {},
       lastCenter: null,
       running: 'stop'
     };
@@ -306,25 +306,27 @@ class Map extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      if (layers[layerSettings.title].isVisible()) {
-        return;
-      }
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
         // this.state.overlay.show();
-      } else {
-        layers[layerSettings.title].show();
-      }
-    } else {
-      if (!layers[layerSettings.title].isVisible()) {
         return;
       }
+
+      if (layers[layerSettings.title].isVisible()) return;
+
+      console.info(`showing layer: ${layerSettings.title}`);
+      layers[layerSettings.title].show();
+    } else {
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
         // this.state.overlay.hide();
-      } else {
-        layers[layerSettings.title].hide();
+        return;
       }
+
+      if (!layers[layerSettings.title].isVisible()) return;
+
+      console.info(`hiding layer: ${layerSettings.title}`);
+      layers[layerSettings.title].hide();
     }
   }
 
