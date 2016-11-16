@@ -9,7 +9,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    overflow: hidden;
     width: 100%;
+
+    &:not(:first-child) {
+      margin: 15px 0 0;
+    }
 
     > .layer-info {
       align-items: center;
@@ -45,6 +50,18 @@
 
     > .sublayer-list {
       flex-basis: 100%;
+      max-height: 0;
+      transition: max-height .25s ease;
+
+      > .layer-item {
+        &:first-child {
+          margin: 15px 0 0;
+        }
+      }
+
+      &.-open {
+        max-height: 175px;
+      }
     }
   }
 }

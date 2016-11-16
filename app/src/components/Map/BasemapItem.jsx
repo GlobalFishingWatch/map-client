@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import BasemapPanelStyles from '../../../styles/components/map/c-basemap-panel.scss';
+import LayerListStyles from '../../../styles/components/map/c-layer-list.scss';
 import layerPanelStyle from '../../../styles/components/map/c-layer-panel.scss';
 import iconsStyles from '../../../styles/icons.scss';
 
@@ -12,11 +12,12 @@ class BasemapItem extends Component {
 
   render() {
     const itemArray = [];
+    const activeClass = this.props.isActive ? LayerListStyles['-open'] : null;
 
     this.props.basemapLayers.forEach((basemapLayer, index) => {
       const baseMapItem = (
         <li
-          className={BasemapPanelStyles['basemap-layers-item']}
+          className={LayerListStyles['layer-item']}
           key={index}
         >
           <label>
@@ -29,13 +30,13 @@ class BasemapItem extends Component {
                 color: basemapLayer.color
               }}
             />
-            <span className={BasemapPanelStyles['basemap-layer-name']}>
+            <span className={LayerListStyles['layer-title']}>
               {basemapLayer.title}
             </span>
           </label>
-          <ul className={layerPanelStyle['layer-options-list']}>
+          <ul className={layerPanelStyle['layer-option-list']}>
             <li
-              className={layerPanelStyle['layer-options-item']}
+              className={layerPanelStyle['layer-option-item']}
               onClick={this.openModal}
             >
               <svg className={classnames(iconsStyles.icon, iconsStyles['icon-i-icon'])}>
@@ -50,7 +51,9 @@ class BasemapItem extends Component {
     });
 
     return (
-      <ul className={BasemapPanelStyles['sublist-basemap-layers']}>
+      <ul
+        className={classnames(LayerListStyles['sublayer-list'], activeClass)}
+      >
         {itemArray}
       </ul>
     );
@@ -59,6 +62,7 @@ class BasemapItem extends Component {
 
 BasemapItem.propTypes = {
   basemapLayers: React.PropTypes.array,
+  isActive: React.PropTypes.bool,
   toggleLayerVisibility: React.PropTypes.func
 };
 
