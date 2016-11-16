@@ -6,7 +6,7 @@
         0
       ],
       "zoom": 3,
-      "layers": [
+      "basemap_layers": [
         {
           "title": "Basemap",
           "source": {
@@ -54,7 +54,9 @@
           "visible": false,
           "color": "#da0ff0",
           "type": "CartoDBAnimation"
-        },
+        }
+      ],
+      "layers": [
         {
           "title": "VESSEL",
           "source": {
