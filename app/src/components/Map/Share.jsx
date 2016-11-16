@@ -74,7 +74,7 @@ class Share extends Component {
     if (this.props.error) {
       return (
         <div className={styles['c-share']}>
-          <h2 className={styles.title}>Share this campaign</h2>
+          <h2 className={styles.title}>Share this map</h2>
           <p>
             Sorry, an error prevented the workspace to be saved. Try again.
           </p>
@@ -103,7 +103,7 @@ class Share extends Component {
 
     return (
       <div className={styles['c-share']}>
-        <h2 className={styles.title}>Share this campaign</h2>
+        <h2 className={styles.title}>Share this map</h2>
         <p className={styles.intro}>
           Copy and paste the link into an email or IM
         </p>
