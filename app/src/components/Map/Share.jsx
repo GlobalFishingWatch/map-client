@@ -58,17 +58,17 @@ class Share extends Component {
     return `${location.origin}${location.pathname}?workspace=${this.props.workspaceId}`;
   }
 
-  // openFacebook(e) {
-  //   console.log(e);
-  // }
-  //
-  // openGooglePlus(e) {
-  //   console.log(e);
-  // }
-  //
-  // openTwitter(e) {
-  //   console.log(e);
-  // }
+  openFacebook() {
+    console.info('Facebook share coming soon...');
+  }
+
+  openGooglePlus() {
+    console.info('Google Plus share coming soon...');
+  }
+
+  openTwitter() {
+    console.info('Twitter share coming soon...');
+  }
 
   render() {
     if (this.props.error) {
