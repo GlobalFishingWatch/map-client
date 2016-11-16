@@ -1,4 +1,4 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION } from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION, SET_TRACK_BOUNDS } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -66,7 +66,19 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
       .then(rawTileData => {
         const cleanData = VesselsTileData.getCleanVectorArrays(rawTileData);
         const groupedData = VesselsTileData.groupData(cleanData);
-        // if (rawTileData[0]) {
+
+        // should this be computed server side ?
+        // this is half implemented because it doesnt take into account filtering and time span
+        const trackBounds = new google.maps.LatLngBounds();
+        for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
+          trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
+        }
+
+        dispatch({
+          type: SET_TRACK_BOUNDS,
+          trackBounds
+        });
+
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
@@ -76,12 +88,8 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
             selectedSeries: series
           }
         });
-        // } else {
-        //   dispatch({
-        //     type: SET_VESSEL_TRACK,
-        //     payload: null
-        //   });
-        // }
+
+
       });
   };
 }

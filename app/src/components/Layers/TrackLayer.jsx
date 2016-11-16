@@ -1,5 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
+import _ from 'lodash';
+
 const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
 const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
 const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
@@ -166,6 +168,8 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
+    let numDrawn = 0;
+
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
@@ -173,6 +177,8 @@ const createTrackLayer = function (google) {
       if (!drawStyle) {
         continue;
       }
+      numDrawn++;
+
       // console.log(drawStyle)
 
       point = this.drawPoint(overlayProjection, data, i, drawStyle);
@@ -189,6 +195,7 @@ const createTrackLayer = function (google) {
       }
       this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
+    console.log(numDrawn);
     this.ctx.stroke();
   };
 
