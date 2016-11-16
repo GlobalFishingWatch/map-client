@@ -47,7 +47,7 @@ export function setLayerOpacity(opacity, layer) {
     type: SET_LAYER_OPACITY,
     payload: {
       layer,
-      opacity: parseInt(opacity, 10)
+      opacity
     }
   };
 }

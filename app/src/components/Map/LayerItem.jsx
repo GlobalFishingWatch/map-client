@@ -33,7 +33,7 @@ class LayerItem extends Component {
 
   // mandatory callback for range element. Updates itself.
   onChangeOpacity(component, value) {
-    const transparency = parseInt(value, 10) / 100;
+    const transparency = parseFloat(value) / 100;
 
     this.setState({
       rangeValue: value

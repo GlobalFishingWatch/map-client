@@ -79,7 +79,6 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -181,8 +180,12 @@ class Map extends Component {
     const layersChanged = newLayers.length !== currentLayers.length ||
       !newLayers.every((l, i) => l.title === currentLayers[i].title && l.visible === currentLayers[i].visible);
 
-    // console.log(addedLayers);
-    // debugger
+    for (let i = 0, j = newLayers.length; i < j; i++) {
+      const newLayer = newLayers[i];
+      if (addedLayers[newLayer.title]) {
+        this.setLayerOpacity(newLayer);
+      }
+    }
 
     // If the layers haven't changed, we have nothing to do
     if (!layersChanged) return;
@@ -193,6 +196,7 @@ class Map extends Component {
     for (let i = 0, j = newLayers.length; i < j; i++) {
       const newLayer = newLayers[i];
       const oldLayer = currentLayers[i];
+
 
       // If the layer is already on the map and its visibility changed, we update it
       if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
@@ -256,6 +260,7 @@ class Map extends Component {
       this.refs.mapContainer.offsetHeight
     );
     this.setState({ /* overlay:  canvasLayer, */ trackLayer });
+
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
 
@@ -277,6 +282,8 @@ class Map extends Component {
           resolve();
         }).bind(this, layerSettings));
     }));
+
+
     return promise;
   }
 
@@ -298,6 +305,7 @@ class Map extends Component {
           resolve();
         }).bind(this, layerSettings));
     }));
+
     return promise;
   }
 
@@ -331,6 +339,27 @@ class Map extends Component {
 
       console.info(`hiding layer: ${layerSettings.title}`);
       layers[layerSettings.title].hide();
+    }
+  }
+
+  /**
+   * Updates a layer's opacity
+   *
+   * @param layerSettings
+   */
+  setLayerOpacity(layerSettings) {
+    const addedLayers = this.state.addedLayers;
+
+    if (!Object.keys(addedLayers).length) return;
+
+    if (layerSettings.type === 'ClusterAnimation') return;
+
+    if (!!layerSettings.opacity) {
+      console.info(`setting opacity of: ${layerSettings.title}`);
+      const opacity = layerSettings.opacity > 1 ?
+        layerSettings.opacity / 100 : layerSettings.opacity;
+
+      addedLayers[layerSettings.title].setOpacity(opacity);
     }
   }
 
