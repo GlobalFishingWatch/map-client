@@ -6,18 +6,32 @@
         0
       ],
       "zoom": 3,
-      "basemap_layers": [
+      "layers": [
         {
-          "title": "Basemap",
+          "title": "Deep Blue",
           "source": {
             "type": "BinFormat",
             "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"
+              "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json"
             }
           },
           "visible": false,
           "color": "#1a7ff0",
-          "type": "CartoDBBasemap"
+          "type": "CartoDBBasemap",
+          "thumbnail": "deep_blue",
+          "visible": true
+        }, {
+          "title": "High contrast",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json"
+            }
+          },
+          "visible": false,
+          "color": "#1a7ff0",
+          "type": "CartoDBBasemap",
+          "visible": false
         },
         {
           "title": "Bathimetry",
@@ -54,9 +68,7 @@
           "visible": false,
           "color": "#da0ff0",
           "type": "CartoDBAnimation"
-        }
-      ],
-      "layers": [
+        },
         {
           "title": "VESSEL",
           "source": {

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import BasemapItem from './BasemapItem';
 import LayerListStyles from '../../../styles/components/map/c-layer-list.scss';
 import iconsStyles from '../../../styles/icons.scss';
-import bathymetryThumbnail from '../../../assets/images/basemaps/bathymetry.png';
-import satelliteThumbnail from '../../../assets/images/basemaps/satellite.png';
+// import bathymetryThumbnail from '../../../assets/images/basemaps/bathymetry.png';
+// import satelliteThumbnail from '../../../assets/images/basemaps/satellite.png';
 
 class BasemapPanel extends Component {
 
@@ -12,7 +11,7 @@ class BasemapPanel extends Component {
     super(props);
 
     this.state = {
-      active: ''
+      basemap: 'Deep Blue'
     };
   }
 
@@ -20,28 +19,37 @@ class BasemapPanel extends Component {
     console.info('opens modal');
   }
 
-  toggleSubMenu(event) {
-    const target = event.currentTarget.getAttribute('data-item');
+  onSelectBasemap(event, layer) {
+    const basemap = event.currentTarget.getAttribute('data-basemap');
+
+    if (this.state.basemap === basemap) return;
 
     Object.assign(this.state, {
-      active: this.state.active === target ? '' : target
+      basemap
     });
 
     this.setState(this.state);
+
+    this.props.toggleLayerVisibility(layer);
   }
 
   render() {
-    if (!this.props.basemapLayers) return null;
-    return (
-      <ul className={LayerListStyles['c-layer-list']}>
-        <li className={LayerListStyles['layer-item']} >
-          <div
-            className={LayerListStyles['layer-info']}
-            data-item="bathymetry"
-            onClick={(event) => this.toggleSubMenu(event)}
-          >
-            <img alt="bathymetry" src={bathymetryThumbnail} className={LayerListStyles['layer-thumbnail']} />
-            <span className={LayerListStyles['layer-title']}>bathymetry</span>
+    const items = [];
+    if (!this.props.layers) return null;
+
+    this.props.layers.forEach((layer, i) => {
+      const urlThumbnail = `/basemaps/${layer.thumbnail}.png`;
+      const itemLayer = (
+        <li
+          className={classnames(LayerListStyles['layer-item'],
+            this.state.basemap === layer.title ? LayerListStyles['-selected'] : null)}
+          data-basemap={layer.title}
+          key={i}
+          onClick={(event) => this.onSelectBasemap(event, layer)}
+        >
+          <div className={LayerListStyles['layer-info']}>
+            <img alt={layer.title} src={urlThumbnail} className={LayerListStyles['layer-thumbnail']} />
+            <span className={LayerListStyles['layer-title']}>{layer.title}</span>
           </div>
           <ul className={LayerListStyles['layer-option-list']}>
             <li
@@ -53,27 +61,22 @@ class BasemapPanel extends Component {
               </svg>
             </li>
           </ul>
-          {this.props.basemapLayers.length &&
-            <BasemapItem
-              basemapLayers={this.props.basemapLayers}
-              toggleLayerVisibility={this.props.toggleLayerVisibility}
-              isActive={this.state.active === 'bathymetry'}
-            />
-          }
-        </li>
-        <li className={LayerListStyles['layer-item']}>
-          <div className={LayerListStyles['layer-info']}>
-            <img alt="satellite" src={satelliteThumbnail} className={LayerListStyles['layer-thumbnail']} />
-            <span className={LayerListStyles['layer-title']}>satellite</span>
-          </div>
-        </li>
+        </li>);
+
+      items.push(itemLayer);
+    });
+
+    return (
+      <ul className={LayerListStyles['c-layer-list']}>
+        {items}
       </ul>
     );
   }
 }
 
 BasemapPanel.propTypes = {
-  basemapLayers: React.PropTypes.array,
+  layers: React.PropTypes.array,
+  subLayers: React.PropTypes.array,
   toggleLayerVisibility: React.PropTypes.func
 };
 

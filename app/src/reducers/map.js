@@ -14,11 +14,15 @@ import {
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE
 } from '../actions';
-import { DEFAULT_VESSEL_COLOR } from '../constants';
+import _ from 'lodash';
+import { DEFAULT_VESSEL_COLOR, BASEMAP_TYPES } from '../constants';
 
 const initialState = {
   loading: false,
-  layers: [],
+  layers: [{
+    title: 'satellite',
+    type: 'CartoDBBasemap'
+  }],
   zoom: 3,
   center: [0, 0],
   shareModal: {
@@ -90,36 +94,68 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers: newLayers });
     }
     case TOGGLE_LAYER_VISIBILITY: {
-      // We get the index of the layer to update
-      const layerIndex = state.layers.reduce((res, l, i) => {
-        if (l.title === action.payload.title) {
-          return i;
-        }
-        return res;
-      }, -1);
 
-      // If the layer couldn't be found, we don't make any change
-      if (layerIndex === -1) return state;
+      const layers = _.cloneDeep(state.layers);
+      const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.title);
+      const newLayer = layers[toggledLayerIndex];
 
-      const newLayer = Object.assign({}, state.layers[layerIndex], {
-        visible: !state.layers[layerIndex].visible
-      });
+      if (toggledLayerIndex === -1) return state;
 
-      let newLayers;
-      if (layerIndex === 0) {
-        if (state.layers.length === 1) {
-          newLayers = [newLayer];
-        } else {
-          newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
-        }
-      } else if (layerIndex === state.layers.length - 1) {
-        newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
+      if (BASEMAP_TYPES.indexOf(newLayer.type) !== -1) {
+        layers.forEach((l) => {
+          const layer = l;
+          // it's not a basemap
+          if (BASEMAP_TYPES.indexOf(layer.type) === -1) return;
+
+          layer.visible = layer.title === newLayer.title;
+        });
       } else {
-        newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
-          state.layers.slice(layerIndex + 1, state.layers.length));
+        newLayer.visible = !newLayer.visible;
       }
 
-      return Object.assign({}, state, { layers: newLayers });
+      // We get the index of the layer to update
+      // const layerIndex = state.layers.reduce((res, l, i) => {
+      //   if (l.title === action.payload.title) {
+      //     return i;
+      //   }
+      //   return res;
+      // }, -1);
+
+      // const newLayers = _.cloneDeep(state.layers);
+      // const toggledLayerIndex = newLayers.findIndex(layer => layer.title === action.payload.title);
+      //
+      // const newLayer = newLayers[toggledLayerIndex];
+
+      // if (newLayer.basemap) {
+      //   // loop through all layers and set visibility to false to all basemap layers
+      //   for ( {})
+      //   newLayers[toggledLayerIndex].visible = true;
+      // }
+      //
+      // return newLayers;
+
+
+      // If the layer couldn't be found, we don't make any change
+
+      // const newLayer = Object.assign({}, state.layers[layerIndex], {
+      //   visible: !state.layers[layerIndex].visible
+      // });
+      //
+      // let newLayers;
+      // if (layerIndex === 0) {
+      //   if (state.layers.length === 1) {
+      //     newLayers = [newLayer];
+      //   } else {
+      //     newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
+      //   }
+      // } else if (layerIndex === state.layers.length - 1) {
+      //   newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
+      // } else {
+      //   newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
+      //     state.layers.slice(layerIndex + 1, state.layers.length));
+      // }
+
+      return Object.assign({}, state, { layers });
     }
 
     case SHARE_MODAL_OPEN: {

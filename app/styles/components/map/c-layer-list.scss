@@ -16,6 +16,13 @@
       margin: 15px 0 0;
     }
 
+    &.-selected {
+      > .layer-info > .layer-thumbnail {
+        border: 3px solid $color-4;
+        border-radius: 2px;
+      }
+    }
+
     > .layer-info {
       align-items: center;
       cursor: pointer;

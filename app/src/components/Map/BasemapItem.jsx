@@ -15,7 +15,7 @@ class BasemapItem extends Component {
     const itemArray = [];
     const activeClass = this.props.isActive ? LayerListStyles['-open'] : null;
 
-    this.props.basemapLayers.forEach((basemapLayer, index) => {
+    this.props.layers.forEach((layer, index) => {
       const baseMapItem = (
         <li
           className={LayerListStyles['layer-item']}
@@ -25,14 +25,14 @@ class BasemapItem extends Component {
             <input
               className={SwitcherStyles['c-switcher']}
               type="checkbox"
-              checked={basemapLayer.visible}
-              onChange={() => this.props.toggleLayerVisibility(basemapLayer)}
+              checked={layer.visible}
+              onChange={() => this.props.toggleLayerVisibility(layer)}
               style={{
-                color: basemapLayer.color
+                color: layer.color
               }}
             />
             <span className={LayerListStyles['layer-title']}>
-              {basemapLayer.title}
+              {layer.title}
             </span>
           </label>
           <ul className={layerPanelStyle['layer-option-list']}>
@@ -62,7 +62,7 @@ class BasemapItem extends Component {
 }
 
 BasemapItem.propTypes = {
-  basemapLayers: React.PropTypes.array,
+  layers: React.PropTypes.array,
   isActive: React.PropTypes.bool,
   toggleLayerVisibility: React.PropTypes.func
 };
