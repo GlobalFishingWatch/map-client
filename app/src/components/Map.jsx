@@ -186,6 +186,13 @@ class Map extends Component {
         }
       );
 
+    for (let i = 0, j = newLayers.length; i < j; i++) {
+      const newLayer = newLayers[i];
+      if (addedLayers[newLayer.title]) {
+        this.setLayerOpacity(newLayer);
+      }
+    }
+
     // If the layers haven't changed, we have nothing to do
     if (!layersChanged) return;
 

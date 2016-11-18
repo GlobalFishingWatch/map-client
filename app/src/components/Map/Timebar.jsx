@@ -274,7 +274,7 @@ class Timebar extends Component {
 
     // time range is too long
     if (newExtent[1].getTime() - newExtent[0].getTime() > TIMELINE_MAX_TIME) {
-      console.log('too long')
+      console.info('too long');
       const oldExtent = this.state.innerExtent;
 
       if (oldExtent[0].getTime() === newExtent[0].getTime()) {

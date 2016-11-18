@@ -131,6 +131,8 @@ export function getWorkspace(workspaceId) {
           const l = layer;
           if (!!layer.opacity) {
             l.opacity = parseFloat(layer.opacity);
+          } else {
+            l.opacity = 1;
           }
         });
 
