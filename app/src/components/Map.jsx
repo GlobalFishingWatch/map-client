@@ -23,8 +23,8 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overlay: null,
-      addedLayers: [],
+      overlay: null, // TODO deprecate this
+      addedLayers: {},
       lastCenter: null,
       running: 'stop'
     };
@@ -79,6 +79,7 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
+  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -317,25 +318,27 @@ class Map extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      if (layers[layerSettings.title].isVisible()) {
-        return;
-      }
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
-        // this.state.overlay.show();
-      } else {
-        layers[layerSettings.title].show();
+        this.vesselsLayer.show();
+        return;
       }
+
+      if (layers[layerSettings.title].isVisible()) return;
+
+      console.info(`showing layer: ${layerSettings.title}`);
+      layers[layerSettings.title].show();
     } else {
-      if (!layers[layerSettings.title].isVisible()) {
-        return;
-      }
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
-        // this.state.overlay.hide();
-      } else {
-        layers[layerSettings.title].hide();
+        this.vesselsLayer.hide();
+        return;
       }
+
+      if (!layers[layerSettings.title].isVisible()) return;
+
+      console.info(`hiding layer: ${layerSettings.title}`);
+      layers[layerSettings.title].hide();
     }
   }
 

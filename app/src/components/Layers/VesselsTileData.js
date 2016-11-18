@@ -69,10 +69,10 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
   },
 
   /**
-   * As data will come in multiple arrays (1 per year basically), they need to be merged here
+   * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
    *
    * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
-   * @returns {*}
+   * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
    */
   groupData(cleanVectorArrays) {
     const data = {};
@@ -83,12 +83,17 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       data[key] = new Float32Array(totalVectorArraysLength);
     });
 
+    let currentArray;
+    let cumulatedOffsets = 0;
+
+    const appendValues = key => {
+      data[key].set(currentArray[key], cumulatedOffsets);
+    };
+
     for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
-      const currentArray = cleanVectorArrays[index];
-      const offset = (index === 0) ? 0 : cleanVectorArrays[index - 1].longitude.length;
-      API_RETURNED_KEYS.forEach((key) => {
-        data[key].set(currentArray[key], offset);
-      });
+      currentArray = cleanVectorArrays[index];
+      API_RETURNED_KEYS.forEach(appendValues);
+      cumulatedOffsets += currentArray.longitude.length;
     }
     return data;
   },

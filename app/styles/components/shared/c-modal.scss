@@ -46,12 +46,12 @@
 
       .contain-button {
         position: absolute;
+        right: 10px;
       }
 
       .contain-padding {
         padding: 40px;
       }
-
     }
   }
 
@@ -61,7 +61,6 @@
     border-radius: 100%;
     cursor: pointer;
     height: 40px;
-    left: 10px;
     position: absolute;
     top: 10px;
     width: 40px;
@@ -83,5 +82,4 @@
       width: 16px;
     }
   }
-
 }

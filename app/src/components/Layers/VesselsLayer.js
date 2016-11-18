@@ -56,6 +56,16 @@ export default class VesselsLayer {
     this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
   }
 
+  show() {
+    this.overlay.show();
+    this.tiled.show();
+  }
+
+  hide() {
+    this.overlay.hide();
+    this.tiled.hide();
+  }
+
   render() {
     this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
     // this.tiled.render(this.currentInnerStartIndex, this.currentInnerEndIndex);
