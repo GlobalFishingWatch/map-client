@@ -21,6 +21,13 @@ const initialState = {
   loading: false,
   layers: [{
     title: 'satellite',
+    source: {
+      type: 'BinFormat',
+      args: {
+        url: ''
+      }
+    },
+    visible: true,
     type: 'CartoDBBasemap'
   }],
   zoom: 3,
@@ -49,8 +56,11 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    case SET_LAYERS:
-      return Object.assign({}, state, { layers: action.payload });
+    case SET_LAYERS: {
+      // joins initialState layers with incoming state layers to not lost first ones.
+      const layers = state.layers.concat(action.payload);
+      return Object.assign({}, state, { layers });
+    }
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
@@ -94,7 +104,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers: newLayers });
     }
     case TOGGLE_LAYER_VISIBILITY: {
-
       const layers = _.cloneDeep(state.layers);
       const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.title);
       const newLayer = layers[toggledLayerIndex];
@@ -112,48 +121,6 @@ export default function (state = initialState, action) {
       } else {
         newLayer.visible = !newLayer.visible;
       }
-
-      // We get the index of the layer to update
-      // const layerIndex = state.layers.reduce((res, l, i) => {
-      //   if (l.title === action.payload.title) {
-      //     return i;
-      //   }
-      //   return res;
-      // }, -1);
-
-      // const newLayers = _.cloneDeep(state.layers);
-      // const toggledLayerIndex = newLayers.findIndex(layer => layer.title === action.payload.title);
-      //
-      // const newLayer = newLayers[toggledLayerIndex];
-
-      // if (newLayer.basemap) {
-      //   // loop through all layers and set visibility to false to all basemap layers
-      //   for ( {})
-      //   newLayers[toggledLayerIndex].visible = true;
-      // }
-      //
-      // return newLayers;
-
-
-      // If the layer couldn't be found, we don't make any change
-
-      // const newLayer = Object.assign({}, state.layers[layerIndex], {
-      //   visible: !state.layers[layerIndex].visible
-      // });
-      //
-      // let newLayers;
-      // if (layerIndex === 0) {
-      //   if (state.layers.length === 1) {
-      //     newLayers = [newLayer];
-      //   } else {
-      //     newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
-      //   }
-      // } else if (layerIndex === state.layers.length - 1) {
-      //   newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
-      // } else {
-      //   newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
-      //     state.layers.slice(layerIndex + 1, state.layers.length));
-      // }
 
       return Object.assign({}, state, { layers });
     }

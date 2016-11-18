@@ -18,14 +18,13 @@
           "visible": false,
           "color": "#1a7ff0",
           "type": "CartoDBBasemap",
-          "thumbnail": "deep_blue",
-          "visible": true
+          "visible": false
         }, {
           "title": "High contrast",
           "source": {
             "type": "BinFormat",
             "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json"
+              "url": "http://cartodb.skytruth.org/user/dev/api/v2/viz/9d8f7b66-160c-11e6-bfbe-0242ac110006/viz.json"
             }
           },
           "visible": false,

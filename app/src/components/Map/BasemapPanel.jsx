@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import classnames from 'classnames';
 import LayerListStyles from '../../../styles/components/map/c-layer-list.scss';
 import iconsStyles from '../../../styles/icons.scss';
-// import bathymetryThumbnail from '../../../assets/images/basemaps/bathymetry.png';
-// import satelliteThumbnail from '../../../assets/images/basemaps/satellite.png';
 
 class BasemapPanel extends Component {
 
@@ -11,7 +10,7 @@ class BasemapPanel extends Component {
     super(props);
 
     this.state = {
-      basemap: 'Deep Blue'
+      basemap: 'satellite'
     };
   }
 
@@ -38,7 +37,8 @@ class BasemapPanel extends Component {
     if (!this.props.layers) return null;
 
     this.props.layers.forEach((layer, i) => {
-      const urlThumbnail = `/basemaps/${layer.thumbnail}.png`;
+      const imageName = _.camelCase(layer.title);
+      const urlThumbnail = `/basemaps/${imageName}.png`;
       const itemLayer = (
         <li
           className={classnames(LayerListStyles['layer-item'],
