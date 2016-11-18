@@ -437,6 +437,7 @@ class Timebar extends Component {
   }
 
   onPauseToggle() {
+    lastTimestamp = null;
     this.setState({
       paused: !this.state.paused
     });
