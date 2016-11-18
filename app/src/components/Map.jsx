@@ -79,7 +79,6 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);

@@ -195,7 +195,7 @@ const createTrackLayer = function (google) {
       }
       this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
-    console.log(numDrawn);
+    console.log(numDrawn, '/', data.latitude.length);
     this.ctx.stroke();
   };
 
