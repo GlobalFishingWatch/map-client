@@ -278,6 +278,7 @@ class Map extends Component {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
+          cartoLayer.setOpacity(layerSettings.opacity);
           addedLayers[layer.title] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
@@ -319,7 +320,6 @@ class Map extends Component {
 
     if (layerSettings.visible) {
       if (layerSettings.type === 'ClusterAnimation') {
-        // TODO
         this.vesselsLayer.show();
         return;
       }
@@ -330,7 +330,6 @@ class Map extends Component {
       layers[layerSettings.title].show();
     } else {
       if (layerSettings.type === 'ClusterAnimation') {
-        // TODO
         this.vesselsLayer.hide();
         return;
       }
@@ -354,12 +353,9 @@ class Map extends Component {
 
     if (layerSettings.type === 'ClusterAnimation') return;
 
-    const opacity = layerSettings.opacity > 1 ?
-      layerSettings.opacity / 100 : layerSettings.opacity;
+    console.info(`setting opacity of: ${layerSettings.title} to ${layerSettings.opacity}`);
 
-    console.info(`setting opacity of: ${layerSettings.title} to ${opacity}`);
-
-    addedLayers[layerSettings.title].setOpacity(opacity);
+    addedLayers[layerSettings.title].setOpacity(layerSettings.opacity);
   }
 
   onMouseMove() {

@@ -130,7 +130,7 @@ export function getWorkspace(workspaceId) {
         layers.forEach((layer) => {
           const l = layer;
           if (!!layer.opacity) {
-            l.opacity = parseFloat(layer.opacity) * 100;
+            l.opacity = parseFloat(layer.opacity);
           }
         });
 
