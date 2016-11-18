@@ -177,15 +177,14 @@ class Map extends Component {
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
 
-    const layersChanged = newLayers.length !== currentLayers.length ||
-      !newLayers.every((l, i) => l.title === currentLayers[i].title && l.visible === currentLayers[i].visible);
-
-    for (let i = 0, j = newLayers.length; i < j; i++) {
-      const newLayer = newLayers[i];
-      if (addedLayers[newLayer.title]) {
-        this.setLayerOpacity(newLayer);
-      }
-    }
+    const layersChanged = newLayers.length !== currentLayers.length || !newLayers.every(
+        (l, i) => {
+          if (l.title !== currentLayers[i].title) return false;
+          if (l.visible !== currentLayers[i].visible) return false;
+          if (l.opacity !== currentLayers[i].opacity) return false;
+          return true;
+        }
+      );
 
     // If the layers haven't changed, we have nothing to do
     if (!layersChanged) return;
@@ -245,13 +244,16 @@ class Map extends Component {
 
     const box = this.refs.mapContainer.getBoundingClientRect();
 
-    this.vesselsLayer = new VesselsLayer(
-      this.map,
-      this.props.token,
-      this.props.filters,
-      box.width,
-      box.height
-    );
+    if (!this.vesselsLayer) {
+      this.vesselsLayer = new VesselsLayer(
+        this.map,
+        this.props.token,
+        this.props.filters,
+        box.width,
+        box.height
+      );
+    }
+
     // Create track layer
     const Overlay = createTrackLayer(google);
     const trackLayer = new Overlay(
