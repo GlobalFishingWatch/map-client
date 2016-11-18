@@ -23,7 +23,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overlay: null,
+      overlay: null, // TODO deprecate this
       addedLayers: {},
       lastCenter: null,
       running: 'stop'
@@ -79,6 +79,7 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
+  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -308,7 +309,7 @@ class Map extends Component {
     if (layerSettings.visible) {
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
-        // this.state.overlay.show();
+        this.vesselsLayer.show();
         return;
       }
 
@@ -319,7 +320,7 @@ class Map extends Component {
     } else {
       if (layerSettings.type === 'ClusterAnimation') {
         // TODO
-        // this.state.overlay.hide();
+        this.vesselsLayer.hide();
         return;
       }
 

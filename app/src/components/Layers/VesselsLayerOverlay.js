@@ -32,6 +32,8 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     panes.overlayLayer.appendChild(this.container);
   }
 
+  onRemove() {}
+
   _build() {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
@@ -46,7 +48,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
-    // this.stage = new PIXI.Container();
 
     this.container.appendChild(this.canvas);
 
@@ -80,11 +81,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
       tplCtx.fillRect(0, 0, 2 * radius, 2 * radius);
     }
     return tplCanvas;
-  }
-
-  onRemove() {
-    this.container.parentNode.removeChild(this.div_);
-    this.container = null;
   }
 
   repositionCanvas() {
@@ -122,8 +118,19 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   draw() {}
 
+  show() {
+    this.hidden = false;
+    this.container.style.display = 'block';
+  }
+
+  hide() {
+    this.hidden = true;
+    this.container.style.display = 'none';
+    this._clear(true);
+  }
+
   render(tiles, startIndex, endIndex) {
-    if (!this.stage) return;
+    if (!this.stage || this.hidden) return;
     // this.debugTexts.forEach(text => {
     //   this.stage.removeChild(text);
     // });
@@ -224,12 +231,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
 
     // disable all sprites and let render take it from there
-    const newTotalPoolSize = this.spritesPool.length;
-
-    for (let i = 0; i < newTotalPoolSize; i++) {
-      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.spritesPool[i].x = -100;
-    }
+    this._clear();
   }
 
   _addSprites(num) {
@@ -248,5 +250,15 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   _getSpritesPerStep() {
     return Math.round(this.viewportWidth * this.viewportHeight * MAX_SPRITES_FACTOR);
+  }
+
+  _clear(render = false) {
+    for (let i = 0, poolSize = this.spritesPool.length; i < poolSize; i++) {
+      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
+      this.spritesPool[i].x = -100;
+    }
+    if (render) {
+      this.renderer.render(this.stage);
+    }
   }
 }
