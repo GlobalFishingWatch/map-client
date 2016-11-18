@@ -58,7 +58,7 @@ class Steps extends Component {
                 <h3 className={StepsStyle.name}>Step 2: Data Processing</h3>
                 <p>22+ million data points are added to the system every day. Using cloud computing and machine
                   learning, Global Fishing Watch processes the data, identifying which vessels are fishing boats,
-                  and when and where they are {' '}
+                  and when and where they are fishing {' '}
                   .
                 </p>
               </div>
