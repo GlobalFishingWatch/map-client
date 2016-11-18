@@ -4,6 +4,7 @@ import {
   SET_ZOOM,
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
+  SET_LAYER_OPACITY,
   SET_TIMELINE_DATES,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
@@ -38,6 +39,16 @@ export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
+  };
+}
+
+export function setLayerOpacity(opacity, layer) {
+  return {
+    type: SET_LAYER_OPACITY,
+    payload: {
+      layer,
+      opacity
+    }
   };
 }
 
@@ -114,6 +125,14 @@ export function getWorkspace(workspaceId) {
         const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
           .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
+
+        // parses opacity attribute
+        layers.forEach((layer) => {
+          const l = layer;
+          if (!!layer.opacity) {
+            l.opacity = parseFloat(layer.opacity);
+          }
+        });
 
         dispatch({
           type: SET_LAYERS,

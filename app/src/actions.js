@@ -2,6 +2,7 @@ export const VESSEL_INIT = 'VESSEL_INIT';
 export const SHOW_LOADING = 'SHOW_LOADING';
 export const SET_LAYERS = 'SET_LAYERS';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
+export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
 export const SET_ZOOM = 'SET_ZOOM';
 export const SET_CENTER = 'SET_CENTER';
 export const SET_TIMELINE_DATES = 'SET_TIMELINE_DATES';

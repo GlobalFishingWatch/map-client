@@ -3,6 +3,7 @@ import {
   SHOW_LOADING,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYERS,
+  SET_LAYER_OPACITY,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -56,6 +57,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { vesselColor: action.payload });
     case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
       return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
+    case SET_LAYER_OPACITY:
+      state.layers.forEach((l) => {
+        const layer = l;
+        if (layer.title === action.payload.layer.title) layer.opacity = action.payload.opacity;
+      });
+      return Object.assign({}, state);
     case TOGGLE_LAYER_VISIBILITY: {
       // We get the index of the layer to update
       const layerIndex = state.layers.reduce((res, l, i) => {

@@ -9,6 +9,7 @@
       cursor: pointer;
 
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
 
       &:not(:first-child) {
@@ -60,6 +61,85 @@
         > .layer-options-item {
           &:not(:first-child) {
             margin: 0 0 0 10px;
+          }
+        }
+      }
+
+      > .opacity-menu {
+        display: flex;
+        flex-basis: 100%;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .25s ease;
+
+        &.-is-visible {
+          max-height: 40px;
+          margin: 10px 0 5px;
+          overflow: visible;
+        }
+
+        :global .opacity-range {
+          appearance: none;
+          background: transparent;
+          height: 40px;
+          position: relative;
+          top: 5px;
+          width: 100%;
+
+          :global .track-container {
+            background-color: $color-14;
+            height: 3px;
+            margin: 10px 0 0;
+            position: relative;
+
+            .track-active {
+              background-color: $color-4;
+              height: 3px;
+            }
+          }
+
+          :global .thumb-container {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+          }
+
+          :global .thumb {
+            background-color: $color-2;
+            border: 2px solid $color-4;
+            display: inline-block;
+            height: 8px;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            width: 8px;
+          }
+
+          :global .label {
+            position: absolute;
+
+            &.-min,
+            &.-max {
+              bottom: 0;
+            }
+
+            &.-current {
+              top: -25px;
+            }
+
+            &.-min {
+              left: 0;
+            }
+
+            &.-max {
+              right: 0;
+            }
+
+            > span {
+              color: $color-4;
+              font-family: $font-family-1;
+              font-size: $font-size-tiny;
+            }
           }
         }
       }

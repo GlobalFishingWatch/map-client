@@ -79,7 +79,6 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -178,8 +177,14 @@ class Map extends Component {
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
 
-    const layersChanged = newLayers.length !== currentLayers.length ||
-      !newLayers.every((l, i) => l.title === currentLayers[i].title && l.visible === currentLayers[i].visible);
+    const layersChanged = newLayers.length !== currentLayers.length || !newLayers.every(
+        (l, i) => {
+          if (l.title !== currentLayers[i].title) return false;
+          if (l.visible !== currentLayers[i].visible) return false;
+          if (l.opacity !== currentLayers[i].opacity) return false;
+          return true;
+        }
+      );
 
     // If the layers haven't changed, we have nothing to do
     if (!layersChanged) return;
@@ -190,6 +195,7 @@ class Map extends Component {
     for (let i = 0, j = newLayers.length; i < j; i++) {
       const newLayer = newLayers[i];
       const oldLayer = currentLayers[i];
+
 
       // If the layer is already on the map and its visibility changed, we update it
       if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
@@ -238,13 +244,16 @@ class Map extends Component {
 
     const box = this.refs.mapContainer.getBoundingClientRect();
 
-    this.vesselsLayer = new VesselsLayer(
-      this.map,
-      this.props.token,
-      this.props.filters,
-      box.width,
-      box.height
-    );
+    if (!this.vesselsLayer) {
+      this.vesselsLayer = new VesselsLayer(
+        this.map,
+        this.props.token,
+        this.props.filters,
+        box.width,
+        box.height
+      );
+    }
+
     // Create track layer
     const Overlay = createTrackLayer(google);
     const trackLayer = new Overlay(
@@ -253,6 +262,7 @@ class Map extends Component {
       this.refs.mapContainer.offsetHeight
     );
     this.setState({ /* overlay:  canvasLayer, */ trackLayer });
+
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
 
@@ -270,10 +280,13 @@ class Map extends Component {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
+          cartoLayer.setOpacity(layerSettings.opacity);
           addedLayers[layer.title] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
     }));
+
+
     return promise;
   }
 
@@ -295,6 +308,7 @@ class Map extends Component {
           resolve();
         }).bind(this, layerSettings));
     }));
+
     return promise;
   }
 
@@ -308,7 +322,6 @@ class Map extends Component {
 
     if (layerSettings.visible) {
       if (layerSettings.type === 'ClusterAnimation') {
-        // TODO
         this.vesselsLayer.show();
         return;
       }
@@ -319,7 +332,6 @@ class Map extends Component {
       layers[layerSettings.title].show();
     } else {
       if (layerSettings.type === 'ClusterAnimation') {
-        // TODO
         this.vesselsLayer.hide();
         return;
       }
@@ -329,6 +341,23 @@ class Map extends Component {
       console.info(`hiding layer: ${layerSettings.title}`);
       layers[layerSettings.title].hide();
     }
+  }
+
+  /**
+   * Updates a layer's opacity
+   *
+   * @param layerSettings
+   */
+  setLayerOpacity(layerSettings) {
+    const addedLayers = this.state.addedLayers;
+
+    if (!Object.keys(addedLayers).length) return;
+
+    if (layerSettings.type === 'ClusterAnimation') return;
+
+    console.info(`setting opacity of: ${layerSettings.title} to ${layerSettings.opacity}`);
+
+    addedLayers[layerSettings.title].setOpacity(layerSettings.opacity);
   }
 
   onMouseMove() {
