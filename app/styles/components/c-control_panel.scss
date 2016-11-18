@@ -93,27 +93,8 @@
       .content-accordion {
         padding: 0 15px;
 
-        // basemaps
-        .basemap-list {
-          display: flex;
-          flex-wrap: wrap;
-
-          > .basemap {
-            border: 3px solid $color-4;
-            border-radius: 2px;
-
-            height: 30px;
-            width: 30px;
-
-            &:not(:first-child) {
-              margin: 0 0 0 15px;
-            }
-
-            > .basemap-img {
-              height: 100%;
-              width: 100%;
-            }
-          }
+        &.-basemaps {
+          margin: 10px 0 0;
         }
 
         .filters {

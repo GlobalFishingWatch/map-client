@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import FilterPanel from '../../containers/Map/FilterPanel';
 import BasemapPanel from '../../containers/Map/BasemapPanel';
 import LayerPanel from '../../containers/Map/LayerPanel';
@@ -46,7 +47,7 @@ class ControlPanel extends Component {
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={controlPanelStyle['content-accordion']}>
+        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-basemaps'])}>
           <BasemapPanel />
         </div>
       </AccordionItem>);
