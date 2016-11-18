@@ -27,7 +27,8 @@ class LayerItem extends Component {
     };
 
     this.state = {
-      rangeValue: this.defaultConfig.value
+      rangeValue: this.defaultConfig.value,
+      opacity: false
     };
   }
 
@@ -38,6 +39,10 @@ class LayerItem extends Component {
     this.setState({
       rangeValue: value
     });
+
+    if (!this.props.layer.visible) {
+      this.props.toggleLayerVisibility(this.props.layer);
+    }
 
     this.props.setLayerOpacity(transparency, this.props.layer);
   }
@@ -51,12 +56,31 @@ class LayerItem extends Component {
   //   console.log(event);
   // }
 
+  onChangeSwitch() {
+    if (this.props.layer.visible) {
+      Object.assign(this.state, {
+        opacity: false
+      });
+
+      this.setState(this.state);
+    }
+
+    this.props.toggleLayerVisibility(this.props.layer);
+  }
+
 
   toggleOpacityMenu() {
-    this.opacityMenu.classList.toggle(layerPanelStyle['-is-visible']);
+    Object.assign(this.state, {
+      opacity: !this.state.opacity
+    });
+
+    this.setState(this.state);
   }
 
   render() {
+    const cssClassOpacity = this.state.opacity ?
+      classnames(layerPanelStyle['opacity-menu'], layerPanelStyle['-is-visible']) : layerPanelStyle['opacity-menu'];
+
     if (!this.state.rangeValue) return null;
 
     return (
@@ -68,7 +92,7 @@ class LayerItem extends Component {
             className={layerPanelStyle.switcher}
             type="checkbox"
             checked={this.props.layer.visible}
-            onChange={() => this.props.toggleLayerVisibility(this.props.layer)}
+            onChange={() => this.onChangeSwitch()}
             style={{
               color: this.props.layer.color
             }}
@@ -103,7 +127,7 @@ class LayerItem extends Component {
             </svg>
           </li>
         </ul>
-        <div className={layerPanelStyle['opacity-menu']} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
+        <div className={cssClassOpacity} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
           <InputRange
             classNames={this.defaultConfig.classnames}
             value={this.state.rangeValue}
