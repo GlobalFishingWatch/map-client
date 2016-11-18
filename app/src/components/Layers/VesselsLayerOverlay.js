@@ -48,7 +48,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
-    // this.stage = new PIXI.Container();
 
     this.container.appendChild(this.canvas);
 
@@ -83,8 +82,6 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
     return tplCanvas;
   }
-
-
 
   repositionCanvas() {
     if (!this.container) return;
@@ -129,6 +126,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
   hide() {
     this.hidden = true;
     this.container.style.display = 'none';
+    this._clear(true);
   }
 
   render(tiles, startIndex, endIndex) {
@@ -233,12 +231,7 @@ export default class VesselsOverlay extends google.maps.OverlayView {
     }
 
     // disable all sprites and let render take it from there
-    const newTotalPoolSize = this.spritesPool.length;
-
-    for (let i = 0; i < newTotalPoolSize; i++) {
-      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.spritesPool[i].x = -100;
-    }
+    this._clear();
   }
 
   _addSprites(num) {
@@ -257,5 +250,15 @@ export default class VesselsOverlay extends google.maps.OverlayView {
 
   _getSpritesPerStep() {
     return Math.round(this.viewportWidth * this.viewportHeight * MAX_SPRITES_FACTOR);
+  }
+
+  _clear(render = false) {
+    for (let i = 0, poolSize = this.spritesPool.length; i < poolSize; i++) {
+      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
+      this.spritesPool[i].x = -100;
+    }
+    if (render) {
+      this.renderer.render(this.stage);
+    }
   }
 }
