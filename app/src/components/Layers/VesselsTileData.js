@@ -151,7 +151,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
 
       if (value > max) max = value;
       if (value < min) min = value;
-
       // const value = Math.max(0.1, Math.min(1, weight / 2));
 
       if (!tilePlaybackData[timeIndex]) {
@@ -161,7 +160,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
           value: [value],
           category: [vectorArray.category[index]],
           series: [vectorArray.series[index]],
-          seriesgroup: [vectorArray.seriesgroup[index]]
+          seriesgroup: [Math.abs(vectorArray.seriesgroup[index])]
         };
         continue;
       }
@@ -171,7 +170,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.value.push(value);
       timestamp.category.push(vectorArray.category[index]);
       timestamp.series.push(vectorArray.series[index]);
-      timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+      timestamp.seriesgroup.push(Math.abs(vectorArray.seriesgroup[index]));
     }
 
     // console.log(min, max)

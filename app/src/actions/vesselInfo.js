@@ -1,4 +1,10 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION } from '../actions';
+import {
+  SET_VESSEL_DETAILS,
+  SET_VESSEL_TRACK,
+  SET_VESSEL_VISIBILITY,
+  SET_VESSEL_POSITION,
+  SET_TRACK_BOUNDS
+} from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -24,13 +30,13 @@ export function setCurrentVessel(vesselDetails) {
     }
     request.open(
       'GET',
-      `${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
+      `${MAP_API_ENDPOINT}/v1/tilesets/765-tileset-nz2-tms/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.responseType = 'application/json';
     request.onreadystatechange = () => {
-      if (request.readyState !== 4) {
+      if (request.readyState !== 4 || request.status === 404) {
         return;
       }
       const data = JSON.parse(request.responseText);
@@ -44,7 +50,7 @@ export function setCurrentVessel(vesselDetails) {
   };
 }
 
-export function getVesselTrack(seriesGroup, series = null) {
+export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const state = getState();
     const filters = state.filters;
@@ -66,7 +72,21 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
       .then(rawTileData => {
         const cleanData = VesselsTileData.getCleanVectorArrays(rawTileData);
         const groupedData = VesselsTileData.groupData(cleanData);
-        // if (rawTileData[0]) {
+
+        if (zoomToBounds) {
+          // should this be computed server side ?
+          // this is half implemented because it doesnt take into account filtering and time span
+          const trackBounds = new google.maps.LatLngBounds();
+          for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
+            trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
+          }
+
+          dispatch({
+            type: SET_TRACK_BOUNDS,
+            trackBounds
+          });
+        }
+
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
@@ -76,12 +96,6 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
             selectedSeries: series
           }
         });
-        // } else {
-        //   dispatch({
-        //     type: SET_VESSEL_TRACK,
-        //     payload: null
-        //   });
-        // }
       });
   };
 }

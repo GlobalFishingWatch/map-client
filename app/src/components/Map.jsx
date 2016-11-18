@@ -79,7 +79,6 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
-  debugger
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -110,11 +109,20 @@ class Map extends Component {
       return;
     }
 
+    if (nextProps.trackBounds) {
+      console.log(nextProps.trackBounds);
+      if (!this.props.trackBounds || !nextProps.trackBounds.equals(this.props.trackBounds)) {
+        console.log(nextProps.trackBounds.equals(this.props.trackBounds));
+        this.map.fitBounds(nextProps.trackBounds);
+      }
+    }
+
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
+
 
     if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
@@ -161,12 +169,14 @@ class Map extends Component {
     }
     this.state.trackLayer.recalculatePosition();
 
-    this.state.trackLayer.drawTile(
+    const bounds = this.state.trackLayer.drawTile(
       workProps.vesselTrack.seriesGroupData,
       workProps.vesselTrack.selectedSeries,
       workProps.filters,
       workProps.map.vesselTrackDisplayMode
     );
+    // this.map.fitBounds(bounds);
+    // console.log(bounds);
   }
 
   /**

@@ -17,6 +17,7 @@ import { RESET_VESSEL_DETAILS } from '../actions';
 const mapStateToProps = (state) => ({
   map: state.map,
   vesselTrack: state.vesselInfo.track,
+  trackBounds: state.vesselInfo.trackBounds,
   filters: state.filters,
   token: state.user.token,
   shareModal: state.map.shareModal
