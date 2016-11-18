@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_TOTAL_DATE_EXTENT, TIMELINE_INNER_EXTENT } from '../../constants';
+import { TIMELINE_TOTAL_DATE_EXTENT, TIMELINE_INNER_EXTENT, TIMELINE_MAX_TIME } from '../../constants';
 import timebarCss from '../../../styles/components/map/c-timebar.scss';
 import timelineCss from '../../../styles/components/map/c-timeline.scss';
 import extentChanged from '../../util/extentChanged';
@@ -269,15 +269,34 @@ class Timebar extends Component {
   }
 
   onInnerBrushMoved() {
+    let newExtentPx = d3.event.selection;
+    const newExtent = this.getExtent(d3.event.selection);
+
+    // time range is too long
+    if (newExtent[1].getTime() - newExtent[0].getTime() > TIMELINE_MAX_TIME) {
+      console.log('too long')
+      const oldExtent = this.state.innerExtent;
+
+      if (oldExtent[0].getTime() === newExtent[0].getTime()) {
+        // right brush was moved
+        newExtent[1] = oldExtent[1];
+      } else {
+        // left brush was moved
+        newExtent[0] = oldExtent[0];
+      }
+      newExtentPx = this.getPxExtent(newExtent);
+      this.redrawInnerBrush(newExtent);
+    }
+
     this.setState({
-      innerExtent: this.getExtent(d3.event.selection)
+      innerExtent: newExtent
     });
-    this.redrawInnerBrushCircles(d3.event.selection);
-    this.redrawInnerBrushFooter(d3.event.selection);
+    this.redrawInnerBrushCircles(newExtentPx);
+    this.redrawInnerBrushFooter(newExtentPx);
   }
 
   redrawInnerBrush(newInnerExtent) {
-    currentInnerPxExtent = [x(newInnerExtent[0]), x(newInnerExtent[1])];
+    currentInnerPxExtent = this.getPxExtent(newInnerExtent);
     // prevent d3 from dispatching brush events that are not user-initiated
     this.disableInnerBrush();
     this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
@@ -309,6 +328,10 @@ class Timebar extends Component {
 
   getExtent(extentPx) {
     return [x.invert(extentPx[0]), x.invert(extentPx[1])];
+  }
+
+  getPxExtent(extent) {
+    return [x(extent[0]), x(extent[1])];
   }
 
   isZoomingIn(outerExtentPx) {

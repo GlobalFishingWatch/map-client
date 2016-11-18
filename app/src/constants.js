@@ -11,6 +11,7 @@ export const TIMELINE_TOTAL_DATE_EXTENT = [new Date(Date.UTC(2012, 0, 1)), new D
 export const TIMELINE_INNER_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(Date.UTC(2015, 0, 30))];
 
 export const TIMELINE_MAX_STEPS = 190; // six months
+export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
 
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
