@@ -12,13 +12,21 @@ import {
   SET_SHARE_MODAL_ERROR,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
-  CHANGE_VESSEL_TRACK_DISPLAY_MODE
+  CHANGE_VESSEL_TRACK_DISPLAY_MODE,
+  SET_BASEMAP
 } from '../actions';
 
 export function toggleLayerVisibility(layer) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
     payload: layer
+  };
+}
+
+export function setBasemap(basemap) {
+  return {
+    type: SET_BASEMAP,
+    payload: basemap
   };
 }
 

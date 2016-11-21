@@ -12,11 +12,30 @@ import {
   SET_SHARE_MODAL_ERROR,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
-  CHANGE_VESSEL_TRACK_DISPLAY_MODE
+  CHANGE_VESSEL_TRACK_DISPLAY_MODE,
+  SET_BASEMAP
 } from '../actions';
+import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from '../constants';
 
 const initialState = {
+  active_basemap: 'satellite',
+  basemaps: [
+    {
+      title: 'satellite',
+      type: 'GoogleBasemap'
+    },
+    {
+      title: 'deep blue',
+      type: 'CartoDBBasemap',
+      url: 'https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json'
+    },
+    {
+      title: 'high contrast',
+      type: 'CartoDBBasemap',
+      url: 'https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json'
+    }
+  ],
   loading: false,
   layers: [],
   zoom: 3,
@@ -45,8 +64,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    case SET_LAYERS:
+    case SET_LAYERS: {
       return Object.assign({}, state, { layers: action.payload });
+    }
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
@@ -58,68 +78,29 @@ export default function (state = initialState, action) {
     case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
       return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
     case SET_LAYER_OPACITY: {
-      const layerOpacity = action.payload.opacity;
-      const layerIndex = state.layers.reduce((res, l, i) => {
-        if (l.title === action.payload.layer.title) {
-          return i;
-        }
-        return res;
-      }, -1);
+      const layers = _.cloneDeep(state.layers);
+      const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
+      const newLayer = layers[toggledLayerIndex];
 
-      // If the layer couldn't be found, we don't make any change
-      if (layerIndex === -1) return state;
+      if (toggledLayerIndex === -1) return state;
 
-      const newLayer = Object.assign({}, state.layers[layerIndex], {
-        opacity: layerOpacity
-      });
+      newLayer.opacity = action.payload.opacity;
 
-      let newLayers;
-      if (layerIndex === 0) {
-        if (state.layers.length === 1) {
-          newLayers = [newLayer];
-        } else {
-          newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
-        }
-      } else if (layerIndex === state.layers.length - 1) {
-        newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
-      } else {
-        newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
-          state.layers.slice(layerIndex + 1, state.layers.length));
-      }
-
-      return Object.assign({}, state, { layers: newLayers });
+      return Object.assign({}, state, { layers });
     }
     case TOGGLE_LAYER_VISIBILITY: {
-      // We get the index of the layer to update
-      const layerIndex = state.layers.reduce((res, l, i) => {
-        if (l.title === action.payload.title) {
-          return i;
-        }
-        return res;
-      }, -1);
+      const layers = _.cloneDeep(state.layers);
+      const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.title);
+      const newLayer = layers[toggledLayerIndex];
 
-      // If the layer couldn't be found, we don't make any change
-      if (layerIndex === -1) return state;
+      if (toggledLayerIndex === -1) return state;
 
-      const newLayer = Object.assign({}, state.layers[layerIndex], {
-        visible: !state.layers[layerIndex].visible
-      });
+      newLayer.visible = !newLayer.visible;
 
-      let newLayers;
-      if (layerIndex === 0) {
-        if (state.layers.length === 1) {
-          newLayers = [newLayer];
-        } else {
-          newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
-        }
-      } else if (layerIndex === state.layers.length - 1) {
-        newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
-      } else {
-        newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
-          state.layers.slice(layerIndex + 1, state.layers.length));
-      }
-
-      return Object.assign({}, state, { layers: newLayers });
+      return Object.assign({}, state, { layers });
+    }
+    case SET_BASEMAP: {
+      return Object.assign({}, state, { active_basemap: action.payload.title });
     }
 
     case SHARE_MODAL_OPEN: {

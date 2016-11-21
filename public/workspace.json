@@ -8,18 +8,6 @@
       "zoom": 3,
       "layers": [
         {
-          "title": "Basemap",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json"
-            }
-          },
-          "visible": false,
-          "color": "#1a7ff0",
-          "type": "CartoDBBasemap"
-        },
-        {
           "title": "Bathimetry",
           "source": {
             "type": "BinFormat",

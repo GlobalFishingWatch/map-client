@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import FilterPanel from '../../containers/Map/FilterPanel';
+import BasemapPanel from '../../containers/Map/BasemapPanel';
 import LayerPanel from '../../containers/Map/LayerPanel';
 import SearchPanel from '../../containers/Map/SearchPanel';
 import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
@@ -45,15 +47,8 @@ class ControlPanel extends Component {
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={controlPanelStyle['content-accordion']}>
-          <ul className={controlPanelStyle['basemap-list']}>
-            <li className={controlPanelStyle.basemap}>
-              <img alt="basemap X" src="#" className="basemap-img" />
-            </li>
-            <li className={controlPanelStyle.basemap}>
-              <img alt="basemap Y" src="#" className="basemap-img" />
-            </li>
-          </ul>
+        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-basemaps'])}>
+          <BasemapPanel />
         </div>
       </AccordionItem>);
   }
