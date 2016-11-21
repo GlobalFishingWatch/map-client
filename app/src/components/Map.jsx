@@ -26,7 +26,8 @@ class Map extends Component {
       overlay: null, // TODO deprecate this
       addedLayers: {},
       lastCenter: null,
-      running: 'stop'
+      running: 'stop',
+      currentBasemap: null
     };
 
     this.updateFilters = this.updateFilters.bind(this);
@@ -109,6 +110,7 @@ class Map extends Component {
       return;
     }
 
+    this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
     this.updateTrackLayer(nextProps);
@@ -168,6 +170,27 @@ class Map extends Component {
     );
   }
 
+  updateBasemap(nextProps) {
+    const currentBasemapTitle = this.props.map.active_basemap;
+    const newBasemapTitle = nextProps.map.active_basemap;
+    const basemaps = this.props.map.basemaps;
+
+    if (currentBasemapTitle === newBasemapTitle) return;
+
+    const promises = [];
+
+    for (let i = 0, j = basemaps.length; i < j; i++) {
+      if (basemaps[i].title !== newBasemapTitle) continue;
+
+      const newBasemap = basemaps[i];
+
+      promises.push(this.setBasemap(newBasemap, 1));
+    }
+
+    Promise.all(promises);
+  }
+
+
   /**
    * Handles and propagates layers changes
    * @param nextProps
@@ -214,13 +237,10 @@ class Map extends Component {
 
       switch (newLayer.type) {
         case 'ClusterAnimation':
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i + 1);
-          break;
-        case 'CartoDBBasemap':
-          promises.push(this.addCartoBasemap(newLayer, i + 1));
+          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i + 2);
           break;
         default:
-          promises.push(this.addCartoLayer(newLayer, i + 1));
+          promises.push(this.addCartoLayer(newLayer, i + 2));
       }
     }
 
@@ -301,16 +321,18 @@ class Map extends Component {
    * @param layerSettings
    * @param index
    */
-  addCartoBasemap(layerSettings, index) {
-    const addedLayers = this.state.addedLayers;
-
+  setBasemap(basemap, index) {
     const promise = new Promise(((resolve) => {
-      cartodb.createLayer(this.map, layerSettings.source.args.url)
-        .addTo(this.map, index)
-        .done(((layer, cartoLayer) => {
-          addedLayers[layer.title] = cartoLayer;
-          resolve();
-        }).bind(this, layerSettings));
+      if (basemap.url) {
+        cartodb.createLayer(this.map, basemap.url)
+          .addTo(this.map, index)
+          .done(((layer, cartoLayer) => {
+            this.state.currentBasemap = cartoLayer;
+            resolve();
+          }).bind(this, basemap));
+      } else {
+        this.state.currentBasemap.hide();
+      }
     }));
 
     return promise;

@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 import BasemapPanel from '../../components/Map/BasemapPanel';
-import { toggleLayerVisibility } from '../../actions/map';
-import { BASEMAP_TYPES } from '../../constants';
+import { setBasemap } from '../../actions/map';
 
 const mapStateToProps = (state) => ({
-  layers: state.map.layers.filter((l) => BASEMAP_TYPES.indexOf(l.type) !== -1)
+  active_basemap: state.map.active_basemap,
+  basemaps: state.map.basemaps
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleLayerVisibility: layer => {
-    dispatch(toggleLayerVisibility(layer));
+  setBasemap: basemap => {
+    dispatch(setBasemap(basemap));
   }
 });
 

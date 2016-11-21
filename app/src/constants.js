@@ -18,8 +18,6 @@ export const MAX_ZOOM_LEVEL = 12;
 
 export const DEFAULT_VESSEL_COLOR = '#1181FB';
 
-export const BASEMAP_TYPES = ['CartoDBBasemap'];
-
 export const API_RETURNED_KEYS = [
   'category',
   'datetime',
