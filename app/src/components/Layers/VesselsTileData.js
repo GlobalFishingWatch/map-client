@@ -57,7 +57,7 @@ export default {
     const endYear = new Date(endDate).getUTCFullYear();
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/765-tileset-nz2-tms/\
+      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/\
 ${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
 ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     }

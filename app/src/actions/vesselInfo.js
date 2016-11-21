@@ -24,7 +24,7 @@ export function setCurrentVessel(vesselDetails) {
     }
     request.open(
       'GET',
-      `${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/sub/seriesgroup=${seriesGroup}/info`,
+      `${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -54,7 +54,7 @@ export function getVesselTrack(seriesGroup, series = null) {
 
     // TODO what's the point of loading all years?
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/tms-format-2015-2016-v1/\
+      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/\
 sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
     const promises = [];

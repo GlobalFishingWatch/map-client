@@ -177,32 +177,29 @@ class Map extends Component {
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
 
-    const layersChanged = newLayers.length !== currentLayers.length || !newLayers.every(
-        (l, i) => {
-          if (l.title !== currentLayers[i].title) return false;
-          if (l.visible !== currentLayers[i].visible) return false;
-          if (l.opacity !== currentLayers[i].opacity) return false;
-          return true;
-        }
-      );
-
-    for (let i = 0, j = newLayers.length; i < j; i++) {
-      const newLayer = newLayers[i];
-      if (addedLayers[newLayer.title]) {
-        this.setLayerOpacity(newLayer);
+    const updatedLayers = newLayers.map(
+      (l, i) => {
+        if (currentLayers[i] === undefined) return l;
+        if (l.title !== currentLayers[i].title) return l;
+        if (l.visible !== currentLayers[i].visible) return l;
+        if (l.opacity !== currentLayers[i].opacity) return l;
+        return false;
       }
-    }
-
-    // If the layers haven't changed, we have nothing to do
-    if (!layersChanged) return;
+    );
 
     const promises = [];
     let callAddVesselLayer = null;
 
-    for (let i = 0, j = newLayers.length; i < j; i++) {
-      const newLayer = newLayers[i];
+    for (let i = 0, j = updatedLayers.length; i < j; i++) {
+      if (!updatedLayers[i]) continue;
+
+      const newLayer = updatedLayers[i];
       const oldLayer = currentLayers[i];
 
+      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
+        this.setLayerOpacity(newLayer);
+        continue;
+      }
 
       // If the layer is already on the map and its visibility changed, we update it
       if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
@@ -213,17 +210,17 @@ class Map extends Component {
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
 
+      if (addedLayers[newLayer.title] !== undefined) return;
+
       switch (newLayer.type) {
         case 'ClusterAnimation':
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i);
+          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i + 1);
           break;
-
         case 'CartoDBBasemap':
-          promises.push(this.addCartoBasemap(newLayer, i));
+          promises.push(this.addCartoBasemap(newLayer, i + 1));
           break;
-
         default:
-          promises.push(this.addCartoLayer(newLayer, i));
+          promises.push(this.addCartoLayer(newLayer, i + 1));
       }
     }
 
@@ -335,7 +332,6 @@ class Map extends Component {
 
       if (layers[layerSettings.title].isVisible()) return;
 
-      console.info(`showing layer: ${layerSettings.title}`);
       layers[layerSettings.title].show();
     } else {
       if (layerSettings.type === 'ClusterAnimation') {
@@ -345,7 +341,6 @@ class Map extends Component {
 
       if (!layers[layerSettings.title].isVisible()) return;
 
-      console.info(`hiding layer: ${layerSettings.title}`);
       layers[layerSettings.title].hide();
     }
   }
@@ -356,15 +351,13 @@ class Map extends Component {
    * @param layerSettings
    */
   setLayerOpacity(layerSettings) {
-    const addedLayers = this.state.addedLayers;
+    const layers = this.state.addedLayers;
 
-    if (!Object.keys(addedLayers).length) return;
+    if (!Object.keys(layers).length) return;
 
     if (layerSettings.type === 'ClusterAnimation') return;
 
-    console.info(`setting opacity of: ${layerSettings.title} to ${layerSettings.opacity}`);
-
-    addedLayers[layerSettings.title].setOpacity(layerSettings.opacity);
+    layers[layerSettings.title].setOpacity(layerSettings.opacity);
   }
 
   onMouseMove() {
