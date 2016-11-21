@@ -57,6 +57,20 @@ const webpackConfig = {
     })
   ],
 
+  resolve: {
+    root: `${process.cwd()}/app`,
+    alias: {
+      assets: 'assets',
+      actions: 'src/actions',
+      components: 'src/components',
+      containers: 'src/containers',
+      reducers: 'src/reducers',
+      styles: 'styles',
+      util: 'src/util'
+    },
+    extensions: ['', '.js', '.jsx']
+  },
+
   module: {
     loaders: [
       {
@@ -84,12 +98,7 @@ const webpackConfig = {
 
   postcss() {
     return [autoprefixer];
-  },
-
-  resolve: {
-    extensions: ['', '.js', '.jsx']
   }
-
 };
 
 // Environment configuration
