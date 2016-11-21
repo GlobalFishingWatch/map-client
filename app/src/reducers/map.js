@@ -57,12 +57,38 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { vesselColor: action.payload });
     case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
       return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
-    case SET_LAYER_OPACITY:
-      state.layers.forEach((l) => {
-        const layer = l;
-        if (layer.title === action.payload.layer.title) layer.opacity = action.payload.opacity;
+    case SET_LAYER_OPACITY: {
+      const layerOpacity = action.payload.opacity;
+      const layerIndex = state.layers.reduce((res, l, i) => {
+        if (l.title === action.payload.layer.title) {
+          return i;
+        }
+        return res;
+      }, -1);
+
+      // If the layer couldn't be found, we don't make any change
+      if (layerIndex === -1) return state;
+
+      const newLayer = Object.assign({}, state.layers[layerIndex], {
+        opacity: layerOpacity
       });
-      return Object.assign({}, state);
+
+      let newLayers;
+      if (layerIndex === 0) {
+        if (state.layers.length === 1) {
+          newLayers = [newLayer];
+        } else {
+          newLayers = [newLayer].concat(state.layers.slice(1, state.layers.length));
+        }
+      } else if (layerIndex === state.layers.length - 1) {
+        newLayers = state.layers.slice(0, state.layers.length - 1).concat([newLayer]);
+      } else {
+        newLayers = state.layers.slice(0, layerIndex).concat([newLayer],
+          state.layers.slice(layerIndex + 1, state.layers.length));
+      }
+
+      return Object.assign({}, state, { layers: newLayers });
+    }
     case TOGGLE_LAYER_VISIBILITY: {
       // We get the index of the layer to update
       const layerIndex = state.layers.reduce((res, l, i) => {
