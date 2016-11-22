@@ -32,7 +32,7 @@
       },
       {
         "title": "Why am I not seeing certain Marine Protected Areas on Global Fishing Watch?",
-        "content": "<p>The MPA layers we show are a subset of <a href='http://www.mpatlas.org' class='gfw-link' target='_blank'>MCI’s MPAtlas</a>. We currently do not show all MPAs globally as their restrictions vary, and for visualization reasons. We will be adding others in the future as well as the ability for users to upload and customize their own layers.</p>"
+        "content": "<p>The default MPA-No Take and MPA-Restricted Use layers do not currently display all MPAs globally because both layers were filtered by size, implementation phase, type, and fishing restrictions before they were imported into Global Fishing Watch. The layers were filtered by those attributes to provide our users with a representative subset of the top MPAs under robust management plans across the planet; filtering also improved the appearance of the map. To view all MPAs available in MCI’s MPAtlas, please add our “MPAtlas” layer. In the map legend under the “Layers” tab, click on the gears icon next to “Layers”. Then, click on “Add new layer” under “Layers”. A “Layer library” will appear. Select “MPAtlas” to add this layer.</p>"
       }
     ]
   },
