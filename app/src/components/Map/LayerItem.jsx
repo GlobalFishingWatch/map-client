@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import layerPanelStyle from '../../../styles/components/map/c-layer-panel.scss';
-import iconsStyles from '../../../styles/icons.scss';
+
+import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
+import OpacityIcon from 'babel!svg-react!assets/icons/opacity-icon.svg?name=OpacityIcon';
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
 class LayerItem extends Component {
 
@@ -106,25 +109,19 @@ class LayerItem extends Component {
             className={layerPanelStyle['layer-options-item']}
             onClick={this.onClickReport}
           >
-            <svg className={classnames(iconsStyles.icon, iconsStyles['icon-report-icon'])}>
-              <use xlinkHref="#icon-report-icon"></use>
-            </svg>
+            <ReportIcon />
           </li>
           <li
             className={layerPanelStyle['layer-options-item']}
             onClick={() => this.toggleOpacityMenu()}
           >
-            <svg className={classnames(iconsStyles.icon, iconsStyles['icon-opacity-icon'])}>
-              <use xlinkHref="#icon-opacity-icon"></use>
-            </svg>
+            <OpacityIcon />
           </li>
           <li
             className={layerPanelStyle['layer-options-item']}
             onClick={this.onClickInfo}
           >
-            <svg className={classnames(iconsStyles.icon, iconsStyles['icon-i-icon'])}>
-              <use xlinkHref="#icon-i-icon"></use>
-            </svg>
+            <InfoIcon />
           </li>
         </ul>
         <div className={cssClassOpacity} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
