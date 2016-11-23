@@ -6,25 +6,26 @@
   color: $color-4;
   display: block;
   font-family: $font-family-1;
-  position: absolute;
-  width: 320px;
+  width: 100%;
 
-  z-index: 10;
-
-  &.-hidden {
-    display: none;
-  }
-
-  &::before {
-    background-color: $color-7;
-    content: '';
+  .button-close {
+    background-color: $color-4;
+    border-radius: 50%;
+    cursor: pointer;
     display: inline-block;
-    height: 12px;
-    left: 30px;
+    height: 26px;
     position: absolute;
-    top: -6px;
-    transform: rotate(45deg);
-    width: 12px;
+    transform: translate(-50%, -50%);
+    width: 26px;
+
+    > .cross {
+      height: 11px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 11px;
+    }
   }
 
   .vessel-metadata {
@@ -36,9 +37,9 @@
     > .row-info {
       display: flex;
       flex-basis: calc(50% - 10px);
+      flex-direction: column;
       flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 2px 0;
+      padding: 4px 0;
 
       &:nth-child(2n) {
         margin: 0 0 0 5px;
@@ -49,56 +50,13 @@
         color: $color-4;
         font-size: $font-size-xxs-small;
       }
-    }
-  }
 
-  .vessel-track-mode {
-    border-top: 1px solid rgba($color-4, .15);
-
-    padding: 10px 20px;
-
-    > div {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .radio {
-      display: none;
-
-      &:checked + .track-mode > .circle {
-        &::after {
-          background-color: $color-1;
-          border-radius: 50%;
-          content: '';
-          display: inline-block;
-
-          height: 4px;
-          left: 50%;
-          position: absolute;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 4px;
-        }
+      > .key {
+        font-weight: $font-weight-bold;
       }
-    }
 
-    .track-mode {
-      cursor: pointer;
-      font-size: $font-size-xxs-small;
-      padding: 0 0 0 15px;
-      position: relative;
-
-      > .circle {
-        background-color: $color-4;
-        border-radius: 50%;
-        display: inline-block;
-
-        height: 12px;
-        left: 0;
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-        width: 12px;
+      > .value {
+        padding: 5px 0 0;
       }
     }
   }
