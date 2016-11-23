@@ -94,17 +94,3 @@ export function toggleVisibility(visibility) {
     });
   };
 }
-
-export function setVesselPosition(elem) {
-  const position = elem.getBoundingClientRect();
-
-  return (dispatch) => {
-    dispatch({
-      type: SET_VESSEL_POSITION,
-      payload: {
-        top: position.top,
-        left: position.left
-      }
-    });
-  };
-}

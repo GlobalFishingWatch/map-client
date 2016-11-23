@@ -15,7 +15,6 @@ import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import NoLogin from '../containers/Map/NoLogin';
-import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
 
@@ -517,7 +516,6 @@ class Map extends Component {
           <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
         <ControlPanel />
-        <VesselInfoPanel />
         <GoogleMapLoader
           containerElement={
             <div className={mapCss.map} style={{ height: '100%' }} />

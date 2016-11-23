@@ -52,7 +52,6 @@ class SearchPanel extends Component {
             keyword={this.state.keyword}
             drawVessel={this.props.drawVessel}
             vesselInfo={this.props.search.entries[i]}
-            setVesselPosition={this.props.setVesselPosition}
             toggleVisibility={this.props.toggleVisibility}
             vesselVisibility={this.props.vesselVisibility}
           />
@@ -102,7 +101,6 @@ SearchPanel.propTypes = {
   drawVessel: React.PropTypes.func,
   getSearchResults: React.PropTypes.func,
   search: React.PropTypes.object,
-  setVesselPosition: React.PropTypes.func,
   toggleVisibility: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool,
   // Whether the search panel is expanded or closed

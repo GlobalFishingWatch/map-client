@@ -5,11 +5,9 @@ import searchPanelStyles from '../../../styles/components/map/c-search-panel.scs
 
 class SearchResult extends Component {
 
-  onDrawVessel(event) {
-    const target = event.target.closest('li');
-
-    this.props.drawVessel(target, this.props.vesselInfo);
-    this.props.toggleVisibility(!this.props.vesselVisibility);
+  onDrawVessel() {
+    this.props.drawVessel(this.props.vesselInfo);
+    this.props.toggleVisibility(true);
   }
 
   hightlightWord(strReplace, str, styleClass) {
@@ -47,7 +45,6 @@ SearchResult.propTypes = {
   drawVessel: React.PropTypes.func,
   keyword: React.PropTypes.string,
   toggleVisibility: React.PropTypes.func,
-  setVesselPosition: React.PropTypes.func,
   vesselInfo: React.PropTypes.object,
   vesselVisibility: React.PropTypes.bool
 };

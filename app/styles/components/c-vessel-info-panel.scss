@@ -59,5 +59,13 @@
         padding: 5px 0 0;
       }
     }
+
+    > .external-link {
+      color: $color-3;
+      display: inline-block;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      margin: 15px 0 0;
+    }
   }
 }
