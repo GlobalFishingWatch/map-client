@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
+
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-import iconsStyles from 'styles/icons.scss';
+
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
 class BasemapPanel extends Component {
 
-  onClickInfo() {
-    console.info('opens modal');
+  onClickInfo(basemap) {
+    const modalParams = {
+      open: true,
+      info: basemap
+    };
+
+    this.props.openLayerInfoModal(modalParams);
   }
 
   onSelectBasemap(event, basemap) {
@@ -38,11 +45,9 @@ class BasemapPanel extends Component {
           <ul className={LayerListStyles['layer-option-list']}>
             <li
               className={LayerListStyles['layer-option-item']}
-              onClick={this.onClickInfo}
+              onClick={() => this.onClickInfo(basemap)}
             >
-              <svg className={classnames(iconsStyles.icon, iconsStyles['icon-i-icon'])}>
-                <use xlinkHref="#icon-i-icon"></use>
-              </svg>
+              <InfoIcon />
             </li>
           </ul>
         </li>);
@@ -61,6 +66,7 @@ class BasemapPanel extends Component {
 BasemapPanel.propTypes = {
   basemaps: React.PropTypes.array,
   active_basemap: React.PropTypes.string,
+  openLayerInfoModal: React.PropTypes.func,
   setBasemap: React.PropTypes.func
 };
 
