@@ -36,9 +36,11 @@ class BasemapPanel extends Component {
             this.props.active_basemap === basemap.title ? LayerListStyles['-selected'] : null)}
           data-basemap={basemap.title}
           key={i}
-          onClick={(event) => this.onSelectBasemap(event, basemap)}
         >
-          <div className={LayerListStyles['layer-info']}>
+          <div
+            className={LayerListStyles['layer-info']}
+            onClick={(event) => this.onSelectBasemap(event, basemap)}
+          >
             <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles['layer-thumbnail']} />
             <span className={LayerListStyles['layer-title']}>{basemap.title}</span>
           </div>
