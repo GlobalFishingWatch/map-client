@@ -10,6 +10,7 @@ import {
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
+  SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
@@ -266,5 +267,12 @@ export function saveWorkspace(errorAction) {
 export function deleteWorkspace() {
   return {
     type: DELETE_WORKSPACE_ID
+  };
+}
+
+export function setLayerInfoModal(modalParams) {
+  return {
+    type: SET_LAYER_INFO_MODAL,
+    payload: modalParams
   };
 }

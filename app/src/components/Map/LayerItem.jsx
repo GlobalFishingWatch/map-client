@@ -57,10 +57,14 @@ class LayerItem extends Component {
   //   console.log(event);
   // }
 
-  //
-  // onClickInfo(event) {
-  //   console.log(event);
-  // }
+  onClickInfo() {
+    const modalParams = {
+      open: true,
+      info: this.props.layer
+    };
+
+    this.props.openLayerInfoModal(modalParams);
+  }
 
   onChangeSwitch() {
     if (this.props.layer.visible) {
@@ -123,7 +127,7 @@ class LayerItem extends Component {
           </li>
           <li
             className={LayerListStyles['layer-option-item']}
-            onClick={this.onClickInfo}
+            onClick={() => this.onClickInfo()}
           >
             <InfoIcon />
           </li>
@@ -146,7 +150,8 @@ class LayerItem extends Component {
 LayerItem.propTypes = {
   layer: React.PropTypes.object,
   toggleLayerVisibility: React.PropTypes.func,
-  setLayerOpacity: React.PropTypes.func
+  setLayerOpacity: React.PropTypes.func,
+  openLayerInfoModal: React.PropTypes.func
 };
 
 export default LayerItem;

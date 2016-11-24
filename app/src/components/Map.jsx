@@ -14,6 +14,7 @@ import mapCss from '../../styles/components/c-map.scss';
 import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
+import LayerInfo from 'containers/Map/LayerInfo';
 import NoLogin from '../containers/Map/NoLogin';
 import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import FooterMini from '../components/Shared/FooterMini';
@@ -519,6 +520,13 @@ class Map extends Component {
       <Modal opened={this.props.shareModal.open} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
+      <Modal
+        opened={this.props.layerModal.open}
+        closeable
+        close={this.props.closeLayerInfoModal}
+      >
+        <LayerInfo />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -585,6 +593,8 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
+  layerModal: React.PropTypes.object,
+  closeLayerInfoModal: React.PropTypes.func,
   closeShareModal: React.PropTypes.func,
   vesselTrackDisplayMode: React.PropTypes.string
 };
