@@ -38,7 +38,7 @@ class SearchPanel extends Component {
     const isSearching = this.props.search.count || this.state.keyword.length > 3;
 
     let searchResults;
-    if (this.props.search.count) {
+    if (this.props.search.count && this.state.keyword.length >= 3) {
       searchResults = [];
       for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
         searchResults.push(
@@ -54,6 +54,8 @@ class SearchPanel extends Component {
           />
         );
       }
+    } else if (this.state.keyword.length < 3) {
+      searchResults = <li className={searchPanelStyles.result}>Type at least 3 characters</li>;
     } else {
       searchResults = <li className={searchPanelStyles.result}>No result</li>;
     }
@@ -81,7 +83,7 @@ class SearchPanel extends Component {
           onClick={() => this.cleanResults()}
         />}
         <ul
-          className={classnames(searchPanelStyles['result-list'], isSearching ? searchPanelStyles['-open'] : '')}
+          className={classnames(searchPanelStyles['result-list'], searchPanelStyles['-open'])}
         >
           {searchResults}
         </ul>
