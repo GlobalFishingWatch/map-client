@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import LayerInfoStyles from 'styles/components/map/c-layer-info.scss';
+
 class LayerInfo extends Component {
 
   constructor(props) {
@@ -16,9 +18,9 @@ class LayerInfo extends Component {
     const description = this.props.info.description || this.defaults.messages.noDescription;
 
     return (
-      <div>
-        <h2>{this.props.info.title}</h2>
-        <p>{description}</p>
+      <div className={LayerInfoStyles['c-layer-info']}>
+        <h2 className={LayerInfoStyles['layer-title']}>{this.props.info.title}</h2>
+        <p className={LayerInfoStyles['layer-description']}>{description}</p>
       </div>
     );
   }
