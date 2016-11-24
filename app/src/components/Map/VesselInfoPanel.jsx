@@ -72,11 +72,11 @@ class VesselInfoPanel extends Component {
               <span className={vesselPanelStyles.key}>Callsign</span>
               <span className={vesselPanelStyles.value}>{this.props.vesselInfo.callsign || '---'}</span>
             </div>
-            {this.props.vesselInfo.mmsi &&
+            {this.props.vesselInfo.link &&
               <a
                 className={vesselPanelStyles['external-link']}
                 target="_blank"
-                href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${this.props.vesselInfo.mmsi}`}
+                href={this.props.vesselInfo.link}
               >Check it on MarineTraffic.com
               </a>
             }
