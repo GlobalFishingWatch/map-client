@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LayerItem from './LayerItem';
-import layerPanelStyle from '../../../styles/components/map/c-layer-panel.scss';
+
+import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 
 
 class LayerPanel extends Component {
@@ -21,11 +22,9 @@ class LayerPanel extends Component {
     }
 
     return (
-      <div className={layerPanelStyle['c-layer-panel']}>
-        <ul className={layerPanelStyle['layer-list']}>
-          {layers}
-        </ul>
-      </div>
+      <ul className={LayerListStyles['c-layer-list']}>
+        {layers}
+      </ul>
     );
   }
 }

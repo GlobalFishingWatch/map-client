@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
-import layerPanelStyle from '../../../styles/components/map/c-layer-panel.scss';
+
+import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
+import OpacitySelectorStyles from 'styles/components/map/c-opacity-selector.scss';
 
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import OpacityIcon from 'babel!svg-react!assets/icons/opacity-icon.svg?name=OpacityIcon';
@@ -82,17 +85,18 @@ class LayerItem extends Component {
 
   render() {
     const cssClassOpacity = this.state.opacity ?
-      classnames(layerPanelStyle['opacity-menu'], layerPanelStyle['-is-visible']) : layerPanelStyle['opacity-menu'];
+      classnames(OpacitySelectorStyles['c-opacity-selector'], OpacitySelectorStyles['-is-visible']) :
+      OpacitySelectorStyles['c-opacity-selector'];
 
     if (!this.state.rangeValue) return null;
 
     return (
       <li
-        className={layerPanelStyle['layer-item']}
+        className={LayerListStyles['layer-item']}
       >
         <label>
           <input
-            className={layerPanelStyle.switcher}
+            className={SwitcherStyles['c-switcher']}
             type="checkbox"
             checked={this.props.layer.visible}
             onChange={() => this.onChangeSwitch()}
@@ -100,25 +104,25 @@ class LayerItem extends Component {
               color: this.props.layer.color
             }}
           />
-          <span className={layerPanelStyle['layer-name']}>
+          <span className={LayerListStyles['layer-title']}>
             {this.props.layer.title}
           </span>
         </label>
-        <ul className={layerPanelStyle['layer-options-list']}>
+        <ul className={LayerListStyles['layer-option-list']}>
           <li
-            className={layerPanelStyle['layer-options-item']}
+            className={LayerListStyles['layer-option-item']}
             onClick={this.onClickReport}
           >
             <ReportIcon />
           </li>
           <li
-            className={layerPanelStyle['layer-options-item']}
+            className={LayerListStyles['layer-option-item']}
             onClick={() => this.toggleOpacityMenu()}
           >
             <OpacityIcon />
           </li>
           <li
-            className={layerPanelStyle['layer-options-item']}
+            className={LayerListStyles['layer-option-item']}
             onClick={this.onClickInfo}
           >
             <InfoIcon />
