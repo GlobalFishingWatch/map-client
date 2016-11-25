@@ -62,7 +62,7 @@ class ControlPanel extends Component {
         titleClassName={controlPanelStyle['title-accordion']}
 
       >
-        <div className={controlPanelStyle['content-accordion']}>
+        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
           <LayerPanel />
         </div>
       </AccordionItem>);

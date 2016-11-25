@@ -3,14 +3,10 @@
 .controlpanel {
   background: rgba($color-1, .8);
   box-shadow: 0 0 4px 0 rgba($color-12, .5);
-
-  font-family: $font-family-1;
-
   max-width: 320px;
   position: absolute;
   right: 0;
-  width: 320px;
-
+  width: 100%;
   z-index: 10;
 
   > .resume-display {
@@ -91,31 +87,9 @@
       }
 
       .content-accordion {
+        margin: 10px 0 0;
         padding: 0 15px;
-
-        &.-basemaps {
-          margin: 10px 0 0;
-        }
-
-        .filters {
-          background: $color-1;
-        }
       }
     }
-  }
-
-  ::-webkit-input-placeholder {
-    color: rgba($color-4, .3);
-    text-transform: uppercase;
-  }
-
-  ::-moz-placeholder {
-    color: rgba($color-4, .3);
-    text-transform: uppercase;
-  }
-
-  :-ms-input-placeholder {
-    color: rgba($color-4, .3);
-    text-transform: uppercase;
   }
 }
