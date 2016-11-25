@@ -101,7 +101,7 @@ class LayerItem extends Component {
             checked={this.props.layer.visible}
             onChange={() => this.onChangeSwitch()}
             style={{
-              color: this.props.layer.color
+              backgroundColor: this.props.layer.color
             }}
           />
           <span className={LayerListStyles['layer-title']}>
