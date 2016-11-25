@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
-import LayerListStyles from '../../../styles/components/map/c-layer-list.scss';
-import iconsStyles from '../../../styles/icons.scss';
+import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import iconsStyles from 'styles/icons.scss';
 
 class BasemapPanel extends Component {
 

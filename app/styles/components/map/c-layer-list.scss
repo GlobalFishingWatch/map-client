@@ -1,19 +1,27 @@
 @import '../../settings';
 
 .c-layer-list {
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
 
-  .layer-item {
+  > .layer-item {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    overflow: hidden;
     width: 100%;
 
     &:not(:first-child) {
-      margin: 15px 0 0;
+      margin: 5px 0 0;
+    }
+
+    &:first-child > .layer-info {
+      margin: 0 0 5px;
+    }
+
+    &:not(:first-child) > .layer-info {
+      margin: 5px 0;
     }
 
     &.-selected {
@@ -49,6 +57,8 @@
       display: flex;
 
       > .layer-option-item {
+        cursor: pointer;
+
         &:not(:first-child) {
           margin: 0 0 0 10px;
         }
