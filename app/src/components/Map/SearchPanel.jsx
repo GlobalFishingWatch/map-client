@@ -5,6 +5,8 @@ import SearchResult from './SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
 import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
 
+import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
+
 class SearchPanel extends Component {
 
   constructor(props) {
@@ -74,17 +76,18 @@ class SearchPanel extends Component {
         </svg>}
 
       {!!isSearching &&
-        <svg
-          className={classnames(iconsStyles.icon, 'icon-filter')}
+        <CloseIcon
+          className={classnames(iconsStyles.icon, 'icon-close')}
           onClick={() => this.cleanResults()}
-        >
-          <use xlinkHref="#icon-filter"></use>
-        </svg>}
+        />}
         <ul
           className={classnames(searchPanelStyles['result-list'], isSearching ? searchPanelStyles['-open'] : '')}
         >
           {searchResults}
         </ul>
+        {!isSearching &&
+          <span>type at least 3 letters</span>
+        }
       </div>);
   }
 }

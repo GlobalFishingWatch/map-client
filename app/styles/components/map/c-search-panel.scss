@@ -20,10 +20,18 @@
   }
 
   :global .icon-search,
-  :global .icon-filter {
+  :global .icon-close {
     position: absolute;
     right: 0;
+  }
+
+  :global .icon-search {
     top: 8px;
+  }
+
+  :global .icon-close {
+    stroke: $color-4;
+    top: 6px;
   }
 
   :global .icon-filter {
