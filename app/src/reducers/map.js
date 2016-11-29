@@ -1,3 +1,5 @@
+/* eslint-disable max-len  */
+
 import {
   VESSEL_INIT,
   SHOW_LOADING,
@@ -27,13 +29,13 @@ const initialState = {
     },
     {
       title: 'deep blue',
-      type: 'CartoDBBasemap',
-      url: 'https://simbiotica.carto.com/api/v2/viz/2d92092c-5afa-11e6-aa0c-0e233c30368f/viz.json'
+      type: 'Basemap',
+      url: 'https://api.mapbox.com/styles/v1/globalfishing/civmm3zwz00rp2jqls9pue7cw/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
     },
     {
       title: 'high contrast',
-      type: 'CartoDBBasemap',
-      url: 'https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json'
+      type: 'Basemap',
+      url: 'https://api.mapbox.com/styles/v1/globalfishing/civmoj3y900r92io7gqgcdppq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
     }
   ],
   loading: false,
