@@ -1,5 +1,8 @@
 /* eslint react/sort-comp:0 */
+/* eslint-disable max-len  */
+
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
 // import CanvasLayer from './Layers/CanvasLayer';
@@ -15,6 +18,7 @@ import NoLogin from '../containers/Map/NoLogin';
 import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import FooterMini from '../components/Shared/FooterMini';
 import extentChanged from '../util/extentChanged';
+
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
@@ -171,25 +175,8 @@ class Map extends Component {
   }
 
   updateBasemap(nextProps) {
-    const currentBasemapTitle = this.props.map.active_basemap;
-    const newBasemapTitle = nextProps.map.active_basemap;
-    const basemaps = this.props.map.basemaps;
-
-    if (currentBasemapTitle === newBasemapTitle) return;
-
-    const promises = [];
-
-    for (let i = 0, j = basemaps.length; i < j; i++) {
-      if (basemaps[i].title !== newBasemapTitle) continue;
-
-      const newBasemap = basemaps[i];
-
-      promises.push(this.setBasemap(newBasemap, 1));
-    }
-
-    Promise.all(promises);
+    this.map.setMapTypeId(nextProps.map.active_basemap);
   }
-
 
   /**
    * Handles and propagates layers changes
@@ -418,7 +405,22 @@ class Map extends Component {
     if (!this.map) {
       this.map = this.refs.map.props.map;
       this.props.getWorkspace();
+      this.defineBasemaps(this.props.basemaps);
     }
+  }
+
+  defineBasemaps(basemaps) {
+    _.templateSettings.interpolate = /{([\s\S]+?)}/g;
+
+    basemaps.filter((b) => b.type === 'Basemap').forEach((basemap) => {
+      const urlTemplate = _.template(basemap.url);
+      this.map.mapTypes.set(basemap.title, new google.maps.ImageMapType({
+        getTileUrl: (coord, zoom) => urlTemplate({ x: coord.x, y: coord.y, z: zoom }),
+        tileSize: new google.maps.Size(256, 256),
+        name: basemap.title,
+        maxZoom: 18
+      }));
+    });
   }
 
   isTrackLayerReady() {
@@ -561,6 +563,7 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  basemaps: React.PropTypes.array,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
   setZoom: React.PropTypes.func,
