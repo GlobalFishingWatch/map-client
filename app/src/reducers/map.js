@@ -12,6 +12,7 @@ import {
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
+  SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
@@ -45,6 +46,10 @@ const initialState = {
   shareModal: {
     open: false,
     error: null
+  },
+  layerModal: {
+    open: false,
+    info: {}
   },
   workspaceId: null,
   vesselTransparency: 5,
@@ -122,7 +127,14 @@ export default function (state = initialState, action) {
       newState.shareModal.error = action.payload;
       return newState;
     }
-
+    case SET_LAYER_INFO_MODAL: {
+      const newState = Object.assign({}, state);
+      newState.layerModal = {
+        open: action.payload.open,
+        info: action.payload.info
+      };
+      return newState;
+    }
     default:
       return state;
   }

@@ -8,7 +8,8 @@ import {
   openShareModal,
   saveWorkspace,
   deleteWorkspace,
-  setShareModalError
+  setShareModalError,
+  setLayerInfoModal
 } from '../actions/map';
 import { updateFilters } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
@@ -20,7 +21,8 @@ const mapStateToProps = (state) => ({
   filters: state.filters,
   token: state.user.token,
   shareModal: state.map.shareModal,
-  basemaps: state.map.basemaps
+  basemaps: state.map.basemaps,
+  layerModal: state.map.layerModal
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -54,6 +56,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(openShareModal(false));
     dispatch(deleteWorkspace());
     dispatch(setShareModalError(null));
+  },
+  closeLayerInfoModal: () => {
+    dispatch(setLayerInfoModal({
+      open: false
+    }));
   }
 });
 
