@@ -94,9 +94,6 @@ class SearchPanel extends Component {
         >
           {searchResults}
         </ul>
-        {!isSearching &&
-          <span>type at least 3 letters</span>
-        }
       </div>);
   }
 }
