@@ -16,5 +16,18 @@
     font-family: $font-family-1;
     font-size: $font-size-x-small;
     line-height: 1.4;
+
+    a {
+      color: $color-4;
+      display: inline-block;
+
+      &::after {
+        background-color: $color-6;
+        content: '';
+        display: block;
+        height: 1px;
+        margin-top: 1px;
+      }
+    }
   }
 }
