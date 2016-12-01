@@ -12,28 +12,33 @@ import {
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
+  SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
-  SET_BASEMAP
+  SET_BASEMAP,
+  SET_TILESET_URL
 } from '../actions';
 import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from '../constants';
 
 const initialState = {
-  active_basemap: 'satellite',
+  active_basemap: 'Satellite',
   basemaps: [
     {
-      title: 'satellite',
+      title: 'Satellite',
+      description: 'The default satellite image view',
       type: 'GoogleBasemap'
     },
     {
-      title: 'deep blue',
+      title: 'Deep Blue',
+      description: 'Custom basemap that highlights the data about fishing activity',
       type: 'Basemap',
       url: 'https://api.mapbox.com/styles/v1/globalfishing/civmm3zwz00rp2jqls9pue7cw/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
     },
     {
-      title: 'high contrast',
+      title: 'High Contrast',
+      description: 'High contrast basemap, that highlights borders and shore. Ideal for usage with projectors',
       type: 'Basemap',
       url: 'https://api.mapbox.com/styles/v1/globalfishing/civmoj3y900r92io7gqgcdppq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
     }
@@ -41,10 +46,15 @@ const initialState = {
   loading: false,
   layers: [],
   zoom: 3,
+  tilesetUrl: null,
   center: [0, 0],
   shareModal: {
     open: false,
     error: null
+  },
+  layerModal: {
+    open: false,
+    info: {}
   },
   workspaceId: null,
   vesselTransparency: 5,
@@ -66,9 +76,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    case SET_LAYERS: {
+    case SET_LAYERS:
       return Object.assign({}, state, { layers: action.payload });
-    }
+    case SET_TILESET_URL:
+      return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
@@ -122,7 +133,14 @@ export default function (state = initialState, action) {
       newState.shareModal.error = action.payload;
       return newState;
     }
-
+    case SET_LAYER_INFO_MODAL: {
+      const newState = Object.assign({}, state);
+      newState.layerModal = {
+        open: action.payload.open,
+        info: action.payload.info
+      };
+      return newState;
+    }
     default:
       return state;
   }

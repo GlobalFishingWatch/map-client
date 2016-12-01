@@ -3,11 +3,11 @@ import PelagosClient from '../../lib/pelagosClient';
 import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from '../../constants';
 
 export default {
-  getTilePelagosPromises(tileCoordinates, outerStartDate, outerEndDate, token) {
+  getTilePelagosPromises(tilesetUrl, tileCoordinates, outerStartDate, outerEndDate, token) {
     const promises = [];
 
     if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tileCoordinates, outerStartDate, outerEndDate);
+      const urls = this.getTemporalTileURLs(tilesetUrl, tileCoordinates, outerStartDate, outerEndDate);
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
       }
@@ -47,17 +47,18 @@ export default {
   /**
    * Generates the URLs to load vessel track data
    *
+   * @param tilesetUrl
    * @param tileCoordinates
    * @param startDate
    * @param endDate
    * @returns {Array}
    */
-  getTemporalTileURLs(tileCoordinates, startDate, endDate) {
+  getTemporalTileURLs(tilesetUrl, tileCoordinates, startDate, endDate) {
     const startYear = new Date(startDate).getUTCFullYear();
     const endYear = new Date(endDate).getUTCFullYear();
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/\
+      urls.push(`${tilesetUrl}/\
 ${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
 ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     }
@@ -122,7 +123,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArray
    * @param tileCoordinates
    */
-  getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset, flag) {
+  getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset) {
     const tilePlaybackData = [];
     // const tilePlaybackDataGrid = [];
 
@@ -139,11 +140,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       // if (!data.weight[index]) {
       //   return false;
       // }
-      const category = vectorArray.category[index];
-      if (flag && flag !== category) {
-        continue;
-      }
-
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, outerStartDateOffset);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
@@ -175,10 +171,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
     }
 
-    // console.log(min, max)
-    // console.log(tilePlaybackDataGrid)
-    // return tilePlaybackDataGrid;
-    // console.log(tilePlaybackData)
     return tilePlaybackData;
   }
 };

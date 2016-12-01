@@ -1,14 +1,23 @@
 import { connect } from 'react-redux';
 import Timebar from '../../components/Map/Timebar';
-import { updateFilters } from '../../actions/filters';
+import { setInnerTimelineDates, setOuterTimelineDates, setPlayingStatus, setTimelineOverDates } from '../../actions/filters';
 
 const mapStateToProps = state => ({
   filters: state.filters
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateFilters: filters => {
-    dispatch(updateFilters(filters));
+  updateInnerTimelineDates: dates => {
+    dispatch(setInnerTimelineDates(dates));
+  },
+  updateOuterTimelineDates: dates => {
+    dispatch(setOuterTimelineDates(dates));
+  },
+  updatePlayingStatus: paused => {
+    dispatch(setPlayingStatus(paused));
+  },
+  updateTimelineOverDates: dates => {
+    dispatch(setTimelineOverDates(dates));
   }
 });
 

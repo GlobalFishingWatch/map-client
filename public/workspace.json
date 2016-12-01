@@ -9,6 +9,7 @@
       "layers": [
         {
           "title": "Bathimetry",
+          "description": "Bathimetry of the oceans",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -21,6 +22,7 @@
         },
         {
           "title": "Ports",
+          "description": "Ports of the world. Zoom in to show smaller ports",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -33,6 +35,7 @@
         },
         {
           "title": "Labels",
+          "description": "Labels of continents, countries and regions",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -45,10 +48,11 @@
         },
         {
           "title": "VESSEL",
+          "description": "Fishing effort layer",
           "source": {
             "type": "BinFormat",
             "args": {
-              "url": "https://storage.googleapis.com/vizzuality-staging/random/"
+              "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms"
             }
           },
           "visible": true,
@@ -58,6 +62,8 @@
         },
         {
           "title": "MPA - No Take",
+          "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
@@ -72,6 +78,8 @@
         },
         {
           "title": "MPA - Restricted Use",
+          "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
@@ -86,6 +94,8 @@
         },
         {
           "title": "EEZ",
+          "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
@@ -99,6 +109,7 @@
         },
         {
           "title": "High Seas Pocket",
+          "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -112,6 +123,7 @@
         },
         {
           "title": "RFMO",
+          "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -129,6 +141,10 @@
       "innerExtent": [
         1420070400000,
         1422576000000
+      ],
+      "outerExtent": [
+        1322697600000,
+        1470009600000
       ]
     }
   },

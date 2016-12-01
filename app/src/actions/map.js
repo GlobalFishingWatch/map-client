@@ -5,15 +5,19 @@ import {
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYER_OPACITY,
-  SET_TIMELINE_DATES,
+  SET_INNER_TIMELINE_DATES,
+  SET_OUTER_TIMELINE_DATES,
+  SET_FLAG_FILTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
+  SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
-  SET_BASEMAP
+  SET_BASEMAP,
+  SET_TILESET_URL
 } from '../actions';
 
 export function toggleLayerVisibility(layer) {
@@ -125,14 +129,33 @@ export function getWorkspace(workspaceId) {
 
         // We update the dates of the timeline
         dispatch({
-          type: SET_TIMELINE_DATES,
+          type: SET_INNER_TIMELINE_DATES,
           payload: workspace.timeline.innerExtent.map(d => new Date(d))
+        });
+
+        dispatch({
+          type: SET_OUTER_TIMELINE_DATES,
+          payload: workspace.timeline.outerExtent.map(d => new Date(d))
+        });
+
+        dispatch({
+          type: SET_FLAG_FILTER,
+          payload: workspace.flag
         });
 
         // We update the layers
         const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
           .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
+
+        const vesselLayer = workspace.map.layers
+          .filter(l => l.type === 'ClusterAnimation')[0];
+        const tilesetUrl = vesselLayer.source.args.url;
+
+        dispatch({
+          type: SET_TILESET_URL,
+          payload: tilesetUrl
+        });
 
         // parses opacity attribute
         layers.forEach((layer) => {
@@ -242,9 +265,10 @@ export function saveWorkspace(errorAction) {
           },
           timeline: {
             // We store the timestamp
-            innerExtent: state.filters.timelineInnerExtent.map(e => +e)
-            // TODO: add the outer extent when in the store
-          }
+            innerExtent: state.filters.timelineInnerExtent.map(e => +e),
+            outerExtent: state.filters.timelineOuterExtent.map(e => +e)
+          },
+          flag: state.filters.flag
         }
       })
     })
@@ -266,5 +290,12 @@ export function saveWorkspace(errorAction) {
 export function deleteWorkspace() {
   return {
     type: DELETE_WORKSPACE_ID
+  };
+}
+
+export function setLayerInfoModal(modalParams) {
+  return {
+    type: SET_LAYER_INFO_MODAL,
+    payload: modalParams
   };
 }

@@ -24,7 +24,7 @@ export function setCurrentVessel(vesselDetails) {
     }
     request.open(
       'GET',
-      `${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/sub/seriesgroup=${seriesGroup}/info`,
+      `${state.map.tilesetUrl}/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -53,7 +53,7 @@ export function getVesselTrack(seriesGroup, series = null) {
     const urls = [];
 
     for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/\
+      urls.push(`${state.map.tilesetUrl}/\
 sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
     const promises = [];

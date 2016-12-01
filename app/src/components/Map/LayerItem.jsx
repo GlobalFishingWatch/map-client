@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
-
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import OpacitySelectorStyles from 'styles/components/map/c-opacity-selector.scss';
-
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import OpacityIcon from 'babel!svg-react!assets/icons/opacity-icon.svg?name=OpacityIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
@@ -57,10 +55,14 @@ class LayerItem extends Component {
   //   console.log(event);
   // }
 
-  //
-  // onClickInfo(event) {
-  //   console.log(event);
-  // }
+  onClickInfo() {
+    const modalParams = {
+      open: true,
+      info: this.props.layer
+    };
+
+    this.props.openLayerInfoModal(modalParams);
+  }
 
   onChangeSwitch() {
     if (this.props.layer.visible) {
@@ -109,12 +111,12 @@ class LayerItem extends Component {
           </span>
         </label>
         <ul className={LayerListStyles['layer-option-list']}>
-          <li
+          {this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
             onClick={this.onClickReport}
           >
             <ReportIcon />
-          </li>
+          </li>}
           <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.toggleOpacityMenu()}
@@ -123,7 +125,7 @@ class LayerItem extends Component {
           </li>
           <li
             className={LayerListStyles['layer-option-item']}
-            onClick={this.onClickInfo}
+            onClick={() => this.onClickInfo()}
           >
             <InfoIcon />
           </li>
@@ -146,7 +148,8 @@ class LayerItem extends Component {
 LayerItem.propTypes = {
   layer: React.PropTypes.object,
   toggleLayerVisibility: React.PropTypes.func,
-  setLayerOpacity: React.PropTypes.func
+  setLayerOpacity: React.PropTypes.func,
+  openLayerInfoModal: React.PropTypes.func
 };
 
 export default LayerItem;

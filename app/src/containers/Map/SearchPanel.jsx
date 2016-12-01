@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import SearchPanel from '../../components/Map/SearchPanel';
-import { updateFilters } from '../../actions/filters';
+import { setFlagFilter } from '../../actions/filters';
 import { getSearchResults } from '../../actions/search';
 import { getVesselTrack, toggleVisibility, setVesselPosition } from '../../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../../actions';
@@ -16,8 +16,8 @@ const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {
 }, 200);
 
 const mapDispatchToProps = (dispatch) => ({
-  updateFilters: (filters) => {
-    dispatch(updateFilters(filters));
+  setFlagFilter: (filters) => {
+    dispatch(setFlagFilter(filters));
   },
 
   /**

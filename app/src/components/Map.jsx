@@ -13,6 +13,7 @@ import mapCss from '../../styles/components/c-map.scss';
 import Timebar from '../containers/Map/Timebar';
 import Modal from './Shared/Modal';
 import Share from '../containers/Map/Share';
+import LayerInfo from 'containers/Map/LayerInfo';
 import NoLogin from '../containers/Map/NoLogin';
 import VesselInfoPanel from '../containers/Map/VesselInfoPanel';
 import FooterMini from '../components/Shared/FooterMini';
@@ -32,7 +33,6 @@ class Map extends Component {
       currentBasemap: null
     };
 
-    this.updateFilters = this.updateFilters.bind(this);
     this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
@@ -143,7 +143,7 @@ class Map extends Component {
     // - selected inner extent changed
     // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
     if (this.props.filters.flag !== nextProps.filters.flag ||
-        this.props.filters.startDate !== nextProps.filters.startDate ||
+        this.props.filters.startDate !== nextProps.filters.startDate || // TODO endDate/startDate still used????
         this.props.filters.endDate !== nextProps.filters.endDate ||
         innerExtentChanged) {
       this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
@@ -167,12 +167,13 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
+    if (!this.vesselsLayer) {
+      return;
+    }
     if (
-      this.props.filters.startDate !== nextProps.filters.startDate
-      || this.props.filters.endDate !== nextProps.filters.endDate
-      || this.props.filters.flag !== nextProps.filters.flag
+      this.props.filters.flag !== nextProps.filters.flag
     ) {
-      this.vesselsLayer.updateFilters(nextProps.filters);
+      this.vesselsLayer.updateFlag(nextProps.filters.flag);
     }
   }
 
@@ -289,6 +290,7 @@ class Map extends Component {
     if (!this.vesselsLayer) {
       this.vesselsLayer = new VesselsLayer(
         this.map,
+        this.props.map.tilesetUrl,
         this.props.token,
         this.props.filters,
         box.width,
@@ -458,21 +460,6 @@ class Map extends Component {
   }
 
   /**
-   * Triggered when the user updates the vessel data pickers
-   * Has special handling for startDate/endDate
-   *
-   * @param target Name of the filter
-   * @param value New value of the filter
-   */
-  updateFilters(target, value) {
-    const filters = Object.assign({}, this.props.filters);
-
-    filters[target] = value;
-
-    this.props.updateFilters(filters);
-  }
-
-  /**
    * Handles vessel transparency changes
    *
    * @param nextProps
@@ -548,6 +535,13 @@ class Map extends Component {
       <Modal opened={this.props.shareModal.open} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
+      <Modal
+        opened={this.props.layerModal.open}
+        closeable
+        close={this.props.closeLayerInfoModal}
+      >
+        <LayerInfo />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -595,10 +589,10 @@ Map.propTypes = {
   basemaps: React.PropTypes.array,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
+  tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
-  updateFilters: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   map: React.PropTypes.object,
@@ -614,7 +608,10 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
-  closeShareModal: React.PropTypes.func
+  closeShareModal: React.PropTypes.func,
+  layerModal: React.PropTypes.object,
+  closeLayerInfoModal: React.PropTypes.func,
+  vesselTrackDisplayMode: React.PropTypes.string
 };
 
 export default Map;

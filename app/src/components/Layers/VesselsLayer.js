@@ -6,7 +6,7 @@ import { VESSEL_CLICK_TOLERANCE_PX } from '../../constants';
 
 export default class VesselsLayer {
 
-  constructor(map, token, filters, viewportWidth, viewportHeight, debug = false) {
+  constructor(map, tilesetUrl, token, filters, viewportWidth, viewportHeight, debug = false) {
     this.map = map;
 
     const innerStartDate = filters.timelineInnerExtent[0];
@@ -22,9 +22,16 @@ export default class VesselsLayer {
         this.outerStartDateOffset
     );
 
-    this.overlay = new VesselsLayerOverlay(map, viewportWidth, viewportHeight, debug);
+    this.overlay = new VesselsLayerOverlay(
+      map,
+      filters,
+      viewportWidth,
+      viewportHeight,
+      debug
+    );
     this.tiled = new VesselsLayerTiled(
       this.map,
+      tilesetUrl,
       token,
       filters,
       this.outerStartDateOffset,
@@ -36,9 +43,9 @@ export default class VesselsLayer {
     this.centerListener = google.maps.event.addListener(this.map, 'center_changed', this._onCenterChanged.bind(this));
   }
 
-  updateFilters(filters) {
-    this.overlay.setFlag(filters.flag);
-    this.tiled.setFlag(filters.flag);
+  updateFlag(flag) {
+    this.overlay.setFlag(flag);
+    this.tiled.setFlag(flag);
     this.render();
   }
 

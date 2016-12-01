@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import BasemapPanel from '../../components/Map/BasemapPanel';
-import { setBasemap } from '../../actions/map';
+import { setBasemap, setLayerInfoModal } from '../../actions/map';
 
 const mapStateToProps = (state) => ({
   active_basemap: state.map.active_basemap,
@@ -10,6 +10,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setBasemap: basemap => {
     dispatch(setBasemap(basemap));
+  },
+  openLayerInfoModal: modalParams => {
+    dispatch(setLayerInfoModal(modalParams));
   }
 });
 
