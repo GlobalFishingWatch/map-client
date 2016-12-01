@@ -1,11 +1,12 @@
 /* eslint no-param-reassign: 0 */
 import VesselsTileData from './VesselsTileData';
 
-class CanvasLayer {
-  constructor(map, token, filters, outerStartDateOffset, debug = false) {
+class VesselsLayerTiled {
+  constructor(map, tilesetUrl, token, filters, outerStartDateOffset, debug = false) {
     this.map = map;
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
+    this.tilesetUrl = tilesetUrl;
 
     this.tiles = [];
 
@@ -79,6 +80,7 @@ class CanvasLayer {
     this.tiles.push(canvas);
 
     const pelagosPromises = VesselsTileData.getTilePelagosPromises(
+      this.tilesetUrl,
       canvas.tileCoordinates,
       this.outerStartDate,
       this.outerEndDate,
@@ -217,4 +219,4 @@ class CanvasLayer {
   }
 }
 
-export default CanvasLayer;
+export default VesselsLayerTiled;

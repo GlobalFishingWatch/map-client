@@ -16,7 +16,8 @@ import {
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
-  SET_BASEMAP
+  SET_BASEMAP,
+  SET_TILESET_URL
 } from '../actions';
 
 export function toggleLayerVisibility(layer) {
@@ -146,6 +147,15 @@ export function getWorkspace(workspaceId) {
         const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
           .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
+
+        const vesselLayer = workspace.map.layers
+          .filter(l => l.type === 'ClusterAnimation')[0];
+        const tilesetUrl = vesselLayer.source.args.url;
+
+        dispatch({
+          type: SET_TILESET_URL,
+          payload: tilesetUrl
+        });
 
         // parses opacity attribute
         layers.forEach((layer) => {

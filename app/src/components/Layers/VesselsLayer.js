@@ -6,7 +6,7 @@ import { VESSEL_CLICK_TOLERANCE_PX } from '../../constants';
 
 export default class VesselsLayer {
 
-  constructor(map, token, filters, viewportWidth, viewportHeight, debug = false) {
+  constructor(map, tilesetUrl, token, filters, viewportWidth, viewportHeight, debug = false) {
     this.map = map;
 
     const innerStartDate = filters.timelineInnerExtent[0];
@@ -31,6 +31,7 @@ export default class VesselsLayer {
     );
     this.tiled = new VesselsLayerTiled(
       this.map,
+      tilesetUrl,
       token,
       filters,
       this.outerStartDateOffset,
