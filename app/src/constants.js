@@ -17,7 +17,7 @@ export const MAX_ZOOM_LEVEL = 12;
 
 export const DEFAULT_VESSEL_COLOR = '#1181FB';
 
-export const API_RETURNED_KEYS = [
+export const VESSELS_ENDPOINT_KEYS = [
   'category',
   'datetime',
   'latitude',
@@ -27,6 +27,12 @@ export const API_RETURNED_KEYS = [
   'sigma',
   'weight'
 ];
+
+// tracks
+export const SHOW_OUTER_TRACK_BELOW_NUM_POINTS = 30000;
+export const TRACK_OVER_COLOR = 'rgba(255, 255, 255, 1)';
+export const TRACK_MATCH_COLOR = 'rgba(165, 247, 253, 1)';
+export const TRACK_OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .2)';
 
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)

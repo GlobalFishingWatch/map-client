@@ -26,7 +26,6 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overlay: null, // TODO deprecate this
       addedLayers: {},
       lastCenter: null,
       running: 'stop',
@@ -70,8 +69,6 @@ class Map extends Component {
     // when double clicking or scrolling on the map
     const center = this.map.getCenter();
     this.props.setCenter([center.lat(), center.lng()]);
-
-    this.updateTrackLayer();
   }
 
   /**
@@ -82,6 +79,9 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
+    if (!this.vesselsLayer) {
+      return;
+    }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -104,6 +104,8 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // console.log('componentWillReceiveProps', nextProps)
+    // console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
     if (!nextProps.token) {
       return;
     }
@@ -115,7 +117,39 @@ class Map extends Component {
     this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
-    this.updateTrackLayer(nextProps);
+
+    const innerExtentChanged = extentChanged(this.props.filters.timelineInnerExtent, nextProps.filters.timelineInnerExtent);
+    const startTimestamp = nextProps.filters.timelineInnerExtent[0].getTime();
+    const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
+
+    // update tracks layer when:
+    // - user selected a new vessel
+    // - zoom level changed (needs fetching of a new tileset)
+    // - playing state changed
+    // - user hovers on timeline to highlight a portion of the track
+    // - selected inner extent changed
+    if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
+        this.props.map.zoom !== nextProps.map.zoom ||
+        this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
+        extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
+        innerExtentChanged) {
+      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
+    }
+
+    if (this.vesselsLayer) {
+      // update vessels layer when:
+      // - user selected a new flag
+      // - selected outer extent changed
+      // - selected inner extent changed
+      // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
+      if (this.props.filters.flag !== nextProps.filters.flag ||
+        this.props.filters.startDate !== nextProps.filters.startDate || // TODO endDate/startDate still used????
+        this.props.filters.endDate !== nextProps.filters.endDate ||
+        innerExtentChanged) {
+        this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+      }
+    }
+
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
 
@@ -137,36 +171,38 @@ class Map extends Component {
     if (!this.vesselsLayer) {
       return;
     }
-
-    const newInnerExtent = nextProps.filters.timelineInnerExtent;
-    if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
-    }
-
     if (
-      this.props.filters.startDate !== nextProps.filters.startDate
-      || this.props.filters.endDate !== nextProps.filters.endDate
-      || this.props.filters.flag !== nextProps.filters.flag
+      this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.vesselsLayer.updateFlag(nextProps.filters.flag);
-      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
-      this.updateTrackLayer();
     }
   }
 
-  updateTrackLayer(props = null) {
-    const workProps = props || this.props;
-
-    if (!this.isTrackLayerReady() || !workProps || !workProps.vesselTrack) {
+  updateTrackLayer(props, startTimestamp, endTimestamp, timelinePaused) {
+    if (!this.isTrackLayerReady() || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
       return;
     }
     this.state.trackLayer.recalculatePosition();
 
+    const data = props.vesselTrack.seriesGroupData;
+
+    let overStartTimestamp;
+    let overEndTimestamp;
+    if (props.filters.timelineOverExtent) {
+      overStartTimestamp = props.filters.timelineOverExtent[0].getTime();
+      overEndTimestamp = props.filters.timelineOverExtent[1].getTime();
+    }
+
     this.state.trackLayer.drawTile(
-      workProps.vesselTrack.seriesGroupData,
-      workProps.vesselTrack.selectedSeries,
-      workProps.filters,
-      workProps.map.vesselTrackDisplayMode
+      data,
+      props.vesselTrack.selectedSeries,
+      {
+        startTimestamp,
+        endTimestamp,
+        timelinePaused,
+        overStartTimestamp,
+        overEndTimestamp
+      }
     );
   }
 
@@ -263,13 +299,13 @@ class Map extends Component {
     }
 
     // Create track layer
-    const Overlay = createTrackLayer(google);
-    const trackLayer = new Overlay(
+    const TrackLayer = createTrackLayer(google);
+    const trackLayer = new TrackLayer(
       this.refs.map.props.map,
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ /* overlay:  canvasLayer, */ trackLayer });
+    this.setState({ trackLayer });
 
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
@@ -391,7 +427,6 @@ class Map extends Component {
     }
     this.map.panTo(this.state.lastCenter);
     this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
-    this.updateTrackLayer();
   }
 
   /**
@@ -434,16 +469,15 @@ class Map extends Component {
       return;
     }
 
-    if (!this.state.overlay) {
+    if (!this.vesselsLayer) {
       return;
     }
 
     // TODO
-    // this.state.overlay.setVesselTransparency(nextProps.map.vesselTransparency);
+    // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
 
-    // TODO?
     // if (this.state.running !== 'play') {
-    //   this.state.overlay.refresh();
+    //   this.vesselsLayer.refresh();
     // }
   }
 
@@ -458,14 +492,15 @@ class Map extends Component {
       return;
     }
 
-    if (!this.state.overlay) {
+    if (!this.vesselsLayer) {
       return;
     }
 
-    this.state.overlay.setVesselColor(nextProps.map.vesselColor);
+    // TODO
+    this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
 
     if (this.state.running !== 'play') {
-      this.state.overlay.refresh();
+      this.vesselsLayer.refresh();
     }
   }
 
@@ -480,7 +515,6 @@ class Map extends Component {
       : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
-    this.updateTrackLayer();
   }
 
   /**
@@ -573,9 +607,9 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
+  closeShareModal: React.PropTypes.func,
   layerModal: React.PropTypes.object,
   closeLayerInfoModal: React.PropTypes.func,
-  closeShareModal: React.PropTypes.func,
   vesselTrackDisplayMode: React.PropTypes.string
 };
 

@@ -38,6 +38,7 @@ class Timebar extends Component {
     this.onStartDatePickerChange = this.onStartDatePickerChange.bind(this);
     this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
     this.onPauseToggle = this.onPauseToggle.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
       paused: true,
       innerExtent: TIMELINE_INNER_DATE_EXTENT, // used only by durationPicker
@@ -175,6 +176,10 @@ class Timebar extends Component {
       this.startTick();
     });
 
+    this.group.on('mousemove', () => {
+      this.onMouseOver(d3.event.offsetX);
+    });
+
     d3.select('body').on('mousemove', () => {
       if (dragging) {
         const nx = d3.event.pageX - leftOffset;
@@ -265,6 +270,7 @@ class Timebar extends Component {
 
   onInnerBrushReleased() {
     this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
+    this.props.updatePlayingStatus(true);
   }
 
   onInnerBrushMoved() {
@@ -458,9 +464,16 @@ class Timebar extends Component {
 
   onPauseToggle() {
     lastTimestamp = null;
+    const paused = !this.state.paused;
     this.setState({
-      paused: !this.state.paused
+      paused
     });
+    this.props.updatePlayingStatus(paused);
+  }
+
+  onMouseOver(offsetX) {
+    const timelineOverExtent = this.getExtent([offsetX - 2, offsetX + 2]);
+    this.props.updateTimelineOverDates(timelineOverExtent);
   }
 
   render() {
@@ -510,6 +523,8 @@ class Timebar extends Component {
 Timebar.propTypes = {
   updateInnerTimelineDates: React.PropTypes.func,
   updateOuterTimelineDates: React.PropTypes.func,
+  updatePlayingStatus: React.PropTypes.func,
+  updateTimelineOverDates: React.PropTypes.func,
   filters: React.PropTypes.object
 };
 
