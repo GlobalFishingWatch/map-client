@@ -1,14 +1,12 @@
 const initialState = {
   track: {},
   details: {},
-  vesselPosition: {},
   vesselVisibility: false
 };
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
   RESET_VESSEL_DETAILS,
-  SET_VESSEL_POSITION,
   SET_VESSEL_VISIBILITY
 } from '../actions';
 
@@ -18,15 +16,13 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { track: action.payload });
     case SET_VESSEL_DETAILS: {
       const details = Object.assign({}, state.details, action.payload);
-      return Object.assign({}, state, { details });
+      return Object.assign({}, state, { details, vesselVisibility: true });
     }
     case RESET_VESSEL_DETAILS:
       return Object.assign({}, state, { details: action.payload });
     case SET_VESSEL_VISIBILITY: {
       return Object.assign({}, state, { vesselVisibility: action.payload });
     }
-    case SET_VESSEL_POSITION:
-      return Object.assign({}, state, { vesselPosition: action.payload });
     default:
       return state;
   }

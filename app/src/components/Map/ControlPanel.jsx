@@ -4,13 +4,16 @@ import FilterPanel from '../../containers/Map/FilterPanel';
 import BasemapPanel from '../../containers/Map/BasemapPanel';
 import LayerPanel from '../../containers/Map/LayerPanel';
 import SearchPanel from '../../containers/Map/SearchPanel';
+import VesselInfoPanel from '../../containers/Map/VesselInfoPanel';
 import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
+
 import { Accordion, AccordionItem } from 'react-sanfona';
 
 class ControlPanel extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       searchVisible: false
     };
@@ -112,6 +115,7 @@ class ControlPanel extends Component {
     return (
       <div className={controlPanelStyle.controlpanel}>
         {this.renderResume()}
+        <VesselInfoPanel />
         <Accordion
           activeItems={6}
           allowMultiple={false}

@@ -1,4 +1,4 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION } from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -91,20 +91,6 @@ export function toggleVisibility(visibility) {
     dispatch({
       type: SET_VESSEL_VISIBILITY,
       payload: visibility
-    });
-  };
-}
-
-export function setVesselPosition(elem) {
-  const position = elem.getBoundingClientRect();
-
-  return (dispatch) => {
-    dispatch({
-      type: SET_VESSEL_POSITION,
-      payload: {
-        top: position.top,
-        left: position.left
-      }
     });
   };
 }
