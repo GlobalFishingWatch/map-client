@@ -70,8 +70,6 @@ class Map extends Component {
     // when double clicking or scrolling on the map
     const center = this.map.getCenter();
     this.props.setCenter([center.lat(), center.lng()]);
-
-    this.updateTrackLayer();
   }
 
   /**
@@ -104,6 +102,8 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps', nextProps)
+    console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
     if (!nextProps.token) {
       return;
     }
@@ -115,7 +115,33 @@ class Map extends Component {
     this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
-    this.updateTrackLayer(nextProps);
+
+    const innerExtentChanged = extentChanged(this.props.filters.timelineInnerExtent, nextProps.filters.timelineInnerExtent);
+    const startTimestamp = nextProps.filters.timelineInnerExtent[0].getTime();
+    const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
+
+    // update tracks layer when:
+    // - user selected a new vessel
+    // - zoom level changed (needs fetching of a new tileset)
+    // - selected inner extent changed
+    if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
+        this.props.map.zoom !== nextProps.map.zoom ||
+        innerExtentChanged) {
+      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp);
+    }
+
+    // update vessels layer when:
+    // - user selected a new flag
+    // - selected outer extent changed
+    // - selected inner extent changed
+    // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
+    if (this.props.filters.flag !== nextProps.filters.flag ||
+        this.props.filters.startDate !== nextProps.filters.startDate ||
+        this.props.filters.endDate !== nextProps.filters.endDate ||
+        innerExtentChanged) {
+      this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+    }
+
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
 
@@ -134,39 +160,26 @@ class Map extends Component {
    * @param nextProps
    */
   updateFiltersState(nextProps) {
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    const newInnerExtent = nextProps.filters.timelineInnerExtent;
-    if (extentChanged(newInnerExtent, this.props.filters.timelineInnerExtent)) {
-      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
-    }
-
     if (
       this.props.filters.startDate !== nextProps.filters.startDate
       || this.props.filters.endDate !== nextProps.filters.endDate
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
       this.vesselsLayer.updateFilters(nextProps.filters);
-      this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
-      this.updateTrackLayer();
     }
   }
 
-  updateTrackLayer(props = null) {
-    const workProps = props || this.props;
-
-    if (!this.isTrackLayerReady() || !workProps || !workProps.vesselTrack) {
+  updateTrackLayer(props, startTimestamp, endTimestamp) {
+    if (!this.isTrackLayerReady() || !props || !props.vesselTrack) {
       return;
     }
     this.state.trackLayer.recalculatePosition();
 
     this.state.trackLayer.drawTile(
-      workProps.vesselTrack.seriesGroupData,
-      workProps.vesselTrack.selectedSeries,
-      workProps.filters,
-      workProps.map.vesselTrackDisplayMode
+      props.vesselTrack.seriesGroupData,
+      props.vesselTrack.selectedSeries,
+      startTimestamp,
+      endTimestamp
     );
   }
 
@@ -390,7 +403,6 @@ class Map extends Component {
     }
     this.map.panTo(this.state.lastCenter);
     this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
-    this.updateTrackLayer();
   }
 
   /**
@@ -494,7 +506,6 @@ class Map extends Component {
       : this.map.getZoom() - 1;
 
     this.map.setZoom(newZoomLevel);
-    this.updateTrackLayer();
   }
 
   /**
@@ -581,8 +592,7 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
-  closeShareModal: React.PropTypes.func,
-  vesselTrackDisplayMode: React.PropTypes.string
+  closeShareModal: React.PropTypes.func
 };
 
 export default Map;

@@ -36,6 +36,7 @@ const createTrackLayer = function (google) {
 
   TrackLayer.prototype = new google.maps.OverlayView();
   TrackLayer.prototype.regenerate = function () {
+    this.canvas.ctx.beginPath();
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
@@ -127,9 +128,8 @@ const createTrackLayer = function (google) {
    * @param data
    * @param series
    * @param filters
-   * @param vesselTrackDisplayMode
    */
-  TrackLayer.prototype.drawTile = function (data, series, filters, vesselTrackDisplayMode) {
+  TrackLayer.prototype.drawTile = function (data, series, startTimestamp, endTimestamp) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -141,16 +141,12 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
-    console.log('drawtile', filters, vesselTrackDisplayMode)
+    console.log('drawtile')
     let numPointsDrawn = 0;
-
-    const startTimestamp = filters.timelineInnerExtent[0].getTime();
-    const endTimestamp = filters.timelineInnerExtent[1].getTime();
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      // drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
       drawStyle = this.getDrawStyle(data.datetime[i], startTimestamp, endTimestamp);
       if (!drawStyle || series !== data.series[i]) {
         continue;
@@ -172,9 +168,9 @@ const createTrackLayer = function (google) {
       this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
 
-    if (numPointsDrawn > 0) {
-      this.ctx.stroke();
-    }
+    console.log(numPointsDrawn)
+
+    this.ctx.stroke();
   };
 
   TrackLayer.prototype.onAdd = function () {

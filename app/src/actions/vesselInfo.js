@@ -52,7 +52,6 @@ export function getVesselTrack(seriesGroup, series = null) {
     const endYear = new Date(filters.endDate).getUTCFullYear();
     const urls = [];
 
-    // TODO what's the point of loading all years?
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/\
 sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
