@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
-
 import CloseIcon from 'babel!svg-react!../../../assets/icons/close.svg?name=Icon';
-
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
 import helperStyles from 'styles/_helpers.scss';
 
