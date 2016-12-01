@@ -40,7 +40,6 @@ class Timebar extends Component {
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
-      paused: true,
       innerExtent: TIMELINE_INNER_DATE_EXTENT, // used only by durationPicker
       outerExtent: TIMELINE_OUTER_DATE_EXTENT,
       innerExtentPx: [0, 100]  // used only by durationPicker
@@ -74,9 +73,9 @@ class Timebar extends Component {
     });
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (this.state.paused !== nextState.paused) {
-      this.togglePause(nextState.paused);
+  componentWillUpdate(nextProps) {
+    if (this.props.filters.timelinePaused !== nextProps.filters.timelinePaused) {
+      this.togglePause(nextProps.filters.timelinePaused);
     }
   }
 
@@ -388,7 +387,7 @@ class Timebar extends Component {
     const deltaTick = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
 
-    if (!this.state.paused) {
+    if (!this.props.filters.timelinePaused) {
       this.playStep(deltaTick);
     }
 
@@ -402,7 +401,7 @@ class Timebar extends Component {
       }
     }
 
-    if (dragging || !this.state.paused) {
+    if (dragging || !this.props.filters.timelinePaused) {
       window.requestAnimationFrame(this.onTick.bind(this));
     }
   }
@@ -435,9 +434,9 @@ class Timebar extends Component {
       offsetedInnerExtent = [new Date(endOfTime.getTime() - innerExtentDelta), endOfTime];
       offsetedOuterExtent = [new Date(endOfTime.getTime() - outerExtentDelta), endOfTime];
       this.setState({
-        paused: true,
         outerExtent: offsetedOuterExtent
       });
+      this.updatePlayingStatus(true);
     }
 
     this.props.updateInnerTimelineDates(offsetedInnerExtent);
@@ -464,10 +463,7 @@ class Timebar extends Component {
 
   onPauseToggle() {
     lastTimestamp = null;
-    const paused = !this.state.paused;
-    this.setState({
-      paused
-    });
+    const paused = !this.props.filters.timelinePaused;
     this.props.updatePlayingStatus(paused);
   }
 
@@ -502,7 +498,7 @@ class Timebar extends Component {
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>
           <TogglePauseButton
             onToggle={this.onPauseToggle}
-            paused={this.state.paused}
+            paused={this.props.filters.timelinePaused}
           />
         </div>
 
