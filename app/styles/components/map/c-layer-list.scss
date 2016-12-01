@@ -26,8 +26,7 @@
 
     &.-selected {
       > .layer-info > .layer-thumbnail {
-        border: 3px solid $color-4;
-        border-radius: 2px;
+        border: 2px solid $color-4;
       }
     }
 
@@ -37,7 +36,7 @@
       display: flex;
 
       > .layer-thumbnail {
-        border-radius: 2px;
+        border: 1px solid $color-19;
         height: 30px;
         margin: 0 10px 0 0;
         width: 30px;
