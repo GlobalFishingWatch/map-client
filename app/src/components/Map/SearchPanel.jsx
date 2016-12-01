@@ -12,6 +12,10 @@ class SearchPanel extends Component {
   constructor(props) {
     super(props);
 
+    this.defaults = {
+      characterLimit: 3
+    };
+
     this.state = {
       keyword: ''
     };
@@ -35,10 +39,10 @@ class SearchPanel extends Component {
   }
 
   render() {
-    const isSearching = this.props.search.count || this.state.keyword.length > 3;
+    const isSearching = this.props.search.count || this.state.keyword.length > this.defaults.characterLimit;
 
     let searchResults;
-    if (this.props.search.count) {
+    if (this.props.search.count && this.state.keyword.length >= this.defaults.characterLimit) {
       searchResults = [];
       for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
         searchResults.push(
@@ -54,6 +58,11 @@ class SearchPanel extends Component {
           />
         );
       }
+    } else if (this.state.keyword.length < this.defaults.characterLimit) {
+      searchResults = (
+        <li className={searchPanelStyles.result}>
+          Type at least {this.defaults.characterLimit} characters
+        </li>);
     } else {
       searchResults = <li className={searchPanelStyles.result}>No result</li>;
     }
@@ -81,13 +90,10 @@ class SearchPanel extends Component {
           onClick={() => this.cleanResults()}
         />}
         <ul
-          className={classnames(searchPanelStyles['result-list'], isSearching ? searchPanelStyles['-open'] : '')}
+          className={classnames(searchPanelStyles['result-list'], searchPanelStyles['-open'])}
         >
           {searchResults}
         </ul>
-        {!isSearching &&
-          <span>type at least 3 letters</span>
-        }
       </div>);
   }
 }
