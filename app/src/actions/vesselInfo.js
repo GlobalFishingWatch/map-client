@@ -1,4 +1,4 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SET_VESSEL_POSITION } from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';

@@ -9,30 +9,10 @@ import helperStyles from 'styles/_helpers.scss';
 
 class VesselInfoPanel extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      vesselVisibility: this.props.vesselVisibility
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(nextProps);
-  }
-
-  onClose() {
-    Object.assign(this.state, {
-      vesselVisibility: false
-    });
-
-    this.setState(this.state);
-  }
-
   render() {
     let vesselInfo = null;
     let iso = null;
-    const visibilityClass = this.state.vesselVisibility ? null : helperStyles['_is-hidden'];
+    const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
 
     if (this.props.vesselInfo && Object.keys(this.props.vesselInfo).length) {
       if (this.props.vesselInfo.flag) {
@@ -42,7 +22,7 @@ class VesselInfoPanel extends Component {
       vesselInfo = (
         <div>
           <span
-            onClick={() => this.onClose()}
+            onClick={() => this.props.toggleVisibility(false)}
             className={vesselPanelStyles['button-close']}
           >
             <CloseIcon className={vesselPanelStyles.cross} />
@@ -97,6 +77,7 @@ class VesselInfoPanel extends Component {
 
 VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
+  toggleVisibility: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool
 };
 
