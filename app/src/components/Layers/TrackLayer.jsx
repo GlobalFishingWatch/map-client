@@ -101,19 +101,15 @@ const createTrackLayer = function (google) {
       return `rgba(0, ${green}, 0, 1)`;
     }
     if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
-      // console.log('before start date')
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
     if (filters && filters.endDate && data.datetime[index] > filters.endDate) {
-      // console.log('after end date')
       return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
     }
     if (filters && filters.timelineInnerExtent[0] && data.datetime[index] < filters.timelineInnerExtent[0]) {
-      // console.log('in inner range')
       return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
     }
     if (filters && filters.timelineInnerExtent[1] && data.datetime[index] > filters.timelineInnerExtent[1]) {
-      // console.log('in inner range')
       return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
     }
     return MATCH_COLOR;
@@ -166,6 +162,9 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
+    // console.log('drawtile', filters, vesselTrackDisplayMode)
+    let numPointsDrawn = 0;
+
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
@@ -173,7 +172,7 @@ const createTrackLayer = function (google) {
       if (!drawStyle) {
         continue;
       }
-      // console.log(drawStyle)
+      numPointsDrawn++;
 
       point = this.drawPoint(overlayProjection, data, i, drawStyle);
 
@@ -189,7 +188,10 @@ const createTrackLayer = function (google) {
       }
       this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
-    this.ctx.stroke();
+
+    if (numPointsDrawn > 0) {
+      this.ctx.stroke();
+    }
   };
 
   TrackLayer.prototype.onAdd = function () {
