@@ -259,6 +259,7 @@ class Map extends Component {
     if (!this.vesselsLayer) {
       this.vesselsLayer = new VesselsLayer(
         this.map,
+        this.props.map.tilesetUrl,
         this.props.token,
         this.props.filters,
         box.width,
@@ -574,6 +575,7 @@ Map.propTypes = {
   basemaps: React.PropTypes.array,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
+  tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,

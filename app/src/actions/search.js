@@ -23,7 +23,7 @@ export function getSearchResults(searchTerm) {
     // ID of the current request
     const queryID = ++searchQueryID;
 
-    fetch(`${MAP_API_ENDPOINT}/v1/tilesets/801-tileset-nz2-tms/search/?query=${searchTerm}`, {
+    fetch(`${state.map.tilesetUrl}/search/?query=${searchTerm}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${state.user.token}`

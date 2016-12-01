@@ -16,7 +16,8 @@ import {
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
-  SET_BASEMAP
+  SET_BASEMAP,
+  SET_TILESET_URL
 } from '../actions';
 import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from '../constants';
@@ -42,6 +43,7 @@ const initialState = {
   loading: false,
   layers: [],
   zoom: 3,
+  tilesetUrl: null,
   center: [0, 0],
   shareModal: {
     open: false,
@@ -71,9 +73,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    case SET_LAYERS: {
+    case SET_LAYERS:
       return Object.assign({}, state, { layers: action.payload });
-    }
+    case SET_TILESET_URL:
+      return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
