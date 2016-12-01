@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PelagosClient from '../../lib/pelagosClient';
-import { API_RETURNED_KEYS, PLAYBACK_PRECISION } from '../../constants';
+import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from '../../constants';
 
 export default {
   getTilePelagosPromises(tileCoordinates, outerStartDate, outerEndDate, token) {
@@ -71,15 +71,16 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
   /**
    * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
    *
-   * @param vectorArrays an array of objects containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
+   * @param vectorArrays an array of objects containing a Float32Array for each vessel param (lat, lon, weight...)
+   * @param vectorArraysKeys the keys to pick on the vectorArrays (lat, lon, weight, etc)
    * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
    */
-  groupData(cleanVectorArrays) {
+  groupData(cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT_KEYS) {
     const data = {};
 
     const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
 
-    API_RETURNED_KEYS.forEach((key) => {
+    vectorArraysKeys.forEach((key) => {
       data[key] = new Float32Array(totalVectorArraysLength);
     });
 
@@ -92,7 +93,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
 
     for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
       currentArray = cleanVectorArrays[index];
-      API_RETURNED_KEYS.forEach(appendValues);
+      vectorArraysKeys.forEach(appendValues);
       cumulatedOffsets += currentArray.longitude.length;
     }
     return data;

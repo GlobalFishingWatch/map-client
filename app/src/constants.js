@@ -18,7 +18,7 @@ export const MAX_ZOOM_LEVEL = 12;
 
 export const DEFAULT_VESSEL_COLOR = '#1181FB';
 
-export const API_RETURNED_KEYS = [
+export const VESSELS_ENDPOINT_KEYS = [
   'category',
   'datetime',
   'latitude',
