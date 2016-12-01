@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
 const MATCH_COLOR = 'rgba(165, 247, 253, 1)';
-const OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .1)';
+const OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .15)';
 
 const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {
@@ -87,12 +87,16 @@ const createTrackLayer = function (google) {
    * @param timestamp the current point timestamp
    * @param startTimestamp the starting timestamp from the timeline inner extent
    * @param endTimestamp the end timestamp from the timeline inner extent
+   * @param isTimelinePlaying if in the middle of playing, do not display tracks out of innerExtent for perf reasons
    **/
-  TrackLayer.prototype.getDrawStyle = function (timestamp, startTimestamp, endTimestamp) {
+  TrackLayer.prototype.getDrawStyle = function (timestamp, startTimestamp, endTimestamp, showOuterTrack) {
     if (timestamp > startTimestamp && timestamp < endTimestamp) {
       return MATCH_COLOR;
     }
-    return OUT_OF_INNER_EXTENT_COLOR;
+    if (showOuterTrack === true) {
+      return OUT_OF_INNER_EXTENT_COLOR;
+    }
+    return false;
   };
 
   /**
@@ -129,7 +133,7 @@ const createTrackLayer = function (google) {
    * @param series
    * @param filters
    */
-  TrackLayer.prototype.drawTile = function (data, series, startTimestamp, endTimestamp) {
+  TrackLayer.prototype.drawTile = function (data, series, startTimestamp, endTimestamp, showOuterTrack) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -141,17 +145,17 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
-    console.log('drawtile')
-    let numPointsDrawn = 0;
+    // console.log('drawtile', showOuterTrack)
+    // let numPointsDrawn = 0;
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      drawStyle = this.getDrawStyle(data.datetime[i], startTimestamp, endTimestamp);
+      drawStyle = this.getDrawStyle(data.datetime[i], startTimestamp, endTimestamp, showOuterTrack);
       if (!drawStyle || series !== data.series[i]) {
         continue;
       }
-      numPointsDrawn++;
+      // numPointsDrawn++;
 
       point = this.drawPoint(overlayProjection, data, i, drawStyle);
 
@@ -168,7 +172,7 @@ const createTrackLayer = function (google) {
       this.ctx.lineTo(~~point.x - this.offset.x, ~~point.y - this.offset.y);
     }
 
-    console.log(numPointsDrawn)
+    // console.log(numPointsDrawn)
 
     this.ctx.stroke();
   };

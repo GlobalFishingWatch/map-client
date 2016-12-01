@@ -264,7 +264,8 @@ class Timebar extends Component {
 
   onInnerBrushReleased() {
     this.props.updateFilters({
-      timelineInnerExtent: this.getExtent(d3.event.selection)
+      timelineInnerExtent: this.getExtent(d3.event.selection),
+      isTimelinePlaying: false
     });
   }
 
@@ -436,7 +437,8 @@ class Timebar extends Component {
     }
 
     this.props.updateFilters({
-      timelineInnerExtent: offsetedInnerExtent
+      timelineInnerExtent: offsetedInnerExtent,
+      isTimelinePlaying: true
     });
 
     // if inner extent gets closer to outer extent right, also offset the outer extent to make the inner extent fit
@@ -464,6 +466,11 @@ class Timebar extends Component {
     this.setState({
       paused: !this.state.paused
     });
+    if (!this.state.paused) {
+      this.props.updateFilters({
+        isTimelinePlaying: false
+      });
+    }
   }
 
   render() {

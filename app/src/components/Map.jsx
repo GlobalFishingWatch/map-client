@@ -102,8 +102,8 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps)
-    console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
+    // console.log('componentWillReceiveProps', nextProps)
+    // console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
     if (!nextProps.token) {
       return;
     }
@@ -123,11 +123,13 @@ class Map extends Component {
     // update tracks layer when:
     // - user selected a new vessel
     // - zoom level changed (needs fetching of a new tileset)
+    // - playing state changed
     // - selected inner extent changed
     if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
         this.props.map.zoom !== nextProps.map.zoom ||
+        this.props.filters.isTimelinePlaying !== nextProps.filters.isTimelinePlaying ||
         innerExtentChanged) {
-      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp);
+      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.isTimelinePlaying);
     }
 
     // update vessels layer when:
@@ -169,17 +171,21 @@ class Map extends Component {
     }
   }
 
-  updateTrackLayer(props, startTimestamp, endTimestamp) {
+  updateTrackLayer(props, startTimestamp, endTimestamp, isTimelinePlaying) {
     if (!this.isTrackLayerReady() || !props || !props.vesselTrack) {
       return;
     }
     this.state.trackLayer.recalculatePosition();
 
+    const data = props.vesselTrack.seriesGroupData;
+    const showOuterTrack = !(isTimelinePlaying && data.latitude.length > 40000)
+
     this.state.trackLayer.drawTile(
-      props.vesselTrack.seriesGroupData,
+      data,
       props.vesselTrack.selectedSeries,
       startTimestamp,
-      endTimestamp
+      endTimestamp,
+      showOuterTrack
     );
   }
 
