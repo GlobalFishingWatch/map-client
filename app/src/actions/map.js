@@ -5,7 +5,8 @@ import {
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYER_OPACITY,
-  SET_TIMELINE_DATES,
+  SET_INNER_TIMELINE_DATES,
+  SET_OUTER_TIMELINE_DATES,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
@@ -126,8 +127,13 @@ export function getWorkspace(workspaceId) {
 
         // We update the dates of the timeline
         dispatch({
-          type: SET_TIMELINE_DATES,
+          type: SET_INNER_TIMELINE_DATES,
           payload: workspace.timeline.innerExtent.map(d => new Date(d))
+        });
+
+        dispatch({
+          type: SET_OUTER_TIMELINE_DATES,
+          payload: workspace.timeline.outerExtent.map(d => new Date(d))
         });
 
         // We update the layers
@@ -243,8 +249,8 @@ export function saveWorkspace(errorAction) {
           },
           timeline: {
             // We store the timestamp
-            innerExtent: state.filters.timelineInnerExtent.map(e => +e)
-            // TODO: add the outer extent when in the store
+            innerExtent: state.filters.timelineInnerExtent.map(e => +e),
+            outerExtent: state.filters.timelineOuterExtent.map(e => +e)
           }
         }
       })
