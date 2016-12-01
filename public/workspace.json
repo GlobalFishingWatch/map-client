@@ -63,6 +63,7 @@
         {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
@@ -78,6 +79,7 @@
         {
           "title": "MPA - Restricted Use",
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
@@ -93,6 +95,7 @@
         {
           "title": "EEZ",
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
+          "reportable": true,
           "source": {
             "type": "BinFormat",
             "args": {
