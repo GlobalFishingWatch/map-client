@@ -5,13 +5,15 @@ import { TIMELINE_MAX_STEPS } from '../../constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
-export default class VesselsOverlay extends google.maps.OverlayView {
+export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
-  constructor(map, viewportWidth, viewportHeight) {
+  constructor(map, filters, viewportWidth, viewportHeight) {
     super();
 
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
+
+    this.setFlag(filters.flag);
 
     this.map = map;
     this.setMap(map);

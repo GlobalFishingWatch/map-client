@@ -121,7 +121,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArray
    * @param tileCoordinates
    */
-  getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset, flag) {
+  getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset) {
     const tilePlaybackData = [];
     // const tilePlaybackDataGrid = [];
 
@@ -138,11 +138,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       // if (!data.weight[index]) {
       //   return false;
       // }
-      const category = vectorArray.category[index];
-      if (flag && flag !== category) {
-        continue;
-      }
-
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, outerStartDateOffset);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
@@ -174,10 +169,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
     }
 
-    // console.log(min, max)
-    // console.log(tilePlaybackDataGrid)
-    // return tilePlaybackDataGrid;
-    // console.log(tilePlaybackData)
     return tilePlaybackData;
   }
 };

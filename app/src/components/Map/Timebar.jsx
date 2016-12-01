@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_TOTAL_DATE_EXTENT, TIMELINE_INNER_EXTENT, TIMELINE_MAX_TIME } from '../../constants';
+import { TIMELINE_OUTER_DATE_EXTENT, TIMELINE_INNER_DATE_EXTENT, TIMELINE_MAX_TIME } from '../../constants';
 import timebarCss from '../../../styles/components/map/c-timebar.scss';
 import timelineCss from '../../../styles/components/map/c-timeline.scss';
 import extentChanged from '../../util/extentChanged';
@@ -39,9 +39,9 @@ class Timebar extends Component {
     this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.state = {
-      outerExtent: TIMELINE_TOTAL_DATE_EXTENT,
       paused: true,
-      innerExtent: TIMELINE_INNER_EXTENT, // used only by durationPicker
+      innerExtent: TIMELINE_INNER_DATE_EXTENT, // used only by durationPicker
+      outerExtent: TIMELINE_OUTER_DATE_EXTENT,
       innerExtentPx: [0, 100]  // used only by durationPicker
     };
   }
@@ -56,21 +56,24 @@ class Timebar extends Component {
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);
     }
-    this.setState({
-      innerExtent: nextProps.filters.timelineInnerExtent // used only by durationPicker
-    });
-  }
 
-  componentWillUpdate(nextProps, nextState) {
-    // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
-    if (extentChanged(this.state.outerExtent, nextState.outerExtent)) {
+    const newOuterExtent = nextProps.filters.timelineOuterExtent;
+    if (extentChanged(this.props.filters.timelineOuterExtent, newOuterExtent)) {
       // redraw
-      const newOuterPxExtent = [x(nextState.outerExtent[0]), x(nextState.outerExtent[1])];
+      const newOuterPxExtent = [x(newOuterExtent[0]), x(newOuterExtent[1])];
       const isLargerThanBefore =
         newOuterPxExtent[0] < x(this.state.outerExtent[0]) ||
         newOuterPxExtent[1] > x(this.state.outerExtent[1]);
       this.redrawOuterBrush(newOuterPxExtent, isLargerThanBefore);
     }
+
+    this.setState({
+      innerExtent: nextProps.filters.timelineInnerExtent,
+      outerExtent: nextProps.filters.timelineOuterExtent
+    });
+  }
+
+  componentWillUpdate(nextProps, nextState) {
     if (this.state.paused !== nextState.paused) {
       this.togglePause(nextState.paused);
     }
@@ -101,7 +104,7 @@ class Timebar extends Component {
       .x(d => x(d.date))
       .y0(height)
       .y1(d => y(d.price));
-    x.domain(TIMELINE_TOTAL_DATE_EXTENT);
+    x.domain(TIMELINE_OUTER_DATE_EXTENT);
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
     this.svg = d3.select('#timeline_svg_container').append('svg')
@@ -197,8 +200,8 @@ class Timebar extends Component {
 
   getDummyData() {
     const dummyData = [];
-    const startDate = TIMELINE_TOTAL_DATE_EXTENT[0];
-    const endDate = TIMELINE_TOTAL_DATE_EXTENT[1];
+    const startDate = TIMELINE_OUTER_DATE_EXTENT[0];
+    const endDate = TIMELINE_OUTER_DATE_EXTENT[1];
     for (let year = startDate.getFullYear(); year <= endDate.getFullYear(); year++) {
       const startMonth = (year === startDate.getFullYear()) ? startDate.getMonth() : 0;
       const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
@@ -219,9 +222,7 @@ class Timebar extends Component {
   setOuterExtent(outerExtentPx) {
     const outerExtent = this.getNewOuterExtent(outerExtentPx);
 
-    this.setState({
-      outerExtent
-    });
+    this.props.updateOuterTimelineDates(outerExtent);
   }
 
   getNewOuterExtent(newOuterPxExtent) {
@@ -229,10 +230,10 @@ class Timebar extends Component {
     // do not get out of total range for outer brush
     const newOuterTimeLeft = x.invert(newOuterPxExtent[0]);
     const newOuterTimeRight = x.invert(newOuterPxExtent[1]);
-    const isAfterStartDate = newOuterTimeLeft.getTime() > TIMELINE_TOTAL_DATE_EXTENT[0].getTime();
-    const isBeforeEndDate = newOuterTimeRight.getTime() < TIMELINE_TOTAL_DATE_EXTENT[1].getTime();
-    const newOuterTimeExtentLeft = isAfterStartDate ? newOuterTimeLeft : TIMELINE_TOTAL_DATE_EXTENT[0];
-    const newOuterTimeExtentRight = isBeforeEndDate ? newOuterTimeRight : TIMELINE_TOTAL_DATE_EXTENT[1];
+    const isAfterStartDate = newOuterTimeLeft.getTime() > TIMELINE_OUTER_DATE_EXTENT[0].getTime();
+    const isBeforeEndDate = newOuterTimeRight.getTime() < TIMELINE_OUTER_DATE_EXTENT[1].getTime();
+    const newOuterTimeExtentLeft = isAfterStartDate ? newOuterTimeLeft : TIMELINE_OUTER_DATE_EXTENT[0];
+    const newOuterTimeExtentRight = isBeforeEndDate ? newOuterTimeRight : TIMELINE_OUTER_DATE_EXTENT[1];
     return [newOuterTimeExtentLeft, newOuterTimeExtentRight];
   }
 
@@ -263,9 +264,7 @@ class Timebar extends Component {
   }
 
   onInnerBrushReleased() {
-    this.props.updateFilters({
-      timelineInnerExtent: this.getExtent(d3.event.selection)
-    });
+    this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
   }
 
   onInnerBrushMoved() {
@@ -419,7 +418,7 @@ class Timebar extends Component {
     const previousInnerExtent = this.props.filters.timelineInnerExtent;
     let offsetedInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + playStep));
     let offsetedOuterExtent = this.state.outerExtent.map(d => new Date(d.getTime() + playStep));
-    const endOfTime = TIMELINE_TOTAL_DATE_EXTENT[1];
+    const endOfTime = TIMELINE_OUTER_DATE_EXTENT[1];
     const isAtEndOfTime = x(offsetedInnerExtent[1]) >= x(endOfTime);
 
 
@@ -435,9 +434,7 @@ class Timebar extends Component {
       });
     }
 
-    this.props.updateFilters({
-      timelineInnerExtent: offsetedInnerExtent
-    });
+    this.props.updateInnerTimelineDates(offsetedInnerExtent);
 
     // if inner extent gets closer to outer extent right, also offset the outer extent to make the inner extent fit
     if (!isAtEndOfTime && x(offsetedInnerExtent[1]) + innerOuterMarginPx > x(this.state.outerExtent[1])) {
@@ -472,7 +469,7 @@ class Timebar extends Component {
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
             selected={this.state.outerExtent[0]}
-            minDate={TIMELINE_TOTAL_DATE_EXTENT[0]}
+            minDate={TIMELINE_OUTER_DATE_EXTENT[0]}
             maxDate={this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
           >
@@ -483,7 +480,7 @@ class Timebar extends Component {
           <DatePicker
             selected={this.state.outerExtent[1]}
             minDate={this.props.filters.timelineInnerExtent[1]}
-            maxDate={TIMELINE_TOTAL_DATE_EXTENT[1]}
+            maxDate={TIMELINE_OUTER_DATE_EXTENT[1]}
             onChange={this.onEndDatePickerChange}
           >
             End<br />date
@@ -511,7 +508,8 @@ class Timebar extends Component {
 }
 
 Timebar.propTypes = {
-  updateFilters: React.PropTypes.func,
+  updateInnerTimelineDates: React.PropTypes.func,
+  updateOuterTimelineDates: React.PropTypes.func,
   filters: React.PropTypes.object
 };
 
