@@ -1,8 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
-const OUT_OF_INNER_BOUNDS_COLOR = 'rgba(255, 128, 0, 1)';
-const OUT_OF_OUTER_BOUNDS_COLOR = 'rgba(255, 255, 0, 1)';
-const MATCH_COLOR = 'rgba(255, 0, 0, 1)';
+const MATCH_COLOR = 'rgba(165, 247, 253, 1)';
+const OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .1)';
 
 const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {
@@ -84,35 +83,15 @@ const createTrackLayer = function (google) {
 
   /**
    * Calculates the rendering style (color + alpha) to be drawn for the current vessel track/point
-   *
-   * @param data
-   * @param index
-   * @param filters
-   * @param series
-   * @param vesselTrackDisplayMode
-   * @returns {*}
-   */
-  TrackLayer.prototype.getDrawStyle = function (data, index, filters, series, vesselTrackDisplayMode) {
-    if (series && data.series[index] !== series) {
-      if (vesselTrackDisplayMode !== 'all') {
-        return false;
-      }
-      const green = 100 + (data.series[index] % 155);
-      return `rgba(0, ${green}, 0, 1)`;
+   * @param timestamp the current point timestamp
+   * @param startTimestamp the starting timestamp from the timeline inner extent
+   * @param endTimestamp the end timestamp from the timeline inner extent
+   **/
+  TrackLayer.prototype.getDrawStyle = function (timestamp, startTimestamp, endTimestamp) {
+    if (timestamp > startTimestamp && timestamp < endTimestamp) {
+      return MATCH_COLOR;
     }
-    if (filters && filters.startDate && data.datetime[index] < filters.startDate) {
-      return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
-    }
-    if (filters && filters.endDate && data.datetime[index] > filters.endDate) {
-      return (vesselTrackDisplayMode === 'all') ? OUT_OF_OUTER_BOUNDS_COLOR : false;
-    }
-    if (filters && filters.timelineInnerExtent[0] && data.datetime[index] < filters.timelineInnerExtent[0]) {
-      return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
-    }
-    if (filters && filters.timelineInnerExtent[1] && data.datetime[index] > filters.timelineInnerExtent[1]) {
-      return (vesselTrackDisplayMode !== 'current') ? OUT_OF_INNER_BOUNDS_COLOR : false;
-    }
-    return MATCH_COLOR;
+    return OUT_OF_INNER_EXTENT_COLOR;
   };
 
   /**
@@ -162,14 +141,18 @@ const createTrackLayer = function (google) {
     let drawStyle = null;
     let previousDrawStyle = null;
 
-    // console.log('drawtile', filters, vesselTrackDisplayMode)
+    console.log('drawtile', filters, vesselTrackDisplayMode)
     let numPointsDrawn = 0;
+
+    const startTimestamp = filters.timelineInnerExtent[0].getTime();
+    const endTimestamp = filters.timelineInnerExtent[1].getTime();
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
-      if (!drawStyle) {
+      // drawStyle = this.getDrawStyle(data, i, filters, series, vesselTrackDisplayMode);
+      drawStyle = this.getDrawStyle(data.datetime[i], startTimestamp, endTimestamp);
+      if (!drawStyle || series !== data.series[i]) {
         continue;
       }
       numPointsDrawn++;
