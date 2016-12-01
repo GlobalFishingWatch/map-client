@@ -2,13 +2,18 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
-import timebarCss from 'styles/components/map/c-timebar.scss';
-import timelineCss from 'styles/components/map/c-timeline.scss';
-import extentChanged from 'util/extentChanged';
+import { TIMELINE_TOTAL_DATE_EXTENT, TIMELINE_INNER_EXTENT, TIMELINE_MAX_TIME } from 'constants';
+
 import DatePicker from 'components/Map/DatePicker';
 import TogglePauseButton from 'components/Map/TogglePauseButton';
 import DurationPicker from 'components/Map/DurationPicker';
+
+import timebarCss from 'styles/components/map/c-timebar.scss';
+import timelineCss from 'styles/components/map/c-timeline.scss';
+
+import extentChanged from 'util/extentChanged';
+import isMobile from 'ismobilejs';
+import moment from 'moment';
 
 let width;
 let height;
@@ -111,9 +116,10 @@ class Timebar extends Component {
     );
     const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
     leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
-    width = parseInt(computedStyles.width, 10) - 50;
+    width = parseInt(computedStyles.width, 10);
     height = parseInt(computedStyles.height, 10);
     const durationPickerHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
+
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -492,6 +498,13 @@ class Timebar extends Component {
   }
 
   render() {
+    const dateFormat = 'DD MMM YYYY';
+    const startDateText = isMobile.phone || isMobile.tablet ? ' start' : 'start date';
+    const endDateText = isMobile.phone || isMobile.tablet ? 'end' : 'end date';
+
+    const startDate = moment(this.props.filters.startDate).format(dateFormat);
+    const endDate = moment(this.props.filters.endDate).format(dateFormat);
+
     return (
       <div className={timebarCss['c-timebar']}>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
@@ -501,7 +514,8 @@ class Timebar extends Component {
             maxDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
           >
-            Start<br />Date
+            {startDateText}
+            {startDate}
           </DatePicker>
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
@@ -511,7 +525,8 @@ class Timebar extends Component {
             maxDate={this.props.filters.timelineOverallExtent[1]}
             onChange={this.onEndDatePickerChange}
           >
-            End<br />date
+            {endDateText}
+            {endDate}
           </DatePicker>
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>

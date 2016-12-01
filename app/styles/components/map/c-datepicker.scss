@@ -1,23 +1,56 @@
 @import '../../settings';
 
 :global .c-datepicker {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  justify-content: center;
   position: relative;
 
-  .c-datepicker-title {
-    color: $color-3;
-    font-size: $font-size-small;
+  &::after {
+    background-color: rgba($color-3, .4);
+    content: '';
+    display: inline-block;
+    height: 60%;
     position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 1px;
+  }
+
+  > .c-datepicker-title {
+    color: rgba($color-3, .5);
+    font-size: $font-size-xs-small;
+    font-weight: $font-weight-bold;
     text-transform: uppercase;
-    top: 25%;
-    width: 100%;
+
+    @media #{$mq-mobile-large} {
+      font-size: $font-size-small;
+    }
+  }
+
+  > .datepicker-date {
+    color: $color-3;
+    font-size: $font-size-xs-small;
+    font-weight: $font-weight-bold;
+    max-width: 80%;
+    text-align: center;
+    text-transform: uppercase;
+    word-wrap: break-word;
   }
 
   .react-datepicker__input-container {
     height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
   }
 
   input {
+    border: 0;
     cursor: pointer;
     height: 100%;
     opacity: 0;

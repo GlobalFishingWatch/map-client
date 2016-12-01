@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import classnames from 'classnames';
+
 import css from 'styles/components/map/c-durationpicker.scss';
+import iconStyles from 'styles/icons.scss';
+
+import SetttingsIcon from 'babel!svg-react!assets/icons/duration_settings.svg?name=SetttingsIcon';
 
 class DurationPicker extends Component {
 
@@ -28,8 +33,13 @@ class DurationPicker extends Component {
 
     return (
       <div style={style} className={css['c-durationpicker']}>
-        <div className={css['c-durationpicker-text']}>
-          {humanizedDuration}
+        <div className={css.container}>
+          <SetttingsIcon
+            className={classnames(iconStyles.icon, css['icon-settings'])}
+          />
+          <div className={css['c-durationpicker-text']}>
+            {humanizedDuration}
+          </div>
         </div>
       </div>
     );

@@ -20,7 +20,10 @@ class DatePicker extends Component {
     return (
       <div className="c-datepicker">
         <div className="c-datepicker-title">
-          {this.props.children}
+          {this.props.children[0]}
+        </div>
+        <div className="datepicker-date">
+          {this.props.children[1]}
         </div>
         <ReactDatePicker
           fixedHeight

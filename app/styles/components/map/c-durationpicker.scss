@@ -1,23 +1,37 @@
 @import '../../settings';
 
 .c-durationpicker {
-  background-color: $color-1;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  color: $color-4;
-  font-size: $font-size-x-small;
-  height: $duration-picker-height;
   left: 0;
-  min-width: 100px;
   pointer-events: none;
   position: absolute;
-  text-align: center;
   top: 0;
   transform: translate(15px, 0);
   z-index: 5;
 
-  .c-durationpicker-text {
-    display: inline-block;
-    margin-top: 4px;
+  > .container {
+    align-items: center;
+    background-color: $color-19;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    height: $duration-picker-height;
+    justify-content: space-between;
+    min-width: 85px;
+    padding: 4px;
+
+    > .c-durationpicker-text {
+      color: $color-4;
+      font-size: $font-size-xxs-small;
+      text-transform: uppercase;
+    }
+
+    > .icon-settings  {
+      height: 12px;
+      width: 12px;
+
+      > path {
+        fill: $color-3;
+      }
+    }
   }
 }

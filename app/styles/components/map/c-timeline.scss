@@ -1,9 +1,13 @@
 @import '../../settings';
 
 .c-timeline {
-  flex: 1;
   margin-top: -$duration-picker-height;
   position: relative;
+  width: 50%;
+
+  @media #{$mq-mobile-large} {
+    flex: 1;
+  }
 
   .c-timeline-area {
     fill: $color-8;
