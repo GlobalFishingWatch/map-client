@@ -36,9 +36,9 @@ export default class VesselsLayer {
     this.centerListener = google.maps.event.addListener(this.map, 'center_changed', this._onCenterChanged.bind(this));
   }
 
-  updateFilters(filters) {
-    this.overlay.setFlag(filters.flag);
-    this.tiled.setFlag(filters.flag);
+  updateFlag(flag) {
+    this.overlay.setFlag(flag);
+    this.tiled.setFlag(flag);
     this.render();
   }
 

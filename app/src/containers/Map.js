@@ -11,7 +11,7 @@ import {
   setShareModalError,
   setLayerInfoModal
 } from '../actions/map';
-import { updateFilters } from '../actions/filters';
+import { setFlagFilter } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../actions';
 
@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(toggleLayerVisibility(layer));
   },
   updateFilters: (filters) => {
-    dispatch(updateFilters(filters));
+    dispatch(setFlagFilter(filters));
   },
   setCurrentVessel: (vesselInfo) => {
     dispatch({

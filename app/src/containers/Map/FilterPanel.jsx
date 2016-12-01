@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import FilterPanel from '../../components/Map/FilterPanel';
-import { updateFilters } from '../../actions/filters';
+import { setFlagFilter } from '../../actions/filters';
 
 
 const mapStateToProps = (state) => ({
@@ -8,8 +8,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateFilters: filters => {
-    dispatch(updateFilters(filters));
+  setFlagFilter: filters => {
+    dispatch(setFlagFilter(filters));
   }
 });
 

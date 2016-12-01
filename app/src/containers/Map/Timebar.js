@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 import Timebar from '../../components/Map/Timebar';
-import { updateFilters } from '../../actions/filters';
+import { setInnerTimelineDates, setOuterTimelineDates } from '../../actions/filters';
 
 const mapStateToProps = state => ({
   filters: state.filters
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateFilters: filters => {
-    dispatch(updateFilters(filters));
+  updateInnerTimelineDates: filters => {
+    dispatch(setInnerTimelineDates(filters));
+  },
+  updateOuterTimelineDates: filters => {
+    dispatch(setOuterTimelineDates(filters));
   }
 });
 

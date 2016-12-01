@@ -48,7 +48,7 @@ class FilterPanel extends Component {
       <div className={selectorStyles['c-selector']}>
         <select
           name="country"
-          onChange={(e) => this.props.updateFilters({ flag: e.target.value })}
+          onChange={(e) => this.props.setFlagFilter(e.target.value)}
           defaultValue=""
         >
           {this.countryOptions}
@@ -59,7 +59,7 @@ class FilterPanel extends Component {
 }
 
 FilterPanel.propTypes = {
-  updateFilters: React.PropTypes.func
+  setFlagFilter: React.PropTypes.func
 };
 
 export default FilterPanel;

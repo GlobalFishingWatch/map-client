@@ -222,9 +222,7 @@ class Timebar extends Component {
   setOuterExtent(outerExtentPx) {
     const outerExtent = this.getNewOuterExtent(outerExtentPx);
 
-    this.props.updateFilters({
-      timelineOuterExtent: outerExtent
-    });
+    this.props.updateOuterTimelineDates(outerExtent);
   }
 
   getNewOuterExtent(newOuterPxExtent) {
@@ -266,9 +264,7 @@ class Timebar extends Component {
   }
 
   onInnerBrushReleased() {
-    this.props.updateFilters({
-      timelineInnerExtent: this.getExtent(d3.event.selection)
-    });
+    this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
   }
 
   onInnerBrushMoved() {
@@ -438,9 +434,7 @@ class Timebar extends Component {
       });
     }
 
-    this.props.updateFilters({
-      timelineInnerExtent: offsetedInnerExtent
-    });
+    this.props.updateInnerTimelineDates(offsetedInnerExtent);
 
     // if inner extent gets closer to outer extent right, also offset the outer extent to make the inner extent fit
     if (!isAtEndOfTime && x(offsetedInnerExtent[1]) + innerOuterMarginPx > x(this.state.outerExtent[1])) {
@@ -514,7 +508,8 @@ class Timebar extends Component {
 }
 
 Timebar.propTypes = {
-  updateFilters: React.PropTypes.func,
+  updateInnerTimelineDates: React.PropTypes.func,
+  updateOuterTimelineDates: React.PropTypes.func,
   filters: React.PropTypes.object
 };
 

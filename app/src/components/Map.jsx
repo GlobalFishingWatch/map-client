@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
-// import CanvasLayer from './Layers/CanvasLayer';
 import VesselsLayer from './Layers/VesselsLayer';
 import createTrackLayer from './Layers/TrackLayer';
 import ControlPanel from '../containers/Map/ControlPanel';
@@ -35,7 +34,6 @@ class Map extends Component {
       currentBasemap: null
     };
 
-    this.updateFilters = this.updateFilters.bind(this);
     this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
@@ -151,9 +149,7 @@ class Map extends Component {
       || this.props.filters.endDate !== nextProps.filters.endDate
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
-      // TODO
-      // this.state.overlay.updateFilters(nextProps.filters);
-      this.vesselsLayer.updateFilters(nextProps.filters);
+      this.vesselsLayer.updateFlag(nextProps.filters.flag);
       this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
       this.updateTrackLayer();
     }
@@ -429,21 +425,6 @@ class Map extends Component {
   }
 
   /**
-   * Triggered when the user updates the vessel data pickers
-   * Has special handling for startDate/endDate
-   *
-   * @param target Name of the filter
-   * @param value New value of the filter
-   */
-  updateFilters(target, value) {
-    const filters = Object.assign({}, this.props.filters);
-
-    filters[target] = value;
-
-    this.props.updateFilters(filters);
-  }
-
-  /**
    * Handles vessel transparency changes
    *
    * @param nextProps
@@ -577,7 +558,6 @@ Map.propTypes = {
   setZoom: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
-  updateFilters: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   map: React.PropTypes.object,
