@@ -38,6 +38,7 @@ class Timebar extends Component {
     this.onStartDatePickerChange = this.onStartDatePickerChange.bind(this);
     this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
     this.onPauseToggle = this.onPauseToggle.bind(this);
+    this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
       outerExtent: TIMELINE_TOTAL_DATE_EXTENT,
       paused: true,
@@ -170,6 +171,10 @@ class Timebar extends Component {
       dragging = true;
       this.disableInnerBrush();
       this.startTick();
+    });
+
+    this.group.on('mousemove', () => {
+      this.onMouseOver(d3.event.offsetX);
     });
 
     d3.select('body').on('mousemove', () => {
@@ -471,6 +476,13 @@ class Timebar extends Component {
         isTimelinePlaying: false
       });
     }
+  }
+
+  onMouseOver(offsetX) {
+    const timelineOverExtent = this.getExtent([offsetX - 2, offsetX + 2]);
+    this.props.updateFilters({
+      timelineOverExtent
+    });
   }
 
   render() {

@@ -80,6 +80,9 @@ class Map extends Component {
    * @param event
    */
   onClickMap(event) {
+    if (!this.vesselsLayer) {
+      return;
+    }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0]);
@@ -124,10 +127,12 @@ class Map extends Component {
     // - user selected a new vessel
     // - zoom level changed (needs fetching of a new tileset)
     // - playing state changed
+    // - user hovers on timeline to highlight a portion of the track
     // - selected inner extent changed
     if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
         this.props.map.zoom !== nextProps.map.zoom ||
         this.props.filters.isTimelinePlaying !== nextProps.filters.isTimelinePlaying ||
+        extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
         innerExtentChanged) {
       this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.isTimelinePlaying);
     }
@@ -178,14 +183,25 @@ class Map extends Component {
     this.state.trackLayer.recalculatePosition();
 
     const data = props.vesselTrack.seriesGroupData;
-    const showOuterTrack = !(isTimelinePlaying && data.latitude.length > 40000)
+    const showOuterTrack = !(isTimelinePlaying && data.latitude.length > 40000);
+
+    let overStartTimestamp;
+    let overEndTimestamp;
+    if (props.filters.timelineOverExtent) {
+      overStartTimestamp = props.filters.timelineOverExtent[0].getTime();
+      overEndTimestamp = props.filters.timelineOverExtent[1].getTime();
+    }
 
     this.state.trackLayer.drawTile(
       data,
       props.vesselTrack.selectedSeries,
-      startTimestamp,
-      endTimestamp,
-      showOuterTrack
+      {
+        startTimestamp,
+        endTimestamp,
+        showOuterTrack,
+        overStartTimestamp,
+        overEndTimestamp
+      }
     );
   }
 

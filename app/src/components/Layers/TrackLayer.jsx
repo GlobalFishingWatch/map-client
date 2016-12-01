@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
+const OVER_COLOR = 'rgba(255, 255, 255, 1)';
 const MATCH_COLOR = 'rgba(165, 247, 253, 1)';
 const OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .15)';
 
@@ -89,7 +90,11 @@ const createTrackLayer = function (google) {
    * @param endTimestamp the end timestamp from the timeline inner extent
    * @param isTimelinePlaying if in the middle of playing, do not display tracks out of innerExtent for perf reasons
    **/
-  TrackLayer.prototype.getDrawStyle = function (timestamp, startTimestamp, endTimestamp, showOuterTrack) {
+  TrackLayer.prototype.getDrawStyle = function (timestamp, { startTimestamp, endTimestamp, showOuterTrack, overStartTimestamp, overEndTimestamp }) {
+    if (overStartTimestamp && overStartTimestamp &&
+        timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
+      return OVER_COLOR;
+    }
     if (timestamp > startTimestamp && timestamp < endTimestamp) {
       return MATCH_COLOR;
     }
@@ -133,7 +138,7 @@ const createTrackLayer = function (google) {
    * @param series
    * @param filters
    */
-  TrackLayer.prototype.drawTile = function (data, series, startTimestamp, endTimestamp, showOuterTrack) {
+  TrackLayer.prototype.drawTile = function (data, series, drawParams) {
     this.regenerate();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -151,7 +156,7 @@ const createTrackLayer = function (google) {
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      drawStyle = this.getDrawStyle(data.datetime[i], startTimestamp, endTimestamp, showOuterTrack);
+      drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
       if (!drawStyle || series !== data.series[i]) {
         continue;
       }
