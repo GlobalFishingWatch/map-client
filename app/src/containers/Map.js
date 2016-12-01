@@ -38,9 +38,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       type: RESET_VESSEL_DETAILS,
       payload: vesselInfo
     });
-    if (vesselInfo) {
+    // a negative seriesgroup indicates a cluster.
+    // TODO display a message to the user like in the live version
+    if (vesselInfo && vesselInfo.seriesgroup > 0) {
       dispatch(setCurrentVessel(vesselInfo));
       dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
+    } else {
+      console.warn('not a valid seriesgroup');
     }
   },
   setZoom: zoom => dispatch(setZoom(zoom)),
