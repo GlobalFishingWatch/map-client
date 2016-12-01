@@ -270,7 +270,7 @@ class Timebar extends Component {
 
   onInnerBrushReleased() {
     this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
-    this.props.updatePlayingStatus(false);
+    this.props.updatePlayingStatus(true);
   }
 
   onInnerBrushMoved() {

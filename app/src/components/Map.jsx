@@ -131,22 +131,24 @@ class Map extends Component {
     // - selected inner extent changed
     if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
         this.props.map.zoom !== nextProps.map.zoom ||
-        this.props.filters.isTimelinePlaying !== nextProps.filters.isTimelinePlaying ||
+        this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
         extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
         innerExtentChanged) {
-      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.isTimelinePlaying);
+      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
     }
 
-    // update vessels layer when:
-    // - user selected a new flag
-    // - selected outer extent changed
-    // - selected inner extent changed
-    // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
-    if (this.props.filters.flag !== nextProps.filters.flag ||
+    if (this.vesselsLayer) {
+      // update vessels layer when:
+      // - user selected a new flag
+      // - selected outer extent changed
+      // - selected inner extent changed
+      // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
+      if (this.props.filters.flag !== nextProps.filters.flag ||
         this.props.filters.startDate !== nextProps.filters.startDate || // TODO endDate/startDate still used????
         this.props.filters.endDate !== nextProps.filters.endDate ||
         innerExtentChanged) {
-      this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+        this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+      }
     }
 
     this.updateVesselTransparency(nextProps);
@@ -177,14 +179,13 @@ class Map extends Component {
     }
   }
 
-  updateTrackLayer(props, startTimestamp, endTimestamp, isTimelinePlaying) {
-    if (!this.isTrackLayerReady() || !props || !props.vesselTrack) {
+  updateTrackLayer(props, startTimestamp, endTimestamp, timelinePaused) {
+    if (!this.isTrackLayerReady() || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
       return;
     }
     this.state.trackLayer.recalculatePosition();
 
     const data = props.vesselTrack.seriesGroupData;
-    const showOuterTrack = !(isTimelinePlaying && data.latitude.length > 40000);
 
     let overStartTimestamp;
     let overEndTimestamp;
@@ -199,7 +200,7 @@ class Map extends Component {
       {
         startTimestamp,
         endTimestamp,
-        showOuterTrack,
+        timelinePaused,
         overStartTimestamp,
         overEndTimestamp
       }

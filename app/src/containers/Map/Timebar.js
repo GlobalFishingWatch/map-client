@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import Timebar from '../../components/Map/Timebar';
-import { setInnerTimelineDates, setOuterTimelineDates, setPlayingStatus, setTimelineOverDates } from '../../actions/filters';
+import {
+  setInnerTimelineDates,
+  setOuterTimelineDates,
+  setPlayingStatus,
+  setTimelineOverDates
+} from '../../actions/filters';
 
 const mapStateToProps = state => ({
   filters: state.filters

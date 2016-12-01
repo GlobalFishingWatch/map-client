@@ -27,7 +27,7 @@ export function setOuterTimelineDates(outerTimelineDates) {
   };
 }
 
-export function updatePlayingStatus(paused) {
+export function setPlayingStatus(paused) {
   return {
     type: SET_PLAYING_STATUS,
     payload: paused

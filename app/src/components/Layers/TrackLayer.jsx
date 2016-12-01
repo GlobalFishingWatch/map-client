@@ -1,8 +1,11 @@
 /* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
-const OVER_COLOR = 'rgba(255, 255, 255, 1)';
-const MATCH_COLOR = 'rgba(165, 247, 253, 1)';
-const OUT_OF_INNER_EXTENT_COLOR = 'rgba(165, 247, 253, .15)';
+import {
+  SHOW_OUTER_TRACK_BELOW_NUM_POINTS,
+  TRACK_OVER_COLOR,
+  TRACK_MATCH_COLOR,
+  TRACK_OUT_OF_INNER_EXTENT_COLOR
+} from '../../constants';
 
 const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {
@@ -90,16 +93,22 @@ const createTrackLayer = function (google) {
    * @param endTimestamp the end timestamp from the timeline inner extent
    * @param isTimelinePlaying if in the middle of playing, do not display tracks out of innerExtent for perf reasons
    **/
-  TrackLayer.prototype.getDrawStyle = function (timestamp, { startTimestamp, endTimestamp, showOuterTrack, overStartTimestamp, overEndTimestamp }) {
+  TrackLayer.prototype.getDrawStyle = function (timestamp, {
+    startTimestamp,
+    endTimestamp,
+    showOuterTrack,
+    overStartTimestamp,
+    overEndTimestamp
+  }) {
     if (overStartTimestamp && overStartTimestamp &&
         timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
-      return OVER_COLOR;
+      return TRACK_OVER_COLOR;
     }
     if (timestamp > startTimestamp && timestamp < endTimestamp) {
-      return MATCH_COLOR;
+      return TRACK_MATCH_COLOR;
     }
     if (showOuterTrack === true) {
-      return OUT_OF_INNER_EXTENT_COLOR;
+      return TRACK_OUT_OF_INNER_EXTENT_COLOR;
     }
     return false;
   };
@@ -152,11 +161,14 @@ const createTrackLayer = function (google) {
 
     // console.log('drawtile', showOuterTrack)
     // let numPointsDrawn = 0;
+    const _drawParams = drawParams;
+    const showOuterTrack = _drawParams.timelinePaused || data.latitude.length < SHOW_OUTER_TRACK_BELOW_NUM_POINTS;
+    _drawParams.showOuterTrack = showOuterTrack;
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
+      drawStyle = this.getDrawStyle(data.datetime[i], _drawParams);
       if (!drawStyle || series !== data.series[i]) {
         continue;
       }

@@ -17,6 +17,7 @@ const initialState = {
   endDate: TIMELINE_DEFAULT_END_DATE,
   timelineInnerExtent: TIMELINE_INNER_DATE_EXTENT,
   timelineOuterExtent: TIMELINE_OUTER_DATE_EXTENT,
+  timelinePaused: true,
   flag: ''
 };
 
