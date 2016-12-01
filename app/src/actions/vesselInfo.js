@@ -65,7 +65,13 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
     Promise.all(promises.map(p => p.catch(e => e)))
       .then(rawTileData => {
         const cleanData = VesselsTileData.getCleanVectorArrays(rawTileData);
-        const groupedData = VesselsTileData.groupData(cleanData, ['latitude', 'longitude', 'datetime', 'series', 'weight']);
+        const groupedData = VesselsTileData.groupData(cleanData, [
+          'latitude',
+          'longitude',
+          'datetime',
+          'series',
+          'weight'
+        ]);
         // if (rawTileData[0]) {
         dispatch({
           type: SET_VESSEL_TRACK,

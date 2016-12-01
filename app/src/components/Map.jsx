@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../constants';
-// import CanvasLayer from './Layers/CanvasLayer';
 import VesselsLayer from './Layers/VesselsLayer';
 import createTrackLayer from './Layers/TrackLayer';
 import ControlPanel from '../containers/Map/ControlPanel';
@@ -27,7 +26,6 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      overlay: null, // TODO deprecate this
       addedLayers: {},
       lastCenter: null,
       running: 'stop',
@@ -150,8 +148,6 @@ class Map extends Component {
       || this.props.filters.endDate !== nextProps.filters.endDate
       || this.props.filters.flag !== nextProps.filters.flag
     ) {
-      // TODO
-      // this.state.overlay.updateFilters(nextProps.filters);
       this.vesselsLayer.updateFilters(nextProps.filters);
       this.vesselsLayer.renderTimeRange(newInnerExtent[0].getTime(), newInnerExtent[1].getTime());
       this.updateTrackLayer();
@@ -266,13 +262,13 @@ class Map extends Component {
     }
 
     // Create track layer
-    const Overlay = createTrackLayer(google);
-    const trackLayer = new Overlay(
+    const TrackLayer = createTrackLayer(google);
+    const trackLayer = new TrackLayer(
       this.refs.map.props.map,
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ /* overlay:  canvasLayer, */ trackLayer });
+    this.setState({ trackLayer });
 
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
@@ -452,16 +448,15 @@ class Map extends Component {
       return;
     }
 
-    if (!this.state.overlay) {
+    if (!this.vesselsLayer) {
       return;
     }
 
     // TODO
-    // this.state.overlay.setVesselTransparency(nextProps.map.vesselTransparency);
+    // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
 
-    // TODO?
     // if (this.state.running !== 'play') {
-    //   this.state.overlay.refresh();
+    //   this.vesselsLayer.refresh();
     // }
   }
 
@@ -476,14 +471,15 @@ class Map extends Component {
       return;
     }
 
-    if (!this.state.overlay) {
+    if (!this.vesselsLayer) {
       return;
     }
 
-    this.state.overlay.setVesselColor(nextProps.map.vesselColor);
+    // TODO
+    this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
 
     if (this.state.running !== 'play') {
-      this.state.overlay.refresh();
+      this.vesselsLayer.refresh();
     }
   }
 
