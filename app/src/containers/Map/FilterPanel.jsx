@@ -4,12 +4,12 @@ import { setFlagFilter } from '../../actions/filters';
 
 
 const mapStateToProps = (state) => ({
-  filters: state.filters
+  flag: state.filters.flag
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setFlagFilter: filters => {
-    dispatch(setFlagFilter(filters));
+  setFlagFilter: flag => {
+    dispatch(setFlagFilter(flag));
   }
 });
 

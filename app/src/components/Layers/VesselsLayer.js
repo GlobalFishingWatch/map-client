@@ -22,7 +22,13 @@ export default class VesselsLayer {
         this.outerStartDateOffset
     );
 
-    this.overlay = new VesselsLayerOverlay(map, viewportWidth, viewportHeight, debug);
+    this.overlay = new VesselsLayerOverlay(
+      map,
+      filters,
+      viewportWidth,
+      viewportHeight,
+      debug
+    );
     this.tiled = new VesselsLayerTiled(
       this.map,
       token,

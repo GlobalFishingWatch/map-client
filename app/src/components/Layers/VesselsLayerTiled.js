@@ -109,8 +109,7 @@ class CanvasLayer {
         vectorArray,
         this.outerStartDate,
         this.outerEndDate,
-        this.outerStartDateOffset,
-        this.flag
+        this.outerStartDateOffset
       );
       canvas.data = data;
       canvas.ready = true;

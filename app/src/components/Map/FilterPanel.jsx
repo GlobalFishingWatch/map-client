@@ -49,7 +49,7 @@ class FilterPanel extends Component {
         <select
           name="country"
           onChange={(e) => this.props.setFlagFilter(e.target.value)}
-          defaultValue=""
+          value={this.props.flag}
         >
           {this.countryOptions}
         </select>
@@ -59,7 +59,8 @@ class FilterPanel extends Component {
 }
 
 FilterPanel.propTypes = {
-  setFlagFilter: React.PropTypes.func
+  setFlagFilter: React.PropTypes.func,
+  flag: React.PropTypes.string
 };
 
 export default FilterPanel;

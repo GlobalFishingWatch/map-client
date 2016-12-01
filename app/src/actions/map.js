@@ -7,6 +7,7 @@ import {
   SET_LAYER_OPACITY,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
+  SET_FLAG_FILTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
@@ -136,6 +137,11 @@ export function getWorkspace(workspaceId) {
           payload: workspace.timeline.outerExtent.map(d => new Date(d))
         });
 
+        dispatch({
+          type: SET_FLAG_FILTER,
+          payload: workspace.flag
+        });
+
         // We update the layers
         const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
@@ -251,7 +257,8 @@ export function saveWorkspace(errorAction) {
             // We store the timestamp
             innerExtent: state.filters.timelineInnerExtent.map(e => +e),
             outerExtent: state.filters.timelineOuterExtent.map(e => +e)
-          }
+          },
+          flag: state.filters.flag
         }
       })
     })
