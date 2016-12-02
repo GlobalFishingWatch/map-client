@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import VesselInfoPanel from '../../components/Map/VesselInfoPanel';
 import { toggleVisibility } from '../../actions/vesselInfo';
 import { zoomIntoVesselCenter } from '../../actions/map';
+import { RESET_VESSEL_TRACK } from '../../actions';
+
 
 const mapStateToProps = (state) => ({
   vesselInfo: state.vesselInfo.details,
@@ -10,6 +12,11 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
   toggleVisibility: (visibility) => {
+    if (visibility === false) {
+      dispatch({
+        type: RESET_VESSEL_TRACK
+      });
+    }
     dispatch(toggleVisibility(visibility));
   },
   zoomIntoVesselCenter: () => {

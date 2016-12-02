@@ -39,7 +39,7 @@ const createTrackLayer = function (google) {
   }
 
   TrackLayer.prototype = new google.maps.OverlayView();
-  TrackLayer.prototype.regenerate = function () {
+  TrackLayer.prototype.clear = function () {
     this.canvas.ctx.beginPath();
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
@@ -148,7 +148,7 @@ const createTrackLayer = function (google) {
    * @param filters
    */
   TrackLayer.prototype.drawTile = function (data, series, drawParams) {
-    this.regenerate();
+    this.clear();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
       return;

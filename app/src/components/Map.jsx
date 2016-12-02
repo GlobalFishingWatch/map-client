@@ -122,18 +122,23 @@ class Map extends Component {
     const startTimestamp = nextProps.filters.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
 
-    // update tracks layer when:
-    // - user selected a new vessel
-    // - zoom level changed (needs fetching of a new tileset)
-    // - playing state changed
-    // - user hovers on timeline to highlight a portion of the track
-    // - selected inner extent changed
-    if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
-        this.props.map.zoom !== nextProps.map.zoom ||
-        this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
-        extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
-        innerExtentChanged) {
-      this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
+    if (!nextProps.vesselTrack) {
+      this.state.trackLayer.clear();
+    } else {
+      // update tracks layer when:
+      // - user selected a new vessel
+      // - zoom level changed (needs fetching of a new tileset)
+      // - playing state changed
+      // - user hovers on timeline to highlight a portion of the track
+      // - selected inner extent changed
+      if (!this.props.vesselTrack ||
+          this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
+          this.props.map.zoom !== nextProps.map.zoom ||
+          this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
+          extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
+          innerExtentChanged) {
+        this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
+      }
     }
 
     if (this.vesselsLayer) {
@@ -179,7 +184,7 @@ class Map extends Component {
   }
 
   updateTrackLayer(props, startTimestamp, endTimestamp, timelinePaused) {
-    if (!this.isTrackLayerReady() || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
+    if (!this.state.trackLayer || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
       return;
     }
     this.state.trackLayer.recalculatePosition();
@@ -455,9 +460,6 @@ class Map extends Component {
     });
   }
 
-  isTrackLayerReady() {
-    return this.state.trackLayer && this.props.vesselTrack;
-  }
 
   /**
    * Handles vessel transparency changes
