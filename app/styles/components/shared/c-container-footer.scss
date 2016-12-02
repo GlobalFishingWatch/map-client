@@ -1,6 +1,7 @@
 @import '../../settings';
 
 .c-container-footer {
+  z-index: 100;
 
   .footer-expanded {
     -webkit-overflow-scrolling: touch;
