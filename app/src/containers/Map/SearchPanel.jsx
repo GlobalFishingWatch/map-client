@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import SearchPanel from '../../components/Map/SearchPanel';
 import { setFlagFilter } from '../../actions/filters';
 import { getSearchResults } from '../../actions/search';
-import { getVesselTrack, toggleVisibility } from '../../actions/vesselInfo';
-import { RESET_VESSEL_DETAILS } from '../../actions';
+import { getVesselTrack, toggleVisibility, setCurrentVessel } from '../../actions/vesselInfo';
 
 const mapStateToProps = (state) => ({
   search: state.search,
@@ -34,10 +33,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 
   drawVessel: (vesselDetails) => {
-    dispatch({
-      type: RESET_VESSEL_DETAILS,
-      payload: vesselDetails
-    });
+    dispatch(setCurrentVessel(vesselDetails.seriesgroup));
     dispatch(getVesselTrack(vesselDetails.seriesgroup));
   },
   toggleVisibility: (visibility) => {

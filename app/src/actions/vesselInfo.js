@@ -1,20 +1,19 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SHOW_VESSEL_CLUSTER_INFO } from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_INFO_VISIBILITY, SHOW_VESSEL_CLUSTER_INFO } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
 
-export function setCurrentVessel(vesselDetails) {
+export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
-    if (!vesselDetails) {
-      dispatch({
-        type: SET_VESSEL_DETAILS,
-        payload: {}
-      });
+    dispatch({
+      type: SET_VESSEL_DETAILS,
+      payload: {}
+    });
+    if (!seriesGroup) {
       return;
     }
     const state = getState();
     const token = state.user.token;
-    const seriesGroup = vesselDetails.seriesgroup;
     let request;
 
     if (typeof XMLHttpRequest !== 'undefined') {
@@ -29,7 +28,6 @@ export function setCurrentVessel(vesselDetails) {
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
     request.setRequestHeader('Accept', 'application/json');
-    request.responseType = 'application/json';
     request.onreadystatechange = () => {
       if (request.readyState !== 4) {
         return;
@@ -80,6 +78,10 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
         ]);
         // if (rawTileData[0]) {
         dispatch({
+          type: SET_VESSEL_INFO_VISIBILITY,
+          payload: true
+        });
+        dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
             seriesgroup: seriesGroup,
@@ -101,7 +103,7 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 export function toggleVisibility(visibility) {
   return (dispatch) => {
     dispatch({
-      type: SET_VESSEL_VISIBILITY,
+      type: SET_VESSEL_INFO_VISIBILITY,
       payload: visibility
     });
   };

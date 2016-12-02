@@ -123,7 +123,6 @@ class ControlPanel extends Component {
           activeItems={6}
           allowMultiple={false}
           className={controlPanelStyle['map-options']}
-          onChange={() => this.closeVesselInfo()}
         >
           {this.renderSearch()}
           {this.renderBasemap()}

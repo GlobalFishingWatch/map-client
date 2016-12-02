@@ -11,9 +11,10 @@ import {
   setShareModalError,
   setLayerInfoModal
 } from '../actions/map';
-import { setFlagFilter } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from '../actions/vesselInfo';
-import { RESET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER, RESET_VESSEL_TRACK } from '../actions';
+import {
+  SET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER, SET_VESSEL_TRACK, SET_VESSEL_INFO_VISIBILITY
+} from '../actions';
 
 const mapStateToProps = (state) => ({
   map: state.map,
@@ -32,17 +33,14 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
   },
-  updateFilters: (filters) => {
-    dispatch(setFlagFilter(filters));
-  },
   setCurrentVessel: (vesselInfo, center) => {
     dispatch({
-      type: RESET_VESSEL_DETAILS,
+      type: SET_VESSEL_DETAILS,
       payload: vesselInfo
     });
     if (vesselInfo) {
       if (vesselInfo.seriesgroup > 0) {
-        dispatch(setCurrentVessel(vesselInfo));
+        dispatch(setCurrentVessel(vesselInfo.seriesgroup));
         dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
       } else {
         dispatch({
@@ -53,7 +51,12 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       }
     } else {
       dispatch({
-        type: RESET_VESSEL_TRACK
+        type: SET_VESSEL_TRACK,
+        payload: null
+      });
+      dispatch({
+        type: SET_VESSEL_INFO_VISIBILITY,
+        payload: false
       });
     }
   },

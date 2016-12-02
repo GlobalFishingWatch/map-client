@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
-import SearchResult from './SearchResult';
+import SearchResult from 'containers/Map/SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
 import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
 import isMobile from 'ismobilejs';
@@ -60,10 +59,7 @@ class SearchPanel extends Component {
             className={searchPanelStyles.result}
             key={i}
             keyword={this.state.keyword}
-            drawVessel={this.props.drawVessel}
             vesselInfo={this.props.search.entries[i]}
-            toggleVisibility={this.props.toggleVisibility}
-            vesselVisibility={this.props.vesselVisibility}
           />
         );
       }
