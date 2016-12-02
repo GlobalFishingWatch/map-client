@@ -38,6 +38,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       type: SET_VESSEL_DETAILS,
       payload: vesselInfo
     });
+    dispatch({
+      type: SET_VESSEL_TRACK,
+      payload: null
+    });
     if (vesselInfo) {
       if (vesselInfo.seriesgroup > 0) {
         dispatch(setCurrentVessel(vesselInfo.seriesgroup));

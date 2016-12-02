@@ -11,12 +11,16 @@ class VesselInfoPanel extends Component {
     let vesselInfoContents = null;
     let iso = null;
     const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
-
-    if (this.props.vesselInfo !== undefined && this.props.vesselInfo.flag) {
-      iso = iso3311a2.getCountry(this.props.vesselInfo.flag);
+    let vesselInfo = this.props.vesselInfo;
+    if (vesselInfo === null || vesselInfo === undefined) {
+      vesselInfo = {};
     }
 
-    if (this.props.vesselInfo !== undefined && this.props.vesselInfo.isCluster) {
+    if (vesselInfo !== undefined && vesselInfo.flag) {
+      iso = iso3311a2.getCountry(vesselInfo.flag);
+    }
+
+    if (vesselInfo !== undefined && vesselInfo.isCluster) {
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
           There are multiple vessels at this location.
@@ -31,19 +35,19 @@ class VesselInfoPanel extends Component {
         <div className={vesselPanelStyles['vessel-metadata']}>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
-            <span className={vesselPanelStyles.value}>{this.props.vesselInfo.vesselname || '---'}</span>
+            <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>
           </div>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>IMO</span>
-            <span className={vesselPanelStyles.value}>{this.props.vesselInfo.imo || '---'}</span>
+            <span className={vesselPanelStyles.value}>{vesselInfo.imo || '---'}</span>
           </div>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Class</span>
-            <span className={vesselPanelStyles.value}>{this.props.vesselInfo.shiptype_text || '---'}</span>
+            <span className={vesselPanelStyles.value}>{vesselInfo.shiptype_text || '---'}</span>
           </div>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>MMSI</span>
-            <span className={vesselPanelStyles.value}>{this.props.vesselInfo.mmsi || '---'}</span>
+            <span className={vesselPanelStyles.value}>{vesselInfo.mmsi || '---'}</span>
           </div>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Country</span>
@@ -51,12 +55,12 @@ class VesselInfoPanel extends Component {
           </div>
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Callsign</span>
-            <span className={vesselPanelStyles.value}>{this.props.vesselInfo.callsign || '---'}</span>
+            <span className={vesselPanelStyles.value}>{vesselInfo.callsign || '---'}</span>
           </div>
-          {this.props.vesselInfo.link && <a
+          {vesselInfo.link && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
-            href={this.props.vesselInfo.link}
+            href={vesselInfo.link}
           >Check it on MarineTraffic.com
           </a>
           }
