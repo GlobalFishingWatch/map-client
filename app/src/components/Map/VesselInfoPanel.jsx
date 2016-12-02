@@ -22,7 +22,11 @@ class VesselInfoPanel extends Component {
       if (this.props.vesselInfo.isCluster) {
         vesselInfoContents = (
           <div className={vesselPanelStyles['vessel-metadata']}>
-             There are multiple vessels at this location. Zoom in to see individual points.
+            There are multiple vessels at this location.
+            <a onClick={() => this.props.zoomIntoVesselCenter()} className={vesselPanelStyles.zoom}>
+              Zoom in to see individual points.
+            </a>
+
           </div>
         );
       } else {
@@ -90,6 +94,7 @@ class VesselInfoPanel extends Component {
 VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
   toggleVisibility: React.PropTypes.func,
+  zoomIntoVesselCenter: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool
 };
 

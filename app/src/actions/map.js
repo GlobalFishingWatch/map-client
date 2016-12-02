@@ -299,3 +299,10 @@ export function setLayerInfoModal(modalParams) {
     payload: modalParams
   };
 }
+
+export function zoomIntoVesselCenter() {
+  return (dispatch, getState) => {
+    dispatch(setZoom(getState().map.zoom + 2));
+    dispatch(setCenter(getState().map.vesselClusterCenter));
+  };
+}

@@ -13,7 +13,7 @@ import {
 } from '../actions/map';
 import { setFlagFilter } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from '../actions/vesselInfo';
-import { RESET_VESSEL_DETAILS } from '../actions';
+import { RESET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER } from '../actions';
 
 const mapStateToProps = (state) => ({
   map: state.map,
@@ -35,18 +35,22 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   updateFilters: (filters) => {
     dispatch(setFlagFilter(filters));
   },
-  setCurrentVessel: (vesselInfo) => {
+  setCurrentVessel: (vesselInfo, center) => {
     dispatch({
       type: RESET_VESSEL_DETAILS,
       payload: vesselInfo
     });
-    // a negative seriesgroup indicates a cluster.
-    // TODO display a message to the user like in the live version
-    if (vesselInfo && vesselInfo.seriesgroup > 0) {
-      dispatch(setCurrentVessel(vesselInfo));
-      dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
-    } else {
-      dispatch(showVesselClusterInfo());
+    if (vesselInfo) {
+      if (vesselInfo.seriesgroup > 0) {
+        dispatch(setCurrentVessel(vesselInfo));
+        dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
+      } else {
+        dispatch({
+          type: SET_VESSEL_CLUSTER_CENTER,
+          payload: center
+        });
+        dispatch(showVesselClusterInfo(center));
+      }
     }
   },
   setZoom: zoom => dispatch(setZoom(zoom)),

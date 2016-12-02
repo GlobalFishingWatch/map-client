@@ -68,5 +68,12 @@
       font-size: $font-size-xxs-small;
       margin: 15px 0 0;
     }
+
+    .zoom {
+      font-family: $font-family-1;
+      color: $color-3;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }

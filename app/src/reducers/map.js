@@ -17,7 +17,8 @@ import {
   UPDATE_VESSEL_COLOR,
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
   SET_BASEMAP,
-  SET_TILESET_URL
+  SET_TILESET_URL,
+  SET_VESSEL_CLUSTER_CENTER
 } from '../actions';
 import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from '../constants';
@@ -141,6 +142,8 @@ export default function (state = initialState, action) {
       };
       return newState;
     }
+    case SET_VESSEL_CLUSTER_CENTER:
+      return Object.assign({}, state, { vesselClusterCenter: [action.payload.lat(), action.payload.lng()] });
     default:
       return state;
   }
