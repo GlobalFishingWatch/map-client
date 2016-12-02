@@ -3,17 +3,30 @@
 .controlpanel {
   background: rgba($color-1, .8);
   box-shadow: 0 0 4px 0 rgba($color-12, .5);
-  max-width: 320px;
+  height: $accordion-mobile-height;
+  left: 0;
   position: absolute;
-  right: 0;
+  top: $header-height;
   width: 100%;
   z-index: 10;
 
+  @media #{$mq-tablet} {
+    height: auto;
+    left: auto;
+    max-width: 320px;
+    right: 0;
+    top: 0;
+  }
+
   > .resume-display {
     border-bottom: 1px solid $color-7;
-    display: flex;
+    display: none;
     flex-direction: column;
     padding: 30px 56px 25px 25px;
+
+    @media #{$mq-tablet} {
+      display: flex;
+    }
 
     .counter-description {
       color: rgba($color-3, .5);
@@ -55,11 +68,32 @@
 
 
   > .map-options {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+    padding: 0 30px;
+
+    @media #{$mq-tablet} {
+      flex-wrap: wrap;
+      padding: 0;
+    }
 
     > .accordion-item {
-      border-bottom: 1px solid $color-7;
+      align-items: center;
 
-      padding: 10px;
+      display: inline-flex;
+      padding: 15px 0;
+
+      &:last-child {
+        border-bottom: 0;
+      }
+
+      @media #{$mq-tablet} {
+        border-bottom: 1px solid $color-7;
+        display: block;
+        padding: 10px;
+        width: 100%;
+      }
 
       > .title-accordion {
         align-items: center;
@@ -68,28 +102,56 @@
         display: flex;
 
         font-family: $font-family-1;
-        font-size: $font-size-x-small;
+        font-size: $font-size-xxs-small;
         font-weight: $font-weight-bold;
-        justify-content: space-between;
-
-        padding: 10px 25px 10px 15px;
-
+        text-align: center;
         text-transform: uppercase;
 
-        &:hover {
-          background-color: rgba($color-3, .2);
-          border-radius: 4px;
+        @media #{$mq-tablet} {
+          display: block;
+          font-size: $font-size-x-small;
+          justify-content: space-between;
+          padding: 10px 25px 10px 15px;
+          text-align: left;
+          width: 100%;
+
+          &:hover {
+            background-color: rgba($color-3, .2);
+            border-radius: 4px;
+          }
         }
       }
 
-      &:last-child {
-        border-bottom: 0;
-      }
-
       .content-accordion {
-        margin: 10px 0 0;
-        padding: 0 15px;
+        padding: 15px 20px;
+
+        @media #{$mq-tablet} {
+          margin: 10px 0 0;
+          padding: 0 15px;
+        }
       }
+    }
+
+
+    :global .react-sanfona-item-body {
+      background: rgba($color-1, .8);
+      left: 0;;
+      max-width: 0;
+      position: absolute;
+      top: $accordion-mobile-height;
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        background: transparent;
+        left: auto;
+        max-width: none;
+        position: initial;
+        top: auto;
+      }
+    }
+
+    :global .react-sanfona-item-expanded > .react-sanfona-item-body {
+      max-width: none;
     }
   }
 }

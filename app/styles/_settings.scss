@@ -11,6 +11,9 @@ $wrap-tablet: 55px;
 $wrap-desktop: 115px;
 $footer-mini-height: 38px;
 
+$header-height: 95px;
+$accordion-mobile-height: 60px;
+
 // Map
 $timebar-height: 70px;
 $duration-picker-height: 24px;
@@ -18,8 +21,8 @@ $duration-picker-height: 24px;
 
 // Font sizes
 $font-size-tiny: 10px;
-$font-size-xxs-small: 12px;
-$font-size-xs-small: 13px;
+$font-size-xxs-small: 12px; // UI Kit map
+$font-size-xs-small: 13px; // UI Kit map
 $font-size-small: 14px; // UI kit
 $font-size-x-small: 15px; // UI kit
 $font-size-normal: 16px;
@@ -40,7 +43,7 @@ $font-weight-normal: 400;
 $font-weight-bold: 700;
 
 // Colors
-$color-1: #011137;
+$color-1: #011137; // UI kit map
 $color-2: #021236;
 $color-3: #8abbc7;
 $color-4: #fff;
@@ -53,7 +56,7 @@ $color-10: #e8f4f9;
 $color-11: #0d1a34;
 $color-12: #000;
 $color-13: #2b4f93;
-$color-19: #174084;
+$color-19: #174084; // UI kit map
 $color-20: #bfbfbf;
 $color-21: #121a2a; // UI kit map
 $color-22: rgba(7, 51, 56, .3); // UI kit map
@@ -82,9 +85,11 @@ $breakpoint-mobile-small: 320px;
 $breakpoint-mobile-large: 425px;
 $breakpoint-tablet: 768px;
 $breakpoint-laptop: 1024px;
+$breakpoint-desktop: 1280px;
 
 // Media queries
 $mq-mobile-small: 'screen and (min-width: #{$breakpoint-mobile-small})';
 $mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
+$mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
