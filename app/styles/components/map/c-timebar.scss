@@ -26,13 +26,14 @@
     width: 10%;
 
     @media #{$mq-mobile-large} {
-      width: 100px;
+      width: 50px;
     }
 
     button {
       background: none;
       border: 0;
       color: $color-3;
+      cursor: pointer;
       font-size: $font-size-x-small;
       height: 100%;
       width: 100%;
