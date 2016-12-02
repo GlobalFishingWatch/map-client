@@ -35,7 +35,7 @@
     justify-content: space-between;
     padding: 20px 20px 15px;
 
-    > .row-info {
+    .row-info {
       display: flex;
       flex-basis: calc(50% - 10px);
       flex-direction: column;
@@ -61,12 +61,19 @@
       }
     }
 
-    > .external-link {
+    .external-link {
       color: $color-3;
       display: inline-block;
       font-family: $font-family-1;
       font-size: $font-size-xxs-small;
       margin: 15px 0 0;
+    }
+
+    .zoom {
+      font-family: $font-family-1;
+      color: $color-3;
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
 }

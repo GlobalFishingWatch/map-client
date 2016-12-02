@@ -1,4 +1,4 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY } from '../actions';
+import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_VISIBILITY, SHOW_VESSEL_CLUSTER_INFO } from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -41,6 +41,12 @@ export function setCurrentVessel(vesselDetails) {
       });
     };
     request.send(null);
+  };
+}
+
+export function showVesselClusterInfo() {
+  return {
+    type: SHOW_VESSEL_CLUSTER_INFO
   };
 }
 

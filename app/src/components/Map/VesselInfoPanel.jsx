@@ -9,22 +9,28 @@ class VesselInfoPanel extends Component {
 
   render() {
     let vesselInfo = null;
+    let vesselInfoContents = null;
     let iso = null;
     const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
+
 
     if (this.props.vesselInfo && Object.keys(this.props.vesselInfo).length) {
       if (this.props.vesselInfo.flag) {
         iso = iso3311a2.getCountry(this.props.vesselInfo.flag);
       }
 
-      vesselInfo = (
-        <div>
-          <span
-            onClick={() => this.props.toggleVisibility(false)}
-            className={vesselPanelStyles['button-close']}
-          >
-            <CloseIcon className={vesselPanelStyles.cross} />
-          </span>
+      if (this.props.vesselInfo.isCluster) {
+        vesselInfoContents = (
+          <div className={vesselPanelStyles['vessel-metadata']}>
+            There are multiple vessels at this location.
+            <a onClick={() => this.props.zoomIntoVesselCenter()} className={vesselPanelStyles.zoom}>
+              Zoom in to see individual points.
+            </a>
+
+          </div>
+        );
+      } else {
+        vesselInfoContents = (
           <div className={vesselPanelStyles['vessel-metadata']}>
             <div className={vesselPanelStyles['row-info']}>
               <span className={vesselPanelStyles.key}>Name</span>
@@ -59,6 +65,18 @@ class VesselInfoPanel extends Component {
               </a>
             }
           </div>
+        );
+      }
+
+      vesselInfo = (
+        <div>
+          <span
+            onClick={() => this.props.toggleVisibility(false)}
+            className={vesselPanelStyles['button-close']}
+          >
+            <CloseIcon className={vesselPanelStyles.cross} />
+          </span>
+          {vesselInfoContents}
         </div>
     );
     }
@@ -76,6 +94,7 @@ class VesselInfoPanel extends Component {
 VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
   toggleVisibility: React.PropTypes.func,
+  zoomIntoVesselCenter: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool
 };
 
