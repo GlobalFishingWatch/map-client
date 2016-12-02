@@ -123,7 +123,7 @@ class Map extends Component {
     const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
 
     if (!nextProps.vesselTrack) {
-      this.state.trackLayer.clear();
+      this.trackLayer.clear();
     } else {
       // update tracks layer when:
       // - user selected a new vessel
@@ -184,10 +184,10 @@ class Map extends Component {
   }
 
   updateTrackLayer(props, startTimestamp, endTimestamp, timelinePaused) {
-    if (!this.state.trackLayer || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
+    if (!this.trackLayer || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
       return;
     }
-    this.state.trackLayer.recalculatePosition();
+    this.trackLayer.recalculatePosition();
 
     const data = props.vesselTrack.seriesGroupData;
 
@@ -198,7 +198,7 @@ class Map extends Component {
       overEndTimestamp = props.filters.timelineOverExtent[1].getTime();
     }
 
-    this.state.trackLayer.drawTile(
+    this.trackLayer.drawTile(
       data,
       props.vesselTrack.selectedSeries,
       {
@@ -305,12 +305,11 @@ class Map extends Component {
 
     // Create track layer
     const TrackLayer = createTrackLayer(google);
-    const trackLayer = new TrackLayer(
+    this.trackLayer = new TrackLayer(
       this.refs.map.props.map,
       this.refs.mapContainer.offsetWidth,
       this.refs.mapContainer.offsetHeight
     );
-    this.setState({ trackLayer });
 
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }
