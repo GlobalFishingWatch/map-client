@@ -1,100 +1,85 @@
 @import '../../settings';
 
-.c-map-footer {
+.c-footer-mini {
   align-items: center;
   background-color: $color-1;
   display: flex;
-  height: $map-footer-height;
+  height: $footer-mini-height;
   justify-content: space-between;
-  overflow: hidden;
   padding: 0 10px;
-  position: relative;
-  z-index: 101;
 
   @media #{$mq-mobile-large} {
     padding: 0 20px;
   }
 
-  > .logo-list {
+  > .contain-partners {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    max-width: 70%;
-    width: 100%;
-
-    @media #{$mq-tablet} {
-      max-width: none;
-      width: auto;
-    }
-  }
-
-  > .logo-list > .logo-item {
-    display: inline-flex;
-
-    @media #{$mq-tablet} {
-      &:not(:first-child) {
-        margin: 0 0 0 15px;
-      }
-    }
-  }
-
-  > .logo-list > .logo-item > .logo {
-    height: 100%;
-    width: 100%;
+    width: 70%;
 
     @media screen and (min-width: 1135px) {
-      margin: 0 15px 0 0;
+      justify-content: center;
+      width: 100%;
     }
 
-    &.-oceana {
-      max-width: 60px;
-    }
+    .partner {
+      height: auto;
+      max-width: 70px;
+      width: 100%;
 
-    &.-skytruth {
-      height: 11px;
-      max-width: 75px;
-    }
+      @media screen and (min-width: 1135px) {
+        margin-right: 15px;
+      }
 
-    &.-google {
-      max-width: 50px;
+      &.oceana {
+        max-width: 60px;
+      }
+
+      &.-skytruth-logo {
+        max-width: 85px;
+      }
+
+      &.-google {
+        max-width: 50px;
+      }
     }
   }
 
-  > .options {
+  > .links {
+    align-items: center;
     display: flex;
 
-    .link {
+    > .attributions {
       color: $color-20;
-      font-family: $font-family-1;
-      font-size: $font-size-xxs-small;
+      // display: inline-block;
+      display: none;
 
-      &.-footer,
-      &.-terms-of-use,
-      &.-support {
-        cursor: pointer;
+      // margin-left: 15px;
+
+      &.-footer {
+        display: inline-flex;
       }
 
-      &.-terms-of-use,
-      &.-support {
-        display: none;
+      @media screen and (min-width: 1135px) {
+        display: inline-block;
+      }
 
-        @media #{$mq-tablet} {
-          display: inline-flex;
-        }
+      > a {
+        color: $color-20;
+        display: inline-block;
+        font-size: $font-size-xxs-small;
+        width: 100%;
       }
     }
-  }
 
-  > .options > .attribution-list {
-    display: none;
-
-    @media #{$mq-tablet} {
-      display: flex;
+    .bar-hor {
+      border: solid 1px $color-20;
+      border-top: 0;
+      display: inline-block;
+      height: 5px;
+      margin-left: 4px;
+      width: 40px;
     }
   }
-}
-
-.overflow-container {
-  height: $map-footer-height;
-  overflow: hidden;
 }
