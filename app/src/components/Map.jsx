@@ -14,8 +14,9 @@ import Timebar from 'containers/Map/Timebar';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
+
 import NoLogin from 'containers/Map/NoLogin';
-import FooterMini from 'components/Shared/FooterMini';
+import MapFooter from 'components/Map/MapFooter';
 import extentChanged from 'util/extentChanged';
 
 
@@ -585,7 +586,7 @@ class Map extends Component {
       <div className={mapCss['timebar-container']}>
         <Timebar />
       </div>
-      <FooterMini />
+      <MapFooter />
     </div>);
   }
 }
