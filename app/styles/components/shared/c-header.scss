@@ -13,7 +13,7 @@
   .contain-nav {
     align-items: center;
     display: flex;
-    height: 95px;
+    height: $header-height;
 
     @media #{$mq-tablet} {
       justify-content: space-between;
@@ -27,16 +27,15 @@
   .icon-menu-mobile {
     cursor: pointer;
     display: block;
-    margin-right: 21px;
+    margin: 0 21px 0 0;
     width: 21px;
 
     @media #{$mq-mobile-large} {
-      margin-right: 0;
+      margin: 0;
     }
 
     @media #{$mq-tablet} {
       display: none;
-      margin-right: 0;
     }
   }
 
@@ -59,6 +58,17 @@
       @media #{$mq-tablet} {
         width: auto;
       }
+    }
+  }
+
+  .share-icon {
+    fill: $color-4;
+    height: 15px;
+    order: 3;
+    width: 19px;
+
+    @media #{$mq-tablet} {
+      display: none;
     }
   }
 
@@ -181,13 +191,15 @@
   }
 
   &.-map {
-    background-color: transparent;
+    background-color: $color-19;
     box-shadow: none;
     left: 0;
     position: absolute;
+    width: 100%;
     z-index: 6;
 
     @media #{$mq-tablet} {
+      background-color: transparent;
       width: auto;
     }
 
