@@ -3,9 +3,9 @@
     "map": {
       "center": [
         0,
-        50
+        0
       ],
-      "zoom": 7,
+      "zoom": 3,
       "layers": [
         {
           "title": "Bathimetry",
