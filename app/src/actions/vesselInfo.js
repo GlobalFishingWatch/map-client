@@ -28,6 +28,7 @@ export function setCurrentVessel(vesselDetails) {
       true
     );
     request.setRequestHeader('Authorization', `Bearer ${token}`);
+    request.setRequestHeader('Accept', 'application/json');
     request.responseType = 'application/json';
     request.onreadystatechange = () => {
       if (request.readyState !== 4) {
