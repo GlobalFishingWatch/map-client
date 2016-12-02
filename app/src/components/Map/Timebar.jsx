@@ -428,7 +428,7 @@ class Timebar extends Component {
   }
 
   onStartDatePickerChange(startDate) {
-    this.props.updateOuterTimelineDates([startDate, this.this.props.filters.timelineOuterExtent[1]]);
+    this.props.updateOuterTimelineDates([startDate, this.props.filters.timelineOuterExtent[1]]);
   }
 
   onEndDatePickerChange(endDate) {
