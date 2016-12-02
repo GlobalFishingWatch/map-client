@@ -42,7 +42,6 @@ class PelagosClient {
        https://developer.mozilla.org/En/Using_XMLHttpRequest */
       var success = this.request.status == 200 || (this.isFileUri && this.request.status == 0);
       if (!success) {
-        console.error('Error loading tile');
         this.resolve(null);
         return;
       }
