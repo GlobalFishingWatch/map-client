@@ -6,17 +6,21 @@
   display: flex;
   height: $footer-mini-height;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 10px;
 
-  .contain-partners {
+  @media #{$mq-mobile-large} {
+    padding: 0 20px;
+  }
+
+  > .contain-partners {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 70%;
 
     @media screen and (min-width: 1135px) {
       justify-content: center;
-      width: inherit;
+      width: 100%;
     }
 
     .partner {
@@ -28,40 +32,45 @@
         margin-right: 15px;
       }
 
-      &.-skytruth-logo {
-        max-width: 120px;
+      &.oceana {
+        max-width: 60px;
       }
-    }
 
-    .oceana {
-      max-width: 80px;
+      &.-skytruth-logo {
+        max-width: 85px;
+      }
+
+      &.-google {
+        max-width: 50px;
+      }
     }
   }
 
   > .links {
     align-items: center;
     display: flex;
-    list-style: none;
 
-    li {
+    > .attributions {
       color: $color-20;
-      display: inline-block;
-      font-size: $font-size-tiny;
-      margin-left: 15px;
-    }
-
-    .attributions {
+      // display: inline-block;
       display: none;
+
+      // margin-left: 15px;
+
+      &.-footer {
+        display: inline-flex;
+      }
 
       @media screen and (min-width: 1135px) {
         display: inline-block;
       }
-    }
 
-    a {
-      color: $color-20;
-      cursor: pointer;
-      text-decoration: none;
+      > a {
+        color: $color-20;
+        display: inline-block;
+        font-size: $font-size-xxs-small;
+        width: 100%;
+      }
     }
 
     .bar-hor {

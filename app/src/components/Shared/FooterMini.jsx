@@ -84,11 +84,13 @@ class FooterMini extends Component {
           <div className={styles['contain-partners']}>
             <img className={classnames(styles.partner, styles.oceana)} src={logooceana} alt="oceana logo" />
             <img className={classnames(styles.partner, styles['-skytruth-logo'])} src={logosky} alt="skytruth logo" />
-            <img className={styles.partner} src={logogoogle} alt="google logo" />
+            <img className={classnames(styles.partner, styles['-google'])} src={logogoogle} alt="google logo" />
           </div>
 
           <ul className={styles.links}>
-            <li className={styles.attributions}><a onClick={() => this.toggleFooter()}>{toggleLabel}</a></li>
+            <li className={classnames(styles.attributions, styles['-footer'])}>
+              <a onClick={() => this.toggleFooter()}>{toggleLabel}</a>
+            </li>
             <li className={styles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
             <li className={styles.attributions}>
               <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
