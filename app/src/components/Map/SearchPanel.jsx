@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import SearchResult from './SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
 import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
+import isMobile from 'ismobilejs';
 
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
@@ -29,8 +30,17 @@ class SearchPanel extends Component {
 
   onSearchInputChange(event) {
     const keyword = event.target.value;
+
     this.setState({ keyword });
     this.props.getSearchResults(keyword, { immediate: !keyword.length });
+  }
+
+  onBlur() {
+    document.querySelector('body').style.height = '100%';
+  }
+
+  setBodyHeight() {
+    if (isMobile.phone || isMobile.tablet) document.querySelector('body').style.height = `${window.innerHeight}px`;
   }
 
   cleanResults() {
@@ -70,7 +80,9 @@ class SearchPanel extends Component {
       <div className={searchPanelStyles['c-search-panel']}>
         <input
           type="text"
+          onBlur={this.onBlur}
           onChange={(e) => this.onSearchInputChange(e)}
+          onFocus={this.setBodyHeight}
           className={searchPanelStyles['search-accordion']}
           placeholder="Type your search criteria"
           value={this.state.keyword}
