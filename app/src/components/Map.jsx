@@ -19,7 +19,6 @@ import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import extentChanged from 'util/extentChanged';
 
-
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
 class Map extends Component {
