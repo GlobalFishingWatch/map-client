@@ -12,7 +12,7 @@ import {
   setLayerInfoModal
 } from '../actions/map';
 import { setFlagFilter } from '../actions/filters';
-import { getVesselTrack, setCurrentVessel } from '../actions/vesselInfo';
+import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from '../actions/vesselInfo';
 import { RESET_VESSEL_DETAILS } from '../actions';
 
 const mapStateToProps = (state) => ({
@@ -46,7 +46,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
       dispatch(setCurrentVessel(vesselInfo));
       dispatch(getVesselTrack(vesselInfo.seriesgroup, vesselInfo.series));
     } else {
-      console.warn('not a valid seriesgroup');
+      dispatch(showVesselClusterInfo());
     }
   },
   setZoom: zoom => dispatch(setZoom(zoom)),

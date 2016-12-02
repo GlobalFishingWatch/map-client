@@ -7,7 +7,8 @@ import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
   RESET_VESSEL_DETAILS,
-  SET_VESSEL_VISIBILITY
+  SET_VESSEL_VISIBILITY,
+  SHOW_VESSEL_CLUSTER_INFO
 } from '../actions';
 
 export default function (state = initialState, action) {
@@ -22,6 +23,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { details: action.payload });
     case SET_VESSEL_VISIBILITY: {
       return Object.assign({}, state, { vesselVisibility: action.payload });
+    }
+    case SHOW_VESSEL_CLUSTER_INFO: {
+      return Object.assign({}, state, { details: { isCluster: true }, vesselVisibility: true });
     }
     default:
       return state;
