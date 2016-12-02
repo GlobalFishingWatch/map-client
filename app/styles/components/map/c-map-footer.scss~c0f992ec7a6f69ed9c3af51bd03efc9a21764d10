@@ -1,0 +1,99 @@
+@import '../../settings';
+
+.c-map-footer {
+  align-items: center;
+  background-color: $color-1;
+  display: flex;
+  height: $map-footer-height;
+  justify-content: space-between;
+  padding: 0 10px;
+  position: relative;
+  z-index: 101;
+
+  @media #{$mq-mobile-large} {
+    padding: 0 20px;
+  }
+
+  > .logo-list {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    max-width: 70%;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      max-width: none;
+      width: auto;
+    }
+  }
+
+  > .logo-list > .logo-item {
+    display: inline-flex;
+
+    @media #{$mq-tablet} {
+      &:not(:first-child) {
+        margin: 0 0 0 15px;
+      }
+    }
+  }
+
+  > .logo-list > .logo-item > .logo {
+    height: 100%;
+    width: 100%;
+
+    @media screen and (min-width: 1135px) {
+      margin: 0 15px 0 0;
+    }
+
+    &.-oceana {
+      max-width: 60px;
+    }
+
+    &.-skytruth {
+      height: 11px;
+      max-width: 75px;
+    }
+
+    &.-google {
+      max-width: 50px;
+    }
+  }
+
+  > .options {
+    display: flex;
+
+    .link {
+      color: $color-20;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+
+      &.-footer,
+      &.-terms-of-use,
+      &.-support {
+        cursor: pointer;
+      }
+
+      &.-terms-of-use,
+      &.-support {
+        display: none;
+
+        @media #{$mq-tablet} {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+
+  > .options > .attribution-list {
+    display: none;
+
+    @media #{$mq-tablet} {
+      display: flex;
+    }
+  }
+}
+
+.overflow-container {
+  height: $map-footer-height;
+  overflow: hidden;
+}
