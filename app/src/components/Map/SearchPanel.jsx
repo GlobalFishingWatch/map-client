@@ -4,7 +4,6 @@ import SearchResult from 'containers/Map/SearchResult';
 import iconsStyles from '../../../styles/icons.scss';
 import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
 import isMobile from 'ismobilejs';
-
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {
@@ -17,8 +16,12 @@ class SearchPanel extends Component {
     };
 
     this.state = {
-      keyword: ''
+      keyword: '', searching: false
     };
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ searching: false });
   }
 
   componentDidUpdate(prevProps) {
@@ -30,7 +33,7 @@ class SearchPanel extends Component {
   onSearchInputChange(event) {
     const keyword = event.target.value;
 
-    this.setState({ keyword });
+    this.setState({ keyword, searching: keyword.length >= this.defaults.characterLimit });
     this.props.getSearchResults(keyword, { immediate: !keyword.length });
   }
 
@@ -39,7 +42,9 @@ class SearchPanel extends Component {
   }
 
   setBodyHeight() {
-    if (isMobile.phone || isMobile.tablet) document.querySelector('body').style.height = `${window.innerHeight}px`;
+    if (isMobile.phone || isMobile.tablet) {
+      document.querySelector('body').style.height = `${window.innerHeight}px`;
+    }
   }
 
   cleanResults() {
@@ -51,23 +56,25 @@ class SearchPanel extends Component {
     const isSearching = this.props.search.count || this.state.keyword.length > this.defaults.characterLimit;
 
     let searchResults;
-    if (this.props.search.count && this.state.keyword.length >= this.defaults.characterLimit) {
+    if (this.state.searching) {
+      searchResults = <li className={searchPanelStyles.result}>Searching...</li>;
+    } else if (this.props.search.count && this.state.keyword.length >= this.defaults.characterLimit) {
       searchResults = [];
       for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
-        searchResults.push(
-          <SearchResult
-            className={searchPanelStyles.result}
-            key={i}
-            keyword={this.state.keyword}
-            vesselInfo={this.props.search.entries[i]}
-          />
-        );
+        searchResults.push(<SearchResult
+          className={searchPanelStyles.result}
+          key={i}
+          keyword={this.state.keyword}
+          vesselInfo={this.props.search.entries[i]}
+        />);
       }
-    } else if (this.state.keyword.length < this.defaults.characterLimit) {
+    } else if (this.state.keyword.length < this.defaults.characterLimit && this.state.keyword.length > 0) {
       searchResults = (
         <li className={searchPanelStyles.result}>
           Type at least {this.defaults.characterLimit} characters
         </li>);
+    } else if (this.state.keyword.length === 0) {
+      searchResults = null;
     } else {
       searchResults = <li className={searchPanelStyles.result}>No result</li>;
     }
@@ -84,15 +91,13 @@ class SearchPanel extends Component {
           value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
-      {!isSearching &&
-        <svg
+        {!isSearching && <svg
           className={classnames(iconsStyles.icon, 'icon-search')}
         >
           <use xlinkHref="#icon-search"></use>
         </svg>}
 
-      {!!isSearching &&
-        <CloseIcon
+        {!!isSearching && <CloseIcon
           className={classnames(iconsStyles.icon, 'icon-close')}
           onClick={() => this.cleanResults()}
         />}
@@ -110,10 +115,8 @@ SearchPanel.propTypes = {
   getSearchResults: React.PropTypes.func,
   search: React.PropTypes.object,
   toggleVisibility: React.PropTypes.func,
-  vesselVisibility: React.PropTypes.bool,
-  // Whether the search panel is expanded or closed
+  vesselVisibility: React.PropTypes.bool, // Whether the search panel is expanded or closed
   visible: React.PropTypes.bool
 };
-
 
 export default SearchPanel;
