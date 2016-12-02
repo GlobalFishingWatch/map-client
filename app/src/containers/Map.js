@@ -13,7 +13,7 @@ import {
 } from '../actions/map';
 import { setFlagFilter } from '../actions/filters';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from '../actions/vesselInfo';
-import { RESET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER } from '../actions';
+import { RESET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER, RESET_VESSEL_TRACK } from '../actions';
 
 const mapStateToProps = (state) => ({
   map: state.map,
@@ -51,6 +51,10 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         });
         dispatch(showVesselClusterInfo(center));
       }
+    } else {
+      dispatch({
+        type: RESET_VESSEL_TRACK
+      });
     }
   },
   setZoom: zoom => dispatch(setZoom(zoom)),
