@@ -18,8 +18,11 @@ import SubscribeIcon from 'babel!svg-react!assets/icons/subscribe.svg?name=Subsc
 class Footer extends Component {
 
   render() {
+    const footerClass = this.props.isMap && this.props.expanded ?
+      classnames(FooterStyles['c-footer'], FooterStyles['-expanded']) : FooterStyles['c-footer'];
+
     return (
-      <footer className={FooterStyles['c-footer']}>
+      <footer className={footerClass}>
         <div className={BaseStyles.wrap}>
           <div className={FooterStyles['logos-footer']}>
             <div className={FooterStyles['partner-section']}>
@@ -133,11 +136,13 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  isMap: React.PropTypes.bool
+  isMap: React.PropTypes.bool,
+  expanded: React.PropTypes.bool
 };
 
 Footer.defaultProps = {
-  isMap: false
+  isMap: false,
+  expanded: false
 };
 
 export default Footer;
