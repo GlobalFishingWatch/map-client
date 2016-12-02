@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import classNames from 'classnames';
-import styles from '../../../styles/components/shared/c-header.scss';
-import baseStyle from '../../../styles/_base.scss';
+import classnames from 'classnames';
+import isMobile from 'ismobilejs';
 import betaLogo from '../../../assets/logos/gfw_logo_beta.svg';
 import defaultLogo from '../../../assets/logos/gfw_logo_hor.svg';
 import menuicon from '../../../assets/icons/menu_icon.svg';
 import MenuMobile from './../../containers/MenuMobile';
+
+import baseStyle from 'styles/_base.scss';
+import styles from 'styles/components/shared/c-header.scss';
+import iconStyles from 'styles/icons.scss';
+
+import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 
 class Header extends Component {
 
@@ -67,12 +72,12 @@ class Header extends Component {
         />
         <nav
           className={
-            classNames({ [styles['c-header']]: true, [styles['-map']]: this.doesPathStartsWith('/map') })
+            classnames({ [styles['c-header']]: true, [styles['-map']]: this.doesPathStartsWith('/map') })
           }
         >
           <div
             className={
-              classNames({ [baseStyle.wrap]: true, [baseStyle['-map']]: this.doesPathStartsWith('/map') })
+              classnames({ [baseStyle.wrap]: true, [baseStyle['-map']]: this.doesPathStartsWith('/map') })
             }
           >
             <div className={styles['contain-nav']}>
@@ -91,6 +96,14 @@ class Header extends Component {
                   alt="Global Fishing Watch"
                 />
               </Link>
+
+
+              {isMobile.phone &&
+                <ShareIcon
+                  className={classnames(iconStyles.icon, styles['share-icon'])}
+                  onClick={this.props.openShareModal}
+                />
+              }
               {/* TEMPORARILY REMOVE SHARE BUTTON
               {this.doesPathStartsWith('/map') && <span className={styles['share-header']}>
                 <img src={shareIcon} alt="share icon"></img></span>}
@@ -103,7 +116,7 @@ class Header extends Component {
                   <a
                     className={
                       /\/articles-publications/.test(location.pathname)
-                        ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
+                        ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
                     News
@@ -120,7 +133,7 @@ class Header extends Component {
                         this.doesPathStartsWith('/faq')
                         || this.doesPathStartsWith('/tutorials')
                         || this.doesPathStartsWith('/definitions')
-                      ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
+                      ) ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
                     }
                   >
                     How to
@@ -138,7 +151,7 @@ class Header extends Component {
                       || this.doesPathStartsWith('/partners')
                       || this.doesPathStartsWith('/research-program')
                       || this.doesPathStartsWith('/contact-us')
-                    ) ? classNames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
+                    ) ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
                   >
                     About
                   </a>
@@ -163,6 +176,7 @@ Header.propTypes = {
   logout: React.PropTypes.func,
   login: React.PropTypes.func,
   loggedUser: React.PropTypes.object,
+  openShareModal: React.PropTypes.func,
   setVisibleMenu: React.PropTypes.func
 };
 
