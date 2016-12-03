@@ -37,7 +37,7 @@
 }
 
 .timebar-container {
-  bottom: $footer-mini-height;
+  bottom: $map-footer-height;
   height: $timebar-height;
   left: 0;
   width: 100%;
@@ -49,7 +49,7 @@
   position: relative;
 
   @media screen and (min-width: 900px) {
-    height: calc(100% - #{$footer-mini-height + $timebar-height}); // footer mini height
+    height: calc(100% - #{$map-footer-height + $timebar-height}); // footer mini height
   }
 
 
