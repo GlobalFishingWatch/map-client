@@ -42,7 +42,7 @@ class Footer extends Component {
               className={FooterStyles['close-button']}
               onClick={this.props.onClose}
             >
-              <span className={FooterStyles.cross}></span>
+              <span className={FooterStyles.cross} />
             </div>}
           <div className={FooterStyles['scroll-container']}>
             <div className={BaseStyles.wrap}>
