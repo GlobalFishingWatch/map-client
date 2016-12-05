@@ -5,23 +5,27 @@
   padding: 55px 0 0;
 
   &.-map {
+    left: 0;
     max-height: 0;
     overflow: hidden;
     padding: 0;
     position: absolute;
     transform: translate(0, 0);
     transition: max-height .25s ease, transform .25s ease;
+    width: 100%;
     z-index: 100;
   }
 
   &.-expanded {
     height: 90%;
-    left: 0;
     max-height: 100%;
     overflow: auto;
     padding: 55px 0 0;
     transform: translate(0, calc(-100% - #{$map-footer-height}));
-    width: 100%;
+
+    @media #{$mq-tablet} {
+      height: auto;
+    }
   }
 
   .logos-footer {
