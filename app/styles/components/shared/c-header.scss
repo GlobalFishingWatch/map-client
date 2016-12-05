@@ -63,9 +63,9 @@
 
   .share-icon {
     fill: $color-4;
-    height: 15px;
+    min-height: 16px;
+    min-width: 19px;
     order: 3;
-    width: 19px;
 
     @media #{$mq-tablet} {
       display: none;
