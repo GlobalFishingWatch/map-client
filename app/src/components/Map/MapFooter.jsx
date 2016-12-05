@@ -28,6 +28,10 @@ class MapFooter extends Component {
     return nextState !== this.state;
   }
 
+  onCloseFooter() {
+    this.setState({ footerExpanded: false });
+  }
+
   showSupportModal() {
     this.setState({ showSupport: !this.state.showSupport });
   }
@@ -123,7 +127,8 @@ class MapFooter extends Component {
         </footer>
         <Footer
           isMap
-          expanded={this.state.footerExpanded}
+          isExpanded={this.state.footerExpanded}
+          onClose={() => this.onCloseFooter()}
         />
       </div>
     );
