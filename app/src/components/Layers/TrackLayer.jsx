@@ -44,7 +44,7 @@ const createTrackLayer = function (google) {
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
-  TrackLayer.prototype.recalculatePosition = function () {
+  TrackLayer.prototype.reposition = function () {
     this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const map = this.getMap();
@@ -169,19 +169,20 @@ const createTrackLayer = function (google) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
       drawStyle = this.getDrawStyle(data.datetime[i], _drawParams);
-      if (!drawStyle || series !== data.series[i]) {
+      if (!drawStyle || (series && series !== data.series[i])) {
         continue;
       }
       // numPointsDrawn++;
 
-      point = this.drawPoint(overlayProjection, data, i, drawStyle);
+      point = this.drawPoint(overlayProjection, data, i, drawStyle.strokeStyle);
 
       if (previousDrawStyle !== drawStyle || (i > 0 && data.series[i - 1] !== data.series[i])) {
         if (previousDrawStyle) {
           this.ctx.stroke();
         }
         this.ctx.beginPath();
-        this.ctx.strokeStyle = drawStyle;
+        this.ctx.strokeStyle = drawStyle.strokeStyle;
+        this.ctx.lineWidth = drawStyle.lineWidth;
         if ((i > 0 && data.series[i - 1] === data.series[i]) && previousPoint) {
           this.ctx.moveTo(~~previousPoint.x - this.offset.x, ~~previousPoint.y - this.offset.y);
         }

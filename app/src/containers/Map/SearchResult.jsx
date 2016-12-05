@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   drawVessel: (vesselDetails) => {
     dispatch(setCurrentVessel(vesselDetails.seriesgroup));
-    dispatch(getVesselTrack(vesselDetails.seriesgroup));
+    dispatch(getVesselTrack(vesselDetails.seriesgroup, null, true));
   },
   toggleVisibility: (visibility) => {
     dispatch(toggleVisibility(visibility));

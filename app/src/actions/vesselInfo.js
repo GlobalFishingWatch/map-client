@@ -1,4 +1,10 @@
-import { SET_VESSEL_DETAILS, SET_VESSEL_TRACK, SET_VESSEL_INFO_VISIBILITY, SHOW_VESSEL_CLUSTER_INFO } from '../actions';
+import {
+  SET_VESSEL_DETAILS,
+  SET_VESSEL_TRACK,
+  SET_VESSEL_INFO_VISIBILITY,
+  SHOW_VESSEL_CLUSTER_INFO,
+  SET_TRACK_BOUNDS
+} from '../actions';
 import _ from 'lodash';
 import VesselsTileData from '../components/Layers/VesselsTileData';
 import PelagosClient from '../lib/pelagosClient';
@@ -49,7 +55,7 @@ export function showVesselClusterInfo() {
   };
 }
 
-export function getVesselTrack(seriesGroup, series = null) {
+export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const state = getState();
     const filters = state.filters;
@@ -76,11 +82,12 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
           'series',
           'weight'
         ]);
-        // if (rawTileData[0]) {
+
         dispatch({
           type: SET_VESSEL_INFO_VISIBILITY,
           payload: true
         });
+
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
@@ -90,12 +97,20 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
             selectedSeries: series
           }
         });
-        // } else {
-        //   dispatch({
-        //     type: SET_VESSEL_TRACK,
-        //     payload: null
-        //   });
-        // }
+
+        if (zoomToBounds) {
+          // should this be computed server side ?
+          // this is half implemented because it doesnt take into account filtering and time span
+          const trackBounds = new google.maps.LatLngBounds();
+          for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
+            trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
+          }
+
+          dispatch({
+            type: SET_TRACK_BOUNDS,
+            trackBounds
+          });
+        }
       });
   };
 }

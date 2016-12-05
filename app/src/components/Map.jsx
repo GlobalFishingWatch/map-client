@@ -38,6 +38,7 @@ class Map extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
+    this.onCenterChanged = this.onCenterChanged.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
   }
@@ -126,16 +127,17 @@ class Map extends Component {
       this.trackLayer.clear();
     } else {
       // update tracks layer when:
-      // - user selected a new vessel
+      // - user selected a new vessel (seriesgroup or selectedSeries changed)
       // - zoom level changed (needs fetching of a new tileset)
       // - playing state changed
-      // - user hovers on timeline to highlight a portion of the track
+      // - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set (redrawing is too slow when all series are shown)
       // - selected inner extent changed
       if (!this.props.vesselTrack ||
+          this.props.vesselTrack.seriesgroup !== nextProps.vesselTrack.seriesgroup ||
           this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
           this.props.map.zoom !== nextProps.map.zoom ||
           this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
-          extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent) ||
+          (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent)) ||
           innerExtentChanged) {
         this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
       }
@@ -152,6 +154,12 @@ class Map extends Component {
         this.props.filters.endDate !== nextProps.filters.endDate ||
         innerExtentChanged) {
         this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+      }
+    }
+
+    if (nextProps.trackBounds) {
+      if (!this.props.trackBounds || !nextProps.trackBounds.equals(this.props.trackBounds)) {
+        this.map.fitBounds(nextProps.trackBounds);
       }
     }
 
@@ -187,7 +195,7 @@ class Map extends Component {
     if (!this.trackLayer || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
       return;
     }
-    this.trackLayer.recalculatePosition();
+    this.trackLayer.reposition();
 
     const data = props.vesselTrack.seriesGroupData;
 
@@ -208,6 +216,15 @@ class Map extends Component {
         overStartTimestamp,
         overEndTimestamp
       }
+    );
+  }
+
+  rerenderTrackLayer() {
+    this.updateTrackLayer(
+      this.props,
+      this.props.filters.timelineInnerExtent[0].getTime(),
+      this.props.filters.timelineInnerExtent[1].getTime(),
+      this.props.filters.timelinePaused
     );
   }
 
@@ -443,6 +460,21 @@ class Map extends Component {
       this.props.getWorkspace();
       this.defineBasemaps(this.props.basemaps);
     }
+
+    if (this.vesselsLayer) {
+      this.vesselsLayer.reposition();
+      this.vesselsLayer.render();
+    }
+    if (this.trackLayer) {
+      this.rerenderTrackLayer();
+    }
+  }
+
+  onCenterChanged() {
+    if (this.vesselsLayer) {
+      this.vesselsLayer.reposition();
+      this.vesselsLayer.render();
+    }
   }
 
   defineBasemaps(basemaps) {
@@ -573,6 +605,7 @@ class Map extends Component {
               onDragstart={this.onDragStart}
               onDragend={this.onDragEnd}
               onIdle={this.onMapIdle}
+              onCenterChanged={this.onCenterChanged}
             />
           }
         />
@@ -611,6 +644,7 @@ Map.propTypes = {
   closeShareModal: React.PropTypes.func,
   layerModal: React.PropTypes.object,
   closeLayerInfoModal: React.PropTypes.func,
+  trackBounds: React.PropTypes.object,
   vesselTrackDisplayMode: React.PropTypes.string
 };
 
