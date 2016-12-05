@@ -346,3 +346,13 @@
     }
   }
 }
+
+.veil {
+  background-color: rgba($color-12, .8);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
