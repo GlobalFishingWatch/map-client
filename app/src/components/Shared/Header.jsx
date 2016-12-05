@@ -69,6 +69,7 @@ class Header extends Component {
         <MenuMobile
           visible={this.state.mobileMenuVisible}
           onClose={this.closeMobileMenu}
+          onOpenSupportModal={this.props.setSupportModalVisibility}
         />
         <nav
           className={
@@ -174,6 +175,7 @@ Header.propTypes = {
   login: React.PropTypes.func,
   loggedUser: React.PropTypes.object,
   openShareModal: React.PropTypes.func,
+  setSupportModalVisibility: React.PropTypes.func,
   setVisibleMenu: React.PropTypes.func
 };
 

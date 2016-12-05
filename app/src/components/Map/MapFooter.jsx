@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import FormSupport from 'containers/Map/SupportForm';
 import Footer from 'components/Shared/Footer';
-import Modal from 'components/Shared/Modal';
 
 import MapFooterStyles from 'styles/components/map/c-map-footer.scss';
 
@@ -17,21 +15,12 @@ class MapFooter extends Component {
     super(props);
 
     this.state = {
-      footerExpanded: false,
-      showSupport: false
+      footerExpanded: false
     };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return nextState !== this.state;
-  }
-
-  onCloseFooter() {
-    this.setState({ footerExpanded: false });
-  }
-
-  showSupportModal() {
-    this.setState({ showSupport: !this.state.showSupport });
   }
 
   toggleFooter() {
@@ -43,14 +32,6 @@ class MapFooter extends Component {
 
     return (
       <div className={MapFooterStyles['overflow-container']}>
-        {this.state.showSupport &&
-          <Modal
-            opened
-            closeable
-            close={() => this.showSupportModal()}
-          >
-            <FormSupport close={() => this.showSupportModal()} />
-          </Modal>}
         <div className={MapFooterStyles['c-map-footer']}>
           <ul className={MapFooterStyles['logo-list']}>
             <li className={MapFooterStyles['logo-item']}>
@@ -114,7 +95,7 @@ class MapFooter extends Component {
             </ul>
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles['-support'])}
-              onClick={() => this.showSupportModal()}
+              onClick={this.props.onOpenSupportModal}
             >
               Support
             </span>
@@ -133,5 +114,9 @@ class MapFooter extends Component {
     );
   }
 }
+
+MapFooter.propTypes = {
+  onOpenSupportModal: React.PropTypes.func
+};
 
 export default MapFooter;
