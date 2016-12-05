@@ -11,15 +11,15 @@ export default class VesselsLayer {
 
     const innerStartDate = filters.timelineInnerExtent[0];
     const innerEndDate = filters.timelineInnerExtent[1];
-    this.outerStartDateOffset = VesselsTileData.getTimeAtPrecision(filters.startDate);
+    this.overallStartDateOffset = VesselsTileData.getTimeAtPrecision(filters.timelineOverallExtent[0]);
 
     this.currentInnerStartIndex = VesselsTileData.getOffsetedTimeAtPrecision(
         innerStartDate.getTime(),
-        this.outerStartDateOffset
+        this.overallStartDateOffset
     );
     this.currentInnerEndIndex = VesselsTileData.getOffsetedTimeAtPrecision(
         innerEndDate.getTime(),
-        this.outerStartDateOffset
+        this.overallStartDateOffset
     );
 
     this.overlay = new VesselsLayerOverlay(
@@ -34,7 +34,7 @@ export default class VesselsLayer {
       tilesetUrl,
       token,
       filters,
-      this.outerStartDateOffset,
+      this.overallStartDateOffset,
       debug
     );
     this.tiled.tileCreatedCallback = this._onTileCreated.bind(this);
@@ -76,8 +76,8 @@ export default class VesselsLayer {
   }
 
   renderTimeRange(start, end) {
-    const startIndex = VesselsTileData.getOffsetedTimeAtPrecision(start, this.outerStartDateOffset);
-    const endIndex = VesselsTileData.getOffsetedTimeAtPrecision(end, this.outerStartDateOffset);
+    const startIndex = VesselsTileData.getOffsetedTimeAtPrecision(start, this.overallStartDateOffset);
+    const endIndex = VesselsTileData.getOffsetedTimeAtPrecision(end, this.overallStartDateOffset);
 
     if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
       return;
@@ -125,17 +125,5 @@ export default class VesselsLayer {
     }
     return vessels;
   }
-
-  // drawTimeRange(start, end) {
-    // const startIndex = CanvasLayerData.getOffsetedTimeAtPrecision(start, this.outerStartDateOffset);
-    // const endIndex = CanvasLayerData.getOffsetedTimeAtPrecision(end, this.outerStartDateOffset);
-    // if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
-    //   // TODO: check only startIndex to avoid bypassing when current is 10-20 and next is 10-21 (rounding issue)
-    //   // and force drawing when innerDelta changed
-    //   return -1;
-    // }
-    // this.currentInnerStartIndex = startIndex;
-    // this.currentInnerEndIndex = endIndex;
-  // }
 
 }

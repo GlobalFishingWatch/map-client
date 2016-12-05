@@ -3,11 +3,11 @@ import PelagosClient from '../../lib/pelagosClient';
 import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from '../../constants';
 
 export default {
-  getTilePelagosPromises(tilesetUrl, tileCoordinates, outerStartDate, outerEndDate, token) {
+  getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {
     const promises = [];
-
     if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tilesetUrl, tileCoordinates, outerStartDate, outerEndDate);
+      const urls = this.getTemporalTileURLs(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate);
+      console.log(urls)
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
       }
@@ -50,12 +50,13 @@ export default {
    * @param tilesetUrl
    * @param tileCoordinates
    * @param startDate
-   * @param endDate
+   * @param timelineOverallEndDate
    * @returns {Array}
    */
-  getTemporalTileURLs(tilesetUrl, tileCoordinates, startDate, endDate) {
-    const startYear = new Date(startDate).getUTCFullYear();
-    const endYear = new Date(endDate).getUTCFullYear();
+  getTemporalTileURLs(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate) {
+    const startYear = new Date(timelineOverallStartDate).getUTCFullYear();
+    const endYear = new Date(timelineOverallEndDate).getUTCFullYear();
+    console.log(startYear, endYear)
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
       urls.push(`${tilesetUrl}/\
@@ -105,8 +106,8 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * beginning of avaliable time (outerStart)
    * @param timestamp
    */
-  getOffsetedTimeAtPrecision(timestamp, outerStartDateOffset) {
-    return Math.max(0, this.getTimeAtPrecision(timestamp) - outerStartDateOffset);
+  getOffsetedTimeAtPrecision(timestamp, overallStartDateOffset) {
+    return Math.max(0, this.getTimeAtPrecision(timestamp) - overallStartDateOffset);
   },
 
   /**
@@ -123,7 +124,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArray
    * @param tileCoordinates
    */
-  getTilePlaybackData(vectorArray, outerStartDate, outerEndDate, outerStartDateOffset) {
+  getTilePlaybackData(vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
     const tilePlaybackData = [];
     // const tilePlaybackDataGrid = [];
 
@@ -133,14 +134,14 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
-      if (datetime < outerStartDate || datetime > outerEndDate) {
+      if (datetime < overallStartDate || datetime > overallEndDate) {
         continue;
       }
       // keep?
       // if (!data.weight[index]) {
       //   return false;
       // }
-      const timeIndex = this.getOffsetedTimeAtPrecision(datetime, outerStartDateOffset);
+      const timeIndex = this.getOffsetedTimeAtPrecision(datetime, overallStartDateOffset);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
       const weight = vectorArray.weight[index];

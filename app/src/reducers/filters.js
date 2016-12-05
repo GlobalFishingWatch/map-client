@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
@@ -6,17 +7,15 @@ import {
   SET_TIMELINE_OVER_DATES
 } from '../actions';
 import {
-  TIMELINE_DEFAULT_START_DATE,
-  TIMELINE_DEFAULT_END_DATE,
-  TIMELINE_INNER_DATE_EXTENT,
-  TIMELINE_OUTER_DATE_EXTENT
+  TIMELINE_DEFAULT_INNER_DATE_EXTENT,
+  TIMELINE_DEFAULT_OUTER_DATE_EXTENT,
+  TIMELINE_OVERALL_START_DATE
 } from '../constants';
 
 const initialState = {
-  startDate: TIMELINE_DEFAULT_START_DATE,
-  endDate: TIMELINE_DEFAULT_END_DATE,
-  timelineInnerExtent: TIMELINE_INNER_DATE_EXTENT,
-  timelineOuterExtent: TIMELINE_OUTER_DATE_EXTENT,
+  timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, moment().subtract(3, 'days').toDate()],
+  timelineInnerExtent: TIMELINE_DEFAULT_INNER_DATE_EXTENT,
+  timelineOuterExtent: TIMELINE_DEFAULT_OUTER_DATE_EXTENT,
   timelinePaused: true,
   flag: ''
 };
