@@ -17,8 +17,9 @@ import {
   UPDATE_VESSEL_COLOR,
   SET_BASEMAP,
   SET_TILESET_URL,
-  SET_VESSEL_CLUSTER_CENTER
-} from 'actions';
+  SET_VESSEL_CLUSTER_CENTER,
+  SET_SUPPORT_MODAL_VISIBILITY
+} from '../actions';
 import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from 'constants';
 
@@ -55,6 +56,9 @@ const initialState = {
   layerModal: {
     open: false,
     info: {}
+  },
+  supportModal: {
+    open: false
   },
   workspaceId: null,
   vesselTransparency: 5,
@@ -140,6 +144,14 @@ export default function (state = initialState, action) {
     }
     case SET_VESSEL_CLUSTER_CENTER:
       return Object.assign({}, state, { vesselClusterCenter: [action.payload.lat(), action.payload.lng()] });
+    case SET_SUPPORT_MODAL_VISIBILITY: {
+      const newState = Object.assign({}, state);
+      newState.supportModal = {
+        open: action.payload
+      };
+      return newState;
+    }
+
     default:
       return state;
   }

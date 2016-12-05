@@ -15,8 +15,10 @@ import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 
+import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
+
 import extentChanged from 'util/extentChanged';
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -551,6 +553,13 @@ class Map extends Component {
       >
         <LayerInfo />
       </Modal>
+      <Modal
+        opened={this.props.supportModal.open}
+        closeable
+        close={this.props.closeSupportModal}
+      >
+        <SupportForm />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -589,7 +598,9 @@ class Map extends Component {
       <div className={mapCss['timebar-container']}>
         <Timebar />
       </div>
-      <MapFooter />
+      <MapFooter
+        onOpenSupportModal={this.props.openSupportModal}
+      />
     </div>);
   }
 }
@@ -618,10 +629,14 @@ Map.propTypes = {
   /**
    * Close the share modal
    */
+  supportModal: React.PropTypes.object,
   closeShareModal: React.PropTypes.func,
   layerModal: React.PropTypes.object,
   closeLayerInfoModal: React.PropTypes.func,
-  trackBounds: React.PropTypes.object
+  trackBounds: React.PropTypes.object,
+  vesselTrackDisplayMode: React.PropTypes.string,
+  closeSupportModal: React.PropTypes.func,
+  openSupportModal: React.PropTypes.func
 };
 
 export default Map;

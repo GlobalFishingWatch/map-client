@@ -96,7 +96,6 @@ class SupportForm extends Component {
                 onChange={(event) => { this.handleChange(event); }}
                 value={this.state.name}
               />
-
               <label htmlFor="support_email">Email</label>
               <input
                 className={supportFormStyle['input-text']}
@@ -107,7 +106,6 @@ class SupportForm extends Component {
                 value={this.state.email}
                 required
               />
-
               <label htmlFor="support_type">Type</label>
               <div className={supportFormStyle['select-container']}>
                 <select
@@ -172,6 +170,5 @@ SupportForm.propTypes = {
   defaultUserEmail: React.PropTypes.string,
   close: React.PropTypes.func
 };
-
 
 export default SupportForm;

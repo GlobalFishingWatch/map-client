@@ -10,7 +10,8 @@ import {
   saveWorkspace,
   deleteWorkspace,
   setShareModalError,
-  setLayerInfoModal
+  setLayerInfoModal,
+  setSupportModalVisibility
 } from 'actions/map';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo } from 'actions/vesselInfo';
 import {
@@ -26,7 +27,7 @@ const mapStateToProps = (state) => ({
   shareModal: state.map.shareModal,
   basemaps: state.map.basemaps,
   activeBasemap: state.map.activeBasemap,
-  layerModal: state.map.layerModal
+  supportModal: state.map.supportModal
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -86,6 +87,12 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setLayerInfoModal({
       open: false
     }));
+  },
+  closeSupportModal: () => {
+    dispatch(setSupportModalVisibility(false));
+  },
+  openSupportModal: () => {
+    dispatch(setSupportModalVisibility(true));
   }
 });
 
