@@ -8,7 +8,6 @@ import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import controlPanelStyle from 'styles/components/c-control_panel.scss';
 
 import { Accordion, AccordionItem } from 'react-sanfona';
-import isMobile from 'ismobilejs';
 
 class ControlPanel extends Component {
 
@@ -28,7 +27,7 @@ class ControlPanel extends Component {
   }
 
   renderSearch() {
-    const title = isMobile.phone || isMobile.tablet ? 'search' : 'search vessels';
+    const title = window.innerWidth < 1024 ? 'search' : 'search vessels';
 
     return (
       <AccordionItem

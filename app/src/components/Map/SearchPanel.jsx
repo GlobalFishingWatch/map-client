@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import SearchResult from 'containers/Map/SearchResult';
+
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
-import isMobile from 'ismobilejs';
+
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {
@@ -42,9 +43,7 @@ class SearchPanel extends Component {
   }
 
   setBodyHeight() {
-    if (isMobile.phone || isMobile.tablet) {
-      document.querySelector('body').style.height = `${window.innerHeight}px`;
-    }
+    document.querySelector('body').style.height = `${window.innerHeight}px`;
   }
 
   cleanResults() {

@@ -42,7 +42,6 @@
     "ga-react-router": "^2.1.1",
     "html-webpack-plugin": "^2.19.0",
     "image-webpack-loader": "^2.0.0",
-    "ismobilejs": "^0.4.0",
     "iso-3166-1-alpha-2": "^1.0.0",
     "jade": "^1.11.0",
     "jquery": "^3.1.0",
