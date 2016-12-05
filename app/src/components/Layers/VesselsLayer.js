@@ -39,8 +39,6 @@ export default class VesselsLayer {
     );
     this.tiled.tileCreatedCallback = this._onTileCreated.bind(this);
     this.tiled.tileReleasedCallback = this._onTileReleased.bind(this);
-
-    this.centerListener = google.maps.event.addListener(this.map, 'center_changed', this._onCenterChanged.bind(this));
   }
 
   updateFlag(flag) {
@@ -58,11 +56,6 @@ export default class VesselsLayer {
     this.render();
   }
 
-  _onCenterChanged() {
-    this.overlay.repositionCanvas();
-    this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
-  }
-
   show() {
     this.overlay.show();
     this.tiled.show();
@@ -71,6 +64,10 @@ export default class VesselsLayer {
   hide() {
     this.overlay.hide();
     this.tiled.hide();
+  }
+
+  reposition() {
+    this.overlay.repositionCanvas();
   }
 
   render() {
