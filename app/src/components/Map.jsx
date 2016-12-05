@@ -146,12 +146,9 @@ class Map extends Component {
     if (this.vesselsLayer) {
       // update vessels layer when:
       // - user selected a new flag
-      // - selected outer extent changed
       // - selected inner extent changed
       // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
       if (this.props.filters.flag !== nextProps.filters.flag ||
-        this.props.filters.startDate !== nextProps.filters.startDate || // TODO endDate/startDate still used????
-        this.props.filters.endDate !== nextProps.filters.endDate ||
         innerExtentChanged) {
         this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
       }
