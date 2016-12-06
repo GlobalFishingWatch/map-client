@@ -82,7 +82,7 @@ const webpackConfig = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
+          'image-webpack'
         ]
       },
       {
@@ -96,6 +96,11 @@ const webpackConfig = {
     ]
   },
 
+  imageWebpackLoader: {
+    optimizationLevel: (process.env.NODE_ENV === 'development' ? 0 : 7),
+    bypassOnDebug: true,
+    interlaced: false
+  },
   postcss() {
     return [autoprefixer];
   }
