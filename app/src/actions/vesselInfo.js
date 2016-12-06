@@ -59,8 +59,8 @@ export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false)
   return (dispatch, getState) => {
     const state = getState();
     const filters = state.filters;
-    const startYear = new Date(filters.startDate).getUTCFullYear();
-    const endYear = new Date(filters.endDate).getUTCFullYear();
+    const startYear = new Date(filters.timelineOverallStartDate).getUTCFullYear();
+    const endYear = new Date(filters.timelineOverallEndDate).getUTCFullYear();
     const urls = [];
 
     for (let i = startYear; i <= endYear; i++) {

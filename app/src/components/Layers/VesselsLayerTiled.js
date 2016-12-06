@@ -2,7 +2,7 @@
 import VesselsTileData from './VesselsTileData';
 
 class VesselsLayerTiled {
-  constructor(map, tilesetUrl, token, filters, outerStartDateOffset, debug = false) {
+  constructor(map, tilesetUrl, token, filters, overallStartDateOffset, debug = false) {
     this.map = map;
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
@@ -10,9 +10,9 @@ class VesselsLayerTiled {
 
     this.tiles = [];
 
-    this.outerStartDate = filters.startDate;
-    this.outerEndDate = filters.endDate;
-    this.outerStartDateOffset = outerStartDateOffset;
+    this.timelineOverallStartDate = filters.timelineOverallExtent[0];
+    this.timelineOverallEndDate = filters.timelineOverallExtent[1];
+    this.overallStartDateOffset = overallStartDateOffset;
 
     this.debug = debug;
 
@@ -82,8 +82,8 @@ class VesselsLayerTiled {
     const pelagosPromises = VesselsTileData.getTilePelagosPromises(
       this.tilesetUrl,
       canvas.tileCoordinates,
-      this.outerStartDate,
-      this.outerEndDate,
+      this.timelineOverallStartDate,
+      this.timelineOverallEndDate,
       this.token
     );
     if (this.debug) this._showDebugInfo(canvas, 'S');
@@ -109,9 +109,9 @@ class VesselsLayerTiled {
       const vectorArray = this._addTilePixelCoordinates(canvas.tileCoordinates, groupedData);
       const data = VesselsTileData.getTilePlaybackData(
         vectorArray,
-        this.outerStartDate,
-        this.outerEndDate,
-        this.outerStartDateOffset
+        this.timelineOverallStartDate,
+        this.timelineOverallEndDate,
+        this.overallStartDateOffset
       );
       canvas.data = data;
       canvas.ready = true;

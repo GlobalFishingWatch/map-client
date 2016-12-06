@@ -5,6 +5,7 @@ import css from '../../../styles/components/map/c-durationpicker.scss';
 class DurationPicker extends Component {
 
   getHumanizedDuration(extent) {
+    if (!extent) return '';
     const innerDelta = moment(extent[1])
       .diff(moment(extent[0]));
     return moment.duration(innerDelta).humanize();
