@@ -61,11 +61,8 @@ class Timebar extends Component {
 
     const currentOuterExtent = this.props.filters.timelineOuterExtent;
     const newOuterExtent = nextProps.filters.timelineOuterExtent;
-    console.log(currentOuterExtent, newOuterExtent)
-    console.log(extentChanged(currentOuterExtent, newOuterExtent))
+
     if (extentChanged(currentOuterExtent, newOuterExtent)) {
-      // redraw
-      // this.redrawOuterBrush(newOuterPxExtent, isLargerThanBefore);
       this.redrawOuterBrush(newOuterExtent, currentOuterExtent);
     }
   }
@@ -84,7 +81,6 @@ class Timebar extends Component {
   }
 
   build() {
-    console.log(this.props);
     const dummyData = this.getDummyData(
       this.props.filters.timelineOverallExtent[0],
       this.props.filters.timelineOverallExtent[1]
@@ -167,9 +163,6 @@ class Timebar extends Component {
     this.outerBrushFunc.move(this.outerBrush, [0, width]);
     this.resetOuterBrush();
     this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
-
-    // draw initial outer extent
-    // this.redrawOuterBrush(this.props.filters.timelineOuterExtent, this.props.filters.timelineOverallExtent);
 
     // custom outer brush events
     this.outerBrush.selectAll('.handle').on('mousedown', () => {
@@ -286,7 +279,6 @@ class Timebar extends Component {
 
     // time range is too long
     if (newExtent[1].getTime() - newExtent[0].getTime() > TIMELINE_MAX_TIME) {
-      console.info('too long');
       const oldExtent = this.props.filters.timelineInnerExtent;
 
       if (oldExtent[0].getTime() === newExtent[0].getTime()) {
@@ -395,7 +387,6 @@ class Timebar extends Component {
     if (!this.props.filters.timelinePaused) {
       this.playStep(deltaTick);
     }
-
     if (dragging) {
       const outerExtentPx = currentOuterPxExtent;
 

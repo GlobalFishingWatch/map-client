@@ -7,8 +7,6 @@ import {
   SET_TIMELINE_OVER_DATES
 } from '../actions';
 import {
-  TIMELINE_DEFAULT_INNER_DATE_EXTENT,
-  TIMELINE_DEFAULT_OUTER_DATE_EXTENT,
   TIMELINE_OVERALL_START_DATE
 } from '../constants';
 

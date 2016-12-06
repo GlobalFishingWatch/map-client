@@ -172,7 +172,7 @@ export function getWorkspace(workspaceId) {
           payload: layers
         });
       })
-      // .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
+      .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
   };
 }
 
