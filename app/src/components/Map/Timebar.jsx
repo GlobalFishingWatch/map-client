@@ -227,12 +227,13 @@ class Timebar extends Component {
   getNewOuterExtent(newOuterPxExtent) {
     // use the new x scale to compute new time values
     // do not get out of total range for outer brush
+    const propsTimelineOverallExtent = this.props.filters.timelineOverallExtent;
     const newOuterTimeLeft = x.invert(newOuterPxExtent[0]);
     const newOuterTimeRight = x.invert(newOuterPxExtent[1]);
-    const isAfterOverallStartDate = newOuterTimeLeft.getTime() > this.props.filters.timelineOverallExtent[0].getTime();
-    const isBeforeOverallEndDate = newOuterTimeRight.getTime() < this.props.filters.timelineOverallExtent[1].getTime();
-    const newOuterTimeExtentLeft = isAfterOverallStartDate ? newOuterTimeLeft : this.props.filters.timelineOverallExtent[0];
-    const newOuterTimeExtentRight = isBeforeOverallEndDate ? newOuterTimeRight : this.props.filters.timelineOverallExtent[1];
+    const isAfterOverallStartDate = newOuterTimeLeft.getTime() > propsTimelineOverallExtent[0].getTime();
+    const isBeforeOverallEndDate = newOuterTimeRight.getTime() < propsTimelineOverallExtent[1].getTime();
+    const newOuterTimeExtentLeft = isAfterOverallStartDate ? newOuterTimeLeft : propsTimelineOverallExtent[0];
+    const newOuterTimeExtentRight = isBeforeOverallEndDate ? newOuterTimeRight : propsTimelineOverallExtent[1];
     return [newOuterTimeExtentLeft, newOuterTimeExtentRight];
   }
 

@@ -174,8 +174,6 @@ class Map extends Component {
 
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
-
-
   }
 
   /**
