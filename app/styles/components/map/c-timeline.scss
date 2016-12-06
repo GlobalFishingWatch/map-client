@@ -17,8 +17,14 @@
 
     text {
       fill: $color-4;
-      font-size: $font-size-x-small;
+      font-family: $font-family-1;
+      font-size: $font-size-xs-small;
+      user-select: none;
     }
+  }
+
+  .c-timeline-full-year {
+    font-weight: bold;
   }
 
   .c-timeline-outer-brush-selection {
