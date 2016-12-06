@@ -14,8 +14,6 @@ import {
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, moment().subtract(3, 'days').toDate()],
-  timelineInnerExtent: TIMELINE_DEFAULT_INNER_DATE_EXTENT,
-  timelineOuterExtent: TIMELINE_DEFAULT_OUTER_DATE_EXTENT,
   timelinePaused: true,
   flag: ''
 };

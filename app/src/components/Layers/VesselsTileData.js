@@ -6,8 +6,12 @@ export default {
   getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {
     const promises = [];
     if (tileCoordinates) {
-      const urls = this.getTemporalTileURLs(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate);
-      console.log(urls)
+      const urls = this.getTemporalTileURLs(
+        tilesetUrl,
+        tileCoordinates,
+        timelineOverallStartDate,
+        timelineOverallEndDate
+      );
       for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
         promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
       }
@@ -56,7 +60,6 @@ export default {
   getTemporalTileURLs(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate) {
     const startYear = new Date(timelineOverallStartDate).getUTCFullYear();
     const endYear = new Date(timelineOverallEndDate).getUTCFullYear();
-    console.log(startYear, endYear)
     const urls = [];
     for (let year = startYear; year <= endYear; year++) {
       urls.push(`${tilesetUrl}/\

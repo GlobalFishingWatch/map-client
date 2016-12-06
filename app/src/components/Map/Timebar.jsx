@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_OUTER_DATE_EXTENT, TIMELINE_MAX_TIME } from '../../constants';
+import { TIMELINE_MAX_TIME } from '../../constants';
 import timebarCss from '../../../styles/components/map/c-timebar.scss';
 import timelineCss from '../../../styles/components/map/c-timeline.scss';
 import extentChanged from '../../util/extentChanged';
@@ -44,11 +44,15 @@ class Timebar extends Component {
     };
   }
 
-  componentDidMount() {
-    this.build();
-  }
-
   componentWillReceiveProps(nextProps) {
+    if (!nextProps.filters.timelineOuterExtent || !nextProps.filters.timelineInnerExtent) {
+      return;
+    }
+
+    if (!this.svg) {
+      this.build();
+    }
+
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
@@ -57,13 +61,12 @@ class Timebar extends Component {
 
     const currentOuterExtent = this.props.filters.timelineOuterExtent;
     const newOuterExtent = nextProps.filters.timelineOuterExtent;
+    console.log(currentOuterExtent, newOuterExtent)
+    console.log(extentChanged(currentOuterExtent, newOuterExtent))
     if (extentChanged(currentOuterExtent, newOuterExtent)) {
       // redraw
-      const newOuterPxExtent = [x(newOuterExtent[0]), x(newOuterExtent[1])];
-      const isLargerThanBefore =
-        newOuterPxExtent[0] < x(currentOuterExtent[0]) ||
-        newOuterPxExtent[1] > x(currentOuterExtent[1]);
-      this.redrawOuterBrush(newOuterPxExtent, isLargerThanBefore);
+      // this.redrawOuterBrush(newOuterPxExtent, isLargerThanBefore);
+      this.redrawOuterBrush(newOuterExtent, currentOuterExtent);
     }
   }
 
@@ -165,6 +168,9 @@ class Timebar extends Component {
     this.resetOuterBrush();
     this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
 
+    // draw initial outer extent
+    // this.redrawOuterBrush(this.props.filters.timelineOuterExtent, this.props.filters.timelineOverallExtent);
+
     // custom outer brush events
     this.outerBrush.selectAll('.handle').on('mousedown', () => {
       currentHandleIsWest = d3.event.target.classList[1] === 'handle--w';
@@ -244,7 +250,13 @@ class Timebar extends Component {
     outerBrushHandleRight.attr('x', width - 2);
   }
 
-  redrawOuterBrush(newOuterPxExtent, isLargerThanBefore) {
+  redrawOuterBrush(newOuterExtent, currentOuterExtent) {
+    const newOuterPxExtent = [x(newOuterExtent[0]), x(newOuterExtent[1])];
+    const isLargerThanBefore =
+      currentOuterExtent === undefined ||
+      newOuterPxExtent[0] < x(currentOuterExtent[0]) ||
+      newOuterPxExtent[1] > x(currentOuterExtent[1]);
+
     // grab inner time extent before changing x scale
     const prevInnerTimeExtent = [x.invert(currentInnerPxExtent[0]), x.invert(currentInnerPxExtent[1])];
 
@@ -453,9 +465,9 @@ class Timebar extends Component {
       <div className={timebarCss['c-timebar']}>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
-            selected={this.props.filters.timelineOuterExtent[0]}
+            selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[0]}
             minDate={this.props.filters.timelineOverallExtent[0]}
-            maxDate={this.props.filters.timelineInnerExtent[0]}
+            maxDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
           >
             Start<br />Date
@@ -463,8 +475,8 @@ class Timebar extends Component {
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
-            selected={this.props.filters.timelineOuterExtent[1]}
-            minDate={this.props.filters.timelineInnerExtent[1]}
+            selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[1]}
+            minDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[1]}
             maxDate={this.props.filters.timelineOverallExtent[1]}
             onChange={this.onEndDatePickerChange}
           >

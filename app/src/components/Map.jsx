@@ -119,6 +119,18 @@ class Map extends Component {
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
 
+    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
+      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+    }
+
+    if (this.props.map.zoom !== nextProps.map.zoom) {
+      this.map.setZoom(nextProps.map.zoom);
+    }
+
+    if (!nextProps.filters.timelineOuterExtent || !nextProps.filters.timelineInnerExtent) {
+      return;
+    }
+
     const innerExtentChanged = extentChanged(this.props.filters.timelineInnerExtent, nextProps.filters.timelineInnerExtent);
     const startTimestamp = nextProps.filters.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
@@ -163,13 +175,7 @@ class Map extends Component {
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
 
-    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
-      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
-    }
 
-    if (this.props.map.zoom !== nextProps.map.zoom) {
-      this.map.setZoom(nextProps.map.zoom);
-    }
   }
 
   /**

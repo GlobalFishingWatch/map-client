@@ -1,10 +1,8 @@
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 
+// end date is today minus 3 days, see filters reducer
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
-
-export const TIMELINE_DEFAULT_OUTER_DATE_EXTENT = [new Date(Date.UTC(2012, 0, 1)), new Date(Date.UTC(2016, 7, 1))];
-export const TIMELINE_DEFAULT_INNER_DATE_EXTENT = [new Date(Date.UTC(2015, 0, 1)), new Date(Date.UTC(2015, 0, 30))];
 
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
