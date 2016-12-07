@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import ArticlesPublications from '../components/ArticlesPublications';
-import { getArticlesPublicationsEntries } from '../actions/articlesPublications';
+import ArticlesPublications from 'components/ArticlesPublications';
+import { getArticlesPublicationsEntries } from 'actions/articlesPublications';
 
 const mapStateToProps = (state) => ({
   articlesPublications: state.articlesPublications

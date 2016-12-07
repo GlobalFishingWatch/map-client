@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ImageAttributionStyles from '../../../styles/components/shared/c-image-attribution.scss';
+import ImageAttributionStyles from 'styles/components/shared/c-image-attribution.scss';
 
 class ImageAttribution extends Component {
 

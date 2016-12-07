@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import ControlPanel from '../../components/Map/ControlPanel';
-import { updateVesselTransparency, updateVesselColor } from '../../actions/map';
-import { toggleVisibility } from '../../actions/vesselInfo';
+import ControlPanel from 'components/Map/ControlPanel';
+import { updateVesselTransparency, updateVesselColor } from 'actions/map';
+import { toggleVisibility } from 'actions/vesselInfo';
 
 
 const mapStateToProps = (state) => ({

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import CoverPage from '../components/Home/CoverPage';
-import { getCoverPageEntries } from '../actions/coverPage';
+import CoverPage from 'components/Home/CoverPage';
+import { getCoverPageEntries } from 'actions/coverPage';
 
 const mapStateToProps = (state) => ({
   coverPageEntries: state.coverPageEntries

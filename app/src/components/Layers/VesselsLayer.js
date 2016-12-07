@@ -1,7 +1,7 @@
-import VesselsLayerOverlay from './VesselsLayerOverlay';
-import VesselsLayerTiled from './VesselsLayerTiled';
-import VesselsTileData from './VesselsTileData';
-import { VESSEL_CLICK_TOLERANCE_PX } from '../../constants';
+import VesselsLayerOverlay from 'components/Layers/VesselsLayerOverlay';
+import VesselsLayerTiled from 'components/Layers/VesselsLayerTiled';
+import VesselsTileData from 'components/Layers/VesselsTileData';
+import { VESSEL_CLICK_TOLERANCE_PX } from 'constants';
 
 
 export default class VesselsLayer {

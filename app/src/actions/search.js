@@ -1,4 +1,4 @@
-import { GET_SEARCH_RESULTS } from '../actions';
+import { GET_SEARCH_RESULTS } from 'actions';
 import 'whatwg-fetch';
 
 let searchQueryID = 0;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import gallery from '../../../styles/components/c-gallery-images.scss';
-import boxtriangle from '../../../assets/icons/box_triangle.svg';
+import gallery from 'styles/components/c-gallery-images.scss';
+import boxtriangle from 'assets/icons/box_triangle.svg';
 
 class SuccessStoryGallery extends Component {
 

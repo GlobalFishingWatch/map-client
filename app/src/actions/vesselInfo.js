@@ -4,10 +4,10 @@ import {
   SET_VESSEL_INFO_VISIBILITY,
   SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS
-} from '../actions';
+} from 'actions';
 import _ from 'lodash';
-import VesselsTileData from '../components/Layers/VesselsTileData';
-import PelagosClient from '../lib/pelagosClient';
+import VesselsTileData from 'components/Layers/VesselsTileData';
+import PelagosClient from 'lib/pelagosClient';
 
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {

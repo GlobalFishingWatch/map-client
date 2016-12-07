@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import css from '../../../styles/components/map/c-durationpicker.scss';
+import css from 'styles/components/map/c-durationpicker.scss';
 
 class DurationPicker extends Component {
 

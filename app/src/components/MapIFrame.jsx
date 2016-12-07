@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
-import Modal from './Shared/Modal';
-import NoLogin from '../containers/Map/NoLogin';
-import Header from '../containers/Header';
-import FooterMini from './Shared/FooterMini';
-import mapStyles from '../../styles/components/c-map.scss';
+import Modal from 'components/Shared/Modal';
+import NoLogin from 'containers/Map/NoLogin';
+import Header from 'containers/Header';
+import FooterMini from 'components/Shared/FooterMini';
+import mapStyles from 'styles/components/c-map.scss';
 
 function MapIFrame(props) {
   /**

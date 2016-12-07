@@ -18,7 +18,7 @@ import {
   CHANGE_VESSEL_TRACK_DISPLAY_MODE,
   SET_BASEMAP,
   SET_TILESET_URL
-} from '../actions';
+} from 'actions';
 
 export function toggleLayerVisibility(layer) {
   return {

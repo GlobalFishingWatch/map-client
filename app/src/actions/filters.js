@@ -4,7 +4,7 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_PLAYING_STATUS,
   SET_TIMELINE_OVER_DATES
-} from '../actions';
+} from 'actions';
 
 export function setFlagFilter(flag) {
   return {

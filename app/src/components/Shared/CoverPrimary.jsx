@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import CoverPage from '../../../styles/components/c-cover-page.scss';
-import baseStyle from '../../../styles/_base.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo.png';
-import Header from '../../containers/Header';
-import ImageAttribution from './ImageAttribution';
+import CoverPage from 'styles/components/c-cover-page.scss';
+import baseStyle from 'styles/_base.scss';
+import LogoLDF from 'assets/logos/ldf_logo.png';
+import Header from 'containers/Header';
+import ImageAttribution from 'components/Shared/ImageAttribution';
 
 class CoverPrimary extends Component {
 

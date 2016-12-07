@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import CoverPrimary from './Shared/CoverPrimary';
-import Footer from './Shared/Footer';
-import Loader from './Shared/Loader';
-import AppStyles from '../../styles/_base.scss';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import PubArticleStyle from '../../styles/components/c-publication-article.scss';
-import articlesPublicationsBackgroundImage from '../../assets/images/articles_publications.jpg';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import Footer from 'components/Shared/Footer';
+import Loader from 'components/Shared/Loader';
+import AppStyles from 'styles/_base.scss';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import PubArticleStyle from 'styles/components/c-publication-article.scss';
+import articlesPublicationsBackgroundImage from 'assets/images/articles_publications.jpg';
 
 class ArticlesPublications extends Component {
 

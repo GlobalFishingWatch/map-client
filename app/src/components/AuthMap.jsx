@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import MapContainer from '../containers/Map';
-import MapIFrameContainer from '../containers/MapIFrame';
+import MapContainer from 'containers/Map';
+import MapIFrameContainer from 'containers/MapIFrame';
 
 class AuthMap extends Component {
 

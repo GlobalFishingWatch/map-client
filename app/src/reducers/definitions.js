@@ -1,5 +1,5 @@
 const initialState = null;
-import { GET_DEFINITION_ENTRIES } from '../actions';
+import { GET_DEFINITION_ENTRIES } from 'actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

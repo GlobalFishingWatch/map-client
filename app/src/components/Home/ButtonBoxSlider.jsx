@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import CoverPage from '../../../styles/components/c-cover-page.scss';
+import CoverPage from 'styles/components/c-cover-page.scss';
 
 class ButtonBoxSlider extends Component {
   render() {

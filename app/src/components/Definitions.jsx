@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import classnames from 'classnames';
-import CoverPrimary from './Shared/CoverPrimary';
-import Footer from './Shared/Footer';
-import AppStyles from '../../styles/_base.scss';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import definitionsBackgroundImage from '../../assets/images/definitions.jpg';
-import Accordion from './Shared/Accordion';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import Footer from 'components/Shared/Footer';
+import AppStyles from 'styles/_base.scss';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import definitionsBackgroundImage from 'assets/images/definitions.jpg';
+import Accordion from 'components/Shared/Accordion';
 
 class Definitions extends Component {
 

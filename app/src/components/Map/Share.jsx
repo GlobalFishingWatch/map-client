@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import facebookIcon from '../../../assets/icons/facebook.svg';
-import twitterIcon from '../../../assets/icons/twitter.svg';
-import googlePlusIcon from '../../../assets/icons/google-plus.svg';
+import facebookIcon from 'assets/icons/facebook.svg';
+import twitterIcon from 'assets/icons/twitter.svg';
+import googlePlusIcon from 'assets/icons/google-plus.svg';
 
-import styles from '../../../styles/components/map/c-share.scss';
+import styles from 'styles/components/map/c-share.scss';
 
 
 class Share extends Component {

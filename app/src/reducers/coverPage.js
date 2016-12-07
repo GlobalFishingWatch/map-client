@@ -1,5 +1,5 @@
 const initialState = null;
-import { GET_COVER_PAGE_ENTRIES } from '../actions';
+import { GET_COVER_PAGE_ENTRIES } from 'actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

@@ -1,4 +1,4 @@
-import { GET_COVER_PAGE_ENTRIES } from '../actions';
+import { GET_COVER_PAGE_ENTRIES } from 'actions';
 import 'whatwg-fetch';
 
 export function getCoverPageEntries() {

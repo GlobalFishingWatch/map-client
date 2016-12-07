@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import CoverPrimary from './Shared/CoverPrimary';
-import Footer from './Shared/Footer';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import Footer from 'components/Shared/Footer';
 import { Link } from 'react-router';
-import Rhombus from './Shared/Rhombus';
-import baseStyle from '../../styles/_base.scss';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import researchProgramBackgroundImage from '../../assets/images/research-program.jpg';
-import AncorsLogo from '../../assets/research-partners/ancors-logo.png';
-import CSIROLogo from '../../assets/research-partners/csiro-logo.png';
-import StanfordLogo from '../../assets/research-partners/stanford-logo.png';
-import McCauleyLogo from '../../assets/research-partners/mccauley-logo.png';
-import MarineGeospatialLogo from '../../assets/research-partners/marine-logo.png';
-import SustainableFisheries from '../../assets/research-partners/sustainable-logo.png';
-import WormLabLogo from '../../assets/research-partners/worm-lab.svg';
-import UbcLogo from '../../assets/research-partners/ubc_logo.jpg';
-import PristineLogo from '../../assets/research-partners/pristine_logo.png';
-import FaoLogo from '../../assets/research-partners/fao_logo.png';
+import Rhombus from 'components/Shared/Rhombus';
+import baseStyle from 'styles/_base.scss';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import researchProgramBackgroundImage from 'assets/images/research-program.jpg';
+import AncorsLogo from 'assets/research-partners/ancors-logo.png';
+import CSIROLogo from 'assets/research-partners/csiro-logo.png';
+import StanfordLogo from 'assets/research-partners/stanford-logo.png';
+import McCauleyLogo from 'assets/research-partners/mccauley-logo.png';
+import MarineGeospatialLogo from 'assets/research-partners/marine-logo.png';
+import SustainableFisheries from 'assets/research-partners/sustainable-logo.png';
+import WormLabLogo from 'assets/research-partners/worm-lab.svg';
+import UbcLogo from 'assets/research-partners/ubc_logo.jpg';
+import PristineLogo from 'assets/research-partners/pristine_logo.png';
+import FaoLogo from 'assets/research-partners/fao_logo.png';
 
 class ResearchProgram extends Component {
 

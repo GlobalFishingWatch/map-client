@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import iconInfoBlack from '../../../assets/icons/info_black.svg';
-import ToolTipStyle from '../../../styles/components/c-tooltip-info.scss';
+import iconInfoBlack from 'assets/icons/info_black.svg';
+import ToolTipStyle from 'styles/components/c-tooltip-info.scss';
 
 class ToolTip extends Component {
   constructor(props) {

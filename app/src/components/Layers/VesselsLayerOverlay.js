@@ -1,7 +1,7 @@
 /* global PIXI */
 
 import 'pixi.js';
-import { TIMELINE_MAX_STEPS } from '../../constants';
+import { TIMELINE_MAX_STEPS } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 

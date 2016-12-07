@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import supportFormStyle from '../../../styles/components/c-support-form.scss';
-import buttonStyle from '../../../styles/components/c-button.scss';
+import supportFormStyle from 'styles/components/c-support-form.scss';
+import buttonStyle from 'styles/components/c-button.scss';
 
 class SupportForm extends Component {
   constructor(props) {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import Footer from './Shared/Footer';
-import Loader from './Shared/Loader';
-import Accordion from './Shared/Accordion';
-import CoverPrimary from './Shared/CoverPrimary';
-import AppStyles from '../../styles/_base.scss';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import faqBackgroundImage from '../../assets/images/faq.jpg';
+import Footer from 'components/Shared/Footer';
+import Loader from 'components/Shared/Loader';
+import Accordion from 'components/Shared/Accordion';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import AppStyles from 'styles/_base.scss';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import faqBackgroundImage from 'assets/images/faq.jpg';
 
 class FAQ extends Component {
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import PelagosClient from '../../lib/pelagosClient';
-import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from '../../constants';
+import PelagosClient from 'lib/pelagosClient';
+import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from 'constants';
 
 export default {
   getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {

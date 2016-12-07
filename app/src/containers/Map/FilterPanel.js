@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import FilterPanel from '../../components/Map/FilterPanel';
-import { setFlagFilter } from '../../actions/filters';
+import FilterPanel from 'components/Map/FilterPanel';
+import { setFlagFilter } from 'actions/filters';
 
 
 const mapStateToProps = (state) => ({

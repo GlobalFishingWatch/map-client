@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Header from '../containers/Header';
-import Footer from './Shared/Footer';
-import ContactUsForm from './ContactUs/ContactUsForm';
-import contactStyle from '../../styles/components/c-contact.scss';
-import baseStyle from '../../styles/_base.scss';
-import ImageAttribution from './Shared/ImageAttribution';
+import Header from 'containers/Header';
+import Footer from 'components/Shared/Footer';
+import ContactUsForm from 'components/ContactUs/ContactUsForm';
+import contactStyle from 'styles/components/c-contact.scss';
+import baseStyle from 'styles/_base.scss';
+import ImageAttribution from 'components/Shared/ImageAttribution';
 
 class ContactUs extends Component {
 

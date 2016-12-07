@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import SearchPanel from '../../components/Map/SearchPanel';
-import { setFlagFilter } from '../../actions/filters';
-import { getSearchResults } from '../../actions/search';
-import { getVesselTrack, toggleVisibility, setCurrentVessel } from '../../actions/vesselInfo';
+import SearchPanel from 'components/Map/SearchPanel';
+import { setFlagFilter } from 'actions/filters';
+import { getSearchResults } from 'actions/search';
+import { getVesselTrack, toggleVisibility, setCurrentVessel } from 'actions/vesselInfo';
 
 const mapStateToProps = (state) => ({
   search: state.search,

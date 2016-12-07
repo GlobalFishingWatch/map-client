@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { scrollTo } from '../../lib/Utils';
-import formStyle from '../../../styles/components/c-contact-form.scss';
-import buttonStyle from '../../../styles/components/c-button.scss';
-import contactStyle from '../../../styles/components/c-contact.scss';
+import { scrollTo } from 'lib/Utils';
+import formStyle from 'styles/components/c-contact-form.scss';
+import buttonStyle from 'styles/components/c-button.scss';
+import contactStyle from 'styles/components/c-contact.scss';
 
 class ContactUsForm extends Component {
   constructor(props) {

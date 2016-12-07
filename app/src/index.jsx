@@ -9,17 +9,17 @@ import ga from 'ga-react-router';
 import _ from 'lodash';
 import Promise from 'promise-polyfill';
 import Routes from './routes';
-import mapReducer from './reducers/map';
-import faqReducer from './reducers/faq';
-import coverPageReducer from './reducers/coverPage';
-import definitionReducer from './reducers/definitions';
-import userReducer from './reducers/user';
-import filtersReducer from './reducers/filters';
-import '../styles/global.scss';
-import contactReducer from './reducers/contact';
-import searchReducer from './reducers/search';
-import vesselInfoReducer from './reducers/vesselInfo';
-import articlesPublicationsReducer from './reducers/articlesPublications';
+import mapReducer from 'reducers/map';
+import faqReducer from 'reducers/faq';
+import coverPageReducer from 'reducers/coverPage';
+import definitionReducer from 'reducers/definitions';
+import userReducer from 'reducers/user';
+import filtersReducer from 'reducers/filters';
+import 'styles/global.scss';
+import contactReducer from 'reducers/contact';
+import searchReducer from 'reducers/search';
+import vesselInfoReducer from 'reducers/vesselInfo';
+import articlesPublicationsReducer from 'reducers/articlesPublications';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;

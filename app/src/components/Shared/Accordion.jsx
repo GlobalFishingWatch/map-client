@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import ToolTipJSON from './ToolTipJSON';
-import Rhombus from './Rhombus';
-import Loader from './Loader';
+import ToolTipJSON from 'components/Shared/ToolTipJSON';
+import Rhombus from 'components/Shared/Rhombus';
+import Loader from 'components/Shared/Loader';
 import $ from 'jquery';
 import classnames from 'classnames';
-import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
+import AccordionStyles from 'styles/components/shared/c-content-accordion.scss';
 
 class Accordion extends Component {
 
