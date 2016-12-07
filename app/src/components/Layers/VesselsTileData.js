@@ -134,6 +134,8 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     let max = 0;
     let min = Infinity;
 
+
+
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
@@ -159,6 +161,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
         tilePlaybackData[timeIndex] = {
           x: [x],
           y: [y],
+          weight: [weight],
           value: [value],
           category: [vectorArray.category[index]],
           series: [vectorArray.series[index]],
@@ -169,6 +172,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const timestamp = tilePlaybackData[timeIndex];
       timestamp.x.push(x);
       timestamp.y.push(y);
+      timestamp.weight.push(weight);
       timestamp.value.push(value);
       timestamp.category.push(vectorArray.category[index]);
       timestamp.series.push(vectorArray.series[index]);

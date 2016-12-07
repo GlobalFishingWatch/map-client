@@ -86,6 +86,8 @@ class Map extends Component {
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
     // just get the 1st one for now
     this.props.setCurrentVessel(vessels[0], event.latLng);
+
+    this.vesselsLayer.getHistogram();
   }
 
   componentDidMount() {
