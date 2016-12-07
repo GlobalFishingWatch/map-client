@@ -107,15 +107,13 @@ class Map extends Component {
   componentWillReceiveProps(nextProps) {
     // console.log('componentWillReceiveProps', nextProps)
     // console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
-    if (!nextProps.token) {
+    if (!nextProps.token || !nextProps.map || !this.map) {
       return;
     }
 
-    if (!nextProps.map) {
-      return;
+    if (nextProps.map.active_basemap !== this.props.map.active_basemap) {
+      this.updateBasemap(nextProps);
     }
-
-    this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
 
@@ -352,33 +350,9 @@ class Map extends Component {
         }).bind(this, layerSettings));
     }));
 
-
     return promise;
   }
 
-  /**
-   * Creates a Carto-based layer
-   *
-   * @returns {Promise}
-   * @param layerSettings
-   * @param index
-   */
-  setBasemap(basemap, index) {
-    const promise = new Promise(((resolve) => {
-      if (basemap.url) {
-        cartodb.createLayer(this.map, basemap.url)
-          .addTo(this.map, index)
-          .done(((layer, cartoLayer) => {
-            this.state.currentBasemap = cartoLayer;
-            resolve();
-          }).bind(this, basemap));
-      } else {
-        this.state.currentBasemap.hide();
-      }
-    }));
-
-    return promise;
-  }
 
   /**
    * Toggles a layer's visibility
