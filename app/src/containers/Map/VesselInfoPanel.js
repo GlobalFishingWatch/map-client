@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import VesselInfoPanel from '../../components/Map/VesselInfoPanel';
-import { toggleVisibility } from '../../actions/vesselInfo';
-import { zoomIntoVesselCenter } from '../../actions/map';
-import { SET_VESSEL_TRACK } from '../../actions';
+import VesselInfoPanel from 'components/Map/VesselInfoPanel';
+import { toggleVisibility } from 'actions/vesselInfo';
+import { zoomIntoVesselCenter } from 'actions/map';
+import { SET_VESSEL_TRACK } from 'actions';
 
 
 const mapStateToProps = (state) => ({

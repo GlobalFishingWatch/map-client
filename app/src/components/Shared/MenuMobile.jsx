@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import menuMobile from '../../../styles/components/c-mobile-menu.scss';
+import menuMobile from 'styles/components/c-mobile-menu.scss';
 import { Link } from 'react-router';
 
 class MenuMobile extends Component {

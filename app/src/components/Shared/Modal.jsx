@@ -1,7 +1,7 @@
 import React from 'react';
-import styles from '../../../styles/components/shared/c-modal.scss';
+import styles from 'styles/components/shared/c-modal.scss';
 // eslint-disable-next-line import/no-unresolved
-import Icon from 'babel!svg-react!../../../assets/icons/close.svg?name=Icon';
+import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
 

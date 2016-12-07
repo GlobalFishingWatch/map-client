@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DEFAULT_VESSEL_COLOR } from '../../constants';
+import { DEFAULT_VESSEL_COLOR } from 'constants';
 
 class FiltersPanel extends Component {
 

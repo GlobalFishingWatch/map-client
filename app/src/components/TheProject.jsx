@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import CoverPrimary from './Shared/CoverPrimary';
-import ToolTip from '../components/Shared/ToolTip';
+import ToolTip from 'components/Shared/ToolTip';
 import Footer from './Shared/Footer';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import baseStyle from '../../styles/_base.scss';
-import projectBackgroundImage from '../../assets/images/project.jpg';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import baseStyle from 'styles/_base.scss';
+import projectBackgroundImage from 'assets/images/project.jpg';
 
 class TheProject extends Component {
 

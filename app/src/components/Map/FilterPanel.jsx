@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import selectorStyles from '../../../styles/components/shared/c-selector.scss';
-import { FLAGS } from '../../constants';
+import selectorStyles from 'styles/components/shared/c-selector.scss';
+import { FLAGS } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 
 class FilterPanel extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import styles from '../../../styles/components/map/c-no-login.scss';
+import styles from 'styles/components/map/c-no-login.scss';
 
 class NoLogin extends Component {
 

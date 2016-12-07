@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import loaderStyle from '../../../styles/components/c-loader.scss';
+import loaderStyle from 'styles/components/c-loader.scss';
 
 class Loader extends Component {
 

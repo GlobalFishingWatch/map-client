@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import InfoMapContentStyle from '../../../styles/components/c-info-map-content.scss';
-import baseStyle from '../../../styles/_base.scss';
-import ButtonStyle from '../../../styles/components/c-button-arrow.scss';
-import Rhombus from '../Shared/Rhombus';
+import InfoMapContentStyle from 'styles/components/c-info-map-content.scss';
+import baseStyle from 'styles/_base.scss';
+import ButtonStyle from 'styles/components/c-button-arrow.scss';
+import Rhombus from 'components/Shared/Rhombus';
 
 class InfoMap extends Component {
 

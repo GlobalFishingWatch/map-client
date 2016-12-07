@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import ContactUs from '../components/ContactUs';
-import { submitForm } from '../actions/contact';
+import ContactUs from 'components/ContactUs';
+import { submitForm } from 'actions/contact';
 
 const mapStateToProps = (state) => ({
   contactStatus: state.contactStatus,

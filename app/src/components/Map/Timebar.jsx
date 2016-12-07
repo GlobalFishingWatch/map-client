@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME } from '../../constants';
-import timebarCss from '../../../styles/components/map/c-timebar.scss';
-import timelineCss from '../../../styles/components/map/c-timeline.scss';
-import extentChanged from '../../util/extentChanged';
+import { TIMELINE_MAX_TIME } from 'constants';
+import timebarCss from 'styles/components/map/c-timebar.scss';
+import timelineCss from 'styles/components/map/c-timeline.scss';
+import extentChanged from 'util/extentChanged';
 import DatePicker from './DatePicker';
 import TogglePauseButton from './TogglePauseButton';
 import DurationPicker from './DurationPicker';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import searchPanelStyles from '../../../styles/components/map/c-search-panel.scss';
+import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
 
 class SearchResult extends Component {
 

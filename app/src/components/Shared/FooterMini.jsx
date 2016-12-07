@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import styles from '../../../styles/components/shared/c-footer-mini.scss';
-import ContainerFooterStyle from '../../../styles/components/shared/c-container-footer.scss';
-import logooceana from '../../../assets/logos/oceana_logo_white.png';
-import logosky from '../../../assets/logos/skytruth_white.png';
-import logogoogle from '../../../assets/logos/google_logo.png';
+import styles from 'styles/components/shared/c-footer-mini.scss';
+import ContainerFooterStyle from 'styles/components/shared/c-container-footer.scss';
+import logooceana from 'assets/logos/oceana_logo_white.png';
+import logosky from 'assets/logos/skytruth_white.png';
+import logogoogle from 'assets/logos/google_logo.png';
 import Footer from './Footer';
-import FormSupport from '../../containers/Map/SupportForm';
-import Modal from '../Shared/Modal';
-// import SupportModal from '../../components/Map/SupportModal';
+import FormSupport from 'containers/Map/SupportForm';
+import Modal from 'components/Shared/Modal';
+// import SupportModal from 'components/Map/SupportModal';
 
 class FooterMini extends Component {
 

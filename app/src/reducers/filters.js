@@ -5,10 +5,10 @@ import {
   SET_FLAG_FILTER,
   SET_PLAYING_STATUS,
   SET_TIMELINE_OVER_DATES
-} from '../actions';
+} from 'actions';
 import {
   TIMELINE_OVERALL_START_DATE
-} from '../constants';
+} from 'constants';
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, moment().subtract(3, 'days').toDate()],

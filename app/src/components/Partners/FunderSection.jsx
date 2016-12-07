@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import BaseStyle from '../../../styles/_base.scss';
-import FunderSectionStyle from '../../../styles/components/c-funder-section.scss';
-import ldfLogo from '../../../assets/logos/ldf_logo_color.png';
-import adessiumLogo from '../../../assets/logos/adessium_logo.png';
-import marislaLogo from '../../../assets/logos/marisla_logo.png';
-import waterlooLogo from '../../../assets/logos/waterloo_logo.png';
-import wyssLogo from '../../../assets/logos/wyss_logo.png';
-import bloombergLogo from '../../../assets/logos/bloomberg_logo.png';
+import BaseStyle from 'styles/_base.scss';
+import FunderSectionStyle from 'styles/components/c-funder-section.scss';
+import ldfLogo from 'assets/logos/ldf_logo_color.png';
+import adessiumLogo from 'assets/logos/adessium_logo.png';
+import marislaLogo from 'assets/logos/marisla_logo.png';
+import waterlooLogo from 'assets/logos/waterloo_logo.png';
+import wyssLogo from 'assets/logos/wyss_logo.png';
+import bloombergLogo from 'assets/logos/bloomberg_logo.png';
 
 class FunderSection extends Component {
 

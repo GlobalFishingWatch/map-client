@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import FilterPanel from '../../containers/Map/FilterPanel';
-import BasemapPanel from '../../containers/Map/BasemapPanel';
-import LayerPanel from '../../containers/Map/LayerPanel';
-import SearchPanel from '../../containers/Map/SearchPanel';
-import VesselInfoPanel from '../../containers/Map/VesselInfoPanel';
-import controlPanelStyle from '../../../styles/components/c-control_panel.scss';
+import FilterPanel from 'containers/Map/FilterPanel';
+import BasemapPanel from 'containers/Map/BasemapPanel';
+import LayerPanel from 'containers/Map/LayerPanel';
+import SearchPanel from 'containers/Map/SearchPanel';
+import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
+import controlPanelStyle from 'styles/components/c-control_panel.scss';
 
 import { Accordion, AccordionItem } from 'react-sanfona';
 import isMobile from 'ismobilejs';

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Footer from './Shared/Footer';
 import Steps from './Home/Steps';
-import CoverPage from '../containers/CoverPage';
+import CoverPage from 'containers/CoverPage';
 import InfoMap from './Home/InfoMap';
-import HomepageStyles from '../../styles/layout/l-homepage.scss';
+import HomepageStyles from 'styles/layout/l-homepage.scss';
 
 class Home extends Component {
   render() {

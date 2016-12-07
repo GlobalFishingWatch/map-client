@@ -1,4 +1,4 @@
-import { FORM_RESPONSE } from '../actions';
+import { FORM_RESPONSE } from 'actions';
 
 export function submitForm(data, endpoint) {
   return (dispatch, getState) => {

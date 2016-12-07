@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import LayerPanel from '../../components/Map/LayerPanel';
-import { toggleLayerVisibility, setLayerOpacity, setLayerInfoModal } from '../../actions/map';
+import LayerPanel from 'components/Map/LayerPanel';
+import { toggleLayerVisibility, setLayerOpacity, setLayerInfoModal } from 'actions/map';
 
 const mapStateToProps = (state) => ({
   layers: state.map.layers

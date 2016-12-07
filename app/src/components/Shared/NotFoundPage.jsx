@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Header from '../../containers/Header';
+import Header from 'containers/Header';
 import StatusPage from './StatusPage';
 
 class NotFoundPage extends Component {

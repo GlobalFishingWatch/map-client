@@ -5,7 +5,7 @@ import {
   TRACK_OVER_COLOR,
   TRACK_MATCH_COLOR,
   TRACK_OUT_OF_INNER_EXTENT_COLOR
-} from '../../constants';
+} from 'constants';
 
 const createTrackLayer = function (google) {
   function TrackLayer(map, width, height) {

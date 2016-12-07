@@ -2,7 +2,7 @@ const initialState = {
   entries: [],
   count: 0
 };
-import { GET_SEARCH_RESULTS } from '../actions';
+import { GET_SEARCH_RESULTS } from 'actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

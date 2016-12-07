@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
-import SliderCase from '../../../styles/components/c-slider-case.scss';
-import LinkBox from '../../../styles/components/c-link-box.scss';
-import boxtriangle from '../../../assets/icons/box_triangle.svg';
+import SliderCase from 'styles/components/c-slider-case.scss';
+import LinkBox from 'styles/components/c-link-box.scss';
+import boxtriangle from 'assets/icons/box_triangle.svg';
 
 class CaseStudySlider extends Component {
   render() {

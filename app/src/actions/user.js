@@ -1,4 +1,4 @@
-import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
+import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from 'actions';
 import 'whatwg-fetch';
 import { browserHistory } from 'react-router';
 

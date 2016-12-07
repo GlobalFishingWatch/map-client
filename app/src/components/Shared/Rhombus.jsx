@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import iconBlueBox from '../../../assets/icons/arrow_box.svg';
-import iconWhiteBox from '../../../assets/icons/arrow_box_white.svg';
+import iconBlueBox from 'assets/icons/arrow_box.svg';
+import iconWhiteBox from 'assets/icons/arrow_box_white.svg';
 
 // This component is used to replace the rhombus element around the website.
 // Feel free to customize it and improve it if need.

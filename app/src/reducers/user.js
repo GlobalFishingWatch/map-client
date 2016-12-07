@@ -1,5 +1,5 @@
 const initialState = {};
-import { GET_USER, SET_TOKEN, LOGOUT } from '../actions';
+import { GET_USER, SET_TOKEN, LOGOUT } from 'actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

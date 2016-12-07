@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import StatusPageStyles from '../../../styles/components/shared/c-status-page.scss';
+import StatusPageStyles from 'styles/components/shared/c-status-page.scss';
 import ImageAttribution from './ImageAttribution';
 
 class StatusPage extends Component {

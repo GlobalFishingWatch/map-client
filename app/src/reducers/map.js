@@ -19,9 +19,9 @@ import {
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER
-} from '../actions';
+} from 'actions';
 import _ from 'lodash';
-import { DEFAULT_VESSEL_COLOR } from '../constants';
+import { DEFAULT_VESSEL_COLOR } from 'constants';
 
 const initialState = {
   active_basemap: 'Satellite',

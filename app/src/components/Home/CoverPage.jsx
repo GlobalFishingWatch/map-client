@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import _ from 'lodash';
 import classnames from 'classnames';
-import CoverPageStyle from '../../../styles/components/c-cover-page.scss';
-import baseStyle from '../../../styles/_base.scss';
+import CoverPageStyle from 'styles/components/c-cover-page.scss';
+import baseStyle from 'styles/_base.scss';
 import Slider from 'react-slick';
-import Header from '../../containers/Header';
+import Header from 'containers/Header';
 import { Link } from 'react-router';
-import Rhombus from '../Shared/Rhombus';
+import Rhombus from 'components/Shared/Rhombus';
 import CoverPagePreloader from './CoverPagePreloader';
-import { scrollTo } from '../../lib/Utils';
-import BoxTriangleStyle from '../../../styles/components/c-box-triangle.scss';
-import LogoLDF from '../../../assets/logos/ldf_logo_white.svg';
-import sliderBackground1 from '../../../assets/images/background_1.jpg';
-import ImageAttribution from '../Shared/ImageAttribution';
+import { scrollTo } from 'lib/Utils';
+import BoxTriangleStyle from 'styles/components/c-box-triangle.scss';
+import LogoLDF from 'assets/logos/ldf_logo_white.svg';
+import sliderBackground1 from 'assets/images/background_1.jpg';
+import ImageAttribution from 'components/Shared/ImageAttribution';
 
 class CoverPage extends Component {
 

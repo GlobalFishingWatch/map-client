@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import logooceana from '../../../assets/logos/oceana_logo_white.png';
-import logosky from '../../../assets/logos/skytruth_white.png';
-import logogoogle from '../../../assets/logos/google_logo.png';
-import logoldf from '../../../assets/logos/ldf_logo_white.svg';
-import logoGFW from '../../../assets/logos/gfw_logo.png';
-import iconFacebook from '../../../assets/icons/facebook.svg';
-import iconTwitter from '../../../assets/icons/twitter.svg';
-import SubscribeSVG from '../../../assets/icons/subscribe.svg';
+import logooceana from 'assets/logos/oceana_logo_white.png';
+import logosky from 'assets/logos/skytruth_white.png';
+import logogoogle from 'assets/logos/google_logo.png';
+import logoldf from 'assets/logos/ldf_logo_white.svg';
+import logoGFW from 'assets/logos/gfw_logo.png';
+import iconFacebook from 'assets/icons/facebook.svg';
+import iconTwitter from 'assets/icons/twitter.svg';
+import SubscribeSVG from 'assets/icons/subscribe.svg';
 
 
-import AppStyles from '../../../styles/_base.scss';
-import footerStyle from '../../../styles/components/c-footer.scss';
+import AppStyles from 'styles/_base.scss';
+import footerStyle from 'styles/components/c-footer.scss';
 
 
 export default function () {

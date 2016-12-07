@@ -63,7 +63,9 @@ const webpackConfig = {
       assets: 'assets',
       actions: 'src/actions',
       components: 'src/components',
+      constants: 'src/constants.js',
       containers: 'src/containers',
+      lib: 'src/lib',
       reducers: 'src/reducers',
       styles: 'styles',
       util: 'src/util'

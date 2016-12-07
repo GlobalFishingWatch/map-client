@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Map from '../components/Map';
+import Map from 'components/Map';
 import {
   getWorkspace,
   toggleLayerVisibility,
@@ -10,11 +10,11 @@ import {
   deleteWorkspace,
   setShareModalError,
   setLayerInfoModal
-} from '../actions/map';
-import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from '../actions/vesselInfo';
+} from 'actions/map';
+import { getVesselTrack, setCurrentVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 import {
   SET_VESSEL_DETAILS, SET_VESSEL_CLUSTER_CENTER, SET_VESSEL_TRACK, SET_VESSEL_INFO_VISIBILITY
-} from '../actions';
+} from 'actions';
 
 const mapStateToProps = (state) => ({
   map: state.map,

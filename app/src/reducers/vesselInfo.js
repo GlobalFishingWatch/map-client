@@ -9,7 +9,7 @@ import {
   SET_VESSEL_INFO_VISIBILITY,
   SET_TRACK_BOUNDS,
   SHOW_VESSEL_CLUSTER_INFO
-} from '../actions';
+} from 'actions';
 
 export default function (state = initialState, action) {
   switch (action.type) {

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import CoverPrimary from './Shared/CoverPrimary';
 import Footer from './Shared/Footer';
 import { Link } from 'react-router';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import AppStyles from '../../styles/_base.scss';
-import TextPages from '../../styles/components/c-text-pages.scss';
-import termsBackgroundImage from '../../assets/images/terms.jpg';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import AppStyles from 'styles/_base.scss';
+import TextPages from 'styles/components/c-text-pages.scss';
+import termsBackgroundImage from 'assets/images/terms.jpg';
 
 class TermsOfUse extends Component {
 

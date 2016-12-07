@@ -4,9 +4,9 @@ import Footer from './Shared/Footer';
 import Loader from './Shared/Loader';
 import Accordion from './Shared/Accordion';
 import CoverPrimary from './Shared/CoverPrimary';
-import AppStyles from '../../styles/_base.scss';
-import StaticPageStyles from '../../styles/layout/l-static-page.scss';
-import faqBackgroundImage from '../../assets/images/faq.jpg';
+import AppStyles from 'styles/_base.scss';
+import StaticPageStyles from 'styles/layout/l-static-page.scss';
+import faqBackgroundImage from 'assets/images/faq.jpg';
 
 class FAQ extends Component {
 

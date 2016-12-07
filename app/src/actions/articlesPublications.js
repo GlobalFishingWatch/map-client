@@ -1,4 +1,4 @@
-import { GET_ARTICLES_PUBLICATIONS_ENTRIES } from '../actions';
+import { GET_ARTICLES_PUBLICATIONS_ENTRIES } from 'actions';
 import 'whatwg-fetch';
 
 export function getArticlesPublicationsEntries() {

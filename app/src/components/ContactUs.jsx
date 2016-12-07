@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Header from '../containers/Header';
+import Header from 'containers/Header';
 import Footer from './Shared/Footer';
 import ContactUsForm from './ContactUs/ContactUsForm';
-import contactStyle from '../../styles/components/c-contact.scss';
-import baseStyle from '../../styles/_base.scss';
+import contactStyle from 'styles/components/c-contact.scss';
+import baseStyle from 'styles/_base.scss';
 import ImageAttribution from './Shared/ImageAttribution';
 
 class ContactUs extends Component {

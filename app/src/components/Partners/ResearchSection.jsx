@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Slider from 'react-slick';
-import BaseStyle from '../../../styles/_base.scss';
-import ResearchSectionStyle from '../../../styles/components/c-research-section.scss';
-import csiroLogo from '../../../assets/research-partners/csiro-logo.png';
-import faoLogo from '../../../assets/research-partners/fao_logo.png';
-import ancorsLogo from '../../../assets/research-partners/ancors-logo.png';
-import dalhousieLogo from '../../../assets/research-partners/dalhousie-logo.jpg';
-import marineLogo from '../../../assets/research-partners/marine-logo.png';
-import mccauleyLogo from '../../../assets/research-partners/mccauley-logo.png';
-import stanfordLogo from '../../../assets/research-partners/stanford-logo.png';
-import sustainableLogo from '../../../assets/research-partners/sustainable-logo.png';
-import pristineLogo from '../../../assets/research-partners/pristine_logo.png';
-import ubcLogo from '../../../assets/research-partners/ubc_logo.jpg';
+import BaseStyle from 'styles/_base.scss';
+import ResearchSectionStyle from 'styles/components/c-research-section.scss';
+import csiroLogo from 'assets/research-partners/csiro-logo.png';
+import faoLogo from 'assets/research-partners/fao_logo.png';
+import ancorsLogo from 'assets/research-partners/ancors-logo.png';
+import dalhousieLogo from 'assets/research-partners/dalhousie-logo.jpg';
+import marineLogo from 'assets/research-partners/marine-logo.png';
+import mccauleyLogo from 'assets/research-partners/mccauley-logo.png';
+import stanfordLogo from 'assets/research-partners/stanford-logo.png';
+import sustainableLogo from 'assets/research-partners/sustainable-logo.png';
+import pristineLogo from 'assets/research-partners/pristine_logo.png';
+import ubcLogo from 'assets/research-partners/ubc_logo.jpg';
 
 class ResearchSection extends Component {
 

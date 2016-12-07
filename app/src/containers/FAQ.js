@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import FAQ from '../components/FAQ';
-import { getFAQEntries } from '../actions/faq';
+import FAQ from 'components/FAQ';
+import { getFAQEntries } from 'actions/faq';
 
 const mapStateToProps = (state) => ({
   faqEntries: state.faqEntries

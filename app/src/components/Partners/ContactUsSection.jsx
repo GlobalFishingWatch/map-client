@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import BaseStyle from '../../../styles/_base.scss';
-import style from '../../../styles/components/c-partners-contact-us.scss';
+import BaseStyle from 'styles/_base.scss';
+import style from 'styles/components/c-partners-contact-us.scss';
 
 class OtherSection extends Component {
 

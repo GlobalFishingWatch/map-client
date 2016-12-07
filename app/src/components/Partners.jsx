@@ -6,7 +6,7 @@ import FunderSection from './Partners/FunderSection';
 import ResearchSection from './Partners/ResearchSection';
 import OtherSection from './Partners/OtherSection';
 import ContactUsSection from './Partners/ContactUsSection';
-import partnersBackgroundImage from '../../assets/images/partners.jpg';
+import partnersBackgroundImage from 'assets/images/partners.jpg';
 
 class Partners extends Component {
 

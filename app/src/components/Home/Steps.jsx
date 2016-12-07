@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ToolTip from '../../components/Shared/ToolTip';
-import StepsStyle from '../../../styles/components/homepage/c-steps.scss';
-import baseStyle from '../../../styles/_base.scss';
-import iconSatellite from '../../../assets/images/steps/icon-step-1.svg';
-import iconData from '../../../assets/images/steps/icon-step-2.svg';
-import iconYou from '../../../assets/images/steps/icon-step-3.svg';
+import ToolTip from 'components/Shared/ToolTip';
+import StepsStyle from 'styles/components/homepage/c-steps.scss';
+import baseStyle from 'styles/_base.scss';
+import iconSatellite from 'assets/images/steps/icon-step-1.svg';
+import iconData from 'assets/images/steps/icon-step-2.svg';
+import iconYou from 'assets/images/steps/icon-step-3.svg';
 
 class Steps extends Component {
   render() {

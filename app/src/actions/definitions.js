@@ -1,4 +1,4 @@
-import { GET_DEFINITION_ENTRIES } from '../actions';
+import { GET_DEFINITION_ENTRIES } from 'actions';
 import 'whatwg-fetch';
 
 export function getDefinitionEntries() {

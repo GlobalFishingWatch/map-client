@@ -4,7 +4,7 @@ import Rhombus from './Rhombus';
 import Loader from './Loader';
 import $ from 'jquery';
 import classnames from 'classnames';
-import AccordionStyles from '../../../styles/components/shared/c-content-accordion.scss';
+import AccordionStyles from 'styles/components/shared/c-content-accordion.scss';
 
 class Accordion extends Component {
 
