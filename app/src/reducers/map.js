@@ -15,7 +15,6 @@ import {
   SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
-  CHANGE_VESSEL_TRACK_DISPLAY_MODE,
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER
@@ -24,7 +23,7 @@ import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from 'constants';
 
 const initialState = {
-  active_basemap: 'satellite',
+  activeBasemap: null,
   basemaps: [
     {
       title: 'satellite',
@@ -59,8 +58,7 @@ const initialState = {
   },
   workspaceId: null,
   vesselTransparency: 5,
-  vesselColor: DEFAULT_VESSEL_COLOR,
-  vesselTrackDisplayMode: 'current'
+  vesselColor: DEFAULT_VESSEL_COLOR
 };
 
 /**
@@ -89,8 +87,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { vesselTransparency: action.payload });
     case UPDATE_VESSEL_COLOR:
       return Object.assign({}, state, { vesselColor: action.payload });
-    case CHANGE_VESSEL_TRACK_DISPLAY_MODE:
-      return Object.assign({}, state, { vesselTrackDisplayMode: action.payload });
     case SET_LAYER_OPACITY: {
       const layers = _.cloneDeep(state.layers);
       const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
@@ -114,7 +110,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layers });
     }
     case SET_BASEMAP: {
-      return Object.assign({}, state, { active_basemap: action.payload.title });
+      return Object.assign({}, state, { activeBasemap: action.payload });
     }
 
     case SHARE_MODAL_OPEN: {
