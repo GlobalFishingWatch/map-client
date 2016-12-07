@@ -115,7 +115,6 @@ class Map extends Component {
       return;
     }
 
-    this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
 
@@ -227,10 +226,6 @@ class Map extends Component {
       this.props.filters.timelineInnerExtent[1].getTime(),
       this.props.filters.timelinePaused
     );
-  }
-
-  updateBasemap(nextProps) {
-    this.map.setMapTypeId(nextProps.map.active_basemap);
   }
 
   /**
