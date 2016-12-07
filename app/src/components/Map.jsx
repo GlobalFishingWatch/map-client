@@ -111,7 +111,7 @@ class Map extends Component {
       return;
     }
 
-    if (nextProps.map.active_basemap !== this.props.map.active_basemap) {
+    if (nextProps.map.activeBasemap !== this.props.map.activeBasemap) {
       this.updateBasemap(nextProps);
     }
     this.updateLayersState(nextProps);
