@@ -31,6 +31,24 @@ let outerBrushHandleRight;
 let innerBrushLeftCircle;
 let innerBrushRightCircle;
 
+const customTickFormat = (date, index, allDates) => {
+  let format;
+  if (d3.timeDay(date) < date) {
+    format = '%I %p';
+  } else if (d3.timeMonth(date) < date) {
+    format = d3.timeWeek(date) < date ? '%a %d' : '%b %d';
+  } else if (d3.timeYear(date) < date) {
+    if (index === 0) {
+      format = '%b %Y';
+    } else {
+      format = (allDates.length >= 15) ? '%b' : '%B';
+    }
+  } else {
+    format = '%Y';
+  }
+  return d3.timeFormat(format)(date);
+};
+
 class Timebar extends Component {
 
   constructor(props) {
@@ -93,8 +111,8 @@ class Timebar extends Component {
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
-    xAxis = d3.axisTop().scale(x);
-      // .tickFormat(1, d3.timeFormat("%B lala"));
+    xAxis = d3.axisTop().scale(x)
+      .tickFormat(customTickFormat);
 
     // define the way the timeline chart is going to be drawn
     area = d3.area()
@@ -265,6 +283,9 @@ class Timebar extends Component {
 
     // calculate new inner extent, using old inner extent on new x scale
     this.redrawInnerBrush(prevInnerTimeExtent);
+
+    this.svg.selectAll('g.tick text')
+      .classed(timelineCss['c-timeline-full-year'], function isFullYear() { return this.innerHTML.match(/^\d{4}$/); });
 
     return newOuterTimeExtent;
   }
