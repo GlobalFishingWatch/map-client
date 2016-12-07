@@ -305,10 +305,10 @@ class Timebar extends Component {
 
       if (oldExtent[0].getTime() === newExtent[0].getTime()) {
         // right brush was moved
-        newExtent[1] = oldExtent[1];
+        newExtent[1] = new Date(oldExtent[0].getTime() + TIMELINE_MAX_TIME);
       } else {
         // left brush was moved
-        newExtent[0] = oldExtent[0];
+        newExtent[0] = new Date(oldExtent[1].getTime() - TIMELINE_MAX_TIME);
       }
       newExtentPx = this.getPxExtent(newExtent);
       this.redrawInnerBrush(newExtent);
