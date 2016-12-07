@@ -6,9 +6,9 @@ import { TIMELINE_MAX_TIME } from 'constants';
 import timebarCss from 'styles/components/map/c-timebar.scss';
 import timelineCss from 'styles/components/map/c-timeline.scss';
 import extentChanged from 'util/extentChanged';
-import DatePicker from './DatePicker';
-import TogglePauseButton from './TogglePauseButton';
-import DurationPicker from './DurationPicker';
+import DatePicker from 'components/Map/DatePicker';
+import TogglePauseButton from 'components/Map/TogglePauseButton';
+import DurationPicker from 'components/Map/DurationPicker';
 
 let width;
 let height;

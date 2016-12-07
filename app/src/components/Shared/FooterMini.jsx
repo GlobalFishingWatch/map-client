@@ -6,7 +6,7 @@ import ContainerFooterStyle from 'styles/components/shared/c-container-footer.sc
 import logooceana from 'assets/logos/oceana_logo_white.png';
 import logosky from 'assets/logos/skytruth_white.png';
 import logogoogle from 'assets/logos/google_logo.png';
-import Footer from './Footer';
+import Footer from 'components/Shared/Footer';
 import FormSupport from 'containers/Map/SupportForm';
 import Modal from 'components/Shared/Modal';
 // import SupportModal from 'components/Map/SupportModal';

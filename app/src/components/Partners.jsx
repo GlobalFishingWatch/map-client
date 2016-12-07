@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import CoverPrimary from './Shared/CoverPrimary';
-import Footer from './Shared/Footer';
-import PartnerSection from './Partners/PartnerSection';
-import FunderSection from './Partners/FunderSection';
-import ResearchSection from './Partners/ResearchSection';
-import OtherSection from './Partners/OtherSection';
-import ContactUsSection from './Partners/ContactUsSection';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import Footer from 'components/Shared/Footer';
+import PartnerSection from 'components/Partners/PartnerSection';
+import FunderSection from 'components/Partners/FunderSection';
+import ResearchSection from 'components/Partners/ResearchSection';
+import OtherSection from 'components/Partners/OtherSection';
+import ContactUsSection from 'components/Partners/ContactUsSection';
 import partnersBackgroundImage from 'assets/images/partners.jpg';
 
 class Partners extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayerItem from './LayerItem';
+import LayerItem from 'components/Map/LayerItem';
 
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 

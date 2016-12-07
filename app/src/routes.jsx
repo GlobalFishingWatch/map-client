@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { useScroll } from 'react-router-scroll';
-import AppContainer from './containers/App';
-import HomeContainer from './components/Home';
-import AuthMapContainer from './containers/AuthMap';
-import ArticlesPublications from './containers/ArticlesPublications';
-import FAQContainer from './containers/FAQ';
-import Tutorials from './components/Tutorials';
-import Orbcomm from './components/Orbcomm';
-import Definitions from './containers/Definitions';
-import TheProject from './components/TheProject';
-import ResearchProgram from './components/ResearchProgram';
-import Partners from './components/Partners';
-import TermsOfUse from './components/TermsOfUse';
-import PrivacyPolicy from './components/PrivacyPolicy';
+import AppContainer from 'containers/App';
+import HomeContainer from 'components/Home';
+import AuthMapContainer from 'containers/AuthMap';
+import ArticlesPublications from 'containers/ArticlesPublications';
+import FAQContainer from 'containers/FAQ';
+import Tutorials from 'components/Tutorials';
+import Orbcomm from 'components/Orbcomm';
+import Definitions from 'containers/Definitions';
+import TheProject from 'components/TheProject';
+import ResearchProgram from 'components/ResearchProgram';
+import Partners from 'components/Partners';
+import TermsOfUse from 'components/TermsOfUse';
+import PrivacyPolicy from 'components/PrivacyPolicy';
 import { Router, Route, IndexRoute, applyRouterMiddleware } from 'react-router';
-import NotFoundPage from './components/Shared/NotFoundPage';
-import ContactUsContainer from './containers/ContactUs';
+import NotFoundPage from 'components/Shared/NotFoundPage';
+import ContactUsContainer from 'containers/ContactUs';
 
 /**
  * Return whether the page should be scrolled to top when

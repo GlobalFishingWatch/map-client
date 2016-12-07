@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from 'containers/Header';
-import StatusPage from './StatusPage';
+import StatusPage from 'components/Shared/StatusPage';
 
 class NotFoundPage extends Component {
 

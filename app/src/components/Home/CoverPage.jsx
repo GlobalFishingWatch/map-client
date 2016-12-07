@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 import Header from 'containers/Header';
 import { Link } from 'react-router';
 import Rhombus from 'components/Shared/Rhombus';
-import CoverPagePreloader from './CoverPagePreloader';
+import CoverPagePreloader from 'components/Home/CoverPagePreloader';
 import { scrollTo } from 'lib/Utils';
 import BoxTriangleStyle from 'styles/components/c-box-triangle.scss';
 import LogoLDF from 'assets/logos/ldf_logo_white.svg';

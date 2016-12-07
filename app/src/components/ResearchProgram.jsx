@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import CoverPrimary from './Shared/CoverPrimary';
-import Footer from './Shared/Footer';
+import CoverPrimary from 'components/Shared/CoverPrimary';
+import Footer from 'components/Shared/Footer';
 import { Link } from 'react-router';
-import Rhombus from './Shared/Rhombus';
+import Rhombus from 'components/Shared/Rhombus';
 import baseStyle from 'styles/_base.scss';
 import StaticPageStyles from 'styles/layout/l-static-page.scss';
 import researchProgramBackgroundImage from 'assets/images/research-program.jpg';

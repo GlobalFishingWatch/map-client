@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ToolTip from './ToolTip';
+import ToolTip from 'components/Shared/ToolTip';
 import { render } from 'react-dom';
 
 class ToolTipJSON extends Component {

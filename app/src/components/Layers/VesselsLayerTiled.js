@@ -1,5 +1,5 @@
 /* eslint no-param-reassign: 0 */
-import VesselsTileData from './VesselsTileData';
+import VesselsTileData from 'components/Layers/VesselsTileData';
 
 class VesselsLayerTiled {
   constructor(map, tilesetUrl, token, filters, overallStartDateOffset, debug = false) {
