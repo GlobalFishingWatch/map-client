@@ -58,7 +58,8 @@ class Timebar extends Component {
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
-      innerExtentPx: [0, 100]  // used only by durationPicker
+      innerExtentPx: [0, 100],  // used only by durationPicker
+      durationPickerExtent: props.filters.timelineInnerExtent
     };
   }
 
@@ -73,6 +74,9 @@ class Timebar extends Component {
 
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
+    this.setState({
+      durationPickerExtent: this.props.filters.timelineInnerExtent
+    });
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);
     }
@@ -314,6 +318,9 @@ class Timebar extends Component {
       this.redrawInnerBrush(newExtent);
     }
 
+    this.setState({
+      durationPickerExtent: newExtent
+    });
     this.redrawInnerBrushCircles(newExtentPx);
     this.redrawInnerBrushFooter(newExtentPx);
   }
@@ -326,6 +333,7 @@ class Timebar extends Component {
     this.redrawInnerBrushCircles(currentInnerPxExtent);
     this.redrawInnerBrushFooter(currentInnerPxExtent);
     this.enableInnerBrush();
+    // this.updateDurationPicker();
   }
 
   redrawInnerBrushCircles(newInnerPxExtent) {
@@ -508,7 +516,7 @@ class Timebar extends Component {
           id="timeline_svg_container"
         >
           <DurationPicker
-            extent={this.props.filters.timelineInnerExtent}
+            extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
           />
         </div>
