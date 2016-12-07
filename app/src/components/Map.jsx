@@ -230,7 +230,8 @@ class Map extends Component {
   }
 
   updateBasemap(nextProps) {
-    this.map.setMapTypeId(nextProps.map.active_basemap);
+    if (!nextProps.activeBasemap || nextProps.activeBasemap === this.props.activeBasemap) return;
+    this.map.setMapTypeId(nextProps.activeBasemap);
   }
 
   /**
@@ -620,6 +621,7 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  activeBasemap: React.PropTypes.string,
   basemaps: React.PropTypes.array,
   filters: React.PropTypes.object,
   token: React.PropTypes.string,
@@ -645,8 +647,7 @@ Map.propTypes = {
   closeShareModal: React.PropTypes.func,
   layerModal: React.PropTypes.object,
   closeLayerInfoModal: React.PropTypes.func,
-  trackBounds: React.PropTypes.object,
-  vesselTrackDisplayMode: React.PropTypes.string
+  trackBounds: React.PropTypes.object
 };
 
 export default Map;

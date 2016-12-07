@@ -18,10 +18,7 @@ class BasemapPanel extends Component {
   }
 
   onSelectBasemap(event, basemap) {
-    const selectedBasemap = event.currentTarget.getAttribute('data-basemap');
-
-    if (this.props.active_basemap === selectedBasemap) return;
-    this.props.setBasemap(basemap);
+    this.props.setBasemap(basemap.title);
   }
 
   render() {
@@ -33,8 +30,7 @@ class BasemapPanel extends Component {
       const itemLayer = (
         <li
           className={classnames(LayerListStyles['layer-item'],
-            this.props.active_basemap === basemap.title ? LayerListStyles['-selected'] : null)}
-          data-basemap={basemap.title}
+            this.props.activeBasemap === basemap.title ? LayerListStyles['-selected'] : null)}
           key={i}
         >
           <div
@@ -67,7 +63,7 @@ class BasemapPanel extends Component {
 
 BasemapPanel.propTypes = {
   basemaps: React.PropTypes.array,
-  active_basemap: React.PropTypes.string,
+  activeBasemap: React.PropTypes.string,
   openLayerInfoModal: React.PropTypes.func,
   setBasemap: React.PropTypes.func
 };

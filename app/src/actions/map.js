@@ -15,7 +15,6 @@ import {
   SET_LAYER_INFO_MODAL,
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
-  CHANGE_VESSEL_TRACK_DISPLAY_MODE,
   SET_BASEMAP,
   SET_TILESET_URL
 } from 'actions';
@@ -31,13 +30,6 @@ export function setBasemap(basemap) {
   return {
     type: SET_BASEMAP,
     payload: basemap
-  };
-}
-
-export function changeVesselTrackDisplayMode(vesselTrackDisplayMode) {
-  return {
-    type: CHANGE_VESSEL_TRACK_DISPLAY_MODE,
-    payload: vesselTrackDisplayMode
   };
 }
 
@@ -141,6 +133,11 @@ export function getWorkspace(workspaceId) {
         dispatch({
           type: SET_FLAG_FILTER,
           payload: workspace.flag
+        });
+
+        dispatch({
+          type: SET_BASEMAP,
+          payload: workspace.basemap
         });
 
         // We update the layers
@@ -263,6 +260,7 @@ export function saveWorkspace(errorAction) {
             zoom: state.map.zoom,
             layers: state.map.layers
           },
+          basemap: state.map.activeBasemap,
           timeline: {
             // We store the timestamp
             innerExtent: state.filters.timelineInnerExtent.map(e => +e),
