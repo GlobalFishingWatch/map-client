@@ -3,7 +3,7 @@ import BasemapPanel from 'components/Map/BasemapPanel';
 import { setBasemap, setLayerInfoModal } from 'actions/map';
 
 const mapStateToProps = (state) => ({
-  active_basemap: state.map.active_basemap,
+  activeBasemap: state.map.activeBasemap,
   basemaps: state.map.basemaps
 });
 

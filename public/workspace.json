@@ -5,6 +5,7 @@
         0,
         0
       ],
+      "basemap": "satellite",
       "zoom": 3,
       "layers": [
         {
