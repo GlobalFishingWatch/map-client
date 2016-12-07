@@ -448,7 +448,7 @@ class Timebar extends Component {
     if (isAtEndOfTime) {
       const innerExtentDelta = offsetInnerExtent[1].getTime() - offsetInnerExtent[0].getTime();
       offsetInnerExtent = [new Date(endOfTime.getTime() - innerExtentDelta), endOfTime];
-      this.updatePlayingStatus(true);
+      this.props.updatePlayingStatus(true);
     }
 
     this.props.updateInnerTimelineDates(offsetInnerExtent);
