@@ -118,7 +118,9 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     };
   }
 
-  draw() {}
+  draw() {
+    this.repositionCanvas();
+  }
 
   show() {
     this.hidden = false;
