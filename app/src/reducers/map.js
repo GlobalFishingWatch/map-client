@@ -24,10 +24,10 @@ import _ from 'lodash';
 import { DEFAULT_VESSEL_COLOR } from 'constants';
 
 const initialState = {
-  active_basemap: 'Satellite',
+  active_basemap: 'satellite',
   basemaps: [
     {
-      title: 'Satellite',
+      title: 'satellite',
       description: 'The default satellite image view',
       type: 'GoogleBasemap'
     },
