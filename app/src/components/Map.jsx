@@ -105,15 +105,11 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps', nextProps)
-    // console.log(this.props.vesselTrack.selectedSeries, nextProps.vesselTrack.selectedSeries)
     if (!nextProps.token || !nextProps.map || !this.map) {
       return;
     }
 
-    if (nextProps.map.activeBasemap !== this.props.map.activeBasemap) {
-      this.updateBasemap(nextProps);
-    }
+    this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
     this.updateFiltersState(nextProps);
 
