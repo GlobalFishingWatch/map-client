@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME } from 'constants';
+import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
 import timebarCss from 'styles/components/map/c-timebar.scss';
 import timelineCss from 'styles/components/map/c-timeline.scss';
 import extentChanged from 'util/extentChanged';
@@ -435,11 +435,15 @@ class Timebar extends Component {
     }
   }
 
+  /**
+   * @param deltaTick frame length in ms
+   */
   playStep(deltaTick) {
     // compute new basePlayStep (used for playback), because we want it to depend on the zoom levels
-    const playStep = this.getPlayStep(this.props.filters.timelineOuterExtent) * deltaTick;
+    const playStep = this.getPlayStep(this.props.filters.timelineOuterExtent);
+    const realtimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep * deltaTick);
     const previousInnerExtent = this.props.filters.timelineInnerExtent;
-    let offsetInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + playStep));
+    let offsetInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + realtimePlayStep));
     const endOfTime = this.props.filters.timelineOuterExtent[1];
     const isAtEndOfTime = x(offsetInnerExtent[1]) >= x(endOfTime);
 
