@@ -23,6 +23,10 @@ class MapFooter extends Component {
     return nextState !== this.state;
   }
 
+  onCloseFooter() {
+    this.setState({ footerExpanded: false });
+  }
+
   toggleFooter() {
     this.setState({ footerExpanded: !this.state.footerExpanded });
   }
