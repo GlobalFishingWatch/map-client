@@ -12,7 +12,6 @@ import timebarCss from 'styles/components/map/c-timebar.scss';
 import timelineCss from 'styles/components/map/c-timeline.scss';
 
 import extentChanged from 'util/extentChanged';
-import isMobile from 'ismobilejs';
 import moment from 'moment';
 
 let width;
@@ -499,8 +498,8 @@ class Timebar extends Component {
 
   render() {
     const dateFormat = 'DD MMM YYYY';
-    const startDateText = isMobile.phone || isMobile.tablet ? ' start' : 'start date';
-    const endDateText = isMobile.phone || isMobile.tablet ? 'end' : 'end date';
+    const startDateText = window.innerWidth < 1024 ? ' start' : 'start date';
+    const endDateText = window.innerWidth < 1024 ? 'end' : 'end date';
 
     const startDate = moment(this.props.filters.startDate).format(dateFormat);
     const endDate = moment(this.props.filters.endDate).format(dateFormat);
