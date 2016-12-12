@@ -84,8 +84,7 @@ class Map extends Component {
       return;
     }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
-    // just get the 1st one for now
-    this.props.setCurrentVessel(vessels[0], event.latLng);
+    this.props.setCurrentVessel(vessels, event.latLng);
   }
 
   componentDidMount() {

@@ -3,7 +3,9 @@ import {
   SET_VESSEL_TRACK,
   SET_VESSEL_INFO_VISIBILITY,
   SHOW_VESSEL_CLUSTER_INFO,
-  SET_TRACK_BOUNDS
+  SET_TRACK_BOUNDS,
+  SHOW_NO_VESSELS_INFO,
+  SHOW_VESSEL_LOADING_INFO
 } from 'actions';
 import _ from 'lodash';
 import VesselsTileData from 'components/Layers/VesselsTileData';
@@ -12,12 +14,9 @@ import PelagosClient from 'lib/pelagosClient';
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
     dispatch({
-      type: SET_VESSEL_DETAILS,
-      payload: {}
+      type: SHOW_VESSEL_LOADING_INFO
     });
-    if (!seriesGroup) {
-      return;
-    }
+
     const state = getState();
     const token = state.user.token;
     let request;
@@ -52,6 +51,12 @@ export function setCurrentVessel(seriesGroup) {
 export function showVesselClusterInfo() {
   return {
     type: SHOW_VESSEL_CLUSTER_INFO
+  };
+}
+
+export function showNoVesselsInfo() {
+  return {
+    type: SHOW_NO_VESSELS_INFO
   };
 }
 
