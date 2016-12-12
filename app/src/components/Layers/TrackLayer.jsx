@@ -100,14 +100,12 @@ const createTrackLayer = function (google) {
     overStartTimestamp,
     overEndTimestamp
   }) {
-    if (overStartTimestamp && overStartTimestamp &&
+    if (overStartTimestamp && overEndTimestamp &&
         timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
       return TRACK_OVER_COLOR;
-    }
-    if (timestamp > startTimestamp && timestamp < endTimestamp) {
+    } else if (timestamp > startTimestamp && timestamp < endTimestamp) {
       return TRACK_MATCH_COLOR;
-    }
-    if (showOuterTrack === true) {
+    } else if (showOuterTrack === true) {
       return TRACK_OUT_OF_INNER_EXTENT_COLOR;
     }
     return false;
