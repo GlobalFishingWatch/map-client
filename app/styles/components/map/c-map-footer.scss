@@ -22,40 +22,36 @@
     width: 100%;
 
     @media #{$mq-tablet} {
-      max-width: none;
-      width: auto;
+      max-width: 320px;
     }
   }
 
-  > .logo-list > .logo-item {
-    display: inline-flex;
-
-    @media #{$mq-tablet} {
-      &:not(:first-child) {
-        margin: 0 0 0 15px;
-      }
-    }
-  }
-
-  > .logo-list > .logo-item > .logo {
-    height: 100%;
+  > .logo-list > .logo {
+    height: auto;
     width: 100%;
-
-    @media screen and (min-width: 1135px) {
-      margin: 0 15px 0 0;
-    }
 
     &.-oceana {
       max-width: 60px;
+
+      @media #{$mq-mobile-large} {
+        max-width: 80px;
+      }
     }
 
     &.-skytruth {
-      height: 11px;
-      max-width: 75px;
+      max-width: 70px;
+
+      @media #{$mq-mobile-large} {
+        max-width: 120px;
+      }
     }
 
     &.-google {
       max-width: 50px;
+
+      @media #{$mq-mobile-large} {
+        max-width: 70px;
+      }
     }
   }
 

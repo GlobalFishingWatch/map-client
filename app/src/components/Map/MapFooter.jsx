@@ -37,29 +37,23 @@ class MapFooter extends Component {
     return (
       <div className={MapFooterStyles['overflow-container']}>
         <div className={MapFooterStyles['c-map-footer']}>
-          <ul className={MapFooterStyles['logo-list']}>
-            <li className={MapFooterStyles['logo-item']}>
-              <img
-                className={classnames(MapFooterStyles.logo, MapFooterStyles['-oceana'])}
-                src={OceanaLogo}
-                alt="Oceana"
-              />
-            </li>
-            <li className={MapFooterStyles['logo-item']}>
-              <img
-                className={classnames(MapFooterStyles.logo, MapFooterStyles['-skytruth'])}
-                src={SkytruthLogo}
-                alt="Skytruth"
-              />
-            </li>
-            <li className={MapFooterStyles['logo-item']}>
-              <img
-                className={classnames(MapFooterStyles.logo, MapFooterStyles['-google'])}
-                src={GoogleLogo}
-                alt="Google"
-              />
-            </li>
-          </ul>
+          <div className={MapFooterStyles['logo-list']}>
+            <img
+              className={classnames(MapFooterStyles.logo, MapFooterStyles['-oceana'])}
+              src={OceanaLogo}
+              alt="Oceana"
+            />
+            <img
+              className={classnames(MapFooterStyles.logo, MapFooterStyles['-skytruth'])}
+              src={SkytruthLogo}
+              alt="Skytruth"
+            />
+            <img
+              className={classnames(MapFooterStyles.logo, MapFooterStyles['-google'])}
+              src={GoogleLogo}
+              alt="Google"
+            />
+          </div>
           <div className={MapFooterStyles.options}>
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles['-footer'])}
