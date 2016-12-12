@@ -12,7 +12,6 @@ class MenuMobile extends Component {
   }
 
   render() {
-    const isDesktop = window.innerWidth > 1024;
     const cssClass = this.props.visible ?
       `${menuMobile['c-mobile-menu']} ${menuMobile['-show']}` : `${menuMobile['c-mobile-menu']}`;
 
@@ -61,19 +60,6 @@ class MenuMobile extends Component {
       <div className={cssClass}>
         <ul>
           <li><Link to="/map">Map</Link></li>
-          {!isDesktop &&
-            <ul className={menuMobile['submenu-mobile']}>
-              <li>
-                <a
-                  href="#"
-                  target="_blank"
-                  onClick={(e) => this.onClickSupoport(e)}
-                >
-                  Support
-                </a>
-              </li>
-              <li><Link to="/terms-of-use">Terms of use</Link></li>
-            </ul>}
           <li>News</li>
           <ul className={menuMobile['submenu-mobile']}>
             <li><a href={BLOG_URL} target="_blank">Blog</a></li>

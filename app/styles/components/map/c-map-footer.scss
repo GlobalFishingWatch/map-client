@@ -73,13 +73,10 @@
         cursor: pointer;
       }
 
-      &.-terms-of-use,
-      &.-support {
+      // leave it just in case...
+      &.-support,
+      &.-terms-of-use {
         display: none;
-
-        @media #{$mq-tablet} {
-          display: inline-flex;
-        }
       }
     }
   }
