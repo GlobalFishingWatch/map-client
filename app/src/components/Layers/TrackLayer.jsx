@@ -163,8 +163,6 @@ const createTrackLayer = function (google) {
     const showOuterTrack = _drawParams.timelinePaused || data.latitude.length < SHOW_OUTER_TRACK_BELOW_NUM_POINTS;
     _drawParams.showOuterTrack = showOuterTrack;
 
-    console.log(drawParams.startTimestamp, drawParams.overStartTimestamp)
-
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
