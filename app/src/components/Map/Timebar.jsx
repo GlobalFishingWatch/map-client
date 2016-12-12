@@ -476,7 +476,7 @@ class Timebar extends Component {
   }
 
   onMouseOver(offsetX) {
-    const timelineOverExtent = this.getExtent([offsetX - 2, offsetX + 2]);
+    const timelineOverExtent = this.getExtent([offsetX - 5, offsetX + 5]);
     this.props.updateTimelineOverDates(timelineOverExtent);
   }
 
