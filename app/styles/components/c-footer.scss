@@ -148,7 +148,7 @@
     @media #{$mq-tablet} {
       flex-wrap: nowrap;
       justify-content: space-between;
-      padding: 55px 0 60px;
+      padding: 55px 0 calc(60px - 20px);
     }
 
     .nav-list {
@@ -162,18 +162,19 @@
         margin: 0 35px 0 0;
       }
 
-      > .nav-item  {
-
-        &:not(:first-child) {
-          margin: 20px 0 0;
+      > .nav-item {
+        &:not(:last-child) > .nav-link {
+          margin: 0 0 20px;
         }
+      }
 
-        > .nav-link {
-          color: $color-16;
-          font-size: $font-size-x-small;
-          font-weight: $font-weight-normal;
-          text-transform: uppercase;
-        }
+      > .nav-item > .nav-link {
+        color: $color-16;
+        cursor: pointer;
+        display: inline-block;
+        font-size: $font-size-x-small;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
       }
     }
   }

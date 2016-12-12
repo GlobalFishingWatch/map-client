@@ -124,6 +124,10 @@ class Footer extends Component {
                   <li className={FooterStyles['nav-item']}>
                     <Link className={FooterStyles['nav-link']} to="/privacy-policy">Privacy policy</Link>
                   </li>
+                  {this.props.isMap &&
+                    <li className={FooterStyles['nav-item']}>
+                      <span className={FooterStyles['nav-link']} onClick={this.props.onOpenSupportModal}>Support</span>
+                    </li>}
                 </ul>
                 <div className={FooterStyles['social-section']}>
                   <a
@@ -167,7 +171,8 @@ class Footer extends Component {
 Footer.propTypes = {
   isMap: React.PropTypes.bool,
   isExpanded: React.PropTypes.bool,
-  onClose: React.PropTypes.func
+  onClose: React.PropTypes.func,
+  onOpenSupportModal: React.PropTypes.func
 };
 
 Footer.defaultProps = {
