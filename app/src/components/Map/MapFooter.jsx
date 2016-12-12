@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-
 import FormSupport from 'containers/Map/SupportForm';
 import Footer from 'components/Shared/Footer';
 import Modal from 'components/Shared/Modal';
@@ -25,6 +24,10 @@ class MapFooter extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return nextState !== this.state;
+  }
+
+  onCloseFooter() {
+    this.setState({ footerExpanded: false });
   }
 
   showSupportModal() {
@@ -123,7 +126,8 @@ class MapFooter extends Component {
         </div>
         <Footer
           isMap
-          expanded={this.state.footerExpanded}
+          isExpanded={this.state.footerExpanded}
+          onClose={() => this.onCloseFooter()}
         />
       </div>
     );

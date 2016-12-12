@@ -7,6 +7,7 @@ import defaultLogo from 'assets/logos/gfw_logo_hor.svg';
 import menuicon from 'assets/icons/menu_icon.svg';
 import MenuMobile from 'containers/MenuMobile';
 
+
 import baseStyle from 'styles/_base.scss';
 import styles from 'styles/components/shared/c-header.scss';
 import iconStyles from 'styles/icons.scss';
