@@ -103,11 +103,9 @@ const createTrackLayer = function (google) {
     if (overStartTimestamp && overStartTimestamp &&
         timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
       return TRACK_OVER_COLOR;
-    }
-    if (timestamp > startTimestamp && timestamp < endTimestamp) {
+    } else if (timestamp > startTimestamp && timestamp < endTimestamp) {
       return TRACK_MATCH_COLOR;
-    }
-    if (showOuterTrack === true) {
+    } else if (showOuterTrack === true) {
       return TRACK_OUT_OF_INNER_EXTENT_COLOR;
     }
     return false;
@@ -164,6 +162,8 @@ const createTrackLayer = function (google) {
     const _drawParams = drawParams;
     const showOuterTrack = _drawParams.timelinePaused || data.latitude.length < SHOW_OUTER_TRACK_BELOW_NUM_POINTS;
     _drawParams.showOuterTrack = showOuterTrack;
+
+    console.log(drawParams.startTimestamp, drawParams.overStartTimestamp)
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
