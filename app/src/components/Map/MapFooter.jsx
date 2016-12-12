@@ -61,36 +61,30 @@ class MapFooter extends Component {
             >
               {toggleLabel}
             </span>
-            <ul className={MapFooterStyles['attribution-list']}>
-              <li className={MapFooterStyles['attribution-item']}>
-                <a
-                  className={MapFooterStyles.link}
-                  href="https://carto.com/"
-                  target="_blank"
-                >
-                  CartoDB
-                </a>
-              </li>
-              <li className={classnames(MapFooterStyles.link, MapFooterStyles['attribution-item'])}>
-                <span className={MapFooterStyles['attribution-item']}>
-                  Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
-                  <a
-                    className={MapFooterStyles.link}
-                    href="http://marineregions.org/"
-                    target="_blank"
-                  >
-                    marineregions.org
-                  </a>, MPAs:{' '}
-                  <a
-                    className={MapFooterStyles.link}
-                    href="http://mpatlas.org/"
-                    target="_blank"
-                  >
-                    mpatlas.org
-                  </a>
-                </span>
-              </li>
-            </ul>
+            <span className={classnames(MapFooterStyles.link, MapFooterStyles['-attributions'])}>
+              <a
+                className={MapFooterStyles.link}
+                href="https://carto.com/"
+                target="_blank"
+              >
+                CartoDB
+              </a>
+              {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, <br />TerraMetrics, EEZs:{' '}
+              <a
+                className={MapFooterStyles.link}
+                href="http://marineregions.org/"
+                target="_blank"
+              >
+                marineregions.org
+              </a>, MPAs:{' '}
+              <a
+                className={MapFooterStyles.link}
+                href="http://mpatlas.org/"
+                target="_blank"
+              >
+                mpatlas.org
+              </a>
+            </span>
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles['-support'])}
               onClick={this.props.onOpenSupportModal}

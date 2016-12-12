@@ -22,6 +22,10 @@
     width: 100%;
 
     @media #{$mq-tablet} {
+      max-width: 270px;
+    }
+
+    @media #{$mq-laptop} {
       max-width: 320px;
     }
   }
@@ -29,6 +33,14 @@
   > .logo-list > .logo {
     height: auto;
     width: 100%;
+
+    @media #{$mq-mobile-large} {
+      transform: scale(.8);
+    }
+
+    @media #{$mq-laptop} {
+      transform: scale(1);
+    }
 
     &.-oceana {
       max-width: 60px;
@@ -56,10 +68,18 @@
   }
 
   > .options {
+    align-items: center;
     display: flex;
+    justify-content: flex-end;
+
+    @media #{$mq-tablet} {
+      justify-content: space-between;
+      max-width: 425px;
+      width: 100%;
+    }
 
     .link {
-      color: $color-20;
+      color: $color-4;
       font-family: $font-family-1;
       font-size: $font-size-xxs-small;
 
@@ -69,19 +89,33 @@
         cursor: pointer;
       }
 
-      // leave it just in case...
-      &.-support,
-      &.-terms-of-use {
+      &.-attributions {
+        color: rgba($color-4, .5);
+        display: none;
+
+        @media #{$mq-tablet} {
+          display: inline-block;
+          text-align: right;
+        }
+
+        @media #{$mq-laptop} {
+          max-width: 375px;
+        }
+
+        > a {
+          color: rgba($color-4, .5);
+
+          &:hover {
+            color: $color-4;
+          }
+        }
+      }
+
+      // leave it by now...
+      &.-terms-of-use,
+      &.-support {
         display: none;
       }
-    }
-  }
-
-  > .options > .attribution-list {
-    display: none;
-
-    @media #{$mq-tablet} {
-      display: flex;
     }
   }
 }
