@@ -4,14 +4,12 @@ import classnames from 'classnames';
 import FormSupport from 'containers/Map/SupportForm';
 import Footer from 'components/Shared/Footer';
 import Modal from 'components/Shared/Modal';
-// import SupportModal from 'components/Map/SupportModal';
 
 import MapFooterStyles from 'styles/components/map/c-map-footer.scss';
-import ContainerFooterStyle from 'styles/components/shared/c-container-footer.scss';
 
-import logooceana from 'assets/logos/oceana_logo_white.png';
-import logosky from 'assets/logos/skytruth_white.png';
-import logogoogle from 'assets/logos/google_logo.png';
+import OceanaLogo from 'assets/logos/oceana_logo_white.png';
+import SkytruthLogo from 'assets/logos/skytruth_white.png';
+import GoogleLogo from 'assets/logos/google_logo.png';
 
 class MapFooter extends Component {
 
@@ -41,90 +39,91 @@ class MapFooter extends Component {
   }
 
   render() {
-    let supportModal;
-
-    // if (this.state.footerExpanded) {
-    //   expandedFooter = (
-    //     <div className={ContainerFooterStyle['footer-expanded']}>
-    //       <Footer
-    //         isMap
-    //       />
-    //     </div>
-    //   );
-    // }
-    if (this.state.showSupport) {
-      supportModal = (
-        <Modal
-          opened
-          closeable
-          close={() => this.showSupportModal()}
-        >
-          <FormSupport close={() => this.showSupportModal()} />
-        </Modal>
-      );
-    }
-
     const toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
-      <div>
-        {supportModal}
-        <div className={ContainerFooterStyle['c-container-footer']}>
-          {!this.state.footerExpanded && <div className={ContainerFooterStyle['contain-responsive-attributions']}>
-            <ul>
-              <li><a href="https://carto.com/" target="_blank">Carto</a></li>
-              <li>
-                <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
-                  <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs:{' '}
-                  <a href="http://mpatlas.org/">mpatlas.org</a>
+      <div className={MapFooterStyles['overflow-container']}>
+        {this.state.showSupport &&
+          <Modal
+            opened
+            closeable
+            close={() => this.showSupportModal()}
+          >
+            <FormSupport close={() => this.showSupportModal()} />
+          </Modal>}
+        <div className={MapFooterStyles['c-map-footer']}>
+          <ul className={MapFooterStyles['logo-list']}>
+            <li className={MapFooterStyles['logo-item']}>
+              <img
+                className={classnames(MapFooterStyles.logo, MapFooterStyles['-oceana'])}
+                src={OceanaLogo}
+                alt="Oceana"
+              />
+            </li>
+            <li className={MapFooterStyles['logo-item']}>
+              <img
+                className={classnames(MapFooterStyles.logo, MapFooterStyles['-skytruth'])}
+                src={SkytruthLogo}
+                alt="Skytruth"
+              />
+            </li>
+            <li className={MapFooterStyles['logo-item']}>
+              <img
+                className={classnames(MapFooterStyles.logo, MapFooterStyles['-google'])}
+                src={GoogleLogo}
+                alt="Google"
+              />
+            </li>
+          </ul>
+          <div className={MapFooterStyles.options}>
+            <span
+              className={classnames(MapFooterStyles.link, MapFooterStyles['-footer'])}
+              onClick={() => this.toggleFooter()}
+            >
+              {toggleLabel}
+            </span>
+            <ul className={MapFooterStyles['attribution-list']}>
+              <li className={MapFooterStyles['attribution-item']}>
+                <a
+                  className={MapFooterStyles.link}
+                  href="https://carto.com/"
+                  target="_blank"
+                >
+                  CartoDB
+                </a>
+              </li>
+              <li className={classnames(MapFooterStyles.link, MapFooterStyles['attribution-item'])}>
+                <span className={MapFooterStyles['attribution-item']}>
+                  Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
+                  <a
+                    className={MapFooterStyles.link}
+                    href="http://marineregions.org/"
+                    target="_blank"
+                  >
+                    marineregions.org
+                  </a>, MPAs:{' '}
+                  <a
+                    className={MapFooterStyles.link}
+                    href="http://mpatlas.org/"
+                    target="_blank"
+                  >
+                    mpatlas.org
+                  </a>
                 </span>
               </li>
             </ul>
-          </div>}
-          <div
-            className={ContainerFooterStyle['contain-responsive-buttons']}
-            style={this.state.footerExpanded ? {
-              marginTop: '20px'
-            } : null}
-          >
-            <span onClick={() => this.toggleFooter()}>{toggleLabel}</span>
-            <span onClick={() => this.showSupportModal()}>Support</span>
+            <span
+              className={classnames(MapFooterStyles.link, MapFooterStyles['-support'])}
+              onClick={() => this.showSupportModal()}
+            >
+              Support
+            </span>
+            <Link
+              className={classnames(MapFooterStyles.link, MapFooterStyles['-terms-of-use'])}
+              to="/terms-of-use"
+            >Terms of use</Link>
           </div>
         </div>
-        <footer className={MapFooterStyles['c-footer-mini']}>
-          <div className={MapFooterStyles['contain-partners']}>
-            <img
-              className={classnames(MapFooterStyles.partner, MapFooterStyles.oceana)}
-              src={logooceana}
-              alt="Oceana"
-            />
-            <img
-              className={classnames(MapFooterStyles.partner, MapFooterStyles['-skytruth-logo'])}
-              src={logosky}
-              alt="Skytruth"
-            />
-            <img
-              className={classnames(MapFooterStyles.partner, MapFooterStyles['-google'])}
-              src={logogoogle}
-              alt="Google"
-            />
-          </div>
-
-          <ul className={MapFooterStyles.links}>
-            <li className={classnames(MapFooterStyles.attributions, MapFooterStyles['-footer'])}>
-              <a onClick={() => this.toggleFooter()}>{toggleLabel}</a>
-            </li>
-            <li className={MapFooterStyles.attributions}><a href="https://carto.com/" target="_blank">CartoDB</a></li>
-            <li className={MapFooterStyles.attributions}>
-              <span>Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
-                <a href="http://marineregions.org/" target="_blank">marineregions.org</a>, MPAs:{' '}
-                <a href="http://mpatlas.org/">mpatlas.org</a>
-              </span>
-            </li>
-            <li className={MapFooterStyles.attributions}><Link to="/terms-of-use">Terms of use</Link></li>
-            <li className={MapFooterStyles.attributions}><a onClick={() => this.showSupportModal()}>Support</a></li>
-          </ul>
-        </footer>
         <Footer
           isMap
           isExpanded={this.state.footerExpanded}
