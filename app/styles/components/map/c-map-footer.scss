@@ -1,85 +1,99 @@
 @import '../../settings';
 
-.c-footer-mini {
+.c-map-footer {
   align-items: center;
   background-color: $color-1;
   display: flex;
-  height: $footer-mini-height;
+  height: $map-footer-height;
   justify-content: space-between;
   padding: 0 10px;
+  position: relative;
+  z-index: 101;
 
   @media #{$mq-mobile-large} {
     padding: 0 20px;
   }
 
-  > .contain-partners {
+  > .logo-list {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    max-width: 70%;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      max-width: none;
+      width: auto;
+    }
+  }
+
+  > .logo-list > .logo-item {
+    display: inline-flex;
+
+    @media #{$mq-tablet} {
+      &:not(:first-child) {
+        margin: 0 0 0 15px;
+      }
+    }
+  }
+
+  > .logo-list > .logo-item > .logo {
+    height: 100%;
+    width: 100%;
 
     @media screen and (min-width: 1135px) {
-      justify-content: center;
-      width: 100%;
+      margin: 0 15px 0 0;
     }
 
-    .partner {
-      height: auto;
-      max-width: 70px;
-      width: 100%;
+    &.-oceana {
+      max-width: 60px;
+    }
 
-      @media screen and (min-width: 1135px) {
-        margin-right: 15px;
-      }
+    &.-skytruth {
+      height: 11px;
+      max-width: 75px;
+    }
 
-      &.oceana {
-        max-width: 60px;
-      }
-
-      &.-skytruth-logo {
-        max-width: 85px;
-      }
-
-      &.-google {
-        max-width: 50px;
-      }
+    &.-google {
+      max-width: 50px;
     }
   }
 
-  > .links {
-    align-items: center;
+  > .options {
     display: flex;
 
-    > .attributions {
+    .link {
       color: $color-20;
-      // display: inline-block;
-      display: none;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
 
-      // margin-left: 15px;
-
-      &.-footer {
-        display: inline-flex;
+      &.-footer,
+      &.-terms-of-use,
+      &.-support {
+        cursor: pointer;
       }
 
-      @media screen and (min-width: 1135px) {
-        display: inline-block;
-      }
+      &.-terms-of-use,
+      &.-support {
+        display: none;
 
-      > a {
-        color: $color-20;
-        display: inline-block;
-        font-size: $font-size-xxs-small;
-        width: 100%;
+        @media #{$mq-tablet} {
+          display: inline-flex;
+        }
       }
-    }
-
-    .bar-hor {
-      border: solid 1px $color-20;
-      border-top: 0;
-      display: inline-block;
-      height: 5px;
-      margin-left: 4px;
-      width: 40px;
     }
   }
+
+  > .options > .attribution-list {
+    display: none;
+
+    @media #{$mq-tablet} {
+      display: flex;
+    }
+  }
+}
+
+.overflow-container {
+  height: $map-footer-height;
+  overflow: hidden;
 }
