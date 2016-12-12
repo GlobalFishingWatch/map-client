@@ -17,7 +17,7 @@ let x;
 let y;
 let xAxis;
 let area;
-const innerOuterMarginPx = 10;
+const INNER_OUTER_MARGIN_PX = 10;
 
 let currentInnerPxExtent = [0, 1];
 let currentOuterPxExtent = [0, width];
@@ -96,7 +96,8 @@ class Timebar extends Component {
   }
 
   componentWillUnmount() {
-    this.outerBrush.selectAll('.handle').on('mousedown', null);
+    outerBrushHandleLeft.on('mousedown', null);
+    outerBrushHandleRight.on('mousedown', null);
     d3.select('body').on('mousemove', null);
     d3.select('body').on('mouseup', null);
     this.innerBrushFunc.on('end', null);
@@ -146,26 +147,17 @@ class Timebar extends Component {
     // set up brush generators
     brush = () => d3.brushX().extent([[0, 0], [width, height]]);
     this.innerBrushFunc = brush();
-    this.outerBrushFunc = brush();
-
-    this.outerBrush = this.group.append('g')
-      .attr('class', timelineCss['c-timeline-outer-brush'])
-      .call(this.outerBrushFunc);
-
-    // disable default d3 brush events for the outer brush
-    this.outerBrush.on('.brush', null);
 
     this.innerBrush = this.group.append('g')
       .attr('class', timelineCss['c-timeline-inner-brush'])
       .call(this.innerBrushFunc);
 
-    // no need to keep brush overlays (the invisible interactive zone outside of the brush)
-    this.outerBrush.select('.overlay').remove();
-    this.outerBrush.select('.selection').attr('cursor', 'default');
-    this.outerBrush.select('.selection').classed(timelineCss['c-timeline-outer-brush-selection'], true);
-    outerBrushHandleLeft = this.group.append('rect').classed(timelineCss['c-timeline-outer-brush-handle'], true)
+    outerBrushHandleLeft = this.group.append('rect')
+      .classed(timelineCss['c-timeline-outer-brush-handle'], true)
       .attr('height', height);
-    outerBrushHandleRight = this.group.append('rect').classed(timelineCss['c-timeline-outer-brush-handle'], true)
+
+    outerBrushHandleRight = this.group.append('rect')
+      .classed(timelineCss['c-timeline-outer-brush-handle'], true)
       .attr('height', height);
 
     this.innerBrush.select('.overlay').remove();
@@ -182,17 +174,12 @@ class Timebar extends Component {
       .classed(timelineCss['c-timeline-outer-brush-circle'], true);
 
     // move both brushes to initial position
-    this.outerBrushFunc.move(this.outerBrush, [0, width]);
     this.resetOuterBrush();
     this.redrawInnerBrush(this.props.filters.timelineInnerExtent);
 
     // custom outer brush events
-    this.outerBrush.selectAll('.handle').on('mousedown', () => {
-      currentHandleIsWest = d3.event.target.classList[1] === 'handle--w';
-      dragging = true;
-      this.disableInnerBrush();
-      this.startTick();
-    });
+    outerBrushHandleLeft.on('mousedown', this.onOuterHandleClick.bind(this));
+    outerBrushHandleRight.on('mousedown', this.onOuterHandleClick.bind(this));
 
     this.group.on('mousemove', () => {
       this.onMouseOver(d3.event.offsetX);
@@ -219,6 +206,14 @@ class Timebar extends Component {
     });
 
     this.enableInnerBrush();
+  }
+
+  onOuterHandleClick() {
+    d3.event.preventDefault();
+    currentHandleIsWest = outerBrushHandleLeft.node() === d3.event.target;
+    dragging = true;
+    this.disableInnerBrush();
+    this.startTick();
   }
 
   getDummyData(startDate, endDate) {
@@ -261,8 +256,7 @@ class Timebar extends Component {
 
   resetOuterBrush() {
     currentOuterPxExtent = [0, width];
-    this.outerBrush.select('.selection').attr('width', width).attr('x', 0);
-    outerBrushHandleLeft.attr('x', 0);
+    outerBrushHandleLeft.attr('x', 20);
     outerBrushHandleRight.attr('x', width - 2);
   }
 
@@ -373,15 +367,11 @@ class Timebar extends Component {
     const extent = outerExtentPx;
     // do not go within the inner brush
     if (currentHandleIsWest) {
-      extent[0] = Math.min(currentInnerPxExtent[0] - innerOuterMarginPx, outerExtentPx[0]);
+      extent[0] = Math.min(currentInnerPxExtent[0] - INNER_OUTER_MARGIN_PX, outerExtentPx[0]);
     } else {
-      extent[1] = Math.max(currentInnerPxExtent[1] + innerOuterMarginPx, outerExtentPx[1]);
+      extent[1] = Math.max(currentInnerPxExtent[1] + INNER_OUTER_MARGIN_PX, outerExtentPx[1]);
     }
 
-    // move outer brush selection rect -- normally done by d3.brush by default,
-    // but we disabled all brush events
-    this.outerBrush.select('.selection').attr('x', extent[0]);
-    this.outerBrush.select('.selection').attr('width', extent[1] - extent[0]);
     outerBrushHandleLeft.attr('x', extent[0]);
     outerBrushHandleRight.attr('x', extent[1] - 2);
   }
