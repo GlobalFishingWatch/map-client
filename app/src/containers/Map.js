@@ -27,6 +27,7 @@ const mapStateToProps = (state) => ({
   shareModal: state.map.shareModal,
   basemaps: state.map.basemaps,
   activeBasemap: state.map.activeBasemap,
+  layerModal: state.map.layerModal,
   supportModal: state.map.supportModal
 });
 
