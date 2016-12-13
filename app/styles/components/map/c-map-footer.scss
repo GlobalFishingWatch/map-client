@@ -51,9 +51,11 @@
     }
 
     &.-skytruth {
-      max-width: 70px;
+      height: 12px;
+      max-width: 90px;
 
       @media #{$mq-mobile-large} {
+        height: auto;
         max-width: 120px;
       }
     }
