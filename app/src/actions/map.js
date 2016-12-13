@@ -18,6 +18,7 @@ import {
   SET_BASEMAP,
   SET_TILESET_URL
 } from 'actions';
+import { toggleVisibility } from 'actions/vesselInfo';
 
 export function toggleLayerVisibility(layer) {
   return {
@@ -34,9 +35,14 @@ export function setBasemap(basemap) {
 }
 
 export function setZoom(zoom) {
-  return {
-    type: SET_ZOOM,
-    payload: zoom
+  return (dispatch, getState) => {
+    dispatch({
+      type: SET_ZOOM,
+      payload: zoom
+    });
+    if (getState().vesselInfo.details.isCluster === true) {
+      dispatch(toggleVisibility(false));
+    }
   };
 }
 export function setCenter(center) {

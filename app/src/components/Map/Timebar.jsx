@@ -197,6 +197,9 @@ class Timebar extends Component {
     this.group.on('mousemove', () => {
       this.onMouseOver(d3.event.offsetX);
     });
+    this.group.on('mouseout', () => {
+      this.onMouseOut();
+    });
 
     d3.select('body').on('mousemove', () => {
       if (dragging) {
@@ -480,8 +483,12 @@ class Timebar extends Component {
   }
 
   onMouseOver(offsetX) {
-    const timelineOverExtent = this.getExtent([offsetX - 2, offsetX + 2]);
+    const timelineOverExtent = this.getExtent([offsetX - 5, offsetX + 5]);
     this.props.updateTimelineOverDates(timelineOverExtent);
+  }
+
+  onMouseOut() {
+    this.props.updateTimelineOverDates([new Date(0), new Date(0)]);
   }
 
   render() {

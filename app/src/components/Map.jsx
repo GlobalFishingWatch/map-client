@@ -84,8 +84,7 @@ class Map extends Component {
       return;
     }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
-    // just get the 1st one for now
-    this.props.setCurrentVessel(vessels[0], event.latLng);
+    this.props.setCurrentVessel(vessels, event.latLng);
   }
 
   componentDidMount() {
@@ -145,7 +144,14 @@ class Map extends Component {
           this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
           (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent)) ||
           innerExtentChanged) {
-        this.updateTrackLayer(nextProps, startTimestamp, endTimestamp, nextProps.filters.timelinePaused);
+        this.updateTrackLayer({
+          data: nextProps.vesselTrack.seriesGroupData,
+          selectedSeries: nextProps.vesselTrack.selectedSeries,
+          startTimestamp,
+          endTimestamp,
+          timelinePaused: nextProps.filters.timelinePaused,
+          timelineOverExtent: nextProps.filters.timelineOverExtent
+        });
       }
     }
 
@@ -186,24 +192,23 @@ class Map extends Component {
     }
   }
 
-  updateTrackLayer(props, startTimestamp, endTimestamp, timelinePaused) {
-    if (!this.trackLayer || !props || !props.vesselTrack || !props.vesselTrack.seriesGroupData) {
+  // TODO remove props from this method args
+  updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
+    if (!this.trackLayer || !data) {
       return;
     }
     this.trackLayer.reposition();
 
-    const data = props.vesselTrack.seriesGroupData;
-
     let overStartTimestamp;
     let overEndTimestamp;
-    if (props.filters.timelineOverExtent) {
-      overStartTimestamp = props.filters.timelineOverExtent[0].getTime();
-      overEndTimestamp = props.filters.timelineOverExtent[1].getTime();
+    if (timelineOverExtent) {
+      overStartTimestamp = timelineOverExtent[0].getTime();
+      overEndTimestamp = timelineOverExtent[1].getTime();
     }
 
     this.trackLayer.drawTile(
       data,
-      props.vesselTrack.selectedSeries,
+      selectedSeries,
       {
         startTimestamp,
         endTimestamp,
@@ -215,12 +220,17 @@ class Map extends Component {
   }
 
   rerenderTrackLayer() {
-    this.updateTrackLayer(
-      this.props,
-      this.props.filters.timelineInnerExtent[0].getTime(),
-      this.props.filters.timelineInnerExtent[1].getTime(),
-      this.props.filters.timelinePaused
-    );
+    if (!this.props.vesselTrack) {
+      return;
+    }
+    this.updateTrackLayer({
+      data: this.props.vesselTrack.seriesGroupData,
+      selectedSeries: this.props.vesselTrack.selectedSeries,
+      startTimestamp: this.props.filters.timelineInnerExtent[0].getTime(),
+      endTimestamp: this.props.filters.timelineInnerExtent[1].getTime(),
+      timelinePaused: this.props.filters.timelinePaused,
+      timelineOverExtent: this.props.filters.timelineOverExtent
+    });
   }
 
   updateBasemap(nextProps) {
@@ -522,12 +532,6 @@ class Map extends Component {
     this.map.setZoom(newZoomLevel);
   }
 
-  /**
-   * Big scary map rendering method
-   * TODO: see if we can split this up into multiple React components or, if not, split up into multiple render methods
-   *
-   * @returns {XML}
-   */
   render() {
     return (<div className="full-height-container">
       <Modal
