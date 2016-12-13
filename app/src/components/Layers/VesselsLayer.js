@@ -127,19 +127,19 @@ export default class VesselsLayer {
     return vessels;
   }
 
-  getHistogram() {
+  getHistogram(propName = 'weight') {
     let data = this.tiled.tiles
       .filter(tile => tile.ready)
       .map(tile => tile.data
-        .map(frame => frame.weight));
+        .map(frame => frame[propName]));
     data = _.flattenDeep(data)
     console.log(data.length)
     if (data.length) {
-      const bins = d3.histogram().thresholds(d3.thresholdFreedmanDiaconis)(data);
-      const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 30]);
+      const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
+      const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
       console.table(bins.filter(bin => bin.length).map(bin => {
-        const binMin = d3.min(bin).toLocaleString({maximumFractionDigits: 2});
-        const binMax = d3.max(bin).toLocaleString({maximumFractionDigits: 2});
+        const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
+        const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
         return {
           range: [binMin, binMax].join('﹣'),
           bars: Array(Math.round(x(bin.length))).join('█'),

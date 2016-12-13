@@ -108,6 +108,7 @@ class VesselsLayerTiled {
       const groupedData = VesselsTileData.groupData(cleanVectorArrays);
       const vectorArray = this._addTilePixelCoordinates(canvas.tileCoordinates, groupedData);
       const data = VesselsTileData.getTilePlaybackData(
+        zoom,
         vectorArray,
         this.timelineOverallStartDate,
         this.timelineOverallEndDate,

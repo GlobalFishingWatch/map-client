@@ -85,7 +85,7 @@ class Map extends Component {
     }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
 
-    this.vesselsLayer.getHistogram();
+    this.vesselsLayer.getHistogram('opacity');
     this.props.setCurrentVessel(vessels, event.latLng);
   }
 

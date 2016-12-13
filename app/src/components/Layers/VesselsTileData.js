@@ -127,30 +127,32 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArray
    * @param tileCoordinates
    */
-  getTilePlaybackData(vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
+  getTilePlaybackData(zoom, vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
     const tilePlaybackData = [];
     // const tilePlaybackDataGrid = [];
 
     let max = 0;
     let min = Infinity;
 
+    console.log(zoom)
 
+    // console.log(zoom)
+    const zRadius = Math.pow(zoom - 1, 2.5);
+    const zOpacity = Math.pow(zoom - 1, 3.5);
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
-      if (datetime < overallStartDate || datetime > overallEndDate) {
-        continue;
-      }
-      // keep?
-      // if (!data.weight[index]) {
-      //   return false;
-      // }
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, overallStartDateOffset);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
       const weight = vectorArray.weight[index];
+      const sigma = vectorArray.sigma[index];
       const value = Math.sqrt(weight) * 0.2;
+      const radius = 0.3 * Math.max(0.8, 2 + Math.log(sigma * zRadius));
+      let opacity = 3 + Math.log(3 + Math.log((weight * zOpacity) / 1000));
+      opacity = 0.1 + 0.2 * opacity;
+      opacity = Math.min(1, Math.max(0.5, opacity));
 
       if (value > max) max = value;
       if (value < min) min = value;
@@ -162,6 +164,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
           x: [x],
           y: [y],
           weight: [weight],
+          sigma: [sigma],
+          radius: [radius],
+          opacity: [opacity],
           value: [value],
           category: [vectorArray.category[index]],
           series: [vectorArray.series[index]],
@@ -173,6 +178,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.x.push(x);
       timestamp.y.push(y);
       timestamp.weight.push(weight);
+      timestamp.sigma.push(sigma);
+      timestamp.radius.push(radius);
+      timestamp.opacity.push(opacity);
       timestamp.value.push(value);
       timestamp.category.push(vectorArray.category[index]);
       timestamp.series.push(vectorArray.series[index]);

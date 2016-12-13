@@ -47,12 +47,12 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
     // this.stage = new PIXI.Container();
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
-    this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
+    this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, alpha: true, position: true });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 1));
+    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(8, 0.25));
 
     this.spritesPool = [];
     this.timeIndexDelta = 0;
@@ -200,14 +200,11 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
         }
         numSprites++;
         const sprite = this.spritesPool[this.numSprites];
-        // const weight = playbackData.weight[i];
-        const value = frame.value[index];
-        // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
-        // allValues += value;
 
         sprite.position.x = offsetX + frame.x[index];
         sprite.position.y = offsetY + frame.y[index];
-        sprite.scale.set(value);
+        sprite.alpha = frame.opacity[index];
+        sprite.scale.set(frame.radius[index]);
 
         this.numSprites++;
       }
