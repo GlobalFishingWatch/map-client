@@ -128,11 +128,11 @@ class Timebar extends Component {
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
     this.svg = d3.select('#timeline_svg_container').append('svg')
-      .attr('width', width + 30)
+      .attr('width', width + 34)
       .attr('height', height + durationPickerHeight);
 
     this.group = this.svg.append('g')
-      .attr('transform', `translate(0,${durationPickerHeight})`);
+      .attr('transform', `translate(16,${durationPickerHeight})`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -256,7 +256,7 @@ class Timebar extends Component {
 
   resetOuterBrush() {
     currentOuterPxExtent = [0, width];
-    outerBrushHandleLeft.attr('x', 20);
+    outerBrushHandleLeft.attr('x', 0);
     outerBrushHandleRight.attr('x', width - 2);
   }
 
