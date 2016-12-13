@@ -91,12 +91,6 @@ class SearchPanel extends Component {
           value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
-        {!isSearching && <svg
-          className={classnames(iconsStyles.icon, 'icon-search')}
-        >
-          <use xlinkHref="#icon-search"></use>
-        </svg>}
-
         {!!isSearching && <CloseIcon
           className={classnames(iconsStyles.icon, 'icon-close')}
           onClick={() => this.cleanResults()}

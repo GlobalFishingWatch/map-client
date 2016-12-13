@@ -82,7 +82,7 @@
       align-items: center;
 
       display: inline-flex;
-      padding: 15px 0;
+      padding: 10px 0;
 
       &:last-child {
         border-bottom: 0;
@@ -95,29 +95,48 @@
         width: 100%;
       }
 
-      > .title-accordion {
+      .accordion-header {
         align-items: center;
-        color: $color-4;
-
+        cursor: pointer;
         display: flex;
-
-        font-family: $font-family-1;
-        font-size: $font-size-xxs-small;
-        font-weight: $font-weight-bold;
-        text-align: center;
-        text-transform: uppercase;
+        flex-direction: column-reverse;
+        justify-content: space-between;
+        padding: 10px 15px;
 
         @media #{$mq-tablet} {
-          display: block;
-          font-size: $font-size-x-small;
-          justify-content: space-between;
-          padding: 10px 25px 10px 15px;
-          text-align: left;
-          width: 100%;
+          flex-direction: row;
 
           &:hover {
             background-color: rgba($color-3, .2);
             border-radius: 4px;
+          }
+        }
+
+        > .accordion-title {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-xxs-small;
+          font-weight: $font-weight-bold;
+          margin: 5px 0 0;
+          text-align: center;
+          text-transform: uppercase;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+            margin: 0;
+            text-align: left;
+          }
+        }
+
+        > .search-icon,
+        > .basemap-icon,
+        > .layers-icon,
+        > .filters-icon {
+          fill: $color-4;
+          min-height: 18px;
+
+          @media #{$mq-tablet} {
+            min-height: none;
           }
         }
       }
