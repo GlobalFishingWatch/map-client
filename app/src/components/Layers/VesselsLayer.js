@@ -94,6 +94,10 @@ export default class VesselsLayer {
     this.render();
   }
 
+  setZoom(zoom) {
+    this.overlay.setZoom(zoom);
+  }
+
   updateViewportSize(width, height) {
     this.overlay.updateViewportSize(width, height);
   }

@@ -134,8 +134,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     let max = 0;
     let min = Infinity;
 
-    console.log(zoom)
-
     // console.log(zoom)
     const zRadius = Math.pow(zoom - 1, 2.5);
     const zOpacity = Math.pow(zoom - 1, 3.5);
@@ -149,7 +147,8 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const weight = vectorArray.weight[index];
       const sigma = vectorArray.sigma[index];
       const value = Math.sqrt(weight) * 0.2;
-      const radius = 0.3 * Math.max(0.8, 2 + Math.log(sigma * zRadius));
+      let radius = 0.2 * Math.max(0.8, 2 + Math.log(sigma * zRadius));
+      radius = Math.max(0.25, radius);
       let opacity = 3 + Math.log(3 + Math.log((weight * zOpacity) / 1000));
       opacity = 0.1 + 0.2 * opacity;
       opacity = Math.min(1, Math.max(0.5, opacity));
