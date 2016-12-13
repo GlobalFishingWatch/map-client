@@ -31,7 +31,7 @@
 
   &.-expanded {
     padding: 55px 0 0;
-    transform: translate(0, calc(-100% - #{$map-footer-height}));
+    transform: translateY(-100%) translateY(-#{$map-footer-height}); //IE 11
 
     .scroll-container {
       max-height: 100%;
