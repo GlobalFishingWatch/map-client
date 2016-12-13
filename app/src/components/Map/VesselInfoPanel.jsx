@@ -9,28 +9,36 @@ class VesselInfoPanel extends Component {
 
   render() {
     let vesselInfoContents = null;
-    let iso = null;
     const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
-    let vesselInfo = this.props.vesselInfo;
-    if (vesselInfo === null || vesselInfo === undefined) {
-      vesselInfo = {};
-    }
+    const vesselInfo = this.props.vesselInfo;
 
-    if (vesselInfo !== undefined && vesselInfo.flag) {
-      iso = iso3311a2.getCountry(vesselInfo.flag);
-    }
-
-    if (vesselInfo !== undefined && vesselInfo.isCluster) {
+    if (vesselInfo === null || vesselInfo.isCluster || vesselInfo.isLoading) {
+      let message;
+      if (vesselInfo === null) {
+        message = <div>There are no vessels at this location</div>;
+      } else if (vesselInfo.isLoading) {
+        message = <div>Loading vessel information...</div>;
+      } else {
+        message = (
+          <div>
+            There are multiple vessels at this location.
+            <a onClick={() => this.props.zoomIntoVesselCenter()} className={vesselPanelStyles.zoom}>
+              Zoom in to see individual points.
+            </a>
+          </div>
+        );
+      }
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
-          There are multiple vessels at this location.
-          <a onClick={() => this.props.zoomIntoVesselCenter()} className={vesselPanelStyles.zoom}>
-            Zoom in to see individual points.
-          </a>
-
+          {message}
         </div>
       );
     } else {
+      let iso = null;
+      if (vesselInfo !== undefined && vesselInfo.flag) {
+        iso = iso3311a2.getCountry(vesselInfo.flag);
+      }
+
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
           <div className={vesselPanelStyles['row-info']}>

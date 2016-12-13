@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME } from 'constants';
+import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
 import timebarCss from 'styles/components/map/c-timebar.scss';
 import timelineCss from 'styles/components/map/c-timeline.scss';
 import extentChanged from 'util/extentChanged';
@@ -58,7 +58,8 @@ class Timebar extends Component {
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
-      innerExtentPx: [0, 100]  // used only by durationPicker
+      innerExtentPx: [0, 100],  // used only by durationPicker
+      durationPickerExtent: props.filters.timelineInnerExtent
     };
   }
 
@@ -73,6 +74,9 @@ class Timebar extends Component {
 
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
+    this.setState({
+      durationPickerExtent: this.props.filters.timelineInnerExtent
+    });
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);
     }
@@ -193,6 +197,9 @@ class Timebar extends Component {
     this.group.on('mousemove', () => {
       this.onMouseOver(d3.event.offsetX);
     });
+    this.group.on('mouseout', () => {
+      this.onMouseOut();
+    });
 
     d3.select('body').on('mousemove', () => {
       if (dragging) {
@@ -305,17 +312,20 @@ class Timebar extends Component {
 
       if (oldExtent[0].getTime() === newExtent[0].getTime()) {
         // right brush was moved
-        newExtent[1] = oldExtent[1];
+        newExtent[1] = new Date(oldExtent[0].getTime() + TIMELINE_MAX_TIME);
       } else {
         // left brush was moved
-        newExtent[0] = oldExtent[0];
+        newExtent[0] = new Date(oldExtent[1].getTime() - TIMELINE_MAX_TIME);
       }
       newExtentPx = this.getPxExtent(newExtent);
       this.redrawInnerBrush(newExtent);
     }
 
+    this.setState({
+      durationPickerExtent: newExtent
+    });
     this.redrawInnerBrushCircles(newExtentPx);
-    this.redrawInnerBrushFooter(newExtentPx);
+    this.redrawDurationPicker(newExtentPx);
   }
 
   redrawInnerBrush(newInnerExtent) {
@@ -324,7 +334,7 @@ class Timebar extends Component {
     this.disableInnerBrush();
     this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
     this.redrawInnerBrushCircles(currentInnerPxExtent);
-    this.redrawInnerBrushFooter(currentInnerPxExtent);
+    this.redrawDurationPicker(currentInnerPxExtent);
     this.enableInnerBrush();
   }
 
@@ -333,7 +343,7 @@ class Timebar extends Component {
     innerBrushRightCircle.attr('cx', newInnerPxExtent[1]);
   }
 
-  redrawInnerBrushFooter(newInnerPxExtent) {
+  redrawDurationPicker(newInnerPxExtent) {
     this.setState({
       innerExtentPx: newInnerPxExtent
     });
@@ -435,11 +445,15 @@ class Timebar extends Component {
     }
   }
 
+  /**
+   * @param deltaTick frame length in ms
+   */
   playStep(deltaTick) {
     // compute new basePlayStep (used for playback), because we want it to depend on the zoom levels
-    const playStep = this.getPlayStep(this.props.filters.timelineOuterExtent) * deltaTick;
+    const playStep = this.getPlayStep(this.props.filters.timelineOuterExtent);
+    const realtimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep * deltaTick);
     const previousInnerExtent = this.props.filters.timelineInnerExtent;
-    let offsetInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + playStep));
+    let offsetInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + realtimePlayStep));
     const endOfTime = this.props.filters.timelineOuterExtent[1];
     const isAtEndOfTime = x(offsetInnerExtent[1]) >= x(endOfTime);
 
@@ -469,8 +483,12 @@ class Timebar extends Component {
   }
 
   onMouseOver(offsetX) {
-    const timelineOverExtent = this.getExtent([offsetX - 2, offsetX + 2]);
+    const timelineOverExtent = this.getExtent([offsetX - 5, offsetX + 5]);
     this.props.updateTimelineOverDates(timelineOverExtent);
+  }
+
+  onMouseOut() {
+    this.props.updateTimelineOverDates([new Date(0), new Date(0)]);
   }
 
   render() {
@@ -508,7 +526,7 @@ class Timebar extends Component {
           id="timeline_svg_container"
         >
           <DurationPicker
-            extent={this.props.filters.timelineInnerExtent}
+            extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
           />
         </div>
