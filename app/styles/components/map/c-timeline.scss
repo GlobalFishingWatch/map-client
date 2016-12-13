@@ -34,8 +34,23 @@
 
   .c-timeline-outer-brush-handle {
     cursor: ew-resize;
-    fill: $color-3;
-    width: 4px;
+
+    path,
+    rect {
+      stroke: $color-3;
+    }
+
+    path {
+      stroke-width: 4px;
+    }
+
+    rect {
+      fill: $color-8;
+      height: 6px;
+      stroke-width: 3px;
+      transform: translate(-3px, -3px);
+      width: 6px;
+    }
   }
 
   .c-timeline-inner-brush-selection {

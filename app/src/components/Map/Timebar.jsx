@@ -152,13 +152,8 @@ class Timebar extends Component {
       .attr('class', timelineCss['c-timeline-inner-brush'])
       .call(this.innerBrushFunc);
 
-    outerBrushHandleLeft = this.group.append('rect')
-      .classed(timelineCss['c-timeline-outer-brush-handle'], true)
-      .attr('height', height);
-
-    outerBrushHandleRight = this.group.append('rect')
-      .classed(timelineCss['c-timeline-outer-brush-handle'], true)
-      .attr('height', height);
+    outerBrushHandleLeft = this.createOuterHandle();
+    outerBrushHandleRight = this.createOuterHandle();
 
     this.innerBrush.select('.overlay').remove();
     // inner brush selection should cover duration picker
@@ -208,9 +203,24 @@ class Timebar extends Component {
     this.enableInnerBrush();
   }
 
+  createOuterHandle() {
+    const handle = this.group.append('g')
+      .classed(timelineCss['c-timeline-outer-brush-handle'], true);
+
+    handle
+      .append('path')
+      .attr('d', `M0 0 V ${height}`);
+
+    handle
+      .append('rect')
+      .attr('y', height / 2);
+
+    return handle;
+  }
+
   onOuterHandleClick() {
     d3.event.preventDefault();
-    currentHandleIsWest = outerBrushHandleLeft.node() === d3.event.target;
+    currentHandleIsWest = outerBrushHandleLeft.node() === d3.event.currentTarget;
     dragging = true;
     this.disableInnerBrush();
     this.startTick();
@@ -256,8 +266,8 @@ class Timebar extends Component {
 
   resetOuterBrush() {
     currentOuterPxExtent = [0, width];
-    outerBrushHandleLeft.attr('x', 0);
-    outerBrushHandleRight.attr('x', width - 2);
+    outerBrushHandleLeft.attr('transform', 'translate(0,0)');
+    outerBrushHandleRight.attr('transform', `translate(${width - 2}, 0)`);
   }
 
   redrawOuterBrush(newOuterExtent, currentOuterExtent) {
@@ -372,8 +382,8 @@ class Timebar extends Component {
       extent[1] = Math.max(currentInnerPxExtent[1] + INNER_OUTER_MARGIN_PX, outerExtentPx[1]);
     }
 
-    outerBrushHandleLeft.attr('x', extent[0]);
-    outerBrushHandleRight.attr('x', extent[1] - 2);
+    outerBrushHandleLeft.attr('transform', `translate(${extent[0]}, 0)`);
+    outerBrushHandleRight.attr('transform', `translate(${extent[1] - 2}, 0)`);
   }
 
   zoomOut(outerExtentPx, deltaTick) {
