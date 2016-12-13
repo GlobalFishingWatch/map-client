@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { Accordion, AccordionItem } from 'react-sanfona';
+
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
 import LayerPanel from 'containers/Map/LayerPanel';
 import SearchPanel from 'containers/Map/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
-import controlPanelStyle from 'styles/components/c-control_panel.scss';
 
-import { Accordion, AccordionItem } from 'react-sanfona';
-import isMobile from 'ismobilejs';
+import controlPanelStyle from 'styles/components/c-control_panel.scss';
+import iconStyles from 'styles/icons.scss';
+
+import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
+import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
+import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
+import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
 
 class ControlPanel extends Component {
 
@@ -28,14 +34,19 @@ class ControlPanel extends Component {
   }
 
   renderSearch() {
-    const title = isMobile.phone || isMobile.tablet ? 'search' : 'search vessels';
+    const titleLiteral = window.innerWidth > 1024 ? 'search vessels' : 'search';
+
+    const title = (
+      <div className={controlPanelStyle['accordion-header']}>
+        <h2 className={controlPanelStyle['accordion-title']}>{titleLiteral}</h2>
+        <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
+      </div>);
 
     return (
       <AccordionItem
         title={title}
         key="search"
         className={controlPanelStyle['accordion-item']}
-        titleClassName={controlPanelStyle['title-accordion']}
         onExpand={() => this.setState({ searchVisible: true })}
         onClose={() => this.setState({ searchVisible: false })}
       >
@@ -46,9 +57,15 @@ class ControlPanel extends Component {
   }
 
   renderBasemap() {
+    const title = (
+      <div className={controlPanelStyle['accordion-header']}>
+        <h2 className={controlPanelStyle['accordion-title']}>Basemap</h2>
+        <BasemapIcon className={classnames(iconStyles.icons, controlPanelStyle['basemap-icon'])} />
+      </div>);
+
     return (
       <AccordionItem
-        title="Basemap"
+        title={title}
         key="basemap"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
@@ -60,9 +77,15 @@ class ControlPanel extends Component {
   }
 
   renderLayerPicker() {
+    const title = (
+      <div className={controlPanelStyle['accordion-header']}>
+        <h2 className={controlPanelStyle['accordion-title']}>Layers</h2>
+        <LayersIcon className={classnames(iconStyles.icons, controlPanelStyle['layers-icon'])} />
+      </div>);
+
     return (
       <AccordionItem
-        title="Layers"
+        title={title}
         key="layers"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
@@ -96,9 +119,15 @@ class ControlPanel extends Component {
   }
 
   renderFilters() {
+    const title = (
+      <div className={controlPanelStyle['accordion-header']}>
+        <h2 className={controlPanelStyle['accordion-title']}>Filters</h2>
+        <FiltersIcon className={classnames(iconStyles.icons, controlPanelStyle['filters-icon'])} />
+      </div>);
+
     return (
       <AccordionItem
-        title="Filters"
+        title={title}
         key="filters"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
