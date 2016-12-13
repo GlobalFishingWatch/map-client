@@ -16,7 +16,8 @@ import {
   UPDATE_VESSEL_TRANSPARENCY,
   UPDATE_VESSEL_COLOR,
   SET_BASEMAP,
-  SET_TILESET_URL
+  SET_TILESET_URL,
+  SET_SUPPORT_MODAL_VISIBILITY
 } from 'actions';
 import { toggleVisibility } from 'actions/vesselInfo';
 
@@ -308,5 +309,12 @@ export function zoomIntoVesselCenter() {
   return (dispatch, getState) => {
     dispatch(setZoom(getState().map.zoom + 2));
     dispatch(setCenter(getState().map.vesselClusterCenter));
+  };
+}
+
+export function setSupportModalVisibility(visibility) {
+  return {
+    type: SET_SUPPORT_MODAL_VISIBILITY,
+    payload: visibility
   };
 }

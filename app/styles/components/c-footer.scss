@@ -2,103 +2,77 @@
 
 .c-footer {
   background-color: $color-19;
-  padding-top: 55px;
+  padding: 55px 0 0;
 
-  //Section Founding Logos on footer
+  &.-map {
+    height: calc(100% - #{$map-footer-height} - 30px);
+    left: 0;
+    max-height: 100%;
+    padding: 0;
+    position: fixed;
+    transform: translate(0, 0);
+    transition: max-height .25s ease, transform .25s ease;
+    width: 100%;
+    z-index: 100;
+
+    .scroll-container {
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .close-button {
+      display: none;
+    }
+
+    @media #{$mq-tablet} {
+      height: $max-map-footer-height;
+    }
+  }
+
+  &.-expanded {
+    padding: 55px 0 0;
+    transform: translateY(-100%) translateY(-#{$map-footer-height}); //IE 11
+
+    .scroll-container {
+      max-height: 100%;
+      overflow: auto;
+
+      @media#{$mq-tablet} {
+        overflow: visible;
+      }
+    }
+
+    .close-button {
+      display: inline-block;
+    }
+  }
+
   .logos-footer {
     border-bottom: 1px solid rgba($color-4, .2);
-    display: block;
     padding: 0 0 30px;
-
-    @media #{$mq-mobile-large} {
-      justify-content: space-between;
-      padding: 0 0 30px;
-    }
 
     @media screen and (min-width: 845px) {
       align-items: flex-end;
       display: flex;
       flex-wrap: wrap;
+      justify-content: space-between;
     }
 
-    .partner-footer,
-    .sponsor-footer {
+    .partner-section,
+    .funder-section {
       > .logo-list {
         align-items: center;
         display: flex;
-        list-style: none;
-      }
-
-      >.logo-list-funding {
-        display: block;
-        list-style: none;
-        width: 100%;
-
-        @media screen and (min-width: 845px) {
-          width: 200px;
-        }
-
-        li {
-
-          @media screen and (min-width: 845px) {
-            text-align: right;
-          }
-        }
-      }
-
-      .funding-text {
-        color: $color-16;
-        display: block;
-        font-size: $font-size-normal;
-        margin-bottom: 15px;
-        margin-top: 0;
-
-        @media screen and (min-width: 845px) {
-          display: none;
-        }
       }
 
       .logo-item {
-        margin-right: 20px;
-
-        &:last-child {
-          margin-right: 0;
+        &:not(:first-child) {
+          margin: 0 0 0 20px;
         }
 
         @media #{$mq-laptop} {
-          margin-right: 50px;
-
-          &:last-child {
-            margin-right: 0;
-          }
-        }
-
-        .logo-ldf {
-          max-width: 130px;
-          width: calc(100% / 3);
-
-          @media #{$mq-tablet} {
-            width: 100%;
-          }
-
-          @media screen and (min-width: 845px) {
-            max-width: 200px;
-            position: relative;
-            top: 12px;
-          }
-        }
-
-        &.-funding-logo {
-          border-top: 1px solid rgba($color-4, .2);
-          margin-top: 30px;
-          max-width: 100%;
-          padding-top: 30px;
-
-          @media screen and (min-width: 845px) {
-            border-top: 0;
-            margin-top: 0;
-            max-width: none;
-            padding-top: 0;
+          &:not(:first-child) {
+            margin: 0 0 0 50px;
           }
         }
       }
@@ -110,31 +84,60 @@
 
         &.-oceana {
           max-width: 130px;
-
         }
 
         &.-skytruth-logo {
           max-width: 190px;
         }
       }
+
+      .logo-item > .logo-ldf {
+        height: auto;
+        max-width: 130px;
+        width: calc(100% / 3);
+
+        @media #{$mq-tablet} {
+          width: 100%;
+        }
+
+        @media screen and (min-width: 845px) {
+          max-width: 200px;
+          position: relative;
+          top: 12px;
+        }
+      }
     }
 
-    .partner-footer {
+    > .partner-section {
       > .partner-text {
         color: $color-16;
-        display: block;
+        display: inline-block;
         font-size: $font-size-normal;
-        margin-bottom: 15px;
+        margin: 0 0 15px;
 
         @media #{$mq-laptop} {
-          margin-bottom: 35px;
+          margin: 0 0 35px;
+        }
+      }
+    }
+
+    > .funder-section {
+      > .logo-funder-list {
+        border-top: 1px solid rgba($color-4, .2);
+        margin: 30px 0 0;
+        padding: 30px 0 0;
+
+        @media screen and (min-width: 845px) {
+          border-top: 0;
+          margin: 0;
+          padding: 0;
+          width: 200px;
         }
       }
     }
   }
 
-  //Section Navigation footer
-  .nav-footer {
+  .map-section {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -143,119 +146,79 @@
     @media #{$mq-tablet} {
       flex-wrap: nowrap;
       justify-content: space-between;
-      padding: 55px 0 60px;
+      padding: 55px 0 calc(60px - 20px);
     }
 
-    .nav-section {
-      -moz-column-count: 2;
+    .nav-list {
       column-count: 2;
-      list-style: none;
-      margin-bottom: 30px;
+      margin: 0 0 30px;
       width: 100%;
 
-      & + .nav-section {
-        padding-left: 20px;
-      }
-
-      .nav-item  {
-        & + .nav-item {
-          margin-top: 20px;
-        }
-
-        > .nav-link {
-          color: $color-16;
-          font-size: 15px;
-          font-weight: $font-weight-normal;
-          text-decoration: none;
-          text-transform: uppercase;
-        }
-      }
-
       @media #{$mq-tablet} {
-        -moz-column-count: 3;
-        -moz-column-gap: 60px;
         column-count: 3;
         column-gap: 60px;
-        margin-bottom: 0;
-        margin-right: 35px;
-        width: inherit;
-      }
-    }
-
-    .content-nav-section-mobile {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-
-      @media #{$mq-tablet} {
-        display: none;
-      }
-    }
-
-    .nav-section-mobile {
-      display: block;
-
-      &:last-child {
-        margin-right: 0;
+        margin: 0 35px 0 0;
       }
 
-      @media #{$mq-tablet} {
-        display: none;
-        margin-right: 0;
+      > .nav-item {
+        &:not(:last-child) > .nav-link {
+          margin: 0 0 20px;
+        }
       }
-    }
 
-    .social-section {
-      width: 100%;
-
-      @media #{$mq-tablet} {
-        width: inherit;
+      > .nav-item > .nav-link {
+        color: $color-16;
+        cursor: pointer;
+        display: inline-block;
+        font-size: $font-size-x-small;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
       }
     }
   }
 
   .social-section {
-    align-items: flex-start;
+    align-items: center;
     border-top: 1px solid rgba($color-4, .2);
-    display: block;
+    display: flex;
+    flex-direction: column;
     padding: 35px 0;
-    position: relative;
+    width: 100%;
 
     @media #{$mq-tablet} {
       align-items: center;
       border-top: 0;
       display: block;
       padding: 0;
+      width: auto;
     }
 
-    // Get rid of this, this is a button component
-    .subscribe-button {
+    // Get rid of this, this is a button component, someday..
+    .button-subscribe {
+      align-items: baseline;
       background-color: $color-6;
       border-radius: 1px;
       color: $color-4;
-      display: block;
+      display: flex;
       font-size: $font-size-x-small;
-      font-weight: 400;
-      margin: 0 auto;
-      max-width: 230px;
-      padding: 8px 15px;
-      text-decoration: none;
+      padding: 10px 15px;
       text-transform: uppercase;
-      width: 100%;
-
 
       @media #{$mq-tablet} {
-        display: flex;
-        font-size: $font-size-x-small;
-        margin: inherit;
+        align-items: center;
         max-width: 230px;
-        padding: 10px 15px;
       }
 
-      > .email-subscribe {
-        margin-left: 10px;
-        min-width: 18px;
-        width: 18px;
+      > .icon-subscribe {
+        fill: $color-4;
+        height: 11px;
+        margin: 0 0 0 15px;
+        max-width: 18px;
+        width: 100%;
+
+        @media #{$mq-tablet} {
+          margin: 0;
+        }
       }
     }
 
@@ -263,12 +226,11 @@
       align-items: center;
       display: flex;
       justify-content: center;
-      margin-top: 25px;
+      margin: 25px 0 0;
 
       @media #{$mq-tablet} {
-        display: flex;
         justify-content: flex-start;
-        margin-top: 35px;
+        margin: 35px 0 0;
       }
 
       > .social-text {
@@ -280,13 +242,7 @@
       > .social-list {
         align-items: center;
         display: flex;
-        margin-left: 0;
-        margin-top: 0;
-
-        @media #{$mq-tablet} {
-          align-items: center;
-          display: flex;
-        }
+        margin: 0 0 0 15px;
 
         > .social-item {
           align-items: center;
@@ -295,16 +251,10 @@
           display: inline-flex;
           height: 32px;
           justify-content: center;
-          margin-left: 20px;
-          min-width: 32px;
           width: 32px;
 
-          @media #{$mq-tablet} {
-            margin-left: 15px;
-          }
-
-          & + .social-item {
-            margin-left: 15px;
+          &:not(:first-child) {
+            margin: 0 0 0 15px;
           }
 
           > a {
@@ -314,18 +264,16 @@
             height: 100%;
             justify-content: center;
             width: 100%;
-          }
 
-          &:first-child {
-            img {
-              min-width: 16px;
-              width: 16px;
+            > .icon-twitter {
+              fill: $color-4;
+              height: 14px;
+              width: 17px;
             }
-          }
 
-          &:last-child {
-            img {
-              min-width: 10px;
+            > .icon-facebook {
+              fill: $color-4;
+              height: 19px;
               width: 10px;
             }
           }
@@ -334,8 +282,7 @@
     }
   }
 
-  //Section Brand footer
-  .second-footer {
+  .sub-footer {
     align-items: center;
     background-color: $color-12;
     display: flex;
@@ -343,15 +290,68 @@
     justify-content: center;
     padding: 5px 0;
 
-    > .gfw-logo {
+    > .logo-gfw {
       height: 100%;
     }
 
-    > .gfw-text {
+    > .sub-footer-text {
       color: $color-4;
       font-size: $font-size-x-small;
       font-weight: $font-weight-light;
       margin-left: 10px;
     }
   }
+
+  .close-button {
+    background-color: $color-4;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    height: 39px;
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transform: translate(0, -50%);
+    width: 39px;
+
+    > .cross {
+      display: inline-block;
+      height: 18px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+
+      &::before,
+      &::after {
+        background-color: $color-7;
+
+        content: '';
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        width: 3px;
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+}
+
+.veil {
+  background-color: rgba($color-12, .8);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100;
 }

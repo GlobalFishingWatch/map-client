@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-import isMobile from 'ismobilejs';
+
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
 import defaultLogo from 'assets/logos/gfw_logo_hor.svg';
 import menuicon from 'assets/icons/menu_icon.svg';
@@ -69,6 +69,7 @@ class Header extends Component {
         <MenuMobile
           visible={this.state.mobileMenuVisible}
           onClose={this.closeMobileMenu}
+          onOpenSupportModal={this.props.setSupportModalVisibility}
         />
         <nav
           className={
@@ -97,13 +98,10 @@ class Header extends Component {
                 />
               </Link>
 
-
-              {isMobile.phone &&
-                <ShareIcon
-                  className={classnames(iconStyles.icon, styles['share-icon'])}
-                  onClick={this.props.openShareModal}
-                />
-              }
+              <ShareIcon
+                className={classnames(iconStyles.icon, styles['share-icon'])}
+                onClick={this.props.openShareModal}
+              />
               {/* TEMPORARILY REMOVE SHARE BUTTON
               {this.doesPathStartsWith('/map') && <span className={styles['share-header']}>
                 <img src={shareIcon} alt="share icon"></img></span>}
@@ -177,6 +175,7 @@ Header.propTypes = {
   login: React.PropTypes.func,
   loggedUser: React.PropTypes.object,
   openShareModal: React.PropTypes.func,
+  setSupportModalVisibility: React.PropTypes.func,
   setVisibleMenu: React.PropTypes.func
 };
 

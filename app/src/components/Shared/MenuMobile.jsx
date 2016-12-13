@@ -4,6 +4,13 @@ import { Link } from 'react-router';
 
 class MenuMobile extends Component {
 
+  onClickSupoport(e) {
+    e.preventDefault();
+
+    this.props.onClose();
+    this.props.setSupportModalVisibility(true);
+  }
+
   render() {
     const cssClass = this.props.visible ?
       `${menuMobile['c-mobile-menu']} ${menuMobile['-show']}` : `${menuMobile['c-mobile-menu']}`;
@@ -83,7 +90,8 @@ MenuMobile.propTypes = {
   onClose: React.PropTypes.func,
   logout: React.PropTypes.func,
   login: React.PropTypes.func,
-  loggedUser: React.PropTypes.object
+  loggedUser: React.PropTypes.object,
+  setSupportModalVisibility: React.PropTypes.func
 };
 
 export default MenuMobile;

@@ -16,6 +16,7 @@ import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=Base
 import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
 
+
 class ControlPanel extends Component {
 
   constructor(props) {

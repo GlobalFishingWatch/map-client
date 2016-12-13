@@ -1,9 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
+
 import Modal from 'components/Shared/Modal';
 import NoLogin from 'containers/Map/NoLogin';
 import Header from 'containers/Header';
-import FooterMini from 'components/Shared/FooterMini';
+import MapFooter from 'components/Map/MapFooter';
 import mapStyles from 'styles/components/c-map.scss';
 
 function MapIFrame(props) {
@@ -45,7 +46,7 @@ function MapIFrame(props) {
     <div className={classnames({ [mapStyles['map-iframe-container']]: true, [mapStyles['-placeholder']]: showModal })}>
       <Header />
       {content}
-      <FooterMini />
+      <MapFooter />
     </div>
   );
 }
