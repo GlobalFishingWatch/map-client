@@ -7,9 +7,9 @@
   &.-map {
     height: calc(100% - #{$map-footer-height} - 30px);
     left: 0;
-    max-height: 0;
+    max-height: 100%;
     padding: 0;
-    position: absolute;
+    position: fixed;
     transform: translate(0, 0);
     transition: max-height .25s ease, transform .25s ease;
     width: 100%;
@@ -25,13 +25,11 @@
     }
 
     @media #{$mq-tablet} {
-      height: auto;
-      max-height: none;
+      height: $max-map-footer-height;
     }
   }
 
   &.-expanded {
-    max-height: 100%;
     padding: 55px 0 0;
     transform: translate(0, calc(-100% - #{$map-footer-height}));
 
