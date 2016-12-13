@@ -326,7 +326,7 @@ class Timebar extends Component {
       durationPickerExtent: newExtent
     });
     this.redrawInnerBrushCircles(newExtentPx);
-    this.redrawInnerBrushFooter(newExtentPx);
+    this.redrawDurationPicker(newExtentPx);
   }
 
   redrawInnerBrush(newInnerExtent) {
@@ -335,9 +335,8 @@ class Timebar extends Component {
     this.disableInnerBrush();
     this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent);
     this.redrawInnerBrushCircles(currentInnerPxExtent);
-    this.redrawInnerBrushFooter(currentInnerPxExtent);
+    this.redrawDurationPicker(currentInnerPxExtent);
     this.enableInnerBrush();
-    // this.updateDurationPicker();
   }
 
   redrawInnerBrushCircles(newInnerPxExtent) {
@@ -345,7 +344,7 @@ class Timebar extends Component {
     innerBrushRightCircle.attr('cx', newInnerPxExtent[1]);
   }
 
-  redrawInnerBrushFooter(newInnerPxExtent) {
+  redrawDurationPicker(newInnerPxExtent) {
     this.setState({
       innerExtentPx: newInnerPxExtent
     });
