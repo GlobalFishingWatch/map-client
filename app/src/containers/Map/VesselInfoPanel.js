@@ -22,7 +22,6 @@ const mapDispatchToProps = dispatch => ({
   },
   zoomIntoVesselCenter: () => {
     dispatch(zoomIntoVesselCenter());
-    dispatch(toggleVisibility(false));
   }
 });
 

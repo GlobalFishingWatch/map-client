@@ -121,10 +121,8 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 }
 
 export function toggleVisibility(visibility) {
-  return (dispatch) => {
-    dispatch({
-      type: SET_VESSEL_INFO_VISIBILITY,
-      payload: visibility
-    });
+  return {
+    type: SET_VESSEL_INFO_VISIBILITY,
+    payload: visibility
   };
 }
