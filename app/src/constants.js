@@ -24,6 +24,12 @@ export const VESSELS_ENDPOINT_KEYS = [
   'weight'
 ];
 
+// vessels rendering
+// from this zoom level and above, render using circle style instead of heatmap
+export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
+// the base radius, it can only be scaled down by the radius factor calculated on the dataset
+export const VESSELS_BASE_RADIUS = 8;
+
 // tracks
 export const SHOW_OUTER_TRACK_BELOW_NUM_POINTS = 30000;
 export const TRACK_OVER_COLOR = {
@@ -49,6 +55,7 @@ export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
 export const VESSEL_MIN_RADIUS = 1;
 export const VESSEL_MAX_RADIUS = 4;
 export const VESSEL_CLICK_TOLERANCE_PX = 2;
+
 
 export const FLAGS = {
   0: 'AD',

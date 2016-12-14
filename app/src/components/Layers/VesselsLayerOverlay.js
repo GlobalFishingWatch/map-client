@@ -1,14 +1,8 @@
 /* global PIXI */
 import 'pixi.js';
-import { TIMELINE_MAX_STEPS } from 'constants';
+import { TIMELINE_MAX_STEPS, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD, VESSELS_BASE_RADIUS } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
-
-// the base radius, it can only be scaled down by the radius factor present in the data
-const BASE_RADIUS = 8;
-
-// from this zoom level and above, render using circle style instead of heatmap
-const HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
 
 export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
@@ -58,7 +52,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
     this.container.appendChild(this.canvas);
 
-    const baseTexture = PIXI.Texture.fromCanvas(this._getVesselTexture(BASE_RADIUS, 0.25));
+    const baseTexture = PIXI.Texture.fromCanvas(this._getVesselTexture(VESSELS_BASE_RADIUS, 0.25));
     this.mainVesselTexture = new PIXI.Texture(baseTexture, this._getTextureFrame());
 
     this.spritesPool = [];
@@ -93,7 +87,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     // circle style
     x += diameter + 1; // tiny offset between 2 frames
     tplCtx.beginPath();
-    tplCtx.arc(x, y, radius - 1, 0, 2 * Math.PI, false);
+    tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
     tplCtx.fillStyle = 'rgba(255, 255, 255, 1)';
     tplCtx.fill();
 
@@ -101,7 +95,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
   }
 
   _getTextureFrame(xOffset = 0) {
-    return new PIXI.Rectangle(xOffset, 0, BASE_RADIUS * 2, BASE_RADIUS * 2);
+    return new PIXI.Rectangle(xOffset, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
   }
 
   repositionCanvas() {
@@ -154,7 +148,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
   setZoom(zoom) {
     // one diameter + tiny offset between 2 frames
-    const textureXOffset = (zoom < HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0 : BASE_RADIUS * 2 + 1;
+    const textureXOffset = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0 : VESSELS_BASE_RADIUS * 2 + 1;
     this.mainVesselTexture.frame = this._getTextureFrame(textureXOffset);
     this.mainVesselTexture.update();
   }

@@ -306,7 +306,7 @@ export function setLayerInfoModal(modalParams) {
 
 export function zoomIntoVesselCenter() {
   return (dispatch, getState) => {
-    dispatch(setZoom(getState().map.zoom + 2));
+    dispatch(setZoom(getState().map.zoom + 3));
     dispatch(setCenter(getState().map.vesselClusterCenter));
   };
 }

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import PelagosClient from 'lib/pelagosClient';
-import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from 'constants';
+import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
 
 export default {
   getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {
@@ -135,8 +135,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
     let min = Infinity;
 
     // console.log(zoom)
-    const zRadius = Math.pow(zoom - 1, 2.5);
-    const zOpacity = Math.pow(zoom - 1, 3.5);
+    const zoomFactorRadius = Math.pow(zoom - 1, 2.5);
+    const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
+    const zoomFactorOpacity = Math.pow(zoom - 1, 3.5);
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
@@ -147,9 +148,9 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const weight = vectorArray.weight[index];
       const sigma = vectorArray.sigma[index];
       const value = Math.sqrt(weight) * 0.2;
-      let radius = 0.2 * Math.max(0.8, 2 + Math.log(sigma * zRadius));
+      let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
       radius = Math.max(0.25, radius);
-      let opacity = 3 + Math.log(3 + Math.log((weight * zOpacity) / 1000));
+      let opacity = 3 + Math.log(3 + Math.log((weight * zoomFactorOpacity) / 1000));
       opacity = 0.1 + 0.2 * opacity;
       opacity = Math.min(1, Math.max(0.5, opacity));
 
