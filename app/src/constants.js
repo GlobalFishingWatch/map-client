@@ -29,6 +29,20 @@ export const VESSELS_ENDPOINT_KEYS = [
 export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
 // the base radius, it can only be scaled down by the radius factor calculated on the dataset
 export const VESSELS_BASE_RADIUS = 8;
+// the minimum multiplicator for vessels radius. Multiply by VESSELS_BASE_RADIUS to get the final radius in px
+export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
+// in heatmap style, defines how 'blurry' a point will look. Higher = less blur
+export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
+// in heatmap style, defines color stops of the radial gradient
+export const VESSELS_HEATMAP_COLOR_STOPS = [
+  { stop: 0, color: 'rgba(255,255,255,1)' },
+  { stop: 0.1, color: 'rgba(136, 251, 255,1)' },
+  { stop: 0.2, color: 'rgba(255, 248, 150,1)' },
+  { stop: 1, color: 'rgba(48, 149, 255, 0)' }
+];
+// color of circles in circles rendering mode (more zoomed in)
+export const VESSELS_CIRCLES_COLOR = 'rgba(255, 255, 255, 1)';
+export const VESSELS_MINIMUM_OPACITY = 0.5;
 
 // tracks
 export const SHOW_OUTER_TRACK_BELOW_NUM_POINTS = 30000;
@@ -48,14 +62,6 @@ export const TRACK_OUT_OF_INNER_EXTENT_COLOR = {
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
-
-// draw vessel point each VESSEL_RESOLUTION pixels. Use powers of two.
-export const VESSEL_RESOLUTION = 1;
-export const VESSEL_GRID_SIZE = 256 / VESSEL_RESOLUTION;
-export const VESSEL_MIN_RADIUS = 1;
-export const VESSEL_MAX_RADIUS = 4;
-export const VESSEL_CLICK_TOLERANCE_PX = 2;
-
 
 export const FLAGS = {
   0: 'AD',

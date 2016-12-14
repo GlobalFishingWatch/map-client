@@ -1,6 +1,13 @@
 /* global PIXI */
 import 'pixi.js';
-import { TIMELINE_MAX_STEPS, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD, VESSELS_BASE_RADIUS } from 'constants';
+import {
+  TIMELINE_MAX_STEPS,
+  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
+  VESSELS_BASE_RADIUS,
+  VESSELS_HEATMAP_BLUR_FACTOR,
+  VESSELS_HEATMAP_COLOR_STOPS,
+  VESSELS_CIRCLES_COLOR
+} from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
@@ -46,13 +53,21 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.canvas.style.position = 'absolute';
 
     // this.stage = new PIXI.Container();
+    // the ParticleContainer is a fastest version of the PIXI sprite container
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
-    this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, alpha: true, position: true, uvs: true });
+    this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
+      scale: true,
+      alpha: true,
+      position: true,
+      uvs: true
+    });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
 
-    const baseTexture = PIXI.Texture.fromCanvas(this._getVesselTexture(VESSELS_BASE_RADIUS, 0.25));
+    const baseTexture = PIXI.Texture.fromCanvas(
+      this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR)
+    );
     this.mainVesselTexture = new PIXI.Texture(baseTexture, this._getTextureFrame());
 
     this.spritesPool = [];
@@ -77,10 +92,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     // heatmap style
     let x = radius;
     const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(0.1, 'rgba(136, 251, 255,1)');
-    gradient.addColorStop(0.2, 'rgba(255, 248, 150,1)');
-    gradient.addColorStop(1, 'rgba(48, 149, 255, 0)');
+    VESSELS_HEATMAP_COLOR_STOPS.forEach(colorStop => { gradient.addColorStop(colorStop.stop, colorStop.color); });
     tplCtx.fillStyle = gradient;
     tplCtx.fillRect(0, 0, diameter, diameter);
 
@@ -88,7 +100,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     x += diameter + 1; // tiny offset between 2 frames
     tplCtx.beginPath();
     tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-    tplCtx.fillStyle = 'rgba(255, 255, 255, 1)';
+    tplCtx.fillStyle = VESSELS_CIRCLES_COLOR;
     tplCtx.fill();
 
     return tplCanvas;

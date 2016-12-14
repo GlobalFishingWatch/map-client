@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import PelagosClient from 'lib/pelagosClient';
-import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
+import {
+  VESSELS_ENDPOINT_KEYS,
+  PLAYBACK_PRECISION,
+  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
+  VESSELS_MINIMUM_RADIUS_FACTOR,
+  VESSELS_MINIMUM_OPACITY
+} from 'constants';
 
 export default {
   getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {
@@ -129,12 +135,7 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    */
   getTilePlaybackData(zoom, vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
     const tilePlaybackData = [];
-    // const tilePlaybackDataGrid = [];
 
-    let max = 0;
-    let min = Infinity;
-
-    // console.log(zoom)
     const zoomFactorRadius = Math.pow(zoom - 1, 2.5);
     const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
     const zoomFactorOpacity = Math.pow(zoom - 1, 3.5);
@@ -147,17 +148,11 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const y = vectorArray.y[index];
       const weight = vectorArray.weight[index];
       const sigma = vectorArray.sigma[index];
-      const value = Math.sqrt(weight) * 0.2;
       let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
-      radius = Math.max(0.25, radius);
+      radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
       let opacity = 3 + Math.log(3 + Math.log((weight * zoomFactorOpacity) / 1000));
       opacity = 0.1 + 0.2 * opacity;
-      opacity = Math.min(1, Math.max(0.5, opacity));
-
-      if (value > max) max = value;
-      if (value < min) min = value;
-
-      // const value = Math.max(0.1, Math.min(1, weight / 2));
+      opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
       if (!tilePlaybackData[timeIndex]) {
         tilePlaybackData[timeIndex] = {
@@ -167,7 +162,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
           sigma: [sigma],
           radius: [radius],
           opacity: [opacity],
-          value: [value],
           category: [vectorArray.category[index]],
           series: [vectorArray.series[index]],
           seriesgroup: [vectorArray.seriesgroup[index]]
@@ -181,7 +175,6 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       timestamp.sigma.push(sigma);
       timestamp.radius.push(radius);
       timestamp.opacity.push(opacity);
-      timestamp.value.push(value);
       timestamp.category.push(vectorArray.category[index]);
       timestamp.series.push(vectorArray.series[index]);
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
