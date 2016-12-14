@@ -11,6 +11,30 @@
   z-index: 5;
 }
 
+.mobile-map-attributions {
+  color: rgba($color-4, .5);
+  display: inline-block;
+  font-size: $font-size-xxs-small;
+  left: 50%;
+  max-width: 400px;
+  position: absolute;
+  text-align: center;
+  top: calc(#{$header-height} + #{$accordion-mobile-height} + 3px);
+  transform: translate(-50%, 0);
+
+  width: 100%;
+  z-index: 101;
+
+  > .link {
+    color: inherit;
+    font-size: inherit;
+  }
+
+  @media #{$mq-tablet} {
+    display: none;
+  }
+}
+
 .zoom-controls {
   bottom: 135px;
   left: 35px;
