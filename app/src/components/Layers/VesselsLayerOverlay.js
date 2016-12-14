@@ -1,7 +1,13 @@
 /* global PIXI */
-
 import 'pixi.js';
-import { TIMELINE_MAX_STEPS } from 'constants';
+import {
+  TIMELINE_MAX_STEPS,
+  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
+  VESSELS_BASE_RADIUS,
+  VESSELS_HEATMAP_BLUR_FACTOR,
+  VESSELS_HEATMAP_COLOR_STOPS,
+  VESSELS_CIRCLES_COLOR
+} from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
@@ -47,13 +53,22 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.canvas.style.position = 'absolute';
 
     // this.stage = new PIXI.Container();
+    // the ParticleContainer is a fastest version of the PIXI sprite container
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
-    this.stage = new PIXI.ParticleContainer(maxSprites, { scale: true, position: true });
+    this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
+      scale: true,
+      alpha: true,
+      position: true,
+      uvs: true
+    });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
 
     this.container.appendChild(this.canvas);
 
-    this.mainVesselTexture = PIXI.Texture.fromCanvas(this._getVesselTemplate(5, 0.15));
+    const baseTexture = PIXI.Texture.fromCanvas(
+      this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR)
+    );
+    this.mainVesselTexture = new PIXI.Texture(baseTexture, this._getTextureFrame());
 
     this.spritesPool = [];
     this.timeIndexDelta = 0;
@@ -61,28 +76,38 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.debugTexts = [];
   }
 
-  _getVesselTemplate(radius, blurFactor) {
+  // builds a texture spritesheet containing both the heatmap style (radial gradient)
+  // and the circle style that is used at higher zoom levels
+  // Then, only the texture frame is modified depending on the zoom level,
+  // in order not to have to recreate sprites
+  _getVesselTexture(radius, blurFactor) {
     const tplCanvas = document.createElement('canvas');
     const tplCtx = tplCanvas.getContext('2d');
-    const x = radius;
-    const y = radius;
-    tplCanvas.width = tplCanvas.height = radius * 2;
+    const diameter = radius * 2;
+    tplCanvas.width = diameter * 2 + 1; // tiny offset between 2 frames
+    tplCanvas.height = diameter;
 
-    if (blurFactor === 1) {
-      tplCtx.beginPath();
-      tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-      tplCtx.fillStyle = 'rgba(255, 255, 237, 0.5)';
-      tplCtx.fill();
-    } else {
-      const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
-      gradient.addColorStop(0, 'rgba(255,255,255,1)');
-      gradient.addColorStop(0.1, 'rgba(136, 251, 255,1)');
-      gradient.addColorStop(0.2, 'rgba(255, 248, 150,1)');
-      gradient.addColorStop(1, 'rgba(48, 149, 255, 0)');
-      tplCtx.fillStyle = gradient;
-      tplCtx.fillRect(0, 0, 2 * radius, 2 * radius);
-    }
+    const y = radius;
+
+    // heatmap style
+    let x = radius;
+    const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
+    VESSELS_HEATMAP_COLOR_STOPS.forEach(colorStop => { gradient.addColorStop(colorStop.stop, colorStop.color); });
+    tplCtx.fillStyle = gradient;
+    tplCtx.fillRect(0, 0, diameter, diameter);
+
+    // circle style
+    x += diameter + 1; // tiny offset between 2 frames
+    tplCtx.beginPath();
+    tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
+    tplCtx.fillStyle = VESSELS_CIRCLES_COLOR;
+    tplCtx.fill();
+
     return tplCanvas;
+  }
+
+  _getTextureFrame(xOffset = 0) {
+    return new PIXI.Rectangle(xOffset, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
   }
 
   repositionCanvas() {
@@ -131,6 +156,13 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.hidden = true;
     this.container.style.display = 'none';
     this._clear(true);
+  }
+
+  setZoom(zoom) {
+    // one diameter + tiny offset between 2 frames
+    const textureXOffset = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0 : VESSELS_BASE_RADIUS * 2 + 1;
+    this.mainVesselTexture.frame = this._getTextureFrame(textureXOffset);
+    this.mainVesselTexture.update();
   }
 
   render(tiles, startIndex, endIndex) {
@@ -201,14 +233,11 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
         }
         numSprites++;
         const sprite = this.spritesPool[this.numSprites];
-        // const weight = playbackData.weight[i];
-        const value = frame.value[index];
-        // const value = Math.min(5, Math.max(1, Math.round(weight / 30)));
-        // allValues += value;
 
         sprite.position.x = offsetX + frame.x[index];
         sprite.position.y = offsetY + frame.y[index];
-        sprite.scale.set(value);
+        sprite.alpha = frame.opacity[index];
+        sprite.scale.set(frame.radius[index]);
 
         this.numSprites++;
       }

@@ -65,7 +65,6 @@ class Map extends Component {
       this.map.setZoom(MAX_ZOOM_LEVEL);
     }
 
-    this.setState({ zoom });
     this.props.setZoom(zoom);
 
     // We also need to update the center of the map as it can be changed
@@ -86,6 +85,10 @@ class Map extends Component {
       return;
     }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
+
+    // use the following to debug values coming from the server tiles or computed in VesselsTileData
+    // this.vesselsLayer.getHistogram('opacity');
+
     this.props.setCurrentVessel(vessels, event.latLng);
   }
 
@@ -119,6 +122,7 @@ class Map extends Component {
     }
 
     if (this.props.map.zoom !== nextProps.map.zoom) {
+      this.vesselsLayer.setZoom(nextProps.map.zoom);
       this.map.setZoom(nextProps.map.zoom);
     }
 
@@ -516,6 +520,7 @@ class Map extends Component {
     // TODO
     this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
 
+    // TODO remove
     if (this.state.running !== 'play') {
       this.vesselsLayer.refresh();
     }

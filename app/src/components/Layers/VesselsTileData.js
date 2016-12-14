@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import PelagosClient from 'lib/pelagosClient';
-import { VESSELS_ENDPOINT_KEYS, PLAYBACK_PRECISION } from 'constants';
+import {
+  VESSELS_ENDPOINT_KEYS,
+  PLAYBACK_PRECISION,
+  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
+  VESSELS_MINIMUM_RADIUS_FACTOR,
+  VESSELS_MINIMUM_OPACITY
+} from 'constants';
 
 export default {
   getTilePelagosPromises(tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) {
@@ -127,39 +133,35 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
    * @param vectorArray
    * @param tileCoordinates
    */
-  getTilePlaybackData(vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
+  getTilePlaybackData(zoom, vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) {
     const tilePlaybackData = [];
-    // const tilePlaybackDataGrid = [];
 
-    let max = 0;
-    let min = Infinity;
+    const zoomFactorRadius = Math.pow(zoom - 1, 2.5);
+    const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
+    const zoomFactorOpacity = Math.pow(zoom - 1, 3.5);
 
     for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
       const datetime = vectorArray.datetime[index];
 
-      if (datetime < overallStartDate || datetime > overallEndDate) {
-        continue;
-      }
-      // keep?
-      // if (!data.weight[index]) {
-      //   return false;
-      // }
       const timeIndex = this.getOffsetedTimeAtPrecision(datetime, overallStartDateOffset);
       const x = vectorArray.x[index];
       const y = vectorArray.y[index];
       const weight = vectorArray.weight[index];
-      const value = Math.sqrt(weight) * 0.2;
-
-      if (value > max) max = value;
-      if (value < min) min = value;
-
-      // const value = Math.max(0.1, Math.min(1, weight / 2));
+      const sigma = vectorArray.sigma[index];
+      let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
+      radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
+      let opacity = 3 + Math.log(3 + Math.log((weight * zoomFactorOpacity) / 1000));
+      opacity = 0.1 + 0.2 * opacity;
+      opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
       if (!tilePlaybackData[timeIndex]) {
         tilePlaybackData[timeIndex] = {
           x: [x],
           y: [y],
-          value: [value],
+          weight: [weight],
+          sigma: [sigma],
+          radius: [radius],
+          opacity: [opacity],
           category: [vectorArray.category[index]],
           series: [vectorArray.series[index]],
           seriesgroup: [vectorArray.seriesgroup[index]]
@@ -169,7 +171,10 @@ ${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
       const timestamp = tilePlaybackData[timeIndex];
       timestamp.x.push(x);
       timestamp.y.push(y);
-      timestamp.value.push(value);
+      timestamp.weight.push(weight);
+      timestamp.sigma.push(sigma);
+      timestamp.radius.push(radius);
+      timestamp.opacity.push(opacity);
       timestamp.category.push(vectorArray.category[index]);
       timestamp.series.push(vectorArray.series[index]);
       timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);

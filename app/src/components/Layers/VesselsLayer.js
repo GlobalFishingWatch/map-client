@@ -2,7 +2,8 @@ import VesselsLayerOverlay from 'components/Layers/VesselsLayerOverlay';
 import VesselsLayerTiled from 'components/Layers/VesselsLayerTiled';
 import VesselsTileData from 'components/Layers/VesselsTileData';
 import { VESSEL_CLICK_TOLERANCE_PX } from 'constants';
-
+import _ from 'lodash';
+import * as d3 from 'd3';
 
 export default class VesselsLayer {
 
@@ -83,14 +84,14 @@ export default class VesselsLayer {
       return;
     }
 
-    // console.log('???', startIndex, endIndex)
-
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
 
-    // // console.log(startIndex)
-    // this.render(startIndex, endIndex);
     this.render();
+  }
+
+  setZoom(zoom) {
+    this.overlay.setZoom(zoom);
   }
 
   updateViewportSize(width, height) {
@@ -115,7 +116,6 @@ export default class VesselsLayer {
         if (vx >= offsetedX - VESSEL_CLICK_TOLERANCE_PX && vx <= offsetedX + VESSEL_CLICK_TOLERANCE_PX &&
             vy >= offsetedY - VESSEL_CLICK_TOLERANCE_PX && vy <= offsetedY + VESSEL_CLICK_TOLERANCE_PX) {
           vessels.push({
-            value: frame.value[i],
             category: frame.category[i],
             series: frame.series[i],
             seriesgroup: frame.seriesgroup[i]
@@ -124,6 +124,27 @@ export default class VesselsLayer {
       }
     }
     return vessels;
+  }
+
+  getHistogram(propName = 'weight') {
+    let data = this.tiled.tiles
+      .filter(tile => tile.ready)
+      .map(tile => tile.data
+        .map(frame => frame[propName]));
+    data = _.flattenDeep(data);
+    if (data.length) {
+      const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
+      const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
+      console.table(bins.filter(bin => bin.length).map(bin => {
+        const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
+        const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
+        return {
+          range: [binMin, binMax].join('﹣'),
+          bars: Array(Math.round(x(bin.length))).join('█'),
+          num: bin.length
+        };
+      }));
+    }
   }
 
 }
