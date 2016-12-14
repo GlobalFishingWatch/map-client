@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import facebookIcon from 'assets/icons/facebook.svg';
-import twitterIcon from 'assets/icons/twitter.svg';
-import googlePlusIcon from 'assets/icons/google-plus.svg';
-
 import styles from 'styles/components/map/c-share.scss';
+import iconStyles from 'styles/icons.scss';
+
+import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=FacebookIcon';
+import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
+import GooglePlusIcon from 'babel!svg-react!assets/icons/google-plus.svg?name=GooglePlusIcon';
 
 
 class Share extends Component {
@@ -122,7 +123,7 @@ class Share extends Component {
             onClick={e => this.openFacebook(e)}
           >
             <span className={styles['button-container']}>
-              <img src={facebookIcon} alt="Global Fishing Watch Facebook" />
+              <FacebookIcon className={classnames(iconStyles.icon, styles['facebook-icon'])} />
               <span className={styles['button-text']}>facebook</span>
             </span>
           </button>
@@ -131,7 +132,7 @@ class Share extends Component {
             onClick={e => this.openGooglePlus(e)}
           >
             <span className={styles['button-container']}>
-              <img src={googlePlusIcon} alt="Global Fishing Watch Google+" />
+              <GooglePlusIcon className={classnames(iconStyles.icon, styles['google-plus-icon'])} />
               <span className={styles['button-text']}>Google</span>
             </span>
           </button>
@@ -140,7 +141,7 @@ class Share extends Component {
             onClick={e => this.openTwitter(e)}
           >
             <span className={styles['button-container']}>
-              <img src={twitterIcon} alt="Global Fishing Watch Twitter" />
+              <TwitterIcon className={classnames(iconStyles.icon, styles['twitter-icon'])} />
               <span className={styles['button-text']}>Twitter</span>
             </span>
           </button>
