@@ -84,7 +84,9 @@ class Map extends Component {
     }
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
 
-    this.vesselsLayer.getHistogram('opacity');
+    // use the following to debug values coming from the server tiles or computed in VesselsTileData
+    // this.vesselsLayer.getHistogram('opacity');
+
     this.props.setCurrentVessel(vessels, event.latLng);
   }
 

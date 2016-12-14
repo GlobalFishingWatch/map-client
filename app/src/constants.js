@@ -63,6 +63,10 @@ export const TRACK_OUT_OF_INNER_EXTENT_COLOR = {
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
 
+// radius of vessels lookup in pixels,
+// ie how large the clicked region should be for including vessels
+export const VESSEL_CLICK_TOLERANCE_PX = 2;
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

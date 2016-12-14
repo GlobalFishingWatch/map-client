@@ -84,13 +84,9 @@ export default class VesselsLayer {
       return;
     }
 
-    // console.log('???', startIndex, endIndex)
-
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
 
-    // // console.log(startIndex)
-    // this.render(startIndex, endIndex);
     this.render();
   }
 
@@ -120,7 +116,6 @@ export default class VesselsLayer {
         if (vx >= offsetedX - VESSEL_CLICK_TOLERANCE_PX && vx <= offsetedX + VESSEL_CLICK_TOLERANCE_PX &&
             vy >= offsetedY - VESSEL_CLICK_TOLERANCE_PX && vy <= offsetedY + VESSEL_CLICK_TOLERANCE_PX) {
           vessels.push({
-            value: frame.value[i],
             category: frame.category[i],
             series: frame.series[i],
             seriesgroup: frame.seriesgroup[i]
@@ -136,8 +131,7 @@ export default class VesselsLayer {
       .filter(tile => tile.ready)
       .map(tile => tile.data
         .map(frame => frame[propName]));
-    data = _.flattenDeep(data)
-    console.log(data.length)
+    data = _.flattenDeep(data);
     if (data.length) {
       const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
       const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
