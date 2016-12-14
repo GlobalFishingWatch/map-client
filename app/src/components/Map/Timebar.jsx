@@ -18,6 +18,7 @@ let y;
 let xAxis;
 let area;
 const INNER_OUTER_MARGIN_PX = 10;
+const X_OVERFLOW_OFFSET = 16;
 
 let currentInnerPxExtent = [0, 1];
 let currentOuterPxExtent = [0, width];
@@ -132,7 +133,7 @@ class Timebar extends Component {
       .attr('height', height + durationPickerHeight);
 
     this.group = this.svg.append('g')
-      .attr('transform', `translate(16,${durationPickerHeight})`);
+      .attr('transform', `translate(${X_OVERFLOW_OFFSET},${durationPickerHeight})`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -182,7 +183,7 @@ class Timebar extends Component {
 
     d3.select('body').on('mousemove', () => {
       if (dragging) {
-        const nx = d3.event.pageX - leftOffset;
+        const nx = d3.event.pageX - leftOffset - X_OVERFLOW_OFFSET;
         if (currentHandleIsWest) {
           currentOuterPxExtent[0] = nx;
         } else {
@@ -418,7 +419,6 @@ class Timebar extends Component {
     }
     if (dragging) {
       const outerExtentPx = currentOuterPxExtent;
-
       if (this.isZoomingIn(outerExtentPx)) {
         this.zoomIn(outerExtentPx);
       } else {
