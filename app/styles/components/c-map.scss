@@ -12,26 +12,35 @@
 }
 
 .zoom-controls {
-  bottom: 135px;
-  left: 35px;
-  position: absolute;
-  z-index: 6;
+  display: none;
+
+  @media #{$mq-tablet} {
+    bottom: 35px;
+    display: block;
+    left: 35px;
+    position: absolute;
+    z-index: 6;
+  }
+
+  @media #{$mq-desktop} {
+    bottom: 135px;
+  }
 
   > .control {
+    align-items: center;
     background-color: $color-19;
-    border: 1px solid $color-21;
     border-radius: 50%;
-    box-shadow: 0 0 8px 0 $color-22;
+    box-shadow: 0 0 8px 0 rgba($color-22, .3);
     color: $color-4;
     cursor: pointer;
-    display: block;
+    display: flex;
     height: 40px;
-    line-height: 40px;
+    justify-content: center;
     text-align: center;
     width: 40px;
 
-    & + .control {
-      margin-top: 5px;
+    &:not(:first-child) {
+      margin: 5px 0 0;
     }
   }
 }
