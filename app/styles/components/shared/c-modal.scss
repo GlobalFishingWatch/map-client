@@ -16,14 +16,15 @@
     align-items: center;
     display: flex;
     height: 100%;
-    margin-left: 10px;
-    max-height: calc(100% - 60px);
+    max-height: calc(100% - 45px);
     position: relative;
-    width: calc(100% - 60px);
+    width: calc(100% - 45px);
+
 
     @media #{$mq-mobile-large} {
       max-width: 860px;
       min-width: 370px;
+      width: calc(100% - 60px);
     }
 
     @media #{$mq-tablet} {
@@ -39,18 +40,19 @@
       background-color: $color-2;
       border: 1px solid rgba($color-3, .3);
       color: $color-4;
-      max-height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      width: calc(100% - 10px);
+      width: 100%;
 
       .contain-button {
         position: absolute;
-        right: 10px;
+        right: 0;
       }
 
       .contain-padding {
-        padding: 40px;
+        padding: 20px;
+
+        @media #{$mq-tablet} {
+          padding: 40px;
+        }
       }
     }
   }
@@ -61,16 +63,13 @@
     border-radius: 100%;
     cursor: pointer;
     height: 40px;
+    left: 0;
     position: absolute;
-    top: 10px;
+    top: 20px;
+    transform: translate(-50%, 0);
     width: 40px;
     z-index: 1;
 
-    @media screen and (min-width: 550px) {
-      left: 0;
-      top: 20px;
-      transform: translateX(-50%);
-    }
 
     > .icon {
       display: block;
