@@ -61,8 +61,7 @@ class Timebar extends Component {
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
-      innerExtentPx: [0, 100],  // used only by durationPicker
-      durationPickerExtent: props.filters.timelineInnerExtent
+      innerExtentPx: [0, 100]  // used only by durationPicker
     };
   }
 
@@ -494,11 +493,17 @@ class Timebar extends Component {
     this.props.updateTimelineOverDates([new Date(0), new Date(0)]);
   }
 
-  onTimeRangeSelected(rangeTime) {
-    const currentStarDate = this.props.filters.timelineInnerExtent[0];
-    const nextEndDate = moment(currentStarDate).add(rangeTime, 'milliseconds')._d; // not sure about this...
+  onTimeRangeSelected(rangeTimeMs) {
+    let currentStartDate = this.props.filters.timelineInnerExtent[0];
+    let nextEndDate = new Date(currentStartDate.getTime() + rangeTimeMs);
 
-    const newExtentPx = this.getPxExtent([currentStarDate, nextEndDate]);
+    // if the predefined range time selection overrides timebar limits...
+    if (this.props.filters.timelineOuterExtent[1] < nextEndDate) {
+      nextEndDate = this.props.filters.timelineOuterExtent[1];
+      currentStartDate = new Date(nextEndDate.getTime() - rangeTimeMs);
+    }
+
+    const newExtentPx = this.getPxExtent([currentStartDate, nextEndDate]);
     this.redrawInnerBrushCircles(newExtentPx);
 
     const newExtent = this.getExtent(newExtentPx);
@@ -514,6 +519,7 @@ class Timebar extends Component {
 
     const startDate = moment(this.props.filters.startDate).format(dateFormat);
     const endDate = moment(this.props.filters.endDate).format(dateFormat);
+
 
     return (
       <div className={timebarCss['c-timebar']}>
@@ -551,7 +557,7 @@ class Timebar extends Component {
           id="timeline_svg_container"
         >
           <DurationPicker
-            extent={this.state.durationPickerExtent}
+            extent={this.props.filters.timelineInnerExtent}
             extentPx={this.state.innerExtentPx}
             onTimeRangeSelected={(rangeTime) => this.onTimeRangeSelected(rangeTime)}
           />

@@ -83,10 +83,26 @@ class DurationPicker extends Component {
         {this.state.showSettingsMenu &&
           <div className={css['setttings-panel']}>
             <ul className={css['settings-list']}>
-              <li className={css['settings-item']} data-range="1 week" onClick={(e) => this.setTimeRange(e)}>1 week</li>
-              <li className={css['settings-item']} data-range="15 days" onClick={(e) => this.setTimeRange(e)}>15 days</li>
-              <li className={css['settings-item']} data-range="1 month" onClick={(e) => this.setTimeRange(e)}>1 month</li>
-              <li className={css['settings-item']} data-range="3 months" onClick={(e) => this.setTimeRange(e)}>3 months</li>
+              <li
+                className={css['settings-item']}
+                data-range="1 week"
+                onClick={(e) => this.setTimeRange(e)}
+              >1 week</li>
+              <li
+                className={css['settings-item']}
+                data-range="15 days"
+                onClick={(e) => this.setTimeRange(e)}
+              >15 days</li>
+              <li
+                className={css['settings-item']}
+                data-range="1 month"
+                onClick={(e) => this.setTimeRange(e)}
+              >1 month</li>
+              <li
+                className={css['settings-item']}
+                data-range="3 months"
+                onClick={(e) => this.setTimeRange(e)}
+              >3 months</li>
             </ul>
           </div>
         }
