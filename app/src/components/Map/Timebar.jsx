@@ -1,17 +1,15 @@
 /* eslint react/sort-comp:0 */
+/* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
-import { TIMELINE_TOTAL_DATE_EXTENT, TIMELINE_INNER_EXTENT, TIMELINE_MAX_TIME } from 'constants';
-
+import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
+import timebarCss from 'styles/components/map/c-timebar.scss';
+import timelineCss from 'styles/components/map/c-timeline.scss';
+import extentChanged from 'util/extentChanged';
 import DatePicker from 'components/Map/DatePicker';
 import TogglePauseButton from 'components/Map/TogglePauseButton';
 import DurationPicker from 'components/Map/DurationPicker';
-
-import timebarCss from 'styles/components/map/c-timebar.scss';
-import timelineCss from 'styles/components/map/c-timeline.scss';
-
-import extentChanged from 'util/extentChanged';
 import moment from 'moment';
 
 let width;
