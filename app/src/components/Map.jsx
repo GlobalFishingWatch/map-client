@@ -573,6 +573,32 @@ class Map extends Component {
           <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
         <ControlPanel />
+        <div className={mapCss['attributions-container']}>
+          <span className={mapCss['mobile-map-attributions']}>
+            <a
+              className={mapCss.link}
+              href="https://carto.com/"
+              target="_blank"
+            >
+              CartoDB
+            </a>
+            {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
+            <a
+              className={mapCss.link}
+              href="http://marineregions.org/"
+              target="_blank"
+            >
+              marineregions.org
+            </a>, MPAs:{' '}
+            <a
+              className={mapCss.link}
+              href="http://mpatlas.org/"
+              target="_blank"
+            >
+              mpatlas.org
+            </a>
+          </span>
+        </div>
         <GoogleMapLoader
           containerElement={
             <div className={mapCss.map} style={{ height: '100%' }} />
