@@ -25,6 +25,8 @@ import extentChanged from 'util/extentChanged';
 import iconStyles from 'styles/icons.scss';
 
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
+import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
+import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
@@ -538,7 +540,7 @@ class Map extends Component {
    * @param event
    */
   changeZoomLevel(event) {
-    const newZoomLevel = (event.target.id === 'zoom_up')
+    const newZoomLevel = (event.currentTarget.id === 'zoom_up')
       ? this.map.getZoom() + 1
       : this.map.getZoom() - 1;
 
@@ -577,8 +579,12 @@ class Map extends Component {
           <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
             <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
           </span>
-          <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
-          <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
+          <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>
+            <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
+          </span>
+          <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>
+            <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
+          </span>
         </div>
         <ControlPanel />
         <GoogleMapLoader
