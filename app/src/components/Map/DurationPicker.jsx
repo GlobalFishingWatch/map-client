@@ -9,6 +9,14 @@ import SetttingsIcon from 'babel!svg-react!assets/icons/duration_settings.svg?na
 
 class DurationPicker extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showSettingsMenu: false
+    };
+  }
+
   getHumanizedDuration(extent) {
     if (!extent) return '';
     const innerDelta = moment(extent[1])
@@ -24,6 +32,12 @@ class DurationPicker extends Component {
     return `${extentPx[0]}px`;
   }
 
+  toggleSettingsMenu() {
+    this.setState({
+      showSettingsMenu: !this.state.showSettingsMenu
+    });
+  }
+
   render() {
     const humanizedDuration = this.getHumanizedDuration(this.props.extent);
     const style = {
@@ -36,7 +50,20 @@ class DurationPicker extends Component {
         <div className={css.container}>
           <SetttingsIcon
             className={classnames(iconStyles.icon, css['icon-settings'])}
+            onClick={() => this.toggleSettingsMenu()}
           />
+
+        {this.state.showSettingsMenu &&
+          <div className={css['setttings-panel']}>
+            <ul className={css['settings-list']}>
+              <li className={css['settings-item']}>1 week</li>
+              <li className={css['settings-item']}>15 days</li>
+              <li className={css['settings-item']}>1 month</li>
+              <li className={css['settings-item']}>3 months</li>
+            </ul>
+          </div>
+        }
+
           <div className={css['c-durationpicker-text']}>
             {humanizedDuration}
           </div>

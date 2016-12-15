@@ -2,7 +2,6 @@
 
 .c-durationpicker {
   left: 0;
-  pointer-events: none;
   position: absolute;
   top: 0;
   transform: translate(15px, 0);
@@ -18,6 +17,7 @@
     justify-content: space-between;
     min-width: 85px;
     padding: 4px;
+    position: relative;
 
     > .c-durationpicker-text {
       color: $color-4;
@@ -26,11 +26,51 @@
     }
 
     > .icon-settings  {
+      cursor: pointer;
       height: 12px;
       width: 12px;
 
       > path {
         fill: $color-3;
+      }
+    }
+
+    > .setttings-panel {
+      background-color: rgba($color-1, .9);
+      bottom: 27px;
+      left: -31px;
+      padding: 10px 5px;
+      position: absolute;
+
+      &::before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba($color-1, .9);
+        bottom: -6px;
+
+        content: '';
+        display: inline-block;
+        height: 0;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, 0);
+
+        width: 0;
+      }
+    }
+
+    > .setttings-panel > .settings-list {
+
+      > .settings-item {
+        color: $color-4;
+        cursor: pointer;
+        font-size: $font-size-xxs-small;
+        padding: 5px 10px;
+        text-align: center;
+
+        &:hover {
+          background-color: rgba($color-3, .6);
+        }
       }
     }
   }
