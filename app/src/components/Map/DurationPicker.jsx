@@ -32,6 +32,33 @@ class DurationPicker extends Component {
     return `${extentPx[0]}px`;
   }
 
+  setTimeRange(event) {
+    const rangeTime = event.currentTarget.getAttribute('data-range');
+    const now = moment();
+    let limitTime;
+
+    switch (rangeTime) {
+      case '1 week':
+        limitTime = moment().add(1, 'week');
+        break;
+      case '15 days':
+        limitTime = moment().add(15, 'days');
+        break;
+
+      case '1 month':
+        limitTime = moment().add(1, 'month');
+        break;
+
+      case '3 months':
+        limitTime = moment().add(3, 'months');
+        break;
+      default:
+        limitTime = moment();
+    }
+
+    this.props.onTimeRangeSelected(limitTime.diff(now));
+  }
+
   toggleSettingsMenu() {
     this.setState({
       showSettingsMenu: !this.state.showSettingsMenu
@@ -56,10 +83,10 @@ class DurationPicker extends Component {
         {this.state.showSettingsMenu &&
           <div className={css['setttings-panel']}>
             <ul className={css['settings-list']}>
-              <li className={css['settings-item']}>1 week</li>
-              <li className={css['settings-item']}>15 days</li>
-              <li className={css['settings-item']}>1 month</li>
-              <li className={css['settings-item']}>3 months</li>
+              <li className={css['settings-item']} data-range="1 week" onClick={(e) => this.setTimeRange(e)}>1 week</li>
+              <li className={css['settings-item']} data-range="15 days" onClick={(e) => this.setTimeRange(e)}>15 days</li>
+              <li className={css['settings-item']} data-range="1 month" onClick={(e) => this.setTimeRange(e)}>1 month</li>
+              <li className={css['settings-item']} data-range="3 months" onClick={(e) => this.setTimeRange(e)}>3 months</li>
             </ul>
           </div>
         }
@@ -75,7 +102,8 @@ class DurationPicker extends Component {
 
 DurationPicker.propTypes = {
   extent: React.PropTypes.array,
-  extentPx: React.PropTypes.array
+  extentPx: React.PropTypes.array,
+  onTimeRangeSelected: React.PropTypes.func
 };
 
 export default DurationPicker;

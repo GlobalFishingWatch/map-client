@@ -494,6 +494,19 @@ class Timebar extends Component {
     this.props.updateTimelineOverDates([new Date(0), new Date(0)]);
   }
 
+  onTimeRangeSelected(rangeTime) {
+    const currentStarDate = this.props.filters.timelineInnerExtent[0];
+    const nextEndDate = moment(currentStarDate).add(rangeTime, 'milliseconds')._d; // not sure about this...
+
+    const newExtentPx = this.getPxExtent([currentStarDate, nextEndDate]);
+    this.redrawInnerBrushCircles(newExtentPx);
+
+    const newExtent = this.getExtent(newExtentPx);
+    this.redrawInnerBrush(newExtent);
+
+    this.props.updateInnerTimelineDates(newExtent);
+  }
+
   render() {
     const dateFormat = 'DD MMM YYYY';
     const startDateText = window.innerWidth < 1024 ? ' start' : 'start date';
@@ -540,6 +553,7 @@ class Timebar extends Component {
           <DurationPicker
             extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
+            onTimeRangeSelected={(rangeTime) => this.onTimeRangeSelected(rangeTime)}
           />
         </div>
       </div>
