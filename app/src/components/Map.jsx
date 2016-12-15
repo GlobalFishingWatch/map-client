@@ -2,6 +2,7 @@
 /* eslint-disable max-len  */
 
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'constants';
@@ -20,6 +21,11 @@ import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 
 import extentChanged from 'util/extentChanged';
+
+import iconStyles from 'styles/icons.scss';
+
+import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
+
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
@@ -568,7 +574,9 @@ class Map extends Component {
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
-          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>S</span>
+          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
+            <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
+          </span>
           <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>+</span>
           <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>-</span>
         </div>
