@@ -99,7 +99,7 @@ class Header extends Component {
               </Link>
 
               <ShareIcon
-                className={classnames(iconStyles.icon, styles['share-icon'])}
+                className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
                 onClick={this.props.openShareModal}
               />
               {/* TEMPORARILY REMOVE SHARE BUTTON
