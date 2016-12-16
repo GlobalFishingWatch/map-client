@@ -61,7 +61,8 @@ class Timebar extends Component {
     this.onPauseToggle = this.onPauseToggle.bind(this);
     this.onMouseOver = this.onMouseOver.bind(this);
     this.state = {
-      innerExtentPx: [0, 100]  // used only by durationPicker
+      innerExtentPx: [0, 100],  // used only by durationPicker
+      durationPickerExtent: props.filters.timelineInnerExtent
     };
   }
 
@@ -557,7 +558,7 @@ class Timebar extends Component {
           id="timeline_svg_container"
         >
           <DurationPicker
-            extent={this.props.filters.timelineInnerExtent}
+            extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
             onTimeRangeSelected={(rangeTime) => this.onTimeRangeSelected(rangeTime)}
           />
