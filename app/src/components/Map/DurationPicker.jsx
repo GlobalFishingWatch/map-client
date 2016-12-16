@@ -58,6 +58,7 @@ class DurationPicker extends Component {
         (<li
           className={css['settings-item']}
           data-index={i}
+          key={i}
           onClick={(e) => this.setTimeRange(e)}
         >{duration.humanize()}</li>)
       );
