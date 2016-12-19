@@ -14,9 +14,9 @@
     border-top-right-radius: 4px;
     display: flex;
     height: $duration-picker-height;
-    justify-content: space-between;
+    justify-content: center;
     min-width: 85px;
-    padding: 4px;
+    padding: 4px 4px 4px 18px;
     position: relative;
 
     > .c-durationpicker-text {
@@ -28,6 +28,8 @@
     > .icon-settings  {
       cursor: pointer;
       height: 12px;
+      left: 5px;
+      position: absolute;
       width: 12px;
 
       > path {
