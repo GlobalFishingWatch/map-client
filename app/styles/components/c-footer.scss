@@ -13,7 +13,7 @@
     transform: translate(0, 0);
     transition: max-height .25s ease, transform .25s ease;
     width: 100%;
-    z-index: 100;
+    z-index: 102;
 
     .scroll-container {
       max-height: 0;
@@ -353,5 +353,5 @@
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 102;
 }
