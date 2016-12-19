@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP / 4; // 1 day
@@ -66,6 +68,14 @@ export const PLAYBACK_PRECISION = 86400000;
 // radius of vessels lookup in pixels,
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 2;
+
+// time range options in the duration picker menu
+export const DURATION_PICKER_OPTIONS = [
+  moment.duration(1, 'week'),
+  moment.duration(15, 'days'),
+  moment.duration(1, 'month'),
+  moment.duration(3, 'months')
+];
 
 export const FLAGS = {
   0: 'AD',

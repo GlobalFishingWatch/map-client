@@ -1,4 +1,5 @@
 /* eslint react/sort-comp:0 */
+/* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
@@ -9,6 +10,7 @@ import extentChanged from 'util/extentChanged';
 import DatePicker from 'components/Map/DatePicker';
 import TogglePauseButton from 'components/Map/TogglePauseButton';
 import DurationPicker from 'components/Map/DurationPicker';
+import moment from 'moment';
 
 let width;
 let height;
@@ -76,7 +78,7 @@ class Timebar extends Component {
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     this.setState({
-      durationPickerExtent: this.props.filters.timelineInnerExtent
+      durationPickerExtent: newInnerExtent
     });
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);
@@ -114,6 +116,7 @@ class Timebar extends Component {
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
     const durationPickerHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
+
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -491,7 +494,34 @@ class Timebar extends Component {
     this.props.updateTimelineOverDates([new Date(0), new Date(0)]);
   }
 
+  onTimeRangeSelected(rangeTimeMs) {
+    let currentStartDate = this.props.filters.timelineInnerExtent[0];
+    let nextEndDate = new Date(currentStartDate.getTime() + rangeTimeMs);
+
+    // if the predefined range time selection overrides timebar limits...
+    if (this.props.filters.timelineOuterExtent[1] < nextEndDate) {
+      nextEndDate = this.props.filters.timelineOuterExtent[1];
+      currentStartDate = new Date(nextEndDate.getTime() - rangeTimeMs);
+    }
+
+    const newExtentPx = this.getPxExtent([currentStartDate, nextEndDate]);
+    this.redrawInnerBrushCircles(newExtentPx);
+
+    const newExtent = this.getExtent(newExtentPx);
+    this.redrawInnerBrush(newExtent);
+
+    this.props.updateInnerTimelineDates(newExtent);
+  }
+
   render() {
+    const dateFormat = 'DD MMM YYYY';
+    const startDateText = window.innerWidth < 1024 ? ' start' : 'start date';
+    const endDateText = window.innerWidth < 1024 ? 'end' : 'end date';
+
+    const startDate = moment(this.props.filters.startDate).format(dateFormat);
+    const endDate = moment(this.props.filters.endDate).format(dateFormat);
+
+
     return (
       <div className={timebarCss['c-timebar']}>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
@@ -501,7 +531,8 @@ class Timebar extends Component {
             maxDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
           >
-            Start<br />Date
+            {startDateText}
+            {startDate}
           </DatePicker>
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
@@ -511,7 +542,8 @@ class Timebar extends Component {
             maxDate={this.props.filters.timelineOverallExtent[1]}
             onChange={this.onEndDatePickerChange}
           >
-            End<br />date
+            {endDateText}
+            {endDate}
           </DatePicker>
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>
@@ -528,6 +560,7 @@ class Timebar extends Component {
           <DurationPicker
             extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
+            onTimeRangeSelected={(rangeTime) => this.onTimeRangeSelected(rangeTime)}
           />
         </div>
       </div>

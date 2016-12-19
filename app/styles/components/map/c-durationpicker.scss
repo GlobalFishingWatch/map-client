@@ -1,23 +1,75 @@
 @import '../../settings';
 
 .c-durationpicker {
-  background-color: $color-1;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  color: $color-4;
-  font-size: $font-size-x-small;
-  height: $duration-picker-height;
   left: 0;
-  min-width: 100px;
-  pointer-events: none;
   position: absolute;
-  text-align: center;
   top: 0;
   transform: translate(15px, 0);
   z-index: 5;
 
-  .c-durationpicker-text {
-    display: inline-block;
-    margin-top: 4px;
+  > .container {
+    align-items: center;
+    background-color: $color-19;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    height: $duration-picker-height;
+    justify-content: center;
+    min-width: 85px;
+    padding: 4px 4px 4px 18px;
+    position: relative;
+
+    > .c-durationpicker-text {
+      color: $color-4;
+      font-size: $font-size-xxs-small;
+      text-transform: uppercase;
+    }
+
+    > .icon-settings  {
+      cursor: pointer;
+      height: 12px;
+      left: 5px;
+      position: absolute;
+      width: 12px;
+    }
+
+    > .setttings-panel {
+      background-color: rgba($color-1, .9);
+      bottom: 27px;
+      left: -31px;
+      padding: 10px 5px;
+      position: absolute;
+
+      &::before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba($color-1, .9);
+        bottom: -6px;
+
+        content: '';
+        display: inline-block;
+        height: 0;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, 0);
+
+        width: 0;
+      }
+    }
+
+    > .setttings-panel > .settings-list {
+
+      > .settings-item {
+        color: $color-4;
+        cursor: pointer;
+        font-size: $font-size-xxs-small;
+        padding: 5px 10px;
+        text-align: center;
+
+        &:hover {
+          background-color: rgba($color-3, .6);
+        }
+      }
+    }
   }
 }
