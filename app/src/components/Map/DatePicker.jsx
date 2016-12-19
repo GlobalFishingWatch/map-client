@@ -3,13 +3,13 @@ import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'styles/components/map/c-datepicker.scss';
+import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
 
 class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
   }
-
 
   onChange(m) {
     // convert moment to date
@@ -28,8 +28,8 @@ class DatePicker extends Component {
         <ReactDatePicker
           fixedHeight
           selected={moment(this.props.selected)}
-          minDate={moment(this.props.minDate)}
-          maxDate={moment(this.props.maxDate)}
+          minDate={TIMELINE_OVERALL_START_DATE}
+          maxDate={TIMELINE_OVERALL_END_DATE}
           onChange={this.onChange}
         />
       </div>

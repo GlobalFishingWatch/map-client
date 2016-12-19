@@ -521,14 +521,11 @@ class Timebar extends Component {
     const startDate = moment(this.props.filters.startDate).format(dateFormat);
     const endDate = moment(this.props.filters.endDate).format(dateFormat);
 
-
     return (
       <div className={timebarCss['c-timebar']}>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
             selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[0]}
-            minDate={this.props.filters.timelineOverallExtent[0]}
-            maxDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[0]}
             onChange={this.onStartDatePickerChange}
           >
             {startDateText}
@@ -538,8 +535,6 @@ class Timebar extends Component {
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
             selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[1]}
-            minDate={this.props.filters.timelineInnerExtent && this.props.filters.timelineInnerExtent[1]}
-            maxDate={this.props.filters.timelineOverallExtent[1]}
             onChange={this.onEndDatePickerChange}
           >
             {endDateText}
