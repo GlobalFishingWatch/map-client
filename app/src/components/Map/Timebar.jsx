@@ -10,7 +10,6 @@ import extentChanged from 'util/extentChanged';
 import DatePicker from 'components/Map/DatePicker';
 import TogglePauseButton from 'components/Map/TogglePauseButton';
 import DurationPicker from 'components/Map/DurationPicker';
-import moment from 'moment';
 
 let width;
 let height;
@@ -473,6 +472,9 @@ class Timebar extends Component {
 
   onStartDatePickerChange(startDate) {
     this.props.updateOuterTimelineDates([startDate, this.props.filters.timelineOuterExtent[1]]);
+    this.setState({
+      durationPicker: [startDate, this.props.filters.timelineOuterExtent[1]]
+    });
   }
 
   onEndDatePickerChange(endDate) {
@@ -514,32 +516,21 @@ class Timebar extends Component {
   }
 
   render() {
-    const dateFormat = 'DD MMM YYYY';
-    const startDateText = window.innerWidth < 1024 ? ' start' : 'start date';
-    const endDateText = window.innerWidth < 1024 ? 'end' : 'end date';
-
-    const startDate = moment(this.props.filters.startDate).format(dateFormat);
-    const endDate = moment(this.props.filters.endDate).format(dateFormat);
-
     return (
       <div className={timebarCss['c-timebar']}>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
             selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[0]}
             onChange={this.onStartDatePickerChange}
-          >
-            {startDateText}
-            {startDate}
-          </DatePicker>
+            literalDate={window.innerWidth < 1024 ? ' start' : 'start date'}
+          />
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
           <DatePicker
             selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[1]}
             onChange={this.onEndDatePickerChange}
-          >
-            {endDateText}
-            {endDate}
-          </DatePicker>
+            literalDate={window.innerWidth < 1024 ? 'end' : 'end date'}
+          />
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>
           <TogglePauseButton
