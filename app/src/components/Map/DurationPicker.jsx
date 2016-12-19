@@ -80,15 +80,24 @@ class DurationPicker extends Component {
   }
 
   render() {
+    let filterFunc = null;
     const humanizedDuration = this.getHumanizedDuration(this.state.extent);
     const style = {
       width: this.getWidth(this.props.extentPx),
       left: this.getLeft(this.props.extentPx)
     };
 
+    // filters predefined time ranges to avoid overlapping the whole timebar
+    // when its range is lesser than the available options
+    if (this.props.timelineOuterExtent) {
+      const diffTime = moment.duration(this.props.timelineOuterExtent[1] - this.props.timelineOuterExtent[0]);
+      filterFunc = (duration) => moment.duration(diffTime) >= duration;
+    }
+
     let durations;
     if (this.state.showSettingsMenu) {
-      durations = DURATION_PICKER_OPTIONS.map((duration, i) =>
+      durations = DURATION_PICKER_OPTIONS.filter(filterFunc)
+      .map((duration, i) =>
         (<li
           className={css['settings-item']}
           data-index={i}
@@ -129,6 +138,7 @@ class DurationPicker extends Component {
 DurationPicker.propTypes = {
   extent: React.PropTypes.array,
   extentPx: React.PropTypes.array,
+  timelineOuterExtent: React.PropTypes.array,
   onTimeRangeSelected: React.PropTypes.func
 };
 
