@@ -6,7 +6,7 @@ import { DURATION_PICKER_OPTIONS } from 'constants';
 import css from 'styles/components/map/c-durationpicker.scss';
 import iconStyles from 'styles/icons.scss';
 
-import SetttingsIcon from 'babel!svg-react!assets/icons/duration_settings.svg?name=SetttingsIcon';
+import SettingsIcon from 'assets/icons/duration_settings.svg';
 
 class DurationPicker extends Component {
 
@@ -16,12 +16,28 @@ class DurationPicker extends Component {
     this.state = {
       showSettingsMenu: false
     };
+
+    this.hideSettingsPanelBinded = this.hideSettingsPanel.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       extent: nextProps.extent
     });
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState === this.state) return;
+
+    if (nextState.showSettingsMenu) {
+      this.setEventListeners();
+    } else {
+      this.removeEventListeners();
+    }
+  }
+
+  setEventListeners() {
+    document.querySelector('body').addEventListener('click', this.hideSettingsPanelBinded);
   }
 
   getHumanizedDuration(extent) {
@@ -45,9 +61,21 @@ class DurationPicker extends Component {
     this.props.onTimeRangeSelected(duration.asMilliseconds());
   }
 
+  removeEventListeners() {
+    document.querySelector('body').removeEventListener('click', this.hideSettingsPanelBinded);
+  }
+
   toggleSettingsMenu() {
     this.setState({
       showSettingsMenu: !this.state.showSettingsMenu
+    });
+  }
+
+  hideSettingsPanel(event) {
+    if (!this.el || this.svg.contains(event.target) || this.el.contains(event.target)) return;
+
+    this.setState({
+      showSettingsMenu: false
     });
   }
 
@@ -73,13 +101,16 @@ class DurationPicker extends Component {
     return (
       <div style={style} className={css['c-durationpicker']}>
         <div className={css.container}>
-          <SetttingsIcon
+          <img
+            alt="settings duration"
+            src={SettingsIcon}
             className={classnames(iconStyles.icon, css['icon-settings'])}
             onClick={() => this.toggleSettingsMenu()}
+            ref={(elem) => { this.svg = elem; }}
           />
 
         {this.state.showSettingsMenu &&
-          <div className={css['setttings-panel']}>
+          <div className={css['setttings-panel']} ref={(elem) => { this.el = elem; }}>
             <ul className={css['settings-list']}>
               {durations}
             </ul>

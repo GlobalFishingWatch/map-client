@@ -113,7 +113,7 @@ class Timebar extends Component {
     );
     const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
     leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
-    width = parseInt(computedStyles.width, 10);
+    width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
     const durationPickerHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
 
