@@ -78,7 +78,7 @@ class Timebar extends Component {
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     this.setState({
-      durationPickerExtent: this.props.filters.timelineInnerExtent
+      durationPickerExtent: newInnerExtent
     });
     if (extentChanged(this.props.filters.timelineInnerExtent, newInnerExtent)) {
       this.redrawInnerBrush(newInnerExtent);

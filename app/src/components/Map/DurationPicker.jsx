@@ -18,6 +18,12 @@ class DurationPicker extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      extent: nextProps.extent
+    });
+  }
+
   getHumanizedDuration(extent) {
     if (!extent) return '';
     const innerDelta = moment(extent[1])
@@ -46,7 +52,7 @@ class DurationPicker extends Component {
   }
 
   render() {
-    const humanizedDuration = this.getHumanizedDuration(this.props.extent);
+    const humanizedDuration = this.getHumanizedDuration(this.state.extent);
     const style = {
       width: this.getWidth(this.props.extentPx),
       left: this.getLeft(this.props.extentPx)
