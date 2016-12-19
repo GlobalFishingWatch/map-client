@@ -30,6 +30,7 @@ class DatePicker extends Component {
 
   render() {
     const stringDate = this.state.selected ? moment(this.state.selected).format('DD MMM YYYY') : '-';
+    const minDate = this.props.minDate ? moment(this.props.minDate).add(1, 'day') : TIMELINE_OVERALL_START_DATE;
 
     return (
       <div className="c-datepicker">
@@ -42,7 +43,7 @@ class DatePicker extends Component {
         <ReactDatePicker
           fixedHeight
           selected={moment(this.props.selected)}
-          minDate={TIMELINE_OVERALL_START_DATE}
+          minDate={minDate}
           maxDate={TIMELINE_OVERALL_END_DATE}
           onChange={this.onChange}
         />

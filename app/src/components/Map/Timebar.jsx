@@ -530,6 +530,7 @@ class Timebar extends Component {
             selected={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[1]}
             onChange={this.onEndDatePickerChange}
             literalDate={window.innerWidth < 1024 ? 'end' : 'end date'}
+            minDate={this.props.filters.timelineOuterExtent && this.props.filters.timelineOuterExtent[0]}
           />
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>
