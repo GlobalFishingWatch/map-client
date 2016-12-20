@@ -1,19 +1,12 @@
 @import '../../settings';
 
 .c-no-login {
-  font-family: $font-family-1;
-  position: relative;
   text-align: center;
 
   > .back {
+    color: $color-4;
     font-size: $font-size-x-small;
-    left: -30px;
-    position: absolute;
-    top: -30px;
-
-    > a  {
-      color: $color-4;
-    }
+    margin: 25px 0 0;
   }
 
   > .title {
@@ -22,22 +15,18 @@
     margin-bottom: 10px;
   }
 
-  > .content {
-    color: $color-4;
-    margin: 10px 0;
-  }
-
   a {
     color: $color-4;
     cursor: pointer;
     display: inline-block;
+    line-height: 1.2;
 
     &::after {
       background-color: $color-6;
       content: '';
       display: block;
       height: 1px;
-      margin-top: 1px;
+      margin: 1px 0 0;
     }
   }
 }

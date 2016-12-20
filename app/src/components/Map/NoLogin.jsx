@@ -7,14 +7,12 @@ class NoLogin extends Component {
   render() {
     return (
       <div className={styles['c-no-login']}>
-        <p className={styles.back}>
-          <Link to="/">￩ Visit Home Page</Link>
-        </p>
         <h2 className={styles.title}>Login required</h2>
-        <p className={styles.content}>
+        <div className={styles.content}>
           To view the Map, you must have a user account. Click{' '}
           <a onClick={this.props.login}>here</a> to login or register.
-        </p>
+        </div>
+        <Link to="/" className={styles.back}>Visit Home Page</Link>
       </div>
     );
   }
