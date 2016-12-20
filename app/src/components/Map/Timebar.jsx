@@ -99,6 +99,8 @@ class Timebar extends Component {
   }
 
   componentWillUnmount() {
+    if (!this.svg) return;
+
     outerBrushHandleLeft.on('mousedown', null);
     outerBrushHandleRight.on('mousedown', null);
     d3.select('body').on('mousemove', null);
