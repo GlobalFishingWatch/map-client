@@ -30,13 +30,15 @@
       height: 12px;
       left: 5px;
       position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
       width: 12px;
     }
 
     > .setttings-panel {
       background-color: rgba($color-1, .9);
       bottom: 27px;
-      left: -31px;
+      left: -30px;
       min-width: 84px;
       padding: 10px 5px;
       position: absolute;
