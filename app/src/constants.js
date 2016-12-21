@@ -4,8 +4,9 @@ import moment from 'moment';
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP / 4; // 1 day
 
-// end date is today minus 3 days, see filters reducer
+// end date is today minus 3 days
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
+export const TIMELINE_OVERALL_END_DATE = moment().subtract(3, 'days').toDate();
 
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months

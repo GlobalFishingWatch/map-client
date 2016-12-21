@@ -8,22 +8,35 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+
+    this.state = {};
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selected: nextProps.selected
+    });
+  }
 
   onChange(m) {
     // convert moment to date
     this.props.onChange(m.clone().toDate());
+
+    this.setState({
+      selected: m
+    });
   }
 
   render() {
+    const stringDate = this.state.selected ? moment(this.state.selected).format('DD MMM YYYY') : '-';
+
     return (
       <div className="c-datepicker">
         <div className="c-datepicker-title">
-          {this.props.children[0]}
+          {this.props.literalDate}
         </div>
         <div className="datepicker-date">
-          {this.props.children[1]}
+          {stringDate}
         </div>
         <ReactDatePicker
           fixedHeight
@@ -39,7 +52,10 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = {
   onChange: React.PropTypes.func,
-  children: React.PropTypes.array,
+  /**
+  * title of the datepicker
+  */
+  literalDate: React.PropTypes.string,
   /**
    * Current  date set (a Date object)
    */

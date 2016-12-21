@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
@@ -7,11 +6,12 @@ import {
   SET_TIMELINE_OVER_DATES
 } from 'actions';
 import {
-  TIMELINE_OVERALL_START_DATE
+  TIMELINE_OVERALL_START_DATE,
+  TIMELINE_OVERALL_END_DATE
 } from 'constants';
 
 const initialState = {
-  timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, moment().subtract(3, 'days').toDate()],
+  timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
   timelinePaused: true,
   flag: ''
 };
