@@ -135,6 +135,7 @@ export default class VesselsLayer {
     if (data.length) {
       const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
       const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
+      /* eslint no-console:0 */
       console.table(bins.filter(bin => bin.length).map(bin => {
         const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
         const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
