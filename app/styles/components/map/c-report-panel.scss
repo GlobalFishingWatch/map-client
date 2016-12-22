@@ -65,13 +65,13 @@
     transition: max-height .25s ease;
 
     &.-expanded {
-      max-height: 220px;
+      max-height: 270px;
     }
   }
 
   > .container > .content {
     background-color: $color-4;
-    padding: 20px 30px;
+    padding: 20px 0 20px 30px;
 
     > .polygon-list {
       max-height: 100px;
@@ -86,15 +86,53 @@
       align-items: center;
       display: flex;
       justify-content: space-between;
+      position: relative;
 
       &:not(:first-child) {
-        margin: 10px 0 0;
+        margin: 15px 0 0;
+      }
+
+      &:first-child {
+        padding: 10px 0 0;
+      }
+
+      &:last-child {
+        padding: 0 0 10px;
       }
 
       > .polygon-name {
         color: $color-1;
         font-size: $font-size-xxs-small;
         text-transform: uppercase;
+      }
+
+      > .polygon-remove {
+        display: inline-flex;
+        position: absolute;
+        right: 28px;
+
+        &:hover {
+          &::before {
+            background-color: rgba($color-3, .4);
+            border-radius: 50%;
+            content: '';
+            display: inline-block;
+            height: 31px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 31px;
+          }
+        }
+
+        > .icon-remove-polygon {
+          cursor: pointer;
+          fill: $color-7;
+          height: 16px;
+          position: relative;
+          width: 10px;
+        }
       }
     }
   }

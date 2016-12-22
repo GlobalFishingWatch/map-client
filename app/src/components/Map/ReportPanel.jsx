@@ -3,7 +3,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
+import iconStyles from 'styles/icons.scss';
 import ReportPanelStyles from 'styles/components/map/c-report-panel.scss';
+
+import RemovePolygonIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=RemovePolygonIcon';
 
 class ReportPanel extends Component {
 
@@ -54,7 +57,13 @@ class ReportPanel extends Component {
         polygonItems.push((
           <li className={ReportPanelStyles['polygon-item']} key={polygon.id}>
             <span className={ReportPanelStyles['polygon-name']}>{polygon.name}</span>
-            <span id={polygon.id} className={ReportPanelStyles['polygon-remove']}></span>
+            <span className={ReportPanelStyles['polygon-remove']}>
+              <RemovePolygonIcon
+                className={classnames(iconStyles.icon, ReportPanelStyles['icon-remove-polygon'])}
+                id={polygon.id}
+                onClick={(e) => this.onRemovePolygon(e)}
+              />
+            </span>
           </li>
         ))
       ));
