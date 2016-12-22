@@ -1,0 +1,76 @@
+@import '../../settings';
+@import '../../mixins';
+
+.c-report-panel {
+  bottom: calc(#{$timebar-height} + #{$map-footer-height});
+  position: absolute;
+  right: 0;
+  z-index: 105;
+
+  > .menu {
+    align-items: center;
+    background-color: $color-13;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 25px 16px 30px;
+  }
+
+  > .menu > .report-total {
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
+
+  > .menu > .toggle {
+    @include arrow(12px, 2px, $color-4, 'down');
+    cursor: pointer;
+    position: absolute;
+    right: 27px;
+    top: 22px;
+    transform: translate(0, -50%) rotate(45deg);
+    transform-origin: center;
+    transition: transform .25s ease;
+
+    &.-expand {
+      transform: translate(0, -50%) rotate(-135deg);
+    }
+  }
+
+  > .content {
+    background-color: $color-4;
+    padding: 30px;
+  }
+
+  > .content > .polygon-list > .polygon-item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+
+    > .polygon-name {
+      color: $color-1;
+      font-size: $font-size-xxs-small;
+      text-transform: uppercase;
+    }
+  }
+
+  > .report-options > .report-button {
+    background-color: $color-4;
+    border-top: 1px solid rgba($color-19, .3);
+    color: $color-19;
+    cursor: pointer;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    padding: 15px 30px;
+    text-transform: uppercase;
+
+    &:not(:first-child) {
+      border-left: 1px solid rgba($color-19, .3);
+    }
+  }
+}
