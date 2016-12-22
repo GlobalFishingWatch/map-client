@@ -1,25 +1,46 @@
 @import '../../settings';
 
 .c-no-login {
-  text-align: center;
-
-  > .back {
-    color: $color-4;
-    font-size: $font-size-x-small;
-    margin: 25px 0 0;
-  }
 
   > .title {
-    font-size: $font-size-x-medium;
-    font-weight: $font-weight-normal;
-    margin-bottom: 10px;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-bold;
+    margin: 0 0 10px;
+    text-align: center;
   }
 
-  a {
+  > .content {
+    text-align: center;
+  }
+
+  > .content > p {
+    color: $color-4;
+    font-size: $font-size-x-small;
+
+    &.paragraph-back {
+      font-size: $font-size-small;
+      line-height: 1.2;
+    }
+  }
+
+  > .content > .btn-action {
+    background-color: $color-3;
+    border: 0;
     color: $color-4;
     cursor: pointer;
     display: inline-block;
-    line-height: 1.2;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    margin: 35px 0;
+    padding: 10px 25px;
+    text-transform: uppercase;
+  }
+
+  > .content .back {
+    color: $color-4;
+    cursor: pointer;
+    display: inline-block;
 
     &::after {
       background-color: $color-6;
