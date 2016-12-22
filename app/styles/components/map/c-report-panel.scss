@@ -2,15 +2,29 @@
 @import '../../mixins';
 
 .c-report-panel {
-  bottom: calc(#{$timebar-height} + #{$map-footer-height});
+  left: 0;
   position: absolute;
-  right: 0;
+  top: calc(#{$header-height} + #{$accordion-mobile-height});
   transform: translate(0, 0);
   transition: transform .25s ease;
-  z-index: 5;
+  width: 100%;
+  z-index: 103;
+
+  @media #{$mq-mobile-large} {
+    bottom: calc(#{$timebar-height} + #{$map-footer-height});
+    left: auto;
+    min-width: 320px;
+    right: 0;
+    top: auto;
+    width: auto;
+  }
 
   &.-minimized {
-    transform: translate(0, calc(100% - #{$report-panel-menu-height}));
+    transform: translate(0, calc(-100% - #{$report-panel-menu-height}));
+
+    @media #{$mq-mobile-large} {
+      transform: translate(0, calc(100% - #{$report-panel-menu-height}));
+    }
   }
 
   > .menu {
@@ -45,28 +59,47 @@
     }
   }
 
-  > .content {
+  > .container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+
+    &.-expanded {
+      max-height: 220px;
+    }
+  }
+
+  > .container > .content {
     background-color: $color-4;
-    padding: 30px;
-  }
+    padding: 20px 30px;
 
-  > .content > .polygon-list > .polygon-item {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
+    > .polygon-list {
+      max-height: 100px;
+      overflow-y: auto;
 
-    &:not(:first-child) {
-      margin: 10px 0 0;
+      @media #{$mq-desktop} {
+        max-height: 200px;
+      }
     }
 
-    > .polygon-name {
-      color: $color-1;
-      font-size: $font-size-xxs-small;
-      text-transform: uppercase;
+    > .polygon-list > .polygon-item {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      &:not(:first-child) {
+        margin: 10px 0 0;
+      }
+
+      > .polygon-name {
+        color: $color-1;
+        font-size: $font-size-xxs-small;
+        text-transform: uppercase;
+      }
     }
   }
 
-  > .report-options > .report-button {
+  > .container > .report-options > .report-button {
     background-color: $color-4;
     border-top: 1px solid rgba($color-19, .3);
     color: $color-19;
@@ -74,8 +107,9 @@
     font-size: $font-size-x-small;
     font-weight: $font-weight-bold;
     letter-spacing: -.1px;
-    padding: 15px 30px;
+    padding: 15px 0;
     text-transform: uppercase;
+    width: 50%;
 
     &:not(:first-child) {
       border-left: 1px solid rgba($color-19, .3);

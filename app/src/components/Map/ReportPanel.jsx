@@ -40,8 +40,11 @@ class ReportPanel extends Component {
 
     if (!this.state.visible) return null;
 
-    const panelClass = this.state.expanded ?
-      ReportPanelStyles['c-report-panel'] : classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']);
+    const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
+      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']) : ReportPanelStyles['c-report-panel'];
+
+    const containerClass = this.state.expanded && window.innerWidth < 1024 ?
+      ReportPanelStyles.container : classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']);
 
     const toggleClass = this.state.expanded ?
       ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles['-expanded']);
@@ -63,15 +66,17 @@ class ReportPanel extends Component {
           <span className={ReportPanelStyles['report-total']}>{this.props.polygons.length} layers added</span>
           <span className={toggleClass} onClick={() => this.onTogglePanel()} />
         </div>
-        <div className={ReportPanelStyles.content}>
-          {this.props.polygons.length &&
-            <ul className={ReportPanelStyles['polygon-list']}>
-              {polygonItems}
-            </ul>}
-        </div>
-        <div className={ReportPanelStyles['report-options']}>
-          <button className={ReportPanelStyles['report-button']}>send report</button>
-          <button className={ReportPanelStyles['report-button']}>discard</button>
+        <div className={containerClass}>
+          <div className={ReportPanelStyles.content}>
+            {this.props.polygons.length &&
+              <ul className={ReportPanelStyles['polygon-list']}>
+                {polygonItems}
+              </ul>}
+          </div>
+          <div className={ReportPanelStyles['report-options']}>
+            <button className={ReportPanelStyles['report-button']}>send report</button>
+            <button className={ReportPanelStyles['report-button']}>discard</button>
+          </div>
         </div>
       </div>
     );

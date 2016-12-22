@@ -69,6 +69,19 @@ const initialState = {
       }, {
         id: 'iuoiuo87',
         name: 'Polygon 2'
+      },
+      {
+        id: 'kldshhfgf92',
+        name: 'Polygon 3'
+      }, {
+        id: 'iuoihgjghuo87',
+        name: 'Polygon 4'
+      }, {
+        id: 'kldshdsssf92',
+        name: 'Polygon 5'
+      }, {
+        id: 'iuoiujkhkjhjko87',
+        name: 'Polygon 6'
       }
     ]
   },

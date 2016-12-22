@@ -5,7 +5,7 @@
   display: flex;
   height: 100%;
   position: relative;
-  z-index: 5;
+  z-index: 105;
 
   @media #{$mq-mobile-large} {
     padding: 0 0 0 10px;
