@@ -5,14 +5,22 @@
   bottom: calc(#{$timebar-height} + #{$map-footer-height});
   position: absolute;
   right: 0;
-  z-index: 105;
+  transform: translate(0, 0);
+  transition: transform .25s ease;
+  z-index: 5;
+
+  &.-minimized {
+    transform: translate(0, calc(100% - #{$report-panel-menu-height}));
+  }
 
   > .menu {
     align-items: center;
     background-color: $color-13;
     display: flex;
+    height: $report-panel-menu-height;
     justify-content: space-between;
-    padding: 16px 25px 16px 30px;
+    padding: 0 25px 0 16px;
+    position: relative;
   }
 
   > .menu > .report-total {
@@ -27,12 +35,12 @@
     cursor: pointer;
     position: absolute;
     right: 27px;
-    top: 22px;
+    top: calc(50% - 4px);
     transform: translate(0, -50%) rotate(45deg);
-    transform-origin: center;
     transition: transform .25s ease;
 
-    &.-expand {
+    &.-expanded {
+      top: calc(50% + 4px);
       transform: translate(0, -50%) rotate(-135deg);
     }
   }
