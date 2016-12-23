@@ -52,7 +52,7 @@ class ReportPanel extends Component {
     const toggleClass = this.state.expanded ?
       ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles['-expanded']);
 
-    if (!!this.props.polygons && this.props.polygons.length) {
+    if (this.props.polygons.length) {
       this.props.polygons.map(polygon => (
         polygonItems.push((
           <li className={ReportPanelStyles['polygon-item']} key={polygon.id}>
@@ -83,8 +83,8 @@ class ReportPanel extends Component {
               </ul>}
           </div>
           <div className={ReportPanelStyles['report-options']}>
-            <button className={ReportPanelStyles['report-button']}>send report</button>
-            <button className={ReportPanelStyles['report-button']}>discard</button>
+            <button className={ReportPanelStyles['report-button']} onClick={this.props.onSendReport}>send report</button>
+            <button className={ReportPanelStyles['report-button']} onClick={this.props.onDiscardReport}>discard</button>
           </div>
         </div>
       </div>
@@ -97,8 +97,10 @@ ReportPanel.defaultProps = {
 };
 
 ReportPanel.propTypes = {
-  polygons: React.PropTypes.array,
-  onRemovePolygon: React.PropTypes.func
+  onDiscardReport: React.PropTypes.func,
+  onRemovePolygon: React.PropTypes.func,
+  onSendReport: React.PropTypes.func,
+  polygons: React.PropTypes.array
 };
 
 export default ReportPanel;
