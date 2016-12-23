@@ -14,15 +14,15 @@ class ReportPanel extends Component {
     super(props);
 
     this.state = {
-      visible: this.props.polygons.length,
-      expanded: this.props.polygons.length
+      visible: this.props.polygons.length > 0,
+      expanded: this.props.polygons.length > 0
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      visible: nextProps.polygons.length,
-      expanded: nextProps.polygons.length
+      visible: nextProps.polygons.length > 0,
+      expanded: nextProps.polygons.length > 0
     });
   }
 
@@ -44,10 +44,10 @@ class ReportPanel extends Component {
     if (!this.state.visible) return null;
 
     const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
-      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']) : ReportPanelStyles['c-report-panel'];
+      ReportPanelStyles['c-report-panel'] : classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']);
 
-    const containerClass = this.state.expanded && window.innerWidth < 1024 ?
-      ReportPanelStyles.container : classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']);
+    const containerClass = this.state.expanded && window.innerWidth >= 1024 ?
+      classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']) : ReportPanelStyles.container;
 
     const toggleClass = this.state.expanded ?
       ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles['-expanded']);
@@ -71,9 +71,9 @@ class ReportPanel extends Component {
 
     return (
       <div className={panelClass}>
-        <div className={ReportPanelStyles.menu}>
+        <div className={ReportPanelStyles.menu} onClick={() => this.onTogglePanel()}>
           <span className={ReportPanelStyles['report-total']}>{this.props.polygons.length} layers added</span>
-          <span className={toggleClass} onClick={() => this.onTogglePanel()} />
+          <span className={toggleClass} />
         </div>
         <div className={containerClass}>
           <div className={ReportPanelStyles.content}>

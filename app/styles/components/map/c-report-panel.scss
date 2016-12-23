@@ -30,6 +30,7 @@
   > .menu {
     align-items: center;
     background-color: $color-13;
+    cursor: pointer;
     display: flex;
     height: $report-panel-menu-height;
     justify-content: space-between;
@@ -46,7 +47,6 @@
 
   > .menu > .toggle {
     @include arrow(12px, 2px, $color-4, 'down');
-    cursor: pointer;
     position: absolute;
     right: 27px;
     top: calc(50% - 4px);
