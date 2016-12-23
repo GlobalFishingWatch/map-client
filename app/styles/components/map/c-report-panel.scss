@@ -23,7 +23,7 @@
     transform: translate(0, calc(-100% - #{$report-panel-menu-height}));
 
     @media #{$mq-mobile-large} {
-      transform: translate(0, calc(100% - #{$report-panel-menu-height}));
+      transform: translate(0, 0);
     }
   }
 

@@ -44,9 +44,9 @@ class ReportPanel extends Component {
     if (!this.state.visible) return null;
 
     const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
-      ReportPanelStyles['c-report-panel'] : classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']);
+      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']) : ReportPanelStyles['c-report-panel'];
 
-    const containerClass = this.state.expanded && window.innerWidth >= 1024 ?
+    const containerClass = this.state.expanded ?
       classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']) : ReportPanelStyles.container;
 
     const toggleClass = this.state.expanded ?
