@@ -38,15 +38,12 @@ class Map extends Component {
     super(props);
     this.state = {
       addedLayers: {},
-      lastCenter: null,
-      running: 'stop',
-      currentBasemap: null
+      lastCenter: null
     };
 
     this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
-    this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
     this.onCenterChanged = this.onCenterChanged.bind(this);
@@ -124,7 +121,7 @@ class Map extends Component {
 
     this.updateBasemap(nextProps);
     this.updateLayersState(nextProps);
-    this.updateFiltersState(nextProps);
+    this.updateFlag(nextProps);
 
     if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
       this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
@@ -192,11 +189,10 @@ class Map extends Component {
   }
 
   /**
-   * Handles and propagates filters changes
-   *
+   * Handles flag change
    * @param nextProps
    */
-  updateFiltersState(nextProps) {
+  updateFlag(nextProps) {
     if (!this.vesselsLayer) {
       return;
     }
@@ -207,7 +203,6 @@ class Map extends Component {
     }
   }
 
-  // TODO remove props from this method args
   updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
     if (!this.trackLayer || !data) {
       return;
@@ -261,6 +256,7 @@ class Map extends Component {
     const currentLayers = this.props.map.layers;
     const newLayers = nextProps.map.layers;
     const addedLayers = this.state.addedLayers;
+    console.log(newLayers)
 
     const updatedLayers = newLayers.map(
       (l, i) => {
@@ -271,6 +267,8 @@ class Map extends Component {
         return false;
       }
     );
+    // console.log(addedLayers)
+    // console.log(updatedLayers)
 
     const promises = [];
     let callAddVesselLayer = null;
@@ -299,7 +297,7 @@ class Map extends Component {
 
       switch (newLayer.type) {
         case 'ClusterAnimation':
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i + 2);
+          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           break;
         default:
           promises.push(this.addCartoLayer(newLayer, i + 2));
@@ -314,20 +312,9 @@ class Map extends Component {
 
   /**
    * Creates vessel track layer
-   *
    * @param layerSettings
-   * @param position
    */
   addVesselLayer(layerSettings) {
-    // const canvasLayer = new CanvasLayer(
-    //   position,
-    //   this.map,
-    //   this.props.token,
-    //   this.props.filters,
-    //   this.props.map.vesselTransparency,
-    //   this.props.map.vesselColor,
-    //   layerSettings.visible);
-
     const box = this.refs.mapContainer.getBoundingClientRect();
 
     if (!this.vesselsLayer) {
@@ -427,12 +414,6 @@ class Map extends Component {
     this.map.setOptions({ draggableCursor: 'default' });
   }
 
-  onDragStart() {
-    if (!this.map) {
-      return;
-    }
-  }
-
   onDragEnd() {
     if (!this.map) {
       return;
@@ -505,10 +486,6 @@ class Map extends Component {
 
     // TODO
     // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
-
-    // if (this.state.running !== 'play') {
-    //   this.vesselsLayer.refresh();
-    // }
   }
 
   /**
@@ -528,11 +505,6 @@ class Map extends Component {
 
     // TODO
     this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
-
-    // TODO remove
-    if (this.state.running !== 'play') {
-      this.vesselsLayer.refresh();
-    }
   }
 
   /**
@@ -633,7 +605,6 @@ class Map extends Component {
               onClick={this.onClickMap}
               onMousemove={this.onMouseMove}
               onZoomChanged={this.onZoomChanged}
-              onDragstart={this.onDragStart}
               onDragend={this.onDragEnd}
               onIdle={this.onMapIdle}
               onCenterChanged={this.onCenterChanged}
