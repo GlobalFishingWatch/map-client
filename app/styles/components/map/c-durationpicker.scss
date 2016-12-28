@@ -3,7 +3,7 @@
 .c-durationpicker {
   left: 0;
   position: absolute;
-  top: 0;
+  top: -$duration-picker-height;
   transform: translate(15px, 0);
   z-index: 5;
 

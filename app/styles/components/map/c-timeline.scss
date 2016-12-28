@@ -1,7 +1,6 @@
 @import '../../settings';
 
 .c-timeline {
-  margin-top: -$duration-picker-height;
   position: relative;
   width: 50%;
 
@@ -60,9 +59,8 @@
   .c-timeline-inner-brush-selection {
     fill: $color-4;
     fill-opacity: .2;
-    height: $timebar-height + $duration-picker-height;
+    height: $timebar-height;
     stroke-width: 0;
-    y: -$duration-picker-height;
   }
 
   .c-timeline-outer-brush-circle {
