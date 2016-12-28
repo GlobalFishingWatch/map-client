@@ -1,34 +1,56 @@
 @import '../../settings';
 
-// this component needs crossbrowsing
+input {
+  appearance: none;
+  border: 0;
+}
+
 .c-switcher {
   appearance: none;
-  background: linear-gradient(to bottom, $hsla-begin, $hsla-end), linear-gradient(to right, $color-27 50%, currentColor 50%) 0 0, 5px 0;
-  background-size: 100% 100%, 200% 100%;
   border-radius: 25px;
   cursor: pointer;
-  height: 10px;
+  height: 8px;
   margin: 0 8px 0 0;
   outline: 0;
   padding: 0 10px 0 0;
   position: relative;
-  transition: .15s;
   width: 20px;
 
-  &::after {
-    background: $color-26 linear-gradient($hsla-end, $hsla-begin);
+  &::before {
+    background-color: $color-27;
     border-radius: 25px;
     content: '';
-    display: block;
+    display: inline-block;
+    height: 100%;
+    left: 0;
+    opacity: 1;
+    position: absolute;
+    transition: opacity .2s ease;
+    width: 100%;
+  }
+
+  &::after {
+    background: $color-4;
+    border-radius: 50%;
+    content: '';
+    display: inline-block;
     height: 10px;
     left: 0;
-    position: relative;
-    top: 0;
+    position: absolute;
+    right: auto;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: transform .2s ease;
     width: 10px;
   }
 
   &:checked {
-    background-position: 0 0, 15px 0;
-    padding: 0 0 0 10px;
+    &::before {
+      opacity: 0;
+    }
+
+    &::after {
+      transform: translate(100%, -50%);
+    }
   }
 }
