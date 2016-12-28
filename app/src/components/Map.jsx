@@ -15,6 +15,7 @@ import Timebar from 'containers/Map/Timebar';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
+import ReportPanel from 'containers/Map/ReportPanel';
 
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
@@ -640,6 +641,7 @@ class Map extends Component {
           }
         />
       </div>
+      <ReportPanel />
       <div className={mapCss['timebar-container']}>
         <Timebar />
       </div>

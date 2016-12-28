@@ -112,12 +112,11 @@ class Timebar extends Component {
       this.props.filters.timelineOverallExtent[0],
       this.props.filters.timelineOverallExtent[1]
     );
-    const computedStyles = window.getComputedStyle(document.getElementById('timeline_svg_container'));
-    leftOffset = document.getElementById('timeline_svg_container').offsetLeft;
+    const container = d3.select('#timeline_svg_container');
+    const computedStyles = window.getComputedStyle(container.node());
+    leftOffset = container.node().offsetLeft;
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
-    const durationPickerHeight = Math.abs(parseInt(computedStyles.marginTop, 10));
-
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
@@ -132,12 +131,12 @@ class Timebar extends Component {
     x.domain(this.props.filters.timelineOverallExtent);
     y.domain([0, d3.max(dummyData.map(d => d.price))]);
 
-    this.svg = d3.select('#timeline_svg_container').append('svg')
+    this.svg = container.append('svg')
       .attr('width', width + 34)
-      .attr('height', height + durationPickerHeight);
+      .attr('height', height);
 
     this.group = this.svg.append('g')
-      .attr('transform', `translate(${X_OVERFLOW_OFFSET},${durationPickerHeight})`);
+      .attr('transform', `translate(${X_OVERFLOW_OFFSET}, 0)`);
 
     this.group.append('path')
       .datum(dummyData)
@@ -161,10 +160,9 @@ class Timebar extends Component {
     outerBrushHandleRight = this.createOuterHandle();
 
     this.innerBrush.select('.overlay').remove();
-    // inner brush selection should cover duration picker
+
     this.innerBrush.select('.selection')
-      .attr('y', - durationPickerHeight)
-      .attr('height', height + durationPickerHeight)
+      .attr('height', height)
       .classed(timelineCss['c-timeline-inner-brush-selection'], true);
     innerBrushLeftCircle = this.innerBrush.append('circle');
     innerBrushRightCircle = this.innerBrush.append('circle');

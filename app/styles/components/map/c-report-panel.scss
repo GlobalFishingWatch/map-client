@@ -1,0 +1,157 @@
+@import '../../settings';
+@import '../../mixins';
+
+.c-report-panel {
+  left: 0;
+  position: absolute;
+  top: calc(#{$header-height} + #{$accordion-mobile-height});
+  transform: translate(0, 0);
+  transition: transform .25s ease;
+  width: 100%;
+  z-index: 103;
+
+  @media #{$mq-mobile-large} {
+    bottom: calc(#{$timebar-height} + #{$map-footer-height});
+    left: auto;
+    min-width: 320px;
+    right: 0;
+    top: auto;
+    width: auto;
+  }
+
+  &.-minimized {
+    transform: translate(0, calc(-100% - #{$report-panel-menu-height}));
+
+    @media #{$mq-mobile-large} {
+      transform: translate(0, 0);
+    }
+  }
+
+  > .menu {
+    align-items: center;
+    background-color: $color-13;
+    cursor: pointer;
+    display: flex;
+    height: $report-panel-menu-height;
+    justify-content: space-between;
+    padding: 0 25px 0 30px;
+    position: relative;
+  }
+
+  > .menu > .report-total {
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
+
+  > .menu > .toggle {
+    @include arrow(12px, 2px, $color-4, 'down');
+    position: absolute;
+    right: 27px;
+    top: calc(50% - 4px);
+    transform: translate(0, -50%) rotate(45deg);
+    transition: transform .25s ease;
+
+    &.-expanded {
+      top: calc(50% + 4px);
+      transform: translate(0, -50%) rotate(-135deg);
+    }
+  }
+
+  > .container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+
+    &.-expanded {
+      max-height: 270px;
+    }
+  }
+
+  > .container > .content {
+    background-color: $color-4;
+    padding: 20px 0 20px 30px;
+
+    > .polygon-list {
+      max-height: 100px;
+      overflow-y: auto;
+
+      @media #{$mq-desktop} {
+        max-height: 200px;
+      }
+    }
+
+    > .polygon-list > .polygon-item {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+
+      &:not(:first-child) {
+        margin: 15px 0 0;
+      }
+
+      &:first-child {
+        padding: 10px 0 0;
+      }
+
+      &:last-child {
+        padding: 0 0 10px;
+      }
+
+      > .polygon-name {
+        color: $color-1;
+        font-size: $font-size-xxs-small;
+        text-transform: uppercase;
+      }
+
+      > .polygon-remove {
+        display: inline-flex;
+        position: absolute;
+        right: 28px;
+
+        &:hover {
+          &::before {
+            background-color: rgba($color-3, .4);
+            border-radius: 50%;
+            content: '';
+            display: inline-block;
+            height: 31px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 31px;
+          }
+        }
+
+        > .icon-remove-polygon {
+          cursor: pointer;
+          fill: $color-7;
+          height: 16px;
+          position: relative;
+          width: 10px;
+        }
+      }
+    }
+  }
+
+  > .container > .report-options > .report-button {
+    background-color: $color-4;
+    border-top: 1px solid rgba($color-19, .3);
+    color: $color-19;
+    cursor: pointer;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    outline: none;
+    padding: 15px 0;
+    text-transform: uppercase;
+    width: 50%;
+
+    &:not(:first-child) {
+      border-left: 1px solid rgba($color-19, .3);
+    }
+  }
+}
