@@ -69,8 +69,6 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
     this.spritesPool = [];
     this.timeIndexDelta = 0;
-
-    this.debugTexts = [];
   }
 
   // builds a texture spritesheet containing both the heatmap style (radial gradient)
@@ -164,10 +162,6 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
   render(tiles, startIndex, endIndex) {
     if (!this.stage || this.hidden) return;
-    // this.debugTexts.forEach(text => {
-    //   this.stage.removeChild(text);
-    // });
-    // this.debugTexts = [];
 
     const newTimeIndexDelta = endIndex - startIndex;
 
@@ -184,12 +178,6 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.numSprites = 0;
 
     tiles.forEach(tile => {
-      // const text = new PIXI.Text('This is a pixi text', { fontFamily: 'Arial', fontSize: 14, fill: 0xff1010 });
-      // text.position.x = bounds.left;
-      // text.position.y = bounds.top;
-      // this.stage.addChild(text);
-      // this.debugTexts.push(text);
-
       const bounds = tile.getBoundingClientRect();
       if (!document.body.contains(tile)) {
         console.warn('rendering tile that doesnt exist in the DOM', tile);
