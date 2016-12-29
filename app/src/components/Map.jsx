@@ -53,19 +53,7 @@ class Map extends Component {
   onZoomChanged() {
     if (!this.map) return;
 
-    let zoom = this.map.getZoom();
-
-    if (zoom < MIN_ZOOM_LEVEL) {
-      zoom = MIN_ZOOM_LEVEL;
-      this.map.setZoom(MIN_ZOOM_LEVEL);
-    }
-
-    if (zoom > MAX_ZOOM_LEVEL) {
-      zoom = MAX_ZOOM_LEVEL;
-      this.map.setZoom(MAX_ZOOM_LEVEL);
-    }
-
-    this.props.setZoom(zoom);
+    this.props.setZoom(this.map.getZoom());
 
     // We also need to update the center of the map as it can be changed
     // when double clicking or scrolling on the map
@@ -265,7 +253,9 @@ class Map extends Component {
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
-                zoomControl: false
+                zoomControl: false,
+                minZoom: MIN_ZOOM_LEVEL,
+                maxZoom: MAX_ZOOM_LEVEL
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onMousemove={this.onMouseMove}
