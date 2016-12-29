@@ -81,11 +81,11 @@ class Map extends Component {
 
     this.updateBasemap(nextProps);
 
-    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
-      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+    if (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1]) {
+      this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
     }
 
-    if (this.props.map.zoom !== nextProps.map.zoom) {
+    if (this.props.zoom !== nextProps.zoom) {
       this.map.setZoom(nextProps.map.zoom);
     }
 
@@ -247,8 +247,8 @@ class Map extends Component {
           googleMapElement={
             <GoogleMap
               ref="map"
-              defaultZoom={this.props.map.zoom}
-              defaultCenter={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
+              defaultZoom={this.props.zoom}
+              defaultCenter={{ lat: this.props.center[0], lng: this.props.center[1] }}
               defaultZoomControl={false}
               defaultOptions={{
                 streetViewControl: false,
@@ -292,7 +292,8 @@ Map.propTypes = {
   setCurrentVessel: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
-  map: React.PropTypes.object,
+  center: React.PropTypes.array,
+  zoom: React.PropTypes.number,
   /**
    * State of the share modal: { open, workspaceId }
    */

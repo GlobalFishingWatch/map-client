@@ -14,7 +14,8 @@ import {
 } from 'actions/map';
 
 const mapStateToProps = (state) => ({
-  map: state.map,
+  center: state.map.center,
+  zoom: state.map.zoom,
   trackBounds: state.vesselInfo.trackBounds,
   token: state.user.token,
   shareModal: state.map.shareModal,
