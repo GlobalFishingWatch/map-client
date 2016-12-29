@@ -13,13 +13,13 @@ const MAX_SPRITES_FACTOR = 0.002;
 
 export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
-  constructor(map, filters, viewportWidth, viewportHeight) {
+  constructor(map, flag, viewportWidth, viewportHeight) {
     super();
 
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
 
-    this.setFlag(filters.flag);
+    this.setFlag(flag);
 
     this.map = map;
     this.setMap(map);

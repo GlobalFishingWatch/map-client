@@ -2,7 +2,7 @@
 import VesselsTileData from 'components/Layers/VesselsTileData';
 
 class VesselsLayerTiled {
-  constructor(map, tilesetUrl, token, filters, overallStartDateOffset, debug = false) {
+  constructor(map, tilesetUrl, token, timelineOverallExtent, flag, overallStartDateOffset, debug = false) {
     this.map = map;
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
@@ -10,14 +10,14 @@ class VesselsLayerTiled {
 
     this.tiles = [];
 
-    this.timelineOverallStartDate = filters.timelineOverallExtent[0];
-    this.timelineOverallEndDate = filters.timelineOverallExtent[1];
+    this.timelineOverallStartDate = timelineOverallExtent[0];
+    this.timelineOverallEndDate = timelineOverallExtent[1];
     this.overallStartDateOffset = overallStartDateOffset;
 
     this.debug = debug;
 
-    if (!!filters) {
-      this.setFlag(filters.flag);
+    if (!!flag) {
+      this.setFlag(flag);
     }
 
     this.map.overlayMapTypes.insertAt(0, this);
@@ -171,9 +171,9 @@ class VesselsLayerTiled {
         }
         const x = frame.x[index];
         const y = frame.y[index];
-        const value = 5 * frame.value[index];
+        const radius = 10 * frame.radius[index];
         ctx.moveTo(x, y);
-        ctx.arc(x, y, value, 0, 2 * Math.PI, false);
+        ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
       }
     }
     ctx.stroke();
