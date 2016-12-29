@@ -42,6 +42,7 @@ class Map extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
+    this.onWindowResizeBound = this.onWindowResize.bind(this);
   }
 
   /**
@@ -70,6 +71,18 @@ class Map extends Component {
     // when double clicking or scrolling on the map
     const center = this.map.getCenter();
     this.props.setCenter([center.lat(), center.lng()]);
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.onWindowResizeBound);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResizeBound);
+  }
+
+  onWindowResize() {
+    this.setState(this.getViewportSize());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -131,12 +144,19 @@ class Map extends Component {
       this.props.getWorkspace();
       this.defineBasemaps(this.props.basemaps);
 
-      // pass map down to MapLayers
-      this.setState({
-        map: this.map,
-        mapContainer: this.refs.mapContainer
-      });
+      // pass map and viewport dimensions down to MapLayers
+      const stateUpdate = this.getViewportSize();
+      stateUpdate.map = this.map;
+      this.setState(stateUpdate);
     }
+  }
+
+  getViewportSize() {
+    const rect = this.refs.mapContainer.getBoundingClientRect();
+    return {
+      viewportWidth: rect.width,
+      viewportHeight: rect.height
+    };
   }
 
   defineBasemaps(basemaps) {
@@ -256,7 +276,11 @@ class Map extends Component {
           }
         />
       </div>
-      <MapLayers map={this.state.map} mapContainer={this.state.mapContainer} />
+      <MapLayers
+        map={this.state.map}
+        viewportWidth={this.state.viewportWidth}
+        viewportHeight={this.state.viewportHeight}
+      />
       <ReportPanel />
       <div className={mapCss['timebar-container']}>
         <Timebar />

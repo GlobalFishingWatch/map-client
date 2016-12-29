@@ -14,14 +14,17 @@ class MapLayers extends Component {
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
-    this.onWindowResizeBound = this.onWindowResize.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
-      this.mapContainer = nextProps.mapContainer;
       this.build();
+    } else {
+      if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
+        this.vesselsLayer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
+        // TODO update tracks layer viewport as well
+      }
     }
 
     this.updateLayers(nextProps);
@@ -87,14 +90,12 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
-    window.addEventListener('resize', this.onWindowResizeBound);
   }
 
   componentWillUnmount() {
     this.map.removeListener('idle', this.onMapIdleBound);
     this.map.removeListener('click', this.onMapClickBound);
     this.map.removeListener('center_changed', this.onMapCenterChangedBound);
-    window.removeEventListener('resize', this.onWindowResize);
   }
 
 
@@ -164,8 +165,6 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   addVesselLayer(layerSettings) {
-    const box = this.mapContainer.getBoundingClientRect();
-
     if (!this.vesselsLayer) {
       this.vesselsLayer = new VesselsLayer(
         this.map,
@@ -174,8 +173,8 @@ class MapLayers extends Component {
         this.props.timelineInnerExtent,
         this.props.timelineOverallExtent,
         this.props.flag,
-        box.width,
-        box.height
+        this.props.viewportWidth,
+        this.props.viewportHeight
       );
     }
 
@@ -183,8 +182,8 @@ class MapLayers extends Component {
     const TrackLayer = createTrackLayer(google);
     this.trackLayer = new TrackLayer(
       this.map,
-      this.mapContainer.offsetWidth,
-      this.mapContainer.offsetHeight
+      this.props.viewportWidth,
+      this.props.viewportHeight
     );
 
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
@@ -391,16 +390,6 @@ class MapLayers extends Component {
     this.props.setCurrentVessel(vessels, event.latLng);
   }
 
-
-
-  onWindowResize() {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    const box = this.mapContainer.getBoundingClientRect();
-    this.vesselsLayer.updateViewportSize(box.width, box.height);
-  }
-
   render() {
     return null;
   }
@@ -409,7 +398,6 @@ class MapLayers extends Component {
 
 MapLayers.propTypes = {
   map: React.PropTypes.object,
-  mapContainer: React.PropTypes.object,
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   layers: React.PropTypes.array,
@@ -421,7 +409,9 @@ MapLayers.propTypes = {
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
   setCurrentVessel: React.PropTypes.func,
-  vesselTrack: React.PropTypes.object
+  vesselTrack: React.PropTypes.object,
+  viewportWidth: React.PropTypes.number,
+  viewportHeight: React.PropTypes.number
 };
 
 
