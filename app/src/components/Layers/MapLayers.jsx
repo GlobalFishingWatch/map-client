@@ -181,10 +181,10 @@ class MapLayers extends Component {
     // Create track layer
     const TrackLayer = createTrackLayer(google);
     this.trackLayer = new TrackLayer(
-      this.map,
       this.props.viewportWidth,
       this.props.viewportHeight
     );
+    this.trackLayer.setMap(this.map);
 
     this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
   }

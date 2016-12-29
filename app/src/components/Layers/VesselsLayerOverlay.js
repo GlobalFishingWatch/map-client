@@ -1,5 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
+import BaseOverlay from 'components/Layers/BaseOverlay';
 import {
   TIMELINE_MAX_STEPS,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
@@ -11,7 +12,7 @@ import {
 
 const MAX_SPRITES_FACTOR = 0.002;
 
-export default class VesselsLayerOverlay extends google.maps.OverlayView {
+export default class VesselsLayerOverlay extends BaseOverlay {
 
   constructor(flag, viewportWidth, viewportHeight) {
     super();
@@ -43,8 +44,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
 
-    const rect = this._getCanvasRect();
-    this.renderer = new PIXI.WebGLRenderer(rect.width, rect.height, { transparent: true });
+    this.renderer = new PIXI.WebGLRenderer(this.viewportWidth, this.viewportHeight, { transparent: true });
 
     this.canvas = this.renderer.view;
     this.canvas.style.position = 'absolute';
@@ -107,20 +107,19 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
   repositionCanvas() {
     if (!this.container) return;
-
-    const rect = this._getCanvasRect();
-
-    this.container.style.left = `${rect.x}px`;
-    this.container.style.top = `${rect.y}px`;
-    this.renderer.resize(rect.width, rect.height);
-    this.canvas.style.width = `${rect.width}px`;
-    this.canvas.style.height = `${rect.height}px`;
+    const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
+    this.container.style.left = `${offset.x}px`;
+    this.container.style.top = `${offset.y}px`;
+    this.renderer.resize(this.viewportWidth, this.viewportHeight);
+    this.canvas.style.width = `${this.viewportWidth}px`;
+    this.canvas.style.height = `${this.viewportHeight}px`;
   }
 
   updateViewportSize(viewportWidth, viewportHeight) {
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
     this._resizeSpritesPool();
+    this.repositionCanvas();
   }
 
   _getCanvasRect() {

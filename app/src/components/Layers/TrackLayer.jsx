@@ -1,5 +1,5 @@
-/* eslint no-underscore-dangle:0 */
 /* eslint func-names:0 */
+import BaseOverlay from 'components/Layers/BaseOverlay';
 import {
   SHOW_OUTER_TRACK_BELOW_NUM_POINTS,
   TRACK_OVER_COLOR,
@@ -8,10 +8,7 @@ import {
 } from 'constants';
 
 const createTrackLayer = function (google) {
-  function TrackLayer(map, width, height) {
-    this.map = map;
-    // Explicitly call setMap on this overlay.
-    this.setMap(map);
+  function TrackLayer(viewportWidth, viewportHeight) {
     this.offset = {
       x: 0,
       y: 0
@@ -24,48 +21,28 @@ const createTrackLayer = function (google) {
     canvas.style.borderStyle = 'none';
     canvas.style.borderWidth = '0px';
     canvas.style.position = 'absolute';
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = viewportWidth;
+    canvas.height = viewportHeight;
 
     this.canvas = canvas;
     const ctx = canvas.getContext('2d');
     canvas.style.left = '0px';
     canvas.style.top = '0px';
-    ctx.width = canvas.width = width;
-    ctx.height = canvas.height = height;
     ctx.fillStyle = 'rgba(0,0,0,.4)';
     canvas.ctx = ctx;
     this.ctx = this.canvas.ctx;
   }
 
-  TrackLayer.prototype = new google.maps.OverlayView();
+  TrackLayer.prototype = new BaseOverlay();
   TrackLayer.prototype.clear = function () {
     this.canvas.ctx.beginPath();
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
   TrackLayer.prototype.reposition = function () {
-    this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    const map = this.getMap();
-
-    // topLeft can't be calculated from map.getBounds(), because bounds are
-    // clamped to -180 and 180 when completely zoomed out. Instead, calculate
-    // left as an offset from the center, which is an unwrapped LatLng.
-    const center = map.getCenter();
-
-    // Canvas position relative to draggable map's container depends on
-    // overlayView's projection, not the map's. Have to use the center of the
-    // map for this, not the top left, for the same reason as above.
-    const projection = this.getProjection();
-    const divCenter = projection.fromLatLngToDivPixel(center);
-    const offsetX = -Math.round(window.innerWidth / 2 - divCenter.x);
-    const offsetY = -Math.round(window.innerHeight / 2 - divCenter.y);
-    this.offset = {
-      x: offsetX,
-      y: offsetY
-    };
-    this.canvas.style[TrackLayer.CSS_TRANSFORM_] = `translate(${offsetX}px,${offsetY}px)`;
+    // getRepositionOffset is defined on BaseOverlay
+    this.offset = this.getRepositionOffset(this.canvas.width, this.canvas.height);
+    this.canvas.style[TrackLayer.CSS_TRANSFORM_] = `translate(${this.offset.x}px, ${this.offset.y}px)`;
   };
 
   TrackLayer.CSS_TRANSFORM_ = (() => {
