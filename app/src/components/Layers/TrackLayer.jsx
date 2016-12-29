@@ -52,11 +52,7 @@ const createTrackLayer = function (google) {
     // topLeft can't be calculated from map.getBounds(), because bounds are
     // clamped to -180 and 180 when completely zoomed out. Instead, calculate
     // left as an offset from the center, which is an unwrapped LatLng.
-    const top = map.getBounds().getNorthEast().lat();
     const center = map.getCenter();
-    const scale = Math.pow(2, map.getZoom());
-    const left = center.lng() - (this.canvasCssWidth_ * 180) / (256 * scale);
-    this.topLeft_ = new google.maps.LatLng(top, left);
 
     // Canvas position relative to draggable map's container depends on
     // overlayView's projection, not the map's. Have to use the center of the
