@@ -2,8 +2,7 @@
 import VesselsTileData from 'components/Layers/VesselsTileData';
 
 class VesselsLayerTiled {
-  constructor(map, tilesetUrl, token, timelineOverallExtent, flag, overallStartDateOffset, debug = false) {
-    this.map = map;
+  constructor(tilesetUrl, token, flag, timelineOverallExtent, overallStartDateOffset, debug = false) {
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
     this.tilesetUrl = tilesetUrl;
@@ -19,16 +18,6 @@ class VesselsLayerTiled {
     if (!!flag) {
       this.setFlag(flag);
     }
-
-    this.map.overlayMapTypes.insertAt(0, this);
-  }
-
-  show() {
-    this.map.overlayMapTypes.insertAt(0, this);
-  }
-
-  hide() {
-    this.map.overlayMapTypes.removeAt(0);
   }
 
   setFlag(flag) {

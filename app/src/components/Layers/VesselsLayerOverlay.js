@@ -13,16 +13,13 @@ const MAX_SPRITES_FACTOR = 0.002;
 
 export default class VesselsLayerOverlay extends google.maps.OverlayView {
 
-  constructor(map, flag, viewportWidth, viewportHeight) {
+  constructor(flag, viewportWidth, viewportHeight) {
     super();
 
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
 
     this.setFlag(flag);
-
-    this.map = map;
-    this.setMap(map);
   }
 
   setFlag(flag) {
@@ -131,7 +128,7 @@ export default class VesselsLayerOverlay extends google.maps.OverlayView {
   _getCanvasRect() {
     const overlayProjection = this.getProjection();
 
-    const mapBounds = this.map.getBounds();
+    const mapBounds = this.getMap().getBounds();
     const sw = overlayProjection.fromLatLngToDivPixel(mapBounds.getSouthWest());
     const ne = overlayProjection.fromLatLngToDivPixel(mapBounds.getNorthEast());
 

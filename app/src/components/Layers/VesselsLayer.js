@@ -24,21 +24,21 @@ export default class VesselsLayer {
     );
 
     this.overlay = new VesselsLayerOverlay(
-      map,
       flag,
       viewportWidth,
-      viewportHeight,
-      debug
+      viewportHeight
     );
+    this.overlay.setMap(map);
+
     this.tiled = new VesselsLayerTiled(
-      this.map,
       tilesetUrl,
       token,
-      timelineOverallExtent,
       flag,
+      timelineOverallExtent,
       this.overallStartDateOffset,
       debug
     );
+    map.overlayMapTypes.insertAt(0, this.tiled);
     this.tiled.tileCreatedCallback = this._onTileCreated.bind(this);
     this.tiled.tileReleasedCallback = this._onTileReleased.bind(this);
   }
@@ -60,12 +60,12 @@ export default class VesselsLayer {
 
   show() {
     this.overlay.show();
-    this.tiled.show();
+    this.map.overlayMapTypes.insertAt(0, this.tiled);
   }
 
   hide() {
     this.overlay.hide();
-    this.tiled.hide();
+    this.map.overlayMapTypes.removeAt(0);
   }
 
   reposition() {
