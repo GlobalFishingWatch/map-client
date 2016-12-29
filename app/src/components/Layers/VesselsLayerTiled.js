@@ -2,7 +2,7 @@
 import VesselsTileData from 'components/Layers/VesselsTileData';
 
 class VesselsLayerTiled {
-  constructor(tilesetUrl, token, flag, timelineOverallExtent, overallStartDateOffset, debug = false) {
+  constructor(tilesetUrl, token, timelineOverallExtent, overallStartDateOffset, debug = false) {
     this.tileSize = new google.maps.Size(256, 256);
     this.token = token;
     this.tilesetUrl = tilesetUrl;
@@ -14,18 +14,6 @@ class VesselsLayerTiled {
     this.overallStartDateOffset = overallStartDateOffset;
 
     this.debug = debug;
-
-    if (!!flag) {
-      this.setFlag(flag);
-    }
-  }
-
-  setFlag(flag) {
-    if (flag !== '') {
-      this.flag = parseInt(flag, 10);
-    } else {
-      this.flag = null;
-    }
   }
 
   _getCanvas(ownerDocument) {
@@ -155,9 +143,6 @@ class VesselsLayerTiled {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
-        if (this.flag && this.flag !== frame.category[index]) {
-          continue;
-        }
         const x = frame.x[index];
         const y = frame.y[index];
         const radius = 10 * frame.radius[index];

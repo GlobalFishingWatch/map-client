@@ -33,7 +33,6 @@ export default class VesselsLayer {
     this.tiled = new VesselsLayerTiled(
       tilesetUrl,
       token,
-      flag,
       timelineOverallExtent,
       this.overallStartDateOffset,
       debug
@@ -45,7 +44,6 @@ export default class VesselsLayer {
 
   updateFlag(flag) {
     this.overlay.setFlag(flag);
-    this.tiled.setFlag(flag);
     this.render();
   }
 
