@@ -3,9 +3,9 @@ import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
-import OpacitySelectorStyles from 'styles/components/map/c-opacity-selector.scss';
+import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
-import OpacityIcon from 'babel!svg-react!assets/icons/opacity-icon.svg?name=OpacityIcon';
+import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
 class LayerItem extends Component {
@@ -15,7 +15,7 @@ class LayerItem extends Component {
 
     this.defaultConfig = {
       classnames: {
-        component: 'opacity-range',
+        component: 'blending-range',
         labelMax: 'label -max',
         labelMin: 'label -min',
         labelValue: 'label -current',
@@ -32,7 +32,7 @@ class LayerItem extends Component {
 
     this.state = {
       rangeValue: this.defaultConfig.value,
-      opacity: false
+      showBlending: false
     };
   }
 
@@ -66,29 +66,25 @@ class LayerItem extends Component {
 
   onChangeSwitch() {
     if (this.props.layer.visible) {
-      Object.assign(this.state, {
-        opacity: false
+      this.setState({
+        showBlending: false
       });
-
-      this.setState(this.state);
     }
 
     this.props.toggleLayerVisibility(this.props.layer);
   }
 
 
-  toggleOpacityMenu() {
-    Object.assign(this.state, {
-      opacity: !this.state.opacity
+  toggleBlending() {
+    this.setState({
+      showBlending: !this.state.showBlending
     });
-
-    this.setState(this.state);
   }
 
   render() {
-    const cssClassOpacity = this.state.opacity ?
-      classnames(OpacitySelectorStyles['c-opacity-selector'], OpacitySelectorStyles['-is-visible']) :
-      OpacitySelectorStyles['c-opacity-selector'];
+    const cssClassBlending = this.state.showBlending ?
+      classnames(BlendingStyles['c-blending'], BlendingStyles['-is-visible']) :
+      BlendingStyles['c-blending'];
 
     if (!this.state.rangeValue) return null;
 
@@ -119,9 +115,9 @@ class LayerItem extends Component {
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
-            onClick={() => this.toggleOpacityMenu()}
+            onClick={() => this.toggleBlending()}
           >
-            <OpacityIcon />
+            <BlendingIcon />
           </li>
           <li
             className={LayerListStyles['layer-option-item']}
@@ -130,7 +126,7 @@ class LayerItem extends Component {
             <InfoIcon />
           </li>
         </ul>
-        <div className={cssClassOpacity} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
+        <div className={cssClassBlending} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
           <InputRange
             classNames={this.defaultConfig.classnames}
             value={this.state.rangeValue}
