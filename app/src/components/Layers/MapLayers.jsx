@@ -82,7 +82,6 @@ class MapLayers extends Component {
       }
     }
 
-    this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
   }
 
@@ -235,27 +234,7 @@ class MapLayers extends Component {
 
     if (!Object.keys(layers).length) return;
 
-    if (layerSettings.type === 'ClusterAnimation') return;
-
     layers[layerSettings.title].setOpacity(layerSettings.opacity);
-  }
-
-  /**
-   * Handles vessel transparency changes
-   *
-   * @param nextProps
-   */
-  updateVesselTransparency(nextProps) {
-    if (this.props.map.vesselTransparency === nextProps.map.vesselTransparency) {
-      return;
-    }
-
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    // TODO
-    // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
   }
 
   /**

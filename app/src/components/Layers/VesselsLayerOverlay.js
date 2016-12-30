@@ -159,6 +159,10 @@ export default class VesselsLayerOverlay extends BaseOverlay {
     this.mainVesselTexture.update();
   }
 
+  setOpacity(opacity) {
+    this.canvas.style.opacity = opacity;
+  }
+
   render(tiles, startIndex, endIndex) {
     if (!this.stage || this.hidden) return;
 
