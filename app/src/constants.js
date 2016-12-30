@@ -14,8 +14,6 @@ export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six mont
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 
-export const DEFAULT_VESSEL_COLOR = '#1181FB';
-
 export const VESSELS_ENDPOINT_KEYS = [
   'category',
   'datetime',

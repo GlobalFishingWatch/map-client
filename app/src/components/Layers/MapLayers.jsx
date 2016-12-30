@@ -81,8 +81,6 @@ class MapLayers extends Component {
         this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
       }
     }
-
-    this.updateVesselColor(nextProps);
   }
 
   build() {
@@ -128,6 +126,11 @@ class MapLayers extends Component {
 
       if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
+        continue;
+      }
+
+      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.color !== newLayer.color) {
+        this.setLayerColor(newLayer);
         continue;
       }
 
@@ -226,7 +229,6 @@ class MapLayers extends Component {
 
   /**
    * Updates a layer's opacity
-   *
    * @param layerSettings
    */
   setLayerOpacity(layerSettings) {
@@ -238,22 +240,15 @@ class MapLayers extends Component {
   }
 
   /**
-   * TODO
-   * Handles vessel color changes
-   *
-   * @param nextProps
+   * Updates a layer's color
+   * @param layerSettings
    */
-  updateVesselColor(nextProps) {
-    if (this.props.map.vesselColor === nextProps.map.vesselColor) {
-      return;
-    }
+  setLayerColor(layerSettings) {
+    const layers = this.state.addedLayers;
 
-    if (!this.vesselsLayer) {
-      return;
-    }
+    if (!Object.keys(layers).length) return;
 
-    // TODO
-    this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
+    layers[layerSettings.title].setColor(layerSettings.color);
   }
 
   /**

@@ -13,8 +13,6 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
-  UPDATE_VESSEL_TRANSPARENCY,
-  UPDATE_VESSEL_COLOR,
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY
@@ -60,20 +58,6 @@ export function setLayerOpacity(opacity, layer) {
       layer,
       opacity
     }
-  };
-}
-
-export function updateVesselTransparency(transparency) {
-  return {
-    type: UPDATE_VESSEL_TRANSPARENCY,
-    payload: parseInt(transparency, 10)
-  };
-}
-
-export function updateVesselColor(color) {
-  return {
-    type: UPDATE_VESSEL_COLOR,
-    payload: color
   };
 }
 
