@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
-import createTrackLayer from 'components/Layers/TrackLayer';
+import TrackLayer from 'components/Layers/TrackLayer';
 
 class MapLayers extends Component {
   constructor(props) {
@@ -179,7 +179,6 @@ class MapLayers extends Component {
     }
 
     // Create track layer
-    const TrackLayer = createTrackLayer(google);
     this.trackLayer = new TrackLayer(
       this.props.viewportWidth,
       this.props.viewportHeight

@@ -1,4 +1,3 @@
-/* eslint func-names:0 */
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import {
   SHOW_OUTER_TRACK_BELOW_NUM_POINTS,
@@ -7,8 +6,9 @@ import {
   TRACK_OUT_OF_INNER_EXTENT_COLOR
 } from 'constants';
 
-const createTrackLayer = function (google) {
-  function TrackLayer(viewportWidth, viewportHeight) {
+export default class TrackLayer extends BaseOverlay {
+  constructor(viewportWidth, viewportHeight) {
+    super();
     this.offset = {
       x: 0,
       y: 0
@@ -33,31 +33,28 @@ const createTrackLayer = function (google) {
     this.ctx = this.canvas.ctx;
   }
 
-  TrackLayer.prototype = new BaseOverlay();
-  TrackLayer.prototype.clear = function () {
+  clear() {
     this.canvas.ctx.beginPath();
     this.canvas.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  };
+  }
 
-  TrackLayer.prototype.reposition = function () {
+  reposition() {
     // getRepositionOffset is defined on BaseOverlay
     this.offset = this.getRepositionOffset(this.canvas.width, this.canvas.height);
     this.canvas.style[TrackLayer.CSS_TRANSFORM_] = `translate(${this.offset.x}px, ${this.offset.y}px)`;
-  };
+  }
 
-  TrackLayer.CSS_TRANSFORM_ = (() => {
-    const div = document.createElement('div');
-    const transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
-    for (let i = 0; i < transformProps.length; i++) {
-      const prop = transformProps[i];
-      if (div.style[prop] !== undefined) {
-        return prop;
-      }
-    }
+  onAdd() {
+    const panes = this.getPanes();
+    panes.overlayLayer.appendChild(this.canvas);
+  }
 
-    // return unprefixed version by default
-    return transformProps[0];
-  })();
+  draw() {}
+
+  onRemove() {
+    this.canvas.parentNode.removeChild(this.canvas);
+    this.canvas = null;
+  }
 
   /**
    * Calculates the rendering style (color + alpha) to be drawn for the current vessel track/point
@@ -66,7 +63,7 @@ const createTrackLayer = function (google) {
    * @param endTimestamp the end timestamp from the timeline inner extent
    * @param isTimelinePlaying if in the middle of playing, do not display tracks out of innerExtent for perf reasons
    **/
-  TrackLayer.prototype.getDrawStyle = function (timestamp, {
+  getDrawStyle(timestamp, {
     startTimestamp,
     endTimestamp,
     showOuterTrack,
@@ -82,7 +79,7 @@ const createTrackLayer = function (google) {
       return TRACK_OUT_OF_INNER_EXTENT_COLOR;
     }
     return false;
-  };
+  }
 
   /**
    * Draws a single vessel point of a track
@@ -92,7 +89,7 @@ const createTrackLayer = function (google) {
    * @param drawStyle
    * @returns {*}
    */
-  TrackLayer.prototype.drawPoint = function (overlayProjection, data, i, drawStyle) {
+  drawPoint(overlayProjection, data, i, drawStyle) {
     const point = overlayProjection.fromLatLngToDivPixel(
       new google.maps.LatLng(data.latitude[i], data.longitude[i])
     );
@@ -109,7 +106,7 @@ const createTrackLayer = function (google) {
       this.ctx.fillRect(~~point.x - this.offset.x, ~~point.y - this.offset.y, 1, 1);
     }
     return point;
-  };
+  }
 
   /**
    * Draws the tile's content based on the provided vessel data
@@ -118,7 +115,7 @@ const createTrackLayer = function (google) {
    * @param series
    * @param filters
    */
-  TrackLayer.prototype.drawTile = function (data, series, drawParams) {
+  drawTile(data, series, drawParams) {
     this.clear();
     const overlayProjection = this.getProjection();
     if (!overlayProjection || !data) {
@@ -164,28 +161,19 @@ const createTrackLayer = function (google) {
     // console.log(numPointsDrawn)
 
     this.ctx.stroke();
-  };
+  }
+}
 
-  TrackLayer.prototype.onAdd = function () {
-    const panes = this.getPanes();
-    panes.overlayLayer.appendChild(this.canvas);
-  };
+TrackLayer.CSS_TRANSFORM_ = (() => {
+  const div = document.createElement('div');
+  const transformProps = ['transform', 'WebkitTransform', 'MozTransform', 'OTransform', 'msTransform'];
+  for (let i = 0; i < transformProps.length; i++) {
+    const prop = transformProps[i];
+    if (div.style[prop] !== undefined) {
+      return prop;
+    }
+  }
 
-  // We use the south-west and north-east
-  // coordinates of the overlay to peg it to the correct position and size.
-  // To do this, we need to retrieve the projection from the overlay.
-  TrackLayer.prototype.draw = function () {
-
-  };
-
-  // The onRemove() method will be called automatically from the API if
-  // we ever set the overlay's map property to 'null'.
-  TrackLayer.prototype.onRemove = function () {
-    this.canvas.parentNode.removeChild(this.canvas);
-    this.canvas = null;
-  };
-
-  return TrackLayer;
-};
-
-export default createTrackLayer;
+  // return unprefixed version by default
+  return transformProps[0];
+})();
