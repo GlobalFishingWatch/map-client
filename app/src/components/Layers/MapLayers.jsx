@@ -111,6 +111,7 @@ class MapLayers extends Component {
         if (l.title !== currentLayers[i].title) return l;
         if (l.visible !== currentLayers[i].visible) return l;
         if (l.opacity !== currentLayers[i].opacity) return l;
+        if (l.hue !== currentLayers[i].hue) return l;
         return false;
       }
     );
@@ -129,8 +130,8 @@ class MapLayers extends Component {
         continue;
       }
 
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.color !== newLayer.color) {
-        this.setLayerColor(newLayer);
+      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+        this.setLayerHue(newLayer);
         continue;
       }
 
@@ -243,12 +244,13 @@ class MapLayers extends Component {
    * Updates a layer's color
    * @param layerSettings
    */
-  setLayerColor(layerSettings) {
+  setLayerHue(layerSettings) {
     const layers = this.state.addedLayers;
+    console.log(layerSettings.hue, layers[layerSettings.title])
 
     if (!Object.keys(layers).length) return;
 
-    layers[layerSettings.title].setColor(layerSettings.color);
+    // layers[layerSettings.title].setColor(layerSettings.color);
   }
 
   /**

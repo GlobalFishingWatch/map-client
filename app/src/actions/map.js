@@ -5,6 +5,7 @@ import {
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYER_OPACITY,
+  SET_LAYER_HUE,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTER,
@@ -57,6 +58,16 @@ export function setLayerOpacity(opacity, layer) {
     payload: {
       layer,
       opacity
+    }
+  };
+}
+
+export function setLayerHue(hue, layer) {
+  return {
+    type: SET_LAYER_HUE,
+    payload: {
+      layer,
+      hue
     }
   };
 }

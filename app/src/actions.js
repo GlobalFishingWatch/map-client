@@ -4,6 +4,7 @@ export const SET_LAYERS = 'SET_LAYERS';
 export const SET_TILESET_URL = 'SET_TILESET_URL';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
+export const SET_LAYER_HUE = 'SET_LAYER_HUE';
 export const SET_BASEMAP = 'SET_BASEMAP';
 export const SET_ZOOM = 'SET_ZOOM';
 export const SET_CENTER = 'SET_CENTER';

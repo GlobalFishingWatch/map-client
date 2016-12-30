@@ -71,6 +71,8 @@ class LayerItem extends Component {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer);
     }
+
+    this.props.setLayerHue(value, this.props.layer);
   }
 
   // onClickReport(event) {
@@ -177,6 +179,7 @@ LayerItem.propTypes = {
   layer: React.PropTypes.object,
   toggleLayerVisibility: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
+  setLayerHue: React.PropTypes.func,
   openLayerInfoModal: React.PropTypes.func
 };
 

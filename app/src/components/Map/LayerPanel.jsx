@@ -16,6 +16,7 @@ class LayerPanel extends Component {
             layer={this.props.layers[i]}
             toggleLayerVisibility={this.props.toggleLayerVisibility}
             setLayerOpacity={this.props.setLayerOpacity}
+            setLayerHue={this.props.setLayerHue}
             openLayerInfoModal={this.props.setLayerInfoModal}
           />
         );
@@ -34,7 +35,8 @@ LayerPanel.propTypes = {
   layers: React.PropTypes.array,
   toggleLayerVisibility: React.PropTypes.func,
   setLayerInfoModal: React.PropTypes.func,
-  setLayerOpacity: React.PropTypes.func
+  setLayerOpacity: React.PropTypes.func,
+  setLayerHue: React.PropTypes.func
 };
 
 
