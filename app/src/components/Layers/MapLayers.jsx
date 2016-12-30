@@ -117,8 +117,6 @@ class MapLayers extends Component {
         return false;
       }
     );
-    // console.log(addedLayers)
-    // console.log(updatedLayers)
 
     const promises = [];
     let callAddVesselLayer = null;
@@ -221,22 +219,8 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.show();
-        return;
-      }
-
-      if (layers[layerSettings.title].isVisible()) return;
-
       layers[layerSettings.title].show();
     } else {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.hide();
-        return;
-      }
-
-      if (!layers[layerSettings.title].isVisible()) return;
-
       layers[layerSettings.title].hide();
     }
   }
