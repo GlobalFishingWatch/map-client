@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
@@ -8,40 +9,51 @@ import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=Report
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
+const INPUT_RANGE_DEFAULT_CONFIG = {
+  classnames: {
+    component: 'blending-range',
+    labelMax: 'label -max',
+    labelMin: 'label -min',
+    labelValue: 'label -current',
+    trackActive: 'track-active',
+    trackContainer: 'track-container',
+    sliderContainer: 'thumb-container',
+    slider: 'thumb'
+  }
+};
+
 class LayerItem extends Component {
 
   constructor(props) {
     super(props);
-
-    this.defaultConfig = {
-      classnames: {
-        component: 'blending-range',
-        labelMax: 'label -max',
-        labelMin: 'label -min',
-        labelValue: 'label -current',
-        trackActive: 'track-active',
-        trackContainer: 'track-container',
-        sliderContainer: 'thumb-container',
-        slider: 'thumb'
-      },
+    this.opacityRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    _.assign(this.opacityRangeConfig, {
       minValue: 10,
       maxValue: 100,
       step: 10,
       value: this.props.layer.opacity * 100
-    };
+    });
+
+    this.hueRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    _.assign(this.hueRangeConfig, {
+      minValue: 0,
+      maxValue: 360,
+      step: 10,
+      value: this.props.layer.hue
+    });
 
     this.state = {
-      rangeValue: this.defaultConfig.value,
+      opacityRangeValue: this.opacityRangeConfig.value,
+      hueRangeValue: this.hueRangeConfig.value,
       showBlending: false
     };
   }
 
-  // mandatory callback for range element. Updates itself.
   onChangeOpacity(component, value) {
     const transparency = parseFloat(value) / 100;
 
     this.setState({
-      rangeValue: value
+      opacityRangeValue: value
     });
 
     if (!this.props.layer.visible) {
@@ -49,6 +61,16 @@ class LayerItem extends Component {
     }
 
     this.props.setLayerOpacity(transparency, this.props.layer);
+  }
+
+  onChangeHue(component, value) {
+    this.setState({
+      hueRangeValue: value
+    });
+
+    if (!this.props.layer.visible) {
+      this.props.toggleLayerVisibility(this.props.layer);
+    }
   }
 
   // onClickReport(event) {
@@ -86,7 +108,7 @@ class LayerItem extends Component {
       classnames(BlendingStyles['c-blending'], BlendingStyles['-is-visible']) :
       BlendingStyles['c-blending'];
 
-    if (!this.state.rangeValue) return null;
+    if (!this.state.opacityRangeValue) return null;
 
     return (
       <li
@@ -127,13 +149,23 @@ class LayerItem extends Component {
           </li>
         </ul>
         <div className={cssClassBlending} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
+          Opacity
           <InputRange
-            classNames={this.defaultConfig.classnames}
-            value={this.state.rangeValue}
-            maxValue={this.defaultConfig.maxValue}
-            minValue={this.defaultConfig.minValue}
+            classNames={this.opacityRangeConfig.classnames}
+            value={this.state.opacityRangeValue}
+            maxValue={this.opacityRangeConfig.maxValue}
+            minValue={this.opacityRangeConfig.minValue}
             onChange={(component, value) => this.onChangeOpacity(component, value)}
-            step={this.defaultConfig.step}
+            step={this.opacityRangeConfig.step}
+          />
+          Hue
+          <InputRange
+            classNames={this.hueRangeConfig.classnames}
+            value={this.state.hueRangeValue}
+            maxValue={this.hueRangeConfig.maxValue}
+            minValue={this.hueRangeConfig.minValue}
+            onChange={(component, value) => this.onChangeHue(component, value)}
+            step={this.hueRangeConfig.step}
           />
         </div>
       </li>

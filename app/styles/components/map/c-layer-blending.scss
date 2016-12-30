@@ -2,18 +2,16 @@
 
 .c-blending {
   cursor: default;
-  display: block;
-  opacity: 0;
+  display: none;
   position: absolute;
   width: 200px;
   background-color: $color-19;
   bottom: 40px;
   padding: 20px;
-  transition: opacity .25s ease;
 
   &.-is-visible {
     margin: 10px 0 5px;
-    opacity: 1;
+    display: block;
     overflow: visible;
   }
 
