@@ -7,12 +7,12 @@ import * as d3 from 'd3';
 
 export default class VesselsLayer {
 
-  constructor(map, tilesetUrl, token, filters, viewportWidth, viewportHeight, debug = false) {
+  constructor(map, tilesetUrl, token, timelineInnerExtent, timelineOverallExtent, flag, viewportWidth, viewportHeight, debug = false) {
     this.map = map;
 
-    const innerStartDate = filters.timelineInnerExtent[0];
-    const innerEndDate = filters.timelineInnerExtent[1];
-    this.overallStartDateOffset = VesselsTileData.getTimeAtPrecision(filters.timelineOverallExtent[0]);
+    const innerStartDate = timelineInnerExtent[0];
+    const innerEndDate = timelineInnerExtent[1];
+    this.overallStartDateOffset = VesselsTileData.getTimeAtPrecision(timelineOverallExtent[0]);
 
     this.currentInnerStartIndex = VesselsTileData.getOffsetedTimeAtPrecision(
         innerStartDate.getTime(),
@@ -24,27 +24,26 @@ export default class VesselsLayer {
     );
 
     this.overlay = new VesselsLayerOverlay(
-      map,
-      filters,
+      flag,
       viewportWidth,
-      viewportHeight,
-      debug
+      viewportHeight
     );
+    this.overlay.setMap(map);
+
     this.tiled = new VesselsLayerTiled(
-      this.map,
       tilesetUrl,
       token,
-      filters,
+      timelineOverallExtent,
       this.overallStartDateOffset,
       debug
     );
+    map.overlayMapTypes.insertAt(0, this.tiled);
     this.tiled.tileCreatedCallback = this._onTileCreated.bind(this);
     this.tiled.tileReleasedCallback = this._onTileReleased.bind(this);
   }
 
   updateFlag(flag) {
     this.overlay.setFlag(flag);
-    this.tiled.setFlag(flag);
     this.render();
   }
 
@@ -59,12 +58,12 @@ export default class VesselsLayer {
 
   show() {
     this.overlay.show();
-    this.tiled.show();
+    this.map.overlayMapTypes.insertAt(0, this.tiled);
   }
 
   hide() {
     this.overlay.hide();
-    this.tiled.hide();
+    this.map.overlayMapTypes.removeAt(0);
   }
 
   reposition() {
@@ -73,6 +72,7 @@ export default class VesselsLayer {
 
   render() {
     this.overlay.render(this.tiled.tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
+    // uncomment for debugging purposes
     // this.tiled.render(this.currentInnerStartIndex, this.currentInnerEndIndex);
   }
 
@@ -100,7 +100,7 @@ export default class VesselsLayer {
 
   selectVesselsAt(x, y) {
     const tile = this.tiled.getTileAt(x, y);
-    if (tile === null || tile.data === null) return [];
+    if (tile === null || tile.data === null || tile.data === undefined) return [];
 
     const offsetedX = x - tile.box.left;
     const offsetedY = y - tile.box.top;

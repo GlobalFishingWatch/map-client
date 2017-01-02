@@ -175,8 +175,7 @@ export function getWorkspace(workspaceId) {
           type: SET_LAYERS,
           payload: layers
         });
-      })
-      .catch(err => console.warn(`Unable to fetch the layers: ${err}`));
+      });
   };
 }
 

@@ -37,7 +37,7 @@
       "allow": ["warn", "error", "info"]
     }],
     "comma-dangle": ["error", "never"],
-    "max-len": ["error", 120],
+    "max-len": ["error", 140],
     "react/prefer-stateless-function": "off",
     "no-underscore-dangle": 0
   },

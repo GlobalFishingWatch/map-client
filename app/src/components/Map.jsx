@@ -6,8 +6,6 @@ import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'constants';
-import VesselsLayer from 'components/Layers/VesselsLayer';
-import createTrackLayer from 'components/Layers/TrackLayer';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -16,12 +14,11 @@ import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
+import MapLayers from 'containers/Layers/MapLayers';
 
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
-
-import extentChanged from 'util/extentChanged';
 
 import iconStyles from 'styles/icons.scss';
 
@@ -37,21 +34,15 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      addedLayers: {},
-      lastCenter: null,
-      running: 'stop',
-      currentBasemap: null
+      lastCenter: null
     };
 
-    this.onClickMap = this.onClickMap.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
-    this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapIdle = this.onMapIdle.bind(this);
-    this.onCenterChanged = this.onCenterChanged.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.onWindowResize = this.onWindowResize.bind(this);
+    this.onWindowResizeBound = this.onWindowResize.bind(this);
   }
 
   /**
@@ -62,19 +53,7 @@ class Map extends Component {
   onZoomChanged() {
     if (!this.map) return;
 
-    let zoom = this.map.getZoom();
-
-    if (zoom < MIN_ZOOM_LEVEL) {
-      zoom = MIN_ZOOM_LEVEL;
-      this.map.setZoom(MIN_ZOOM_LEVEL);
-    }
-
-    if (zoom > MAX_ZOOM_LEVEL) {
-      zoom = MAX_ZOOM_LEVEL;
-      this.map.setZoom(MAX_ZOOM_LEVEL);
-    }
-
-    this.props.setZoom(zoom);
+    this.props.setZoom(this.map.getZoom());
 
     // We also need to update the center of the map as it can be changed
     // when double clicking or scrolling on the map
@@ -82,103 +61,31 @@ class Map extends Component {
     this.props.setCenter([center.lat(), center.lng()]);
   }
 
-  /**
-   * Detects and handles map clicks
-   * Detects collisions with current vessel data
-   * Draws tracks and loads vessel details
-   *
-   * @param event
-   */
-  onClickMap(event) {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
-
-    // use the following to debug values coming from the server tiles or computed in VesselsTileData
-    // this.vesselsLayer.getHistogram('opacity');
-
-    this.props.setCurrentVessel(vessels, event.latLng);
-  }
-
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResize);
+    window.addEventListener('resize', this.onWindowResizeBound);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('resize', this.onWindowResizeBound);
   }
 
   onWindowResize() {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    const box = this.refs.mapContainer.getBoundingClientRect();
-    this.vesselsLayer.updateViewportSize(box.width, box.height);
+    this.setState(this.getViewportSize());
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.token || !nextProps.map || !this.map) {
+    if (!nextProps.token || !this.map) {
       return;
     }
 
     this.updateBasemap(nextProps);
-    this.updateLayersState(nextProps);
-    this.updateFiltersState(nextProps);
 
-    if (this.props.map.center[0] !== nextProps.map.center[0] || this.props.map.center[1] !== nextProps.map.center[1]) {
-      this.map.setCenter({ lat: nextProps.map.center[0], lng: nextProps.map.center[1] });
+    if (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1]) {
+      this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
     }
 
-    if (this.props.map.zoom !== nextProps.map.zoom) {
-      this.vesselsLayer.setZoom(nextProps.map.zoom);
-      this.map.setZoom(nextProps.map.zoom);
-    }
-
-    if (!nextProps.filters.timelineOuterExtent || !nextProps.filters.timelineInnerExtent) {
-      return;
-    }
-
-    const innerExtentChanged = extentChanged(this.props.filters.timelineInnerExtent, nextProps.filters.timelineInnerExtent);
-    const startTimestamp = nextProps.filters.timelineInnerExtent[0].getTime();
-    const endTimestamp = nextProps.filters.timelineInnerExtent[1].getTime();
-
-    if (!nextProps.vesselTrack) {
-      this.trackLayer.clear();
-    } else {
-      // update tracks layer when:
-      // - user selected a new vessel (seriesgroup or selectedSeries changed)
-      // - zoom level changed (needs fetching of a new tileset)
-      // - playing state changed
-      // - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set (redrawing is too slow when all series are shown)
-      // - selected inner extent changed
-      if (!this.props.vesselTrack ||
-          this.props.vesselTrack.seriesgroup !== nextProps.vesselTrack.seriesgroup ||
-          this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
-          this.props.map.zoom !== nextProps.map.zoom ||
-          this.props.filters.timelinePaused !== nextProps.filters.timelinePaused ||
-          (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.filters.timelineOverExtent, nextProps.filters.timelineOverExtent)) ||
-          innerExtentChanged) {
-        this.updateTrackLayer({
-          data: nextProps.vesselTrack.seriesGroupData,
-          selectedSeries: nextProps.vesselTrack.selectedSeries,
-          startTimestamp,
-          endTimestamp,
-          timelinePaused: nextProps.filters.timelinePaused,
-          timelineOverExtent: nextProps.filters.timelineOverExtent
-        });
-      }
-    }
-
-    if (this.vesselsLayer) {
-      // update vessels layer when:
-      // - user selected a new flag
-      // - selected inner extent changed
-      // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles, then rendered by the vessel layer
-      if (this.props.filters.flag !== nextProps.filters.flag ||
-        innerExtentChanged) {
-        this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
-      }
+    if (this.props.zoom !== nextProps.zoom) {
+      this.map.setZoom(nextProps.zoom);
     }
 
     if (nextProps.trackBounds) {
@@ -186,66 +93,6 @@ class Map extends Component {
         this.map.fitBounds(nextProps.trackBounds);
       }
     }
-
-    this.updateVesselTransparency(nextProps);
-    this.updateVesselColor(nextProps);
-  }
-
-  /**
-   * Handles and propagates filters changes
-   *
-   * @param nextProps
-   */
-  updateFiltersState(nextProps) {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    if (
-      this.props.filters.flag !== nextProps.filters.flag
-    ) {
-      this.vesselsLayer.updateFlag(nextProps.filters.flag);
-    }
-  }
-
-  // TODO remove props from this method args
-  updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
-    if (!this.trackLayer || !data) {
-      return;
-    }
-    this.trackLayer.reposition();
-
-    let overStartTimestamp;
-    let overEndTimestamp;
-    if (timelineOverExtent) {
-      overStartTimestamp = timelineOverExtent[0].getTime();
-      overEndTimestamp = timelineOverExtent[1].getTime();
-    }
-
-    this.trackLayer.drawTile(
-      data,
-      selectedSeries,
-      {
-        startTimestamp,
-        endTimestamp,
-        timelinePaused,
-        overStartTimestamp,
-        overEndTimestamp
-      }
-    );
-  }
-
-  rerenderTrackLayer() {
-    if (!this.props.vesselTrack) {
-      return;
-    }
-    this.updateTrackLayer({
-      data: this.props.vesselTrack.seriesGroupData,
-      selectedSeries: this.props.vesselTrack.selectedSeries,
-      startTimestamp: this.props.filters.timelineInnerExtent[0].getTime(),
-      endTimestamp: this.props.filters.timelineInnerExtent[1].getTime(),
-      timelinePaused: this.props.filters.timelinePaused,
-      timelineOverExtent: this.props.filters.timelineOverExtent
-    });
   }
 
   updateBasemap(nextProps) {
@@ -253,184 +100,11 @@ class Map extends Component {
     this.map.setMapTypeId(nextProps.activeBasemap);
   }
 
-  /**
-   * Handles and propagates layers changes
-   * @param nextProps
-   */
-  updateLayersState(nextProps) {
-    const currentLayers = this.props.map.layers;
-    const newLayers = nextProps.map.layers;
-    const addedLayers = this.state.addedLayers;
-
-    const updatedLayers = newLayers.map(
-      (l, i) => {
-        if (currentLayers[i] === undefined) return l;
-        if (l.title !== currentLayers[i].title) return l;
-        if (l.visible !== currentLayers[i].visible) return l;
-        if (l.opacity !== currentLayers[i].opacity) return l;
-        return false;
-      }
-    );
-
-    const promises = [];
-    let callAddVesselLayer = null;
-
-    for (let i = 0, j = updatedLayers.length; i < j; i++) {
-      if (!updatedLayers[i]) continue;
-
-      const newLayer = updatedLayers[i];
-      const oldLayer = currentLayers[i];
-
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
-        this.setLayerOpacity(newLayer);
-        continue;
-      }
-
-      // If the layer is already on the map and its visibility changed, we update it
-      if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
-        this.toggleLayerVisibility(newLayer);
-        continue;
-      }
-
-      // If the layer is not yet on the map and is invisible, we skip it
-      if (!newLayer.visible) continue;
-
-      if (addedLayers[newLayer.title] !== undefined) return;
-
-      switch (newLayer.type) {
-        case 'ClusterAnimation':
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer, i + 2);
-          break;
-        default:
-          promises.push(this.addCartoLayer(newLayer, i + 2));
-      }
-    }
-
-    Promise.all(promises).then((() => {
-      if (callAddVesselLayer) callAddVesselLayer();
-      this.setState({ addedLayers });
-    }));
-  }
-
-  /**
-   * Creates vessel track layer
-   *
-   * @param layerSettings
-   * @param position
-   */
-  addVesselLayer(layerSettings) {
-    // const canvasLayer = new CanvasLayer(
-    //   position,
-    //   this.map,
-    //   this.props.token,
-    //   this.props.filters,
-    //   this.props.map.vesselTransparency,
-    //   this.props.map.vesselColor,
-    //   layerSettings.visible);
-
-    const box = this.refs.mapContainer.getBoundingClientRect();
-
-    if (!this.vesselsLayer) {
-      this.vesselsLayer = new VesselsLayer(
-        this.map,
-        this.props.map.tilesetUrl,
-        this.props.token,
-        this.props.filters,
-        box.width,
-        box.height
-      );
-    }
-
-    // Create track layer
-    const TrackLayer = createTrackLayer(google);
-    this.trackLayer = new TrackLayer(
-      this.refs.map.props.map,
-      this.refs.mapContainer.offsetWidth,
-      this.refs.mapContainer.offsetHeight
-    );
-
-    this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
-  }
-
-  /**
-   * Creates a Carto-based layer
-   *
-   * @returns {Promise}
-   * @param layerSettings
-   * @param index
-   */
-  addCartoLayer(layerSettings, index) {
-    const addedLayers = this.state.addedLayers;
-
-    const promise = new Promise(((resolve) => {
-      cartodb.createLayer(this.map, layerSettings.source.args.url)
-        .addTo(this.map, index)
-        .done(((layer, cartoLayer) => {
-          cartoLayer.setOpacity(layerSettings.opacity);
-          addedLayers[layer.title] = cartoLayer;
-          resolve();
-        }).bind(this, layerSettings));
-    }));
-
-    return promise;
-  }
-
-
-  /**
-   * Toggles a layer's visibility
-   *
-   * @param layerSettings
-   */
-  toggleLayerVisibility(layerSettings) {
-    const layers = this.state.addedLayers;
-
-    if (layerSettings.visible) {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.show();
-        return;
-      }
-
-      if (layers[layerSettings.title].isVisible()) return;
-
-      layers[layerSettings.title].show();
-    } else {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.hide();
-        return;
-      }
-
-      if (!layers[layerSettings.title].isVisible()) return;
-
-      layers[layerSettings.title].hide();
-    }
-  }
-
-  /**
-   * Updates a layer's opacity
-   *
-   * @param layerSettings
-   */
-  setLayerOpacity(layerSettings) {
-    const layers = this.state.addedLayers;
-
-    if (!Object.keys(layers).length) return;
-
-    if (layerSettings.type === 'ClusterAnimation') return;
-
-    layers[layerSettings.title].setOpacity(layerSettings.opacity);
-  }
-
   onMouseMove() {
     if (!this.map) {
       return;
     }
     this.map.setOptions({ draggableCursor: 'default' });
-  }
-
-  onDragStart() {
-    if (!this.map) {
-      return;
-    }
   }
 
   onDragEnd() {
@@ -456,22 +130,20 @@ class Map extends Component {
       this.map = this.refs.map.props.map;
       this.props.getWorkspace();
       this.defineBasemaps(this.props.basemaps);
-    }
 
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
-    }
-    if (this.trackLayer) {
-      this.rerenderTrackLayer();
+      // pass map and viewport dimensions down to MapLayers
+      const stateUpdate = this.getViewportSize();
+      stateUpdate.map = this.map;
+      this.setState(stateUpdate);
     }
   }
 
-  onCenterChanged() {
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
-    }
+  getViewportSize() {
+    const rect = this.refs.mapContainer.getBoundingClientRect();
+    return {
+      viewportWidth: rect.width,
+      viewportHeight: rect.height
+    };
   }
 
   defineBasemaps(basemaps) {
@@ -486,53 +158,6 @@ class Map extends Component {
         maxZoom: 18
       }));
     });
-  }
-
-
-  /**
-   * Handles vessel transparency changes
-   *
-   * @param nextProps
-   */
-  updateVesselTransparency(nextProps) {
-    if (this.props.map.vesselTransparency === nextProps.map.vesselTransparency) {
-      return;
-    }
-
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    // TODO
-    // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
-
-    // if (this.state.running !== 'play') {
-    //   this.vesselsLayer.refresh();
-    // }
-  }
-
-  /**
-   * TODO
-   * Handles vessel color changes
-   *
-   * @param nextProps
-   */
-  updateVesselColor(nextProps) {
-    if (this.props.map.vesselColor === nextProps.map.vesselColor) {
-      return;
-    }
-
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    // TODO
-    this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
-
-    // TODO remove
-    if (this.state.running !== 'play') {
-      this.vesselsLayer.refresh();
-    }
   }
 
   /**
@@ -621,26 +246,30 @@ class Map extends Component {
           googleMapElement={
             <GoogleMap
               ref="map"
-              defaultZoom={this.props.map.zoom}
-              defaultCenter={{ lat: this.props.map.center[0], lng: this.props.map.center[1] }}
+              defaultZoom={this.props.zoom}
+              defaultCenter={{ lat: this.props.center[0], lng: this.props.center[1] }}
               defaultZoomControl={false}
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
-                zoomControl: false
+                zoomControl: false,
+                minZoom: MIN_ZOOM_LEVEL,
+                maxZoom: MAX_ZOOM_LEVEL
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
-              onClick={this.onClickMap}
               onMousemove={this.onMouseMove}
               onZoomChanged={this.onZoomChanged}
-              onDragstart={this.onDragStart}
               onDragend={this.onDragEnd}
               onIdle={this.onMapIdle}
-              onCenterChanged={this.onCenterChanged}
             />
           }
         />
       </div>
+      <MapLayers
+        map={this.state.map}
+        viewportWidth={this.state.viewportWidth}
+        viewportHeight={this.state.viewportHeight}
+      />
       <ReportPanel />
       <div className={mapCss['timebar-container']}>
         <Timebar />
@@ -655,7 +284,6 @@ class Map extends Component {
 Map.propTypes = {
   activeBasemap: React.PropTypes.string,
   basemaps: React.PropTypes.array,
-  filters: React.PropTypes.object,
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
@@ -663,8 +291,8 @@ Map.propTypes = {
   setCurrentVessel: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
-  map: React.PropTypes.object,
-  vesselTrack: React.PropTypes.object,
+  center: React.PropTypes.array,
+  zoom: React.PropTypes.number,
   /**
    * State of the share modal: { open, workspaceId }
    */
@@ -681,7 +309,6 @@ Map.propTypes = {
   layerModal: React.PropTypes.object,
   closeLayerInfoModal: React.PropTypes.func,
   trackBounds: React.PropTypes.object,
-  vesselTrackDisplayMode: React.PropTypes.string,
   closeSupportModal: React.PropTypes.func,
   openSupportModal: React.PropTypes.func
 };
