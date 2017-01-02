@@ -25,7 +25,7 @@ import { toggleVisibility } from 'actions/vesselInfo';
 export function toggleLayerVisibility(layer) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
-    payload: layer
+    payload: { layer }
   };
 }
 

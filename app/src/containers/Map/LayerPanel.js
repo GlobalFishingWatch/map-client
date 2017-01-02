@@ -10,8 +10,8 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
   },
-  setLayerOpacity: (transparency, layer) => {
-    dispatch(setLayerOpacity(transparency, layer));
+  setLayerOpacity: (opacity, layer) => {
+    dispatch(setLayerOpacity(opacity, layer));
   },
   setLayerHue: (hue, layer) => {
     dispatch(setLayerHue(hue, layer));

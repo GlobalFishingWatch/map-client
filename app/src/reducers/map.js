@@ -88,10 +88,10 @@ const initialState = {
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
   const layers = _.cloneDeep(state.layers);
-  const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.title);
-  const changedLayer = layers[toggledLayerIndex];
+  const layerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
+  const changedLayer = layers[layerIndex];
 
-  if (toggledLayerIndex > -1) {
+  if (layerIndex > -1) {
     changedLayerCallback(changedLayer);
   }
   return layers;
