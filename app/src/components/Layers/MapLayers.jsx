@@ -29,7 +29,7 @@ class MapLayers extends Component {
     this.updateLayers(nextProps);
     this.updateFlag(nextProps);
 
-    if (this.props.zoom !== nextProps.zoom) {
+    if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
       this.vesselsLayer.setZoom(nextProps.zoom);
     }
 
