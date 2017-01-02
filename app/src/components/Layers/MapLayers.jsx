@@ -200,6 +200,8 @@ class MapLayers extends Component {
         this.props.viewportWidth,
         this.props.viewportHeight
       );
+      this.vesselsLayer.setOpacity(layerSettings.opacity);
+      this.vesselsLayer.setHue(layerSettings.hue);
     }
 
     // Create track layer
@@ -264,16 +266,14 @@ class MapLayers extends Component {
   }
 
   /**
-   * Updates a layer's color
+   * Updates a layer's hue
    * @param layerSettings
    */
   setLayerHue(layerSettings) {
     const layers = this.state.addedLayers;
-    console.log(layerSettings.hue, layers[layerSettings.title]);
 
     if (!Object.keys(layers).length) return;
-
-    // layers[layerSettings.title].setColor(layerSettings.color);
+    layers[layerSettings.title].setHue(layerSettings.hue);
   }
 
   /**

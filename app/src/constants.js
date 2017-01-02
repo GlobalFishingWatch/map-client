@@ -34,13 +34,10 @@ export const VESSELS_BASE_RADIUS = 8;
 export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
-// in heatmap style, defines color stops of the radial gradient
-export const VESSELS_HEATMAP_COLOR_STOPS = [
-  { stop: 0, color: 'rgba(136, 251, 255, 1)' },
-  { stop: 1, color: 'rgba(48, 149, 255, 0)' }
-];
-// color of circles in circles rendering mode (more zoomed in)
-export const VESSELS_CIRCLES_COLOR = 'rgba(255, 255, 255, 1)';
+
+export const VESSELS_HUES_INCREMENTS_NUM = 10;
+export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
+
 export const VESSELS_MINIMUM_OPACITY = 0.5;
 
 // tracks

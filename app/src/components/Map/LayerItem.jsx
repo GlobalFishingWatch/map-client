@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, VESSELS_HUES_INCREMENT } from 'constants';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
@@ -31,7 +31,7 @@ class LayerItem extends Component {
     _.assign(this.opacityRangeConfig, {
       minValue: 10,
       maxValue: 100,
-      step: 10,
+      step: 1,
       value: this.props.layer.opacity * 100
     });
 
@@ -39,7 +39,7 @@ class LayerItem extends Component {
     _.assign(this.hueRangeConfig, {
       minValue: 0,
       maxValue: 360,
-      step: 10,
+      step: VESSELS_HUES_INCREMENT,
       value: this.props.layer.hue
     });
     this.hueRangeConfig.classnames.component = 'blending-range -hue';
