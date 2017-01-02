@@ -1,5 +1,4 @@
 /* eslint-disable react/sort-comp  */
-
 import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
@@ -42,32 +41,17 @@ class MapLayers extends Component {
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
 
-    if (!nextProps.vesselTrack) {
+    if (this.trackLayer && !nextProps.vesselTrack) {
       this.trackLayer.clear();
-    } else {
-      // update tracks layer when:
-      // - user selected a new vessel (seriesgroup or selectedSeries changed)
-      // - zoom level changed (needs fetching of a new tileset)
-      // - playing state changed
-      // - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set
-      //    (redrawing is too slow when all series are shown)
-      // - selected inner extent changed
-      if (!this.props.vesselTrack ||
-          this.props.vesselTrack.seriesgroup !== nextProps.vesselTrack.seriesgroup ||
-          this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries ||
-          this.props.zoom !== nextProps.zoom ||
-          this.props.timelinePaused !== nextProps.timelinePaused ||
-          (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) ||
-          innerExtentChanged) {
-        this.updateTrackLayer({
-          data: nextProps.vesselTrack.seriesGroupData,
-          selectedSeries: nextProps.vesselTrack.selectedSeries,
-          startTimestamp,
-          endTimestamp,
-          timelinePaused: nextProps.timelinePaused,
-          timelineOverExtent: nextProps.timelineOverExtent
-        });
-      }
+    } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
+      this.updateTrackLayer({
+        data: nextProps.vesselTrack.seriesGroupData,
+        selectedSeries: nextProps.vesselTrack.selectedSeries,
+        startTimestamp,
+        endTimestamp,
+        timelinePaused: nextProps.timelinePaused,
+        timelineOverExtent: nextProps.timelineOverExtent
+      });
     }
 
     if (this.vesselsLayer) {
@@ -84,6 +68,44 @@ class MapLayers extends Component {
 
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
+  }
+
+  /**
+   * update tracks layer when:
+   * - user selected a new vessel (seriesgroup or selectedSeries changed)
+   * - zoom level changed (needs fetching of a new tileset)
+   * - playing state changed
+   * - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set (redrawing is too
+   * slow when all series are shown)
+   * - selected inner extent changed
+   *
+   * @param nextProps
+   * @param innerExtentChanged
+   * @returns {boolean}
+   */
+  shouldUpdateTrackLayer(nextProps, innerExtentChanged) {
+    if (!this.props.vesselTrack) {
+      return true;
+    }
+    if (this.props.vesselTrack.seriesgroup !== nextProps.vesselTrack.seriesgroup) {
+      return true;
+    }
+    if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries) {
+      return true;
+    }
+    if (this.props.zoom !== nextProps.zoom) {
+      return true;
+    }
+    if (this.props.timelinePaused !== nextProps.timelinePaused) {
+      return true;
+    }
+    if (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
+      return true;
+    }
+    if (innerExtentChanged) {
+      return true;
+    }
+    return false;
   }
 
   build() {
@@ -109,16 +131,14 @@ class MapLayers extends Component {
     const addedLayers = this.state.addedLayers;
 
     const updatedLayers = newLayers.map(
-      (l, i) => {
-        if (currentLayers[i] === undefined) return l;
-        if (l.title !== currentLayers[i].title) return l;
-        if (l.visible !== currentLayers[i].visible) return l;
-        if (l.opacity !== currentLayers[i].opacity) return l;
+      (layer, index) => {
+        if (currentLayers[index] === undefined) return layer;
+        if (layer.title !== currentLayers[index].title) return layer;
+        if (layer.visible !== currentLayers[index].visible) return layer;
+        if (layer.opacity !== currentLayers[index].opacity) return layer;
         return false;
       }
     );
-    // console.log(addedLayers)
-    // console.log(updatedLayers)
 
     const promises = [];
     let callAddVesselLayer = null;
