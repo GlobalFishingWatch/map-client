@@ -36,9 +36,7 @@ export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
 // in heatmap style, defines color stops of the radial gradient
 export const VESSELS_HEATMAP_COLOR_STOPS = [
-  { stop: 0, color: 'rgba(255,255,255,1)' },
-  { stop: 0.1, color: 'rgba(136, 251, 255,1)' },
-  { stop: 0.2, color: 'rgba(255, 248, 150,1)' },
+  { stop: 0, color: 'rgba(136, 251, 255, 1)' },
   { stop: 1, color: 'rgba(48, 149, 255, 0)' }
 ];
 // color of circles in circles rendering mode (more zoomed in)
@@ -75,6 +73,12 @@ export const DURATION_PICKER_OPTIONS = [
   moment.duration(1, 'month'),
   moment.duration(3, 'months')
 ];
+
+export const LAYER_TYPES = {
+  CartoDBAnimation: 'CartoDBAnimation',
+  CartoDBBasemap: 'CartoDBBasemap',
+  ClusterAnimation: 'ClusterAnimation'
+};
 
 export const FLAGS = {
   0: 'AD',

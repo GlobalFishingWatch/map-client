@@ -42,6 +42,7 @@ class LayerItem extends Component {
       step: 10,
       value: this.props.layer.hue
     });
+    this.hueRangeConfig.classnames.component = 'blending-range -hue';
 
     this.state = {
       opacityRangeValue: this.opacityRangeConfig.value,
@@ -102,10 +103,6 @@ class LayerItem extends Component {
   }
 
   render() {
-    const cssClassBlending = this.props.showBlending ?
-      classnames(BlendingStyles['c-blending'], BlendingStyles['-is-visible']) :
-      BlendingStyles['c-blending'];
-
     if (!this.state.opacityRangeValue) return null;
 
     return (
@@ -137,7 +134,7 @@ class LayerItem extends Component {
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.toggleBlending()}
           >
-            <BlendingIcon />
+            <BlendingIcon className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.showBlending })} />
           </li>
           <li
             className={LayerListStyles['layer-option-item']}
@@ -146,7 +143,10 @@ class LayerItem extends Component {
             <InfoIcon />
           </li>
         </ul>
-        <div className={cssClassBlending} ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}>
+        <div
+          className={classnames(BlendingStyles['c-blending'], { [`${BlendingStyles['-is-visible']}`]: this.props.showBlending })}
+          ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}
+        >
           Opacity
           <InputRange
             classNames={this.opacityRangeConfig.classnames}

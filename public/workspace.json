@@ -57,7 +57,8 @@
             }
           },
           "visible": true,
-          "color": "green",
+          "color": "#88FBFF",
+          "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1
         },
