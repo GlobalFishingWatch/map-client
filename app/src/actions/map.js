@@ -1,4 +1,5 @@
 import { push } from 'react-router-redux';
+import _ from 'lodash';
 import {
   SET_LAYERS,
   SET_ZOOM,
@@ -18,6 +19,7 @@ import {
   SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY
 } from 'actions';
+import { LAYER_TYPES } from 'constants';
 import { toggleVisibility } from 'actions/vesselInfo';
 
 export function toggleLayerVisibility(layer) {
@@ -143,12 +145,11 @@ export function getWorkspace(workspaceId) {
         });
 
         // We update the layers
-        const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
-          .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
+          .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
 
         const vesselLayer = workspace.map.layers
-          .filter(l => l.type === 'ClusterAnimation')[0];
+          .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
         const tilesetUrl = vesselLayer.source.args.url;
 
         dispatch({

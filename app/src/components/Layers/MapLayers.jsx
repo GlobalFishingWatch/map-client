@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import { LAYER_TYPES } from 'constants';
 
 class MapLayers extends Component {
   constructor(props) {
@@ -169,7 +170,7 @@ class MapLayers extends Component {
       if (addedLayers[newLayer.title] !== undefined) return;
 
       switch (newLayer.type) {
-        case 'ClusterAnimation':
+        case LAYER_TYPES.ClusterAnimation:
           callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           break;
         default:

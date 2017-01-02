@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
+import { LAYER_TYPES } from 'constants';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
@@ -160,6 +161,7 @@ class LayerItem extends Component {
             onChange={(component, value) => this.onChangeOpacity(component, value)}
             step={this.opacityRangeConfig.step}
           />
+        {this.props.layer.type === LAYER_TYPES.ClusterAnimation && <div>
           Hue
           <InputRange
             classNames={this.hueRangeConfig.classnames}
@@ -169,6 +171,7 @@ class LayerItem extends Component {
             onChange={(component, value) => this.onChangeHue(component, value)}
             step={this.hueRangeConfig.step}
           />
+        </div>}
         </div>
       </li>
     );
