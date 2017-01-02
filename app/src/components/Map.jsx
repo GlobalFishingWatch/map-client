@@ -74,8 +74,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps)
-    if (!nextProps.token || !nextProps.map || !this.map) {
+    if (!nextProps.token || !this.map) {
       return;
     }
 
@@ -86,7 +85,7 @@ class Map extends Component {
     }
 
     if (this.props.zoom !== nextProps.zoom) {
-      this.map.setZoom(nextProps.map.zoom);
+      this.map.setZoom(nextProps.zoom);
     }
 
     if (nextProps.trackBounds) {
