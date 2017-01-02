@@ -5,6 +5,18 @@ import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 
 
 class LayerPanel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { currentBlendingOptionsShown: -1 };
+  }
+
+  onLayerBlendingToggled(layerIndex) {
+    let currentBlendingOptionsShown = layerIndex;
+    if (currentBlendingOptionsShown === this.state.currentBlendingOptionsShown) {
+      currentBlendingOptionsShown = -1;
+    }
+    this.setState({ currentBlendingOptionsShown });
+  }
 
   render() {
     const layers = [];
@@ -13,11 +25,14 @@ class LayerPanel extends Component {
         layers.push(
           <LayerItem
             key={i}
+            layerIndex={i}
             layer={this.props.layers[i]}
             toggleLayerVisibility={this.props.toggleLayerVisibility}
             setLayerOpacity={this.props.setLayerOpacity}
             setLayerHue={this.props.setLayerHue}
             openLayerInfoModal={this.props.setLayerInfoModal}
+            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
+            showBlending={this.state.currentBlendingOptionsShown === i}
           />
         );
       }

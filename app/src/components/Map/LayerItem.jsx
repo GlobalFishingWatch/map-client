@@ -45,8 +45,7 @@ class LayerItem extends Component {
 
     this.state = {
       opacityRangeValue: this.opacityRangeConfig.value,
-      hueRangeValue: this.hueRangeConfig.value,
-      showBlending: false
+      hueRangeValue: this.hueRangeConfig.value
     };
   }
 
@@ -91,9 +90,7 @@ class LayerItem extends Component {
 
   onChangeSwitch() {
     if (this.props.layer.visible) {
-      this.setState({
-        showBlending: false
-      });
+      this.props.onLayerBlendingToggled(this.props.layerIndex);
     }
 
     this.props.toggleLayerVisibility(this.props.layer);
@@ -101,13 +98,11 @@ class LayerItem extends Component {
 
 
   toggleBlending() {
-    this.setState({
-      showBlending: !this.state.showBlending
-    });
+    this.props.onLayerBlendingToggled(this.props.layerIndex);
   }
 
   render() {
-    const cssClassBlending = this.state.showBlending ?
+    const cssClassBlending = this.props.showBlending ?
       classnames(BlendingStyles['c-blending'], BlendingStyles['-is-visible']) :
       BlendingStyles['c-blending'];
 
@@ -179,11 +174,14 @@ class LayerItem extends Component {
 }
 
 LayerItem.propTypes = {
+  layerIndex: React.PropTypes.number,
   layer: React.PropTypes.object,
   toggleLayerVisibility: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   setLayerHue: React.PropTypes.func,
-  openLayerInfoModal: React.PropTypes.func
+  openLayerInfoModal: React.PropTypes.func,
+  onLayerBlendingToggled: React.PropTypes.func,
+  showBlending: React.PropTypes.bool
 };
 
 export default LayerItem;
