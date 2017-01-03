@@ -1,0 +1,22 @@
+@import '../../settings';
+
+.c-polygon-report {
+  background: $color-13;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  left: -50%;
+  opacity: .95;
+  width: 300px;
+
+  .close {
+    background: green;
+  }
+
+  .add {
+    background: lime;
+  }
+}
+
+// TODO this is a hack. Ask Skytruth to disable Carto InfoWindows on their viz.json
+:global .cartodb-infowindow {
+  display: none !important;
+}

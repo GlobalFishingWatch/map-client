@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import PolygonReport from 'containers/Map/PolygonReport';
 
 class MapLayers extends Component {
   constructor(props) {
@@ -112,6 +113,8 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
+
+    this.setState({ map: this.map, reportPolygonId: 1 });
   }
 
   componentWillUnmount() {
@@ -222,7 +225,14 @@ class MapLayers extends Component {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
-          cartoLayer.setOpacity(layerSettings.opacity);
+          cartoLayer.on('featureClick', (event, latLng, pos, data) => {
+            this.setState({
+              reportPolygonId: data.cartodb_id,
+              // TODO ask Skytruth to add interactivity: [cartodb_id, name] on their viz.json
+              reportPolygonDescription: 'descriptionTBD',
+              reportPolygonLatLng: latLng
+            });
+          });
           addedLayers[layer.title] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
@@ -230,7 +240,6 @@ class MapLayers extends Component {
 
     return promise;
   }
-
 
   /**
    * Toggles a layer's visibility
@@ -410,7 +419,14 @@ class MapLayers extends Component {
   }
 
   render() {
-    return null;
+    return (<div>
+      <PolygonReport
+        map={this.state.map}
+        id={this.state.reportPolygonId}
+        description={this.state.reportPolygonDescription}
+        latLng={this.state.reportPolygonLatLng}
+      />
+    </div>);
   }
 }
 

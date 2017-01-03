@@ -60,31 +60,6 @@ const initialState = {
   supportModal: {
     open: false
   },
-  // sample data for reports
-  report: {
-    polygons: [
-      {
-        id: 'kldshf92',
-        name: 'Polygon 1'
-      }, {
-        id: 'iuoiuo87',
-        name: 'Polygon 2'
-      },
-      {
-        id: 'kldshhfgf92',
-        name: 'Polygon 3'
-      }, {
-        id: 'iuoihgjghuo87',
-        name: 'Polygon 4'
-      }, {
-        id: 'kldshdsssf92',
-        name: 'Polygon 5'
-      }, {
-        id: 'iuoiujkhkjhjko87',
-        name: 'Polygon 6'
-      }
-    ]
-  },
   workspaceId: null,
   vesselTransparency: 5,
   vesselColor: DEFAULT_VESSEL_COLOR

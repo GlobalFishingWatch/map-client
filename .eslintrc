@@ -39,7 +39,8 @@
     "comma-dangle": ["error", "never"],
     "max-len": ["error", 140],
     "react/prefer-stateless-function": "off",
-    "no-underscore-dangle": 0
+    "no-underscore-dangle": 0,
+    "react/sort-comp": 0
   },
   "settings": {
       "import/resolver": {

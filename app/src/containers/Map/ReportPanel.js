@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import ReportPanel from 'components/Map/ReportPanel';
 
 const mapStateToProps = (state) => ({
-  polygons: state.map.report.polygons
+  polygons: state.report.polygons
 });
 
 const mapDispatchToProps = () => ({

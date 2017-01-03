@@ -72,7 +72,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": false,
+          "visible": true,
           "color": "#da0000",
           "type": "CartoDBAnimation",
           "opacity": 1
