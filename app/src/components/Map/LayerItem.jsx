@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { LAYER_TYPES, VESSELS_HUES_INCREMENT } from 'constants';
+import { hueToRgbString } from 'util/hsvToRgb';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
@@ -97,9 +98,15 @@ class LayerItem extends Component {
     this.props.toggleLayerVisibility(this.props.layer);
   }
 
-
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.layerIndex);
+  }
+
+  getColor(layer) {
+    if (layer.hue !== undefined) {
+      return hueToRgbString(layer.hue);
+    }
+    return layer.color;
   }
 
   render() {
@@ -115,8 +122,9 @@ class LayerItem extends Component {
             type="checkbox"
             checked={this.props.layer.visible}
             onChange={() => this.onChangeSwitch()}
+            key={this.getColor(this.props.layer)}
             style={{
-              color: this.props.layer.color
+              color: this.getColor(this.props.layer)
             }}
           />
           <span className={LayerListStyles['layer-title']}>

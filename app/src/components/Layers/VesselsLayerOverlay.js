@@ -1,6 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
-import hsvToRgb from 'util/hsvToRgb';
+import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import {
   TIMELINE_MAX_STEPS,
@@ -94,8 +94,7 @@ export default class VesselsLayerOverlay extends BaseOverlay {
       let x = radius;
       const gradient = tplCtx.createRadialGradient(x, yCenter, radius * blurFactor, x, yCenter, radius);
       const hue = hueIncrement * VESSELS_HUES_INCREMENT;
-      const rgb = hsvToRgb(hue, 50, 100);
-      const rgbString = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+      const rgbString = hueToRgbString(hue);
       gradient.addColorStop(0, rgbString);
 
       const rgbOuter = hsvToRgb(Math.min(360, hue + 30), 80, 100);
