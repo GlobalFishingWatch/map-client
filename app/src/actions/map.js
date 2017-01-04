@@ -162,13 +162,21 @@ export function getWorkspace(workspaceId) {
         });
 
         // parses opacity attribute
-        layers.forEach((layer) => {
+        layers.forEach(layer => {
           const l = layer;
           if (!!layer.opacity) {
             l.opacity = parseFloat(layer.opacity);
           } else {
             l.opacity = 1;
           }
+        });
+
+        // add an id to each layer
+        let id = 0;
+        layers.forEach(layer => {
+          /* eslint no-param-reassign: 0 */
+          layer.id = id;
+          id++;
         });
 
         dispatch({

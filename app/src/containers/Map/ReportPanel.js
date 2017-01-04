@@ -3,7 +3,9 @@ import ReportPanel from 'components/Map/ReportPanel';
 import { deletePolygon, discardReport } from 'actions/report';
 
 const mapStateToProps = (state) => ({
-  polygons: state.report.polygons
+  polygons: state.report.polygons,
+  visible: state.report.layerId !== null,
+  layerTitle: state.report.layerTitle
 });
 
 const mapDispatchToProps = (dispatch) => ({

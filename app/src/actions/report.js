@@ -2,6 +2,7 @@ import {
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   SEND_REPORT,
+  START_REPORT,
   DISCARD_REPORT
 } from 'actions';
 
@@ -36,8 +37,28 @@ export function toggleReportPolygon(polygonId, polygonName) {
   };
 }
 
+export function startReport(layerId, layerTitle) {
+  return {
+    type: START_REPORT,
+    payload: {
+      layerId,
+      layerTitle
+    }
+  };
+}
+
 export function discardReport() {
   return {
     type: DISCARD_REPORT
+  };
+}
+
+export function toggleReport(layerId, layerTitle) {
+  return (dispatch, getState) => {
+    if (getState().report.layerId === layerId) {
+      dispatch(discardReport());
+    } else {
+      dispatch(startReport(layerId, layerTitle));
+    }
   };
 }

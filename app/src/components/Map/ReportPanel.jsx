@@ -14,17 +14,15 @@ class ReportPanel extends Component {
     super(props);
 
     this.state = {
-      visible: this.props.polygons.length > 0,
-      expanded: this.props.polygons.length > 0
+      expanded: true
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      visible: nextProps.polygons.length > 0,
-      expanded: nextProps.polygons.length > 0
-    });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     expanded: nextProps.polygons.length > 0
+  //   });
+  // }
 
   onTogglePanel() {
     this.setState({
@@ -33,9 +31,9 @@ class ReportPanel extends Component {
   }
 
   render() {
-    const polygonItems = [];
+    let polygonItems = [];
 
-    if (!this.state.visible) return null;
+    if (this.props.visible === false) return null;
 
     const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
       classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']) : ReportPanelStyles['c-report-panel'];
@@ -61,20 +59,23 @@ class ReportPanel extends Component {
           </li>
         ))
       ));
+    } else {
+      polygonItems = (<li className={ReportPanelStyles['polygon-item']}>
+        <span className={ReportPanelStyles['polygon-name']}>No polygons added yet.<br /> Select polygons on the map.</span>
+      </li>);
     }
 
     return (
       <div className={panelClass}>
         <div className={ReportPanelStyles.menu} onClick={() => this.onTogglePanel()}>
-          <span className={ReportPanelStyles['report-total']}>{this.props.polygons.length} layers added</span>
+          <span className={ReportPanelStyles['report-total']}>{this.props.layerTitle}: {this.props.polygons.length} added</span>
           <span className={toggleClass} />
         </div>
         <div className={containerClass}>
           <div className={ReportPanelStyles.content}>
-            {this.props.polygons.length &&
-              <ul className={ReportPanelStyles['polygon-list']}>
-                {polygonItems}
-              </ul>}
+            <ul className={ReportPanelStyles['polygon-list']}>
+              {polygonItems}
+            </ul>
           </div>
           <div className={ReportPanelStyles['report-options']}>
             <button className={ReportPanelStyles['report-button']} onClick={this.props.onSendReport}>send report</button>
@@ -94,7 +95,9 @@ ReportPanel.propTypes = {
   onDiscardReport: React.PropTypes.func,
   onRemovePolygon: React.PropTypes.func,
   onSendReport: React.PropTypes.func,
-  polygons: React.PropTypes.array
+  polygons: React.PropTypes.array,
+  layerTitle: React.PropTypes.string,
+  visible: React.PropTypes.bool
 };
 
 export default ReportPanel;

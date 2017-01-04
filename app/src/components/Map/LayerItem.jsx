@@ -51,9 +51,9 @@ class LayerItem extends Component {
     this.props.setLayerOpacity(transparency, this.props.layer);
   }
 
-  // onClickReport(event) {
-  //   console.log(event);
-  // }
+  onClickReport() {
+    this.props.toggleReport(this.props.layer.id, this.props.layer.title);
+  }
 
   onClickInfo() {
     const modalParams = {
@@ -113,9 +113,11 @@ class LayerItem extends Component {
         <ul className={LayerListStyles['layer-option-list']}>
           {this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
-            onClick={this.onClickReport}
+            onClick={() => this.onClickReport()}
           >
-            <ReportIcon />
+            <ReportIcon
+              className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.isCurrentlyReported })}
+            />
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
@@ -147,7 +149,9 @@ class LayerItem extends Component {
 
 LayerItem.propTypes = {
   layer: React.PropTypes.object,
+  isCurrentlyReported: React.PropTypes.bool,
   toggleLayerVisibility: React.PropTypes.func,
+  toggleReport: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   openLayerInfoModal: React.PropTypes.func
 };
