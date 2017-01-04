@@ -69,6 +69,10 @@ class MapLayers extends Component {
 
     this.updateVesselTransparency(nextProps);
     this.updateVesselColor(nextProps);
+
+    if (nextProps.reportLayerId !== this.props.reportLayerId) {
+      this.setLayersInteraction(nextProps.reportLayerId);
+    }
   }
 
   /**
@@ -225,6 +229,7 @@ class MapLayers extends Component {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
+          cartoLayer.setInteraction(false);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.setState({
               reportPolygonId: data.cartodb_id,
@@ -239,6 +244,32 @@ class MapLayers extends Component {
     }));
 
     return promise;
+  }
+
+  setLayersInteraction(reportLayerId) {
+    console.log(reportLayerId)
+    this.props.layers.forEach(layerSettings => {
+      const layer = this.state.addedLayers[layerSettings.title];
+      // console.log(this)
+      // console.log(this.state)
+      // console.log(this.state.addedLayers)
+      // console.log(layerSettings.title)
+      // console.log(this.state.addedLayers[layerSettings.title])
+      // console.log(layer)
+      if (layer) {
+        if (reportLayerId === null) {
+          if (layerSettings.type === 'ClusterAnimation') {
+            layer.setInteraction(true);
+          } else {
+            layer.setInteraction(false);
+          }
+        } else if (reportLayerId === layerSettings.id) {
+          layer.setInteraction(true);
+        } else {
+          layer.setInteraction(false);
+        }
+      }
+    });
   }
 
   /**
@@ -406,7 +437,8 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    if (!this.vesselsLayer || !event) {
+    console.log(this.vesselsLayer.interactive)
+    if (!this.vesselsLayer || !event || this.vesselsLayer.interactive === false) {
       return;
     }
 
@@ -446,7 +478,8 @@ MapLayers.propTypes = {
   setCurrentVessel: React.PropTypes.func,
   vesselTrack: React.PropTypes.object,
   viewportWidth: React.PropTypes.number,
-  viewportHeight: React.PropTypes.number
+  viewportHeight: React.PropTypes.number,
+  reportLayerId: React.PropTypes.number
 };
 
 

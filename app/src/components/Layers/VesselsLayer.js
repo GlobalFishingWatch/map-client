@@ -94,6 +94,11 @@ export default class VesselsLayer {
     this.overlay.setZoom(zoom);
   }
 
+  setInteraction(interactive) {
+    console.log('vessel', interactive)
+    this.interactive = interactive;
+  }
+
   updateViewportSize(width, height) {
     this.overlay.updateViewportSize(width, height);
   }
