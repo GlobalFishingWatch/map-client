@@ -26,12 +26,6 @@ class ReportPanel extends Component {
     });
   }
 
-  onRemovePolygon(event) {
-    const id = event.currentTarget.getAttribute('id');
-
-    this.props.onRemovePolygon(id);
-  }
-
   onTogglePanel() {
     this.setState({
       expanded: !this.state.expanded
@@ -53,7 +47,7 @@ class ReportPanel extends Component {
       ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles['-expanded']);
 
     if (this.props.polygons.length) {
-      this.props.polygons.map(polygon => (
+      this.props.polygons.map((polygon, index) => (
         polygonItems.push((
           <li className={ReportPanelStyles['polygon-item']} key={polygon.id}>
             <span className={ReportPanelStyles['polygon-name']}>{polygon.name}</span>
@@ -61,7 +55,7 @@ class ReportPanel extends Component {
               <RemovePolygonIcon
                 className={classnames(iconStyles.icon, ReportPanelStyles['icon-remove-polygon'])}
                 id={polygon.id}
-                onClick={(e) => this.onRemovePolygon(e)}
+                onClick={() => this.props.onRemovePolygon(index)}
               />
             </span>
           </li>
