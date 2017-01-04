@@ -24,6 +24,8 @@ export default function (state = initialState, action) {
       polygons.splice(action.payload.polygonIndex, 1);
       return Object.assign({}, state, { polygons });
     }
+    case DISCARD_REPORT:
+      return Object.assign({}, state, { polygons: [] });
 
     default:
       return state;

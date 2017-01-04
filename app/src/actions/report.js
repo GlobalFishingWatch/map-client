@@ -35,3 +35,9 @@ export function toggleReportPolygon(polygonId, polygonName) {
     }
   };
 }
+
+export function discardReport() {
+  return {
+    type: DISCARD_REPORT
+  };
+}
