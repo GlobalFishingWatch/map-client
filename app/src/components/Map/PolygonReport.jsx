@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import PolygonReportStyles from 'styles/components/map/c-polygon-report.scss';
-
+import buttonCloseStyles from 'styles/components/c-button-close.scss';
+import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 
 class PolygonReportInfoWindow extends google.maps.OverlayView {
   constructor() {
@@ -84,11 +85,11 @@ export default class PolygonReport extends Component {
       <div className={PolygonReportStyles.title}>
         {this.props.id}
       </div>
-      <div className={PolygonReportStyles.title}>
+      <div className={PolygonReportStyles.description}>
         {this.props.description}
       </div>
-      <button className={classnames('js-close', PolygonReportStyles.close)}>
-        Close
+      <button className={classnames('js-close', PolygonReportStyles.close, buttonCloseStyles['c-button-close'])}>
+        <CloseIcon className={buttonCloseStyles.cross} />
       </button>
       <button className={classnames('js-add', PolygonReportStyles.add)}>
         Add to report

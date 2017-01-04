@@ -8,27 +8,6 @@
   font-family: $font-family-1;
   width: 100%;
 
-  .button-close {
-    background-color: $color-4;
-    border-radius: 50%;
-    cursor: pointer;
-    display: inline-block;
-    height: 26px;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    width: 26px;
-
-    > .cross {
-      height: 11px;
-      left: 50%;
-      position: absolute;
-      stroke: $color-7;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 11px;
-    }
-  }
-
   .vessel-metadata {
     display: flex;
     flex-wrap: wrap;
