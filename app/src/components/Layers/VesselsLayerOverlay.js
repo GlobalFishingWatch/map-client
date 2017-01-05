@@ -241,7 +241,7 @@ export default class VesselsLayerOverlay extends BaseOverlay {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
-        if (this.flag && this.flag !== frame.category[index]) {
+        if (Number.isInteger(this.flag) && this.flag !== frame.category[index]) {
           continue;
         }
         numSprites++;
