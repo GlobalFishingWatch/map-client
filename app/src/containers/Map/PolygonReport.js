@@ -5,7 +5,8 @@ import { toggleReportPolygon, clearPolygon } from 'actions/report';
 const mapStateToProps = (state) => ({
   id: state.report.currentPolygon.id,
   description: state.report.currentPolygon.description,
-  latLng: state.report.currentPolygon.latLng
+  latLng: state.report.currentPolygon.latLng,
+  isInReport: state.report.currentPolygon.isInReport
 });
 
 const mapDispatchToProps = (dispatch) => ({

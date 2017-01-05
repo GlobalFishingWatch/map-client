@@ -51,7 +51,7 @@ export default class PolygonReport extends Component {
 
   // avoids updating when props.map changes
   shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id || nextProps.id !== this.props.id) {
+    if (nextProps.id !== this.props.id || nextProps.isInReport !== this.props.isInReport) {
       return true;
     }
     return false;
@@ -68,12 +68,17 @@ export default class PolygonReport extends Component {
   onInfoWindowClick(e) {
     if (e.target.className.indexOf('js-close') > -1) {
       this.props.clearPolygon();
-    } else if (e.target.className.indexOf('js-add') > -1) {
+    } else if (e.target.className.indexOf('js-toggle') > -1) {
       this.props.toggleReportPolygon(this.props.id);
     }
   }
 
   render() {
+    const toggleButtonText = (this.props.isInReport) ? 'remove from report' : 'add to report';
+    let toggleButtonClassName = classnames('js-toggle', PolygonReportStyles.toggle);
+    if (this.props.isInReport) {
+      toggleButtonClassName += ` ${PolygonReportStyles['-remove']}`;
+    }
     this.element = (this.props.id === undefined) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
       <div className={PolygonReportStyles.title}>
         {this.props.id}
@@ -84,8 +89,8 @@ export default class PolygonReport extends Component {
       <button className={classnames('js-close', PolygonReportStyles.close, buttonCloseStyles['c-button-close'])}>
         <CloseIcon className={buttonCloseStyles.cross} />
       </button>
-      <button className={classnames('js-add', PolygonReportStyles.add)}>
-        Add to report
+      <button className={toggleButtonClassName}>
+        {toggleButtonText}
       </button>
     </div>);
 
@@ -95,9 +100,9 @@ export default class PolygonReport extends Component {
 
 PolygonReport.propTypes = {
   id: React.PropTypes.number,
-  reportLayerId: React.PropTypes.number,
   description: React.PropTypes.string,
   latLng: React.PropTypes.array,
+  isInReport: React.PropTypes.bool,
   toggleReportPolygon: React.PropTypes.func,
   clearPolygon: React.PropTypes.func
 };
