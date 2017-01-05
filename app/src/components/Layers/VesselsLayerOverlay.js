@@ -21,7 +21,10 @@ export default class VesselsLayerOverlay extends BaseOverlay {
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
     this._build();
-    this.setFlag(flag);
+
+    if (flag) {
+      this.setFlag(flag);
+    }
   }
 
   setFlag(flag) {
@@ -241,7 +244,7 @@ export default class VesselsLayerOverlay extends BaseOverlay {
       if (!frame) continue;
 
       for (let index = 0, len = frame.x.length; index < len; index++) {
-        if (this.flag && this.flag !== frame.category[index]) {
+        if (this.flag !== undefined && this.flag !== frame.category[index]) {
           continue;
         }
         numSprites++;
