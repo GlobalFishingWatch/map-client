@@ -2,23 +2,27 @@
 
 .c-polygon-report {
   background: $color-13;
-  bottom: 120px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  left: -50%;
+  bottom: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
   height: 120px;
+  left: -110px;
   opacity: .95;
   padding: 24px;
+  position: absolute;
   width: 220px;
 
-  .title, .description, .add {
+  .title,
+  .description,
+  .add {
     color: $color-4;
     font-family: $font-family-1;
     font-size: 15px;
   }
 
-  .title, .add {
-    text-transform: capitalize;
+  .title,
+  .add {
     font-weight: bold;
+    text-transform: uppercase;
   }
 
   .close {
@@ -30,14 +34,23 @@
   }
 
   .add {
+    cursor: pointer;
     margin-top: 20px;
+
     &::before {
       background: $color-4;
       color: $color-13;
       content: '+';
       display: inline-block;
-      margin-right: 4px;
+      margin-right: 8px;
       width: 20px;
+    }
+  }
+
+  .close,
+  .add {
+    &:focus {
+      outline: none;
     }
   }
 }

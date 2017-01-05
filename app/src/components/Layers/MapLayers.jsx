@@ -243,7 +243,7 @@ class MapLayers extends Component {
             this.setState({
               reportPolygonId: data.cartodb_id,
               // TODO ask Skytruth to add interactivity: [cartodb_id, name] on their viz.json
-              reportPolygonDescription: 'descriptionTBD',
+              reportPolygonDescription: '',
               reportPolygonLatLng: latLng
             });
           });

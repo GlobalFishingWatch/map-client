@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toggleReportPolygon: polygonId => {
-    dispatch(toggleReportPolygon(polygonId, `name TBD (${polygonId})`));
+    dispatch(toggleReportPolygon(polygonId, ''));
   }
 });
 
