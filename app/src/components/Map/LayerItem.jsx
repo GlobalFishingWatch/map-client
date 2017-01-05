@@ -51,6 +51,14 @@ class LayerItem extends Component {
     };
   }
 
+  onChangeVisibility() {
+    if (this.props.layer.visible && this.props.showBlending) {
+      this.props.onLayerBlendingToggled(this.props.layerIndex);
+    }
+
+    this.props.toggleLayerVisibility(this.props.layer.id);
+  }
+
   onChangeOpacity(component, value) {
     const transparency = parseFloat(value) / 100;
 
@@ -59,14 +67,10 @@ class LayerItem extends Component {
     });
 
     if (!this.props.layer.visible) {
-      this.props.toggleLayerVisibility(this.props.layer);
+      this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerOpacity(transparency, this.props.layer);
-  }
-
-  onClickReport() {
-    this.props.toggleReport(this.props.layer.id, this.props.layer.title);
+    this.props.setLayerOpacity(transparency, this.props.layer.id);
   }
 
   onChangeHue(component, value) {
@@ -75,10 +79,14 @@ class LayerItem extends Component {
     });
 
     if (!this.props.layer.visible) {
-      this.props.toggleLayerVisibility(this.props.layer);
+      this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerHue(value, this.props.layer);
+    this.props.setLayerHue(value, this.props.layer.id);
+  }
+
+  onClickReport() {
+    this.props.toggleReport(this.props.layer.id, this.props.layer.title);
   }
 
   onClickInfo() {
@@ -88,14 +96,6 @@ class LayerItem extends Component {
     };
 
     this.props.openLayerInfoModal(modalParams);
-  }
-
-  onChangeSwitch() {
-    if (this.props.layer.visible && this.props.showBlending) {
-      this.props.onLayerBlendingToggled(this.props.layerIndex);
-    }
-
-    this.props.toggleLayerVisibility(this.props.layer);
   }
 
   toggleBlending() {
@@ -121,7 +121,7 @@ class LayerItem extends Component {
             className={SwitcherStyles['c-switcher']}
             type="checkbox"
             checked={this.props.layer.visible}
-            onChange={() => this.onChangeSwitch()}
+            onChange={() => this.onChangeVisibility()}
             key={this.getColor(this.props.layer)}
             style={{
               color: this.getColor(this.props.layer)

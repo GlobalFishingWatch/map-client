@@ -9,17 +9,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  toggleLayerVisibility: (layer) => {
-    dispatch(toggleLayerVisibility(layer));
+  toggleLayerVisibility: (layerId) => {
+    dispatch(toggleLayerVisibility(layerId));
+  },
+  setLayerOpacity: (opacity, layerId) => {
+    dispatch(setLayerOpacity(opacity, layerId));
+  },
+  setLayerHue: (hue, layerId) => {
+    dispatch(setLayerHue(hue, layerId));
   },
   toggleReport: (layerId, layerTitle) => {
     dispatch(toggleReport(layerId, layerTitle));
-  },
-  setLayerOpacity: (opacity, layer) => {
-    dispatch(setLayerOpacity(opacity, layer));
-  },
-  setLayerHue: (hue, layer) => {
-    dispatch(setLayerHue(hue, layer));
   },
   setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));

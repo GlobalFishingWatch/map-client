@@ -68,9 +68,6 @@ class MapLayers extends Component {
       }
     }
 
-    this.updateVesselTransparency(nextProps);
-    this.updateVesselColor(nextProps);
-
     if (nextProps.reportLayerId !== this.props.reportLayerId) {
       this.setLayersInteraction(nextProps.reportLayerId);
     }
@@ -158,18 +155,18 @@ class MapLayers extends Component {
       const newLayer = updatedLayers[i];
       const oldLayer = currentLayers[i];
 
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
+      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
         continue;
       }
 
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
         this.setLayerHue(newLayer);
         continue;
       }
 
       // If the layer is already on the map and its visibility changed, we update it
-      if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
+      if (addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
         this.toggleLayerVisibility(newLayer);
         continue;
       }
@@ -177,7 +174,7 @@ class MapLayers extends Component {
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
 
-      if (addedLayers[newLayer.title] !== undefined) return;
+      if (addedLayers[newLayer.id] !== undefined) return;
 
       switch (newLayer.type) {
         case LAYER_TYPES.ClusterAnimation:
@@ -212,6 +209,7 @@ class MapLayers extends Component {
       );
       this.vesselsLayer.setOpacity(layerSettings.opacity);
       this.vesselsLayer.setHue(layerSettings.hue);
+      this.vesselsLayer.setInteraction(true);
     }
 
     // Create track layer
@@ -221,7 +219,7 @@ class MapLayers extends Component {
     );
     this.trackLayer.setMap(this.map);
 
-    this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
+    this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
   }
 
   /**
@@ -247,7 +245,7 @@ class MapLayers extends Component {
               reportPolygonLatLng: latLng
             });
           });
-          addedLayers[layer.title] = cartoLayer;
+          addedLayers[layer.id] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
     }));
@@ -258,7 +256,7 @@ class MapLayers extends Component {
   setLayersInteraction(reportLayerId) {
     console.log(reportLayerId)
     this.props.layers.forEach(layerSettings => {
-      const layer = this.state.addedLayers[layerSettings.title];
+      const layer = this.state.addedLayers[layerSettings.id];
       // console.log(this)
       // console.log(this.state)
       // console.log(this.state.addedLayers)
@@ -266,15 +264,20 @@ class MapLayers extends Component {
       // console.log(this.state.addedLayers[layerSettings.title])
       // console.log(layer)
       if (layer) {
+        // no report enabled: enable interaction in all but vessel layer
         if (reportLayerId === null) {
           if (layerSettings.type === 'ClusterAnimation') {
+            console.log('enable', layerSettings.title);
             layer.setInteraction(true);
           } else {
+            console.log('disable', layerSettings.title);
             layer.setInteraction(false);
           }
         } else if (reportLayerId === layerSettings.id) {
+          console.log('enable', layerSettings.title);
           layer.setInteraction(true);
         } else {
+          console.log('disable', layerSettings.title);
           layer.setInteraction(false);
         }
       }
@@ -290,9 +293,9 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      layers[layerSettings.title].show();
+      layers[layerSettings.id].show();
     } else {
-      layers[layerSettings.title].hide();
+      layers[layerSettings.id].hide();
     }
   }
 
@@ -305,7 +308,7 @@ class MapLayers extends Component {
 
     if (!Object.keys(layers).length) return;
 
-    layers[layerSettings.title].setOpacity(layerSettings.opacity);
+    layers[layerSettings.id].setOpacity(layerSettings.opacity);
   }
 
   /**
@@ -316,7 +319,7 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (!Object.keys(layers).length) return;
-    layers[layerSettings.title].setHue(layerSettings.hue);
+    layers[layerSettings.id].setHue(layerSettings.hue);
   }
 
   /**
