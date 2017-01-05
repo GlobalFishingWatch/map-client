@@ -1,10 +1,12 @@
 import { push } from 'react-router-redux';
+import _ from 'lodash';
 import {
   SET_LAYERS,
   SET_ZOOM,
   SET_CENTER,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYER_OPACITY,
+  SET_LAYER_HUE,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTER,
@@ -13,18 +15,17 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
-  UPDATE_VESSEL_TRANSPARENCY,
-  UPDATE_VESSEL_COLOR,
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY
 } from 'actions';
+import { LAYER_TYPES } from 'constants';
 import { toggleVisibility } from 'actions/vesselInfo';
 
 export function toggleLayerVisibility(layer) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
-    payload: layer
+    payload: { layer }
   };
 }
 
@@ -63,17 +64,13 @@ export function setLayerOpacity(opacity, layer) {
   };
 }
 
-export function updateVesselTransparency(transparency) {
+export function setLayerHue(hue, layer) {
   return {
-    type: UPDATE_VESSEL_TRANSPARENCY,
-    payload: parseInt(transparency, 10)
-  };
-}
-
-export function updateVesselColor(color) {
-  return {
-    type: UPDATE_VESSEL_COLOR,
-    payload: color
+    type: SET_LAYER_HUE,
+    payload: {
+      layer,
+      hue
+    }
   };
 }
 
@@ -148,12 +145,11 @@ export function getWorkspace(workspaceId) {
         });
 
         // We update the layers
-        const allowedLayerTypes = ['CartoDBAnimation', 'CartoDBBasemap', 'ClusterAnimation'];
         const layers = workspace.map.layers
-          .filter(l => allowedLayerTypes.indexOf(l.type) !== -1);
+          .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
 
         const vesselLayer = workspace.map.layers
-          .filter(l => l.type === 'ClusterAnimation')[0];
+          .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
         const tilesetUrl = vesselLayer.source.args.url;
 
         dispatch({

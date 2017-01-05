@@ -10,6 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    position: relative;
     width: 100%;
 
     &:not(:first-child) {
@@ -61,6 +62,11 @@
         &:not(:first-child) {
           margin: 0 0 0 10px;
         }
+
+      }
+
+      .-highlighted path {
+        fill: $color-4;
       }
     }
 

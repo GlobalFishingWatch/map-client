@@ -6,6 +6,7 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYERS,
   SET_LAYER_OPACITY,
+  SET_LAYER_HUE,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -13,15 +14,12 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
-  UPDATE_VESSEL_TRANSPARENCY,
-  UPDATE_VESSEL_COLOR,
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY
 } from '../actions';
 import _ from 'lodash';
-import { DEFAULT_VESSEL_COLOR } from 'constants';
 
 const initialState = {
   activeBasemap: null,
@@ -85,9 +83,18 @@ const initialState = {
       }
     ]
   },
-  workspaceId: null,
-  vesselTransparency: 5,
-  vesselColor: DEFAULT_VESSEL_COLOR
+  workspaceId: null
+};
+
+const getUpdatedLayers = (state, action, changedLayerCallback) => {
+  const layers = _.cloneDeep(state.layers);
+  const layerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
+  const changedLayer = layers[layerIndex];
+
+  if (layerIndex > -1) {
+    changedLayerCallback(changedLayer);
+  }
+  return layers;
 };
 
 /**
@@ -112,30 +119,25 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-    case UPDATE_VESSEL_TRANSPARENCY:
-      return Object.assign({}, state, { vesselTransparency: action.payload });
-    case UPDATE_VESSEL_COLOR:
-      return Object.assign({}, state, { vesselColor: action.payload });
     case SET_LAYER_OPACITY: {
-      const layers = _.cloneDeep(state.layers);
-      const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
-      const newLayer = layers[toggledLayerIndex];
-
-      if (toggledLayerIndex === -1) return state;
-
-      newLayer.opacity = action.payload.opacity;
-
+      /* eslint no-param-reassign: 0 */
+      const layers = getUpdatedLayers(state, action, changedLayer => {
+        changedLayer.opacity = action.payload.opacity;
+      });
+      return Object.assign({}, state, { layers });
+    }
+    case SET_LAYER_HUE: {
+      /* eslint no-param-reassign: 0 */
+      const layers = getUpdatedLayers(state, action, changedLayer => {
+        changedLayer.hue = action.payload.hue;
+      });
       return Object.assign({}, state, { layers });
     }
     case TOGGLE_LAYER_VISIBILITY: {
-      const layers = _.cloneDeep(state.layers);
-      const toggledLayerIndex = layers.findIndex(l => l.title === action.payload.title);
-      const newLayer = layers[toggledLayerIndex];
-
-      if (toggledLayerIndex === -1) return state;
-
-      newLayer.visible = !newLayer.visible;
-
+      /* eslint no-param-reassign: 0 */
+      const layers = getUpdatedLayers(state, action, changedLayer => {
+        changedLayer.visible = !changedLayer.visible;
+      });
       return Object.assign({}, state, { layers });
     }
     case SET_BASEMAP: {

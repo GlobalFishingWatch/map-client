@@ -1,21 +1,41 @@
 @import '../../settings';
 
-.c-opacity-selector {
+.c-blending {
+  color: $color-4;
   cursor: default;
   display: flex;
   flex-basis: 100%;
+  font-family: $font-family-1;
+  font-size: $font-size-xxs-small;
   max-height: 0;
   overflow: hidden;
+  text-transform: uppercase;
 
-  transition: max-height .25s ease;
+  @media #{$mq-tablet} {
+    background-color: $color-1;
+    border: solid 1px rgba($color-3, .4);
+    bottom: 30px;
+    display: none;
+    opacity: .9;
+    padding: 20px;
+    position: absolute;
+    width: 270px;
+  }
 
   &.-is-visible {
+    display: flex;
     margin: 10px 0 5px;
     max-height: 40px;
     overflow: visible;
+
+    @media #{$mq-tablet} {
+      display: block;
+      margin: 0;
+      max-height: none;
+    }
   }
 
-  :global .opacity-range {
+  :global .blending-range {
     appearance: none;
     background: transparent;
     height: 40px;
@@ -77,8 +97,7 @@
       }
 
       &.-current {
-        top: -25px;
-        transform: translate(calc(-50% + 3px), 0);
+        display: none;
       }
 
       &.-min {
@@ -94,6 +113,24 @@
         font-family: $font-family-1;
         font-size: $font-size-tiny;
       }
+    }
+  }
+
+  :global .blending-range.-hue {
+    height: 25px;
+
+    :global .track-container {
+      .track-active {
+        display: none;
+      }
+
+      &::before {
+        background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+      }
+    }
+
+    :global .label {
+      display: none;
     }
   }
 }

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import { LAYER_TYPES } from 'constants';
 
 class MapLayers extends Component {
   constructor(props) {
@@ -65,9 +66,6 @@ class MapLayers extends Component {
         this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
       }
     }
-
-    this.updateVesselTransparency(nextProps);
-    this.updateVesselColor(nextProps);
   }
 
   /**
@@ -136,6 +134,7 @@ class MapLayers extends Component {
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;
         if (layer.opacity !== currentLayers[index].opacity) return layer;
+        if (layer.hue !== currentLayers[index].hue) return layer;
         return false;
       }
     );
@@ -154,6 +153,11 @@ class MapLayers extends Component {
         continue;
       }
 
+      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+        this.setLayerHue(newLayer);
+        continue;
+      }
+
       // If the layer is already on the map and its visibility changed, we update it
       if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
         this.toggleLayerVisibility(newLayer);
@@ -166,7 +170,7 @@ class MapLayers extends Component {
       if (addedLayers[newLayer.title] !== undefined) return;
 
       switch (newLayer.type) {
-        case 'ClusterAnimation':
+        case LAYER_TYPES.ClusterAnimation:
           callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           break;
         default:
@@ -196,6 +200,8 @@ class MapLayers extends Component {
         this.props.viewportWidth,
         this.props.viewportHeight
       );
+      this.vesselsLayer.setOpacity(layerSettings.opacity);
+      this.vesselsLayer.setHue(layerSettings.hue);
     }
 
     // Create track layer
@@ -241,29 +247,14 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.show();
-        return;
-      }
-
-      if (layers[layerSettings.title].isVisible()) return;
-
       layers[layerSettings.title].show();
     } else {
-      if (layerSettings.type === 'ClusterAnimation') {
-        this.vesselsLayer.hide();
-        return;
-      }
-
-      if (!layers[layerSettings.title].isVisible()) return;
-
       layers[layerSettings.title].hide();
     }
   }
 
   /**
    * Updates a layer's opacity
-   *
    * @param layerSettings
    */
   setLayerOpacity(layerSettings) {
@@ -271,46 +262,18 @@ class MapLayers extends Component {
 
     if (!Object.keys(layers).length) return;
 
-    if (layerSettings.type === 'ClusterAnimation') return;
-
     layers[layerSettings.title].setOpacity(layerSettings.opacity);
   }
 
   /**
-   * Handles vessel transparency changes
-   *
-   * @param nextProps
+   * Updates a layer's hue
+   * @param layerSettings
    */
-  updateVesselTransparency(nextProps) {
-    if (this.props.map.vesselTransparency === nextProps.map.vesselTransparency) {
-      return;
-    }
+  setLayerHue(layerSettings) {
+    const layers = this.state.addedLayers;
 
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    // TODO
-    // this.vesselsLayer.setVesselTransparency(nextProps.map.vesselTransparency);
-  }
-
-  /**
-   * TODO
-   * Handles vessel color changes
-   *
-   * @param nextProps
-   */
-  updateVesselColor(nextProps) {
-    if (this.props.map.vesselColor === nextProps.map.vesselColor) {
-      return;
-    }
-
-    if (!this.vesselsLayer) {
-      return;
-    }
-
-    // TODO
-    this.vesselsLayer.setVesselColor(nextProps.map.vesselColor);
+    if (!Object.keys(layers).length) return;
+    layers[layerSettings.title].setHue(layerSettings.hue);
   }
 
   /**

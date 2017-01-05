@@ -94,6 +94,19 @@ export default class VesselsLayer {
     this.overlay.setZoom(zoom);
   }
 
+  setOpacity(opacity) {
+    this.overlay.setOpacity(opacity);
+  }
+
+  /**
+   * Updates the layer's hue
+   * @param hue a value on the color wheel between 0 and 360
+   */
+  setHue(hue) {
+    this.overlay.setHue(hue);
+    this.render();
+  }
+
   updateViewportSize(width, height) {
     this.overlay.updateViewportSize(width, height);
   }
