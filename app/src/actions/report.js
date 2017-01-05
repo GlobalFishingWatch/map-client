@@ -5,7 +5,7 @@ import {
   START_REPORT,
   DISCARD_REPORT
 } from 'actions';
-
+import { toggleLayerVisibility } from 'actions/map';
 
 export function addPolygon(polygonId, polygonName) {
   return {
@@ -38,12 +38,15 @@ export function toggleReportPolygon(polygonId, polygonName) {
 }
 
 export function startReport(layerId, layerTitle) {
-  return {
-    type: START_REPORT,
-    payload: {
-      layerId,
-      layerTitle
-    }
+  return (dispatch) => {
+    dispatch(toggleLayerVisibility(layerId, true));
+    dispatch({
+      type: START_REPORT,
+      payload: {
+        layerId,
+        layerTitle
+      }
+    });
   };
 }
 

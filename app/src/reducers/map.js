@@ -98,7 +98,7 @@ export default function (state = initialState, action) {
     case TOGGLE_LAYER_VISIBILITY: {
       /* eslint no-param-reassign: 0 */
       const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.visible = !changedLayer.visible;
+        changedLayer.visible = (action.payload.forceShow === true) ? true : !changedLayer.visible;
       });
       return Object.assign({}, state, { layers });
     }

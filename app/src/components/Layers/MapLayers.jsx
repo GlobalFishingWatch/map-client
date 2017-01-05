@@ -155,6 +155,12 @@ class MapLayers extends Component {
       const newLayer = updatedLayers[i];
       const oldLayer = currentLayers[i];
 
+      // If the layer is already on the map and its visibility changed, we update it
+      if (addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
+        this.toggleLayerVisibility(newLayer);
+        continue;
+      }
+
       if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
         continue;
@@ -165,11 +171,6 @@ class MapLayers extends Component {
         continue;
       }
 
-      // If the layer is already on the map and its visibility changed, we update it
-      if (addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
-        this.toggleLayerVisibility(newLayer);
-        continue;
-      }
 
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
@@ -181,7 +182,7 @@ class MapLayers extends Component {
           callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           break;
         default:
-          promises.push(this.addCartoLayer(newLayer, i + 2));
+          promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
     }
 
@@ -228,15 +229,16 @@ class MapLayers extends Component {
    * @returns {Promise}
    * @param layerSettings
    * @param index
+   * @param reportLayerId used to toggle interactivity on or off
    */
-  addCartoLayer(layerSettings, index) {
+  addCartoLayer(layerSettings, index, reportLayerId) {
     const addedLayers = this.state.addedLayers;
 
     const promise = new Promise(((resolve) => {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
-          cartoLayer.setInteraction(false);
+          cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.setState({
               reportPolygonId: data.cartodb_id,
@@ -254,7 +256,6 @@ class MapLayers extends Component {
   }
 
   setLayersInteraction(reportLayerId) {
-    console.log(reportLayerId)
     this.props.layers.forEach(layerSettings => {
       const layer = this.state.addedLayers[layerSettings.id];
       // console.log(this)
@@ -290,6 +291,7 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   toggleLayerVisibility(layerSettings) {
+    console.log('toggle', layerSettings)
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {

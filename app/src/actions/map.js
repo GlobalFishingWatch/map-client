@@ -47,10 +47,13 @@ export function setCenter(center) {
   };
 }
 
-export function toggleLayerVisibility(layerId) {
+export function toggleLayerVisibility(layerId, forceShow = false) {
   return {
     type: TOGGLE_LAYER_VISIBILITY,
-    payload: { layerId }
+    payload: {
+      layerId,
+      forceShow
+    }
   };
 }
 
