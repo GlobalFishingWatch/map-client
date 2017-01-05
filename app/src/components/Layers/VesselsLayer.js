@@ -94,6 +94,10 @@ export default class VesselsLayer {
     this.overlay.setZoom(zoom);
   }
 
+  setInteraction(interactive) {
+    this.interactive = interactive;
+  }
+
   setOpacity(opacity) {
     this.overlay.setOpacity(opacity);
   }

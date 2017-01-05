@@ -73,7 +73,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
-          "visible": false,
+          "visible": true,
           "color": "#da0000",
           "type": "CartoDBAnimation",
           "opacity": 1
@@ -89,7 +89,7 @@
             }
           },
           "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
-          "visible": false,
+          "visible": true,
           "color": "#c45e00",
           "type": "CartoDBAnimation",
           "opacity": 1

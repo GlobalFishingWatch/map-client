@@ -51,6 +51,14 @@ class LayerItem extends Component {
     };
   }
 
+  onChangeVisibility() {
+    if (this.props.layer.visible && this.props.showBlending) {
+      this.props.onLayerBlendingToggled(this.props.layerIndex);
+    }
+
+    this.props.toggleLayerVisibility(this.props.layer.id);
+  }
+
   onChangeOpacity(component, value) {
     const transparency = parseFloat(value) / 100;
 
@@ -59,10 +67,10 @@ class LayerItem extends Component {
     });
 
     if (!this.props.layer.visible) {
-      this.props.toggleLayerVisibility(this.props.layer);
+      this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerOpacity(transparency, this.props.layer);
+    this.props.setLayerOpacity(transparency, this.props.layer.id);
   }
 
   onChangeHue(component, value) {
@@ -71,15 +79,15 @@ class LayerItem extends Component {
     });
 
     if (!this.props.layer.visible) {
-      this.props.toggleLayerVisibility(this.props.layer);
+      this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerHue(value, this.props.layer);
+    this.props.setLayerHue(value, this.props.layer.id);
   }
 
-  // onClickReport(event) {
-  //   console.log(event);
-  // }
+  onClickReport() {
+    this.props.toggleReport(this.props.layer.id, this.props.layer.title);
+  }
 
   onClickInfo() {
     const modalParams = {
@@ -88,14 +96,6 @@ class LayerItem extends Component {
     };
 
     this.props.openLayerInfoModal(modalParams);
-  }
-
-  onChangeSwitch() {
-    if (this.props.layer.visible && this.props.showBlending) {
-      this.props.onLayerBlendingToggled(this.props.layerIndex);
-    }
-
-    this.props.toggleLayerVisibility(this.props.layer);
   }
 
   toggleBlending() {
@@ -121,7 +121,7 @@ class LayerItem extends Component {
             className={SwitcherStyles['c-switcher']}
             type="checkbox"
             checked={this.props.layer.visible}
-            onChange={() => this.onChangeSwitch()}
+            onChange={() => this.onChangeVisibility()}
             key={this.getColor(this.props.layer)}
             style={{
               color: this.getColor(this.props.layer)
@@ -134,9 +134,11 @@ class LayerItem extends Component {
         <ul className={LayerListStyles['layer-option-list']}>
           {this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
-            onClick={this.onClickReport}
+            onClick={() => this.onClickReport()}
           >
-            <ReportIcon />
+            <ReportIcon
+              className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.isCurrentlyReported })}
+            />
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
@@ -184,7 +186,9 @@ class LayerItem extends Component {
 LayerItem.propTypes = {
   layerIndex: React.PropTypes.number,
   layer: React.PropTypes.object,
+  isCurrentlyReported: React.PropTypes.bool,
   toggleLayerVisibility: React.PropTypes.func,
+  toggleReport: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   setLayerHue: React.PropTypes.func,
   openLayerInfoModal: React.PropTypes.func,

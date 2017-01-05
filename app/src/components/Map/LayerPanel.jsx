@@ -27,7 +27,9 @@ class LayerPanel extends Component {
             key={i}
             layerIndex={i}
             layer={this.props.layers[i]}
+            isCurrentlyReported={this.props.layers[i].id === this.props.currentlyReportedLayerId}
             toggleLayerVisibility={this.props.toggleLayerVisibility}
+            toggleReport={this.props.toggleReport}
             setLayerOpacity={this.props.setLayerOpacity}
             setLayerHue={this.props.setLayerHue}
             openLayerInfoModal={this.props.setLayerInfoModal}
@@ -48,7 +50,9 @@ class LayerPanel extends Component {
 
 LayerPanel.propTypes = {
   layers: React.PropTypes.array,
+  currentlyReportedLayerId: React.PropTypes.number,
   toggleLayerVisibility: React.PropTypes.func,
+  toggleReport: React.PropTypes.func,
   setLayerInfoModal: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   setLayerHue: React.PropTypes.func

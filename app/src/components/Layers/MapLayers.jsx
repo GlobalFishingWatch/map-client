@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
 class MapLayers extends Component {
@@ -14,6 +15,7 @@ class MapLayers extends Component {
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
+    this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,6 +68,10 @@ class MapLayers extends Component {
         this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
       }
     }
+
+    if (nextProps.reportLayerId !== this.props.reportLayerId) {
+      this.setLayersInteraction(nextProps.reportLayerId);
+    }
   }
 
   /**
@@ -110,6 +116,8 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
+
+    this.setState({ map: this.map, reportPolygonId: 1 });
   }
 
   componentWillUnmount() {
@@ -148,33 +156,34 @@ class MapLayers extends Component {
       const newLayer = updatedLayers[i];
       const oldLayer = currentLayers[i];
 
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
-        this.setLayerOpacity(newLayer);
-        continue;
-      }
-
-      if (addedLayers[newLayer.title] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
-        this.setLayerHue(newLayer);
-        continue;
-      }
-
       // If the layer is already on the map and its visibility changed, we update it
-      if (addedLayers[newLayer.title] && oldLayer.visible !== newLayer.visible) {
+      if (addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
         this.toggleLayerVisibility(newLayer);
         continue;
       }
 
+      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
+        this.setLayerOpacity(newLayer);
+        continue;
+      }
+
+      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+        this.setLayerHue(newLayer);
+        continue;
+      }
+
+
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
 
-      if (addedLayers[newLayer.title] !== undefined) return;
+      if (addedLayers[newLayer.id] !== undefined) return;
 
       switch (newLayer.type) {
         case LAYER_TYPES.ClusterAnimation:
           callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           break;
         default:
-          promises.push(this.addCartoLayer(newLayer, i + 2));
+          promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
     }
 
@@ -202,6 +211,7 @@ class MapLayers extends Component {
       );
       this.vesselsLayer.setOpacity(layerSettings.opacity);
       this.vesselsLayer.setHue(layerSettings.hue);
+      this.vesselsLayer.setInteraction(true);
     }
 
     // Create track layer
@@ -211,7 +221,7 @@ class MapLayers extends Component {
     );
     this.trackLayer.setMap(this.map);
 
-    this.state.addedLayers[layerSettings.title] = this.vesselsLayer;
+    this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
   }
 
   /**
@@ -220,16 +230,19 @@ class MapLayers extends Component {
    * @returns {Promise}
    * @param layerSettings
    * @param index
+   * @param reportLayerId used to toggle interactivity on or off
    */
-  addCartoLayer(layerSettings, index) {
+  addCartoLayer(layerSettings, index, reportLayerId) {
     const addedLayers = this.state.addedLayers;
-
     const promise = new Promise(((resolve) => {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
-          cartoLayer.setOpacity(layerSettings.opacity);
-          addedLayers[layer.title] = cartoLayer;
+          cartoLayer.setInteraction(reportLayerId === layerSettings.id);
+          cartoLayer.on('featureClick', (event, latLng, pos, data) => {
+            this.onCartoLayerFeatureClickBound(data.cartodb_id, latLng, layer.id);
+          });
+          addedLayers[layer.id] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
     }));
@@ -237,6 +250,37 @@ class MapLayers extends Component {
     return promise;
   }
 
+  onCartoLayerFeatureClick(id, latLng, layerId) {
+    // this check should not be necessary but setInteraction(false) or interactive = false
+    // on Carto layers don't seem to be reliable -_-
+    if (layerId === this.props.reportLayerId) {
+      this.props.showPolygon(id, '', latLng);
+    }
+  }
+
+  setLayersInteraction(reportLayerId) {
+    this.props.layers.forEach(layerSettings => {
+      const layer = this.state.addedLayers[layerSettings.id];
+      if (layer) {
+        // no report enabled: enable interaction in all but vessel layer
+        if (reportLayerId === null) {
+          if (layerSettings.type === 'ClusterAnimation') {
+            layer.setInteraction(true);
+          } else {
+            // apparently both are needed -_-
+            layer.setInteraction(false);
+            layer.interactive = false;
+          }
+        } else if (reportLayerId === layerSettings.id) {
+          layer.setInteraction(true);
+          layer.interactive = true;
+        } else {
+          layer.setInteraction(false);
+          layer.interactive = false;
+        }
+      }
+    });
+  }
 
   /**
    * Toggles a layer's visibility
@@ -247,9 +291,9 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
-      layers[layerSettings.title].show();
+      layers[layerSettings.id].show();
     } else {
-      layers[layerSettings.title].hide();
+      layers[layerSettings.id].hide();
     }
   }
 
@@ -262,7 +306,7 @@ class MapLayers extends Component {
 
     if (!Object.keys(layers).length) return;
 
-    layers[layerSettings.title].setOpacity(layerSettings.opacity);
+    layers[layerSettings.id].setOpacity(layerSettings.opacity);
   }
 
   /**
@@ -273,7 +317,7 @@ class MapLayers extends Component {
     const layers = this.state.addedLayers;
 
     if (!Object.keys(layers).length) return;
-    layers[layerSettings.title].setHue(layerSettings.hue);
+    layers[layerSettings.id].setHue(layerSettings.hue);
   }
 
   /**
@@ -360,7 +404,7 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    if (!this.vesselsLayer || !event) {
+    if (!this.vesselsLayer || !event || this.vesselsLayer.interactive === false) {
       return;
     }
 
@@ -373,7 +417,11 @@ class MapLayers extends Component {
   }
 
   render() {
-    return null;
+    return (<div>
+      <PolygonReport
+        map={this.state.map}
+      />
+    </div>);
   }
 }
 
@@ -390,10 +438,12 @@ MapLayers.propTypes = {
   timelineOuterExtent: React.PropTypes.array,
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
-  setCurrentVessel: React.PropTypes.func,
   vesselTrack: React.PropTypes.object,
   viewportWidth: React.PropTypes.number,
-  viewportHeight: React.PropTypes.number
+  viewportHeight: React.PropTypes.number,
+  reportLayerId: React.PropTypes.number,
+  setCurrentVessel: React.PropTypes.func,
+  showPolygon: React.PropTypes.func
 };
 
 

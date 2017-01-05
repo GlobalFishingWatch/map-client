@@ -1,0 +1,22 @@
+@import '../settings';
+
+.c-button-close {
+  background-color: $color-4;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  height: 26px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 26px;
+
+  > .cross {
+    height: 11px;
+    left: 50%;
+    position: absolute;
+    stroke: $color-7;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 11px;
+  }
+}

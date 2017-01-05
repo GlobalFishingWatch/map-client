@@ -20,6 +20,7 @@ import contactReducer from 'reducers/contact';
 import searchReducer from 'reducers/search';
 import vesselInfoReducer from 'reducers/vesselInfo';
 import articlesPublicationsReducer from 'reducers/articlesPublications';
+import reportReducer from 'reducers/report';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -40,7 +41,8 @@ const reducer = combineReducers({
   search: searchReducer,
   vesselInfo: vesselInfoReducer,
   definitions: definitionReducer,
-  articlesPublications: articlesPublicationsReducer
+  articlesPublications: articlesPublicationsReducer,
+  report: reportReducer
 });
 
 

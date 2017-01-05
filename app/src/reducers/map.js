@@ -58,37 +58,12 @@ const initialState = {
   supportModal: {
     open: false
   },
-  // sample data for reports
-  report: {
-    polygons: [
-      {
-        id: 'kldshf92',
-        name: 'Polygon 1'
-      }, {
-        id: 'iuoiuo87',
-        name: 'Polygon 2'
-      },
-      {
-        id: 'kldshhfgf92',
-        name: 'Polygon 3'
-      }, {
-        id: 'iuoihgjghuo87',
-        name: 'Polygon 4'
-      }, {
-        id: 'kldshdsssf92',
-        name: 'Polygon 5'
-      }, {
-        id: 'iuoiujkhkjhjko87',
-        name: 'Polygon 6'
-      }
-    ]
-  },
   workspaceId: null
 };
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
   const layers = _.cloneDeep(state.layers);
-  const layerIndex = layers.findIndex(l => l.title === action.payload.layer.title);
+  const layerIndex = layers.findIndex(l => l.id === action.payload.layerId);
   const changedLayer = layers[layerIndex];
 
   if (layerIndex > -1) {
@@ -119,6 +94,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
+
+    case TOGGLE_LAYER_VISIBILITY: {
+      /* eslint no-param-reassign: 0 */
+      const layers = getUpdatedLayers(state, action, changedLayer => {
+        changedLayer.visible = (action.payload.forceShow === true) ? true : !changedLayer.visible;
+      });
+      return Object.assign({}, state, { layers });
+    }
     case SET_LAYER_OPACITY: {
       /* eslint no-param-reassign: 0 */
       const layers = getUpdatedLayers(state, action, changedLayer => {
@@ -133,13 +116,7 @@ export default function (state = initialState, action) {
       });
       return Object.assign({}, state, { layers });
     }
-    case TOGGLE_LAYER_VISIBILITY: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.visible = !changedLayer.visible;
-      });
-      return Object.assign({}, state, { layers });
-    }
+
     case SET_BASEMAP: {
       return Object.assign({}, state, { activeBasemap: action.payload });
     }

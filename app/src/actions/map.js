@@ -22,13 +22,6 @@ import {
 import { LAYER_TYPES } from 'constants';
 import { toggleVisibility } from 'actions/vesselInfo';
 
-export function toggleLayerVisibility(layer) {
-  return {
-    type: TOGGLE_LAYER_VISIBILITY,
-    payload: { layer }
-  };
-}
-
 export function setBasemap(basemap) {
   return {
     type: SET_BASEMAP,
@@ -54,21 +47,31 @@ export function setCenter(center) {
   };
 }
 
-export function setLayerOpacity(opacity, layer) {
+export function toggleLayerVisibility(layerId, forceShow = false) {
+  return {
+    type: TOGGLE_LAYER_VISIBILITY,
+    payload: {
+      layerId,
+      forceShow
+    }
+  };
+}
+
+export function setLayerOpacity(opacity, layerId) {
   return {
     type: SET_LAYER_OPACITY,
     payload: {
-      layer,
+      layerId,
       opacity
     }
   };
 }
 
-export function setLayerHue(hue, layer) {
+export function setLayerHue(hue, layerId) {
   return {
     type: SET_LAYER_HUE,
     payload: {
-      layer,
+      layerId,
       hue
     }
   };
@@ -158,13 +161,21 @@ export function getWorkspace(workspaceId) {
         });
 
         // parses opacity attribute
-        layers.forEach((layer) => {
+        layers.forEach(layer => {
           const l = layer;
           if (!!layer.opacity) {
             l.opacity = parseFloat(layer.opacity);
           } else {
             l.opacity = 1;
           }
+        });
+
+        // add an id to each layer
+        let id = 0;
+        layers.forEach(layer => {
+          /* eslint no-param-reassign: 0 */
+          layer.id = id;
+          id++;
         });
 
         dispatch({

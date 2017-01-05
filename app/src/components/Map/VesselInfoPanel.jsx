@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
+import buttonCloseStyles from 'styles/components/c-button-close.scss';
 import helperStyles from 'styles/_helpers.scss';
 
 class VesselInfoPanel extends Component {
@@ -84,9 +85,9 @@ class VesselInfoPanel extends Component {
         <div>
           <span
             onClick={() => this.props.toggleVisibility(false)}
-            className={vesselPanelStyles['button-close']}
+            className={buttonCloseStyles['c-button-close']}
           >
-            <CloseIcon className={vesselPanelStyles.cross} />
+            <CloseIcon className={buttonCloseStyles.cross} />
           </span>
           {vesselInfoContents}
         </div>
