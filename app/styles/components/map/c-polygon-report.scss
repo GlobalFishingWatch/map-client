@@ -22,8 +22,11 @@
   }
 
   .close {
-    top: 0;
+    & * {
+      pointer-events: none;
+    }
     right: -26px;
+    top: 0;
   }
 
   .add {

@@ -57,8 +57,8 @@ export default class PolygonReport extends Component {
   }
 
   // avoids updating when props.map changes
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id || nextProps.reportLayerId !== this.props.reportLayerId) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.id !== this.props.id || nextProps.reportLayerId !== this.props.reportLayerId || nextState.closed !== this.state.closed) {
       return true;
     }
     return false;
