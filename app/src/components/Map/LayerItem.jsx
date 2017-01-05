@@ -91,7 +91,7 @@ class LayerItem extends Component {
   }
 
   onChangeSwitch() {
-    if (this.props.layer.visible) {
+    if (this.props.layer.visible && this.props.showBlending) {
       this.props.onLayerBlendingToggled(this.props.layerIndex);
     }
 
