@@ -51,10 +51,14 @@ export default class PolygonReport extends Component {
       this.infoWindow.div.addEventListener('click', this.onInfoWindowClickBound);
       this.map = nextProps.map;
     }
+    this.setState({
+      closed: nextProps.reportLayerId !== this.props.reportLayerId
+    });
   }
 
+  // avoids updating when props.map changes
   shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id) {
+    if (nextProps.id !== this.props.id || nextProps.reportLayerId !== this.props.reportLayerId) {
       return true;
     }
     return false;
@@ -70,18 +74,18 @@ export default class PolygonReport extends Component {
 
   onInfoWindowClick(e) {
     if (e.target.className.indexOf('js-close') > -1) {
-      this.onClose();
+      this.close();
     } else if (e.target.className.indexOf('js-add') > -1) {
       this.props.toggleReportPolygon(this.props.id);
     }
   }
 
-  onClose() {
+  close() {
     this.setState({ closed: true });
   }
 
   render() {
-    this.element = (this.state.closed === true) ? null : (<div className={PolygonReportStyles['c-polygon-report']}>
+    this.element = (this.state.closed === true) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
       <div className={PolygonReportStyles.title}>
         {this.props.id}
       </div>
@@ -102,6 +106,7 @@ export default class PolygonReport extends Component {
 
 PolygonReport.propTypes = {
   id: React.PropTypes.number,
+  reportLayerId: React.PropTypes.number,
   description: React.PropTypes.string,
   latLng: React.PropTypes.array,
   toggleReportPolygon: React.PropTypes.func
