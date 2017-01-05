@@ -3,11 +3,11 @@ import {
   CLEAR_POLYGON,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
-  SEND_REPORT,
   START_REPORT,
   DISCARD_REPORT
 } from 'actions';
 import { toggleLayerVisibility } from 'actions/map';
+import { FLAGS } from 'constants';
 
 export function showPolygon(id, description, latLng) {
   return {
@@ -86,5 +86,47 @@ export function toggleReport(layerId, layerTitle) {
     } else {
       dispatch(startReport(layerId, layerTitle));
     }
+  };
+}
+
+export function sendReport() {
+  return (dispatch, getState) => {
+    const state = getState();
+    if (!state.user.token) {
+      console.warn('user is not authenticated');
+      return;
+    }
+
+    // TODO hardcoded, will need to check w/ Skytruth for how to retrieve that properly
+    const tileset = '801-tileset-nz2-tms';
+    const url = `${MAP_API_ENDPOINT}/v1/tilesets/${tileset}/reports`;
+    const payload = {
+      from: state.filters.timelineInnerExtent[0].toISOString(),
+      to: state.filters.timelineInnerExtent[1].toISOString()
+    };
+    payload.flags = (state.filters.flag) ? [FLAGS[state.filters.flag]] : [];
+    payload.regions = [];
+    state.report.polygons.forEach(polygon => {
+      payload.regions.push({
+        name: state.report.layerTitle,
+        value: polygon.id
+      });
+    });
+    const body = JSON.stringify({ report: payload });
+    console.log(body);
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${state.user.token}`
+      },
+      body
+    }).then(res => {
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+    }).then(res => res.json())
+      .then(data => {
+        console.warn('success', data);
+      });
   };
 }
