@@ -55,7 +55,7 @@ class ReportPanel extends Component {
       ));
     } else {
       polygonItems = (<li className={ReportPanelStyles['polygon-item']}>
-        <span className={ReportPanelStyles['polygon-name']}>No polygons added yet.<br /> Select polygons on the map.</span>
+        <span className={ReportPanelStyles['polygon-name']}>No regions added yet.<br /> Select regions on the map.</span>
       </li>);
     }
 
