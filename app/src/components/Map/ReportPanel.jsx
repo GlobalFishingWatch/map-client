@@ -18,12 +18,6 @@ class ReportPanel extends Component {
     };
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     expanded: nextProps.polygons.length > 0
-  //   });
-  // }
-
   onTogglePanel() {
     this.setState({
       expanded: !this.state.expanded
@@ -78,7 +72,7 @@ class ReportPanel extends Component {
             </ul>
           </div>
           <div className={ReportPanelStyles['report-options']}>
-            <button className={ReportPanelStyles['report-button']} onClick={this.props.onSendReport}>send report</button>
+            <button className={classnames(ReportPanelStyles['report-button'], { [ReportPanelStyles['-disabled']]: this.props.polygons.length !== 1 })} onClick={this.props.onSendReport}>send report</button>
             <button className={ReportPanelStyles['report-button']} onClick={this.props.onDiscardReport}>discard</button>
           </div>
         </div>

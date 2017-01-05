@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ReportPanel from 'components/Map/ReportPanel';
-import { deletePolygon, discardReport } from 'actions/report';
+import { deletePolygon, discardReport, sendReport } from 'actions/report';
 
 const mapStateToProps = (state) => ({
   polygons: state.report.polygons,
@@ -16,8 +16,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(deletePolygon(index));
   },
   onSendReport: () => {
-    // replace this with an action
-    console.info('onSendReport');
+    dispatch(sendReport());
   }
 });
 
