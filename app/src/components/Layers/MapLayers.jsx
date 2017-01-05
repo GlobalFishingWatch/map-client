@@ -15,6 +15,7 @@ class MapLayers extends Component {
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
+    this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -233,14 +234,13 @@ class MapLayers extends Component {
    */
   addCartoLayer(layerSettings, index, reportLayerId) {
     const addedLayers = this.state.addedLayers;
-
     const promise = new Promise(((resolve) => {
       cartodb.createLayer(this.map, layerSettings.source.args.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
-            this.props.showPolygon(data.cartodb_id, '', latLng);
+            this.onCartoLayerFeatureClickBound(data.cartodb_id, latLng, layer.id);
           });
           addedLayers[layer.id] = cartoLayer;
           resolve();
@@ -248,6 +248,14 @@ class MapLayers extends Component {
     }));
 
     return promise;
+  }
+
+  onCartoLayerFeatureClick(id, latLng, layerId) {
+    // this check should not be necessary but setInteraction(false) or interactive = false
+    // on Carto layers don't seem to be reliable -_-
+    if (layerId === this.props.reportLayerId) {
+      this.props.showPolygon(id, '', latLng);
+    }
   }
 
   setLayersInteraction(reportLayerId) {
@@ -259,12 +267,16 @@ class MapLayers extends Component {
           if (layerSettings.type === 'ClusterAnimation') {
             layer.setInteraction(true);
           } else {
+            // apparently both are needed -_-
             layer.setInteraction(false);
+            layer.interactive = false;
           }
         } else if (reportLayerId === layerSettings.id) {
           layer.setInteraction(true);
+          layer.interactive = true;
         } else {
           layer.setInteraction(false);
+          layer.interactive = false;
         }
       }
     });
