@@ -113,7 +113,6 @@ export function sendReport() {
       });
     });
     const body = JSON.stringify({ report: payload });
-    console.log(body);
     fetch(url, {
       method: 'POST',
       headers: {
