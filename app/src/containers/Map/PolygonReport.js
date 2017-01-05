@@ -1,14 +1,19 @@
 import { connect } from 'react-redux';
 import PolygonReport from 'components/Map/PolygonReport';
-import { toggleReportPolygon } from 'actions/report';
+import { toggleReportPolygon, clearPolygon } from 'actions/report';
 
 const mapStateToProps = (state) => ({
-  reportLayerId: state.report.layerId
+  id: state.report.currentPolygon.id,
+  description: state.report.currentPolygon.description,
+  latLng: state.report.currentPolygon.latLng
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleReportPolygon: polygonId => {
     dispatch(toggleReportPolygon(polygonId, ''));
+  },
+  clearPolygon: () => {
+    dispatch(clearPolygon());
   }
 });
 

@@ -1,4 +1,6 @@
 import {
+  SHOW_POLYGON,
+  CLEAR_POLYGON,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   SEND_REPORT,
@@ -7,6 +9,7 @@ import {
 } from 'actions';
 
 const initialState = {
+  currentPolygon: {},
   polygons: [],
   layerTitle: null,
   layerId: null
@@ -14,6 +17,16 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SHOW_POLYGON: {
+      return Object.assign({}, state, {
+        currentPolygon: action.payload
+      });
+    }
+    case CLEAR_POLYGON: {
+      return Object.assign({}, state, {
+        currentPolygon: {}
+      });
+    }
     case ADD_REPORT_POLYGON: {
       const polygons = state.polygons.slice();
       polygons.push({

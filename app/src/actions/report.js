@@ -1,4 +1,6 @@
 import {
+  SHOW_POLYGON,
+  CLEAR_POLYGON,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   SEND_REPORT,
@@ -6,6 +8,23 @@ import {
   DISCARD_REPORT
 } from 'actions';
 import { toggleLayerVisibility } from 'actions/map';
+
+export function showPolygon(id, description, latLng) {
+  return {
+    type: SHOW_POLYGON,
+    payload: {
+      id,
+      description,
+      latLng
+    }
+  };
+}
+
+export function clearPolygon() {
+  return {
+    type: CLEAR_POLYGON
+  };
+}
 
 export function addPolygon(polygonId, polygonName) {
   return {
@@ -40,6 +59,7 @@ export function toggleReportPolygon(polygonId, polygonName) {
 export function startReport(layerId, layerTitle) {
   return (dispatch) => {
     dispatch(toggleLayerVisibility(layerId, true));
+    dispatch(clearPolygon());
     dispatch({
       type: START_REPORT,
       payload: {
@@ -51,8 +71,11 @@ export function startReport(layerId, layerTitle) {
 }
 
 export function discardReport() {
-  return {
-    type: DISCARD_REPORT
+  return (dispatch) => {
+    dispatch(clearPolygon());
+    dispatch({
+      type: DISCARD_REPORT
+    });
   };
 }
 

@@ -240,12 +240,7 @@ class MapLayers extends Component {
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
-            this.setState({
-              reportPolygonId: data.cartodb_id,
-              // TODO ask Skytruth to add interactivity: [cartodb_id, name] on their viz.json
-              reportPolygonDescription: '',
-              reportPolygonLatLng: latLng
-            });
+            this.props.showPolygon(data.cartodb_id, '', latLng);
           });
           addedLayers[layer.id] = cartoLayer;
           resolve();
@@ -258,27 +253,17 @@ class MapLayers extends Component {
   setLayersInteraction(reportLayerId) {
     this.props.layers.forEach(layerSettings => {
       const layer = this.state.addedLayers[layerSettings.id];
-      // console.log(this)
-      // console.log(this.state)
-      // console.log(this.state.addedLayers)
-      // console.log(layerSettings.title)
-      // console.log(this.state.addedLayers[layerSettings.title])
-      // console.log(layer)
       if (layer) {
         // no report enabled: enable interaction in all but vessel layer
         if (reportLayerId === null) {
           if (layerSettings.type === 'ClusterAnimation') {
-            console.log('enable', layerSettings.title);
             layer.setInteraction(true);
           } else {
-            console.log('disable', layerSettings.title);
             layer.setInteraction(false);
           }
         } else if (reportLayerId === layerSettings.id) {
-          console.log('enable', layerSettings.title);
           layer.setInteraction(true);
         } else {
-          console.log('disable', layerSettings.title);
           layer.setInteraction(false);
         }
       }
@@ -291,7 +276,6 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   toggleLayerVisibility(layerSettings) {
-    console.log('toggle', layerSettings)
     const layers = this.state.addedLayers;
 
     if (layerSettings.visible) {
@@ -408,7 +392,6 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    console.log(this.vesselsLayer.interactive)
     if (!this.vesselsLayer || !event || this.vesselsLayer.interactive === false) {
       return;
     }
@@ -425,9 +408,6 @@ class MapLayers extends Component {
     return (<div>
       <PolygonReport
         map={this.state.map}
-        id={this.state.reportPolygonId}
-        description={this.state.reportPolygonDescription}
-        latLng={this.state.reportPolygonLatLng}
       />
     </div>);
   }
@@ -446,11 +426,12 @@ MapLayers.propTypes = {
   timelineOuterExtent: React.PropTypes.array,
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
-  setCurrentVessel: React.PropTypes.func,
   vesselTrack: React.PropTypes.object,
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
-  reportLayerId: React.PropTypes.number
+  reportLayerId: React.PropTypes.number,
+  setCurrentVessel: React.PropTypes.func,
+  showPolygon: React.PropTypes.func
 };
 
 

@@ -37,28 +37,21 @@ class PolygonReportInfoWindow extends google.maps.OverlayView {
 export default class PolygonReport extends Component {
   constructor() {
     super();
-    this.state = {
-      closed: false
-    };
     this.onInfoWindowClickBound = this.onInfoWindowClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps)
     if (!this.map && nextProps.map) {
       this.infoWindow = new PolygonReportInfoWindow();
       this.infoWindow.setMap(nextProps.map);
       this.infoWindow.div.addEventListener('click', this.onInfoWindowClickBound);
       this.map = nextProps.map;
     }
-    this.setState({
-      closed: nextProps.reportLayerId !== this.props.reportLayerId
-    });
   }
 
   // avoids updating when props.map changes
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.id !== this.props.id || nextProps.reportLayerId !== this.props.reportLayerId || nextState.closed !== this.state.closed) {
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.id !== this.props.id || nextProps.id !== this.props.id) {
       return true;
     }
     return false;
@@ -74,18 +67,14 @@ export default class PolygonReport extends Component {
 
   onInfoWindowClick(e) {
     if (e.target.className.indexOf('js-close') > -1) {
-      this.close();
+      this.props.clearPolygon();
     } else if (e.target.className.indexOf('js-add') > -1) {
       this.props.toggleReportPolygon(this.props.id);
     }
   }
 
-  close() {
-    this.setState({ closed: true });
-  }
-
   render() {
-    this.element = (this.state.closed === true) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
+    this.element = (this.props.id === undefined) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
       <div className={PolygonReportStyles.title}>
         {this.props.id}
       </div>
@@ -109,5 +98,6 @@ PolygonReport.propTypes = {
   reportLayerId: React.PropTypes.number,
   description: React.PropTypes.string,
   latLng: React.PropTypes.array,
-  toggleReportPolygon: React.PropTypes.func
+  toggleReportPolygon: React.PropTypes.func,
+  clearPolygon: React.PropTypes.func
 };

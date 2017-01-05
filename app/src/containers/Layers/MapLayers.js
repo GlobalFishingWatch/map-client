@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import MapLayers from 'components/Layers/MapLayers';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo } from 'actions/vesselInfo';
+import { showPolygon } from 'actions/report';
 import {
   SET_VESSEL_CLUSTER_CENTER, SET_VESSEL_TRACK
 } from 'actions';
@@ -55,6 +56,9 @@ const mapDispatchToProps = (dispatch) => ({
       });
       dispatch(showVesselClusterInfo());
     }
+  },
+  showPolygon: (id, description, latLng) => {
+    dispatch(showPolygon(id, description, latLng));
   }
 });
 
