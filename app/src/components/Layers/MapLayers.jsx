@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
 import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import TiledLayer from 'components/Layers/TiledLayer';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
@@ -117,7 +118,10 @@ class MapLayers extends Component {
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
 
-    this.setState({ map: this.map, reportPolygonId: 1 });
+    this.setState({ map: this.map });
+
+    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile)
+    this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
   }
 
   componentWillUnmount() {
@@ -443,7 +447,9 @@ MapLayers.propTypes = {
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.number,
   setCurrentVessel: React.PropTypes.func,
-  showPolygon: React.PropTypes.func
+  showPolygon: React.PropTypes.func,
+  createTile: React.PropTypes.func,
+  releaseTile: React.PropTypes.func
 };
 
 

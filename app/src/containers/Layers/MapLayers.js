@@ -3,6 +3,7 @@ import _ from 'lodash';
 import MapLayers from 'components/Layers/MapLayers';
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo } from 'actions/vesselInfo';
 import { showPolygon } from 'actions/report';
+import { createTile, releaseTile } from 'actions/heatmap';
 import {
   SET_VESSEL_CLUSTER_CENTER, SET_VESSEL_TRACK
 } from 'actions';
@@ -59,6 +60,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   showPolygon: (id, description, latLng) => {
     dispatch(showPolygon(id, description, latLng));
+  },
+  createTile: (canvas) => {
+    dispatch(createTile(canvas));
+  },
+  releaseTile: (canvas) => {
+    dispatch(releaseTile(canvas));
   }
 });
 
