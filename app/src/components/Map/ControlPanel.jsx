@@ -28,9 +28,6 @@ class ControlPanel extends Component {
   }
 
   closeVesselInfo() {
-    // if it's already closed, do nothing
-    if (!this.props.vesselVisibility) return;
-
     this.props.toggleVisibility(false);
   }
 
@@ -134,12 +131,7 @@ class ControlPanel extends Component {
         titleClassName={controlPanelStyle['title-accordion']}
       >
         <div className={controlPanelStyle['content-accordion']}>
-          <FilterPanel
-            updateVesselTransparency={this.props.updateVesselTransparency}
-            vesselTransparency={this.props.vesselTransparency}
-            updateVesselColor={this.props.updateVesselColor}
-            vesselColor={this.props.vesselColor}
-          />
+          <FilterPanel />
         </div>
       </AccordionItem>);
   }
@@ -166,12 +158,7 @@ class ControlPanel extends Component {
 
 ControlPanel.propTypes = {
   toggleVisibility: React.PropTypes.func,
-  layers: React.PropTypes.array,
-  updateVesselTransparency: React.PropTypes.func,
-  vesselTransparency: React.PropTypes.number,
-  updateVesselColor: React.PropTypes.func,
-  vesselColor: React.PropTypes.string,
-  vesselVisibility: React.PropTypes.bool
+  layers: React.PropTypes.array
 };
 
 

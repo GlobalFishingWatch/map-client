@@ -14,8 +14,6 @@ export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six mont
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 
-export const DEFAULT_VESSEL_COLOR = '#1181FB';
-
 export const VESSELS_ENDPOINT_KEYS = [
   'category',
   'datetime',
@@ -36,15 +34,10 @@ export const VESSELS_BASE_RADIUS = 8;
 export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
-// in heatmap style, defines color stops of the radial gradient
-export const VESSELS_HEATMAP_COLOR_STOPS = [
-  { stop: 0, color: 'rgba(255,255,255,1)' },
-  { stop: 0.1, color: 'rgba(136, 251, 255,1)' },
-  { stop: 0.2, color: 'rgba(255, 248, 150,1)' },
-  { stop: 1, color: 'rgba(48, 149, 255, 0)' }
-];
-// color of circles in circles rendering mode (more zoomed in)
-export const VESSELS_CIRCLES_COLOR = 'rgba(255, 255, 255, 1)';
+
+export const VESSELS_HUES_INCREMENTS_NUM = 10;
+export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
+
 export const VESSELS_MINIMUM_OPACITY = 0.5;
 
 // tracks
@@ -77,6 +70,12 @@ export const DURATION_PICKER_OPTIONS = [
   moment.duration(1, 'month'),
   moment.duration(3, 'months')
 ];
+
+export const LAYER_TYPES = {
+  CartoDBAnimation: 'CartoDBAnimation',
+  CartoDBBasemap: 'CartoDBBasemap',
+  ClusterAnimation: 'ClusterAnimation'
+};
 
 export const FLAGS = {
   0: 'AD',

@@ -1,13 +1,14 @@
 /* global PIXI */
 import 'pixi.js';
+import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import {
   TIMELINE_MAX_STEPS,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
-  VESSELS_HEATMAP_COLOR_STOPS,
-  VESSELS_CIRCLES_COLOR
+  VESSELS_HUES_INCREMENTS_NUM,
+  VESSELS_HUES_INCREMENT
 } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
@@ -19,7 +20,7 @@ export default class VesselsLayerOverlay extends BaseOverlay {
 
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
-
+    this._build();
     this.setFlag(flag);
   }
 
@@ -32,7 +33,6 @@ export default class VesselsLayerOverlay extends BaseOverlay {
   }
 
   onAdd() {
-    this._build();
     // Add the element to the "overlayLayer" pane.
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.container);
@@ -62,17 +62,21 @@ export default class VesselsLayerOverlay extends BaseOverlay {
 
     this.container.appendChild(this.canvas);
 
-    const baseTexture = PIXI.Texture.fromCanvas(
-      this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR)
-    );
-    this.mainVesselTexture = new PIXI.Texture(baseTexture, this._getTextureFrame());
+    const baseTextureCanvas = this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR);
+    const baseTexture = PIXI.Texture.fromCanvas(baseTextureCanvas);
+    const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
+    this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
+
+    // uncomment to debug spritesheet
+    // this.container.appendChild(baseTextureCanvas);
 
     this.spritesPool = [];
     this.timeIndexDelta = 0;
   }
 
   // builds a texture spritesheet containing both the heatmap style (radial gradient)
-  // and the circle style that is used at higher zoom levels
+  // and the circle style that is used at higher zoom levels, as well as a number of hues for each
+  // in a grid.
   // Then, only the texture frame is modified depending on the zoom level,
   // in order not to have to recreate sprites
   _getVesselTexture(radius, blurFactor) {
@@ -80,29 +84,64 @@ export default class VesselsLayerOverlay extends BaseOverlay {
     const tplCtx = tplCanvas.getContext('2d');
     const diameter = radius * 2;
     tplCanvas.width = diameter * 2 + 1; // tiny offset between 2 frames
-    tplCanvas.height = diameter;
+    tplCanvas.height = diameter * VESSELS_HUES_INCREMENTS_NUM + VESSELS_HUES_INCREMENTS_NUM;
 
-    const y = radius;
+    for (let hueIncrement = 0; hueIncrement < VESSELS_HUES_INCREMENTS_NUM; hueIncrement++) {
+      const y = diameter * hueIncrement + hueIncrement;
+      const yCenter = y + radius;
 
-    // heatmap style
-    let x = radius;
-    const gradient = tplCtx.createRadialGradient(x, y, radius * blurFactor, x, y, radius);
-    VESSELS_HEATMAP_COLOR_STOPS.forEach(colorStop => { gradient.addColorStop(colorStop.stop, colorStop.color); });
-    tplCtx.fillStyle = gradient;
-    tplCtx.fillRect(0, 0, diameter, diameter);
+      // heatmap style
+      let x = radius;
+      const gradient = tplCtx.createRadialGradient(x, yCenter, radius * blurFactor, x, yCenter, radius);
+      const hue = hueIncrement * VESSELS_HUES_INCREMENT;
+      const rgbString = hueToRgbString(hue);
+      gradient.addColorStop(0, rgbString);
 
-    // circle style
-    x += diameter + 1; // tiny offset between 2 frames
-    tplCtx.beginPath();
-    tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-    tplCtx.fillStyle = VESSELS_CIRCLES_COLOR;
-    tplCtx.fill();
+      const rgbOuter = hsvToRgb(Math.min(360, hue + 30), 80, 100);
+      gradient.addColorStop(1, `rgba(${rgbOuter.r}, ${rgbOuter.g}, ${rgbOuter.b}, 0)`);
+
+      tplCtx.fillStyle = gradient;
+      tplCtx.fillRect(0, y, diameter, diameter);
+
+      // circle style
+      x += diameter + 1; // tiny offset between 2 frames
+      tplCtx.beginPath();
+      tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = rgbString;
+      tplCtx.fill();
+    }
 
     return tplCanvas;
   }
 
-  _getTextureFrame(xOffset = 0) {
-    return new PIXI.Rectangle(xOffset, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
+  /**
+   * Updates the main texture frame offset to show different brush styles and hues
+   * Both args are optional, if one is omitted, previous value is used
+   * @heatmapStyle bool whether to use heatmap style or solid circle style
+   * @hue number hue value between 0 and 360
+   */
+  _setTextureFrame(useHeatmapStyle = null, hue = null) {
+    const textureFrame = this.mainVesselTexture.frame.clone();
+
+    if (useHeatmapStyle !== null) {
+      // one diameter + tiny offset between 2 frames
+      textureFrame.x = (useHeatmapStyle) ? 0 : VESSELS_BASE_RADIUS * 2 + 1;
+    }
+
+    if (hue !== null) {
+      // 0 - 360 -> 0 -> 10
+      let hueIncrement = hue / VESSELS_HUES_INCREMENT;
+      if (hueIncrement === VESSELS_HUES_INCREMENTS_NUM) {
+        hueIncrement = 0;
+      }
+      textureFrame.y = hueIncrement * VESSELS_BASE_RADIUS * 2;
+      if (hueIncrement > 0) {
+        textureFrame.y += hueIncrement;
+      }
+    }
+
+    this.mainVesselTexture.frame = textureFrame;
+    this.mainVesselTexture.update();
   }
 
   repositionCanvas() {
@@ -122,21 +161,6 @@ export default class VesselsLayerOverlay extends BaseOverlay {
     this.repositionCanvas();
   }
 
-  _getCanvasRect() {
-    const overlayProjection = this.getProjection();
-
-    const mapBounds = this.getMap().getBounds();
-    const sw = overlayProjection.fromLatLngToDivPixel(mapBounds.getSouthWest());
-    const ne = overlayProjection.fromLatLngToDivPixel(mapBounds.getNorthEast());
-
-    return {
-      x: sw.x,
-      y: ne.y,
-      width: ne.x - sw.x,
-      height: sw.y - ne.y
-    };
-  }
-
   draw() {
     this.repositionCanvas();
   }
@@ -153,10 +177,15 @@ export default class VesselsLayerOverlay extends BaseOverlay {
   }
 
   setZoom(zoom) {
-    // one diameter + tiny offset between 2 frames
-    const textureXOffset = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0 : VESSELS_BASE_RADIUS * 2 + 1;
-    this.mainVesselTexture.frame = this._getTextureFrame(textureXOffset);
-    this.mainVesselTexture.update();
+    this._setTextureFrame(zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD);
+  }
+
+  setOpacity(opacity) {
+    this.canvas.style.opacity = opacity;
+  }
+
+  setHue(hue) {
+    this._setTextureFrame(null, hue);
   }
 
   render(tiles, startIndex, endIndex) {

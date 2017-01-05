@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LayerPanel from 'components/Map/LayerPanel';
-import { toggleLayerVisibility, setLayerOpacity, setLayerInfoModal } from 'actions/map';
 import { toggleReport } from 'actions/report';
+import { toggleLayerVisibility, setLayerOpacity, setLayerHue, setLayerInfoModal } from 'actions/map';
 
 const mapStateToProps = (state) => ({
   layers: state.map.layers,
@@ -15,8 +15,11 @@ const mapDispatchToProps = (dispatch) => ({
   toggleReport: (layerId, layerTitle) => {
     dispatch(toggleReport(layerId, layerTitle));
   },
-  setLayerOpacity: (transparency, layer) => {
-    dispatch(setLayerOpacity(transparency, layer));
+  setLayerOpacity: (opacity, layer) => {
+    dispatch(setLayerOpacity(opacity, layer));
+  },
+  setLayerHue: (hue, layer) => {
+    dispatch(setLayerHue(hue, layer));
   },
   setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));
