@@ -81,7 +81,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-
     case SET_BASEMAP: {
       return Object.assign({}, state, { activeBasemap: action.payload });
     }

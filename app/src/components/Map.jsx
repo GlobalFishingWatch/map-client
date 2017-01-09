@@ -15,6 +15,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
+import LayerLibrary from 'containers/Map/LayerLibrary';
 
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
@@ -204,7 +205,7 @@ class Map extends Component {
         closeable
         close={this.props.closeLayerLibraryModal}
       >
-        <SupportForm />
+        <LayerLibrary />
       </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
