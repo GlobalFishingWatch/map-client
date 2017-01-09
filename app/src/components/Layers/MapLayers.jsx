@@ -113,17 +113,20 @@ class MapLayers extends Component {
   }
 
   build() {
-    this.map.addListener('idle', this.onMapIdleBound);
-    this.map.addListener('click', this.onMapClickBound);
-    this.map.addListener('center_changed', this.onMapCenterChangedBound);
+    this.onIdle = google.maps.event.addListener(this.map, 'idle', this.onMapIdleBound);
+    this.onClickBound = google.maps.event.addListener(this.map, 'click', this.onMapClickBound);
+    this.onMapCenterChanged = google.maps.event.addListener(this.map, 'center_changed', this.onMapCenterChangedBound);
 
     this.setState({ map: this.map, reportPolygonId: 1 });
   }
 
   componentWillUnmount() {
-    this.map.removeListener('idle', this.onMapIdleBound);
-    this.map.removeListener('click', this.onMapClickBound);
-    this.map.removeListener('center_changed', this.onMapCenterChangedBound);
+    google.maps.event.removeListener(this.onIdle);
+    google.maps.event.removeListener(this.onClickBound);
+    google.maps.event.removeListener(this.onMapCenterChanged);
+    // this.onIdle.remove();
+    // this.onClickBound.remove();
+    // this.onMapCenterChanged.remove();
   }
 
 
