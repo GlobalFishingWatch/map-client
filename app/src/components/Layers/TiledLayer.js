@@ -46,6 +46,13 @@ export default class TiledLayer {
   getTile(coord, zoom, ownerDocument) {
     const tileCoordinates = this._getTileCoordinates(coord, zoom);
     const canvas = this._getCanvas(ownerDocument);
+
+    // case where queried coors are not showable (beyond poles):
+    // just send back the DOM but don't try to fetch any data
+    if (tileCoordinates === null) {
+      return canvas;
+    }
+
     canvas.uid = this.currentUid;
     this.createTile(this.currentUid, tileCoordinates);
     return canvas;
