@@ -199,6 +199,13 @@ class Map extends Component {
       >
         <SupportForm />
       </Modal>
+      <Modal
+        opened={this.props.layerLibraryModal.open}
+        closeable
+        close={this.props.closeLayerLibraryModal}
+      >
+        <SupportForm />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -310,7 +317,9 @@ Map.propTypes = {
   closeLayerInfoModal: React.PropTypes.func,
   trackBounds: React.PropTypes.object,
   closeSupportModal: React.PropTypes.func,
-  openSupportModal: React.PropTypes.func
+  openSupportModal: React.PropTypes.func,
+  layerLibraryModal: React.PropTypes.object,
+  closeLayerLibraryModal: React.PropTypes.func
 };
 
 export default Map;

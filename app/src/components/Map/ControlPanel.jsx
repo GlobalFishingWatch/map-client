@@ -5,6 +5,7 @@ import { Accordion, AccordionItem } from 'react-sanfona';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
 import LayerPanel from 'containers/Map/LayerPanel';
+import LayerManagement from 'containers/Map/LayerManagement';
 import SearchPanel from 'containers/Map/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 
@@ -91,6 +92,7 @@ class ControlPanel extends Component {
       >
         <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
           <LayerPanel />
+          <LayerManagement />
         </div>
       </AccordionItem>);
   }

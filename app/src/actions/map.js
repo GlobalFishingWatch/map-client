@@ -14,7 +14,8 @@ import {
   SET_LAYER_INFO_MODAL,
   SET_BASEMAP,
   SET_TILESET_URL,
-  SET_SUPPORT_MODAL_VISIBILITY
+  SET_SUPPORT_MODAL_VISIBILITY,
+  SET_LAYER_LIBRARY_MODAL_VISIBILITY
 } from 'actions';
 import { toggleVisibility } from 'actions/vesselInfo';
 import { initLayers } from 'actions/layers';
@@ -263,6 +264,13 @@ export function zoomIntoVesselCenter() {
 export function setSupportModalVisibility(visibility) {
   return {
     type: SET_SUPPORT_MODAL_VISIBILITY,
+    payload: visibility
+  };
+}
+
+export function setLayerLibraryModalVisivility(visibility) {
+  return {
+    type: SET_LAYER_LIBRARY_MODAL_VISIBILITY,
     payload: visibility
   };
 }

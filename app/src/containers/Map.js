@@ -9,7 +9,8 @@ import {
   deleteWorkspace,
   setShareModalError,
   setLayerInfoModal,
-  setSupportModalVisibility
+  setSupportModalVisibility,
+  setLayerLibraryModalVisivility
 } from 'actions/map';
 import {
   toggleLayerVisibility,
@@ -24,7 +25,8 @@ const mapStateToProps = (state) => ({
   basemaps: state.map.basemaps,
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
-  supportModal: state.map.supportModal
+  supportModal: state.map.supportModal,
+  layerLibraryModal: state.map.layerLibraryModal
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -56,6 +58,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   openSupportModal: () => {
     dispatch(setSupportModalVisibility(true));
+  },
+  closeLayerLibraryModal: () => {
+    dispatch(setLayerLibraryModalVisivility(false));
   }
 });
 
