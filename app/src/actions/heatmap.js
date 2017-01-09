@@ -1,7 +1,8 @@
 /* eslint no-param-reassign: 0 */
 
 import {
-  UPDATE_HEATMAP_TILES
+  UPDATE_HEATMAP_TILES,
+  COMPLETE_TILE_LOAD
 } from '../actions';
 import {
   getTimeAtPrecision,
@@ -19,7 +20,8 @@ export function createTile(uid, tileCoordinates) {
     const timelineOverallEndDate = getState().filters.timelineOverallExtent[1];
     const overallStartDateOffset = getTimeAtPrecision(timelineOverallStartDate);
     const token = getState().user.token;
-    // const allPromises = [];
+    const allPromises = [];
+
     Object.keys(layers).forEach(layerId => {
       const layer = layers[layerId];
       const tiles = layer.tiles;
@@ -37,7 +39,10 @@ export function createTile(uid, tileCoordinates) {
         token
       );
 
-      Promise.all(pelagosPromises).then((rawTileData) => {
+      const allLayerPromises = Promise.all(pelagosPromises);
+      allPromises.push(allLayerPromises);
+
+      allLayerPromises.then(rawTileData => {
         if (!rawTileData || rawTileData.length === 0) {
           console.warn('empty dataset');
         }
@@ -65,6 +70,12 @@ export function createTile(uid, tileCoordinates) {
       });
 
       tiles.push(tile);
+    });
+
+    Promise.all(allPromises).then(() => {
+      dispatch({
+        type: COMPLETE_TILE_LOAD
+      });
     });
   };
 }
