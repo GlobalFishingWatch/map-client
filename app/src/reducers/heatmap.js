@@ -1,5 +1,6 @@
 import {
-  SET_LAYERS
+  SET_LAYERS,
+  UPDATE_HEATMAP_TILES
 } from '../actions';
 
 // a dict of heatmap layers (key is layer id)
@@ -20,6 +21,10 @@ export default function (state = initialState, action) {
       });
       console.log(newState)
       return newState;
+    }
+
+    case UPDATE_HEATMAP_TILES: {
+      return Object.assign({}, state, action.payload);
     }
 
     default:

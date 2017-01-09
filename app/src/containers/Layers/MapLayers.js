@@ -61,11 +61,11 @@ const mapDispatchToProps = (dispatch) => ({
   showPolygon: (id, description, latLng) => {
     dispatch(showPolygon(id, description, latLng));
   },
-  createTile: (canvas) => {
-    dispatch(createTile(canvas));
+  createTile: (uid, coordinates) => {
+    dispatch(createTile(uid, coordinates));
   },
-  releaseTile: (canvas) => {
-    dispatch(releaseTile(canvas));
+  releaseTile: (uid) => {
+    dispatch(releaseTile(uid));
   }
 });
 

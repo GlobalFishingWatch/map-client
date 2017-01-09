@@ -1,30 +1,51 @@
-export function createTile(canvas) {
+/* eslint no-param-reassign: 0 */
+import {
+  UPDATE_HEATMAP_TILES
+} from '../actions';
+
+// const loadLayerTile = (canvas, url) => {
+//
+// }
+
+export function createTile(uid, tileCoordinates) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
+    console.log(layers)
     Object.keys(layers).forEach(layerId => {
-      console.log(layerId);
       const layer = layers[layerId];
+      // console.log(layer)
       const tiles = layer.tiles;
-      canvas.index = tiles.length;
-      tiles.push(canvas);
+
+      const tile = {
+        uid,
+        tileCoordinates
+      };
+      // tile.data = loadLayerTile(zoom, layer.url);
+      tiles.push(tile);
+    });
+    dispatch({
+      type: UPDATE_HEATMAP_TILES,
+      payload: layers
     });
   };
 }
 
-export function releaseTile(canvas) {
+export function releaseTile(uid) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
     Object.keys(layers).forEach(layerId => {
-      console.log(layerId);
       const layer = layers[layerId];
       const tiles = layer.tiles;
-      const index = tiles.indexOf(canvas);
-      if (index === -1) {
-        console.warn('unknown tile released', index);
+      const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);
+      if (!releasedTileIndex) {
+        console.warn('unknown tile released', uid);
         return;
       }
-      console.warn('released tile #', index);
-      tiles.splice(index, 1);
+      tiles.splice(releasedTileIndex, 1);
+    });
+    dispatch({
+      type: UPDATE_HEATMAP_TILES,
+      payload: layers
     });
   };
 }

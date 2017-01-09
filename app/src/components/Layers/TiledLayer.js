@@ -3,6 +3,7 @@ export default class TiledLayer {
     this.createTile = createTile;
     this.releaseTile = releaseTile;
     this.tileSize = new google.maps.Size(256, 256);
+    this.currentUid = 0;
   }
 
   _getCanvas(ownerDocument) {
@@ -43,20 +44,21 @@ export default class TiledLayer {
   }
 
   getTile(coord, zoom, ownerDocument) {
+    const tileCoordinates = this._getTileCoordinates(coord, zoom);
     const canvas = this._getCanvas(ownerDocument);
-    canvas.tileCoordinates = this._getTileCoordinates(coord, zoom);
-    this.createTile(canvas);
+    canvas.uid = this.currentUid;
+    this.createTile(this.currentUid, tileCoordinates);
     return canvas;
   }
 
   releaseTile(canvas) {
-    const index = this.tiles.indexOf(canvas);
-    if (index === -1) {
-      console.warn('unknown tile released', index);
-      return;
-    }
-    console.warn('released tile #', index);
-    this.tiles.splice(index, 1);
-    this.releaseTile(canvas);
+    // const index = this.tiles.indexOf(canvas);
+    // if (index === -1) {
+    //   console.warn('unknown tile released', index);
+    //   return;
+    // }
+    // console.warn('released tile #', index);
+    // this.tiles.splice(index, 1);
+    this.releaseTile(canvas.uid);
   }
 }

@@ -29,8 +29,12 @@ class MapLayers extends Component {
         // TODO update tracks layer viewport as well
       }
     }
-
-    this.updateLayers(nextProps);
+    if (nextProps.layers.length) {
+      if (!this.props.layers.length) {
+        this.initHeatmap();
+      }
+      this.updateLayers(nextProps);
+    }
     this.updateFlag(nextProps);
 
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
@@ -119,9 +123,6 @@ class MapLayers extends Component {
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
 
     this.setState({ map: this.map });
-
-    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile)
-    this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
   }
 
   componentWillUnmount() {
@@ -130,12 +131,18 @@ class MapLayers extends Component {
     this.map.removeListener('center_changed', this.onMapCenterChangedBound);
   }
 
+  initHeatmap() {
+    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
+    this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
+  }
+
 
   /**
    * Handles and propagates layers changes
    * @param nextProps
    */
   updateLayers(nextProps) {
+    console.log('update layers!')
     const currentLayers = this.props.layers;
     const newLayers = nextProps.layers;
     const addedLayers = this.state.addedLayers;
