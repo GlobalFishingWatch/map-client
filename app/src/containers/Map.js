@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import Map from 'components/Map';
 import {
   getWorkspace,
-  toggleLayerVisibility,
   setZoom,
   setCenter,
   openShareModal,
@@ -12,6 +11,9 @@ import {
   setLayerInfoModal,
   setSupportModalVisibility
 } from 'actions/map';
+import {
+  toggleLayerVisibility,
+} from 'actions/layers';
 
 const mapStateToProps = (state) => ({
   center: state.map.center,

@@ -22,6 +22,7 @@ import vesselInfoReducer from 'reducers/vesselInfo';
 import articlesPublicationsReducer from 'reducers/articlesPublications';
 import reportReducer from 'reducers/report';
 import heatmapReducer from 'reducers/heatmap';
+import layersReducer from 'reducers/layers';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -44,7 +45,8 @@ const reducer = combineReducers({
   definitions: definitionReducer,
   articlesPublications: articlesPublicationsReducer,
   report: reportReducer,
-  heatmap: heatmapReducer
+  heatmap: heatmapReducer,
+  layers: layersReducer
 });
 
 

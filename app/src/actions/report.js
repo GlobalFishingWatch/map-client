@@ -6,7 +6,7 @@ import {
   START_REPORT,
   DISCARD_REPORT
 } from 'actions';
-import { toggleLayerVisibility } from 'actions/map';
+import { toggleLayerVisibility } from 'actions/layers';
 import { FLAGS } from 'constants';
 
 export function showPolygon(id, description, latLng) {

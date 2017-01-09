@@ -1,12 +1,9 @@
 import { push } from 'react-router-redux';
-import _ from 'lodash';
+import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
   SET_ZOOM,
   SET_CENTER,
-  TOGGLE_LAYER_VISIBILITY,
-  SET_LAYER_OPACITY,
-  SET_LAYER_HUE,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTER,
@@ -19,8 +16,8 @@ import {
   SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY
 } from 'actions';
-import { LAYER_TYPES } from 'constants';
 import { toggleVisibility } from 'actions/vesselInfo';
+import { initLayers } from 'actions/layers';
 
 export function setBasemap(basemap) {
   return {
@@ -44,36 +41,6 @@ export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
-  };
-}
-
-export function toggleLayerVisibility(layerId, forceShow = false) {
-  return {
-    type: TOGGLE_LAYER_VISIBILITY,
-    payload: {
-      layerId,
-      forceShow
-    }
-  };
-}
-
-export function setLayerOpacity(opacity, layerId) {
-  return {
-    type: SET_LAYER_OPACITY,
-    payload: {
-      layerId,
-      opacity
-    }
-  };
-}
-
-export function setLayerHue(hue, layerId) {
-  return {
-    type: SET_LAYER_HUE,
-    payload: {
-      layerId,
-      hue
-    }
   };
 }
 
@@ -147,10 +114,6 @@ export function getWorkspace(workspaceId) {
           payload: workspace.basemap
         });
 
-        // We update the layers
-        const layers = workspace.map.layers
-          .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
-
         const vesselLayer = workspace.map.layers
           .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
         const tilesetUrl = vesselLayer.source.args.url;
@@ -160,28 +123,7 @@ export function getWorkspace(workspaceId) {
           payload: tilesetUrl
         });
 
-        // parses opacity attribute
-        layers.forEach(layer => {
-          const l = layer;
-          if (!!layer.opacity) {
-            l.opacity = parseFloat(layer.opacity);
-          } else {
-            l.opacity = 1;
-          }
-        });
-
-        // add an id to each layer
-        let id = 0;
-        layers.forEach(layer => {
-          /* eslint no-param-reassign: 0 */
-          layer.id = id;
-          id++;
-        });
-
-        dispatch({
-          type: SET_LAYERS,
-          payload: layers
-        });
+        dispatch(initLayers(workspace.map.layers));
       });
   };
 }
@@ -271,7 +213,7 @@ export function saveWorkspace(errorAction) {
           map: {
             center: state.map.center,
             zoom: state.map.zoom,
-            layers: state.map.layers
+            layers: state.layers
           },
           basemap: state.map.activeBasemap,
           timeline: {

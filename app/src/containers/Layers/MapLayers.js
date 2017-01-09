@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
   token: state.user.token,
   tilesetUrl: state.map.tilesetUrl,
   zoom: state.map.zoom,
-  layers: state.map.layers,
+  layers: state.layers,
   flag: state.filters.flag,
   timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove
   timelineInnerExtent: state.filters.timelineInnerExtent,

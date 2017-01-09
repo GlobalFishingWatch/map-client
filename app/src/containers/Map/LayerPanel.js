@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import LayerPanel from 'components/Map/LayerPanel';
 import { toggleReport } from 'actions/report';
-import { toggleLayerVisibility, setLayerOpacity, setLayerHue, setLayerInfoModal } from 'actions/map';
+import { setLayerInfoModal } from 'actions/map';
+import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'actions/layers';
 
 const mapStateToProps = (state) => ({
-  layers: state.map.layers,
+  layers: state.layers,
   currentlyReportedLayerId: state.report.layerId
 });
 
