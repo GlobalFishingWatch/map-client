@@ -126,8 +126,6 @@ export function queryHeatmap(tileQuery, latLng) {
     });
     vessels = _.flatten(vessels);
 
-    console.log(vessels);
-
     dispatch({
       type: SET_VESSEL_TRACK,
       payload: null

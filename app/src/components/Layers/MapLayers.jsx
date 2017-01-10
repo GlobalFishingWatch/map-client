@@ -30,7 +30,7 @@ class MapLayers extends Component {
       }
     }
     if (nextProps.layers.length) {
-      if (!this.props.layers.length) {
+      if (!this.heatmapLayer) {
         this.initHeatmap();
       }
       this.updateLayers(nextProps);
@@ -129,6 +129,7 @@ class MapLayers extends Component {
 
   componentWillUnmount() {
     google.maps.event.clearInstanceListeners(this.map);
+    this.map.overlayMapTypes.removeAt(0);
   }
 
   initHeatmap() {
@@ -153,9 +154,11 @@ class MapLayers extends Component {
     const currentLayers = this.props.layers;
     const newLayers = nextProps.layers;
     const addedLayers = this.state.addedLayers;
+    const initialLoad = Object.keys(this.state.addedLayers).length === 0;
 
     const updatedLayers = newLayers.map(
       (layer, index) => {
+        if (initialLoad) return layer;
         if (currentLayers[index] === undefined) return layer;
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;

@@ -116,6 +116,11 @@ export default class HeatmapSubLayer {
 
     let numSprites = 0;
 
+    if (this.spritesPool.length) {
+      console.log('empty sprites pool')
+      return;
+    }
+
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
       const frame = data[timeIndex];
 
@@ -141,6 +146,7 @@ export default class HeatmapSubLayer {
   }
 
   resizeSpritesPool(finalPoolSize) {
+    console.log('resizeSpritesPool', finalPoolSize);
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
     if (poolDelta > 0) {
