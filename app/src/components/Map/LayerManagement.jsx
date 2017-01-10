@@ -6,8 +6,8 @@ class LayerManagement extends Component {
   render() {
     return (
       <div className={LayerManagementStyles['c-layer-management']}>
-        <button onClick={() => this.props.openModal()}>add layers</button>
-        <button>edit layers</button>
+        <button className={LayerManagementStyles['layer-button']} onClick={() => this.props.openModal()}>add layers</button>
+        <button className={LayerManagementStyles['layer-button']}>edit layers</button>
       </div>
     );
   }
