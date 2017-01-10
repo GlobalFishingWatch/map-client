@@ -121,34 +121,15 @@ export default class HeatmapLayer extends BaseOverlay {
     const subLayer = new HeatmapSubLayer(layerSettings, this.baseTexture, maxSprites, this._renderStage.bind(this));
     this.stage.addChild(subLayer.stage);
     this.subLayers.push(subLayer);
+    this.resizeSpritesPool();
     return subLayer;
   }
 
-  _renderStage() {
-    this.renderer.render(this.stage);
-  }
-
-  // rendering
-  render(data) {
-    for (let i = 0; i < this.subLayers.length; i++) {
-      const subLayer = this.subLayers[i];
-      const subLayerData = data[subLayer.id];
-      if (subLayerData === undefined) {
-        continue;
-      }
-      const tiles = subLayerData.tiles;
-      subLayer.render(tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
-    }
-    this._renderStage();
-  }
-
-  renderTimeRange(data, start, end) {
-    const startIndex = getOffsetedTimeAtPrecision(start, this.overallStartDateOffset);
-    const endIndex = getOffsetedTimeAtPrecision(end, this.overallStartDateOffset);
-
-    if (this.currentInnerStartIndex === startIndex && this.currentInnerEndIndex === endIndex) {
-      return;
-    }
+  render(data, timelineInnerExtent) {
+    const startTimestamp = timelineInnerExtent[0].getTime();
+    const endTimestamp = timelineInnerExtent[1].getTime();
+    const startIndex = getOffsetedTimeAtPrecision(startTimestamp, this.overallStartDateOffset);
+    const endIndex = getOffsetedTimeAtPrecision(endTimestamp, this.overallStartDateOffset);
 
     this.currentInnerStartIndex = startIndex;
     this.currentInnerEndIndex = endIndex;
@@ -165,7 +146,20 @@ export default class HeatmapLayer extends BaseOverlay {
       }
     }
 
-    this.render(data);
+    for (let i = 0; i < this.subLayers.length; i++) {
+      const subLayer = this.subLayers[i];
+      const subLayerData = data[subLayer.id];
+      if (subLayerData === undefined) {
+        continue;
+      }
+      const tiles = subLayerData.tiles;
+      subLayer.render(tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
+    }
+    this._renderStage();
+  }
+
+  _renderStage() {
+    this.renderer.render(this.stage);
   }
 
   setZoom(zoom) {

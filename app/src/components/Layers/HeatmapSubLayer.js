@@ -11,12 +11,17 @@ export default class HeatmapSubLayer {
     this.id = layerSettings.id;
     this.globalStageRenderCallback = globalStageRenderCallback;
     this._build(baseTexture, maxSprites);
+
+    if (layerSettings.visible === false) {
+      this.hide(false);
+    }
+    this.setOpacity(layerSettings.opacity, false);
+    this.setHue(layerSettings.hue, false);
   }
 
   _build(baseTexture, maxSprites) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
-    // const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
       scale: true,
       alpha: true,
@@ -36,19 +41,19 @@ export default class HeatmapSubLayer {
     this.globalStageRenderCallback();
   }
 
-  hide() {
+  hide(rerender = true) {
     this.stage.visible = false;
-    this.globalStageRenderCallback();
+    if (rerender) this.globalStageRenderCallback();
   }
 
-  setOpacity(opacity) {
+  setOpacity(opacity, rerender = true) {
     this.stage.alpha = opacity;
-    this.globalStageRenderCallback();
+    if (rerender) this.globalStageRenderCallback();
   }
 
-  setHue(hue) {
+  setHue(hue, rerender = true) {
     this.setTextureFrame(null, hue);
-    this.globalStageRenderCallback();
+    if (rerender) this.globalStageRenderCallback();
   }
 
   /**
@@ -89,11 +94,11 @@ export default class HeatmapSubLayer {
     tiles.forEach(tile => {
       const bounds = tile.canvas.getBoundingClientRect();
       if (!document.body.contains(tile.canvas)) {
-        // console.warn('rendering tile that doesnt exist in the DOM', tile);
+        console.warn('rendering tile that doesnt exist in the DOM', tile);
       }
 
       if (bounds.left === 0 && bounds.top === 0) {
-        // console.warn('tile at 0,0');
+        console.warn('tile at 0,0');
       }
       this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top, tile.error);
     });
@@ -138,7 +143,7 @@ export default class HeatmapSubLayer {
   resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
-
+    console.log(poolDelta)
     if (poolDelta > 0) {
       this._addSprites(poolDelta);
     } else {

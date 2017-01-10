@@ -65,9 +65,6 @@ class MapLayers extends Component {
     }
 
     if (this.heatmapLayer) {
-      if (this.heatmapLayer && nextProps.heatmap !== this.props.heatmap) {
-        this.heatmapLayer.render(nextProps.heatmap);
-      }
       // update vessels layer when:
       // - user selected a new flag
       // - tiled data changed
@@ -75,7 +72,7 @@ class MapLayers extends Component {
       if (this.props.flag !== nextProps.flag ||
         nextProps.heatmap !== this.props.heatmap ||
         innerExtentChanged) {
-        this.heatmapLayer.renderTimeRange(this.props.heatmap, startTimestamp, endTimestamp);
+        this.heatmapLayer.render(nextProps.heatmap, nextProps.timelineInnerExtent);
       }
     }
 
@@ -202,6 +199,7 @@ class MapLayers extends Component {
 
       if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
         this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
+        this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
       } else {
         promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
@@ -371,7 +369,7 @@ class MapLayers extends Component {
   onMapIdle() {
     if (this.heatmapLayer) {
       this.heatmapLayer.reposition();
-      this.heatmapLayer.render(this.props.heatmap);
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
     }
     if (this.trackLayer) {
       this.rerenderTrackLayer();
@@ -381,7 +379,7 @@ class MapLayers extends Component {
   onMapCenterChanged() {
     if (this.heatmapLayer) {
       this.heatmapLayer.reposition();
-      this.heatmapLayer.render(this.props.heatmap);
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
     }
   }
 
