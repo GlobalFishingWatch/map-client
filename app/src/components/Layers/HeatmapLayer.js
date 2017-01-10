@@ -132,7 +132,11 @@ export default class HeatmapLayer extends BaseOverlay {
   render(data) {
     for (let i = 0; i < this.subLayers.length; i++) {
       const subLayer = this.subLayers[i];
-      const tiles = data[subLayer.id].tiles;
+      const subLayerData = data[subLayer.id];
+      if (subLayerData === undefined) {
+        continue;
+      }
+      const tiles = subLayerData.tiles;
       subLayer.render(tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
     }
     this._renderStage();

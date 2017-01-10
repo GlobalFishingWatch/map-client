@@ -36,10 +36,6 @@ class MapLayers extends Component {
       this.updateLayers(nextProps);
     }
 
-    if (this.heatmapLayer && nextProps.heatmap !== this.props.heatmap) {
-      this.heatmapLayer.render(nextProps.heatmap);
-    }
-
     this.updateFlag(nextProps);
 
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
@@ -49,6 +45,7 @@ class MapLayers extends Component {
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
       return;
     }
+
 
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtent, nextProps.timelineInnerExtent);
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
@@ -68,12 +65,15 @@ class MapLayers extends Component {
     }
 
     if (this.heatmapLayer) {
+      if (this.heatmapLayer && nextProps.heatmap !== this.props.heatmap) {
+        this.heatmapLayer.render(nextProps.heatmap);
+      }
       // update vessels layer when:
       // - user selected a new flag
+      // - tiled data changed
       // - selected inner extent changed
-      // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles,
-      //      then rendered by the vessel layer
       if (this.props.flag !== nextProps.flag ||
+        nextProps.heatmap !== this.props.heatmap ||
         innerExtentChanged) {
         this.heatmapLayer.renderTimeRange(this.props.heatmap, startTimestamp, endTimestamp);
       }
@@ -200,12 +200,10 @@ class MapLayers extends Component {
 
       if (addedLayers[newLayer.id] !== undefined) return;
 
-      switch (newLayer.type) {
-        case LAYER_TYPES.ClusterAnimation:
-          this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
-          break;
-        default:
-          promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
+      if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
+        this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
+      } else {
+        promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
     }
 
