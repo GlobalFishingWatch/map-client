@@ -118,7 +118,7 @@ export default class HeatmapSubLayer {
 
     if (this.spritesPool.length) {
       console.log('empty sprites pool')
-      return;
+      return 0;
     }
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {

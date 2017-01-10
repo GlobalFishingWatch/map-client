@@ -397,16 +397,8 @@ class MapLayers extends Component {
     }
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    console.log(tileQuery);
 
     this.props.queryHeatmap(tileQuery, event.latLng);
-    return;
-    const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
-
-    // use the following to debug values coming from the server tiles or computed in VesselsTileData
-    // this.vesselsLayer.getHistogram('opacity');
-
-    this.props.setCurrentVessel(vessels, event.latLng);
   }
 
   render() {

@@ -1,5 +1,6 @@
 import PelagosClient from 'lib/pelagosClient';
 import _ from 'lodash';
+import * as d3 from 'd3';
 import {
   PLAYBACK_PRECISION,
   VESSELS_ENDPOINT_KEYS,
@@ -198,4 +199,26 @@ export const selectVesselsAt = (tileData, localX, localY, startIndex, endIndex) 
     }
   }
   return vessels;
+};
+
+export const getHistogram = (tiles, propName = 'weight') => {
+  let data = tiles
+    .filter(tile => tile.ready)
+    .map(tile => tile.data
+      .map(frame => frame[propName]));
+  data = _.flattenDeep(data);
+  if (data.length) {
+    const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
+    const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
+    /* eslint no-console:0 */
+    console.table(bins.filter(bin => bin.length).map(bin => {
+      const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
+      const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
+      return {
+        range: [binMin, binMax].join('﹣'),
+        bars: Array(Math.round(x(bin.length))).join('█'),
+        num: bin.length
+      };
+    }));
+  }
 };
