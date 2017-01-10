@@ -89,11 +89,11 @@ export default class HeatmapSubLayer {
     tiles.forEach(tile => {
       const bounds = tile.canvas.getBoundingClientRect();
       if (!document.body.contains(tile.canvas)) {
-        console.warn('rendering tile that doesnt exist in the DOM', tile);
+        // console.warn('rendering tile that doesnt exist in the DOM', tile);
       }
 
       if (bounds.left === 0 && bounds.top === 0) {
-        console.warn('tile at 0,0');
+        // console.warn('tile at 0,0');
       }
       this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top, tile.error);
     });

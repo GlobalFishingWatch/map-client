@@ -35,6 +35,11 @@ class MapLayers extends Component {
       }
       this.updateLayers(nextProps);
     }
+
+    if (this.heatmapLayer && nextProps.heatmap !== this.props.heatmap) {
+      this.heatmapLayer.render(nextProps.heatmap);
+    }
+
     this.updateFlag(nextProps);
 
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
