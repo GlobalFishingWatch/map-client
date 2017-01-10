@@ -8,7 +8,7 @@ import {
   SHOW_VESSEL_LOADING_INFO
 } from 'actions';
 import _ from 'lodash';
-import VesselsTileData from 'components/Layers/VesselsTileData';
+import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
 export function setCurrentVessel(seriesGroup) {
@@ -79,8 +79,8 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then(rawTileData => {
-        const cleanData = VesselsTileData.getCleanVectorArrays(rawTileData);
-        const groupedData = VesselsTileData.groupData(cleanData, [
+        const cleanData = getCleanVectorArrays(rawTileData);
+        const groupedData = groupData(cleanData, [
           'latitude',
           'longitude',
           'datetime',
