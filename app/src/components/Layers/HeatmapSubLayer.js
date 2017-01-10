@@ -143,7 +143,6 @@ export default class HeatmapSubLayer {
   resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
-    console.log(poolDelta)
     if (poolDelta > 0) {
       this._addSprites(poolDelta);
     } else {

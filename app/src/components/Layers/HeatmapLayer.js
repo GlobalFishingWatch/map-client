@@ -11,19 +11,17 @@ import {
   VESSELS_HUES_INCREMENT,
   TIMELINE_MAX_STEPS
 } from 'constants';
-import { getTimeAtPrecision, getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
+import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
 export default class HeatmapLayer extends BaseOverlay {
-  constructor(viewportWidth, viewportHeight, timelineOverallExtent) {
+  constructor(viewportWidth, viewportHeight) {
     super();
     this.subLayers = [];
     this.timeIndexDelta = 0;
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
-
-    this.overallStartDateOffset = getTimeAtPrecision(timelineOverallExtent[0]);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -125,14 +123,9 @@ export default class HeatmapLayer extends BaseOverlay {
     return subLayer;
   }
 
-  render(data, timelineInnerExtent) {
-    const startTimestamp = timelineInnerExtent[0].getTime();
-    const endTimestamp = timelineInnerExtent[1].getTime();
-    const startIndex = getOffsetedTimeAtPrecision(startTimestamp, this.overallStartDateOffset);
-    const endIndex = getOffsetedTimeAtPrecision(endTimestamp, this.overallStartDateOffset);
-
-    this.currentInnerStartIndex = startIndex;
-    this.currentInnerEndIndex = endIndex;
+  render(data, timelineInnerExtentIndexes) {
+    const startIndex = timelineInnerExtentIndexes[0];
+    const endIndex = timelineInnerExtentIndexes[1];
 
     const newTimeIndexDelta = endIndex - startIndex;
 
@@ -153,7 +146,7 @@ export default class HeatmapLayer extends BaseOverlay {
         continue;
       }
       const tiles = subLayerData.tiles;
-      subLayer.render(tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
+      subLayer.render(tiles, startIndex, endIndex);
     }
     this._renderStage();
   }

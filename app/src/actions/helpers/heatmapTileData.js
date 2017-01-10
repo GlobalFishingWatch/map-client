@@ -5,7 +5,8 @@ import {
   VESSELS_ENDPOINT_KEYS,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_MINIMUM_RADIUS_FACTOR,
-  VESSELS_MINIMUM_OPACITY
+  VESSELS_MINIMUM_OPACITY,
+  VESSEL_CLICK_TOLERANCE_PX
 } from 'constants';
 
 /**
@@ -175,4 +176,26 @@ export const getTilePlaybackData = (zoom, vectorArray, overallStartDate, overall
   }
 
   return tilePlaybackData;
+};
+
+export const selectVesselsAt = (tileData, localX, localY, startIndex, endIndex) => {
+  const vessels = [];
+
+  for (let f = startIndex; f < endIndex; f++) {
+    const frame = tileData[f];
+    if (frame === undefined) continue;
+    for (let i = 0; i < frame.x.length; i++) {
+      const vx = frame.x[i];
+      const vy = frame.y[i];
+      if (vx >= localX - VESSEL_CLICK_TOLERANCE_PX && vx <= localX + VESSEL_CLICK_TOLERANCE_PX &&
+          vy >= localY - VESSEL_CLICK_TOLERANCE_PX && vy <= localY + VESSEL_CLICK_TOLERANCE_PX) {
+        vessels.push({
+          category: frame.category[i],
+          series: frame.series[i],
+          seriesgroup: frame.seriesgroup[i]
+        });
+      }
+    }
+  }
+  return vessels;
 };

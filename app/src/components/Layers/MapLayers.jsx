@@ -46,7 +46,6 @@ class MapLayers extends Component {
       return;
     }
 
-
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtent, nextProps.timelineInnerExtent);
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
@@ -57,6 +56,7 @@ class MapLayers extends Component {
       this.updateTrackLayer({
         data: nextProps.vesselTrack.seriesGroupData,
         selectedSeries: nextProps.vesselTrack.selectedSeries,
+        // TODO directly use timelineInnerExtentIndexes
         startTimestamp,
         endTimestamp,
         timelinePaused: nextProps.timelinePaused,
@@ -70,9 +70,9 @@ class MapLayers extends Component {
       // - tiled data changed
       // - selected inner extent changed
       if (this.props.flag !== nextProps.flag ||
-        nextProps.heatmap !== this.props.heatmap ||
+        this.props.heatmap !== nextProps.heatmap ||
         innerExtentChanged) {
-        this.heatmapLayer.render(nextProps.heatmap, nextProps.timelineInnerExtent);
+        this.heatmapLayer.render(nextProps.heatmap, nextProps.timelineInnerExtentIndexes);
       }
     }
 
@@ -136,7 +136,7 @@ class MapLayers extends Component {
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
-    this.heatmapLayer = new HeatmapLayer(this.props.viewportWidth, this.props.viewportHeight, this.props.timelineOverallExtent);
+    this.heatmapLayer = new HeatmapLayer(this.props.viewportWidth, this.props.viewportHeight);
     this.heatmapLayer.setMap(this.map);
     // Create track layer
     this.trackLayer = new TrackLayer(
@@ -199,7 +199,7 @@ class MapLayers extends Component {
 
       if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
         this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
-        this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
+        this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
       } else {
         promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
@@ -369,7 +369,7 @@ class MapLayers extends Component {
   onMapIdle() {
     if (this.heatmapLayer) {
       this.heatmapLayer.reposition();
-      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
     }
     if (this.trackLayer) {
       this.rerenderTrackLayer();
@@ -379,7 +379,7 @@ class MapLayers extends Component {
   onMapCenterChanged() {
     if (this.heatmapLayer) {
       this.heatmapLayer.reposition();
-      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtent);
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
     }
   }
 
@@ -391,10 +391,15 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    if (!this.vesselsLayer || !event || this.vesselsLayer.interactive === false) {
+    if (!event || !this.heatmapLayer || this.heatmapLayer.interactive === false) {
       return;
     }
 
+    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
+    console.log(tileQuery);
+
+    this.props.queryHeatmap(tileQuery, event.latLng);
+    return;
     const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
 
     // use the following to debug values coming from the server tiles or computed in VesselsTileData
@@ -423,6 +428,7 @@ MapLayers.propTypes = {
   flag: React.PropTypes.string,
   timelineOverallExtent: React.PropTypes.array,
   timelineInnerExtent: React.PropTypes.array,
+  timelineInnerExtentIndexes: React.PropTypes.array,
   timelineOuterExtent: React.PropTypes.array,
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
@@ -430,7 +436,7 @@ MapLayers.propTypes = {
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.number,
-  setCurrentVessel: React.PropTypes.func,
+  queryHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,
   releaseTile: React.PropTypes.func

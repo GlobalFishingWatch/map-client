@@ -3,6 +3,7 @@ export default class TiledLayer {
     this.getTileCallback = getTileCallback;
     this.releaseTileCallback = releaseTileCallback;
     this.tileSize = new google.maps.Size(256, 256);
+    this.tiles = [];
     this.currentUid = 0;
   }
 
@@ -55,11 +56,30 @@ export default class TiledLayer {
 
     canvas.uid = this.currentUid;
     this.getTileCallback(this.currentUid, tileCoordinates, canvas);
+    this.tiles.push(canvas);
     this.currentUid++;
     return canvas;
   }
 
   releaseTile(canvas) {
+    const tileIndex = this.tiles.indexOf(canvas);
+    this.tiles.splice(tileIndex, 1);
     this.releaseTileCallback(canvas.uid);
+  }
+
+  getTileQueryAt(x, y) {
+    for (let i = 0; i < this.tiles.length; i++) {
+      const tile = this.tiles[i];
+      const tileBox = tile.getBoundingClientRect();
+      if (y > tileBox.top && y < tileBox.top + 256 && x > tileBox.left && x < tileBox.left + 256) {
+        tile.box = tileBox;
+        return {
+          uid: tile.uid,
+          localX: x - tileBox.left,
+          localY: y - tileBox.top
+        };
+      }
+    }
+    return null;
   }
 }

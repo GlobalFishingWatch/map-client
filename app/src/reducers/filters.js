@@ -9,19 +9,30 @@ import {
   TIMELINE_OVERALL_START_DATE,
   TIMELINE_OVERALL_END_DATE
 } from 'constants';
+import { getTimeAtPrecision, getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
+  timelineOverallStartDateOffset: getTimeAtPrecision(TIMELINE_OVERALL_START_DATE),
   timelinePaused: true,
   flag: ''
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_INNER_TIMELINE_DATES:
+    case SET_INNER_TIMELINE_DATES: {
+      const timelineInnerExtent = action.payload;
+      const startTimestamp = timelineInnerExtent[0].getTime();
+      const endTimestamp = timelineInnerExtent[1].getTime();
+      const startIndex = getOffsetedTimeAtPrecision(startTimestamp, state.timelineOverallStartDateOffset);
+      const endIndex = getOffsetedTimeAtPrecision(endTimestamp, state.timelineOverallStartDateOffset);
+      const timelineInnerExtentIndexes = [startIndex, endIndex];
+
       return Object.assign({}, state, {
-        timelineInnerExtent: action.payload
+        timelineInnerExtent,
+        timelineInnerExtentIndexes
       });
+    }
     case SET_OUTER_TIMELINE_DATES:
       return Object.assign({}, state, {
         timelineOuterExtent: action.payload
