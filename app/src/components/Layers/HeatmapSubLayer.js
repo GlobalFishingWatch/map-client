@@ -117,7 +117,7 @@ export default class HeatmapSubLayer {
     let numSprites = 0;
 
     if (!this.spritesPool.length) {
-      console.warn('empty sprites pool')
+      console.warn('empty sprites pool');
       return 0;
     }
 

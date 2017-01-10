@@ -62,7 +62,6 @@ export default class TiledLayer {
   }
 
   releaseTile(canvas) {
-    console.log('release', canvas.uid)
     const tileIndex = this.tiles.indexOf(canvas);
     this.tiles.splice(tileIndex, 1);
     this.releaseTileCallback(canvas.uid);

@@ -23,7 +23,6 @@ const initialState = [];
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LAYERS:
-    console.log(action.payload)
       return action.payload.concat();
 
     case TOGGLE_LAYER_VISIBILITY: {

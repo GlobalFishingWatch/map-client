@@ -12,7 +12,7 @@ import {
   setSupportModalVisibility
 } from 'actions/map';
 import {
-  toggleLayerVisibility,
+  toggleLayerVisibility
 } from 'actions/layers';
 
 const mapStateToProps = (state) => ({
