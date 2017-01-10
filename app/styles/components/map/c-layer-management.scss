@@ -1,0 +1,19 @@
+@import '../../settings';
+
+.c-layer-management {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 0;
+
+  > .layer-button {
+    border: 1px solid $color-3;
+    color: $color-3;
+    cursor: pointer;
+    font-size: $font-size-xxs-small;
+    font-weight: $font-weight-bold;
+    outline: none;
+    padding: 5px;
+    text-transform: uppercase;
+    width: calc(50% - 2px);
+  }
+}

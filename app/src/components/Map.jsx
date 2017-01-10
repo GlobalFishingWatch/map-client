@@ -15,6 +15,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
+import LayerLibrary from 'containers/Map/LayerLibrary';
 
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
@@ -199,6 +200,13 @@ class Map extends Component {
       >
         <SupportForm />
       </Modal>
+      <Modal
+        opened={this.props.layerLibraryModal}
+        closeable
+        close={this.props.closeLayerLibraryModal}
+      >
+        <LayerLibrary />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -310,7 +318,9 @@ Map.propTypes = {
   closeLayerInfoModal: React.PropTypes.func,
   trackBounds: React.PropTypes.object,
   closeSupportModal: React.PropTypes.func,
-  openSupportModal: React.PropTypes.func
+  openSupportModal: React.PropTypes.func,
+  layerLibraryModal: React.PropTypes.bool,
+  closeLayerLibraryModal: React.PropTypes.func
 };
 
 export default Map;

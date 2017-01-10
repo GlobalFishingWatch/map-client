@@ -13,7 +13,8 @@ import {
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
-  SET_SUPPORT_MODAL_VISIBILITY
+  SET_SUPPORT_MODAL_VISIBILITY,
+  SET_LAYER_LIBRARY_MODAL_VISIBILITY
 } from '../actions';
 
 const initialState = {
@@ -52,6 +53,9 @@ const initialState = {
   supportModal: {
     open: false
   },
+  layerLibraryModal: {
+    open: false
+  },
   workspaceId: null
 };
 
@@ -77,7 +81,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-
     case SET_BASEMAP: {
       return Object.assign({}, state, { activeBasemap: action.payload });
     }
@@ -112,6 +115,14 @@ export default function (state = initialState, action) {
     case SET_SUPPORT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.supportModal = {
+        open: action.payload
+      };
+      return newState;
+    }
+
+    case SET_LAYER_LIBRARY_MODAL_VISIBILITY: {
+      const newState = Object.assign({}, state);
+      newState.layerLibraryModal = {
         open: action.payload
       };
       return newState;
