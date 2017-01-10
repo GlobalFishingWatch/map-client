@@ -17,6 +17,7 @@ export default class HeatmapSubLayer {
     }
     this.setOpacity(layerSettings.opacity, false);
     this.setHue(layerSettings.hue, false);
+    this.setFlag(layerSettings.flag, false);
   }
 
   _build(baseTexture, maxSprites) {
@@ -53,6 +54,11 @@ export default class HeatmapSubLayer {
 
   setHue(hue, rerender = true) {
     this.setTextureFrame(null, hue);
+    if (rerender) this.globalStageRenderCallback();
+  }
+
+  setFlag(flag, rerender = true) {
+    this.flag = flag;
     if (rerender) this.globalStageRenderCallback();
   }
 
@@ -117,7 +123,7 @@ export default class HeatmapSubLayer {
     let numSprites = 0;
 
     if (!this.spritesPool.length) {
-      console.warn('empty sprites pool')
+      console.warn('empty sprites pool');
       return 0;
     }
 

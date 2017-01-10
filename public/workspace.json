@@ -59,6 +59,7 @@
           "visible": true,
           "color": "#88FBFF",
           "hue": 182,
+          "flag": "66",
           "type": "ClusterAnimation",
           "opacity": 1
         },

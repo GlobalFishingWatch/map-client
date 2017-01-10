@@ -36,8 +36,6 @@ class MapLayers extends Component {
       this.updateLayers(nextProps);
     }
 
-    this.updateFlag(nextProps);
-
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
       this.heatmapLayer.setZoom(nextProps.zoom);
     }
@@ -66,11 +64,9 @@ class MapLayers extends Component {
 
     if (this.heatmapLayer) {
       // update vessels layer when:
-      // - user selected a new flag
       // - tiled data changed
       // - selected inner extent changed
-      if (this.props.flag !== nextProps.flag ||
-        this.props.heatmap !== nextProps.heatmap ||
+      if (this.props.heatmap !== nextProps.heatmap ||
         innerExtentChanged) {
         this.heatmapLayer.render(nextProps.heatmap, nextProps.timelineInnerExtentIndexes);
       }
@@ -164,6 +160,7 @@ class MapLayers extends Component {
         if (layer.visible !== currentLayers[index].visible) return layer;
         if (layer.opacity !== currentLayers[index].opacity) return layer;
         if (layer.hue !== currentLayers[index].hue) return layer;
+        if (layer.flag !== currentLayers[index].flag) return layer;
         return false;
       }
     );
@@ -189,6 +186,11 @@ class MapLayers extends Component {
 
       if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.hue !== newLayer.hue) {
         this.setLayerHue(newLayer);
+        continue;
+      }
+
+      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.flag !== newLayer.flag) {
+        this.setLayerFlag(newLayer);
         continue;
       }
 
@@ -307,20 +309,11 @@ class MapLayers extends Component {
     layers[layerSettings.id].setHue(layerSettings.hue);
   }
 
-  /**
-   * Handles flag change
-   * @param nextProps
-   */
-  updateFlag(nextProps) {
-    // TODO
-    // if (!this.vesselsLayer) {
-    //   return;
-    // }
-    // if (
-    //   this.props.flag !== nextProps.flag
-    // ) {
-    //   this.vesselsLayer.updateFlag(nextProps.flag);
-    // }
+  setLayerFlag(layerSettings) {
+    const layers = this.state.addedLayers;
+
+    if (!Object.keys(layers).length) return;
+    layers[layerSettings.id].setFlag(layerSettings.flag);
   }
 
   updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
@@ -418,7 +411,6 @@ MapLayers.propTypes = {
   layers: React.PropTypes.array,
   heatmap: React.PropTypes.object,
   zoom: React.PropTypes.number,
-  flag: React.PropTypes.string,
   timelineOverallExtent: React.PropTypes.array,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,

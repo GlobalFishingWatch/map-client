@@ -9,7 +9,6 @@ const mapStateToProps = (state) => ({
   zoom: state.map.zoom,
   layers: state.layers,
   heatmap: state.heatmap,
-  flag: state.filters.flag,
   timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove
   timelineInnerExtent: state.filters.timelineInnerExtent,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
