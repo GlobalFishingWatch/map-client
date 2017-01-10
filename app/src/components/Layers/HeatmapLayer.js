@@ -11,7 +11,6 @@ import {
   VESSELS_HUES_INCREMENT,
   TIMELINE_MAX_STEPS
 } from 'constants';
-import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
 const MAX_SPRITES_FACTOR = 0.002;
 

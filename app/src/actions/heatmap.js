@@ -95,7 +95,7 @@ export function releaseTile(uid) {
       const layer = layers[layerId];
       const tiles = layer.tiles;
       const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);
-      if (!releasedTileIndex) {
+      if (releasedTileIndex === -1) {
         console.warn('unknown tile released', uid);
         return;
       }
