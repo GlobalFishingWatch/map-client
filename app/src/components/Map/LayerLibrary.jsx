@@ -44,7 +44,7 @@ LayerLibrary.propTypes = {
   // sets modal with info about the current layer
   setLayerInfoModal: React.PropTypes.func,
   // function to set visibility of the layer library modal
-  setLayerLibraryModalVisivility: React.PropTypes.func,
+  setLayerLibraryModalVisibility: React.PropTypes.func,
   // funcion to change visibility of the current layer
   toggleLayerVisibility: React.PropTypes.func
 };

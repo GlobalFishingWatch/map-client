@@ -6,7 +6,7 @@ class LayerManagement extends Component {
   render() {
     return (
       <div className={LayerManagementStyles['c-layer-management']}>
-        <button onClick={() => this.props.setLayerLibraryModalVisivility()}>add layers</button>
+        <button onClick={() => this.props.openModal()}>add layers</button>
         <button>edit layers</button>
       </div>
     );
@@ -14,7 +14,7 @@ class LayerManagement extends Component {
 }
 
 LayerManagement.propTypes = {
-  setLayerLibraryModalVisivility: React.PropTypes.func
+  openModal: React.PropTypes.func
 };
 
 export default LayerManagement;

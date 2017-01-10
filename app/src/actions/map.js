@@ -268,7 +268,7 @@ export function setSupportModalVisibility(visibility) {
   };
 }
 
-export function setLayerLibraryModalVisivility(visibility) {
+export function setLayerLibraryModalVisibility(visibility) {
   return {
     type: SET_LAYER_LIBRARY_MODAL_VISIBILITY,
     payload: visibility

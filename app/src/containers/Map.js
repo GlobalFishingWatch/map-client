@@ -10,7 +10,7 @@ import {
   setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerLibraryModalVisivility
+  setLayerLibraryModalVisibility
 } from 'actions/map';
 import {
   toggleLayerVisibility,
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setSupportModalVisibility(true));
   },
   closeLayerLibraryModal: () => {
-    dispatch(setLayerLibraryModalVisivility(false));
+    dispatch(setLayerLibraryModalVisibility(false));
   }
 });
 

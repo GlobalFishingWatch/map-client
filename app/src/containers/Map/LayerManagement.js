@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import LayerManagement from 'components/Map/LayerManagement';
-import { setLayerLibraryModalVisivility } from 'actions/map';
+import { setLayerLibraryModalVisibility } from 'actions/map';
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  setLayerLibraryModalVisivility: () => {
-    dispatch(setLayerLibraryModalVisivility(true));
+  openModal: () => {
+    dispatch(setLayerLibraryModalVisibility(true));
   }
 });
 
