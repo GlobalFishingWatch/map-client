@@ -1,8 +1,9 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
-import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
+import TiledLayer from 'components/Layers/TiledLayer';
+import HeatmapLayer from 'components/Layers/HeatmapLayer';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
@@ -24,16 +25,21 @@ class MapLayers extends Component {
       this.build();
     } else {
       if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
-        this.vesselsLayer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
+        this.heatmapLayer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
       }
     }
+    if (nextProps.layers.length) {
+      if (!this.heatmapLayer) {
+        this.initHeatmap();
+      }
+      this.updateLayers(nextProps);
+    }
 
-    this.updateLayers(nextProps);
     this.updateFlag(nextProps);
 
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
-      this.vesselsLayer.setZoom(nextProps.zoom);
+      this.heatmapLayer.setZoom(nextProps.zoom);
     }
 
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
@@ -50,6 +56,7 @@ class MapLayers extends Component {
       this.updateTrackLayer({
         data: nextProps.vesselTrack.seriesGroupData,
         selectedSeries: nextProps.vesselTrack.selectedSeries,
+        // TODO directly use timelineInnerExtentIndexes
         startTimestamp,
         endTimestamp,
         timelinePaused: nextProps.timelinePaused,
@@ -57,15 +64,15 @@ class MapLayers extends Component {
       });
     }
 
-    if (this.vesselsLayer) {
+    if (this.heatmapLayer) {
       // update vessels layer when:
       // - user selected a new flag
+      // - tiled data changed
       // - selected inner extent changed
-      // Vessels layer will update automatically on zoom and center changes, as the overlay will fetch tiles,
-      //      then rendered by the vessel layer
       if (this.props.flag !== nextProps.flag ||
+        this.props.heatmap !== nextProps.heatmap ||
         innerExtentChanged) {
-        this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+        this.heatmapLayer.render(nextProps.heatmap, nextProps.timelineInnerExtentIndexes);
       }
     }
 
@@ -117,11 +124,25 @@ class MapLayers extends Component {
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
 
-    this.setState({ map: this.map, reportPolygonId: 1 });
+    this.setState({ map: this.map });
   }
 
   componentWillUnmount() {
     google.maps.event.clearInstanceListeners(this.map);
+    this.map.overlayMapTypes.removeAt(0);
+  }
+
+  initHeatmap() {
+    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
+    this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
+    this.heatmapLayer = new HeatmapLayer(this.props.viewportWidth, this.props.viewportHeight);
+    this.heatmapLayer.setMap(this.map);
+    // Create track layer
+    this.trackLayer = new TrackLayer(
+      this.props.viewportWidth,
+      this.props.viewportHeight
+    );
+    this.trackLayer.setMap(this.map);
   }
 
 
@@ -133,9 +154,11 @@ class MapLayers extends Component {
     const currentLayers = this.props.layers;
     const newLayers = nextProps.layers;
     const addedLayers = this.state.addedLayers;
+    const initialLoad = Object.keys(this.state.addedLayers).length === 0;
 
     const updatedLayers = newLayers.map(
       (layer, index) => {
+        if (initialLoad) return layer;
         if (currentLayers[index] === undefined) return layer;
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;
@@ -146,7 +169,6 @@ class MapLayers extends Component {
     );
 
     const promises = [];
-    let callAddVesselLayer = null;
 
     for (let i = 0, j = updatedLayers.length; i < j; i++) {
       if (!updatedLayers[i]) continue;
@@ -176,50 +198,17 @@ class MapLayers extends Component {
 
       if (addedLayers[newLayer.id] !== undefined) return;
 
-      switch (newLayer.type) {
-        case LAYER_TYPES.ClusterAnimation:
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
-          break;
-        default:
-          promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
+      if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
+        this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
+        this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
+      } else {
+        promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
     }
 
     Promise.all(promises).then((() => {
-      if (callAddVesselLayer) callAddVesselLayer();
       this.setState({ addedLayers });
     }));
-  }
-
-  /**
-   * Creates vessel track layer
-   * @param layerSettings
-   */
-  addVesselLayer(layerSettings) {
-    if (!this.vesselsLayer) {
-      this.vesselsLayer = new VesselsLayer(
-        this.map,
-        this.props.tilesetUrl,
-        this.props.token,
-        this.props.timelineInnerExtent,
-        this.props.timelineOverallExtent,
-        this.props.flag,
-        this.props.viewportWidth,
-        this.props.viewportHeight
-      );
-      this.vesselsLayer.setOpacity(layerSettings.opacity);
-      this.vesselsLayer.setHue(layerSettings.hue);
-      this.vesselsLayer.setInteraction(true);
-    }
-
-    // Create track layer
-    this.trackLayer = new TrackLayer(
-      this.props.viewportWidth,
-      this.props.viewportHeight
-    );
-    this.trackLayer.setMap(this.map);
-
-    this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
   }
 
   /**
@@ -323,14 +312,15 @@ class MapLayers extends Component {
    * @param nextProps
    */
   updateFlag(nextProps) {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    if (
-      this.props.flag !== nextProps.flag
-    ) {
-      this.vesselsLayer.updateFlag(nextProps.flag);
-    }
+    // TODO
+    // if (!this.vesselsLayer) {
+    //   return;
+    // }
+    // if (
+    //   this.props.flag !== nextProps.flag
+    // ) {
+    //   this.vesselsLayer.updateFlag(nextProps.flag);
+    // }
   }
 
   updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
@@ -378,9 +368,9 @@ class MapLayers extends Component {
    * Handles map idle event (once loading is done)
    */
   onMapIdle() {
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
+    if (this.heatmapLayer) {
+      this.heatmapLayer.reposition();
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
     }
     if (this.trackLayer) {
       this.rerenderTrackLayer();
@@ -388,9 +378,9 @@ class MapLayers extends Component {
   }
 
   onMapCenterChanged() {
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
+    if (this.heatmapLayer) {
+      this.heatmapLayer.reposition();
+      this.heatmapLayer.render(this.props.heatmap, this.props.timelineInnerExtentIndexes);
     }
   }
 
@@ -402,16 +392,13 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    if (!this.vesselsLayer || !event || this.vesselsLayer.interactive === false) {
+    if (!event || !this.heatmapLayer || this.heatmapLayer.interactive === false) {
       return;
     }
 
-    const vessels = this.vesselsLayer.selectVesselsAt(event.pixel.x, event.pixel.y);
+    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
 
-    // use the following to debug values coming from the server tiles or computed in VesselsTileData
-    // this.vesselsLayer.getHistogram('opacity');
-
-    this.props.setCurrentVessel(vessels, event.latLng);
+    this.props.queryHeatmap(tileQuery, event.latLng);
   }
 
   render() {
@@ -429,10 +416,12 @@ MapLayers.propTypes = {
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   layers: React.PropTypes.array,
+  heatmap: React.PropTypes.object,
   zoom: React.PropTypes.number,
   flag: React.PropTypes.string,
   timelineOverallExtent: React.PropTypes.array,
   timelineInnerExtent: React.PropTypes.array,
+  timelineInnerExtentIndexes: React.PropTypes.array,
   timelineOuterExtent: React.PropTypes.array,
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
@@ -440,8 +429,10 @@ MapLayers.propTypes = {
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.number,
-  setCurrentVessel: React.PropTypes.func,
-  showPolygon: React.PropTypes.func
+  queryHeatmap: React.PropTypes.func,
+  showPolygon: React.PropTypes.func,
+  createTile: React.PropTypes.func,
+  releaseTile: React.PropTypes.func
 };
 
 

@@ -3,10 +3,6 @@
 import {
   VESSEL_INIT,
   SHOW_LOADING,
-  TOGGLE_LAYER_VISIBILITY,
-  SET_LAYERS,
-  SET_LAYER_OPACITY,
-  SET_LAYER_HUE,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -19,7 +15,6 @@ import {
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY
 } from '../actions';
-import _ from 'lodash';
 
 const initialState = {
   activeBasemap: null,
@@ -43,7 +38,6 @@ const initialState = {
     }
   ],
   loading: false,
-  layers: [],
   zoom: 3,
   tilesetUrl: null,
   center: [0, 0],
@@ -61,17 +55,6 @@ const initialState = {
   workspaceId: null
 };
 
-const getUpdatedLayers = (state, action, changedLayerCallback) => {
-  const layers = _.cloneDeep(state.layers);
-  const layerIndex = layers.findIndex(l => l.id === action.payload.layerId);
-  const changedLayer = layers[layerIndex];
-
-  if (layerIndex > -1) {
-    changedLayerCallback(changedLayer);
-  }
-  return layers;
-};
-
 /**
  * Map reducer
  *
@@ -86,36 +69,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    case SET_LAYERS:
-      return Object.assign({}, state, { layers: action.payload });
+    // case SET_LAYERS:
+    //   return Object.assign({}, state, { layers: action.payload });
     case SET_TILESET_URL:
       return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-
-    case TOGGLE_LAYER_VISIBILITY: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.visible = (action.payload.forceShow === true) ? true : !changedLayer.visible;
-      });
-      return Object.assign({}, state, { layers });
-    }
-    case SET_LAYER_OPACITY: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.opacity = action.payload.opacity;
-      });
-      return Object.assign({}, state, { layers });
-    }
-    case SET_LAYER_HUE: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.hue = action.payload.hue;
-      });
-      return Object.assign({}, state, { layers });
-    }
 
     case SET_BASEMAP: {
       return Object.assign({}, state, { activeBasemap: action.payload });
