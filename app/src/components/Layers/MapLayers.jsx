@@ -121,9 +121,7 @@ class MapLayers extends Component {
   }
 
   componentWillUnmount() {
-    this.map.removeListener('idle', this.onMapIdleBound);
-    this.map.removeListener('click', this.onMapClickBound);
-    this.map.removeListener('center_changed', this.onMapCenterChangedBound);
+    google.maps.event.clearInstanceListeners(this.map);
   }
 
 
