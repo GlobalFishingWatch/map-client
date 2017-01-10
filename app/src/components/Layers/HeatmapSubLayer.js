@@ -100,7 +100,7 @@ export default class HeatmapSubLayer {
       if (bounds.left === 0 && bounds.top === 0) {
         console.warn('tile at 0,0');
       }
-      this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top, tile.error);
+      this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 
     // hide unused sprites
@@ -116,8 +116,8 @@ export default class HeatmapSubLayer {
 
     let numSprites = 0;
 
-    if (this.spritesPool.length) {
-      console.log('empty sprites pool')
+    if (!this.spritesPool.length) {
+      console.warn('empty sprites pool')
       return 0;
     }
 
@@ -146,7 +146,6 @@ export default class HeatmapSubLayer {
   }
 
   resizeSpritesPool(finalPoolSize) {
-    console.log('resizeSpritesPool', finalPoolSize);
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
     if (poolDelta > 0) {
