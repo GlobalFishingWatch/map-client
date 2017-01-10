@@ -20,6 +20,9 @@ export function initLayers(layers_) {
       } else {
         l.opacity = 1;
       }
+      if (!!layer.flag) {
+        l.flag = parseInt(layer.flag, 10);
+      }
     });
 
     // add an id to each layer

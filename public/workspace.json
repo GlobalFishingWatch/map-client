@@ -1,12 +1,9 @@
 {
   "workspace": {
     "map": {
-      "center": [
-        0,
-        0
-      ],
+      "center": [51.998410382390325, 6.240234375],
       "basemap": "satellite",
-      "zoom": 3,
+      "zoom": 4,
       "layers": [
         {
           "title": "Bathimetry",
@@ -48,8 +45,8 @@
           "type": "CartoDBAnimation"
         },
         {
-          "title": "VESSEL",
-          "description": "Fishing effort layer",
+          "title": "VESSEL (FR)",
+          "description": "Fishing effort layer (fr)",
           "source": {
             "type": "BinFormat",
             "args": {
@@ -59,6 +56,23 @@
           "visible": true,
           "color": "#88FBFF",
           "hue": 182,
+          "flag": "66",
+          "type": "ClusterAnimation",
+          "opacity": 1
+        },
+        {
+          "title": "VESSEL (UK)",
+          "description": "Fishing effort layer (uk)",
+          "source": {
+            "type": "BinFormat",
+            "args": {
+              "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms"
+            }
+          },
+          "visible": true,
+          "color": "#88FBFF",
+          "hue": 0,
+          "flag": "68",
           "type": "ClusterAnimation",
           "opacity": 1
         },

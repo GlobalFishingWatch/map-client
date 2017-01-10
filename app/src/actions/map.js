@@ -105,11 +105,6 @@ export function getWorkspace(workspaceId) {
         });
 
         dispatch({
-          type: SET_FLAG_FILTER,
-          payload: workspace.flag
-        });
-
-        dispatch({
           type: SET_BASEMAP,
           payload: workspace.basemap
         });
@@ -118,6 +113,8 @@ export function getWorkspace(workspaceId) {
           .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
         const tilesetUrl = vesselLayer.source.args.url;
 
+        // TODO this is only used by vesselInfo, but the data is inside a layer
+        // review wit SkyTruth
         dispatch({
           type: SET_TILESET_URL,
           payload: tilesetUrl
