@@ -13,7 +13,7 @@ import {
   getTilePlaybackData
 } from './helpers/heatmapTileData';
 
-export function createTile(uid, tileCoordinates) {
+export function createTile(uid, tileCoordinates, canvas) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
@@ -23,12 +23,15 @@ export function createTile(uid, tileCoordinates) {
     const allPromises = [];
 
     Object.keys(layers).forEach(layerId => {
+      // TODO Bail if layer is not visible
+      // TODO Filter by flag
       const layer = layers[layerId];
       const tiles = layer.tiles;
 
       const tile = {
         uid,
-        tileCoordinates
+        tileCoordinates,
+        canvas
       };
 
       const pelagosPromises = getTilePelagosPromises(

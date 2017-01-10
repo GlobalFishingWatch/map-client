@@ -1,9 +1,9 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
 import extentChanged from 'util/extentChanged';
-import VesselsLayer from 'components/Layers/VesselsLayer';
 import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
+import HeatmapLayer from 'components/Layers/HeatmapLayer';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
@@ -25,7 +25,7 @@ class MapLayers extends Component {
       this.build();
     } else {
       if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
-        this.vesselsLayer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
+        this.heatmapLayer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
       }
     }
@@ -38,7 +38,7 @@ class MapLayers extends Component {
     this.updateFlag(nextProps);
 
     if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
-      this.vesselsLayer.setZoom(nextProps.zoom);
+      this.heatmapLayer.setZoom(nextProps.zoom);
     }
 
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
@@ -62,7 +62,7 @@ class MapLayers extends Component {
       });
     }
 
-    if (this.vesselsLayer) {
+    if (this.heatmapLayer) {
       // update vessels layer when:
       // - user selected a new flag
       // - selected inner extent changed
@@ -70,7 +70,7 @@ class MapLayers extends Component {
       //      then rendered by the vessel layer
       if (this.props.flag !== nextProps.flag ||
         innerExtentChanged) {
-        this.vesselsLayer.renderTimeRange(startTimestamp, endTimestamp);
+        this.heatmapLayer.renderTimeRange(this.props.heatmap, startTimestamp, endTimestamp);
       }
     }
 
@@ -132,8 +132,11 @@ class MapLayers extends Component {
   }
 
   initHeatmap() {
+    console.log('init heatmap')
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
+    this.heatmapLayer = new HeatmapLayer(this.props.viewportWidth, this.props.viewportHeight, this.props.timelineOverallExtent);
+    this.heatmapLayer.setMap(this.map);
   }
 
 
@@ -142,7 +145,6 @@ class MapLayers extends Component {
    * @param nextProps
    */
   updateLayers(nextProps) {
-    console.log('update layers!')
     const currentLayers = this.props.layers;
     const newLayers = nextProps.layers;
     const addedLayers = this.state.addedLayers;
@@ -192,6 +194,7 @@ class MapLayers extends Component {
       switch (newLayer.type) {
         case LAYER_TYPES.ClusterAnimation:
           callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
+          this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
           break;
         default:
           promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
@@ -209,21 +212,22 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   addVesselLayer(layerSettings) {
-    if (!this.vesselsLayer) {
-      this.vesselsLayer = new VesselsLayer(
-        this.map,
-        this.props.tilesetUrl,
-        this.props.token,
-        this.props.timelineInnerExtent,
-        this.props.timelineOverallExtent,
-        this.props.flag,
-        this.props.viewportWidth,
-        this.props.viewportHeight
-      );
-      this.vesselsLayer.setOpacity(layerSettings.opacity);
-      this.vesselsLayer.setHue(layerSettings.hue);
-      this.vesselsLayer.setInteraction(true);
-    }
+    // TODO remove
+    // if (!this.vesselsLayer) {
+    //   this.vesselsLayer = new VesselsLayer(
+    //     this.map,
+    //     this.props.tilesetUrl,
+    //     this.props.token,
+    //     this.props.timelineInnerExtent,
+    //     this.props.timelineOverallExtent,
+    //     this.props.flag,
+    //     this.props.viewportWidth,
+    //     this.props.viewportHeight
+    //   );
+    //   this.vesselsLayer.setOpacity(layerSettings.opacity);
+    //   this.vesselsLayer.setHue(layerSettings.hue);
+    //   this.vesselsLayer.setInteraction(true);
+    // }
 
     // Create track layer
     this.trackLayer = new TrackLayer(
@@ -232,7 +236,7 @@ class MapLayers extends Component {
     );
     this.trackLayer.setMap(this.map);
 
-    this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
+    // this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
   }
 
   /**
@@ -336,14 +340,15 @@ class MapLayers extends Component {
    * @param nextProps
    */
   updateFlag(nextProps) {
-    if (!this.vesselsLayer) {
-      return;
-    }
-    if (
-      this.props.flag !== nextProps.flag
-    ) {
-      this.vesselsLayer.updateFlag(nextProps.flag);
-    }
+    // TODO
+    // if (!this.vesselsLayer) {
+    //   return;
+    // }
+    // if (
+    //   this.props.flag !== nextProps.flag
+    // ) {
+    //   this.vesselsLayer.updateFlag(nextProps.flag);
+    // }
   }
 
   updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
@@ -391,9 +396,9 @@ class MapLayers extends Component {
    * Handles map idle event (once loading is done)
    */
   onMapIdle() {
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
+    if (this.heatmapLayer) {
+      this.heatmapLayer.reposition();
+      this.heatmapLayer.render(this.props.heatmap);
     }
     if (this.trackLayer) {
       this.rerenderTrackLayer();
@@ -401,9 +406,9 @@ class MapLayers extends Component {
   }
 
   onMapCenterChanged() {
-    if (this.vesselsLayer) {
-      this.vesselsLayer.reposition();
-      this.vesselsLayer.render();
+    if (this.heatmapLayer) {
+      this.heatmapLayer.reposition();
+      this.heatmapLayer.render(this.props.heatmap);
     }
   }
 
@@ -442,6 +447,7 @@ MapLayers.propTypes = {
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   layers: React.PropTypes.array,
+  heatmap: React.PropTypes.object,
   zoom: React.PropTypes.number,
   flag: React.PropTypes.string,
   timelineOverallExtent: React.PropTypes.array,

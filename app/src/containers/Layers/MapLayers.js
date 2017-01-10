@@ -13,6 +13,7 @@ const mapStateToProps = (state) => ({
   tilesetUrl: state.map.tilesetUrl,
   zoom: state.map.zoom,
   layers: state.layers,
+  heatmap: state.heatmap,
   flag: state.filters.flag,
   timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove
   timelineInnerExtent: state.filters.timelineInnerExtent,
@@ -61,8 +62,8 @@ const mapDispatchToProps = (dispatch) => ({
   showPolygon: (id, description, latLng) => {
     dispatch(showPolygon(id, description, latLng));
   },
-  createTile: (uid, coordinates) => {
-    dispatch(createTile(uid, coordinates));
+  createTile: (uid, coordinates, canvas) => {
+    dispatch(createTile(uid, coordinates, canvas));
   },
   releaseTile: (uid) => {
     dispatch(releaseTile(uid));

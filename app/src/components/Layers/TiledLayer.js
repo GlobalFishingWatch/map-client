@@ -54,18 +54,12 @@ export default class TiledLayer {
     }
 
     canvas.uid = this.currentUid;
-    this.createTile(this.currentUid, tileCoordinates);
+    this.createTile(this.currentUid, tileCoordinates, canvas);
+    this.currentUid++;
     return canvas;
   }
 
   releaseTile(canvas) {
-    // const index = this.tiles.indexOf(canvas);
-    // if (index === -1) {
-    //   console.warn('unknown tile released', index);
-    //   return;
-    // }
-    // console.warn('released tile #', index);
-    // this.tiles.splice(index, 1);
     this.releaseTile(canvas.uid);
   }
 }
