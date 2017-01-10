@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import LayerLibrary from 'components/Map/LayerLibrary';
-import { setLayerInfoModal, setLayerLibraryModalVisibility, toggleLayerVisibility } from 'actions/map';
+import { setLayerInfoModal, setLayerLibraryModalVisibility } from 'actions/map';
+import { toggleLayerVisibility } from 'actions/layers';
 
 const mapStateToProps = (state) => ({
-  layers: state.map.layers
+  layers: state.layers
 });
 
 const mapDispatchToProps = (dispatch) => ({
