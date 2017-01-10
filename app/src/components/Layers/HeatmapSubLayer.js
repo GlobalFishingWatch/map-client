@@ -7,8 +7,9 @@ import {
 } from 'constants';
 
 export default class HeatmapSubLayer {
-  constructor(layerSettings, baseTexture, maxSprites) {
+  constructor(layerSettings, baseTexture, maxSprites, globalStageRenderCallback) {
     this.id = layerSettings.id;
+    this.globalStageRenderCallback = globalStageRenderCallback;
     this._build(baseTexture, maxSprites);
   }
 
@@ -31,20 +32,23 @@ export default class HeatmapSubLayer {
   }
 
   show() {
-    this.hidden = false;
+    this.stage.visible = true;
+    this.globalStageRenderCallback();
   }
 
   hide() {
-    this.hidden = true;
-    // clear stage
+    this.stage.visible = false;
+    this.globalStageRenderCallback();
   }
 
   setOpacity(opacity) {
-    // set flag, use on render
+    this.stage.alpha = opacity;
+    this.globalStageRenderCallback();
   }
 
   setHue(hue) {
     this.setTextureFrame(null, hue);
+    this.globalStageRenderCallback();
   }
 
   /**
@@ -78,7 +82,7 @@ export default class HeatmapSubLayer {
   }
 
   render(tiles, startIndex, endIndex) {
-    if (this.hidden) return;
+    if (this.stage.visible === false) return;
 
     this.numSprites = 0;
 
@@ -98,7 +102,6 @@ export default class HeatmapSubLayer {
     for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
       this.spritesPool[i].x = -100;
     }
-    console.log(this.numSprites)
   }
 
   _dumpTileVessels(startIndex, endIndex, data, offsetX, offsetY) {

@@ -118,10 +118,14 @@ export default class HeatmapLayer extends BaseOverlay {
   // SubLayer management
   addSubLayer(layerSettings) {
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
-    const subLayer = new HeatmapSubLayer(layerSettings, this.baseTexture, maxSprites);
+    const subLayer = new HeatmapSubLayer(layerSettings, this.baseTexture, maxSprites, this._renderStage.bind(this));
     this.stage.addChild(subLayer.stage);
     this.subLayers.push(subLayer);
     return subLayer;
+  }
+
+  _renderStage() {
+    this.renderer.render(this.stage);
   }
 
   // rendering
@@ -131,7 +135,7 @@ export default class HeatmapLayer extends BaseOverlay {
       const tiles = data[subLayer.id].tiles;
       subLayer.render(tiles, this.currentInnerStartIndex, this.currentInnerEndIndex);
     }
-    this.renderer.render(this.stage);
+    this._renderStage();
   }
 
   renderTimeRange(data, start, end) {
@@ -164,6 +168,7 @@ export default class HeatmapLayer extends BaseOverlay {
     for (let i = 0; i < this.subLayers.length; i++) {
       this.subLayers[i].setTextureFrame(zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD);
     }
+    this._renderStage();
   }
 
   updateViewportSize(viewportWidth, viewportHeight) {

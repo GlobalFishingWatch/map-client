@@ -132,11 +132,16 @@ class MapLayers extends Component {
   }
 
   initHeatmap() {
-    console.log('init heatmap')
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
     this.heatmapLayer = new HeatmapLayer(this.props.viewportWidth, this.props.viewportHeight, this.props.timelineOverallExtent);
     this.heatmapLayer.setMap(this.map);
+    // Create track layer
+    this.trackLayer = new TrackLayer(
+      this.props.viewportWidth,
+      this.props.viewportHeight
+    );
+    this.trackLayer.setMap(this.map);
   }
 
 
@@ -161,7 +166,6 @@ class MapLayers extends Component {
     );
 
     const promises = [];
-    let callAddVesselLayer = null;
 
     for (let i = 0, j = updatedLayers.length; i < j; i++) {
       if (!updatedLayers[i]) continue;
@@ -193,7 +197,6 @@ class MapLayers extends Component {
 
       switch (newLayer.type) {
         case LAYER_TYPES.ClusterAnimation:
-          callAddVesselLayer = this.addVesselLayer.bind(this, newLayer);
           this.state.addedLayers[newLayer.id] = this.heatmapLayer.addSubLayer(newLayer);
           break;
         default:
@@ -202,41 +205,8 @@ class MapLayers extends Component {
     }
 
     Promise.all(promises).then((() => {
-      if (callAddVesselLayer) callAddVesselLayer();
       this.setState({ addedLayers });
     }));
-  }
-
-  /**
-   * Creates vessel track layer
-   * @param layerSettings
-   */
-  addVesselLayer(layerSettings) {
-    // TODO remove
-    // if (!this.vesselsLayer) {
-    //   this.vesselsLayer = new VesselsLayer(
-    //     this.map,
-    //     this.props.tilesetUrl,
-    //     this.props.token,
-    //     this.props.timelineInnerExtent,
-    //     this.props.timelineOverallExtent,
-    //     this.props.flag,
-    //     this.props.viewportWidth,
-    //     this.props.viewportHeight
-    //   );
-    //   this.vesselsLayer.setOpacity(layerSettings.opacity);
-    //   this.vesselsLayer.setHue(layerSettings.hue);
-    //   this.vesselsLayer.setInteraction(true);
-    // }
-
-    // Create track layer
-    this.trackLayer = new TrackLayer(
-      this.props.viewportWidth,
-      this.props.viewportHeight
-    );
-    this.trackLayer.setMap(this.map);
-
-    // this.state.addedLayers[layerSettings.id] = this.vesselsLayer;
   }
 
   /**
