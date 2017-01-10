@@ -201,7 +201,7 @@ class Map extends Component {
         <SupportForm />
       </Modal>
       <Modal
-        opened={this.props.layerLibraryModal.open}
+        opened={this.props.layerLibraryModal}
         closeable
         close={this.props.closeLayerLibraryModal}
       >
@@ -319,7 +319,7 @@ Map.propTypes = {
   trackBounds: React.PropTypes.object,
   closeSupportModal: React.PropTypes.func,
   openSupportModal: React.PropTypes.func,
-  layerLibraryModal: React.PropTypes.object,
+  layerLibraryModal: React.PropTypes.bool,
   closeLayerLibraryModal: React.PropTypes.func
 };
 

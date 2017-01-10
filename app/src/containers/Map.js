@@ -13,7 +13,7 @@ import {
   setLayerLibraryModalVisibility
 } from 'actions/map';
 import {
-  toggleLayerVisibility,
+  toggleLayerVisibility
 } from 'actions/layers';
 
 const mapStateToProps = (state) => ({
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
-  layerLibraryModal: state.map.layerLibraryModal
+  layerLibraryModal: state.map.layerLibraryModal.open
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
