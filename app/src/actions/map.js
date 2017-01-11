@@ -6,7 +6,6 @@ import {
   SET_CENTER,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
-  SET_FLAG_FILTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
@@ -19,6 +18,7 @@ import {
 } from 'actions';
 import { toggleVisibility } from 'actions/vesselInfo';
 import { initLayers } from 'actions/layers';
+import { setFlagFilters } from 'actions/filters';
 
 export function setBasemap(basemap) {
   return {
@@ -122,6 +122,8 @@ export function getWorkspace(workspaceId) {
         });
 
         dispatch(initLayers(workspace.map.layers));
+
+        dispatch(setFlagFilters(workspace.map.flagFilters));
       });
   };
 }

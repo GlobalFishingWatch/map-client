@@ -6,6 +6,7 @@ import {
   SET_LAYER_OPACITY,
   SET_LAYER_HUE
 } from 'actions';
+import { updateFlagFilters } from 'actions/filters';
 
 export function initLayers(layers_) {
   return (dispatch) => {
@@ -19,9 +20,6 @@ export function initLayers(layers_) {
         l.opacity = parseFloat(layer.opacity);
       } else {
         l.opacity = 1;
-      }
-      if (!!layer.flag) {
-        l.flag = parseInt(layer.flag, 10);
       }
     });
 
@@ -62,11 +60,15 @@ export function setLayerOpacity(opacity, layerId) {
 }
 
 export function setLayerHue(hue, layerId) {
-  return {
-    type: SET_LAYER_HUE,
-    payload: {
-      layerId,
-      hue
-    }
+  return (dispatch) => {
+    dispatch({
+      type: SET_LAYER_HUE,
+      payload: {
+        layerId,
+        hue
+      }
+    });
+    // TODO we might want to override all filters hue settings here (see with Dani)
+    dispatch(updateFlagFilters());
   };
 }
