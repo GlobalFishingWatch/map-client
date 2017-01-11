@@ -40,12 +40,30 @@
       }
     }
 
+
     .external-link {
       color: $color-3;
       display: inline-block;
       font-family: $font-family-1;
       font-size: $font-size-xxs-small;
       margin: 15px 0 0;
+    }
+
+    .rfmo-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .rfmo-item {
+        width: calc(50% - 3px);
+
+        &:nth-child(2n) {
+          margin: 0 0 0 6px;
+        }
+      }
+
+      > .rfmo-item > .external-link {
+        margin: 10px 0 0;
+      }
     }
 
     .zoom {

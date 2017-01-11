@@ -10,8 +10,26 @@ class VesselInfoPanel extends Component {
 
   render() {
     let vesselInfoContents = null;
+    let RFMORegistry = null;
     const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
     const vesselInfo = this.props.vesselInfo;
+
+    if (vesselInfo.rfmo_registry_info) {
+      RFMORegistry = [];
+      vesselInfo.rfmo_registry_info.forEach((registry) => {
+        RFMORegistry.push(
+          <li className={vesselPanelStyles['rfmo-item']}>
+            <a
+              className={vesselPanelStyles['external-link']}
+              href={`${registry.url}`}
+              target="_blank"
+            >
+              {registry.rfmo}
+            </a>
+          </li>
+        );
+      });
+    }
 
     if (vesselInfo === null || vesselInfo.isCluster || vesselInfo.isLoading) {
       let message;
@@ -66,6 +84,14 @@ class VesselInfoPanel extends Component {
             <span className={vesselPanelStyles.key}>Callsign</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.callsign || '---'}</span>
           </div>
+          {RFMORegistry &&
+            <div className={vesselPanelStyles['row-info']}>
+              <span className={vesselPanelStyles.key}>RFMO</span>
+              <ul className={vesselPanelStyles['rfmo-list']}>
+                {RFMORegistry}
+              </ul>
+            </div>
+          }
           {vesselInfo.link && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
