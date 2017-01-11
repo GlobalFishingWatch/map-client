@@ -7,9 +7,37 @@ import {
   SET_LAYER_HUE
 } from 'actions';
 
-export function initLayers(layers_) {
+export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch) => {
-    const layers = layers_
+    const workspaceLayersIds = [];
+
+    // Get all ids coming from workspace
+    workspaceLayers.forEach((l) => {
+      if (l.id === undefined) return;
+      workspaceLayersIds.push(l.id);
+    });
+
+    // formats layer object to keep a consistent format around the app
+    libraryLayers.forEach((l) => {
+      // moves "args" content to the root of the object
+      Object.assign(l, l.args);
+      // removes "args" property from the object
+      /* eslint no-param-reassign: 0 */
+      delete l.args;
+    });
+
+
+    // Match workspace ids with library ones
+    const matchedLayers = _.filter(libraryLayers, (l) => workspaceLayersIds.indexOf(l.id) !== -1);
+
+    matchedLayers.forEach((l) => {
+      const localLayer = _.find(workspaceLayers, (wl) => wl.id === l.id);
+
+      // overwrites API values with workspace ones
+      Object.assign(l, localLayer);
+    });
+
+    const layers = matchedLayers
       .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
 
     // parses opacity attribute
@@ -23,14 +51,6 @@ export function initLayers(layers_) {
       if (!!layer.flag) {
         l.flag = parseInt(layer.flag, 10);
       }
-    });
-
-    // add an id to each layer
-    let id = 0;
-    layers.forEach(layer => {
-      /* eslint no-param-reassign: 0 */
-      layer.id = id;
-      id++;
     });
 
     dispatch({

@@ -110,9 +110,10 @@ export function getWorkspace(workspaceId) {
           payload: workspace.basemap
         });
 
-        const vesselLayer = workspace.map.layers
+
+        const vesselLayer = state.layerLibrary.layers
           .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-        const tilesetUrl = vesselLayer.source.args.url;
+        const tilesetUrl = vesselLayer.args.source.args.url;
 
         // TODO this is only used by vesselInfo, but the data is inside a layer
         // review wit SkyTruth
@@ -121,7 +122,7 @@ export function getWorkspace(workspaceId) {
           payload: tilesetUrl
         });
 
-        dispatch(initLayers(workspace.map.layers));
+        dispatch(initLayers(workspace.map.layers, state.layerLibrary.layers));
       });
   };
 }
