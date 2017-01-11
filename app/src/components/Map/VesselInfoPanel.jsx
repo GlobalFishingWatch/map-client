@@ -14,7 +14,7 @@ class VesselInfoPanel extends Component {
     const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
     const vesselInfo = this.props.vesselInfo;
 
-    if (vesselInfo.rfmo_registry_info) {
+    if (vesselInfo && vesselInfo.rfmo_registry_info) {
       RFMORegistry = [];
       vesselInfo.rfmo_registry_info.forEach((registry) => {
         RFMORegistry.push(
