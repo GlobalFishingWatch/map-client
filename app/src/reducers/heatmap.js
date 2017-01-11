@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
       action.payload.forEach(layer => {
         if (layer.type === 'ClusterAnimation') {
           newState[layer.id] = {
-            url: layer.source.args.url,
+            url: layer.args.source.args.url,
             tiles: []
           };
         }
