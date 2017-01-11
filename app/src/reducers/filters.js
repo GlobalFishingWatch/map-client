@@ -1,7 +1,7 @@
 import {
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
-  SET_FLAG_FILTER,
+  SET_FLAG_FILTERS,
   SET_PLAYING_STATUS,
   SET_TIMELINE_OVER_DATES
 } from 'actions';
@@ -26,7 +26,8 @@ const initialState = {
     getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime(), timelineOverallStartDateOffset)
   ],
   timelinePaused: true,
-  flag: ''
+  flags: [],
+  flagsLayers: {}
 };
 
 export default function (state = initialState, action) {
@@ -48,9 +49,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelineOuterExtent: action.payload
       });
-    case SET_FLAG_FILTER:
+    case SET_FLAG_FILTERS:
       return Object.assign({}, state, {
-        flag: action.payload
+        flags: action.payload.flagFilters,
+        flagsLayers: action.payload.flagFiltersLayers
       });
     case SET_PLAYING_STATUS:
       return Object.assign({}, state, {

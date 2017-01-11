@@ -7,20 +7,7 @@ import {
 } from 'constants';
 
 export default class HeatmapSubLayer {
-  constructor(layerSettings, baseTexture, maxSprites, globalStageRenderCallback) {
-    this.id = layerSettings.id;
-    this.globalStageRenderCallback = globalStageRenderCallback;
-    this._build(baseTexture, maxSprites);
-
-    if (layerSettings.visible === false) {
-      this.hide(false);
-    }
-    this.setOpacity(layerSettings.opacity, false);
-    this.setHue(layerSettings.hue, false);
-    this.setFlag(layerSettings.flag, false);
-  }
-
-  _build(baseTexture, maxSprites) {
+  constructor(baseTexture, maxSprites) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -35,31 +22,18 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
+
+    this._resizeSpritesPool(10000);
   }
 
-  show() {
-    this.stage.visible = true;
-    this.globalStageRenderCallback();
+
+  setFilters(flag, hue) {
+    this.flag = (flag === 'ALL') ? undefined : flag;
+    this._setTextureFrame(null, hue);
   }
 
-  hide(rerender = true) {
-    this.stage.visible = false;
-    if (rerender) this.globalStageRenderCallback();
-  }
-
-  setOpacity(opacity, rerender = true) {
-    this.stage.alpha = opacity;
-    if (rerender) this.globalStageRenderCallback();
-  }
-
-  setHue(hue, rerender = true) {
-    this.setTextureFrame(null, hue);
-    if (rerender) this.globalStageRenderCallback();
-  }
-
-  setFlag(flag, rerender = true) {
-    this.flag = flag;
-    if (rerender) this.globalStageRenderCallback();
+  setRenderingStyle(useHeatmapStyle) {
+    this._setTextureFrame(useHeatmapStyle);
   }
 
   /**
@@ -68,7 +42,7 @@ export default class HeatmapSubLayer {
    * @heatmapStyle bool whether to use heatmap style or solid circle style
    * @hue number hue value between 0 and 360
    */
-  setTextureFrame(useHeatmapStyle = null, hue = null) {
+  _setTextureFrame(useHeatmapStyle = null, hue = null) {
     const textureFrame = this.mainVesselTexture.frame.clone();
 
     if (useHeatmapStyle !== null) {
@@ -93,7 +67,12 @@ export default class HeatmapSubLayer {
   }
 
   render(tiles, startIndex, endIndex) {
-    if (this.stage.visible === false) return;
+    const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
+    const numSpritesNeededWithMargin = numSpritesNeeded * 2;
+
+    if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
+      this._resizeSpritesPool(numSpritesNeededWithMargin);
+    }
 
     this.numSprites = 0;
 
@@ -106,7 +85,7 @@ export default class HeatmapSubLayer {
       if (bounds.left === 0 && bounds.top === 0) {
         console.warn('tile at 0,0');
       }
-      this.numSprites += this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
+      this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 
     // hide unused sprites
@@ -117,14 +96,12 @@ export default class HeatmapSubLayer {
 
   _dumpTileVessels(startIndex, endIndex, data, offsetX, offsetY) {
     if (!data) {
-      return 0;
+      return;
     }
-
-    let numSprites = 0;
 
     if (!this.spritesPool.length) {
       console.warn('empty sprites pool');
-      return 0;
+      return;
     }
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
@@ -136,24 +113,40 @@ export default class HeatmapSubLayer {
         if (this.flag && this.flag !== frame.category[index]) {
           continue;
         }
-        numSprites++;
+        this.numSprites++;
         const sprite = this.spritesPool[this.numSprites];
 
         sprite.position.x = offsetX + frame.x[index];
         sprite.position.y = offsetY + frame.y[index];
         sprite.alpha = frame.opacity[index];
         sprite.scale.set(frame.radius[index]);
-
-        this.numSprites++;
       }
     }
+  }
 
+  _getNumSpritesNeeded(tiles, startIndex, endIndex) {
+    let numSprites = 0;
+    // get pool size
+    tiles.forEach(tile => {
+      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+        if (!tile.data) continue;
+        const frame = tile.data[timeIndex];
+        if (!frame) continue;
+        for (let index = 0, len = frame.x.length; index < len; index++) {
+          if (this.flag && this.flag !== frame.category[index]) {
+            continue;
+          }
+          numSprites++;
+        }
+      }
+    });
     return numSprites;
   }
 
-  resizeSpritesPool(finalPoolSize) {
+  _resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
+    // console.log(currentPoolSize, '->', finalPoolSize);
     if (poolDelta > 0) {
       this._addSprites(poolDelta);
     } else {
@@ -170,7 +163,6 @@ export default class HeatmapSubLayer {
   }
 
   _addSprites(num) {
-    // console.log('add sprites: ', num);
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
       vessel.anchor.x = vessel.anchor.y = 0.5;

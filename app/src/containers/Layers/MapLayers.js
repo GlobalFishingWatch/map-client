@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import MapLayers from 'components/Layers/MapLayers';
 import { showPolygon } from 'actions/report';
 import { getTile, releaseTile, queryHeatmap } from 'actions/heatmap';
+import { setFlagFilters } from 'actions/filters';
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
   tilesetUrl: state.map.tilesetUrl,
   zoom: state.map.zoom,
   layers: state.layers,
+  flagsLayers: state.filters.flagsLayers,
   heatmap: state.heatmap,
   timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove
   timelineInnerExtent: state.filters.timelineInnerExtent,
@@ -31,6 +33,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   queryHeatmap: (tileQuery, latLng) => {
     dispatch(queryHeatmap(tileQuery, latLng));
+  },
+  testSetFilters: filters => {
+    dispatch(setFlagFilters(filters));
   }
 });
 

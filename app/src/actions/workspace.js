@@ -9,6 +9,7 @@ import {
   SET_LAYERS, SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL
 } from 'actions';
 import { initLayers } from 'actions/layers';
+import { setFlagFilters } from 'actions/filters';
 
 function dispatchActions(workspaceData, dispatch) {
   // We update the zoom level
@@ -39,6 +40,8 @@ function dispatchActions(workspaceData, dispatch) {
   });
 
   dispatch(initLayers(workspaceData.layers));
+
+  dispatch(setFlagFilters(workspaceData.flagFilters));
 }
 
 function processNewWorkspace(data) {
@@ -55,6 +58,7 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     basemap: workspace.basemap,
     layers: workspace.map.layers,
+    flagFilters: workspace.map.flagFilters,
     tilesetUrl
   };
 }
