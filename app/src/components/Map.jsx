@@ -130,7 +130,7 @@ class Map extends Component {
     if (!this.map) {
       this.map = this.refs.map.props.map;
       this.props.getLayerLibrary();
-      this.props.getWorkspace();
+
       this.defineBasemaps(this.props.basemaps);
 
       // pass map and viewport dimensions down to MapLayers
