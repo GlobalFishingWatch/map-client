@@ -14,7 +14,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'containers/Map/LayerLibrary';
+import LayerLibrary from 'containers/LayerLibrary';
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
@@ -124,6 +124,7 @@ class Map extends Component {
   onMapIdle() {
     if (!this.map) {
       this.map = this.refs.map.props.map;
+      this.props.getLayerLibrary();
       this.props.getWorkspace();
       this.defineBasemaps(this.props.basemaps);
 
@@ -294,6 +295,7 @@ Map.propTypes = {
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
+  getLayerLibrary: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
