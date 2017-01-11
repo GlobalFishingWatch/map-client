@@ -1,0 +1,512 @@
+{
+  "data": {
+    "directories": [
+      "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory"
+    ]
+  },
+  "ui": {
+    "sideBar": {
+      "filters_tab": true
+    }
+  },
+  "state": {
+    "time": {
+      "__jsonclass__": [
+        "Date",
+        "2016-08-31T05:42:15.215Z"
+      ]
+    },
+    "timeExtent": 2588378089,
+    "title": "Development Daily Update",
+    "timeFocus": {
+      "__jsonclass__": [
+        "Date",
+        "2016-08-22T17:01:30.417Z"
+      ]
+    },
+    "offset": 20,
+    "maxoffset": 100,
+    "lat": -5.707547445489973,
+    "lon": -3.885040283203125,
+    "zoom": 3,
+    "paused": true,
+    "edit": false
+  },
+  "map": {
+    "animations": [
+      {
+        "args": {
+          "source": {
+            "args": {
+              "url": ""
+            },
+            "type": "EmptyFormat"
+          },
+          "description": "The depth and topography of the seafloor.",
+          "title": "Bathymetry",
+          "visible": true,
+          "color": "orange"
+        },
+        "type": "SatelliteAnimation"
+      },
+      {
+        "args": {
+          "title": "MPA - No Take",
+          "source": {
+            "type": "CartoDBFormat",
+            "args": {
+              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mpant/source"
+            }
+          },
+          "visible": true,
+          "color": "#da0000"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "MPA - Restricted Use",
+          "source": {
+            "type": "CartoDBFormat",
+            "args": {
+              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mparu/source"
+            }
+          },
+          "visible": false,
+          "color": "#c45e00"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "EEZ",
+          "source": {
+            "type": "CartoDBFormat",
+            "args": {
+              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source"
+            }
+          },
+          "visible": true,
+          "color": "blue"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "High Seas Pocket",
+          "source": {
+            "type": "CartoDBFormat",
+            "args": {
+              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source"
+            }
+          },
+          "visible": false,
+          "color": "#00006d"
+        },
+        "type": "CartoDBAnimation"
+      },
+      {
+        "args": {
+          "title": "Fishing Activity",
+          "visible": true,
+          "source": {
+            "type": "TiledBinFormat",
+            "args": {
+              "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms"
+            }
+          },
+          "seriesTilesets": [
+            {
+              "type": "VesselTrackAnimation",
+              "args": {
+                "title": "Vessel Track (%(queryValues)s)",
+                "color": "grey",
+                "visible": true,
+                "source": {
+                  "type": "TiledBinFormat",
+                  "args": {
+                    "url": "%(query_url)s"
+                  }
+                },
+                "selections": {
+                  "info": {
+                    "data": {},
+                    "header": {
+                      "length": 0
+                    },
+                    "max_range_count": 1,
+                    "sortcols": []
+                  },
+                  "selected": {
+                    "data": {},
+                    "header": {
+                      "length": 0
+                    },
+                    "max_range_count": 1,
+                    "sortcols": []
+                  }
+                },
+                "category": "Vessels"
+              }
+            }
+          ],
+          "columns": {
+            "longitude": {
+              "type": "Float32",
+              "hidden": true,
+              "source": {
+                "longitude": 1
+              },
+              "name": "longitude"
+            },
+            "latitude": {
+              "type": "Float32",
+              "hidden": true,
+              "source": {
+                "latitude": 1
+              },
+              "name": "latitude"
+            },
+            "sigma": {
+              "type": "Float32",
+              "source": {
+                "sigma": 1,
+                "hover": 0.01,
+                "selected": 0
+              },
+              "min": 0,
+              "max": 1,
+              "name": "sigma"
+            },
+            "weight": {
+              "type": "Float32",
+              "source": {
+                "weight": 0.19331230724557336,
+                "hover": 100,
+                "selected": 100
+              },
+              "min": 0,
+              "max": 0.4,
+              "name": "weight"
+            },
+            "time": {
+              "type": "Float32",
+              "hidden": true,
+              "source": {
+                "datetime": 1
+              },
+              "name": "time"
+            },
+            "filter": {
+              "type": "Float32",
+              "source": {
+                "_": null,
+                "timerange": -1,
+                "Flags": -1
+              },
+              "name": "filter"
+            },
+            "selected": {
+              "type": "Float32",
+              "hidden": true,
+              "source": {
+                "selected": 1
+              },
+              "name": "selected"
+            },
+            "hover": {
+              "type": "Float32",
+              "hidden": true,
+              "source": {
+                "hover": 1
+              },
+              "name": "hover"
+            }
+          },
+          "uniforms": {
+            "heatmap_zoom": {
+              "value": 22,
+              "min": 0,
+              "max": 22,
+              "name": "heatmap_zoom"
+            },
+            "red": {
+              "value": 1,
+              "min": 0,
+              "max": 1,
+              "name": "red"
+            },
+            "green": {
+              "value": 0.6,
+              "min": 0,
+              "max": 1,
+              "name": "green"
+            },
+            "blue": {
+              "value": 0.4,
+              "min": 0,
+              "max": 1,
+              "name": "blue"
+            },
+            "selected_red": {
+              "value": 1,
+              "min": 0,
+              "max": 1,
+              "name": "selected_red"
+            },
+            "selected_green": {
+              "value": 0,
+              "min": 0,
+              "max": 1,
+              "name": "selected_green"
+            },
+            "selected_blue": {
+              "value": 0,
+              "min": 0,
+              "max": 1,
+              "name": "selected_blue"
+            },
+            "hover_red": {
+              "value": 0.4,
+              "min": 0,
+              "max": 1,
+              "name": "hover_red"
+            },
+            "hover_green": {
+              "value": 0.6,
+              "min": 0,
+              "max": 1,
+              "name": "hover_green"
+            },
+            "hover_blue": {
+              "value": 1,
+              "min": 0,
+              "max": 1,
+              "name": "hover_blue"
+            }
+          },
+          "selections": {
+            "Flags": {
+              "max_range_count": 10,
+              "header": {
+                "length": 2
+              },
+              "data": {
+                "category": [
+                  {
+                    "__jsonclass__": [
+                      "Number",
+                      "-Infinity"
+                    ]
+                  },
+                  {
+                    "__jsonclass__": [
+                      "Number",
+                      "Infinity"
+                    ]
+                  }
+                ]
+              },
+              "sortcols": [
+                "category"
+              ]
+            },
+            "selected": {
+              "header": {
+                "length": 0
+              },
+              "data": {
+                "seriesgroup": []
+              },
+              "sortcols": [
+                "seriesgroup"
+              ],
+              "max_range_count": 1
+            },
+            "info": {
+              "header": {
+                "length": 0
+              },
+              "data": {
+                "seriesgroup": []
+              },
+              "sortcols": [
+                "seriesgroup"
+              ],
+              "max_range_count": 1
+            },
+            "hover": {
+              "header": {
+                "length": 0
+              },
+              "data": {
+                "seriesgroup": []
+              },
+              "sortcols": [
+                "seriesgroup"
+              ],
+              "max_range_count": 1
+            },
+            "timerange": {
+              "header": {
+                "length": 1
+              },
+              "data": {
+                "datetime": [
+                  1427868746623,
+                  1430716324712
+                ]
+              },
+              "sortcols": [
+                "datetime"
+              ],
+              "max_range_count": 1
+            }
+          }
+        },
+        "type": "ClusterAnimation"
+      },
+      {
+        "args": {
+          "title": "RFMO",
+          "source": {
+            "type": "CartoDBFormat",
+            "args": {
+              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/rfmo/source"
+            }
+          },
+          "visible": false,
+          "color": "#236b01"
+        },
+        "type": "CartoDBAnimation"
+      }
+    ],
+    "options": {
+      "mapTypeId": "roadmap",
+      "styles": [
+        {
+          "featureType": "poi",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural",
+          "stylers": [
+            {
+              "visibility": "on"
+            },
+            {
+              "color": "#294480"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "visibility": "on"
+            },
+            {
+              "color": "#567bc2"
+            },
+            {
+              "lightness": -13
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#567bc2"
+            },
+            {
+              "lightness": 6
+            },
+            {
+              "gamma": 1.39
+            },
+            {
+              "visibility": "on"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "visibility": "on"
+            },
+            {
+              "color": "#567bc2"
+            },
+            {
+              "lightness": -19
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "transit",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#011137 "
+            },
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.man_made",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#0080ff"
+            },
+            {
+              "visibility": "simplified"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "id": "vizzuality-gfw-integration-prod-final-v7.json",
+    "urls": {
+      "save": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces",
+      "load": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces/vizzuality-gfw-integration-prod-final-v7.json",
+      "visualization": "http://globalfishingwatch.org/map/workspace/vizzuality-gfw-integration-prod-final-v7.json"
+    }
+  }
+}

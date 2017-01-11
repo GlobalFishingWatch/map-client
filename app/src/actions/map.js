@@ -1,24 +1,17 @@
 import { push } from 'react-router-redux';
-import { LAYER_TYPES } from 'constants';
 import {
-  SET_LAYERS,
   SET_ZOOM,
   SET_CENTER,
-  SET_INNER_TIMELINE_DATES,
-  SET_OUTER_TIMELINE_DATES,
-  SET_FLAG_FILTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
   SET_BASEMAP,
-  SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_LIBRARY_MODAL_VISIBILITY
 } from 'actions';
 import { toggleVisibility } from 'actions/vesselInfo';
-import { initLayers } from 'actions/layers';
 
 export function setBasemap(basemap) {
   return {
@@ -42,87 +35,6 @@ export function setCenter(center) {
   return {
     type: SET_CENTER,
     payload: center
-  };
-}
-
-/**
- * Retrieve the workspace according to its ID and sets the zoom and
- * the center of the map, the timeline dates and the available layers
- *
- * @export getWorkspace
- * @param {string} workspaceId - workspace's ID to load
- * @returns {object}
- */
-export function getWorkspace(workspaceId) {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    if (!state.user.token) {
-      dispatch({
-        type: SET_LAYERS,
-        payload: []
-      });
-      return;
-    }
-
-    const ID = workspaceId || DEFAULT_WORKSPACE;
-    let url;
-
-    if (!workspaceId && !!USE_LOCAL_WORKSPACE) {
-      url = '/workspace.json';
-    } else {
-      url = `${MAP_API_ENDPOINT}/v1/workspaces/${ID}`;
-    }
-
-    fetch(url, {
-      headers: {
-        Authorization: `Bearer ${state.user.token}`
-      }
-    }).then(res => res.json())
-      .then(data => {
-        const workspace = data.workspace;
-
-        // We update the zoom level
-        dispatch({
-          type: SET_ZOOM,
-          payload: workspace.map.zoom
-        });
-
-        // We update the center of the map
-        dispatch({
-          type: SET_CENTER,
-          payload: workspace.map.center
-        });
-
-        // We update the dates of the timeline
-        dispatch({
-          type: SET_INNER_TIMELINE_DATES,
-          payload: workspace.timeline.innerExtent.map(d => new Date(d))
-        });
-
-        dispatch({
-          type: SET_OUTER_TIMELINE_DATES,
-          payload: workspace.timeline.outerExtent.map(d => new Date(d))
-        });
-
-        dispatch({
-          type: SET_BASEMAP,
-          payload: workspace.basemap
-        });
-
-        const vesselLayer = workspace.map.layers
-          .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-        const tilesetUrl = vesselLayer.source.args.url;
-
-        // TODO this is only used by vesselInfo, but the data is inside a layer
-        // review wit SkyTruth
-        dispatch({
-          type: SET_TILESET_URL,
-          payload: tilesetUrl
-        });
-
-        dispatch(initLayers(workspace.map.layers));
-      });
   };
 }
 
