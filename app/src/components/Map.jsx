@@ -190,6 +190,7 @@ class Map extends Component {
         opened={this.props.layerModal.open}
         closeable
         close={this.props.closeLayerInfoModal}
+        zIndex={1003}
       >
         <LayerInfo />
       </Modal>

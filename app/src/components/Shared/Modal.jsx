@@ -47,6 +47,9 @@ class Modal extends React.Component {
     }
 
     let closeButton;
+    const customStyles = {
+      zIndex: this.props.zIndex || null
+    };
 
     if (this.props.closeable) {
       closeButton = (<button className={styles['close-button']} onClick={() => this.props.close()}>
@@ -55,7 +58,7 @@ class Modal extends React.Component {
     }
 
     return (
-      <div className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
+      <div style={customStyles} className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
         <div className={styles.content} onClick={(e) => this.onClickOverlay(e)}>
           <div className={styles['contain-content']}>
             <div className={styles['contain-button']}>
@@ -90,7 +93,11 @@ Modal.propTypes = {
    * Define the modal box can be closed by the user
    * Required
    */
-  closeable: React.PropTypes.bool
+  closeable: React.PropTypes.bool,
+  /**
+   * Sets z-index of the modal
+   */
+  zIndex: React.PropTypes.number
 };
 
 
