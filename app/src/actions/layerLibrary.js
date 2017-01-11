@@ -16,6 +16,14 @@ export function getLayerLibrary() {
     .then(data => {
       const layers = data.entries;
 
+      // adds an id to each layer. Remove when API gives id
+      let id = 0;
+      layers.forEach(layer => {
+        /* eslint no-param-reassign: 0 */
+        layer.id = id;
+        id++;
+      });
+
       dispatch({
         type: GET_LAYER_LIBRARY,
         payload: layers

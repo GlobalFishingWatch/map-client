@@ -31,8 +31,7 @@ class LayerLibrary extends Component {
     const library = [];
 
     if (this.props.layers.length > 0) {
-      this.props.layers.forEach((l, i) => {
-        const layer = l.args;
+      this.props.layers.forEach((layer, i) => {
         library.push(<li
           className={LayerListStyles['layer-item']}
           key={i}
