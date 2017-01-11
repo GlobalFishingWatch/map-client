@@ -35,6 +35,7 @@ class LayerLibrary extends Component {
         const layer = l.args;
         library.push(<li
           className={LayerListStyles['layer-item']}
+          key={i}
         >
           <label>
             <input
@@ -42,7 +43,6 @@ class LayerLibrary extends Component {
               type="checkbox"
               checked={layer.visible}
               onChange={() => this.onChange(layer)}
-              key={i}
               style={{
                 color: layer.color
               }}
