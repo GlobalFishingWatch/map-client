@@ -13,6 +13,9 @@ import {
   setLayerLibraryModalVisibility
 } from 'actions/map';
 import {
+  getLayerLibrary
+} from 'actions/layerLibrary';
+import {
   toggleLayerVisibility
 } from 'actions/layers';
 
@@ -30,6 +33,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  getLayerLibrary: () => {
+    dispatch(getLayerLibrary());
+  },
   getWorkspace: () => {
     dispatch(getWorkspace(ownProps.workspaceId));
   },
