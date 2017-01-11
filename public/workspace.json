@@ -16,7 +16,8 @@
           },
           "visible": false,
           "color": "#1a7ff0",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "id": 0
         },
         {
           "title": "Ports",
@@ -73,7 +74,8 @@
           "visible": true,
           "color": "#da0000",
           "type": "CartoDBAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": 2
         },
         {
           "title": "MPA - Restricted Use",
@@ -89,7 +91,8 @@
           "visible": true,
           "color": "#c45e00",
           "type": "CartoDBAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": 3
         },
         {
           "title": "EEZ",
@@ -104,7 +107,8 @@
           "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": 4
         },
         {
           "title": "High Seas Pocket",
@@ -118,7 +122,8 @@
           "visible": true,
           "color": "#00006d",
           "type": "CartoDBAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": 5
         },
         {
           "title": "RFMO",
@@ -132,7 +137,8 @@
           "visible": false,
           "color": "blue",
           "type": "CartoDBAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": 6
         }
       ]
     },
