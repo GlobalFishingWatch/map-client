@@ -110,8 +110,8 @@ export function loadWorkspace(workspaceId) {
     const ID = workspaceId || DEFAULT_WORKSPACE;
     let url;
 
-    if (!workspaceId && !!USE_LOCAL_WORKSPACE) {
-      url = '/workspace-prod.json';
+    if (!workspaceId && LOCAL_WORKSPACE) {
+      url = LOCAL_WORKSPACE;
     } else {
       url = `${MAP_API_ENDPOINT}/v1/workspaces/${ID}`;
     }
