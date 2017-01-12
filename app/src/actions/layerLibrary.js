@@ -1,11 +1,17 @@
-import { GET_LAYER_LIBRARY } from 'actions';
-import { getWorkspace } from 'actions/map';
+import {
+  GET_LAYER_LIBRARY
+} from 'actions';
+
+import {
+  getWorkspace
+} from 'actions/workspace';
 
 export function getLayerLibrary() {
   return (dispatch, getState) => {
     const state = getState();
 
     // by now, API requires auth. This should change in future
+
     if (!state.user.token) return false;
     fetch(`${MAP_API_ENDPOINT}/v1/directory`, {
       headers: {
