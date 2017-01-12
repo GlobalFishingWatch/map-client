@@ -132,7 +132,7 @@ class LayerItem extends Component {
           </span>
         </label>
         <ul className={LayerListStyles['layer-option-list']}>
-          {!this.props.layerLibraryDisplay && this.props.userCanReport && this.props.layer.reportable && <li
+          {this.props.userCanReport && this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickReport()}
           >
@@ -140,14 +140,12 @@ class LayerItem extends Component {
               className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.isCurrentlyReported })}
             />
           </li>}
-          {!this.props.layerLibraryDisplay &&
-            <li
-              className={LayerListStyles['layer-option-item']}
-              onClick={() => this.toggleBlending()}
-            >
-              <BlendingIcon className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.showBlending })} />
-            </li>
-          }
+          <li
+            className={LayerListStyles['layer-option-item']}
+            onClick={() => this.toggleBlending()}
+          >
+            <BlendingIcon className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.showBlending })} />
+          </li>
           <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickInfo()}
@@ -187,7 +185,6 @@ class LayerItem extends Component {
 
 LayerItem.propTypes = {
   layerIndex: React.PropTypes.number,
-  layerLibraryDisplay: React.PropTypes.bool,
   layer: React.PropTypes.object,
   isCurrentlyReported: React.PropTypes.bool,
   toggleLayerVisibility: React.PropTypes.func,
