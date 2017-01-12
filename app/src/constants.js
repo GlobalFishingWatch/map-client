@@ -31,6 +31,22 @@ export const VESSELS_ENDPOINT_KEYS = [
   'weight'
 ];
 
+export const GUEST_PERMISSION_SET = [
+  'seeVesselsLayers',
+  'selectVessel',
+  'seeVesselBasicInfo',
+  'shareWorkspace'
+];
+
+export const AUTH_PERMISSION_SET = [
+  'seeVesselsLayers',
+  'selectVessel',
+  'seeVesselBasicInfo',
+  'shareWorkspace',
+  'seeVesselId',
+  'searchVessels'
+];
+
 // vessels rendering
 // from this zoom level and above, render using circle style instead of heatmap
 export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
