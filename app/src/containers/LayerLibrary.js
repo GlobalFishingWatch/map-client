@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import LayerLibrary from 'components/LayerLibrary';
+import { addLayer, removeLayer } from 'actions/layerLibrary';
 import { setLayerInfoModal, setLayerLibraryModalVisibility } from 'actions/map';
 import { toggleLayerVisibility } from 'actions/layers';
 
@@ -12,12 +13,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setLayerLibraryModalVisibility(false));
   },
   addLayer: (layerId) => {
-    // TODO add layer logic
-    console.warn(layerId, 'adds layer');
+    dispatch(addLayer(layerId));
   },
   removeLayer: (layerId) => {
-    // TODO remove layer logic
-    console.warn(layerId, 'removes layer');
+    dispatch(removeLayer(layerId));
   },
   setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));

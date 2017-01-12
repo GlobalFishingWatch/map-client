@@ -35,6 +35,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
         return;
       }
 
+      localLayer.added = true;
+
       // overwrites API values with workspace ones
       Object.assign(layer, localLayer);
     });

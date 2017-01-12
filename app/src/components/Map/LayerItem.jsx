@@ -110,7 +110,7 @@ class LayerItem extends Component {
   }
 
   render() {
-    if (!this.state.opacityRangeValue) return null;
+    if (!this.props.layer.added) return null;
 
     return (
       <li

@@ -9,10 +9,10 @@ import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 class LayerLibrary extends Component {
 
   onChange(layer) {
-    if (layer.visible) {
-      this.props.removeLayer();
+    if (layer.added) {
+      this.props.removeLayer(layer.id);
     } else {
-      this.props.addLayer();
+      this.props.addLayer(layer.id);
     }
   }
 
@@ -40,11 +40,8 @@ class LayerLibrary extends Component {
             <input
               className={SwitcherStyles['c-switcher']}
               type="checkbox"
-              checked={layer.visible}
+              checked={layer.added}
               onChange={() => this.onChange(layer)}
-              style={{
-                color: layer.color
-              }}
             />
             <span className={LayerListStyles['layer-title']}>
               {layer.title}
