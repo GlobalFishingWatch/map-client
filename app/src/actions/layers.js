@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { LAYER_TYPES } from 'constants';
-import { SET_LAYERS, TOGGLE_LAYER_VISIBILITY, SET_LAYER_OPACITY, SET_LAYER_HUE } from 'actions';
+import { SET_LAYERS, TOGGLE_LAYER_VISIBILITY, SET_LAYER_OPACITY, SET_LAYER_HUE, SET_TILESET_URL } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
 export function initLayers(workspaceLayers, libraryLayers) {
@@ -31,7 +31,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
     matchedLayers.forEach(layer => {
       const localLayer = _.find(workspaceLayers, workspaceLayer => workspaceLayer.id === layer.id);
 
-      if (!localLayer) return;
+      if (!localLayer) {
+        return;
+      }
 
       // overwrites API values with workspace ones
       Object.assign(layer, localLayer);
@@ -53,6 +55,19 @@ export function initLayers(workspaceLayers, libraryLayers) {
         l.opacity = 1;
       }
     });
+
+    const vesselLayer = layers
+      .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
+
+    if (vesselLayer !== undefined) {
+      const tilesetUrl = vesselLayer.source.args.url;
+
+      // TODO this is only used by vesselInfo, but the data is inside a layer
+      // review wit SkyTruth
+      dispatch({
+        type: SET_TILESET_URL, payload: tilesetUrl
+      });
+    }
 
     dispatch({
       type: SET_LAYERS, payload: layers
