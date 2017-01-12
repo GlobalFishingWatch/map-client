@@ -33,6 +33,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
     matchedLayers.forEach((l) => {
       const localLayer = _.find(workspaceLayers, (wl) => wl.id === l.id);
 
+      if (!localLayer) return;
+
       // overwrites API values with workspace ones
       Object.assign(l, localLayer);
     });
