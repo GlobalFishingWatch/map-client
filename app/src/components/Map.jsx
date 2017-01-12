@@ -183,7 +183,7 @@ class Map extends Component {
       >
         <NoLogin />
       </Modal>
-      <Modal opened={this.props.shareModal.open} closeable close={this.props.closeShareModal}>
+      <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
       <Modal
@@ -303,9 +303,9 @@ Map.propTypes = {
   center: React.PropTypes.array,
   zoom: React.PropTypes.number,
   /**
-   * State of the share modal: { open, workspaceId }
+   * If share modal is open or closed
    */
-  shareModal: React.PropTypes.object,
+  shareModalOpenState: React.PropTypes.bool,
   /**
    * Open the share modal
    */
