@@ -23,7 +23,7 @@ const mapStateToProps = (state) => ({
   zoom: state.map.zoom,
   trackBounds: state.vesselInfo.trackBounds,
   token: state.user.token,
-  shareModal: state.map.shareModal,
+  shareModalOpenState: state.map.shareModal.open,
   basemaps: state.map.basemaps,
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,

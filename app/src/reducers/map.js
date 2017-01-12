@@ -86,9 +86,8 @@ export default function (state = initialState, action) {
     }
 
     case SHARE_MODAL_OPEN: {
-      const newState = Object.assign({}, state);
-      newState.shareModal.open = action.payload;
-      return newState;
+      const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
+      return Object.assign({}, state, { shareModal });
     }
 
     case SET_WORKSPACE_ID:
