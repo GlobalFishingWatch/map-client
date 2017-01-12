@@ -4,7 +4,7 @@ import {
 } from 'actions';
 import { initLayers } from 'actions/layers';
 
-export function processNewWorkspace(data, dispatch) {
+function processNewWorkspace(data, dispatch) {
   const workspace = data.workspace;
 
   // We update the zoom level
@@ -43,7 +43,7 @@ export function processNewWorkspace(data, dispatch) {
   dispatch(initLayers(workspace.map.layers));
 }
 
-export function processProductionWorkspace(data, dispatch) {
+function processLegacyWorkspace(data, dispatch) {
   const workspace = data;
 
   // We update the zoom level
@@ -122,10 +122,10 @@ export function loadWorkspace(workspaceId) {
       }
     }).then(res => res.json())
       .then(data => {
-        if ('workspace' in data) {
+        if (data.workspace !== undefined) {
           return processNewWorkspace(data, dispatch);
         }
-        return processProductionWorkspace(data, dispatch);
+        return processLegacyWorkspace(data, dispatch);
       });
   };
 }
