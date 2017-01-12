@@ -1,19 +1,16 @@
 import { push } from 'react-router-redux';
-import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
   SET_ZOOM,
   SET_CENTER,
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
-  SET_FLAG_FILTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
   SET_BASEMAP,
-  SET_TILESET_URL,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_LIBRARY_MODAL_VISIBILITY
 } from 'actions';
@@ -108,18 +105,6 @@ export function getWorkspace(workspaceId) {
         dispatch({
           type: SET_BASEMAP,
           payload: workspace.basemap
-        });
-
-
-        const vesselLayer = state.layerLibrary.layers
-          .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-        const tilesetUrl = vesselLayer.args.source.args.url;
-
-        // TODO this is only used by vesselInfo, but the data is inside a layer
-        // review wit SkyTruth
-        dispatch({
-          type: SET_TILESET_URL,
-          payload: tilesetUrl
         });
 
         dispatch(initLayers(workspace.map.layers, state.layerLibrary.layers));
