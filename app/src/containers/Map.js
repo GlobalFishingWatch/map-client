@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Map from 'components/Map';
 import {
-  getWorkspace,
   setZoom,
   setCenter,
   openShareModal,
@@ -12,6 +11,9 @@ import {
   setSupportModalVisibility,
   setLayerLibraryModalVisibility
 } from 'actions/map';
+import {
+  getWorkspace
+} from 'actions/workspace';
 import {
   toggleLayerVisibility
 } from 'actions/layers';

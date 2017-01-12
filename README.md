@@ -138,6 +138,6 @@ Google Analytics tracking code.
 
 Name/ID of the default workspace to be loaded on the map (if `USE_LOCAL_WORKSPACE` is set to false, see below)
 
-#### USE_LOCAL_WORKSPACE
+#### LOCAL_WORKSPACE
 
-Boolean value to determine whether to load by default the workspace defined by `DEFAULT_WORKSPACE` or `public/workspace.json`
+If set, should point to the local workspace to be loaded

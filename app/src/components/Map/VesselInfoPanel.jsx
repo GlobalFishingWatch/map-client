@@ -92,10 +92,10 @@ class VesselInfoPanel extends Component {
               </ul>
             </div>
           }
-          {vesselInfo.link && <a
+          {vesselInfo.mmsi && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
-            href={vesselInfo.link}
+            href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
           >Check it on MarineTraffic.com
           </a>
           }

@@ -70,10 +70,6 @@ class Timebar extends Component {
       return;
     }
 
-    if (!this.svg) {
-      this.build();
-    }
-
     // depending on whether state (outerExtent) or props (innerExtent) have been updated, we'll do different things
     const newInnerExtent = nextProps.filters.timelineInnerExtent;
     this.setState({
@@ -89,6 +85,10 @@ class Timebar extends Component {
     if (extentChanged(currentOuterExtent, newOuterExtent)) {
       this.redrawOuterBrush(newOuterExtent, currentOuterExtent);
     }
+  }
+
+  componentDidMount() {
+    this.build();
   }
 
   componentWillUpdate(nextProps) {

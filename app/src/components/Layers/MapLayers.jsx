@@ -252,24 +252,14 @@ class MapLayers extends Component {
   }
 
   setLayersInteraction(reportLayerId) {
-    this.props.layers.forEach(layerSettings => {
+    this.heatmapLayer.interactive = (reportLayerId === null);
+    this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach(layerSettings => {
       const layer = this.state.addedLayers[layerSettings.id];
       if (layer) {
-        // no report enabled: enable interaction in all but vessel layer
-        if (reportLayerId === null) {
-          if (layerSettings.type === 'ClusterAnimation') {
-            layer.setInteraction(true);
-          } else {
-            // apparently both are needed -_-
-            layer.setInteraction(false);
-            layer.interactive = false;
-          }
-        } else if (reportLayerId === layerSettings.id) {
+        if (reportLayerId === layerSettings.id) {
           layer.setInteraction(true);
-          layer.interactive = true;
         } else {
           layer.setInteraction(false);
-          layer.interactive = false;
         }
       }
     });

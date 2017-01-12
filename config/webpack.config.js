@@ -51,7 +51,7 @@ const webpackConfig = {
       ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
       REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,
       DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
-      USE_LOCAL_WORKSPACE: JSON.stringify(envVariables.USE_LOCAL_WORKSPACE),
+      LOCAL_WORKSPACE: JSON.stringify(envVariables.LOCAL_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
       HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL)
     })

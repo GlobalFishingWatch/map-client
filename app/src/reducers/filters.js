@@ -6,14 +6,25 @@ import {
   SET_TIMELINE_OVER_DATES
 } from 'actions';
 import {
+  TIMELINE_DEFAULT_INNER_START_DATE,
+  TIMELINE_DEFAULT_INNER_END_DATE,
+  TIMELINE_DEFAULT_OUTER_START_DATE,
+  TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_OVERALL_START_DATE,
   TIMELINE_OVERALL_END_DATE
 } from 'constants';
 import { getTimeAtPrecision, getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
+const timelineOverallStartDateOffset = getTimeAtPrecision(TIMELINE_OVERALL_START_DATE);
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
-  timelineOverallStartDateOffset: getTimeAtPrecision(TIMELINE_OVERALL_START_DATE),
+  timelineOuterExtent: [TIMELINE_DEFAULT_OUTER_START_DATE, TIMELINE_DEFAULT_OUTER_END_DATE],
+  timelineOverallStartDateOffset,
+  timelineInnerExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
+  timelineInnerExtentIndexes: [
+    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime(), timelineOverallStartDateOffset),
+    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime(), timelineOverallStartDateOffset)
+  ],
   timelinePaused: true,
   flags: [],
   flagsLayers: {}
