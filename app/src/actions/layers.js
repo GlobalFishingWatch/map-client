@@ -19,29 +19,29 @@ export function initLayers(workspaceLayers, libraryLayers) {
     });
 
     // formats layer object to keep a consistent format around the app
-    libraryLayers.forEach((l) => {
+    libraryLayers.forEach(layer => {
       // moves "args" content to the root of the object
-      Object.assign(l, l.args);
+      Object.assign(layer, layer.args);
       // removes "args" property from the object
       /* eslint no-param-reassign: 0 */
-      delete l.args;
+      delete layer.args;
     });
 
 
     // Match workspace ids with library ones
-    const matchedLayers = _.filter(libraryLayers, (l) => workspaceLayersIds.indexOf(l.id) !== -1);
+    const matchedLayers = _.filter(libraryLayers, layer => workspaceLayersIds.indexOf(layer.id) !== -1);
 
-    matchedLayers.forEach((l) => {
-      const localLayer = _.find(workspaceLayers, (wl) => wl.id === l.id);
+    matchedLayers.forEach(layer => {
+      const localLayer = _.find(workspaceLayers, workspaceLayer => workspaceLayer.id === layer.id);
 
       if (!localLayer) return;
 
       // overwrites API values with workspace ones
-      Object.assign(l, localLayer);
+      Object.assign(layer, localLayer);
     });
 
     const layers = matchedLayers
-      .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
+      .filter(layer => _.values(LAYER_TYPES).indexOf(layer.type) !== -1);
 
     // parses opacity attribute
     layers.forEach(layer => {
