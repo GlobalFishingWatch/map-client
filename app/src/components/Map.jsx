@@ -297,7 +297,6 @@ Map.propTypes = {
   tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
   getLayerLibrary: React.PropTypes.func,
-  getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Map from 'components/Map';
 import {
-  getWorkspace,
   setZoom,
   setCenter,
   openShareModal,
@@ -32,12 +31,9 @@ const mapStateToProps = (state) => ({
   layerLibraryModal: state.map.layerLibraryModal.open
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   getLayerLibrary: () => {
     dispatch(getLayerLibrary());
-  },
-  getWorkspace: () => {
-    dispatch(getWorkspace(ownProps.workspaceId));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
