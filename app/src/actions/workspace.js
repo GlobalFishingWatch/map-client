@@ -1,75 +1,84 @@
-import { LAYER_TYPES } from 'constants';
+import {
+  LAYER_TYPES,
+  TIMELINE_DEFAULT_OUTER_START_DATE,
+  TIMELINE_DEFAULT_OUTER_END_DATE,
+  TIMELINE_DEFAULT_INNER_START_DATE,
+  TIMELINE_DEFAULT_INNER_END_DATE
+} from 'constants';
 import {
   SET_LAYERS, SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL
 } from 'actions';
 import { initLayers } from 'actions/layers';
 
-function processNewWorkspace(data, dispatch) {
-  const workspace = data.workspace;
-
+function dispatchActions(workspaceData, dispatch) {
   // We update the zoom level
   dispatch({
-    type: SET_ZOOM, payload: workspace.map.zoom
+    type: SET_ZOOM, payload: workspaceData.zoomLevel
   });
 
   // We update the center of the map
   dispatch({
-    type: SET_CENTER, payload: workspace.map.center
+    type: SET_CENTER, payload: workspaceData.mapCenter
   });
 
   // We update the dates of the timeline
   dispatch({
-    type: SET_INNER_TIMELINE_DATES, payload: workspace.timeline.innerExtent.map(d => new Date(d))
+    type: SET_INNER_TIMELINE_DATES, payload: workspaceData.timelineInnerDates
   });
 
   dispatch({
-    type: SET_OUTER_TIMELINE_DATES, payload: workspace.timeline.outerExtent.map(d => new Date(d))
+    type: SET_OUTER_TIMELINE_DATES, payload: workspaceData.timelineOuterDates
   });
 
   dispatch({
-    type: SET_BASEMAP, payload: workspace.basemap
+    type: SET_BASEMAP, payload: workspaceData.basemap
   });
+
+  dispatch({
+    type: SET_TILESET_URL, payload: workspaceData.tilesetUrl
+  });
+
+  dispatch(initLayers(workspaceData.layers));
+}
+
+function processNewWorkspace(data) {
+  const workspace = data.workspace;
 
   const vesselLayer = workspace.map.layers
     .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
   const tilesetUrl = vesselLayer.source.args.url;
 
-  // TODO this is only used by vesselInfo, but the data is inside a layer
-  // review wit SkyTruth
-  dispatch({
-    type: SET_TILESET_URL, payload: tilesetUrl
-  });
-
-  dispatch(initLayers(workspace.map.layers));
+  return {
+    zoom: workspace.map.zoom,
+    center: workspace.map.center,
+    timelineInnerDates: workspace.timeline.innerExtent.map(d => new Date(d)),
+    timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
+    basemap: workspace.basemap,
+    layers: workspace.map.layers,
+    tilesetUrl
+  };
 }
 
 function processLegacyWorkspace(data, dispatch) {
   const workspace = data;
 
-  // We update the zoom level
-  dispatch({
-    type: SET_ZOOM, payload: workspace.state.zoom
-  });
+  let startOuterDate = TIMELINE_DEFAULT_OUTER_START_DATE;
+  let endOuterDate = TIMELINE_DEFAULT_OUTER_END_DATE;
+  let startInnerDate = TIMELINE_DEFAULT_INNER_START_DATE;
+  let endInnerDate = TIMELINE_DEFAULT_INNER_END_DATE;
 
-  // We update the center of the map
-  dispatch({
-    type: SET_CENTER, payload: [workspace.state.lat, workspace.state.lon]
-  });
+  const serializedStartDate = workspace.state.time.__jsonclass__;
 
-  if (workspace.timeline) {
-    // We update the dates of the timeline
-    if (workspace.timeline.innerExtent) {
-      dispatch({
-        type: SET_INNER_TIMELINE_DATES, payload: workspace.timeline.innerExtent.map(d => new Date(d))
-      });
-    }
-
-    if (workspace.timeline.outerExtent) {
-      dispatch({
-        type: SET_OUTER_TIMELINE_DATES, payload: workspace.timeline.outerExtent.map(d => new Date(d))
-      });
-    }
+  if (serializedStartDate !== undefined && serializedStartDate[0] === 'Date' && workspace.state.timeExtent) {
+    endOuterDate = new Date(serializedStartDate[1]);
+    startOuterDate = new Date(endOuterDate.getTime() - workspace.state.timeExtent);
+    startInnerDate = startOuterDate;
+    endInnerDate = new Date(startInnerDate.getTime() + Math.min(workspace.state.timeExtent, 15778476000));
   }
+
+  dispatch({
+    type: SET_INNER_TIMELINE_DATES, payload: [startInnerDate, endInnerDate]
+  });
 
   dispatch({
     type: SET_BASEMAP, payload: workspace.basemap
@@ -79,13 +88,15 @@ function processLegacyWorkspace(data, dispatch) {
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
   const tilesetUrl = vesselLayer.source.args.url;
 
-  // TODO this is only used by vesselInfo, but the data is inside a layer
-  // review wit SkyTruth
-  dispatch({
-    type: SET_TILESET_URL, payload: tilesetUrl
-  });
-
-  dispatch(initLayers(layers));
+  return {
+    zoom: workspace.state.zoom,
+    center: [workspace.state.lat, workspace.state.lon],
+    timelineInnerDates: [startOuterDate, endOuterDate],
+    timelineOuterDates: [startInnerDate, endInnerDate],
+    basemap: workspace.basemap,
+    layers,
+    tilesetUrl
+  };
 }
 
 /**
@@ -96,7 +107,7 @@ function processLegacyWorkspace(data, dispatch) {
  * @param {string} workspaceId - workspace's ID to load
  * @returns {object}
  */
-export function loadWorkspace(workspaceId) {
+export function getWorkspace(workspaceId) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -122,14 +133,13 @@ export function loadWorkspace(workspaceId) {
       }
     }).then(res => res.json())
       .then(data => {
+        let workspaceData;
         if (data.workspace !== undefined) {
-          return processNewWorkspace(data, dispatch);
+          workspaceData = processNewWorkspace(data, dispatch);
+        } else {
+          workspaceData = processLegacyWorkspace(data, dispatch);
         }
-        return processLegacyWorkspace(data, dispatch);
+        return dispatchActions(workspaceData, dispatch);
       });
   };
-}
-
-export function getWorkspace(workspaceId) {
-  return loadWorkspace(workspaceId);
 }
