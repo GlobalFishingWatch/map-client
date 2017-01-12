@@ -13,12 +13,12 @@ import { initLayers } from 'actions/layers';
 function dispatchActions(workspaceData, dispatch) {
   // We update the zoom level
   dispatch({
-    type: SET_ZOOM, payload: workspaceData.zoomLevel
+    type: SET_ZOOM, payload: workspaceData.zoom
   });
 
   // We update the center of the map
   dispatch({
-    type: SET_CENTER, payload: workspaceData.mapCenter
+    type: SET_CENTER, payload: workspaceData.center
   });
 
   // We update the dates of the timeline
