@@ -17,17 +17,15 @@ class VesselInfoPanel extends Component {
     if (vesselInfo && vesselInfo.rfmo_registry_info) {
       RFMORegistry = [];
       vesselInfo.rfmo_registry_info.forEach((registry) => {
-        RFMORegistry.push(
-          <li className={vesselPanelStyles['rfmo-item']}>
-            <a
-              className={vesselPanelStyles['external-link']}
-              href={`${registry.url}`}
-              target="_blank"
-            >
-              {registry.rfmo}
-            </a>
-          </li>
-        );
+        RFMORegistry.push(<li className={vesselPanelStyles['rfmo-item']}>
+          <a
+            className={vesselPanelStyles['external-link']}
+            href={`${registry.url}`}
+            target="_blank"
+          >
+            {registry.rfmo}
+          </a>
+        </li>);
       });
     }
 
@@ -52,52 +50,64 @@ class VesselInfoPanel extends Component {
           {message}
         </div>
       );
+    } else if (this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
+      return null;
     } else {
       let iso = null;
       if (vesselInfo !== undefined && vesselInfo.flag) {
         iso = iso3311a2.getCountry(vesselInfo.flag);
       }
 
+      const canSeeVesselId = (this.props.userPermissions.indexOf('info') !== -1);
+
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
-          <div className={vesselPanelStyles['row-info']}>
+          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>
           </div>
-          <div className={vesselPanelStyles['row-info']}>
+          }
+          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>IMO</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.imo || '---'}</span>
           </div>
+          }
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Class</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.shiptype_text || '---'}</span>
           </div>
-          <div className={vesselPanelStyles['row-info']}>
+          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>MMSI</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.mmsi || '---'}</span>
           </div>
+          }
           <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Country</span>
             <span className={vesselPanelStyles.value}>{iso || '---'}</span>
           </div>
-          <div className={vesselPanelStyles['row-info']}>
+          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Callsign</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.callsign || '---'}</span>
           </div>
-          {RFMORegistry &&
-            <div className={vesselPanelStyles['row-info']}>
-              <span className={vesselPanelStyles.key}>RFMO</span>
-              <ul className={vesselPanelStyles['rfmo-list']}>
-                {RFMORegistry}
-              </ul>
-            </div>
           }
-          {vesselInfo.mmsi && <a
+          {canSeeVesselId && RFMORegistry && <div className={vesselPanelStyles['row-info']}>
+            <span className={vesselPanelStyles.key}>RFMO</span>
+            <ul className={vesselPanelStyles['rfmo-list']}>
+              {RFMORegistry}
+            </ul>
+          </div>
+          }
+          {canSeeVesselId && vesselInfo.mmsi && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
             href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
           >Check it on MarineTraffic.com
           </a>
+          }
+          {!canSeeVesselId && <a
+            className={vesselPanelStyles['external-link']}
+            onClick={this.props.login}
+          >Click here to login and see more details</a>
           }
         </div>
       );
@@ -125,7 +135,9 @@ VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
   toggleVisibility: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
-  vesselVisibility: React.PropTypes.bool
+  login: React.PropTypes.func,
+  vesselVisibility: React.PropTypes.bool,
+  userPermissions: React.PropTypes.array
 };
 
 export default VesselInfoPanel;

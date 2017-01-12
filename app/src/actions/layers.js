@@ -8,9 +8,15 @@ import {
 } from 'actions';
 
 export function initLayers(layers_) {
-  return (dispatch) => {
-    const layers = layers_
+  return (dispatch, getState) => {
+    const state = getState();
+
+    let layers = layers_
       .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
+
+    if (state.user.acl.indexOf('seeVesselsLayers') === -1) {
+      layers = layers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
+    }
 
     // parses opacity attribute
     layers.forEach(layer => {

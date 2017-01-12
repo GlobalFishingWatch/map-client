@@ -132,7 +132,7 @@ class LayerItem extends Component {
           </span>
         </label>
         <ul className={LayerListStyles['layer-option-list']}>
-          {!this.props.layerLibraryDisplay && this.props.layer.reportable && <li
+          {!this.props.layerLibraryDisplay && this.props.userCanReport && this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickReport()}
           >
@@ -196,7 +196,8 @@ LayerItem.propTypes = {
   setLayerHue: React.PropTypes.func,
   openLayerInfoModal: React.PropTypes.func,
   onLayerBlendingToggled: React.PropTypes.func,
-  showBlending: React.PropTypes.bool
+  showBlending: React.PropTypes.bool,
+  userCanReport: React.PropTypes.bool
 };
 
 export default LayerItem;

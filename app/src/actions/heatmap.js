@@ -110,9 +110,15 @@ export function releaseTile(uid) {
 
 export function queryHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
+    const state = getState();
+
+    if (state.user.acl.indexOf('selectVessel') === -1) {
+      return;
+    }
+
     // TODO do not query all sublayers?
-    const layers = getState().heatmap;
-    const timelineExtent = getState().filters.timelineInnerExtentIndexes;
+    const layers = state.heatmap;
+    const timelineExtent = state.filters.timelineInnerExtentIndexes;
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
     let vessels = [];

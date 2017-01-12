@@ -38,14 +38,8 @@ export const GUEST_PERMISSION_SET = [
   'shareWorkspace'
 ];
 
-export const AUTH_PERMISSION_SET = [
-  'seeVesselsLayers',
-  'selectVessel',
-  'seeVesselBasicInfo',
-  'shareWorkspace',
-  'seeVesselId',
-  'searchVessels'
-];
+// for now, auth users get no special permissions, everything comes from the API
+export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET;
 
 // vessels rendering
 // from this zoom level and above, render using circle style instead of heatmap
