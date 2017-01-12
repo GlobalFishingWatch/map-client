@@ -51,16 +51,21 @@ export function addLayer(layerId) {
     const layerLibrary = _.cloneDeep(state.layerLibrary.layers);
     const layerToAdd = _.find(layerLibrary, (layer) => layer.id === layerId);
     const newLayers = _.cloneDeep(state.layers);
+    const addedLayer = _.find(newLayers, layer => layer.id === layerToAdd.id);
 
     if (layerToAdd === undefined) return;
-
-    // already added
-    if (newLayers.indexOf(layerToAdd) !== -1) return;
 
     layerToAdd.added = true;
     layerToAdd.visible = true;
 
-    newLayers.push(layerToAdd);
+    // not added, updates attributes and adds it into the array of layers
+    if (addedLayer === undefined) {
+      newLayers.push(layerToAdd);
+    } else {
+      // already added, only need to update its attributes
+      addedLayer.added = true;
+      addedLayer.visible = true;
+    }
 
     dispatch({
       type: GET_LAYER_LIBRARY,
