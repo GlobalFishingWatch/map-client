@@ -36,7 +36,7 @@ class MapLayers extends Component {
       this.updateLayers(nextProps);
     }
 
-    if (this.props.zoom !== nextProps.zoom && this.vesselsLayer) {
+    if (this.props.zoom !== nextProps.zoom && this.heatmapContainer) {
       this.heatmapContainer.setZoom(nextProps.zoom);
     }
 
