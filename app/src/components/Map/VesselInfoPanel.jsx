@@ -8,35 +8,20 @@ import buttonCloseStyles from 'styles/components/c-button-close.scss';
 class VesselInfoPanel extends Component {
 
   render() {
-    const vesselInfo = this.props.vesselInfo;
+    const vesselInfo = this.props.details.find(vessel => vessel.visible === true);
+    const status = this.props.detailsStatus;
 
-    if (vesselInfo === null) {
+    if (status === null && vesselInfo === undefined) {
       return null;
     }
 
     let vesselInfoContents = null;
-    let RFMORegistry = null;
 
-    if (vesselInfo && vesselInfo.rfmo_registry_info) {
-      RFMORegistry = [];
-      vesselInfo.rfmo_registry_info.forEach((registry) => {
-        RFMORegistry.push(<li className={vesselPanelStyles['rfmo-item']}>
-          <a
-            className={vesselPanelStyles['external-link']}
-            href={`${registry.url}`}
-            target="_blank"
-          >
-            {registry.rfmo}
-          </a>
-        </li>);
-      });
-    }
-
-    if (vesselInfo.isEmpty || vesselInfo.isCluster || vesselInfo.isLoading) {
+    if (status.isEmpty || status.isCluster || status.isLoading) {
       let message;
-      if (vesselInfo.isEmpty) {
+      if (status.isEmpty) {
         message = <div>There are no vessels at this location</div>;
-      } else if (vesselInfo.isLoading) {
+      } else if (status.isLoading) {
         message = <div>Loading vessel information...</div>;
       } else {
         message = (
@@ -55,10 +40,26 @@ class VesselInfoPanel extends Component {
       );
     } else if (this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
-    } else {
+    } else if (vesselInfo !== undefined) {
       let iso = null;
-      if (vesselInfo !== undefined && vesselInfo.flag) {
+      if (vesselInfo.flag) {
         iso = iso3311a2.getCountry(vesselInfo.flag);
+      }
+
+      let RFMORegistry = null;
+      if (vesselInfo.rfmo_registry_info) {
+        RFMORegistry = [];
+        vesselInfo.rfmo_registry_info.forEach((registry) => {
+          RFMORegistry.push(<li className={vesselPanelStyles['rfmo-item']}>
+            <a
+              className={vesselPanelStyles['external-link']}
+              href={`${registry.url}`}
+              target="_blank"
+            >
+              {registry.rfmo}
+            </a>
+          </li>);
+        });
       }
 
       const canSeeVesselId = (this.props.userPermissions.indexOf('info') !== -1);
@@ -66,7 +67,7 @@ class VesselInfoPanel extends Component {
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
           <button
-            className={classnames(vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.isPinned })}
+            className={classnames(vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
             onClick={() => { this.props.togglePin(); }}
           />
 
@@ -137,12 +138,13 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  vesselInfo: React.PropTypes.object,
+  details: React.PropTypes.array,
+  detailsStatus: React.PropTypes.object,
+  userPermissions: React.PropTypes.array,
   hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
   togglePin: React.PropTypes.func,
-  login: React.PropTypes.func,
-  userPermissions: React.PropTypes.array
+  login: React.PropTypes.func
 };
 
 export default VesselInfoPanel;

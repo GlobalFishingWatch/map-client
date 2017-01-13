@@ -104,7 +104,6 @@ class SearchPanel extends Component {
 }
 
 SearchPanel.propTypes = {
-  drawVessel: React.PropTypes.func,
   getSearchResults: React.PropTypes.func,
   search: React.PropTypes.object,
   visible: React.PropTypes.bool

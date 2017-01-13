@@ -3,7 +3,6 @@ import _ from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
   COMPLETE_TILE_LOAD,
-  SET_VESSEL_TRACK,
   SET_VESSEL_CLUSTER_CENTER
 } from '../actions';
 import {
@@ -15,7 +14,7 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from './helpers/heatmapTileData';
-import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo, clearTrack } from 'actions/vesselInfo';
+import { showVesselClusterInfo, showNoVesselsInfo, addVessel } from 'actions/vesselInfo';
 
 
 export function getTile(uid, tileCoordinates, canvas) {
@@ -132,8 +131,6 @@ export function queryHeatmap(tileQuery, latLng) {
     });
     vessels = _.flatten(vessels);
 
-    dispatch(clearTrack());
-
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a succesful vessel query, not a cluster
     const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
@@ -148,8 +145,8 @@ export function queryHeatmap(tileQuery, latLng) {
       // (less than 0 means that points have been clustered server side):
       // only one valid result
       // console.log('one valid result');
-      dispatch(setCurrentVessel(vessels[0].seriesgroup));
-      dispatch(getVesselTrack(vessels[0].seriesgroup, vessels[0].series));
+
+      dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
     } else {
       // multiple results
       // console.log('multiple results');
