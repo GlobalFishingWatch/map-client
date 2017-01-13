@@ -11,7 +11,9 @@ import {
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 
-function dispatchActions(workspaceData, dispatch) {
+function dispatchActions(workspaceData, dispatch, getState) {
+  const state = getState();
+
   // We update the zoom level
   dispatch({
     type: SET_ZOOM, payload: workspaceData.zoom
@@ -39,7 +41,7 @@ function dispatchActions(workspaceData, dispatch) {
     type: SET_TILESET_URL, payload: workspaceData.tilesetUrl
   });
 
-  dispatch(initLayers(workspaceData.layers));
+  dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
 
   dispatch(setFlagFilters(workspaceData.flagFilters));
 }
@@ -143,7 +145,7 @@ export function getWorkspace(workspaceId) {
         } else {
           workspaceData = processLegacyWorkspace(data, dispatch);
         }
-        return dispatchActions(workspaceData, dispatch);
+        return dispatchActions(workspaceData, dispatch, getState);
       });
   };
 }

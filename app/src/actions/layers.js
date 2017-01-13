@@ -4,14 +4,45 @@ import {
   SET_LAYERS,
   TOGGLE_LAYER_VISIBILITY,
   SET_LAYER_OPACITY,
-  SET_LAYER_HUE
+  SET_LAYER_HUE,
+  SET_TILESET_URL
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
-export function initLayers(layers_) {
+export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch) => {
-    const layers = layers_
-      .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
+    const workspaceLayersIds = [];
+
+    // Get all ids coming from workspace
+    workspaceLayers.forEach((l) => {
+      if (l.id === undefined) return;
+      workspaceLayersIds.push(l.id);
+    });
+
+    // formats layer object to keep a consistent format around the app
+    libraryLayers.forEach(layer => {
+      // moves "args" content to the root of the object
+      Object.assign(layer, layer.args);
+      // removes "args" property from the object
+      /* eslint no-param-reassign: 0 */
+      delete layer.args;
+    });
+
+
+    // Match workspace ids with library ones
+    const matchedLayers = _.filter(libraryLayers, layer => workspaceLayersIds.indexOf(layer.id) !== -1);
+
+    matchedLayers.forEach(layer => {
+      const localLayer = _.find(workspaceLayers, workspaceLayer => workspaceLayer.id === layer.id);
+
+      if (!localLayer) return;
+
+      // overwrites API values with workspace ones
+      Object.assign(layer, localLayer);
+    });
+
+    const layers = matchedLayers
+      .filter(layer => _.values(LAYER_TYPES).indexOf(layer.type) !== -1);
 
     // parses opacity attribute
     layers.forEach(layer => {
@@ -23,13 +54,19 @@ export function initLayers(layers_) {
       }
     });
 
-    // add an id to each layer
-    let id = 0;
-    layers.forEach(layer => {
-      /* eslint no-param-reassign: 0 */
-      layer.id = id;
-      id++;
-    });
+    const vesselLayer = layers
+      .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
+
+    if (vesselLayer !== undefined) {
+      const tilesetUrl = vesselLayer.source.args.url;
+
+      // TODO this is only used by vesselInfo, but the data is inside a layer
+      // review wit SkyTruth
+      dispatch({
+        type: SET_TILESET_URL,
+        payload: tilesetUrl
+      });
+    }
 
     dispatch({
       type: SET_LAYERS,
