@@ -44,6 +44,7 @@ class ControlPanel extends Component {
         >
           <div className={controlPanelStyle['content-accordion']}>
             <a
+              className="login-required-link"
               onClick={this.props.login}
             >Click here to login and see more details</a>
           </div>
