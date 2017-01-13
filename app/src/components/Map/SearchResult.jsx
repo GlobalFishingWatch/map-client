@@ -5,7 +5,6 @@ class SearchResult extends Component {
 
   onDrawVessel() {
     this.props.drawVessel(this.props.vesselInfo);
-    this.props.toggleVisibility(true);
   }
 
   highlightWord(strReplace, str, styleClass) {
@@ -42,9 +41,7 @@ class SearchResult extends Component {
 SearchResult.propTypes = {
   drawVessel: React.PropTypes.func,
   keyword: React.PropTypes.string,
-  toggleVisibility: React.PropTypes.func,
-  vesselInfo: React.PropTypes.object,
-  vesselVisibility: React.PropTypes.bool
+  vesselInfo: React.PropTypes.object
 };
 
 export default SearchResult;

@@ -11,7 +11,7 @@ import {
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_LIBRARY_MODAL_VISIBILITY
 } from 'actions';
-import { toggleVisibility } from 'actions/vesselInfo';
+import { clearVesselInfo } from 'actions/vesselInfo';
 
 export function setBasemap(basemap) {
   return {
@@ -26,8 +26,9 @@ export function setZoom(zoom) {
       type: SET_ZOOM,
       payload: zoom
     });
-    if (getState().vesselInfo && getState().vesselInfo.details && getState().vesselInfo.details.isCluster === true) {
-      dispatch(toggleVisibility(false));
+    if (getState().vesselInfo && getState().vesselInfo.details &&
+        (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
+      dispatch(clearVesselInfo());
     }
   };
 }

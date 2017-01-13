@@ -169,7 +169,6 @@ class ControlPanel extends Component {
 }
 
 ControlPanel.propTypes = {
-  toggleVisibility: React.PropTypes.func,
   login: React.PropTypes.func,
   layers: React.PropTypes.array,
   userPermissions: React.PropTypes.array

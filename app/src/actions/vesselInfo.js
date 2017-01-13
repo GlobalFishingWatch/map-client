@@ -1,7 +1,7 @@
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
-  SET_VESSEL_INFO_VISIBILITY,
+  CLEAR_VESSEL_INFO,
   SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS,
   SHOW_NO_VESSELS_INFO,
@@ -60,6 +60,13 @@ export function showNoVesselsInfo() {
   };
 }
 
+export function clearTrack() {
+  return {
+    type: SET_VESSEL_TRACK,
+    payload: null
+  };
+}
+
 export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const state = getState();
@@ -89,11 +96,6 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
         ]);
 
         dispatch({
-          type: SET_VESSEL_INFO_VISIBILITY,
-          payload: true
-        });
-
-        dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
             seriesgroup: seriesGroup,
@@ -120,9 +122,9 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
   };
 }
 
-export function toggleVisibility(visibility) {
+export function clearVesselInfo() {
   return {
-    type: SET_VESSEL_INFO_VISIBILITY,
-    payload: visibility
+    type: CLEAR_VESSEL_INFO,
+    payload: false
   };
 }

@@ -369,19 +369,6 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    // REMOVE ME
-    this.props.testSetFilters([
-      {
-        "flag": "66",
-        "hue": 0
-      }, {
-        "flag": "32",
-        "hue": 288
-      }, {
-        "flag": "68"
-      }
-    ]);
-
     if (!event || !this.heatmapContainer || this.heatmapContainer.interactive === false) {
       return;
     }

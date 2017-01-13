@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
 import buttonCloseStyles from 'styles/components/c-button-close.scss';
-import helperStyles from 'styles/_helpers.scss';
 
 class VesselInfoPanel extends Component {
 
   render() {
+    const vesselInfo = this.props.vesselInfo;
+
+    if (vesselInfo === null) {
+      return null;
+    }
+
     let vesselInfoContents = null;
     let RFMORegistry = null;
-    const visibilityClass = this.props.vesselVisibility ? null : helperStyles['_is-hidden'];
-    const vesselInfo = this.props.vesselInfo;
 
     if (vesselInfo && vesselInfo.rfmo_registry_info) {
       RFMORegistry = [];
@@ -29,9 +31,9 @@ class VesselInfoPanel extends Component {
       });
     }
 
-    if (vesselInfo === null || vesselInfo.isCluster || vesselInfo.isLoading) {
+    if (vesselInfo.isEmpty || vesselInfo.isCluster || vesselInfo.isLoading) {
       let message;
-      if (vesselInfo === null) {
+      if (vesselInfo.isEmpty) {
         message = <div>There are no vessels at this location</div>;
       } else if (vesselInfo.isLoading) {
         message = <div>Loading vessel information...</div>;
@@ -114,13 +116,10 @@ class VesselInfoPanel extends Component {
     }
 
     return (
-      <div
-        className={classnames(vesselPanelStyles['c-vessel-info-panel'], visibilityClass)}
-        id="vesselBox"
-      >
+      <div className={vesselPanelStyles['c-vessel-info-panel']} >
         <div>
           <span
-            onClick={() => this.props.toggleVisibility(false)}
+            onClick={() => this.props.hide()}
             className={buttonCloseStyles['c-button-close']}
           >
             <CloseIcon className={buttonCloseStyles.cross} />
@@ -133,10 +132,9 @@ class VesselInfoPanel extends Component {
 
 VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
-  toggleVisibility: React.PropTypes.func,
+  hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
   login: React.PropTypes.func,
-  vesselVisibility: React.PropTypes.bool,
   userPermissions: React.PropTypes.array
 };
 
