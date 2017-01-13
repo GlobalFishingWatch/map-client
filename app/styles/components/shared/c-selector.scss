@@ -7,6 +7,14 @@
   padding: 10px 30px 10px 10px;
   position: relative;
 
+  &.-flag-filter {
+    max-width: 80%;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+  }
+
   > select {
     appearance: none;
     background-color: transparent;

@@ -93,6 +93,8 @@ export const LAYER_TYPES = {
   ClusterAnimation: 'ClusterAnimation'
 };
 
+export const FLAG_FILTERS_LIMIT = 4;
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',
