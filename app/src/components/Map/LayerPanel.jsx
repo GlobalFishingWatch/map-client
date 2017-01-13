@@ -19,6 +19,8 @@ class LayerPanel extends Component {
   }
 
   render() {
+    const canReport = (this.props.userPermissions.indexOf('reporting') !== -1);
+
     const layers = [];
     if (this.props.layers) {
       for (let i = 0, length = this.props.layers.length; i < length; i++) {
@@ -27,6 +29,7 @@ class LayerPanel extends Component {
             key={i}
             layerIndex={i}
             layer={this.props.layers[i]}
+            userCanReport={canReport}
             isCurrentlyReported={this.props.layers[i].id === this.props.currentlyReportedLayerId}
             toggleLayerVisibility={this.props.toggleLayerVisibility}
             toggleReport={this.props.toggleReport}
@@ -55,7 +58,8 @@ LayerPanel.propTypes = {
   toggleReport: React.PropTypes.func,
   setLayerInfoModal: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
-  setLayerHue: React.PropTypes.func
+  setLayerHue: React.PropTypes.func,
+  userPermissions: React.PropTypes.array
 };
 
 

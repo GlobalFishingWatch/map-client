@@ -28,7 +28,8 @@ const mapStateToProps = (state) => ({
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
-  layerLibraryModal: state.map.layerLibraryModal.open
+  layerLibraryModal: state.map.layerLibraryModal.open,
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

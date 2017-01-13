@@ -1,8 +1,16 @@
 import { connect } from 'react-redux';
 import ControlPanel from 'components/Map/ControlPanel';
+import { login } from 'actions/user';
 
 const mapStateToProps = (state) => ({
-  layers: state.layers
+  layers: state.layers,
+  userPermissions: state.user.userPermissions
 });
 
-export default connect(mapStateToProps, null)(ControlPanel);
+const mapDispatchToProps = dispatch => ({
+  login: () => {
+    dispatch(login());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

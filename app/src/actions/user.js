@@ -1,6 +1,8 @@
-import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from 'actions';
+import { SET_USER_PERMISSIONS, SET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from 'actions';
+import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
 import { browserHistory } from 'react-router';
+import _ from 'lodash';
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_SESSION, token);
@@ -8,6 +10,17 @@ export function setToken(token) {
     type: SET_TOKEN,
     payload: token
   };
+}
+
+function getUserData(data) {
+  return {
+    displayName: data.displayName,
+    email: data.email
+  };
+}
+
+function getAclData(data) {
+  return data.allowedFeatures;
 }
 
 export function getLoggedUser() {
@@ -21,8 +34,12 @@ export function getLoggedUser() {
 
     if (!token) {
       dispatch({
-        type: GET_USER,
+        type: SET_USER,
         payload: null
+      });
+      dispatch({
+        type: SET_USER_PERMISSIONS,
+        payload: getAclData(GUEST_PERMISSION_SET)
       });
       return;
     }
@@ -41,10 +58,14 @@ export function getLoggedUser() {
         payload: null
       });
       return null;
-    }).then((user) => {
+    }).then((payload) => {
       dispatch({
-        type: GET_USER,
-        payload: user
+        type: SET_USER,
+        payload: getUserData(payload)
+      });
+      dispatch({
+        type: SET_USER_PERMISSIONS,
+        payload: _.uniq(AUTH_PERMISSION_SET.concat(getAclData(payload)))
       });
     });
   };

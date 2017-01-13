@@ -1,6 +1,5 @@
 /* eslint react/sort-comp:0 */
 /* eslint-disable max-len  */
-
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
@@ -16,17 +15,13 @@ import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import LayerLibrary from 'containers/Map/LayerLibrary';
-
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
-
 import iconStyles from 'styles/icons.scss';
-
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
-
 
 const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
@@ -175,6 +170,8 @@ class Map extends Component {
   }
 
   render() {
+    const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+
     return (<div className="full-height-container">
       <Modal
         opened={!this.props.token && REQUIRE_MAP_LOGIN}
@@ -183,9 +180,10 @@ class Map extends Component {
       >
         <NoLogin />
       </Modal>
-      <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
+      {canShareWorkspaces && <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
+      }
       <Modal
         opened={this.props.layerModal.open}
         closeable
@@ -211,9 +209,9 @@ class Map extends Component {
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
-          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
+          {canShareWorkspaces && <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
             <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
-          </span>
+          </span>}
           <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>
             <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
           </span>
@@ -321,7 +319,8 @@ Map.propTypes = {
   closeSupportModal: React.PropTypes.func,
   openSupportModal: React.PropTypes.func,
   layerLibraryModal: React.PropTypes.bool,
-  closeLayerLibraryModal: React.PropTypes.func
+  closeLayerLibraryModal: React.PropTypes.func,
+  userPermissions: React.PropTypes.array
 };
 
 export default Map;

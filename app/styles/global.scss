@@ -101,6 +101,16 @@ body {
   }
 }
 
+:global .login-required-link {
+  color: $color-3;
+  display: inline-block;
+  font-family: $font-family-1;
+  font-size: $font-size-xs-small;
+  margin: 15px 0 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 p {
   color: $color-9;

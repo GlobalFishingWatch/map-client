@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Accordion, AccordionItem } from 'react-sanfona';
-
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
 import LayerPanel from 'containers/Map/LayerPanel';
 import LayerManagement from 'containers/Map/LayerManagement';
 import SearchPanel from 'containers/Map/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
-
 import controlPanelStyle from 'styles/components/c-control_panel.scss';
 import iconStyles from 'styles/icons.scss';
-
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
 import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
 import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
-
 
 class ControlPanel extends Component {
 
@@ -28,10 +24,6 @@ class ControlPanel extends Component {
     };
   }
 
-  closeVesselInfo() {
-    this.props.toggleVisibility(false);
-  }
-
   renderSearch() {
     const titleLiteral = window.innerWidth > 1024 ? 'search vessels' : 'search';
 
@@ -40,6 +32,24 @@ class ControlPanel extends Component {
         <h2 className={controlPanelStyle['accordion-title']}>{titleLiteral}</h2>
         <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
       </div>);
+
+    if (this.props.userPermissions.indexOf('search') === -1) {
+      return (
+        <AccordionItem
+          title={title}
+          key="search"
+          className={controlPanelStyle['accordion-item']}
+          onExpand={() => this.setState({ searchVisible: true })}
+          onClose={() => this.setState({ searchVisible: false })}
+        >
+          <div className={controlPanelStyle['content-accordion']}>
+            <a
+              className="login-required-link"
+              onClick={this.props.login}
+            >Only registered users can use the search feature. Click here to log in.</a>
+          </div>
+        </AccordionItem>);
+    }
 
     return (
       <AccordionItem
@@ -160,8 +170,9 @@ class ControlPanel extends Component {
 
 ControlPanel.propTypes = {
   toggleVisibility: React.PropTypes.func,
-  layers: React.PropTypes.array
+  login: React.PropTypes.func,
+  layers: React.PropTypes.array,
+  userPermissions: React.PropTypes.array
 };
-
 
 export default ControlPanel;
