@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
   timelineOuterExtent: state.filters.timelineOuterExtent,
   timelineOverExtent: state.filters.timelineOverExtent,
   timelinePaused: state.filters.timelinePaused,
-  vesselTrack: state.vesselInfo.track,
+  vesselTracks: state.vesselInfo.tracks,
   reportLayerId: state.report.layerId
 });
 
