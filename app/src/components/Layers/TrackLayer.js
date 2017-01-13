@@ -108,20 +108,26 @@ export default class TrackLayer extends BaseOverlay {
     return point;
   }
 
+  drawTracks(tracks, drawParams) {
+    this.clear();
+    const overlayProjection = this.getProjection();
+    if (!overlayProjection) {
+      return;
+    }
+
+    tracks.forEach(track => {
+      this._drawTrack(track.data, track.selectedSeries, drawParams, overlayProjection);
+    });
+  }
+
   /**
    * Draws the tile's content based on the provided vessel data
    *
    * @param data
    * @param series
-   * @param filters
+   * @param drawParams
    */
-  drawTile(data, series, drawParams) {
-    this.clear();
-    const overlayProjection = this.getProjection();
-    if (!overlayProjection || !data) {
-      return;
-    }
-
+  _drawTrack(data, series, drawParams, overlayProjection) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
