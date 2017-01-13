@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
@@ -64,6 +65,11 @@ class VesselInfoPanel extends Component {
 
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
+          <button
+            className={classnames(vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.isPinned })}
+            onClick={() => { this.props.togglePin(); }}
+          />
+
           {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>
@@ -134,6 +140,7 @@ VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
   hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
+  togglePin: React.PropTypes.func,
   login: React.PropTypes.func,
   userPermissions: React.PropTypes.array
 };
