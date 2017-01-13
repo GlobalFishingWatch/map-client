@@ -120,7 +120,7 @@ class VesselInfoPanel extends Component {
       >
         <div>
           <span
-            onClick={() => this.props.toggleVisibility(false)}
+            onClick={() => this.props.hide()}
             className={buttonCloseStyles['c-button-close']}
           >
             <CloseIcon className={buttonCloseStyles.cross} />
@@ -133,7 +133,7 @@ class VesselInfoPanel extends Component {
 
 VesselInfoPanel.propTypes = {
   vesselInfo: React.PropTypes.object,
-  toggleVisibility: React.PropTypes.func,
+  hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
   login: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool,

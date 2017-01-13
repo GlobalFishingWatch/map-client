@@ -107,7 +107,6 @@ SearchPanel.propTypes = {
   drawVessel: React.PropTypes.func,
   getSearchResults: React.PropTypes.func,
   search: React.PropTypes.object,
-  toggleVisibility: React.PropTypes.func,
   vesselVisibility: React.PropTypes.bool, // Whether the search panel is expanded or closed
   visible: React.PropTypes.bool
 };

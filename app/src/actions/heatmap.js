@@ -15,7 +15,7 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from './helpers/heatmapTileData';
-import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo } from 'actions/vesselInfo';
+import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo, clearTrack } from 'actions/vesselInfo';
 
 
 export function getTile(uid, tileCoordinates, canvas) {
@@ -132,10 +132,7 @@ export function queryHeatmap(tileQuery, latLng) {
     });
     vessels = _.flatten(vessels);
 
-    dispatch({
-      type: SET_VESSEL_TRACK,
-      payload: null
-    });
+    dispatch(clearTrack());
 
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a succesful vessel query, not a cluster
