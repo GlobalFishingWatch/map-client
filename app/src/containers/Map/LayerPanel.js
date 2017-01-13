@@ -7,7 +7,7 @@ import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'actions/lay
 const mapStateToProps = (state) => ({
   layers: state.layers,
   currentlyReportedLayerId: state.report.layerId,
-  userPermissions: state.user.acl
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = (dispatch) => ({

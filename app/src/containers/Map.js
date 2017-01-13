@@ -29,7 +29,7 @@ const mapStateToProps = (state) => ({
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
   layerLibraryModal: state.map.layerLibraryModal.open,
-  userPermissions: state.user.acl
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

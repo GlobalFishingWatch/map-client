@@ -14,7 +14,7 @@ export function initLayers(layers_) {
     let layers = layers_
       .filter(l => _.values(LAYER_TYPES).indexOf(l.type) !== -1);
 
-    if (state.user.acl.indexOf('seeVesselsLayers') === -1) {
+    if (state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
       layers = layers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
     }
 

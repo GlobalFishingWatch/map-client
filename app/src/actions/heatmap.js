@@ -112,7 +112,7 @@ export function queryHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
 
-    if (state.user.acl.indexOf('selectVessel') === -1) {
+    if (state.user.userPermissions.indexOf('selectVessel') === -1) {
       return;
     }
 

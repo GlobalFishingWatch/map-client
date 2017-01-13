@@ -4,7 +4,7 @@ import { login } from 'actions/user';
 
 const mapStateToProps = (state) => ({
   layers: state.layers,
-  userPermissions: state.user.acl
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = dispatch => ({

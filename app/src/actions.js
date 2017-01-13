@@ -22,7 +22,7 @@ export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
 
 // User actions
 export const SET_USER = 'SET_USER';
-export const SET_ACL = 'SET_ACL';
+export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS';
 export const SET_TOKEN = 'SET_TOKEN';
 export const LOGOUT = 'LOGOUT';
 export const TOKEN_SESSION = 'TOKEN_SESSION';
