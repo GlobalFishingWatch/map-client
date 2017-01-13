@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => ({
   },
   zoomIntoVesselCenter: () => {
     dispatch(zoomIntoVesselCenter());
+  },
+  togglePin: () => {
+    console.log('togglePin');
   }
 });
 
