@@ -16,8 +16,8 @@ function getUserData(data) {
   return data;
 }
 
-function getAclData() {
-  return ['reporting'];
+function getAclData(data) {
+  return data.allowedFeatures;
 }
 
 export function getLoggedUser() {

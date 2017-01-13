@@ -46,7 +46,7 @@ class ControlPanel extends Component {
             <a
               className="login-required-link"
               onClick={this.props.login}
-            >Click here to login and see more details</a>
+            >Only registered users can use the search feature. Click here to log in.</a>
           </div>
         </AccordionItem>);
     }
