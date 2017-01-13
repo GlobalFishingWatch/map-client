@@ -41,8 +41,7 @@ class SearchResult extends Component {
 SearchResult.propTypes = {
   drawVessel: React.PropTypes.func,
   keyword: React.PropTypes.string,
-  vesselInfo: React.PropTypes.object,
-  vesselVisibility: React.PropTypes.bool
+  vesselInfo: React.PropTypes.object
 };
 
 export default SearchResult;

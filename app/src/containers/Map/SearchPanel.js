@@ -5,8 +5,7 @@ import { getSearchResults } from 'actions/search';
 import { getVesselTrack, setCurrentVessel } from 'actions/vesselInfo';
 
 const mapStateToProps = (state) => ({
-  search: state.search,
-  vesselVisibility: state.vesselInfo.vesselVisibility
+  search: state.search
 });
 
 const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {

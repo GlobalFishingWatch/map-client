@@ -26,7 +26,8 @@ export function setZoom(zoom) {
       type: SET_ZOOM,
       payload: zoom
     });
-    if (getState().vesselInfo && getState().vesselInfo.details && getState().vesselInfo.details.isCluster === true) {
+    if (getState().vesselInfo && getState().vesselInfo.details &&
+        (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
       dispatch(clearVesselInfo());
     }
   };

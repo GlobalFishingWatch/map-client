@@ -6,7 +6,6 @@ import { login } from 'actions/user';
 
 const mapStateToProps = (state) => ({
   vesselInfo: state.vesselInfo.details,
-  vesselVisibility: state.vesselInfo.vesselVisibility,
   userPermissions: state.user.userPermissions
 });
 
