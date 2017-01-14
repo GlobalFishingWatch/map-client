@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import { GET_LAYER_LIBRARY, SET_LAYERS } from 'actions';
+import { GET_LAYER_LIBRARY } from 'actions';
 import { getWorkspace } from 'actions/workspace';
 import calculateLayerId from 'util/calculateLayerId';
+import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'actions/layers';
 
 export function getLayerLibrary() {
   return (dispatch, getState) => {
@@ -46,60 +46,15 @@ export function getLayerLibrary() {
 }
 
 export function addLayer(layerId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const layerLibrary = _.cloneDeep(state.layerLibrary.layers);
-    const layerToAdd = _.find(layerLibrary, (layer) => layer.id === layerId);
-    const newLayers = _.cloneDeep(state.layers);
-    const addedLayer = _.find(newLayers, layer => layer.id === layerToAdd.id);
-
-    if (layerToAdd === undefined) {
-      return;
-    }
-
-    layerToAdd.added = true;
-    layerToAdd.visible = true;
-
-    // not added, updates attributes and adds it into the array of layers
-    if (addedLayer === undefined) {
-      newLayers.push(layerToAdd);
-    } else {
-      // already added, only need to update its attributes
-      addedLayer.added = true;
-      addedLayer.visible = true;
-    }
-
-    dispatch({
-      type: GET_LAYER_LIBRARY, payload: layerLibrary
-    });
-
-    dispatch({
-      type: SET_LAYERS, payload: newLayers
-    });
+  return (dispatch) => {
+    dispatch(toggleLayerVisibility(layerId, true));
+    dispatch(toggleLayerWorkspacePresence(layerId, true));
   };
 }
 
 export function removeLayer(layerId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const library = _.cloneDeep(state.layerLibrary.layers);
-    const newLayers = _.cloneDeep(state.layers);
-
-    const layerLibrary = _.find(library, (layer) => layer.id === layerId);
-    const layerToRemove = _.find(newLayers, (layer) => layer.id === layerId);
-    if (layerToRemove === undefined) {
-      return;
-    }
-
-    layerLibrary.added = false;
-    layerToRemove.added = false;
-
-    dispatch({
-      type: GET_LAYER_LIBRARY, payload: library
-    });
-
-    dispatch({
-      type: SET_LAYERS, payload: newLayers
-    });
+  return (dispatch) => {
+    dispatch(toggleLayerVisibility(layerId, false));
+    dispatch(toggleLayerWorkspacePresence(layerId, false));
   };
 }

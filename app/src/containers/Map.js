@@ -17,6 +17,9 @@ import {
 import {
   toggleLayerVisibility
 } from 'actions/layers';
+import {
+  getWorkspace
+} from 'actions/workspace';
 
 const mapStateToProps = (state) => ({
   center: state.map.center,
@@ -32,9 +35,10 @@ const mapStateToProps = (state) => ({
   userPermissions: state.user.userPermissions
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getLayerLibrary: () => {
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  loadLayers: () => {
     dispatch(getLayerLibrary());
+    dispatch(getWorkspace(ownProps.workspaceId));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));

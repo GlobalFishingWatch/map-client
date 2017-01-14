@@ -1,6 +1,13 @@
 import _ from 'lodash';
 import { LAYER_TYPES } from 'constants';
-import { SET_LAYERS, TOGGLE_LAYER_VISIBILITY, SET_LAYER_OPACITY, SET_LAYER_HUE, SET_TILESET_URL } from 'actions';
+import {
+  SET_LAYERS,
+  TOGGLE_LAYER_VISIBILITY,
+  TOGGLE_LAYER_WORKSPACE_PRESENCE,
+  SET_LAYER_OPACITY,
+  SET_LAYER_HUE,
+  SET_TILESET_URL
+} from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
 export function initLayers(workspaceLayers, libraryLayers) {
@@ -23,9 +30,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
       const matchedWorkspaceLayer = _.find(workspaceLayers, workspaceLayer => libraryLayer.id === workspaceLayer.id);
       if (matchedWorkspaceLayer) {
         Object.assign(matchedWorkspaceLayer, {
-          library: true,
-          added: true,
-          description: libraryLayer.description || matchedWorkspaceLayer.description
+          library: true, added: true, description: libraryLayer.description || matchedWorkspaceLayer.description
         });
       } else {
         workspaceLayers.push(Object.assign(libraryLayer, { added: false }));
@@ -59,10 +64,18 @@ export function initLayers(workspaceLayers, libraryLayers) {
   };
 }
 
-export function toggleLayerVisibility(layerId, forceShow = false) {
+export function toggleLayerVisibility(layerId, forceStatus = null) {
   return {
     type: TOGGLE_LAYER_VISIBILITY, payload: {
-      layerId, forceShow
+      layerId, forceStatus
+    }
+  };
+}
+
+export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
+  return {
+    type: TOGGLE_LAYER_WORKSPACE_PRESENCE, payload: {
+      layerId, forceStatus
     }
   };
 }
