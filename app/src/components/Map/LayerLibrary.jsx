@@ -32,6 +32,7 @@ class LayerLibrary extends Component {
 
     if (this.props.layers.length > 0) {
       this.props.layers.forEach((layer, i) => {
+        if (!layer.library) return;
         library.push(<li
           className={LayerListStyles['layer-item']}
           key={i}
@@ -42,6 +43,9 @@ class LayerLibrary extends Component {
               type="checkbox"
               checked={layer.added}
               onChange={() => this.onChange(layer)}
+              style={{
+                color: layer.color
+              }}
             />
             <span className={LayerListStyles['layer-title']}>
               {layer.title}
@@ -79,9 +83,7 @@ LayerLibrary.propTypes = {
   removeLayer: React.PropTypes.func,
   // sets modal with info about the current layer
   setLayerInfoModal: React.PropTypes.func,
-  // function to set visibility of the layer library modal
-  setLayerLibraryModalVisibility: React.PropTypes.func,
-  // funcion to change visibility of the current layer
+  // function to change visibility of the current layer
   toggleLayerVisibility: React.PropTypes.func
 };
 

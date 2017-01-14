@@ -1,144 +1,103 @@
 {
   "workspace": {
     "map": {
-      "center": [0, 0],
+      "center": [
+        0,
+        0
+      ],
       "basemap": "satellite",
       "zoom": 3,
       "layers": [
         {
           "title": "Bathimetry",
           "description": "Bathimetry of the oceans",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json"
-            }
-          },
+          "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
           "visible": false,
           "color": "#1a7ff0",
           "type": "CartoDBAnimation",
-          "id": 0
+          "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
         },
         {
           "title": "Ports",
           "description": "Ports of the world. Zoom in to show smaller ports",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json"
-            }
-          },
+          "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json",
           "visible": false,
           "color": "#1a7ff0",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
         },
         {
           "title": "Labels",
           "description": "Labels of continents, countries and regions",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json"
-            }
-          },
+          "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json",
           "visible": false,
           "color": "#da0ff0",
-          "type": "CartoDBAnimation"
+          "type": "CartoDBAnimation",
+          "id": "2c1c344e-5af7-11e6-91af-0ee66e2c9693"
         },
         {
           "title": "VESSEL",
           "description": "Fishing effort layer (fr)",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms"
-            }
-          },
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms",
           "visible": true,
           "color": "#88FBFF",
           "hue": 182,
           "type": "ClusterAnimation",
-          "opacity": 1
+          "opacity": 1,
+          "id": "801-tileset-nz2-tms"
         },
         {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
           "reportable": true,
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mpant/source"
-            }
-          },
-          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mpant",
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mpant/source",
           "visible": true,
           "color": "#da0000",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": 2
+          "id": "mpant"
         },
         {
           "title": "MPA - Restricted Use",
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
           "reportable": true,
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mparu/source"
-            }
-          },
-          "descriptionUrl": "http://beta.globalfishingwatch.org/how-to/definitions/#def_mparu",
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mparu/source",
           "visible": true,
           "color": "#c45e00",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": 3
+          "id": "mparu"
         },
         {
           "title": "EEZ",
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "reportable": true,
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source"
-            }
-          },
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source",
           "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": 4
+          "id": "eez"
         },
         {
           "title": "High Seas Pocket",
           "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source"
-            }
-          },
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source",
           "visible": true,
           "color": "#00006d",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": 5
+          "id": "highseas"
         },
         {
           "title": "RFMO",
           "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
-          "source": {
-            "type": "BinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/rfmo/source"
-            }
-          },
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/rfmo/source",
           "visible": false,
           "color": "blue",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": 6
+          "id": "rfmo"
         }
       ]
     },

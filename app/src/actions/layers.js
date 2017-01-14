@@ -6,50 +6,34 @@ import { updateFlagFilters } from 'actions/filters';
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState();
-    const workspaceLayersIds = [];
-
-    // Get all ids coming from workspace
-    workspaceLayers.forEach((l) => {
-      if (l.id === undefined) {
-        return;
-      }
-      workspaceLayersIds.push(l.id);
-    });
-
-    // formats layer object to keep a consistent format around the app
-    libraryLayers.forEach(layer => {
-      // moves "args" content to the root of the object
-      Object.assign(layer, layer.args);
-      // removes "args" property from the object
-      /* eslint no-param-reassign: 0 */
-      delete layer.args;
-    });
-
-    // Match workspace ids with library ones
-    const matchedLayers = _.filter(libraryLayers, layer => workspaceLayersIds.indexOf(layer.id) !== -1);
-
-    matchedLayers.forEach(layer => {
-      const localLayer = _.find(workspaceLayers, workspaceLayer => workspaceLayer.id === layer.id);
-
-      if (!localLayer) {
-        return;
-      }
-
-      localLayer.added = true;
-
-      // overwrites API values with workspace ones
-      Object.assign(layer, localLayer);
-    });
-
-    let layers = matchedLayers
-      .filter(layer => _.values(LAYER_TYPES).indexOf(layer.type) !== -1);
 
     if (state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
-      layers = layers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
+      /* eslint no-param-reassign: 0 */
+      workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
+      libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
     }
 
+    workspaceLayers.forEach(layer => {
+      /* eslint no-param-reassign: 0 */
+      layer.added = true;
+      layer.library = false;
+    });
+
+    libraryLayers.forEach(libraryLayer => {
+      const matchedWorkspaceLayer = _.find(workspaceLayers, workspaceLayer => libraryLayer.id === workspaceLayer.id);
+      if (matchedWorkspaceLayer) {
+        Object.assign(matchedWorkspaceLayer, {
+          library: true,
+          added: true,
+          description: libraryLayer.description || matchedWorkspaceLayer.description
+        });
+      } else {
+        workspaceLayers.push(Object.assign(libraryLayer, { added: false }));
+      }
+    });
+
     // parses opacity attribute
-    layers.forEach(layer => {
+    workspaceLayers.forEach(layer => {
       const l = layer;
       if (!!layer.opacity) {
         l.opacity = parseFloat(layer.opacity);
@@ -58,21 +42,19 @@ export function initLayers(workspaceLayers, libraryLayers) {
       }
     });
 
-    const vesselLayer = layers
+    const vesselLayer = workspaceLayers
       .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
 
     if (vesselLayer !== undefined) {
-      const tilesetUrl = vesselLayer.source.args.url;
+      // TODO: we should probably store this somewhere else on the WS
+      const tilesetUrl = vesselLayer.url;
 
-      // TODO this is only used by vesselInfo, but the data is inside a layer
-      // review wit SkyTruth
       dispatch({
         type: SET_TILESET_URL, payload: tilesetUrl
       });
     }
-
     dispatch({
-      type: SET_LAYERS, payload: layers
+      type: SET_LAYERS, payload: workspaceLayers
     });
   };
 }

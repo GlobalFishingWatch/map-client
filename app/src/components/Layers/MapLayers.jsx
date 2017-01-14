@@ -228,7 +228,7 @@ class MapLayers extends Component {
   addCartoLayer(layerSettings, index, reportLayerId) {
     const addedLayers = this.state.addedLayers;
     const promise = new Promise(((resolve) => {
-      cartodb.createLayer(this.map, layerSettings.source.args.url)
+      cartodb.createLayer(this.map, layerSettings.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);

@@ -3,7 +3,6 @@ import _ from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
   COMPLETE_TILE_LOAD,
-  SET_VESSEL_TRACK,
   SET_VESSEL_CLUSTER_CENTER
 } from '../actions';
 import {

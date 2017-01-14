@@ -10,6 +10,7 @@ import {
 } from 'actions';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
+import calculateLayerId from 'util/calculateLayerId';
 
 function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
@@ -51,7 +52,7 @@ function processNewWorkspace(data) {
 
   const vesselLayer = workspace.map.layers
     .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-  const tilesetUrl = vesselLayer.source.args.url;
+  const tilesetUrl = vesselLayer.url;
 
   return {
     zoom: workspace.map.zoom,
@@ -90,9 +91,20 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_BASEMAP, payload: workspace.basemap
   });
 
-  const layers = workspace.map.animations.map(l => Object.assign({}, l.args, { type: l.type }));
+  const layers = workspace.map.animations.map(l => ({
+    title: l.title,
+    description: l.description,
+    color: l.color,
+    visible: l.visible,
+    type: l.type,
+    url: l.args.source.args.url
+  }));
+  layers.forEach(layer => {
+    /* eslint no-param-reassign: 0 */
+    layer.id = calculateLayerId(layer);
+  });
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-  const tilesetUrl = vesselLayer.source.args.url;
+  const tilesetUrl = vesselLayer.url;
 
   return {
     zoom: workspace.state.zoom,
@@ -110,10 +122,10 @@ function processLegacyWorkspace(data, dispatch) {
  * the center of the map, the timeline dates and the available layers
  *
  * @export getWorkspace
- * @param {string} workspaceId - workspace's ID to load
+ * @param {null} workspaceId - workspace's ID to load
  * @returns {object}
  */
-export function getWorkspace(workspaceId) {
+export function getWorkspace(workspaceId = null) {
   return (dispatch, getState) => {
     const state = getState();
 

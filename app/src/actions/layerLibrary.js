@@ -1,45 +1,45 @@
 import _ from 'lodash';
-import {
-  GET_LAYER_LIBRARY,
-  SET_LAYERS
-} from 'actions';
-
-import {
-  getWorkspace
-} from 'actions/workspace';
+import { GET_LAYER_LIBRARY, SET_LAYERS } from 'actions';
+import { getWorkspace } from 'actions/workspace';
+import calculateLayerId from 'util/calculateLayerId';
 
 export function getLayerLibrary() {
   return (dispatch, getState) => {
     const state = getState();
 
-    // by now, API requires auth. This should change in future
-
-    if (!state.user.token) return false;
-    fetch(`${MAP_API_ENDPOINT}/v1/directory`, {
-      headers: {
+    const options = {};
+    if (!state.user.token) {
+      options.headers = {
         Authorization: `Bearer ${state.user.token}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      const layers = data.entries;
+      };
+    }
 
-      // adds an id to each layer. Remove when API gives id
-      let id = 0;
-      layers.forEach(layer => {
-        /* eslint no-param-reassign: 0 */
-        layer.id = id;
-        layer.added = false;
-        id++;
+    fetch(`${MAP_API_ENDPOINT}/v1/directory`, options)
+      .then(res => res.json())
+      .then(data => {
+        const layers = data.entries.map(l => ({
+          id: l.args.id,
+          title: l.args.title,
+          description: l.args.description,
+          color: l.args.color,
+          visible: false,
+          type: l.type,
+          url: l.args.source.args.url,
+          added: false,
+          library: true
+        }));
+
+        layers.forEach(layer => {
+          /* eslint no-param-reassign: 0 */
+          layer.id = calculateLayerId(layer);
+        });
+
+        dispatch({
+          type: GET_LAYER_LIBRARY, payload: layers
+        });
+
+        dispatch(getWorkspace());
       });
-
-      dispatch({
-        type: GET_LAYER_LIBRARY,
-        payload: layers
-      });
-
-      dispatch(getWorkspace());
-    });
 
     return true;
   };
@@ -53,7 +53,9 @@ export function addLayer(layerId) {
     const newLayers = _.cloneDeep(state.layers);
     const addedLayer = _.find(newLayers, layer => layer.id === layerToAdd.id);
 
-    if (layerToAdd === undefined) return;
+    if (layerToAdd === undefined) {
+      return;
+    }
 
     layerToAdd.added = true;
     layerToAdd.visible = true;
@@ -68,13 +70,11 @@ export function addLayer(layerId) {
     }
 
     dispatch({
-      type: GET_LAYER_LIBRARY,
-      payload: layerLibrary
+      type: GET_LAYER_LIBRARY, payload: layerLibrary
     });
 
     dispatch({
-      type: SET_LAYERS,
-      payload: newLayers
+      type: SET_LAYERS, payload: newLayers
     });
   };
 }
@@ -87,19 +87,19 @@ export function removeLayer(layerId) {
 
     const layerLibrary = _.find(library, (layer) => layer.id === layerId);
     const layerToRemove = _.find(newLayers, (layer) => layer.id === layerId);
-    if (layerToRemove === undefined) return;
+    if (layerToRemove === undefined) {
+      return;
+    }
 
     layerLibrary.added = false;
     layerToRemove.added = false;
 
     dispatch({
-      type: GET_LAYER_LIBRARY,
-      payload: library
+      type: GET_LAYER_LIBRARY, payload: library
     });
 
     dispatch({
-      type: SET_LAYERS,
-      payload: newLayers
+      type: SET_LAYERS, payload: newLayers
     });
   };
 }

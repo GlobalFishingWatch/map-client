@@ -14,7 +14,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'containers/LayerLibrary';
+import LayerLibrary from '../containers/Map/LayerLibrary';
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
