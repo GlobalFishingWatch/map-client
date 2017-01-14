@@ -36,7 +36,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  loadLayers: () => {
+  loadInitialState: () => {
     dispatch(getLayerLibrary());
     dispatch(getWorkspace(ownProps.workspaceId));
   },
