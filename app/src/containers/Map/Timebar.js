@@ -8,7 +8,10 @@ import {
 } from 'actions/filters';
 
 const mapStateToProps = state => ({
-  filters: state.filters
+  timelineOverallExtent: state.filters.timelineOverallExtent,
+  timelineOuterExtent: state.filters.timelineOuterExtent,
+  timelineInnerExtent: state.filters.timelineInnerExtent,
+  timelinePaused: state.filters.timelinePaused
 });
 
 const mapDispatchToProps = dispatch => ({

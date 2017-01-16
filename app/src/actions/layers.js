@@ -7,7 +7,8 @@ import {
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
   SET_TILESET_URL,
-  SET_MAX_ZOOM
+  SET_MAX_ZOOM,
+  SET_OVERALL_TIMELINE_DATES
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -88,10 +89,12 @@ export function loadTilesetMetadata(tilesetUrl) {
           });
         }
 
-        const foo = [];
-        data.temporalExtents.forEach(pair => {
-          foo.push([new Date(pair[0]), new Date(pair[1])]);
-        });
+        if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
+          dispatch({
+            type: SET_OVERALL_TIMELINE_DATES,
+            payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
+          });
+        }
       });
 
     dispatch({

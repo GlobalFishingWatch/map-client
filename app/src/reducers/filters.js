@@ -3,7 +3,8 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTERS,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_OVER_DATES
+  SET_TIMELINE_OVER_DATES,
+  SET_OVERALL_TIMELINE_DATES
 } from 'actions';
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -41,18 +42,28 @@ export default function (state = initialState, action) {
       const timelineInnerExtentIndexes = [startIndex, endIndex];
 
       return Object.assign({}, state, {
-        timelineInnerExtent,
-        timelineInnerExtentIndexes
+        timelineInnerExtent, timelineInnerExtentIndexes
       });
     }
     case SET_OUTER_TIMELINE_DATES:
       return Object.assign({}, state, {
-        timelineOuterExtent: action.payload
+        timelineOuterExtent: [
+          new Date(Math.max(action.payload[0], state.timelineOverallExtent[0])),
+          new Date(Math.min(action.payload[1], state.timelineOverallExtent[1]))
+        ]
       });
+    case SET_OVERALL_TIMELINE_DATES: {
+      return Object.assign({}, state, {
+        timelineOverallExtent: action.payload,
+        timelineOuterExtent: [
+          new Date(Math.max(action.payload[0], state.timelineOuterExtent[0])),
+          new Date(Math.min(action.payload[1], state.timelineOuterExtent[1]))
+        ]
+      });
+    }
     case SET_FLAG_FILTERS:
       return Object.assign({}, state, {
-        flags: action.payload.flagFilters,
-        flagsLayers: action.payload.flagFiltersLayers
+        flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers
       });
     case SET_PLAYING_STATUS:
       return Object.assign({}, state, {
