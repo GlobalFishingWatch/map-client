@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'constants';
+import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -262,7 +262,7 @@ class Map extends Component {
                 mapTypeControl: false,
                 zoomControl: false,
                 minZoom: MIN_ZOOM_LEVEL,
-                maxZoom: MAX_ZOOM_LEVEL
+                maxZoom: this.props.maxZoom
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onMousemove={this.onMouseMove}
@@ -302,6 +302,7 @@ Map.propTypes = {
   setCenter: React.PropTypes.func,
   center: React.PropTypes.array,
   zoom: React.PropTypes.number,
+  maxZoom: React.PropTypes.number,
   /**
    * If share modal is open or closed
    */

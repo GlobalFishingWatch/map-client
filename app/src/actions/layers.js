@@ -6,7 +6,8 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
-  SET_TILESET_URL
+  SET_TILESET_URL,
+  SET_MAX_ZOOM
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -60,6 +61,41 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
     dispatch({
       type: SET_LAYERS, payload: workspaceLayers
+    });
+  };
+}
+
+export function loadTilesetMetadata(tilesetUrl) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const headers = {
+      'Content-Type': 'application/json', Accept: 'application/json'
+    };
+
+    if (state.user.token) {
+      headers.Authorization = `Bearer ${state.user.token}`;
+    }
+
+    fetch(`${tilesetUrl}/header`, {
+      method: 'GET', headers
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.maxZoom !== undefined) {
+          dispatch({
+            type: SET_MAX_ZOOM, payload: data.maxZoom
+          });
+        }
+
+        const foo = [];
+        data.temporalExtents.forEach(pair => {
+          foo.push([new Date(pair[0]), new Date(pair[1])]);
+        });
+      });
+
+    dispatch({
+      type: SET_TILESET_URL, payload: tilesetUrl
     });
   };
 }
