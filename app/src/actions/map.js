@@ -124,7 +124,7 @@ export function saveWorkspace(errorAction) {
           map: {
             center: state.map.center,
             zoom: state.map.zoom,
-            layers: state.layers
+            layers: state.layers.filter(layer => layer.added)
           },
           basemap: state.map.activeBasemap,
           timeline: {

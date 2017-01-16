@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
   SET_LAYERS,
   TOGGLE_LAYER_VISIBILITY,
+  TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
   SET_LAYER_HUE
 } from 'actions';
@@ -24,11 +25,17 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LAYERS:
       return action.payload.concat();
-
     case TOGGLE_LAYER_VISIBILITY: {
       /* eslint no-param-reassign: 0 */
       const layers = getUpdatedLayers(state, action, changedLayer => {
-        changedLayer.visible = (action.payload.forceShow === true) ? true : !changedLayer.visible;
+        changedLayer.visible = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.visible;
+      });
+      return layers;
+    }
+    case TOGGLE_LAYER_WORKSPACE_PRESENCE: {
+      /* eslint no-param-reassign: 0 */
+      const layers = getUpdatedLayers(state, action, changedLayer => {
+        changedLayer.added = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.added;
       });
       return layers;
     }

@@ -3,7 +3,6 @@ import _ from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
   COMPLETE_TILE_LOAD,
-  SET_VESSEL_TRACK,
   SET_VESSEL_CLUSTER_CENTER
 } from '../actions';
 import {
@@ -51,15 +50,7 @@ export function getTile(uid, tileCoordinates, canvas) {
       allPromises.push(allLayerPromises);
 
       allLayerPromises.then(rawTileData => {
-        if (!rawTileData || rawTileData.length === 0) {
-          console.warn('empty dataset');
-        }
-
         const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-        if (cleanVectorArrays.length !== rawTileData.length) {
-          console.warn('partially empty dataset');
-        }
-
         const groupedData = groupData(cleanVectorArrays);
         const vectorArray = addTilePixelCoordinates(tileCoordinates, groupedData);
         const data = getTilePlaybackData(
@@ -96,7 +87,6 @@ export function releaseTile(uid) {
       const tiles = layer.tiles;
       const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);
       if (releasedTileIndex === -1) {
-        console.warn('unknown tile released', uid);
         return;
       }
       tiles.splice(releasedTileIndex, 1);

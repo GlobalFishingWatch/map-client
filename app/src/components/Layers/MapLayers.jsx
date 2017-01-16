@@ -10,9 +10,7 @@ import { LAYER_TYPES } from 'constants';
 class MapLayers extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      addedLayers: {}
-    };
+    this.addedLayers = {};
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
@@ -123,8 +121,6 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
-
-    this.setState({ map: this.map });
   }
 
   componentWillUnmount() {
@@ -153,8 +149,7 @@ class MapLayers extends Component {
   updateLayers(nextProps) {
     const currentLayers = this.props.layers;
     const newLayers = nextProps.layers;
-    const addedLayers = this.state.addedLayers;
-    const initialLoad = Object.keys(this.state.addedLayers).length === 0;
+    const initialLoad = Object.keys(this.addedLayers).length === 0;
 
     const updatedLayers = newLayers.map(
       (layer, index) => {
@@ -176,12 +171,12 @@ class MapLayers extends Component {
       const oldLayer = currentLayers[i];
 
       // If the layer is already on the map and its visibility changed, we update it
-      if (addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
+      if (this.addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
         this.toggleLayerVisibility(newLayer);
         continue;
       }
 
-      if (addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
+      if (this.addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
         continue;
       }
@@ -189,7 +184,7 @@ class MapLayers extends Component {
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
 
-      if (addedLayers[newLayer.id] !== undefined) return;
+      if (this.addedLayers[newLayer.id] !== undefined) return;
 
       if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
         this.addHeatmapLayer(newLayer);
@@ -198,13 +193,11 @@ class MapLayers extends Component {
       }
     }
 
-    Promise.all(promises).then((() => {
-      this.setState({ addedLayers });
-    }));
+    Promise.all(promises);
   }
 
   addHeatmapLayer(newLayer) {
-    this.state.addedLayers[newLayer.id] = this.heatmapContainer.addLayer(newLayer);
+    this.addedLayers[newLayer.id] = this.heatmapContainer.addLayer(newLayer);
     this.setHeatmapFlags(this.props);
     this.renderHeatmap(this.props);
   }
@@ -226,16 +219,15 @@ class MapLayers extends Component {
    * @param reportLayerId used to toggle interactivity on or off
    */
   addCartoLayer(layerSettings, index, reportLayerId) {
-    const addedLayers = this.state.addedLayers;
     const promise = new Promise(((resolve) => {
-      cartodb.createLayer(this.map, layerSettings.source.args.url)
+      cartodb.createLayer(this.map, layerSettings.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.onCartoLayerFeatureClickBound(data.cartodb_id, latLng, layer.id);
           });
-          addedLayers[layer.id] = cartoLayer;
+          this.addedLayers[layer.id] = cartoLayer;
           resolve();
         }).bind(this, layerSettings));
     }));
@@ -254,7 +246,7 @@ class MapLayers extends Component {
   setLayersInteraction(reportLayerId) {
     this.heatmapLayer.interactive = (reportLayerId === null);
     this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach(layerSettings => {
-      const layer = this.state.addedLayers[layerSettings.id];
+      const layer = this.addedLayers[layerSettings.id];
       if (layer) {
         if (reportLayerId === layerSettings.id) {
           layer.setInteraction(true);
@@ -271,12 +263,10 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   toggleLayerVisibility(layerSettings) {
-    const layers = this.state.addedLayers;
-
     if (layerSettings.visible) {
-      layers[layerSettings.id].show();
+      this.addedLayers[layerSettings.id].show();
     } else {
-      layers[layerSettings.id].hide();
+      this.addedLayers[layerSettings.id].hide();
     }
 
     if (layerSettings.type === LAYER_TYPES.ClusterAnimation) {
@@ -289,11 +279,9 @@ class MapLayers extends Component {
    * @param layerSettings
    */
   setLayerOpacity(layerSettings) {
-    const layers = this.state.addedLayers;
+    if (!Object.keys(this.addedLayers).length) return;
 
-    if (!Object.keys(layers).length) return;
-
-    layers[layerSettings.id].setOpacity(layerSettings.opacity);
+    this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
 
     if (layerSettings.type === LAYER_TYPES.ClusterAnimation) {
       this.renderHeatmap(this.props);
@@ -381,7 +369,7 @@ class MapLayers extends Component {
   render() {
     return (<div>
       <PolygonReport
-        map={this.state.map}
+        map={this.map}
       />
     </div>);
   }

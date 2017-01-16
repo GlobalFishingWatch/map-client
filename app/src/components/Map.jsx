@@ -124,7 +124,8 @@ class Map extends Component {
   onMapIdle() {
     if (!this.map) {
       this.map = this.refs.map.props.map;
-      this.props.getWorkspace();
+      this.props.loadInitialState();
+
       this.defineBasemaps(this.props.basemaps);
 
       // pass map and viewport dimensions down to MapLayers
@@ -294,6 +295,7 @@ Map.propTypes = {
   token: React.PropTypes.string,
   tilesetUrl: React.PropTypes.string,
   setZoom: React.PropTypes.func,
+  loadInitialState: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
   toggleLayerVisibility: React.PropTypes.func,

@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
 
-import LayerItem from 'components/Map/LayerItem';
-
 import LayerLibraryStyles from 'styles/components/map/c-layer-management.scss';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
+
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
 class LayerLibrary extends Component {
+
+  onChange(layer) {
+    if (layer.added) {
+      this.props.removeLayer(layer.id);
+    } else {
+      this.props.addLayer(layer.id);
+    }
+  }
+
+  onClickInfo(layer) {
+    const modalParams = {
+      open: true,
+      info: layer
+    };
+
+    this.props.setLayerInfoModal(modalParams);
+  }
 
   render() {
     if (!this.props.layers) return null;
@@ -14,14 +32,34 @@ class LayerLibrary extends Component {
 
     if (this.props.layers.length > 0) {
       this.props.layers.forEach((layer, i) => {
-        library.push(<LayerItem
+        if (!layer.library) return;
+        library.push(<li
+          className={LayerListStyles['layer-item']}
           key={i}
-          layerIndex={i}
-          layer={layer}
-          layerLibraryDisplay
-          toggleLayerVisibility={this.props.toggleLayerVisibility}
-          openLayerInfoModal={this.props.setLayerInfoModal}
-        />);
+        >
+          <label>
+            <input
+              className={SwitcherStyles['c-switcher']}
+              type="checkbox"
+              checked={layer.added}
+              onChange={() => this.onChange(layer)}
+              style={{
+                color: layer.color
+              }}
+            />
+            <span className={LayerListStyles['layer-title']}>
+              {layer.title}
+            </span>
+          </label>
+          <ul className={LayerListStyles['layer-option-list']}>
+            <li
+              className={LayerListStyles['layer-option-item']}
+              onClick={() => this.onClickInfo(layer)}
+            >
+              <InfoIcon />
+            </li>
+          </ul>
+        </li>);
       });
     }
 
@@ -39,13 +77,13 @@ class LayerLibrary extends Component {
 LayerLibrary.propTypes = {
   // array of layers available in the library
   layers: React.PropTypes.array,
-  // function to get all available layers
-  setLayerLibrary: React.PropTypes.func,
+  // triggers when user adds a layer
+  addLayer: React.PropTypes.func,
+  // triggers when user removes a layer
+  removeLayer: React.PropTypes.func,
   // sets modal with info about the current layer
   setLayerInfoModal: React.PropTypes.func,
-  // function to set visibility of the layer library modal
-  setLayerLibraryModalVisibility: React.PropTypes.func,
-  // funcion to change visibility of the current layer
+  // function to change visibility of the current layer
   toggleLayerVisibility: React.PropTypes.func
 };
 
