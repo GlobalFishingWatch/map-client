@@ -17,9 +17,6 @@ import {
 import {
   toggleLayerVisibility
 } from 'actions/layers';
-import {
-  getWorkspace
-} from 'actions/workspace';
 
 const mapStateToProps = (state) => ({
   center: state.map.center,
@@ -37,36 +34,28 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   loadInitialState: () => {
-    dispatch(getLayerLibrary());
-    dispatch(getWorkspace(ownProps.workspaceId));
+    dispatch(getLayerLibrary(ownProps.workspaceId));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
-  },
-  setZoom: zoom => dispatch(setZoom(zoom)),
-  setCenter: center => dispatch(setCenter(center)),
+  }, setZoom: zoom => dispatch(setZoom(zoom)), setCenter: center => dispatch(setCenter(center)),
 
   openShareModal: () => {
     dispatch(openShareModal(true));
     dispatch(saveWorkspace(setShareModalError));
-  },
-  closeShareModal: () => {
+  }, closeShareModal: () => {
     dispatch(openShareModal(false));
     dispatch(deleteWorkspace());
     dispatch(setShareModalError(null));
-  },
-  closeLayerInfoModal: () => {
+  }, closeLayerInfoModal: () => {
     dispatch(setLayerInfoModal({
       open: false
     }));
-  },
-  closeSupportModal: () => {
+  }, closeSupportModal: () => {
     dispatch(setSupportModalVisibility(false));
-  },
-  openSupportModal: () => {
+  }, openSupportModal: () => {
     dispatch(setSupportModalVisibility(true));
-  },
-  closeLayerLibraryModal: () => {
+  }, closeLayerLibraryModal: () => {
     dispatch(setLayerLibraryModalVisibility(false));
   }
 });
