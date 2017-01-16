@@ -1,0 +1,36 @@
+@import '../../settings';
+
+.c-upload-layer {
+
+  > .upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .submit-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .submit-container > .submit-button {
+      width: 180px;
+    }
+  }
+
+  .column {
+    display: flex;
+    flex-basis: calc(50% - 13px);
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+
+    &:not(:first-child) {
+      margin: 15px 0 0;
+    }
+  }
+}

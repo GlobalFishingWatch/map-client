@@ -71,3 +71,6 @@ export const DISCARD_REPORT = 'DISCARD_REPORT';
 // heatmap
 export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
 export const COMPLETE_TILE_LOAD = 'COMPLETE_TILE_LOAD';
+
+// upload
+export const UPLOAD_USER_LAYER = 'UPLOAD_USER_LAYER';

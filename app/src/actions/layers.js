@@ -6,7 +6,8 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
-  SET_TILESET_URL
+  SET_TILESET_URL,
+  UPLOAD_USER_LAYER
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -97,5 +98,14 @@ export function setLayerHue(hue, layerId) {
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
     dispatch(updateFlagFilters());
+  };
+}
+
+export function uploadLayer(dataLayer) {
+  return (dispatch) => {
+    dispatch({
+      type: UPLOAD_USER_LAYER,
+      payload: dataLayer
+    });
   };
 }

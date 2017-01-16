@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
+import ButtonStyles from 'styles/components/map/c-button.scss';
 
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
@@ -75,7 +77,7 @@ class LayerLibraryModal extends Component {
           </ul>}
         <div className={LayerLibraryStyles['footer-container']}>
           <button
-            className={LayerLibraryStyles['done-button']}
+            className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'], LayerLibraryStyles['done-button'])}
             onClick={() => this.props.closeModal()}
           >
             done
