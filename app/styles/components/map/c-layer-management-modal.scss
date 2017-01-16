@@ -24,15 +24,16 @@
       color: $color-4;
       cursor: pointer;
       font-size: $font-size-xs-small;
-      text-transform: uppercase;
       min-width: 145px;
       padding: 0 20px;
       position: relative;
       text-align: center;
+      text-transform: uppercase;
       z-index: 1;
 
       &.-selected {
         color: $color-1;
+
         &::before {
           background-color: $color-4;
           border-radius: 100px;

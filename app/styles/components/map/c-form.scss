@@ -40,12 +40,12 @@
   }
 
   .file-container {
-    position: relative;
     height: 40px;
+    position: relative;
 
     > .fake-file-container {
-      left: 0;
       height: 100%;
+      left: 0;
       position: absolute;
       top: 0;
       width: 100%;
@@ -54,8 +54,8 @@
     > .fake-file-container > .fake-file-input {
       align-items: center;
       display: flex;
-      left: 0;
       height: 100%;
+      left: 0;
       position: absolute;
       width: 66.666%;
       z-index: 1;
@@ -63,10 +63,10 @@
       > .fake-file-input-placeholder {
         color: $color-14;
         font-size: $font-size-small;
-        text-overflow: ellipsis;
         overflow-x: auto;
-        width: 100%;
+        text-overflow: ellipsis;
         white-space: nowrap;
+        width: 100%;
       }
     }
 
@@ -94,15 +94,10 @@
     resize: none;
   }
 
-  input[type="file"] {
+  .file-input {
     border: 0;
-    // cursor: pointer;
-    // height: 100%;
+    height: 100%;
     opacity: 0;
-    // position: absolute;
-    // right: 0;
-    // top: 0;
-    // width: calc(33.33%);
-    // z-index: 1;
+    width: 100%;
   }
 }
