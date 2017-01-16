@@ -14,7 +14,7 @@ import {
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_LIBRARY_MODAL_VISIBILITY
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
 } from '../actions';
 
 const initialState = {
@@ -53,7 +53,7 @@ const initialState = {
   supportModal: {
     open: false
   },
-  layerLibraryModal: {
+  layerManagementModal: {
     open: false
   },
   workspaceId: null
@@ -119,11 +119,12 @@ export default function (state = initialState, action) {
       return newState;
     }
 
-    case SET_LAYER_LIBRARY_MODAL_VISIBILITY: {
+    case SET_LAYER_MANAGEMENT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
-      newState.layerLibraryModal = {
+      newState.layerManagementModal = {
         open: action.payload
       };
+
       return newState;
     }
 

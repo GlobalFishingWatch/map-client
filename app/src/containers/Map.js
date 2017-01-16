@@ -9,7 +9,7 @@ import {
   setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerLibraryModalVisibility
+  setLayerManagementModalVisibility
 } from 'actions/map';
 import {
   getLayerLibrary
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => ({
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
-  layerLibraryModal: state.map.layerLibraryModal.open,
+  layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions
 });
 
@@ -55,8 +55,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setSupportModalVisibility(false));
   }, openSupportModal: () => {
     dispatch(setSupportModalVisibility(true));
-  }, closeLayerLibraryModal: () => {
-    dispatch(setLayerLibraryModalVisibility(false));
+  }, closeLayerManagementModal: () => {
+    dispatch(setLayerManagementModalVisibility(false));
   }
 });
 

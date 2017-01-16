@@ -1,3 +1,74 @@
 @import '../../settings';
 
-.c-layer-library {};
+.c-layer-library {
+
+  > .search-container {
+    position: relative;
+
+    > .search-input {
+      border: 0;
+      border-bottom: 1px solid $color-14;
+      background: transparent;
+      color: $color-4;
+      font-size: $font-size-x-small;
+      line-height: 1.9;
+      outline: none;
+      padding: 0 20px 0 0;
+      width: 100%;
+
+      ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: $color-14;
+      }
+
+      ::-moz-placeholder { /* Firefox 19+ */
+        color: $color-14;
+      }
+
+      :-ms-input-placeholder { /* IE 10+ */
+        color: $color-14;
+      }
+    }
+
+    > .search-icon {
+      fill: $color-14;
+      position: absolute;
+      bottom: 4px;
+      right: 0;
+    }
+  }
+
+  > .layer-list {
+    background-image: linear-gradient(to bottom, $color-24, $color-2);
+    column-count: 2;
+    // column-gap: 105px;
+    margin: 10px 0 0;
+    max-height: 210px;
+    overflow-y: auto;
+  }
+
+  > .layer-list > .layer-item {
+    display: flex;
+    justify-content: space-between;
+    max-width: 275px;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+  }
+
+  > .footer-container {
+    display: flex;
+    justify-content: center;
+
+    > .done-button {
+      background-color: $color-3;
+      color: $color-4;
+      cursor: pointer;
+      font-size: $font-size-x-small;
+      font-weight: $font-weight-bold;
+      padding: 15px 0;
+      text-transform: uppercase;
+      width: 180px;
+    }
+  }
+};

@@ -1,0 +1,52 @@
+@import '../../settings';
+
+.c-layer-management-modal {
+
+  > .title {
+    color: $color-4;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-bold;
+    text-align: center;
+  }
+
+  > .content-switcher {
+    align-items: center;
+    border: 1px solid $color-14;
+    border-radius: 100px;
+    display: flex;
+    font-weight: $font-weight-bold;
+    height: 40px;
+    justify-content: space-around;
+    margin: 25px auto;
+    width: 305px;
+
+    > .content-option {
+      color: $color-4;
+      cursor: pointer;
+      font-size: $font-size-xs-small;
+      text-transform: uppercase;
+      min-width: 145px;
+      padding: 0 20px;
+      position: relative;
+      text-align: center;
+      z-index: 1;
+
+      &.-selected {
+        color: $color-1;
+        &::before {
+          background-color: $color-4;
+          border-radius: 100px;
+          content: '';
+          display: inline-block;
+          height: 30px;
+          left: 50%;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 145px;
+          z-index: -1;
+        }
+      }
+    }
+  }
+}
