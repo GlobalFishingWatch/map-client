@@ -27,9 +27,21 @@ class ControlPanel extends Component {
   renderSearch() {
     const titleLiteral = window.innerWidth > 1024 ? 'search vessels' : 'search';
 
+    let pinnedVessels;
+    const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
+
+    if (numPinnedVessels > 0) {
+      const numPinnedVesselsLabel = `${numPinnedVessels} pinned`;
+
+      pinnedVessels = (<div>
+        {numPinnedVesselsLabel}
+      </div>);
+    }
+
     const title = (
       <div className={controlPanelStyle['accordion-header']}>
         <h2 className={controlPanelStyle['accordion-title']}>{titleLiteral}</h2>
+        {pinnedVessels}
         <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
       </div>);
 
@@ -171,6 +183,7 @@ class ControlPanel extends Component {
 ControlPanel.propTypes = {
   login: React.PropTypes.func,
   layers: React.PropTypes.array,
+  vessels: React.PropTypes.array,
   userPermissions: React.PropTypes.array
 };
 
