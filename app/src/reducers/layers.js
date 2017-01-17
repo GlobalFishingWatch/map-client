@@ -55,8 +55,6 @@ export default function (state = initialState, action) {
       return layers;
     }
     case UPLOAD_USER_LAYER: {
-      // TODO
-      console.log(action);
       return {};
     }
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
 import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import ButtonStyles from 'styles/components/map/c-button.scss';
-
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
+
+const SHOW_SEARCH = false;
 
 class LayerLibraryModal extends Component {
 
@@ -67,10 +67,11 @@ class LayerLibraryModal extends Component {
 
     return (
       <div className={LayerLibraryStyles['c-layer-library']}>
-        <div className={LayerLibraryStyles['search-container']}>
+        {SHOW_SEARCH && <div className={LayerLibraryStyles['search-container']}>
           <input className={LayerLibraryStyles['search-input']} placeholder="Search layer" />
           <SearchIcon className={LayerLibraryStyles['search-icon']} />
         </div>
+        }
         {library &&
           <ul className={LayerLibraryStyles['layer-list']}>
             {library}
