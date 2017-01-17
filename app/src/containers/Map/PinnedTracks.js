@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PinnedTracks from 'components/Map/PinnedTracks';
-import { showPinnedVesselDetails, toggleVesselPin } from 'actions/vesselInfo';
+import { showPinnedVesselDetails, toggleVesselPin, setPinnedVesselHue } from 'actions/vesselInfo';
 
 const mapStateToProps = (state) => ({
   vessels: state.vesselInfo.details
@@ -13,7 +13,8 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveClicked: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));
   },
-  setTrackHue(/* hue */) {
+  testRandomHue(seriesgroup, hue) {
+    dispatch(setPinnedVesselHue(seriesgroup, hue));
   }
 });
 

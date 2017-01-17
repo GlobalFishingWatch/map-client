@@ -81,6 +81,8 @@ class MapLayers extends Component {
   }
 
   /**
+   * TODO remove this monster. This will be possible with an isolated container only interested
+   *    in relevant props.
    * update tracks layer when:
    * - user selected a new vessel (seriesgroup or selectedSeries changed)
    * - zoom level changed (needs fetching of a new tileset)
@@ -98,6 +100,11 @@ class MapLayers extends Component {
       return true;
     }
     if (this.props.vesselTracks.length !== nextProps.vesselTracks.length) {
+      return true;
+    }
+    if (nextProps.vesselTracks.some((vesselTrack, index) =>
+      vesselTrack.hue !== this.props.vesselTracks[index].hue
+    ) === true) {
       return true;
     }
     // if (this.props.vesselTracks.seriesgroup !== nextProps.vesselTracks.seriesgroup) {

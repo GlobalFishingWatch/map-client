@@ -5,10 +5,10 @@ import {
   SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS,
   SHOW_NO_VESSELS_INFO,
-  SHOW_VESSEL_LOADING_INFO,
   TOGGLE_ACTIVE_VESSEL_PIN,
   ADD_VESSEL,
-  SHOW_VESSEL_DETAILS
+  SHOW_VESSEL_DETAILS,
+  SET_PINNED_VESSEL_HUE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -17,10 +17,6 @@ import PelagosClient from 'lib/pelagosClient';
 
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
-    dispatch({
-      type: SHOW_VESSEL_LOADING_INFO
-    });
-
     const state = getState();
     const token = state.user.token;
     let request;
@@ -169,5 +165,15 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
+  };
+}
+
+export function setPinnedVesselHue(seriesgroup, hue) {
+  return {
+    type: SET_PINNED_VESSEL_HUE,
+    payload: {
+      seriesgroup,
+      hue
+    }
   };
 }
