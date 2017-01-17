@@ -1,0 +1,13 @@
+@import '../../settings';
+
+.c-pinned-tracks {
+  color: $color-4;
+
+  * {
+    color: $color-4;
+  }
+
+  button {
+    border: 1px solid $color-4;
+  }
+}
