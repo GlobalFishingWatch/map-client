@@ -26,6 +26,8 @@ class PinnedTracks extends Component {
       return null;
     }
 
+    const editButtonText = (this.state.editMode === false) ? 'Edit pinned' : 'stop editing';
+
     return (
       <div className={pinnedTracksStyles['c-pinned-tracks']}>
         <ul>
@@ -64,7 +66,7 @@ class PinnedTracks extends Component {
           })}
         </ul>
         <button onClick={() => { this.onEditClick(); }}>
-          Edit pinned
+          {editButtonText}
         </button>
       </div>
     );
