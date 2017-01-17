@@ -1,28 +1,13 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
+import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
-import selectorStyles from 'styles/components/shared/c-selector.scss';
 
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
-import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
-
-const defaultValues = {
-  hue: 180
-};
 
 class FilterPanel extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      indexToShow: -1
-    };
-  }
 
   componentWillMount() {
     this.countryOptions = this.getCountryOptions();
@@ -62,6 +47,15 @@ class FilterPanel extends Component {
     return countryOptions;
   }
 
+  updateFilters(filter, index) {
+    const updatedFilters = _.cloneDeep(this.props.flags);
+    if (!updatedFilters[index]) return;
+
+    Object.assign(updatedFilters[index], filter);
+
+    this.props.setFlagFilters(updatedFilters);
+  }
+
   addFilter() {
     const currentFilters = this.props.flags;
     currentFilters.push({
@@ -78,73 +72,18 @@ class FilterPanel extends Component {
     this.props.setFlagFilters(filters);
   }
 
-  onToggleBlending(index) {
-    let indexToShow = index;
-    if (indexToShow === this.state.indexToShow) {
-      indexToShow = -1;
-    }
-    this.setState({ indexToShow });
-  }
-
-  onChangeHue(hue, index) {
-    const filters = _.cloneDeep(this.props.flags);
-    if (filters[index] === undefined) return;
-
-    filters[index].hue = hue;
-
-    this.props.setFlagFilters(filters);
-  }
-
-  onChange(country, index) {
-    const filters = _.cloneDeep(this.props.flags);
-    if (filters[index] === undefined) return;
-
-    filters[index].flag = country;
-
-    this.props.setFlagFilters(filters);
-  }
-
   render() {
     const filterSelectors = [];
     this.props.flags.forEach((flagFilter, i) => {
       filterSelectors.push(
-        <li
-          className={flagFilterStyles['filter-item']}
+        <FilterItem
+          countryOptions={this.countryOptions}
+          index={i}
           key={i}
-        >
-          <div className={selectorStyles['c-selector']}>
-            <select
-              name="country"
-              onChange={(e) => this.onChange(e.target.value, i)}
-              value={flagFilter.flag}
-            >
-              {this.countryOptions}
-            </select>
-          </div>
-          <div className={flagFilterStyles['filter-option']}>
-            <ul className={flagFilterStyles['filter-option-list']}>
-              <li className={flagFilterStyles['filter-option-item']}>
-                <BlendingIcon
-                  className={flagFilterStyles['icon-blending']}
-                  onClick={() => this.onToggleBlending(i)}
-                />
-              </li>
-              <li className={flagFilterStyles['filter-option-item']}>
-                <RemoveFilterIcon
-                  className={flagFilterStyles['icon-delete-cross']}
-                  onClick={() => this.removeFilter(i)}
-                />
-              </li>
-            </ul>
-          </div>
-          <LayerOptionsTooltip
-            displayHue
-            hueValue={defaultValues.hue}
-            onChangeHue={(hue, index) => this.onChangeHue(hue, index)}
-            showBlending={this.state.indexToShow === i}
-            index={i}
-          />
-        </li>
+          filter={flagFilter}
+          removeFilter={() => this.removeFilter()}
+          updateFilters={(filter, index) => this.updateFilters(filter, index)}
+        />
       );
     });
 

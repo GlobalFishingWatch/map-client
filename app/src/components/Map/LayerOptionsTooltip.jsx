@@ -39,6 +39,7 @@ class LayerOptionsTooltip extends Component {
       step: VESSELS_HUES_INCREMENT,
       value: this.props.hueValue
     });
+
     this.hueRangeConfig.classnames.component = 'blending-range -hue';
 
     this.state = {
@@ -61,11 +62,7 @@ class LayerOptionsTooltip extends Component {
       hueRangeValue: value
     });
 
-    if (this.props.hasOwnProperty('index')) {
-      this.props.onChangeHue(value, this.props.index);
-    } else {
-      this.props.onChangeHue(value);
-    }
+    this.props.onChangeHue(value);
   }
 
   render() {
@@ -106,7 +103,6 @@ LayerOptionsTooltip.propTypes = {
   displayHue: React.PropTypes.bool,
   displayOpacity: React.PropTypes.bool,
   hueValue: React.PropTypes.number,
-  index: React.PropTypes.number,
   onChangeHue: React.PropTypes.func,
   onChangeOpacity: React.PropTypes.func,
   opacityValue: React.PropTypes.number,
