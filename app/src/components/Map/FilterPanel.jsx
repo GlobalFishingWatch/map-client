@@ -41,7 +41,7 @@ class FilterPanel extends Component {
       return 0;
     });
 
-    countryOptions.push(<option key="" value="">All</option>);
+    countryOptions.push(<option key="" value="">All countries</option>);
 
     countryNames.forEach((country) => {
       countryOptions.push(<option key={country.id} value={country.id}>{country.name}</option>);
@@ -87,7 +87,7 @@ class FilterPanel extends Component {
           className={flagFilterStyles['filter-item']}
           key={i}
         >
-          <div className={classnames(selectorStyles['c-selector'], selectorStyles['-flag-filter'])}>
+          <div className={selectorStyles['c-selector']}>
             <select
               name="country"
               onChange={(e) => this.onChange(e.target.value, i)}

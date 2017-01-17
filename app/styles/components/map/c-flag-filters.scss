@@ -4,11 +4,13 @@
   max-height: 220px;
   overflow-y: auto;
 
-  > .filter-list {}
-
   > .filter-list > .filter-item {
     align-items: center;
     display: flex;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
 
     .filter-option {
       padding: 0 0 0 10px;
