@@ -86,6 +86,7 @@
 
 .map-container {
   height: calc(100% - 88px);
+  overflow-y: hidden;
   position: relative;
 
   @media screen and (min-width: 900px) {
