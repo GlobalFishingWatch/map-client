@@ -7,7 +7,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  vesselClicked: (seriesgroup) => {
+  onVesselClicked: (seriesgroup) => {
     dispatch(showPinnedVesselDetails(seriesgroup));
   },
   setTrackHue(/* hue */) {

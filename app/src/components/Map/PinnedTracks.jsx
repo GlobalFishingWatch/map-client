@@ -55,7 +55,9 @@ class PinnedTracks extends Component {
             }
             return (
               <div key={pinnedVessel.seriesgroup}>
-                {pinnedVessel.vesselname}
+                <a href="#" onClick={() => { this.props.onVesselClicked(pinnedVessel.seriesgroup); }}>
+                  {pinnedVessel.vesselname}
+                </a>
                 {actions}
               </div>);
           })}
@@ -69,7 +71,8 @@ class PinnedTracks extends Component {
 }
 
 PinnedTracks.propTypes = {
-  vessels: React.PropTypes.array
+  vessels: React.PropTypes.array,
+  onVesselClicked: React.PropTypes.func
 };
 
 export default PinnedTracks;
