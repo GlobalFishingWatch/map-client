@@ -53,7 +53,6 @@ class UploadLayer extends Component {
                 placeholder="layer name"
                 onChange={(e) => this.onChange(e.currentTarget)}
                 required
-                value={this.state['layer-name']}
               />
             </div>
 

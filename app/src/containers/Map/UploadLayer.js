@@ -11,6 +11,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onUploadLayer: () => {
     dispatch(uploadLayer());
+    dispatch(setLayerManagementModalVisibility(false));
   }
 });
 
