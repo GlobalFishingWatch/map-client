@@ -17,7 +17,9 @@ class PelagosClient {
       this.resolve = resolve;
       this.reject = reject;
       this.request.open('GET', url, true);
-      this.request.setRequestHeader("Authorization", `Bearer ${token}`);
+      if (token) {
+        this.request.setRequestHeader("Authorization", `Bearer ${token}`);
+      }
       this.request.responseType = "arraybuffer";
       this.request.onload = this.handleData.bind(this);
       this.request.onerror = this.handleData.bind(this);
