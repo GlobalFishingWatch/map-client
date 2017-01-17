@@ -9,16 +9,8 @@ class PinnedTracks extends Component {
     };
   }
 
-  onRemoveClick(seriesgroup) {
-    console.warn('remove ', seriesgroup);
-  }
-
   onBlendingClicked(index) {
     console.warn('show blending popup for layer index', index);
-  }
-
-  onInfoClicked(seriesgroup) {
-    console.warn('show info for vessel with seriesgroup', seriesgroup);
   }
 
   onEditClick() {
@@ -48,8 +40,17 @@ class PinnedTracks extends Component {
             } else {
               actions = (
                 <span>
-                  <button onClick={() => { this.onBlendingClicked(index); }}>hue</button>
-                  <button onClick={() => { this.onInfoClicked(pinnedVessel.seriesgroup); }}>show info</button>
+                  <button
+                    onClick={() => {
+                      // normally this should call the blending popup to open, as in layers
+                      this.onBlendingClicked(index);
+                      // but testing with a random hue for now
+                      this.props.testRandomHue(pinnedVessel.seriesgroup, Math.floor(Math.random() * 360));
+                    }}
+                  >
+                    hue
+                  </button>
+                  <button onClick={() => { }}>show info</button>
                 </span>
               );
             }
@@ -73,7 +74,8 @@ class PinnedTracks extends Component {
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
   onVesselClicked: React.PropTypes.func,
-  onRemoveClicked: React.PropTypes.func
+  onRemoveClicked: React.PropTypes.func,
+  testRandomHue: React.PropTypes.func
 };
 
 export default PinnedTracks;

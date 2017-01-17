@@ -9,8 +9,10 @@ import {
   SHOW_VESSEL_CLUSTER_INFO,
   SHOW_NO_VESSELS_INFO,
   TOGGLE_ACTIVE_VESSEL_PIN,
-  SHOW_VESSEL_DETAILS
+  SHOW_VESSEL_DETAILS,
+  SET_PINNED_VESSEL_HUE
 } from 'actions';
+import { DEFAULT_TRACK_HUE } from 'constants';
 
 const initialState = {
   tracks: [],
@@ -29,7 +31,8 @@ export default function (state = initialState, action) {
       const newTrack = {
         seriesgroup: action.payload.seriesgroup,
         data: action.payload.seriesGroupData,
-        selectedSeries: action.payload.selectedSeries
+        selectedSeries: action.payload.selectedSeries,
+        hue: DEFAULT_TRACK_HUE
       };
       return Object.assign({}, state, {
         tracks: [...state.tracks, newTrack]
@@ -41,6 +44,7 @@ export default function (state = initialState, action) {
         pinned: false,
         visible: false
       }, action.payload);
+
       return Object.assign({}, state, {
         details: [...state.details, newDetails],
         detailsStatus: { isLoaded: true }
@@ -112,6 +116,15 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)]
+      });
+    }
+    case SET_PINNED_VESSEL_HUE: {
+      const tracksIndex = state.tracks.findIndex(track => track.seriesgroup === action.payload.seriesgroup);
+      const newTrack = _.cloneDeep(state.tracks[tracksIndex]);
+      newTrack.hue = action.payload.hue;
+
+      return Object.assign({}, state, {
+        tracks: [...state.tracks.slice(0, tracksIndex), newTrack, ...state.tracks.slice(tracksIndex + 1)]
       });
     }
     default:

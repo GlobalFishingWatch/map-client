@@ -1,9 +1,8 @@
 import BaseOverlay from 'components/Layers/BaseOverlay';
+import { hueToRgbString, hueToRgbaString } from 'util/hsvToRgb';
 import {
   SHOW_OUTER_TRACK_BELOW_NUM_POINTS,
-  TRACK_OVER_COLOR,
-  TRACK_MATCH_COLOR,
-  TRACK_OUT_OF_INNER_EXTENT_COLOR
+  TRACK_OVER_COLOR
 } from 'constants';
 
 export default class TrackLayer extends BaseOverlay {
@@ -63,7 +62,7 @@ export default class TrackLayer extends BaseOverlay {
    * @param endTimestamp the end timestamp from the timeline inner extent
    * @param isTimelinePlaying if in the middle of playing, do not display tracks out of innerExtent for perf reasons
    **/
-  getDrawStyle(timestamp, {
+  getDrawStyle(timestamp, color, colorOut, {
     startTimestamp,
     endTimestamp,
     showOuterTrack,
@@ -74,9 +73,15 @@ export default class TrackLayer extends BaseOverlay {
         timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
       return TRACK_OVER_COLOR;
     } else if (timestamp > startTimestamp && timestamp < endTimestamp) {
-      return TRACK_MATCH_COLOR;
+      return {
+        strokeStyle: color,
+        lineWidth: 2
+      };
     } else if (showOuterTrack === true) {
-      return TRACK_OUT_OF_INNER_EXTENT_COLOR;
+      return {
+        strokeStyle: colorOut,
+        lineWidth: 1
+      };
     }
     return false;
   }
@@ -116,7 +121,7 @@ export default class TrackLayer extends BaseOverlay {
     }
 
     tracks.forEach(track => {
-      this._drawTrack(track.data, track.selectedSeries, drawParams, overlayProjection);
+      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, overlayProjection);
     });
   }
 
@@ -127,22 +132,23 @@ export default class TrackLayer extends BaseOverlay {
    * @param series
    * @param drawParams
    */
-  _drawTrack(data, series, drawParams, overlayProjection) {
+  _drawTrack(data, series, hue, drawParams, overlayProjection) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
     let previousDrawStyle = null;
 
-    // console.log('drawtile', showOuterTrack)
     // let numPointsDrawn = 0;
     const _drawParams = drawParams;
     const showOuterTrack = _drawParams.timelinePaused || data.latitude.length < SHOW_OUTER_TRACK_BELOW_NUM_POINTS;
     _drawParams.showOuterTrack = showOuterTrack;
+    const finalColor = hueToRgbString(hue);
+    const finalColorOutOfInnerBounds = hueToRgbaString(hue, 0.4);
 
     for (let i = 0, length = data.latitude.length; i < length; i++) {
       previousDrawStyle = drawStyle;
       previousPoint = point;
-      drawStyle = this.getDrawStyle(data.datetime[i], _drawParams);
+      drawStyle = this.getDrawStyle(data.datetime[i], finalColor, finalColorOutOfInnerBounds, _drawParams);
       if (!drawStyle || (series && series !== data.series[i])) {
         continue;
       }
