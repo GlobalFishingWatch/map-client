@@ -14,7 +14,7 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from './helpers/heatmapTileData';
-import { showVesselClusterInfo, showNoVesselsInfo, addVessel } from 'actions/vesselInfo';
+import { showVesselClusterInfo, showNoVesselsInfo, addVessel, clearVesselInfo } from 'actions/vesselInfo';
 
 
 export function getTile(uid, tileCoordinates, canvas) {
@@ -136,7 +136,7 @@ export function queryHeatmap(tileQuery, latLng) {
       // (less than 0 means that points have been clustered server side):
       // only one valid result
       // console.log('one valid result');
-
+      dispatch(clearVesselInfo());
       dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
     } else {
       // multiple results
