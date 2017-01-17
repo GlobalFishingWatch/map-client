@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import SearchResult from 'containers/Map/SearchResult';
+import PinnedTracks from 'containers/Map/PinnedTracks';
 
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
@@ -99,14 +100,15 @@ class SearchPanel extends Component {
         >
           {searchResults}
         </ul>
+        <PinnedTracks />
       </div>);
   }
 }
 
 SearchPanel.propTypes = {
-  getSearchResults: React.PropTypes.func,
   search: React.PropTypes.object,
-  visible: React.PropTypes.bool
+  visible: React.PropTypes.bool,
+  getSearchResults: React.PropTypes.func
 };
 
 export default SearchPanel;
