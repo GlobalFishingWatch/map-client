@@ -53,7 +53,8 @@ export default function (state = initialState, action) {
       newDetails.visible = true;
 
       return Object.assign({}, state, {
-        details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)]
+        details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)],
+        detailsStatus: { isLoaded: true }
       });
     }
 
