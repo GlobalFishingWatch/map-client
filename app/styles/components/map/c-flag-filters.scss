@@ -2,11 +2,11 @@
 
 .c-flag-filters {
   max-height: 220px;
-  overflow-y: auto;
 
   > .filter-list > .filter-item {
     align-items: center;
     display: flex;
+    position: relative;
 
     &:not(:first-child) {
       margin: 10px 0 0;
