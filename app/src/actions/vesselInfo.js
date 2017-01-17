@@ -151,6 +151,15 @@ export function toggleActiveVesselPin() {
   };
 }
 
+export function toggleVesselPin(seriesgroup) {
+  return {
+    type: TOGGLE_ACTIVE_VESSEL_PIN,
+    payload: {
+      seriesgroup
+    }
+  };
+}
+
 export function showPinnedVesselDetails(seriesgroup) {
   return (dispatch) => {
     dispatch(clearVesselInfo());

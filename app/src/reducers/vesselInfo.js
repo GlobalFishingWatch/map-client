@@ -99,7 +99,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { trackBounds: action.trackBounds });
     }
     case TOGGLE_ACTIVE_VESSEL_PIN: {
-      const detailsIndex = state.details.findIndex(vessel => vessel.visible === true);
+      let detailsIndex;
+      if (action.payload && action.payload.seriesgroup !== undefined) {
+        // look for vessel with given seriesgoup if provided...
+        detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      } else {
+        // ...or select the currently visible one
+        detailsIndex = state.details.findIndex(vessel => vessel.visible === true);
+      }
       const newDetails = _.cloneDeep(state.details[detailsIndex]);
       newDetails.pinned = !newDetails.pinned;
 

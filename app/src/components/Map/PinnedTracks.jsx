@@ -42,7 +42,7 @@ class PinnedTracks extends Component {
             if (this.state.editMode === true) {
               actions = (
                 <span>
-                  <button onClick={() => { this.onRemoveClick(pinnedVessel.seriesgroup); }}>remove</button>
+                  <button onClick={() => { this.props.onRemoveClicked(pinnedVessel.seriesgroup); }}>remove</button>
                 </span>
               );
             } else {
@@ -72,7 +72,8 @@ class PinnedTracks extends Component {
 
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
-  onVesselClicked: React.PropTypes.func
+  onVesselClicked: React.PropTypes.func,
+  onRemoveClicked: React.PropTypes.func
 };
 
 export default PinnedTracks;
