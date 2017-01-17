@@ -4,7 +4,10 @@
 .c-selector {
   background-color: transparent;
   border: solid 1px $color-14;
-  padding: 10px 30px 10px 10px;
+  display: flex;
+  height: 30px;
+  max-width: 80%;
+  padding: 0 15px;
   position: relative;
 
   > select {
@@ -12,16 +15,18 @@
     background-color: transparent;
     border: 0;
     color: $color-4;
-    font-size: $font-size-x-normal;
+    font-size: $font-size-small;
     font-weight: $font-weight-normal;
+    outline: none;
     width: 100%;
   }
 
   &::after {
     @include arrow(8px, 2px, $color-4, 'down');
+    pointer-events: none;
     position: absolute;
     right: 20px;
-    top: calc(50% - 4px);
+    top: calc(50% - 3px);
     transform: rotate(45deg) translate(0, -50%);
   }
 }

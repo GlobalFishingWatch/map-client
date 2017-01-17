@@ -1,0 +1,59 @@
+@import '../../settings';
+
+.c-flag-filters {
+  max-height: 220px;
+  overflow-y: auto;
+
+  > .filter-list > .filter-item {
+    align-items: center;
+    display: flex;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+
+    .filter-option {
+      padding: 0 0 0 10px;
+      width: 20%;
+    }
+
+    .filter-option-list {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .filter-option-list > .filter-option-item {
+      display: flex;
+
+      > .icon-blending,
+      > .icon-delete-cross {
+        cursor: pointer;
+      }
+
+      > .icon-delete-cross {
+        cursor: pointer;
+        height: 100%;
+        max-height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+
+  > .filter-button {
+    background-color: transparent;
+    border: 1px solid $color-14;
+    color: $color-3;
+    cursor: pointer;
+    font-size: $font-size-xs-small;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    margin: 10px 0 0;
+    outline: none;
+    padding: 8px 0;
+    text-align: center;
+    text-transform: uppercase;
+    width: 215px;;
+  }
+}

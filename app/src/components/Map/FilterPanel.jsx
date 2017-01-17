@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import selectorStyles from 'styles/components/shared/c-selector.scss';
-import { FLAGS } from 'constants';
+import _ from 'lodash';
+import classnames from 'classnames';
+import { FLAG_FILTERS_LIMIT, FLAGS } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
+
+import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
+import selectorStyles from 'styles/components/shared/c-selector.scss';
+
+import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
+import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
 class FilterPanel extends Component {
 
@@ -34,7 +41,7 @@ class FilterPanel extends Component {
       return 0;
     });
 
-    countryOptions.push(<option key="" value="">All</option>);
+    countryOptions.push(<option key="" value="">All countries</option>);
 
     countryNames.forEach((country) => {
       countryOptions.push(<option key={country.id} value={country.id}>{country.name}</option>);
@@ -43,24 +50,93 @@ class FilterPanel extends Component {
     return countryOptions;
   }
 
+  addFilter() {
+    const currentFilters = this.props.flags;
+    currentFilters.push({
+      flag: 'ALL'
+    });
+
+    this.props.setFlagFilters(currentFilters);
+  }
+
+  removeFilter(index) {
+    const filters = _.cloneDeep(this.props.flags);
+    filters.splice(index, 1);
+
+    this.props.setFlagFilters(filters);
+  }
+
+  toggleBlending() {
+    console.warn('toggleBlending (WIP)');
+  }
+
+  onChange(country, index) {
+    const filters = _.cloneDeep(this.props.flags);
+    if (filters[index] === undefined) return;
+
+    filters[index].flag = country;
+
+    this.props.setFlagFilters(filters);
+  }
+
   render() {
-    return (
-      <div className={selectorStyles['c-selector']}>
-        <select
-          name="country"
-          onChange={(e) => this.props.setFlagFilter(e.target.value)}
-          value={this.props.flag}
+    const filterSelectors = [];
+    this.props.flags.forEach((flagFilter, i) => {
+      filterSelectors.push(
+        <li
+          className={flagFilterStyles['filter-item']}
+          key={i}
         >
-          {this.countryOptions}
-        </select>
+          <div className={selectorStyles['c-selector']}>
+            <select
+              name="country"
+              onChange={(e) => this.onChange(e.target.value, i)}
+              value={flagFilter.flag}
+            >
+              {this.countryOptions}
+            </select>
+          </div>
+          <div className={flagFilterStyles['filter-option']}>
+            <ul className={flagFilterStyles['filter-option-list']}>
+              <li className={flagFilterStyles['filter-option-item']}>
+                <BlendingIcon
+                  className={flagFilterStyles['icon-blending']}
+                  onClick={() => this.toggleBlending()}
+                />
+              </li>
+              <li className={flagFilterStyles['filter-option-item']}>
+                <RemoveFilterIcon
+                  className={flagFilterStyles['icon-delete-cross']}
+                  onClick={() => this.removeFilter(i)}
+                />
+              </li>
+            </ul>
+          </div>
+        </li>
+      );
+    });
+
+    return (
+      <div className={flagFilterStyles['c-flag-filters']}>
+        {filterSelectors &&
+          <ul className={flagFilterStyles['filter-list']}>
+            {filterSelectors}
+          </ul>}
+        {this.props.flags.length < FLAG_FILTERS_LIMIT &&
+          <button
+            className={flagFilterStyles['filter-button']}
+            onClick={() => this.addFilter()}
+          >
+            add filter
+          </button>}
       </div>
     );
   }
 }
 
 FilterPanel.propTypes = {
-  setFlagFilter: React.PropTypes.func,
-  flag: React.PropTypes.string
+  flags: React.PropTypes.array,
+  setFlagFilters: React.PropTypes.func
 };
 
 export default FilterPanel;
