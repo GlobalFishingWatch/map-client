@@ -1,0 +1,16 @@
+@import '../../settings';
+
+.c-button {
+  border: 0;
+  cursor: pointer;
+
+  &.-filled {
+    background-color: $color-3;
+    color: $color-4;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    padding: 15px 0;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}

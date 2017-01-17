@@ -9,7 +9,7 @@ import {
   SET_LAYER_INFO_MODAL,
   SET_BASEMAP,
   SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_LIBRARY_MODAL_VISIBILITY
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 
@@ -178,9 +178,9 @@ export function setSupportModalVisibility(visibility) {
   };
 }
 
-export function setLayerLibraryModalVisibility(visibility) {
+export function setLayerManagementModalVisibility(visibility) {
   return {
-    type: SET_LAYER_LIBRARY_MODAL_VISIBILITY,
+    type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
     payload: visibility
   };
 }

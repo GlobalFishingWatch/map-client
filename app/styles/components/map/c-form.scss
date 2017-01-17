@@ -1,0 +1,104 @@
+@import '../../settings';
+
+.c-form {
+
+  .field-name {
+    color: $color-4;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+
+    & + * {
+      margin: 5px 0 0;
+    }
+  }
+
+  .text-input,
+  .fake-file-container,
+  .textarea {
+    background: transparent;
+    border: 1px solid $color-14;
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-small;
+
+    ::-webkit-input-placeholder {
+      color: $color-14;
+    }
+
+    ::-moz-placeholder {
+      color: $color-14;
+    }
+
+    :-ms-input-placeholder {
+      color: $color-14;
+    }
+  }
+
+  .text-input,
+  .fake-file-input,
+  .textarea {
+    padding: 10px;
+  }
+
+  .file-container {
+    height: 40px;
+    position: relative;
+
+    > .fake-file-container {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    > .fake-file-container > .fake-file-input {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      width: 66.666%;
+      z-index: 1;
+
+      > .fake-file-input-placeholder {
+        color: $color-14;
+        font-size: $font-size-small;
+        overflow-x: auto;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+    }
+
+    > .fake-file-container > .fake-file-button {
+      float: right;
+      height: 100%;
+      padding: 10px 0;
+      position: relative;
+      width: calc(100% / 3);
+    }
+
+    > .file-input-container {
+      cursor: pointer;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: calc(33.33%);
+      z-index: 1;
+    }
+  }
+
+  .textarea {
+    height: 100%;
+    resize: none;
+  }
+
+  .file-input {
+    border: 0;
+    height: 100%;
+    opacity: 0;
+    width: 100%;
+  }
+}
