@@ -1,13 +1,58 @@
 @import '../../settings';
 
 .c-pinned-tracks {
-  color: $color-4;
 
-  * {
-    color: $color-4;
+  > .no-pinned-items {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 100px;
+
+    > .no-pin-literal {
+      color: $color-4;
+      font-size: $font-size-xxs-small;
+    }
   }
 
-  button {
-    border: 1px solid $color-4;
+  > .pinned-item-list {
+    min-height: 105px;
+  }
+
+  > .pinned-item-list > .pinned-item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+
+    > .item-name {
+      color: $color-4;
+      font-size: $font-size-xxs-small;
+    }
+
+    > .pinned-item-action-list {
+      align-items: center;
+      display: flex;
+      position: relative;
+
+      > .pinned-item-action-item {
+        display: flex;
+
+        &:not(:first-child) {
+          margin: 0 0 0 10px;
+        }
+      }
+    }
+  }
+
+  > .pinned-button-container {
+    display: flex;
+    justify-content: space-between;
+
+    > .pinned-button {
+      width: calc(50% - 1px);
+    }
   }
 }

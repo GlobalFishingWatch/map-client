@@ -15,17 +15,12 @@
     padding: 20px 20px 15px;
 
     .pin {
+      fill: $color-3;
       position: absolute;
       right: 20px;
 
-      &::after {
-        content: 'pin';
-      }
-
       &.-pinned {
-        &::after {
-          content: 'unpin';
-        }
+        fill: $color-4;
       }
     }
 

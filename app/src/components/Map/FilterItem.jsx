@@ -7,10 +7,6 @@ import selectorStyles from 'styles/components/shared/c-selector.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
-const defaultValues = {
-  hue: 180
-};
-
 class FilterItem extends Component {
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.index);
@@ -43,7 +39,7 @@ class FilterItem extends Component {
   }
 
   render() {
-    const hueValue = this.props.filter.hue || defaultValues.hue;
+    const hueValue = this.props.filter.hue;
 
     return (
       <li
