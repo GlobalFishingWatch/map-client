@@ -18,7 +18,7 @@ import {
 } from '../actions';
 
 const initialState = {
-  activeBasemap: null,
+  activeBasemap: 'satellite',
   basemaps: [
     {
       title: 'satellite',
@@ -81,10 +81,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { zoom: action.payload });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-    case SET_BASEMAP: {
-      return Object.assign({}, state, { activeBasemap: action.payload });
-    }
-
+    case SET_BASEMAP:
+      return Object.assign({}, state, { activeBasemap: action.payload || state.activeBasemap });
     case SHARE_MODAL_OPEN: {
       const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
       return Object.assign({}, state, { shareModal });
