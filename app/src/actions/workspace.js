@@ -6,9 +6,9 @@ import {
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
 import {
-  SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL
+  SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP
 } from 'actions';
-import { initLayers } from 'actions/layers';
+import { initLayers, loadTilesetMetadata } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import calculateLayerId from 'util/calculateLayerId';
 
@@ -38,9 +38,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     type: SET_BASEMAP, payload: workspaceData.basemap
   });
 
-  dispatch({
-    type: SET_TILESET_URL, payload: workspaceData.tilesetUrl
-  });
+  dispatch(loadTilesetMetadata(workspaceData.tilesetUrl));
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
 

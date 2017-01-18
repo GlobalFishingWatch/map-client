@@ -7,6 +7,8 @@ import {
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
   SET_TILESET_URL,
+  SET_MAX_ZOOM,
+  SET_OVERALL_TIMELINE_DATES,
   UPLOAD_USER_LAYER
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
@@ -61,6 +63,43 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
     dispatch({
       type: SET_LAYERS, payload: workspaceLayers
+    });
+  };
+}
+
+export function loadTilesetMetadata(tilesetUrl) {
+  return (dispatch, getState) => {
+    const state = getState();
+
+    const headers = {
+      'Content-Type': 'application/json', Accept: 'application/json'
+    };
+
+    if (state.user.token) {
+      headers.Authorization = `Bearer ${state.user.token}`;
+    }
+
+    fetch(`${tilesetUrl}/header`, {
+      method: 'GET', headers
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.maxZoom !== undefined) {
+          dispatch({
+            type: SET_MAX_ZOOM, payload: data.maxZoom
+          });
+        }
+
+        if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
+          dispatch({
+            type: SET_OVERALL_TIMELINE_DATES,
+            payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
+          });
+        }
+      });
+
+    dispatch({
+      type: SET_TILESET_URL, payload: tilesetUrl
     });
   };
 }

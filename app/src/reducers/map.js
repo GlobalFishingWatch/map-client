@@ -4,6 +4,7 @@ import {
   VESSEL_INIT,
   SHOW_LOADING,
   SET_ZOOM,
+  SET_MAX_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
@@ -15,7 +16,8 @@ import {
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
-} from '../actions';
+} from 'actions';
+import { MAX_ZOOM_LEVEL } from 'constants';
 
 const initialState = {
   activeBasemap: 'satellite',
@@ -40,6 +42,7 @@ const initialState = {
   ],
   loading: false,
   zoom: 3,
+  maxZoom: MAX_ZOOM_LEVEL,
   tilesetUrl: null,
   center: [0, 0],
   shareModal: {
@@ -73,12 +76,12 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, action.payload);
     case SHOW_LOADING:
       return Object.assign({}, state, { loading: action.payload.data });
-    // case SET_LAYERS:
-    //   return Object.assign({}, state, { layers: action.payload });
     case SET_TILESET_URL:
       return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:
       return Object.assign({}, state, { zoom: action.payload });
+    case SET_MAX_ZOOM:
+      return Object.assign({}, state, { maxZoom: Math.min(action.payload, state.maxZoom) });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
     case SET_BASEMAP:
