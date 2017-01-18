@@ -12,21 +12,8 @@ const defaultValues = {
 };
 
 class FilterItem extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      indexToShow: -1
-    };
-  }
-
-  onToggleBlending() {
-    let indexToShow = this.props.index;
-    if (indexToShow === this.state.indexToShow) {
-      indexToShow = -1;
-    }
-    this.setState({ indexToShow });
+  toggleBlending() {
+    this.props.onLayerBlendingToggled(this.props.index);
   }
 
   onChangeHue(hue) {
@@ -78,7 +65,7 @@ class FilterItem extends Component {
             <li className={flagFilterStyles['filter-option-item']}>
               <BlendingIcon
                 className={flagFilterStyles['icon-blending']}
-                onClick={() => this.onToggleBlending()}
+                onClick={() => this.toggleBlending()}
               />
             </li>
             <li className={flagFilterStyles['filter-option-item']}>
@@ -93,7 +80,7 @@ class FilterItem extends Component {
           displayHue
           hueValue={hueValue}
           onChangeHue={(hue) => this.onChangeHue(hue)}
-          showBlending={this.state.indexToShow === this.props.index}
+          showBlending={this.props.showBlending}
         />
       </li>
     );
@@ -104,8 +91,10 @@ FilterItem.propTypes = {
   countryOptions: React.PropTypes.array,
   index: React.PropTypes.number,
   filter: React.PropTypes.object,
+  showBlending: React.PropTypes.bool,
   removeFilter: React.PropTypes.func,
-  updateFilters: React.PropTypes.func
+  updateFilters: React.PropTypes.func,
+  onLayerBlendingToggled: React.PropTypes.func
 };
 
 export default FilterItem;

@@ -8,6 +8,10 @@ import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
 
 
 class FilterPanel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { currentBlendingOptionsShown: -1 };
+  }
 
   componentWillMount() {
     this.countryOptions = this.getCountryOptions();
@@ -54,6 +58,10 @@ class FilterPanel extends Component {
     Object.assign(updatedFilters[index], filter);
 
     this.props.setFlagFilters(updatedFilters);
+
+    if (filter.hue === undefined) {
+      this.hideBlending();
+    }
   }
 
   addFilter() {
@@ -63,6 +71,7 @@ class FilterPanel extends Component {
     });
 
     this.props.setFlagFilters(currentFilters);
+    this.hideBlending();
   }
 
   removeFilter(index) {
@@ -70,6 +79,19 @@ class FilterPanel extends Component {
     filters.splice(index, 1);
 
     this.props.setFlagFilters(filters);
+    this.hideBlending();
+  }
+
+  onLayerBlendingToggled(layerIndex) {
+    let currentBlendingOptionsShown = layerIndex;
+    if (currentBlendingOptionsShown === this.state.currentBlendingOptionsShown) {
+      currentBlendingOptionsShown = -1;
+    }
+    this.setState({ currentBlendingOptionsShown });
+  }
+
+  hideBlending() {
+    this.setState({ currentBlendingOptionsShown: -1 });
   }
 
   render() {
@@ -83,6 +105,8 @@ class FilterPanel extends Component {
           filter={flagFilter}
           removeFilter={() => this.removeFilter()}
           updateFilters={(filter, index) => this.updateFilters(filter, index)}
+          onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
+          showBlending={this.state.currentBlendingOptionsShown === i}
         />
       );
     });
