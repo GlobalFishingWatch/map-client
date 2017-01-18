@@ -25,23 +25,15 @@ class ControlPanel extends Component {
   }
 
   renderSearch() {
-    const titleLiteral = window.innerWidth > 1024 ? 'search vessels' : 'search';
-
-    let pinnedVessels;
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
-
-    if (numPinnedVessels > 0) {
-      const numPinnedVesselsLabel = `${numPinnedVessels} pinned`;
-
-      pinnedVessels = (<div>
-        {numPinnedVesselsLabel}
-      </div>);
-    }
 
     const title = (
       <div className={controlPanelStyle['accordion-header']}>
-        <h2 className={controlPanelStyle['accordion-title']}>{titleLiteral}</h2>
-        {pinnedVessels}
+        <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
+        {numPinnedVessels > 0 &&
+          <div className={controlPanelStyle['pinned-item-count']}>
+            {numPinnedVessels} pinned
+          </div>}
         <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
       </div>);
 

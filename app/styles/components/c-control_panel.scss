@@ -190,4 +190,11 @@
       max-width: none;
     }
   }
+
+  .pinned-item-count {
+    color: rgba($color-3, .5);
+    font-size: $font-size-xs-small;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
 }

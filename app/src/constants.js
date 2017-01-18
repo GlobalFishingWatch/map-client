@@ -62,7 +62,7 @@ export const TRACK_OVER_COLOR = {
   strokeStyle: 'rgba(255, 255, 255, 1)',
   lineWidth: 2
 };
-export const DEFAULT_TRACK_HUE = 0;
+export const DEFAULT_TRACK_HUE = 180;
 
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
