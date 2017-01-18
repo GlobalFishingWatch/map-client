@@ -3,8 +3,10 @@ import _ from 'lodash';
 import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
+import classnames from 'classnames';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
+import MapButtonStyles from 'styles/components/map/c-button.scss';
 
 
 class FilterPanel extends Component {
@@ -120,7 +122,7 @@ class FilterPanel extends Component {
           </ul>}
         {this.props.flags.length < FLAG_FILTERS_LIMIT &&
           <button
-            className={flagFilterStyles['filter-button']}
+            className={classnames(MapButtonStyles['c-button'], flagFilterStyles['filter-button'])}
             onClick={() => this.addFilter()}
           >
             add filter

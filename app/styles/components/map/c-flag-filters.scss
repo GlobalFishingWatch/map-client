@@ -40,20 +40,8 @@
     }
   }
 
-
   > .filter-button {
-    background-color: transparent;
-    border: 1px solid $color-14;
-    color: $color-3;
-    cursor: pointer;
-    font-size: $font-size-xs-small;
-    font-weight: $font-weight-bold;
-    line-height: 1;
     margin: 10px 0 0;
-    outline: none;
-    padding: 8px 0;
-    text-align: center;
-    text-transform: uppercase;
     width: 215px;;
   }
 }
