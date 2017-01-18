@@ -21,6 +21,7 @@ import {
 const mapStateToProps = (state) => ({
   center: state.map.center,
   zoom: state.map.zoom,
+  maxZoom: state.map.maxZoom,
   trackBounds: state.vesselInfo.trackBounds,
   token: state.user.token,
   shareModalOpenState: state.map.shareModal.open,

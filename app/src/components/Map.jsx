@@ -261,7 +261,9 @@ class Map extends Component {
                 streetViewControl: false,
                 mapTypeControl: false,
                 zoomControl: false,
-                minZoom: MIN_ZOOM_LEVEL,
+                minZoom: MIN_ZOOM_LEVEL
+              }}
+              options={{
                 maxZoom: this.props.maxZoom
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
