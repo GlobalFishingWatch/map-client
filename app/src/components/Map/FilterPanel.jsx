@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import FilterItem from 'components/Map/FilterItem';
-import { FLAG_FILTERS_LIMIT, FLAGS } from 'constants';
+import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
@@ -23,8 +23,11 @@ class FilterPanel extends Component {
 
     Object.keys(FLAGS).forEach((index) => {
       if (iso3311a2.getCountry(FLAGS[index])) {
+        const countryCode = FLAGS[index];
+        const iconAsciiCodePoints = FLAGS_SHORTCODES[countryCode.toLowerCase()];
         countryNames.push({
-          name: iso3311a2.getCountry(FLAGS[index]),
+          name: iso3311a2.getCountry(countryCode),
+          icon: String.fromCodePoint.apply(null, iconAsciiCodePoints),
           id: index
         });
       }
@@ -45,7 +48,7 @@ class FilterPanel extends Component {
     countryOptions.push(<option key="" value="">All countries</option>);
 
     countryNames.forEach((country) => {
-      countryOptions.push(<option key={country.id} value={country.id}>{country.name}</option>);
+      countryOptions.push(<option key={country.id} value={country.id}>{country.icon}&nbsp;&nbsp;{country.name}</option>);
     });
 
     return countryOptions;
