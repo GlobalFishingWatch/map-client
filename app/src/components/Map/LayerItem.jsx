@@ -1,55 +1,17 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import InputRange from 'react-input-range';
-import { LAYER_TYPES, VESSELS_HUES_INCREMENT } from 'constants';
+import { LAYER_TYPES } from 'constants';
+import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import { hueToRgbString } from 'util/hsvToRgb';
+
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
-import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
+
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
-const INPUT_RANGE_DEFAULT_CONFIG = {
-  classnames: {
-    component: 'blending-range',
-    labelMax: 'label -max',
-    labelMin: 'label -min',
-    labelValue: 'label -current',
-    trackActive: 'track-active',
-    trackContainer: 'track-container',
-    sliderContainer: 'thumb-container',
-    slider: 'thumb'
-  }
-};
-
 class LayerItem extends Component {
-
-  constructor(props) {
-    super(props);
-    this.opacityRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.opacityRangeConfig, {
-      minValue: 10,
-      maxValue: 100,
-      step: 1,
-      value: this.props.layer.opacity * 100
-    });
-
-    this.hueRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.hueRangeConfig, {
-      minValue: 0,
-      maxValue: 360,
-      step: VESSELS_HUES_INCREMENT,
-      value: this.props.layer.hue
-    });
-    this.hueRangeConfig.classnames.component = 'blending-range -hue';
-
-    this.state = {
-      opacityRangeValue: this.opacityRangeConfig.value,
-      hueRangeValue: this.hueRangeConfig.value
-    };
-  }
 
   onChangeVisibility() {
     if (this.props.layer.visible && this.props.showBlending) {
@@ -59,13 +21,7 @@ class LayerItem extends Component {
     this.props.toggleLayerVisibility(this.props.layer.id);
   }
 
-  onChangeOpacity(component, value) {
-    const transparency = parseFloat(value) / 100;
-
-    this.setState({
-      opacityRangeValue: value
-    });
-
+  onChangeOpacity(transparency) {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
@@ -73,16 +29,12 @@ class LayerItem extends Component {
     this.props.setLayerOpacity(transparency, this.props.layer.id);
   }
 
-  onChangeHue(component, value) {
-    this.setState({
-      hueRangeValue: value
-    });
-
+  onChangeHue(hue) {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerHue(value, this.props.layer.id);
+    this.props.setLayerHue(hue, this.props.layer.id);
   }
 
   onClickReport() {
@@ -110,8 +62,6 @@ class LayerItem extends Component {
   }
 
   render() {
-    if (!this.props.layer.added) return null;
-
     return (
       <li
         className={LayerListStyles['layer-item']}
@@ -153,31 +103,15 @@ class LayerItem extends Component {
             <InfoIcon />
           </li>
         </ul>
-        <div
-          className={classnames(BlendingStyles['c-blending'], { [`${BlendingStyles['-is-visible']}`]: this.props.showBlending })}
-          ref={(opacityMenu) => { this.opacityMenu = opacityMenu; }}
-        >
-          Opacity
-          <InputRange
-            classNames={this.opacityRangeConfig.classnames}
-            value={this.state.opacityRangeValue}
-            maxValue={this.opacityRangeConfig.maxValue}
-            minValue={this.opacityRangeConfig.minValue}
-            onChange={(component, value) => this.onChangeOpacity(component, value)}
-            step={this.opacityRangeConfig.step}
-          />
-        {this.props.layer.type === LAYER_TYPES.ClusterAnimation && <div>
-          Hue
-          <InputRange
-            classNames={this.hueRangeConfig.classnames}
-            value={this.state.hueRangeValue}
-            maxValue={this.hueRangeConfig.maxValue}
-            minValue={this.hueRangeConfig.minValue}
-            onChange={(component, value) => this.onChangeHue(component, value)}
-            step={this.hueRangeConfig.step}
-          />
-        </div>}
-        </div>
+        <LayerOptionsTooltip
+          displayHue={this.props.layer.type === LAYER_TYPES.ClusterAnimation}
+          displayOpacity
+          hueValue={this.props.layer.hue}
+          opacityValue={this.props.layer.opacity}
+          onChangeOpacity={(opacity) => this.onChangeOpacity(opacity)}
+          onChangeHue={(hue) => this.onChangeHue(hue)}
+          showBlending={this.props.showBlending}
+        />
       </li>
     );
   }
