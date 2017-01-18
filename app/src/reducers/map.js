@@ -14,7 +14,8 @@ import {
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
+  SET_PINNED_VESSELS_MODAL_VISIBILITY
 } from '../actions';
 
 const initialState = {
@@ -54,6 +55,9 @@ const initialState = {
     open: false
   },
   layerManagementModal: {
+    open: false
+  },
+  pinnedVesselsModal: {
     open: false
   },
   workspaceId: null
@@ -120,6 +124,15 @@ export default function (state = initialState, action) {
     case SET_LAYER_MANAGEMENT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.layerManagementModal = {
+        open: action.payload
+      };
+
+      return newState;
+    }
+
+    case SET_PINNED_VESSELS_MODAL_VISIBILITY: {
+      const newState = Object.assign({}, state);
+      newState.pinnedVesselsModal = {
         open: action.payload
       };
 

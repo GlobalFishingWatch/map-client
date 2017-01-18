@@ -44,7 +44,10 @@ class PinnedTracks extends Component {
     if (!pinnedVessels.length) {
       pinnedItems = (<div className={pinnedTracksStyles['no-pinned-items']}>
         <span className={pinnedTracksStyles['no-pin-literal']}>No pinned vessels</span>
-        <InfoIcon className={pinnedTracksStyles['info-icon']} />
+        <InfoIcon
+          className={classnames(iconStyles.icon, iconStyles['info-icon'], pinnedTracksStyles['info-icon'])}
+          onClick={() => { this.props.openPinnedVesselModal(); }}
+        />
       </div>);
     } else {
       pinnedItems = (
@@ -125,6 +128,7 @@ PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
   onVesselClicked: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
+  openPinnedVesselModal: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func
 };
 

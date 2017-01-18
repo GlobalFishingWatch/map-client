@@ -9,7 +9,8 @@ import {
   setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerManagementModalVisibility
+  setLayerManagementModalVisibility,
+  setPinnedVesselsModalVisibility
 } from 'actions/map';
 import {
   getLayerLibrary
@@ -29,6 +30,7 @@ const mapStateToProps = (state) => ({
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
   layerManagementModal: state.map.layerManagementModal.open,
+  pinnedVesselsModal: state.map.pinnedVesselsModal.open,
   userPermissions: state.user.userPermissions
 });
 
@@ -57,6 +59,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(setSupportModalVisibility(true));
   }, closeLayerManagementModal: () => {
     dispatch(setLayerManagementModalVisibility(false));
+  },
+  closePinnedVesselModal: () => {
+    dispatch(setPinnedVesselsModalVisibility(false));
   }
 });
 
