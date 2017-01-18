@@ -14,7 +14,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'containers/Map/LayerLibrary';
+import LayerLibrary from 'components/Map/LayerManagementModal';
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
@@ -70,7 +70,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.token || !this.map) {
+    if (!this.map) {
       return;
     }
 
@@ -201,9 +201,9 @@ class Map extends Component {
         <SupportForm />
       </Modal>
       <Modal
-        opened={this.props.layerLibraryModal}
+        opened={this.props.layerManagementModal}
         closeable
-        close={this.props.closeLayerLibraryModal}
+        close={this.props.closeLayerManagementModal}
       >
         <LayerLibrary />
       </Modal>
@@ -323,8 +323,8 @@ Map.propTypes = {
   trackBounds: React.PropTypes.object,
   closeSupportModal: React.PropTypes.func,
   openSupportModal: React.PropTypes.func,
-  layerLibraryModal: React.PropTypes.bool,
-  closeLayerLibraryModal: React.PropTypes.func,
+  layerManagementModal: React.PropTypes.bool,
+  closeLayerManagementModal: React.PropTypes.func,
   userPermissions: React.PropTypes.array
 };
 

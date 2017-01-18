@@ -44,9 +44,8 @@ class MenuMobile extends Component {
               href="https://trial-globalfishingwatch.cs43.force.com/gfw/GFWResetPassword"
               className={menuMobile['forgot-password']}
             >
-              Remember password
+              Reset password
             </a>
-            <button className={menuMobile.register} onClick={this.props.login}>Sign up</button>
           </p>
         </div>
       );

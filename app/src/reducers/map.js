@@ -15,12 +15,12 @@ import {
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_LIBRARY_MODAL_VISIBILITY
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
 const initialState = {
-  activeBasemap: null,
+  activeBasemap: 'satellite',
   basemaps: [
     {
       title: 'satellite',
@@ -56,7 +56,7 @@ const initialState = {
   supportModal: {
     open: false
   },
-  layerLibraryModal: {
+  layerManagementModal: {
     open: false
   },
   workspaceId: null
@@ -84,10 +84,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { maxZoom: Math.min(action.payload, state.maxZoom) });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
-    case SET_BASEMAP: {
-      return Object.assign({}, state, { activeBasemap: action.payload });
-    }
-
+    case SET_BASEMAP:
+      return Object.assign({}, state, { activeBasemap: action.payload || state.activeBasemap });
     case SHARE_MODAL_OPEN: {
       const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
       return Object.assign({}, state, { shareModal });
@@ -122,11 +120,12 @@ export default function (state = initialState, action) {
       return newState;
     }
 
-    case SET_LAYER_LIBRARY_MODAL_VISIBILITY: {
+    case SET_LAYER_MANAGEMENT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
-      newState.layerLibraryModal = {
+      newState.layerManagementModal = {
         open: action.payload
       };
+
       return newState;
     }
 

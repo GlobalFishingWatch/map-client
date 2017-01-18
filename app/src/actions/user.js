@@ -39,7 +39,7 @@ export function getLoggedUser() {
       });
       dispatch({
         type: SET_USER_PERMISSIONS,
-        payload: getAclData(GUEST_PERMISSION_SET)
+        payload: GUEST_PERMISSION_SET
       });
       return;
     }

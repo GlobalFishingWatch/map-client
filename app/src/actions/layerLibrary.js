@@ -8,7 +8,7 @@ export function getLayerLibrary(workspaceID) {
     const state = getState();
 
     const options = {};
-    if (!state.user.token) {
+    if (state.user.token) {
       options.headers = {
         Authorization: `Bearer ${state.user.token}`
       };

@@ -113,13 +113,16 @@ export function sendReport() {
       });
     });
     const body = JSON.stringify({ report: payload });
-    fetch(url, {
+    const options = {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${state.user.token}`
-      },
       body
-    }).then(res => {
+    };
+    if (state.user.token) {
+      options.headers = {
+        Authorization: `Bearer ${state.user.token}`
+      };
+    }
+    fetch(url, options).then(res => {
       if (!res.ok) {
         throw Error(res.statusText);
       }

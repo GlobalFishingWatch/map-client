@@ -8,7 +8,8 @@ import {
   SET_LAYER_HUE,
   SET_TILESET_URL,
   SET_MAX_ZOOM,
-  SET_OVERALL_TIMELINE_DATES
+  SET_OVERALL_TIMELINE_DATES,
+  UPLOAD_USER_LAYER
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -136,5 +137,14 @@ export function setLayerHue(hue, layerId) {
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
     dispatch(updateFlagFilters());
+  };
+}
+
+export function uploadLayer(dataLayer) {
+  return (dispatch) => {
+    dispatch({
+      type: UPLOAD_USER_LAYER,
+      payload: dataLayer
+    });
   };
 }

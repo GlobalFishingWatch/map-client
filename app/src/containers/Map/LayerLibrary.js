@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import LayerLibrary from '../../components/Map/LayerLibrary';
-import { addLayer, removeLayer } from '../../actions/layerLibrary';
-import { setLayerInfoModal } from '../../actions/map';
-import { toggleLayerVisibility } from '../../actions/layers';
+import LayerLibrary from 'components/Map/LayerLibrary';
+import { addLayer, removeLayer } from 'actions/layerLibrary';
+import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
+import { toggleLayerVisibility } from 'actions/layers';
 
 const mapStateToProps = (state) => ({
   layers: state.layers
@@ -11,11 +11,17 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   addLayer: (layerId) => {
     dispatch(addLayer(layerId));
-  }, removeLayer: (layerId) => {
+  },
+  closeModal: () => {
+    dispatch(setLayerManagementModalVisibility(false));
+  },
+  removeLayer: (layerId) => {
     dispatch(removeLayer(layerId));
-  }, setLayerInfoModal: (open) => {
+  },
+  setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));
-  }, toggleLayerVisibility: (layer) => {
+  },
+  toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
   }
 });

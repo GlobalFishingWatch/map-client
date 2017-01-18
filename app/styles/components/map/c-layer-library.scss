@@ -1,3 +1,66 @@
 @import '../../settings';
 
-.c-layer-library {};
+.c-layer-library {
+
+  > .search-container {
+    position: relative;
+
+    > .search-input {
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid $color-14;
+      color: $color-4;
+      font-size: $font-size-x-small;
+      line-height: 1.9;
+      outline: none;
+      padding: 0 20px 0 0;
+      width: 100%;
+
+      ::-webkit-input-placeholder {
+        color: $color-14;
+      }
+
+      ::-moz-placeholder {
+        color: $color-14;
+      }
+
+      :-ms-input-placeholder {
+        color: $color-14;
+      }
+    }
+
+    > .search-icon {
+      bottom: 4px;
+      fill: $color-14;
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  > .layer-list {
+    background-image: linear-gradient(to bottom, $color-24, $color-2);
+    column-count: 2;
+    column-gap: 225px;
+    margin: 10px 0 0;
+  }
+
+  > .layer-list > .layer-item {
+    display: flex;
+    justify-content: space-between;
+    max-width: 275px;
+
+    &:not(:first-child) {
+      margin: 10px 0 0;
+    }
+  }
+
+  > .footer-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 0;
+
+    > .done-button {
+      width: 180px;
+    }
+  }
+};
