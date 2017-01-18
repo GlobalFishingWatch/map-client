@@ -66,9 +66,7 @@ class FilterPanel extends Component {
 
   addFilter() {
     const currentFilters = this.props.flags;
-    currentFilters.push({
-      flag: 'ALL'
-    });
+    currentFilters.push({});
 
     this.props.setFlagFilters(currentFilters);
     this.hideBlending();

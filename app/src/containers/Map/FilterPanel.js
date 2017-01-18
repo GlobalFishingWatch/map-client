@@ -8,8 +8,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setFlagFilters: flag => {
-    dispatch(setFlagFilters(flag));
+  setFlagFilters: flags => {
+    dispatch(setFlagFilters(flags));
   }
 });
 
