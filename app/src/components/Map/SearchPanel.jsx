@@ -87,12 +87,12 @@ class SearchPanel extends Component {
           onChange={(e) => this.onSearchInputChange(e)}
           onFocus={this.setBodyHeight}
           className={searchPanelStyles['search-accordion']}
-          placeholder="Type your search criteria"
+          placeholder="Search vessel"
           value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
         {!!isSearching && <CloseIcon
-          className={classnames(iconsStyles.icon, 'icon-close')}
+          className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
           onClick={() => this.cleanResults()}
         />}
         <ul
