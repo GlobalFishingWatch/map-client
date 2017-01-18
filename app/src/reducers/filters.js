@@ -12,7 +12,8 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_OVERALL_START_DATE,
-  TIMELINE_OVERALL_END_DATE
+  TIMELINE_OVERALL_END_DATE,
+  DEFAULT_TRACK_HUE
 } from 'constants';
 import { getTimeAtPrecision, getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
@@ -61,10 +62,20 @@ export default function (state = initialState, action) {
         ]
       });
     }
-    case SET_FLAG_FILTERS:
+    case SET_FLAG_FILTERS: {
+      const flags = action.payload.flagFilters;
+
+      flags.forEach(flag => {
+        if (flag.hue === undefined) {
+          /* eslint no-param-reassign: 0 */
+          flag.hue = DEFAULT_TRACK_HUE;
+        }
+      });
+
       return Object.assign({}, state, {
         flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers
       });
+    }
     case SET_PLAYING_STATUS:
       return Object.assign({}, state, {
         timelinePaused: action.payload
