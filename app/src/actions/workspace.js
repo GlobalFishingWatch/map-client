@@ -90,10 +90,9 @@ function processLegacyWorkspace(data, dispatch) {
   });
 
   const layers = workspace.map.animations.map(l => ({
-    title: l.title,
-    description: l.description,
-    color: l.color,
-    visible: l.visible,
+    title: l.args.title,
+    color: l.args.color,
+    visible: l.args.visible,
     type: l.type,
     url: l.args.source.args.url
   }));
