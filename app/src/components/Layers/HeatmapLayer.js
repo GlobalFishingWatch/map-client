@@ -38,7 +38,9 @@ export default class HeatmapLayer {
   setSubLayers(flags) {
     const subLayerDelta = flags.length - this.subLayers.length;
     if (subLayerDelta === -1) {
-      this.subLayers.pop();
+      const subLayer = this.subLayers.pop();
+      this.stage.removeChild(subLayer.stage);
+      subLayer.destroy();
     } else if (subLayerDelta > 0) {
       for (let i = 0; i < subLayerDelta; i++) {
         const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites);

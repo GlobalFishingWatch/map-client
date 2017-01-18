@@ -36,6 +36,11 @@ export default class HeatmapSubLayer {
     this._setTextureFrame(useHeatmapStyle);
   }
 
+  destroy() {
+    this.spritesPool = null;
+    this.stage.destroy({ children: true });
+  }
+
   /**
    * Updates the main texture frame offset to show different brush styles and hues
    * Both args are optional, if one is omitted, previous value is used
