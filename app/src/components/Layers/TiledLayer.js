@@ -1,5 +1,6 @@
 export default class TiledLayer {
-  constructor(getTileCallback, releaseTileCallback) {
+  constructor(getTileCallback, releaseTileCallback, map) {
+    this.map = map;
     this.getTileCallback = getTileCallback;
     this.releaseTileCallback = releaseTileCallback;
     this.tileSize = new google.maps.Size(256, 256);
@@ -54,8 +55,10 @@ export default class TiledLayer {
       return canvas;
     }
 
+    canvas.map = this.map;
+
     canvas.uid = this.currentUid;
-    this.getTileCallback(this.currentUid, tileCoordinates, canvas);
+    this.getTileCallback(this.currentUid, tileCoordinates, canvas, this.map);
     this.tiles.push(canvas);
     this.currentUid++;
     return canvas;

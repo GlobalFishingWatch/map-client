@@ -38,7 +38,7 @@
         {
           "title": "VESSEL",
           "description": "Fishing effort layer (fr)",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2-tms",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
           "visible": true,
           "color": "#88FBFF",
           "hue": 182,
