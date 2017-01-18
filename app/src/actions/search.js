@@ -22,13 +22,16 @@ export function getSearchResults(searchTerm) {
 
     // ID of the current request
     const queryID = ++searchQueryID;
-
-    fetch(`${state.map.tilesetUrl}/search/?query=${searchTerm}`, {
-      method: 'GET',
-      headers: {
+    const options = {
+      method: 'GET'
+    };
+    if (state.user.token) {
+      options.headers = {
         Authorization: `Bearer ${state.user.token}`
-      }
-    }).then((response) => response.json()).then((result) => {
+      };
+    }
+    fetch(`${state.map.tilesetUrl}/search/?query=${searchTerm}`, options)
+    .then((response) => response.json()).then((result) => {
       // We ensure to only show the results of the last request
       if (queryID !== searchQueryID) return;
 

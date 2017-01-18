@@ -31,7 +31,9 @@ export function setCurrentVessel(seriesGroup) {
       `${state.map.tilesetUrl}/sub/seriesgroup=${seriesGroup}/info`,
       true
     );
-    request.setRequestHeader('Authorization', `Bearer ${token}`);
+    if (token) {
+      request.setRequestHeader('Authorization', `Bearer ${token}`);
+    }
     request.setRequestHeader('Accept', 'application/json');
     request.onreadystatechange = () => {
       if (request.readyState !== 4) {

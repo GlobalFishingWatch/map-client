@@ -6,7 +6,7 @@ import {
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
 import {
-  SET_LAYERS, SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL
+  SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL
 } from 'actions';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
@@ -129,13 +129,6 @@ export function getWorkspace(workspaceId = null) {
   return (dispatch, getState) => {
     const state = getState();
 
-    if (!state.user.token) {
-      dispatch({
-        type: SET_LAYERS, payload: []
-      });
-      return;
-    }
-
     const ID = workspaceId || DEFAULT_WORKSPACE;
     let url;
 
@@ -145,11 +138,15 @@ export function getWorkspace(workspaceId = null) {
       url = `${MAP_API_ENDPOINT}/v1/workspaces/${ID}`;
     }
 
-    fetch(url, {
-      headers: {
+    const options = {};
+    if (state.user.token) {
+      options.headers = {
         Authorization: `Bearer ${state.user.token}`
-      }
-    }).then(res => res.json())
+      };
+    }
+
+    fetch(url, options)
+      .then(res => res.json())
       .then(data => {
         let workspaceData;
         if (data.workspace !== undefined) {

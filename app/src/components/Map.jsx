@@ -70,7 +70,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.token || !this.map) {
+    if (!this.map) {
       return;
     }
 
