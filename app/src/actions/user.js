@@ -59,6 +59,7 @@ export function getLoggedUser() {
       });
       return null;
     }).then((payload) => {
+      window.ga('set', 'dimension1', payload.identity.userId);
       dispatch({
         type: SET_USER,
         payload: getUserData(payload)
