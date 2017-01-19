@@ -129,7 +129,7 @@ class MapLayers extends Component {
   }
 
   initHeatmap() {
-    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile);
+    this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
     this.heatmapContainer = new HeatmapContainer(this.props.viewportWidth, this.props.viewportHeight);
     this.heatmapContainer.setMap(this.map);

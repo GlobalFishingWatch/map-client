@@ -24,8 +24,8 @@ const mapDispatchToProps = (dispatch) => ({
   showPolygon: (id, description, latLng) => {
     dispatch(showPolygon(id, description, latLng));
   },
-  createTile: (uid, coordinates, canvas) => {
-    dispatch(getTile(uid, coordinates, canvas));
+  createTile: (uid, coordinates, canvas, map) => {
+    dispatch(getTile(uid, coordinates, canvas, map));
   },
   releaseTile: (uid) => {
     dispatch(releaseTile(uid));

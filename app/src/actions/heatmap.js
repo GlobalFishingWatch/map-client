@@ -17,7 +17,7 @@ import {
 import { getVesselTrack, setCurrentVessel, showVesselClusterInfo, showNoVesselsInfo, clearTrack } from 'actions/vesselInfo';
 
 
-export function getTile(uid, tileCoordinates, canvas) {
+export function getTile(uid, tileCoordinates, canvas, map) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
@@ -52,7 +52,8 @@ export function getTile(uid, tileCoordinates, canvas) {
       allLayerPromises.then(rawTileData => {
         const cleanVectorArrays = getCleanVectorArrays(rawTileData);
         const groupedData = groupData(cleanVectorArrays);
-        const vectorArray = addTilePixelCoordinates(tileCoordinates, groupedData);
+        const bounds = tile.canvas.getBoundingClientRect();
+        const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
         const data = getTilePlaybackData(
           tileCoordinates.zoom,
           vectorArray,

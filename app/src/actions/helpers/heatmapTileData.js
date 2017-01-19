@@ -98,28 +98,26 @@ export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT
 
 /**
  * Add projected lat/long values transformed as tile-relative x/y coordinates
+ * @param vectorArray typed arrays, including latitude and longitude
+ * @param map a reference to the original Google Map
+ * @param tileBounds the initial position of the tile in the DOM, used to offset screen coordinates to local tile coordinates
  */
-export const addTilePixelCoordinates = (tileCoordinates, vectorArray) => {
+export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
   const data = vectorArray;
-  const scale = 1 << tileCoordinates.zoom;
-  const tileBaseX = tileCoordinates.x * 256;
-  const tileBaseY = tileCoordinates.y * 256;
-  const zoomDiff = tileCoordinates.zoom + 8 - Math.min(tileCoordinates.zoom + 8, 16);
-
+  const proj = map.getProjection();
+  const top = proj.fromLatLngToPoint(map.getBounds().getNorthEast()).y;
+  const left = proj.fromLatLngToPoint(map.getBounds().getSouthWest()).x;
+  const tileTop = tileBounds.top;
+  const tileLeft = tileBounds.left;
+  const scale = Math.pow(2, map.getZoom());
   data.x = new Int32Array(data.latitude.length);
   data.y = new Int32Array(data.latitude.length);
-
   for (let index = 0, length = data.latitude.length; index < length; index++) {
-    const lat = data.latitude[index];
-    const lng = data.longitude[index];
-    let x = (lng + 180) / 360 * 256;
-    let y = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, 0)) * 256; // eslint-disable-line
-    x *= scale;
-    y *= scale;
-
-    data.x[index] = ~~((x - tileBaseX) << zoomDiff);
-    data.y[index] = ~~((y - tileBaseY) << zoomDiff);
+    const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
+    data.x[index] = (worldPoint.x - left) * scale - tileLeft;
+    data.y[index] = (worldPoint.y - top) * scale - tileTop;
   }
+
   return data;
 };
 
