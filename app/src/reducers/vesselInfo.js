@@ -8,7 +8,7 @@ import {
   SET_TRACK_BOUNDS,
   SHOW_VESSEL_CLUSTER_INFO,
   SHOW_NO_VESSELS_INFO,
-  TOGGLE_ACTIVE_VESSEL_PIN,
+  TOGGLE_VESSEL_PIN,
   SHOW_VESSEL_DETAILS,
   SET_PINNED_VESSEL_HUE
 } from 'actions';
@@ -102,14 +102,13 @@ export default function (state = initialState, action) {
     case SET_TRACK_BOUNDS: {
       return Object.assign({}, state, { trackBounds: action.trackBounds });
     }
-    case TOGGLE_ACTIVE_VESSEL_PIN: {
+    case TOGGLE_VESSEL_PIN: {
       let detailsIndex;
-      if (action.payload && action.payload.seriesgroup !== undefined) {
-        // look for vessel with given seriesgoup if provided...
-        detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      } else {
-        // ...or select the currently visible one
+      if (action.payload.useCurrentlyVisibleVessel === true) {
         detailsIndex = state.details.findIndex(vessel => vessel.visible === true);
+      } else {
+        // look for vessel with given seriesgoup if provided
+        detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       }
       const newDetails = _.cloneDeep(state.details[detailsIndex]);
       newDetails.pinned = !newDetails.pinned;

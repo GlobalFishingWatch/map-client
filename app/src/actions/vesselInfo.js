@@ -5,7 +5,7 @@ import {
   SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS,
   SHOW_NO_VESSELS_INFO,
-  TOGGLE_ACTIVE_VESSEL_PIN,
+  TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
   SET_PINNED_VESSEL_HUE
@@ -143,13 +143,16 @@ export function clearVesselInfo() {
 
 export function toggleActiveVesselPin() {
   return {
-    type: TOGGLE_ACTIVE_VESSEL_PIN
+    type: TOGGLE_VESSEL_PIN,
+    payload: {
+      useCurrentlyVisibleVessel: true
+    }
   };
 }
 
 export function toggleVesselPin(seriesgroup) {
   return {
-    type: TOGGLE_ACTIVE_VESSEL_PIN,
+    type: TOGGLE_VESSEL_PIN,
     payload: {
       seriesgroup
     }

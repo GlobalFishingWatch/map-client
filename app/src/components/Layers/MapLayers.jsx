@@ -107,19 +107,13 @@ class MapLayers extends Component {
     ) === true) {
       return true;
     }
-    // if (this.props.vesselTracks.seriesgroup !== nextProps.vesselTracks.seriesgroup) {
-    //   return true;
-    // }
-    // if (this.props.vesselTracks.selectedSeries !== nextProps.vesselTracks.selectedSeries) {
-    //   return true;
-    // }
     if (this.props.zoom !== nextProps.zoom) {
       return true;
     }
     if (this.props.timelinePaused !== nextProps.timelinePaused) {
       return true;
     }
-    if (/* nextProps.vesselTrack.selectedSeries && */extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
+    if (extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
       return true;
     }
     if (innerExtentChanged) {
