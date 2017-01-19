@@ -1,6 +1,43 @@
-import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT } from '../actions';
+import { GET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT, SET_CURRENT_PATHNAME } from '../actions';
 import 'whatwg-fetch';
 import { browserHistory } from 'react-router';
+import ga from 'ga-react-router';
+
+
+const setGAPageView = (pathname) => {
+  ga('set', 'page', pathname);
+  ga('send', 'pageview');
+};
+
+const setGAUserDimension = (user, currentPathname) => {
+  if (user !== false) {
+    window.ga('set', 'dimension1', user.identity.userId);
+  }
+
+  // trigger initial page view
+  setGAPageView(currentPathname);
+};
+
+const unsetGAUserDimension = () => {
+  window.ga('set', 'dimension1', '');
+};
+
+export function triggerAnalyticsPageView(pathname) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SET_CURRENT_PATHNAME,
+      payload: {
+        pathname
+      }
+    });
+    if (getState().user.loggedUser === undefined) {
+      // auth process did not start yet: loggedUser will later be either an object, or null, but not undefined
+      // we'll trigger initial page view after auth finished (successfully or not), in setGAUserDimension()
+      return;
+    }
+    setGAPageView(pathname);
+  };
+}
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_SESSION, token);
@@ -24,6 +61,7 @@ export function getLoggedUser() {
         type: GET_USER,
         payload: null
       });
+      setGAUserDimension(false, state.user.currentPathname);
       return;
     }
 
@@ -40,13 +78,14 @@ export function getLoggedUser() {
         type: SET_TOKEN,
         payload: null
       });
+      setGAUserDimension(false, state.user.currentPathname);
       return null;
     }).then((user) => {
-      window.ga('set', 'dimension1', user.identity.userId);
       dispatch({
         type: GET_USER,
         payload: user
       });
+      setGAUserDimension(user, state.user.currentPathname);
     });
   };
 }
@@ -57,6 +96,7 @@ export function logout() {
     dispatch({
       type: LOGOUT
     });
+    unsetGAUserDimension();
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
     if (window.location.pathname.match('^/map')) {
       browserHistory.push('/');
