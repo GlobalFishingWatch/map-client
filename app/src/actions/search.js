@@ -1,4 +1,4 @@
-import { GET_SEARCH_RESULTS } from 'actions';
+import { GET_SEARCH_RESULTS, SET_SEARCH_MODAL_VISIBILITY } from 'actions';
 import 'whatwg-fetch';
 
 let searchQueryID = 0;
@@ -47,4 +47,9 @@ export function getSearchResults(searchTerm) {
   };
 }
 
-export { getSearchResults as default };
+export function setSearchModalVisibility(visibility) {
+  return {
+    type: SET_SEARCH_MODAL_VISIBILITY,
+    payload: visibility
+  };
+}

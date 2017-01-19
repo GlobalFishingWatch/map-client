@@ -127,6 +127,7 @@ class SearchPanel extends Component {
             <div className={searchPanelStyles['pagination-container']}>
               <button
                 className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
+                onClick={() => this.props.openSearchModal()}
               >
                 more results
               </button>
@@ -139,7 +140,8 @@ class SearchPanel extends Component {
 SearchPanel.propTypes = {
   search: React.PropTypes.object,
   visible: React.PropTypes.bool,
-  getSearchResults: React.PropTypes.func
+  getSearchResults: React.PropTypes.func,
+  openSearchModal: React.PropTypes.func
 };
 
 export default SearchPanel;

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import SearchPanel from 'components/Map/SearchPanel';
-import { getSearchResults } from 'actions/search';
+import { getSearchResults, setSearchModalVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
   search: state.search
@@ -23,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
     } else {
       getSearchResultsDebounced(dispatch, searchTerm);
     }
+  },
+  openSearchModal: () => {
+    dispatch(setSearchModalVisibility(true));
   }
 });
 
