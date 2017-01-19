@@ -124,7 +124,7 @@ export function queryHeatmap(tileQuery, latLng) {
     vessels = _.flatten(vessels);
 
     // we can get multiple points with similar series and seriesgroup, in which case
-    // we should treat that as a succesful vessel query, not a cluster
+    // we should treat that as a successful vessel query, not a cluster
     const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
     const allSeries = _.uniq(vessels.map(v => v.series));
 
