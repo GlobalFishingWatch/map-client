@@ -1,10 +1,6 @@
 /* eslint no-param-reassign: 0 */
 import _ from 'lodash';
-import {
-  UPDATE_HEATMAP_TILES,
-  COMPLETE_TILE_LOAD,
-  SET_VESSEL_CLUSTER_CENTER
-} from '../actions';
+import { UPDATE_HEATMAP_TILES, COMPLETE_TILE_LOAD, SET_VESSEL_CLUSTER_CENTER } from '../actions';
 import {
   getTimeAtPrecision,
   getTilePelagosPromises,
@@ -15,7 +11,6 @@ import {
   selectVesselsAt
 } from './helpers/heatmapTileData';
 import { showVesselClusterInfo, showNoVesselsInfo, addVessel, clearVesselInfo } from 'actions/vesselInfo';
-
 
 export function getTile(uid, tileCoordinates, canvas, map) {
   return (dispatch, getState) => {
@@ -33,18 +28,10 @@ export function getTile(uid, tileCoordinates, canvas, map) {
       const tiles = layer.tiles;
 
       const tile = {
-        uid,
-        tileCoordinates,
-        canvas
+        uid, tileCoordinates, canvas
       };
 
-      const pelagosPromises = getTilePelagosPromises(
-        layer.url,
-        tileCoordinates,
-        timelineOverallStartDate,
-        timelineOverallEndDate,
-        token
-      );
+      const pelagosPromises = getTilePelagosPromises(layer.url, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token);
 
       const allLayerPromises = Promise.all(pelagosPromises);
       allPromises.push(allLayerPromises);
@@ -64,8 +51,7 @@ export function getTile(uid, tileCoordinates, canvas, map) {
         tile.data = data;
 
         dispatch({
-          type: UPDATE_HEATMAP_TILES,
-          payload: layers
+          type: UPDATE_HEATMAP_TILES, payload: layers
         });
       });
 
@@ -93,8 +79,7 @@ export function releaseTile(uid) {
       tiles.splice(releasedTileIndex, 1);
     });
     dispatch({
-      type: UPDATE_HEATMAP_TILES,
-      payload: layers
+      type: UPDATE_HEATMAP_TILES, payload: layers
     });
   };
 }
@@ -128,6 +113,7 @@ export function queryHeatmap(tileQuery, latLng) {
     const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
     const allSeries = _.uniq(vessels.map(v => v.series));
 
+    dispatch(clearVesselInfo());
     if (vessels.length === 0) {
       // no results in this area
       // console.log('no results');
@@ -137,7 +123,6 @@ export function queryHeatmap(tileQuery, latLng) {
       // (less than 0 means that points have been clustered server side):
       // only one valid result
       // console.log('one valid result');
-      dispatch(clearVesselInfo());
       dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
     } else {
       // multiple results
@@ -145,8 +130,7 @@ export function queryHeatmap(tileQuery, latLng) {
       // the following solely sets the cluster center in the state to be
       // reused later if user clicks on 'zoom to see more'
       dispatch({
-        type: SET_VESSEL_CLUSTER_CENTER,
-        payload: latLng
+        type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
       });
       dispatch(showVesselClusterInfo());
     }

@@ -54,7 +54,7 @@ class VesselInfoPanel extends Component {
       if (vesselInfo.rfmo_registry_info) {
         RFMORegistry = [];
         vesselInfo.rfmo_registry_info.forEach((registry) => {
-          RFMORegistry.push(<li className={vesselPanelStyles['rfmo-item']}>
+          RFMORegistry.push(<li key={registry.rfmo} className={vesselPanelStyles['rfmo-item']}>
             <a
               className={vesselPanelStyles['external-link']}
               href={`${registry.url}`}
