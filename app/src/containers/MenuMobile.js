@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 
-import MenuMobile from '../components/Shared/MenuMobile';
-import { login, logout } from '../actions/user';
-import { getWorkspace, setSupportModalVisibility } from '../actions/map';
+import MenuMobile from 'components/Shared/MenuMobile';
+import { login, logout } from 'actions/user';
+import { setSupportModalVisibility } from 'actions/map';
+import { getWorkspace } from 'actions/workspace';
 
 const mapStateToProps = (state) => ({
   loggedUser: state.user.loggedUser
