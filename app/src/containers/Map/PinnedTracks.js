@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
   onRemoveClicked: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));
   },
-  testRandomHue(seriesgroup, hue) {
+  setPinnedVesselHue(seriesgroup, hue) {
     dispatch(setPinnedVesselHue(seriesgroup, hue));
   }
 });

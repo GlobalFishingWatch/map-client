@@ -78,7 +78,8 @@ class LayerLibraryModal extends Component {
           </ul>}
         <div className={LayerLibraryStyles['footer-container']}>
           <button
-            className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'], LayerLibraryStyles['done-button'])}
+            className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
+              ButtonStyles['-big'], LayerLibraryStyles['done-button'])}
             onClick={() => this.props.closeModal()}
           >
             done

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
-import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
+
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
 import buttonCloseStyles from 'styles/components/c-button-close.scss';
+import iconStyles from 'styles/icons.scss';
+
+import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
+import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
 class VesselInfoPanel extends Component {
 
@@ -66,11 +70,11 @@ class VesselInfoPanel extends Component {
 
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
-          <button
-            className={classnames(vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
+          <PinIcon
+            className={classnames(iconStyles.icon, iconStyles['pin-icon'],
+              vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
             onClick={() => { this.props.togglePin(); }}
           />
-
           {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>

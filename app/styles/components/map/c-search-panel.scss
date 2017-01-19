@@ -18,6 +18,18 @@
     outline: 0;
     padding-right: 30px;
     width: 100%;
+
+    &::-webkit-input-placeholder {
+      color: rgba($color-3, .3);
+    }
+
+    &::-moz-placeholder {
+      color: rgba($color-3, .3);
+    }
+
+    &:-ms-input-placeholder {
+      color: rgba($color-3, .3);
+    }
   }
 
   :global .icon-search,
@@ -30,9 +42,11 @@
     top: 8px;
   }
 
-  :global .icon-close {
-    stroke: $color-4;
-    top: 6px;
+  .clean-query-button {
+    position: absolute;
+    right: 10px;
+    stroke: rgba($color-3, .3);
+    top: 10px;
   }
 
   :global .icon-filter {
@@ -45,7 +59,7 @@
     transition: max-height .25s ease;
 
     &.-open {
-      margin: 10px 0 15px;
+      margin: 10px 0 0;
       max-height: 200px;
     }
 
