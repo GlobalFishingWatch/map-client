@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { SEARCH_RESULTS_LIMIT, SEARCH_RESULT_CHARACTER_LIMIT } from 'constants';
 import SearchResult from 'containers/Map/SearchResult';
-import PinnedTracks from 'containers/Map/PinnedTracks';
-
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
@@ -134,7 +132,6 @@ class SearchPanel extends Component {
               </button>
             </div>}
         </div>
-        <PinnedTracks />
       </div>);
   }
 }
