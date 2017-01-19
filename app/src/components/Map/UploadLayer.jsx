@@ -97,7 +97,8 @@ class UploadLayer extends Component {
           <div className={UploadLayerStyles.row}>
             <div className={UploadLayerStyles['submit-container']}>
               <input
-                className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'], UploadLayerStyles['submit-button'])}
+                className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
+                  ButtonStyles['-big'], UploadLayerStyles['submit-button'])}
                 type="submit"
                 value="done"
               />

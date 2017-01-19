@@ -5,18 +5,18 @@ import {
   SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS,
   SHOW_NO_VESSELS_INFO,
-  SHOW_VESSEL_LOADING_INFO
+  TOGGLE_ACTIVE_VESSEL_PIN,
+  ADD_VESSEL,
+  SHOW_VESSEL_DETAILS,
+  SET_PINNED_VESSEL_HUE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
+
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
-    dispatch({
-      type: SHOW_VESSEL_LOADING_INFO
-    });
-
     const state = getState();
     const token = state.user.token;
     let request;
@@ -45,6 +45,12 @@ export function setCurrentVessel(seriesGroup) {
         type: SET_VESSEL_DETAILS,
         payload: data
       });
+      dispatch({
+        type: SHOW_VESSEL_DETAILS,
+        payload: {
+          seriesgroup: data.seriesgroup
+        }
+      });
     };
     request.send(null);
   };
@@ -62,14 +68,7 @@ export function showNoVesselsInfo() {
   };
 }
 
-export function clearTrack() {
-  return {
-    type: SET_VESSEL_TRACK,
-    payload: null
-  };
-}
-
-export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false) {
+export function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const state = getState();
     const filters = state.filters;
@@ -79,7 +78,7 @@ export function getVesselTrack(seriesGroup, series = null, zoomToBounds = false)
 
     for (let i = startYear; i <= endYear; i++) {
       urls.push(`${state.map.tilesetUrl}/\
-sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
     }
     const promises = [];
     for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
@@ -100,7 +99,7 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
-            seriesgroup: seriesGroup,
+            seriesgroup,
             seriesGroupData: groupedData,
             series: _.uniq(groupedData.series),
             selectedSeries: series
@@ -124,9 +123,59 @@ sub/seriesgroup=${seriesGroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
   };
 }
 
+
+export function addVessel(seriesgroup, series = null, zoomToBounds = false) {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_VESSEL,
+      payload: {
+        seriesgroup
+      }
+    });
+    dispatch(setCurrentVessel(seriesgroup));
+    dispatch(getVesselTrack(seriesgroup, series, zoomToBounds));
+  };
+}
+
 export function clearVesselInfo() {
   return {
-    type: CLEAR_VESSEL_INFO,
-    payload: false
+    type: CLEAR_VESSEL_INFO
+  };
+}
+
+export function toggleActiveVesselPin() {
+  return {
+    type: TOGGLE_ACTIVE_VESSEL_PIN
+  };
+}
+
+export function toggleVesselPin(seriesgroup) {
+  return {
+    type: TOGGLE_ACTIVE_VESSEL_PIN,
+    payload: {
+      seriesgroup
+    }
+  };
+}
+
+export function showPinnedVesselDetails(seriesgroup) {
+  return (dispatch) => {
+    dispatch(clearVesselInfo());
+    dispatch({
+      type: SHOW_VESSEL_DETAILS,
+      payload: {
+        seriesgroup
+      }
+    });
+  };
+}
+
+export function setPinnedVesselHue(seriesgroup, hue) {
+  return {
+    type: SET_PINNED_VESSEL_HUE,
+    payload: {
+      seriesgroup,
+      hue
+    }
   };
 }

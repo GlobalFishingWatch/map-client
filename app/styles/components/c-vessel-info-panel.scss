@@ -14,6 +14,16 @@
     justify-content: space-between;
     padding: 20px 20px 15px;
 
+    .pin {
+      fill: $color-3;
+      position: absolute;
+      right: 20px;
+
+      &.-pinned {
+        fill: $color-4;
+      }
+    }
+
     .row-info {
       display: flex;
       flex-basis: calc(50% - 10px);
