@@ -15,7 +15,7 @@ class VesselInfoPanel extends Component {
     const vesselInfo = this.props.details.find(vessel => vessel.visible === true);
     const status = this.props.detailsStatus;
 
-    if (status === null && vesselInfo === undefined) {
+    if (status === null || vesselInfo === undefined) {
       return null;
     }
 

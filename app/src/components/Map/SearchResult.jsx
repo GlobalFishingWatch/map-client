@@ -5,6 +5,7 @@ class SearchResult extends Component {
 
   onDrawVessel() {
     this.props.drawVessel(this.props.vesselInfo);
+    this.props.closeSearch();
   }
 
   highlightWord(strReplace, str, styleClass) {
@@ -39,6 +40,7 @@ class SearchResult extends Component {
 }
 
 SearchResult.propTypes = {
+  closeSearch: React.PropTypes.func,
   drawVessel: React.PropTypes.func,
   keyword: React.PropTypes.string,
   vesselInfo: React.PropTypes.object

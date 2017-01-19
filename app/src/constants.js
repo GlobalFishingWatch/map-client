@@ -86,6 +86,10 @@ export const LAYER_TYPES = {
   ClusterAnimation: 'ClusterAnimation'
 };
 
+// search
+export const SEARCH_RESULTS_LIMIT = 4;
+export const SEARCH_RESULT_CHARACTER_LIMIT = 3;
+
 export const FLAG_FILTERS_LIMIT = 4;
 
 export const FLAGS = {
