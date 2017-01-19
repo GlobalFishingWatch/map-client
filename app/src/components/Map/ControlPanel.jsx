@@ -13,6 +13,7 @@ import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=Search
 import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
 import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
+import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
 
@@ -51,6 +52,7 @@ class ControlPanel extends Component {
               className="login-required-link"
               onClick={this.props.login}
             >Only registered users can use the search feature. Click here to log in.</a>
+            <PinnedTracks />
           </div>
         </AccordionItem>);
     }
@@ -65,6 +67,7 @@ class ControlPanel extends Component {
       >
         <div className={controlPanelStyle['content-accordion']}>
           <SearchPanel visible={this.state.searchVisible} />
+          <PinnedTracks />
         </div>
       </AccordionItem>);
   }

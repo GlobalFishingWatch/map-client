@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { SEARCH_RESULTS_LIMIT, SEARCH_RESULT_CHARACTER_LIMIT } from 'constants';
 import SearchResult from 'containers/Map/SearchResult';
-import PinnedTracks from 'containers/Map/PinnedTracks';
-
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
+import MapButtonStyles from 'styles/components/map/c-button.scss';
 
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
@@ -13,12 +13,10 @@ class SearchPanel extends Component {
   constructor(props) {
     super(props);
 
-    this.defaults = {
-      characterLimit: 3
-    };
-
     this.state = {
-      keyword: '', searching: false
+      keyword: '',
+      open: false,
+      searching: false
     };
   }
 
@@ -35,7 +33,12 @@ class SearchPanel extends Component {
   onSearchInputChange(event) {
     const keyword = event.target.value;
 
-    this.setState({ keyword, searching: keyword.length >= this.defaults.characterLimit });
+    this.setState({
+      keyword,
+      searching: keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT,
+      open: keyword.length > 0
+    });
+
     this.props.getSearchResults(keyword, { immediate: !keyword.length });
   }
 
@@ -43,40 +46,54 @@ class SearchPanel extends Component {
     document.querySelector('body').style.height = '100%';
   }
 
-  setBodyHeight() {
+  onClick() {
+    if (this.state.keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT) {
+      this.setState({
+        open: true
+      });
+    }
+  }
+
+  onFocus() {
     document.querySelector('body').style.height = `${window.innerHeight}px`;
   }
 
   cleanResults() {
     this.setState({ keyword: '' });
+    this.closeSearch();
     this.props.getSearchResults('', { immediate: true });
   }
 
-  render() {
-    const isSearching = this.props.search.count || this.state.keyword.length > this.defaults.characterLimit;
+  closeSearch() {
+    this.setState({ open: false });
+  }
 
-    let searchResults;
+  render() {
+    let searchResults = null;
+
     if (this.state.searching) {
-      searchResults = <li className={searchPanelStyles.result}>Searching...</li>;
-    } else if (this.props.search.count && this.state.keyword.length >= this.defaults.characterLimit) {
+      searchResults = <li className={searchPanelStyles['search-message']}>Searching...</li>;
+    } else if (this.props.search.count && this.state.keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT) {
       searchResults = [];
-      for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
+      const total = this.props.search.count <= SEARCH_RESULTS_LIMIT ?
+        this.props.search.count : SEARCH_RESULTS_LIMIT;
+
+      for (let i = 0, length = total; i < length; i++) {
         searchResults.push(<SearchResult
           className={searchPanelStyles.result}
           key={i}
           keyword={this.state.keyword}
+          closeSearch={() => this.closeSearch()}
           vesselInfo={this.props.search.entries[i]}
         />);
       }
-    } else if (this.state.keyword.length < this.defaults.characterLimit && this.state.keyword.length > 0) {
+    } else if (this.state.keyword.length < SEARCH_RESULT_CHARACTER_LIMIT && this.state.keyword.length > 0) {
       searchResults = (
-        <li className={searchPanelStyles.result}>
-          Type at least {this.defaults.characterLimit} characters
+        <li className={searchPanelStyles['search-message']}>
+          Type at least {SEARCH_RESULT_CHARACTER_LIMIT} characters
         </li>);
-    } else if (this.state.keyword.length === 0) {
-      searchResults = null;
     } else {
-      searchResults = <li className={searchPanelStyles.result}>No result</li>;
+      searchResults = <li className={searchPanelStyles['search-message']}>No result</li>;
     }
 
     return (
@@ -85,22 +102,36 @@ class SearchPanel extends Component {
           type="text"
           onBlur={this.onBlur}
           onChange={(e) => this.onSearchInputChange(e)}
-          onFocus={this.setBodyHeight}
+          onClick={() => this.onClick()}
+          onFocus={() => this.onFocus()}
           className={searchPanelStyles['search-accordion']}
           placeholder="Search vessel"
           value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
-        {!!isSearching && <CloseIcon
+        {this.state.keyword.length > 0 && <CloseIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
           onClick={() => this.cleanResults()}
         />}
-        <ul
-          className={classnames(searchPanelStyles['result-list'], searchPanelStyles['-open'])}
+        <div
+          className={classnames(searchPanelStyles['results-container'],
+            { [`${searchPanelStyles['-open']}`]: this.state.open })}
         >
-          {searchResults}
-        </ul>
-        <PinnedTracks />
+          <ul
+            className={classnames(searchPanelStyles['result-list'])}
+          >
+            {searchResults}
+          </ul>
+          {this.state.keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT &&
+            !this.state.searching && this.props.search.count > SEARCH_RESULTS_LIMIT &&
+            <div className={searchPanelStyles['pagination-container']}>
+              <button
+                className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
+              >
+                more results
+              </button>
+            </div>}
+        </div>
       </div>);
   }
 }
