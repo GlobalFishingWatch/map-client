@@ -5,6 +5,7 @@ import PinnedTracks from 'containers/Map/PinnedTracks';
 
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
+import MapButtonStyles from 'styles/components/map/c-button.scss';
 
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
@@ -14,7 +15,8 @@ class SearchPanel extends Component {
     super(props);
 
     this.defaults = {
-      characterLimit: 3
+      characterLimit: 3,
+      resultsLimit: 4
     };
 
     this.state = {
@@ -53,14 +55,13 @@ class SearchPanel extends Component {
   }
 
   render() {
-    const isSearching = this.props.search.count || this.state.keyword.length > this.defaults.characterLimit;
+    let searchResults = null;
 
-    let searchResults;
     if (this.state.searching) {
-      searchResults = <li className={searchPanelStyles.result}>Searching...</li>;
+      searchResults = <li className={searchPanelStyles['search-message']}>Searching...</li>;
     } else if (this.props.search.count && this.state.keyword.length >= this.defaults.characterLimit) {
       searchResults = [];
-      for (let i = 0, length = this.props.search.entries.length; i < length; i++) {
+      for (let i = 0, length = this.defaults.resultsLimit; i < length; i++) {
         searchResults.push(<SearchResult
           className={searchPanelStyles.result}
           key={i}
@@ -70,13 +71,11 @@ class SearchPanel extends Component {
       }
     } else if (this.state.keyword.length < this.defaults.characterLimit && this.state.keyword.length > 0) {
       searchResults = (
-        <li className={searchPanelStyles.result}>
+        <li className={searchPanelStyles['search-message']}>
           Type at least {this.defaults.characterLimit} characters
         </li>);
-    } else if (this.state.keyword.length === 0) {
-      searchResults = null;
     } else {
-      searchResults = <li className={searchPanelStyles.result}>No result</li>;
+      searchResults = <li className={searchPanelStyles['search-message']}>No result</li>;
     }
 
     return (
@@ -91,15 +90,29 @@ class SearchPanel extends Component {
           value={this.state.keyword}
           ref={ref => (this.searchField = ref)}
         />
-        {!!isSearching && <CloseIcon
+        {this.state.keyword.length > 0 && <CloseIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
           onClick={() => this.cleanResults()}
         />}
-        <ul
-          className={classnames(searchPanelStyles['result-list'], searchPanelStyles['-open'])}
+        <div
+          className={classnames(searchPanelStyles['results-container'],
+            { [`${searchPanelStyles['-open']}`]: this.state.keyword.length })}
         >
-          {searchResults}
-        </ul>
+          <ul
+            className={classnames(searchPanelStyles['result-list'])}
+          >
+            {searchResults}
+          </ul>
+          {this.state.keyword.length >= this.defaults.characterLimit &&
+            !this.state.searching && this.props.search.count > this.defaults.resultsLimit &&
+            <div className={searchPanelStyles['pagination-container']}>
+              <button
+                className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
+              >
+                more results
+              </button>
+            </div>}
+        </div>
         <PinnedTracks />
       </div>);
   }
