@@ -22,14 +22,39 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    position: relative;
 
     &:not(:first-child) {
       margin: 10px 0 0;
     }
 
     > .item-name {
+      background-color: transparent;
+      border: 0;
+      border-bottom: 1px solid rgba($color-3, .3);
       color: $color-4;
+      flex: 1;
       font-size: $font-size-xxs-small;
+      height: 24px;
+      margin: 0 15px 0 0;
+      outline: none;
+      padding: 0 0 3px;
+    }
+
+    > .rename-icon {
+      position: absolute;
+      right: 28px;
+      stroke: rgba($color-3, .3);
+    }
+
+    > .edition-menu {
+
+      > .delete-icon {
+        cursor: pointer;
+        fill: $color-19;
+        height: 16px;
+        width: 10px;
+      }
     }
 
     > .pinned-item-action-list {
