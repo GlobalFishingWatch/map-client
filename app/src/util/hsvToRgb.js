@@ -26,3 +26,8 @@ export const hueToRgbString = hue => {
   const rgb = hsvToRgb(hue, 50, 100);
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
+
+export const hueToRgbaString = (hue, alpha) => {
+  const rgb = hsvToRgb(hue, 50, 100);
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+};

@@ -14,6 +14,21 @@
     justify-content: space-between;
     padding: 20px 20px 15px;
 
+    .pin {
+      position: absolute;
+      right: 20px;
+
+      &::after {
+        content: 'pin';
+      }
+
+      &.-pinned {
+        &::after {
+          content: 'unpin';
+        }
+      }
+    }
+
     .row-info {
       display: flex;
       flex-basis: calc(50% - 10px);

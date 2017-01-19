@@ -46,12 +46,11 @@ class MapLayers extends Component {
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
 
-    if (this.trackLayer && !nextProps.vesselTrack) {
+    if (this.trackLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
       this.trackLayer.clear();
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
-        data: nextProps.vesselTrack.seriesGroupData,
-        selectedSeries: nextProps.vesselTrack.selectedSeries,
+        data: nextProps.vesselTracks,
         // TODO directly use timelineInnerExtentIndexes
         startTimestamp,
         endTimestamp,
@@ -80,6 +79,8 @@ class MapLayers extends Component {
   }
 
   /**
+   * TODO remove this monster. This will be possible with an isolated container only interested
+   *    in relevant props.
    * update tracks layer when:
    * - user selected a new vessel (seriesgroup or selectedSeries changed)
    * - zoom level changed (needs fetching of a new tileset)
@@ -93,13 +94,15 @@ class MapLayers extends Component {
    * @returns {boolean}
    */
   shouldUpdateTrackLayer(nextProps, innerExtentChanged) {
-    if (!this.props.vesselTrack) {
+    if (!this.props.vesselTracks) {
       return true;
     }
-    if (this.props.vesselTrack.seriesgroup !== nextProps.vesselTrack.seriesgroup) {
+    if (this.props.vesselTracks.length !== nextProps.vesselTracks.length) {
       return true;
     }
-    if (this.props.vesselTrack.selectedSeries !== nextProps.vesselTrack.selectedSeries) {
+    if (nextProps.vesselTracks.some((vesselTrack, index) =>
+      vesselTrack.hue !== this.props.vesselTracks[index].hue
+    ) === true) {
       return true;
     }
     if (this.props.zoom !== nextProps.zoom) {
@@ -108,7 +111,7 @@ class MapLayers extends Component {
     if (this.props.timelinePaused !== nextProps.timelinePaused) {
       return true;
     }
-    if (nextProps.vesselTrack.selectedSeries && extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
+    if (extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
       return true;
     }
     if (innerExtentChanged) {
@@ -288,7 +291,7 @@ class MapLayers extends Component {
     }
   }
 
-  updateTrackLayer({ data, selectedSeries, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
+  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
     if (!this.trackLayer || !data) {
       return;
     }
@@ -301,9 +304,8 @@ class MapLayers extends Component {
       overEndTimestamp = timelineOverExtent[1].getTime();
     }
 
-    this.trackLayer.drawTile(
+    this.trackLayer.drawTracks(
       data,
-      selectedSeries,
       {
         startTimestamp,
         endTimestamp,
@@ -315,12 +317,11 @@ class MapLayers extends Component {
   }
 
   rerenderTrackLayer() {
-    if (!this.props.vesselTrack) {
+    if (!this.props.vesselTracks) {
       return;
     }
     this.updateTrackLayer({
-      data: this.props.vesselTrack.seriesGroupData,
-      selectedSeries: this.props.vesselTrack.selectedSeries,
+      data: this.props.vesselTracks,
       startTimestamp: this.props.timelineInnerExtent[0].getTime(),
       endTimestamp: this.props.timelineInnerExtent[1].getTime(),
       timelinePaused: this.props.timelinePaused,
@@ -390,7 +391,7 @@ MapLayers.propTypes = {
   timelineOuterExtent: React.PropTypes.array,
   timelineOverExtent: React.PropTypes.array,
   timelinePaused: React.PropTypes.bool,
-  vesselTrack: React.PropTypes.object,
+  vesselTracks: React.PropTypes.array,
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.number,
