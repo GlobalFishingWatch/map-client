@@ -89,6 +89,7 @@ export const LAYER_TYPES = {
 // search
 export const SEARCH_RESULTS_LIMIT = 4;
 export const SEARCH_RESULT_CHARACTER_LIMIT = 3;
+export const SEARCH_PAGINATION_ITEM_LIMIT = 10;
 
 export const FLAG_FILTERS_LIMIT = 4;
 

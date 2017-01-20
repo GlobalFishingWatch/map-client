@@ -54,7 +54,13 @@
     }
 
     > .search-result-list > .search-result-item {
-      flex: 1 0 33.333%;
+      flex: 0 0 33.333%;
+      margin: 0 0 15px;
+      padding: 0;
+
+      &:hover {
+        background-color: transparent;
+      }
     }
 
     > .pagination-container {

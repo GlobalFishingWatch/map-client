@@ -15,7 +15,7 @@ import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import LayerLibrary from 'components/Map/LayerManagementModal';
-import SearchModal from 'components/Map/SearchModal';
+import SearchModal from 'containers/Map/SearchModal';
 import SupportForm from 'containers/Map/SupportForm';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';

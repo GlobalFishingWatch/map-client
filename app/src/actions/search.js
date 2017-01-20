@@ -1,4 +1,4 @@
-import { GET_SEARCH_RESULTS, SET_SEARCH_MODAL_VISIBILITY } from 'actions';
+import { GET_SEARCH_RESULTS, SET_SEARCH_MODAL_VISIBILITY, SET_SEARCH_KEYWORD } from 'actions';
 import 'whatwg-fetch';
 
 let searchQueryID = 0;
@@ -44,6 +44,13 @@ export function getSearchResults(searchTerm) {
           }
         });
       });
+  };
+}
+
+export function setKeyword(keyword) {
+  return {
+    type: SET_SEARCH_KEYWORD,
+    payload: keyword
   };
 }
 

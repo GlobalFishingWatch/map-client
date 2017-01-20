@@ -5,14 +5,24 @@
   flex-wrap: wrap;
 
   > .result-item {
+    border-radius: 4px;
     color: rgba($color-4, .7);
     cursor: pointer;
-    flex: 1 0 33.33%;
-    margin: 0 0 10px;
+    font-size: $font-size-small;
+    padding: 6px 10px;
 
-    > .highlight {
+    &:hover {
+      background-color: rgba($color-3, .2);
+    }
+
+    .highlight {
       color: $color-4;
       font-weight: $font-weight-bold;
     }
+  }
+
+  > .status-message {
+    color: $color-4;
+    font-size: $font-size-xs-small;
   }
 }

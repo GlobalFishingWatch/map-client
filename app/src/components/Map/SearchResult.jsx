@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 
 import React, { Component } from 'react';
-import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
+import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 
 class SearchResult extends Component {
 
@@ -10,9 +10,9 @@ class SearchResult extends Component {
     this.props.closeSearch();
   }
 
-  highlightWord(strReplace, str, styleClass) {
+  highlightWord(strReplace, str) {
     const regX = new RegExp(strReplace, 'i');
-    const highlight = `<span class="${styleClass}">${strReplace.toUpperCase()}</span>`;
+    const highlight = `<span class="${ResultListStyles.highlight}">${strReplace.toUpperCase()}</span>`;
 
     return str.replace(regX, highlight);
   }
@@ -20,20 +20,18 @@ class SearchResult extends Component {
   render() {
     const vesselName = this.props.vesselInfo.vesselname;
     const MMSI = this.props.vesselInfo.mmsi;
-    const highlightName = this.highlightWord(this.props.keyword, vesselName, searchPanelStyles.highlight);
-    const highlightMMSI = this.highlightWord(this.props.keyword, MMSI, searchPanelStyles.highlight);
+    const highlightName = this.highlightWord(this.props.keyword, vesselName);
+    const highlightMMSI = this.highlightWord(this.props.keyword, MMSI);
 
     return (
       <li
-        className={searchPanelStyles.result}
+        className={this.props.className}
         onClick={(event) => { this.onDrawVessel(event); }}
       >
         <span
-          className={searchPanelStyles['vessel-name']}
           dangerouslySetInnerHTML={{ __html: highlightName }}
         />
         <span
-          className={searchPanelStyles.mmsi}
           dangerouslySetInnerHTML={{ __html: `, ${highlightMMSI}` }}
         />
       </li>
@@ -42,6 +40,7 @@ class SearchResult extends Component {
 }
 
 SearchResult.propTypes = {
+  className: React.PropTypes.string,
   closeSearch: React.PropTypes.func,
   drawVessel: React.PropTypes.func,
   keyword: React.PropTypes.string,

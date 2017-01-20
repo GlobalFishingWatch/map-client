@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import SearchPanel from 'components/Map/SearchPanel';
+import SearchModal from 'components/Map/SearchModal';
 import { getSearchResults, setSearchModalVisibility, setKeyword } from 'actions/search';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
+  keyword: state.search.keyword,
   search: state.search
 });
 
@@ -11,7 +12,7 @@ const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {
   dispatch(getSearchResults(keyword));
 }, 200);
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   /**
    * Dispatch an action to search for the specified term
    * @param {string} searchTerm - keyword
@@ -24,12 +25,12 @@ const mapDispatchToProps = dispatch => ({
       getSearchResultsDebounced(dispatch, searchTerm);
     }
   },
-  openSearchModal: () => {
-    dispatch(setSearchModalVisibility(true));
-  },
   setKeyword: (keyword) => {
     dispatch(setKeyword(keyword));
+  },
+  closeSearchModal: () => {
+    dispatch(setSearchModalVisibility(false));
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchModal);
