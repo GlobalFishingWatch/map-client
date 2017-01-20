@@ -1,0 +1,18 @@
+@import '../../settings';
+
+.c-result-list {
+  display: flex;
+  flex-wrap: wrap;
+
+  > .result-item {
+    color: rgba($color-4, .7);
+    cursor: pointer;
+    flex: 1 0 33.33%;
+    margin: 0 0 10px;
+
+    > .highlight {
+      color: $color-4;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
