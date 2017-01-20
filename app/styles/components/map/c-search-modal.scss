@@ -56,16 +56,21 @@
     > .search-result-list > .search-result-item {
       flex: 0 0 33.333%;
       margin: 0 0 15px;
-      padding: 0;
+      overflow-y: hidden;
+      padding: 0 20px 0 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:hover {
         background-color: transparent;
       }
     }
 
-    > .pagination-container {
-      display: flex;
-      justify-content: center;
-    }
+  }
+
+  > .paginator-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 0;
   }
 }

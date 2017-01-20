@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import SearchResult from 'components/Map/SearchResult';
+import Paginator from 'components/Shared/Paginator';
 import { SEARCH_RESULT_CHARACTER_LIMIT, SEARCH_PAGINATION_ITEM_LIMIT } from 'constants';
 
 import ModalStyles from 'styles/components/shared/c-modal.scss';
@@ -99,7 +100,7 @@ class SearchModal extends Component {
             </ul>}
         </div>
         <div className={SearchModalStyles['paginator-container']}>
-          // Pagination component goes here
+          <Paginator />
         </div>
       </div>);
   }
