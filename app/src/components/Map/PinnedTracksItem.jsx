@@ -17,7 +17,7 @@ class PinnedTracksItem extends Component {
 
     this.state = {
       editable: false,
-      vesselName: ''
+      vesselName: this.props.pinnedVessel.vesselname
     };
   }
 
