@@ -5,6 +5,7 @@ import { setSearchTerm, setSearchModalVisibility, setSearchPage } from 'actions/
 const mapStateToProps = (state) => ({
   entries: state.search.entries,
   count: state.search.count,
+  page: state.search.page,
   searching: state.search.searching,
   searchTerm: state.search.searchTerm
 });
@@ -14,7 +15,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setSearchPage(page));
   },
   setSearchTerm: (searchTerm) => {
-    dispatch(setSearchPage(0));
     dispatch(setSearchTerm(searchTerm));
   },
   closeSearchModal: () => {

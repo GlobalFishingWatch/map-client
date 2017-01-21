@@ -83,9 +83,8 @@ class SearchModal extends Component {
         <div className={SearchModalStyles['paginator-container']}>
           <div
             className={PaginatorStyles['c-paginator']}
-            style={(!this.props.searching && this.props.entries.length > 0) ? {} : { display: 'none' }}
           >
-            <ReactPaginate
+            {!this.props.searching && this.props.entries.length > 0 && <ReactPaginate
               previousLabel={<Rhombus />}
               nextLabel={<Rhombus />}
               nextClassName={PaginatorStyles.next}
@@ -96,9 +95,11 @@ class SearchModal extends Component {
               pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
               pageRangeDisplayed={3}
               onPageChange={this.onPageChange}
+              forcePage={this.props.page}
               containerClassName={PaginatorStyles['page-list']}
               activeClassName={PaginatorStyles['-current']}
             />
+            }
           </div>
         </div>
       </div>);
@@ -106,7 +107,10 @@ class SearchModal extends Component {
 }
 
 SearchModal.propTypes = {
-  closeSearchModal: React.PropTypes.func, setSearchTerm: React.PropTypes.func, setSearchPage: React.PropTypes.func, /*
+  closeSearchModal: React.PropTypes.func,
+  setSearchTerm: React.PropTypes.func,
+  setSearchPage: React.PropTypes.func,
+  /*
    Search results
    */
   entries: React.PropTypes.array, /*
@@ -118,7 +122,8 @@ SearchModal.propTypes = {
   searching: React.PropTypes.bool, /*
    Search term to use
    */
-  searchTerm: React.PropTypes.string
+  searchTerm: React.PropTypes.string,
+  page: React.PropTypes.number
 };
 
 export default SearchModal;

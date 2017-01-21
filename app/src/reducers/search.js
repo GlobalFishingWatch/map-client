@@ -1,7 +1,5 @@
-import {   SET_SEARCH_STATUS,
-  SET_SEARCH_TERM,
-  SET_SEARCH_MODAL_VISIBILITY,
-  SET_SEARCHING
+import {
+  SET_SEARCH_RESULTS, SET_SEARCH_TERM, SET_SEARCH_MODAL_VISIBILITY, SET_SEARCHING, SET_SEARCH_PAGE
 } from 'actions';
 
 const initialState = {
@@ -15,15 +13,20 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_SEARCH_STATUS:
-      return Object.assign({}, state, action.payload);
+    case SET_SEARCH_RESULTS:
+      return Object.assign({}, state, {
+        count: action.payload.count,
+        entries: action.payload.entries,
+        searching: false
+      });
     case SET_SEARCHING:
       return Object.assign({}, state, { searching: action.payload });
+    case SET_SEARCH_PAGE:
+      return Object.assign({}, state, { page: action.payload });
     case SET_SEARCH_TERM:
       return Object.assign({}, state, { searchTerm: action.payload });
-    case SET_SEARCH_MODAL_VISIBILITY: {
+    case SET_SEARCH_MODAL_VISIBILITY:
       return Object.assign({}, state, { searchModalOpen: action.payload });
-    }
     default:
       return state;
   }
