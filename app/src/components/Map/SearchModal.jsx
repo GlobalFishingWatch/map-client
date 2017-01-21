@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import SearchResult from 'components/Map/SearchResult';
+import SearchResult from 'containers/Map/SearchResult';
 import Paginator from 'components/Shared/Paginator';
-import { SEARCH_RESULT_CHARACTER_LIMIT, SEARCH_PAGINATION_ITEM_LIMIT } from 'constants';
+import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_PAGINATION_ITEM_LIMIT } from 'constants';
 
 import ModalStyles from 'styles/components/shared/c-modal.scss';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
@@ -14,63 +14,37 @@ import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchModal extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      searching: false,
-      keyword: this.props.keyword || ''
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      keyword: nextProps.keyword,
-      searching: false
-    });
-  }
-
   onSearchInputChange(value) {
-    const keyword = value;
-
-    this.setState({
-      keyword,
-      searching: keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT,
-      open: keyword.length > 0
-    });
-
-    this.props.setKeyword(keyword);
-    this.props.getSearchResults(keyword, { immediate: !keyword.length });
+    this.props.getSearchResults(value);
   }
 
   cleanResults() {
-    this.setState({ keyword: '' });
-    this.props.getSearchResults('', { immediate: true });
+    this.props.getSearchResults('');
   }
 
   render() {
     let searchResults;
 
-    if (this.state.searching) {
+    if (this.props.searching) {
       searchResults = <li className={SearchModalStyles['status-message']}>Searching...</li>;
-    } else if (this.props.search.count && this.state.keyword.length >= SEARCH_RESULT_CHARACTER_LIMIT) {
+    } else if (this.props.count && this.props.keyword.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
-      const total = this.props.search.count <= SEARCH_PAGINATION_ITEM_LIMIT ?
-        this.props.search.count : SEARCH_PAGINATION_ITEM_LIMIT;
+      const total = this.props.count <= SEARCH_PAGINATION_ITEM_LIMIT ?
+        this.props.count : SEARCH_PAGINATION_ITEM_LIMIT;
 
       for (let i = 0, length = total; i < length; i++) {
         searchResults.push(<SearchResult
           className={classnames(ResultListStyles['result-item'], SearchModalStyles['search-result-item'])}
           key={i}
-          keyword={this.state.keyword}
-          closeSearch={() => this.props.closeModal()}
-          vesselInfo={this.props.search.entries[i]}
+          keyword={this.props.keyword}
+          closeSearch={() => this.props.closeSearchModal()}
+          vesselInfo={this.props.entries[i]}
         />);
       }
-    } else if (this.props.keyword.length < SEARCH_RESULT_CHARACTER_LIMIT && this.state.keyword.length > 0) {
+    } else if (this.props.keyword.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.keyword.length > 0) {
       searchResults = (
         <li className={SearchModalStyles['status-message']}>
-          Type at least {SEARCH_RESULT_CHARACTER_LIMIT} characters
+          Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
         </li>);
     } else {
       searchResults = <li className={ResultListStyles['status-message']}>No result</li>;
@@ -85,13 +59,14 @@ class SearchModal extends Component {
               className={SearchModalStyles['search-input']}
               onChange={(e) => this.onSearchInputChange(e.target.value)}
               placeholder="Search vessel"
-              value={this.state.keyword}
+              value={this.props.keyword}
             />
-            {this.state.keyword.length === 0 && <SearchIcon
+            {this.props.keyword.length === 0 && <SearchIcon
               className={classnames(iconsStyles.icon, SearchModalStyles['search-icon'])}
             />}
-            {this.state.keyword.length > 0 && <CloseIcon
+            {this.props.keyword.length > 0 && <CloseIcon
               className={classnames(iconsStyles.icon, iconsStyles['icon-close'], SearchModalStyles['delete-icon'])}
+              onClick={() => this.cleanResults()}
             />}
           </div>
           {searchResults &&
@@ -107,11 +82,25 @@ class SearchModal extends Component {
 }
 
 SearchModal.propTypes = {
-  closeModal: React.PropTypes.func,
+  closeSearchModal: React.PropTypes.func,
   getSearchResults: React.PropTypes.func,
   setKeyword: React.PropTypes.func,
-  keyword: React.PropTypes.string,
-  search: React.PropTypes.object
+  /*
+   Search results
+   */
+  entries: React.PropTypes.array,
+  /*
+   Number of total search results
+   */
+  count: React.PropTypes.number,
+  /*
+   If search is in progress
+   */
+  searching: React.PropTypes.bool,
+  /*
+   Keyword to search for
+   */
+  keyword: React.PropTypes.string
 };
 
 export default SearchModal;

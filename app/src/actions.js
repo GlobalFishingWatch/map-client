@@ -24,8 +24,9 @@ export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY';
 export const GET_COVER_PAGE_ENTRIES = 'GET_COVER_PAGE_ENTRIES';
 
 // Search
-export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
+export const SET_SEARCH_STATUS = 'SET_SEARCH_STATUS';
 export const SET_SEARCH_KEYWORD = 'SET_SEARCH_KEYWORD';
+export const SET_SEARCHING = 'SET_SEARCHING';
 
 // User actions
 export const SET_USER = 'SET_USER';

@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
   supportModal: state.map.supportModal,
   layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions,
-  searchModalVisibility: state.search.modal.open
+  searchModalOpen: state.search.searchModalOpen
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

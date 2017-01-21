@@ -211,7 +211,7 @@ class Map extends Component {
         <LayerLibrary />
       </Modal>
       <Modal
-        opened={this.props.searchModalVisibility}
+        opened={this.props.searchModalOpen}
         closeable
         close={this.props.closeSearchModal}
       >
@@ -338,7 +338,7 @@ Map.propTypes = {
   openSupportModal: React.PropTypes.func,
   layerManagementModal: React.PropTypes.bool,
   closeLayerManagementModal: React.PropTypes.func,
-  searchModalVisibility: React.PropTypes.bool,
+  searchModalOpen: React.PropTypes.bool,
   closeSearchModal: React.PropTypes.func,
   userPermissions: React.PropTypes.array
 };
