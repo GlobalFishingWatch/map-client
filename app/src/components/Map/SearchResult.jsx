@@ -20,8 +20,8 @@ class SearchResult extends Component {
   render() {
     const vesselName = this.props.vesselInfo.vesselname;
     const MMSI = this.props.vesselInfo.mmsi;
-    const highlightName = this.highlightWord(this.props.keyword, vesselName);
-    const highlightMMSI = this.highlightWord(this.props.keyword, MMSI);
+    const highlightName = this.highlightWord(this.props.searchTerm, vesselName);
+    const highlightMMSI = this.highlightWord(this.props.searchTerm, MMSI);
 
     return (
       <li
@@ -43,7 +43,7 @@ SearchResult.propTypes = {
   className: React.PropTypes.string,
   closeSearch: React.PropTypes.func,
   drawVessel: React.PropTypes.func,
-  keyword: React.PropTypes.string,
+  searchTerm: React.PropTypes.string,
   vesselInfo: React.PropTypes.object
 };
 

@@ -20,13 +20,13 @@ class SearchPanel extends Component {
   }
 
   onSearchInputChange(event) {
-    const keyword = event.target.value;
+    const searchTerm = event.target.value;
 
     this.setState({
-      open: keyword.length > 0
+      open: searchTerm.length > 0
     });
 
-    this.props.getSearchResults(keyword);
+    this.props.setSearchTerm(searchTerm);
   }
 
   onSearchInputBlur() {
@@ -35,7 +35,7 @@ class SearchPanel extends Component {
 
   onSearchInputFocus() {
     this.setState({
-      open: this.props.keyword.length > 0
+      open: this.props.searchTerm.length > 0
     });
 
     document.querySelector('body').style.height = `${window.innerHeight}px`;
@@ -43,7 +43,7 @@ class SearchPanel extends Component {
 
   cleanResults() {
     this.closeSearch();
-    this.props.getSearchResults('');
+    this.props.setSearchTerm('');
   }
 
   closeSearch() {
@@ -60,21 +60,20 @@ class SearchPanel extends Component {
 
     if (this.props.searching) {
       searchResults = <li className={ResultListStyles['status-message']}>Searching...</li>;
-    } else if (this.props.count && this.props.keyword.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
+    } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
-      const total = this.props.count <= SEARCH_RESULTS_LIMIT ?
-        this.props.count : SEARCH_RESULTS_LIMIT;
+      const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT);
 
       for (let i = 0, length = total; i < length; i++) {
         searchResults.push(<SearchResult
           className={classnames(ResultListStyles['result-item'], searchPanelStyles.result)}
           key={i}
-          keyword={this.props.keyword}
+          searchTerm={this.props.searchTerm}
           closeSearch={() => this.closeSearch()}
           vesselInfo={this.props.entries[i]}
         />);
       }
-    } else if (this.props.keyword.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.keyword.length > 0) {
+    } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = (
         <li className={ResultListStyles['status-message']}>
           Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
@@ -92,10 +91,10 @@ class SearchPanel extends Component {
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles['search-accordion']}
           placeholder="Search vessel"
-          value={this.props.keyword}
+          value={this.props.searchTerm}
           ref={ref => (this.searchField = ref)}
         />
-        {this.props.keyword.length > 0 && <CloseIcon
+        {this.props.searchTerm.length > 0 && <CloseIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
           onClick={() => this.cleanResults()}
         />}
@@ -108,7 +107,7 @@ class SearchPanel extends Component {
           >
             {searchResults}
           </ul>
-          {this.props.keyword.length >= SEARCH_QUERY_MINIMUM_LIMIT &&
+          {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT &&
             !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
             <div className={searchPanelStyles['pagination-container']}>
               <button
@@ -124,7 +123,7 @@ class SearchPanel extends Component {
 }
 
 SearchPanel.propTypes = {
-  getSearchResults: React.PropTypes.func,
+  setSearchTerm: React.PropTypes.func,
   openSearchModal: React.PropTypes.func,
   /*
   Search results
@@ -143,9 +142,9 @@ SearchPanel.propTypes = {
    */
   searchModalOpen: React.PropTypes.bool,
   /*
-  Keyword to search for
+  Search term to search for
    */
-  keyword: React.PropTypes.string
+  searchTerm: React.PropTypes.string
 };
 
 export default SearchPanel;

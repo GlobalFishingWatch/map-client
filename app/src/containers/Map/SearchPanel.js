@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 import SearchPanel from 'components/Map/SearchPanel';
-import { getSearchResults, setSearchModalVisibility } from 'actions/search';
+import { setSearchTerm, setSearchModalVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
   entries: state.search.entries,
   count: state.search.count,
   searching: state.search.searching,
-  keyword: state.search.keyword,
+  searchTerm: state.search.searchTerm,
   searchModalOpen: state.search.searchModalOpen
 });
 
 const mapDispatchToProps = dispatch => ({
-  getSearchResults: (searchTerm) => {
-    dispatch(getSearchResults(searchTerm));
+  setSearchTerm: (searchTerm) => {
+    dispatch(setSearchTerm(searchTerm));
   },
   openSearchModal: () => {
     dispatch(setSearchModalVisibility(true));
