@@ -10,8 +10,8 @@ export default class BaseOverlay extends google.maps.OverlayView {
     // map for this, not the top left, for the same reason as above.
     const projection = this.getProjection();
     const divCenter = projection.fromLatLngToDivPixel(center);
-    const offsetX = -Math.round(viewportWidth / 2 - divCenter.x);
-    const offsetY = -Math.round(viewportHeight / 2 - divCenter.y);
+    const offsetX = -Math.round((viewportWidth / 2) - divCenter.x);
+    const offsetY = -Math.round((viewportHeight / 2) - divCenter.y);
     return {
       x: offsetX,
       y: offsetY

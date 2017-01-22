@@ -1,6 +1,5 @@
-/* eslint no-param-reassign: 0 */
 import _ from 'lodash';
-import { UPDATE_HEATMAP_TILES, COMPLETE_TILE_LOAD, SET_VESSEL_CLUSTER_CENTER } from '../actions';
+import { UPDATE_HEATMAP_TILES, COMPLETE_TILE_LOAD, SET_VESSEL_CLUSTER_CENTER } from 'actions';
 import {
   getTimeAtPrecision,
   getTilePelagosPromises,
@@ -9,8 +8,8 @@ import {
   addTilePixelCoordinates,
   getTilePlaybackData,
   selectVesselsAt
-} from './helpers/heatmapTileData';
-import { showVesselClusterInfo, showNoVesselsInfo, addVessel, clearVesselInfo } from 'actions/vesselInfo';
+} from 'actions/helpers/heatmapTileData';
+import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 
 export function getTile(uid, tileCoordinates, canvas, map) {
   return (dispatch, getState) => {
@@ -21,7 +20,7 @@ export function getTile(uid, tileCoordinates, canvas, map) {
     const token = getState().user.token;
     const allPromises = [];
 
-    Object.keys(layers).forEach(layerId => {
+    Object.keys(layers).forEach((layerId) => {
       // TODO Bail + add empty objects if layer is not visible
       // TODO Filter by flag
       const layer = layers[layerId];
@@ -36,7 +35,7 @@ export function getTile(uid, tileCoordinates, canvas, map) {
       const allLayerPromises = Promise.all(pelagosPromises);
       allPromises.push(allLayerPromises);
 
-      allLayerPromises.then(rawTileData => {
+      allLayerPromises.then((rawTileData) => {
         const cleanVectorArrays = getCleanVectorArrays(rawTileData);
         const groupedData = groupData(cleanVectorArrays);
         const bounds = tile.canvas.getBoundingClientRect();
@@ -69,7 +68,7 @@ export function getTile(uid, tileCoordinates, canvas, map) {
 export function releaseTile(uid) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
-    Object.keys(layers).forEach(layerId => {
+    Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const tiles = layer.tiles;
       const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);

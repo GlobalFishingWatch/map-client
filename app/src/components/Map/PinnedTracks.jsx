@@ -77,7 +77,7 @@ class PinnedTracks extends Component {
                     displayOpacity={false}
                     hueValue={pinnedVessel.hue}
                     showBlending={this.state.currentBlendingOptionsShown === index}
-                    onChangeHue={(hue) => this.props.setPinnedVesselHue(pinnedVessel.seriesgroup, hue)}
+                    onChangeHue={hue => this.props.setPinnedVesselHue(pinnedVessel.seriesgroup, hue)}
                   />
                 </ul>
               );
@@ -110,7 +110,7 @@ class PinnedTracks extends Component {
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles['-filled']}`]: ! !this.state.editMode })}
+              { [`${MapButtonStyles['-filled']}`]: !!this.state.editMode })}
             onClick={() => { this.onEditClick(); }}
           >
             {editButtonText}

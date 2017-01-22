@@ -101,7 +101,7 @@ class SearchPanel extends Component {
         <input
           type="text"
           onBlur={this.onBlur}
-          onChange={(e) => this.onSearchInputChange(e)}
+          onChange={e => this.onSearchInputChange(e)}
           onClick={() => this.onClick()}
           onFocus={() => this.onFocus()}
           className={searchPanelStyles['search-accordion']}

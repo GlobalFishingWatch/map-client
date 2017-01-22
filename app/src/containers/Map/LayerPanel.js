@@ -4,13 +4,13 @@ import { toggleReport } from 'actions/report';
 import { setLayerInfoModal } from 'actions/map';
 import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'actions/layers';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   layers: state.layers,
   currentlyReportedLayerId: state.report.layerId,
   userPermissions: state.user.userPermissions
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   toggleLayerVisibility: (layerId) => {
     dispatch(toggleLayerVisibility(layerId));
   },

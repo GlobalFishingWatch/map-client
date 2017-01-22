@@ -31,7 +31,7 @@ class Share extends Component {
   onCopy(e) {
     e.preventDefault();
 
-    this.refs.input.select();
+    this.refs.input.select(); // eslint-disable-line react/no-string-refs
 
     let error = false;
     try {
@@ -98,7 +98,7 @@ class Share extends Component {
     const url = this.getURLWithWorkspace();
     const copyError = (
       <p className={styles['copy-error']}>
-        Sorry, the link couldn't be copied. Please right click on the input and copy it manually.
+        Sorry, the link couldn&#39;t be copied. Please right click on the input and copy it manually.
       </p>
     );
 

@@ -19,7 +19,7 @@ export function setFlagFilters(flagFilters_) {
     if (!flagFilters.length) {
       flagFilters.push({});
     }
-    heatmapLayers.forEach(heatmapLayer => {
+    heatmapLayers.forEach((heatmapLayer) => {
       const subLayers = [];
       flagFilters.forEach((flagFilter, index) => {
         let flag = flagFilter.flag;

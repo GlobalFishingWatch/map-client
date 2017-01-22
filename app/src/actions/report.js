@@ -106,7 +106,7 @@ export function sendReport() {
     };
     payload.flags = (state.filters.flag) ? [FLAGS[state.filters.flag]] : [];
     payload.regions = [];
-    state.report.polygons.forEach(polygon => {
+    state.report.polygons.forEach((polygon) => {
       payload.regions.push({
         name: state.report.layerTitle,
         value: polygon.id
@@ -122,12 +122,12 @@ export function sendReport() {
         Authorization: `Bearer ${state.user.token}`
       };
     }
-    fetch(url, options).then(res => {
+    fetch(url, options).then((res) => {
       if (!res.ok) {
         throw Error(res.statusText);
       }
     }).then(res => res.json())
-      .then(data => {
+      .then((data) => {
         console.warn('success', data);
       });
   };

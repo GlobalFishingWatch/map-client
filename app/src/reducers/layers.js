@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import {
   SET_LAYERS,
   TOGGLE_LAYER_VISIBILITY,
@@ -27,32 +26,24 @@ export default function (state = initialState, action) {
     case SET_LAYERS:
       return action.payload.concat();
     case TOGGLE_LAYER_VISIBILITY: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
+      return getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.visible = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.visible;
       });
-      return layers;
     }
     case TOGGLE_LAYER_WORKSPACE_PRESENCE: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
+      return getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.added = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.added;
       });
-      return layers;
     }
     case SET_LAYER_OPACITY: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
+      return getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.opacity = action.payload.opacity;
       });
-      return layers;
     }
     case SET_LAYER_HUE: {
-      /* eslint no-param-reassign: 0 */
-      const layers = getUpdatedLayers(state, action, changedLayer => {
+      return getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.hue = action.payload.hue;
       });
-      return layers;
     }
     case UPLOAD_USER_LAYER: {
       return {};

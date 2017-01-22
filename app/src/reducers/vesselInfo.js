@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import {
   ADD_VESSEL,
   SET_VESSEL_DETAILS,

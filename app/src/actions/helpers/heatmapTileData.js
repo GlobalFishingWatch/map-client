@@ -19,7 +19,7 @@ export const getTimeAtPrecision = timestamp =>
 
 /**
  * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
- * beginning of avaliable time (outerStart)
+ * beginning of available time (outerStart)
  * @param timestamp
  */
 export const getOffsetedTimeAtPrecision = (timestamp, overallStartDateOffset) =>
@@ -84,7 +84,7 @@ export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT
   let currentArray;
   let cumulatedOffsets = 0;
 
-  const appendValues = key => {
+  const appendValues = (key) => {
     data[key].set(currentArray[key], cumulatedOffsets);
   };
 
@@ -109,13 +109,13 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
   const left = proj.fromLatLngToPoint(map.getBounds().getSouthWest()).x;
   const tileTop = tileBounds.top;
   const tileLeft = tileBounds.left;
-  const scale = Math.pow(2, map.getZoom());
+  const scale = 2 ** map.getZoom();
   data.x = new Int32Array(data.latitude.length);
   data.y = new Int32Array(data.latitude.length);
   for (let index = 0, length = data.latitude.length; index < length; index++) {
     const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
-    data.x[index] = (worldPoint.x - left) * scale - tileLeft;
-    data.y[index] = (worldPoint.y - top) * scale - tileTop;
+    data.x[index] = ((worldPoint.x - left) * scale) - tileLeft;
+    data.y[index] = ((worldPoint.y - top) * scale) - tileTop;
   }
 
   return data;
@@ -130,9 +130,9 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
 export const getTilePlaybackData = (zoom, vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) => {
   const tilePlaybackData = [];
 
-  const zoomFactorRadius = Math.pow(zoom - 1, 2.5);
+  const zoomFactorRadius = (zoom - 1) ** 2.5;
   const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
-  const zoomFactorOpacity = Math.pow(zoom - 1, 3.5);
+  const zoomFactorOpacity = (zoom - 1) ** 3.5;
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
@@ -145,7 +145,7 @@ export const getTilePlaybackData = (zoom, vectorArray, overallStartDate, overall
     let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
     radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
     let opacity = 3 + Math.log(3 + Math.log((weight * zoomFactorOpacity) / 1000));
-    opacity = 0.1 + 0.2 * opacity;
+    opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
     if (!tilePlaybackData[timeIndex]) {
@@ -209,7 +209,7 @@ export const getHistogram = (tiles, propName = 'weight') => {
     const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
     const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
     /* eslint no-console:0 */
-    console.table(bins.filter(bin => bin.length).map(bin => {
+    console.table(bins.filter(bin => bin.length).map((bin) => {
       const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
       const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
       return {

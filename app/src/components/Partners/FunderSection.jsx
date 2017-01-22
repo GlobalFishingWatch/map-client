@@ -15,7 +15,7 @@ class FunderSection extends Component {
       <div className={BaseStyle.wrap}>
         <h2>Funding Partners</h2>
         <div className={FunderSectionStyle['ldf-information']}>
-          <img src={ldfLogo} alt="Leonardo Dicaprio Foundation logo"></img>
+          <img src={ldfLogo} alt="Leonardo Dicaprio Foundation logo" />
           <p>
             Since 1998, Leonardo DiCaprio Foundation (LDF) has been on a mission to protect the Earth’s last wild
             places, implementing solutions that restore balance to threatened ecosystems, and ensure the long-term
@@ -30,24 +30,25 @@ class FunderSection extends Component {
               href="http://www.ldcfoundation.org"
               className="gfw-link"
               target="_blank"
+              rel="noopener noreferrer"
             >www.ldcfoundation.org</a>.
           </p>
         </div>
         <div className={FunderSectionStyle['funder-logos']}>
           <div className={FunderSectionStyle['funder-logo']}>
-            <img src={marislaLogo} alt="marisla foundation logo"></img>
+            <img src={marislaLogo} alt="marisla foundation logo" />
           </div>
           <div className={FunderSectionStyle['funder-logo']}>
-            <div><img src={bloombergLogo} alt="bloomberg philantropies logo"></img></div>
+            <div><img src={bloombergLogo} alt="bloomberg philantropies logo" /></div>
           </div>
           <div className={FunderSectionStyle['funder-logo']}>
-            <img src={wyssLogo} alt="the wyss foundation logo"></img>
+            <img src={wyssLogo} alt="the wyss foundation logo" />
           </div>
           <div className={FunderSectionStyle['funder-logo']}>
-            <img src={waterlooLogo} alt="the waterloo foundation logo"></img>
+            <img src={waterlooLogo} alt="the waterloo foundation logo" />
           </div>
           <div className={FunderSectionStyle['funder-logo']}>
-            <img src={adessiumLogo} alt="adessium foundation logo"></img>
+            <img src={adessiumLogo} alt="adessium foundation logo" />
           </div>
         </div>
       </div>

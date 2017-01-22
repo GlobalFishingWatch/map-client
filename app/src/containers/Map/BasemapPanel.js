@@ -2,16 +2,16 @@ import { connect } from 'react-redux';
 import BasemapPanel from 'components/Map/BasemapPanel';
 import { setBasemap, setLayerInfoModal } from 'actions/map';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   activeBasemap: state.map.activeBasemap,
   basemaps: state.map.basemaps
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setBasemap: basemap => {
+const mapDispatchToProps = dispatch => ({
+  setBasemap: (basemap) => {
     dispatch(setBasemap(basemap));
   },
-  openLayerInfoModal: modalParams => {
+  openLayerInfoModal: (modalParams) => {
     dispatch(setLayerInfoModal(modalParams));
   }
 });

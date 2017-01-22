@@ -52,7 +52,7 @@ export default class HeatmapSubLayer {
 
     if (useHeatmapStyle !== null) {
       // one diameter + tiny offset between 2 frames
-      textureFrame.x = (useHeatmapStyle) ? 0 : VESSELS_BASE_RADIUS * 2 + 1;
+      textureFrame.x = (useHeatmapStyle) ? 0 : (VESSELS_BASE_RADIUS * 2) + 1;
     }
 
     if (hue !== null) {
@@ -81,7 +81,7 @@ export default class HeatmapSubLayer {
 
     this.numSprites = 0;
 
-    tiles.forEach(tile => {
+    tiles.forEach((tile) => {
       const bounds = tile.canvas.getBoundingClientRect();
       if (!document.body.contains(tile.canvas)) {
         console.warn('rendering tile that doesnt exist in the DOM', tile);
@@ -109,7 +109,7 @@ export default class HeatmapSubLayer {
       return;
     }
 
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
       const frame = data[timeIndex];
 
       if (!frame) continue;
@@ -132,8 +132,8 @@ export default class HeatmapSubLayer {
   _getNumSpritesNeeded(tiles, startIndex, endIndex) {
     let numSprites = 0;
     // get pool size
-    tiles.forEach(tile => {
-      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex ++) {
+    tiles.forEach((tile) => {
+      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
         if (!tile.data) continue;
         const frame = tile.data[timeIndex];
         if (!frame) continue;

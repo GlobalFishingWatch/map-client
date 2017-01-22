@@ -137,7 +137,7 @@ export function saveWorkspace(errorAction) {
       })
     })
       .then(res => res.json())
-      .then(data => {
+      .then((data) => {
         dispatch(setWorkspaceId(data.id));
         dispatch(updateURL());
       })

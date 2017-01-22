@@ -119,11 +119,13 @@ class PrivacyPolicy extends Component {
                   className="gfw-link"
                   target="_blank"
                   href="http://oceana.org/privacy-policy"
+                  rel="noopener noreferrer"
                 >Oceana</a> and{' '}
                 <a
                   className="gfw-link"
                   target="_blank"
                   href="https://www.google.com/intl/en/policies/privacy/"
+                  rel="noopener noreferrer"
                 >Google Policies</a>. SkyTruth may provide Personal Information to or permit access to Personal
                 Information by vendors and service providers who are contracted
                 to help us administer this website. These service providers may

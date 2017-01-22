@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 import React, { Component } from 'react';
 import _ from 'lodash';
 import FilterItem from 'components/Map/FilterItem';
@@ -7,7 +9,6 @@ import classnames from 'classnames';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
-
 
 class FilterPanel extends Component {
   constructor(props) {

@@ -91,7 +91,7 @@ class DurationPicker extends Component {
     // when its range is lesser than the available options
     if (this.props.timelineOuterExtent) {
       const diffTime = moment.duration(this.props.timelineOuterExtent[1] - this.props.timelineOuterExtent[0]);
-      filterFunc = (duration) => moment.duration(diffTime) >= duration;
+      filterFunc = duration => moment.duration(diffTime) >= duration;
     }
 
     let durations;
@@ -102,7 +102,7 @@ class DurationPicker extends Component {
           className={css['settings-item']}
           data-index={i}
           key={i}
-          onClick={(e) => this.setTimeRange(e)}
+          onClick={e => this.setTimeRange(e)}
         >{duration.humanize()}</li>)
       );
     }
@@ -118,7 +118,7 @@ class DurationPicker extends Component {
             ref={(elem) => { this.svg = elem; }}
           />
 
-        {this.state.showSettingsMenu &&
+          {this.state.showSettingsMenu &&
           <div className={css['setttings-panel']} ref={(elem) => { this.el = elem; }}>
             <ul className={css['settings-list']}>
               {durations}

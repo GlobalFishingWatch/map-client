@@ -15,7 +15,7 @@ class PartnerSection extends Component {
         <ul>
           <li>
             <div className={PartnerSectionStyle['contain-img-logo']}>
-              <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana"></img>
+              <img src={oceanaLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo oceana" />
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
               <li><span className={PartnerSectionStyle.name}>Andy Sharpless.</span> Chief Executive Officer</li>
@@ -34,6 +34,7 @@ class PartnerSection extends Component {
                 className="gfw-link"
                 href="http://oceana.org/"
                 target="_blank"
+                rel="noopener noreferrer"
               >www.oceana.org</a>.
             </p>
           </li>
@@ -43,7 +44,7 @@ class PartnerSection extends Component {
                 src={skyLogo}
                 className={classnames(PartnerSectionStyle['img-logo-partners'], PartnerSectionStyle['-skytruth-logo'])}
                 alt="logo SkyTruth"
-              ></img>
+              />
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
               <li><span className={PartnerSectionStyle.name}>John Amos.</span> President</li>
@@ -64,12 +65,13 @@ class PartnerSection extends Component {
                 className="gfw-link"
                 href="http://skytruth.org/"
                 target="_blank"
+                rel="noopener noreferrer"
               > www.skytruth.org</a>.
             </p>
           </li>
           <li>
             <div className={PartnerSectionStyle['contain-img-logo']}>
-              <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google"></img>
+              <img src={googleLogo} className={PartnerSectionStyle['img-logo-partners']} alt="logo google" />
             </div>
             <ul className={PartnerSectionStyle['name-list']}>
               <li><span className={PartnerSectionStyle.name}>Brian Sullivan.</span> Senior Program Manager</li>
@@ -84,6 +86,7 @@ class PartnerSection extends Component {
                 className="gfw-link"
                 href="https://www.google.com/earth/outreach/index.html"
                 target="_blank"
+                rel="noopener noreferrer"
               >earth.google.com/outreach</a>.
             </p>
           </li>

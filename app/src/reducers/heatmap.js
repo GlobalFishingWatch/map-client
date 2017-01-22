@@ -10,7 +10,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LAYERS: {
       const newState = {};
-      action.payload.forEach(layer => {
+      action.payload.forEach((layer) => {
         if (layer.type === 'ClusterAnimation') {
           newState[layer.id] = {
             url: layer.url,

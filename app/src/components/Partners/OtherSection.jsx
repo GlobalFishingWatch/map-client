@@ -12,10 +12,10 @@ class OtherSection extends Component {
         <h2>Data Providers</h2>
         <div className={OtherSectionStyle['other-logos']}>
           <div>
-            <img src={orbcommLogo} alt="orbcomm logo"></img>
+            <img src={orbcommLogo} alt="orbcomm logo" />
           </div>
           <div>
-            <img className={OtherSectionStyle['img-small']} src={atlasLogo} alt="atlas logo"></img>
+            <img className={OtherSectionStyle['img-small']} src={atlasLogo} alt="atlas logo" />
           </div>
         </div>
       </div>

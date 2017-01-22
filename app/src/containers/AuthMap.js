@@ -8,7 +8,7 @@ const mapStateToProps = (state, { location }) => ({
   workspaceId: location.query && location.query.workspace
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   login: () => dispatch(login())
 });
 

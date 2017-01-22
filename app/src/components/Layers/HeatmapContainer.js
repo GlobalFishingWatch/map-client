@@ -2,7 +2,7 @@
 import 'pixi.js';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
-import HeatmapLayer from './HeatmapLayer';
+import HeatmapLayer from 'components/Layers/HeatmapLayer';
 import {
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_BASE_RADIUS,
@@ -57,11 +57,11 @@ export default class HeatmapContainer extends BaseOverlay {
     const tplCanvas = document.createElement('canvas');
     const tplCtx = tplCanvas.getContext('2d');
     const diameter = radius * 2;
-    tplCanvas.width = diameter * 2 + 1; // tiny offset between 2 frames
-    tplCanvas.height = diameter * VESSELS_HUES_INCREMENTS_NUM + VESSELS_HUES_INCREMENTS_NUM;
+    tplCanvas.width = (diameter * 2) + 1; // tiny offset between 2 frames
+    tplCanvas.height = (diameter * VESSELS_HUES_INCREMENTS_NUM) + VESSELS_HUES_INCREMENTS_NUM;
 
     for (let hueIncrement = 0; hueIncrement < VESSELS_HUES_INCREMENTS_NUM; hueIncrement++) {
-      const y = diameter * hueIncrement + hueIncrement;
+      const y = (diameter * hueIncrement) + hueIncrement;
       const yCenter = y + radius;
 
       // heatmap style
@@ -164,7 +164,7 @@ export default class HeatmapContainer extends BaseOverlay {
     if (!Object.keys(flags).length) {
       return;
     }
-    this.layers.forEach(layer => {
+    this.layers.forEach((layer) => {
       const layerFlags = flags[layer.id];
       layer.setSubLayers(layerFlags);
     });

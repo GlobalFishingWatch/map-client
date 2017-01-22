@@ -4,11 +4,11 @@ import { addLayer, removeLayer } from 'actions/layerLibrary';
 import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
 import { toggleLayerVisibility } from 'actions/layers';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   layers: state.layers
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   addLayer: (layerId) => {
     dispatch(addLayer(layerId));
   },

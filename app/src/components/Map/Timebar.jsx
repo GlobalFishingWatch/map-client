@@ -548,7 +548,7 @@ class Timebar extends Component {
             extent={this.state.durationPickerExtent}
             extentPx={this.state.innerExtentPx}
             timelineOuterExtent={this.props.timelineOuterExtent}
-            onTimeRangeSelected={(rangeTime) => this.onTimeRangeSelected(rangeTime)}
+            onTimeRangeSelected={rangeTime => this.onTimeRangeSelected(rangeTime)}
           />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import MapIFrame from 'components/MapIFrame';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   token: state.user.token
 });
 

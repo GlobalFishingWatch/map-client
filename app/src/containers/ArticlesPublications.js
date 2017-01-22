@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 import ArticlesPublications from 'components/ArticlesPublications';
 import { getArticlesPublicationsEntries } from 'actions/articlesPublications';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   articlesPublications: state.articlesPublications
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getArticlesPublicationsEntries: () => dispatch(getArticlesPublicationsEntries())
 });
 

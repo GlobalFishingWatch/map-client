@@ -32,7 +32,7 @@ class CaseStudySlider extends Component {
             </a>
           </p>
         </div>
-        <div className={SliderCase['c-slider-case-img']}></div>
+        <div className={SliderCase['c-slider-case-img']} />
       </div>
       <div className={SliderCase['c-slider-case']}>
         <div className={SliderCase['c-slider-case-text']}>
@@ -53,7 +53,7 @@ class CaseStudySlider extends Component {
             </a>
           </p>
         </div>
-        <div className={SliderCase['c-slider-case-img']}></div>
+        <div className={SliderCase['c-slider-case-img']} />
       </div>
     </Slider>);
   }

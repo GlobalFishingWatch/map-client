@@ -7,23 +7,23 @@ import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import _ from 'lodash';
 import Promise from 'promise-polyfill';
-import Routes from './routes';
 import 'styles/global.scss';
 import reportReducer from 'reducers/report';
 import heatmapReducer from 'reducers/heatmap';
 import layerLibraryReducer from 'reducers/layersLibrary';
 import layersReducer from 'reducers/layers';
-import mapReducer from './reducers/map';
-import faqReducer from './reducers/faq';
-import coverPageReducer from './reducers/coverPage';
-import definitionReducer from './reducers/definitions';
-import userReducer from './reducers/user';
-import filtersReducer from './reducers/filters';
-import contactReducer from './reducers/contact';
-import searchReducer from './reducers/search';
-import vesselInfoReducer from './reducers/vesselInfo';
-import articlesPublicationsReducer from './reducers/articlesPublications';
-import { triggerAnalyticsPageView } from './actions/user';
+import mapReducer from 'reducers/map';
+import faqReducer from 'reducers/faq';
+import coverPageReducer from 'reducers/coverPage';
+import definitionReducer from 'reducers/definitions';
+import userReducer from 'reducers/user';
+import filtersReducer from 'reducers/filters';
+import contactReducer from 'reducers/contact';
+import searchReducer from 'reducers/search';
+import vesselInfoReducer from 'reducers/vesselInfo';
+import articlesPublicationsReducer from 'reducers/articlesPublications';
+import { triggerAnalyticsPageView } from 'actions/user';
+import Routes from './routes';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -71,7 +71,7 @@ const store = createStore(
  */
 const history = syncHistoryWithStore(browserHistory, store);
 
-history.listen(location => {
+history.listen((location) => {
   store.dispatch(triggerAnalyticsPageView(location.pathname));
 
   // SF Pardot

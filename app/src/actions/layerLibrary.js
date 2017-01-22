@@ -16,7 +16,7 @@ export function getLayerLibrary(workspaceID) {
 
     fetch(`${MAP_API_ENDPOINT}/v1/directory`, options)
       .then(res => res.json())
-      .then(data => {
+      .then((data) => {
         const layers = data.entries.map(l => ({
           id: l.args.id,
           title: l.args.title,
@@ -29,8 +29,7 @@ export function getLayerLibrary(workspaceID) {
           library: true
         }));
 
-        layers.forEach(layer => {
-          /* eslint no-param-reassign: 0 */
+        layers.forEach((layer) => {
           layer.id = calculateLayerId(layer);
         });
 

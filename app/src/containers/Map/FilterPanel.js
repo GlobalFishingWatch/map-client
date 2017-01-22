@@ -3,12 +3,12 @@ import FilterPanel from 'components/Map/FilterPanel';
 import { setFlagFilters } from 'actions/filters';
 
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   flags: state.filters.flags
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setFlagFilters: flags => {
+const mapDispatchToProps = dispatch => ({
+  setFlagFilters: (flags) => {
     dispatch(setFlagFilters(flags));
   }
 });

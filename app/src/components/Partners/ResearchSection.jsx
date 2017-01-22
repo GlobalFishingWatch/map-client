@@ -50,50 +50,50 @@ class ResearchSection extends Component {
                 src={csiroLogo}
                 alt="csiro logo"
                 className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
-              ></img>
+              />
             </div>
             <div>
-              <img src={dalhousieLogo} alt="dalhousie logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img src={dalhousieLogo} alt="dalhousie logo" className={ResearchSectionStyle['image-slider']} />
             </div>
             <div>
-              <img src={marineLogo} alt="msi logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img src={marineLogo} alt="msi logo" className={ResearchSectionStyle['image-slider']} />
             </div>
             <div>
               <img
                 src={faoLogo}
                 alt="fao logo"
                 className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
-              ></img>
+              />
             </div>
             <div>
               <img
                 src={pristineLogo}
                 alt="pristine logo"
                 className={ResearchSectionStyle['image-slider']}
-              ></img>
+              />
             </div>
             <div>
-              <img src={stanfordLogo} alt="stanford logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img src={stanfordLogo} alt="stanford logo" className={ResearchSectionStyle['image-slider']} />
             </div>
             <div>
               <img
                 src={ubcLogo}
                 alt="ubc logo"
                 className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
-              ></img>
+              />
             </div>
             <div>
-              <img src={mccauleyLogo} alt="mccauley logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img src={mccauleyLogo} alt="mccauley logo" className={ResearchSectionStyle['image-slider']} />
             </div>
             <div>
               <img
                 src={sustainableLogo}
                 alt="sustainable logo"
                 className={classNames(ResearchSectionStyle['image-slider'], ResearchSectionStyle['-small'])}
-              ></img>
+              />
             </div>
             <div>
-              <img src={ancorsLogo} alt="ancors logo" className={ResearchSectionStyle['image-slider']}></img>
+              <img src={ancorsLogo} alt="ancors logo" className={ResearchSectionStyle['image-slider']} />
             </div>
           </Slider>
         </div>

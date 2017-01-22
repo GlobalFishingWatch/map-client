@@ -1,5 +1,6 @@
-const initialState = null;
 import { GET_COVER_PAGE_ENTRIES } from 'actions';
+
+const initialState = null;
 
 export default function (state = initialState, action) {
   switch (action.type) {

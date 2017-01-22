@@ -7,7 +7,7 @@ class SuccessStoryGallery extends Component {
   render() {
     return (<div className={gallery['c-gallery-images']}>
       <div className={gallery['image-text']}>
-        <div className={gallery.img}></div>
+        <div className={gallery.img} />
         <p className={gallery['info-text']}>
           Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
           porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.
@@ -16,7 +16,7 @@ class SuccessStoryGallery extends Component {
         </p>
       </div>
       <div className={gallery['image-text']}>
-        <div className={gallery.img}></div>
+        <div className={gallery.img} />
         <p className={gallery['info-text']}>
           Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
           porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.
@@ -25,7 +25,7 @@ class SuccessStoryGallery extends Component {
         </p>
       </div>
       <div className={gallery['image-text']}>
-        <div className={gallery.img}></div>
+        <div className={gallery.img} />
         <p className={gallery['info-text']}>
           Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula
           porta felis euismod semper. Aenean lacinia bibendum nulla sed consectetur.

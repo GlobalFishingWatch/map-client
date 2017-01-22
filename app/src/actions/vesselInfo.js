@@ -86,7 +86,7 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
     }
 
     Promise.all(promises.map(p => p.catch(e => e)))
-      .then(rawTileData => {
+      .then((rawTileData) => {
         const cleanData = getCleanVectorArrays(rawTileData);
         const groupedData = groupData(cleanData, [
           'latitude',

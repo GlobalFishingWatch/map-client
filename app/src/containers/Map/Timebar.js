@@ -15,16 +15,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateInnerTimelineDates: dates => {
+  updateInnerTimelineDates: (dates) => {
     dispatch(setInnerTimelineDates(dates));
   },
-  updateOuterTimelineDates: dates => {
+  updateOuterTimelineDates: (dates) => {
     dispatch(setOuterTimelineDates(dates));
   },
-  updatePlayingStatus: paused => {
+  updatePlayingStatus: (paused) => {
     dispatch(setPlayingStatus(paused));
   },
-  updateTimelineOverDates: dates => {
+  updateTimelineOverDates: (dates) => {
     dispatch(setTimelineOverDates(dates));
   }
 });

@@ -27,8 +27,7 @@ class Tutorials extends Component {
                 src="https://www.youtube.com/embed/JrnZbx12FpQ"
                 frameBorder="0"
                 allowFullScreen
-              >
-              </iframe>
+              />
             </div>
           </section>
         </div>
