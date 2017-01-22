@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
-
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import iconsStyles from 'styles/icons.scss';
-
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
@@ -72,26 +70,32 @@ class PinnedTracksItem extends Component {
 
     if (this.props.editMode === true) {
       actions = (
-        <div className={pinnedTracksStyles['edition-menu']}>
+        <div className={pinnedTracksStyles['edition-menu']} >
           <DeleteIcon
             className={classnames(iconsStyles.icon, pinnedTracksStyles['delete-icon'])}
-            onClick={() => { this.props.onRemoveClicked(this.props.pinnedVessel.seriesgroup); }}
+            onClick={() => {
+              this.props.onRemoveClicked(this.props.pinnedVessel.seriesgroup);
+            }}
           />
         </div>
       );
     } else {
       actions = (
-        <ul className={pinnedTracksStyles['pinned-item-action-list']}>
-          <li className={pinnedTracksStyles['pinned-item-action-item']}>
+        <ul className={pinnedTracksStyles['pinned-item-action-list']} >
+          <li className={pinnedTracksStyles['pinned-item-action-item']} >
             <BlendingIcon
               className={iconsStyles['blending-icon']}
-              onClick={() => { this.props.onLayerBlendingToggled(this.props.index); }}
+              onClick={() => {
+                this.props.onLayerBlendingToggled(this.props.index);
+              }}
             />
           </li>
-          <li className={pinnedTracksStyles['pinned-item-action-item']}>
+          <li className={pinnedTracksStyles['pinned-item-action-item']} >
             <InfoIcon
               className={iconsStyles['info-icon']}
-              onClick={() => { this.props.onVesselClicked(this.props.pinnedVessel.seriesgroup); }}
+              onClick={() => {
+                this.props.onVesselClicked(this.props.pinnedVessel.seriesgroup);
+              }}
             />
           </li>
           <LayerOptionsTooltip
@@ -99,7 +103,7 @@ class PinnedTracksItem extends Component {
             displayOpacity={false}
             hueValue={this.state.hue}
             showBlending={this.props.showBlending}
-            onChangeHue={(hue) => this.onChangeHue(hue)}
+            onChangeHue={hue => this.onChangeHue(hue)}
           />
         </ul>
       );
@@ -111,11 +115,13 @@ class PinnedTracksItem extends Component {
         key={this.props.pinnedVessel.seriesgroup}
       >
         <input
-          className={pinnedTracksStyles['item-name']}
-          onChange={(e) => this.onChange(e.currentTarget.value)}
+          className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.editMode })}
+          onChange={e => this.onChange(e.currentTarget.value)}
           readOnly={!this.state.editable}
           value={this.state.vesselName}
-          ref={((elem) => { this.inputName = elem; })}
+          ref={((elem) => {
+            this.inputName = elem;
+          })}
         />
         {this.props.editMode === true && <RenameIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], pinnedTracksStyles['rename-icon'])}
