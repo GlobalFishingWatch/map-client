@@ -44,16 +44,6 @@
       font-weight: $font-weight-bold;
     }
 
-    > .total-count {
-      display: flex;
-      flex-direction: column;
-      padding: 0 0 10px;
-
-      > .total {
-        font-size: $font-size-xs-big;
-      }
-    }
-
     > .categories-display {
       display: flex;
       justify-content: space-between;

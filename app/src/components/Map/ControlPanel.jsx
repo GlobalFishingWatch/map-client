@@ -117,10 +117,6 @@ class ControlPanel extends Component {
   renderResume() {
     return (
       <div className={controlPanelStyle['resume-display']}>
-        <div className={controlPanelStyle['total-count']}>
-          <span className={controlPanelStyle['counter-description']}>vessel activity</span>
-          <span className={controlPanelStyle.total}>224,654</span>
-        </div>
         <div className={controlPanelStyle['categories-display']}>
           <div className={controlPanelStyle['vessel-display']}>
             <span className={controlPanelStyle['counter-description']}>vessels</span>
