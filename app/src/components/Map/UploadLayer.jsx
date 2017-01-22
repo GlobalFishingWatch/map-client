@@ -41,7 +41,7 @@ class UploadLayer extends Component {
       <div className={UploadLayerStyles['c-upload-layer']}>
         <form
           className={classnames(MapFormStyles['c-form'], UploadLayerStyles['upload-form'])}
-          onSubmit={(e) => this.onSubmit(e)}
+          onSubmit={e => this.onSubmit(e)}
         >
           <div className={UploadLayerStyles.column}>
             <div className={UploadLayerStyles.row}>
@@ -51,7 +51,7 @@ class UploadLayer extends Component {
                 type="text"
                 name="layer-name"
                 placeholder="layer name"
-                onChange={(e) => this.onChange(e.currentTarget)}
+                onChange={e => this.onChange(e.currentTarget)}
                 required
               />
             </div>
@@ -73,7 +73,7 @@ class UploadLayer extends Component {
                   <input
                     className={MapFormStyles['file-input']}
                     name="layer-file"
-                    onChange={(e) => this.onChange(e.currentTarget)}
+                    onChange={e => this.onChange(e.currentTarget)}
                     required
                     type="file"
                   />
@@ -87,7 +87,7 @@ class UploadLayer extends Component {
               <textarea
                 className={MapFormStyles.textarea}
                 name="layer-description"
-                onChange={(e) => this.onChange(e.currentTarget)}
+                onChange={e => this.onChange(e.currentTarget)}
                 placeholder="Your layer description"
                 value={this.state['layer-description']}
               />

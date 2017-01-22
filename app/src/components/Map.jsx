@@ -123,7 +123,7 @@ class Map extends Component {
    */
   onMapIdle() {
     if (!this.map) {
-      this.map = this.refs.map.props.map;
+      this.map = this.refs.map.props.map; // eslint-disable-line react/no-string-refs
       this.props.loadInitialState();
 
       this.defineBasemaps(this.props.basemaps);
@@ -146,7 +146,7 @@ class Map extends Component {
   defineBasemaps(basemaps) {
     _.templateSettings.interpolate = /{([\s\S]+?)}/g;
 
-    basemaps.filter((b) => b.type === 'Basemap').forEach((basemap) => {
+    basemaps.filter(b => b.type === 'Basemap').forEach((basemap) => {
       const urlTemplate = _.template(basemap.url);
       this.map.mapTypes.set(basemap.title, new google.maps.ImageMapType({
         getTileUrl: (coord, zoom) => urlTemplate({ x: coord.x, y: coord.y, z: zoom }),
@@ -177,11 +177,13 @@ class Map extends Component {
       <Modal
         opened={!this.props.token && REQUIRE_MAP_LOGIN}
         closeable={false}
-        close={() => {}}
+        close={() => {
+        }}
       >
         <NoLogin />
       </Modal>
-      {canShareWorkspaces && <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
+      {canShareWorkspaces &&
+      <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
         <Share />
       </Modal>
       }
@@ -227,6 +229,7 @@ class Map extends Component {
               className={mapCss.link}
               href="https://carto.com/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               CartoDB
             </a>
@@ -235,6 +238,7 @@ class Map extends Component {
               className={mapCss.link}
               href="http://marineregions.org/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               marineregions.org
             </a>, MPAs:{' '}
@@ -242,6 +246,7 @@ class Map extends Component {
               className={mapCss.link}
               href="http://mpatlas.org/"
               target="_blank"
+              rel="noopener noreferrer"
             >
               mpatlas.org
             </a>

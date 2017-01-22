@@ -16,13 +16,13 @@ class StatusPage extends Component {
       >
         <div className={StatusPageStyles.message}>
           {this.props.title &&
-            <h2 className={StatusPageStyles['title-status']}>{this.props.title}</h2>}
+          <h2 className={StatusPageStyles['title-status']}>{this.props.title}</h2>}
           {this.props.description &&
-            <p className={StatusPageStyles.description}>{this.props.description}</p>}
+          <p className={StatusPageStyles.description}>{this.props.description}</p>}
         </div>
-         {this.props.attribution && <ImageAttribution>
+        {this.props.attribution && <ImageAttribution>
           {this.props.attribution}
-         </ImageAttribution>}
+        </ImageAttribution>}
       </div>
     );
   }

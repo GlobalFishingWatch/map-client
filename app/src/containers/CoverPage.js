@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 import CoverPage from 'components/Home/CoverPage';
 import { getCoverPageEntries } from 'actions/coverPage';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   coverPageEntries: state.coverPageEntries
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getCoverPageEntries: () => dispatch(getCoverPageEntries())
 });
 

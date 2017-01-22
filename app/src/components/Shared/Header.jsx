@@ -120,7 +120,13 @@ class Header extends Component {
                     News
                   </a>
                   <ul className={styles['dropdown-content']}>
-                    <li><a href={BLOG_URL} target="_blank">Blog</a></li>
+                    <li>
+                      <a
+                        href={BLOG_URL}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >Blog</a>
+                    </li>
                     <li><Link to="/articles-publications">Articles and Publications</Link></li>
                   </ul>
                 </li>

@@ -11,7 +11,7 @@ class CoverPagePreloader extends Component {
     const css = images.join(',');
 
     return (
-      <div style={{ background: css }}></div>
+      <div style={{ background: css }} />
     );
   }
 }

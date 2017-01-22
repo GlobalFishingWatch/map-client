@@ -3,7 +3,7 @@ import MapLayers from 'components/Layers/MapLayers';
 import { showPolygon } from 'actions/report';
 import { getTile, releaseTile, queryHeatmap } from 'actions/heatmap';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   token: state.user.token,
   tilesetUrl: state.map.tilesetUrl,
   zoom: state.map.zoom,
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => ({
   reportLayerId: state.report.layerId
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   showPolygon: (id, description, latLng) => {
     dispatch(showPolygon(id, description, latLng));
   },

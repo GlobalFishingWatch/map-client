@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { Component } from 'react';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
 

@@ -16,7 +16,6 @@ export default (layer) => {
 
     // Simply hash the URL
     return layer.url.split('').reduce((a, b) => {
-      /* eslint no-param-reassign: 0 */
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
     }, 0);

@@ -5,9 +5,7 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
-import {
-  SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP
-} from 'actions';
+import { SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP } from 'actions';
 import { initLayers, loadTilesetMetadata } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import calculateLayerId from 'util/calculateLayerId';
@@ -96,8 +94,7 @@ function processLegacyWorkspace(data, dispatch) {
     type: l.type,
     url: l.args.source.args.url
   }));
-  layers.forEach(layer => {
-    /* eslint no-param-reassign: 0 */
+  layers.forEach((layer) => {
     layer.id = calculateLayerId(layer);
   });
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
@@ -144,7 +141,7 @@ export function getWorkspace(workspaceId = null) {
 
     fetch(url, options)
       .then(res => res.json())
-      .then(data => {
+      .then((data) => {
         let workspaceData;
         if (data.workspace !== undefined) {
           workspaceData = processNewWorkspace(data, dispatch);
@@ -155,3 +152,5 @@ export function getWorkspace(workspaceId = null) {
       });
   };
 }
+
+export { getWorkspace as default };

@@ -154,7 +154,9 @@ class TermsOfUse extends Component {
                     <li>
                       <a
                         className="gfw-link"
-                        href="http://earthengine.google.org/terms" target="_blank"
+                        href="http://earthengine.google.org/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         Google Earth Engine
                       </a>
@@ -164,6 +166,7 @@ class TermsOfUse extends Component {
                         className="gfw-link"
                         href="http://www.google.com/intl/en_US/help/terms_maps.html"
                         target="_blank"
+                        rel="noopener noreferrer"
                       >
                         Google Maps/Earth
                       </a>
@@ -173,6 +176,7 @@ class TermsOfUse extends Component {
                         className="gfw-link"
                         href="https://cloud.google.com/terms/service-terms"
                         target="_blank"
+                        rel="noopener noreferrer"
                       >
                         Google Cloud Platform
                       </a>
@@ -182,6 +186,7 @@ class TermsOfUse extends Component {
                         className="gfw-link"
                         href="https://carto.com/terms"
                         target="_blank"
+                        rel="noopener noreferrer"
                       >
                         CARTO
                       </a>

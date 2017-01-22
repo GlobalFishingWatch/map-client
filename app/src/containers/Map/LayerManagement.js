@@ -4,7 +4,7 @@ import { setLayerManagementModalVisibility } from 'actions/map';
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   openModal: () => {
     dispatch(setLayerManagementModalVisibility(true));
   }

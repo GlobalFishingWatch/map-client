@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import ControlPanel from 'components/Map/ControlPanel';
 import { login } from 'actions/user';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   layers: state.layers,
   userPermissions: state.user.userPermissions,
   vessels: state.vesselInfo.details

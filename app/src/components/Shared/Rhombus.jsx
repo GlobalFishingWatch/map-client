@@ -8,7 +8,7 @@ class Rhombus extends Component {
 
   render() {
     return (
-      <img src={this.props.color === 'blue' ? iconBlueBox : iconWhiteBox} alt="icon"></img>
+      <img src={this.props.color === 'blue' ? iconBlueBox : iconWhiteBox} alt="icon" />
     );
   }
 }

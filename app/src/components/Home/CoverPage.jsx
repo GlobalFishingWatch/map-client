@@ -141,7 +141,7 @@ class CoverPage extends Component {
     if (loadedEntries) {
       const slides = [];
 
-      this.props.coverPageEntries.forEach(coverPageEntry => {
+      this.props.coverPageEntries.forEach((coverPageEntry) => {
         if (coverPageEntry.type === 'quote') {
           slides.push(this.renderQuoteSlide(coverPageEntry));
         } else {
@@ -170,15 +170,14 @@ class CoverPage extends Component {
           <div className={baseStyle.wrap}>
             {coverEntriesContent}
             <div className={BoxTriangleStyle['c-box-triangle']} onClick={this.scrollPage}>
-              <div className={BoxTriangleStyle['triangle-min']}></div>
+              <div className={BoxTriangleStyle['triangle-min']} />
             </div>
             <div className={CoverPageStyle['footer-header']}>
               <div className={CoverPageStyle['contain-ldf']}>
                 <img
                   className={CoverPageStyle['ldf-logo']}
                   src={LogoLDF} alt="logo"
-                >
-                </img>
+                />
               </div>
             </div>
           </div>

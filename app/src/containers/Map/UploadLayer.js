@@ -5,7 +5,7 @@ import { uploadLayer } from 'actions/layers';
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   closeModal: () => {
     dispatch(setLayerManagementModalVisibility(false));
   },

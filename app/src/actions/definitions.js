@@ -5,7 +5,7 @@ export function getDefinitionEntries() {
   return (dispatch) => {
     fetch(DEFINITIONS_JSON_URL, {
       method: 'GET'
-    }).then((response) => response.json()).then((data) => {
+    }).then(response => response.json()).then((data) => {
       dispatch({
         type: GET_DEFINITION_ENTRIES,
         payload: data
@@ -13,3 +13,5 @@ export function getDefinitionEntries() {
     });
   };
 }
+
+export { getDefinitionEntries as default };

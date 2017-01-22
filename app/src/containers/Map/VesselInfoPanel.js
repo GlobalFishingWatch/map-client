@@ -4,7 +4,7 @@ import { clearVesselInfo, toggleActiveVesselPin } from 'actions/vesselInfo';
 import { zoomIntoVesselCenter } from 'actions/map';
 import { login } from 'actions/user';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   details: state.vesselInfo.details,
   detailsStatus: state.vesselInfo.detailsStatus,
   userPermissions: state.user.userPermissions

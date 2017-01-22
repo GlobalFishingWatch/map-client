@@ -21,11 +21,9 @@ class MapLayers extends Component {
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
       this.build();
-    } else {
-      if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
-        this.heatmapContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
+    } else if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
+      this.heatmapContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
-      }
     }
     if (nextProps.layers.length) {
       if (!this.heatmapContainer) {
@@ -248,7 +246,7 @@ class MapLayers extends Component {
 
   setLayersInteraction(reportLayerId) {
     this.heatmapLayer.interactive = (reportLayerId === null);
-    this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach(layerSettings => {
+    this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach((layerSettings) => {
       const layer = this.addedLayers[layerSettings.id];
       if (layer) {
         if (reportLayerId === layerSettings.id) {

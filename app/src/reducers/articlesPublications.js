@@ -1,5 +1,6 @@
-const initialState = null;
 import { GET_ARTICLES_PUBLICATIONS_ENTRIES } from 'actions';
+
+const initialState = null;
 
 export default function (state = initialState, action) {
   switch (action.type) {

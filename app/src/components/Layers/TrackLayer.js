@@ -120,7 +120,7 @@ export default class TrackLayer extends BaseOverlay {
       return;
     }
 
-    tracks.forEach(track => {
+    tracks.forEach((track) => {
       this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, overlayProjection);
     });
   }

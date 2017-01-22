@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { Component } from 'react';
 import LayerInfoStyles from 'styles/components/map/c-layer-info.scss';
 

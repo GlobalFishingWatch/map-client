@@ -5,11 +5,11 @@ import { login, logout } from 'actions/user';
 import { setSupportModalVisibility } from 'actions/map';
 import { getWorkspace } from 'actions/workspace';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   loggedUser: state.user.loggedUser
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   login: () => {
     dispatch(login());
   },

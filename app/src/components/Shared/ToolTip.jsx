@@ -75,9 +75,9 @@ class ToolTip extends Component {
 
     let transform = `translate(calc(50% - ${width / 2}px), calc(${height}px + ${offset}px))`;
     if (arrowLeft) {
-      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + height / 2}px - 50%))`;
+      transform = `translate(calc(100% + ${offset}px), calc(${offsetTop + (height / 2)}px - 50%))`;
     } else if (arrowRight) {
-      transform = `translate(-${width / 2 + offset}px, calc(${offsetTop + height / 2}px - 50%))`;
+      transform = `translate(-${(width / 2) + offset}px, calc(${offsetTop + (height / 2)}px - 50%))`;
     }
 
     this.setState({
@@ -95,7 +95,7 @@ class ToolTip extends Component {
   }
 
   attachTouchEndListener() {
-    document.body.addEventListener('touchend', e => {
+    document.body.addEventListener('touchend', (e) => {
       if (!this.state.visible) return;
       // We just want to hide the tooltip when touching anything else but the tooltip or the abbr
       if (!(this.refs.el && this.refs.el.contains(e.target))) {
@@ -125,8 +125,8 @@ class ToolTip extends Component {
           }}
           ref="tooltip"
         >
-        {this.props.text}<br />
-        {link}
+          {this.props.text}<br />
+          {link}
         </span>);
     }
     return (

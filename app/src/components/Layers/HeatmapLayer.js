@@ -30,7 +30,7 @@ export default class HeatmapLayer {
   }
 
   setRenderingStyle(useHeatmapStyle) {
-    this.subLayers.forEach(subLayer => {
+    this.subLayers.forEach((subLayer) => {
       subLayer.setRenderingStyle(useHeatmapStyle);
     });
   }
@@ -57,7 +57,7 @@ export default class HeatmapLayer {
   render(tiles, startIndex, endIndex) {
     if (this.stage.visible === false) return;
 
-    this.subLayers.forEach(subLayer => {
+    this.subLayers.forEach((subLayer) => {
       subLayer.render(tiles, startIndex, endIndex);
     });
   }

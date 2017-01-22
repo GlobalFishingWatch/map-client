@@ -8,11 +8,11 @@ import {
   openShareModal
 } from 'actions/map';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   loggedUser: state.user.loggedUser
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   login: () => {
     dispatch(login());
   },

@@ -55,13 +55,13 @@ class MenuMobile extends Component {
       <div
         onClick={this.props.onClose}
         className={backClass}
-      ></div>
+      />
       <div className={cssClass}>
         <ul>
           <li><Link to="/map">Map</Link></li>
           <li>News</li>
           <ul className={menuMobile['submenu-mobile']}>
-            <li><a href={BLOG_URL} target="_blank">Blog</a></li>
+            <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer">Blog</a></li>
             <li><Link to="/articles-publications">Articles and Publications</Link></li>
           </ul>
           <li>How to</li>

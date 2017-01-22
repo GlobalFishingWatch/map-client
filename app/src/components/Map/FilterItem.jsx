@@ -49,7 +49,7 @@ class FilterItem extends Component {
         <div className={selectorStyles['c-selector']}>
           <select
             name="country"
-            onChange={(e) => this.onChangeCountry(e.target.value)}
+            onChange={e => this.onChangeCountry(e.target.value)}
             value={this.props.filter.flag}
             ref={(selector) => { this.selector = selector; }}
           >
@@ -75,7 +75,7 @@ class FilterItem extends Component {
         <LayerOptionsTooltip
           displayHue
           hueValue={hueValue}
-          onChangeHue={(hue) => this.onChangeHue(hue)}
+          onChangeHue={hue => this.onChangeHue(hue)}
           showBlending={this.props.showBlending}
         />
       </li>

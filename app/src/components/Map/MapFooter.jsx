@@ -66,6 +66,7 @@ class MapFooter extends Component {
                 className={MapFooterStyles.link}
                 href="https://carto.com/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 CartoDB
               </a>
@@ -74,6 +75,7 @@ class MapFooter extends Component {
                 className={MapFooterStyles.link}
                 href="http://marineregions.org/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 marineregions.org
               </a>, MPAs:{' '}
@@ -81,6 +83,7 @@ class MapFooter extends Component {
                 className={MapFooterStyles.link}
                 href="http://mpatlas.org/"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 mpatlas.org
               </a>

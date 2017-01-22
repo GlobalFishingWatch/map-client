@@ -108,8 +108,8 @@ class LayerItem extends Component {
           displayOpacity
           hueValue={this.props.layer.hue}
           opacityValue={this.props.layer.opacity}
-          onChangeOpacity={(opacity) => this.onChangeOpacity(opacity)}
-          onChangeHue={(hue) => this.onChangeHue(hue)}
+          onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
+          onChangeHue={hue => this.onChangeHue(hue)}
           showBlending={this.props.showBlending}
         />
       </li>

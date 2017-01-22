@@ -1,3 +1,5 @@
+/* eslint-disable react/no-danger */
+
 import React, { Component } from 'react';
 import ToolTip from 'components/Shared/ToolTip';
 import { render } from 'react-dom';
@@ -21,7 +23,7 @@ class ToolTipJSON extends Component {
         dangerouslySetInnerHTML={{
           __html: this.props.html
         }}
-        ref={(c) => (this.c = c)}
+        ref={c => (this.c = c)}
       />
     );
   }

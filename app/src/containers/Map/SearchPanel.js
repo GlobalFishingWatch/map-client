@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SearchPanel from 'components/Map/SearchPanel';
 import { getSearchResults } from 'actions/search';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   search: state.search
 });
 
@@ -11,7 +11,7 @@ const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {
   dispatch(getSearchResults(keyword));
 }, 200);
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   /**
    * Dispatch an action to search for the specified term
    * @param {string} searchTerm - keyword

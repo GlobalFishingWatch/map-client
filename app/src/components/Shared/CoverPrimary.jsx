@@ -18,7 +18,7 @@ class CoverPrimary extends Component {
     const ldfLogo = (
       <div className={CoverPage['footer-header']}>
         <div>
-          <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo"></img>
+          <img className={CoverPage['ldf-logo']} src={LogoLDF} alt="logo" />
         </div>
       </div>
     );

@@ -33,11 +33,11 @@ class LayerLibraryModal extends Component {
     const library = [];
 
     if (this.props.layers.length > 0) {
-      this.props.layers.forEach((layer, i) => {
+      this.props.layers.forEach((layer) => {
         if (!layer.library) return;
         library.push(<li
           className={LayerLibraryStyles['layer-item']}
-          key={i}
+          key={layer.title}
         >
           <label>
             <input

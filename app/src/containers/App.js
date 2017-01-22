@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 import App from 'components/App';
 import { setToken, getLoggedUser } from 'actions/user';
 
-const mapStateToProps = (state) => ({ loading: state.map.loading });
+const mapStateToProps = state => ({ loading: state.map.loading });
 
-const mapDispatchToProps = (dispatch) => ({
-  setToken: (token) => dispatch(setToken(token)),
+const mapDispatchToProps = dispatch => ({
+  setToken: token => dispatch(setToken(token)),
   getLoggedUser: () => dispatch(getLoggedUser())
 });
 

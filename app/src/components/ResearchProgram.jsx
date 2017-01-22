@@ -319,6 +319,7 @@ renowned-marine-ecologist-boris-worm.html"
                   className="gfw-link"
                   href="http://earthengine.google.com/"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Google’s Earth Engine platform
                 </a>.
@@ -345,6 +346,7 @@ renowned-marine-ecologist-boris-worm.html"
                   className="gfw-link"
                   href="http://science.sciencemag.org/content/351/6278/1148"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Ending hide and seek in the oceans.
                 </a> Science.
@@ -354,6 +356,7 @@ renowned-marine-ecologist-boris-worm.html"
                   className="gfw-link"
                   href="http://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0158248"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Improving Fishing Pattern Detection from Satellite AIS Using Data Mining and Machine Learning
                 </a>. PLOS ONE 11, e0158248.
@@ -363,6 +366,7 @@ renowned-marine-ecologist-boris-worm.html"
                   className="gfw-link"
                   href="http://vislab-ccom.unh.edu/~schwehr/papers/2016-RobardsEtAl-AIS-conservation.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Conservation science and policy applications of the marine vessel Automatic Identification System
                   (AIS)—a review

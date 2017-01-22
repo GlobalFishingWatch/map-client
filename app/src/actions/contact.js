@@ -32,3 +32,5 @@ export function submitForm(data, endpoint) {
     request.send(postString);
   };
 }
+
+export { submitForm as default };

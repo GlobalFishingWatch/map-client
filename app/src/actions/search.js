@@ -31,17 +31,20 @@ export function getSearchResults(searchTerm) {
       };
     }
     fetch(`${state.map.tilesetUrl}/search/?query=${searchTerm}`, options)
-    .then((response) => response.json()).then((result) => {
-      // We ensure to only show the results of the last request
-      if (queryID !== searchQueryID) return;
+      .then(response => response.json())
+      .then((result) => {
+        // We ensure to only show the results of the last request
+        if (queryID !== searchQueryID) return;
 
-      dispatch({
-        type: GET_SEARCH_RESULTS,
-        payload: {
-          entries: result.entries,
-          count: result.total
-        }
+        dispatch({
+          type: GET_SEARCH_RESULTS,
+          payload: {
+            entries: result.entries,
+            count: result.total
+          }
+        });
       });
-    });
   };
 }
+
+export { getSearchResults as default };

@@ -59,6 +59,7 @@ class VesselInfoPanel extends Component {
               className={vesselPanelStyles['external-link']}
               href={`${registry.url}`}
               target="_blank"
+              rel="noopener noreferrer"
             >
               {registry.rfmo}
             </a>
@@ -113,6 +114,7 @@ class VesselInfoPanel extends Component {
           {canSeeVesselId && vesselInfo.mmsi && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
+            rel="noopener noreferrer"
             href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
           >Check it on MarineTraffic.com
           </a>

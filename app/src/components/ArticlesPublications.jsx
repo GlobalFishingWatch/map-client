@@ -23,9 +23,9 @@ class ArticlesPublications extends Component {
         {articlePublication.image && <div
           className={PubArticleStyle.image}
           style={{ backgroundImage: `url(${articlePublication.image})` }}
-        ></div>}
+        />}
         <h4 className={PubArticleStyle.title}>
-          <a href={articlePublication.link} target="_blank">
+          <a href={articlePublication.link} target="_blank" rel="noopener noreferrer">
             {articlePublication.title}
           </a>
         </h4>

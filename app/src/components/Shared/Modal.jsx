@@ -8,7 +8,7 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onKeyDown = e => {
+    this.onKeyDown = (e) => {
       if (e.keyCode !== 27) {
         return;
       }
@@ -58,8 +58,8 @@ class Modal extends React.Component {
     }
 
     return (
-      <div style={customStyles} className={styles['c-modal']} onClick={(e) => this.onClickOverlay(e)}>
-        <div className={styles.content} onClick={(e) => this.onClickOverlay(e)}>
+      <div style={customStyles} className={styles['c-modal']} onClick={e => this.onClickOverlay(e)}>
+        <div className={styles.content} onClick={e => this.onClickOverlay(e)}>
           <div className={styles['contain-content']}>
             <div className={styles['contain-button']}>
               {closeButton}

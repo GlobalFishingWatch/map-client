@@ -4,7 +4,7 @@ import { login } from 'actions/user';
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   login: () => {
     dispatch(login());
   }

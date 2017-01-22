@@ -12,7 +12,7 @@ class AuthMap extends Component {
 
   render() {
     return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.props.workspaceId} /> :
-      <MapContainer workspaceId={this.props.workspaceId} />;
+    <MapContainer workspaceId={this.props.workspaceId} />;
   }
 }
 
