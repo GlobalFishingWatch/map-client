@@ -11,10 +11,12 @@
     > .no-pin-literal {
       color: $color-4;
       font-size: $font-size-xxs-small;
+      padding: 0 0 4px;
     }
   }
 
   > .pinned-item-list {
+    margin: 9px 0 0;
     min-height: 105px;
   }
 
@@ -29,15 +31,20 @@
     }
 
     > .item-name {
+      font-family: $font-family-1;
       background-color: transparent;
       border: 0;
-      border-bottom: 1px solid rgba($color-3, .3);
       color: $color-4;
       flex: 1;
       font-size: $font-size-xxs-small;
       height: 24px;
       margin: 0 15px 0 0;
       outline: none;
+      padding: 0 0 4px;
+    }
+
+    > .item-rename {
+      border-bottom: 1px solid rgba($color-3, .3);
       padding: 0 0 3px;
     }
 
@@ -61,6 +68,7 @@
       align-items: center;
       display: flex;
       position: relative;
+      padding: 0 0 4px;
 
       > .pinned-item-action-item {
         display: flex;
