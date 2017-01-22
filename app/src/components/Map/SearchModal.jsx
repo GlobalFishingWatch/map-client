@@ -63,7 +63,7 @@ class SearchModal extends Component {
           <div className={SearchModalStyles['search-input-container']}>
             <input
               className={SearchModalStyles['search-input']}
-              onChange={(e) => this.onSearchInputChange(e.target.value)}
+              onChange={e => this.onSearchInputChange(e.target.value)}
               placeholder="Search vessel"
               value={this.props.searchTerm}
             />

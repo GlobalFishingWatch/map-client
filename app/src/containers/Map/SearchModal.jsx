@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import SearchModal from 'components/Map/SearchModal';
 import { setSearchTerm, setSearchModalVisibility, setSearchPage } from 'actions/search';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   entries: state.search.entries,
   count: state.search.count,
   page: state.search.page,
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
   searchTerm: state.search.searchTerm
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   setSearchPage: (page) => {
     dispatch(setSearchPage(page));
   },
