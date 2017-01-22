@@ -8,7 +8,9 @@ import {
   TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
-  SET_PINNED_VESSEL_HUE
+  SET_PINNED_VESSEL_HUE,
+  LOAD_PINNED_VESSEL,
+  SET_PINNED_VESSEL_TITLE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -41,6 +43,7 @@ export function setCurrentVessel(seriesGroup) {
       }
       const data = JSON.parse(request.responseText);
       delete data.series;
+
       dispatch({
         type: SET_VESSEL_DETAILS,
         payload: data
@@ -53,6 +56,51 @@ export function setCurrentVessel(seriesGroup) {
       });
     };
     request.send(null);
+  };
+}
+
+export function setPinnedVessels(pinnedVessels) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const options = {
+      Accept: '*/*'
+    };
+
+    options.headers = {
+      Authorization: `Bearer ${state.user.token}`
+    };
+
+    pinnedVessels.forEach((pinnedVessel) => {
+      let request;
+
+      if (typeof XMLHttpRequest !== 'undefined') {
+        request = new XMLHttpRequest();
+      } else {
+        throw new Error('XMLHttpRequest is disabled');
+      }
+
+      request.open(
+        'GET',
+        `${state.map.tilesetUrl}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
+        true
+      );
+      if (state.user.token) {
+        request.setRequestHeader('Authorization', `Bearer ${state.user.token}`);
+      }
+      request.setRequestHeader('Accept', 'application/json');
+      request.onreadystatechange = () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        const data = JSON.parse(request.responseText);
+        delete data.series;
+        dispatch({
+          type: LOAD_PINNED_VESSEL,
+          payload: Object.assign({}, pinnedVessel, data)
+        });
+      };
+      request.send(null);
+    });
   };
 }
 
@@ -179,6 +227,17 @@ export function setPinnedVesselHue(seriesgroup, hue) {
     payload: {
       seriesgroup,
       hue
+    }
+  };
+}
+
+
+export function setPinnedVesselTitle(seriesgroup, title) {
+  return {
+    type: SET_PINNED_VESSEL_TITLE,
+    payload: {
+      seriesgroup,
+      title
     }
   };
 }

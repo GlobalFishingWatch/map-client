@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import iconsStyles from 'styles/icons.scss';
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
@@ -13,60 +12,30 @@ class PinnedTracksItem extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      editable: false,
-      vesselName: this.props.pinnedVessel.vesselname
-    };
+    this.onVesselLabelClick = this.onVesselLabelClick.bind(this);
+  }
+  onChangeName(value) {
+    this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const vesselName = this.state.vesselName.length === 0 ?
-      nextProps.pinnedVessel.vesselname : this.state.vesselName;
-    const hue = this.state.hue || nextProps.pinnedVessel.hue;
-
-    this.setState({
-      vesselName,
-      hue,
-      editable: nextProps.editMode
-    });
-
-    if (nextProps.editMode === false && this.state.editable === true) {
-      this.props.onUpdatedItem({
-        vesselname: vesselName
-      }, this.props.index);
+  onVesselLabelClick() {
+    if (this.props.editMode === false) {
+      this.props.onVesselClicked(this.props.vessel.seriesgroup);
     }
   }
 
-  onChange(value) {
-    this.setState({
-      vesselName: value
-    });
-  }
-
-  canEditName() {
-    this.setState({
-      vesselName: '',
-      editable: true
-    });
-
+  clearName() {
+    this.onChangeName('');
     this.inputName.focus();
   }
 
   onChangeHue(hue) {
-    this.props.setPinnedVesselHue(this.props.pinnedVessel.seriesgroup, hue);
-
-    this.setState({
-      hue
-    });
-
-    this.props.onUpdatedItem({
-      hue
-    }, this.props.index);
+    this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
   }
 
   render() {
     let actions;
-    if (this.state.vesselName === undefined) return false;
+    if (this.props.vessel.title === undefined) return false;
 
     if (this.props.editMode === true) {
       actions = (
@@ -74,7 +43,7 @@ class PinnedTracksItem extends Component {
           <DeleteIcon
             className={classnames(iconsStyles.icon, pinnedTracksStyles['delete-icon'])}
             onClick={() => {
-              this.props.onRemoveClicked(this.props.pinnedVessel.seriesgroup);
+              this.props.onRemoveClicked(this.props.vessel.seriesgroup);
             }}
           />
         </div>
@@ -90,18 +59,10 @@ class PinnedTracksItem extends Component {
               }}
             />
           </li>
-          <li className={pinnedTracksStyles['pinned-item-action-item']} >
-            <InfoIcon
-              className={iconsStyles['info-icon']}
-              onClick={() => {
-                this.props.onVesselClicked(this.props.pinnedVessel.seriesgroup);
-              }}
-            />
-          </li>
           <LayerOptionsTooltip
             displayHue
             displayOpacity={false}
-            hueValue={this.state.hue}
+            hueValue={this.props.vessel.hue}
             showBlending={this.props.showBlending}
             onChangeHue={hue => this.onChangeHue(hue)}
           />
@@ -112,20 +73,21 @@ class PinnedTracksItem extends Component {
     return (
       <li
         className={pinnedTracksStyles['pinned-item']}
-        key={this.props.pinnedVessel.seriesgroup}
+        key={this.props.vessel.seriesgroup}
       >
         <input
           className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.editMode })}
-          onChange={e => this.onChange(e.currentTarget.value)}
-          readOnly={!this.state.editable}
-          value={this.state.vesselName}
+          onChange={e => this.onChangeName(e.currentTarget.value)}
+          readOnly={!this.props.editMode}
+          value={this.props.vessel.title}
           ref={((elem) => {
             this.inputName = elem;
           })}
+          onClick={this.onVesselLabelClick}
         />
         {this.props.editMode === true && <RenameIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], pinnedTracksStyles['rename-icon'])}
-          onClick={() => this.canEditName()}
+          onClick={() => this.clearName()}
         />}
         {actions}
       </li>);
@@ -137,11 +99,11 @@ PinnedTracksItem.propTypes = {
   index: React.PropTypes.number,
   onLayerBlendingToggled: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
-  onUpdatedItem: React.PropTypes.func,
+  setPinnedVesselTitle: React.PropTypes.func,
   onVesselClicked: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func,
   showBlending: React.PropTypes.bool,
-  pinnedVessel: React.PropTypes.object
+  vessel: React.PropTypes.object
 };
 
 export default PinnedTracksItem;
