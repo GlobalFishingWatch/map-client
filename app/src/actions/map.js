@@ -27,7 +27,7 @@ export function setZoom(zoom) {
       payload: zoom
     });
     if (getState().vesselInfo && getState().vesselInfo.details &&
-        (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
+      (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
       dispatch(clearVesselInfo());
     }
   };
@@ -115,7 +115,6 @@ export function saveWorkspace(errorAction) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
 
-
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
@@ -126,6 +125,11 @@ export function saveWorkspace(errorAction) {
             zoom: state.map.zoom,
             layers: state.layers.filter(layer => layer.added)
           },
+          pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
+            seriesgroup: e.seriesgroup,
+            title: e.title,
+            color: e.color
+          })),
           basemap: state.map.activeBasemap,
           timeline: {
             // We store the timestamp

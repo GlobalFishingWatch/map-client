@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import PinnedTracksItem from 'components/Map/PinnedTracksItem';
+import PinnedTracksItem from 'containers/Map/PinnedTracksItem';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
@@ -29,17 +29,6 @@ class PinnedTracks extends Component {
     });
   }
 
-  onUpdatedItem(updatedVessel, index) {
-    const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
-
-    if (pinnedVessels[index] === undefined) return;
-
-    Object.assign(pinnedVessels[index], updatedVessel);
-
-    // WIP
-    // this.props.savePinnedVessels(pinnedVessels);
-  }
-
   render() {
     const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
     const editButtonText = (this.state.editMode === false) ? 'edit pinned' : 'done';
@@ -60,12 +49,8 @@ class PinnedTracks extends Component {
               index={index}
               key={index}
               onLayerBlendingToggled={() => this.onBlendingClicked(index)}
-              onRemoveClicked={this.props.onRemoveClicked}
-              onUpdatedItem={(updatedVessel, i) => this.onUpdatedItem(updatedVessel, i)}
-              onVesselClicked={this.props.onVesselClicked}
-              setPinnedVesselHue={this.props.setPinnedVesselHue}
               showBlending={this.state.currentBlendingOptionsShown === index}
-              pinnedVessel={pinnedVessel}
+              vessel={pinnedVessel}
             />
           )}
         </ul>
