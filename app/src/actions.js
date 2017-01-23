@@ -28,6 +28,7 @@ export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 export const SET_SEARCH_PAGE = 'SET_SEARCH_PAGE';
 export const SET_SEARCHING = 'SET_SEARCHING';
+export const SET_SEARCH_EDIT_MODE = 'SET_SEARCH_EDIT_MODE';
 
 // User actions
 export const SET_USER = 'SET_USER';
