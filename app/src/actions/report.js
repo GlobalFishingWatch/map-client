@@ -99,7 +99,11 @@ export function sendReport() {
       from: state.filters.timelineInnerExtent[0].toISOString(),
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
-    payload.flags = (state.filters.flag) ? [FLAGS[state.filters.flag]] : [];
+    const currentFlags = state.filters.flags.map(flag => flag.flag)
+      .filter(flag => flag !== undefined)
+      .map(flag => FLAGS[flag]);
+
+    payload.flags = currentFlags;
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
