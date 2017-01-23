@@ -9,11 +9,6 @@ import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=Delete
 
 class PinnedTracksItem extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.onVesselLabelClick = this.onVesselLabelClick.bind(this);
-  }
   onChangeName(value) {
     this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
   }
@@ -83,7 +78,7 @@ class PinnedTracksItem extends Component {
           ref={((elem) => {
             this.inputName = elem;
           })}
-          onClick={this.onVesselLabelClick}
+          onClick={e => this.onVesselLabelClick(e)}
         />
         {this.props.editMode === true && <RenameIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], pinnedTracksStyles['rename-icon'])}

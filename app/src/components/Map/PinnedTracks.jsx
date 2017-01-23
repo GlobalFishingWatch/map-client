@@ -22,10 +22,6 @@ class PinnedTracks extends Component {
     this.setState({ currentBlendingOptionsShown });
   }
 
-  onEditClick() {
-    this.props.toggleEditMode(!this.props.editMode);
-  }
-
   render() {
     const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
     const editButtonText = (this.props.editMode === false) ? 'edit pinned' : 'done';
@@ -42,7 +38,6 @@ class PinnedTracks extends Component {
         <ul className={pinnedTracksStyles['pinned-item-list']}>
           {pinnedVessels.map((pinnedVessel, index) =>
             <PinnedTracksItem
-              editMode={this.props.editMode}
               index={index}
               key={index}
               onLayerBlendingToggled={() => this.onBlendingClicked(index)}
@@ -67,7 +62,7 @@ class PinnedTracks extends Component {
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
               { [`${MapButtonStyles['-filled']}`]: !!this.props.editMode })}
-            onClick={() => { this.onEditClick(); }}
+            onClick={() => { this.props.toggleEditMode(); }}
           >
             {editButtonText}
           </button>

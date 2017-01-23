@@ -11,18 +11,38 @@ import {
   SHOW_VESSEL_DETAILS,
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
-  SET_PINNED_VESSEL_TITLE
+  SET_PINNED_VESSEL_TITLE,
+  TOGGLE_EDIT_MODE
 } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 
 const initialState = {
   tracks: [],
   details: [],
-  detailsStatus: null
+  detailsStatus: null,
+  editMode: false
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case TOGGLE_EDIT_MODE: {
+      const newState = Object.assign({}, state, {
+        editMode: action.payload.forceMode === null ? !state.editMode : action.payload
+      });
+
+      if (newState.editMode === false) {
+        newState.details = _.cloneDeep(state.details);
+
+
+        newState.details.forEach((vesselDetail) => {
+          if (!vesselDetail.title || /^\s*$/.test(vesselDetail.title)) {
+            vesselDetail.title = vesselDetail.vesselname;
+          }
+        });
+      }
+
+      return newState;
+    }
     case ADD_VESSEL: {
       return Object.assign({}, state, {
         detailsStatus: { isLoading: true }
@@ -124,11 +144,13 @@ export default function (state = initialState, action) {
         // look for vessel with given seriesgoup if provided
         detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       }
-      const newDetails = _.cloneDeep(state.details[detailsIndex]);
-      newDetails.pinned = !newDetails.pinned;
+      const newDetail = _.cloneDeep(state.details[detailsIndex]);
+      newDetail.pinned = !newDetail.pinned;
 
+      const newDetails = [...state.details.slice(0, detailsIndex), newDetail, ...state.details.slice(detailsIndex + 1)];
       return Object.assign({}, state, {
-        details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)]
+        details: newDetails,
+        editMode: state.editMode && newDetails.filter(e => e.pinned === true).length > 0
       });
     }
     case SET_PINNED_VESSEL_HUE: {

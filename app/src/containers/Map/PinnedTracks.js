@@ -4,8 +4,8 @@ import { setSearchEditMode } from 'actions/map';
 import { showPinnedVesselDetails, toggleVesselPin, setPinnedVesselHue } from 'actions/vesselInfo';
 
 const mapStateToProps = state => ({
-  editMode: state.map.searchEditMode.open,
-  vessels: state.vesselInfo.details
+  vessels: state.vesselInfo.details,
+  editMode: state.vesselInfo.editMode
 });
 
 const mapDispatchToProps = dispatch => ({

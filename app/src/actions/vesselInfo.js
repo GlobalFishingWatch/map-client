@@ -10,7 +10,8 @@ import {
   SHOW_VESSEL_DETAILS,
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
-  SET_PINNED_VESSEL_TITLE
+  SET_PINNED_VESSEL_TITLE,
+  TOGGLE_EDIT_MODE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -156,7 +157,7 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 
         if (zoomToBounds) {
           // should this be computed server side ?
-          // this is half implemented because it doesnt take into account filtering and time span
+          // this is half implemented because it doesn't take into account filtering and time span
           const trackBounds = new google.maps.LatLngBounds();
           for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
             trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
@@ -170,7 +171,6 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
       });
   };
 }
-
 
 export function addVessel(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch) => {
@@ -209,6 +209,15 @@ export function toggleVesselPin(seriesgroup) {
   };
 }
 
+export function toggleEditMode(forceMode = null) {
+  return {
+    type: TOGGLE_EDIT_MODE,
+    payload: {
+      forceMode
+    }
+  };
+}
+
 export function showPinnedVesselDetails(seriesgroup) {
   return (dispatch) => {
     dispatch(clearVesselInfo());
@@ -218,6 +227,8 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
+
+    dispatch(getVesselTrack(seriesgroup, null, true));
   };
 }
 

@@ -2,6 +2,10 @@ import { connect } from 'react-redux';
 import PinnedTracksItem from 'components/Map/PinnedTracksItem';
 import { showPinnedVesselDetails, toggleVesselPin, setPinnedVesselHue, setPinnedVesselTitle } from 'actions/vesselInfo';
 
+const mapStateToProps = state => ({
+  editMode: state.vesselInfo.editMode
+});
+
 const mapDispatchToProps = dispatch => ({
   onVesselClicked: (seriesgroup) => {
     dispatch(showPinnedVesselDetails(seriesgroup));
@@ -17,4 +21,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(null, mapDispatchToProps)(PinnedTracksItem);
+export default connect(mapStateToProps, mapDispatchToProps)(PinnedTracksItem);
