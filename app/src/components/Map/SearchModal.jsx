@@ -83,7 +83,7 @@ class SearchModal extends Component {
               nextLabel={<Rhombus />}
               nextClassName={PaginatorStyles.next}
               previousClassName={PaginatorStyles.previous}
-              breakLabel={<a href="">...</a>}
+              breakLabel={<span>...</span>}
               pageClassName={PaginatorStyles['page-item']}
               breakClassName={PaginatorStyles['page-item']}
               pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
