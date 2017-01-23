@@ -14,18 +14,12 @@ import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchModal extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.onPageChange = this.onPageChange.bind(this);
-  }
-
   onSearchInputChange(value) {
     this.props.setSearchTerm(value);
   }
 
-  onPageChange(value) {
-    this.props.setSearchPage(value.selected);
+  onPageChange(page) {
+    this.props.setSearchPage(page);
   }
 
   cleanResults() {
@@ -94,7 +88,7 @@ class SearchModal extends Component {
               breakClassName={PaginatorStyles['page-item']}
               pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
               pageRangeDisplayed={3}
-              onPageChange={this.onPageChange}
+              onPageChange={e => this.onPageChange(e.selected)}
               forcePage={this.props.page}
               containerClassName={PaginatorStyles['page-list']}
               activeClassName={PaginatorStyles['-current']}
