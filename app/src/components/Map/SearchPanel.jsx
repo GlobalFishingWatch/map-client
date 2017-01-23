@@ -29,10 +29,6 @@ class SearchPanel extends Component {
     this.props.setSearchTerm(searchTerm);
   }
 
-  onSearchInputBlur() {
-    document.querySelector('body').style.height = '100%';
-  }
-
   onSearchInputFocus() {
     this.setState({
       open: this.props.searchTerm.length > 0
@@ -86,7 +82,7 @@ class SearchPanel extends Component {
       <div className={searchPanelStyles['c-search-panel']}>
         <input
           type="text"
-          onBlur={this.onSearchInputBlur}
+          onBlur={() => this.onBlur()}
           onChange={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles['search-accordion']}
