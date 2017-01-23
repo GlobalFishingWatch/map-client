@@ -17,12 +17,13 @@ const mapStateToProps = state => ({
   timelineOverExtent: state.filters.timelineOverExtent,
   timelinePaused: state.filters.timelinePaused,
   vesselTracks: state.vesselInfo.tracks,
-  reportLayerId: state.report.layerId
+  reportLayerId: state.report.layerId,
+  reportedPolygonsIds: state.report.polygonsIds
 });
 
 const mapDispatchToProps = dispatch => ({
-  showPolygon: (id, description, latLng) => {
-    dispatch(showPolygon(id, description, latLng));
+  showPolygon: (polygonData, latLng) => {
+    dispatch(showPolygon(polygonData, latLng));
   },
   createTile: (uid, coordinates, canvas, map) => {
     dispatch(getTile(uid, coordinates, canvas, map));

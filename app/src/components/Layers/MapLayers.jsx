@@ -1,5 +1,6 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
+import _ from 'lodash';
 import extentChanged from 'util/extentChanged';
 import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
@@ -34,6 +35,10 @@ class MapLayers extends Component {
 
     if (this.props.zoom !== nextProps.zoom && this.heatmapContainer) {
       this.heatmapContainer.setZoom(nextProps.zoom);
+    }
+
+    if (!_.isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
+      this.highlightReportedPolygons(nextProps.reportedPolygonsIds, this.props.reportLayerId);
     }
 
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
@@ -226,7 +231,7 @@ class MapLayers extends Component {
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
-            this.onCartoLayerFeatureClickBound(data.cartodb_id, latLng, layer.id);
+            this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
           this.addedLayers[layer.id] = cartoLayer;
           resolve();
@@ -236,16 +241,23 @@ class MapLayers extends Component {
     return promise;
   }
 
-  onCartoLayerFeatureClick(id, latLng, layerId) {
+  onCartoLayerFeatureClick(polygonData, latLng, layerId) {
     // this check should not be necessary but setInteraction(false) or interactive = false
     // on Carto layers don't seem to be reliable -_-
     if (layerId === this.props.reportLayerId) {
-      this.props.showPolygon(id, '', latLng);
+      this.props.showPolygon(polygonData, latLng);
     }
   }
 
+  highlightReportedPolygons(polygonsIds, reportLayerId) {
+    const cartoLayer = this.addedLayers[reportLayerId];
+    const sql = cartoLayer.getSubLayer(0).getSQL();
+    const newSql = sql.replace(/SELECT.+FROM/i, `SELECT *, reporting_id IN (${polygonsIds.join(', ')}) isinreport FROM`);
+    cartoLayer.getSubLayer(0).setSQL(newSql);
+  }
+
   setLayersInteraction(reportLayerId) {
-    this.heatmapLayer.interactive = (reportLayerId === null);
+    this.heatmapContainer.interactive = (reportLayerId === null);
     this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach((layerSettings) => {
       const layer = this.addedLayers[layerSettings.id];
       if (layer) {
@@ -392,7 +404,8 @@ MapLayers.propTypes = {
   vesselTracks: React.PropTypes.array,
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
-  reportLayerId: React.PropTypes.number,
+  reportLayerId: React.PropTypes.string,
+  reportedPolygonsIds: React.PropTypes.array,
   queryHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,

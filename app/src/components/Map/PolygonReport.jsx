@@ -81,7 +81,7 @@ export default class PolygonReport extends Component {
     }
     this.element = (this.props.id === undefined) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
       <div className={PolygonReportStyles.title}>
-        {this.props.id}
+        {this.props.name}
       </div>
       <div className={PolygonReportStyles.description}>
         {this.props.description}
@@ -100,6 +100,7 @@ export default class PolygonReport extends Component {
 
 PolygonReport.propTypes = {
   id: React.PropTypes.number,
+  name: React.PropTypes.string,
   description: React.PropTypes.string,
   latLng: React.PropTypes.array,
   isInReport: React.PropTypes.bool,

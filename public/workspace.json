@@ -3,7 +3,7 @@
     "map": {
       "center": [
         0,
-        0
+        90
       ],
       "basemap": "satellite",
       "zoom": 3,
@@ -50,7 +50,7 @@
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
           "reportable": true,
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mpant/source",
+          "url": "http://cartodb.skytruth.org/user/erikescoffier/api/v2/viz/9b2dbbb4-e157-11e6-bfbe-0242ac110006/viz.json",
           "visible": true,
           "color": "#da0000",
           "type": "CartoDBAnimation",
@@ -73,7 +73,7 @@
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "reportable": true,
           "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source",
-          "visible": true,
+          "visible": false,
           "color": "blue",
           "type": "CartoDBAnimation",
           "opacity": 1,
