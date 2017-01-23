@@ -25,6 +25,14 @@ class ControlPanel extends Component {
     };
   }
 
+  onCloseSearch() {
+    this.setState({ searchVisible: false });
+
+    if (this.props.searchEditMode === true) {
+      this.props.closeSearchEditMode();
+    }
+  }
+
   renderSearch() {
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
@@ -63,11 +71,13 @@ class ControlPanel extends Component {
         key="search"
         className={controlPanelStyle['accordion-item']}
         onExpand={() => this.setState({ searchVisible: true })}
-        onClose={() => this.setState({ searchVisible: false })}
+        onClose={() => this.onCloseSearch()}
       >
         <div className={controlPanelStyle['content-accordion']}>
           <SearchPanel visible={this.state.searchVisible} />
-          <PinnedTracks />
+          <PinnedTracks
+            editMode={this.props.searchEditMode}
+          />
         </div>
       </AccordionItem>);
   }
@@ -175,7 +185,9 @@ ControlPanel.propTypes = {
   login: React.PropTypes.func,
   layers: React.PropTypes.array,
   vessels: React.PropTypes.array,
-  userPermissions: React.PropTypes.array
+  userPermissions: React.PropTypes.array,
+  closeSearchEditMode: React.PropTypes.func,
+  searchEditMode: React.PropTypes.bool
 };
 
 export default ControlPanel;

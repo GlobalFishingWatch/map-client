@@ -24,6 +24,8 @@ export const GET_COVER_PAGE_ENTRIES = 'GET_COVER_PAGE_ENTRIES';
 
 // Search
 export const GET_SEARCH_RESULTS = 'GET_SEARCH_RESULTS';
+export const SET_SEARCH_EDIT_MODE = 'SET_SEARCH_EDIT_MODE';
+
 
 // User actions
 export const SET_USER = 'SET_USER';

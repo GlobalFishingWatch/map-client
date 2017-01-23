@@ -10,7 +10,6 @@ class PinnedTracks extends Component {
     super(props);
 
     this.state = {
-      editMode: false,
       currentBlendingOptionsShown: -1
     };
   }
@@ -24,14 +23,12 @@ class PinnedTracks extends Component {
   }
 
   onEditClick() {
-    this.setState({
-      editMode: !this.state.editMode
-    });
+    this.props.toggleEditMode(!this.props.editMode);
   }
 
   render() {
     const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
-    const editButtonText = (this.state.editMode === false) ? 'edit pinned' : 'done';
+    const editButtonText = (this.props.editMode === false) ? 'edit pinned' : 'done';
 
     let pinnedItems = null;
 
@@ -45,7 +42,7 @@ class PinnedTracks extends Component {
         <ul className={pinnedTracksStyles['pinned-item-list']}>
           {pinnedVessels.map((pinnedVessel, index) =>
             <PinnedTracksItem
-              editMode={this.state.editMode}
+              editMode={this.props.editMode}
               index={index}
               key={index}
               onLayerBlendingToggled={() => this.onBlendingClicked(index)}
@@ -69,7 +66,7 @@ class PinnedTracks extends Component {
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles['-filled']}`]: !!this.state.editMode })}
+              { [`${MapButtonStyles['-filled']}`]: !!this.props.editMode })}
             onClick={() => { this.onEditClick(); }}
           >
             {editButtonText}
@@ -82,10 +79,12 @@ class PinnedTracks extends Component {
 
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
+  editMode: React.PropTypes.bool,
   onVesselClicked: React.PropTypes.func,
   onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
-  setPinnedVesselHue: React.PropTypes.func
+  setPinnedVesselHue: React.PropTypes.func,
+  toggleEditMode: React.PropTypes.func
 };
 
 export default PinnedTracks;
