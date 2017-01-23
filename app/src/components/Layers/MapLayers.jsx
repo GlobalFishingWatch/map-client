@@ -41,6 +41,13 @@ class MapLayers extends Component {
       this.highlightReportedPolygons(nextProps.reportedPolygonsIds, this.props.reportLayerId);
     }
 
+    if (nextProps.reportLayerId !== this.props.reportLayerId) {
+      if (this.props.reportLayerId !== null) {
+        this.resetReportedPolygons(this.props.reportLayerId);
+      }
+      this.setLayersInteraction(nextProps.reportLayerId);
+    }
+
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
       return;
     }
@@ -74,10 +81,6 @@ class MapLayers extends Component {
         this.setHeatmapFlags(nextProps);
         this.renderHeatmap(nextProps);
       }
-    }
-
-    if (nextProps.reportLayerId !== this.props.reportLayerId) {
-      this.setLayersInteraction(nextProps.reportLayerId);
     }
   }
 
@@ -250,9 +253,23 @@ class MapLayers extends Component {
   }
 
   highlightReportedPolygons(polygonsIds, reportLayerId) {
+    if (polygonsIds.length === 0) {
+      this.resetReportedPolygons(reportLayerId);
+      return;
+    }
+    this._setCartoLayerSQL(reportLayerId, sql =>
+      sql.replace(/SELECT.+FROM/i, `SELECT *, reporting_id IN (${polygonsIds.join(', ')}) isinreport FROM`)
+    );
+  }
+
+  resetReportedPolygons(reportLayerId) {
+    this._setCartoLayerSQL(reportLayerId, sql => sql.replace(/SELECT.+FROM/i, 'SELECT *, false isinreport FROM'));
+  }
+
+  _setCartoLayerSQL(reportLayerId, callback) {
     const cartoLayer = this.addedLayers[reportLayerId];
     const sql = cartoLayer.getSubLayer(0).getSQL();
-    const newSql = sql.replace(/SELECT.+FROM/i, `SELECT *, reporting_id IN (${polygonsIds.join(', ')}) isinreport FROM`);
+    const newSql = callback(sql);
     cartoLayer.getSubLayer(0).setSQL(newSql);
   }
 
