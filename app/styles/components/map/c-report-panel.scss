@@ -103,7 +103,11 @@
       > .polygon-name {
         color: $color-1;
         font-size: $font-size-xxs-small;
+        overflow: hidden;
+        text-overflow: ellipsis;
         text-transform: uppercase;
+        white-space: nowrap;
+        width: 240px;
       }
 
       > .polygon-remove {
