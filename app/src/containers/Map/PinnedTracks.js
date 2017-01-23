@@ -1,6 +1,12 @@
 import { connect } from 'react-redux';
 import PinnedTracks from 'components/Map/PinnedTracks';
-import { showPinnedVesselDetails, toggleVesselPin, setPinnedVesselHue, togglePinnedVesselEditMode } from 'actions/vesselInfo';
+import {
+  showPinnedVesselDetails,
+  toggleVesselPin,
+  setPinnedVesselHue,
+  togglePinnedVesselEditMode,
+  setRecentVesselsModalVisibility
+} from 'actions/vesselInfo';
 
 const mapStateToProps = state => ({
   vessels: state.vesselInfo.details,
@@ -16,6 +22,9 @@ const mapDispatchToProps = dispatch => ({
   },
   togglePinnedVesselEditMode: () => {
     dispatch(togglePinnedVesselEditMode());
+  },
+  openRecentVesselModal: () => {
+    dispatch(setRecentVesselsModalVisibility(true));
   },
   setPinnedVesselHue: (seriesgroup, hue) => {
     dispatch(setPinnedVesselHue(seriesgroup, hue));

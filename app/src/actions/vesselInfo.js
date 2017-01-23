@@ -11,7 +11,8 @@ import {
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_PINNED_VESSEL_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE,
+  SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -242,7 +243,6 @@ export function setPinnedVesselHue(seriesgroup, hue) {
   };
 }
 
-
 export function setPinnedVesselTitle(seriesgroup, title) {
   return {
     type: SET_PINNED_VESSEL_TITLE,
@@ -250,5 +250,12 @@ export function setPinnedVesselTitle(seriesgroup, title) {
       seriesgroup,
       title
     }
+  };
+}
+
+export function setRecentVesselsModalVisibility(visibility) {
+  return {
+    type: SET_RECENT_VESSELS_VISIBILITY,
+    payload: visibility
   };
 }

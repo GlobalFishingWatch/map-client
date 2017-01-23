@@ -15,6 +15,7 @@ import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
+import { setRecentVesselsModalVisibility } from 'actions/vesselInfo';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -29,7 +30,8 @@ const mapStateToProps = state => ({
   supportModal: state.map.supportModal,
   layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions,
-  searchModalOpen: state.search.searchModalOpen
+  searchModalOpen: state.search.searchModalOpen,
+  recentVesselModalOpen: state.vesselInfo.recentVesselModal.open
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -70,6 +72,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeSearchModal: () => {
     dispatch(setSearchModalVisibility(false));
+  },
+  closeRecentVesselModal: () => {
+    dispatch(setRecentVesselsModalVisibility(false));
   }
 });
 
