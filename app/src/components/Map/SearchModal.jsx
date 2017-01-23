@@ -30,7 +30,7 @@ class SearchModal extends Component {
     let searchResults;
 
     if (this.props.searching) {
-      searchResults = <li className={SearchModalStyles['status-message']}>Searching...</li>;
+      searchResults = <li className={ResultListStyles['status-message']}>Searching...</li>;
     } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
       for (let i = 0, length = this.props.entries.length; i < length; i++) {
@@ -43,11 +43,11 @@ class SearchModal extends Component {
       }
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = (
-        <li className={SearchModalStyles['status-message']}>
+        <li className={ResultListStyles['status-message']}>
           Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
         </li>);
     } else {
-      searchResults = <li className={SearchModalStyles['status-message']}>No result</li>;
+      searchResults = <li className={ResultListStyles['status-message']}>No result</li>;
     }
 
     return (
@@ -92,6 +92,7 @@ class SearchModal extends Component {
               forcePage={this.props.page}
               containerClassName={PaginatorStyles['page-list']}
               activeClassName={PaginatorStyles['-current']}
+              disabledClassName={PaginatorStyles['-disabled']}
             />
             }
           </div>
