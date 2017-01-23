@@ -31,27 +31,27 @@
     }
 
     > .item-name {
-      font-family: $font-family-1;
       background-color: transparent;
       border: 0;
       color: $color-4;
       flex: 1;
+      font-family: $font-family-1;
       font-size: $font-size-xxs-small;
       height: 24px;
       margin: 0 15px 0 0;
       outline: none;
-      padding: 0 0 4px;
     }
 
     > .item-rename {
       border-bottom: 1px solid rgba($color-3, .3);
-      padding: 0 0 3px;
     }
 
     > .rename-icon {
       position: absolute;
       right: 28px;
       stroke: rgba($color-3, .3);
+      top: 50%;
+      transform: translate(0, -50%);
     }
 
     > .edition-menu {
@@ -67,8 +67,8 @@
     > .pinned-item-action-list {
       align-items: center;
       display: flex;
-      position: relative;
       padding: 0 0 4px;
+      position: relative;
 
       > .pinned-item-action-item {
         display: flex;
