@@ -53,6 +53,13 @@
         @media #{$mq-tablet} {
           padding: 40px;
         }
+
+        .modal-title {
+          color: $color-4;
+          font-size: $font-size-x-normal;
+          font-weight: $font-weight-bold;
+          text-align: center;
+        }
       }
     }
   }

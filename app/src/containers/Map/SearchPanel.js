@@ -1,28 +1,21 @@
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import SearchPanel from 'components/Map/SearchPanel';
-import { getSearchResults } from 'actions/search';
+import { setSearchTerm, setSearchModalVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
-  search: state.search
+  entries: state.search.entries,
+  count: state.search.count,
+  searching: state.search.searching,
+  searchTerm: state.search.searchTerm,
+  searchModalOpen: state.search.searchModalOpen
 });
 
-const getSearchResultsDebounced = _.debounce((dispatch, keyword) => {
-  dispatch(getSearchResults(keyword));
-}, 200);
-
 const mapDispatchToProps = dispatch => ({
-  /**
-   * Dispatch an action to search for the specified term
-   * @param {string} searchTerm - keyword
-   * @param {object} options - immediate: don't debounce the search
-   */
-  getSearchResults: (searchTerm, { immediate = false } = {}) => {
-    if (immediate) {
-      dispatch(getSearchResults(searchTerm));
-    } else {
-      getSearchResultsDebounced(dispatch, searchTerm);
-    }
+  setSearchTerm: (searchTerm) => {
+    dispatch(setSearchTerm(searchTerm));
+  },
+  openSearchModal: () => {
+    dispatch(setSearchModalVisibility(true));
   }
 });
 
