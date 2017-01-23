@@ -151,18 +151,20 @@ class ControlPanel extends Component {
   render() {
     return (
       <div className={controlPanelStyle.controlpanel}>
-        {this.renderResume()}
-        <VesselInfoPanel />
-        <Accordion
-          activeItems={6}
-          allowMultiple={false}
-          className={controlPanelStyle['map-options']}
-        >
-          {this.renderSearch()}
-          {this.renderBasemap()}
-          {this.renderLayerPicker()}
-          {this.renderFilters()}
-        </Accordion>
+        <div className={controlPanelStyle['bg-wrapper']}>
+          {this.renderResume()}
+          <VesselInfoPanel />
+          <Accordion
+            activeItems={6}
+            allowMultiple={false}
+            className={controlPanelStyle['map-options']}
+          >
+            {this.renderSearch()}
+            {this.renderBasemap()}
+            {this.renderLayerPicker()}
+            {this.renderFilters()}
+          </Accordion>
+        </div>
       </div>
     );
   }

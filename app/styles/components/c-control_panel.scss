@@ -1,10 +1,12 @@
 @import '../settings';
 
 .controlpanel {
-  background: rgba($color-1, .95);
-  box-shadow: 0 0 4px 0 rgba($color-12, .5);
+  box-shadow: 29px 0 4px 0 rgba($color-12, .5);
   height: $accordion-mobile-height;
   left: 0;
+  max-height: calc(100vh - #{$timebar-height + $duration-picker-height + $map-footer-height + $offset-panel-control});
+  overflow-y: auto;
+  padding: 0 0 0 30px;
   position: absolute;
   top: $header-height;
   width: 100%;
@@ -13,12 +15,17 @@
   @media #{$mq-tablet} {
     height: auto;
     left: auto;
-    max-width: 320px;
+    max-width: 350px;
     right: 0;
     top: 0;
   }
 
-  > .resume-display {
+  > .bg-wrapper {
+    background: rgba($color-1, .95);
+    box-shadow: 0 0 4px 0 rgba($color-12, .5);
+  }
+
+  .resume-display {
     border-bottom: 1px solid $color-7;
     display: none;
     flex-direction: column;
@@ -56,8 +63,7 @@
     }
   }
 
-
-  > .map-options {
+  .map-options {
     display: flex;
     height: 100%;
     justify-content: space-between;
