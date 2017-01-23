@@ -55,6 +55,13 @@
 
 .blending-icon {
   cursor: pointer;
+  fill: $color-19;
+  height: 15px;
+  width: 15px;
+
+  &.-white {
+    fill: $color-4;
+  }
 }
 
 .pin-icon {

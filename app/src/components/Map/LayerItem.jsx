@@ -6,6 +6,7 @@ import { hueToRgbString } from 'util/hsvToRgb';
 
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
+import iconStyles from 'styles/icons.scss';
 
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
@@ -94,7 +95,10 @@ class LayerItem extends Component {
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.toggleBlending()}
           >
-            <BlendingIcon className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.showBlending })} />
+            <BlendingIcon
+              className={classnames(iconStyles['blending-icon'],
+                { [`${iconStyles['-white']}`]: this.props.showBlending })}
+            />
           </li>
           <li
             className={LayerListStyles['layer-option-item']}

@@ -48,7 +48,8 @@ class PinnedTracksItem extends Component {
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
           <li className={pinnedTracksStyles['pinned-item-action-item']} >
             <BlendingIcon
-              className={iconsStyles['blending-icon']}
+              className={classnames(iconsStyles['blending-icon'],
+                { [iconsStyles['-white']]: this.props.showBlending })}
               onClick={() => {
                 this.props.onLayerBlendingToggled(this.props.index);
               }}
