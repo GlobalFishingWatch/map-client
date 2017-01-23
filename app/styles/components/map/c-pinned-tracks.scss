@@ -1,23 +1,25 @@
 @import '../../settings';
 
 .c-pinned-tracks {
+  margin: 10px 0 0;
+  min-height: 135px;
+  position: relative;
 
   > .no-pinned-items {
     align-items: center;
     display: flex;
+    height: 24px;
     justify-content: space-between;
-    margin: 10px 0 100px;
 
     > .no-pin-literal {
       color: $color-4;
       font-size: $font-size-xxs-small;
-      padding: 0 0 4px;
     }
   }
 
   > .pinned-item-list {
-    margin: 9px 0 0;
-    min-height: 105px;
+    max-height: 95px;
+    overflow-y: auto;
   }
 
   > .pinned-item-list > .pinned-item {
@@ -67,7 +69,6 @@
     > .pinned-item-action-list {
       align-items: center;
       display: flex;
-      padding: 0 0 4px;
       position: relative;
 
       > .pinned-item-action-item {
@@ -81,8 +82,12 @@
   }
 
   > .pinned-button-container {
+    bottom: 0;
     display: flex;
     justify-content: space-between;
+    left: 0;
+    position: absolute;
+    width: 100%;
 
     > .pinned-button {
       width: calc(50% - 1px);
