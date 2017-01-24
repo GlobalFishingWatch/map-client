@@ -10,7 +10,7 @@ import {
   SET_BASEMAP,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_SEARCH_EDIT_MODE
+  SET_PINNED_VESSEL_EDIT_MODE
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 
@@ -190,9 +190,9 @@ export function setLayerManagementModalVisibility(visibility) {
   };
 }
 
-export function setSearchEditMode(visibility) {
+export function setPinnedVesselEditMode(visibility) {
   return {
-    type: SET_SEARCH_EDIT_MODE,
+    type: SET_PINNED_VESSEL_EDIT_MODE,
     payload: visibility
   };
 }

@@ -28,7 +28,7 @@ class ControlPanel extends Component {
   onCloseSearch() {
     this.setState({ searchVisible: false });
 
-    if (this.props.searchEditMode === true) {
+    if (this.props.pinnedVesselEditMode === true) {
       this.props.closeSearchEditMode();
     }
   }
@@ -75,9 +75,7 @@ class ControlPanel extends Component {
       >
         <div className={controlPanelStyle['content-accordion']}>
           <SearchPanel visible={this.state.searchVisible} />
-          <PinnedTracks
-            editMode={this.props.searchEditMode}
-          />
+          <PinnedTracks />
         </div>
       </AccordionItem>);
   }
@@ -187,7 +185,7 @@ ControlPanel.propTypes = {
   vessels: React.PropTypes.array,
   userPermissions: React.PropTypes.array,
   closeSearchEditMode: React.PropTypes.func,
-  searchEditMode: React.PropTypes.bool
+  pinnedVesselEditMode: React.PropTypes.bool
 };
 
 export default ControlPanel;

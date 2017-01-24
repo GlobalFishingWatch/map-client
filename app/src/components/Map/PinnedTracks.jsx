@@ -24,7 +24,7 @@ class PinnedTracks extends Component {
 
   render() {
     const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
-    const editButtonText = (this.props.editMode === false) ? 'edit pinned' : 'done';
+    const editButtonText = (this.props.pinnedVesselEditMode === false) ? 'edit pinned' : 'done';
 
     let pinnedItems = null;
 
@@ -61,8 +61,8 @@ class PinnedTracks extends Component {
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles['-filled']}`]: !!this.props.editMode })}
-            onClick={() => { this.props.toggleEditMode(); }}
+              { [`${MapButtonStyles['-filled']}`]: !!this.props.pinnedVesselEditMode })}
+            onClick={() => { this.props.togglePinnedVesselEditMode(); }}
           >
             {editButtonText}
           </button>
@@ -74,12 +74,12 @@ class PinnedTracks extends Component {
 
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
-  editMode: React.PropTypes.bool,
+  pinnedVesselEditMode: React.PropTypes.bool,
   onVesselClicked: React.PropTypes.func,
   onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func,
-  toggleEditMode: React.PropTypes.func
+  togglePinnedVesselEditMode: React.PropTypes.func
 };
 
 export default PinnedTracks;

@@ -12,7 +12,7 @@ import {
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE
 } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 
@@ -20,17 +20,17 @@ const initialState = {
   tracks: [],
   details: [],
   detailsStatus: null,
-  editMode: false
+  pinnedVesselEditMode: false
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_EDIT_MODE: {
+    case TOGGLE_PINNED_VESSEL_EDIT_MODE: {
       const newState = Object.assign({}, state, {
-        editMode: action.payload.forceMode === null ? !state.editMode : action.payload
+        pinnedVesselEditMode: action.payload.forceMode === null ? !state.pinnedVesselEditMode : action.payload.forceMode
       });
 
-      if (newState.editMode === false) {
+      if (newState.pinnedVesselEditMode === false) {
         newState.details = _.cloneDeep(state.details);
 
 
@@ -150,7 +150,7 @@ export default function (state = initialState, action) {
       const newDetails = [...state.details.slice(0, detailsIndex), newDetail, ...state.details.slice(detailsIndex + 1)];
       return Object.assign({}, state, {
         details: newDetails,
-        editMode: state.editMode && newDetails.filter(e => e.pinned === true).length > 0
+        pinnedVesselEditMode: state.pinnedVesselEditMode && newDetails.filter(e => e.pinned === true).length > 0
       });
     }
     case SET_PINNED_VESSEL_HUE: {

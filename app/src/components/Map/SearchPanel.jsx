@@ -14,7 +14,7 @@ class SearchPanel extends Component {
     super(props);
 
     this.state = {
-      open: false
+      resultsContainerOpen: false
     };
   }
 
@@ -22,26 +22,28 @@ class SearchPanel extends Component {
     const searchTerm = event.target.value;
 
     this.setState({
-      open: searchTerm.length > 0
+      resultsContainerOpen: searchTerm.length > 0
     });
 
     this.props.setSearchTerm(searchTerm);
   }
 
-  onBlur() {
-    document.querySelector('body').style.height = '100%';
+  onSearchInputFocus() {
+    this.setState({
+      resultsContainerOpen: this.props.searchTerm.length > 0
+    });
 
-    if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT || this.state.searching) {
-      this.setState({
-        open: false
-      });
-    }
+    document.querySelector('body').style.height = `${window.innerHeight}px`;
+  }
+
+  onSearchInputBlur() {
+    document.querySelector('body').style.height = '100%';
   }
 
   onClick() {
     if (this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       this.setState({
-        open: true
+        resultsContainerOpen: true
       });
     }
   }
@@ -52,7 +54,7 @@ class SearchPanel extends Component {
   }
 
   closeSearch() {
-    this.setState({ open: false });
+    this.setState({ resultsContainerOpen: false });
   }
 
   onClickMoreResults() {
@@ -91,7 +93,7 @@ class SearchPanel extends Component {
       <div className={searchPanelStyles['c-search-panel']} >
         <input
           type="text"
-          onBlur={() => this.onBlur()}
+          onBlur={() => this.onSearchInputBlur()}
           onChange={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles['search-accordion']}
@@ -105,7 +107,7 @@ class SearchPanel extends Component {
         />}
         <div
           className={classnames(searchPanelStyles['results-container'],
-            { [`${searchPanelStyles['-open']}`]: this.state.open })}
+            { [`${searchPanelStyles['-open']}`]: this.state.resultsContainerOpen })}
         >
           <ul
             className={classnames(ResultListStyles['c-result-list'], searchPanelStyles['search-list'])}

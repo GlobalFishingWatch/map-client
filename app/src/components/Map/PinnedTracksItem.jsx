@@ -14,7 +14,7 @@ class PinnedTracksItem extends Component {
   }
 
   onVesselLabelClick() {
-    if (this.props.editMode === false) {
+    if (this.props.pinnedVesselEditMode === false) {
       this.props.onVesselClicked(this.props.vessel.seriesgroup);
     }
   }
@@ -32,7 +32,7 @@ class PinnedTracksItem extends Component {
     let actions;
     if (this.props.vessel.title === undefined) return false;
 
-    if (this.props.editMode === true) {
+    if (this.props.pinnedVesselEditMode === true) {
       actions = (
         <div className={pinnedTracksStyles['edition-menu']} >
           <DeleteIcon
@@ -72,16 +72,16 @@ class PinnedTracksItem extends Component {
         key={this.props.vessel.seriesgroup}
       >
         <input
-          className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.editMode })}
+          className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.pinnedVesselEditMode })}
           onChange={e => this.onChangeName(e.currentTarget.value)}
-          readOnly={!this.props.editMode}
+          readOnly={!this.props.pinnedVesselEditMode}
           value={this.props.vessel.title}
           ref={((elem) => {
             this.inputName = elem;
           })}
           onClick={e => this.onVesselLabelClick(e)}
         />
-        {this.props.editMode === true && <RenameIcon
+        {this.props.pinnedVesselEditMode === true && <RenameIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], pinnedTracksStyles['rename-icon'])}
           onClick={() => this.clearName()}
         />}
@@ -91,7 +91,7 @@ class PinnedTracksItem extends Component {
 }
 
 PinnedTracksItem.propTypes = {
-  editMode: React.PropTypes.bool,
+  pinnedVesselEditMode: React.PropTypes.bool,
   index: React.PropTypes.number,
   onLayerBlendingToggled: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,

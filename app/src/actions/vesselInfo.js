@@ -11,7 +11,7 @@ import {
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -209,9 +209,9 @@ export function toggleVesselPin(seriesgroup) {
   };
 }
 
-export function toggleEditMode(forceMode = null) {
+export function togglePinnedVesselEditMode(forceMode = null) {
   return {
-    type: TOGGLE_EDIT_MODE,
+    type: TOGGLE_PINNED_VESSEL_EDIT_MODE,
     payload: {
       forceMode
     }
