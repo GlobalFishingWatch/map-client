@@ -51,6 +51,7 @@ class UploadLayer extends Component {
                 type="text"
                 name="layer-name"
                 placeholder="layer name"
+                value="test"
                 onChange={e => this.onChange(e.currentTarget)}
                 required
               />
@@ -89,7 +90,7 @@ class UploadLayer extends Component {
                 name="layer-description"
                 onChange={e => this.onChange(e.currentTarget)}
                 placeholder="Your layer description"
-                value={this.state['layer-description']}
+                value="description :)"
               />
             </div>
           </div>

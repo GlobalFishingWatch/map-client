@@ -11,7 +11,7 @@ class LayerLibraryModal extends Component {
     super(props);
 
     this.state = {
-      display: 'library'
+      display: 'upload'
     };
   }
 
