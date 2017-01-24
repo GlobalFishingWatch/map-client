@@ -13,7 +13,8 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSELS_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY,
+  SET_RECENT_VESSEL_HISTORY
 } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 
@@ -22,6 +23,7 @@ const initialState = {
   details: [],
   detailsStatus: null,
   pinnedVesselEditMode: false,
+  history: [],
   recentVesselModal: {
     open: false
   }
@@ -184,6 +186,24 @@ export default function (state = initialState, action) {
       };
 
       return newState;
+    }
+
+    case SET_RECENT_VESSEL_HISTORY: {
+      const vesselIndex = state.history.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+
+      if (vesselIndex !== -1) return state;
+
+      const newVessel = {
+        pinned: action.payload.pinned,
+        mmsi: action.payload.mmsi,
+        seriesgroup: action.payload.seriesgroup,
+        series: action.payload.series,
+        vesselName: action.payload.vesselname
+      };
+
+      return Object.assign({}, state, {
+        history: [...state.history, newVessel]
+      });
     }
 
     default:

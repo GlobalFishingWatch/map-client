@@ -12,7 +12,8 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSELS_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY,
+  SET_RECENT_VESSEL_HISTORY
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -55,6 +56,11 @@ export function setCurrentVessel(seriesGroup) {
         payload: {
           seriesgroup: data.seriesgroup
         }
+      });
+
+      dispatch({
+        type: SET_RECENT_VESSEL_HISTORY,
+        payload: data
       });
     };
     request.send(null);
@@ -257,5 +263,12 @@ export function setRecentVesselsModalVisibility(visibility) {
   return {
     type: SET_RECENT_VESSELS_VISIBILITY,
     payload: visibility
+  };
+}
+
+export function setRecentVesselHistory(vessel) {
+  return {
+    type: SET_RECENT_VESSEL_HISTORY,
+    payload: vessel
   };
 }

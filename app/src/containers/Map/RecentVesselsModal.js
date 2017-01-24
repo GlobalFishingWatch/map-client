@@ -1,13 +1,19 @@
 import { connect } from 'react-redux';
 import RecentVesselsModal from 'components/Map/RecentVesselsModal';
-import { setRecentVesselsModalVisibility } from 'actions/vesselInfo';
+import { addVessel, clearVesselInfo, setRecentVesselsModalVisibility } from 'actions/vesselInfo';
 
 const mapStateToProps = state => ({
-  vessels: state.vesselInfo.details
+  history: state.vesselInfo.history
 });
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => {
+    dispatch(setRecentVesselsModalVisibility(false));
+  },
+
+  drawVessel: (seriesgroup, series) => {
+    dispatch(clearVesselInfo());
+    dispatch(addVessel(seriesgroup, series));
     dispatch(setRecentVesselsModalVisibility(false));
   }
 });
