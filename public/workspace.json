@@ -3,7 +3,7 @@
     "map": {
       "center": [
         0,
-        90
+        0
       ],
       "basemap": "satellite",
       "zoom": 3,
@@ -61,7 +61,7 @@
           "title": "MPA - Restricted Use",
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
           "reportable": true,
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/mparu/source",
+          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/f65c6e80-8983-11e6-bd2f-0242ac110006/viz.json",
           "visible": true,
           "color": "#c45e00",
           "type": "CartoDBAnimation",
@@ -73,7 +73,7 @@
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "reportable": true,
           "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source",
-          "visible": false,
+          "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation",
           "opacity": 1,

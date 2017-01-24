@@ -257,19 +257,19 @@ class MapLayers extends Component {
       this.resetReportedPolygons(reportLayerId);
       return;
     }
-    this._setCartoLayerSQL(reportLayerId, sql =>
-      sql.replace(/SELECT.+FROM/i, `SELECT *, reporting_id IN (${polygonsIds.join(', ')}) isinreport FROM`)
-    );
+    this._setCartoLayerSQL(reportLayerId, `cartodb_id IN (${polygonsIds.join(', ')}) isinreport`);
   }
 
   resetReportedPolygons(reportLayerId) {
-    this._setCartoLayerSQL(reportLayerId, sql => sql.replace(/SELECT.+FROM/i, 'SELECT *, false isinreport FROM'));
+    this._setCartoLayerSQL(reportLayerId, 'false isinreport');
   }
 
-  _setCartoLayerSQL(reportLayerId, callback) {
+  _setCartoLayerSQL(reportLayerId, isinreportCol) {
     const cartoLayer = this.addedLayers[reportLayerId];
     const sql = cartoLayer.getSubLayer(0).getSQL();
-    const newSql = callback(sql);
+    const newSql = sql.replace(/SELECT (.+),\s*(false|cartodb_id IN \([\d\s,]+\))\s+isinreport\s.?FROM/gi, (match, selectSubmatch) =>
+      `SELECT ${selectSubmatch}, ${isinreportCol} FROM`
+    );
     cartoLayer.getSubLayer(0).setSQL(newSql);
   }
 

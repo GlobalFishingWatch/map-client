@@ -108,7 +108,7 @@ export function sendReport() {
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
         name: state.report.layerTitle,
-        value: polygon.id
+        value: polygon.reportingId
       });
     });
     const body = JSON.stringify({ report: payload });
