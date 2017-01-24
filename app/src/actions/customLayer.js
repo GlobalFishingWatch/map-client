@@ -3,8 +3,9 @@ import {
   CUSTOM_LAYER_UPLOAD_SUCCESS
 } from 'actions';
 import { setLayerManagementModalVisibility } from 'actions/map';
+import { addCustomLayer } from 'actions/layers';
 
-export default function uploadLayer() {
+export default function uploadLayer(file, name, description) {
   return (dispatch) => {
     dispatch({
       type: CUSTOM_LAYER_UPLOAD_START,
@@ -18,6 +19,10 @@ export default function uploadLayer() {
           payload: 'idle'
         });
         dispatch(setLayerManagementModalVisibility(false));
+
+        // TODO get real URL from API
+        const url = 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml';
+        dispatch(addCustomLayer(url, name, description));
       });
   };
 }

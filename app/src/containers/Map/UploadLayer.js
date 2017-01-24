@@ -9,8 +9,8 @@ const mapDispatchToProps = dispatch => ({
   closeModal: () => {
     dispatch(setLayerManagementModalVisibility(false));
   },
-  onUploadLayer: () => {
-    dispatch(uploadLayer());
+  onUploadLayer: (payload) => {
+    dispatch(uploadLayer(payload.file, payload.name, payload.description));
   }
 });
 

@@ -83,7 +83,8 @@ export const DURATION_PICKER_OPTIONS = [
 export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
-  ClusterAnimation: 'ClusterAnimation'
+  ClusterAnimation: 'ClusterAnimation',
+  Custom: 'Custom'
 };
 
 // search
