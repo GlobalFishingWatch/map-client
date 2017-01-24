@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'components/Map/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin } from 'actions/vesselInfo';
+import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory } from 'actions/vesselInfo';
 import { zoomIntoVesselCenter } from 'actions/map';
 import { login } from 'actions/user';
 
@@ -20,8 +20,9 @@ const mapDispatchToProps = dispatch => ({
   zoomIntoVesselCenter: () => {
     dispatch(zoomIntoVesselCenter());
   },
-  togglePin: () => {
+  onTogglePin: (seriesgroup) => {
     dispatch(toggleActiveVesselPin());
+    dispatch(setRecentVesselHistory(seriesgroup));
   }
 });
 

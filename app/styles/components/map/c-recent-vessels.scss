@@ -14,12 +14,19 @@
   }
 
   > .history-list > .history-item {
+    align-items: center;
+    display: flex;
     flex: 0 0 33.333%;
     margin: 0 0 15px;
     overflow-y: hidden;
-    padding: 0 20px 0 0;
+    padding: 0 10px 0 0;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    > .pinned {
+      fill: rgba($color-3, .5);
+      margin: 0 8px 0 0;
+    }
 
     &:hover {
       background-color: transparent;

@@ -3,8 +3,11 @@ import classnames from 'classnames';
 
 import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
 import ModalStyles from 'styles/components/shared/c-modal.scss';
+import IconStyles from 'styles/icons.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
+
+import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
 class recentVesselsModal extends Component {
 
@@ -19,9 +22,12 @@ class recentVesselsModal extends Component {
             key={i}
             onClick={() => this.props.drawVessel(entry.seriesgroup)}
           >
-            {`${entry.vesselName}, ${entry.mmsi}`}
-          </li>
-        )
+            {entry.pinned === true &&
+              <PinIcon
+                className={classnames(IconStyles.icon, IconStyles['pin-icon'], recentVesselStyles.pinned)}
+              />}
+            <span>{`${entry.vesselname}, ${entry.mmsi}`}</span>
+          </li>)
       ));
     }
 
@@ -31,13 +37,11 @@ class recentVesselsModal extends Component {
         {historyItems.length === 0 &&
           <div className={recentVesselStyles['empty-history']}>
             <span>Your history is currently empty</span>
-          </div>
-        }
+          </div>}
         {historyItems.length > 0 &&
           <ul className={classnames(ResultListStyles['c-result-list'], recentVesselStyles['history-list'])}>
             {historyItems}
-          </ul>
-        }
+          </ul>}
         <div className={recentVesselStyles.footer}>
           <button
             className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], recentVesselStyles['btn-done'])}

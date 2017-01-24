@@ -60,7 +60,9 @@ export function setCurrentVessel(seriesGroup) {
 
       dispatch({
         type: SET_RECENT_VESSEL_HISTORY,
-        payload: data
+        payload: {
+          seriesgroup: data.seriesgroup
+        }
       });
     };
     request.send(null);
@@ -105,6 +107,13 @@ export function setPinnedVessels(pinnedVessels) {
         dispatch({
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
+        });
+
+        dispatch({
+          type: SET_RECENT_VESSEL_HISTORY,
+          payload: {
+            seriesgroup: pinnedVessel.seriesgroup
+          }
         });
       };
       request.send(null);
@@ -266,9 +275,11 @@ export function setRecentVesselsModalVisibility(visibility) {
   };
 }
 
-export function setRecentVesselHistory(vessel) {
+export function setRecentVesselHistory(seriesgroup) {
   return {
     type: SET_RECENT_VESSEL_HISTORY,
-    payload: vessel
+    payload: {
+      seriesgroup
+    }
   };
 }

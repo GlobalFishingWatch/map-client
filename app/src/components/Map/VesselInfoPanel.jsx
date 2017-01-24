@@ -74,7 +74,7 @@ class VesselInfoPanel extends Component {
           <PinIcon
             className={classnames(iconStyles.icon, iconStyles['pin-icon'],
               vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
-            onClick={() => { this.props.togglePin(); }}
+            onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
           />
           {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
@@ -149,7 +149,7 @@ VesselInfoPanel.propTypes = {
   userPermissions: React.PropTypes.array,
   hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,
-  togglePin: React.PropTypes.func,
+  onTogglePin: React.PropTypes.func,
   login: React.PropTypes.func
 };
 
