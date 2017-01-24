@@ -9,12 +9,11 @@ import {
 import { toggleLayerVisibility } from 'actions/layers';
 import { FLAGS } from 'constants';
 
-export function showPolygon(id, description, latLng) {
+export function showPolygon(polygonData, latLng) {
   return {
     type: SHOW_POLYGON,
     payload: {
-      id,
-      description,
+      polygonData,
       latLng
     }
   };
@@ -26,13 +25,9 @@ export function clearPolygon() {
   };
 }
 
-export function addPolygon(polygonId, polygonName) {
+export function addCurrentPolygon() {
   return {
-    type: ADD_REPORT_POLYGON,
-    payload: {
-      polygonId,
-      polygonName
-    }
+    type: ADD_REPORT_POLYGON
   };
 }
 
@@ -45,11 +40,11 @@ export function deletePolygon(polygonIndex) {
   };
 }
 
-export function toggleReportPolygon(polygonId, polygonName) {
+export function toggleReportPolygon(polygonId) {
   return (dispatch, getState) => {
     const polygonIndex = getState().report.polygons.findIndex(polygon => polygon.id === polygonId);
     if (polygonIndex === -1) {
-      dispatch(addPolygon(polygonId, polygonName));
+      dispatch(addCurrentPolygon());
     } else {
       dispatch(deletePolygon(polygonIndex));
     }
@@ -104,12 +99,16 @@ export function sendReport() {
       from: state.filters.timelineInnerExtent[0].toISOString(),
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
-    payload.flags = (state.filters.flag) ? [FLAGS[state.filters.flag]] : [];
+    const currentFlags = state.filters.flags.map(flag => flag.flag)
+      .filter(flag => flag !== undefined)
+      .map(flag => FLAGS[flag]);
+
+    payload.flags = currentFlags;
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
         name: state.report.layerTitle,
-        value: polygon.id
+        value: polygon.reportingId
       });
     });
     const body = JSON.stringify({ report: payload });

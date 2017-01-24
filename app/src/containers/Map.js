@@ -13,6 +13,7 @@ import {
 } from 'actions/map';
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
+import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
@@ -63,6 +64,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeLayerManagementModal: () => {
     dispatch(setLayerManagementModalVisibility(false));
+  },
+  clearReportPolygon: () => {
+    dispatch(clearPolygon());
   },
   closeSearchModal: () => {
     dispatch(setSearchModalVisibility(false));
