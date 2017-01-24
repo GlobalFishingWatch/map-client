@@ -3,7 +3,8 @@ import {
   SET_SEARCH_MODAL_VISIBILITY,
   SET_SEARCHING,
   SET_SEARCH_TERM,
-  SET_SEARCH_PAGE
+  SET_SEARCH_PAGE,
+  SET_SEARCH_RESULTS_VISIBILITY
 } from 'actions';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'constants';
 import 'whatwg-fetch';
@@ -102,5 +103,11 @@ export function setSearchTerm(searchTerm = null) {
 export function setSearchModalVisibility(visibility) {
   return {
     type: SET_SEARCH_MODAL_VISIBILITY, payload: visibility
+  };
+}
+
+export function setSearchResulVisibility(visibility) {
+  return {
+    type: SET_SEARCH_RESULTS_VISIBILITY, payload: visibility
   };
 }

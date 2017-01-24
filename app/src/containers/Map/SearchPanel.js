@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import SearchPanel from 'components/Map/SearchPanel';
-import { setSearchTerm, setSearchModalVisibility } from 'actions/search';
+import { setSearchTerm, setSearchModalVisibility, setSearchResulVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
   entries: state.search.entries,
   count: state.search.count,
   searching: state.search.searching,
   searchTerm: state.search.searchTerm,
-  searchModalOpen: state.search.searchModalOpen
+  searchModalOpen: state.search.searchModalOpen,
+  searchResultsOpen: state.search.searchResultsOpen
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -16,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
   },
   openSearchModal: () => {
     dispatch(setSearchModalVisibility(true));
+  },
+  setSearchResultsVisibility: (visibility) => {
+    dispatch(setSearchResulVisibility(visibility));
   }
 });
 

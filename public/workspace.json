@@ -101,6 +101,17 @@
         }
       ]
     },
+    "pinnedVessels": [
+      {
+        "title": "foo",
+        "seriesgroup": 5932205
+      },
+      {
+        "title": "SUPI GYU18502",
+        "seriesgroup": 7729439
+      }
+    ],
+    "basemap": "satellite",
     "timeline": {
       "innerExtent": [
         1464739200000,

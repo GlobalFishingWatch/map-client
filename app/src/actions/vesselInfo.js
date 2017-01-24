@@ -8,7 +8,10 @@ import {
   TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
-  SET_PINNED_VESSEL_HUE
+  SET_PINNED_VESSEL_HUE,
+  LOAD_PINNED_VESSEL,
+  SET_PINNED_VESSEL_TITLE,
+  TOGGLE_PINNED_VESSEL_EDIT_MODE
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
@@ -41,6 +44,7 @@ export function setCurrentVessel(seriesGroup) {
       }
       const data = JSON.parse(request.responseText);
       delete data.series;
+
       dispatch({
         type: SET_VESSEL_DETAILS,
         payload: data
@@ -53,6 +57,51 @@ export function setCurrentVessel(seriesGroup) {
       });
     };
     request.send(null);
+  };
+}
+
+export function setPinnedVessels(pinnedVessels) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const options = {
+      Accept: '*/*'
+    };
+
+    options.headers = {
+      Authorization: `Bearer ${state.user.token}`
+    };
+
+    pinnedVessels.forEach((pinnedVessel) => {
+      let request;
+
+      if (typeof XMLHttpRequest !== 'undefined') {
+        request = new XMLHttpRequest();
+      } else {
+        throw new Error('XMLHttpRequest is disabled');
+      }
+
+      request.open(
+        'GET',
+        `${state.map.tilesetUrl}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
+        true
+      );
+      if (state.user.token) {
+        request.setRequestHeader('Authorization', `Bearer ${state.user.token}`);
+      }
+      request.setRequestHeader('Accept', 'application/json');
+      request.onreadystatechange = () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        const data = JSON.parse(request.responseText);
+        delete data.series;
+        dispatch({
+          type: LOAD_PINNED_VESSEL,
+          payload: Object.assign({}, pinnedVessel, data)
+        });
+      };
+      request.send(null);
+    });
   };
 }
 
@@ -108,7 +157,7 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 
         if (zoomToBounds) {
           // should this be computed server side ?
-          // this is half implemented because it doesnt take into account filtering and time span
+          // this is half implemented because it doesn't take into account filtering and time span
           const trackBounds = new google.maps.LatLngBounds();
           for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
             trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
@@ -122,7 +171,6 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
       });
   };
 }
-
 
 export function addVessel(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch) => {
@@ -161,6 +209,15 @@ export function toggleVesselPin(seriesgroup) {
   };
 }
 
+export function togglePinnedVesselEditMode(forceMode = null) {
+  return {
+    type: TOGGLE_PINNED_VESSEL_EDIT_MODE,
+    payload: {
+      forceMode
+    }
+  };
+}
+
 export function showPinnedVesselDetails(seriesgroup) {
   return (dispatch) => {
     dispatch(clearVesselInfo());
@@ -170,6 +227,8 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
+
+    dispatch(getVesselTrack(seriesgroup, null, true));
   };
 }
 
@@ -179,6 +238,17 @@ export function setPinnedVesselHue(seriesgroup, hue) {
     payload: {
       seriesgroup,
       hue
+    }
+  };
+}
+
+
+export function setPinnedVesselTitle(seriesgroup, title) {
+  return {
+    type: SET_PINNED_VESSEL_TITLE,
+    payload: {
+      seriesgroup,
+      title
     }
   };
 }

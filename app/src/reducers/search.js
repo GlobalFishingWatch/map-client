@@ -1,5 +1,5 @@
 import {
-  SET_SEARCH_RESULTS, SET_SEARCH_TERM, SET_SEARCH_MODAL_VISIBILITY, SET_SEARCHING, SET_SEARCH_PAGE
+  SET_SEARCH_RESULTS, SET_SEARCH_TERM, SET_SEARCH_MODAL_VISIBILITY, SET_SEARCHING, SET_SEARCH_PAGE, SET_SEARCH_RESULTS_VISIBILITY
 } from 'actions';
 
 const initialState = {
@@ -8,6 +8,7 @@ const initialState = {
   searchTerm: '',
   searching: false,
   searchModalOpen: false,
+  searchResultsOpen: false,
   page: 0
 };
 
@@ -27,6 +28,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { searchTerm: action.payload });
     case SET_SEARCH_MODAL_VISIBILITY:
       return Object.assign({}, state, { searchModalOpen: action.payload });
+    case SET_SEARCH_RESULTS_VISIBILITY:
+      return Object.assign({}, state, { searchResultsOpen: action.payload });
     default:
       return state;
   }
