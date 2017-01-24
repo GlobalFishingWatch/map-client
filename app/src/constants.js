@@ -84,7 +84,8 @@ export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
   ClusterAnimation: 'ClusterAnimation',
-  Custom: 'Custom'
+  Custom: 'Custom',
+  VesselTrackAnimation: 'VesselTrackAnimation'
 };
 
 // search
@@ -319,6 +320,54 @@ export const FLAGS = {
   221: 'ZM',
   222: 'ZW'
 };
+
+export const FLAGS_LANDLOCKED = [
+  'AF',
+  'AD',
+  'AM',
+  'AT',
+  'AZ',
+  'BI',
+  'BF',
+  'BY',
+  'BO',
+  'BT',
+  'BW',
+  'CF',
+  'CH',
+  'CZ',
+  'ET',
+  'HU',
+  'KZ',
+  'KG',
+  'XK',
+  'LA',
+  'LI',
+  'LS',
+  'LU',
+  'MD',
+  'MK',
+  'ML',
+  'MN',
+  'MW',
+  'NE',
+  'NP',
+  'PY',
+  'RW',
+  'SM',
+  'RS',
+  'SS',
+  'SK',
+  'SZ',
+  'TD',
+  'TJ',
+  'TM',
+  'UG',
+  'UZ',
+  'VA',
+  'ZM',
+  'ZW'
+];
 
 export const FLAGS_SHORTCODES = {
   ac: [127462, 127464],

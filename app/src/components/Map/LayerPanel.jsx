@@ -53,7 +53,7 @@ class LayerPanel extends Component {
 
 LayerPanel.propTypes = {
   layers: React.PropTypes.array,
-  currentlyReportedLayerId: React.PropTypes.number,
+  currentlyReportedLayerId: React.PropTypes.string,
   toggleLayerVisibility: React.PropTypes.func,
   toggleReport: React.PropTypes.func,
   setLayerInfoModal: React.PropTypes.func,

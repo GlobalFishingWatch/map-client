@@ -4,14 +4,14 @@ import { toggleReportPolygon, clearPolygon } from 'actions/report';
 
 const mapStateToProps = state => ({
   id: state.report.currentPolygon.id,
-  description: state.report.currentPolygon.description,
+  name: state.report.currentPolygon.name,
   latLng: state.report.currentPolygon.latLng,
   isInReport: state.report.currentPolygon.isInReport
 });
 
 const mapDispatchToProps = dispatch => ({
   toggleReportPolygon: (polygonId) => {
-    dispatch(toggleReportPolygon(polygonId, ''));
+    dispatch(toggleReportPolygon(polygonId));
   },
   clearPolygon: () => {
     dispatch(clearPolygon());

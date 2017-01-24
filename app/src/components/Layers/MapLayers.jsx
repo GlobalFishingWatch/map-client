@@ -1,5 +1,6 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
+import _ from 'lodash';
 import extentChanged from 'util/extentChanged';
 import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
@@ -37,6 +38,17 @@ class MapLayers extends Component {
       this.heatmapContainer.setZoom(nextProps.zoom);
     }
 
+    if (!_.isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
+      this.highlightReportedPolygons(nextProps.reportedPolygonsIds, this.props.reportLayerId);
+    }
+
+    if (nextProps.reportLayerId !== this.props.reportLayerId) {
+      if (this.props.reportLayerId !== null) {
+        this.resetReportedPolygons(this.props.reportLayerId);
+      }
+      this.setLayersInteraction(nextProps.reportLayerId);
+    }
+
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
       return;
     }
@@ -70,10 +82,6 @@ class MapLayers extends Component {
         this.setHeatmapFlags(nextProps);
         this.renderHeatmap(nextProps);
       }
-    }
-
-    if (nextProps.reportLayerId !== this.props.reportLayerId) {
-      this.setLayersInteraction(nextProps.reportLayerId);
     }
   }
 
@@ -233,7 +241,7 @@ class MapLayers extends Component {
         .done(((layer, cartoLayer) => {
           cartoLayer.setInteraction(reportLayerId === layerSettings.id);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
-            this.onCartoLayerFeatureClickBound(data.cartodb_id, latLng, layer.id);
+            this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
           this.addedLayers[layer.id] = cartoLayer;
           resolve();
@@ -243,16 +251,37 @@ class MapLayers extends Component {
     return promise;
   }
 
-  onCartoLayerFeatureClick(id, latLng, layerId) {
+  onCartoLayerFeatureClick(polygonData, latLng, layerId) {
     // this check should not be necessary but setInteraction(false) or interactive = false
     // on Carto layers don't seem to be reliable -_-
     if (layerId === this.props.reportLayerId) {
-      this.props.showPolygon(id, '', latLng);
+      this.props.showPolygon(polygonData, latLng);
     }
   }
 
+  highlightReportedPolygons(polygonsIds, reportLayerId) {
+    if (polygonsIds.length === 0) {
+      this.resetReportedPolygons(reportLayerId);
+      return;
+    }
+    this._setCartoLayerSQL(reportLayerId, `cartodb_id IN (${polygonsIds.join(', ')}) isinreport`);
+  }
+
+  resetReportedPolygons(reportLayerId) {
+    this._setCartoLayerSQL(reportLayerId, 'false isinreport');
+  }
+
+  _setCartoLayerSQL(reportLayerId, isinreportCol) {
+    const cartoLayer = this.addedLayers[reportLayerId];
+    const sql = cartoLayer.getSubLayer(0).getSQL();
+    const newSql = sql.replace(/SELECT (.+),\s*(false|cartodb_id IN \([\d\s,]+\))\s+isinreport\s.?FROM/gi, (match, selectSubmatch) =>
+      `SELECT ${selectSubmatch}, ${isinreportCol} FROM`
+    );
+    cartoLayer.getSubLayer(0).setSQL(newSql);
+  }
+
   setLayersInteraction(reportLayerId) {
-    this.heatmapLayer.interactive = (reportLayerId === null);
+    this.heatmapContainer.interactive = (reportLayerId === null);
     this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach((layerSettings) => {
       const layer = this.addedLayers[layerSettings.id];
       if (layer) {
@@ -399,7 +428,8 @@ MapLayers.propTypes = {
   vesselTracks: React.PropTypes.array,
   viewportWidth: React.PropTypes.number,
   viewportHeight: React.PropTypes.number,
-  reportLayerId: React.PropTypes.number,
+  reportLayerId: React.PropTypes.string,
+  reportedPolygonsIds: React.PropTypes.array,
   queryHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,

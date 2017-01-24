@@ -6,39 +6,32 @@ import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
-
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      open: false
-    };
-  }
-
   onSearchInputChange(event) {
     const searchTerm = event.target.value;
 
-    this.setState({
-      open: searchTerm.length > 0
-    });
+    this.props.setSearchResultsVisibility(searchTerm.length > 0);
 
     this.props.setSearchTerm(searchTerm);
+  }
+
+  onSearchInputFocus() {
+    this.props.setSearchResultsVisibility(this.props.searchTerm.length > 0);
+
+    document.querySelector('body').style.height = `${window.innerHeight}px`;
   }
 
   onSearchInputBlur() {
     document.querySelector('body').style.height = '100%';
   }
 
-  onSearchInputFocus() {
-    this.setState({
-      open: this.props.searchTerm.length > 0
-    });
-
-    document.querySelector('body').style.height = `${window.innerHeight}px`;
+  onClick() {
+    if (this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
+      this.props.setSearchResultsVisibility(true);
+    }
   }
 
   cleanResults() {
@@ -47,7 +40,7 @@ class SearchPanel extends Component {
   }
 
   closeSearch() {
-    this.setState({ open: false });
+    this.props.setSearchResultsVisibility(false);
   }
 
   onClickMoreResults() {
@@ -59,7 +52,7 @@ class SearchPanel extends Component {
     let searchResults = null;
 
     if (this.props.searching) {
-      searchResults = <li className={ResultListStyles['status-message']}>Searching...</li>;
+      searchResults = <li className={ResultListStyles['status-message']} >Searching...</li>;
     } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
       const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT);
@@ -75,18 +68,18 @@ class SearchPanel extends Component {
       }
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = (
-        <li className={ResultListStyles['status-message']}>
+        <li className={ResultListStyles['status-message']} >
           Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
         </li>);
     } else {
-      searchResults = <li className={ResultListStyles['status-message']}>No result</li>;
+      searchResults = <li className={ResultListStyles['status-message']} >No result</li>;
     }
 
     return (
-      <div className={searchPanelStyles['c-search-panel']}>
+      <div className={searchPanelStyles['c-search-panel']} >
         <input
           type="text"
-          onBlur={this.onSearchInputBlur}
+          onBlur={() => this.onSearchInputBlur()}
           onChange={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles['search-accordion']}
@@ -100,23 +93,22 @@ class SearchPanel extends Component {
         />}
         <div
           className={classnames(searchPanelStyles['results-container'],
-            { [`${searchPanelStyles['-open']}`]: this.state.open })}
+            { [`${searchPanelStyles['-open']}`]: this.props.searchResultsOpen })}
         >
           <ul
             className={classnames(ResultListStyles['c-result-list'], searchPanelStyles['search-list'])}
           >
             {searchResults}
           </ul>
-          {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT &&
-            !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
-            <div className={searchPanelStyles['pagination-container']}>
-              <button
-                className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
-                onClick={() => this.onClickMoreResults()}
-              >
-                more results
-              </button>
-            </div>}
+          {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT && !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
+          <div className={searchPanelStyles['pagination-container']} >
+            <button
+              className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
+              onClick={() => this.onClickMoreResults()}
+            >
+              more results
+            </button>
+          </div>}
         </div>
       </div>);
   }
@@ -125,24 +117,29 @@ class SearchPanel extends Component {
 SearchPanel.propTypes = {
   setSearchTerm: React.PropTypes.func,
   openSearchModal: React.PropTypes.func,
+  setSearchResultsVisibility: React.PropTypes.func,
   /*
-  Search results
+   Search results
    */
   entries: React.PropTypes.array,
   /*
-  Number of total search results
+   Number of total search results
    */
   count: React.PropTypes.number,
   /*
-  If search is in progress
+   If search is in progress
    */
   searching: React.PropTypes.bool,
   /*
-  If search modal is open
+   If search modal is open
    */
   searchModalOpen: React.PropTypes.bool,
   /*
-  Search term to search for
+   If search result is open
+   */
+  searchResultsOpen: React.PropTypes.bool,
+  /*
+   Search term to search for
    */
   searchTerm: React.PropTypes.string
 };
