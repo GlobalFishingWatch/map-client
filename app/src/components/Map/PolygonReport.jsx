@@ -75,11 +75,13 @@ export default class PolygonReport extends Component {
 
   render() {
     const toggleButtonText = (this.props.isInReport) ? 'remove from report' : 'add to report';
-    let toggleButtonClassName = classnames('js-toggle', PolygonReportStyles.toggle);
+    let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', PolygonReportStyles.toggle);
     if (this.props.isInReport) {
       toggleButtonClassName += ` ${PolygonReportStyles['-remove']}`;
     }
-    this.element = (this.props.id === undefined) ? <div /> : (<div className={PolygonReportStyles['c-polygon-report']}>
+    this.element = (this.props.id === undefined) ? <div /> : (<div
+      className={classnames(PolygonReportStyles['c-polygon-report'], 'js-polygon-report')}
+    >
       <div className={PolygonReportStyles.title}>
         {this.props.name}
       </div>

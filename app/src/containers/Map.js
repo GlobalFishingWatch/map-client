@@ -13,6 +13,7 @@ import {
 } from 'actions/map';
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
+import { clearPolygon } from 'actions/report';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -61,6 +62,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeLayerManagementModal: () => {
     dispatch(setLayerManagementModalVisibility(false));
+  },
+  clearReportPolygon: () => {
+    dispatch(clearPolygon());
   }
 });
 

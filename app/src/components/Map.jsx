@@ -39,6 +39,7 @@ class Map extends Component {
     this.onMapIdle = this.onMapIdle.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
     this.onWindowResizeBound = this.onWindowResize.bind(this);
+    this.onMapContainerClickBound = this.onMapContainerClick.bind(this);
   }
 
   /**
@@ -170,6 +171,12 @@ class Map extends Component {
     this.map.setZoom(newZoomLevel);
   }
 
+  onMapContainerClick(event) {
+    if (event.target.className.match('js-polygon-report') === null) {
+      this.props.clearReportPolygon();
+    }
+  }
+
   render() {
     const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
@@ -254,7 +261,7 @@ class Map extends Component {
         </div>
         <GoogleMapLoader
           containerElement={
-            <div className={mapCss.map} style={{ height: '100%' }} />
+            <div className={mapCss.map} style={{ height: '100%' }} onClick={this.onMapContainerClickBound} />
           }
           googleMapElement={
             <GoogleMap
@@ -330,7 +337,8 @@ Map.propTypes = {
   openSupportModal: React.PropTypes.func,
   layerManagementModal: React.PropTypes.bool,
   closeLayerManagementModal: React.PropTypes.func,
-  userPermissions: React.PropTypes.array
+  userPermissions: React.PropTypes.array,
+  clearReportPolygon: React.PropTypes.func
 };
 
 export default Map;
