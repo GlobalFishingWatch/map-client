@@ -14,7 +14,7 @@ import {
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY
 } from 'actions';
-import { trackSearchResultClicked } from 'actions/analytics';
+import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
@@ -28,7 +28,7 @@ export function setRecentVesselHistory(seriesgroup) {
   };
 }
 
-export function setCurrentVessel(seriesGroup) {
+function setCurrentVessel(seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
@@ -41,7 +41,7 @@ export function setCurrentVessel(seriesGroup) {
     }
     request.open(
       'GET',
-      `${state.map.tilesetUrl}/sub/seriesgroup=${seriesGroup}/info`,
+      `${state.map.tilesetUrl}/sub/seriesgroup=${seriesgroup}/info`,
       true
     );
     if (token) {
@@ -54,6 +54,12 @@ export function setCurrentVessel(seriesGroup) {
       }
       const data = JSON.parse(request.responseText);
       delete data.series;
+
+      if (fromSearch) {
+        dispatch(trackSearchResultClicked(seriesgroup, data.vesselname));
+      } else {
+        dispatch(trackVesselPointClicked(seriesgroup, data.vesselname));
+      }
 
       dispatch({
         type: SET_VESSEL_DETAILS,
@@ -131,7 +137,7 @@ export function showNoVesselsInfo() {
   };
 }
 
-export function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
+function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const state = getState();
     const filters = state.filters;
@@ -186,16 +192,15 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
   };
 }
 
-export function addVessel(seriesgroup, series = null, zoomToBounds = false) {
+export function addVessel(seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
   return (dispatch) => {
-    dispatch(trackSearchResultClicked(seriesgroup));
     dispatch({
       type: ADD_VESSEL,
       payload: {
         seriesgroup
       }
     });
-    dispatch(setCurrentVessel(seriesgroup));
+    dispatch(setCurrentVessel(seriesgroup, fromSearch));
     dispatch(getVesselTrack(seriesgroup, series, zoomToBounds));
   };
 }

@@ -10,7 +10,6 @@ import {
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
-import { trackVesselPointClicked } from 'actions/analytics';
 
 export function getTile(uid, tileCoordinates, canvas, map) {
   return (dispatch, getState) => {
@@ -124,7 +123,6 @@ export function queryHeatmap(tileQuery, latLng) {
       // only one valid result
       // console.log('one valid result');
       dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
-      dispatch(trackVesselPointClicked(allSeriesGroups[0]));
     } else {
       // multiple results
       // console.log('multiple results');
