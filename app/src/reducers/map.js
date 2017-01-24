@@ -1,5 +1,4 @@
 /* eslint-disable max-len  */
-
 import {
   VESSEL_INIT,
   SHOW_LOADING,
@@ -128,7 +127,6 @@ export default function (state = initialState, action) {
 
       return newState;
     }
-
     default:
       return state;
   }

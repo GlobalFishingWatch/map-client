@@ -1,12 +1,15 @@
 @import '../../settings';
 
 .c-pinned-tracks {
+  margin: 10px 0 0;
+  min-height: 135px;
+  position: relative;
 
   > .no-pinned-items {
     align-items: center;
     display: flex;
+    height: 24px;
     justify-content: space-between;
-    margin: 10px 0 100px;
 
     > .no-pin-literal {
       color: $color-4;
@@ -15,21 +18,52 @@
   }
 
   > .pinned-item-list {
-    min-height: 105px;
+    max-height: 95px;
+    overflow-y: auto;
   }
 
   > .pinned-item-list > .pinned-item {
     align-items: center;
     display: flex;
     justify-content: space-between;
+    position: relative;
 
     &:not(:first-child) {
       margin: 10px 0 0;
     }
 
     > .item-name {
+      background-color: transparent;
+      border: 0;
       color: $color-4;
+      flex: 1;
+      font-family: $font-family-1;
       font-size: $font-size-xxs-small;
+      height: 24px;
+      margin: 0 15px 0 0;
+      outline: none;
+    }
+
+    > .item-rename {
+      border-bottom: 1px solid rgba($color-3, .3);
+    }
+
+    > .rename-icon {
+      position: absolute;
+      right: 28px;
+      stroke: rgba($color-3, .3);
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    > .edition-menu {
+
+      > .delete-icon {
+        cursor: pointer;
+        fill: $color-19;
+        height: 16px;
+        width: 10px;
+      }
     }
 
     > .pinned-item-action-list {
@@ -48,8 +82,12 @@
   }
 
   > .pinned-button-container {
+    bottom: 0;
     display: flex;
     justify-content: space-between;
+    left: 0;
+    position: absolute;
+    width: 100%;
 
     > .pinned-button {
       width: calc(50% - 1px);

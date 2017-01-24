@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
-
+import PinnedTracksItem from 'containers/Map/PinnedTracksItem';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
-import iconStyles from 'styles/icons.scss';
-
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
-import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 
 class PinnedTracks extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      editMode: false,
       currentBlendingOptionsShown: -1
     };
   }
@@ -29,15 +22,9 @@ class PinnedTracks extends Component {
     this.setState({ currentBlendingOptionsShown });
   }
 
-  onEditClick() {
-    this.setState({
-      editMode: !this.state.editMode
-    });
-  }
-
   render() {
     const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
-    const editButtonText = (this.state.editMode === false) ? 'edit pinned' : 'done';
+    const editButtonText = (this.props.pinnedVesselEditMode === false) ? 'edit pinned' : 'done';
 
     let pinnedItems = null;
 
@@ -49,51 +36,15 @@ class PinnedTracks extends Component {
     } else {
       pinnedItems = (
         <ul className={pinnedTracksStyles['pinned-item-list']}>
-          {pinnedVessels.map((pinnedVessel, index) => {
-            let actions;
-            if (this.state.editMode === true) {
-              actions = (
-                <DeleteIcon
-                  onClick={() => { this.props.onRemoveClicked(pinnedVessel.seriesgroup); }}
-                />
-              );
-            } else {
-              actions = (
-                <ul className={pinnedTracksStyles['pinned-item-action-list']}>
-                  <li className={pinnedTracksStyles['pinned-item-action-item']}>
-                    <BlendingIcon
-                      className={iconStyles['blending-icon']}
-                      onClick={() => { this.onBlendingClicked(index); }}
-                    />
-                  </li>
-                  <li className={pinnedTracksStyles['pinned-item-action-item']}>
-                    <InfoIcon
-                      className={iconStyles['info-icon']}
-                      onClick={() => { this.props.onVesselClicked(pinnedVessel.seriesgroup); }}
-                    />
-                  </li>
-                  <LayerOptionsTooltip
-                    displayHue
-                    displayOpacity={false}
-                    hueValue={pinnedVessel.hue}
-                    showBlending={this.state.currentBlendingOptionsShown === index}
-                    onChangeHue={hue => this.props.setPinnedVesselHue(pinnedVessel.seriesgroup, hue)}
-                  />
-                </ul>
-              );
-            }
-
-            return (
-              <li
-                className={pinnedTracksStyles['pinned-item']}
-                key={pinnedVessel.seriesgroup}
-              >
-                <span className={pinnedTracksStyles['item-name']}>
-                  {pinnedVessel.vesselname}
-                </span>
-                {actions}
-              </li>);
-          })}
+          {pinnedVessels.map((pinnedVessel, index) =>
+            <PinnedTracksItem
+              index={index}
+              key={index}
+              onLayerBlendingToggled={() => this.onBlendingClicked(index)}
+              showBlending={this.state.currentBlendingOptionsShown === index}
+              vessel={pinnedVessel}
+            />
+          )}
         </ul>
       );
     }
@@ -110,8 +61,8 @@ class PinnedTracks extends Component {
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles['-filled']}`]: !!this.state.editMode })}
-            onClick={() => { this.onEditClick(); }}
+              { [`${MapButtonStyles['-filled']}`]: !!this.props.pinnedVesselEditMode })}
+            onClick={() => { this.props.togglePinnedVesselEditMode(); }}
           >
             {editButtonText}
           </button>
@@ -123,9 +74,12 @@ class PinnedTracks extends Component {
 
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
+  pinnedVesselEditMode: React.PropTypes.bool,
   onVesselClicked: React.PropTypes.func,
+  onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
-  setPinnedVesselHue: React.PropTypes.func
+  setPinnedVesselHue: React.PropTypes.func,
+  togglePinnedVesselEditMode: React.PropTypes.func
 };
 
 export default PinnedTracks;

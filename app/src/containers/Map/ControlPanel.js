@@ -1,9 +1,12 @@
 import { connect } from 'react-redux';
 import ControlPanel from 'components/Map/ControlPanel';
+import { setSearchResulVisibility } from 'actions/search';
+import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { login } from 'actions/user';
 
 const mapStateToProps = state => ({
   layers: state.layers,
+  pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
   userPermissions: state.user.userPermissions,
   vessels: state.vesselInfo.details
 });
@@ -11,6 +14,12 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   login: () => {
     dispatch(login());
+  },
+  disableSearchEditMode: () => {
+    dispatch(togglePinnedVesselEditMode(false));
+  },
+  hideSearchResults: () => {
+    dispatch(setSearchResulVisibility(false));
   }
 });
 

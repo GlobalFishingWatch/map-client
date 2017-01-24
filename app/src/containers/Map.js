@@ -14,6 +14,7 @@ import {
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
+import { setSearchModalVisibility } from 'actions/search';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -27,7 +28,8 @@ const mapStateToProps = state => ({
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,
   layerManagementModal: state.map.layerManagementModal.open,
-  userPermissions: state.user.userPermissions
+  userPermissions: state.user.userPermissions,
+  searchModalOpen: state.search.searchModalOpen
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -65,6 +67,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   clearReportPolygon: () => {
     dispatch(clearPolygon());
+  },
+  closeSearchModal: () => {
+    dispatch(setSearchModalVisibility(false));
   }
 });
 
