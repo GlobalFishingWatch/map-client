@@ -4,6 +4,7 @@ import extentChanged from 'util/extentChanged';
 import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
 import HeatmapContainer from 'components/Layers/HeatmapContainer';
+import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
@@ -214,12 +215,7 @@ class MapLayers extends Component {
   }
 
   addCustomLayer(layer) {
-    // TODO wrapper arounf KmlLayer to change visibility
-    // TODO hide opacity control for custom layer
-    this.addedLayers[layer.id] = new google.maps.KmlLayer({
-      url: layer.url,
-      map: this.map
-    });
+    this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
   }
 
   /**
