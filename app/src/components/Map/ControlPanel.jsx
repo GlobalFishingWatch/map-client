@@ -17,19 +17,11 @@ import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      searchVisible: false
-    };
-  }
-
   onCloseSearch() {
-    this.setState({ searchVisible: false });
+    this.props.hideSearchResults();
 
     if (this.props.pinnedVesselEditMode === true) {
-      this.props.closeSearchEditMode();
+      this.props.disableSearchEditMode();
     }
   }
 
@@ -52,8 +44,6 @@ class ControlPanel extends Component {
           title={title}
           key="search"
           className={controlPanelStyle['accordion-item']}
-          onExpand={() => this.setState({ searchVisible: true })}
-          onClose={() => this.setState({ searchVisible: false })}
         >
           <div className={controlPanelStyle['content-accordion']}>
             <a
@@ -70,11 +60,10 @@ class ControlPanel extends Component {
         title={title}
         key="search"
         className={controlPanelStyle['accordion-item']}
-        onExpand={() => this.setState({ searchVisible: true })}
         onClose={() => this.onCloseSearch()}
       >
         <div className={controlPanelStyle['content-accordion']}>
-          <SearchPanel visible={this.state.searchVisible} />
+          <SearchPanel />
           <PinnedTracks />
         </div>
       </AccordionItem>);
@@ -184,7 +173,8 @@ ControlPanel.propTypes = {
   layers: React.PropTypes.array,
   vessels: React.PropTypes.array,
   userPermissions: React.PropTypes.array,
-  closeSearchEditMode: React.PropTypes.func,
+  disableSearchEditMode: React.PropTypes.func,
+  hideSearchResults: React.PropTypes.func,
   pinnedVesselEditMode: React.PropTypes.bool
 };
 

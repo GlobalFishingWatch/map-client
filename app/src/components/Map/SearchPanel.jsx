@@ -10,28 +10,16 @@ import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      resultsContainerOpen: false
-    };
-  }
-
   onSearchInputChange(event) {
     const searchTerm = event.target.value;
 
-    this.setState({
-      resultsContainerOpen: searchTerm.length > 0
-    });
+    this.props.setSearchResultsVisibility(searchTerm.length > 0);
 
     this.props.setSearchTerm(searchTerm);
   }
 
   onSearchInputFocus() {
-    this.setState({
-      resultsContainerOpen: this.props.searchTerm.length > 0
-    });
+    this.props.setSearchResultsVisibility(this.props.searchTerm.length > 0);
 
     document.querySelector('body').style.height = `${window.innerHeight}px`;
   }
@@ -42,9 +30,7 @@ class SearchPanel extends Component {
 
   onClick() {
     if (this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
-      this.setState({
-        resultsContainerOpen: true
-      });
+      this.props.setSearchResultsVisibility(true);
     }
   }
 
@@ -54,7 +40,7 @@ class SearchPanel extends Component {
   }
 
   closeSearch() {
-    this.setState({ resultsContainerOpen: false });
+    this.props.setSearchResultsVisibility(false);
   }
 
   onClickMoreResults() {
@@ -107,7 +93,7 @@ class SearchPanel extends Component {
         />}
         <div
           className={classnames(searchPanelStyles['results-container'],
-            { [`${searchPanelStyles['-open']}`]: this.state.resultsContainerOpen })}
+            { [`${searchPanelStyles['-open']}`]: this.props.searchResultsOpen })}
         >
           <ul
             className={classnames(ResultListStyles['c-result-list'], searchPanelStyles['search-list'])}
@@ -131,6 +117,7 @@ class SearchPanel extends Component {
 SearchPanel.propTypes = {
   setSearchTerm: React.PropTypes.func,
   openSearchModal: React.PropTypes.func,
+  setSearchResultsVisibility: React.PropTypes.func,
   /*
    Search results
    */
@@ -147,6 +134,10 @@ SearchPanel.propTypes = {
    If search modal is open
    */
   searchModalOpen: React.PropTypes.bool,
+  /*
+   If search result is open
+   */
+  searchResultsOpen: React.PropTypes.bool,
   /*
    Search term to search for
    */
