@@ -5,9 +5,6 @@ import LayerManagementStyles from 'styles/components/map/c-layer-management.scss
 import MapButtonStyles from 'styles/components/map/c-button.scss';
 
 class LayerManagement extends Component {
-  componentWillMount() {
-    this.props.openModal();
-  }
   render() {
     return (
       <div className={LayerManagementStyles['c-layer-management']}>
