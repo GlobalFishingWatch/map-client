@@ -1,3 +1,38 @@
 @import '../../settings';
 
-.c-recent-vessels {}
+.c-recent-vessels {
+
+  > .empty-history {
+    margin: 30px 0;
+    text-align: center;
+  }
+
+  > .history-list {
+    margin: 45px 0 0;
+    max-height: 275px;
+    overflow-y: auto;
+  }
+
+  > .history-list > .history-item {
+    flex: 0 0 33.333%;
+    margin: 0 0 15px;
+    overflow-y: hidden;
+    padding: 0 20px 0 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  > .footer {
+    display: flex;
+    justify-content: center;
+
+    > .btn-done {
+      height: 40px;
+      width: 180px;
+    }
+  }
+}

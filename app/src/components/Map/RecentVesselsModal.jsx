@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
 import ModalStyles from 'styles/components/shared/c-modal.scss';
+import MapButtonStyles from 'styles/components/map/c-button.scss';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 
 class recentVesselsModal extends Component {
@@ -13,7 +15,7 @@ class recentVesselsModal extends Component {
       this.props.history.map((entry, i) => (
         historyItems.push(
           <li
-            className={ResultListStyles['result-item']}
+            className={classnames(ResultListStyles['result-item'], recentVesselStyles['history-item'])}
             key={i}
             onClick={() => this.props.drawVessel(entry.seriesgroup)}
           >
@@ -32,10 +34,18 @@ class recentVesselsModal extends Component {
           </div>
         }
         {historyItems.length > 0 &&
-          <ul className={ResultListStyles['c-result-list']}>
+          <ul className={classnames(ResultListStyles['c-result-list'], recentVesselStyles['history-list'])}>
             {historyItems}
           </ul>
         }
+        <div className={recentVesselStyles.footer}>
+          <button
+            className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], recentVesselStyles['btn-done'])}
+            onClick={() => this.props.closeModal()}
+          >
+            done
+          </button>
+        </div>
       </div>
     );
   }
