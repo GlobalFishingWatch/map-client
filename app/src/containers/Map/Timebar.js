@@ -4,8 +4,11 @@ import {
   setInnerTimelineDates,
   setOuterTimelineDates,
   setPlayingStatus,
-  setTimelineOverDates
+  setTimelineHoverDates
 } from 'actions/filters';
+import {
+  trackOuterTimelineRangeSwitch
+} from 'actions/analytics';
 
 const mapStateToProps = state => ({
   timelineOverallExtent: state.filters.timelineOverallExtent,
@@ -25,7 +28,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setPlayingStatus(paused));
   },
   updateTimelineOverDates: (dates) => {
-    dispatch(setTimelineOverDates(dates));
+    dispatch(setTimelineHoverDates(dates));
+  },
+  trackOuterTimelineRangeSwitch: (dates) => {
+    dispatch(trackOuterTimelineRangeSwitch(dates[0], dates[1]));
   }
 });
 

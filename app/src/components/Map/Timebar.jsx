@@ -557,6 +557,7 @@ class Timebar extends Component {
 }
 
 Timebar.propTypes = {
+  trackOuterTimelineRangeSwitch: React.PropTypes.func,
   updateInnerTimelineDates: React.PropTypes.func,
   updateOuterTimelineDates: React.PropTypes.func,
   updatePlayingStatus: React.PropTypes.func,

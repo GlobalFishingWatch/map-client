@@ -3,7 +3,7 @@ import {
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_OVER_DATES
+  SET_TIMELINE_HOVER_DATES
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 
@@ -74,9 +74,9 @@ export function setPlayingStatus(paused) {
   };
 }
 
-export function setTimelineOverDates(overDates) {
+export function setTimelineHoverDates(overDates) {
   return {
-    type: SET_TIMELINE_OVER_DATES,
+    type: SET_TIMELINE_HOVER_DATES,
     payload: overDates
   };
 }

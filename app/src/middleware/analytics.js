@@ -3,8 +3,11 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_SEARCH_TERM,
   GA_SEARCH_RESULT_CLICKED,
-  GA_VESSEL_POINT_CLICKED
+  GA_VESSEL_POINT_CLICKED,
+  GA_MAP_POINT_CLICKED,
+  SET_OUTER_TIMELINE_DATES
 } from 'actions';
+import _ from 'lodash';
 import { SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 import ga from 'ga-react-router';
 
@@ -52,25 +55,25 @@ const GA_ACTION_WHITELIST = [
     type: GA_SEARCH_RESULT_CLICKED,
     category: 'Search',
     action: 'Search result selected',
-    getPayload: (action, state) => {
-      const vesselData = state.vesselInfo.details.find(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      if (typeof vesselData !== 'undefined') {
-        return vesselData.vesselname;
-      }
-      return null;
-    }
+    getPayload: action => action.payload
   },
   {
     type: GA_VESSEL_POINT_CLICKED,
-    category: 'Search',
-    action: 'Search result selected',
-    getPayload: (action, state) => {
-      const vesselData = state.vesselInfo.details.find(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      if (typeof vesselData !== 'undefined') {
-        return vesselData.vesselname;
-      }
-      return null;
-    }
+    category: 'Map Interaction',
+    action: 'Loaded a vessel data',
+    getPayload: action => action.payload
+  },
+  {
+    type: GA_MAP_POINT_CLICKED,
+    category: 'Map Interaction',
+    action: 'Click a vessel point',
+    getPayload: action => action.payload
+  },
+  {
+    type: SET_OUTER_TIMELINE_DATES,
+    category: 'Timeline',
+    action: 'Period being observed',
+    getPayload: _.debounce(action => action.payload, 1000)
   }
 ];
 
@@ -88,6 +91,8 @@ const googleAnalyticsMiddleware = store => next => (action) => {
         gaEvent.eventLabel = gaAction.getPayload(action, state);
       }
       if (gaEvent.eventLabel !== null) {
+        // console.log(action.type);
+        // console.log(gaEvent.eventLabel);
         ga('send', gaEvent);
       }
     }

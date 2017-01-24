@@ -56,9 +56,9 @@ function setCurrentVessel(seriesgroup, fromSearch) {
       delete data.series;
 
       if (fromSearch) {
-        dispatch(trackSearchResultClicked(seriesgroup, data.vesselname));
+        dispatch(trackSearchResultClicked(data.vesselname));
       } else {
-        dispatch(trackVesselPointClicked(seriesgroup, data.vesselname));
+        dispatch(trackVesselPointClicked(data.vesselname));
       }
 
       dispatch({
