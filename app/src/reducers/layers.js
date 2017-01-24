@@ -4,8 +4,7 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
-  SET_LAYER_HUE,
-  UPLOAD_USER_LAYER
+  SET_LAYER_HUE
 } from 'actions';
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
@@ -44,9 +43,6 @@ export default function (state = initialState, action) {
       return getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.hue = action.payload.hue;
       });
-    }
-    case UPLOAD_USER_LAYER: {
-      return {};
     }
 
     default:

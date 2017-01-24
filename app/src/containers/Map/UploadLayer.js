@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import UploadLayer from 'components/Map/UploadLayer';
 import { setLayerManagementModalVisibility } from 'actions/map';
-import { uploadLayer } from 'actions/layers';
+import uploadLayer from 'actions/customLayer';
 
 const mapStateToProps = () => ({});
 
@@ -11,7 +11,6 @@ const mapDispatchToProps = dispatch => ({
   },
   onUploadLayer: () => {
     dispatch(uploadLayer());
-    dispatch(setLayerManagementModalVisibility(false));
   }
 });
 
