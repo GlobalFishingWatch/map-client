@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import FilterItem from 'components/Map/FilterItem';
-import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES } from 'constants';
+import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
 
@@ -24,17 +24,19 @@ class FilterPanel extends Component {
     const countryNames = [];
     const countryOptions = [];
 
-    Object.keys(FLAGS).forEach((index) => {
-      if (iso3311a2.getCountry(FLAGS[index])) {
-        const countryCode = FLAGS[index];
-        const iconAsciiCodePoints = FLAGS_SHORTCODES[countryCode.toLowerCase()];
-        countryNames.push({
-          name: iso3311a2.getCountry(countryCode),
-          icon: String.fromCodePoint.apply(null, iconAsciiCodePoints),
-          id: index
-        });
-      }
-    });
+    Object.keys(FLAGS)
+      .filter(key => FLAGS_LANDLOCKED.indexOf(FLAGS[key]) === -1)
+      .forEach((index) => {
+        if (iso3311a2.getCountry(FLAGS[index])) {
+          const countryCode = FLAGS[index];
+          const iconAsciiCodePoints = FLAGS_SHORTCODES[countryCode.toLowerCase()];
+          countryNames.push({
+            name: iso3311a2.getCountry(countryCode),
+            icon: String.fromCodePoint.apply(null, iconAsciiCodePoints),
+            id: index
+          });
+        }
+      });
 
     countryNames.sort((a, b) => {
       if (a.name > b.name) {
