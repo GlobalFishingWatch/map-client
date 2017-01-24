@@ -328,7 +328,6 @@ Map.propTypes = {
   loadInitialState: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
   setCurrentVessel: React.PropTypes.func,
-  toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   center: React.PropTypes.array,
   zoom: React.PropTypes.number,

@@ -14,6 +14,7 @@ import {
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY
 } from 'actions';
+import { trackSearchResultClicked } from 'actions/analytics';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
@@ -187,6 +188,7 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
 
 export function addVessel(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch) => {
+    dispatch(trackSearchResultClicked(seriesgroup));
     dispatch({
       type: ADD_VESSEL,
       payload: {
