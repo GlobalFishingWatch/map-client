@@ -1,7 +1,6 @@
 @import '../../settings';
 
 .c-flag-filters {
-  max-height: 220px;
 
   > .filter-list > .filter-item {
     align-items: center;
@@ -25,18 +24,6 @@
 
     .filter-option-list > .filter-option-item {
       display: flex;
-
-      > .icon-blending,
-      > .icon-delete-cross {
-        cursor: pointer;
-      }
-
-      > .icon-delete-cross {
-        cursor: pointer;
-        height: 100%;
-        max-height: 100%;
-        width: 100%;
-      }
     }
   }
 
