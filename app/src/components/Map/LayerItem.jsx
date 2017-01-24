@@ -90,12 +90,12 @@ class LayerItem extends Component {
               className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.isCurrentlyReported })}
             />
           </li>}
-          <li
+          {this.props.layer.type !== LAYER_TYPES.Custom && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.toggleBlending()}
           >
             <BlendingIcon className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.showBlending })} />
-          </li>
+          </li>}
           <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickInfo()}
@@ -103,6 +103,7 @@ class LayerItem extends Component {
             <InfoIcon />
           </li>
         </ul>
+
         <LayerOptionsTooltip
           displayHue={this.props.layer.type === LAYER_TYPES.ClusterAnimation}
           displayOpacity
