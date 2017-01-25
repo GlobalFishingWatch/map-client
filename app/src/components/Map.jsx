@@ -18,6 +18,7 @@ import LayerLibrary from 'components/Map/LayerManagementModal';
 import SearchModal from 'containers/Map/SearchModal';
 import SupportForm from 'containers/Map/SupportForm';
 import RecentVesselsModal from 'containers/Map/RecentVesselsModal';
+import WelcomeModal from 'containers/Map/WelcomeModal';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import iconStyles from 'styles/icons.scss';
@@ -232,6 +233,13 @@ class Map extends Component {
       >
         <RecentVesselsModal />
       </Modal>
+      <Modal
+        opened={this.props.welcomeModalOpen}
+        closeable
+        close={this.props.closeWelcomeModal}
+      >
+        <WelcomeModal />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -358,7 +366,9 @@ Map.propTypes = {
   searchModalOpen: React.PropTypes.bool,
   closeSearchModal: React.PropTypes.func,
   recentVesselModalOpen: React.PropTypes.bool,
-  closeRecentVesselModal: React.PropTypes.func
+  closeRecentVesselModal: React.PropTypes.func,
+  welcomeModalOpen: React.PropTypes.bool,
+  closeWelcomeModal: React.PropTypes.func
 };
 
 export default Map;
