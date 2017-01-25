@@ -24,6 +24,9 @@ class LayerPanel extends Component {
     const layers = [];
     if (this.props.layers) {
       for (let i = 0, length = this.props.layers.length; i < length; i++) {
+        if (this.props.layers[i].added === false) {
+          continue;
+        }
         layers.push(
           <LayerItem
             key={i}
