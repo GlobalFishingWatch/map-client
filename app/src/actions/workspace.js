@@ -63,7 +63,7 @@ function processNewWorkspace(data) {
     layers: workspace.map.layers,
     flagFilters: workspace.map.flagFilters,
     pinnedVessels: workspace.pinnedVessels,
-    tilesetUrl: workspace.tilesetUrl
+    tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`
   };
 }
 
