@@ -9,7 +9,7 @@
 
   > .history-container {
     margin: 45px 0 0;
-    overflow: scroll;
+    overflow: auto;
     padding: 0 0 5px;
     position: relative;
 
@@ -46,7 +46,7 @@
     }
 
     > .history-item-name {
-      overflow-y: hidden;
+      overflow-x: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
