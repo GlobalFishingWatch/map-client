@@ -4,101 +4,20 @@
     "map": {
       "center": [
         0,
-        0
+        150
       ],
       "basemap": "satellite",
       "zoom": 3,
       "layers": [
         {
-          "title": "Bathimetry",
-          "description": "Bathimetry of the oceans",
-          "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
-          "visible": false,
-          "color": "#1a7ff0",
-          "type": "CartoDBAnimation",
-          "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
-        },
-        {
-          "title": "Ports",
-          "description": "Ports of the world. Zoom in to show smaller ports",
-          "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json",
-          "visible": false,
-          "color": "#1a7ff0",
-          "type": "CartoDBAnimation",
-          "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
-        },
-        {
-          "title": "Labels",
-          "description": "Labels of continents, countries and regions",
-          "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json",
-          "visible": false,
-          "color": "#da0ff0",
-          "type": "CartoDBAnimation",
-          "id": "2c1c344e-5af7-11e6-91af-0ee66e2c9693"
-        },
-        {
-          "title": "VESSEL",
-          "description": "Fishing effort layer (fr)",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
+          "title": "Indonesian fishing",
+          "description": "Indonesian fishing",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
           "visible": true,
-          "color": "#88FBFF",
-          "hue": 182,
+          "color": "#da00FF",
           "type": "ClusterAnimation",
           "opacity": 1,
-          "id": "801-tileset-nz2-tms"
-        },
-        {
-          "title": "MPA - No Take",
-          "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
-          "reportable": true,
-          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/3d8e8416-866c-11e6-8c6b-0242ac110006/viz.json",
-          "visible": false,
-          "color": "#da0000",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "mpant"
-        },
-        {
-          "title": "MPA - Restricted Use",
-          "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
-          "reportable": true,
-          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/f65c6e80-8983-11e6-bd2f-0242ac110006/viz.json",
-          "visible": true,
-          "color": "#c45e00",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "mparu"
-        },
-        {
-          "title": "EEZ",
-          "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
-          "reportable": true,
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source",
-          "visible": true,
-          "color": "blue",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "eez"
-        },
-        {
-          "title": "High Seas Pocket",
-          "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source",
-          "visible": true,
-          "color": "#00006d",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "highseas"
-        },
-        {
-          "title": "RFMO",
-          "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/rfmo/source",
-          "visible": false,
-          "color": "blue",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "rfmo"
+          "id": "indonesia-vms-2014-01-2016-08-tms"
         }
       ]
     },

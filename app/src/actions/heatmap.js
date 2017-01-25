@@ -4,8 +4,11 @@ import {
   COMPLETE_TILE_LOAD,
   SET_VESSEL_CLUSTER_CENTER,
   ADD_REFERENCE_TILE,
-  REMOVE_REFERENCE_TILE
+  REMOVE_REFERENCE_TILE,
+  ADD_HEATMAP_LAYER,
+  REMOVE_HEATMAP_LAYER
 } from 'actions';
+import { LAYER_TYPES } from 'constants';
 import {
   getTimeAtPrecision,
   getTilePelagosPromises,
@@ -43,7 +46,7 @@ function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOff
   return layerTilePromise;
 }
 
-export function getTile(uid, tileCoordinates, canvas) {
+function getTiles(layerIds, referenceTiles) {
   return (dispatch, getState) => {
     const layers = getState().heatmap.heatmapLayers;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
@@ -53,6 +56,44 @@ export function getTile(uid, tileCoordinates, canvas) {
     const map = getState().map.googleMaps;
     const allPromises = [];
 
+    layerIds.forEach((layerId) => {
+      referenceTiles.forEach((referenceTile) => {
+        const tile = {
+          uid: referenceTile.uid,
+          canvas: referenceTile.canvas
+        };
+        layers[layerId].tiles.push(tile);
+        const tilePromise = loadLayerTile(
+          referenceTile,
+          layers[layerId].url,
+          timelineOverallStartDate,
+          timelineOverallEndDate,
+          overallStartDateOffset,
+          token,
+          map
+        );
+        allPromises.push(tilePromise);
+        tilePromise.then((data) => {
+          tile.data = data;
+          dispatch({
+            type: UPDATE_HEATMAP_TILES, payload: layers
+          });
+        });
+      });
+    });
+
+    Promise.all(allPromises).then(() => {
+      // TODO this does nothing for now, use it for loading status indicators
+      dispatch({
+        type: COMPLETE_TILE_LOAD
+      });
+    });
+  };
+}
+
+
+export function getTile(uid, tileCoordinates, canvas) {
+  return (dispatch, getState) => {
     const referenceTile = {
       uid,
       tileCoordinates,
@@ -64,35 +105,7 @@ export function getTile(uid, tileCoordinates, canvas) {
       payload: referenceTile
     });
 
-    Object.keys(layers).forEach((layerId) => {
-      const tile = {
-        uid: referenceTile.uid,
-        canvas
-      };
-      layers[layerId].tiles.push(tile);
-      const tilePromise = loadLayerTile(
-        referenceTile,
-        layers[layerId].url,
-        timelineOverallStartDate,
-        timelineOverallEndDate,
-        overallStartDateOffset,
-        token,
-        map
-      );
-      allPromises.push(tilePromise);
-      tilePromise.then((data) => {
-        tile.data = data;
-        dispatch({
-          type: UPDATE_HEATMAP_TILES, payload: layers
-        });
-      });
-    });
-
-    Promise.all(allPromises).then(() => {
-      dispatch({
-        type: COMPLETE_TILE_LOAD
-      });
-    });
+    dispatch(getTiles(Object.keys(getState().heatmap.heatmapLayers), [referenceTile]));
   };
 }
 
@@ -118,6 +131,57 @@ export function releaseTile(uid) {
     });
   };
 }
+
+
+function addHeatmapLayer(layerId, url) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ADD_HEATMAP_LAYER,
+      payload: {
+        layerId,
+        url
+      }
+    });
+
+    dispatch(getTiles([layerId], getState().heatmap.referenceTiles));
+  };
+}
+
+function removeHeatmapLayer(id) {
+  return (dispatch) => {
+    dispatch({
+      type: REMOVE_HEATMAP_LAYER,
+      payload: {
+        id
+      }
+    });
+  };
+}
+
+export function toggleHeatmapLayer(layerId, forceStatus = null) {
+  return (dispatch, getState) => {
+    const layers = getState().layers;
+
+    // get the possibly added heatmap layer (should be of ClusterAnimation, same id)
+    const addedLayers = layers.filter(layer =>
+      layer.type === LAYER_TYPES.ClusterAnimation && layerId === layer.id
+    );
+    if (addedLayers.length === 0) {
+      console.warn('impossible to add this heatmap layer ', layerId);
+      return;
+    }
+
+    const toggledLayer = addedLayers[0];
+    const nextStatus = (forceStatus !== null) ? forceStatus : !toggledLayer.added;
+    if (nextStatus === true) {
+      dispatch(addHeatmapLayer(layerId,
+        /* toggledLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
+    } else {
+      dispatch(removeHeatmapLayer(layerId));
+    }
+  };
+}
+
 
 export function queryHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {

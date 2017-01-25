@@ -1,8 +1,10 @@
 import {
   SET_LAYERS,
-  UPDATE_HEATMAP_TILES,
+  ADD_HEATMAP_LAYER,
+  REMOVE_HEATMAP_LAYER,
   ADD_REFERENCE_TILE,
-  REMOVE_REFERENCE_TILE
+  REMOVE_REFERENCE_TILE,
+  UPDATE_HEATMAP_TILES
 } from '../actions';
 
 const initialState = {
@@ -25,6 +27,22 @@ export default function (state = initialState, action) {
           };
         }
       });
+      return Object.assign({}, state, { heatmapLayers });
+    }
+
+    case ADD_HEATMAP_LAYER: {
+      const heatmapLayers = Object.assign({}, state.heatmapLayers, {
+        [action.payload.layerId]: {
+          url: action.payload.url,
+          tiles: []
+        }
+      });
+      return Object.assign({}, state, { heatmapLayers });
+    }
+
+    case REMOVE_HEATMAP_LAYER: {
+      const heatmapLayers = Object.assign({}, state.heatmapLayers);
+      delete heatmapLayers[action.payload.layerId];
       return Object.assign({}, state, { heatmapLayers });
     }
 
