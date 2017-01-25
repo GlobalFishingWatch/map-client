@@ -4,9 +4,9 @@ import {
   showPinnedVesselDetails,
   toggleVesselPin,
   setPinnedVesselHue,
-  togglePinnedVesselEditMode,
-  setRecentVesselsModalVisibility
+  togglePinnedVesselEditMode
 } from 'actions/vesselInfo';
+import { setRecentVesselsModalVisibility } from 'actions/map';
 
 const mapStateToProps = state => ({
   vessels: state.vesselInfo.details,

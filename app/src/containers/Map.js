@@ -9,13 +9,13 @@ import {
   setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerManagementModalVisibility
+  setLayerManagementModalVisibility,
+  setRecentVesselsModalVisibility
 } from 'actions/map';
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
-import { setRecentVesselsModalVisibility } from 'actions/vesselInfo';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -31,7 +31,7 @@ const mapStateToProps = state => ({
   layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions,
   searchModalOpen: state.search.searchModalOpen,
-  recentVesselModalOpen: state.vesselInfo.recentVesselModal.open
+  recentVesselModalOpen: state.map.recentVesselModal.open
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

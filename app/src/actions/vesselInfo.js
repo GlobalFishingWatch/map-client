@@ -12,13 +12,20 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSELS_VISIBILITY,
   SET_RECENT_VESSEL_HISTORY
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
+export function setRecentVesselHistory(seriesgroup) {
+  return {
+    type: SET_RECENT_VESSEL_HISTORY,
+    payload: {
+      seriesgroup
+    }
+  };
+}
 
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
@@ -58,12 +65,7 @@ export function setCurrentVessel(seriesGroup) {
         }
       });
 
-      dispatch({
-        type: SET_RECENT_VESSEL_HISTORY,
-        payload: {
-          seriesgroup: data.seriesgroup
-        }
-      });
+      dispatch(setRecentVesselHistory(data.seriesgroup));
     };
     request.send(null);
   };
@@ -109,12 +111,7 @@ export function setPinnedVessels(pinnedVessels) {
           payload: Object.assign({}, pinnedVessel, data)
         });
 
-        dispatch({
-          type: SET_RECENT_VESSEL_HISTORY,
-          payload: {
-            seriesgroup: pinnedVessel.seriesgroup
-          }
-        });
+        dispatch(setRecentVesselHistory(pinnedVessel.seriesgroup));
       };
       request.send(null);
     });
@@ -264,22 +261,6 @@ export function setPinnedVesselTitle(seriesgroup, title) {
     payload: {
       seriesgroup,
       title
-    }
-  };
-}
-
-export function setRecentVesselsModalVisibility(visibility) {
-  return {
-    type: SET_RECENT_VESSELS_VISIBILITY,
-    payload: visibility
-  };
-}
-
-export function setRecentVesselHistory(seriesgroup) {
-  return {
-    type: SET_RECENT_VESSEL_HISTORY,
-    payload: {
-      seriesgroup
     }
   };
 }

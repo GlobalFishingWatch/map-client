@@ -26,7 +26,7 @@ class recentVesselsModal extends Component {
               <PinIcon
                 className={classnames(IconStyles.icon, IconStyles['pin-icon'], recentVesselStyles.pinned)}
               />}
-            <span>{`${entry.vesselname}, ${entry.mmsi}`}</span>
+            <span className={recentVesselStyles['history-item-name']}>{`${entry.vesselname}, ${entry.mmsi}`}</span>
           </li>)
       ));
     }
@@ -34,14 +34,16 @@ class recentVesselsModal extends Component {
     return (
       <div className={recentVesselStyles['c-recent-vessels']}>
         <h3 className={ModalStyles['modal-title']}>Recent vessels</h3>
-        {historyItems.length === 0 &&
-          <div className={recentVesselStyles['empty-history']}>
-            <span>Your history is currently empty</span>
-          </div>}
-        {historyItems.length > 0 &&
-          <ul className={classnames(ResultListStyles['c-result-list'], recentVesselStyles['history-list'])}>
-            {historyItems}
-          </ul>}
+        <div className={recentVesselStyles['history-container']}>
+          {historyItems.length === 0 &&
+            <div className={recentVesselStyles['empty-history']}>
+              <span>Your history is currently empty</span>
+            </div>}
+          {historyItems.length > 0 &&
+            <ul className={classnames(ResultListStyles['c-result-list'], recentVesselStyles['history-list'])}>
+              {historyItems}
+            </ul>}
+        </div>
         <div className={recentVesselStyles.footer}>
           <button
             className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], recentVesselStyles['btn-done'])}
