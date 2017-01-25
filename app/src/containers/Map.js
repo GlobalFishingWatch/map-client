@@ -9,7 +9,8 @@ import {
   setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerManagementModalVisibility
+  setLayerManagementModalVisibility,
+  setRecentVesselsModalVisibility
 } from 'actions/map';
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility } from 'actions/layers';
@@ -29,7 +30,8 @@ const mapStateToProps = state => ({
   supportModal: state.map.supportModal,
   layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions,
-  searchModalOpen: state.search.searchModalOpen
+  searchModalOpen: state.search.searchModalOpen,
+  recentVesselModalOpen: state.map.recentVesselModal.open
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -70,6 +72,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeSearchModal: () => {
     dispatch(setSearchModalVisibility(false));
+  },
+  closeRecentVesselModal: () => {
+    dispatch(setRecentVesselsModalVisibility(false));
   }
 });
 

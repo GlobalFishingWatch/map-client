@@ -14,7 +14,8 @@ import {
   SET_TILESET_URL,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
+  SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -56,6 +57,9 @@ const initialState = {
     open: false
   },
   layerManagementModal: {
+    open: false
+  },
+  recentVesselModal: {
     open: false
   },
   workspaceId: null
@@ -127,6 +131,16 @@ export default function (state = initialState, action) {
 
       return newState;
     }
+
+    case SET_RECENT_VESSELS_VISIBILITY: {
+      const newState = Object.assign({}, state);
+      newState.recentVesselModal = {
+        open: action.payload
+      };
+
+      return newState;
+    }
+
     default:
       return state;
   }

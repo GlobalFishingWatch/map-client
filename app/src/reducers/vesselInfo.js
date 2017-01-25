@@ -12,7 +12,8 @@ import {
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_PINNED_VESSEL_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE,
+  SET_RECENT_VESSEL_HISTORY
 } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 
@@ -20,7 +21,8 @@ const initialState = {
   tracks: [],
   details: [],
   detailsStatus: null,
-  pinnedVesselEditMode: false
+  pinnedVesselEditMode: false,
+  history: []
 };
 
 export default function (state = initialState, action) {
@@ -162,6 +164,7 @@ export default function (state = initialState, action) {
         tracks: [...state.tracks.slice(0, tracksIndex), newTrack, ...state.tracks.slice(tracksIndex + 1)]
       });
     }
+
     case SET_PINNED_VESSEL_TITLE: {
       const detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newDetails = _.cloneDeep(state.details[detailsIndex]);
@@ -171,6 +174,37 @@ export default function (state = initialState, action) {
         details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)]
       });
     }
+
+    case SET_RECENT_VESSEL_HISTORY: {
+      const newVessel = {};
+      const vesselIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      const vesselDetails = state.details[vesselIndex];
+      let vesselHistoryIndex = -1;
+      let vesselHistory = {};
+
+      if (state.history.length > 0) {
+        vesselHistoryIndex = state.history.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+        vesselHistory = state.history[vesselHistoryIndex];
+      }
+
+      Object.assign(newVessel, vesselHistory, {
+        mmsi: vesselDetails.mmsi,
+        seriesgroup: vesselDetails.seriesgroup,
+        vesselname: vesselDetails.vesselname,
+        pinned: vesselDetails.pinned
+      });
+
+      if (vesselHistoryIndex !== -1) {
+        return Object.assign({}, state, {
+          history: [...state.history.slice(0, vesselHistoryIndex), newVessel, ...state.history.slice(vesselHistoryIndex + 1)]
+        });
+      }
+
+      return Object.assign({}, state, {
+        history: [newVessel, ...state.history]
+      });
+    }
+
     default:
       return state;
   }

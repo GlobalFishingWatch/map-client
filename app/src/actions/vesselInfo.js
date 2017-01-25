@@ -11,12 +11,21 @@ import {
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_PINNED_VESSEL_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE,
+  SET_RECENT_VESSEL_HISTORY
 } from 'actions';
 import _ from 'lodash';
 import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
+export function setRecentVesselHistory(seriesgroup) {
+  return {
+    type: SET_RECENT_VESSEL_HISTORY,
+    payload: {
+      seriesgroup
+    }
+  };
+}
 
 export function setCurrentVessel(seriesGroup) {
   return (dispatch, getState) => {
@@ -55,6 +64,8 @@ export function setCurrentVessel(seriesGroup) {
           seriesgroup: data.seriesgroup
         }
       });
+
+      dispatch(setRecentVesselHistory(data.seriesgroup));
     };
     request.send(null);
   };
@@ -99,6 +110,8 @@ export function setPinnedVessels(pinnedVessels) {
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
         });
+
+        dispatch(setRecentVesselHistory(pinnedVessel.seriesgroup));
       };
       request.send(null);
     });
@@ -241,7 +254,6 @@ export function setPinnedVesselHue(seriesgroup, hue) {
     }
   };
 }
-
 
 export function setPinnedVesselTitle(seriesgroup, title) {
   return {

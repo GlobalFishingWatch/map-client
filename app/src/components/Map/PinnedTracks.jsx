@@ -55,6 +55,7 @@ class PinnedTracks extends Component {
         <div className={pinnedTracksStyles['pinned-button-container']}>
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'])}
+            onClick={() => this.props.openRecentVesselModal()}
           >
             recent vessels
           </button>
@@ -79,7 +80,8 @@ PinnedTracks.propTypes = {
   onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func,
-  togglePinnedVesselEditMode: React.PropTypes.func
+  togglePinnedVesselEditMode: React.PropTypes.func,
+  openRecentVesselModal: React.PropTypes.func
 };
 
 export default PinnedTracks;
