@@ -5,7 +5,6 @@ import { getTile, releaseTile, queryHeatmap } from 'actions/heatmap';
 
 const mapStateToProps = state => ({
   token: state.user.token,
-  tilesetUrl: state.map.tilesetUrl,
   zoom: state.map.zoom,
   layers: state.layers,
   flagsLayers: state.filters.flagsLayers,

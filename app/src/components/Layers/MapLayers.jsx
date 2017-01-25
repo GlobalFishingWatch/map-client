@@ -407,7 +407,6 @@ class MapLayers extends Component {
 MapLayers.propTypes = {
   map: React.PropTypes.object,
   token: React.PropTypes.string,
-  tilesetUrl: React.PropTypes.string,
   layers: React.PropTypes.array,
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
