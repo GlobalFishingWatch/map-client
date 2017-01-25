@@ -5,10 +5,13 @@ import {
   GA_SEARCH_RESULT_CLICKED,
   GA_VESSEL_POINT_CLICKED,
   GA_MAP_POINT_CLICKED,
-  SET_OUTER_TIMELINE_DATES
+  GA_PLAY_STATUS_TOGGLED,
+  SET_INNER_TIMELINE_DATES,
+  GA_OUTER_TIMELINE_DATES_UPDATED,
+  SET_WORKSPACE_ID,
+  SET_FLAG_FILTERS
 } from 'actions';
-import _ from 'lodash';
-import { SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
+import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 import ga from 'ga-react-router';
 
 const GA_ACTION_WHITELIST = [
@@ -70,10 +73,55 @@ const GA_ACTION_WHITELIST = [
     getPayload: action => action.payload
   },
   {
-    type: SET_OUTER_TIMELINE_DATES,
+    type: GA_OUTER_TIMELINE_DATES_UPDATED,
     category: 'Timeline',
-    action: 'Period being observed',
-    getPayload: _.debounce(action => action.payload, 1000)
+    action: 'Outer period changed',
+    getPayload: action => action.payload
+  },
+  {
+    type: SET_INNER_TIMELINE_DATES,
+    category: 'Timeline',
+    action: 'Inner period changed',
+    getPayload: (action, state) => {
+      if (state.filters.timelinePaused === false) {
+        return null;
+      }
+      return action.payload;
+    }
+  },
+  {
+    type: GA_PLAY_STATUS_TOGGLED,
+    category: 'Timeline',
+    action: 'Press Play',
+    getPayload: (action, state) => {
+      if (action.payload === false) { // pressed play
+        return {
+          play: true,
+          timeStart: state.filters.timelineInnerExtent[0]
+        };
+      }
+      return {
+        play: false,
+        timeEnd: state.filters.timelineInnerExtent[1]
+      };
+    }
+  },
+  {
+    type: SET_WORKSPACE_ID,
+    category: 'Share',
+    action: 'Share Link',
+    getPayload: action => action.payload
+  },
+  {
+    type: SET_FLAG_FILTERS,
+    category: 'Settings',
+    action: 'Filter by Country',
+    getPayload: action => action.payload.flagFilters.map((flagFilter) => {
+      if (flagFilter.flag) {
+        return FLAGS[flagFilter.flag];
+      }
+      return 'ALL';
+    })
   }
 ];
 
@@ -90,9 +138,7 @@ const googleAnalyticsMiddleware = store => next => (action) => {
       if (gaAction.getPayload) {
         gaEvent.eventLabel = gaAction.getPayload(action, state);
       }
-      if (gaEvent.eventLabel !== null) {
-        // console.log(action.type);
-        // console.log(gaEvent.eventLabel);
+      if (gaEvent.eventLabel !== null && typeof gaEvent.eventLabel !== 'undefined') {
         ga('send', gaEvent);
       }
     }

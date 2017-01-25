@@ -1,5 +1,6 @@
 import {
   SET_INNER_TIMELINE_DATES,
+  SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTERS,
   SET_PLAYING_STATUS,
@@ -33,6 +34,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_INNER_TIMELINE_DATES_FROM_WORKSPACE:
     case SET_INNER_TIMELINE_DATES: {
       const timelineInnerExtent = action.payload;
       const startTimestamp = timelineInnerExtent[0].getTime();
