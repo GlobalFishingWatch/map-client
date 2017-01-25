@@ -5,7 +5,7 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
-import { SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP } from 'actions';
+import { SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL } from 'actions';
 import { initLayers, loadTilesetMetadata } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels } from 'actions/vesselInfo';
@@ -37,6 +37,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
     type: SET_BASEMAP, payload: workspaceData.basemap
   });
 
+  dispatch({
+    type: SET_TILESET_URL,
+    payload: workspaceData.tilesetUrl
+  });
+
   dispatch(loadTilesetMetadata(workspaceData.tilesetUrl));
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
@@ -49,10 +54,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
 function processNewWorkspace(data) {
   const workspace = data.workspace;
 
-  const vesselLayer = workspace.map.layers
-    .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-  const tilesetUrl = vesselLayer.url;
-
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
@@ -62,7 +63,7 @@ function processNewWorkspace(data) {
     layers: workspace.map.layers,
     flagFilters: workspace.map.flagFilters,
     pinnedVessels: workspace.pinnedVessels,
-    tilesetUrl
+    tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`
   };
 }
 

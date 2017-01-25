@@ -1,5 +1,6 @@
 {
   "workspace": {
+    "tileset": "849-tileset-tms",
     "map": {
       "center": [
         0,

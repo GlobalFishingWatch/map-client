@@ -92,9 +92,6 @@ export function sendReport() {
       return;
     }
 
-    // TODO hardcoded, will need to check w/ Skytruth for how to retrieve that properly
-    const tileset = '801-tileset-nz2-tms';
-    const url = `${MAP_API_ENDPOINT}/v1/tilesets/${tileset}/reports`;
     const payload = {
       from: state.filters.timelineInnerExtent[0].toISOString(),
       to: state.filters.timelineInnerExtent[1].toISOString()
@@ -121,7 +118,7 @@ export function sendReport() {
         Authorization: `Bearer ${state.user.token}`
       };
     }
-    fetch(url, options).then((res) => {
+    fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
       if (!res.ok) {
         throw Error(res.statusText);
       }
