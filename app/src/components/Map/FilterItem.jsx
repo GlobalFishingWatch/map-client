@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
+import classnames from 'classnames';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
+import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/c-selector.scss';
 
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
@@ -60,13 +62,15 @@ class FilterItem extends Component {
           <ul className={flagFilterStyles['filter-option-list']}>
             <li className={flagFilterStyles['filter-option-item']}>
               <BlendingIcon
-                className={flagFilterStyles['icon-blending']}
+                className={classnames(IconStyles.icon, IconStyles['blending-icon'],
+                  flagFilterStyles['icon-blending'],
+                { [`${IconStyles['-white']}`]: this.props.showBlending === true })}
                 onClick={() => this.toggleBlending()}
               />
             </li>
             <li className={flagFilterStyles['filter-option-item']}>
               <RemoveFilterIcon
-                className={flagFilterStyles['icon-delete-cross']}
+                className={classnames(IconStyles.icon, IconStyles['delete-cross-icon'], flagFilterStyles['icon-delete-cross'])}
                 onClick={() => this.onRemoveFilter()}
               />
             </li>
