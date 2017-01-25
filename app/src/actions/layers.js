@@ -6,7 +6,6 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
-  SET_TILESET_URL,
   SET_MAX_ZOOM,
   SET_OVERALL_TIMELINE_DATES,
   UPLOAD_USER_LAYER
@@ -50,18 +49,6 @@ export function initLayers(workspaceLayers, libraryLayers) {
       }
     });
 
-    const vesselLayer = workspaceLayers
-      .filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
-
-    if (vesselLayer !== undefined) {
-      // TODO: we should probably store this somewhere else on the WS
-      const tilesetUrl = vesselLayer.url;
-
-      dispatch({
-        type: SET_TILESET_URL,
-        payload: tilesetUrl
-      });
-    }
     dispatch({
       type: SET_LAYERS,
       payload: workspaceLayers
@@ -102,11 +89,6 @@ export function loadTilesetMetadata(tilesetUrl) {
           });
         }
       });
-
-    dispatch({
-      type: SET_TILESET_URL,
-      payload: tilesetUrl
-    });
   };
 }
 

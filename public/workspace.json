@@ -1,5 +1,6 @@
 {
   "workspace": {
+    "tilesetUrl": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
     "map": {
       "center": [
         0,
