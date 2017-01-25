@@ -51,7 +51,7 @@
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
           "reportable": true,
-          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/9b2dbbb4-e157-11e6-bfbe-0242ac110006/viz.json",
+          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/3d8e8416-866c-11e6-8c6b-0242ac110006/viz.json",
           "visible": false,
           "color": "#da0000",
           "type": "CartoDBAnimation",
