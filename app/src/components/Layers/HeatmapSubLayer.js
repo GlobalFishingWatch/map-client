@@ -72,6 +72,8 @@ export default class HeatmapSubLayer {
   }
 
   render(tiles, startIndex, endIndex) {
+    if (tiles.length === 0) return;
+
     const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
     const numSpritesNeededWithMargin = numSpritesNeeded * 2;
 
@@ -80,6 +82,7 @@ export default class HeatmapSubLayer {
     }
 
     this.numSprites = 0;
+
 
     tiles.forEach((tile) => {
       const bounds = tile.canvas.getBoundingClientRect();
@@ -90,6 +93,7 @@ export default class HeatmapSubLayer {
       if (bounds.left === 0 && bounds.top === 0) {
         console.warn('tile at 0,0');
       }
+      console.log(tile.data)
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 

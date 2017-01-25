@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
     case SET_LAYERS: {
       const newState = {};
       action.payload.forEach((layer) => {
-        if (layer.type === 'ClusterAnimation') {
+        if (layer.type === 'ClusterAnimation' && layer.added === true) {
           newState[layer.id] = {
             url: layer.url,
             tiles: []
@@ -20,6 +20,8 @@ export default function (state = initialState, action) {
       });
       return newState;
     }
+
+    // TODO handle adding layers
 
     case UPDATE_HEATMAP_TILES: {
       return Object.assign({}, state, action.payload);
