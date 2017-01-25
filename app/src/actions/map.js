@@ -129,7 +129,8 @@ export function saveWorkspace(errorAction) {
           pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,
             title: e.title,
-            color: e.color
+            color: e.color,
+            hue: e.hue
           })),
           basemap: state.map.activeBasemap,
           timeline: {

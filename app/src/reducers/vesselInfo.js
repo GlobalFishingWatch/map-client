@@ -66,7 +66,8 @@ export default function (state = initialState, action) {
       const newDetails = Object.assign({
         pinned: false,
         visible: false,
-        title: action.payload.vesselname
+        title: action.payload.vesselname,
+        hue: action.payload.hue || DEFAULT_TRACK_HUE
       }, action.payload);
 
       return Object.assign({}, state, {
@@ -79,7 +80,8 @@ export default function (state = initialState, action) {
       const newDetails = Object.assign({
         pinned: true,
         visible: false,
-        title: action.payload.title || action.payload.vesselname
+        title: action.payload.title || action.payload.vesselname,
+        hue: action.payload.hue || DEFAULT_TRACK_HUE
       }, action.payload);
 
       return Object.assign({}, state, {
@@ -157,11 +159,15 @@ export default function (state = initialState, action) {
     }
     case SET_PINNED_VESSEL_HUE: {
       const tracksIndex = state.tracks.findIndex(track => track.seriesgroup === action.payload.seriesgroup);
+      const detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      const newDetails = _.cloneDeep(state.details[detailsIndex]);
       const newTrack = _.cloneDeep(state.tracks[tracksIndex]);
       newTrack.hue = action.payload.hue;
+      newDetails.hue = action.payload.hue;
 
       return Object.assign({}, state, {
-        tracks: [...state.tracks.slice(0, tracksIndex), newTrack, ...state.tracks.slice(tracksIndex + 1)]
+        tracks: [...state.tracks.slice(0, tracksIndex), newTrack, ...state.tracks.slice(tracksIndex + 1)],
+        details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)]
       });
     }
 
