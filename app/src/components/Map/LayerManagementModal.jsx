@@ -23,7 +23,12 @@ class LayerLibraryModal extends Component {
 
   render() {
     return (
-      <div className={LayerMaganementModalStyles['c-layer-management-modal']}>
+      <div
+        className={classnames(
+          LayerMaganementModalStyles['c-layer-management-modal'],
+          { [`${LayerMaganementModalStyles['-disabled']}`]: this.props.status === 'pending' }
+        )}
+      >
         <h3 className={LayerMaganementModalStyles.title}>Add layer</h3>
         <div className={LayerMaganementModalStyles['content-switcher']}>
           <span
@@ -58,7 +63,9 @@ LayerLibraryModal.propTypes = {
   // sets modal with info about the current layer
   setLayerInfoModal: React.PropTypes.func,
   // function to change visibility of the current layer
-  toggleLayerVisibility: React.PropTypes.func
+  toggleLayerVisibility: React.PropTypes.func,
+  // modal loading status
+  status: React.PropTypes.string
 };
 
 export default LayerLibraryModal;

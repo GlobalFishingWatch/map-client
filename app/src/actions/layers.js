@@ -8,7 +8,7 @@ import {
   SET_LAYER_HUE,
   SET_MAX_ZOOM,
   SET_OVERALL_TIMELINE_DATES,
-  UPLOAD_USER_LAYER
+  ADD_CUSTOM_LAYER
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -136,11 +136,13 @@ export function setLayerHue(hue, layerId) {
   };
 }
 
-export function uploadLayer(dataLayer) {
-  return (dispatch) => {
-    dispatch({
-      type: UPLOAD_USER_LAYER,
-      payload: dataLayer
-    });
+export function addCustomLayer(url, name, description) {
+  return {
+    type: ADD_CUSTOM_LAYER,
+    payload: {
+      url,
+      name,
+      description
+    }
   };
 }

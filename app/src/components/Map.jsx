@@ -14,7 +14,7 @@ import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
 import ReportPanel from 'containers/Map/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'components/Map/LayerManagementModal';
+import LayerLibrary from 'containers/Map/LayerManagementModal';
 import SearchModal from 'containers/Map/SearchModal';
 import SupportForm from 'containers/Map/SupportForm';
 import RecentVesselsModal from 'containers/Map/RecentVesselsModal';

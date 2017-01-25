@@ -21,6 +21,7 @@ import filtersReducer from 'reducers/filters';
 import contactReducer from 'reducers/contact';
 import searchReducer from 'reducers/search';
 import vesselInfoReducer from 'reducers/vesselInfo';
+import customLayerReducer from 'reducers/customLayer';
 import articlesPublicationsReducer from 'reducers/articlesPublications';
 import { triggerAnalyticsPageView } from 'actions/user';
 import Routes from './routes';
@@ -48,7 +49,8 @@ const reducer = combineReducers({
   report: reportReducer,
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,
-  layers: layersReducer
+  layers: layersReducer,
+  customLayer: customLayerReducer
 });
 
 const middlewareRouter = routerMiddleware(browserHistory);

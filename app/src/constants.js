@@ -84,6 +84,7 @@ export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
   ClusterAnimation: 'ClusterAnimation',
+  Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation'
 };
 

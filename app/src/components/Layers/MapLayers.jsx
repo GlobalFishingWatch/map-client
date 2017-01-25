@@ -5,6 +5,7 @@ import extentChanged from 'util/extentChanged';
 import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
 import HeatmapContainer from 'components/Layers/HeatmapContainer';
+import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
 
@@ -197,6 +198,8 @@ class MapLayers extends Component {
 
       if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
         this.addHeatmapLayer(newLayer);
+      } else if (newLayer.type === LAYER_TYPES.Custom) {
+        this.addCustomLayer(newLayer);
       } else {
         promises.push(this.addCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
       }
@@ -217,6 +220,10 @@ class MapLayers extends Component {
 
   renderHeatmap(props) {
     this.heatmapContainer.render(props.heatmap, props.timelineInnerExtentIndexes);
+  }
+
+  addCustomLayer(layer) {
+    this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
   }
 
   /**
