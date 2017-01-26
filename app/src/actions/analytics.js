@@ -1,27 +1,23 @@
-import {
-  GA_SEARCH_RESULT_CLICKED,
-  GA_VESSEL_POINT_CLICKED,
-  GA_MAP_POINT_CLICKED
-} from 'actions';
+import { GA_SEARCH_RESULT_CLICKED, GA_VESSEL_POINT_CLICKED, GA_MAP_POINT_CLICKED } from 'actions';
 
 /**
  * Only add here actions that are GA-exclusive.
  * These aim at removing ambiguities in other actions.
  */
-export function trackSearchResultClicked(vesselName) {
+export function trackSearchResultClicked(tilesetUrl, seriesgroup) {
   return (dispatch) => {
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
-      payload: vesselName
+      payload: { tilesetUrl, seriesgroup }
     });
   };
 }
 
-export function trackVesselPointClicked(vesselName) {
+export function trackVesselPointClicked(tilesetUrl, seriesgroup) {
   return (dispatch) => {
     dispatch({
       type: GA_VESSEL_POINT_CLICKED,
-      payload: vesselName
+      payload: { tilesetUrl, seriesgroup }
     });
   };
 }

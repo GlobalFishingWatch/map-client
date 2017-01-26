@@ -56,9 +56,9 @@ function setCurrentVessel(seriesgroup, fromSearch) {
       delete data.series;
 
       if (fromSearch) {
-        dispatch(trackSearchResultClicked(data.vesselname));
+        dispatch(trackSearchResultClicked(state.map.tilesetUrl, seriesgroup));
       } else {
-        dispatch(trackVesselPointClicked(data.vesselname));
+        dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
       }
 
       dispatch({
