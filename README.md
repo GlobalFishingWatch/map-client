@@ -141,3 +141,7 @@ Name/ID of the default workspace to be loaded on the map (if `USE_LOCAL_WORKSPAC
 #### LOCAL_WORKSPACE
 
 If set, should point to the local workspace to be loaded
+
+#### DISABLE_WELCOME_MODAL
+
+Disable welcome modal. Typically enabled in a dev environment, disabled in prod

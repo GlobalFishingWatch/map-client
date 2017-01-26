@@ -64,7 +64,7 @@ const initialState = {
     open: false
   },
   welcomeModal: {
-    open: true
+    open: !DISABLE_WELCOME_MODAL
   },
   workspaceId: null
 };
