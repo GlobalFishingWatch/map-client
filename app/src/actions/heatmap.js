@@ -1,5 +1,11 @@
 import _ from 'lodash';
-import { UPDATE_HEATMAP_TILES, COMPLETE_TILE_LOAD, SET_VESSEL_CLUSTER_CENTER } from 'actions';
+import {
+  UPDATE_HEATMAP_TILES,
+  COMPLETE_TILE_LOAD,
+  SET_VESSEL_CLUSTER_CENTER,
+  ADD_REFERENCE_TILE,
+  REMOVE_REFERENCE_TILE
+} from 'actions';
 import {
   getTimeAtPrecision,
   getTilePelagosPromises,
@@ -59,7 +65,10 @@ export function getTile(uid, tileCoordinates, canvas) {
       canvas
     };
 
-    // push ref tile
+    dispatch({
+      type: ADD_REFERENCE_TILE,
+      payload: referenceTile
+    });
 
     Object.keys(layers).forEach((layerId) => {
       const tilePromise = loadLayerTile(
@@ -90,6 +99,13 @@ export function getTile(uid, tileCoordinates, canvas) {
 
 export function releaseTile(uid) {
   return (dispatch, getState) => {
+    dispatch({
+      type: REMOVE_REFERENCE_TILE,
+      payload: uid
+    });
+
+    console.log(getState().heatmap.referenceTiles);
+
     const layers = getState().heatmap.heatmapLayers;
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
