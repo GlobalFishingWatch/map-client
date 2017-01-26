@@ -2,7 +2,14 @@ import { connect } from 'react-redux';
 import LayerItem from 'components/Map/LayerItem';
 import { toggleReport } from 'actions/report';
 import { setLayerInfoModal } from 'actions/map';
-import { toggleLayerVisibility, setLayerOpacity, setLayerHue, toggleLayerWorkspacePresence, setLayerLabel } from 'actions/layers';
+import {
+  toggleLayerVisibility,
+  setLayerOpacity,
+  setLayerHue,
+  toggleLayerWorkspacePresence,
+  setLayerLabel,
+  confirmLayerRemoval
+} from 'actions/layers';
 
 const mapStateToProps = state => ({
   layerPanelEditMode: state.layers.layerPanelEditMode,
@@ -18,6 +25,8 @@ const mapDispatchToProps = dispatch => ({
     if (layer.library) {
       dispatch(toggleLayerVisibility(layer.id, false));
       dispatch(toggleLayerWorkspacePresence(layer.id));
+    } else {
+      dispatch(confirmLayerRemoval(layer.id, true));
     }
   },
   toggleLayerVisibility: (layerId) => {

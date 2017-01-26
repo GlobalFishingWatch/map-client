@@ -19,6 +19,7 @@ import SearchModal from 'containers/Map/SearchModal';
 import SupportForm from 'containers/Map/SupportForm';
 import RecentVesselsModal from 'containers/Map/RecentVesselsModal';
 import WelcomeModal from 'containers/Map/WelcomeModal';
+import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import iconStyles from 'styles/icons.scss';
@@ -240,6 +241,13 @@ class Map extends Component {
       >
         <WelcomeModal />
       </Modal>
+      <Modal
+        opened={this.props.layerIdPromptedForRemoval !== false}
+        closeable
+        close={this.props.closeLayerRemovalModal}
+      >
+        <PromptLayerRemoval />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -366,7 +374,9 @@ Map.propTypes = {
   recentVesselModalOpen: React.PropTypes.bool,
   closeRecentVesselModal: React.PropTypes.func,
   welcomeModalOpen: React.PropTypes.bool,
-  closeWelcomeModal: React.PropTypes.func
+  closeWelcomeModal: React.PropTypes.func,
+  closeLayerRemovalModal: React.PropTypes.func,
+  layerIdPromptedForRemoval: React.PropTypes.any
 };
 
 export default Map;

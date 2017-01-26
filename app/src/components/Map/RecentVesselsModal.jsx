@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
 import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
 import ModalStyles from 'styles/components/shared/c-modal.scss';
 import IconStyles from 'styles/icons.scss';
@@ -9,7 +8,7 @@ import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 
 import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
-class recentVesselsModal extends Component {
+class RecentVesselsModal extends Component {
 
   render() {
     const historyItems = [];
@@ -57,10 +56,10 @@ class recentVesselsModal extends Component {
   }
 }
 
-recentVesselsModal.propTypes = {
+RecentVesselsModal.propTypes = {
   closeModal: React.PropTypes.func,
   drawVessel: React.PropTypes.func,
   history: React.PropTypes.array
 };
 
-export default recentVesselsModal;
+export default RecentVesselsModal;

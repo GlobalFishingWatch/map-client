@@ -7,7 +7,8 @@ import {
   SET_LAYER_HUE,
   ADD_CUSTOM_LAYER,
   TOGGLE_LAYER_PANEL_EDIT_MODE,
-  SET_WORKSPACE_LAYER_LABEL
+  SET_WORKSPACE_LAYER_LABEL,
+  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 
@@ -24,11 +25,14 @@ const getUpdatedLayers = (state, action, changedLayerCallback) => {
 
 const initialState = {
   workspaceLayers: [],
-  layerPanelEditMode: false
+  layerPanelEditMode: false,
+  layerIdPromptedForRemoval: false
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE:
+      return Object.assign({}, state, { layerIdPromptedForRemoval: action.payload });
     case SET_LAYERS:
       return Object.assign({}, state, { workspaceLayers: action.payload.concat() });
     case TOGGLE_LAYER_VISIBILITY: {
