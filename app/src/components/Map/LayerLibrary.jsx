@@ -100,9 +100,7 @@ LayerLibraryModal.propTypes = {
   // triggers when user removes a layer
   removeLayer: React.PropTypes.func,
   // sets modal with info about the current layer
-  setLayerInfoModal: React.PropTypes.func,
-  // function to change visibility of the current layer
-  toggleLayerVisibility: React.PropTypes.func
+  setLayerInfoModal: React.PropTypes.func
 };
 
 export default LayerLibraryModal;

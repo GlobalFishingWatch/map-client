@@ -4,7 +4,7 @@ import {
   setInnerTimelineDates,
   setOuterTimelineDates,
   setPlayingStatus,
-  setTimelineOverDates
+  setTimelineHoverDates
 } from 'actions/filters';
 
 const mapStateToProps = state => ({
@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setPlayingStatus(paused));
   },
   updateTimelineOverDates: (dates) => {
-    dispatch(setTimelineOverDates(dates));
+    dispatch(setTimelineHoverDates(dates));
   }
 });
 

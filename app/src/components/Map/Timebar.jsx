@@ -306,7 +306,9 @@ class Timebar extends Component {
 
   onInnerBrushReleased() {
     this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
-    this.props.updatePlayingStatus(true);
+    if (!this.props.timelinePaused) {
+      this.props.updatePlayingStatus(true);
+    }
   }
 
   onInnerBrushMoved() {
@@ -375,7 +377,11 @@ class Timebar extends Component {
   }
 
   isZoomingIn(outerExtentPx) {
-    return outerExtentPx[0] >= 0 && outerExtentPx[1] <= width;
+    return outerExtentPx[0] > 0 || outerExtentPx[1] < width;
+  }
+
+  isZoomingOut(outerExtentPx) {
+    return outerExtentPx[0] < 0 || outerExtentPx[1] > width;
   }
 
   zoomIn(outerExtentPx) {
@@ -426,7 +432,7 @@ class Timebar extends Component {
       const outerExtentPx = currentOuterPxExtent;
       if (this.isZoomingIn(outerExtentPx)) {
         this.zoomIn(outerExtentPx);
-      } else {
+      } else if (this.isZoomingOut(outerExtentPx)) {
         this.zoomOut(outerExtentPx, deltaTick);
       }
     }

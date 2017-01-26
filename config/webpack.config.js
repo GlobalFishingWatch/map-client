@@ -66,6 +66,7 @@ const webpackConfig = {
       constants: 'src/constants.js',
       containers: 'src/containers',
       lib: 'src/lib',
+      middleware: 'src/middleware',
       reducers: 'src/reducers',
       styles: 'styles',
       util: 'src/util'

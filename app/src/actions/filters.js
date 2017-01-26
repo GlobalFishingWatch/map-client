@@ -3,9 +3,19 @@ import {
   SET_INNER_TIMELINE_DATES,
   SET_OUTER_TIMELINE_DATES,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_OVER_DATES
+  SET_TIMELINE_HOVER_DATES,
+  GA_PLAY_STATUS_TOGGLED,
+  GA_OUTER_TIMELINE_DATES_UPDATED
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
+import _ from 'lodash';
+
+const gaLogOuterTimelineDatesUpdated = _.debounce((dispatch, outerTimelineDates) => {
+  dispatch({
+    type: GA_OUTER_TIMELINE_DATES_UPDATED,
+    payload: outerTimelineDates
+  });
+}, 1000);
 
 export function setFlagFilters(flagFilters_) {
   return (dispatch, getState) => {
@@ -61,22 +71,37 @@ export function setInnerTimelineDates(innerTimelineDates) {
 }
 
 export function setOuterTimelineDates(outerTimelineDates) {
-  return {
-    type: SET_OUTER_TIMELINE_DATES,
-    payload: outerTimelineDates
+  return (dispatch) => {
+    gaLogOuterTimelineDatesUpdated(dispatch, outerTimelineDates);
+
+    dispatch({
+      type: SET_OUTER_TIMELINE_DATES,
+      payload: outerTimelineDates
+    });
   };
 }
 
 export function setPlayingStatus(paused) {
-  return {
-    type: SET_PLAYING_STATUS,
-    payload: paused
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if (paused !== state.filters.timelinePaused) {
+      dispatch({
+        type: GA_PLAY_STATUS_TOGGLED,
+        payload: paused
+      });
+    }
+
+    dispatch({
+      type: SET_PLAYING_STATUS,
+      payload: paused
+    });
   };
 }
 
-export function setTimelineOverDates(overDates) {
+export function setTimelineHoverDates(overDates) {
   return {
-    type: SET_TIMELINE_OVER_DATES,
+    type: SET_TIMELINE_HOVER_DATES,
     payload: overDates
   };
 }
