@@ -11,6 +11,38 @@ import {
 } from 'actions/helpers/heatmapTileData';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 
+
+function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOffset, token, map) {
+  const canvas = referenceTile.canvas;
+  const tileCoordinates = referenceTile.tileCoordinates;
+  const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, startDate, endDate, token);
+  const allLayerPromises = Promise.all(pelagosPromises);
+  const tile = {
+    uid: referenceTile.uid,
+    canvas
+  };
+
+  const layerTilePromise = new Promise((resolve) => {
+    allLayerPromises.then((rawTileData) => {
+      const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+      const groupedData = groupData(cleanVectorArrays);
+      const bounds = referenceTile.canvas.getBoundingClientRect();
+      const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
+      const data = getTilePlaybackData(
+        tileCoordinates.zoom,
+        vectorArray,
+        startDate,
+        endDate,
+        startDateOffset
+      );
+      tile.data = data;
+      resolve(tile);
+    });
+  });
+
+  return layerTilePromise;
+}
+
 export function getTile(uid, tileCoordinates, canvas) {
   return (dispatch, getState) => {
     const layers = getState().heatmap.heatmapLayers;
@@ -21,41 +53,31 @@ export function getTile(uid, tileCoordinates, canvas) {
     const map = getState().map.googleMaps;
     const allPromises = [];
 
+    const referenceTile = {
+      uid,
+      tileCoordinates,
+      canvas
+    };
+
+    // push ref tile
+
     Object.keys(layers).forEach((layerId) => {
-      // TODO Bail + add empty objects if layer is not visible
-      // TODO Filter by flag
-      const layer = layers[layerId];
-      const tiles = layer.tiles;
-
-      const tile = {
-        uid, tileCoordinates, canvas
-      };
-
-      const pelagosPromises = getTilePelagosPromises(layer.url, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token);
-
-      const allLayerPromises = Promise.all(pelagosPromises);
-      allPromises.push(allLayerPromises);
-
-      allLayerPromises.then((rawTileData) => {
-        const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-        const groupedData = groupData(cleanVectorArrays);
-        const bounds = tile.canvas.getBoundingClientRect();
-        const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
-        const data = getTilePlaybackData(
-          tileCoordinates.zoom,
-          vectorArray,
-          timelineOverallStartDate,
-          timelineOverallEndDate,
-          overallStartDateOffset
-        );
-        tile.data = data;
-
+      const tilePromise = loadLayerTile(
+        referenceTile,
+        layers[layerId].url,
+        timelineOverallStartDate,
+        timelineOverallEndDate,
+        overallStartDateOffset,
+        token,
+        map
+      );
+      allPromises.push(tilePromise);
+      tilePromise.then((tile) => {
+        layers[layerId].tiles.push(tile);
         dispatch({
           type: UPDATE_HEATMAP_TILES, payload: layers
         });
       });
-
-      tiles.push(tile);
     });
 
     Promise.all(allPromises).then(() => {
