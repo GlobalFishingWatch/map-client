@@ -113,7 +113,6 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
   data.x = new Int32Array(data.latitude.length);
   data.y = new Int32Array(data.latitude.length);
 
-  let num = 0;
   for (let index = 0, length = data.latitude.length; index < length; index++) {
     const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
     let worldX = worldPoint.x - left;
@@ -123,17 +122,7 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
     }
     data.x[index] = (worldX * scale) - tileLeft;
     data.y[index] = ((worldPoint.y - top) * scale) - tileTop;
-
-    if (data.x[index] < 0 || data.x[index] > 256 || data.y[index] < 0 || data.y[index] > 256) {
-      if (index < 10) {
-        console.log(data.x[index], data.y[index]);
-        console.log(data.longitude[index], worldPoint.x, left, tileLeft, data.x[index]);
-        console.log(data.latitude[index], worldPoint.y, top, tileTop, data.y[index]);
-      }
-      num++;
-    }
   }
-  console.log('wrong:', num);
 
   return data;
 };
