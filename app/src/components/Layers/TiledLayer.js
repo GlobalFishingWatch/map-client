@@ -58,7 +58,7 @@ export default class TiledLayer {
     canvas.map = this.map;
 
     canvas.uid = this.currentUid;
-    this.getTileCallback(this.currentUid, tileCoordinates, canvas, this.map);
+    this.getTileCallback(this.currentUid, tileCoordinates, canvas);
     this.tiles.push(canvas);
     this.currentUid++;
     return canvas;

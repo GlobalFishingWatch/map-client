@@ -93,7 +93,6 @@ export default class HeatmapSubLayer {
       if (bounds.left === 0 && bounds.top === 0) {
         console.warn('tile at 0,0');
       }
-      console.log(tile.data)
       this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
     });
 

@@ -1,5 +1,6 @@
 import { push } from 'react-router-redux';
 import {
+  INIT_GOOGLE_MAPS,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -13,6 +14,16 @@ import {
   SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
+
+// store the original google maps in the app state.
+// this is needed in the heatmap actions/reducers, to avoid constantly passing
+// this object around
+export function initGoogleMaps(googleMaps) {
+  return {
+    type: INIT_GOOGLE_MAPS,
+    payload: googleMaps
+  };
+}
 
 export function setBasemap(basemap) {
   return {

@@ -1,7 +1,6 @@
 /* eslint-disable max-len  */
 import {
-  VESSEL_INIT,
-  SHOW_LOADING,
+  INIT_GOOGLE_MAPS,
   SET_ZOOM,
   SET_MAX_ZOOM,
   SET_CENTER,
@@ -75,10 +74,8 @@ const initialState = {
  */
 export default function (state = initialState, action) {
   switch (action.type) {
-    case VESSEL_INIT:
-      return Object.assign({}, state, action.payload);
-    case SHOW_LOADING:
-      return Object.assign({}, state, { loading: action.payload.data });
+    case INIT_GOOGLE_MAPS:
+      return Object.assign({}, state, { googleMaps: action.payload });
     case SET_TILESET_URL:
       return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:

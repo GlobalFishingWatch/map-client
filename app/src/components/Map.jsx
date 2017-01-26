@@ -127,6 +127,7 @@ class Map extends Component {
   onMapIdle() {
     if (!this.map) {
       this.map = this.refs.map.props.map; // eslint-disable-line react/no-string-refs
+      this.props.initMap(this.map);
       this.props.loadInitialState();
 
       this.defineBasemaps(this.props.basemaps);

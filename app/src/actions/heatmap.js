@@ -11,13 +11,14 @@ import {
 } from 'actions/helpers/heatmapTileData';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 
-export function getTile(uid, tileCoordinates, canvas, map) {
+export function getTile(uid, tileCoordinates, canvas) {
   return (dispatch, getState) => {
     const layers = getState().heatmap;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
     const timelineOverallEndDate = getState().filters.timelineOverallExtent[1];
     const overallStartDateOffset = getTimeAtPrecision(timelineOverallStartDate);
     const token = getState().user.token;
+    const map = getState().map.googleMaps;
     const allPromises = [];
 
     Object.keys(layers).forEach((layerId) => {
