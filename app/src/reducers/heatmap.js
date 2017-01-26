@@ -3,28 +3,36 @@ import {
   UPDATE_HEATMAP_TILES
 } from '../actions';
 
-// a dict of heatmap layers (key is layer id)
-const initialState = {};
+const initialState = {
+  // a dict of heatmap layers (key is layer id)
+  heatmapLayers: {}
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LAYERS: {
-      const newState = {};
+      const heatmapLayers = {};
       action.payload.forEach((layer) => {
         if (layer.type === 'ClusterAnimation' && layer.added === true) {
-          newState[layer.id] = {
+          heatmapLayers[layer.id] = {
             url: layer.url,
             tiles: []
           };
         }
       });
-      return newState;
+      return Object.assign({}, state, { heatmapLayers });
     }
 
     // TODO handle adding layers
 
     case UPDATE_HEATMAP_TILES: {
-      return Object.assign({}, state, action.payload);
+      // fake immutable
+      const newHeatmapLayers = action.payload;
+      const heatmapLayers = {};
+      Object.keys(newHeatmapLayers).forEach((layerId) => {
+        heatmapLayers[layerId] = newHeatmapLayers[layerId];
+      });
+      return Object.assign({}, state, { heatmapLayers });
     }
 
     default:

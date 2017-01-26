@@ -13,7 +13,7 @@ import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } 
 
 export function getTile(uid, tileCoordinates, canvas) {
   return (dispatch, getState) => {
-    const layers = getState().heatmap;
+    const layers = getState().heatmap.heatmapLayers;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
     const timelineOverallEndDate = getState().filters.timelineOverallExtent[1];
     const overallStartDateOffset = getTimeAtPrecision(timelineOverallStartDate);
@@ -68,7 +68,7 @@ export function getTile(uid, tileCoordinates, canvas) {
 
 export function releaseTile(uid) {
   return (dispatch, getState) => {
-    const layers = getState().heatmap;
+    const layers = getState().heatmap.heatmapLayers;
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const tiles = layer.tiles;
@@ -93,7 +93,7 @@ export function queryHeatmap(tileQuery, latLng) {
     }
 
     // TODO do not query all sublayers?
-    const layers = state.heatmap;
+    const layers = state.heatmap.heatmapLayers;
     const timelineExtent = state.filters.timelineInnerExtentIndexes;
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
