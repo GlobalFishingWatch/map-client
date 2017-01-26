@@ -121,6 +121,7 @@ export function saveWorkspace(errorAction) {
       headers,
       body: JSON.stringify({
         workspace: {
+          tileset: state.map.tilesetUrl,
           map: {
             center: state.map.center,
             zoom: state.map.zoom,
