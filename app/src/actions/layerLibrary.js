@@ -20,6 +20,7 @@ export function getLayerLibrary(workspaceID) {
         const layers = data.entries.map(l => ({
           id: l.args.id,
           title: l.args.title,
+          label: l.args.title,
           description: l.args.description,
           color: l.args.color,
           visible: false,

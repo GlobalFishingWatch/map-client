@@ -53,6 +53,40 @@
       }
     }
 
+    .item-name {
+      background-color: transparent;
+      border: 0;
+      color: $color-4;
+      flex: 1;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      height: 24px;
+      margin: 0 15px 0 0;
+      outline: none;
+    }
+
+    > .item-rename {
+      border-bottom: 1px solid rgba($color-3, .3);
+    }
+
+    > .rename-icon {
+      position: absolute;
+      right: 28px;
+      stroke: rgba($color-3, .3);
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    > .edition-menu {
+
+      > .delete-icon {
+        cursor: pointer;
+        fill: $color-19;
+        height: 16px;
+        width: 10px;
+      }
+    }
+
 
     > .layer-option-list {
       display: flex;

@@ -1,16 +1,25 @@
 import { connect } from 'react-redux';
-import LayerPanel from 'components/Map/LayerPanel';
+import LayerItem from 'components/Map/LayerItem';
 import { toggleReport } from 'actions/report';
 import { setLayerInfoModal } from 'actions/map';
-import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'actions/layers';
+import { toggleLayerVisibility, setLayerOpacity, setLayerHue, toggleLayerWorkspacePresence, setLayerLabel } from 'actions/layers';
 
 const mapStateToProps = state => ({
-  layers: state.layers.workspaceLayers,
+  layerPanelEditMode: state.layers.layerPanelEditMode,
   currentlyReportedLayerId: state.report.layerId,
   userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = dispatch => ({
+  setLayerLabel: (layerId, label) => {
+    dispatch(setLayerLabel(layerId, label));
+  },
+  toggleLayerWorkspacePresence: (layer) => {
+    if (layer.library) {
+      dispatch(toggleLayerVisibility(layer.id, false));
+      dispatch(toggleLayerWorkspacePresence(layer.id));
+    }
+  },
   toggleLayerVisibility: (layerId) => {
     dispatch(toggleLayerVisibility(layerId));
   },
@@ -28,4 +37,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LayerPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(LayerItem);

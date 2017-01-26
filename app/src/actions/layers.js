@@ -8,7 +8,9 @@ import {
   SET_LAYER_HUE,
   SET_MAX_ZOOM,
   SET_OVERALL_TIMELINE_DATES,
-  ADD_CUSTOM_LAYER
+  ADD_CUSTOM_LAYER,
+  TOGGLE_LAYER_PANEL_EDIT_MODE,
+  SET_WORKSPACE_LAYER_LABEL
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
 
@@ -22,6 +24,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
+      layer.label = layer.label || layer.title;
       layer.added = true;
       layer.library = false;
     });
@@ -143,6 +146,24 @@ export function addCustomLayer(url, name, description) {
       url,
       name,
       description
+    }
+  };
+}
+
+export function toggleLayerPanelEditMode(forceMode = null) {
+  return {
+    type: TOGGLE_LAYER_PANEL_EDIT_MODE,
+    payload: {
+      forceMode
+    }
+  };
+}
+
+export function setLayerLabel(layerId, label) {
+  return {
+    type: SET_WORKSPACE_LAYER_LABEL,
+    payload: {
+      layerId, label
     }
   };
 }

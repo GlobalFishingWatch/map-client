@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import LayerItem from 'components/Map/LayerItem';
-
+import LayerItem from 'containers/Map/LayerItem';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-
 
 class LayerPanel extends Component {
   constructor(props) {
@@ -19,8 +17,6 @@ class LayerPanel extends Component {
   }
 
   render() {
-    const canReport = (this.props.userPermissions.indexOf('reporting') !== -1);
-
     const layers = [];
     if (this.props.layers) {
       for (let i = 0, length = this.props.layers.length; i < length; i++) {
@@ -32,13 +28,6 @@ class LayerPanel extends Component {
             key={i}
             layerIndex={i}
             layer={this.props.layers[i]}
-            userCanReport={canReport}
-            isCurrentlyReported={this.props.layers[i].id === this.props.currentlyReportedLayerId}
-            toggleLayerVisibility={this.props.toggleLayerVisibility}
-            toggleReport={this.props.toggleReport}
-            setLayerOpacity={this.props.setLayerOpacity}
-            setLayerHue={this.props.setLayerHue}
-            openLayerInfoModal={this.props.setLayerInfoModal}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
             showBlending={this.state.currentBlendingOptionsShown === i}
           />
