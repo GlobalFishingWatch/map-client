@@ -71,11 +71,12 @@ class VesselInfoPanel extends Component {
 
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
+          {(this.props.userPermissions.indexOf('pin-vessel') !== -1 || vesselInfo.pinned) &&
           <PinIcon
             className={classnames(iconStyles.icon, iconStyles['pin-icon'],
               vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
             onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
-          />
+          />}
           {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>Name</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>
