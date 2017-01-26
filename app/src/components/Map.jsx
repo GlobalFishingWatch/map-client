@@ -26,8 +26,6 @@ import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIco
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 
-const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
-
 class Map extends Component {
 
   constructor(props) {
@@ -112,13 +110,11 @@ class Map extends Component {
       return;
     }
     const center = this.map.getCenter();
-
-    if (strictBounds.contains(center)) {
-      this.props.setCenter([center.lat(), center.lng()]);
-      return;
+    let wrappedLongitude = center.lng();
+    if (wrappedLongitude > 180 || wrappedLongitude < -180) {
+      wrappedLongitude -= Math.floor((wrappedLongitude + 180) / 360) * 360;
     }
-    this.map.panTo(this.state.lastCenter);
-    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
+    this.props.setCenter([Math.max(Math.min(center.lat(), 85), -85), wrappedLongitude]);
   }
 
   /**

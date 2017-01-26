@@ -10,17 +10,12 @@ export default class TiledLayer {
 
   _getCanvas(ownerDocument) {
     // create canvas and reset style
-    const canvas = ownerDocument.createElement('canvas');
-    if (this.debug) canvas.style.border = '1px solid red';
+    const canvas = ownerDocument.createElement('div');
     canvas.style.margin = '0';
     canvas.style.padding = '0';
+    canvas.style.width = '256px';
+    canvas.style.height = '256px';
 
-    // prepare canvas and context sizes
-    const ctx = canvas.getContext('2d');
-    ctx.width = canvas.width = this.tileSize.width;
-    ctx.height = canvas.height = this.tileSize.height;
-
-    canvas.ctx = ctx;
     return canvas;
   }
 
