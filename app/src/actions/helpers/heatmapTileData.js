@@ -112,9 +112,15 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
   const scale = 2 ** map.getZoom();
   data.x = new Int32Array(data.latitude.length);
   data.y = new Int32Array(data.latitude.length);
+
   for (let index = 0, length = data.latitude.length; index < length; index++) {
     const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
-    data.x[index] = ((worldPoint.x - left) * scale) - tileLeft;
+    let worldX = worldPoint.x - left;
+    // x < 0 : case where map left is behind dateline while point is beyond dateline
+    if (worldX < 0 && tileLeft > 0) {
+      worldX = worldPoint.x + (256 - left);
+    }
+    data.x[index] = (worldX * scale) - tileLeft;
     data.y[index] = ((worldPoint.y - top) * scale) - tileTop;
   }
 
