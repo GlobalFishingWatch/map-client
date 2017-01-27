@@ -4,7 +4,7 @@ import { addLayer, removeLayer } from 'actions/layerLibrary';
 import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
 
 const mapStateToProps = state => ({
-  layers: state.layers
+  layers: state.layers.workspaceLayers
 });
 
 const mapDispatchToProps = dispatch => ({

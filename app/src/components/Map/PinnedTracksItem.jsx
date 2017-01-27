@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
-import iconsStyles from 'styles/icons.scss';
+import icons from 'styles/icons.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
@@ -36,7 +36,7 @@ class PinnedTracksItem extends Component {
       actions = (
         <div className={pinnedTracksStyles['edition-menu']} >
           <DeleteIcon
-            className={classnames(iconsStyles.icon, pinnedTracksStyles['delete-icon'])}
+            className={classnames(icons.icon, pinnedTracksStyles['delete-icon'])}
             onClick={() => {
               this.props.onRemoveClicked(this.props.vessel.seriesgroup);
             }}
@@ -48,8 +48,8 @@ class PinnedTracksItem extends Component {
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
           <li className={pinnedTracksStyles['pinned-item-action-item']} >
             <BlendingIcon
-              className={classnames(iconsStyles['blending-icon'],
-                { [iconsStyles['-white']]: this.props.showBlending })}
+              className={classnames(icons['blending-icon'],
+                { [icons['-white']]: this.props.showBlending })}
               onClick={() => {
                 this.props.onLayerBlendingToggled(this.props.index);
               }}
@@ -82,7 +82,7 @@ class PinnedTracksItem extends Component {
           onClick={e => this.onVesselLabelClick(e)}
         />
         {this.props.pinnedVesselEditMode === true && <RenameIcon
-          className={classnames(iconsStyles.icon, iconsStyles['icon-close'], pinnedTracksStyles['rename-icon'])}
+          className={classnames(icons.icon, icons['icon-close'], pinnedTracksStyles['rename-icon'])}
           onClick={() => this.clearName()}
         />}
         {actions}
