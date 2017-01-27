@@ -19,14 +19,9 @@ import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } 
 
 
 function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOffset, token, map) {
-  const canvas = referenceTile.canvas;
   const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, startDate, endDate, token);
   const allLayerPromises = Promise.all(pelagosPromises);
-  const tile = {
-    uid: referenceTile.uid,
-    canvas
-  };
 
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
@@ -41,8 +36,7 @@ function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOff
         endDate,
         startDateOffset
       );
-      tile.data = data;
-      resolve(tile);
+      resolve(data);
     });
   });
 
@@ -71,6 +65,11 @@ export function getTile(uid, tileCoordinates, canvas) {
     });
 
     Object.keys(layers).forEach((layerId) => {
+      const tile = {
+        uid: referenceTile.uid,
+        canvas
+      };
+      layers[layerId].tiles.push(tile);
       const tilePromise = loadLayerTile(
         referenceTile,
         layers[layerId].url,
@@ -81,8 +80,8 @@ export function getTile(uid, tileCoordinates, canvas) {
         map
       );
       allPromises.push(tilePromise);
-      tilePromise.then((tile) => {
-        layers[layerId].tiles.push(tile);
+      tilePromise.then((data) => {
+        tile.data = data;
         dispatch({
           type: UPDATE_HEATMAP_TILES, payload: layers
         });
@@ -103,8 +102,6 @@ export function releaseTile(uid) {
       type: REMOVE_REFERENCE_TILE,
       payload: uid
     });
-
-    console.log(getState().heatmap.referenceTiles);
 
     const layers = getState().heatmap.heatmapLayers;
     Object.keys(layers).forEach((layerId) => {

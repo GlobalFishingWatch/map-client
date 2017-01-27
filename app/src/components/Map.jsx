@@ -321,6 +321,7 @@ class Map extends Component {
 }
 
 Map.propTypes = {
+  initMap: React.PropTypes.func,
   activeBasemap: React.PropTypes.string,
   basemaps: React.PropTypes.array,
   token: React.PropTypes.string,

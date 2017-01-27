@@ -106,7 +106,7 @@ export function setPinnedVessels(pinnedVessels) {
         }
         if (request.responseText === 'Not Found') {
           console.warn('vessel info not found');
-          return
+          return;
         }
         const data = JSON.parse(request.responseText);
         delete data.series;
