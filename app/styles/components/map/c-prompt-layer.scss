@@ -1,12 +1,18 @@
+@import '../../settings';
 
 .c-prompt-layer {
-  margin: 20px 0;
+  margin: 20px 0 0 0;
+
+  > .layer-description {
+    font-family: $font-family-1;
+  }
 
   .footer {
-    margin: 10px 0 0;
+    margin: 20px 0 0;
 
     > .modal-btn {
-      width: 75px;
+      height: 42px;
+      width: 150px;
 
       &:not(:first-child) {
         margin: 0 0 0 20px;
