@@ -31,10 +31,10 @@
       }
     }
 
-    > .layer-info {
+    .layer-info {
       align-items: center;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
 
       > .layer-thumbnail {
         border: 1px solid $color-19;
@@ -42,16 +42,17 @@
         margin: 0 10px 0 0;
         width: 30px;
       }
+
+      > .layer-title {
+        color: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-xxs-small;
+        font-weight: $font-weight-normal;
+        line-height: 2;
+        text-transform: uppercase;
+      }
     }
 
-    .layer-title {
-      color: $color-4;
-      font-family: $font-family-1;
-      font-size: $font-size-xxs-small;
-      font-weight: $font-weight-normal;
-      line-height: 2;
-      text-transform: uppercase;
-    }
 
     > .layer-option-list {
       display: flex;

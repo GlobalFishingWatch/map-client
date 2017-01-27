@@ -78,9 +78,11 @@ class LayerItem extends Component {
               color: this.getColor(this.props.layer)
             }}
           />
-          <span className={LayerListStyles['layer-title']}>
-            {this.props.layer.title}
-          </span>
+          <div className={LayerListStyles['layer-info']}>
+            <span className={LayerListStyles['layer-title']}>
+              {this.props.layer.title}
+            </span>
+          </div>
         </label>
         <ul className={LayerListStyles['layer-option-list']}>
           {this.props.userCanReport && this.props.layer.reportable && <li
