@@ -43,6 +43,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));
+  },
+  openLayerInfoModal: (modalParams) => {
+    dispatch(setLayerInfoModal(modalParams));
   }
 });
 
