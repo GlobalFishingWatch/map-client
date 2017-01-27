@@ -22,10 +22,12 @@ import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } 
 import { trackMapClicked } from 'actions/analytics';
 
 
-function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOffset, token, map) {
+function loadLayerTile(referenceTile, layerUrl, startDate, token, map, temporalExtents) {
   const tileCoordinates = referenceTile.tileCoordinates;
-  const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, startDate, endDate, token);
+  const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, token, temporalExtents);
   const allLayerPromises = Promise.all(pelagosPromises);
+
+  const startDateOffset = getTimeAtPrecision(startDate);
 
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
@@ -36,8 +38,6 @@ function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOff
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
         vectorArray,
-        startDate,
-        endDate,
         startDateOffset
       );
       resolve(data);
@@ -51,13 +51,15 @@ function getTiles(layerIds, referenceTiles) {
   return (dispatch, getState) => {
     const layers = getState().heatmap.heatmapLayers;
     const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
-    const timelineOverallEndDate = getState().filters.timelineOverallExtent[1];
-    const overallStartDateOffset = getTimeAtPrecision(timelineOverallStartDate);
     const token = getState().user.token;
     const map = getState().map.googleMaps;
     const allPromises = [];
 
     layerIds.forEach((layerId) => {
+      const layerHeader = getState().layers.workspaceLayers.find(layer => layer.id === layerId).header;
+      if (!layerHeader) {
+        console.warn('no header has been set on this heatmap layer');
+      }
       referenceTiles.forEach((referenceTile) => {
         const tile = {
           uid: referenceTile.uid,
@@ -68,10 +70,9 @@ function getTiles(layerIds, referenceTiles) {
           referenceTile,
           layers[layerId].url,
           timelineOverallStartDate,
-          timelineOverallEndDate,
-          overallStartDateOffset,
           token,
-          map
+          map,
+          layerHeader.temporalExtents
         );
         allPromises.push(tilePromise);
         tilePromise.then((data) => {

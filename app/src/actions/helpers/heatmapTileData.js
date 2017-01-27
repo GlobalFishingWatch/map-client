@@ -34,27 +34,24 @@ export const getOffsetedTimeAtPrecision = (timestamp, overallStartDateOffset) =>
  * @param timelineOverallEndDate
  * @returns {Array}
  */
-// TODO use header dates, not global dates
-const getTemporalTileURLs = (tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate) => {
-  const startYear = new Date(timelineOverallStartDate).getUTCFullYear();
-  const endYear = new Date(timelineOverallEndDate).getUTCFullYear();
-  const urls = [];
-  for (let year = startYear; year <= endYear; year++) {
-    urls.push(`${tilesetUrl}/\
-${year}-01-01T00:00:00.000Z,${year + 1}-01-01T00:00:00.000Z;
-${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`);
-  }
-  return urls;
+const getTemporalTileURLs = (tilesetUrl, tileCoordinates, temporalExtents) => {
+  const temporalExtentsUrls = [];
+  temporalExtents.forEach((extent) => {
+    const start = new Date(extent[0]).toISOString();
+    const end = new Date(extent[1]).toISOString();
+    const url = `${tilesetUrl}/${start},${end};${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`;
+    temporalExtentsUrls.push(url);
+  });
+  return temporalExtentsUrls;
 };
 
-export const getTilePelagosPromises = (tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token) => {
+export const getTilePelagosPromises = (tilesetUrl, tileCoordinates, token, temporalExtents) => {
   const promises = [];
   if (tileCoordinates) {
     const urls = getTemporalTileURLs(
       tilesetUrl,
       tileCoordinates,
-      timelineOverallStartDate,
-      timelineOverallEndDate
+      temporalExtents
     );
     for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
       promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
@@ -134,7 +131,7 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
  * @param vectorArray
  * @param tileCoordinates
  */
-export const getTilePlaybackData = (zoom, vectorArray, overallStartDate, overallEndDate, overallStartDateOffset) => {
+export const getTilePlaybackData = (zoom, vectorArray, overallStartDateOffset) => {
   const tilePlaybackData = [];
 
   const zoomFactorRadius = (zoom - 1) ** 2.5;
