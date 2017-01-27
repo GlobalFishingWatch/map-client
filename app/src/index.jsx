@@ -13,6 +13,7 @@ import heatmapReducer from 'reducers/heatmap';
 import layerLibraryReducer from 'reducers/layersLibrary';
 import layersReducer from 'reducers/layers';
 import mapReducer from 'reducers/map';
+import analyticsMiddleware from 'middleware/analytics';
 import faqReducer from 'reducers/faq';
 import coverPageReducer from 'reducers/coverPage';
 import definitionReducer from 'reducers/definitions';
@@ -62,8 +63,7 @@ const middlewareRouter = routerMiddleware(browserHistory);
  */
 const store = createStore(
   reducer,
-  applyMiddleware(middlewareRouter),
-  applyMiddleware(thunk)
+  applyMiddleware(analyticsMiddleware, middlewareRouter, thunk)
 );
 
 /**
@@ -90,7 +90,7 @@ history.listen((location) => {
 });
 
 render(
-  <Provider store={store}>
+  <Provider store={store} >
     <Routes history={history} />
   </Provider>,
   document.getElementById('app')

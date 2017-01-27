@@ -19,6 +19,7 @@ import {
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
+import { trackMapClicked } from 'actions/analytics';
 
 
 function loadLayerTile(referenceTile, layerUrl, startDate, endDate, startDateOffset, token, map) {
@@ -223,12 +224,14 @@ export function queryHeatmap(tileQuery, latLng) {
       // (less than 0 means that points have been clustered server side):
       // only one valid result
       // console.log('one valid result');
+      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
       dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
     } else {
       // multiple results
       // console.log('multiple results');
       // the following solely sets the cluster center in the state to be
       // reused later if user clicks on 'zoom to see more'
+      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       dispatch({
         type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
       });

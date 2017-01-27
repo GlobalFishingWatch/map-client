@@ -18,14 +18,14 @@ import LayerLibrary from 'containers/Map/LayerManagementModal';
 import SearchModal from 'containers/Map/SearchModal';
 import SupportForm from 'containers/Map/SupportForm';
 import RecentVesselsModal from 'containers/Map/RecentVesselsModal';
+import WelcomeModal from 'containers/Map/WelcomeModal';
+import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import iconStyles from 'styles/icons.scss';
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
-
-const strictBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-85, -180), new google.maps.LatLng(85, 180));
 
 class Map extends Component {
 
@@ -111,13 +111,11 @@ class Map extends Component {
       return;
     }
     const center = this.map.getCenter();
-
-    if (strictBounds.contains(center)) {
-      this.props.setCenter([center.lat(), center.lng()]);
-      return;
+    let wrappedLongitude = center.lng();
+    if (wrappedLongitude > 180 || wrappedLongitude < -180) {
+      wrappedLongitude -= Math.floor((wrappedLongitude + 180) / 360) * 360;
     }
-    this.map.panTo(this.state.lastCenter);
-    this.props.setCenter([this.state.lastCenter.lat(), this.state.lastCenter.lng()]);
+    this.props.setCenter([Math.max(Math.min(center.lat(), 85), -85), wrappedLongitude]);
   }
 
   /**
@@ -233,6 +231,20 @@ class Map extends Component {
       >
         <RecentVesselsModal />
       </Modal>
+      <Modal
+        opened={this.props.welcomeModalOpen}
+        closeable
+        close={this.props.closeWelcomeModal}
+      >
+        <WelcomeModal />
+      </Modal>
+      <Modal
+        opened={this.props.layerIdPromptedForRemoval !== false}
+        closeable
+        close={this.props.closeLayerRemovalModal}
+      >
+        <PromptLayerRemoval />
+      </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss['zoom-controls']}>
@@ -329,8 +341,6 @@ Map.propTypes = {
   setZoom: React.PropTypes.func,
   loadInitialState: React.PropTypes.func,
   getWorkspace: React.PropTypes.func,
-  setCurrentVessel: React.PropTypes.func,
-  toggleLayerVisibility: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   center: React.PropTypes.array,
   zoom: React.PropTypes.number,
@@ -360,7 +370,11 @@ Map.propTypes = {
   searchModalOpen: React.PropTypes.bool,
   closeSearchModal: React.PropTypes.func,
   recentVesselModalOpen: React.PropTypes.bool,
-  closeRecentVesselModal: React.PropTypes.func
+  closeRecentVesselModal: React.PropTypes.func,
+  welcomeModalOpen: React.PropTypes.bool,
+  closeWelcomeModal: React.PropTypes.func,
+  closeLayerRemovalModal: React.PropTypes.func,
+  layerIdPromptedForRemoval: React.PropTypes.any
 };
 
 export default Map;

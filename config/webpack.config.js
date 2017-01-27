@@ -53,7 +53,8 @@ const webpackConfig = {
       DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
       LOCAL_WORKSPACE: JSON.stringify(envVariables.LOCAL_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
-      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL)
+      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL),
+      DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true'
     })
   ],
 
@@ -66,6 +67,7 @@ const webpackConfig = {
       constants: 'src/constants.js',
       containers: 'src/containers',
       lib: 'src/lib',
+      middleware: 'src/middleware',
       reducers: 'src/reducers',
       styles: 'styles',
       util: 'src/util'

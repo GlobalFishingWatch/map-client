@@ -6,7 +6,7 @@ import { getTile, releaseTile, queryHeatmap } from 'actions/heatmap';
 const mapStateToProps = state => ({
   token: state.user.token,
   zoom: state.map.zoom,
-  layers: state.layers,
+  layers: state.layers.workspaceLayers,
   flagsLayers: state.filters.flagsLayers,
   heatmap: state.heatmap.heatmapLayers,
   timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove

@@ -5,7 +5,15 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
-import { SET_ZOOM, SET_CENTER, SET_INNER_TIMELINE_DATES, SET_OUTER_TIMELINE_DATES, SET_BASEMAP, SET_TILESET_URL } from 'actions';
+
+import {
+  SET_ZOOM,
+  SET_CENTER,
+  SET_OUTER_TIMELINE_DATES,
+  SET_BASEMAP,
+  SET_TILESET_URL,
+  SET_INNER_TIMELINE_DATES_FROM_WORKSPACE
+} from 'actions';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels } from 'actions/vesselInfo';
@@ -26,7 +34,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   // We update the dates of the timeline
   dispatch({
-    type: SET_INNER_TIMELINE_DATES, payload: workspaceData.timelineInnerDates
+    type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: workspaceData.timelineInnerDates
   });
 
   dispatch({
@@ -83,7 +91,7 @@ function processLegacyWorkspace(data, dispatch) {
   }
 
   dispatch({
-    type: SET_INNER_TIMELINE_DATES, payload: [startInnerDate, endInnerDate]
+    type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: [startInnerDate, endInnerDate]
   });
 
   dispatch({

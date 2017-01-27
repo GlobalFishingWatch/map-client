@@ -1,9 +1,10 @@
 import {
   SET_INNER_TIMELINE_DATES,
+  SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
   SET_OUTER_TIMELINE_DATES,
   SET_FLAG_FILTERS,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_OVER_DATES,
+  SET_TIMELINE_HOVER_DATES,
   SET_OVERALL_TIMELINE_DATES
 } from 'actions';
 import {
@@ -33,6 +34,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_INNER_TIMELINE_DATES_FROM_WORKSPACE:
     case SET_INNER_TIMELINE_DATES: {
       const timelineInnerExtent = action.payload;
       const startTimestamp = timelineInnerExtent[0].getTime();
@@ -69,7 +71,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelinePaused: action.payload
       });
-    case SET_TIMELINE_OVER_DATES:
+    case SET_TIMELINE_HOVER_DATES:
       return Object.assign({}, state, {
         timelineOverExtent: action.payload
       });
