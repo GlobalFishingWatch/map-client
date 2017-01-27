@@ -18,9 +18,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
     const state = getState();
 
     if (state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
-      // TODO rename LAYER_TYPES.ClusterAnimation --> LAYER_TYPES.Heatmap
-      workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
-      libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
+      workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
+      libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
     }
 
     workspaceLayers.forEach((layer) => {

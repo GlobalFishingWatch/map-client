@@ -196,7 +196,7 @@ class MapLayers extends Component {
 
       if (this.addedLayers[newLayer.id] !== undefined) return;
 
-      if (newLayer.type === LAYER_TYPES.ClusterAnimation) {
+      if (newLayer.type === LAYER_TYPES.Heatmap) {
         this.addHeatmapLayer(newLayer);
       } else if (newLayer.type === LAYER_TYPES.Custom) {
         this.addCustomLayer(newLayer);
@@ -282,7 +282,7 @@ class MapLayers extends Component {
 
   setLayersInteraction(reportLayerId) {
     this.heatmapContainer.interactive = (reportLayerId === null);
-    this.props.layers.filter(layerSettings => layerSettings.type !== 'ClusterAnimation').forEach((layerSettings) => {
+    this.props.layers.filter(layerSettings => layerSettings.type !== LAYER_TYPES.Heatmap).forEach((layerSettings) => {
       const layer = this.addedLayers[layerSettings.id];
       if (layer) {
         if (reportLayerId === layerSettings.id) {
@@ -306,7 +306,7 @@ class MapLayers extends Component {
       this.addedLayers[layerSettings.id].hide();
     }
 
-    if (layerSettings.type === LAYER_TYPES.ClusterAnimation) {
+    if (layerSettings.type === LAYER_TYPES.Heatmap) {
       this.renderHeatmap(this.props);
     }
   }
@@ -320,7 +320,7 @@ class MapLayers extends Component {
 
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
 
-    if (layerSettings.type === LAYER_TYPES.ClusterAnimation) {
+    if (layerSettings.type === LAYER_TYPES.Heatmap) {
       this.renderHeatmap(this.props);
     }
   }

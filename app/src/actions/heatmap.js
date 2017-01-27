@@ -162,10 +162,10 @@ export function toggleHeatmapLayer(layerId, forceStatus = null) {
   return (dispatch, getState) => {
     const layers = getState().layers;
 
-    // get the possibly added heatmap layer (should be of ClusterAnimation, same id)
+    // get the possibly added heatmap layer (should be of Heatmap, same id)
     // TODO remove, should be done in layers action
     const addedLayers = layers.filter(layer =>
-      layer.type === LAYER_TYPES.ClusterAnimation && layerId === layer.id
+      layer.type === LAYER_TYPES.Heatmap && layerId === layer.id
     );
     if (addedLayers.length === 0) {
       console.warn('impossible to add this heatmap layer ', layerId);

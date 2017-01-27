@@ -1,3 +1,4 @@
+import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
   ADD_HEATMAP_LAYER,
@@ -20,7 +21,7 @@ export default function (state = initialState, action) {
     case SET_LAYERS: {
       const heatmapLayers = {};
       action.payload.forEach((layer) => {
-        if (layer.type === 'ClusterAnimation' && layer.added === true) {
+        if (layer.type === LAYER_TYPES.Heatmap && layer.added === true) {
           heatmapLayers[layer.id] = {
             url: layer.url,
             tiles: []

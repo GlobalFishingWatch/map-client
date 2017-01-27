@@ -13,7 +13,8 @@ export function setFlagFilters(flagFilters_) {
     // if there's only one filter and it's not set, set it to ALL
     // for the next ones, ignore undefined filters
     // filter hue overrides heatmap layer hue when set
-    const heatmapLayers = getState().layers.filter(layer => layer.type === LAYER_TYPES.ClusterAnimation);
+    // TODO ignore non added layers
+    const heatmapLayers = getState().layers.filter(layer => layer.type === LAYER_TYPES.Heatmap);
     const flagFilters = (flagFilters_ === undefined) ? [] : flagFilters_.slice(0);
     const flagFiltersLayers = {};
     if (!flagFilters.length) {

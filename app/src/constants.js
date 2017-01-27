@@ -83,7 +83,7 @@ export const DURATION_PICKER_OPTIONS = [
 export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
-  ClusterAnimation: 'ClusterAnimation',
+  Heatmap: 'ClusterAnimation',
   Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation'
 };

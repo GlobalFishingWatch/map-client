@@ -103,7 +103,7 @@ function processLegacyWorkspace(data, dispatch) {
   layers.forEach((layer) => {
     layer.id = calculateLayerId(layer);
   });
-  const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
+  const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const tilesetUrl = vesselLayer.url;
 
   // TODO: implement legacy workspace loading of pinned vessels
