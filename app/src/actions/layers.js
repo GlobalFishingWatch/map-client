@@ -18,6 +18,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
     const state = getState();
 
     if (state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
+      // TODO rename LAYER_TYPES.ClusterAnimation --> LAYER_TYPES.Heatmap
       workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
       libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
     }
@@ -49,6 +50,10 @@ export function initLayers(workspaceLayers, libraryLayers) {
         l.opacity = 1;
       }
     });
+
+    // TODO get all promises for heatmap/ClusterAnimation layers
+    // when done, add header info to layers reducer
+    // then proceed with SET_LAYERS
 
     dispatch({
       type: SET_LAYERS,
@@ -104,6 +109,10 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
 }
 
 export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
+  // TODO move final shown/hide status here (now both on reducer and heatmap action)
+  // if shown:
+  // check if header data is already loaded in layerId
+  // if not, load header, then proceed with heatmap loading
   return (dispatch) => {
     dispatch({
       type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
@@ -112,6 +121,7 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
         forceStatus
       }
     });
+    // TODO check if layer is heatmap here
     dispatch(toggleHeatmapLayer(layerId, forceStatus));
   };
 }

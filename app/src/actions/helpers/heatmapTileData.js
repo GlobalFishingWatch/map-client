@@ -34,6 +34,7 @@ export const getOffsetedTimeAtPrecision = (timestamp, overallStartDateOffset) =>
  * @param timelineOverallEndDate
  * @returns {Array}
  */
+// TODO use header dates, not global dates
 const getTemporalTileURLs = (tilesetUrl, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate) => {
   const startYear = new Date(timelineOverallStartDate).getUTCFullYear();
   const endYear = new Date(timelineOverallEndDate).getUTCFullYear();

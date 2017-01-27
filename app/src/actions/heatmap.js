@@ -163,6 +163,7 @@ export function toggleHeatmapLayer(layerId, forceStatus = null) {
     const layers = getState().layers;
 
     // get the possibly added heatmap layer (should be of ClusterAnimation, same id)
+    // TODO remove, should be done in layers action
     const addedLayers = layers.filter(layer =>
       layer.type === LAYER_TYPES.ClusterAnimation && layerId === layer.id
     );

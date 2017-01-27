@@ -42,6 +42,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     payload: workspaceData.tilesetUrl
   });
 
+  // TODO remove this, do it on layers
   dispatch(loadTilesetMetadata(workspaceData.tilesetUrl));
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
