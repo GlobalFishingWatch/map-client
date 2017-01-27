@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import PromptLayerRemoval from 'components/Map/PromptLayerRemoval';
-import { setRecentVesselsModalVisibility } from 'actions/map';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence, confirmLayerRemoval } from 'actions/layers';
 
 const mapStateToProps = state => ({
@@ -8,9 +7,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  closeModal: () => {
-    dispatch(setRecentVesselsModalVisibility(false));
-  },
   keepLayer: () => {
     dispatch(confirmLayerRemoval(false));
   },
