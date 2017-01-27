@@ -4,20 +4,21 @@
     "map": {
       "center": [
         0,
-        150
+        0
       ],
       "basemap": "satellite",
       "zoom": 3,
       "layers": [
         {
-          "title": "Indonesian fishing",
-          "description": "Indonesian fishing",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
+          "title": "VESSEL",
+          "description": "Fishing effort layer (fr)",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
           "visible": true,
-          "color": "#da00FF",
+          "color": "#88FBFF",
+          "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
-          "id": "indonesia-vms-2014-01-2016-08-tms"
+          "id": "801-tileset-nz2-tms"
         }
       ]
     },

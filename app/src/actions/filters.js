@@ -47,6 +47,11 @@ export function setFlagFilters(flagFilters_) {
     });
   };
 }
+export function setFlagFiltersLayers() {
+  return (dispatch, getState) => {
+    dispatch(setFlagFilters(getState().filters.flags));
+  };
+}
 
 export function updateFlagFilters() {
   return (dispatch, getState) => {

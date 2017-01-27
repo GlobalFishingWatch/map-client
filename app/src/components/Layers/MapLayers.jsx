@@ -214,6 +214,8 @@ class MapLayers extends Component {
     this.renderHeatmap(this.props);
   }
 
+  // TODO removeHeatmapLayer
+
   setHeatmapFlags(props) {
     this.heatmapContainer.setFlags(props.flagsLayers);
   }

@@ -10,8 +10,50 @@ import {
   SET_OVERALL_TIMELINE_DATES,
   ADD_CUSTOM_LAYER
 } from 'actions';
-import { updateFlagFilters } from 'actions/filters';
+import { updateFlagFilters, setFlagFiltersLayers } from 'actions/filters';
 import { toggleHeatmapLayer } from 'actions/heatmap';
+
+
+function loadLayerHeader(tilesetUrl, token) {
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return new Promise((resolve) => {
+    fetch(`${tilesetUrl}/header`, {
+      method: 'GET',
+      headers
+    })
+    .then(res => res.json())
+    .then((data) => {
+      resolve(data);
+    });
+  });
+}
+
+function setGlobalFiltersFromHeader(data) {
+  return (dispatch) => {
+    if (data.maxZoom !== undefined) {
+      dispatch({
+        type: SET_MAX_ZOOM,
+        payload: data.maxZoom
+      });
+    }
+
+    if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
+      dispatch({
+        type: SET_OVERALL_TIMELINE_DATES,
+        payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
+      });
+    }
+  };
+}
+
 
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
@@ -50,50 +92,26 @@ export function initLayers(workspaceLayers, libraryLayers) {
       }
     });
 
-    // TODO get all promises for heatmap/ClusterAnimation layers
-    // when done, add header info to layers reducer
-    // then proceed with SET_LAYERS
-
-    dispatch({
-      type: SET_LAYERS,
-      payload: workspaceLayers
-    });
-  };
-}
-
-export function loadTilesetMetadata(tilesetUrl) {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    };
-
-    if (state.user.token) {
-      headers.Authorization = `Bearer ${state.user.token}`;
-    }
-
-    fetch(`${tilesetUrl}/header`, {
-      method: 'GET',
-      headers
-    })
-      .then(res => res.json())
-      .then((data) => {
-        if (data.maxZoom !== undefined) {
-          dispatch({
-            type: SET_MAX_ZOOM,
-            payload: data.maxZoom
-          });
-        }
-
-        if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
-          dispatch({
-            type: SET_OVERALL_TIMELINE_DATES,
-            payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
-          });
-        }
+    const headersPromises = [];
+    workspaceLayers
+      .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
+      .forEach((heatmapLayer) => {
+        const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
+        headerPromise.then((headerData) => {
+          heatmapLayer.header = headerData;
+          dispatch(setGlobalFiltersFromHeader(headerData));
+        });
+        headersPromises.push(headerPromise);
       });
+
+    const headersPromise = Promise.all(headersPromises);
+    headersPromise.then(() => {
+      dispatch({
+        type: SET_LAYERS,
+        payload: workspaceLayers
+      });
+      dispatch(setFlagFiltersLayers());
+    });
   };
 }
 
