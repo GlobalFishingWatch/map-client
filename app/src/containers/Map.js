@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Map from 'components/Map';
 import {
+  initGoogleMaps,
   setZoom,
   setCenter,
   openShareModal,
@@ -38,6 +39,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  initMap: (googleMaps) => {
+    dispatch(initGoogleMaps(googleMaps));
+  },
   loadInitialState: () => {
     dispatch(getLayerLibrary(ownProps.workspaceId));
   },

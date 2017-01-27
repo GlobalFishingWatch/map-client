@@ -14,6 +14,7 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { updateFlagFilters } from 'actions/filters';
+import { toggleHeatmapLayer } from 'actions/heatmap';
 
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
@@ -107,12 +108,15 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
 }
 
 export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
-  return {
-    type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
-    payload: {
-      layerId,
-      forceStatus
-    }
+  return (dispatch) => {
+    dispatch({
+      type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
+      payload: {
+        layerId,
+        forceStatus
+      }
+    });
+    dispatch(toggleHeatmapLayer(layerId, forceStatus));
   };
 }
 
