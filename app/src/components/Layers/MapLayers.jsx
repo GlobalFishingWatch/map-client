@@ -168,6 +168,7 @@ class MapLayers extends Component {
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;
         if (layer.opacity !== currentLayers[index].opacity) return layer;
+        if (layer.added !== currentLayers[index].added) return layer;
         return false;
       }
     );
@@ -179,6 +180,17 @@ class MapLayers extends Component {
 
       const newLayer = updatedLayers[i];
       const oldLayer = currentLayers[i];
+
+      if (this.addedLayers[newLayer.id] && newLayer.added === false) {
+        if (newLayer.type === LAYER_TYPES.Heatmap) {
+          this.removeHeatmapLayer(newLayer);
+        } else if (newLayer.type === LAYER_TYPES.Custom) {
+          this.removeCustomLayer(newLayer);
+        } else {
+          promises.push(this.removeCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
+        }
+        continue;
+      }
 
       // If the layer is already on the map and its visibility changed, we update it
       if (this.addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
@@ -214,7 +226,9 @@ class MapLayers extends Component {
     this.renderHeatmap(this.props);
   }
 
-  // TODO removeHeatmapLayer
+  removeHeatmapLayer(layer) {
+    this.heatmapContainer.removeLayer(layer.id);
+  }
 
   setHeatmapFlags(props) {
     this.heatmapContainer.setFlags(props.flagsLayers);
@@ -226,6 +240,11 @@ class MapLayers extends Component {
 
   addCustomLayer(layer) {
     this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
+  }
+
+  removeCustomLayer() {
+    // TODO
+    console.warn('removeCustomLayer: TBD');
   }
 
   /**
@@ -251,6 +270,11 @@ class MapLayers extends Component {
     }));
 
     return promise;
+  }
+
+  removeCartoLayer() {
+    // TODO
+    console.warn('removeCartoLayer: TBD');
   }
 
   onCartoLayerFeatureClick(polygonData, latLng, layerId) {
@@ -420,7 +444,6 @@ MapLayers.propTypes = {
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
   zoom: React.PropTypes.number,
-  timelineOverallExtent: React.PropTypes.array,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,
   timelineOuterExtent: React.PropTypes.array,

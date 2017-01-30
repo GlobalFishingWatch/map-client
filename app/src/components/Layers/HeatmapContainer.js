@@ -121,6 +121,13 @@ export default class HeatmapContainer extends BaseOverlay {
     return layer;
   }
 
+  removeLayer(layerId) {
+    const removedLayerIndex = this.layers.findIndex(layer => layer.id === layerId);
+    const removedLayer = this.layers[removedLayerIndex];
+    this.stage.removeChild(removedLayer.stage);
+    this.layers.splice(removedLayerIndex, 1);
+  }
+
   render(data, timelineInnerExtentIndexes) {
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];

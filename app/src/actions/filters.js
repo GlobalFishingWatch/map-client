@@ -65,7 +65,7 @@ export function setFlagFiltersLayers() {
     dispatch(setFlagFilters(getState().filters.flags));
   };
 }
-
+// TODO duplicate ! --> refreshFilters
 export function updateFlagFilters() {
   return (dispatch, getState) => {
     dispatch(setFlagFilters(getState().filters.flags));
