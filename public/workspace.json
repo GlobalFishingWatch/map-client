@@ -4,7 +4,7 @@
     "map": {
       "center": [
         0,
-        0
+        100
       ],
       "basemap": "satellite",
       "zoom": 3,
@@ -35,17 +35,6 @@
           "color": "#da0ff0",
           "type": "CartoDBAnimation",
           "id": "2c1c344e-5af7-11e6-91af-0ee66e2c9693"
-        },
-        {
-          "title": "VESSEL",
-          "description": "Fishing effort layer (fr)",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
-          "visible": true,
-          "color": "#88FBFF",
-          "hue": 182,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "801-tileset-nz2-tms"
         },
         {
           "title": "Indonesia",

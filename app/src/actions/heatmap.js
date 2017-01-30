@@ -10,7 +10,6 @@ import {
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 import {
-  getTimeAtPrecision,
   getTilePelagosPromises,
   getCleanVectorArrays,
   groupData,
@@ -22,12 +21,10 @@ import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } 
 import { trackMapClicked } from 'actions/analytics';
 
 
-function loadLayerTile(referenceTile, layerUrl, startDate, token, map, temporalExtents) {
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
   const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, token, temporalExtents);
   const allLayerPromises = Promise.all(pelagosPromises);
-
-  const startDateOffset = getTimeAtPrecision(startDate);
 
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
@@ -37,8 +34,7 @@ function loadLayerTile(referenceTile, layerUrl, startDate, token, map, temporalE
       const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
-        vectorArray,
-        startDateOffset
+        vectorArray
       );
       resolve(data);
     });
@@ -50,7 +46,6 @@ function loadLayerTile(referenceTile, layerUrl, startDate, token, map, temporalE
 function getTiles(layerIds, referenceTiles) {
   return (dispatch, getState) => {
     const layers = getState().heatmap.heatmapLayers;
-    const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
     const token = getState().user.token;
     const map = getState().map.googleMaps;
     const allPromises = [];
@@ -69,7 +64,6 @@ function getTiles(layerIds, referenceTiles) {
         const tilePromise = loadLayerTile(
           referenceTile,
           layers[layerId].url,
-          timelineOverallStartDate,
           token,
           map,
           layerHeader.temporalExtents

@@ -7,7 +7,8 @@ import {
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_MINIMUM_RADIUS_FACTOR,
   VESSELS_MINIMUM_OPACITY,
-  VESSEL_CLICK_TOLERANCE_PX
+  VESSEL_CLICK_TOLERANCE_PX,
+  TIMELINE_OVERALL_START_DATE_OFFSET
 } from 'constants';
 
 /**
@@ -22,8 +23,8 @@ export const getTimeAtPrecision = timestamp =>
  * beginning of available time (outerStart)
  * @param timestamp
  */
-export const getOffsetedTimeAtPrecision = (timestamp, overallStartDateOffset) =>
-  Math.max(0, getTimeAtPrecision(timestamp) - overallStartDateOffset);
+export const getOffsetedTimeAtPrecision = timestamp =>
+  Math.max(0, getTimeAtPrecision(timestamp) - TIMELINE_OVERALL_START_DATE_OFFSET);
 
 /**
  * Generates the URLs to load vessel track data
@@ -131,7 +132,7 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
  * @param vectorArray
  * @param tileCoordinates
  */
-export const getTilePlaybackData = (zoom, vectorArray, overallStartDateOffset) => {
+export const getTilePlaybackData = (zoom, vectorArray) => {
   const tilePlaybackData = [];
 
   const zoomFactorRadius = (zoom - 1) ** 2.5;
@@ -141,14 +142,17 @@ export const getTilePlaybackData = (zoom, vectorArray, overallStartDateOffset) =
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
 
-    const timeIndex = getOffsetedTimeAtPrecision(datetime, overallStartDateOffset);
+    const timeIndex = getOffsetedTimeAtPrecision(datetime);
     const x = vectorArray.x[index];
     const y = vectorArray.y[index];
     const weight = vectorArray.weight[index];
     const sigma = vectorArray.sigma[index];
     let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
     radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
-    let opacity = 3 + Math.log(3 + Math.log((weight * zoomFactorOpacity) / 1000));
+    let opacity = 3 + Math.log((weight * zoomFactorOpacity) / 1000);
+    // TODO quick hack to avoid negative values, check why that happens
+    opacity = Math.max(0, opacity);
+    opacity = 3 + Math.log(opacity);
     opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
