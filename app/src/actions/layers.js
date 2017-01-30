@@ -158,15 +158,20 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
     });
     if (newLayer.type === LAYER_TYPES.Heatmap) {
       if (added === true) {
+        // TODO remove: this is a hack needed because current library endpoint returns a vessel heatmap url that doesnt work
+        const url = (newLayer.url === 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2') ?
+        'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms' :
+        newLayer.url;
+
         if (newLayer.header === undefined) {
           loadLayerHeader(newLayer.url, getState().user.token).then((header) => {
             dispatch(setLayerHeader(layerId, header));
-            dispatch(addHeatmapLayerFromLibrary(layerId, /* newLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
+            dispatch(addHeatmapLayerFromLibrary(layerId, url));
             dispatch(setGlobalFiltersFromHeader(header));
             dispatch(setFlagFiltersLayers());
           });
         } else {
-          dispatch(addHeatmapLayerFromLibrary(layerId, /* newLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
+          dispatch(addHeatmapLayerFromLibrary(layerId, url));
           dispatch(setFlagFiltersLayers());
         }
       } else {

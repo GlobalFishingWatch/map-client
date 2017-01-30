@@ -50,7 +50,6 @@ export function setFlagFilters(flagFilters_) {
       });
       flagFiltersLayers[heatmapLayer.id] = subLayers;
     });
-    console.log(flagFiltersLayers)
     dispatch({
       type: SET_FLAG_FILTERS,
       payload: {
