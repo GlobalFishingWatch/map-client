@@ -23,7 +23,6 @@ export function setFlagFilters(flagFilters_) {
     // if there's only one filter and it's not set, set it to ALL
     // for the next ones, ignore undefined filters
     // filter hue overrides heatmap layer hue when set
-    // TODO ignore non added layers
     const heatmapLayers = getState().layers.workspaceLayers.filter(layer =>
       layer.type === LAYER_TYPES.Heatmap && layer.added === true
     );
@@ -59,13 +58,7 @@ export function setFlagFilters(flagFilters_) {
     });
   };
 }
-export function setFlagFiltersLayers() {
-  return (dispatch, getState) => {
-    dispatch(setFlagFilters(getState().filters.flags));
-  };
-}
-// TODO duplicate ! --> refreshFilters
-export function updateFlagFilters() {
+export function refreshFlagFiltersLayers() {
   return (dispatch, getState) => {
     dispatch(setFlagFilters(getState().filters.flags));
   };

@@ -14,7 +14,7 @@ import {
   SET_WORKSPACE_LAYER_LABEL,
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
-import { updateFlagFilters, setFlagFiltersLayers } from 'actions/filters';
+import { refreshFlagFiltersLayers } from 'actions/filters';
 import { addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
 
 
@@ -126,7 +126,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
         type: SET_LAYERS,
         payload: workspaceLayers
       });
-      dispatch(setFlagFiltersLayers());
+      dispatch(refreshFlagFiltersLayers());
     });
   };
 }
@@ -142,10 +142,6 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
 }
 
 export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
-  // TODO move final shown/hide status here (now both on reducer and heatmap action)
-  // if shown:
-  // check if header data is already loaded in layerId
-  // if not, load header, then proceed with heatmap loading
   return (dispatch, getState) => {
     const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     const added = (forceStatus !== null) ? forceStatus : !newLayer.added;
@@ -168,15 +164,15 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
             dispatch(setLayerHeader(layerId, header));
             dispatch(addHeatmapLayerFromLibrary(layerId, url));
             dispatch(setGlobalFiltersFromHeader(header));
-            dispatch(setFlagFiltersLayers());
+            dispatch(refreshFlagFiltersLayers());
           });
         } else {
           dispatch(addHeatmapLayerFromLibrary(layerId, url));
-          dispatch(setFlagFiltersLayers());
+          dispatch(refreshFlagFiltersLayers());
         }
       } else {
         dispatch(removeHeatmapLayerFromLibrary(layerId));
-        dispatch(setFlagFiltersLayers());
+        dispatch(refreshFlagFiltersLayers());
       }
     }
   };
@@ -202,7 +198,7 @@ export function setLayerHue(hue, layerId) {
       }
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
-    dispatch(updateFlagFilters());
+    dispatch(refreshFlagFiltersLayers());
   };
 }
 
