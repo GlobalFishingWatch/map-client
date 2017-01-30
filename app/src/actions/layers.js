@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
+  SET_LAYER_HEADER,
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
@@ -14,7 +15,7 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { updateFlagFilters, setFlagFiltersLayers } from 'actions/filters';
-import { toggleHeatmapLayer } from 'actions/heatmap';
+import { addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -57,6 +58,17 @@ function setGlobalFiltersFromHeader(data) {
   };
 }
 
+function setLayerHeader(layerId, header) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_LAYER_HEADER,
+      payload: {
+        layerId,
+        header
+      }
+    });
+  };
+}
 
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
@@ -101,9 +113,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
       .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
       .forEach((heatmapLayer) => {
         const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
-        headerPromise.then((headerData) => {
-          heatmapLayer.header = headerData;
-          dispatch(setGlobalFiltersFromHeader(headerData));
+        headerPromise.then((header) => {
+          heatmapLayer.header = header;
+          dispatch(setGlobalFiltersFromHeader(header));
         });
         headersPromises.push(headerPromise);
       });
@@ -134,16 +146,34 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
   // if shown:
   // check if header data is already loaded in layerId
   // if not, load header, then proceed with heatmap loading
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    const added = (forceStatus !== null) ? forceStatus : !newLayer.added;
     dispatch({
       type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
       payload: {
         layerId,
-        forceStatus
+        added
       }
     });
-    // TODO check if layer is heatmap here
-    dispatch(toggleHeatmapLayer(layerId, forceStatus));
+    if (newLayer.type === LAYER_TYPES.Heatmap) {
+      if (added === true) {
+        if (newLayer.header === undefined) {
+          loadLayerHeader(newLayer.url, getState().user.token).then((header) => {
+            dispatch(setLayerHeader(layerId, header));
+            dispatch(addHeatmapLayerFromLibrary(layerId, /* newLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
+            dispatch(setGlobalFiltersFromHeader(header));
+            dispatch(setFlagFiltersLayers());
+          });
+        } else {
+          dispatch(addHeatmapLayerFromLibrary(layerId, /* newLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
+          dispatch(setFlagFiltersLayers());
+        }
+      } else {
+        dispatch(removeHeatmapLayerFromLibrary(layerId));
+        dispatch(setFlagFiltersLayers());
+      }
+    }
   };
 }
 

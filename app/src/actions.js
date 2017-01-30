@@ -1,5 +1,6 @@
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
 export const SET_LAYERS = 'SET_LAYERS';
+export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
 export const SET_TILESET_URL = 'SET_TILESET_URL';
 export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';

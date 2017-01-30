@@ -24,7 +24,9 @@ export function setFlagFilters(flagFilters_) {
     // for the next ones, ignore undefined filters
     // filter hue overrides heatmap layer hue when set
     // TODO ignore non added layers
-    const heatmapLayers = getState().layers.workspaceLayers.filter(layer => layer.type === LAYER_TYPES.Heatmap);
+    const heatmapLayers = getState().layers.workspaceLayers.filter(layer =>
+      layer.type === LAYER_TYPES.Heatmap && layer.added === true
+    );
     const flagFilters = (flagFilters_ === undefined) ? [] : flagFilters_.slice(0);
     const flagFiltersLayers = {};
     if (!flagFilters.length) {
@@ -48,6 +50,7 @@ export function setFlagFilters(flagFilters_) {
       });
       flagFiltersLayers[heatmapLayer.id] = subLayers;
     });
+    console.log(flagFiltersLayers)
     dispatch({
       type: SET_FLAG_FILTERS,
       payload: {

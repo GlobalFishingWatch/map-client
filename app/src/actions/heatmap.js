@@ -8,7 +8,6 @@ import {
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER
 } from 'actions';
-import { LAYER_TYPES } from 'constants';
 import {
   getTilePelagosPromises,
   getCleanVectorArrays,
@@ -51,7 +50,8 @@ function getTiles(layerIds, referenceTiles) {
     const allPromises = [];
 
     layerIds.forEach((layerId) => {
-      const layerHeader = getState().layers.workspaceLayers.find(layer => layer.id === layerId).header;
+      const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+      const layerHeader = workspaceLayer.header;
       if (!layerHeader) {
         console.warn('no header has been set on this heatmap layer');
       }
@@ -129,7 +129,7 @@ export function releaseTile(uid) {
 }
 
 
-function addHeatmapLayer(layerId, url) {
+export function addHeatmapLayerFromLibrary(layerId, url) {
   return (dispatch, getState) => {
     dispatch({
       type: ADD_HEATMAP_LAYER,
@@ -143,7 +143,7 @@ function addHeatmapLayer(layerId, url) {
   };
 }
 
-function removeHeatmapLayer(id) {
+export function removeHeatmapLayerFromLibrary(id) {
   return (dispatch) => {
     dispatch({
       type: REMOVE_HEATMAP_LAYER,
@@ -153,32 +153,6 @@ function removeHeatmapLayer(id) {
     });
   };
 }
-
-export function toggleHeatmapLayer(layerId, forceStatus = null) {
-  return (dispatch, getState) => {
-    const layers = getState().layers;
-
-    // get the possibly added heatmap layer (should be of Heatmap, same id)
-    // TODO remove, should be done in layers action
-    const addedLayers = layers.filter(layer =>
-      layer.type === LAYER_TYPES.Heatmap && layerId === layer.id
-    );
-    if (addedLayers.length === 0) {
-      console.warn('impossible to add this heatmap layer ', layerId);
-      return;
-    }
-
-    const toggledLayer = addedLayers[0];
-    const nextStatus = (forceStatus !== null) ? forceStatus : !toggledLayer.added;
-    if (nextStatus === true) {
-      dispatch(addHeatmapLayer(layerId,
-        /* toggledLayer.url */ 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms'));
-    } else {
-      dispatch(removeHeatmapLayer(layerId));
-    }
-  };
-}
-
 
 export function queryHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {

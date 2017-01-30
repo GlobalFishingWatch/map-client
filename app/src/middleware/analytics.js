@@ -33,15 +33,12 @@ const GA_ACTION_WHITELIST = [
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
     category: 'Layer',
     action: 'Add from GFW Library',
-    getPayload: (action, state) => {
-      const layerIndex = state.layers.workspaceLayers.findIndex(l => l.id === action.payload.layerId);
-      const changedLayer = state.layers.workspaceLayers[layerIndex];
-
-      return {
+    getPayload: action => (
+      {
         layerId: action.payload.layerId,
-        visibility: action.payload.forceStatus !== null ? action.payload.forceStatus : !changedLayer.added
-      };
-    }
+        visibility: action.payload.added
+      }
+    )
   },
   {
     type: SET_SEARCH_TERM,

@@ -210,7 +210,7 @@ class MapLayers extends Component {
 
   addHeatmapLayer(newLayer) {
     this.addedLayers[newLayer.id] = this.heatmapContainer.addLayer(newLayer);
-    this.setHeatmapFlags(this.props);
+    // this.setHeatmapFlags(this.props);
     this.renderHeatmap(this.props);
   }
 

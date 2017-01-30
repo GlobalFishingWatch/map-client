@@ -36,8 +36,10 @@ export default class HeatmapLayer {
   }
 
   setSubLayers(flags) {
+    console.log(flags)
     const subLayerDelta = flags.length - this.subLayers.length;
     if (subLayerDelta === -1) {
+      console.log('remove heatmap layer stage')
       const subLayer = this.subLayers.pop();
       this.stage.removeChild(subLayer.stage);
       subLayer.destroy();
