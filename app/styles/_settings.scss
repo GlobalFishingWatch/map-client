@@ -5,14 +5,14 @@ $font-family-2: 'Roboto Slab', serif;
 // Layout
 $max-width: 1280px;
 $wrap-mobile: 25px;
-// $wrap-tablet is random. Feel free to change it if you know
-// what size should have wraps in tablet.
 $wrap-tablet: 55px;
 $wrap-desktop: 115px;
 $map-footer-height: 38px;
 $max-map-footer-height: 485px;
+$offset-panel-control-mobile: 190px;
 $offset-panel-control: 20px;
 
+$header-height-mobile: 60px;
 $header-height: 95px;
 $accordion-mobile-height: 60px;
 

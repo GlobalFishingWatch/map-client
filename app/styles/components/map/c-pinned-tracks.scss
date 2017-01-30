@@ -32,10 +32,18 @@
       cursor: pointer;
       flex: 1;
       font-family: $font-family-1;
-      font-size: $font-size-xxs-small;
+      font-size: $font-size-normal;
       height: 24px;
       margin: 0 15px 0 0;
+      max-width: 90%;
       outline: none;
+      overflow-y: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-xxs-small;
+      }
     }
 
     > .item-rename {
@@ -67,6 +75,7 @@
 
       > .pinned-item-action-item {
         display: flex;
+        position: relative;
 
         &:not(:first-child) {
           margin: 0 0 0 10px;

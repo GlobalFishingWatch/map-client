@@ -67,6 +67,12 @@ class FilterItem extends Component {
                 { [`${IconStyles['-white']}`]: this.props.showBlending === true })}
                 onClick={() => this.toggleBlending()}
               />
+              <LayerOptionsTooltip
+                displayHue
+                hueValue={hueValue}
+                onChangeHue={hue => this.onChangeHue(hue)}
+                showBlending={this.props.showBlending}
+              />
             </li>
             <li className={flagFilterStyles['filter-option-item']}>
               <RemoveFilterIcon
@@ -76,12 +82,6 @@ class FilterItem extends Component {
             </li>
           </ul>
         </div>
-        <LayerOptionsTooltip
-          displayHue
-          hueValue={hueValue}
-          onChangeHue={hue => this.onChangeHue(hue)}
-          showBlending={this.props.showBlending}
-        />
       </li>
     );
   }

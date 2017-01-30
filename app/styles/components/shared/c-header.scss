@@ -13,9 +13,10 @@
   .contain-nav {
     align-items: center;
     display: flex;
-    height: $header-height;
+    height: $header-height-mobile;
 
     @media #{$mq-tablet} {
+      height: $header-height;
       justify-content: space-between;
     }
   }
@@ -52,6 +53,7 @@
     }
 
     img {
+      height: 100%;
       max-width: 250px;
       width: 100%;
 

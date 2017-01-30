@@ -2,8 +2,11 @@
 @import '../../mixins';
 
 .c-search-panel {
-  position: relative;
   z-index: 10;
+
+  @media #{$mq-tablet} {
+    position: relative;
+  }
 
   > .search-accordion {
     background-color: transparent;
@@ -46,9 +49,14 @@
 
   .clean-query-button {
     position: absolute;
-    right: 10px;
+    right: 29px;
     stroke: rgba($color-3, .3);
-    top: 10px;
+    top: 25px;
+
+    @media #{$mq-tablet} {
+      right: 10px;
+      top: 10px;
+    }
   }
 
   :global .icon-filter {
@@ -59,25 +67,30 @@
     background-color: $color-1;
     max-height: 0;
     overflow: hidden;
-    position: relative;
-    width: 310px;
-
-    &::after {
-      @include arrow(15px, 1px, rgba($color-3, .3), 'up');
-      background-color: $color-1;
-      left: 30px;
-      position: absolute;
-      top: -8px;
-    }
 
     &.-open {
       border: 1px solid rgba($color-3, .3);
-      left: -20px;
+      left: 0;
       max-height: none;
       overflow: visible;
       padding: 15px 15px 0;
       position: absolute;
-      top: 34px;
+      top: 47px;
+      width: 100%;
+      z-index: 1;
+
+      &::after {
+        @include arrow(15px, 1px, rgba($color-3, .3), 'up');
+        background-color: $color-1;
+        left: 30px;
+        position: absolute;
+        top: -8px;
+      }
+
+      @media #{$mq-tablet} {
+        max-width: 310px;
+        top: 34px;
+      }
     }
   }
 

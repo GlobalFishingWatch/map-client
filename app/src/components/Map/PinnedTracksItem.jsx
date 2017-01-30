@@ -4,6 +4,7 @@ import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import icons from 'styles/icons.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 
@@ -46,7 +47,7 @@ class PinnedTracksItem extends Component {
     } else {
       actions = (
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
-          <li className={pinnedTracksStyles['pinned-item-action-item']} >
+          <li className={pinnedTracksStyles['pinned-item-action-item']}>
             <BlendingIcon
               className={classnames(icons['blending-icon'],
                 { [icons['-white']]: this.props.showBlending })}
@@ -54,14 +55,20 @@ class PinnedTracksItem extends Component {
                 this.props.onLayerBlendingToggled(this.props.index);
               }}
             />
+            <LayerOptionsTooltip
+              displayHue
+              displayOpacity={false}
+              hueValue={this.props.vessel.hue}
+              showBlending={this.props.showBlending}
+              onChangeHue={hue => this.onChangeHue(hue)}
+            />
           </li>
-          <LayerOptionsTooltip
-            displayHue
-            displayOpacity={false}
-            hueValue={this.props.vessel.hue}
-            showBlending={this.props.showBlending}
-            onChangeHue={hue => this.onChangeHue(hue)}
-          />
+          <li
+            className={pinnedTracksStyles['pinned-item-action-item']}
+            onClick={e => this.onVesselLabelClick(e)}
+          >
+            <InfoIcon className={classnames(icons.icon, icons['info-icon'])} />
+          </li>
         </ul>
       );
     }

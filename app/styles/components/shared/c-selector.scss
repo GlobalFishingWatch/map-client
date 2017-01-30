@@ -5,10 +5,15 @@
   background-color: transparent;
   border: solid 1px $color-14;
   display: flex;
-  height: 30px;
+  flex-grow: 2;
+  height: 40px;
   max-width: 80%;
   padding: 0 15px;
   position: relative;
+
+  @media #{$mq-tablet} {
+    height: 30px;
+  }
 
   > select {
     appearance: none;
