@@ -12,7 +12,8 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSEL_HISTORY
+  SET_RECENT_VESSEL_HISTORY,
+  LOAD_RECENT_VESSEL_HISTORY
 } from 'actions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import _ from 'lodash';
@@ -25,6 +26,13 @@ export function setRecentVesselHistory(seriesgroup) {
     payload: {
       seriesgroup
     }
+  };
+}
+
+export function loadRecentVesselHistory() {
+  return {
+    type: LOAD_RECENT_VESSEL_HISTORY,
+    payload: null
   };
 }
 

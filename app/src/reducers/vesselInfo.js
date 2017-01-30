@@ -13,7 +13,8 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSEL_HISTORY
+  SET_RECENT_VESSEL_HISTORY,
+  LOAD_RECENT_VESSEL_HISTORY
 } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 
@@ -206,9 +207,34 @@ export default function (state = initialState, action) {
         });
       }
 
+      try {
+        const serializedState = JSON.stringify([newVessel, ...state.history]);
+        localStorage.setItem('vessel_history', serializedState);
+      } catch (err) {
+        return Object.assign({}, state, {
+          history: [newVessel, ...state.history]
+        });
+      }
+
       return Object.assign({}, state, {
         history: [newVessel, ...state.history]
       });
+    }
+
+    case LOAD_RECENT_VESSEL_HISTORY: {
+      try {
+        const serializedState = localStorage.getItem('vessel_history');
+
+        if (serializedState === null) {
+          return state;
+        }
+
+        return Object.assign({}, state, {
+          history: JSON.parse(serializedState)
+        });
+      } catch (err) {
+        return state;
+      }
     }
 
     default:
