@@ -187,8 +187,9 @@ class MapLayers extends Component {
         } else if (newLayer.type === LAYER_TYPES.Custom) {
           this.removeCustomLayer(newLayer);
         } else {
-          promises.push(this.removeCartoLayer(newLayer, i + 2, nextProps.reportLayerId));
+          this.removeCartoLayer(newLayer, i + 2, nextProps.reportLayerId);
         }
+        delete this.addedLayers[newLayer.id];
         continue;
       }
 
