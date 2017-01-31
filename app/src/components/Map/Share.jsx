@@ -60,15 +60,21 @@ class Share extends Component {
   }
 
   openFacebook() {
-    console.info('Facebook share coming soon...');
+    const url = this.getURLWithWorkspace();
+
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
   }
 
   openGooglePlus() {
-    console.info('Google Plus share coming soon...');
+    const url = this.getURLWithWorkspace();
+
+    window.open(`https://plus.google.com/share?url=${url}`);
   }
 
   openTwitter() {
-    console.info('Twitter share coming soon...');
+    const url = this.getURLWithWorkspace();
+
+    window.open(`https://twitter.com/share?url=${url}`);
   }
 
   render() {
