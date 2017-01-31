@@ -197,6 +197,9 @@ export function queryHeatmap(tileQuery, latLng) {
       // console.log('multiple results');
       // the following solely sets the cluster center in the state to be
       // reused later if user clicks on 'zoom to see more'
+      if (allSeriesGroups[0] <= 0) {
+        console.warn('negative seriesgroup:', allSeriesGroups[0]);
+      }
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       dispatch({
         type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
