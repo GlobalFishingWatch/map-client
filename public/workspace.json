@@ -4,7 +4,7 @@
     "map": {
       "center": [
         0,
-        100
+        0
       ],
       "basemap": "satellite",
       "zoom": 3,
@@ -38,14 +38,25 @@
         },
         {
           "title": "Indonesia",
-          "description": "Indonesia",
+          "description": "Indonesia VMS data",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
           "visible": true,
-          "color": "#88FBFF",
+          "color": "#FB88FF",
           "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "indonesia-vms-2014-01-2016-08-tms"
+        },
+        {
+          "title": "Fishing effort",
+          "description": "Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
+          "visible": true,
+          "color": "#88FBFF",
+          "hue": 72,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "849-tileset-tms"
         },
         {
           "title": "MPA - No Take",
