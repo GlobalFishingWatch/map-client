@@ -69,7 +69,7 @@ export default class TiledLayer {
     for (let i = 0; i < this.tiles.length; i++) {
       const tile = this.tiles[i];
       const tileBox = tile.getBoundingClientRect();
-      if (y > tileBox.top && y < tileBox.top + 256 && x > tileBox.left && x < tileBox.left + 256) {
+      if (y >= tileBox.top && y < tileBox.top + 256 && x >= tileBox.left && x < tileBox.left + 256) {
         tile.box = tileBox;
         return {
           uid: tile.uid,
@@ -78,6 +78,7 @@ export default class TiledLayer {
         };
       }
     }
+    console.warn('no tile was found at', x, y);
     return null;
   }
 }
