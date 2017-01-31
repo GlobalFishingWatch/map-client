@@ -170,7 +170,7 @@ LayerItem.propTypes = {
   layer object
    */
   layer: React.PropTypes.object,
-  currentlyReportedLayerId: React.PropTypes.number,
+  currentlyReportedLayerId: React.PropTypes.string,
   toggleLayerVisibility: React.PropTypes.func,
   toggleLayerWorkspacePresence: React.PropTypes.func,
   toggleReport: React.PropTypes.func,

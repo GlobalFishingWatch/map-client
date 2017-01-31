@@ -73,7 +73,7 @@
           "title": "EEZ",
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "reportable": true,
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/eez/source",
+          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
           "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation",
@@ -93,7 +93,7 @@
         {
           "title": "RFMO",
           "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/rfmo/source",
+          "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/fbafc1dc-e731-11e6-9ac1-0242ac110006/viz.json",
           "visible": false,
           "color": "blue",
           "type": "CartoDBAnimation",
