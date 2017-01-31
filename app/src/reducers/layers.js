@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {
   SET_LAYERS,
+  SET_LAYER_HEADER,
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
@@ -35,6 +36,14 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { layerIdPromptedForRemoval: action.payload });
     case SET_LAYERS:
       return Object.assign({}, state, { workspaceLayers: action.payload.concat() });
+    case SET_LAYER_HEADER: {
+      const layerIndex = state.workspaceLayers.findIndex(layer => layer.id === action.payload.layerId);
+      const layer = _.cloneDeep(state.workspaceLayers[layerIndex]);
+      layer.header = action.payload.header;
+      return Object.assign({}, state, {
+        workspaceLayers: [...state.workspaceLayers.slice(0, layerIndex), layer, ...state.workspaceLayers.slice(layerIndex + 1)]
+      });
+    }
     case TOGGLE_LAYER_VISIBILITY: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.visible = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.visible;
@@ -43,7 +52,7 @@ export default function (state = initialState, action) {
     }
     case TOGGLE_LAYER_WORKSPACE_PRESENCE: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
-        changedLayer.added = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.added;
+        changedLayer.added = action.payload.added;
       });
       return Object.assign({}, state, {
         workspaceLayers,

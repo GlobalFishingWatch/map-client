@@ -23,7 +23,9 @@ export function setFlagFilters(flagFilters_) {
     // if there's only one filter and it's not set, set it to ALL
     // for the next ones, ignore undefined filters
     // filter hue overrides heatmap layer hue when set
-    const heatmapLayers = getState().layers.workspaceLayers.filter(layer => layer.type === LAYER_TYPES.ClusterAnimation);
+    const heatmapLayers = getState().layers.workspaceLayers.filter(layer =>
+      layer.type === LAYER_TYPES.Heatmap && layer.added === true
+    );
     const flagFilters = (flagFilters_ === undefined) ? [] : flagFilters_.slice(0);
     const flagFiltersLayers = {};
     if (!flagFilters.length) {
@@ -56,8 +58,7 @@ export function setFlagFilters(flagFilters_) {
     });
   };
 }
-
-export function updateFlagFilters() {
+export function refreshFlagFiltersLayers() {
   return (dispatch, getState) => {
     dispatch(setFlagFilters(getState().filters.flags));
   };

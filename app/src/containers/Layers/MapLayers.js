@@ -8,8 +8,7 @@ const mapStateToProps = state => ({
   zoom: state.map.zoom,
   layers: state.layers.workspaceLayers,
   flagsLayers: state.filters.flagsLayers,
-  heatmap: state.heatmap,
-  timelineOverallExtent: state.filters.timelineOverallExtent, // TODO remove
+  heatmap: state.heatmap.heatmapLayers,
   timelineInnerExtent: state.filters.timelineInnerExtent,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   timelineOuterExtent: state.filters.timelineOuterExtent,
@@ -24,8 +23,8 @@ const mapDispatchToProps = dispatch => ({
   showPolygon: (polygonData, latLng) => {
     dispatch(showPolygon(polygonData, latLng));
   },
-  createTile: (uid, coordinates, canvas, map) => {
-    dispatch(getTile(uid, coordinates, canvas, map));
+  createTile: (uid, coordinates, canvas) => {
+    dispatch(getTile(uid, coordinates, canvas));
   },
   releaseTile: (uid) => {
     dispatch(releaseTile(uid));

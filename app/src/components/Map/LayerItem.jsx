@@ -114,7 +114,7 @@ class LayerItem extends Component {
             <InfoIcon />
           </li>
           <LayerOptionsTooltip
-            displayHue={this.props.layer.type === LAYER_TYPES.ClusterAnimation}
+            displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
             displayOpacity
             hueValue={this.props.layer.hue}
             opacityValue={this.props.layer.opacity}
@@ -125,7 +125,6 @@ class LayerItem extends Component {
         </ul>
       );
     }
-
 
     return (
       <li

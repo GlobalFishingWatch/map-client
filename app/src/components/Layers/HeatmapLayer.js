@@ -39,8 +39,7 @@ export default class HeatmapLayer {
     const subLayerDelta = flags.length - this.subLayers.length;
     if (subLayerDelta === -1) {
       const subLayer = this.subLayers.pop();
-      this.stage.removeChild(subLayer.stage);
-      subLayer.destroy();
+      this.destroySubLayer(subLayer);
     } else if (subLayerDelta > 0) {
       for (let i = 0; i < subLayerDelta; i++) {
         const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites);
@@ -60,5 +59,15 @@ export default class HeatmapLayer {
     this.subLayers.forEach((subLayer) => {
       subLayer.render(tiles, startIndex, endIndex);
     });
+  }
+
+  destroy() {
+    this.subLayers.forEach(this.destroySubLayer);
+    this.stage.destroy({ children: true });
+  }
+
+  destroySubLayer(subLayer) {
+    this.stage.removeChild(subLayer.stage);
+    subLayer.destroy();
   }
 }

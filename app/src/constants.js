@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
@@ -67,6 +68,7 @@ export const DEFAULT_TRACK_HUE = 180;
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
+export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OVERALL_START_DATE);
 
 // radius of vessels lookup in pixels,
 // ie how large the clicked region should be for including vessels
@@ -83,7 +85,7 @@ export const DURATION_PICKER_OPTIONS = [
 export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
-  ClusterAnimation: 'ClusterAnimation',
+  Heatmap: 'ClusterAnimation',
   Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation'
 };

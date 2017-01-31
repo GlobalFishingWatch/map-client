@@ -5,6 +5,7 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
+
 import {
   SET_ZOOM,
   SET_CENTER,
@@ -13,7 +14,7 @@ import {
   SET_TILESET_URL,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE
 } from 'actions';
-import { initLayers, loadTilesetMetadata } from 'actions/layers';
+import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
@@ -48,8 +49,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
     type: SET_TILESET_URL,
     payload: workspaceData.tilesetUrl
   });
-
-  dispatch(loadTilesetMetadata(workspaceData.tilesetUrl));
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
 
@@ -111,7 +110,7 @@ function processLegacyWorkspace(data, dispatch) {
   layers.forEach((layer) => {
     layer.id = calculateLayerId(layer);
   });
-  const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.ClusterAnimation)[0];
+  const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const tilesetUrl = vesselLayer.url;
 
   // TODO: implement legacy workspace loading of pinned vessels

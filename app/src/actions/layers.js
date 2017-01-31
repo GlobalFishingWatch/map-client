@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
+  SET_LAYER_HEADER,
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_LAYER_OPACITY,
@@ -13,15 +14,69 @@ import {
   SET_WORKSPACE_LAYER_LABEL,
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
-import { updateFlagFilters } from 'actions/filters';
+import { refreshFlagFiltersLayers } from 'actions/filters';
+import { addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
+
+
+function loadLayerHeader(tilesetUrl, token) {
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return new Promise((resolve) => {
+    fetch(`${tilesetUrl}/header`, {
+      method: 'GET',
+      headers
+    })
+    .then(res => res.json())
+    .then((data) => {
+      resolve(data);
+    });
+  });
+}
+
+function setGlobalFiltersFromHeader(data) {
+  return (dispatch) => {
+    if (data.maxZoom !== undefined) {
+      dispatch({
+        type: SET_MAX_ZOOM,
+        payload: data.maxZoom
+      });
+    }
+
+    if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
+      dispatch({
+        type: SET_OVERALL_TIMELINE_DATES,
+        payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
+      });
+    }
+  };
+}
+
+function setLayerHeader(layerId, header) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_LAYER_HEADER,
+      payload: {
+        layerId,
+        header
+      }
+    });
+  };
+}
 
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState();
 
     if (state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
-      workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
-      libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.ClusterAnimation);
+      workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
+      libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
     }
 
     workspaceLayers.forEach((layer) => {
@@ -53,46 +108,26 @@ export function initLayers(workspaceLayers, libraryLayers) {
       }
     });
 
-    dispatch({
-      type: SET_LAYERS,
-      payload: workspaceLayers
-    });
-  };
-}
-
-export function loadTilesetMetadata(tilesetUrl) {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    };
-
-    if (state.user.token) {
-      headers.Authorization = `Bearer ${state.user.token}`;
-    }
-
-    fetch(`${tilesetUrl}/header`, {
-      method: 'GET',
-      headers
-    })
-      .then(res => res.json())
-      .then((data) => {
-        if (data.maxZoom !== undefined) {
-          dispatch({
-            type: SET_MAX_ZOOM,
-            payload: data.maxZoom
-          });
-        }
-
-        if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
-          dispatch({
-            type: SET_OVERALL_TIMELINE_DATES,
-            payload: [new Date(data.colsByName.datetime.min), new Date(data.colsByName.datetime.max)]
-          });
-        }
+    const headersPromises = [];
+    workspaceLayers
+      .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
+      .forEach((heatmapLayer) => {
+        const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
+        headerPromise.then((header) => {
+          heatmapLayer.header = header;
+          dispatch(setGlobalFiltersFromHeader(header));
+        });
+        headersPromises.push(headerPromise);
       });
+
+    const headersPromise = Promise.all(headersPromises);
+    headersPromise.then(() => {
+      dispatch({
+        type: SET_LAYERS,
+        payload: workspaceLayers
+      });
+      dispatch(refreshFlagFiltersLayers());
+    });
   };
 }
 
@@ -107,11 +142,38 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
 }
 
 export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
-  return {
-    type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
-    payload: {
-      layerId,
-      forceStatus
+  return (dispatch, getState) => {
+    const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    const added = (forceStatus !== null) ? forceStatus : !newLayer.added;
+    dispatch({
+      type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
+      payload: {
+        layerId,
+        added
+      }
+    });
+    if (newLayer.type === LAYER_TYPES.Heatmap) {
+      if (added === true) {
+        // TODO remove: this is a hack needed because current library endpoint returns a vessel heatmap url that doesnt work
+        const url = (newLayer.url === 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2') ?
+        'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms' :
+        newLayer.url;
+
+        if (newLayer.header === undefined) {
+          loadLayerHeader(newLayer.url, getState().user.token).then((header) => {
+            dispatch(setLayerHeader(layerId, header));
+            dispatch(addHeatmapLayerFromLibrary(layerId, url));
+            dispatch(setGlobalFiltersFromHeader(header));
+            dispatch(refreshFlagFiltersLayers());
+          });
+        } else {
+          dispatch(addHeatmapLayerFromLibrary(layerId, url));
+          dispatch(refreshFlagFiltersLayers());
+        }
+      } else {
+        dispatch(removeHeatmapLayerFromLibrary(layerId));
+        dispatch(refreshFlagFiltersLayers());
+      }
     }
   };
 }
@@ -136,7 +198,7 @@ export function setLayerHue(hue, layerId) {
       }
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
-    dispatch(updateFlagFilters());
+    dispatch(refreshFlagFiltersLayers());
   };
 }
 

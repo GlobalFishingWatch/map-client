@@ -15,17 +15,15 @@ import {
   TIMELINE_OVERALL_START_DATE,
   TIMELINE_OVERALL_END_DATE
 } from 'constants';
-import { getTimeAtPrecision, getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
+import { getOffsetedTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
-const timelineOverallStartDateOffset = getTimeAtPrecision(TIMELINE_OVERALL_START_DATE);
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
   timelineOuterExtent: [TIMELINE_DEFAULT_OUTER_START_DATE, TIMELINE_DEFAULT_OUTER_END_DATE],
-  timelineOverallStartDateOffset,
   timelineInnerExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
   timelineInnerExtentIndexes: [
-    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime(), timelineOverallStartDateOffset),
-    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime(), timelineOverallStartDateOffset)
+    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime()),
+    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
   flags: [],
@@ -39,8 +37,8 @@ export default function (state = initialState, action) {
       const timelineInnerExtent = action.payload;
       const startTimestamp = timelineInnerExtent[0].getTime();
       const endTimestamp = timelineInnerExtent[1].getTime();
-      const startIndex = getOffsetedTimeAtPrecision(startTimestamp, state.timelineOverallStartDateOffset);
-      const endIndex = getOffsetedTimeAtPrecision(endTimestamp, state.timelineOverallStartDateOffset);
+      const startIndex = getOffsetedTimeAtPrecision(startTimestamp);
+      const endIndex = getOffsetedTimeAtPrecision(endTimestamp);
       const timelineInnerExtentIndexes = [startIndex, endIndex];
 
       return Object.assign({}, state, {

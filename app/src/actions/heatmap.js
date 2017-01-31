@@ -1,7 +1,14 @@
 import _ from 'lodash';
-import { UPDATE_HEATMAP_TILES, COMPLETE_TILE_LOAD, SET_VESSEL_CLUSTER_CENTER } from 'actions';
 import {
-  getTimeAtPrecision,
+  UPDATE_HEATMAP_TILES,
+  COMPLETE_TILE_LOAD,
+  SET_VESSEL_CLUSTER_CENTER,
+  ADD_REFERENCE_TILE,
+  REMOVE_REFERENCE_TILE,
+  ADD_HEATMAP_LAYER,
+  REMOVE_HEATMAP_LAYER
+} from 'actions';
+import {
   getTilePelagosPromises,
   getCleanVectorArrays,
   groupData,
@@ -12,53 +19,67 @@ import {
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 import { trackMapClicked } from 'actions/analytics';
 
-export function getTile(uid, tileCoordinates, canvas, map) {
+
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
+  const tileCoordinates = referenceTile.tileCoordinates;
+  const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, token, temporalExtents);
+  const allLayerPromises = Promise.all(pelagosPromises);
+
+  const layerTilePromise = new Promise((resolve) => {
+    allLayerPromises.then((rawTileData) => {
+      const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+      const groupedData = groupData(cleanVectorArrays);
+      const bounds = referenceTile.canvas.getBoundingClientRect();
+      const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
+      const data = getTilePlaybackData(
+        tileCoordinates.zoom,
+        vectorArray
+      );
+      resolve(data);
+    });
+  });
+
+  return layerTilePromise;
+}
+
+function getTiles(layerIds, referenceTiles) {
   return (dispatch, getState) => {
-    const layers = getState().heatmap;
-    const timelineOverallStartDate = getState().filters.timelineOverallExtent[0];
-    const timelineOverallEndDate = getState().filters.timelineOverallExtent[1];
-    const overallStartDateOffset = getTimeAtPrecision(timelineOverallStartDate);
+    const layers = getState().heatmap.heatmapLayers;
     const token = getState().user.token;
+    const map = getState().map.googleMaps;
     const allPromises = [];
 
-    Object.keys(layers).forEach((layerId) => {
-      // TODO Bail + add empty objects if layer is not visible
-      // TODO Filter by flag
-      const layer = layers[layerId];
-      const tiles = layer.tiles;
-
-      const tile = {
-        uid, tileCoordinates, canvas
-      };
-
-      const pelagosPromises = getTilePelagosPromises(layer.url, tileCoordinates, timelineOverallStartDate, timelineOverallEndDate, token);
-
-      const allLayerPromises = Promise.all(pelagosPromises);
-      allPromises.push(allLayerPromises);
-
-      allLayerPromises.then((rawTileData) => {
-        const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-        const groupedData = groupData(cleanVectorArrays);
-        const bounds = tile.canvas.getBoundingClientRect();
-        const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
-        const data = getTilePlaybackData(
-          tileCoordinates.zoom,
-          vectorArray,
-          timelineOverallStartDate,
-          timelineOverallEndDate,
-          overallStartDateOffset
+    layerIds.forEach((layerId) => {
+      const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+      const layerHeader = workspaceLayer.header;
+      if (!layerHeader) {
+        console.warn('no header has been set on this heatmap layer');
+      }
+      referenceTiles.forEach((referenceTile) => {
+        const tile = {
+          uid: referenceTile.uid,
+          canvas: referenceTile.canvas
+        };
+        layers[layerId].tiles.push(tile);
+        const tilePromise = loadLayerTile(
+          referenceTile,
+          layers[layerId].url,
+          token,
+          map,
+          layerHeader.temporalExtents
         );
-        tile.data = data;
-
-        dispatch({
-          type: UPDATE_HEATMAP_TILES, payload: layers
+        allPromises.push(tilePromise);
+        tilePromise.then((data) => {
+          tile.data = data;
+          dispatch({
+            type: UPDATE_HEATMAP_TILES, payload: layers
+          });
         });
       });
-
-      tiles.push(tile);
     });
 
     Promise.all(allPromises).then(() => {
+      // TODO this does nothing for now, use it for loading status indicators
       dispatch({
         type: COMPLETE_TILE_LOAD
       });
@@ -66,9 +87,32 @@ export function getTile(uid, tileCoordinates, canvas, map) {
   };
 }
 
+
+export function getTile(uid, tileCoordinates, canvas) {
+  return (dispatch, getState) => {
+    const referenceTile = {
+      uid,
+      tileCoordinates,
+      canvas
+    };
+
+    dispatch({
+      type: ADD_REFERENCE_TILE,
+      payload: referenceTile
+    });
+
+    dispatch(getTiles(Object.keys(getState().heatmap.heatmapLayers), [referenceTile]));
+  };
+}
+
 export function releaseTile(uid) {
   return (dispatch, getState) => {
-    const layers = getState().heatmap;
+    dispatch({
+      type: REMOVE_REFERENCE_TILE,
+      payload: uid
+    });
+
+    const layers = getState().heatmap.heatmapLayers;
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const tiles = layer.tiles;
@@ -84,6 +128,32 @@ export function releaseTile(uid) {
   };
 }
 
+
+export function addHeatmapLayerFromLibrary(layerId, url) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ADD_HEATMAP_LAYER,
+      payload: {
+        layerId,
+        url
+      }
+    });
+
+    dispatch(getTiles([layerId], getState().heatmap.referenceTiles));
+  };
+}
+
+export function removeHeatmapLayerFromLibrary(id) {
+  return (dispatch) => {
+    dispatch({
+      type: REMOVE_HEATMAP_LAYER,
+      payload: {
+        id
+      }
+    });
+  };
+}
+
 export function queryHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
@@ -93,7 +163,7 @@ export function queryHeatmap(tileQuery, latLng) {
     }
 
     // TODO do not query all sublayers?
-    const layers = state.heatmap;
+    const layers = state.heatmap.heatmapLayers;
     const timelineExtent = state.filters.timelineInnerExtentIndexes;
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
