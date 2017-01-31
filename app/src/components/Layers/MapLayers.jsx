@@ -109,7 +109,7 @@ class MapLayers extends Component {
       return true;
     }
     if (nextProps.vesselTracks.some((vesselTrack, index) =>
-      vesselTrack.hue !== this.props.vesselTracks[index].hue
+      vesselTrack.hue !== this.props.vesselTracks[index].hue || vesselTrack.visible !== this.props.vesselTracks[index].visible
     ) === true) {
       return true;
     }

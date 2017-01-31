@@ -8,6 +8,9 @@ import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=Bl
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
+import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
+import { hueToRgbString } from 'util/hsvToRgb';
+
 
 class PinnedTracksItem extends Component {
 
@@ -28,6 +31,17 @@ class PinnedTracksItem extends Component {
 
   onChangeHue(hue) {
     this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
+  }
+
+  getColor(vessel) {
+    if (vessel.hue !== undefined) {
+      return hueToRgbString(vessel.hue);
+    }
+    return vessel.color;
+  }
+
+  onChangeVisibility() {
+    this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
   render() {
@@ -81,6 +95,16 @@ class PinnedTracksItem extends Component {
         key={this.props.vessel.seriesgroup}
       >
         <input
+          className={SwitcherStyles['c-switcher']}
+          type="checkbox"
+          checked={this.props.vessel.visible}
+          onChange={() => this.onChangeVisibility()}
+          key={this.getColor(this.props.vessel)}
+          style={{
+            color: this.getColor(this.props.vessel)
+          }}
+        />
+        <input
           className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.pinnedVesselEditMode })}
           onChange={e => this.onChangeName(e.currentTarget.value)}
           readOnly={!this.props.pinnedVesselEditMode}
@@ -102,6 +126,7 @@ class PinnedTracksItem extends Component {
 PinnedTracksItem.propTypes = {
   pinnedVesselEditMode: React.PropTypes.bool,
   index: React.PropTypes.number,
+  togglePinnedVesselVisibility: React.PropTypes.func,
   onLayerBlendingToggled: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselTitle: React.PropTypes.func,

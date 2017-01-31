@@ -15,7 +15,8 @@ import {
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY,
-  LOAD_RECENT_VESSEL_HISTORY
+  LOAD_RECENT_VESSEL_HISTORY,
+  TOGGLE_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
 import {
   setInnerTimelineDates,
@@ -327,6 +328,16 @@ export function setPinnedVesselHue(seriesgroup, hue) {
     payload: {
       seriesgroup,
       hue
+    }
+  };
+}
+
+export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
+  return {
+    type: TOGGLE_PINNED_VESSEL_TRACK_VISIBILITY,
+    payload: {
+      seriesgroup,
+      forceStatus
     }
   };
 }
