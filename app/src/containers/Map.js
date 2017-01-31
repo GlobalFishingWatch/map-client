@@ -5,7 +5,6 @@ import {
   setZoom,
   setCenter,
   openShareModal,
-  saveWorkspace,
   deleteWorkspace,
   setShareModalError,
   setLayerInfoModal,
@@ -14,6 +13,9 @@ import {
   setRecentVesselsModalVisibility,
   setWelcomeModalVisibility
 } from 'actions/map';
+import {
+  saveWorkspace
+} from 'actions/workspace';
 import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
 import { clearPolygon } from 'actions/report';

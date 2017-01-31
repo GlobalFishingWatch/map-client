@@ -11,6 +11,7 @@ import {
   SET_LAYER_INFO_MODAL,
   SET_BASEMAP,
   SET_TILESET_URL,
+  SET_TILESET_ID,
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
@@ -44,6 +45,7 @@ const initialState = {
   zoom: 3,
   maxZoom: MAX_ZOOM_LEVEL,
   tilesetUrl: null,
+  tilesetId: null,
   center: [0, 0],
   shareModal: {
     open: false,
@@ -80,6 +82,8 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case INIT_GOOGLE_MAPS:
       return Object.assign({}, state, { googleMaps: action.payload });
+    case SET_TILESET_ID:
+      return Object.assign({}, state, { tilesetId: action.payload });
     case SET_TILESET_URL:
       return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_ZOOM:
