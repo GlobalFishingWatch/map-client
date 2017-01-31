@@ -168,13 +168,10 @@ export function queryHeatmap(tileQuery, latLng) {
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
     let vessels = [];
-    Object.keys(layers).forEach((layerId, index) => {
+    Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      // TODO remove ?
-      if (index === 0) {
-        vessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
-      }
+      vessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
     });
     vessels = _.flatten(vessels);
 
