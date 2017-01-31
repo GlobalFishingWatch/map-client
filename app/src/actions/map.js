@@ -126,7 +126,7 @@ export function saveWorkspace(errorAction) {
           map: {
             center: state.map.center,
             zoom: state.map.zoom,
-            layers: state.layers.filter(layer => layer.added)
+            layers: state.layers.workspaceLayers.filter(layer => layer.added)
           },
           pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,

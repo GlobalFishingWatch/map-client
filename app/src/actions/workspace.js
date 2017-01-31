@@ -15,7 +15,7 @@ import {
 } from 'actions';
 import { initLayers, loadTilesetMetadata } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
-import { setPinnedVessels } from 'actions/vesselInfo';
+import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 
 function dispatchActions(workspaceData, dispatch, getState) {
@@ -54,6 +54,8 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
 
   dispatch(setFlagFilters(workspaceData.flagFilters));
+
+  dispatch(loadRecentVesselHistory());
 
   dispatch(setPinnedVessels(workspaceData.pinnedVessels));
 }

@@ -20,8 +20,8 @@ const GA_ACTION_WHITELIST = [
     category: 'Layer',
     action: 'Toggle layer visibility',
     getPayload: (action, state) => {
-      const layerIndex = state.layers.findIndex(l => l.id === action.payload.layerId);
-      const changedLayer = state.layers[layerIndex];
+      const layerIndex = state.layers.workspaceLayers.findIndex(l => l.id === action.payload.layerId);
+      const changedLayer = state.layers.workspaceLayers[layerIndex];
 
       return {
         layerId: action.payload.layerId,
@@ -34,8 +34,8 @@ const GA_ACTION_WHITELIST = [
     category: 'Layer',
     action: 'Add from GFW Library',
     getPayload: (action, state) => {
-      const layerIndex = state.layers.findIndex(l => l.id === action.payload.layerId);
-      const changedLayer = state.layers[layerIndex];
+      const layerIndex = state.layers.workspaceLayers.findIndex(l => l.id === action.payload.layerId);
+      const changedLayer = state.layers.workspaceLayers[layerIndex];
 
       return {
         layerId: action.payload.layerId,

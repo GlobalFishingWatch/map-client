@@ -3,14 +3,14 @@ import classnames from 'classnames';
 import { LAYER_TYPES } from 'constants';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import { hueToRgbString } from 'util/hsvToRgb';
-
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
-import iconStyles from 'styles/icons.scss';
-
+import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
+import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
+import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 
 class LayerItem extends Component {
 
@@ -38,6 +38,10 @@ class LayerItem extends Component {
     this.props.setLayerHue(hue, this.props.layer.id);
   }
 
+  onChangeLayerLabel(value) {
+    this.props.setLayerLabel(this.props.layer.id, value);
+  }
+
   onClickReport() {
     this.props.toggleReport(this.props.layer.id, this.props.layer.title);
   }
@@ -49,6 +53,11 @@ class LayerItem extends Component {
     };
 
     this.props.openLayerInfoModal(modalParams);
+  }
+
+  clearName() {
+    this.onChangeLayerLabel('');
+    this.inputName.focus();
   }
 
   toggleBlending() {
@@ -63,32 +72,30 @@ class LayerItem extends Component {
   }
 
   render() {
-    return (
-      <li
-        className={LayerListStyles['layer-item']}
-      >
-        <label>
-          <input
-            className={SwitcherStyles['c-switcher']}
-            type="checkbox"
-            checked={this.props.layer.visible}
-            onChange={() => this.onChangeVisibility()}
-            key={this.getColor(this.props.layer)}
-            style={{
-              color: this.getColor(this.props.layer)
+    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === this.props.layer.id;
+    const canReport = (this.props.userPermissions.indexOf('reporting') !== -1);
+
+    let actions;
+    if (this.props.layerPanelEditMode === true) {
+      actions = (
+        <div className={LayerListStyles['edition-menu']} >
+          <DeleteIcon
+            className={classnames(icons.icon, LayerListStyles['delete-icon'])}
+            onClick={() => {
+              this.props.toggleLayerWorkspacePresence(this.props.layer);
             }}
           />
-          <span className={LayerListStyles['layer-title']}>
-            {this.props.layer.title}
-          </span>
-        </label>
-        <ul className={LayerListStyles['layer-option-list']}>
-          {this.props.userCanReport && this.props.layer.reportable && <li
+        </div>
+      );
+    } else {
+      actions = (
+        <ul className={LayerListStyles['layer-option-list']} >
+          {canReport && this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
-              className={classnames({ [`${LayerListStyles['-highlighted']}`]: this.props.isCurrentlyReported })}
+              className={classnames({ [`${LayerListStyles['-highlighted']}`]: isCurrentlyReportedLayer })}
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom && <li
@@ -96,8 +103,8 @@ class LayerItem extends Component {
             onClick={() => this.toggleBlending()}
           >
             <BlendingIcon
-              className={classnames(iconStyles['blending-icon'],
-                { [`${iconStyles['-white']}`]: this.props.showBlending })}
+              className={classnames(icons['blending-icon'],
+                { [`${icons['-white']}`]: this.props.showBlending })}
             />
           </li>}
           <li
@@ -106,34 +113,80 @@ class LayerItem extends Component {
           >
             <InfoIcon />
           </li>
+          <LayerOptionsTooltip
+            displayHue={this.props.layer.type === LAYER_TYPES.ClusterAnimation}
+            displayOpacity
+            hueValue={this.props.layer.hue}
+            opacityValue={this.props.layer.opacity}
+            onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
+            onChangeHue={hue => this.onChangeHue(hue)}
+            showBlending={this.props.showBlending}
+          />
         </ul>
+      );
+    }
 
-        <LayerOptionsTooltip
-          displayHue={this.props.layer.type === LAYER_TYPES.ClusterAnimation}
-          displayOpacity
-          hueValue={this.props.layer.hue}
-          opacityValue={this.props.layer.opacity}
-          onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
-          onChangeHue={hue => this.onChangeHue(hue)}
-          showBlending={this.props.showBlending}
+
+    return (
+      <li
+        className={LayerListStyles['layer-item']}
+      >
+        <input
+          className={SwitcherStyles['c-switcher']}
+          type="checkbox"
+          checked={this.props.layer.visible}
+          onChange={() => this.onChangeVisibility()}
+          key={this.getColor(this.props.layer)}
+          style={{
+            color: this.getColor(this.props.layer)
+          }}
         />
+        <input
+          className={classnames(LayerListStyles['item-name'], { [LayerListStyles['item-rename']]: this.props.layerPanelEditMode })}
+          onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
+          readOnly={!this.props.layerPanelEditMode}
+          value={this.props.layer.label}
+          ref={((elem) => {
+            this.inputName = elem;
+          })}
+        />
+        {this.props.layerPanelEditMode === true && <RenameIcon
+          className={classnames(icons.icon, icons['icon-close'], LayerListStyles['rename-icon'])}
+          onClick={() => this.clearName()}
+        />}
+        {actions}
       </li>
     );
   }
 }
 
 LayerItem.propTypes = {
+  /*
+  list of restricted actions a user is allowed to perform
+   */
+  userPermissions: React.PropTypes.array,
   layerIndex: React.PropTypes.number,
+  /*
+  layer object
+   */
   layer: React.PropTypes.object,
-  isCurrentlyReported: React.PropTypes.bool,
+  currentlyReportedLayerId: React.PropTypes.number,
   toggleLayerVisibility: React.PropTypes.func,
+  toggleLayerWorkspacePresence: React.PropTypes.func,
   toggleReport: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   setLayerHue: React.PropTypes.func,
   openLayerInfoModal: React.PropTypes.func,
   onLayerBlendingToggled: React.PropTypes.func,
+  /*
+  Called when a layer title changes
+   */
+  setLayerLabel: React.PropTypes.func,
   showBlending: React.PropTypes.bool,
-  userCanReport: React.PropTypes.bool
+  /*
+  If layer labels are editable or not
+   */
+  layerPanelEditMode: React.PropTypes.bool
 };
 
 export default LayerItem;

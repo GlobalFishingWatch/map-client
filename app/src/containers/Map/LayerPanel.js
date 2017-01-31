@@ -5,7 +5,7 @@ import { setLayerInfoModal } from 'actions/map';
 import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'actions/layers';
 
 const mapStateToProps = state => ({
-  layers: state.layers,
+  layers: state.layers.workspaceLayers,
   currentlyReportedLayerId: state.report.layerId,
   userPermissions: state.user.userPermissions
 });

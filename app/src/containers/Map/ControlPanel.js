@@ -5,7 +5,7 @@ import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { login } from 'actions/user';
 
 const mapStateToProps = state => ({
-  layers: state.layers,
+  layers: state.layers.workspaceLayers,
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
   userPermissions: state.user.userPermissions,
   vessels: state.vesselInfo.details

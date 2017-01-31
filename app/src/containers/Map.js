@@ -14,7 +14,7 @@ import {
   setWelcomeModalVisibility
 } from 'actions/map';
 import { getLayerLibrary } from 'actions/layerLibrary';
-import { toggleLayerVisibility } from 'actions/layers';
+import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
 
@@ -33,7 +33,8 @@ const mapStateToProps = state => ({
   userPermissions: state.user.userPermissions,
   searchModalOpen: state.search.searchModalOpen,
   recentVesselModalOpen: state.map.recentVesselModal.open,
-  welcomeModalOpen: state.map.welcomeModal.open
+  welcomeModalOpen: state.map.welcomeModal.open,
+  layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -80,6 +81,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeWelcomeModal: () => {
     dispatch(setWelcomeModalVisibility(false));
+  },
+  closeLayerRemovalModal: () => {
+    dispatch(confirmLayerRemoval(false));
   }
 });
 

@@ -60,6 +60,15 @@
           font-weight: $font-weight-bold;
           text-align: center;
         }
+
+        p {
+          color: $color-4;
+        }
+
+        .footer {
+          display: flex;
+          justify-content: center;
+        }
       }
     }
   }
