@@ -92,6 +92,7 @@
     > .social-button {
       border: 0;
       cursor: pointer;
+      outline: 0;
       padding: 24px 0;
 
       &:not(:first-child) {
