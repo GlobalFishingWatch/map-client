@@ -106,9 +106,10 @@ export function setPinnedVessels(pinnedVessels) {
         throw new Error('XMLHttpRequest is disabled');
       }
 
+      const baseURL = pinnedVessel.tilesetUrl || state.map.tilesetUrl;
       request.open(
         'GET',
-        `${state.map.tilesetUrl}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
+        `${baseURL}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
         true
       );
       if (state.user.token) {
@@ -183,7 +184,8 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
             seriesgroup,
             seriesGroupData: groupedData,
             series: _.uniq(groupedData.series),
-            selectedSeries: series
+            selectedSeries: series,
+            tilesetUrl: state.map.tilesetUrl
           }
         });
 

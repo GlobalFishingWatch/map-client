@@ -1,10 +1,8 @@
-import { push } from 'react-router-redux';
 import {
   INIT_GOOGLE_MAPS,
   SET_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
-  SET_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
@@ -77,90 +75,6 @@ export function setShareModalError(error) {
   return {
     type: SET_SHARE_MODAL_ERROR,
     payload: error
-  };
-}
-
-/**
- * Save the workspace's ID in the store
- *
- * @export setWorkspaceId
- * @param {string} workspaceId
- * @returns {object}
- */
-export function setWorkspaceId(workspaceId) {
-  return {
-    type: SET_WORKSPACE_ID,
-    payload: workspaceId
-  };
-}
-
-/**
- * Update the URL according to the parameters present in the store
- *
- * @export updateURL
- * @returns {object}
- */
-export function updateURL() {
-  return (dispatch, getState) => {
-    const state = getState();
-    dispatch(push(`/map?workspace=${state.map.workspaceId}`));
-  };
-}
-
-/**
- * Save the state of the map, the filters and the timeline and send it
- * to the API. Get back the id of the workspace and save it in the store.
- * In case of error, call the error action callback with the error string.
- *
- * @export saveWorkspace
- * @param {function} errorAction - action to dispatch in case of error
- * @returns {object}
- */
-export function saveWorkspace(errorAction) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    };
-
-    if (state.user.token) {
-      headers.Authorization = `Bearer ${state.user.token}`;
-    }
-
-    fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        workspace: {
-          tileset: state.map.tilesetUrl,
-          map: {
-            center: state.map.center,
-            zoom: state.map.zoom,
-            layers: state.layers.workspaceLayers.filter(layer => layer.added)
-          },
-          pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
-            seriesgroup: e.seriesgroup,
-            title: e.title,
-            color: e.color,
-            hue: e.hue
-          })),
-          basemap: state.map.activeBasemap,
-          timeline: {
-            // We store the timestamp
-            innerExtent: state.filters.timelineInnerExtent.map(e => +e),
-            outerExtent: state.filters.timelineOuterExtent.map(e => +e)
-          },
-          flag: state.filters.flag
-        }
-      })
-    })
-      .then(res => res.json())
-      .then((data) => {
-        dispatch(setWorkspaceId(data.id));
-        dispatch(updateURL());
-      })
-      .catch(({ message }) => dispatch(errorAction(message)));
   };
 }
 
