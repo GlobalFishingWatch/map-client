@@ -168,13 +168,10 @@ export function queryHeatmap(tileQuery, latLng) {
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
     let vessels = [];
-    Object.keys(layers).forEach((layerId, index) => {
+    Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      // TODO remove ?
-      if (index === 0) {
-        vessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
-      }
+      vessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
     });
     vessels = _.flatten(vessels);
 
@@ -200,6 +197,9 @@ export function queryHeatmap(tileQuery, latLng) {
       // console.log('multiple results');
       // the following solely sets the cluster center in the state to be
       // reused later if user clicks on 'zoom to see more'
+      if (allSeriesGroups[0] <= 0) {
+        console.warn('negative seriesgroup:', allSeriesGroups[0]);
+      }
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       dispatch({
         type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
