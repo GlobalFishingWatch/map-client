@@ -81,13 +81,12 @@
   height: $timebar-height;
   left: 0;
   width: 100%;
-  z-index: 6;
 }
 
 .map-container {
-  height: calc(100% - 88px);
-  overflow-y: hidden;
+  height: calc(100vh - #{$map-footer-height + $timebar-height});
   position: relative;
+  z-index: 4;
 
   @media screen and (min-width: 900px) {
     height: calc(100% - #{$map-footer-height + $timebar-height}); // footer mini height

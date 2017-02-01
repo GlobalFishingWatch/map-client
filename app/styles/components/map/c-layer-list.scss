@@ -125,8 +125,16 @@
         }
       }
 
-      .-highlighted path {
-        fill: $color-4;
+      .-highlighted {
+        path {
+          &:first-child {
+            fill: $color-4;
+          }
+
+          &:last-child {
+            fill: $color-13;
+          }
+        }
       }
     }
 

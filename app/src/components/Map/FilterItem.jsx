@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import classnames from 'classnames';
+import { REVERSE_TOOLTIP_FILTERS_MOBILE } from 'constants';
 
 import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
@@ -72,6 +73,7 @@ class FilterItem extends Component {
                 hueValue={hueValue}
                 onChangeHue={hue => this.onChangeHue(hue)}
                 showBlending={this.props.showBlending}
+                isReverse={this.props.index < REVERSE_TOOLTIP_FILTERS_MOBILE}
               />
             </li>
             <li className={flagFilterStyles['filter-option-item']}>

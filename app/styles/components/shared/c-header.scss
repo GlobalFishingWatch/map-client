@@ -197,7 +197,7 @@
     left: 0;
     position: absolute;
     width: 100%;
-    z-index: 6;
+    z-index: 5;
 
     @media #{$mq-tablet} {
       background-color: transparent;
