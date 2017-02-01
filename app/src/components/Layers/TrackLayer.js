@@ -114,6 +114,7 @@ export default class TrackLayer extends BaseOverlay {
   }
 
   drawTracks(tracks, drawParams) {
+    return
     this.clear();
     const overlayProjection = this.getProjection();
     if (!overlayProjection) {

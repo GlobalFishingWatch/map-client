@@ -149,6 +149,7 @@ class MapLayers extends Component {
       this.props.viewportHeight
     );
     this.trackLayer.setMap(this.map);
+    this.tracksLayer = this.heatmapContainer.tracksLayer;
   }
 
 
@@ -365,6 +366,16 @@ class MapLayers extends Component {
     }
 
     this.trackLayer.drawTracks(
+      data,
+      {
+        startTimestamp,
+        endTimestamp,
+        timelinePaused,
+        overStartTimestamp,
+        overEndTimestamp
+      }
+    );
+    this.tracksLayer.drawTracks(
       data,
       {
         startTimestamp,

@@ -3,6 +3,7 @@ import 'pixi.js';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
+import TracksLayer from 'components/Layers/TracksLayerGL';
 import {
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_BASE_RADIUS,
@@ -43,6 +44,8 @@ export default class HeatmapContainer extends BaseOverlay {
     const baseTextureCanvas = this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR);
     this.baseTexture = PIXI.Texture.fromCanvas(baseTextureCanvas);
 
+    this.tracksLayer = new TracksLayer();
+    this.stage.addChild(this.tracksLayer.stage);
 
     // uncomment to debug spritesheet
     // this.container.appendChild(baseTextureCanvas);
