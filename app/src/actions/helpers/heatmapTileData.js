@@ -126,6 +126,19 @@ export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
   return data;
 };
 
+export const addTracksWorldCoordinates = (vectorArray, map) => {
+  const data = vectorArray;
+  const proj = map.getProjection();
+  data.worldX = new Float32Array(data.latitude.length);
+  data.worldY = new Float32Array(data.longitude.length);
+  for (let index = 0, length = data.latitude.length; index < length; index++) {
+    const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
+    data.worldX[index] = worldPoint.x;
+    data.worldY[index] = worldPoint.y;
+  }
+  return data;
+};
+
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *

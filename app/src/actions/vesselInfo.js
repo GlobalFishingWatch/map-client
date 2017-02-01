@@ -17,7 +17,7 @@ import {
 } from 'actions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import _ from 'lodash';
-import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
+import { getCleanVectorArrays, groupData, addTracksWorldCoordinates } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
 export function setRecentVesselHistory(seriesgroup) {
@@ -152,6 +152,7 @@ export function showNoVesselsInfo() {
 
 function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
+    const map = getState().map.googleMaps;
     const state = getState();
     const filters = state.filters;
     const startYear = new Date(filters.timelineOverallExtent[0]).getUTCFullYear();
@@ -177,12 +178,13 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
           'series',
           'weight'
         ]);
+        const vectorArray = addTracksWorldCoordinates(groupedData, map);
 
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
             seriesgroup,
-            seriesGroupData: groupedData,
+            seriesGroupData: vectorArray,
             series: _.uniq(groupedData.series),
             selectedSeries: series,
             tilesetUrl: state.map.tilesetUrl

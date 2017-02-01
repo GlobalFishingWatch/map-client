@@ -46,6 +46,8 @@ export default class TrackLayer extends BaseOverlay {
   onAdd() {
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.canvas);
+    this.map = this.getMap();
+    this.projection = this.map.getProjection();
   }
 
   draw() {}
@@ -94,10 +96,19 @@ export default class TrackLayer extends BaseOverlay {
    * @param drawStyle
    * @returns {*}
    */
-  drawPoint(overlayProjection, data, i, drawStyle) {
-    const point = overlayProjection.fromLatLngToDivPixel(
-      new google.maps.LatLng(data.latitude[i], data.longitude[i])
-    );
+  drawPoint(projectionData, data, i, drawStyle) {
+    // TODO reuse world coordinates calculated in vesselInfo
+    // use map top left corner at draw time, ie const top = proj.fromLatLngToPoint(map.getBounds().getNorthEast()).y;
+    // and zoom to convert from world coordinates to pixel coordinates
+
+    // const point = overlayProjection.fromLatLngToDivPixel(
+    //   new google.maps.LatLng(data.latitude[i], data.longitude[i])
+    // );
+
+    const point = {
+      x: (data.worldX[i] - projectionData.left) * projectionData.scale,
+      y: (data.worldY[i] - projectionData.top) * projectionData.scale
+    };
 
     const weight = data.weight[i];
     if (weight > 0.75) {
@@ -114,15 +125,14 @@ export default class TrackLayer extends BaseOverlay {
   }
 
   drawTracks(tracks, drawParams) {
-    return
     this.clear();
-    const overlayProjection = this.getProjection();
-    if (!overlayProjection) {
-      return;
-    }
-
+    const projectionData = {
+      top: this.projection.fromLatLngToPoint(this.map.getBounds().getNorthEast()).y,
+      left: this.projection.fromLatLngToPoint(this.map.getBounds().getSouthWest()).x,
+      scale: 2 ** this.map.getZoom()
+    };
     tracks.forEach((track) => {
-      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, overlayProjection);
+      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, projectionData);
     });
   }
 
@@ -133,7 +143,7 @@ export default class TrackLayer extends BaseOverlay {
    * @param series
    * @param drawParams
    */
-  _drawTrack(data, series, hue, drawParams, overlayProjection) {
+  _drawTrack(data, series, hue, drawParams, projectionData) {
     let point = null;
     let previousPoint = null;
     let drawStyle = null;
@@ -155,7 +165,7 @@ export default class TrackLayer extends BaseOverlay {
       }
       // numPointsDrawn++;
 
-      point = this.drawPoint(overlayProjection, data, i, drawStyle.strokeStyle);
+      point = this.drawPoint(projectionData, data, i, drawStyle.strokeStyle);
 
       if (previousDrawStyle !== drawStyle || (i > 0 && data.series[i - 1] !== data.series[i])) {
         if (previousDrawStyle) {
