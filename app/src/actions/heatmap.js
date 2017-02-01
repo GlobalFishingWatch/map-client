@@ -22,7 +22,7 @@ import { trackMapClicked } from 'actions/analytics';
 
 function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
   const tileCoordinates = referenceTile.tileCoordinates;
-  const pelagosPromises = getTilePelagosPromises(layerUrl, tileCoordinates, token, temporalExtents);
+  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates });
   const allLayerPromises = Promise.all(pelagosPromises);
 
   const layerTilePromise = new Promise((resolve) => {
@@ -63,6 +63,7 @@ function getTiles(layerIds, referenceTiles) {
         layers[layerId].tiles.push(tile);
         const tilePromise = loadLayerTile(
           referenceTile,
+          // TODO use URL from header
           layers[layerId].url,
           token,
           map,

@@ -17,7 +17,7 @@ import {
 } from 'actions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import _ from 'lodash';
-import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
+import { getCleanVectorArrays, groupData, getTilePelagosPromises } from 'actions/helpers/heatmapTileData';
 import PelagosClient from 'lib/pelagosClient';
 
 export function setRecentVesselHistory(seriesgroup) {
@@ -152,23 +152,35 @@ export function showNoVesselsInfo() {
   };
 }
 
-function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
+function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
     const filters = state.filters;
     const startYear = new Date(filters.timelineOverallExtent[0]).getUTCFullYear();
     const endYear = new Date(filters.timelineOverallExtent[1]).getUTCFullYear();
-    const urls = [];
+    let promises;
 
-    for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${state.map.tilesetUrl}/\
-sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+    // TODO remove this when layer Id is always provided to getVesselTrack
+    if (layerId === null) {
+      const urls = [];
+      promises = [];
+      for (let i = startYear; i <= endYear; i++) {
+        urls.push(`${state.map.tilesetUrl}/\
+          sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
+      }
+      for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+        promises.push(new PelagosClient().obtainTile(urls[urlIndex], state.user.token));
+      }
+    } else {
+      const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
+      const header = currentLayer.header;
+      // TODO use URL from header
+      const url = currentLayer.url;
+      // ;0,0,0
+      promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
     }
-    const promises = [];
-    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-      promises.push(new PelagosClient().obtainTile(urls[urlIndex], state.user.token));
-    }
+
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -215,7 +227,7 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
       type: ADD_VESSEL
     });
     dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
-    dispatch(getVesselTrack(seriesgroup, series, zoomToBounds));
+    dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
   };
 }
 
@@ -262,7 +274,8 @@ export function showPinnedVesselDetails(seriesgroup) {
       }
     });
 
-    dispatch(getVesselTrack(seriesgroup, null, true));
+    // TODO send           layerId
+    dispatch(getVesselTrack(null, seriesgroup, null, true));
   };
 }
 
