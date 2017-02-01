@@ -97,6 +97,8 @@ export const SEARCH_MODAL_PAGE_SIZE = 15;
 
 export const FLAG_FILTERS_LIMIT = 4;
 
+export const REVERSE_TOOLTIP_ITEMS_MOBILE = 5;
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',
