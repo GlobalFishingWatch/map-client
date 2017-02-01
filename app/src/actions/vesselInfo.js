@@ -244,8 +244,8 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function showPinnedVesselDetails(layerId, seriesgroup) {
-  return (dispatch) => {
+export function showPinnedVesselDetails(seriesgroup) {
+  return (dispatch, getState) => {
     dispatch(clearVesselInfo());
     dispatch({
       type: SHOW_VESSEL_DETAILS,
@@ -253,8 +253,8 @@ export function showPinnedVesselDetails(layerId, seriesgroup) {
         seriesgroup
       }
     });
-
-    dispatch(getVesselTrack(layerId, seriesgroup, null, true));
+    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
+    dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
   };
 }
 

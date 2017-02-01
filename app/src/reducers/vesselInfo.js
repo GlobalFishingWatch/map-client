@@ -198,7 +198,8 @@ export default function (state = initialState, action) {
         mmsi: vesselDetails.mmsi,
         seriesgroup: vesselDetails.seriesgroup,
         vesselname: vesselDetails.vesselname,
-        pinned: vesselDetails.pinned
+        pinned: vesselDetails.pinned,
+        layerId: vesselDetails.layerId
       });
 
       if (vesselHistoryIndex !== -1) {

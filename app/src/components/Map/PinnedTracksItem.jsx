@@ -15,7 +15,7 @@ class PinnedTracksItem extends Component {
 
   onVesselLabelClick() {
     if (this.props.pinnedVesselEditMode === false) {
-      this.props.onVesselClicked(this.props.vessel.layerId, this.props.vessel.seriesgroup);
+      this.props.onVesselClicked(this.props.vessel.seriesgroup);
     }
   }
 
