@@ -167,44 +167,62 @@ export function queryHeatmap(tileQuery, latLng) {
     const timelineExtent = state.filters.timelineInnerExtentIndexes;
     const startIndex = timelineExtent[0];
     const endIndex = timelineExtent[1];
-    let vessels = [];
+    const layersVessels = [];
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      vessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
+      layersVessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
     });
-    vessels = _.flatten(vessels);
 
-    // we can get multiple points with similar series and seriesgroup, in which case
-    // we should treat that as a successful vessel query, not a cluster
-    const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
-    const allSeries = _.uniq(vessels.map(v => v.series));
+    const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.length > 0);
+
+    let isCluster;
+    let isEmpty;
+    let seriesgroup;
+    let series;
+
+    if (layersVesselsResult.length === 0) {
+      isEmpty = true;
+    } else if (layersVesselsResult.length > 1) {
+      // if there are points over multiple layers, consider this a cluster
+      isCluster = true;
+    } else {
+      // we can get multiple points with similar series and seriesgroup, in which case
+      // we should treat that as a successful vessel query, not a cluster
+      const vessels = layersVesselsResult[0];
+      const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
+      const allSeries = _.uniq(vessels.map(v => v.series));
+      seriesgroup = allSeriesGroups[0];
+      series = allSeries[0];
+
+      if (vessels.length === 0) {
+        isEmpty = true;
+      } else if (allSeriesGroups.length > 1 || allSeries.length > 1 || seriesgroup <= 0) {
+        // one seriesGroup, one series, and seriesGroup is > 0
+        // (less than 0 means that points have been clustered server side)
+        isCluster = true;
+        if (allSeriesGroups[0] <= 0) {
+          console.warn('negative seriesgroup:', allSeriesGroups[0]);
+        }
+      }
+    }
+
 
     dispatch(clearVesselInfo());
-    if (vessels.length === 0) {
-      // no results in this area
-      // console.log('no results');
+
+    if (isEmpty === true) {
       dispatch(showNoVesselsInfo());
-    } else if (allSeriesGroups.length === 1 && allSeries.length === 1 && allSeriesGroups[0] > 0) {
-      // one seriesGroup, one series, and seriesGroup is > 0
-      // (less than 0 means that points have been clustered server side):
-      // only one valid result
-      // console.log('one valid result');
-      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
-      dispatch(addVessel(allSeriesGroups[0], allSeries[0]));
-    } else {
-      // multiple results
-      // console.log('multiple results');
+    } else if (isCluster === true) {
+      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       // the following solely sets the cluster center in the state to be
       // reused later if user clicks on 'zoom to see more'
-      if (allSeriesGroups[0] <= 0) {
-        console.warn('negative seriesgroup:', allSeriesGroups[0]);
-      }
-      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       dispatch({
         type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
       });
       dispatch(showVesselClusterInfo());
+    } else {
+      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
+      dispatch(addVessel(seriesgroup, series));
     }
   };
 }

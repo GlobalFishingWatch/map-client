@@ -152,6 +152,7 @@ export function showNoVesselsInfo() {
 
 function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
+    console.warn('seriesgroup', seriesgroup, 'series', series)
     const state = getState();
     const filters = state.filters;
     const startYear = new Date(filters.timelineOverallExtent[0]).getUTCFullYear();
@@ -178,6 +179,7 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
           'weight'
         ]);
 
+        console.log(groupedData)
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
