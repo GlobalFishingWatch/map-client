@@ -36,7 +36,7 @@ export function loadRecentVesselHistory() {
   };
 }
 
-function setCurrentVessel(seriesgroup, fromSearch) {
+function setCurrentVessel(layerId, seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
@@ -68,6 +68,8 @@ function setCurrentVessel(seriesgroup, fromSearch) {
       } else {
         dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
       }
+
+      data.layerId = layerId;
 
       dispatch({
         type: SET_VESSEL_DETAILS,
@@ -152,7 +154,7 @@ export function showNoVesselsInfo() {
 
 function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
-    console.warn('seriesgroup', seriesgroup, 'series', series)
+    console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
     const filters = state.filters;
     const startYear = new Date(filters.timelineOverallExtent[0]).getUTCFullYear();
@@ -179,7 +181,6 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
           'weight'
         ]);
 
-        console.log(groupedData)
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
@@ -208,15 +209,12 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
   };
 }
 
-export function addVessel(seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
+export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
   return (dispatch) => {
     dispatch({
-      type: ADD_VESSEL,
-      payload: {
-        seriesgroup
-      }
+      type: ADD_VESSEL
     });
-    dispatch(setCurrentVessel(seriesgroup, fromSearch));
+    dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
     dispatch(getVesselTrack(seriesgroup, series, zoomToBounds));
   };
 }

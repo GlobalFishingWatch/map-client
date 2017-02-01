@@ -162,7 +162,6 @@ export function queryHeatmap(tileQuery, latLng) {
       return;
     }
 
-    // TODO do not query all sublayers?
     const layers = state.heatmap.heatmapLayers;
     const timelineExtent = state.filters.timelineInnerExtentIndexes;
     const startIndex = timelineExtent[0];
@@ -171,15 +170,19 @@ export function queryHeatmap(tileQuery, latLng) {
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      layersVessels.push(selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex));
+      layersVessels.push({
+        layerId,
+        vessels: selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex)
+      });
     });
 
-    const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.length > 0);
+    const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
 
     let isCluster;
     let isEmpty;
     let seriesgroup;
     let series;
+    let layerId;
 
     if (layersVesselsResult.length === 0) {
       isEmpty = true;
@@ -189,7 +192,8 @@ export function queryHeatmap(tileQuery, latLng) {
     } else {
       // we can get multiple points with similar series and seriesgroup, in which case
       // we should treat that as a successful vessel query, not a cluster
-      const vessels = layersVesselsResult[0];
+      layerId = layersVesselsResult[0].layerId;
+      const vessels = layersVesselsResult[0].vessels;
       const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
       const allSeries = _.uniq(vessels.map(v => v.series));
       seriesgroup = allSeriesGroups[0];
@@ -222,7 +226,7 @@ export function queryHeatmap(tileQuery, latLng) {
       dispatch(showVesselClusterInfo());
     } else {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
-      dispatch(addVessel(seriesgroup, series));
+      dispatch(addVessel(layerId, seriesgroup, series));
     }
   };
 }
