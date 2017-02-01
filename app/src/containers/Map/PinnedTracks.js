@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import PinnedTracks from 'components/Map/PinnedTracks';
 import {
-  showPinnedVesselDetails,
   toggleVesselPin,
   setPinnedVesselHue,
   togglePinnedVesselEditMode
@@ -14,9 +13,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onVesselClicked: (seriesgroup) => {
-    dispatch(showPinnedVesselDetails(seriesgroup));
-  },
   onRemoveClicked: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));
   },

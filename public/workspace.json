@@ -116,11 +116,13 @@
     "pinnedVessels": [
       {
         "title": "foo",
-        "seriesgroup": 5932205
+        "seriesgroup": 5932205,
+        "layerId": "849-tileset-tms"
       },
       {
         "title": "SUPI GYU18502",
-        "seriesgroup": 7729439
+        "seriesgroup": 7729439,
+        "layerId": "849-tileset-tms"
       }
     ],
     "basemap": "satellite",

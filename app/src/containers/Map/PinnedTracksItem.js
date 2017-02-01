@@ -9,9 +9,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onVesselClicked: (seriesgroup) => {
+  onVesselClicked: (layerId, seriesgroup) => {
     dispatch(setRecentVesselHistory(seriesgroup));
-    dispatch(showPinnedVesselDetails(seriesgroup));
+    dispatch(showPinnedVesselDetails(layerId, seriesgroup));
   },
   onRemoveClicked: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));
