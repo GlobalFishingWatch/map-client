@@ -2,9 +2,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import extentChanged from 'util/extentChanged';
-import TrackLayer from 'components/Layers/TrackLayer';
 import TiledLayer from 'components/Layers/TiledLayer';
-import HeatmapContainer from 'components/Layers/HeatmapContainer';
+import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import { LAYER_TYPES } from 'constants';
@@ -24,18 +23,18 @@ class MapLayers extends Component {
       this.map = nextProps.map;
       this.build();
     } else if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
-      this.heatmapContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
+      this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
     }
     if (nextProps.layers.length) {
-      if (!this.heatmapContainer) {
+      if (!this.glContainer) {
         this.initHeatmap();
       }
       this.updateLayers(nextProps);
     }
 
-    if (this.props.zoom !== nextProps.zoom && this.heatmapContainer) {
-      this.heatmapContainer.setZoom(nextProps.zoom);
+    if (this.props.zoom !== nextProps.zoom && this.glContainer) {
+      this.glContainer.setZoom(nextProps.zoom);
     }
 
     if (!_.isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
@@ -57,8 +56,8 @@ class MapLayers extends Component {
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
 
-    if (this.trackLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
-      this.trackLayer.clear();
+    if (this.tracksLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
+      this.tracksLayer.clear();
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextProps.vesselTracks,
@@ -70,7 +69,7 @@ class MapLayers extends Component {
       });
     }
 
-    if (this.heatmapContainer) {
+    if (this.glContainer) {
       // update vessels layer when:
       // - tiled data changed
       // - selected inner extent changed
@@ -141,15 +140,9 @@ class MapLayers extends Component {
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
-    this.heatmapContainer = new HeatmapContainer(this.props.viewportWidth, this.props.viewportHeight);
-    this.heatmapContainer.setMap(this.map);
-    // Create track layer
-    this.trackLayer = new TrackLayer(
-      this.props.viewportWidth,
-      this.props.viewportHeight
-    );
-    this.trackLayer.setMap(this.map);
-    this.tracksLayer = this.heatmapContainer.tracksLayer;
+    this.glContainer = new GLContainer(this.props.viewportWidth, this.props.viewportHeight);
+    this.glContainer.setMap(this.map);
+    this.tracksLayer = this.glContainer.tracksLayer;
   }
 
 
@@ -223,20 +216,20 @@ class MapLayers extends Component {
   }
 
   addHeatmapLayer(newLayer) {
-    this.addedLayers[newLayer.id] = this.heatmapContainer.addLayer(newLayer);
+    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer);
     this.renderHeatmap(this.props);
   }
 
   removeHeatmapLayer(layer) {
-    this.heatmapContainer.removeLayer(layer.id);
+    this.glContainer.removeLayer(layer.id);
   }
 
   setHeatmapFlags(props) {
-    this.heatmapContainer.setFlags(props.flagsLayers);
+    this.glContainer.setFlags(props.flagsLayers);
   }
 
   renderHeatmap(props) {
-    this.heatmapContainer.render(props.heatmap, props.timelineInnerExtentIndexes);
+    this.glContainer.render(props.heatmap, props.timelineInnerExtentIndexes);
   }
 
   addCustomLayer(layer) {
@@ -308,7 +301,7 @@ class MapLayers extends Component {
   }
 
   setLayersInteraction(reportLayerId) {
-    this.heatmapContainer.interactive = (reportLayerId === null);
+    this.glContainer.interactive = (reportLayerId === null);
     this.props.layers.filter(layerSettings => layerSettings.type !== LAYER_TYPES.Heatmap).forEach((layerSettings) => {
       const layer = this.addedLayers[layerSettings.id];
       if (layer) {
@@ -353,10 +346,9 @@ class MapLayers extends Component {
   }
 
   updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
-    if (!this.trackLayer || !data) {
+    if (!this.tracksLayer || !data) {
       return;
     }
-    this.trackLayer.reposition();
 
     let overStartTimestamp;
     let overEndTimestamp;
@@ -365,16 +357,6 @@ class MapLayers extends Component {
       overEndTimestamp = timelineOverExtent[1].getTime();
     }
 
-    this.trackLayer.drawTracks(
-      data,
-      {
-        startTimestamp,
-        endTimestamp,
-        timelinePaused,
-        overStartTimestamp,
-        overEndTimestamp
-      }
-    );
     this.tracksLayer.drawTracks(
       data,
       {
@@ -385,6 +367,7 @@ class MapLayers extends Component {
         overEndTimestamp
       }
     );
+    this.glContainer.renderTracks();
   }
 
   rerenderTrackLayer() {
@@ -405,19 +388,23 @@ class MapLayers extends Component {
    * Handles map idle event (once loading is done)
    */
   onMapIdle() {
-    if (this.heatmapContainer) {
-      this.heatmapContainer.reposition();
+    if (this.glContainer) {
+      this.glContainer.reposition();
       this.renderHeatmap(this.props);
     }
-    if (this.trackLayer) {
+    if (this.tracksLayer) {
       this.rerenderTrackLayer();
     }
   }
 
   onMapCenterChanged() {
-    if (this.heatmapContainer) {
-      this.heatmapContainer.reposition();
+    // TODO instead of rerendering everything while moving, just offset the webGL canvas
+    if (this.glContainer) {
+      this.glContainer.reposition();
       this.renderHeatmap(this.props);
+    }
+    if (this.tracksLayer) {
+      this.rerenderTrackLayer();
     }
   }
 
@@ -429,7 +416,7 @@ class MapLayers extends Component {
    * @param event
    */
   onMapClick(event) {
-    if (!event || !this.heatmapContainer || this.heatmapContainer.interactive === false) {
+    if (!event || !this.glContainer || this.glContainer.interactive === false) {
       return;
     }
 

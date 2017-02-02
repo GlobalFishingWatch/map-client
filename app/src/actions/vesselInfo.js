@@ -157,8 +157,12 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
     console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
 
+    let layerId_ = layerId;
     // TODO remove when layerId is passed around when using search
-    const layerId_ = (layerId === null) ? '849-tileset-tms' : layerId;
+    if (layerId === null || layerId === undefined) {
+      console.warn('layerId not sent, using default tileset');
+      layerId_ = '849-tileset-tms';
+    }
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
     const header = currentLayer.header;

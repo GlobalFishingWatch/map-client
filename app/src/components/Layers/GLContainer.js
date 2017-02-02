@@ -3,7 +3,7 @@ import 'pixi.js';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
-import TracksLayer from 'components/Layers/TracksLayerGL';
+import TracksLayer from 'components/Layers/TracksLayer';
 import {
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_BASE_RADIUS,
@@ -15,7 +15,7 @@ import {
 
 const MAX_SPRITES_FACTOR = 0.002;
 
-export default class HeatmapContainer extends BaseOverlay {
+export default class GLContainer extends BaseOverlay {
   constructor(viewportWidth, viewportHeight) {
     super();
     this.layers = [];
@@ -32,7 +32,7 @@ export default class HeatmapContainer extends BaseOverlay {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
 
-    this.renderer = new PIXI.WebGLRenderer(this.viewportWidth, this.viewportHeight, { transparent: true });
+    this.renderer = new PIXI.WebGLRenderer(this.viewportWidth, this.viewportHeight, { transparent: true, antialias: true });
 
     this.canvas = this.renderer.view;
     this.canvas.style.position = 'absolute';
@@ -93,9 +93,9 @@ export default class HeatmapContainer extends BaseOverlay {
 
   // GMaps overlay logic
   onAdd() {
-    // Add the element to the "overlayLayer" pane.
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.container);
+    this.tracksLayer.setMap(this.getMap());
   }
 
   onRemove() {}
@@ -156,6 +156,10 @@ export default class HeatmapContainer extends BaseOverlay {
       const tiles = layerData.tiles;
       layer.render(tiles, startIndex, endIndex);
     }
+    this._renderStage();
+  }
+
+  renderTracks() {
     this._renderStage();
   }
 
