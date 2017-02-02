@@ -1,39 +1,33 @@
 @import '../../settings';
+@import '../../mixins';
 
 .c-blending {
+  background-color: $color-1;
+  border: solid 1px rgba($color-3, .4);
+  bottom: 27px;
   color: $color-4;
-  cursor: default;
-  display: flex;
-  flex-basis: 100%;
+  display: none;
   font-family: $font-family-1;
   font-size: $font-size-xxs-small;
   max-height: 0;
-  overflow: hidden;
+  padding: 20px;
+  position: absolute;
+  right: -30px;
   text-transform: uppercase;
+  width: 270px;
   z-index: 10;
 
-  @media #{$mq-tablet} {
+  &::before {
+    @include arrow(12px, 1px, rgba($color-3, .4), 'down');
     background-color: $color-1;
-    border: solid 1px rgba($color-3, .4);
-    bottom: 30px;
-    display: none;
-    padding: 20px;
+    bottom: -7px;
     position: absolute;
-    right: 0;
-    width: 270px;
+    right: 31px;
   }
 
   &.-is-visible {
-    display: flex;
-    margin: 10px 0 5px;
-    max-height: 40px;
-    overflow: visible;
-
-    @media #{$mq-tablet} {
-      display: block;
-      margin: 0;
-      max-height: none;
-    }
+    display: block;
+    max-height: none;
   }
 
   :global .blending-range {

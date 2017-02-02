@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import MediaQuery from 'react-responsive';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
@@ -29,14 +30,31 @@ class ControlPanel extends Component {
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
     const title = (
-      <div className={controlPanelStyle['accordion-header']}>
-        <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
-        {numPinnedVessels > 0 &&
-          <div className={controlPanelStyle['pinned-item-count']}>
-            {numPinnedVessels} pinned
-          </div>}
-        <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
+      <div>
+        <MediaQuery maxWidth={767}>
+          <div className={classnames(controlPanelStyle['accordion-header'], controlPanelStyle['-search'])}>
+            <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
+            <div className={controlPanelStyle['header-search-info']}>
+              <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
+              {numPinnedVessels > 0 &&
+                <div className={controlPanelStyle['pinned-item-count']}>
+                  ({numPinnedVessels})
+                </div>}
+            </div>
+          </div>
+        </MediaQuery>
+        <MediaQuery minWidth={768}>
+          <div className={controlPanelStyle['accordion-header']}>
+            <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
+            {numPinnedVessels > 0 &&
+              <div className={controlPanelStyle['pinned-item-count']}>
+                {numPinnedVessels} pinned
+              </div>}
+            <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
+          </div>
+        </MediaQuery>
       </div>);
+
 
     if (this.props.userPermissions.indexOf('search') === -1) {
       return (
@@ -105,8 +123,10 @@ class ControlPanel extends Component {
 
       >
         <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
-          <LayerPanel />
-          <LayerManagement />
+          <div className={controlPanelStyle.wrapper}>
+            <LayerPanel />
+            <LayerManagement />
+          </div>
         </div>
       </AccordionItem>);
   }
@@ -150,22 +170,44 @@ class ControlPanel extends Component {
 
   render() {
     return (
-      <div className={controlPanelStyle.controlpanel}>
-        <div className={controlPanelStyle['bg-wrapper']}>
-          {this.renderResume()}
-          <VesselInfoPanel />
-          <Accordion
-            activeItems={6}
-            allowMultiple={false}
-            className={controlPanelStyle['map-options']}
-          >
-            {this.renderSearch()}
-            {this.renderBasemap()}
-            {this.renderLayerPicker()}
-            {this.renderFilters()}
-          </Accordion>
-        </div>
-      </div>
+      <MediaQuery minWidth={768}>
+        {(matches) => {
+          if (matches) {
+            return (
+              <div className={controlPanelStyle.controlpanel}>
+                <div className={controlPanelStyle['bg-wrapper']}>
+                  {this.renderResume()}
+                  <VesselInfoPanel />
+                  <Accordion
+                    activeItems={6}
+                    allowMultiple={false}
+                    className={controlPanelStyle['map-options']}
+                  >
+                    {this.renderSearch()}
+                    {this.renderBasemap()}
+                    {this.renderLayerPicker()}
+                    {this.renderFilters()}
+                  </Accordion>
+                </div>
+              </div>);
+          }
+
+          return (<div className={controlPanelStyle.controlpanel}>
+            {this.renderResume()}
+            <VesselInfoPanel />
+            <Accordion
+              activeItems={6}
+              allowMultiple={false}
+              className={controlPanelStyle['map-options']}
+            >
+              {this.renderSearch()}
+              {this.renderBasemap()}
+              {this.renderLayerPicker()}
+              {this.renderFilters()}
+            </Accordion>
+          </div>);
+        }}
+      </MediaQuery>
     );
   }
 }
