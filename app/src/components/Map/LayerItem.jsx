@@ -106,6 +106,15 @@ class LayerItem extends Component {
               className={classnames(icons['blending-icon'],
                 { [`${icons['-white']}`]: this.props.showBlending })}
             />
+            <LayerOptionsTooltip
+              displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
+              displayOpacity
+              hueValue={this.props.layer.hue}
+              opacityValue={this.props.layer.opacity}
+              onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
+              onChangeHue={hue => this.onChangeHue(hue)}
+              showBlending={this.props.showBlending}
+            />
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
@@ -113,15 +122,6 @@ class LayerItem extends Component {
           >
             <InfoIcon />
           </li>
-          <LayerOptionsTooltip
-            displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
-            displayOpacity
-            hueValue={this.props.layer.hue}
-            opacityValue={this.props.layer.opacity}
-            onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
-            onChangeHue={hue => this.onChangeHue(hue)}
-            showBlending={this.props.showBlending}
-          />
         </ul>
       );
     }

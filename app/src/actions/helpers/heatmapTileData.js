@@ -35,28 +35,36 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  * @param timelineOverallEndDate
  * @returns {Array}
  */
-const getTemporalTileURLs = (tilesetUrl, tileCoordinates, temporalExtents) => {
-  const temporalExtentsUrls = [];
+const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
+  const urls = [];
   temporalExtents.forEach((extent) => {
     const start = new Date(extent[0]).toISOString();
     const end = new Date(extent[1]).toISOString();
-    const url = `${tilesetUrl}/${start},${end};${tileCoordinates.zoom},${tileCoordinates.x},${tileCoordinates.y}`;
-    temporalExtentsUrls.push(url);
+    let url = `${tilesetUrl}/`;
+    if (params.seriesgroup) {
+      url += `sub/seriesgroup=${params.seriesgroup}/`;
+    }
+    url += `${start},${end}`;
+    if (params.tileCoordinates) {
+      url += `;${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
+    } else {
+      // meh.
+      url += ';0,0,0';
+    }
+    urls.push(url);
   });
-  return temporalExtentsUrls;
+  return urls;
 };
 
-export const getTilePelagosPromises = (tilesetUrl, tileCoordinates, token, temporalExtents) => {
+export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
-  if (tileCoordinates) {
-    const urls = getTemporalTileURLs(
-      tilesetUrl,
-      tileCoordinates,
-      temporalExtents
-    );
-    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-      promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
-    }
+  const urls = getTemporalTileURLs(
+    tilesetUrl,
+    temporalExtents,
+    params
+  );
+  for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+    promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
   }
 
   return promises;

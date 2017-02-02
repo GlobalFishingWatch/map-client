@@ -76,7 +76,6 @@ class PinnedTracks extends Component {
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
   pinnedVesselEditMode: React.PropTypes.bool,
-  onVesselClicked: React.PropTypes.func,
   onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func,

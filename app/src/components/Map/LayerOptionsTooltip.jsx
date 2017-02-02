@@ -73,6 +73,17 @@ class LayerOptionsTooltip extends Component {
         className={classnames(BlendingStyles['c-blending'], { [`${BlendingStyles['-is-visible']}`]: this.props.showBlending })}
       >
         {this.props.displayOpacity && <div>
+          {this.props.displayHue && <div>
+            Hue
+            <InputRange
+              classNames={this.hueRangeConfig.classnames}
+              value={this.state.hueRangeValue}
+              maxValue={this.hueRangeConfig.maxValue}
+              minValue={this.hueRangeConfig.minValue}
+              onChange={(component, value) => this.onChangeHue(value)}
+              step={this.hueRangeConfig.step}
+            />
+          </div>}
           Opacity
           <InputRange
             classNames={this.opacityRangeConfig.classnames}
@@ -81,17 +92,6 @@ class LayerOptionsTooltip extends Component {
             minValue={this.opacityRangeConfig.minValue}
             onChange={(component, value) => this.onChangeOpacity(value)}
             step={this.opacityRangeConfig.step}
-          />
-        </div>}
-        {this.props.displayHue && <div>
-          Hue
-          <InputRange
-            classNames={this.hueRangeConfig.classnames}
-            value={this.state.hueRangeValue}
-            maxValue={this.hueRangeConfig.maxValue}
-            minValue={this.hueRangeConfig.minValue}
-            onChange={(component, value) => this.onChangeHue(value)}
-            step={this.hueRangeConfig.step}
           />
         </div>}
       </div>
