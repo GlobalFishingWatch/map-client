@@ -28,6 +28,7 @@
     > .item-name {
       background-color: transparent;
       border: 0;
+      border-bottom: 1px solid transparent;
       color: $color-4;
       cursor: pointer;
       flex: 1;
@@ -47,7 +48,7 @@
     }
 
     > .item-rename {
-      border-bottom: 1px solid rgba($color-3, .3);
+      border-bottom-color: rgba($color-3, .3);
     }
 
     > .rename-icon {
