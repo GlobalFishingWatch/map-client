@@ -19,7 +19,7 @@ class RecentVesselsModal extends Component {
           <li
             className={classnames(ResultListStyles['result-item'], recentVesselStyles['history-item'])}
             key={i}
-            onClick={() => this.props.drawVessel(entry.seriesgroup)}
+            onClick={() => this.props.drawVessel(entry.layerId, entry.seriesgroup)}
           >
             {entry.pinned === true &&
               <PinIcon

@@ -17,8 +17,7 @@ import {
 } from 'actions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import _ from 'lodash';
-import { getCleanVectorArrays, groupData } from 'actions/helpers/heatmapTileData';
-import PelagosClient from 'lib/pelagosClient';
+import { getCleanVectorArrays, groupData, getTilePelagosPromises } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
   return {
@@ -36,7 +35,7 @@ export function loadRecentVesselHistory() {
   };
 }
 
-function setCurrentVessel(seriesgroup, fromSearch) {
+function setCurrentVessel(layerId, seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
@@ -68,6 +67,8 @@ function setCurrentVessel(seriesgroup, fromSearch) {
       } else {
         dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
       }
+
+      data.layerId = layerId;
 
       dispatch({
         type: SET_VESSEL_DETAILS,
@@ -150,22 +151,20 @@ export function showNoVesselsInfo() {
   };
 }
 
-function getVesselTrack(seriesgroup, series = null, zoomToBounds = false) {
+function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
+    console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
-    const filters = state.filters;
-    const startYear = new Date(filters.timelineOverallExtent[0]).getUTCFullYear();
-    const endYear = new Date(filters.timelineOverallExtent[1]).getUTCFullYear();
-    const urls = [];
 
-    for (let i = startYear; i <= endYear; i++) {
-      urls.push(`${state.map.tilesetUrl}/\
-sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.000Z;0,0,0`);
-    }
-    const promises = [];
-    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-      promises.push(new PelagosClient().obtainTile(urls[urlIndex], state.user.token));
-    }
+
+    // TODO remove when layerId is passed around when using search
+    const layerId_ = (layerId === null) ? '849-tileset-tms' : layerId;
+
+    const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
+    const header = currentLayer.header;
+    // TODO use URL from header
+    const url = currentLayer.url;
+    const promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -206,16 +205,13 @@ sub/seriesgroup=${seriesgroup}/${i}-01-01T00:00:00.000Z,${i + 1}-01-01T00:00:00.
   };
 }
 
-export function addVessel(seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
+export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
   return (dispatch) => {
     dispatch({
-      type: ADD_VESSEL,
-      payload: {
-        seriesgroup
-      }
+      type: ADD_VESSEL
     });
-    dispatch(setCurrentVessel(seriesgroup, fromSearch));
-    dispatch(getVesselTrack(seriesgroup, series, zoomToBounds));
+    dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+    dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
   };
 }
 
@@ -253,7 +249,7 @@ export function togglePinnedVesselEditMode(forceMode = null) {
 }
 
 export function showPinnedVesselDetails(seriesgroup) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(clearVesselInfo());
     dispatch({
       type: SHOW_VESSEL_DETAILS,
@@ -261,8 +257,8 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
-
-    dispatch(getVesselTrack(seriesgroup, null, true));
+    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
+    dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
   };
 }
 
