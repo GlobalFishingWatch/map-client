@@ -4,7 +4,7 @@
   background-color: $color-13;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
   position: relative;
-  z-index: 11;
+  z-index: 4;
 
   @media #{$mq-tablet} {
     background-color: transparent;
