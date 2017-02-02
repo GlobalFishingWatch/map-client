@@ -120,7 +120,6 @@ class ControlPanel extends Component {
         key="layers"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
-
       >
         <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
           <div className={controlPanelStyle.wrapper}>
