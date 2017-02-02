@@ -1,6 +1,6 @@
 import React from 'react';
+import classnames from 'classnames';
 import styles from 'styles/components/shared/c-modal.scss';
-// eslint-disable-next-line import/no-unresolved
 import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
@@ -58,8 +58,15 @@ class Modal extends React.Component {
     }
 
     return (
-      <div style={customStyles} className={styles['c-modal']} onClick={e => this.onClickOverlay(e)}>
-        <div className={styles.content} onClick={e => this.onClickOverlay(e)}>
+      <div
+        style={customStyles}
+        className={classnames(styles['c-modal'], { [styles['-small']]: this.props.isSmall })}
+        onClick={e => this.onClickOverlay(e)}
+      >
+        <div
+          className={styles.content}
+          onClick={e => this.onClickOverlay(e)}
+        >
           <div className={styles['contain-content']}>
             <div className={styles['contain-button']}>
               {closeButton}
@@ -97,6 +104,7 @@ Modal.propTypes = {
   /**
    * Sets z-index of the modal
    */
+  isSmall: React.PropTypes.bool,
   zIndex: React.PropTypes.number
 };
 
