@@ -18,17 +18,17 @@
     height: 40px;
     justify-content: space-around;
     margin: 25px auto;
-    width: 305px;
+    max-width: 304px;
+
 
     > .content-option {
       color: $color-4;
       cursor: pointer;
       font-size: $font-size-xs-small;
-      min-width: 145px;
-      padding: 0 20px;
       position: relative;
       text-align: center;
       text-transform: uppercase;
+      width: calc(50% - 9px);
       z-index: 1;
 
       &.-selected {
@@ -44,7 +44,7 @@
           position: absolute;
           top: 50%;
           transform: translate(-50%, -50%);
-          width: 145px;
+          width: 100%;
           z-index: -1;
         }
       }

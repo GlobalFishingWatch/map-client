@@ -73,9 +73,11 @@ class LayerLibraryModal extends Component {
         </div>
         }
         {library &&
-          <ul className={LayerLibraryStyles['layer-list']}>
-            {library}
-          </ul>}
+          <div className={LayerLibraryStyles.wrapper}>
+            <ul className={LayerLibraryStyles['layer-list']}>
+              {library}
+            </ul>
+          </div>}
         <div className={LayerLibraryStyles['footer-container']}>
           <button
             className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
