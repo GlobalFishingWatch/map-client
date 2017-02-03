@@ -10,6 +10,11 @@
     .submit-container {
       display: flex;
       justify-content: center;
+      margin: 55px 0 0;
+
+      @media #{$mq-tablet} {
+        margin: 45px 0 0;
+      }
     }
 
     .submit-container > .submit-button {
@@ -19,14 +24,26 @@
 
   .column {
     display: flex;
-    flex-basis: calc(50% - 13px);
+    flex-basis: 100%;
     flex-direction: column;
+    justify-content: space-between;
+
+    &:not(:first-child) {
+      margin: 15px 0 0;
+    }
+
+    @media #{$mq-tablet} {
+      flex-basis: calc(50% - 13px);
+
+      &:not(:first-child) {
+        margin: 0;
+      }
+    }
   }
 
   .row {
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
 
     &:not(:first-child) {

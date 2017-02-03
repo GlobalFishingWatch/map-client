@@ -2,7 +2,7 @@
 
 .c-modal {
   align-items: center;
-  background-color: rgba($color-1, .7);
+  background-color: rgba($color-2, .9);
   display: flex;
   height: 100%;
   justify-content: center;
@@ -17,6 +17,7 @@
     display: flex;
     height: 100%;
     max-height: calc(100% - 45px);
+    min-width: 320px;
     position: relative;
     width: calc(100% - 45px);
 
@@ -48,10 +49,10 @@
       }
 
       .contain-padding {
-        padding: 20px;
+        padding: 40px 20px 20px;
 
         @media #{$mq-tablet} {
-          padding: 40px;
+          padding: 60px;
         }
 
         .modal-title {
@@ -84,24 +85,33 @@
     border: 0;
     border-radius: 100%;
     cursor: pointer;
-    height: 40px;
+    height: 26px;
     left: 0;
     position: absolute;
     top: 20px;
     transform: translate(-50%, 0);
-    width: 40px;
+    width: 26px;
     z-index: 1;
 
+    @media #{$mq-tablet} {
+      height: 40px;
+      width: 40px;
+    }
 
     > .icon {
       display: block;
-      height: 16px;
+      height: 12px;
       left: 50%;
       position: absolute;
       stroke: $color-7;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 16px;
+      width: 12px;
+
+      @media #{$mq-tablet} {
+        height: 16px;
+        width: 16px;
+      }
     }
   }
 }
