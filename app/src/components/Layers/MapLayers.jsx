@@ -300,7 +300,8 @@ class MapLayers extends Component {
   _setCartoLayerSQL(reportLayerId, isinreportCol) {
     const cartoLayer = this.addedLayers[reportLayerId];
     const sql = cartoLayer.getSubLayer(0).getSQL();
-    const newSql = sql.replace(/SELECT (.+),\s*(false|cartodb_id IN \([\d\s,]+\))\s+isinreport\s.?FROM/gi, (match, selectSubmatch) =>
+    const newSql = sql.replace(/SELECT ((.|\n)+),[\n|\s]*(false|cartodb_id IN \([\d\s,]+\))[\n|\s]+isinreport[\n|\s]+FROM/gi,
+    (match, selectSubmatch) =>
       `SELECT ${selectSubmatch}, ${isinreportCol} FROM`
     );
     cartoLayer.getSubLayer(0).setSQL(newSql);
