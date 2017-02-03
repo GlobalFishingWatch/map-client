@@ -51,7 +51,7 @@ class Map extends Component {
    */
   onZoomChanged() {
     if (!this.map) return;
-
+    console.log(this.map.getZoom())
     this.props.setZoom(this.map.getZoom());
 
     // We also need to update the center of the map as it can be changed
@@ -301,11 +301,11 @@ class Map extends Component {
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
-                zoomControl: false,
-                minZoom: MIN_ZOOM_LEVEL
+                zoomControl: false
               }}
               options={{
-                maxZoom: this.props.maxZoom
+                maxZoom: this.props.maxZoom,
+                minZoom: MIN_ZOOM_LEVEL
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onMousemove={this.onMouseMove}
