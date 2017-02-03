@@ -240,7 +240,7 @@ class Map extends Component {
       </Modal>
       <Modal
         opened={this.props.layerIdPromptedForRemoval !== false}
-        closeable
+        isSmall
         close={this.props.closeLayerRemovalModal}
       >
         <PromptLayerRemoval />

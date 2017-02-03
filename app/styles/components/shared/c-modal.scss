@@ -73,6 +73,12 @@
     }
   }
 
+  &.-small {
+    > .content {
+      max-width: 500px;
+    }
+  }
+
   .close-button {
     background-color: $color-4;
     border: 0;
