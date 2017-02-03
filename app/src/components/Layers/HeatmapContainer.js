@@ -4,7 +4,6 @@ import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
 import {
-  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
@@ -160,20 +159,20 @@ export default class HeatmapContainer extends BaseOverlay {
     this.renderer.render(this.stage);
   }
 
-  setZoom(zoom) {
+  setStyle(useHeatmapStyle) {
     for (let i = 0; i < this.layers.length; i++) {
-      this.layers[i].setRenderingStyle(zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD);
+      this.layers[i].setRenderingStyle(useHeatmapStyle);
     }
     this._renderStage();
   }
 
-  setFlags(flags) {
+  setFlags(flags, useHeatmapStyle) {
     if (!Object.keys(flags).length) {
       return;
     }
     this.layers.forEach((layer) => {
       const layerFlags = flags[layer.id];
-      layer.setSubLayers(layerFlags);
+      layer.setSubLayers(layerFlags, useHeatmapStyle);
     });
   }
 
