@@ -26,6 +26,7 @@
     display: flex;
     flex-basis: 100%;
     flex-direction: column;
+    justify-content: space-between;
 
     &:not(:first-child) {
       margin: 15px 0 0;
@@ -43,7 +44,6 @@
   .row {
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
 
     &:not(:first-child) {
