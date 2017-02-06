@@ -69,12 +69,19 @@ export const hsvToRgb = (h_, s_, v_) => {
 };
 
 // returns an rgb string with default saturation and luminance values
+const hueToRgbDefaults = hue => hsvToRgb(hue, 50, 100);
+
 export const hueToRgbString = (hue) => {
-  const rgb = hsvToRgb(hue, 50, 100);
+  const rgb = hueToRgbDefaults(hue);
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
 
+export const hueToRgbHexString = (hue) => {
+  const rgb = hueToRgbDefaults(hue);
+  return `0x${rgb.r.toString(16)}${rgb.g.toString(16)}${rgb.b.toString(16)}`;
+};
+
 export const hueToRgbaString = (hue, alpha) => {
-  const rgb = hsvToRgb(hue, 50, 100);
+  const rgb = hueToRgbDefaults(hue);
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
 };

@@ -60,10 +60,11 @@ export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
 export const VESSELS_MINIMUM_OPACITY = 0.5;
 
 // tracks
-export const SHOW_OUTER_TRACK_BELOW_NUM_POINTS = 30000;
-export const TRACK_OVER_COLOR = {
-  strokeStyle: 'rgba(255, 255, 255, 1)',
-  lineWidth: 2
+export const TRACK_SEGMENT_TYPES = {
+  Hidden: 0,
+  OutOfInnerRange: 1,
+  InInnerRange: 2,
+  Highlighted: 3
 };
 export const DEFAULT_TRACK_HUE = 180;
 

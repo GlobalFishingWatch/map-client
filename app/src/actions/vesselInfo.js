@@ -22,7 +22,7 @@ import {
   setOuterTimelineDates
 } from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
-import { getCleanVectorArrays, groupData, getTilePelagosPromises } from 'actions/helpers/heatmapTileData';
+import { getTilePelagosPromises, getCleanVectorArrays, groupData, addTracksWorldCoordinates } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
   return {
@@ -175,11 +175,16 @@ function getTrackTimeExtent(data, series = null) {
 
 function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
+    const map = getState().map.googleMaps;
     console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
 
+    let layerId_ = layerId;
     // TODO remove when layerId is passed around when using search
-    const layerId_ = (layerId === null) ? '849-tileset-tms' : layerId;
+    if (layerId === null || layerId === undefined) {
+      console.warn('layerId not sent, using default tileset');
+      layerId_ = '849-tileset-tms';
+    }
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
     const header = currentLayer.header;
@@ -197,12 +202,13 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
           'series',
           'weight'
         ]);
+        const vectorArray = addTracksWorldCoordinates(groupedData, map);
 
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
             seriesgroup,
-            seriesGroupData: groupedData,
+            seriesGroupData: vectorArray,
             series: _.uniq(groupedData.series),
             selectedSeries: series,
             tilesetUrl: state.map.tilesetUrl

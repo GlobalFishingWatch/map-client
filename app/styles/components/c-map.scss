@@ -73,6 +73,11 @@
     &:not(:first-child) {
       margin: 5px 0 0;
     }
+
+    &.-disabled {
+      opacity: .75;
+      pointer-events: none;
+    }
   }
 }
 
