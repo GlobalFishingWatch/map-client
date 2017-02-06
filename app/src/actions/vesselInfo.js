@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
@@ -14,8 +15,7 @@ import {
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY,
-  LOAD_RECENT_VESSEL_HISTORY,
-  TIMELINE_MIN_INNER_EXTENT
+  LOAD_RECENT_VESSEL_HISTORY
 } from 'actions';
 import {
   setInnerTimelineDates,
