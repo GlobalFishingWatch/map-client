@@ -43,8 +43,11 @@ class Modal extends React.Component {
 
   render() {
     if (!this.props.opened) {
+      document.body.style.overflow = 'overlay';
       return null;
     }
+
+    document.body.style.overflow = 'hidden';
 
     let closeButton;
     const customStyles = {
