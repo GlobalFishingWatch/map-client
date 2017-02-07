@@ -90,7 +90,7 @@
 }
 
 .map-container {
-  height: calc(100% - 88px);
+  height: calc(100% - #{$map-footer-height + $timebar-height});
   overflow-y: hidden;
   position: relative;
 
