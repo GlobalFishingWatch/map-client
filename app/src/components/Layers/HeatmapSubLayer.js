@@ -71,7 +71,7 @@ export default class HeatmapSubLayer {
     this.mainVesselTexture.update();
   }
 
-  render(tiles, startIndex, endIndex) {
+  render(tiles, startIndex, endIndex, offsets) {
     if (tiles.length === 0) return;
 
     const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
@@ -85,15 +85,11 @@ export default class HeatmapSubLayer {
 
 
     tiles.forEach((tile) => {
-      const bounds = tile.canvas.getBoundingClientRect();
       if (!document.body.contains(tile.canvas)) {
         console.warn('rendering tile that doesnt exist in the DOM', tile);
       }
 
-      if (bounds.left === 0 && bounds.top === 0) {
-        console.warn('tile at 0,0');
-      }
-      this._dumpTileVessels(startIndex, endIndex, tile.data, bounds.left, bounds.top);
+      this._dumpTileVessels(startIndex, endIndex, tile.data, offsets);
     });
 
     // hide unused sprites
@@ -102,7 +98,7 @@ export default class HeatmapSubLayer {
     }
   }
 
-  _dumpTileVessels(startIndex, endIndex, data, offsetX, offsetY) {
+  _dumpTileVessels(startIndex, endIndex, data, offsets) {
     if (!data) {
       return;
     }
@@ -117,15 +113,22 @@ export default class HeatmapSubLayer {
 
       if (!frame) continue;
 
-      for (let index = 0, len = frame.x.length; index < len; index++) {
+      for (let index = 0, len = frame.worldX.length; index < len; index++) {
         if (this.flag && this.flag !== frame.category[index]) {
           continue;
         }
         this.numSprites++;
         const sprite = this.spritesPool[this.numSprites];
 
-        sprite.position.x = offsetX + frame.x[index];
-        sprite.position.y = offsetY + frame.y[index];
+        // sprite.position.x = offsetX + frame.x[index];
+        // sprite.position.y = offsetY + frame.y[index];
+        const worldX = frame.worldX[index];
+        let originX = offsets.left;
+        if (originX > worldX) {
+          originX -= 256;
+        }
+        sprite.position.x = (worldX - originX) * offsets.scale;
+        sprite.position.y = ((frame.worldY[index] - offsets.top) * offsets.scale);
         sprite.alpha = frame.opacity[index];
         sprite.scale.set(frame.radius[index]);
       }
@@ -140,7 +143,7 @@ export default class HeatmapSubLayer {
         if (!tile.data) continue;
         const frame = tile.data[timeIndex];
         if (!frame) continue;
-        for (let index = 0, len = frame.x.length; index < len; index++) {
+        for (let index = 0, len = frame.worldX.length; index < len; index++) {
           if (this.flag && this.flag !== frame.category[index]) {
             continue;
           }
