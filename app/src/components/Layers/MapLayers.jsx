@@ -6,7 +6,9 @@ import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
+
+const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 
 class MapLayers extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class MapLayers extends Component {
     }
 
     if (this.props.zoom !== nextProps.zoom && this.glContainer) {
-      this.glContainer.setZoom(nextProps.zoom);
+      this.glContainer.setStyle(useHeatmapStyle(nextProps.zoom));
     }
 
     if (!_.isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
@@ -225,7 +227,7 @@ class MapLayers extends Component {
   }
 
   setHeatmapFlags(props) {
-    this.glContainer.setFlags(props.flagsLayers);
+    this.glContainer.setFlags(props.flagsLayers, useHeatmapStyle(this.props.zoom));
   }
 
   renderHeatmap(props) {

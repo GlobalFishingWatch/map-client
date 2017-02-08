@@ -7,7 +7,7 @@ import {
 } from 'constants';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites) {
+  constructor(baseTexture, maxSprites, useHeatmapStyle) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -22,6 +22,7 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
+    this.setRenderingStyle(useHeatmapStyle);
 
     this._resizeSpritesPool(10000);
   }
