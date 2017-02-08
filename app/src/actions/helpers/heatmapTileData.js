@@ -37,16 +37,18 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  */
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
-  temporalExtents.forEach((extent) => {
-    const start = new Date(extent[0]).toISOString();
-    const end = new Date(extent[1]).toISOString();
+  (temporalExtents || [null]).forEach((extent) => {
     let url = `${tilesetUrl}/`;
     if (params.seriesgroup) {
       url += `sub/seriesgroup=${params.seriesgroup}/`;
     }
-    url += `${start},${end}`;
+    if (extent !== null) {
+      const start = new Date(extent[0]).toISOString();
+      const end = new Date(extent[1]).toISOString();
+      url += `${start},${end};`;
+    }
     if (params.tileCoordinates) {
-      url += `;${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
+      url += `${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
     } else {
       // meh.
       url += ';0,0,0';
