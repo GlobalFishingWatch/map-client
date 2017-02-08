@@ -25,6 +25,22 @@
     right: 31px;
   }
 
+  @media screen and (max-width: $breakpoint-tablet) {
+    &.-reverse {
+      bottom: auto;
+      top: 27px;
+
+      &::before {
+        @include arrow(12px, 1px, rgba($color-3, .4), 'up');
+        background-color: $color-1;
+        position: absolute;
+        right: 31px;
+        top: -7px;
+      }
+    }
+  }
+
+
   &.-is-visible {
     display: block;
     max-height: none;

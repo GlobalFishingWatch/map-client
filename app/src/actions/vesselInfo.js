@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import { TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
@@ -15,8 +17,11 @@ import {
   SET_RECENT_VESSEL_HISTORY,
   LOAD_RECENT_VESSEL_HISTORY
 } from 'actions';
+import {
+  setInnerTimelineDates,
+  setOuterTimelineDates
+} from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
-import _ from 'lodash';
 import { getTilePelagosPromises, getCleanVectorArrays, groupData, addWorldCoordinates } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
@@ -151,6 +156,23 @@ export function showNoVesselsInfo() {
   };
 }
 
+function getTrackTimeExtent(data, series = null) {
+  let start = Infinity;
+  let end = 0;
+  for (let i = 0, length = data.datetime.length; i < length; i++) {
+    if (series !== null && series !== data.series[i]) {
+      continue;
+    }
+    const time = data.datetime[i];
+    if (time < start) {
+      start = time;
+    } else if (time > end) {
+      end = time;
+    }
+  }
+  return [start, end];
+}
+
 function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
     const map = getState().map.googleMaps;
@@ -192,6 +214,38 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
             tilesetUrl: state.map.tilesetUrl
           }
         });
+
+        // change Timebar bounds, so that
+        // - outer bounds fits time range of tracks (filtered by series if applicable)
+        // - outer bounds is not less than a week
+        // - inner bounds start is moved to beginning of outer bounds if it's outside
+        // - inner bounds end is moved to fit in outer bounds
+        const tracksExtent = getTrackTimeExtent(groupedData, series);
+        let tracksDuration = tracksExtent[1] - tracksExtent[0];
+
+        if (tracksDuration < TIMELINE_MIN_INNER_EXTENT) {
+          tracksExtent[1] = tracksExtent[0] + TIMELINE_MIN_INNER_EXTENT;
+          tracksDuration = TIMELINE_MIN_INNER_EXTENT;
+        }
+
+        const currentInnerExtent = state.filters.timelineInnerExtent;
+        const currentInnerExtentStart = currentInnerExtent[0].getTime();
+        const currentInnerExtentEnd = currentInnerExtent[1].getTime();
+        const currentInnerDuration = currentInnerExtentEnd - currentInnerExtentStart;
+        let newInnerExtentStart = currentInnerExtentStart;
+        let newInnerExtentEnd = currentInnerExtentEnd;
+
+        if (newInnerExtentStart < tracksExtent[0] || newInnerExtentStart > tracksExtent[1]) {
+          newInnerExtentStart = tracksExtent[0];
+          newInnerExtentEnd = newInnerExtentStart + currentInnerDuration;
+        }
+
+        if (newInnerExtentEnd > tracksExtent[1]) {
+          newInnerExtentEnd = newInnerExtentStart + (tracksDuration * 0.1);
+        }
+
+        dispatch(setInnerTimelineDates([new Date(newInnerExtentStart), new Date(newInnerExtentEnd)]));
+        dispatch(setOuterTimelineDates([new Date(tracksExtent[0]), new Date(tracksExtent[1])]));
 
         if (zoomToBounds) {
           // should this be computed server side ?

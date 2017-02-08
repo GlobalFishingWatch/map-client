@@ -5,13 +5,36 @@
   color: $color-4;
   display: block;
   font-family: $font-family-1;
+  position: absolute;
+  top: $accordion-mobile-height;
   width: 100%;
+  z-index: 1;
 
-  .vessel-metadata {
+  @media #{$mq-tablet} {
+    position: relative;
+    top: 0;
+  }
+
+  &.-expanded {
+
+    > .vessel-metadata {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+  > .vessel-metadata {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    max-height: $vessel-info-height;
+    overflow: hidden;
     padding: 20px 20px 15px;
+
+    @media #{$mq-tablet} {
+      max-height: none;
+    }
+
 
     .pin {
       fill: $color-3;
@@ -28,7 +51,7 @@
       flex-basis: calc(50% - 10px);
       flex-direction: column;
       flex-wrap: wrap;
-      padding: 4px 0;
+      padding: 4px 0 10px;
 
       &:nth-child(2n) {
         margin: 0 0 0 5px;
@@ -82,6 +105,31 @@
       display: block;
       font-family: $font-family-1;
       text-decoration: underline;
+    }
+  }
+
+  .buttons-container {
+    bottom: 0;
+    display: flex;
+    position: absolute;
+    right: 10px;
+    transform: translate(0, 50%);
+
+    > button {
+      position: relative;
+      transform: none;
+
+      &:not(:first-child) {
+        margin: 0 0 0 10px;
+      }
+    }
+
+    @media #{$mq-tablet} {
+      bottom: auto;
+      left: 0;
+      right: auto;
+      top: 0;
+      transform: translate(-50%, -50%);
     }
   }
 }

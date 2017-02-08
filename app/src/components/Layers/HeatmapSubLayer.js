@@ -7,7 +7,7 @@ import {
 } from 'constants';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites) {
+  constructor(baseTexture, maxSprites, useHeatmapStyle) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -22,6 +22,7 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
+    this.setRenderingStyle(useHeatmapStyle);
 
     this._resizeSpritesPool(10000);
   }
@@ -176,7 +177,8 @@ export default class HeatmapSubLayer {
   _addSprites(num) {
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
-      vessel.anchor.x = vessel.anchor.y = 0.5;
+      vessel.anchor.x = 0.5;
+      vessel.anchor.y = 0.5;
       // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
       vessel.x = -100;
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;

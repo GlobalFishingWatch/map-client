@@ -35,14 +35,14 @@ export default class HeatmapLayer {
     });
   }
 
-  setSubLayers(flags) {
+  setSubLayers(flags, useHeatmapStyle) {
     const subLayerDelta = flags.length - this.subLayers.length;
     if (subLayerDelta === -1) {
       const subLayer = this.subLayers.pop();
       this.destroySubLayer(subLayer);
     } else if (subLayerDelta > 0) {
       for (let i = 0; i < subLayerDelta; i++) {
-        const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites);
+        const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites, useHeatmapStyle);
         this.subLayers.push(subLayer);
         this.stage.addChild(subLayer.stage);
       }

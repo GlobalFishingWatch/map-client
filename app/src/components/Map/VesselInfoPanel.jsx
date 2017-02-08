@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
+import MediaQuery from 'react-responsive';
+import ExpandButton from 'components/Shared/ExpandButton';
 
 import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
 import buttonCloseStyles from 'styles/components/c-button-close.scss';
@@ -10,6 +12,22 @@ import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
 class VesselInfoPanel extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isExpanded: true // expanded by default to hide the fact that accordion will remain opened.
+      // TODO: close the accordion when the info panel appears.
+      // TODO: replace accordion component
+    };
+  }
+
+  onExpand() {
+    this.setState({
+      isExpanded: !this.state.isExpanded
+    });
+  }
 
   render() {
     const vesselInfo = this.props.details.find(vessel => vessel.visible === true);
@@ -130,16 +148,27 @@ class VesselInfoPanel extends Component {
     }
 
     return (
-      <div className={vesselPanelStyles['c-vessel-info-panel']} >
-        <div>
-          <span
+      <div
+        className={classnames(vesselPanelStyles['c-vessel-info-panel'],
+          { [`${vesselPanelStyles['-expanded']}`]: this.state.isExpanded })}
+      >
+        <div className={vesselPanelStyles['buttons-container']}>
+
+          <MediaQuery maxWidth={789}>
+            <ExpandButton
+              onExpand={() => this.onExpand()}
+              isExpanded={this.state.isExpanded}
+            />
+          </MediaQuery>
+
+          <button
             onClick={() => this.props.hide()}
-            className={buttonCloseStyles['c-button-close']}
+            className={classnames(buttonCloseStyles['c-button-close'], vesselPanelStyles['close-btn'])}
           >
             <CloseIcon className={buttonCloseStyles.cross} />
-          </span>
-          {vesselInfoContents}
+          </button>
         </div>
+        {vesselInfoContents}
       </div>);
   }
 }
