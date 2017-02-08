@@ -3,7 +3,6 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import {
   PLAYBACK_PRECISION,
-  VESSELS_ENDPOINT_KEYS,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_MINIMUM_RADIUS_FACTOR,
   VESSELS_MINIMUM_OPACITY,
@@ -81,7 +80,7 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
  * @param vectorArraysKeys the keys to pick on the vectorArrays (lat, lon, weight, etc)
  * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
  */
-export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT_KEYS) => {
+export const groupData = (cleanVectorArrays, vectorArraysKeys) => {
   const data = {};
 
   const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
