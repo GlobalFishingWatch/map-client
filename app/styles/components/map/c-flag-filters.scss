@@ -1,7 +1,7 @@
 @import '../../settings';
 
 .c-flag-filters {
-  max-height: calc(100vh - #{$timebar-height + $duration-picker-height + $map-footer-height + $offset-panel-control-mobile});
+  max-height: 100%;
   overflow-y: auto;
 
   @media #{$mq-tablet} {

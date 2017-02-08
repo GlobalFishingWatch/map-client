@@ -2,7 +2,7 @@
 @import '../../mixins';
 
 .c-search-panel {
-  z-index: 10;
+  z-index: 11;
 
   @media #{$mq-tablet} {
     position: relative;

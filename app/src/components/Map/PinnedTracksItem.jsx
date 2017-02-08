@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import icons from 'styles/icons.scss';
@@ -61,6 +62,7 @@ class PinnedTracksItem extends Component {
               hueValue={this.props.vessel.hue}
               showBlending={this.props.showBlending}
               onChangeHue={hue => this.onChangeHue(hue)}
+              isReverse={this.props.index < REVERSE_TOOLTIP_ITEMS_MOBILE}
             />
           </li>
           <li

@@ -8,7 +8,7 @@
   transform: translate(0, 0);
   transition: transform .25s ease;
   width: 100%;
-  z-index: 103;
+  z-index: 5;
 
   @media #{$mq-mobile-large} {
     bottom: calc(#{$timebar-height} + #{$map-footer-height});

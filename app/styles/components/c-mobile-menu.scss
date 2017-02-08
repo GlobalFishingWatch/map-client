@@ -13,7 +13,7 @@
   transform: translatex(-100%);
   transition: transform ease-in .2s;
   width: 300px;
-  z-index: 106;
+  z-index: 7;
 
   @media #{$mq-tablet} {
     width: 325px;
@@ -109,7 +109,7 @@
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 20;
+  z-index: 6;
 
   &.-show {
     display: block;
