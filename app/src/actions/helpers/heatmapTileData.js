@@ -169,7 +169,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns) => {
     .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
     .uniq()
     .value();
-  console.log(extraColumns);
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
