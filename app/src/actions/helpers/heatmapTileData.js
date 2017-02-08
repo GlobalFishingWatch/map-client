@@ -80,12 +80,12 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
  * @param vectorArraysKeys the keys to pick on the vectorArrays (lat, lon, weight, etc)
  * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
  */
-export const groupData = (cleanVectorArrays, vectorArraysKeys) => {
+export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
 
   const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
 
-  vectorArraysKeys.forEach((key) => {
+  columns.forEach((key) => {
     data[key] = new Float32Array(totalVectorArraysLength);
   });
 
@@ -98,7 +98,7 @@ export const groupData = (cleanVectorArrays, vectorArraysKeys) => {
 
   for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
     currentArray = cleanVectorArrays[index];
-    vectorArraysKeys.forEach(appendValues);
+    columns.forEach(appendValues);
     cumulatedOffsets += currentArray.longitude.length;
   }
   return data;
@@ -154,12 +154,22 @@ export const addTracksWorldCoordinates = (vectorArray, map) => {
  * @param vectorArray
  * @param tileCoordinates
  */
-export const getTilePlaybackData = (zoom, vectorArray) => {
+export const getTilePlaybackData = (zoom, vectorArray, columns) => {
   const tilePlaybackData = [];
 
   const zoomFactorRadius = (zoom - 1) ** 2.5;
   const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
   const zoomFactorOpacity = (zoom - 1) ** 3.5;
+
+  // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
+  const extraColumns = _
+    .chain(columns)
+    .concat([])
+    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity') // those are mandatory thus manually added
+    .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
+    .uniq()
+    .value();
+  console.log(extraColumns);
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
@@ -179,29 +189,30 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
     if (!tilePlaybackData[timeIndex]) {
-      tilePlaybackData[timeIndex] = {
+      const frame = {
         x: [x],
         y: [y],
         weight: [weight],
         sigma: [sigma],
         radius: [radius],
-        opacity: [opacity],
-        category: [vectorArray.category[index]],
-        series: [vectorArray.series[index]],
-        seriesgroup: [vectorArray.seriesgroup[index]]
+        opacity: [opacity]
       };
+      extraColumns.forEach((column) => {
+        frame[column] = [vectorArray[column][index]];
+      });
+      tilePlaybackData[timeIndex] = frame;
       continue;
     }
-    const timestamp = tilePlaybackData[timeIndex];
-    timestamp.x.push(x);
-    timestamp.y.push(y);
-    timestamp.weight.push(weight);
-    timestamp.sigma.push(sigma);
-    timestamp.radius.push(radius);
-    timestamp.opacity.push(opacity);
-    timestamp.category.push(vectorArray.category[index]);
-    timestamp.series.push(vectorArray.series[index]);
-    timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+    const frame = tilePlaybackData[timeIndex];
+    frame.x.push(x);
+    frame.y.push(y);
+    frame.weight.push(weight);
+    frame.sigma.push(sigma);
+    frame.radius.push(radius);
+    frame.opacity.push(opacity);
+    extraColumns.forEach((column) => {
+      frame[column].push(vectorArray[column][index]);
+    });
   }
 
   return tilePlaybackData;
