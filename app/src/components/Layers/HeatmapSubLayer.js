@@ -174,7 +174,8 @@ export default class HeatmapSubLayer {
   _addSprites(num) {
     for (let i = 0; i < num; i++) {
       const vessel = new PIXI.Sprite(this.mainVesselTexture);
-      vessel.anchor.x = vessel.anchor.y = 0.5;
+      vessel.anchor.x = 0.5;
+      vessel.anchor.y = 0.5;
       // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
       vessel.x = -100;
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
