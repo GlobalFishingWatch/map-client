@@ -32,7 +32,8 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lastCenter: null
+      lastCenter: null,
+      latlon: ''
     };
 
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -98,11 +99,14 @@ class Map extends Component {
     this.map.setMapTypeId(nextProps.activeBasemap);
   }
 
-  onMouseMove() {
+  onMouseMove(point) {
     if (!this.map) {
       return;
     }
     this.map.setOptions({ draggableCursor: 'default' });
+    this.setState({
+      latlon: `${point.latLng.lat().toFixed(4)}, ${point.latLng.lng().toFixed(4)}`
+    });
   }
 
   onDragEnd() {
@@ -245,6 +249,9 @@ class Map extends Component {
       </Modal>
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
+        <div className={mapCss.latlon}>
+          {this.state.latlon}
+        </div>
         <div className={mapCss['zoom-controls']}>
           {canShareWorkspaces && <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
             <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />

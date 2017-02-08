@@ -13,7 +13,6 @@
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     position: relative;
     width: 100%;
 
@@ -71,35 +70,39 @@
     .item-name {
       background-color: transparent;
       border: 0;
+      border-bottom: 1px solid transparent;
+      border-radius: 0;
       color: $color-4;
       flex-grow: 2;
       font-family: $font-family-1;
       font-size: $font-size-normal;
       height: 24px;
       margin: 0 15px 0 0;
-      max-width: 155;
+      max-width: 85%;
       outline: none;
       text-overflow: ellipsis;
 
       @media #{$mq-tablet} {
         font-size: $font-size-xxs-small;
-        max-width: 145px;
       }
     }
 
     > .item-rename {
-      border-bottom: 1px solid rgba($color-3, .3);
+      border-bottom-color: rgba($color-3, .3);
+      padding: 0 20px 0 0;
     }
 
     > .rename-icon {
       position: absolute;
-      right: 28px;
+      right: 30px;
       stroke: rgba($color-3, .3);
       top: 50%;
       transform: translate(0, -50%);
     }
 
     > .edition-menu {
+      display: flex;
+      justify-content: flex-end;
 
       > .delete-icon {
         cursor: pointer;
@@ -125,8 +128,16 @@
         }
       }
 
-      .-highlighted path {
-        fill: $color-4;
+      .-highlighted {
+        path {
+          &:first-child {
+            fill: $color-4;
+          }
+
+          &:last-child {
+            fill: $color-13;
+          }
+        }
       }
     }
 

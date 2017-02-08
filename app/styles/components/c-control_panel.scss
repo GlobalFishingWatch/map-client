@@ -5,7 +5,6 @@
   box-shadow: 29px 0 4px 0 rgba($color-12, .5);
   height: $accordion-mobile-height;
   left: 0;
-  max-height: calc(100vh - #{$timebar-height + $duration-picker-height + $map-footer-height + $offset-panel-control});
   position: absolute;
   top: $header-height-mobile;
   width: 100%;
@@ -15,6 +14,7 @@
     background: transparent;
     height: auto;
     left: auto;
+    max-height: calc(100vh - #{$timebar-height + $duration-picker-height + $map-footer-height + $offset-panel-control});
     max-width: 350px;
     overflow-y: auto;
     padding: 0 0 0 30px;
@@ -29,7 +29,7 @@
   }
 
   .resume-display {
-    border-bottom: 1px solid $color-7;
+    border-bottom: 1px solid rgba($color-7, .4);
     display: none;
     flex-direction: column;
     padding: 30px 56px 25px 25px;
@@ -155,22 +155,17 @@
         }
       }
 
-
       .content-accordion {
+        max-height: 100%;
+        overflow-y: auto;
         padding: 15px 20px;
 
         @media #{$mq-tablet} {
+          height: auto;
           margin: 10px 0 0;
+          max-height: none;
+          overflow-y: visible;
           padding: 0 15px;
-        }
-
-        > .wrapper {
-          max-height: calc(100vh - #{$timebar-height + $duration-picker-height + $map-footer-height + $offset-panel-control-mobile});
-          overflow-y: auto;
-
-          @media #{$mq-tablet} {
-            overflow-y: visible;
-          }
         }
       }
     }
@@ -195,11 +190,19 @@
 
     :global .react-sanfona-item-body {
       background: rgba($color-1, .95);
-      left: 0;;
+      left: 0;
       max-width: 0;
       position: absolute;
       top: $accordion-mobile-height;
       width: 100%;
+
+      > .react-sanfona-item-body-wrapper {
+        height: calc(100vh - #{$header-height-mobile + $accordion-mobile-height + $map-footer-height});
+
+        @media #{$mq-tablet} {
+          height: auto;
+        }
+      }
 
       @media #{$mq-tablet} {
         background: transparent;

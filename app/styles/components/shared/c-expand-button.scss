@@ -1,0 +1,29 @@
+@import '../../settings';
+@import '../../mixins';
+
+.c-expand-button {
+  background-color: $color-4;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 26px;
+  outline: none;
+  position: relative;
+  width: 26px;
+
+  &::after {
+    @include arrow(8px, 2px, $color-19, 'down');
+    left: calc(50% - 4px);
+    position: absolute;
+    top: calc(50% + 1px);
+    transform: rotate(45deg) translate(-50%, -50%);
+  }
+
+  &.-expanded {
+    &::after {
+      @include arrow(8px, 2px, $color-19, 'up');
+      left: calc(50% - 3px);
+      top: calc(50% + 4px);
+      transform: rotate(45deg) translate(-50%, -50%);
+    }
+  }
+}

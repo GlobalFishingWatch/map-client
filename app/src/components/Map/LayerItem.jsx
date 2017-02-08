@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
 import { hueToRgbString } from 'util/hsvToRgb';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
@@ -114,6 +114,7 @@ class LayerItem extends Component {
               onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
               onChangeHue={hue => this.onChangeHue(hue)}
               showBlending={this.props.showBlending}
+              isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
             />
           </li>}
           <li
