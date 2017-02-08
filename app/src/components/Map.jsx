@@ -51,7 +51,6 @@ class Map extends Component {
    */
   onZoomChanged() {
     if (!this.map) return;
-
     this.props.setZoom(this.map.getZoom());
 
     // We also need to update the center of the map as it can be changed
@@ -180,7 +179,6 @@ class Map extends Component {
 
   render() {
     const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
-
     return (<div className="full-height-container">
       <Modal
         opened={!this.props.token && REQUIRE_MAP_LOGIN}
@@ -251,10 +249,18 @@ class Map extends Component {
           {canShareWorkspaces && <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal}>
             <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
           </span>}
-          <span className={mapCss.control} id="zoom_up" onClick={this.changeZoomLevel}>
+          <span
+            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom >= this.props.maxZoom })}
+            id="zoom_up"
+            onClick={this.changeZoomLevel}
+          >
             <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
           </span>
-          <span className={mapCss.control} id="zoom_down" onClick={this.changeZoomLevel}>
+          <span
+            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom <= MIN_ZOOM_LEVEL })}
+            id="zoom_down"
+            onClick={this.changeZoomLevel}
+          >
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
@@ -301,11 +307,11 @@ class Map extends Component {
               defaultOptions={{
                 streetViewControl: false,
                 mapTypeControl: false,
-                zoomControl: false,
-                minZoom: MIN_ZOOM_LEVEL
+                zoomControl: false
               }}
               options={{
-                maxZoom: this.props.maxZoom
+                maxZoom: this.props.maxZoom,
+                minZoom: MIN_ZOOM_LEVEL
               }}
               defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
               onMousemove={this.onMouseMove}
