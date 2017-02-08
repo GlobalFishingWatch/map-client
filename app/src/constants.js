@@ -15,6 +15,8 @@ export const TIMELINE_DEFAULT_OUTER_END_DATE = new Date(Date.UTC(2016, 0, 1));
 export const TIMELINE_DEFAULT_INNER_START_DATE = new Date(Date.UTC(2015, 0, 1));
 export const TIMELINE_DEFAULT_INNER_END_DATE = new Date(Date.UTC(2015, 1, 1));
 
+export const TIMELINE_MIN_INNER_EXTENT = 1.21e+9; // 2 weeks
+
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
 
