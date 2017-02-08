@@ -15,12 +15,16 @@
   display: none;
   @media #{$mq-tablet} {
     bottom: 45px;
-    color: rgba($color-4, .6);
+    color: rgba($color-4, .7);
     display: block;
     font-size: $font-size-xxs-small;
-    left: 45px;
+    left: 95px;
     position: absolute;
     z-index: 99;
+  }
+
+  @media #{$mq-desktop} {
+    left: 45px;
   }
 }
 
