@@ -12,7 +12,6 @@ const packageJSON = require('../package.json');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
-
 const webpackConfig = {
 
   entry: [

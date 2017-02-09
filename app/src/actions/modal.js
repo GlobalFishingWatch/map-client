@@ -8,11 +8,11 @@ import 'whatwg-fetch';
 
 export function setWelcomeModalUrl() {
   const cookie = document.cookie.split(WELCOME_MODAL_COOKIE_KEY);
-  if (cookie.length < 2) return null;
+  debugger;
+  if (cookie.length < 2) return { type: SET_WELCOME_MODAL_URL, payload: null };
   const url = cookie[1].split('=')[1];
-  return (dispatch) => {
-    dispatch(SET_WELCOME_MODAL_URL, { payload: url });
-  };
+
+  return { type: SET_WELCOME_MODAL_URL, payload: url };
 }
 
 export function setWelcomeModalContent() {
@@ -25,8 +25,11 @@ export function setWelcomeModalContent() {
         if (res.status >= 400) throw new Error(res.statusText);
         return res.text();
       })
-      .then(body => dispatch(SET_WELCOME_MODAL_CONTENT, { payload: body }))
-      .catch(err => dispatch(SET_WELCOME_MODAL_CONTENT_ERROR, { payload: err }));
+      .then((body) => {
+        dispatch({ type: SET_WELCOME_MODAL_CONTENT, payload: body });
+        dispatch({ type: SET_WELCOME_MODAL_VISIBILITY, payload: true });
+      })
+      .catch(err => dispatch({ type: SET_WELCOME_MODAL_CONTENT_ERROR, payload: err }));
   };
 }
 

@@ -15,6 +15,21 @@ class App extends Component {
       }
     }
     this.props.getLoggedUser();
+    // test cookie
+    document.cookie += `${WELCOME_MODAL_COOKIE_KEY}=https://www.google.es`;
+    this.props.setWelcomeModalUrl();
+  }
+
+  componentDidMount() {
+    this.getWelcomeModal();
+  }
+
+  getWelcomeModal() {
+    const storedUrl = localStorage.getItem(WELCOME_MODAL_COOKIE_KEY);
+    if (this.props.welcomeModalUrl && storedUrl !== this.props.welcomeModalUrl) {
+      localStorage.setItem(WELCOME_MODAL_COOKIE_KEY, this.props.welcomeModalUrl);
+      this.props.setWelcomeModalContent();
+    }
   }
 
   render() {
@@ -32,7 +47,10 @@ App.propTypes = {
   loading: React.PropTypes.bool,
   children: React.PropTypes.object,
   setToken: React.PropTypes.func,
-  getLoggedUser: React.PropTypes.func
+  getLoggedUser: React.PropTypes.func,
+  setWelcomeModalUrl: React.PropTypes.func,
+  setWelcomeModalContent: React.PropTypes.func,
+  welcomeModalUrl: React.PropTypes.string
 };
 
 

@@ -10,9 +10,9 @@ import {
   setLayerInfoModal,
   setSupportModalVisibility,
   setLayerManagementModalVisibility,
-  setRecentVesselsModalVisibility,
-  setWelcomeModalVisibility
+  setRecentVesselsModalVisibility
 } from 'actions/map';
+import { setWelcomeModalVisibility } from 'actions/modal';
 import {
   saveWorkspace
 } from 'actions/workspace';

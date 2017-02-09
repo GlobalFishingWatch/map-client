@@ -30,7 +30,6 @@ import Routes from './routes';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
-
 /**
  * Reducers
  * @info(http://redux.js.org/docs/basics/Reducers.html)

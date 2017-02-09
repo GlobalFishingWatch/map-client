@@ -1,12 +1,18 @@
 import { connect } from 'react-redux';
 import App from 'components/App';
 import { setToken, getLoggedUser } from 'actions/user';
+import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
 
-const mapStateToProps = state => ({ loading: state.map.loading });
+const mapStateToProps = state => ({
+  loading: state.map.loading,
+  welcomeModalUrl: state.modal.welcome.url
+});
 
 const mapDispatchToProps = dispatch => ({
   setToken: token => dispatch(setToken(token)),
-  getLoggedUser: () => dispatch(getLoggedUser())
+  getLoggedUser: () => dispatch(getLoggedUser()),
+  setWelcomeModalUrl: () => dispatch(setWelcomeModalUrl()),
+  setWelcomeModalContent: () => dispatch(setWelcomeModalContent())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
