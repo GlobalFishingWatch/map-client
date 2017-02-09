@@ -37,7 +37,8 @@ export const VESSELS_ENDPOINT_KEYS = [
 export const GUEST_PERMISSION_SET = [
   'seeVesselsLayers',
   'selectVessel',
-  'shareWorkspace'
+  'shareWorkspace',
+  'seeVesselBasicInfo'
 ];
 
 // for now, auth users get no special permissions, everything comes from the API
