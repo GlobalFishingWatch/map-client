@@ -60,6 +60,7 @@ class MapLayers extends Component {
 
     if (this.tracksLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
       this.tracksLayer.clear();
+      this.glContainer.renderTracks();
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextProps.vesselTracks,
