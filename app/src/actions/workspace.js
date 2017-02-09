@@ -264,6 +264,9 @@ export function getWorkspace(workspaceId = null) {
           workspaceData = processLegacyWorkspace(data, dispatch);
         }
         return dispatchActions(workspaceData, dispatch, getState);
+      })
+      .catch((error) => {
+        console.error('Error loading workspace: ', error.message);
       });
   };
 }
