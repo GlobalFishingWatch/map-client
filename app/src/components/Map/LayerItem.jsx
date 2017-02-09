@@ -133,11 +133,11 @@ class LayerItem extends Component {
       >
         <div
           className={classnames(SwitcherStyles['c-switcher'], { [SwitcherStyles['-active']]: this.props.layer.visible })}
-          onClick={() => this.onChangeVisibility()}
           style={this.props.layer.visible ? { background: this.getColor(this.props.layer) } : null}
         >
           <input
             type="checkbox"
+            onChange={() => this.onChangeVisibility()}
             checked={this.props.layer.visible}
             key={this.getColor(this.props.layer)}
           />
