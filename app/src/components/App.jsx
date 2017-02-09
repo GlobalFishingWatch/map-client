@@ -15,13 +15,12 @@ class App extends Component {
       }
     }
     this.props.getLoggedUser();
-    // test cookie
-    document.cookie += `${WELCOME_MODAL_COOKIE_KEY}=https://www.google.es`;
+
     this.props.setWelcomeModalUrl();
   }
 
-  componentDidMount() {
-    this.getWelcomeModal();
+  componentDidUpdate(nextProps) {
+    if (nextProps.welcomeModalUrl !== this.props.welcomeModalUrl) this.getWelcomeModal();
   }
 
   getWelcomeModal() {

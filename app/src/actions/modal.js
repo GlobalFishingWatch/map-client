@@ -1,3 +1,4 @@
+/* eslint-disable max-len  */
 import {
   SET_WELCOME_MODAL_URL,
   SET_WELCOME_MODAL_CONTENT,
@@ -7,11 +8,9 @@ import {
 import 'whatwg-fetch';
 
 export function setWelcomeModalUrl() {
-  const cookie = document.cookie.split(WELCOME_MODAL_COOKIE_KEY);
-  debugger;
-  if (cookie.length < 2) return { type: SET_WELCOME_MODAL_URL, payload: null };
-  const url = cookie[1].split('=')[1];
-
+  // const cookie = document.cookie.split(WELCOME_MODAL_COOKIE_KEY);
+  // if (cookie.length < 2) return { type: SET_WELCOME_MODAL_URL, payload: null };
+  const url = 'https://gist.githubusercontent.com/sorodrigo/c39d7718049a9b5553b5c4597f93bbdd/raw/4a7279c0e378946ec668b07fd8dbbbc41783de88/helloworld.html'; // cookie[1].split('=')[1];
   return { type: SET_WELCOME_MODAL_URL, payload: url };
 }
 

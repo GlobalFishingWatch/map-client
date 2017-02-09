@@ -1,13 +1,23 @@
-import React from 'react';
+/* eslint-disable react/no-danger */
+import React, { Component } from 'react';
 
-function WelcomeModal() {
-  return (
-    <span>Welcome message (WIP)</span>
-  );
+class WelcomeModal extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <div dangerouslySetInnerHTML={{ __html: this.props.content }} />
+    );
+  }
 }
 
 WelcomeModal.propTypes = {
-  closeModal: React.PropTypes.func
+  closeModal: React.PropTypes.func,
+  content: React.PropTypes.string
 };
 
 export default WelcomeModal;
