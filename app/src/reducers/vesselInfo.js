@@ -58,7 +58,7 @@ export default function (state = initialState, action) {
 
     case SET_VESSEL_TRACK: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = state.vessels[vesselIndex];
+      const newVessel = _.cloneDeep(state.vessels[vesselIndex]);
       newVessel.track = {
         data: action.payload.seriesGroupData,
         selectedSeries: action.payload.selectedSeries

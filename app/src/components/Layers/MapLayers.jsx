@@ -67,8 +67,6 @@ class MapLayers extends Component {
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
 
     const nextTracks = getTracks(nextProps.vesselTracks);
-    const shouldUpdate = this.shouldUpdateTrackLayer(nextProps, innerExtentChanged);
-    console.log(shouldUpdate)
 
     if (this.tracksLayer && (!nextTracks || nextTracks.length === 0)) {
       this.tracksLayer.clear();
