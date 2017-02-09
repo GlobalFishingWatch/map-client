@@ -30,8 +30,8 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const vesselInfo = this.props.details.find(vessel => vessel.shownInInfoPanel === true);
-    const status = this.props.detailsStatus;
+    const vesselInfo = this.props.vessels.find(vessel => vessel.shownInInfoPanel === true);
+    const status = this.props.infoPanelStatus;
 
     if (status === null && vesselInfo === undefined) {
       return null;
@@ -174,8 +174,8 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  details: React.PropTypes.array,
-  detailsStatus: React.PropTypes.object,
+  vessels: React.PropTypes.array,
+  infoPanelStatus: React.PropTypes.object,
   userPermissions: React.PropTypes.array,
   hide: React.PropTypes.func,
   zoomIntoVesselCenter: React.PropTypes.func,

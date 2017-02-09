@@ -5,8 +5,8 @@ import { zoomIntoVesselCenter } from 'actions/map';
 import { login } from 'actions/user';
 
 const mapStateToProps = state => ({
-  details: state.vesselInfo.details,
-  detailsStatus: state.vesselInfo.detailsStatus,
+  vessels: state.vesselInfo.vessels,
+  infoPanelStatus: state.vesselInfo.infoPanelStatus,
   userPermissions: state.user.userPermissions
 });
 

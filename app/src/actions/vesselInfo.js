@@ -176,9 +176,9 @@ function getTrackTimeExtent(data, series = null) {
 
 function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
-    const map = getState().map.googleMaps;
-    console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
+    const map = state.map.googleMaps;
+    console.warn('seriesgroup', seriesgroup, 'series', series);
 
     let layerId_ = layerId;
     // TODO remove when layerId is passed around when using search
@@ -268,7 +268,10 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
 export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
   return (dispatch) => {
     dispatch({
-      type: ADD_VESSEL
+      type: ADD_VESSEL,
+      payload: {
+        seriesgroup
+      }
     });
     dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
     dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
@@ -318,7 +321,7 @@ export function showPinnedVesselDetails(seriesgroup) {
       }
     });
     // TODO only if vessel is not already toggled on
-    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
+    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
     dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
   };
 }
@@ -335,7 +338,7 @@ export function setPinnedVesselHue(seriesgroup, hue) {
 
 export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   return (dispatch, getState) => {
-    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
+    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
     const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
     dispatch({
       type: SET_PINNED_VESSEL_TRACK_VISIBILITY,

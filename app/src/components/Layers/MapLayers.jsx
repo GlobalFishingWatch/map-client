@@ -10,6 +10,14 @@ import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 
+const getTracks = vessels => vessels
+    .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
+    .map(vessel => ({
+      data: vessel.track.data,
+      selectedSeries: vessel.track.selectedSeries,
+      hue: vessel.hue
+    }));
+
 class MapLayers extends Component {
   constructor(props) {
     super(props);
@@ -58,12 +66,16 @@ class MapLayers extends Component {
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
 
-    if (this.tracksLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
+    const nextTracks = getTracks(nextProps.vesselTracks);
+    const shouldUpdate = this.shouldUpdateTrackLayer(nextProps, innerExtentChanged);
+    console.log(shouldUpdate)
+
+    if (this.tracksLayer && (!nextTracks || nextTracks.length === 0)) {
       this.tracksLayer.clear();
       this.glContainer.renderTracks();
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
-        data: nextProps.vesselTracks,
+        data: nextTracks,
         // TODO directly use timelineInnerExtentIndexes
         startTimestamp,
         endTimestamp,
@@ -110,7 +122,10 @@ class MapLayers extends Component {
       return true;
     }
     if (nextProps.vesselTracks.some((vesselTrack, index) =>
-      vesselTrack.hue !== this.props.vesselTracks[index].hue || vesselTrack.visible !== this.props.vesselTracks[index].visible
+      vesselTrack.hue !== this.props.vesselTracks[index].hue ||
+      vesselTrack.visible !== this.props.vesselTracks[index].visible ||
+      vesselTrack.shownInInfoPanel !== this.props.vesselTracks[index].shownInInfoPanel ||
+      vesselTrack.track !== this.props.vesselTracks[index].track
     ) === true) {
       return true;
     }
@@ -378,8 +393,11 @@ class MapLayers extends Component {
     if (!this.props.vesselTracks) {
       return;
     }
+
+    const tracks = getTracks(this.props.vesselTracks);
+
     this.updateTrackLayer({
-      data: this.props.vesselTracks,
+      data: tracks,
       startTimestamp: this.props.timelineInnerExtent[0].getTime(),
       endTimestamp: this.props.timelineInnerExtent[1].getTime(),
       timelinePaused: this.props.timelinePaused,
