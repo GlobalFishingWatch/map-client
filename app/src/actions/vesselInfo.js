@@ -16,7 +16,7 @@ import {
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY,
   LOAD_RECENT_VESSEL_HISTORY,
-  TOGGLE_PINNED_VESSEL_TRACK_VISIBILITY
+  SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
 import {
   setInnerTimelineDates,
@@ -317,6 +317,7 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
+    // TODO only if vessel is not already toggled on
     const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
     dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
   };
@@ -333,12 +334,18 @@ export function setPinnedVesselHue(seriesgroup, hue) {
 }
 
 export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
-  return {
-    type: TOGGLE_PINNED_VESSEL_TRACK_VISIBILITY,
-    payload: {
-      seriesgroup,
-      forceStatus
-    }
+  return (dispatch, getState) => {
+    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
+    const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
+    dispatch({
+      type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
+      payload: {
+        seriesgroup,
+        visible
+      }
+    });
+  // load track if status is on
+  // unload track if status is off
   };
 }
 
