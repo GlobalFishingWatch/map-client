@@ -150,7 +150,9 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(loadRecentVesselHistory());
 
-  dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+  if (state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
+    dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+  }
 }
 
 function processNewWorkspace(data) {
