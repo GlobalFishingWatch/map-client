@@ -131,16 +131,18 @@ class LayerItem extends Component {
       <li
         className={LayerListStyles['layer-item']}
       >
-        <input
-          className={SwitcherStyles['c-switcher']}
-          type="checkbox"
-          checked={this.props.layer.visible}
-          onChange={() => this.onChangeVisibility()}
-          key={this.getColor(this.props.layer)}
-          style={{
-            color: this.getColor(this.props.layer)
-          }}
-        />
+        <div
+          className={classnames(SwitcherStyles['c-switcher'], { [SwitcherStyles['-active']]: this.props.layer.visible })}
+          onClick={() => this.onChangeVisibility()}
+          style={this.props.layer.visible ? { background: this.getColor(this.props.layer) } : null}
+        >
+          <input
+            type="checkbox"
+            checked={this.props.layer.visible}
+            key={this.getColor(this.props.layer)}
+          />
+          <div className={SwitcherStyles.toggle} />
+        </div>
         <input
           className={classnames(LayerListStyles['item-name'], { [LayerListStyles['item-rename']]: this.props.layerPanelEditMode })}
           onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
