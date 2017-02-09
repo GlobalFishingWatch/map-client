@@ -36,7 +36,7 @@ const mapStateToProps = state => ({
   userPermissions: state.user.userPermissions,
   searchModalOpen: state.search.searchModalOpen,
   recentVesselModalOpen: state.map.recentVesselModal.open,
-  welcomeModalOpen: state.map.welcomeModal.open,
+  welcomeModalOpen: state.modal.welcome.open,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval
 });
 

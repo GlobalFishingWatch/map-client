@@ -15,8 +15,7 @@ import {
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY,
-  SET_WELCOME_MODAL_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -63,9 +62,6 @@ const initialState = {
   },
   recentVesselModal: {
     open: false
-  },
-  welcomeModal: {
-    open: !DISABLE_WELCOME_MODAL
   },
   workspaceId: null
 };
@@ -140,15 +136,6 @@ export default function (state = initialState, action) {
     case SET_RECENT_VESSELS_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.recentVesselModal = {
-        open: action.payload
-      };
-
-      return newState;
-    }
-
-    case SET_WELCOME_MODAL_VISIBILITY: {
-      const newState = Object.assign({}, state);
-      newState.welcomeModal = {
         open: action.payload
       };
 

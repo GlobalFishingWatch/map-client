@@ -24,6 +24,7 @@ import searchReducer from 'reducers/search';
 import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'reducers/customLayer';
 import articlesPublicationsReducer from 'reducers/articlesPublications';
+import modalReducer from 'reducers/modal';
 import { triggerAnalyticsPageView } from 'actions/user';
 import Routes from './routes';
 
@@ -51,7 +52,8 @@ const reducer = combineReducers({
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
-  customLayer: customLayerReducer
+  customLayer: customLayerReducer,
+  modal: modalReducer
 });
 
 const middlewareRouter = routerMiddleware(browserHistory);
