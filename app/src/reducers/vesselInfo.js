@@ -29,24 +29,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_PINNED_VESSEL_EDIT_MODE: {
-      const newState = Object.assign({}, state, {
-        pinnedVesselEditMode: action.payload.forceMode === null ? !state.pinnedVesselEditMode : action.payload.forceMode
-      });
-
-      if (newState.pinnedVesselEditMode === false) {
-        newState.details = _.cloneDeep(state.details);
-
-
-        newState.details.forEach((vesselDetail) => {
-          if (!vesselDetail.title || /^\s*$/.test(vesselDetail.title)) {
-            vesselDetail.title = vesselDetail.vesselname;
-          }
-        });
-      }
-
-      return newState;
-    }
     case ADD_VESSEL: {
       return Object.assign({}, state, {
         detailsStatus: { isLoading: true }
@@ -70,6 +52,7 @@ export default function (state = initialState, action) {
       const newDetails = Object.assign({
         pinned: false,
         visible: false,
+        shownInInfoPanel: false,
         title: action.payload.vesselname,
         hue: DEFAULT_TRACK_HUE
       }, action.payload);
@@ -96,7 +79,7 @@ export default function (state = initialState, action) {
     case SHOW_VESSEL_DETAILS: {
       const detailsIndex = state.details.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newDetails = _.cloneDeep(state.details[detailsIndex]);
-      newDetails.visible = true;
+      newDetails.shownInInfoPanel = true;
 
       return Object.assign({}, state, {
         details: [...state.details.slice(0, detailsIndex), newDetails, ...state.details.slice(detailsIndex + 1)],
@@ -105,7 +88,7 @@ export default function (state = initialState, action) {
     }
 
     case CLEAR_VESSEL_INFO: {
-      const detailsIndex = state.details.findIndex(vessel => vessel.visible === true);
+      const detailsIndex = state.details.findIndex(vessel => vessel.shownInInfoPanel === true);
 
       // no vessel currently shown: just reset details status
       if (detailsIndex === -1) {
@@ -115,10 +98,10 @@ export default function (state = initialState, action) {
       }
 
       const currentlyVisibleVessel = _.cloneDeep(state.details[detailsIndex]);
-      currentlyVisibleVessel.visible = false;
 
-      // vessel is pinned: set info to visible = false
+      // vessel is pinned: set info to shownInInfoPanel = false
       if (currentlyVisibleVessel.pinned === true) {
+        currentlyVisibleVessel.shownInInfoPanel = false;
         return Object.assign({}, state, {
           details: [...state.details.slice(0, detailsIndex), currentlyVisibleVessel, ...state.details.slice(detailsIndex + 1)],
           detailsStatus: null
@@ -250,6 +233,25 @@ export default function (state = initialState, action) {
       } catch (err) {
         return state;
       }
+    }
+
+    case TOGGLE_PINNED_VESSEL_EDIT_MODE: {
+      const newState = Object.assign({}, state, {
+        pinnedVesselEditMode: action.payload.forceMode === null ? !state.pinnedVesselEditMode : action.payload.forceMode
+      });
+
+      if (newState.pinnedVesselEditMode === false) {
+        newState.details = _.cloneDeep(state.details);
+
+
+        newState.details.forEach((vesselDetail) => {
+          if (!vesselDetail.title || /^\s*$/.test(vesselDetail.title)) {
+            vesselDetail.title = vesselDetail.vesselname;
+          }
+        });
+      }
+
+      return newState;
     }
 
     default:

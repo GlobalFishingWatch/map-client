@@ -30,7 +30,7 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const vesselInfo = this.props.details.find(vessel => vessel.visible === true);
+    const vesselInfo = this.props.details.find(vessel => vessel.shownInInfoPanel === true);
     const status = this.props.detailsStatus;
 
     if (status === null && vesselInfo === undefined) {
