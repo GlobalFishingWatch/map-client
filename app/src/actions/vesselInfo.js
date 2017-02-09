@@ -311,31 +311,6 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function showPinnedVesselDetails(seriesgroup) {
-  return (dispatch, getState) => {
-    dispatch(clearVesselInfo());
-    dispatch({
-      type: SHOW_VESSEL_DETAILS,
-      payload: {
-        seriesgroup
-      }
-    });
-    // TODO only if vessel is not already toggled on
-    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
-    dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
-  };
-}
-
-export function setPinnedVesselHue(seriesgroup, hue) {
-  return {
-    type: SET_PINNED_VESSEL_HUE,
-    payload: {
-      seriesgroup,
-      hue
-    }
-  };
-}
-
 export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   return (dispatch, getState) => {
     const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
@@ -347,8 +322,32 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
         visible
       }
     });
-  // load track if status is on
-  // unload track if status is off
+    if (visible === true && currentVessel.track === undefined) {
+      dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
+    }
+  };
+}
+
+export function showPinnedVesselDetails(seriesgroup) {
+  return (dispatch) => {
+    dispatch(clearVesselInfo());
+    dispatch({
+      type: SHOW_VESSEL_DETAILS,
+      payload: {
+        seriesgroup
+      }
+    });
+    dispatch(togglePinnedVesselVisibility(seriesgroup, true));
+  };
+}
+
+export function setPinnedVesselHue(seriesgroup, hue) {
+  return {
+    type: SET_PINNED_VESSEL_HUE,
+    payload: {
+      seriesgroup,
+      hue
+    }
   };
 }
 
