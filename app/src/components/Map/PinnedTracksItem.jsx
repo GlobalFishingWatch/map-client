@@ -8,9 +8,7 @@ import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=Bl
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
-import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
-import { hueToRgbString } from 'util/hsvToRgb';
-
+import Toggle from 'components/Shared/Toggle';
 
 class PinnedTracksItem extends Component {
 
@@ -31,13 +29,6 @@ class PinnedTracksItem extends Component {
 
   onChangeHue(hue) {
     this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
-  }
-
-  getColor(vessel) {
-    if (vessel.hue !== undefined) {
-      return hueToRgbString(vessel.hue);
-    }
-    return vessel.color;
   }
 
   onChangeVisibility() {
@@ -94,15 +85,10 @@ class PinnedTracksItem extends Component {
         className={pinnedTracksStyles['pinned-item']}
         key={this.props.vessel.seriesgroup}
       >
-        <input
-          className={SwitcherStyles['c-switcher']}
-          type="checkbox"
-          checked={this.props.vessel.visible}
-          onChange={() => this.onChangeVisibility()}
-          key={this.getColor(this.props.vessel)}
-          style={{
-            color: this.getColor(this.props.vessel)
-          }}
+        <Toggle
+          on={this.props.vessel.visible}
+          hue={this.props.vessel.hue}
+          onToggled={() => this.onChangeVisibility()}
         />
         <input
           className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.pinnedVesselEditMode })}
