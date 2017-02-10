@@ -10,6 +10,7 @@ import {
   TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
+  HIDE_VESSELS_INFO_PANEL,
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
@@ -264,12 +265,23 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
   };
 }
 
+export function hideVesselsInfoPanel() {
+  return {
+    type: HIDE_VESSELS_INFO_PANEL
+  };
+}
+
 export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
     dispatch({
       type: ADD_VESSEL
     });
-    dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+    if (state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
+      dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+    } else {
+      dispatch(hideVesselsInfoPanel());
+    }
     dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
   };
 }
