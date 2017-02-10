@@ -7,6 +7,7 @@ import {
   SET_TRACK_BOUNDS,
   SHOW_VESSEL_CLUSTER_INFO,
   SHOW_NO_VESSELS_INFO,
+  HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
   SHOW_VESSEL_DETAILS,
   SET_PINNED_VESSEL_HUE,
@@ -137,6 +138,10 @@ export default function (state = initialState, action) {
     case SHOW_NO_VESSELS_INFO:
       return Object.assign({}, state, {
         detailsStatus: { isEmpty: true }
+      });
+    case HIDE_VESSELS_INFO_PANEL:
+      return Object.assign({}, state, {
+        detailsStatus: null
       });
     case SET_TRACK_BOUNDS: {
       return Object.assign({}, state, { trackBounds: action.trackBounds });
