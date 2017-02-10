@@ -92,9 +92,9 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom && <li
             className={LayerListStyles['layer-option-item']}
-            onClick={() => this.toggleBlending()}
           >
             <BlendingIcon
+              onClick={() => this.toggleBlending()}
               className={classnames(icons['blending-icon'],
                 { [`${icons['-white']}`]: this.props.showBlending })}
             />
