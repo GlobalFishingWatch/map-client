@@ -35,6 +35,7 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
         tileCoordinates.zoom,
         vectorArray
       );
+      // console.log(data)
       resolve(data);
     });
   });

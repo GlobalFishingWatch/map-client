@@ -54,11 +54,13 @@ export default class TracksLayerGL {
     const circlePoints = {
       inner: {
         x: [],
-        y: []
+        y: [],
+        radius: []
       },
       over: {
         x: [],
-        y: []
+        y: [],
+        radius: []
       }
     };
 
@@ -89,23 +91,25 @@ export default class TracksLayerGL {
       if (drawStyle === TRACK_SEGMENT_TYPES.Highlighted) {
         circlePoints.over.x.push(x);
         circlePoints.over.y.push(y);
+        circlePoints.over.radius.push(data.radius[i]);
       } else if (drawStyle === TRACK_SEGMENT_TYPES.InInnerRange) {
         circlePoints.inner.x.push(x);
         circlePoints.inner.y.push(y);
+        circlePoints.inner.radius.push(data.radius[i]);
       }
       prevDrawStyle = drawStyle;
       prevX = x;
       prevY = y;
     }
 
-    this.stage.lineStyle(0.5, color, 1);
+    this.stage.lineStyle(0.5, '0xff00ff', 1);
     for (let i = 0, circlesLength = circlePoints.inner.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 6);
+      this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], circlePoints.inner.radius[i]);
     }
 
     this.stage.lineStyle(0.5, '0xFFFFFF', 1);
     for (let i = 0, circlesLength = circlePoints.over.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 6);
+      this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], circlePoints.inner.radius[i]);
     }
   }
 
