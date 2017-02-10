@@ -15,12 +15,14 @@ import {
 const MAX_SPRITES_FACTOR = 0.002;
 
 export default class GLContainer extends BaseOverlay {
-  constructor(viewportWidth, viewportHeight) {
+  constructor(viewportWidth, viewportHeight, addedCallback) {
     super();
     this.layers = [];
     this.timeIndexDelta = 0;
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
+
+    this.addedCallback = addedCallback;
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -98,7 +100,10 @@ export default class GLContainer extends BaseOverlay {
   onAdd() {
     const panes = this.getPanes();
     panes.overlayLayer.appendChild(this.container);
-    this.tracksLayer.setMap(this.getMap());
+    this.map = this.getMap();
+    this.layerProjection = this.getProjection();
+    this.mapProjection = this.map.getProjection();
+    this.addedCallback(this.layerProjection);
   }
 
   onRemove() {}
@@ -134,7 +139,21 @@ export default class GLContainer extends BaseOverlay {
     this.layers.splice(removedLayerIndex, 1);
   }
 
-  render(data, timelineInnerExtentIndexes) {
+  _getOffsets() {
+    const topLeft = this.layerProjection.fromContainerPixelToLatLng(new google.maps.Point(0, 0));
+    const topLeftWorld = this.mapProjection.fromLatLngToPoint(topLeft);
+    return {
+      top: topLeftWorld.y,
+      left: topLeftWorld.x,
+      scale: 2 ** this.map.getZoom()
+    };
+  }
+
+  updateHeatmap(data, timelineInnerExtentIndexes) {
+    if (!this.mapProjection) {
+      return;
+    }
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
 
@@ -157,12 +176,20 @@ export default class GLContainer extends BaseOverlay {
         continue;
       }
       const tiles = layerData.tiles;
-      layer.render(tiles, startIndex, endIndex);
+      layer.render(tiles, startIndex, endIndex, this._getOffsets());
     }
     this._renderStage();
   }
 
-  renderTracks() {
+  updateTracks(tracks, drawParams) {
+    this.tracksLayer.update(tracks, drawParams, this._getOffsets());
+  }
+
+  clearTracks() {
+    this.tracksLayer.clear();
+  }
+
+  render() {
     this._renderStage();
   }
 

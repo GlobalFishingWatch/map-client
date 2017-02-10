@@ -10,26 +10,15 @@ export default class TracksLayerGL {
     this.stage = new PIXI.Graphics();
   }
 
-  setMap(map) {
-    this.map = map;
-    this.projection = this.map.getProjection();
-  }
-
   clear() {
     this.stage.clear();
   }
 
-  drawTracks(tracks, drawParams) {
-    const projectionData = {
-      top: this.projection.fromLatLngToPoint(this.map.getBounds().getNorthEast()).y,
-      left: this.projection.fromLatLngToPoint(this.map.getBounds().getSouthWest()).x,
-      scale: 2 ** this.map.getZoom()
-    };
-
+  update(tracks, drawParams, offsets) {
     this.clear();
 
     tracks.forEach((track) => {
-      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, projectionData);
+      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
     });
   }
 
@@ -42,7 +31,7 @@ export default class TracksLayerGL {
    * @param projectionData An object containing the world top and left and the scale factor (dependent on zoom).
    * This is used to convert world coordinates to pixels
    */
-  _drawTrack(data, queriedSeries, hue, drawParams, projectionData) {
+  _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
     const color = hueToRgbHexString(hue);
 
     let prevDrawStyle;
@@ -70,8 +59,13 @@ export default class TracksLayerGL {
       if (queriedSeries && queriedSeries !== currentSeries) {
         continue;
       }
-      const x = ((data.worldX[i] - projectionData.left) * projectionData.scale);
-      const y = ((data.worldY[i] - projectionData.top) * projectionData.scale);
+      const worldX = data.worldX[i];
+      let originX = offsets.left;
+      if (originX > worldX) {
+        originX -= 256;
+      }
+      const x = ((data.worldX[i] - originX) * offsets.scale);
+      const y = ((data.worldY[i] - offsets.top) * offsets.scale);
 
       const drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
       if (prevDrawStyle !== drawStyle) {

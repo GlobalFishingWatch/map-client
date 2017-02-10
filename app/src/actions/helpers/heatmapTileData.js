@@ -107,34 +107,8 @@ export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT
  * Add projected lat/long values transformed as tile-relative x/y coordinates
  * @param vectorArray typed arrays, including latitude and longitude
  * @param map a reference to the original Google Map
- * @param tileBounds the initial position of the tile in the DOM, used to offset screen coordinates to local tile coordinates
  */
-export const addTilePixelCoordinates = (vectorArray, map, tileBounds) => {
-  const data = vectorArray;
-  const proj = map.getProjection();
-  const top = proj.fromLatLngToPoint(map.getBounds().getNorthEast()).y;
-  const left = proj.fromLatLngToPoint(map.getBounds().getSouthWest()).x;
-  const tileTop = tileBounds.top;
-  const tileLeft = tileBounds.left;
-  const scale = 2 ** map.getZoom();
-  data.x = new Int32Array(data.latitude.length);
-  data.y = new Int32Array(data.latitude.length);
-
-  for (let index = 0, length = data.latitude.length; index < length; index++) {
-    const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
-    let worldX = worldPoint.x - left;
-    // x < 0 : case where map left is behind dateline while point is beyond dateline
-    if (worldX < 0 && tileLeft > 0) {
-      worldX = worldPoint.x + (256 - left);
-    }
-    data.x[index] = (worldX * scale) - tileLeft;
-    data.y[index] = ((worldPoint.y - top) * scale) - tileTop;
-  }
-
-  return data;
-};
-
-export const addTracksWorldCoordinates = (vectorArray, map) => {
+export const addWorldCoordinates = (vectorArray, map) => {
   const data = vectorArray;
   const proj = map.getProjection();
   data.worldX = new Float32Array(data.latitude.length);
@@ -173,8 +147,8 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
     const datetime = vectorArray.datetime[index];
 
     const timeIndex = getOffsetedTimeAtPrecision(datetime);
-    const x = vectorArray.x[index];
-    const y = vectorArray.y[index];
+    const worldX = vectorArray.worldX[index];
+    const worldY = vectorArray.worldY[index];
     const weight = vectorArray.weight[index];
     const sigma = vectorArray.sigma[index];
     const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
@@ -187,8 +161,8 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
 
     if (!tilePlaybackData[timeIndex]) {
       tilePlaybackData[timeIndex] = {
-        x: [x],
-        y: [y],
+        worldX: [worldX],
+        worldY: [worldY],
         weight: [weight],
         sigma: [sigma],
         radius: [radius],
@@ -200,8 +174,8 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
       continue;
     }
     const timestamp = tilePlaybackData[timeIndex];
-    timestamp.x.push(x);
-    timestamp.y.push(y);
+    timestamp.worldX.push(worldX);
+    timestamp.worldY.push(worldY);
     timestamp.weight.push(weight);
     timestamp.sigma.push(sigma);
     timestamp.radius.push(radius);
@@ -226,17 +200,21 @@ export const addTracksPointRadius = (data, zoom) => {
   return data;
 };
 
-export const selectVesselsAt = (tileData, localX, localY, startIndex, endIndex) => {
+export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex) => {
   const vessels = [];
+
+  // convert px tolerance/radius to world units
+  const scale = 2 ** currentZoom;
+  const vesselClickToleranceWorld = VESSEL_CLICK_TOLERANCE_PX / scale;
 
   for (let f = startIndex; f < endIndex; f++) {
     const frame = tileData[f];
     if (frame === undefined) continue;
-    for (let i = 0; i < frame.x.length; i++) {
-      const vx = frame.x[i];
-      const vy = frame.y[i];
-      if (vx >= localX - VESSEL_CLICK_TOLERANCE_PX && vx <= localX + VESSEL_CLICK_TOLERANCE_PX &&
-          vy >= localY - VESSEL_CLICK_TOLERANCE_PX && vy <= localY + VESSEL_CLICK_TOLERANCE_PX) {
+    for (let i = 0; i < frame.worldX.length; i++) {
+      const wx = frame.worldX[i];
+      const wy = frame.worldY[i];
+      if (wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
+          wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         vessels.push({
           category: frame.category[i],
           series: frame.series[i],
