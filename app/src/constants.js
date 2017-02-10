@@ -37,7 +37,6 @@ export const VESSELS_ENDPOINT_KEYS = [
 export const GUEST_PERMISSION_SET = [
   'seeVesselsLayers',
   'selectVessel',
-  'seeVesselBasicInfo',
   'shareWorkspace'
 ];
 
