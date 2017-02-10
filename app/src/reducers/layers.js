@@ -75,7 +75,7 @@ export default function (state = initialState, action) {
       const workspaceLayers = [
         ...state.workspaceLayers,
         {
-          id: action.payload.url,
+          id: action.payload.id,
           url: action.payload.url,
           title: action.payload.name,
           label: action.payload.name,

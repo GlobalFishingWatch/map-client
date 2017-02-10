@@ -28,13 +28,14 @@ export default function uploadLayer(url, name, description) {
         return res.json();
       })
       .then((data) => {
+        const layerId = data.args.id;
         const newUrl = data.args.source.args.url;
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_SUCCESS,
           payload: 'idle'
         });
         dispatch(setLayerManagementModalVisibility(false));
-        dispatch(addCustomLayer(newUrl, name, description));
+        dispatch(addCustomLayer(layerId, newUrl, name, description));
       });
   };
 }
