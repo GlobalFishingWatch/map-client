@@ -66,13 +66,10 @@ class LayerOptionsTooltip extends Component {
   }
 
   render() {
-    // if (!this.state.opacityRangeValue) return null;
-
     return (
       <div
         className={classnames(
           BlendingStyles['c-blending'],
-          { [`${BlendingStyles['-is-visible']}`]: this.props.showBlending },
           { [`${BlendingStyles['-reverse']}`]: this.props.isReverse })
         }
       >
@@ -107,10 +104,9 @@ LayerOptionsTooltip.propTypes = {
   displayHue: React.PropTypes.bool,
   displayOpacity: React.PropTypes.bool,
   hueValue: React.PropTypes.number,
+  opacityValue: React.PropTypes.number,
   onChangeHue: React.PropTypes.func,
   onChangeOpacity: React.PropTypes.func,
-  opacityValue: React.PropTypes.number,
-  showBlending: React.PropTypes.bool,
   isReverse: React.PropTypes.bool
 };
 
