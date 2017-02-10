@@ -24,6 +24,11 @@
     font-weight: $font-weight-normal;
     outline: none;
     width: 100%;
+
+    > option {
+      background: $color-4;
+      color: $color-12;
+    }
   }
 
   &::after {
