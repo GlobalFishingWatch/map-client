@@ -43,8 +43,12 @@ export default class GLContainer extends BaseOverlay {
     const baseTextureCanvas = this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR);
     this.baseTexture = PIXI.Texture.fromCanvas(baseTextureCanvas);
 
+    this.heatmapStage = new PIXI.Container();
+    this.stage.addChild(this.heatmapStage);
+
     this.tracksLayer = new TracksLayer();
     this.stage.addChild(this.tracksLayer.stage);
+
 
     // uncomment to debug spritesheet
     // this.container.appendChild(baseTextureCanvas);
@@ -118,7 +122,7 @@ export default class GLContainer extends BaseOverlay {
   addLayer(layerSettings) {
     const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites, this._renderStage.bind(this));
-    this.stage.addChild(layer.stage);
+    this.heatmapStage.addChild(layer.stage);
     this.layers.push(layer);
     return layer;
   }
@@ -126,7 +130,7 @@ export default class GLContainer extends BaseOverlay {
   removeLayer(layerId) {
     const removedLayerIndex = this.layers.findIndex(layer => layer.id === layerId);
     const removedLayer = this.layers[removedLayerIndex];
-    this.stage.removeChild(removedLayer.stage);
+    this.heatmapStage.removeChild(removedLayer.stage);
     this.layers.splice(removedLayerIndex, 1);
   }
 

@@ -102,6 +102,7 @@ export default class TracksLayerGL {
       prevY = y;
     }
 
+    this.stage.lineStyle(0);
     // inner range center circle
     this.stage.beginFill(color, 1);
     for (let i = 0, circlesLength = circlePoints.inner.x.length; i < circlesLength; i++) {
@@ -109,9 +110,9 @@ export default class TracksLayerGL {
       this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 2);
     }
     // inner range glow
-    this.stage.beginFill(color, 0.1);
+    this.stage.beginFill(color, 0.03);
     for (let i = 0, circlesLength = circlePoints.inner.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 8);
+      this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 10);
     }
 
     // over range center circle
@@ -121,9 +122,9 @@ export default class TracksLayerGL {
       this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 2);
     }
     // over range glow
-    this.stage.beginFill('0xFFFFFF', 0.1);
+    this.stage.beginFill('0xFFFFFF', 0.03);
     for (let i = 0, circlesLength = circlePoints.over.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 8);
+      this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 10);
     }
   }
 
