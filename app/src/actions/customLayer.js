@@ -6,26 +6,35 @@ import { setLayerManagementModalVisibility } from 'actions/map';
 import { addCustomLayer } from 'actions/layers';
 
 export default function uploadLayer(url, name, description) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const token = state.user.token;
+
     dispatch({
       type: CUSTOM_LAYER_UPLOAD_START,
       payload: 'pending'
     });
-    fetch(url)
+
+    fetch(`${MAP_API_ENDPOINT}/v1/directory`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({ title: name, url, description })
+    })
       .then((res) => {
-        if (res.status >= 400) throw new Error(res.statusText)
+        if (res.status >= 400) throw new Error(res.statusText);
         return res.json();
       })
-      .then(() => {
+      .then((data) => {
+        const newUrl = data.args.source.args.url;
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_SUCCESS,
           payload: 'idle'
         });
         dispatch(setLayerManagementModalVisibility(false));
-
-        // TODO get real URL from API
-        const url = 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml';
-        dispatch(addCustomLayer(url, name, description));
+        dispatch(addCustomLayer(newUrl, name, description));
       });
   };
 }
