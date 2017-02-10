@@ -76,18 +76,18 @@ class LayerOptionsTooltip extends Component {
           { [`${BlendingStyles['-reverse']}`]: this.props.isReverse })
         }
       >
+        {this.props.displayHue && <div>
+          Hue
+          <InputRange
+            classNames={this.hueRangeConfig.classnames}
+            value={this.state.hueRangeValue}
+            maxValue={this.hueRangeConfig.maxValue}
+            minValue={this.hueRangeConfig.minValue}
+            onChange={(component, value) => this.onChangeHue(value)}
+            step={this.hueRangeConfig.step}
+          />
+        </div>}
         {this.props.displayOpacity && <div>
-          {this.props.displayHue && <div>
-            Hue
-            <InputRange
-              classNames={this.hueRangeConfig.classnames}
-              value={this.state.hueRangeValue}
-              maxValue={this.hueRangeConfig.maxValue}
-              minValue={this.hueRangeConfig.minValue}
-              onChange={(component, value) => this.onChangeHue(value)}
-              step={this.hueRangeConfig.step}
-            />
-          </div>}
           Opacity
           <InputRange
             classNames={this.opacityRangeConfig.classnames}
