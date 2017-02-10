@@ -5,6 +5,10 @@ import {
   SET_WELCOME_MODAL_VISIBILITY
 } from 'actions';
 
+/**
+ * TODO: refactor all modals living in the ./reducers/map.js file to this one.
+ */
+
 const initialState = {
   welcome: {
     url: null,

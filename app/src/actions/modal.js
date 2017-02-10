@@ -6,6 +6,10 @@ import {
 } from 'actions';
 import 'whatwg-fetch';
 
+/**
+ * TODO: refactor all modals living in the ./actions/map.js file to this one.
+ */
+
 export function setWelcomeModalUrl() {
   const cookie = document.cookie.split(WELCOME_MODAL_COOKIE_KEY);
   if (cookie.length < 2) return { type: SET_WELCOME_MODAL_URL, payload: null };
