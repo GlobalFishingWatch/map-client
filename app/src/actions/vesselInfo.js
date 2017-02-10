@@ -288,7 +288,7 @@ export function toggleActiveVesselPin() {
   return {
     type: TOGGLE_VESSEL_PIN,
     payload: {
-      useCurrentlyVisibleVessel: true
+      useVesselCurrentlyInInfoPanel: true
     }
   };
 }
