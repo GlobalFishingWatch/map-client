@@ -5,15 +5,18 @@ import {
 import { setLayerManagementModalVisibility } from 'actions/map';
 import { addCustomLayer } from 'actions/layers';
 
-export default function uploadLayer(file, name, description) {
+export default function uploadLayer(url, name, description) {
   return (dispatch) => {
     dispatch({
       type: CUSTOM_LAYER_UPLOAD_START,
       payload: 'pending'
     });
-    fetch('http://www.vizzuality.com/')
+    fetch(url)
+      .then((res) => {
+        if (res.status >= 400) throw new Error(res.statusText)
+        return res.json();
+      })
       .then(() => {
-        console.warn('simulated call to API done');
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_SUCCESS,
           payload: 'idle'

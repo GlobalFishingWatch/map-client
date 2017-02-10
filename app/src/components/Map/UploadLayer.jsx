@@ -19,13 +19,7 @@ class UploadLayer extends Component {
 
   onChange(target) {
     const newState = Object.assign({}, this.state);
-
-    if (target.type === 'file') {
-      // gets file name from the path file.
-      newState[target.name] = target.value.split(/(\\|\/)/g).pop();
-    } else {
-      newState[target.name] = target.value;
-    }
+    newState[target.name] = target.value;
 
     this.setState(newState);
   }
@@ -57,28 +51,15 @@ class UploadLayer extends Component {
             </div>
 
             <div className={UploadLayerStyles.row}>
-              <label className={MapFormStyles['field-name']} htmlFor="file">file</label>
-              <div className={MapFormStyles['file-container']}>
-                <div className={MapFormStyles['fake-file-container']}>
-                  <div className={MapFormStyles['fake-file-input']}>
-                    <span className={MapFormStyles['fake-file-input-placeholder']}>{this.state.file}</span>
-                  </div>
-                  <div
-                    className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'], MapFormStyles['fake-file-button'])}
-                  >
-                    select file
-                  </div>
-                </div>
-                <div className={MapFormStyles['file-input-container']}>
-                  <input
-                    className={MapFormStyles['file-input']}
-                    name="file"
-                    onChange={e => this.onChange(e.currentTarget)}
-                    required
-                    type="file"
-                  />
-                </div>
-              </div>
+              <label className={MapFormStyles['field-name']} htmlFor="url">url</label>
+              <input
+                className={MapFormStyles['text-input']}
+                name="url"
+                placeholder="example.org"
+                type="text"
+                onChange={e => this.onChange(e.currentTarget)}
+                required
+              />
             </div>
           </div>
           <div className={UploadLayerStyles.column}>
@@ -104,7 +85,6 @@ class UploadLayer extends Component {
               />
             </div>
           </div>
-
         </form>
       </div>
     );
