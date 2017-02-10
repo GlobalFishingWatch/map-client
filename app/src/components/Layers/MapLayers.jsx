@@ -50,16 +50,18 @@ class MapLayers extends Component {
       this.setLayersInteraction(nextProps.reportLayerId);
     }
 
-    if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
+    if (!this.glContainer || !nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
       return;
     }
 
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtent, nextProps.timelineInnerExtent);
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
+    let isGLContainerDirty = false;
 
-    if (this.tracksLayer && (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0)) {
-      this.tracksLayer.clear();
+    if (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0) {
+      this.glContainer.clearTracks();
+      isGLContainerDirty = true;
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextProps.vesselTracks,
@@ -69,20 +71,25 @@ class MapLayers extends Component {
         timelinePaused: nextProps.timelinePaused,
         timelineOverExtent: nextProps.timelineOverExtent
       });
+      isGLContainerDirty = true;
     }
 
-    if (this.glContainer) {
-      // update vessels layer when:
-      // - tiled data changed
-      // - selected inner extent changed
-      if (this.props.heatmap !== nextProps.heatmap ||
-        innerExtentChanged) {
-        this.renderHeatmap(nextProps);
-      }
-      if (nextProps.flagsLayers !== this.props.flagsLayers) {
-        this.setHeatmapFlags(nextProps);
-        this.renderHeatmap(nextProps);
-      }
+    // update heatmap layer when:
+    // - tiled data changed
+    // - selected inner extent changed
+    if (this.props.heatmap !== nextProps.heatmap ||
+      innerExtentChanged) {
+      this.updateHeatmap(nextProps);
+      isGLContainerDirty = true;
+    }
+    if (nextProps.flagsLayers !== this.props.flagsLayers) {
+      this.setHeatmapFlags(nextProps);
+      this.updateHeatmap(nextProps);
+      isGLContainerDirty = true;
+    }
+
+    if (isGLContainerDirty === true) {
+      this.renderGLContainer();
     }
   }
 
@@ -142,9 +149,10 @@ class MapLayers extends Component {
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
-    this.glContainer = new GLContainer(this.props.viewportWidth, this.props.viewportHeight);
+    this.glContainer = new GLContainer(this.props.viewportWidth, this.props.viewportHeight, (overlayProjection) => {
+      this.tiledLayer.setProjection(overlayProjection);
+    });
     this.glContainer.setMap(this.map);
-    this.tracksLayer = this.glContainer.tracksLayer;
   }
 
 
@@ -219,19 +227,28 @@ class MapLayers extends Component {
 
   addHeatmapLayer(newLayer) {
     this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer);
-    this.renderHeatmap(this.props);
+    this.renderGLContainer();
   }
 
   removeHeatmapLayer(layer) {
     this.glContainer.removeLayer(layer.id);
+    this.renderGLContainer();
   }
 
   setHeatmapFlags(props) {
     this.glContainer.setFlags(props.flagsLayers, useHeatmapStyle(this.props.zoom));
   }
 
-  renderHeatmap(props) {
-    this.glContainer.render(props.heatmap, props.timelineInnerExtentIndexes);
+  updateHeatmap(props) {
+    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes);
+  }
+
+  updateHeatmapWithCurrentProps() {
+    this.updateHeatmap(this.props);
+  }
+
+  renderGLContainer() {
+    this.glContainer.render();
   }
 
   addCustomLayer(layer) {
@@ -330,7 +347,8 @@ class MapLayers extends Component {
     }
 
     if (layerSettings.type === LAYER_TYPES.Heatmap) {
-      this.renderHeatmap(this.props);
+      this.updateHeatmapWithCurrentProps();
+      this.renderGLContainer();
     }
   }
 
@@ -344,12 +362,13 @@ class MapLayers extends Component {
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
 
     if (layerSettings.type === LAYER_TYPES.Heatmap) {
-      this.renderHeatmap(this.props);
+      this.updateHeatmapWithCurrentProps();
+      this.renderGLContainer();
     }
   }
 
   updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
-    if (!this.tracksLayer || !data) {
+    if (!this.glContainer || !data) {
       return;
     }
 
@@ -360,7 +379,7 @@ class MapLayers extends Component {
       overEndTimestamp = timelineOverExtent[1].getTime();
     }
 
-    this.tracksLayer.drawTracks(
+    this.glContainer.updateTracks(
       data,
       {
         startTimestamp,
@@ -370,10 +389,9 @@ class MapLayers extends Component {
         overEndTimestamp
       }
     );
-    this.glContainer.renderTracks();
   }
 
-  rerenderTrackLayer() {
+  updateTrackLayerWithCurrentProps() {
     if (!this.props.vesselTracks) {
       return;
     }
@@ -393,10 +411,9 @@ class MapLayers extends Component {
   onMapIdle() {
     if (this.glContainer) {
       this.glContainer.reposition();
-      this.renderHeatmap(this.props);
-    }
-    if (this.tracksLayer) {
-      this.rerenderTrackLayer();
+      this.updateTrackLayerWithCurrentProps();
+      this.updateHeatmapWithCurrentProps();
+      this.renderGLContainer();
     }
   }
 
@@ -404,10 +421,9 @@ class MapLayers extends Component {
     // TODO instead of rerendering everything while moving, just offset the webGL canvas
     if (this.glContainer) {
       this.glContainer.reposition();
-      this.renderHeatmap(this.props);
-    }
-    if (this.tracksLayer) {
-      this.rerenderTrackLayer();
+      this.updateTrackLayerWithCurrentProps();
+      this.updateHeatmapWithCurrentProps();
+      this.renderGLContainer();
     }
   }
 

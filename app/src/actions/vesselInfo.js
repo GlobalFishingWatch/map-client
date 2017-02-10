@@ -22,7 +22,7 @@ import {
   setOuterTimelineDates
 } from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
-import { getTilePelagosPromises, getCleanVectorArrays, groupData, addTracksWorldCoordinates } from 'actions/helpers/heatmapTileData';
+import { getTilePelagosPromises, getCleanVectorArrays, groupData, addWorldCoordinates } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
   return {
@@ -202,7 +202,7 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
           'series',
           'weight'
         ]);
-        const vectorArray = addTracksWorldCoordinates(groupedData, map);
+        const vectorArray = addWorldCoordinates(groupedData, map);
 
         dispatch({
           type: SET_VESSEL_TRACK,
