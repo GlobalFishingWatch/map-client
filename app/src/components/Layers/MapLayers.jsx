@@ -278,6 +278,7 @@ class MapLayers extends Component {
             this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
           this.addedLayers[layer.id] = cartoLayer;
+          this.setLayerOpacity(layerSettings);
           resolve();
         }).bind(this, layerSettings));
     }));

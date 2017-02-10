@@ -121,6 +121,14 @@ export const addWorldCoordinates = (vectorArray, map) => {
   return data;
 };
 
+const _getZoomFactorRadiusRenderingMode = zoom => ((zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.15);
+const _getZoomFactorRadius = zoom => (zoom - 1) ** 2.5;
+const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
+  let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
+  radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
+  return radius;
+};
+
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
@@ -130,8 +138,9 @@ export const addWorldCoordinates = (vectorArray, map) => {
 export const getTilePlaybackData = (zoom, vectorArray) => {
   const tilePlaybackData = [];
 
-  const zoomFactorRadius = (zoom - 1) ** 2.5;
-  const zoomFactorRadiusRenderingMode = (zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.2;
+  const zoomFactorRadius = _getZoomFactorRadius(zoom);
+  const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
+
   const zoomFactorOpacity = (zoom - 1) ** 3.5;
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
@@ -142,8 +151,7 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
     const worldY = vectorArray.worldY[index];
     const weight = vectorArray.weight[index];
     const sigma = vectorArray.sigma[index];
-    let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
-    radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
+    const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
     let opacity = 3 + Math.log((weight * zoomFactorOpacity) / 1000);
     // TODO quick hack to avoid negative values, check why that happens
     opacity = Math.max(0, opacity);
@@ -178,6 +186,18 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
   }
 
   return tilePlaybackData;
+};
+
+export const addTracksPointRadius = (data, zoom) => {
+  const zoomFactorRadius = _getZoomFactorRadius(zoom);
+  const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
+
+  data.radius = new Float32Array(data.latitude.length);
+
+  for (let index = 0, length = data.latitude.length; index < length; index++) {
+    data.radius[index] = _getRadius(data.sigma[index], zoomFactorRadiusRenderingMode, zoomFactorRadius);
+  }
+  return data;
 };
 
 export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex) => {
