@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
+import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_FILTERS_MOBILE } from 'constants';
 
@@ -68,13 +68,14 @@ class FilterItem extends Component {
                 { [`${IconStyles['-white']}`]: this.props.showBlending === true })}
                 onClick={() => this.toggleBlending()}
               />
-              <LayerOptionsTooltip
+              {this.props.showBlending &&
+              <LayerBlendingOptionsTooltip
                 displayHue
                 hueValue={hueValue}
                 onChangeHue={hue => this.onChangeHue(hue)}
-                showBlending={this.props.showBlending}
                 isReverse={this.props.index < REVERSE_TOOLTIP_FILTERS_MOBILE}
               />
+              }
             </li>
             <li className={flagFilterStyles['filter-option-item']}>
               <RemoveFilterIcon
