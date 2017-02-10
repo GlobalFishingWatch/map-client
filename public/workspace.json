@@ -13,7 +13,7 @@
           "title": "Bathimetry",
           "description": "Bathimetry of the oceans",
           "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
-          "visible": false,
+          "visible": true,
           "color": "#1a7ff0",
           "type": "CartoDBAnimation",
           "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
@@ -37,12 +37,23 @@
           "id": "2c1c344e-5af7-11e6-91af-0ee66e2c9693"
         },
         {
+          "title": "Indonesia",
+          "description": "Indonesia VMS data",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
+          "visible": true,
+          "color": "#FB88FF",
+          "hue": 72,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "indonesia-vms-2014-01-2016-08-tms"
+        },
+        {
           "title": "Fishing effort",
           "description": "Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
           "visible": true,
           "color": "#88FBFF",
-          "hue": 72,
+          "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "849-tileset-tms"
@@ -77,7 +88,7 @@
           "visible": true,
           "color": "blue",
           "type": "CartoDBAnimation",
-          "opacity": 1,
+          "opacity": 0.6,
           "id": "eez"
         },
         {
@@ -110,7 +121,7 @@
         "hue": 72
       }
     ],
-    "basemap": "satellite",
+    "basemap": "Deep Blue",
     "timeline": {
       "innerExtent": [
         1464739200000,
