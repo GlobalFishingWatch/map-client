@@ -61,6 +61,7 @@ class MapLayers extends Component {
 
     if (!nextProps.vesselTracks || nextProps.vesselTracks.length === 0) {
       this.glContainer.clearTracks();
+      this.glContainer.toggleHeatmapDimming(false);
       isGLContainerDirty = true;
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
@@ -71,6 +72,7 @@ class MapLayers extends Component {
         timelinePaused: nextProps.timelinePaused,
         timelineOverExtent: nextProps.timelineOverExtent
       });
+      this.glContainer.toggleHeatmapDimming(true);
       isGLContainerDirty = true;
     }
 
