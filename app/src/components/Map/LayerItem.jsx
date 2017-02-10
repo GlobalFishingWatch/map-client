@@ -140,6 +140,7 @@ class LayerItem extends Component {
             type="checkbox"
             checked={this.props.layer.visible}
             key={this.getColor(this.props.layer)}
+            readOnly
           />
           <div className={SwitcherStyles.toggle} />
         </div>
