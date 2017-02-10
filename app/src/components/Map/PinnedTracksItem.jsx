@@ -28,6 +28,9 @@ class PinnedTracksItem extends Component {
   }
 
   onChangeHue(hue) {
+    if (!this.props.vessel.visible) {
+      this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
+    }
     this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
   }
 
