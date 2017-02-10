@@ -16,11 +16,11 @@ class App extends Component {
     }
     this.props.getLoggedUser();
 
-    this.props.setWelcomeModalUrl();
+    if (!DISABLE_WELCOME_MODAL) this.props.setWelcomeModalUrl();
   }
 
   componentDidUpdate(nextProps) {
-    if (nextProps.welcomeModalUrl !== this.props.welcomeModalUrl) this.getWelcomeModal();
+    if (nextProps.welcomeModalUrl !== this.props.welcomeModalUrl && !DISABLE_WELCOME_MODAL) this.getWelcomeModal();
   }
 
   getWelcomeModal() {
