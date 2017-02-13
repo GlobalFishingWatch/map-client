@@ -22,6 +22,7 @@ import { trackMapClicked } from 'actions/analytics';
 
 function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
   const tileCoordinates = referenceTile.tileCoordinates;
+  // TODO pass temporal extents indexes
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates });
   const allLayerPromises = Promise.all(pelagosPromises);
 
@@ -49,6 +50,9 @@ function getTiles(layerIds, referenceTiles) {
     const map = getState().map.googleMaps;
     const allPromises = [];
 
+    // TODO get current timestamp / or timestamp specified as 3rd arg
+    // TODO from timestamp range, store temporalExtentsIndexesLoaded (per layer)
+
     layerIds.forEach((layerId) => {
       const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
       const layerHeader = workspaceLayer.header;
@@ -68,6 +72,7 @@ function getTiles(layerIds, referenceTiles) {
           token,
           map,
           layerHeader.temporalExtents
+          // TODO add temporal extent indexes
         );
         allPromises.push(tilePromise);
         tilePromise.then((data) => {
@@ -153,6 +158,17 @@ export function removeHeatmapLayerFromLibrary(id) {
       }
     });
   };
+}
+
+export function loadTilesExtraTimeRange(dates) {
+  // TODO
+  // for each layer
+    // get temporalExtentsIndexesLoaded
+    // compare with dates and see if more needs to be loaded
+    // loop through ref tiles
+      // loadLayerTile with only temporalExtentsIndexes NOT LOADED
+      // merge data from new tile with existing dataset :
+      // go through all frames, point to new data at index
 }
 
 export function queryHeatmap(tileQuery, latLng) {

@@ -65,6 +65,7 @@ export function refreshFlagFiltersLayers() {
 }
 
 export function setInnerTimelineDates(innerTimelineDates) {
+  // TODO trigger tiles loading
   return {
     type: SET_INNER_TIMELINE_DATES,
     payload: innerTimelineDates

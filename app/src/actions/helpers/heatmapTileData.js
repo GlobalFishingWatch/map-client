@@ -35,9 +35,11 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  * @param timelineOverallEndDate
  * @returns {Array}
  */
+ // TODO add temporal extents filtering
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
   temporalExtents.forEach((extent) => {
+    // skip if index doesnt match with temporalExtentsIndexesLoaded
     const start = new Date(extent[0]).toISOString();
     const end = new Date(extent[1]).toISOString();
     let url = `${tilesetUrl}/`;
