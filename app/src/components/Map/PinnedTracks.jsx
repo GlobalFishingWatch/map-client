@@ -34,9 +34,9 @@ class PinnedTracks extends Component {
       </div>);
     } else {
       pinnedItemsHeading = (
-        <span className={pinnedTracksStyles['pinned-tracks-heading']}>
+        <div className={pinnedTracksStyles['pinned-tracks-heading']}>
           pinned vessels
-        </span>);
+        </div>);
 
       pinnedItems = (
         <ul className={pinnedTracksStyles['pinned-item-list']}>
