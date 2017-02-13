@@ -2,21 +2,21 @@
 
 // this component needs crossbrowsing
 
-.c-switcher {
+.c-toggle {
   appearance: none;
   position: relative;
   display: flex;
-  background: linear-gradient(to bottom, $hsla-begin, $hsla-end), linear-gradient(to right, $color-27 50%, currentColor 50%) 0 0, 5px 0;
+  background: $color-27;
   border-radius: 25px;
   cursor: pointer;
-  width: 20px;
+  min-width: 20px;
   height: 10px;
   margin: 0 15px 0 0;
   outline: 0;
   padding: 0 10px 0 0;
 
   &.-active {
-    .toggle {
+    .toggle-ball {
       left: 10px;
     }
   }
@@ -31,14 +31,14 @@
     cursor: pointer;
   }
 
-  .toggle {
+  .toggle-ball {
     position: absolute;
     top: 0;
     left: 0;
     display: inline-block;
     width: 10px;
     height: 10px;
-    background: $color-26 linear-gradient($hsla-end, $hsla-begin);
+    background: $color-4;
     border-radius: 50%;
     transition: .15s ease-in;
     pointer-events: none;
