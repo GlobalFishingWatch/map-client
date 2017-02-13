@@ -6,7 +6,8 @@ import {
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   ADD_HEATMAP_LAYER,
-  REMOVE_HEATMAP_LAYER
+  REMOVE_HEATMAP_LAYER,
+  INIT_HEATMAP_LAYERS
 } from 'actions';
 import {
   getTilePelagosPromises,
@@ -16,14 +17,49 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
+import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 import { trackMapClicked } from 'actions/analytics';
 
 
-function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
+export function initHeatmapLayers() {
+  return (dispatch, getState) => {
+    const currentOuterExtent = getState().filters.timelineOuterExtent;
+    const currentExtentStart = currentOuterExtent[0].getTime();
+    const currentExtentEnd = currentOuterExtent[1].getTime();
+
+    const workspaceLayers = getState().layers.workspaceLayers;
+
+    const heatmapLayers = {};
+
+    workspaceLayers.forEach((workspaceLayer) => {
+      if (workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true) {
+        heatmapLayers[workspaceLayer.id] = {
+          url: workspaceLayer.url,
+          tiles: [],
+          temporalExtentsLoadedIndices: []
+        };
+        workspaceLayer.header.temporalExtents.forEach((temporalExtents, index) => {
+          const temporalExtentStart = temporalExtents[0];
+          const temporalExtentEnd = temporalExtents[1];
+          if (temporalExtentEnd >= currentExtentStart && temporalExtentStart <= currentExtentEnd) {
+            heatmapLayers[workspaceLayer.id].temporalExtentsLoadedIndices.push(index);
+          }
+        });
+      }
+    });
+
+    dispatch({
+      type: INIT_HEATMAP_LAYERS,
+      payload: heatmapLayers
+    });
+  };
+}
+
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsLoadedIndices) {
   const tileCoordinates = referenceTile.tileCoordinates;
   // TODO pass temporal extents indexes
-  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates });
+  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsLoadedIndices });
   const allLayerPromises = Promise.all(pelagosPromises);
 
   const layerTilePromise = new Promise((resolve) => {
@@ -50,9 +86,6 @@ function getTiles(layerIds, referenceTiles) {
     const map = getState().map.googleMaps;
     const allPromises = [];
 
-    // TODO get current timestamp / or timestamp specified as 3rd arg
-    // TODO from timestamp range, store temporalExtentsIndexesLoaded (per layer)
-
     layerIds.forEach((layerId) => {
       const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
       const layerHeader = workspaceLayer.header;
@@ -71,8 +104,8 @@ function getTiles(layerIds, referenceTiles) {
           layers[layerId].url,
           token,
           map,
-          layerHeader.temporalExtents
-          // TODO add temporal extent indexes
+          layerHeader.temporalExtents,
+          layers[layerId].temporalExtentsLoadedIndices
         );
         allPromises.push(tilePromise);
         tilePromise.then((data) => {

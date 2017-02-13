@@ -1,11 +1,10 @@
-import { LAYER_TYPES } from 'constants';
 import {
-  SET_LAYERS,
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER,
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
-  UPDATE_HEATMAP_TILES
+  UPDATE_HEATMAP_TILES,
+  INIT_HEATMAP_LAYERS
 } from '../actions';
 
 const initialState = {
@@ -18,17 +17,9 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_LAYERS: {
-      const heatmapLayers = {};
-      action.payload.forEach((layer) => {
-        if (layer.type === LAYER_TYPES.Heatmap && layer.added === true) {
-          heatmapLayers[layer.id] = {
-            url: layer.url,
-            tiles: []
-          };
-        }
-      });
-      return Object.assign({}, state, { heatmapLayers });
+    case INIT_HEATMAP_LAYERS: {
+      console.log(action.payload)
+      return Object.assign({}, state, { heatmapLayers: action.payload });
     }
 
     case ADD_HEATMAP_LAYER: {

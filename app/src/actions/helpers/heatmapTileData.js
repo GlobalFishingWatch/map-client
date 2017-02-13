@@ -38,7 +38,7 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  // TODO add temporal extents filtering
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
-  temporalExtents.forEach((extent) => {
+  temporalExtents.forEach((extent, index) => {
     // skip if index doesnt match with temporalExtentsIndexesLoaded
     const start = new Date(extent[0]).toISOString();
     const end = new Date(extent[1]).toISOString();
@@ -53,7 +53,9 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
       // meh.
       url += ';0,0,0';
     }
-    urls.push(url);
+    if (!params.temporalExtentsLoadedIndices || params.temporalExtentsLoadedIndices.indexOf(index) > -1) {
+      urls.push(url);
+    }
   });
   return urls;
 };
@@ -65,12 +67,14 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
     temporalExtents,
     params
   );
+  console.log(urls);
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
     promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
   }
 
   return promises;
 };
+
 
 export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null);
 
