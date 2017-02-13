@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import UploadLayerStyles from 'styles/components/map/c-upload-layer.scss';
+import CustomLayerStyles from 'styles/components/map/c-custom-layer.scss';
 import MapFormStyles from 'styles/components/map/c-form.scss';
 import ButtonStyles from 'styles/components/map/c-button.scss';
 
-class UploadLayer extends Component {
+class CustomLayer extends Component {
 
   constructor(props) {
     super(props);
@@ -27,18 +27,18 @@ class UploadLayer extends Component {
   onSubmit(event) {
     event.preventDefault();
 
-    this.props.onUploadLayer(this.state);
+    this.props.onCustomLayer(this.state);
   }
 
   render() {
     return (
-      <div className={UploadLayerStyles['c-upload-layer']}>
+      <div className={CustomLayerStyles['c-custom-layer']}>
         <form
-          className={classnames(MapFormStyles['c-form'], UploadLayerStyles['upload-form'])}
+          className={classnames(MapFormStyles['c-form'], CustomLayerStyles['upload-form'])}
           onSubmit={e => this.onSubmit(e)}
         >
-          <div className={UploadLayerStyles.column}>
-            <div className={UploadLayerStyles.row}>
+          <div className={CustomLayerStyles.column}>
+            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles['field-name']} htmlFor="name">name</label>
               <input
                 className={MapFormStyles['text-input']}
@@ -50,7 +50,7 @@ class UploadLayer extends Component {
               />
             </div>
 
-            <div className={UploadLayerStyles.row}>
+            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles['field-name']} htmlFor="url">url</label>
               <input
                 className={MapFormStyles['text-input']}
@@ -62,8 +62,8 @@ class UploadLayer extends Component {
               />
             </div>
           </div>
-          <div className={UploadLayerStyles.column}>
-            <div className={UploadLayerStyles.row}>
+          <div className={CustomLayerStyles.column}>
+            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles['field-name']} htmlFor="description">description</label>
               <textarea
                 className={MapFormStyles.textarea}
@@ -75,11 +75,11 @@ class UploadLayer extends Component {
             </div>
           </div>
 
-          <div className={UploadLayerStyles.row}>
-            <div className={UploadLayerStyles['submit-container']}>
+          <div className={CustomLayerStyles.row}>
+            <div className={CustomLayerStyles['submit-container']}>
               <input
                 className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
-                  ButtonStyles['-big'], UploadLayerStyles['submit-button'])}
+                  ButtonStyles['-big'], CustomLayerStyles['submit-button'])}
                 type="submit"
                 value="done"
               />
@@ -91,9 +91,9 @@ class UploadLayer extends Component {
   }
 }
 
-UploadLayer.propTypes = {
+CustomLayer.propTypes = {
   // function triggered once the form is submitted
-  onUploadLayer: React.PropTypes.func
+  onCustomLayer: React.PropTypes.func
 };
 
-export default UploadLayer;
+export default CustomLayer;

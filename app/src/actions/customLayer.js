@@ -5,7 +5,7 @@ import {
 import { setLayerManagementModalVisibility } from 'actions/map';
 import { addCustomLayer } from 'actions/layers';
 
-export default function uploadLayer(url, name, description) {
+export default function uploadCustomLayer(url, name, description) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibrary from 'containers/Map/LayerLibrary';
-import UploadLayer from 'containers/Map/UploadLayer';
+import CustomLayer from 'containers/Map/CustomLayer';
 
 import LayerMaganementModalStyles from 'styles/components/map/c-layer-management-modal.scss';
 
@@ -47,7 +47,7 @@ class LayerLibraryModal extends Component {
           </span>
         </div>
         {this.state.display === 'library' && <LayerLibrary />}
-        {this.state.display === 'upload' && <UploadLayer />}
+        {this.state.display === 'upload' && <CustomLayer />}
       </div>
     );
   }
