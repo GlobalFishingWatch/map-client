@@ -32,7 +32,8 @@ class MapLayers extends Component {
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
       this.build();
-    } else if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
+    } else if ((nextProps.viewportWidth !== this.props.viewportWidth ||
+        nextProps.viewportHeight !== this.props.viewportHeight) && this.glContainer !== undefined) {
       this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
     }
