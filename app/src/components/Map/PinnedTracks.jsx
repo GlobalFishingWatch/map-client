@@ -26,12 +26,18 @@ class PinnedTracks extends Component {
     const editButtonText = (this.props.pinnedVesselEditMode === false) ? 'edit pinned' : 'done';
 
     let pinnedItems = null;
+    let pinnedItemsHeading = null;
 
     if (!pinnedVessels.length) {
-      pinnedItems = (<div className={pinnedTracksStyles['no-pinned-items']}>
+      pinnedItemsHeading = (<div className={pinnedTracksStyles['no-pinned-items']}>
         <span className={pinnedTracksStyles['no-pin-literal']}>No pinned vessels</span>
       </div>);
     } else {
+      pinnedItemsHeading = (
+        <div className={pinnedTracksStyles['pinned-tracks-heading']}>
+          pinned vessels
+        </div>);
+
       pinnedItems = (
         <ul className={pinnedTracksStyles['pinned-item-list']}>
           {pinnedVessels.map((pinnedVessel, index) =>
@@ -49,6 +55,7 @@ class PinnedTracks extends Component {
 
     return (
       <div className={pinnedTracksStyles['c-pinned-tracks']}>
+        {pinnedItemsHeading}
         {pinnedItems}
         <div className={pinnedTracksStyles['pinned-button-container']}>
           <button

@@ -3,6 +3,21 @@
 .c-pinned-tracks {
   margin: 10px 0 0;
 
+  > .pinned-tracks-heading {
+    color: $color-4;
+    display: flex;
+    font-family: $font-family-1;
+    font-size: $font-size-xxs-small;
+    font-weight: $font-weight-bold;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-xs-small;
+    }
+  }
+
   > .no-pinned-items {
     align-items: center;
     display: flex;
