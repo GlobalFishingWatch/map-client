@@ -250,10 +250,9 @@ export default function (state = initialState, action) {
       });
 
       if (newState.pinnedVesselEditMode === false) {
-        newState.details = _.cloneDeep(state.details);
+        newState.vessels = _.cloneDeep(state.vessels);
 
-
-        newState.details.forEach((vesselDetail) => {
+        newState.vessels.forEach((vesselDetail) => {
           if (!vesselDetail.title || /^\s*$/.test(vesselDetail.title)) {
             vesselDetail.title = vesselDetail.vesselname;
           }
