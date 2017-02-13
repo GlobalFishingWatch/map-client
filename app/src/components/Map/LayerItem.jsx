@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
-import { hueToRgbString } from 'util/hsvToRgb';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
+import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {
 
@@ -62,13 +61,6 @@ class LayerItem extends Component {
 
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.layerIndex);
-  }
-
-  getColor(layer) {
-    if (layer.hue !== undefined) {
-      return hueToRgbString(layer.hue);
-    }
-    return layer.color;
   }
 
   render() {
@@ -131,18 +123,12 @@ class LayerItem extends Component {
       <li
         className={LayerListStyles['layer-item']}
       >
-        <div
-          className={classnames(SwitcherStyles['c-switcher'], { [SwitcherStyles['-active']]: this.props.layer.visible })}
-          onClick={() => this.onChangeVisibility()}
-          style={this.props.layer.visible ? { background: this.getColor(this.props.layer) } : null}
-        >
-          <input
-            type="checkbox"
-            checked={this.props.layer.visible}
-            key={this.getColor(this.props.layer)}
-          />
-          <div className={SwitcherStyles.toggle} />
-        </div>
+        <Toggle
+          on={this.props.layer.visible}
+          color={this.props.layer.color}
+          hue={this.props.layer.hue}
+          onToggled={() => this.onChangeVisibility()}
+        />
         <input
           className={classnames(LayerListStyles['item-name'], { [LayerListStyles['item-rename']]: this.props.layerPanelEditMode })}
           onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}

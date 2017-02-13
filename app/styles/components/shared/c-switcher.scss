@@ -41,5 +41,6 @@
     background: $color-26 linear-gradient($hsla-end, $hsla-begin);
     border-radius: 50%;
     transition: .15s ease-in;
+    pointer-events: none;
   }
 }

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import ButtonStyles from 'styles/components/map/c-button.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
+import Toggle from 'components/Shared/Toggle';
 
 const SHOW_SEARCH = false;
 
@@ -40,14 +40,10 @@ class LayerLibraryModal extends Component {
           key={layer.title}
         >
           <label>
-            <input
-              className={SwitcherStyles['c-switcher']}
-              type="checkbox"
-              checked={layer.added}
-              onChange={() => this.onChange(layer)}
-              style={{
-                color: layer.color
-              }}
+            <Toggle
+              on={layer.added}
+              color={layer.color}
+              onToggled={() => this.onChange(layer)}
             />
             <span className={LayerListStyles['layer-title']}>
               {layer.title}

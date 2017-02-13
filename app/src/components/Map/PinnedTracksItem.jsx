@@ -8,6 +8,7 @@ import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=Bl
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
+import Toggle from 'components/Shared/Toggle';
 
 class PinnedTracksItem extends Component {
 
@@ -28,6 +29,10 @@ class PinnedTracksItem extends Component {
 
   onChangeHue(hue) {
     this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
+  }
+
+  onChangeVisibility() {
+    this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
   render() {
@@ -80,6 +85,11 @@ class PinnedTracksItem extends Component {
         className={pinnedTracksStyles['pinned-item']}
         key={this.props.vessel.seriesgroup}
       >
+        <Toggle
+          on={this.props.vessel.visible}
+          hue={this.props.vessel.hue}
+          onToggled={() => this.onChangeVisibility()}
+        />
         <input
           className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.pinnedVesselEditMode })}
           onChange={e => this.onChangeName(e.currentTarget.value)}
@@ -102,6 +112,7 @@ class PinnedTracksItem extends Component {
 PinnedTracksItem.propTypes = {
   pinnedVesselEditMode: React.PropTypes.bool,
   index: React.PropTypes.number,
+  togglePinnedVesselVisibility: React.PropTypes.func,
   onLayerBlendingToggled: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselTitle: React.PropTypes.func,

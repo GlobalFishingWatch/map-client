@@ -115,14 +115,10 @@
     },
     "pinnedVessels": [
       {
-        "title": "foo",
-        "seriesgroup": 5932205,
-        "layerId": "849-tileset-tms"
-      },
-      {
-        "title": "SUPI GYU18502",
-        "seriesgroup": 7729439,
-        "layerId": "849-tileset-tms"
+        "title": "FUKUSEKI MARU NO.3",
+        "seriesgroup": 4674332,
+        "layerId": "849-tileset-tms",
+        "hue": 72
       }
     ],
     "basemap": "Deep Blue",

@@ -8,7 +8,7 @@ import {
 import { setRecentVesselsModalVisibility } from 'actions/map';
 
 const mapStateToProps = state => ({
-  vessels: state.vesselInfo.details,
+  vessels: state.vesselInfo.vessels,
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode
 });
 
