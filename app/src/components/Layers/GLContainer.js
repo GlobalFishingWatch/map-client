@@ -214,6 +214,10 @@ export default class GLContainer extends BaseOverlay {
     });
   }
 
+  toggleHeatmapDimming(dim) {
+    this.heatmapStage.alpha = (dim === true) ? 0.25 : 1;
+  }
+
   updateViewportSize(viewportWidth, viewportHeight) {
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;

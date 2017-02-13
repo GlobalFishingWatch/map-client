@@ -22,7 +22,6 @@ import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import extractTilesetFromURL from 'util/extractTileset';
-import { hsvToRgb } from 'util/hsvToRgb';
 
 /**
  * Save the workspace's ID in the store
@@ -83,11 +82,11 @@ export function saveWorkspace(errorAction) {
             zoom: state.map.zoom,
             layers: state.layers.workspaceLayers.filter(layer => layer.added)
           },
-          pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
+          pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,
             tileset: e.seriesgroup,
             title: e.title,
-            color: hsvToRgb(e.hue, 50, 100)
+            hue: e.hue
           })),
           basemap: state.map.activeBasemap,
           timeline: {
@@ -264,6 +263,9 @@ export function getWorkspace(workspaceId = null) {
           workspaceData = processLegacyWorkspace(data, dispatch);
         }
         return dispatchActions(workspaceData, dispatch, getState);
+      })
+      .catch((error) => {
+        console.error('Error loading workspace: ', error.message);
       });
   };
 }
