@@ -53,7 +53,7 @@ class FilterPanel extends Component {
     countryOptions.push(<option key="" value="">All countries</option>);
 
     countryNames.forEach((country) => {
-      countryOptions.push(<option key={country.id} value={country.id}>{country.icon}&nbsp;&nbsp;{country.name}</option>);
+      countryOptions.push(<option key={country.id} value={country.id}>{country.name}&nbsp;&nbsp;{country.icon}</option>);
     });
 
     return countryOptions;

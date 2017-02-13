@@ -65,16 +65,22 @@ export default class TiledLayer {
     this.releaseTileCallback(canvas.uid);
   }
 
+  setProjection(overlayProjection) {
+    this.overlayProjection = overlayProjection;
+  }
+
   getTileQueryAt(x, y) {
     for (let i = 0; i < this.tiles.length; i++) {
       const tile = this.tiles[i];
       const tileBox = tile.getBoundingClientRect();
       if (y >= tileBox.top && y < tileBox.top + 256 && x >= tileBox.left && x < tileBox.left + 256) {
         tile.box = tileBox;
+        const latlon = this.overlayProjection.fromContainerPixelToLatLng(new google.maps.Point(x, y));
+        const world = this.map.getProjection().fromLatLngToPoint(latlon);
         return {
           uid: tile.uid,
-          localX: x - tileBox.left,
-          localY: y - tileBox.top
+          worldX: world.x,
+          worldY: world.y
         };
       }
     }

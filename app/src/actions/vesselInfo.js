@@ -10,19 +10,27 @@ import {
   TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
+  HIDE_VESSELS_INFO_PANEL,
   SET_PINNED_VESSEL_HUE,
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
   SET_RECENT_VESSEL_HISTORY,
-  LOAD_RECENT_VESSEL_HISTORY
+  LOAD_RECENT_VESSEL_HISTORY,
+  SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
 import {
   setInnerTimelineDates,
   setOuterTimelineDates
 } from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
-import { getTilePelagosPromises, getCleanVectorArrays, groupData, addTracksWorldCoordinates } from 'actions/helpers/heatmapTileData';
+import {
+  getTilePelagosPromises,
+  getCleanVectorArrays,
+  groupData,
+  addWorldCoordinates,
+  addTracksPointRadius
+} from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
   return {
@@ -175,9 +183,9 @@ function getTrackTimeExtent(data, series = null) {
 
 function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
   return (dispatch, getState) => {
-    const map = getState().map.googleMaps;
-    console.warn('seriesgroup', seriesgroup, 'series', series);
     const state = getState();
+    const map = state.map.googleMaps;
+    console.warn('seriesgroup', seriesgroup, 'series', series);
 
     let layerId_ = layerId;
     // TODO remove when layerId is passed around when using search
@@ -200,9 +208,14 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
           'longitude',
           'datetime',
           'series',
-          'weight'
+          'weight',
+          'sigma'
         ]);
-        const vectorArray = addTracksWorldCoordinates(groupedData, map);
+
+        let vectorArray = addWorldCoordinates(groupedData, map);
+
+        const zoom = state.map.zoom;
+        vectorArray = addTracksPointRadius(groupedData, zoom);
 
         dispatch({
           type: SET_VESSEL_TRACK,
@@ -264,12 +277,26 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
   };
 }
 
+export function hideVesselsInfoPanel() {
+  return {
+    type: HIDE_VESSELS_INFO_PANEL
+  };
+}
+
 export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
     dispatch({
-      type: ADD_VESSEL
+      type: ADD_VESSEL,
+      payload: {
+        seriesgroup
+      }
     });
-    dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+    if (state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
+      dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+    } else {
+      dispatch(hideVesselsInfoPanel());
+    }
     dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
   };
 }
@@ -284,7 +311,7 @@ export function toggleActiveVesselPin() {
   return {
     type: TOGGLE_VESSEL_PIN,
     payload: {
-      useCurrentlyVisibleVessel: true
+      useVesselCurrentlyInInfoPanel: true
     }
   };
 }
@@ -307,8 +334,25 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function showPinnedVesselDetails(seriesgroup) {
+export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   return (dispatch, getState) => {
+    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
+    const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
+    dispatch({
+      type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
+      payload: {
+        seriesgroup,
+        visible
+      }
+    });
+    if (visible === true && currentVessel.track === undefined) {
+      dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
+    }
+  };
+}
+
+export function showPinnedVesselDetails(seriesgroup) {
+  return (dispatch) => {
     dispatch(clearVesselInfo());
     dispatch({
       type: SHOW_VESSEL_DETAILS,
@@ -316,8 +360,7 @@ export function showPinnedVesselDetails(seriesgroup) {
         seriesgroup
       }
     });
-    const currentVessel = getState().vesselInfo.details.find(vessel => vessel.seriesgroup === seriesgroup);
-    dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
+    dispatch(togglePinnedVesselVisibility(seriesgroup, true));
   };
 }
 

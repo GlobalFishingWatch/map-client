@@ -83,7 +83,7 @@ export function saveWorkspace(errorAction) {
             zoom: state.map.zoom,
             layers: state.layers.workspaceLayers.filter(layer => layer.added)
           },
-          pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
+          pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,
             tileset: e.seriesgroup,
             title: e.title,
@@ -264,6 +264,9 @@ export function getWorkspace(workspaceId = null) {
           workspaceData = processLegacyWorkspace(data, dispatch);
         }
         return dispatchActions(workspaceData, dispatch, getState);
+      })
+      .catch((error) => {
+        console.error('Error loading workspace: ', error.message);
       });
   };
 }
