@@ -14,7 +14,7 @@
   right: -30px;
   text-transform: uppercase;
   width: 270px;
-  z-index: 10;
+  z-index: 11;
 
   &::before {
     @include arrow(12px, 1px, rgba($color-3, .4), 'down');
