@@ -28,15 +28,6 @@
           "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
         },
         {
-          "title": "Labels",
-          "description": "Labels of continents, countries and regions",
-          "url": "http://simbiotica.carto.com/api/v2/viz/2c1c344e-5af7-11e6-91af-0ee66e2c9693/viz.json",
-          "visible": false,
-          "color": "#da0ff0",
-          "type": "CartoDBAnimation",
-          "id": "2c1c344e-5af7-11e6-91af-0ee66e2c9693"
-        },
-        {
           "title": "Indonesia",
           "description": "Indonesia VMS data",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
@@ -113,15 +104,8 @@
         }
       ]
     },
-    "pinnedVessels": [
-      {
-        "title": "FUKUSEKI MARU NO.3",
-        "seriesgroup": 4674332,
-        "layerId": "849-tileset-tms",
-        "hue": 72
-      }
-    ],
-    "basemap": "Deep Blue",
+    "pinnedVessels": [],
+    "basemap": "satellite",
     "timeline": {
       "innerExtent": [
         1464739200000,
