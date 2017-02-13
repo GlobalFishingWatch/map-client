@@ -40,14 +40,14 @@ class LayerLibraryModal extends Component {
           </span>
           <span
             className={classnames(LayerMaganementModalStyles['content-option'],
-              { [`${LayerMaganementModalStyles['-selected']}`]: this.state.display === 'upload' })}
-            onClick={() => this.setDisplay('upload')}
+              { [`${LayerMaganementModalStyles['-selected']}`]: this.state.display === 'customLayer' })}
+            onClick={() => this.setDisplay('customLayer')}
           >
-            upload layer
+            custom layer
           </span>
         </div>
         {this.state.display === 'library' && <LayerLibrary />}
-        {this.state.display === 'upload' && <CustomLayer />}
+        {this.state.display === 'customLayer' && <CustomLayer />}
       </div>
     );
   }
