@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
+import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
@@ -92,22 +92,23 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom && <li
             className={LayerListStyles['layer-option-item']}
-            onClick={() => this.toggleBlending()}
           >
             <BlendingIcon
+              onClick={() => this.toggleBlending()}
               className={classnames(icons['blending-icon'],
                 { [`${icons['-white']}`]: this.props.showBlending })}
             />
-            <LayerOptionsTooltip
+            {this.props.showBlending &&
+            <LayerBlendingOptionsTooltip
               displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
               displayOpacity
               hueValue={this.props.layer.hue}
               opacityValue={this.props.layer.opacity}
               onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
               onChangeHue={hue => this.onChangeHue(hue)}
-              showBlending={this.props.showBlending}
               isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
             />
+            }
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}

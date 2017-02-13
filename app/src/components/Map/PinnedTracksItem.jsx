@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
+import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import icons from 'styles/icons.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
@@ -28,6 +28,9 @@ class PinnedTracksItem extends Component {
   }
 
   onChangeHue(hue) {
+    if (!this.props.vessel.visible) {
+      this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
+    }
     this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
   }
 
@@ -61,14 +64,14 @@ class PinnedTracksItem extends Component {
                 this.props.onLayerBlendingToggled(this.props.index);
               }}
             />
-            <LayerOptionsTooltip
+            {this.props.showBlending &&
+            <LayerBlendingOptionsTooltip
               displayHue
-              displayOpacity={false}
               hueValue={this.props.vessel.hue}
-              showBlending={this.props.showBlending}
               onChangeHue={hue => this.onChangeHue(hue)}
               isReverse={this.props.index < REVERSE_TOOLTIP_ITEMS_MOBILE}
             />
+            }
           </li>
           <li
             className={pinnedTracksStyles['pinned-item-action-item']}
