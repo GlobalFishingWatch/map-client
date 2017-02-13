@@ -14,12 +14,13 @@ import {
 } from 'actions/map';
 import { setWelcomeModalVisibility } from 'actions/modal';
 import {
+  setUrlWorkspaceId,
   saveWorkspace
 } from 'actions/workspace';
-import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
+import { loadTimebarChartData } from 'actions/timebar';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -45,7 +46,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(initGoogleMaps(googleMaps));
   },
   loadInitialState: () => {
-    dispatch(getLayerLibrary(ownProps.workspaceId));
+    dispatch(setUrlWorkspaceId(ownProps.workspaceId));
+    dispatch(loadTimebarChartData());
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));

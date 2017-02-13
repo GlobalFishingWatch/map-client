@@ -14,6 +14,7 @@ import {
   SET_TILESET_URL,
   SET_TILESET_ID,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
+  SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID
 } from 'actions';
 import { push } from 'react-router-redux';
@@ -22,6 +23,14 @@ import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import extractTilesetFromURL from 'util/extractTileset';
+
+
+export function setUrlWorkspaceId(workspaceId) {
+  return {
+    type: SET_URL_WORKSPACE_ID,
+    payload: workspaceId
+  };
+}
 
 /**
  * Save the workspace's ID in the store
@@ -233,9 +242,10 @@ function processLegacyWorkspace(data, dispatch) {
  * @param {null} workspaceId - workspace's ID to load
  * @returns {object}
  */
-export function getWorkspace(workspaceId = null) {
+export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
+    const workspaceId = state.map.urlWorkspaceId;
 
     const ID = workspaceId || DEFAULT_WORKSPACE;
     let url;

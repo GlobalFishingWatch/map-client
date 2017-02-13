@@ -6,6 +6,7 @@ import {
   SET_CENTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
+  SET_URL_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
@@ -95,6 +96,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { shareModal });
     }
 
+    case SET_URL_WORKSPACE_ID:
+      return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: action.payload });
 

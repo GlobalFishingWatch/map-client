@@ -25,6 +25,7 @@ import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'reducers/customLayer';
 import articlesPublicationsReducer from 'reducers/articlesPublications';
 import modalReducer from 'reducers/modal';
+import timebarReducer from 'reducers/timebar';
 import { triggerAnalyticsPageView } from 'actions/user';
 import Routes from './routes';
 
@@ -52,7 +53,8 @@ const reducer = combineReducers({
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   customLayer: customLayerReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  timebar: timebarReducer
 });
 
 const middlewareRouter = routerMiddleware(browserHistory);
