@@ -8,7 +8,6 @@ import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=Report
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
-import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {
@@ -52,11 +51,6 @@ class LayerItem extends Component {
     };
 
     this.props.openLayerInfoModal(modalParams);
-  }
-
-  clearName() {
-    this.onChangeLayerLabel('');
-    this.inputName.focus();
   }
 
   toggleBlending() {
@@ -139,10 +133,6 @@ class LayerItem extends Component {
             this.inputName = elem;
           })}
         />
-        {this.props.layerPanelEditMode === true && <RenameIcon
-          className={classnames(icons.icon, icons['icon-close'], LayerListStyles['rename-icon'])}
-          onClick={() => this.clearName()}
-        />}
         {actions}
       </li>
     );
