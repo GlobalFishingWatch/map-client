@@ -26,6 +26,12 @@ class ControlPanel extends Component {
     }
   }
 
+  onCloseLayerPicker() {
+    if (this.props.layerPanelEditMode === true) {
+      this.props.disableLayerPanelEditMode();
+    }
+  }
+
   renderSearch() {
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
@@ -120,6 +126,7 @@ class ControlPanel extends Component {
         key="layers"
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
+        onClose={() => this.onCloseLayerPicker()}
       >
         <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
           <div className={controlPanelStyle.wrapper}>
@@ -217,8 +224,10 @@ ControlPanel.propTypes = {
   vessels: React.PropTypes.array,
   userPermissions: React.PropTypes.array,
   disableSearchEditMode: React.PropTypes.func,
+  disableLayerPanelEditMode: React.PropTypes.func,
   hideSearchResults: React.PropTypes.func,
-  pinnedVesselEditMode: React.PropTypes.bool
+  pinnedVesselEditMode: React.PropTypes.bool,
+  layerPanelEditMode: React.PropTypes.bool
 };
 
 export default ControlPanel;
