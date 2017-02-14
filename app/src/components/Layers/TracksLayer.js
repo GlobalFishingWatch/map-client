@@ -33,6 +33,7 @@ export default class TracksLayerGL {
    */
   _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
     const color = hueToRgbHexString(hue);
+    const MIN_ZOOM_LEVEL = 5;
 
     let prevDrawStyle;
     let prevSeries;
@@ -74,7 +75,11 @@ export default class TracksLayerGL {
         } else if (drawStyle === TRACK_SEGMENT_TYPES.InInnerRange) {
           this.stage.lineStyle(2, color, 1);
         } else if (drawStyle === TRACK_SEGMENT_TYPES.Highlighted) {
-          this.stage.lineStyle(2, '0xFFFFFF', 1);
+          if (drawParams.zoom > MIN_ZOOM_LEVEL) {
+            this.stage.lineStyle(2, '0xFFFFFF', 1);
+          } else {
+            this.stage.lineStyle(4, '0xFFFFFF', 1);
+          }
         }
         this.stage.moveTo(prevX || x, prevY || y);
       }
@@ -99,18 +104,20 @@ export default class TracksLayerGL {
     this.stage.lineStyle(0);
 
     // inner range center circle
-    this.stage.beginFill('0xFFFFFF', 1);
-    for (let i = 0, circlesLength = circlePoints.inner.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 2);
-    }
-    this.stage.endFill();
+    if (drawParams.zoom > MIN_ZOOM_LEVEL) {
+      this.stage.beginFill(color, 1);
+      for (let i = 0, circlesLength = circlePoints.inner.x.length; i < circlesLength; i++) {
+        this.stage.drawCircle(circlePoints.inner.x[i], circlePoints.inner.y[i], 2);
+      }
+      this.stage.endFill();
 
-    // over range center circle
-    this.stage.beginFill('0xFFFFFF', 1);
-    for (let i = 0, circlesLength = circlePoints.over.x.length; i < circlesLength; i++) {
-      this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 2);
+      // hover range center circle
+      this.stage.beginFill('0xFFFFFF', 1);
+      for (let i = 0, circlesLength = circlePoints.over.x.length; i < circlesLength; i++) {
+        this.stage.drawCircle(circlePoints.over.x[i], circlePoints.over.y[i], 2);
+      }
+      this.stage.endFill();
     }
-    this.stage.endFill();
   }
 
   getDrawStyle(timestamp, { startTimestamp, endTimestamp, overStartTimestamp, overEndTimestamp }) {
