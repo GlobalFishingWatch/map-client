@@ -25,7 +25,7 @@ class Toggle extends Component {
       <div className={ToggleStyles['toggle-ball']}>
         <span
           className={ToggleStyles['toggle-inner-ball']}
-          style={this.props.on ? { background: this.getColor() } : null }
+          style={this.props.on ? { background: this.getColor() } : null}
         />
       </div>
     </div>);

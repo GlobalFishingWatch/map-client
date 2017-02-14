@@ -1,6 +1,7 @@
 import {
   CUSTOM_LAYER_UPLOAD_START,
-  CUSTOM_LAYER_UPLOAD_SUCCESS
+  CUSTOM_LAYER_UPLOAD_SUCCESS,
+  CUSTOM_LAYER_UPLOAD_ERROR
 } from 'actions';
 import { setLayerManagementModalVisibility } from 'actions/map';
 import { addCustomLayer } from 'actions/layers';
@@ -36,6 +37,7 @@ export default function uploadCustomLayer(url, name, description) {
         });
         dispatch(setLayerManagementModalVisibility(false));
         dispatch(addCustomLayer(layerId, newUrl, name, description));
-      });
+      })
+      .catch(err => dispatch({ type: CUSTOM_LAYER_UPLOAD_ERROR, payload: { error: err, status: 'idle' } }));
   };
 }

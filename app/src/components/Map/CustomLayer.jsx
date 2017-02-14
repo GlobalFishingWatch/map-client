@@ -12,7 +12,6 @@ class CustomLayer extends Component {
 
     this.state = {
       name: 'layer name',
-      file: 'layer.kml',
       description: ''
     };
   }
@@ -76,6 +75,9 @@ class CustomLayer extends Component {
           </div>
 
           <div className={CustomLayerStyles.row}>
+            {this.props.error &&
+              <span className={CustomLayerStyles['submit-error']}> Whoops! Something went wrong. </span>
+            }
             <div className={CustomLayerStyles['submit-container']}>
               <input
                 className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
@@ -93,7 +95,8 @@ class CustomLayer extends Component {
 
 CustomLayer.propTypes = {
   // function triggered once the form is submitted
-  onCustomLayer: React.PropTypes.func
+  onCustomLayer: React.PropTypes.func,
+  error: React.PropTypes.string
 };
 
 export default CustomLayer;

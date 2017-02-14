@@ -3,7 +3,9 @@ import CustomLayer from 'components/Map/CustomLayer';
 import { setLayerManagementModalVisibility } from 'actions/map';
 import uploadCustomLayer from 'actions/customLayer';
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+  error: state.customLayer.error
+});
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => {
