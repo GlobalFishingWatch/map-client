@@ -22,7 +22,6 @@ import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import extractTilesetFromURL from 'util/extractTileset';
-import { hsvToRgb } from 'util/hsvToRgb';
 
 /**
  * Save the workspace's ID in the store
@@ -87,7 +86,7 @@ export function saveWorkspace(errorAction) {
             seriesgroup: e.seriesgroup,
             tileset: e.seriesgroup,
             title: e.title,
-            color: hsvToRgb(e.hue, 50, 100)
+            hue: e.hue
           })),
           basemap: state.map.activeBasemap,
           timeline: {

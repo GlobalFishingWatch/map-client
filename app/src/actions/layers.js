@@ -33,9 +33,18 @@ function loadLayerHeader(tilesetUrl, token) {
       method: 'GET',
       headers
     })
-    .then(res => res.json())
+    .then((res) => {
+      if (res.status >= 400) {
+        console.warn(`loading of layer failed ${tilesetUrl}`);
+        Promise.reject();
+        return null;
+      }
+      return res.json();
+    })
     .then((data) => {
       resolve(data);
+    }).catch((err) => {
+      console.warn(err);
     });
   });
 }
@@ -114,19 +123,24 @@ export function initLayers(workspaceLayers, libraryLayers) {
       .forEach((heatmapLayer) => {
         const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
         headerPromise.then((header) => {
-          heatmapLayer.header = header;
-          dispatch(setGlobalFiltersFromHeader(header));
+          if (header !== null) {
+            heatmapLayer.header = header;
+            dispatch(setGlobalFiltersFromHeader(header));
+          }
         });
         headersPromises.push(headerPromise);
       });
 
-    const headersPromise = Promise.all(headersPromises);
-    headersPromise.then(() => {
+    const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));
+    headersPromise
+    .then(() => {
       dispatch({
         type: SET_LAYERS,
-        payload: workspaceLayers
+        payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
       });
       dispatch(refreshFlagFiltersLayers());
+    }).catch((err) => {
+      console.warn(err);
     });
   };
 }
@@ -161,10 +175,12 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
 
         if (newLayer.header === undefined) {
           loadLayerHeader(newLayer.url, getState().user.token).then((header) => {
-            dispatch(setLayerHeader(layerId, header));
-            dispatch(addHeatmapLayerFromLibrary(layerId, url));
-            dispatch(setGlobalFiltersFromHeader(header));
-            dispatch(refreshFlagFiltersLayers());
+            if (header) {
+              dispatch(setLayerHeader(layerId, header));
+              dispatch(addHeatmapLayerFromLibrary(layerId, url));
+              dispatch(setGlobalFiltersFromHeader(header));
+              dispatch(refreshFlagFiltersLayers());
+            }
           });
         } else {
           dispatch(addHeatmapLayerFromLibrary(layerId, url));

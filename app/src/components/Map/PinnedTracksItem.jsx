@@ -6,7 +6,6 @@ import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import icons from 'styles/icons.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
-import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
@@ -20,11 +19,6 @@ class PinnedTracksItem extends Component {
     if (this.props.pinnedVesselEditMode === false) {
       this.props.onVesselClicked(this.props.vessel.seriesgroup);
     }
-  }
-
-  clearName() {
-    this.onChangeName('');
-    this.inputName.focus();
   }
 
   onChangeHue(hue) {
@@ -103,10 +97,6 @@ class PinnedTracksItem extends Component {
           })}
           onClick={e => this.onVesselLabelClick(e)}
         />
-        {this.props.pinnedVesselEditMode === true && <RenameIcon
-          className={classnames(icons.icon, icons['icon-close'], pinnedTracksStyles['rename-icon'])}
-          onClick={() => this.clearName()}
-        />}
         {actions}
       </li>);
   }
