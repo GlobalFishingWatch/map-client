@@ -9,8 +9,7 @@ import {
   SET_BASEMAP,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY,
-  SET_WELCOME_MODAL_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 
@@ -121,13 +120,6 @@ export function setLayerManagementModalVisibility(visibility) {
 export function setRecentVesselsModalVisibility(visibility) {
   return {
     type: SET_RECENT_VESSELS_VISIBILITY,
-    payload: visibility
-  };
-}
-
-export function setWelcomeModalVisibility(visibility) {
-  return {
-    type: SET_WELCOME_MODAL_VISIBILITY,
     payload: visibility
   };
 }

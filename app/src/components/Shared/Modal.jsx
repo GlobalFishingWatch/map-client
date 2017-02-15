@@ -19,6 +19,7 @@ class Modal extends React.Component {
     /* If the modal is opened at instantiation, we want the keydown handler to be active */
     if (props.opened) {
       document.addEventListener('keydown', this.onKeyDown);
+      document.body.classList.add(styles['-no-bg-overlay']);
     }
   }
 
@@ -26,6 +27,9 @@ class Modal extends React.Component {
     /* We attach the keydown handler only if the modal gets to be visible */
     if (!this.props.opened && nextProps.opened) {
       document.addEventListener('keydown', this.onKeyDown);
+      document.body.classList.add(styles['-no-bg-overlay']);
+    } else if (this.props.opened && !nextProps.opened) {
+      document.body.classList.remove(styles['-no-bg-overlay']);
     }
 
     return true;
@@ -33,6 +37,7 @@ class Modal extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
+    document.body.classList.remove(styles['-no-bg-overlay']);
   }
 
   onClickOverlay(e) {
@@ -42,9 +47,7 @@ class Modal extends React.Component {
   }
 
   render() {
-    if (!this.props.opened) {
-      return null;
-    }
+    if (!this.props.opened) return null;
 
     let closeButton;
     const customStyles = {

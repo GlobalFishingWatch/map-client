@@ -12,7 +12,7 @@ import {
   getTilePelagosPromises,
   getCleanVectorArrays,
   groupData,
-  addTilePixelCoordinates,
+  addWorldCoordinates,
   getTilePlaybackData,
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
@@ -29,13 +29,13 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, col
     allLayerPromises.then((rawTileData) => {
       const cleanVectorArrays = getCleanVectorArrays(rawTileData);
       const groupedData = groupData(cleanVectorArrays, columns);
-      const bounds = referenceTile.canvas.getBoundingClientRect();
-      const vectorArray = addTilePixelCoordinates(groupedData, map, bounds);
+      const vectorArray = addWorldCoordinates(groupedData, map);
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
         vectorArray,
         columns
       );
+      // console.log(data)
       resolve(data);
     });
   });
@@ -175,7 +175,7 @@ export function queryHeatmap(tileQuery, latLng) {
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
       layersVessels.push({
         layerId,
-        vessels: selectVesselsAt(queriedTile.data, tileQuery.localX, tileQuery.localY, startIndex, endIndex)
+        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
       });
     });
 

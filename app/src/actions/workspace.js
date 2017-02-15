@@ -14,6 +14,7 @@ import {
   SET_TILESET_URL,
   SET_TILESET_ID,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
+  SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID
 } from 'actions';
 import { push } from 'react-router-redux';
@@ -22,7 +23,14 @@ import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import extractTilesetFromURL from 'util/extractTileset';
-import { hsvToRgb } from 'util/hsvToRgb';
+
+
+export function setUrlWorkspaceId(workspaceId) {
+  return {
+    type: SET_URL_WORKSPACE_ID,
+    payload: workspaceId
+  };
+}
 
 /**
  * Save the workspace's ID in the store
@@ -83,11 +91,11 @@ export function saveWorkspace(errorAction) {
             zoom: state.map.zoom,
             layers: state.layers.workspaceLayers.filter(layer => layer.added)
           },
-          pinnedVessels: state.vesselInfo.details.filter(e => e.pinned === true).map(e => ({
+          pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,
             tileset: e.seriesgroup,
             title: e.title,
-            color: hsvToRgb(e.hue, 50, 100)
+            hue: e.hue
           })),
           basemap: state.map.activeBasemap,
           timeline: {
@@ -232,9 +240,10 @@ function processLegacyWorkspace(data, dispatch) {
  * @param {null} workspaceId - workspace's ID to load
  * @returns {object}
  */
-export function getWorkspace(workspaceId = null) {
+export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
+    const workspaceId = state.map.urlWorkspaceId;
 
     const ID = workspaceId || DEFAULT_WORKSPACE;
     let url;
@@ -262,6 +271,9 @@ export function getWorkspace(workspaceId = null) {
           workspaceData = processLegacyWorkspace(data, dispatch);
         }
         return dispatchActions(workspaceData, dispatch, getState);
+      })
+      .catch((error) => {
+        console.error('Error loading workspace: ', error.message);
       });
   };
 }

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'components/Map/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory } from 'actions/vesselInfo';
+import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory, hideVesselsInfoPanel } from 'actions/vesselInfo';
 import { zoomIntoVesselCenter } from 'actions/map';
 import { login } from 'actions/user';
 
 const mapStateToProps = state => ({
-  details: state.vesselInfo.details,
-  detailsStatus: state.vesselInfo.detailsStatus,
+  vessels: state.vesselInfo.vessels,
+  infoPanelStatus: state.vesselInfo.infoPanelStatus,
   userPermissions: state.user.userPermissions
 });
 
@@ -18,6 +18,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(clearVesselInfo());
   },
   zoomIntoVesselCenter: () => {
+    dispatch(hideVesselsInfoPanel());
     dispatch(zoomIntoVesselCenter());
   },
   onTogglePin: (seriesgroup) => {

@@ -10,16 +10,17 @@ import {
   setLayerInfoModal,
   setSupportModalVisibility,
   setLayerManagementModalVisibility,
-  setRecentVesselsModalVisibility,
-  setWelcomeModalVisibility
+  setRecentVesselsModalVisibility
 } from 'actions/map';
+import { setWelcomeModalVisibility } from 'actions/modal';
 import {
+  setUrlWorkspaceId,
   saveWorkspace
 } from 'actions/workspace';
-import { getLayerLibrary } from 'actions/layerLibrary';
 import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
+import { loadTimebarChartData } from 'actions/timebar';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -36,7 +37,7 @@ const mapStateToProps = state => ({
   userPermissions: state.user.userPermissions,
   searchModalOpen: state.search.searchModalOpen,
   recentVesselModalOpen: state.map.recentVesselModal.open,
-  welcomeModalOpen: state.map.welcomeModal.open,
+  welcomeModalOpen: state.modal.welcome.open,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval
 });
 
@@ -45,7 +46,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(initGoogleMaps(googleMaps));
   },
   loadInitialState: () => {
-    dispatch(getLayerLibrary(ownProps.workspaceId));
+    dispatch(setUrlWorkspaceId(ownProps.workspaceId));
+    dispatch(loadTimebarChartData());
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));

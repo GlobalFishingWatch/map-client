@@ -1,10 +1,12 @@
 import {
   CUSTOM_LAYER_UPLOAD_START,
-  CUSTOM_LAYER_UPLOAD_SUCCESS
+  CUSTOM_LAYER_UPLOAD_SUCCESS,
+  CUSTOM_LAYER_UPLOAD_ERROR
 } from 'actions';
 
 const initialState = {
-  status: 'idle'
+  status: 'idle',
+  error: null
 };
 
 export default function (state = initialState, action) {
@@ -13,6 +15,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { status: action.payload });
     case CUSTOM_LAYER_UPLOAD_SUCCESS:
       return Object.assign({}, state, { status: action.payload });
+    case CUSTOM_LAYER_UPLOAD_ERROR:
+      return Object.assign({}, state, { error: action.payload, status: action.status });
     default:
       return state;
   }

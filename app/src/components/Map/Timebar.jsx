@@ -66,6 +66,10 @@ class Timebar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.timebarChartData.length && !this.props.timebarChartData.length) {
+      this.build(nextProps.timebarChartData);
+    }
+
     if (!nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
       return;
     }
@@ -87,10 +91,6 @@ class Timebar extends Component {
     }
   }
 
-  componentDidMount() {
-    this.build();
-  }
-
   componentWillUpdate(nextProps) {
     if (this.props.timelinePaused !== nextProps.timelinePaused) {
       this.togglePause(nextProps.timelinePaused);
@@ -107,11 +107,7 @@ class Timebar extends Component {
     this.innerBrushFunc.on('end', null);
   }
 
-  build() {
-    const dummyData = this.getDummyData(
-      this.props.timelineOverallExtent[0],
-      this.props.timelineOverallExtent[1]
-    );
+  build(chartData) {
     const container = d3.select('#timeline_svg_container');
     const computedStyles = window.getComputedStyle(container.node());
     leftOffset = container.node().offsetLeft;
@@ -127,9 +123,9 @@ class Timebar extends Component {
     area = d3.area()
       .x(d => x(d.date))
       .y0(height)
-      .y1(d => y(d.price));
+      .y1(d => y(d.value));
     x.domain(this.props.timelineOverallExtent);
-    y.domain([0, d3.max(dummyData.map(d => d.price))]);
+    y.domain([0, d3.max(chartData.map(d => d.value))]);
 
     this.svg = container.append('svg')
       .attr('width', width + 34)
@@ -139,7 +135,7 @@ class Timebar extends Component {
       .attr('transform', `translate(${X_OVERFLOW_OFFSET}, 0)`);
 
     this.group.append('path')
-      .datum(dummyData)
+      .datum(chartData)
       .attr('class', timelineCss['c-timeline-area'])
       .attr('d', area);
 
@@ -230,25 +226,6 @@ class Timebar extends Component {
     dragging = true;
     this.disableInnerBrush();
     this.startTick();
-  }
-
-  getDummyData(startDate, endDate) {
-    const dummyData = [];
-    for (let year = startDate.getFullYear(); year <= endDate.getFullYear(); year++) {
-      const startMonth = (year === startDate.getFullYear()) ? startDate.getMonth() : 0;
-      const endMonth = (year === endDate.getFullYear()) ? endDate.getMonth() : 11;
-
-      for (let m = startMonth; m <= endMonth; m++) {
-        const endDay = (m === endDate.getMonth()) ? endDate.getDate() : 28;
-        for (let d = 2; d <= endDay; d += 4) {
-          dummyData.push({
-            date: new Date(year, m, d),
-            price: Math.random()
-          });
-        }
-      }
-    }
-    return dummyData;
   }
 
   setOuterExtent(outerExtentPx) {
@@ -563,6 +540,7 @@ class Timebar extends Component {
 }
 
 Timebar.propTypes = {
+  timebarChartData: React.PropTypes.array,
   updateInnerTimelineDates: React.PropTypes.func,
   updateOuterTimelineDates: React.PropTypes.func,
   updatePlayingStatus: React.PropTypes.func,

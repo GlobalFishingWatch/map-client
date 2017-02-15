@@ -1,0 +1,79 @@
+@import '../../settings';
+
+.c-welcome-modal {
+  display: flex;
+  font-family: $font-family-1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  max-height: 50vh;
+
+  > .content {
+    overflow: auto;
+    max-height: 40vh;
+    text-align: center;
+    padding: 45px 0;
+
+    h1, h2 {
+      font-size: $font-size-x-normal;
+      font-weight: $font-weight-bold;
+      margin: 0 0 10px;
+      text-align: center;
+    }
+
+    p {
+      font-size: $font-size-x-small;
+      margin: 25px 0;
+    }
+
+    a {
+      display: inline-block;
+      color: $color-4;
+      font-family: $font-family-1;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-normal;
+      margin-bottom: 5px;
+      border-bottom: solid 1px $color-29;
+    }
+
+  }
+
+  .btn-action {
+    background-color: $color-3;
+    border: 0;
+    color: $color-4;
+    cursor: pointer;
+    display: inline-block;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    margin: 10px 0;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    height: 30%;
+    width: 100%;
+    background-image: linear-gradient(to bottom, rgba(4, 20, 56, 0.0), #021236);
+    pointer-events: none;
+    bottom: 0;
+    left: 0;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    height: 10%;
+    width: 100%;
+    background-image: linear-gradient(to top, rgba(4, 20, 56, 0.0), #021236);
+    pointer-events: none;
+    top: 0;
+    left: 0;
+  }
+
+}

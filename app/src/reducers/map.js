@@ -6,6 +6,7 @@ import {
   SET_CENTER,
   SHARE_MODAL_OPEN,
   SET_WORKSPACE_ID,
+  SET_URL_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
@@ -15,8 +16,7 @@ import {
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY,
-  SET_WELCOME_MODAL_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -64,9 +64,6 @@ const initialState = {
   recentVesselModal: {
     open: false
   },
-  welcomeModal: {
-    open: !DISABLE_WELCOME_MODAL
-  },
   workspaceId: null
 };
 
@@ -99,6 +96,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { shareModal });
     }
 
+    case SET_URL_WORKSPACE_ID:
+      return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: action.payload });
 
@@ -140,15 +139,6 @@ export default function (state = initialState, action) {
     case SET_RECENT_VESSELS_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.recentVesselModal = {
-        open: action.payload
-      };
-
-      return newState;
-    }
-
-    case SET_WELCOME_MODAL_VISIBILITY: {
-      const newState = Object.assign({}, state);
-      newState.welcomeModal = {
         open: action.payload
       };
 

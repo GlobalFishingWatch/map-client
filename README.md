@@ -145,3 +145,7 @@ If set, should point to the local workspace to be loaded
 #### DISABLE_WELCOME_MODAL
 
 Disable welcome modal. Typically enabled in a dev environment, disabled in prod
+
+#### WELCOME_MODAL_COOKIE_KEY
+
+Key used to read the welcome modal's url cookie

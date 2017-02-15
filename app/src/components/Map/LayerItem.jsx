@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
-import LayerOptionsTooltip from 'components/Map/LayerOptionsTooltip';
-import { hueToRgbString } from 'util/hsvToRgb';
+import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-import SwitcherStyles from 'styles/components/shared/c-switcher.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
-import RenameIcon from 'babel!svg-react!assets/icons/close.svg?name=RenameIcon';
+import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {
 
@@ -55,20 +53,8 @@ class LayerItem extends Component {
     this.props.openLayerInfoModal(modalParams);
   }
 
-  clearName() {
-    this.onChangeLayerLabel('');
-    this.inputName.focus();
-  }
-
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.layerIndex);
-  }
-
-  getColor(layer) {
-    if (layer.hue !== undefined) {
-      return hueToRgbString(layer.hue);
-    }
-    return layer.color;
   }
 
   render() {
@@ -100,22 +86,23 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom && <li
             className={LayerListStyles['layer-option-item']}
-            onClick={() => this.toggleBlending()}
           >
             <BlendingIcon
+              onClick={() => this.toggleBlending()}
               className={classnames(icons['blending-icon'],
                 { [`${icons['-white']}`]: this.props.showBlending })}
             />
-            <LayerOptionsTooltip
+            {this.props.showBlending &&
+            <LayerBlendingOptionsTooltip
               displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
               displayOpacity
               hueValue={this.props.layer.hue}
               opacityValue={this.props.layer.opacity}
               onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
               onChangeHue={hue => this.onChangeHue(hue)}
-              showBlending={this.props.showBlending}
               isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
             />
+            }
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
@@ -131,15 +118,11 @@ class LayerItem extends Component {
       <li
         className={LayerListStyles['layer-item']}
       >
-        <input
-          className={SwitcherStyles['c-switcher']}
-          type="checkbox"
-          checked={this.props.layer.visible}
-          onChange={() => this.onChangeVisibility()}
-          key={this.getColor(this.props.layer)}
-          style={{
-            color: this.getColor(this.props.layer)
-          }}
+        <Toggle
+          on={this.props.layer.visible}
+          color={this.props.layer.color}
+          hue={this.props.layer.hue}
+          onToggled={() => this.onChangeVisibility()}
         />
         <input
           className={classnames(LayerListStyles['item-name'], { [LayerListStyles['item-rename']]: this.props.layerPanelEditMode })}
@@ -150,10 +133,6 @@ class LayerItem extends Component {
             this.inputName = elem;
           })}
         />
-        {this.props.layerPanelEditMode === true && <RenameIcon
-          className={classnames(icons.icon, icons['icon-close'], LayerListStyles['rename-icon'])}
-          onClick={() => this.clearName()}
-        />}
         {actions}
       </li>
     );
