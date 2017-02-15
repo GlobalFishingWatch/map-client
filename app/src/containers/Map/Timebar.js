@@ -8,6 +8,7 @@ import {
 } from 'actions/filters';
 
 const mapStateToProps = state => ({
+  timebarChartData: state.timebar.chartData,
   timelineOverallExtent: state.filters.timelineOverallExtent,
   timelineOuterExtent: state.filters.timelineOuterExtent,
   timelineInnerExtent: state.filters.timelineInnerExtent,
