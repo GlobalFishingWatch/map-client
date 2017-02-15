@@ -61,10 +61,7 @@ class FilterItem extends Component {
         </div>
         <div className={flagFilterStyles['filter-option']}>
           <ul className={flagFilterStyles['filter-option-list']}>
-            <li
-              className={flagFilterStyles['filter-option-item']}
-              ref={(ref) => { this.tooltip = ref; }}
-            >
+            <li className={flagFilterStyles['filter-option-item']}>
               <LayerBlendingOptionsTooltip
                 displayHue
                 hueValue={hueValue}

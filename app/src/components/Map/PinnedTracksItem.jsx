@@ -53,10 +53,7 @@ class PinnedTracksItem extends Component {
     } else {
       actions = (
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
-          <li
-            className={pinnedTracksStyles['pinned-item-action-item']}
-            ref={(ref) => { this.tooltip = ref; }}
-          >
+          <li className={pinnedTracksStyles['pinned-item-action-item']}>
             <LayerBlendingOptionsTooltip
               displayHue
               hueValue={this.props.vessel.hue}

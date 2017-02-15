@@ -59,7 +59,7 @@ class LayerOptionsTooltip extends Component {
     return true;
   }
 
-  closeTooltip (e) {
+  closeTooltip(e) {
     e.stopPropagation();
     e.preventDefault();
     if (this.tooltip.contains(e.target)) return;
