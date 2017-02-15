@@ -35,11 +35,9 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  * @param timelineOverallEndDate
  * @returns {Array}
  */
- // TODO add temporal extents filtering
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
   temporalExtents.forEach((extent, index) => {
-    // skip if index doesnt match with temporalExtentsIndexesLoaded
     const start = new Date(extent[0]).toISOString();
     const end = new Date(extent[1]).toISOString();
     let url = `${tilesetUrl}/`;
@@ -67,7 +65,6 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
     temporalExtents,
     params
   );
-  console.log(urls);
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
     promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
   }

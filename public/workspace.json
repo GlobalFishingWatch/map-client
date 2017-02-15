@@ -28,17 +28,6 @@
           "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
         },
         {
-          "title": "Indonesia",
-          "description": "Indonesia VMS data",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/indonesia-vms-2014-01-2016-08-tms",
-          "visible": true,
-          "color": "#FB88FF",
-          "hue": 72,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "indonesia-vms-2014-01-2016-08-tms"
-        },
-        {
           "title": "Fishing effort",
           "description": "Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
@@ -112,7 +101,7 @@
         1467331200000
       ],
       "outerExtent": [
-        1450566000000,
+        1451689200000,
         1480550400000
       ]
     }
