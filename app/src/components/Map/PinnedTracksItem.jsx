@@ -11,6 +11,21 @@ import Toggle from 'components/Shared/Toggle';
 
 class PinnedTracksItem extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidUpdate() {
+    if (this.props.showBlending) {
+      window.addEventListener('click', this.closeTooltip.bind(this));
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.closeTooltip.bind(this));
+  }
+
   onChangeName(value) {
     this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
   }
@@ -32,6 +47,15 @@ class PinnedTracksItem extends Component {
     this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
+  closeTooltip(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (this.tooltip.contains(e.target)) return;
+    this.props.onLayerBlendingToggled(-1);
+    window.removeEventListener('click', this.closeTooltip.bind(this));
+  }
+
   render() {
     let actions;
     if (this.props.vessel.title === undefined) return false;
@@ -50,13 +74,14 @@ class PinnedTracksItem extends Component {
     } else {
       actions = (
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
-          <li className={pinnedTracksStyles['pinned-item-action-item']}>
+          <li
+            className={pinnedTracksStyles['pinned-item-action-item']}
+            ref={(ref) => { this.tooltip = ref; }}
+          >
             <BlendingIcon
               className={classnames(icons['blending-icon'],
                 { [icons['-white']]: this.props.showBlending })}
-              onClick={() => {
-                this.props.onLayerBlendingToggled(this.props.index);
-              }}
+              onClick={() => this.props.onLayerBlendingToggled(this.props.index)}
             />
             {this.props.showBlending &&
             <LayerBlendingOptionsTooltip
