@@ -7,32 +7,9 @@ import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/c-selector.scss';
 
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
 class FilterItem extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.closeTooltip = this.closeTooltip.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.showBlending !== this.props.showBlending) {
-      if (nextProps.showBlending) window.addEventListener('click', this.closeTooltip);
-    }
-    return true;
-  }
-
-  closeTooltip(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    if (this.tooltip.contains(e.target)) return;
-    window.removeEventListener('click', this.closeTooltip);
-    this.props.onLayerBlendingToggled(this.props.index);
-  }
 
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.index);
@@ -88,20 +65,14 @@ class FilterItem extends Component {
               className={flagFilterStyles['filter-option-item']}
               ref={(ref) => { this.tooltip = ref; }}
             >
-              <BlendingIcon
-                className={classnames(IconStyles.icon, IconStyles['blending-icon'],
-                  flagFilterStyles['icon-blending'],
-                { [`${IconStyles['-white']}`]: this.props.showBlending === true })}
-                onClick={() => this.toggleBlending()}
-              />
-              {this.props.showBlending &&
               <LayerBlendingOptionsTooltip
                 displayHue
                 hueValue={hueValue}
                 onChangeHue={hue => this.onChangeHue(hue)}
                 isReverse={this.props.index < REVERSE_TOOLTIP_FILTERS_MOBILE}
+                visible={this.props.showBlending}
+                toggleVisibility={() => this.toggleBlending()}
               />
-              }
             </li>
             <li className={flagFilterStyles['filter-option-item']}>
               <RemoveFilterIcon

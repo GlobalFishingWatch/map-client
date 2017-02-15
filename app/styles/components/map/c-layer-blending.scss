@@ -2,139 +2,143 @@
 @import '../../mixins';
 
 .c-blending {
-  background-color: $color-1;
-  border: solid 1px rgba($color-3, .4);
-  bottom: 27px;
-  color: $color-4;
-  font-family: $font-family-1;
-  font-size: $font-size-xxs-small;
-  max-height: none;
-  padding: 20px;
-  position: absolute;
-  right: -30px;
-  text-transform: uppercase;
-  width: 270px;
-  z-index: 11;
+  display: flex;
 
-  &::before {
-    @include arrow(12px, 1px, rgba($color-3, .4), 'down');
+  .blending-tooltip {
     background-color: $color-1;
-    bottom: -7px;
+    border: solid 1px rgba($color-3, .4);
+    bottom: 27px;
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-xxs-small;
+    max-height: none;
+    padding: 20px;
     position: absolute;
-    right: 31px;
-  }
+    right: -30px;
+    text-transform: uppercase;
+    width: 270px;
+    z-index: 11;
 
-  @media screen and (max-width: $breakpoint-tablet) {
-    &.-reverse {
-      bottom: auto;
-      top: 27px;
+    &::before {
+      @include arrow(12px, 1px, rgba($color-3, .4), 'down');
+      background-color: $color-1;
+      bottom: -7px;
+      position: absolute;
+      right: 31px;
+    }
 
-      &::before {
-        @include arrow(12px, 1px, rgba($color-3, .4), 'up');
-        background-color: $color-1;
-        position: absolute;
-        right: 31px;
-        top: -7px;
+    @media screen and (max-width: $breakpoint-tablet) {
+      &.-reverse {
+        bottom: auto;
+        top: 27px;
+
+        &::before {
+          @include arrow(12px, 1px, rgba($color-3, .4), 'up');
+          background-color: $color-1;
+          position: absolute;
+          right: 31px;
+          top: -7px;
+        }
       }
     }
-  }
 
-  :global .blending-range {
-    appearance: none;
-    background: transparent;
-    height: 40px;
-    position: relative;
-    top: 5px;
-    width: 100%;
-
-    :global .track-container {
-      background-color: transparent;
-      cursor: pointer;
-      height: 15px;
+    :global .blending-range {
+      appearance: none;
+      background: transparent;
+      height: 40px;
       position: relative;
+      top: 5px;
+      width: 100%;
 
-      .track-active {
-        background-color: $color-4;
-        height: 3px;
+      :global .track-container {
+        background-color: transparent;
+        cursor: pointer;
+        height: 15px;
+        position: relative;
+
+        .track-active {
+          background-color: $color-4;
+          height: 3px;
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+
+        &::before {
+          background: $color-13;
+          content: '';
+          display: inline-block;
+          height: 3px;
+          left: 0;
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          width: 100%;
+        }
+      }
+
+      :global .thumb-container {
         position: absolute;
         top: 50%;
         transform: translate(0, -50%);
       }
 
-      &::before {
-        background: $color-13;
-        content: '';
+      :global .thumb {
+        background-color: $color-2;
+        border: 2px solid $color-4;
         display: inline-block;
-        height: 3px;
+        height: 8px;
         left: 0;
         position: absolute;
         top: 50%;
-        transform: translate(0, -50%);
-        width: 100%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+      }
+
+      :global .label {
+        position: absolute;
+
+        &.-min,
+        &.-max {
+          bottom: 10px;
+        }
+
+        &.-current {
+          display: none;
+        }
+
+        &.-min {
+          left: 0;
+        }
+
+        &.-max {
+          right: 0;
+        }
+
+        > span {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-tiny;
+        }
       }
     }
 
-    :global .thumb-container {
-      position: absolute;
-      top: 50%;
-      transform: translate(0, -50%);
-    }
+    :global .blending-range.-hue {
+      height: 25px;
 
-    :global .thumb {
-      background-color: $color-2;
-      border: 2px solid $color-4;
-      display: inline-block;
-      height: 8px;
-      left: 0;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px;
-    }
+      :global .track-container {
+        .track-active {
+          display: none;
+        }
 
-    :global .label {
-      position: absolute;
-
-      &.-min,
-      &.-max {
-        bottom: 10px;
+        &::before {
+          background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+        }
       }
 
-      &.-current {
+      :global .label {
         display: none;
       }
-
-      &.-min {
-        left: 0;
-      }
-
-      &.-max {
-        right: 0;
-      }
-
-      > span {
-        color: $color-4;
-        font-family: $font-family-1;
-        font-size: $font-size-tiny;
-      }
-    }
-  }
-
-  :global .blending-range.-hue {
-    height: 25px;
-
-    :global .track-container {
-      .track-active {
-        display: none;
-      }
-
-      &::before {
-        background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
-      }
-    }
-
-    :global .label {
-      display: none;
     }
   }
 }

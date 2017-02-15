@@ -5,34 +5,11 @@ import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTool
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.closeTooltip = this.closeTooltip.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.showBlending !== this.props.showBlending) {
-      if (nextProps.showBlending) window.addEventListener('click', this.closeTooltip);
-    }
-    return true;
-  }
-
-  closeTooltip(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    if (this.tooltip.contains(e.target)) return;
-    window.removeEventListener('click', this.closeTooltip);
-    this.props.onLayerBlendingToggled(this.props.layer.id);
-  }
 
   onChangeVisibility() {
     if (this.props.layer.visible && this.props.showBlending) {
@@ -86,7 +63,7 @@ class LayerItem extends Component {
     let actions;
     if (this.props.layerPanelEditMode === true) {
       actions = (
-        <div className={LayerListStyles['edition-menu']} >
+        <div className={LayerListStyles['edition-menu']}>
           <DeleteIcon
             className={classnames(icons.icon, LayerListStyles['delete-icon'])}
             onClick={() => {
@@ -97,7 +74,7 @@ class LayerItem extends Component {
       );
     } else {
       actions = (
-        <ul className={LayerListStyles['layer-option-list']} >
+        <ul className={LayerListStyles['layer-option-list']}>
           {canReport && this.props.layer.reportable && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickReport()}
@@ -107,16 +84,7 @@ class LayerItem extends Component {
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
-          <li
-            className={LayerListStyles['layer-option-item']}
-            ref={(ref) => { this.tooltip = ref; }}
-          >
-            <BlendingIcon
-              onClick={() => this.toggleBlending()}
-              className={classnames(icons['blending-icon'],
-                { [`${icons['-white']}`]: this.props.showBlending })}
-            />
-            {this.props.showBlending &&
+          <li className={LayerListStyles['layer-option-item']}>
             <LayerBlendingOptionsTooltip
               displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
               displayOpacity
@@ -125,8 +93,9 @@ class LayerItem extends Component {
               onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
               onChangeHue={hue => this.onChangeHue(hue)}
               isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
+              visible={this.props.showBlending}
+              toggleVisibility={() => this.toggleBlending()}
             />
-            }
           </li>}
           <li
             className={LayerListStyles['layer-option-item']}
@@ -165,12 +134,12 @@ class LayerItem extends Component {
 
 LayerItem.propTypes = {
   /*
-  list of restricted actions a user is allowed to perform
+   list of restricted actions a user is allowed to perform
    */
   userPermissions: React.PropTypes.array,
   layerIndex: React.PropTypes.number,
   /*
-  layer object
+   layer object
    */
   layer: React.PropTypes.object,
   currentlyReportedLayerId: React.PropTypes.string,
@@ -182,12 +151,12 @@ LayerItem.propTypes = {
   openLayerInfoModal: React.PropTypes.func,
   onLayerBlendingToggled: React.PropTypes.func,
   /*
-  Called when a layer title changes
+   Called when a layer title changes
    */
   setLayerLabel: React.PropTypes.func,
   showBlending: React.PropTypes.bool,
   /*
-  If layer labels are editable or not
+   If layer labels are editable or not
    */
   layerPanelEditMode: React.PropTypes.bool
 };
