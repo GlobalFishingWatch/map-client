@@ -11,6 +11,29 @@ import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=Bl
 import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
 class FilterItem extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.closeTooltip = this.closeTooltip.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.showBlending !== this.props.showBlending) {
+      if (nextProps.showBlending) window.addEventListener('click', this.closeTooltip);
+    }
+    return true;
+  }
+
+  closeTooltip(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (this.tooltip.contains(e.target)) return;
+    window.removeEventListener('click', this.closeTooltip);
+    this.props.onLayerBlendingToggled(this.props.index);
+  }
+
   toggleBlending() {
     this.props.onLayerBlendingToggled(this.props.index);
   }
@@ -61,7 +84,10 @@ class FilterItem extends Component {
         </div>
         <div className={flagFilterStyles['filter-option']}>
           <ul className={flagFilterStyles['filter-option-list']}>
-            <li className={flagFilterStyles['filter-option-item']}>
+            <li
+              className={flagFilterStyles['filter-option-item']}
+              ref={(ref) => { this.tooltip = ref; }}
+            >
               <BlendingIcon
                 className={classnames(IconStyles.icon, IconStyles['blending-icon'],
                   flagFilterStyles['icon-blending'],

@@ -14,16 +14,14 @@ class PinnedTracksItem extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.closeTooltip = this.closeTooltip.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.props.showBlending) {
-      window.addEventListener('click', this.closeTooltip.bind(this));
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.showBlending !== this.props.showBlending) {
+      if (nextProps.showBlending) window.addEventListener('click', this.closeTooltip);
     }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('click', this.closeTooltip.bind(this));
+    return true;
   }
 
   onChangeName(value) {
@@ -52,8 +50,8 @@ class PinnedTracksItem extends Component {
     e.preventDefault();
 
     if (this.tooltip.contains(e.target)) return;
-    this.props.onLayerBlendingToggled(-1);
-    window.removeEventListener('click', this.closeTooltip.bind(this));
+    window.removeEventListener('click', this.closeTooltip);
+    this.props.onLayerBlendingToggled(this.props.index);
   }
 
   render() {

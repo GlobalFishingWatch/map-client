@@ -12,6 +12,28 @@ import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.closeTooltip = this.closeTooltip.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.showBlending !== this.props.showBlending) {
+      if (nextProps.showBlending) window.addEventListener('click', this.closeTooltip);
+    }
+    return true;
+  }
+
+  closeTooltip(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (this.tooltip.contains(e.target)) return;
+    window.removeEventListener('click', this.closeTooltip);
+    this.props.onLayerBlendingToggled(this.props.layer.id);
+  }
+
   onChangeVisibility() {
     if (this.props.layer.visible && this.props.showBlending) {
       this.props.onLayerBlendingToggled(this.props.layerIndex);
@@ -84,8 +106,10 @@ class LayerItem extends Component {
               className={classnames({ [`${LayerListStyles['-highlighted']}`]: isCurrentlyReportedLayer })}
             />
           </li>}
-          {this.props.layer.type !== LAYER_TYPES.Custom && <li
+          {this.props.layer.type !== LAYER_TYPES.Custom &&
+          <li
             className={LayerListStyles['layer-option-item']}
+            ref={(ref) => { this.tooltip = ref; }}
           >
             <BlendingIcon
               onClick={() => this.toggleBlending()}
