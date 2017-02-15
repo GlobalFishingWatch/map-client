@@ -215,10 +215,11 @@ export function setLayerHue(hue, layerId) {
   };
 }
 
-export function addCustomLayer(url, name, description) {
+export function addCustomLayer(id, url, name, description) {
   return {
     type: ADD_CUSTOM_LAYER,
     payload: {
+      id,
       url,
       name,
       description

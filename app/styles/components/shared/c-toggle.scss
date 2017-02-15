@@ -6,7 +6,7 @@
   appearance: none;
   position: relative;
   display: flex;
-  background: $color-27;
+  background: $color-7;
   border-radius: 25px;
   cursor: pointer;
   min-width: 20px;
@@ -16,6 +16,8 @@
   padding: 0 10px 0 0;
 
   &.-active {
+    background: $color-3;
+
     .toggle-ball {
       left: 10px;
     }
@@ -42,5 +44,17 @@
     border-radius: 50%;
     transition: .15s ease-in;
     pointer-events: none;
+
+    // Can't be a pseudo-element because we need js manipulation
+    .toggle-inner-ball {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background-color: $color-4;
+      width: 4px;
+      height: 4px;
+    }
   }
 }

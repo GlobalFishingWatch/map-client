@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SwitcherStyles from 'styles/components/shared/c-toggle.scss';
+import ToggleStyles from 'styles/components/shared/c-toggle.scss';
 import classnames from 'classnames';
 import { hueToRgbString } from 'util/hsvToRgb';
 
@@ -13,7 +13,7 @@ class Toggle extends Component {
 
   render() {
     return (<div
-      className={classnames(SwitcherStyles['c-toggle'], { [SwitcherStyles['-active']]: this.props.on })}
+      className={classnames(ToggleStyles['c-toggle'], { [ToggleStyles['-active']]: this.props.on })}
       style={this.props.on ? { background: this.getColor() } : null}
     >
       <input
@@ -22,7 +22,12 @@ class Toggle extends Component {
         checked={this.props.on}
         readOnly
       />
-      <div className={SwitcherStyles['toggle-ball']} />
+      <div className={ToggleStyles['toggle-ball']}>
+        <span
+          className={ToggleStyles['toggle-inner-ball']}
+          style={this.props.on ? { background: this.getColor() } : null}
+        />
+      </div>
     </div>);
   }
 }
