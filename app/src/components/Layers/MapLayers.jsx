@@ -81,7 +81,8 @@ class MapLayers extends Component {
         startTimestamp,
         endTimestamp,
         timelinePaused: nextProps.timelinePaused,
-        timelineOverExtent: nextProps.timelineOverExtent
+        timelineOverExtent: nextProps.timelineOverExtent,
+        zoom: nextProps.zoom
       });
       this.glContainer.toggleHeatmapDimming(true);
       isGLContainerDirty = true;
@@ -384,7 +385,7 @@ class MapLayers extends Component {
     }
   }
 
-  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
+  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent, zoom }) {
     if (!this.glContainer || !data) {
       return;
     }
@@ -403,7 +404,8 @@ class MapLayers extends Component {
         endTimestamp,
         timelinePaused,
         overStartTimestamp,
-        overEndTimestamp
+        overEndTimestamp,
+        zoom
       }
     );
   }
@@ -420,7 +422,8 @@ class MapLayers extends Component {
       startTimestamp: this.props.timelineInnerExtent[0].getTime(),
       endTimestamp: this.props.timelineInnerExtent[1].getTime(),
       timelinePaused: this.props.timelinePaused,
-      timelineOverExtent: this.props.timelineOverExtent
+      timelineOverExtent: this.props.timelineOverExtent,
+      zoom: this.props.zoom
     });
   }
 

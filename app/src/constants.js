@@ -67,6 +67,7 @@ export const TRACK_SEGMENT_TYPES = {
   Highlighted: 3
 };
 export const DEFAULT_TRACK_HUE = 180;
+export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 5;
 
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
