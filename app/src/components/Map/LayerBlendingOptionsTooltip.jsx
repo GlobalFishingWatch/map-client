@@ -91,7 +91,7 @@ class LayerOptionsTooltip extends Component {
         <BlendingIcon
           onClick={() => this.props.toggleVisibility()}
           className={classnames(icons['blending-icon'],
-            { [`${icons['-white']}`]: this.props.showBlending })}
+            { [`${icons['-white']}`]: this.props.visible })}
         />
         {this.props.visible &&
         <div
@@ -137,8 +137,7 @@ LayerOptionsTooltip.propTypes = {
   onChangeOpacity: React.PropTypes.func,
   isReverse: React.PropTypes.bool,
   toggleVisibility: React.PropTypes.func,
-  visible: React.PropTypes.bool,
-  showBlending: React.PropTypes.func
+  visible: React.PropTypes.bool
 };
 
 export default LayerOptionsTooltip;
