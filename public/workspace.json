@@ -50,6 +50,17 @@
           "id": "849-tileset-tms"
         },
         {
+          "title": "SHARKS!!!",
+          "description": "Fishing effort",
+          "url": "https://cartodbproxy-dot-world-fishing-827.appspot.com/tile/http%3A%2F%2Fcartodb.skytruth.org%2Fuser%2Fredhog%2Fapi%2Fv2%2Fviz%2F5ce1eba6-d418-11e6-b9ce-0242ac110006%2Fviz.json/7d4658135ffb78bdf0730ea279",
+          "visible": true,
+          "color": "#88FBFF",
+          "hue": 36,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "sharks"
+        },
+        {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
           "reportable": true,

@@ -3,7 +3,6 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import {
   PLAYBACK_PRECISION,
-  VESSELS_ENDPOINT_KEYS,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
   VESSELS_MINIMUM_RADIUS_FACTOR,
   VESSELS_MINIMUM_OPACITY,
@@ -37,16 +36,18 @@ export const getOffsetedTimeAtPrecision = timestamp =>
  */
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
-  temporalExtents.forEach((extent) => {
-    const start = new Date(extent[0]).toISOString();
-    const end = new Date(extent[1]).toISOString();
+  (temporalExtents || [null]).forEach((extent) => {
     let url = `${tilesetUrl}/`;
     if (params.seriesgroup) {
       url += `sub/seriesgroup=${params.seriesgroup}/`;
     }
-    url += `${start},${end}`;
+    if (extent !== null) {
+      const start = new Date(extent[0]).toISOString();
+      const end = new Date(extent[1]).toISOString();
+      url += `${start},${end};`;
+    }
     if (params.tileCoordinates) {
-      url += `;${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
+      url += `${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
     } else {
       // meh.
       url += ';0,0,0';
@@ -79,12 +80,12 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
  * @param vectorArraysKeys the keys to pick on the vectorArrays (lat, lon, weight, etc)
  * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
  */
-export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT_KEYS) => {
+export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
 
   const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
 
-  vectorArraysKeys.forEach((key) => {
+  columns.forEach((key) => {
     data[key] = new Float32Array(totalVectorArraysLength);
   });
 
@@ -97,7 +98,7 @@ export const groupData = (cleanVectorArrays, vectorArraysKeys = VESSELS_ENDPOINT
 
   for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
     currentArray = cleanVectorArrays[index];
-    vectorArraysKeys.forEach(appendValues);
+    columns.forEach(appendValues);
     cumulatedOffsets += currentArray.longitude.length;
   }
   return data;
@@ -135,13 +136,22 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
  * @param vectorArray
  * @param tileCoordinates
  */
-export const getTilePlaybackData = (zoom, vectorArray) => {
+export const getTilePlaybackData = (zoom, vectorArray, columns) => {
   const tilePlaybackData = [];
 
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
   const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
 
   const zoomFactorOpacity = (zoom - 1) ** 3.5;
+
+  // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
+  const extraColumns = _
+    .chain(columns)
+    .concat([])
+    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity') // those are mandatory thus manually added
+    .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
+    .uniq()
+    .value();
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
@@ -160,29 +170,30 @@ export const getTilePlaybackData = (zoom, vectorArray) => {
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
     if (!tilePlaybackData[timeIndex]) {
-      tilePlaybackData[timeIndex] = {
+      const frame = {
         worldX: [worldX],
         worldY: [worldY],
         weight: [weight],
         sigma: [sigma],
         radius: [radius],
-        opacity: [opacity],
-        category: [vectorArray.category[index]],
-        series: [vectorArray.series[index]],
-        seriesgroup: [vectorArray.seriesgroup[index]]
+        opacity: [opacity]
       };
+      extraColumns.forEach((column) => {
+        frame[column] = [vectorArray[column][index]];
+      });
+      tilePlaybackData[timeIndex] = frame;
       continue;
     }
-    const timestamp = tilePlaybackData[timeIndex];
-    timestamp.worldX.push(worldX);
-    timestamp.worldY.push(worldY);
-    timestamp.weight.push(weight);
-    timestamp.sigma.push(sigma);
-    timestamp.radius.push(radius);
-    timestamp.opacity.push(opacity);
-    timestamp.category.push(vectorArray.category[index]);
-    timestamp.series.push(vectorArray.series[index]);
-    timestamp.seriesgroup.push(vectorArray.seriesgroup[index]);
+    const frame = tilePlaybackData[timeIndex];
+    frame.worldX.push(worldX);
+    frame.worldY.push(worldY);
+    frame.weight.push(weight);
+    frame.sigma.push(sigma);
+    frame.radius.push(radius);
+    frame.opacity.push(opacity);
+    extraColumns.forEach((column) => {
+      frame[column].push(vectorArray[column][index]);
+    });
   }
 
   return tilePlaybackData;

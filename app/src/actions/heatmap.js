@@ -20,7 +20,7 @@ import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } 
 import { trackMapClicked } from 'actions/analytics';
 
 
-function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, columns) {
   const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates });
   const allLayerPromises = Promise.all(pelagosPromises);
@@ -28,11 +28,12 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents) {
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
       const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-      const groupedData = groupData(cleanVectorArrays);
+      const groupedData = groupData(cleanVectorArrays, columns);
       const vectorArray = addWorldCoordinates(groupedData, map);
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
-        vectorArray
+        vectorArray,
+        columns
       );
       // console.log(data)
       resolve(data);
@@ -67,7 +68,8 @@ function getTiles(layerIds, referenceTiles) {
           layers[layerId].url,
           token,
           map,
-          layerHeader.temporalExtents
+          layerHeader.temporalExtents,
+          Object.keys(layerHeader.colsByName)
         );
         allPromises.push(tilePromise);
         tilePromise.then((data) => {
