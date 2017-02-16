@@ -63,7 +63,6 @@
         {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
-          "reportable": true,
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/3d8e8416-866c-11e6-8c6b-0242ac110006/viz.json",
           "visible": false,
           "color": "#da0000",
@@ -74,7 +73,6 @@
         {
           "title": "MPA - Restricted Use",
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
-          "reportable": true,
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/f65c6e80-8983-11e6-bd2f-0242ac110006/viz.json",
           "visible": true,
           "color": "#c45e00",
@@ -85,7 +83,6 @@
         {
           "title": "EEZ",
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
-          "reportable": true,
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
           "visible": true,
           "color": "blue",

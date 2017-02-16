@@ -75,7 +75,7 @@ class LayerItem extends Component {
     } else {
       actions = (
         <ul className={LayerListStyles['layer-option-list']}>
-          {canReport && this.props.layer.reportable && <li
+          {canReport && this.props.layer.reportId !== undefined && <li
             className={LayerListStyles['layer-option-item']}
             onClick={() => this.onClickReport()}
           >
