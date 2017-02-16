@@ -53,12 +53,17 @@ export default function (state = initialState, action) {
         ]
       });
     case SET_OVERALL_TIMELINE_DATES: {
+      const timelineOverallExtent = [
+        new Date(Math.min(action.payload[0], state.timelineOverallExtent[0])),
+        new Date(Math.max(action.payload[1], state.timelineOverallExtent[1]))
+      ];
+      const timelineOuterExtent = [
+        new Date(Math.max(timelineOverallExtent[0], state.timelineOuterExtent[0])),
+        new Date(Math.min(timelineOverallExtent[1], state.timelineOuterExtent[1]))
+      ];
       return Object.assign({}, state, {
-        timelineOverallExtent: action.payload,
-        timelineOuterExtent: [
-          new Date(Math.max(action.payload[0], state.timelineOuterExtent[0])),
-          new Date(Math.min(action.payload[1], state.timelineOuterExtent[1]))
-        ]
+        timelineOverallExtent,
+        timelineOuterExtent
       });
     }
     case SET_FLAG_FILTERS:
