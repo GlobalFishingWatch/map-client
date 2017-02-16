@@ -110,6 +110,14 @@
         width: 240px;
       }
 
+      > .polygon-message {
+        color: $color-1;
+        font-size: $font-size-xxs-small;
+        font-weight: bold;
+        text-transform: uppercase;
+        width: 240px;
+      }
+
       > .polygon-remove {
         display: inline-flex;
         position: absolute;

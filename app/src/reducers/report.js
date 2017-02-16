@@ -4,15 +4,20 @@ import {
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
-  DISCARD_REPORT
+  DISCARD_REPORT,
+  SET_REPORT_STATUS_SENT,
+  SET_REPORT_STATUS_ERROR
 } from 'actions';
+import { REPORT_STATUS } from 'constants';
 
 const initialState = {
   currentPolygon: {},
   polygons: [],
   polygonsIds: [],
   layerTitle: null,
-  layerId: null
+  layerId: null,
+  status: REPORT_STATUS.idle,
+  statusText: ''
 };
 
 export default function (state = initialState, action) {
@@ -63,9 +68,19 @@ export default function (state = initialState, action) {
     }
 
     case START_REPORT:
-      return Object.assign({}, state, { polygons: [], layerId: action.payload.layerId, layerTitle: action.payload.layerTitle });
+      return Object.assign({}, state, {
+        polygons: [],
+        layerId: action.payload.layerId,
+        layerTitle: action.payload.layerTitle,
+        status: REPORT_STATUS.idle
+      });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], layerId: null });
+
+    case SET_REPORT_STATUS_SENT:
+      return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
+    case SET_REPORT_STATUS_ERROR:
+      return Object.assign({}, state, { status: REPORT_STATUS.error, statusText: action.payload });
 
 
     default:

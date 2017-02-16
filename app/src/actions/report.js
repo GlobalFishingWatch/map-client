@@ -4,7 +4,9 @@ import {
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
-  DISCARD_REPORT
+  DISCARD_REPORT,
+  SET_REPORT_STATUS_SENT,
+  SET_REPORT_STATUS_ERROR
 } from 'actions';
 import { toggleLayerVisibility } from 'actions/layers';
 import { FLAGS } from 'constants';
@@ -121,11 +123,21 @@ export function sendReport() {
     };
     fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
       if (!res.ok) {
-        throw Error(res.statusText);
+        throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
       }
+      return res;
     }).then(res => res.json())
       .then((data) => {
-        console.warn('success', data);
+        dispatch({
+          type: SET_REPORT_STATUS_SENT,
+          payload: data.message
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_REPORT_STATUS_ERROR,
+          payload: err.message
+        });
       });
   };
 }
