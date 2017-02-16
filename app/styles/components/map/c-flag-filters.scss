@@ -1,8 +1,6 @@
 @import '../../settings';
 
 .c-flag-filters {
-  max-height: 100%;
-  overflow-y: auto;
 
   @media #{$mq-tablet} {
     max-height: none;
