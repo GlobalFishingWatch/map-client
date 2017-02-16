@@ -109,15 +109,16 @@ export function sendReport() {
       });
     });
     const body = JSON.stringify(payload);
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/json');
     const options = {
       method: 'POST',
       body
     };
-    if (state.user.token) {
-      options.headers = {
-        Authorization: `Bearer ${state.user.token}`
-      };
-    }
+    options.headers = {
+      Authorization: `Bearer ${state.user.token}`,
+      'Content-Type': 'application/json'
+    };
     fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
       if (!res.ok) {
         throw Error(res.statusText);
