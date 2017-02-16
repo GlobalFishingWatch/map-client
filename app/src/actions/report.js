@@ -8,7 +8,7 @@ import {
   SET_REPORT_STATUS_SENT,
   SET_REPORT_STATUS_ERROR
 } from 'actions';
-import { toggleLayerVisibility } from 'actions/layers';
+import { toggleLayerVisibility, setLayerOpacity } from 'actions/layers';
 import { FLAGS } from 'constants';
 
 export function showPolygon(polygonData, latLng) {
@@ -56,6 +56,7 @@ export function toggleReportPolygon(polygonId) {
 export function startReport(layerId, layerTitle) {
   return (dispatch) => {
     dispatch(toggleLayerVisibility(layerId, true));
+    dispatch(setLayerOpacity(1, layerId));
     dispatch(clearPolygon());
     dispatch({
       type: START_REPORT,
