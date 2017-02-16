@@ -100,7 +100,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
         Object.assign(matchedWorkspaceLayer, {
           library: true,
           added: true,
-          description: libraryLayer.description || matchedWorkspaceLayer.description
+          description: libraryLayer.description || matchedWorkspaceLayer.description,
+          reportId: libraryLayer.reportId
         });
       } else {
         workspaceLayers.push(Object.assign(libraryLayer, { added: false }));

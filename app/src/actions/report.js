@@ -53,16 +53,19 @@ export function toggleReportPolygon(polygonId) {
   };
 }
 
-export function startReport(layerId, layerTitle) {
-  return (dispatch) => {
+function startReport(layerId) {
+  return (dispatch, getState) => {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(setLayerOpacity(1, layerId));
     dispatch(clearPolygon());
+
+    const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     dispatch({
       type: START_REPORT,
       payload: {
         layerId,
-        layerTitle
+        layerTitle: workspaceLayer.title,
+        reportId: workspaceLayer.reportId
       }
     });
   };
@@ -77,12 +80,12 @@ export function discardReport() {
   };
 }
 
-export function toggleReport(layerId, layerTitle) {
+export function toggleReport(layerId) {
   return (dispatch, getState) => {
     if (getState().report.layerId === layerId) {
       dispatch(discardReport());
     } else {
-      dispatch(startReport(layerId, layerTitle));
+      dispatch(startReport(layerId));
     }
   };
 }
@@ -105,9 +108,10 @@ export function sendReport() {
 
     payload.flags = currentFlags;
     payload.regions = [];
+
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
-        name: state.report.layerTitle,
+        name: state.report.reportId,
         value: polygon.reportingId.toString()
       });
     });

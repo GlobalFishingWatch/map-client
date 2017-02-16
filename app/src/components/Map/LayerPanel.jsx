@@ -47,7 +47,6 @@ LayerPanel.propTypes = {
   layers: React.PropTypes.array,
   currentlyReportedLayerId: React.PropTypes.string,
   toggleLayerVisibility: React.PropTypes.func,
-  toggleReport: React.PropTypes.func,
   setLayerInfoModal: React.PropTypes.func,
   setLayerOpacity: React.PropTypes.func,
   setLayerHue: React.PropTypes.func,

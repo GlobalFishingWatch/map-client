@@ -71,6 +71,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         polygons: [],
         layerId: action.payload.layerId,
+        reportId: action.payload.reportId,
         layerTitle: action.payload.layerTitle,
         status: REPORT_STATUS.idle
       });

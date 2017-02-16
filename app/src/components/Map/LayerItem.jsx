@@ -40,7 +40,7 @@ class LayerItem extends Component {
   }
 
   onClickReport() {
-    this.props.toggleReport(this.props.layer.id, this.props.layer.title);
+    this.props.toggleReport(this.props.layer.id);
   }
 
   onClickInfo() {
