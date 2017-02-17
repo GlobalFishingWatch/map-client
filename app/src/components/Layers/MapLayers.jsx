@@ -304,14 +304,21 @@ class MapLayers extends Component {
   }
 
   removeCartoLayer(layer) {
-    let layerIndexToRemove;
+    let cartoLayer;
+    let overlayMapTypeIndex;
     this.map.overlayMapTypes.forEach((overlayMapType, index) => {
       if (overlayMapType && overlayMapType.id && overlayMapType.id === layer.id) {
-        layerIndexToRemove = index;
+        cartoLayer = overlayMapType;
+        overlayMapTypeIndex = index;
       }
     });
-    if (layerIndexToRemove !== undefined) {
-      this.map.overlayMapTypes.removeAt(layerIndexToRemove);
+    if (overlayMapTypeIndex !== undefined) {
+      for (let subLayerIndex = 0, subLayersCount = cartoLayer.getSubLayerCount(); subLayerIndex < subLayersCount; subLayerIndex++) {
+        const subLayer = cartoLayer.getSubLayer(subLayerIndex);
+        subLayer.setInteraction(false);
+        subLayer.off();
+      }
+      this.map.overlayMapTypes.removeAt(overlayMapTypeIndex);
     }
   }
 
