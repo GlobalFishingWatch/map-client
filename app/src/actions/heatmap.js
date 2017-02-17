@@ -173,10 +173,12 @@ export function queryHeatmap(tileQuery, latLng) {
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      layersVessels.push({
-        layerId,
-        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
-      });
+      if (queriedTile.data !== undefined) {
+        layersVessels.push({
+          layerId,
+          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
+        });
+      }
     });
 
     const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
