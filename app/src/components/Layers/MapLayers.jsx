@@ -160,7 +160,7 @@ class MapLayers extends Component {
 
   componentWillUnmount() {
     google.maps.event.clearInstanceListeners(this.map);
-    this.map.overlayMapTypes.removeAt(0);
+    this.map.overlayMapTypes.clear();
   }
 
   initHeatmap() {
@@ -208,7 +208,7 @@ class MapLayers extends Component {
         } else if (newLayer.type === LAYER_TYPES.Custom) {
           this.removeCustomLayer(newLayer);
         } else {
-          this.removeCartoLayer(newLayer, i + 2, nextProps.reportLayerId);
+          this.removeCartoLayer(newLayer);
         }
         delete this.addedLayers[newLayer.id];
         continue;
@@ -293,6 +293,7 @@ class MapLayers extends Component {
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
+          cartoLayer.id = layerSettings.id;
           this.addedLayers[layer.id] = cartoLayer;
           this.setLayerOpacity(layerSettings);
           resolve();
@@ -302,9 +303,16 @@ class MapLayers extends Component {
     return promise;
   }
 
-  removeCartoLayer() {
-    // TODO
-    console.warn('removeCartoLayer: TBD');
+  removeCartoLayer(layer) {
+    let layerIndexToRemove;
+    this.map.overlayMapTypes.forEach((overlayMapType, index) => {
+      if (overlayMapType && overlayMapType.id && overlayMapType.id === layer.id) {
+        layerIndexToRemove = index;
+      }
+    });
+    if (layerIndexToRemove !== undefined) {
+      this.map.overlayMapTypes.removeAt(layerIndexToRemove);
+    }
   }
 
   onCartoLayerFeatureClick(polygonData, latLng, layerId) {
