@@ -215,7 +215,8 @@ class Timebar extends Component {
 
     handle
       .append('rect')
-      .attr('y', height / 2);
+      .attr('y', height / 2)
+      .attr('x', 0);
 
     return handle;
   }

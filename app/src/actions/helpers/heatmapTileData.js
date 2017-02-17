@@ -50,7 +50,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
       url += `${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
     } else {
       // meh.
-      url += ';0,0,0';
+      url += '0,0,0';
     }
     urls.push(url);
   });
