@@ -108,14 +108,17 @@ class DurationPicker extends Component {
     }
 
     return (
-      <div style={style} className={css['c-durationpicker']}>
+      <div
+        style={style}
+        className={css['c-durationpicker']}
+        onClick={() => this.toggleSettingsMenu()}
+        ref={(elem) => { this.svg = elem; }}
+      >
         <div className={css.container}>
           <img
             alt="settings duration"
             src={SettingsIcon}
             className={classnames(iconStyles.icon, css['icon-settings'])}
-            onClick={() => this.toggleSettingsMenu()}
-            ref={(elem) => { this.svg = elem; }}
           />
 
           {this.state.showSettingsMenu &&

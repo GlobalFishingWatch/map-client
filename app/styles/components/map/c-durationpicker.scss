@@ -1,6 +1,7 @@
 @import '../../settings';
 
 .c-durationpicker {
+  cursor: pointer;
   left: 0;
   position: absolute;
   top: -$duration-picker-height;
@@ -20,13 +21,17 @@
     position: relative;
 
     > .c-durationpicker-text {
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
       color: $color-4;
       font-size: $font-size-xxs-small;
       text-transform: uppercase;
+      user-select: none;
     }
 
     > .icon-settings  {
-      cursor: pointer;
       height: 12px;
       left: 5px;
       position: absolute;

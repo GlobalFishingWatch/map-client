@@ -22,6 +22,10 @@
     text {
       display: none;
       @media #{$mq-mobile-large} {
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
         display: block;
         fill: $color-4;
         font-family: $font-family-1;
