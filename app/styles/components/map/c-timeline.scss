@@ -41,23 +41,28 @@
   }
 
   .c-timeline-outer-brush-handle {
-    cursor: ew-resize;
+    display: none;
 
-    path,
-    rect {
-      stroke: $color-3;
-    }
+    @media #{$mq-mobile-large} {
+      cursor: ew-resize;
+      display: block;
 
-    path {
-      stroke-width: 4px;
-    }
+      path,
+      rect {
+        stroke: $color-3;
+      }
 
-    rect {
-      fill: $color-8;
-      height: 6px;
-      stroke-width: 3px;
-      transform: translate(-3px, -3px);
-      width: 6px;
+      path {
+        stroke-width: 4px;
+      }
+
+      rect {
+        fill: $color-8;
+        height: 6px;
+        stroke-width: 3px;
+        transform: translate(-3px, -3px);
+        width: 6px;
+      }
     }
   }
 
