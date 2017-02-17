@@ -66,6 +66,15 @@
     }
   }
 
+  .c-timeline-inner-brush {
+    :global .handle {
+      display: none;
+      @media #{$mq-mobile-large} {
+        display: block;
+      }
+    }
+  }
+
   .c-timeline-inner-brush-selection {
     fill: $color-4;
     fill-opacity: .2;
@@ -73,9 +82,27 @@
     stroke-width: 0;
   }
 
-  .c-timeline-outer-brush-circle {
+  .c-timeline-inner-brush-circle {
     cursor: ew-resize;
     fill: $color-4;
     pointer-events: none;
+  }
+
+  .c-timeline-inner-brush-circles {
+    display: none;
+    @media #{$mq-mobile-large} {
+      display: block;
+    }
+  }
+
+  .c-timeline-inner-brush-middle {
+    pointer-events: none;
+
+    > path {
+      stroke: $color-3;
+    }
+    @media #{$mq-mobile-large} {
+      display: none;
+    }
   }
 }
