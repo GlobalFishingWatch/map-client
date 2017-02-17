@@ -156,7 +156,7 @@
       }
 
       .content-accordion {
-        max-height: calc(100% - 108px);
+        height: calc(100% - 108px);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding: 15px 20px;
