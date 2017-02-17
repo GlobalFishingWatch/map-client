@@ -22,6 +22,7 @@ export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six mont
 
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
+export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
 
 export const GUEST_PERMISSION_SET = [
   'seeVesselsLayers',
