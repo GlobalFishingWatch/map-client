@@ -1,5 +1,4 @@
 /* eslint react/sort-comp:0 */
-/* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
 import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
 import classnames from 'classnames';
@@ -221,6 +220,9 @@ class Timebar extends Component {
   }
 
   onOuterHandleClick() {
+    if (!this.props.timelinePaused) {
+      this.props.updatePlayingStatus(true);
+    }
     d3.event.preventDefault();
     currentHandleIsWest = outerBrushHandleLeft.node() === d3.event.currentTarget;
     dragging = true;
@@ -281,13 +283,6 @@ class Timebar extends Component {
     return newOuterTimeExtent;
   }
 
-  onInnerBrushReleased() {
-    this.props.updateInnerTimelineDates(this.getExtent(d3.event.selection));
-    if (!this.props.timelinePaused) {
-      this.props.updatePlayingStatus(true);
-    }
-  }
-
   onInnerBrushMoved() {
     let newExtentPx = d3.event.selection;
     const newExtent = this.getExtent(d3.event.selection);
@@ -312,6 +307,12 @@ class Timebar extends Component {
     });
     this.redrawInnerBrushCircles(newExtentPx);
     this.redrawDurationPicker(newExtentPx);
+
+    this.props.updateInnerTimelineDates(newExtent);
+
+    if (!this.props.timelinePaused) {
+      this.props.updatePlayingStatus(true);
+    }
   }
 
   redrawInnerBrush(newInnerExtent) {
@@ -342,7 +343,6 @@ class Timebar extends Component {
 
   enableInnerBrush() {
     this.innerBrushFunc.on('brush', this.onInnerBrushMoved.bind(this));
-    this.innerBrushFunc.on('end', this.onInnerBrushReleased.bind(this));
   }
 
   getExtent(extentPx) {
