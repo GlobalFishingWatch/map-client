@@ -30,8 +30,18 @@ class CustomLayer extends Component {
   }
 
   render() {
+    const canUploadLayers = this.props.userPermissions.indexOf('custom-layer') !== -1;
     return (
       <div className={CustomLayerStyles['c-custom-layer']}>
+        {!canUploadLayers &&
+        <div className={CustomLayerStyles['no-access']}>
+          <a
+            className="login-required-link"
+            onClick={this.props.login}
+          >Only registered users can upload custom layers. Click here to log in.</a>
+        </div>
+        }
+        {canUploadLayers &&
         <form
           className={classnames(MapFormStyles['c-form'], CustomLayerStyles['upload-form'])}
           onSubmit={e => this.onSubmit(e)}
@@ -87,7 +97,7 @@ class CustomLayer extends Component {
               />
             </div>
           </div>
-        </form>
+        </form>}
       </div>
     );
   }
@@ -96,7 +106,9 @@ class CustomLayer extends Component {
 CustomLayer.propTypes = {
   // function triggered once the form is submitted
   onCustomLayer: React.PropTypes.func,
-  error: React.PropTypes.string
+  error: React.PropTypes.string,
+  login: React.PropTypes.func,
+  userPermissions: React.PropTypes.array
 };
 
 export default CustomLayer;
