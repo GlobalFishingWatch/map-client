@@ -3,8 +3,9 @@ import _ from 'lodash';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';
-
+import icons from 'styles/icons.scss';
 import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
+import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 
 const INPUT_RANGE_DEFAULT_CONFIG = {
   classnames: {
@@ -46,6 +47,23 @@ class LayerOptionsTooltip extends Component {
       opacityRangeValue: this.opacityRangeConfig.value,
       hueRangeValue: this.hueRangeConfig.value
     };
+
+    this.closeTooltip = this.closeTooltip.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('click', this.closeTooltip);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.closeTooltip);
+  }
+
+  closeTooltip(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    if (this.tooltip.contains(e.target) || !this.props.visible) return;
+    this.props.toggleVisibility();
   }
 
   onChangeOpacity(value) {
@@ -68,32 +86,43 @@ class LayerOptionsTooltip extends Component {
   render() {
     return (
       <div
-        className={classnames(
-          BlendingStyles['c-blending'],
-          { [`${BlendingStyles['-reverse']}`]: this.props.isReverse })
-        }
+        className={classnames(BlendingStyles['c-blending'])}
+        ref={(ref) => { this.tooltip = ref; }}
       >
-        {this.props.displayHue && <div>
-          Hue
-          <InputRange
-            classNames={this.hueRangeConfig.classnames}
-            value={this.state.hueRangeValue}
-            maxValue={this.hueRangeConfig.maxValue}
-            minValue={this.hueRangeConfig.minValue}
-            onChange={(component, value) => this.onChangeHue(value)}
-            step={this.hueRangeConfig.step}
-          />
-        </div>}
-        {this.props.displayOpacity && <div>
-          Opacity
-          <InputRange
-            classNames={this.opacityRangeConfig.classnames}
-            value={this.state.opacityRangeValue}
-            maxValue={this.opacityRangeConfig.maxValue}
-            minValue={this.opacityRangeConfig.minValue}
-            onChange={(component, value) => this.onChangeOpacity(value)}
-            step={this.opacityRangeConfig.step}
-          />
+        <BlendingIcon
+          onClick={() => this.props.toggleVisibility()}
+          className={classnames(icons['blending-icon'],
+            { [`${icons['-white']}`]: this.props.visible })}
+        />
+        {this.props.visible &&
+        <div
+          className={classnames(
+            BlendingStyles['blending-tooltip'],
+            { [`${BlendingStyles['-reverse']}`]: this.props.isReverse })
+          }
+        >
+          {this.props.displayHue && <div>
+            Hue
+            <InputRange
+              classNames={this.hueRangeConfig.classnames}
+              value={this.state.hueRangeValue}
+              maxValue={this.hueRangeConfig.maxValue}
+              minValue={this.hueRangeConfig.minValue}
+              onChange={(component, value) => this.onChangeHue(value)}
+              step={this.hueRangeConfig.step}
+            />
+          </div>}
+          {this.props.displayOpacity && <div>
+            Opacity
+            <InputRange
+              classNames={this.opacityRangeConfig.classnames}
+              value={this.state.opacityRangeValue}
+              maxValue={this.opacityRangeConfig.maxValue}
+              minValue={this.opacityRangeConfig.minValue}
+              onChange={(component, value) => this.onChangeOpacity(value)}
+              step={this.opacityRangeConfig.step}
+            />
+          </div>}
         </div>}
       </div>
     );
@@ -107,7 +136,9 @@ LayerOptionsTooltip.propTypes = {
   opacityValue: React.PropTypes.number,
   onChangeHue: React.PropTypes.func,
   onChangeOpacity: React.PropTypes.func,
-  isReverse: React.PropTypes.bool
+  isReverse: React.PropTypes.bool,
+  toggleVisibility: React.PropTypes.func,
+  visible: React.PropTypes.bool
 };
 
 export default LayerOptionsTooltip;
