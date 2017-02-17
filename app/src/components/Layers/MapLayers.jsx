@@ -272,9 +272,8 @@ class MapLayers extends Component {
     this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
   }
 
-  removeCustomLayer() {
-    // TODO
-    console.warn('removeCustomLayer: TBD');
+  removeCustomLayer(layer) {
+    this.addedLayers[layer.id].destroy();
   }
 
   /**

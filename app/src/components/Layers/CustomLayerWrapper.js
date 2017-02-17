@@ -9,7 +9,8 @@ export default class CustomLayerWrapper {
       preserveViewport: true
     });
     this.handleZoomLevel = this.handleZoomLevel.bind(this);
-    google.maps.event.addListener(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
+
+    this.zoomListener = google.maps.event.addListener(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
   }
 
   show() {
@@ -26,5 +27,10 @@ export default class CustomLayerWrapper {
 
     if (span.lng >= MAX_AUTO_ZOOM_LONGITUDE_SPAN) this.map.setCenter(bounds.getCenter());
     else this.map.fitBounds(bounds.toJSON());
+  }
+
+  destroy() {
+    google.maps.event.removeListener(this.zoomListener);
+    this.hide();
   }
 }
