@@ -1,6 +1,8 @@
 @import '../../settings';
 
 .c-custom-layer {
+  height: 100%;
+  overflow-y: auto;
 
   > .upload-form {
     display: flex;
