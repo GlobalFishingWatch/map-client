@@ -51,17 +51,18 @@ class LayerOptionsTooltip extends Component {
     this.closeTooltip = this.closeTooltip.bind(this);
   }
 
-  componentWillUpdate(nextProps) {
-    if (nextProps.visible !== this.props.visible) {
-      if (nextProps.visible) window.addEventListener('click', this.closeTooltip);
-      else window.removeEventListener('click', this.closeTooltip);
-    }
+  componentDidMount() {
+    window.addEventListener('click', this.closeTooltip);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.closeTooltip);
   }
 
   closeTooltip(e) {
     e.stopPropagation();
     e.preventDefault();
-    if (this.tooltip.contains(e.target)) return;
+    if (this.tooltip.contains(e.target) || !this.props.visible) return;
     this.props.toggleVisibility();
   }
 
