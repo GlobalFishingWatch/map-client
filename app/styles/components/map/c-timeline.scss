@@ -13,16 +13,21 @@
   }
 
   .c-timeline-x-axis {
+
     line,
     path {
       stroke: $color-4;
     }
 
     text {
-      fill: $color-4;
-      font-family: $font-family-1;
-      font-size: $font-size-xs-small;
-      user-select: none;
+      display: none;
+      @media #{$mq-mobile-large} {
+        display: block;
+        fill: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-xs-small;
+        user-select: none;
+      }
     }
   }
 
