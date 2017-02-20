@@ -14,16 +14,12 @@ import layerLibraryReducer from 'reducers/layersLibrary';
 import layersReducer from 'reducers/layers';
 import mapReducer from 'reducers/map';
 import analyticsMiddleware from 'middleware/analytics';
-import faqReducer from 'reducers/faq';
-import coverPageReducer from 'reducers/coverPage';
-import definitionReducer from 'reducers/definitions';
 import userReducer from 'reducers/user';
 import filtersReducer from 'reducers/filters';
 import contactReducer from 'reducers/contact';
 import searchReducer from 'reducers/search';
 import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'reducers/customLayer';
-import articlesPublicationsReducer from 'reducers/articlesPublications';
 import modalReducer from 'reducers/modal';
 import timebarReducer from 'reducers/timebar';
 import { triggerAnalyticsPageView } from 'actions/user';
@@ -41,13 +37,9 @@ const reducer = combineReducers({
   map: mapReducer,
   user: userReducer,
   filters: filtersReducer,
-  faqEntries: faqReducer,
-  coverPageEntries: coverPageReducer,
   contactStatus: contactReducer,
   search: searchReducer,
   vesselInfo: vesselInfoReducer,
-  definitions: definitionReducer,
-  articlesPublications: articlesPublicationsReducer,
   report: reportReducer,
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,

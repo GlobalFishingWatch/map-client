@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
-
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
-import defaultLogo from 'assets/logos/gfw_logo_hor.svg';
 import menuicon from 'assets/icons/menu_icon.svg';
 import MenuMobile from 'containers/MenuMobile';
-
 import baseStyle from 'styles/_base.scss';
 import styles from 'styles/components/shared/c-header.scss';
 import iconStyles from 'styles/icons.scss';
@@ -27,17 +24,6 @@ class Header extends Component {
 
   closeMobileMenu() {
     this.setState({ mobileMenuVisible: false });
-  }
-
-  /**
-   * Return whether the route starts with the passed string
-   *
-   * @param {String} route
-   * @returns {Boolean}
-   */
-  doesPathStartsWith(route) {
-    const regex = new RegExp(route.replace('/', '\\/'));
-    return regex.test(location.pathname);
   }
 
   render() {
@@ -73,12 +59,12 @@ class Header extends Component {
         />
         <nav
           className={
-            classnames({ [styles['c-header']]: true, [styles['-map']]: this.doesPathStartsWith('/map') })
+            classnames({ [styles['c-header']]: true, [styles['-map']]: true })
           }
         >
           <div
             className={
-              classnames({ [baseStyle.wrap]: true, [baseStyle['-map']]: this.doesPathStartsWith('/map') })
+              classnames({ [baseStyle.wrap]: true, [baseStyle['-map']]: true })
             }
           >
             <div className={styles['contain-nav']}>
@@ -93,7 +79,7 @@ class Header extends Component {
                 className={styles['app-logo']}
               >
                 <img
-                  src={this.doesPathStartsWith('/map') ? betaLogo : defaultLogo}
+                  src={betaLogo}
                   alt="Global Fishing Watch"
                 />
               </Link>
@@ -102,13 +88,9 @@ class Header extends Component {
                 className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
                 onClick={this.props.openShareModal}
               />
-              {/* TEMPORARILY REMOVE SHARE BUTTON
-              {this.doesPathStartsWith('/map') && <span className={styles['share-header']}>
-                <img src={shareIcon} alt="share icon"></img></span>}
-              */}
               <ul className={styles.menu}>
                 <li>
-                  <Link className={this.doesPathStartsWith('/map') && styles['-active']} to="/map">Map</Link>
+                  <Link className={styles['-active']} to="/map">Map</Link>
                 </li>
                 <li className={styles.dropdown}>
                   <a
@@ -132,13 +114,7 @@ class Header extends Component {
                 </li>
                 <li className={styles.dropdown}>
                   <a
-                    className={
-                      (
-                        this.doesPathStartsWith('/faq')
-                        || this.doesPathStartsWith('/tutorials')
-                        || this.doesPathStartsWith('/definitions')
-                      ) ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
-                    }
+                    className={styles['-no-cursor']}
                   >
                     How to
                   </a>
@@ -150,12 +126,7 @@ class Header extends Component {
                 </li>
                 <li className={styles.dropdown}>
                   <a
-                    className={(
-                      this.doesPathStartsWith('/the-project')
-                      || this.doesPathStartsWith('/partners')
-                      || this.doesPathStartsWith('/research-program')
-                      || this.doesPathStartsWith('/contact-us')
-                    ) ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']}
+                    className={styles['-no-cursor']}
                   >
                     About
                   </a>
