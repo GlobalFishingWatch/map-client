@@ -2,6 +2,11 @@
 
 .c-custom-layer {
 
+  .no-access {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
   > .upload-form {
     display: flex;
     flex-wrap: wrap;

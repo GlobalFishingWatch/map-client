@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
 import CustomLayerStyles from 'styles/components/map/c-custom-layer.scss';
 import MapFormStyles from 'styles/components/map/c-form.scss';
 import ButtonStyles from 'styles/components/map/c-button.scss';
@@ -30,15 +29,28 @@ class CustomLayer extends Component {
   }
 
   render() {
+    if (this.props.userPermissions.indexOf('custom-layer') === -1) {
+      return (
+        <div className={CustomLayerStyles['c-custom-layer']} >
+          <div className={CustomLayerStyles['no-access']} >
+            <a
+              className="login-required-link"
+              onClick={this.props.login}
+            >Only registered users can upload custom layers. Click here to log in.</a>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className={CustomLayerStyles['c-custom-layer']}>
+      <div className={CustomLayerStyles['c-custom-layer']} >
         <form
           className={classnames(MapFormStyles['c-form'], CustomLayerStyles['upload-form'])}
           onSubmit={e => this.onSubmit(e)}
         >
-          <div className={CustomLayerStyles.column}>
-            <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles['field-name']} htmlFor="name">name</label>
+          <div className={CustomLayerStyles.column} >
+            <div className={CustomLayerStyles.row} >
+              <label className={MapFormStyles['field-name']} htmlFor="name" >name</label>
               <input
                 className={MapFormStyles['text-input']}
                 type="text"
@@ -49,8 +61,8 @@ class CustomLayer extends Component {
               />
             </div>
 
-            <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles['field-name']} htmlFor="url">url</label>
+            <div className={CustomLayerStyles.row} >
+              <label className={MapFormStyles['field-name']} htmlFor="url" >url</label>
               <input
                 className={MapFormStyles['text-input']}
                 name="url"
@@ -61,9 +73,9 @@ class CustomLayer extends Component {
               />
             </div>
           </div>
-          <div className={CustomLayerStyles.column}>
-            <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles['field-name']} htmlFor="description">description</label>
+          <div className={CustomLayerStyles.column} >
+            <div className={CustomLayerStyles.row} >
+              <label className={MapFormStyles['field-name']} htmlFor="description" >description</label>
               <textarea
                 className={MapFormStyles.textarea}
                 name="description"
@@ -74,11 +86,11 @@ class CustomLayer extends Component {
             </div>
           </div>
 
-          <div className={CustomLayerStyles.row}>
+          <div className={CustomLayerStyles.row} >
             {this.props.error &&
-              <span className={CustomLayerStyles['submit-error']}> Whoops! Something went wrong. </span>
+            <span className={CustomLayerStyles['submit-error']} > Whoops! Something went wrong. </span>
             }
-            <div className={CustomLayerStyles['submit-container']}>
+            <div className={CustomLayerStyles['submit-container']} >
               <input
                 className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
                   ButtonStyles['-big'], CustomLayerStyles['submit-button'])}
@@ -96,7 +108,9 @@ class CustomLayer extends Component {
 CustomLayer.propTypes = {
   // function triggered once the form is submitted
   onCustomLayer: React.PropTypes.func,
-  error: React.PropTypes.string
+  error: React.PropTypes.string,
+  login: React.PropTypes.func,
+  userPermissions: React.PropTypes.array
 };
 
 export default CustomLayer;
