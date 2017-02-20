@@ -10,7 +10,9 @@ const mapStateToProps = state => ({
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
   layerPanelEditMode: state.layers.layerPanelEditMode,
   userPermissions: state.user.userPermissions,
-  vessels: state.vesselInfo.vessels
+  vessels: state.vesselInfo.vessels,
+  chartData: state.timebar.chartData,
+  timelineInnerExtent: state.filters.timelineInnerExtent
 });
 
 const mapDispatchToProps = dispatch => ({

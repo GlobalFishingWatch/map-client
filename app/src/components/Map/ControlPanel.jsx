@@ -32,30 +32,48 @@ class ControlPanel extends Component {
     }
   }
 
+  calculateVesselCount() {
+    const min = this.props.timelineInnerExtent[0].getTime();
+    const max = this.props.timelineInnerExtent[1].getTime();
+
+    if (this.props.chartData.length === 0) {
+      return '-';
+    }
+
+    const result = this.props.chartData.reduce((acc, elem) => {
+      if (elem.date >= min && elem.date <= max) {
+        return acc + elem.value;
+      }
+      return acc;
+    }, 0);
+
+    return Math.round(result);
+  }
+
   renderSearch() {
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
     const title = (
       <div>
-        <MediaQuery maxWidth={767}>
-          <div className={classnames(controlPanelStyle['accordion-header'], controlPanelStyle['-search'])}>
+        <MediaQuery maxWidth={767} >
+          <div className={classnames(controlPanelStyle['accordion-header'], controlPanelStyle['-search'])} >
             <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
-            <div className={controlPanelStyle['header-search-info']}>
-              <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
+            <div className={controlPanelStyle['header-search-info']} >
+              <h2 className={controlPanelStyle['accordion-title']} >vessels</h2>
               {numPinnedVessels > 0 &&
-                <div className={controlPanelStyle['pinned-item-count']}>
-                  ({numPinnedVessels})
-                </div>}
+              <div className={controlPanelStyle['pinned-item-count']} >
+                ({numPinnedVessels})
+              </div>}
             </div>
           </div>
         </MediaQuery>
-        <MediaQuery minWidth={768}>
-          <div className={controlPanelStyle['accordion-header']}>
-            <h2 className={controlPanelStyle['accordion-title']}>vessels</h2>
+        <MediaQuery minWidth={768} >
+          <div className={controlPanelStyle['accordion-header']} >
+            <h2 className={controlPanelStyle['accordion-title']} >vessels</h2>
             {numPinnedVessels > 0 &&
-              <div className={controlPanelStyle['pinned-item-count']}>
-                {numPinnedVessels} pinned
-              </div>}
+            <div className={controlPanelStyle['pinned-item-count']} >
+              {numPinnedVessels} pinned
+            </div>}
             <SearchIcon className={classnames(iconStyles.icons, controlPanelStyle['search-icon'])} />
           </div>
         </MediaQuery>
@@ -69,7 +87,7 @@ class ControlPanel extends Component {
           key="search"
           className={controlPanelStyle['accordion-item']}
         >
-          <div className={controlPanelStyle['content-accordion']}>
+          <div className={controlPanelStyle['content-accordion']} >
             <a
               className="login-required-link"
               onClick={this.props.login}
@@ -86,7 +104,7 @@ class ControlPanel extends Component {
         className={controlPanelStyle['accordion-item']}
         onClose={() => this.onCloseSearch()}
       >
-        <div className={controlPanelStyle['content-accordion']}>
+        <div className={controlPanelStyle['content-accordion']} >
           <SearchPanel />
           <PinnedTracks />
         </div>
@@ -95,8 +113,8 @@ class ControlPanel extends Component {
 
   renderBasemap() {
     const title = (
-      <div className={controlPanelStyle['accordion-header']}>
-        <h2 className={controlPanelStyle['accordion-title']}>Basemap</h2>
+      <div className={controlPanelStyle['accordion-header']} >
+        <h2 className={controlPanelStyle['accordion-title']} >Basemap</h2>
         <BasemapIcon className={classnames(iconStyles.icons, controlPanelStyle['basemap-icon'])} />
       </div>);
 
@@ -107,7 +125,7 @@ class ControlPanel extends Component {
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-basemaps'])}>
+        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-basemaps'])} >
           <BasemapPanel />
         </div>
       </AccordionItem>);
@@ -115,8 +133,8 @@ class ControlPanel extends Component {
 
   renderLayerPicker() {
     const title = (
-      <div className={controlPanelStyle['accordion-header']}>
-        <h2 className={controlPanelStyle['accordion-title']}>Layers</h2>
+      <div className={controlPanelStyle['accordion-header']} >
+        <h2 className={controlPanelStyle['accordion-title']} >Layers</h2>
         <LayersIcon className={classnames(iconStyles.icons, controlPanelStyle['layers-icon'])} />
       </div>);
 
@@ -128,8 +146,8 @@ class ControlPanel extends Component {
         titleClassName={controlPanelStyle['title-accordion']}
         onClose={() => this.onCloseLayerPicker()}
       >
-        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])}>
-          <div className={controlPanelStyle.wrapper}>
+        <div className={classnames(controlPanelStyle['content-accordion'], controlPanelStyle['-layers'])} >
+          <div className={controlPanelStyle.wrapper} >
             <LayerPanel />
             <LayerManagement />
           </div>
@@ -139,15 +157,11 @@ class ControlPanel extends Component {
 
   renderResume() {
     return (
-      <div className={controlPanelStyle['resume-display']}>
-        <div className={controlPanelStyle['categories-display']}>
-          <div className={controlPanelStyle['vessel-display']}>
-            <span className={controlPanelStyle['counter-description']}>vessels</span>
-            <span className={controlPanelStyle.total}>224,654</span>
-          </div>
-          <div className={controlPanelStyle['activity-display']}>
-            <span className={controlPanelStyle['counter-description']}>activity</span>
-            <span className={controlPanelStyle.total}>224,654</span>
+      <div className={controlPanelStyle['resume-display']} >
+        <div className={controlPanelStyle['categories-display']} >
+          <div className={controlPanelStyle['vessel-display']} >
+            <span className={controlPanelStyle['counter-description']} >vessels</span>
+            <span className={controlPanelStyle.total} >{this.calculateVesselCount()}</span>
           </div>
         </div>
       </div>
@@ -156,8 +170,8 @@ class ControlPanel extends Component {
 
   renderFilters() {
     const title = (
-      <div className={controlPanelStyle['accordion-header']}>
-        <h2 className={controlPanelStyle['accordion-title']}>Filters</h2>
+      <div className={controlPanelStyle['accordion-header']} >
+        <h2 className={controlPanelStyle['accordion-title']} >Filters</h2>
         <FiltersIcon className={classnames(iconStyles.icons, controlPanelStyle['filters-icon'])} />
       </div>);
 
@@ -168,7 +182,7 @@ class ControlPanel extends Component {
         className={controlPanelStyle['accordion-item']}
         titleClassName={controlPanelStyle['title-accordion']}
       >
-        <div className={controlPanelStyle['content-accordion']}>
+        <div className={controlPanelStyle['content-accordion']} >
           <FilterPanel />
         </div>
       </AccordionItem>);
@@ -176,12 +190,12 @@ class ControlPanel extends Component {
 
   render() {
     return (
-      <MediaQuery minWidth={768}>
+      <MediaQuery minWidth={768} >
         {(matches) => {
           if (matches) {
             return (
-              <div className={controlPanelStyle.controlpanel}>
-                <div className={controlPanelStyle['bg-wrapper']}>
+              <div className={controlPanelStyle.controlpanel} >
+                <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
                   <VesselInfoPanel />
                   <Accordion
@@ -198,7 +212,7 @@ class ControlPanel extends Component {
               </div>);
           }
 
-          return (<div className={controlPanelStyle.controlpanel}>
+          return (<div className={controlPanelStyle.controlpanel} >
             {this.renderResume()}
             <VesselInfoPanel />
             <Accordion
@@ -222,12 +236,14 @@ ControlPanel.propTypes = {
   login: React.PropTypes.func,
   layers: React.PropTypes.array,
   vessels: React.PropTypes.array,
+  chartData: React.PropTypes.array,
   userPermissions: React.PropTypes.array,
   disableSearchEditMode: React.PropTypes.func,
   disableLayerPanelEditMode: React.PropTypes.func,
   hideSearchResults: React.PropTypes.func,
   pinnedVesselEditMode: React.PropTypes.bool,
-  layerPanelEditMode: React.PropTypes.bool
+  layerPanelEditMode: React.PropTypes.bool,
+  timelineInnerExtent: React.PropTypes.array
 };
 
 export default ControlPanel;
