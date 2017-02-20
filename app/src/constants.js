@@ -96,6 +96,13 @@ export const FLAG_FILTERS_LIMIT = 10;
 export const REVERSE_TOOLTIP_ITEMS_MOBILE = 5;
 export const REVERSE_TOOLTIP_FILTERS_MOBILE = 3;
 
+// report
+export const REPORT_STATUS = {
+  idle: 'idle',
+  error: 'error',
+  sent: 'sent'
+};
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

@@ -17,18 +17,25 @@ export function getLayerLibrary() {
     fetch(`${MAP_API_ENDPOINT}/v1/directory`, options)
       .then(res => res.json())
       .then((data) => {
-        const layers = data.entries.map(l => ({
-          id: l.args.id,
-          title: l.args.title,
-          label: l.args.title,
-          description: l.args.description,
-          color: l.args.color,
-          visible: false,
-          type: l.type,
-          url: l.args.source.args.url,
-          added: false,
-          library: true
-        }));
+        const layers = data.entries.map((l) => {
+          const layer = {
+            id: l.args.id,
+            title: l.args.title,
+            label: l.args.title,
+            description: l.args.description,
+            color: l.args.color,
+            visible: false,
+            type: l.type,
+            url: l.args.source.args.url,
+            added: false,
+            library: true
+          };
+          if (l.args.meta && l.args.meta.reports && l.args.meta.reports.regions) {
+            layer.reportId = Object.keys(l.args.meta.reports.regions)[0];
+          }
+
+          return layer;
+        });
 
         layers.forEach((layer) => {
           layer.id = calculateLayerId(layer);

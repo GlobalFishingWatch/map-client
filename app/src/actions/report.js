@@ -4,9 +4,11 @@ import {
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
-  DISCARD_REPORT
+  DISCARD_REPORT,
+  SET_REPORT_STATUS_SENT,
+  SET_REPORT_STATUS_ERROR
 } from 'actions';
-import { toggleLayerVisibility } from 'actions/layers';
+import { toggleLayerVisibility, setLayerOpacity } from 'actions/layers';
 import { FLAGS } from 'constants';
 
 export function showPolygon(polygonData, latLng) {
@@ -51,15 +53,19 @@ export function toggleReportPolygon(polygonId) {
   };
 }
 
-export function startReport(layerId, layerTitle) {
-  return (dispatch) => {
+function startReport(layerId) {
+  return (dispatch, getState) => {
     dispatch(toggleLayerVisibility(layerId, true));
+    dispatch(setLayerOpacity(1, layerId));
     dispatch(clearPolygon());
+
+    const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     dispatch({
       type: START_REPORT,
       payload: {
         layerId,
-        layerTitle
+        layerTitle: workspaceLayer.title,
+        reportId: workspaceLayer.reportId
       }
     });
   };
@@ -74,12 +80,12 @@ export function discardReport() {
   };
 }
 
-export function toggleReport(layerId, layerTitle) {
+export function toggleReport(layerId) {
   return (dispatch, getState) => {
     if (getState().report.layerId === layerId) {
       dispatch(discardReport());
     } else {
-      dispatch(startReport(layerId, layerTitle));
+      dispatch(startReport(layerId));
     }
   };
 }
@@ -102,29 +108,39 @@ export function sendReport() {
 
     payload.flags = currentFlags;
     payload.regions = [];
+
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
-        name: state.report.layerTitle,
-        value: polygon.reportingId
+        name: state.report.reportId,
+        value: polygon.reportingId.toString()
       });
     });
-    const body = JSON.stringify({ report: payload });
+    const body = JSON.stringify(payload);
     const options = {
       method: 'POST',
       body
     };
-    if (state.user.token) {
-      options.headers = {
-        Authorization: `Bearer ${state.user.token}`
-      };
-    }
+    options.headers = {
+      Authorization: `Bearer ${state.user.token}`,
+      'Content-Type': 'application/json'
+    };
     fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
       if (!res.ok) {
-        throw Error(res.statusText);
+        throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
       }
+      return res;
     }).then(res => res.json())
       .then((data) => {
-        console.warn('success', data);
+        dispatch({
+          type: SET_REPORT_STATUS_SENT,
+          payload: data.message
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_REPORT_STATUS_ERROR,
+          payload: err.message
+        });
       });
   };
 }

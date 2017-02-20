@@ -5,7 +5,9 @@ import { deletePolygon, discardReport, sendReport } from 'actions/report';
 const mapStateToProps = state => ({
   polygons: state.report.polygons,
   visible: state.report.layerId !== null,
-  layerTitle: state.report.layerTitle
+  layerTitle: state.report.layerTitle,
+  status: state.report.status,
+  statusText: state.report.statusText
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -38,8 +38,8 @@ const mapDispatchToProps = dispatch => ({
   setLayerHue: (hue, layerId) => {
     dispatch(setLayerHue(hue, layerId));
   },
-  toggleReport: (layerId, layerTitle) => {
-    dispatch(toggleReport(layerId, layerTitle));
+  toggleReport: (layerId) => {
+    dispatch(toggleReport(layerId));
   },
   setLayerInfoModal: (open) => {
     dispatch(setLayerInfoModal(open));
