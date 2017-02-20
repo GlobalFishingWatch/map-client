@@ -44,6 +44,9 @@ class CustomLayer extends Component {
 
     return (
       <div className={CustomLayerStyles['c-custom-layer']} >
+        <div className={CustomLayerStyles['custom-layer-caption']}>
+          <p>Insert a link to a .kml layer file.</p>
+        </div>
         <form
           className={classnames(MapFormStyles['c-form'], CustomLayerStyles['upload-form'])}
           onSubmit={e => this.onSubmit(e)}
