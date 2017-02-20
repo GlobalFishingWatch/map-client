@@ -32,7 +32,8 @@ class MapLayers extends Component {
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
       this.build();
-    } else if (nextProps.viewportWidth !== this.props.viewportWidth || nextProps.viewportHeight !== this.props.viewportHeight) {
+    } else if ((nextProps.viewportWidth !== this.props.viewportWidth ||
+        nextProps.viewportHeight !== this.props.viewportHeight) && this.glContainer !== undefined) {
       this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
     }
@@ -80,7 +81,8 @@ class MapLayers extends Component {
         startTimestamp,
         endTimestamp,
         timelinePaused: nextProps.timelinePaused,
-        timelineOverExtent: nextProps.timelineOverExtent
+        timelineOverExtent: nextProps.timelineOverExtent,
+        zoom: nextProps.zoom
       });
       this.glContainer.toggleHeatmapDimming(true);
       isGLContainerDirty = true;
@@ -158,7 +160,7 @@ class MapLayers extends Component {
 
   componentWillUnmount() {
     google.maps.event.clearInstanceListeners(this.map);
-    this.map.overlayMapTypes.removeAt(0);
+    this.map.overlayMapTypes.clear();
   }
 
   initHeatmap() {
@@ -206,7 +208,7 @@ class MapLayers extends Component {
         } else if (newLayer.type === LAYER_TYPES.Custom) {
           this.removeCustomLayer(newLayer);
         } else {
-          this.removeCartoLayer(newLayer, i + 2, nextProps.reportLayerId);
+          this.removeCartoLayer(newLayer);
         }
         delete this.addedLayers[newLayer.id];
         continue;
@@ -270,9 +272,8 @@ class MapLayers extends Component {
     this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
   }
 
-  removeCustomLayer() {
-    // TODO
-    console.warn('removeCustomLayer: TBD');
+  removeCustomLayer(layer) {
+    this.addedLayers[layer.id].destroy();
   }
 
   /**
@@ -292,6 +293,7 @@ class MapLayers extends Component {
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
+          cartoLayer.id = layerSettings.id;
           this.addedLayers[layer.id] = cartoLayer;
           this.setLayerOpacity(layerSettings);
           resolve();
@@ -301,9 +303,23 @@ class MapLayers extends Component {
     return promise;
   }
 
-  removeCartoLayer() {
-    // TODO
-    console.warn('removeCartoLayer: TBD');
+  removeCartoLayer(layer) {
+    let cartoLayer;
+    let overlayMapTypeIndex;
+    this.map.overlayMapTypes.forEach((overlayMapType, index) => {
+      if (overlayMapType && overlayMapType.id && overlayMapType.id === layer.id) {
+        cartoLayer = overlayMapType;
+        overlayMapTypeIndex = index;
+      }
+    });
+    if (overlayMapTypeIndex !== undefined) {
+      for (let subLayerIndex = 0, subLayersCount = cartoLayer.getSubLayerCount(); subLayerIndex < subLayersCount; subLayerIndex++) {
+        const subLayer = cartoLayer.getSubLayer(subLayerIndex);
+        subLayer.setInteraction(false);
+        subLayer.off();
+      }
+      this.map.overlayMapTypes.removeAt(overlayMapTypeIndex);
+    }
   }
 
   onCartoLayerFeatureClick(polygonData, latLng, layerId) {
@@ -383,7 +399,7 @@ class MapLayers extends Component {
     }
   }
 
-  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent }) {
+  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent, zoom }) {
     if (!this.glContainer || !data) {
       return;
     }
@@ -402,7 +418,8 @@ class MapLayers extends Component {
         endTimestamp,
         timelinePaused,
         overStartTimestamp,
-        overEndTimestamp
+        overEndTimestamp,
+        zoom
       }
     );
   }
@@ -419,7 +436,8 @@ class MapLayers extends Component {
       startTimestamp: this.props.timelineInnerExtent[0].getTime(),
       endTimestamp: this.props.timelineInnerExtent[1].getTime(),
       timelinePaused: this.props.timelinePaused,
-      timelineOverExtent: this.props.timelineOverExtent
+      timelineOverExtent: this.props.timelineOverExtent,
+      zoom: this.props.zoom
     });
   }
 

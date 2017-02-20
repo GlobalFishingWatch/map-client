@@ -169,13 +169,10 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
     });
     if (newLayer.type === LAYER_TYPES.Heatmap) {
       if (added === true) {
-        // TODO remove: this is a hack needed because current library endpoint returns a vessel heatmap url that doesnt work
-        const url = (newLayer.url === 'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/801-tileset-nz2') ?
-        'https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms' :
-        newLayer.url;
+        const url = newLayer.url;
 
         if (newLayer.header === undefined) {
-          loadLayerHeader(newLayer.url, getState().user.token).then((header) => {
+          loadLayerHeader(url, getState().user.token).then((header) => {
             if (header) {
               dispatch(setLayerHeader(layerId, header));
               dispatch(addHeatmapLayerFromLibrary(layerId, url));
@@ -219,10 +216,11 @@ export function setLayerHue(hue, layerId) {
   };
 }
 
-export function addCustomLayer(url, name, description) {
+export function addCustomLayer(id, url, name, description) {
   return {
     type: ADD_CUSTOM_LAYER,
     payload: {
+      id,
       url,
       name,
       description

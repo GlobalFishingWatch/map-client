@@ -22,31 +22,17 @@ export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six mont
 
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
-
-export const VESSELS_ENDPOINT_KEYS = [
-  'category',
-  'datetime',
-  'latitude',
-  'longitude',
-  'series',
-  'seriesgroup',
-  'sigma',
-  'weight'
-];
+export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
 
 export const GUEST_PERMISSION_SET = [
-  'seeVesselsLayers',
-  'selectVessel',
-  'shareWorkspace'
-];
-
-// for now, auth users get no special permissions, everything comes from the API
-export const AUTH_PERMISSION_SET = [
   'seeVesselsLayers',
   'selectVessel',
   'shareWorkspace',
   'seeVesselBasicInfo'
 ];
+
+// for now, auth users get no special permissions, everything comes from the API
+export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET;
 
 // vessels rendering
 // from this zoom level and above, render using circle style instead of heatmap
@@ -71,6 +57,7 @@ export const TRACK_SEGMENT_TYPES = {
   Highlighted: 3
 };
 export const DEFAULT_TRACK_HUE = 180;
+export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 5;
 
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)

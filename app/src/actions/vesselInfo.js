@@ -203,6 +203,11 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
         const cleanData = getCleanVectorArrays(rawTileData);
+
+        if (!cleanData.length) {
+          return;
+        }
+
         const groupedData = groupData(cleanData, [
           'latitude',
           'longitude',

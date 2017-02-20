@@ -3,7 +3,7 @@ import { getWorkspace } from 'actions/workspace';
 import calculateLayerId from 'util/calculateLayerId';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'actions/layers';
 
-export function getLayerLibrary(workspaceID) {
+export function getLayerLibrary() {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -38,7 +38,7 @@ export function getLayerLibrary(workspaceID) {
           type: GET_LAYER_LIBRARY, payload: layers
         });
 
-        dispatch(getWorkspace(workspaceID));
+        dispatch(getWorkspace());
       });
 
     return true;

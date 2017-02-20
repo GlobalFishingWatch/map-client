@@ -4,7 +4,6 @@ import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
 import icons from 'styles/icons.scss';
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -32,6 +31,10 @@ class PinnedTracksItem extends Component {
     this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
+  toggleBlending() {
+    this.props.onLayerBlendingToggled(this.props.index);
+  }
+
   render() {
     let actions;
     if (this.props.vessel.title === undefined) return false;
@@ -51,21 +54,14 @@ class PinnedTracksItem extends Component {
       actions = (
         <ul className={pinnedTracksStyles['pinned-item-action-list']} >
           <li className={pinnedTracksStyles['pinned-item-action-item']}>
-            <BlendingIcon
-              className={classnames(icons['blending-icon'],
-                { [icons['-white']]: this.props.showBlending })}
-              onClick={() => {
-                this.props.onLayerBlendingToggled(this.props.index);
-              }}
-            />
-            {this.props.showBlending &&
             <LayerBlendingOptionsTooltip
               displayHue
               hueValue={this.props.vessel.hue}
               onChangeHue={hue => this.onChangeHue(hue)}
               isReverse={this.props.index < REVERSE_TOOLTIP_ITEMS_MOBILE}
+              visible={this.props.showBlending}
+              toggleVisibility={() => this.toggleBlending()}
             />
-            }
           </li>
           <li
             className={pinnedTracksStyles['pinned-item-action-item']}

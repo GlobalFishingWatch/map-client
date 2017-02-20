@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibrary from 'containers/Map/LayerLibrary';
-import UploadLayer from 'containers/Map/UploadLayer';
+import CustomLayer from 'containers/Map/CustomLayer';
 
-import LayerMaganementModalStyles from 'styles/components/map/c-layer-management-modal.scss';
+import LayerManagementModalStyles from 'styles/components/map/c-layer-management-modal.scss';
 
 class LayerLibraryModal extends Component {
 
@@ -25,29 +25,31 @@ class LayerLibraryModal extends Component {
     return (
       <div
         className={classnames(
-          LayerMaganementModalStyles['c-layer-management-modal'],
-          { [`${LayerMaganementModalStyles['-disabled']}`]: this.props.status === 'pending' }
+          LayerManagementModalStyles['c-layer-management-modal'],
+          { [`${LayerManagementModalStyles['-disabled']}`]: this.props.status === 'pending' }
         )}
       >
-        <h3 className={LayerMaganementModalStyles.title}>Add layer</h3>
-        <div className={LayerMaganementModalStyles['content-switcher']}>
+        <h3 className={LayerManagementModalStyles.title}>Add layer</h3>
+        <div className={LayerManagementModalStyles['content-switcher']}>
           <span
-            className={classnames(LayerMaganementModalStyles['content-option'],
-              { [`${LayerMaganementModalStyles['-selected']}`]: this.state.display === 'library' })}
+            className={classnames(LayerManagementModalStyles['content-option'],
+              { [`${LayerManagementModalStyles['-selected']}`]: this.state.display === 'library' })}
             onClick={() => this.setDisplay('library')}
           >
             layers library
           </span>
           <span
-            className={classnames(LayerMaganementModalStyles['content-option'],
-              { [`${LayerMaganementModalStyles['-selected']}`]: this.state.display === 'upload' })}
-            onClick={() => this.setDisplay('upload')}
+            className={classnames(LayerManagementModalStyles['content-option'],
+              {
+                [`${LayerManagementModalStyles['-selected']}`]: this.state.display === 'customLayer'
+              })}
+            onClick={() => this.setDisplay('customLayer')}
           >
-            upload layer
+            custom layer
           </span>
         </div>
         {this.state.display === 'library' && <LayerLibrary />}
-        {this.state.display === 'upload' && <UploadLayer />}
+        {this.state.display === 'customLayer' && <CustomLayer />}
       </div>
     );
   }

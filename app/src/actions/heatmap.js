@@ -60,7 +60,7 @@ export function initHeatmapLayers() {
   };
 }
 
-function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsIndices) {
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsIndices, columns) {
   const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsIndices });
   const allLayerPromises = Promise.all(pelagosPromises);
@@ -68,11 +68,12 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, tem
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
       const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-      const groupedData = groupData(cleanVectorArrays);
+      const groupedData = groupData(cleanVectorArrays, columns);
       const vectorArray = addWorldCoordinates(groupedData, map);
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
-        vectorArray
+        vectorArray,
+        columns
       );
       resolve(data);
     });
@@ -115,17 +116,17 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           token,
           map,
           layerHeader.temporalExtents,
-          temporalExtentsToLoad
+          temporalExtentsToLoad,
+          Object.keys(layerHeader.colsByName)
         );
         allPromises.push(tilePromise);
         tilePromise.then((newData) => {
           if (tile.data) {
             console.log(layerId, tile.uid, 'data already exists');
             console.log(tile.data, newData);
-          }
           // TODO if data already exists, merge it with new data
           // to merge: check min indexes and max indexes of each data
-          else {
+          } else {
             tile.data = newData;
           }
           dispatch({
@@ -261,10 +262,12 @@ export function queryHeatmap(tileQuery, latLng) {
     Object.keys(layers).forEach((layerId) => {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      layersVessels.push({
-        layerId,
-        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
-      });
+      if (queriedTile.data !== undefined) {
+        layersVessels.push({
+          layerId,
+          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
+        });
+      }
     });
 
     const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
