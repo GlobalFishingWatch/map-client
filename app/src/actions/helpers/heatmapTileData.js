@@ -52,7 +52,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
       // meh.
       url += '0,0,0';
     }
-    if (!params.temporalExtentsLoadedIndices || params.temporalExtentsLoadedIndices.indexOf(index) > -1) {
+    if (!params.temporalExtentsIndices || params.temporalExtentsIndices.indexOf(index) > -1) {
       urls.push(url);
     }
   });
@@ -136,11 +136,12 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
- * @param vectorArray
- * @param tileCoordinates
+ * @param vectorArray the source data before indexing by day
+ * @param columns the columns present on the dataset, determined by tileset headers
+ * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (zoom, vectorArray, columns) => {
-  const tilePlaybackData = [];
+export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData) => {
+  const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
   const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);

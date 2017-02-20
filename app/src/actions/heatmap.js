@@ -60,7 +60,7 @@ export function initHeatmapLayers() {
   };
 }
 
-function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsIndices, columns) {
+function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsIndices, columns, prevPlaybackData) {
   const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsIndices });
   const allLayerPromises = Promise.all(pelagosPromises);
@@ -73,7 +73,8 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, tem
       const data = getTilePlaybackData(
         tileCoordinates.zoom,
         vectorArray,
-        columns
+        columns,
+        prevPlaybackData
       );
       resolve(data);
     });
@@ -96,7 +97,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         console.warn('no header has been set on this heatmap layer');
       }
       referenceTiles.forEach((referenceTile) => {
-        // TODO check if tile does not already exist first
+        // check if tile does not already exist first
         let tile = layers[layerId].tiles.find(t => t.uid === referenceTile.uid);
         if (!tile) {
           tile = {
@@ -107,7 +108,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         }
         const temporalExtentsToLoad = (newTemporalExtentsToLoad === undefined)
           ? layers[layerId].temporalExtentsLoadedIndices
-          : newTemporalExtentsToLoad;
+          : newTemporalExtentsToLoad[layerId];
 
         const tilePromise = loadLayerTile(
           referenceTile,
@@ -117,18 +118,12 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           map,
           layerHeader.temporalExtents,
           temporalExtentsToLoad,
-          Object.keys(layerHeader.colsByName)
+          Object.keys(layerHeader.colsByName),
+          tile.data
         );
         allPromises.push(tilePromise);
         tilePromise.then((newData) => {
-          if (tile.data) {
-            console.log(layerId, tile.uid, 'data already exists');
-            console.log(tile.data, newData);
-          // TODO if data already exists, merge it with new data
-          // to merge: check min indexes and max indexes of each data
-          } else {
-            tile.data = newData;
-          }
+          tile.data = newData;
           dispatch({
             type: UPDATE_HEATMAP_TILES, payload: layers
           });
@@ -240,7 +235,6 @@ export function loadTilesExtraTimeRange() {
 
     // getTiles with indices diff
     if (Object.keys(layersToUpdate).length) {
-      console.log(layersToUpdate);
       dispatch(getTiles(Object.keys(layersToUpdate), getState().heatmap.referenceTiles, layersToUpdate));
     }
   };
