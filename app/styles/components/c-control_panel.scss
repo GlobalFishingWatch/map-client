@@ -156,8 +156,9 @@
       }
 
       .content-accordion {
-        max-height: 100%;
+        height: calc(100% - 108px);
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         padding: 15px 20px;
 
         @media #{$mq-tablet} {

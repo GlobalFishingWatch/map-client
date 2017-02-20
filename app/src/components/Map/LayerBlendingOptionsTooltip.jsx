@@ -51,11 +51,20 @@ class LayerOptionsTooltip extends Component {
     this.closeTooltip = this.closeTooltip.bind(this);
   }
 
-  componentDidMount() {
-    window.addEventListener('click', this.closeTooltip);
+  componentWillUpdate(nextProps) {
+    if (nextProps.visible !== this.props.visible) {
+      if (nextProps.visible) {
+        window.addEventListener('touchend', this.closeTooltip);
+        window.addEventListener('click', this.closeTooltip);
+      } else {
+        window.removeEventListener('touchend', this.closeTooltip);
+        window.removeEventListener('click', this.closeTooltip);
+      }
+    }
   }
 
   componentWillUnmount() {
+    window.removeEventListener('touchend', this.closeTooltip);
     window.removeEventListener('click', this.closeTooltip);
   }
 
