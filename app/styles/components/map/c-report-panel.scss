@@ -170,5 +170,9 @@
       color: rgba($color-19, .5);
       pointer-events: none;
     }
+
+    &.-wide {
+      width: 100%;
+    }
   }
 }

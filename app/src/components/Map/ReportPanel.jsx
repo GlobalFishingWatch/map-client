@@ -2,9 +2,7 @@
 
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
 import { REPORT_STATUS } from 'constants';
-
 import iconStyles from 'styles/icons.scss';
 import ReportPanelStyles from 'styles/components/map/c-report-panel.scss';
 
@@ -71,6 +69,10 @@ class ReportPanel extends Component {
       buttons = (<div className={ReportPanelStyles['report-options']}>
         <button className={classnames(ReportPanelStyles['report-button'], { [ReportPanelStyles['-disabled']]: this.props.polygons.length !== 1 })} onClick={this.props.onSendReport}>send report</button>
         <button className={ReportPanelStyles['report-button']} onClick={this.props.onDiscardReport}>discard</button>
+      </div>);
+    } else if (this.props.status === REPORT_STATUS.sent) {
+      buttons = (<div className={ReportPanelStyles['report-options']}>
+        <button className={classnames(ReportPanelStyles['report-button'], ReportPanelStyles['-wide'])} onClick={this.props.onDiscardReport}>close</button>
       </div>);
     }
 

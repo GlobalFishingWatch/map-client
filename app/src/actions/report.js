@@ -116,8 +116,6 @@ export function sendReport() {
       });
     });
     const body = JSON.stringify(payload);
-    const headers = new Headers();
-    headers.set('Content-Type', 'application/json');
     const options = {
       method: 'POST',
       body
