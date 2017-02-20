@@ -40,14 +40,18 @@ class ControlPanel extends Component {
       return '-';
     }
 
-    const result = this.props.chartData.reduce((acc, elem) => {
+    let result = this.props.chartData.reduce((acc, elem) => {
       if (elem.date >= min && elem.date <= max) {
         return acc + elem.value;
       }
       return acc;
     }, 0);
 
-    return Math.round(result);
+    result = `${Math.round(result)}`;
+    for (let i = result.length - 3; i > 0; i -= 3) {
+      result = `${result.substr(0, i)},${result.substr(i)}`;
+    }
+    return result;
   }
 
   renderSearch() {
