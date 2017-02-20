@@ -1,3 +1,5 @@
+// ye who enter here, fear not
+// this is the first time I used D3, please dont hate me
 /* eslint react/sort-comp:0 */
 /* eslint react/sort-comp:0 */
 import React, { Component } from 'react';
@@ -32,6 +34,7 @@ let outerBrushHandleLeft;
 let outerBrushHandleRight;
 let innerBrushLeftCircle;
 let innerBrushRightCircle;
+let innerBrushMiddle;
 
 const customTickFormat = (date, index, allDates) => {
   let format;
@@ -160,12 +163,25 @@ class Timebar extends Component {
     this.innerBrush.select('.selection')
       .attr('height', height)
       .classed(timelineCss['c-timeline-inner-brush-selection'], true);
-    innerBrushLeftCircle = this.innerBrush.append('circle');
-    innerBrushRightCircle = this.innerBrush.append('circle');
-    this.innerBrush.selectAll('circle')
+
+    const innerBrushCircles = this.innerBrush.append('g')
+      .classed(timelineCss['c-timeline-inner-brush-circles'], true);
+
+    innerBrushLeftCircle = innerBrushCircles.append('circle');
+    innerBrushRightCircle = innerBrushCircles.append('circle');
+    innerBrushCircles.selectAll('circle')
       .attr('cy', height / 2)
       .attr('r', 5)
-      .classed(timelineCss['c-timeline-outer-brush-circle'], true);
+      .classed(timelineCss['c-timeline-inner-brush-circle'], true);
+
+    innerBrushMiddle = this.innerBrush.append('g')
+      .classed(timelineCss['c-timeline-inner-brush-middle'], true);
+    innerBrushMiddle.append('path')
+      .attr('d', `M 0 0 L 0 ${height}`);
+    innerBrushMiddle.append('circle')
+      .attr('r', 5)
+      .attr('cy', height / 2)
+      .classed(timelineCss['c-timeline-inner-brush-circle'], true);
 
     // move both brushes to initial position
     this.resetOuterBrush();
@@ -328,6 +344,8 @@ class Timebar extends Component {
   redrawInnerBrushCircles(newInnerPxExtent) {
     innerBrushLeftCircle.attr('cx', newInnerPxExtent[0]);
     innerBrushRightCircle.attr('cx', newInnerPxExtent[1]);
+    const middle = newInnerPxExtent[0] + ((newInnerPxExtent[1] - newInnerPxExtent[0]) / 2);
+    innerBrushMiddle.attr('transform', `translate(${middle}, 0)`);
   }
 
   redrawDurationPicker(newInnerPxExtent) {

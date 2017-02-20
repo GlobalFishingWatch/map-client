@@ -13,16 +13,25 @@
   }
 
   .c-timeline-x-axis {
+
     line,
     path {
       stroke: $color-4;
     }
 
     text {
-      fill: $color-4;
-      font-family: $font-family-1;
-      font-size: $font-size-xs-small;
-      user-select: none;
+      display: none;
+      @media #{$mq-mobile-large} {
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        display: block;
+        fill: $color-4;
+        font-family: $font-family-1;
+        font-size: $font-size-xs-small;
+        user-select: none;
+      }
     }
   }
 
@@ -36,23 +45,37 @@
   }
 
   .c-timeline-outer-brush-handle {
-    cursor: ew-resize;
+    display: none;
 
-    path,
-    rect {
-      stroke: $color-3;
+    @media #{$mq-mobile-large} {
+      cursor: ew-resize;
+      display: block;
+
+      path,
+      rect {
+        stroke: $color-3;
+      }
+
+      path {
+        stroke-width: 4px;
+      }
+
+      rect {
+        fill: $color-8;
+        height: 6px;
+        stroke-width: 3px;
+        transform: translate(-3px, -3px);
+        width: 6px;
+      }
     }
+  }
 
-    path {
-      stroke-width: 4px;
-    }
-
-    rect {
-      fill: $color-8;
-      height: 6px;
-      stroke-width: 3px;
-      transform: translate(-3px, -3px);
-      width: 6px;
+  .c-timeline-inner-brush {
+    :global .handle {
+      display: none;
+      @media #{$mq-mobile-large} {
+        display: block;
+      }
     }
   }
 
@@ -63,9 +86,27 @@
     stroke-width: 0;
   }
 
-  .c-timeline-outer-brush-circle {
+  .c-timeline-inner-brush-circle {
     cursor: ew-resize;
     fill: $color-4;
     pointer-events: none;
+  }
+
+  .c-timeline-inner-brush-circles {
+    display: none;
+    @media #{$mq-mobile-large} {
+      display: block;
+    }
+  }
+
+  .c-timeline-inner-brush-middle {
+    pointer-events: none;
+
+    > path {
+      stroke: $color-3;
+    }
+    @media #{$mq-mobile-large} {
+      display: none;
+    }
   }
 }
