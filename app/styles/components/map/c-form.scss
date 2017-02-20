@@ -46,6 +46,7 @@
     resize: none;
 
     @media #{$mq-tablet} {
+      height: auto;
       min-height: none;
     }
   }
