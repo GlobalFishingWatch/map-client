@@ -15,7 +15,7 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { refreshFlagFiltersLayers } from 'actions/filters';
-import { addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
+import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -139,6 +139,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
         type: SET_LAYERS,
         payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
       });
+      dispatch(initHeatmapLayers());
       dispatch(refreshFlagFiltersLayers());
     }).catch((err) => {
       console.warn(err);

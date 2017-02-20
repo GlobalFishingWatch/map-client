@@ -8,6 +8,7 @@ import {
   GA_OUTER_TIMELINE_DATES_UPDATED
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
+import { loadTilesExtraTimeRange } from 'actions/heatmap';
 import _ from 'lodash';
 
 const gaLogOuterTimelineDatesUpdated = _.debounce((dispatch, outerTimelineDates) => {
@@ -65,6 +66,7 @@ export function refreshFlagFiltersLayers() {
 }
 
 export function setInnerTimelineDates(innerTimelineDates) {
+  // TODO trigger tiles loading
   return {
     type: SET_INNER_TIMELINE_DATES,
     payload: innerTimelineDates
@@ -79,6 +81,8 @@ export function setOuterTimelineDates(outerTimelineDates) {
       type: SET_OUTER_TIMELINE_DATES,
       payload: outerTimelineDates
     });
+
+    dispatch(loadTilesExtraTimeRange());
   };
 }
 

@@ -26,17 +26,18 @@ export const getOffsetedTimeAtPrecision = timestamp =>
   Math.max(0, getTimeAtPrecision(timestamp) - TIMELINE_OVERALL_START_DATE_OFFSET);
 
 /**
- * Generates the URLs to load vessel track data
+ * Generates the URLs to load vessel track data for a tile
  *
- * @param tilesetUrl
- * @param tileCoordinates
- * @param startDate
- * @param timelineOverallEndDate
- * @returns {Array}
+ * @param {string} tilesetUrl       the tileset base URL
+ * @param {array} temporalExtents   all tileset temporal extents
+ * @param {object} params           - seriesgroup: a seriesgroup id, used for tracks loading
+ *                                  - tileCoordinates: this tiles tile coordinates (zoom, x, y). Will default to 0,0,0
+ *                                  - temporalExtentsIndices: restrict to these temporalExtents indices
+ * @returns {Array}                 an array of URLs for this tile
  */
 const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
   const urls = [];
-  (temporalExtents || [null]).forEach((extent) => {
+  (temporalExtents || [null]).forEach((extent, index) => {
     let url = `${tilesetUrl}/`;
     if (params.seriesgroup) {
       url += `sub/seriesgroup=${params.seriesgroup}/`;
@@ -52,11 +53,17 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
       // meh.
       url += '0,0,0';
     }
-    urls.push(url);
+    if (!params.temporalExtentsIndices || params.temporalExtentsIndices.indexOf(index) > -1) {
+      urls.push(url);
+    }
   });
   return urls;
 };
 
+
+/**
+ * See getTemporalTileURLs.
+ */
 export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
   const urls = getTemporalTileURLs(
@@ -71,13 +78,14 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
   return promises;
 };
 
+
 export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null);
 
 /**
  * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
  *
- * @param vectorArrays an array of objects containing a Float32Array for each vessel param (lat, lon, weight...)
- * @param vectorArraysKeys the keys to pick on the vectorArrays (lat, lon, weight, etc)
+ * @param cleanVectorArrays an array of objects containing a Float32Array for each vessel param (lat, lon, weight...)
+ * @param columns the keys to pick on the vectorArrays (lat, lon, weight, etc)
  * @returns an object containing a Float32Array for each API_RETURNED_KEY (lat, lon, weight, etc)
  */
 export const groupData = (cleanVectorArrays, columns) => {
@@ -133,11 +141,13 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
- * @param vectorArray
- * @param tileCoordinates
+ * @param zoom the current zoom, used in radius calculations
+ * @param vectorArray the source data before indexing by day
+ * @param columns the columns present on the dataset, determined by tileset headers
+ * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (zoom, vectorArray, columns) => {
-  const tilePlaybackData = [];
+export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData) => {
+  const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
   const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);

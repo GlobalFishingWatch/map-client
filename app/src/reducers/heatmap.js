@@ -1,6 +1,7 @@
-import { LAYER_TYPES } from 'constants';
+import _ from 'lodash';
 import {
-  SET_LAYERS,
+  INIT_HEATMAP_LAYERS,
+  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER,
   ADD_REFERENCE_TILE,
@@ -10,6 +11,7 @@ import {
 
 const initialState = {
   // a dict of heatmap layers (key is layer id)
+  // each containing url, tiles, temporalExtentsLoadedIndices
   heatmapLayers: {},
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
@@ -18,17 +20,16 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_LAYERS: {
-      const heatmapLayers = {};
-      action.payload.forEach((layer) => {
-        if (layer.type === LAYER_TYPES.Heatmap && layer.added === true) {
-          heatmapLayers[layer.id] = {
-            url: layer.url,
-            tiles: []
-          };
-        }
-      });
-      return Object.assign({}, state, { heatmapLayers });
+    case INIT_HEATMAP_LAYERS: {
+      return Object.assign({}, state, { heatmapLayers: action.payload });
+    }
+
+    case UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES: {
+      const heatmapLayers = state.heatmapLayers;
+      let indices = heatmapLayers[action.payload.layerId].temporalExtentsLoadedIndices;
+      indices = _.uniq(indices.concat(action.payload.diff));
+      heatmapLayers[action.payload.layerId].temporalExtentsLoadedIndices = indices;
+      return Object.assign({}, state, heatmapLayers);
     }
 
     case ADD_HEATMAP_LAYER: {
