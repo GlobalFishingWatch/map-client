@@ -124,7 +124,8 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
     const allPromises = [];
 
     layerIds.forEach((layerId) => {
-      const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+      const workspaceLayers = getState().layers.workspaceLayers;
+      const workspaceLayer = workspaceLayers.find(layer => layer.id === layerId);
       const layerHeader = workspaceLayer.header;
       if (!layerHeader) {
         console.warn('no header has been set on this heatmap layer');

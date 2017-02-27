@@ -42,7 +42,7 @@ class LayerLibraryModal extends Component {
           <label>
             <Toggle
               on={layer.added}
-              color={layer.color}
+              hue={layer.hue}
               onToggled={() => this.onChange(layer)}
             />
             <span className={LayerListStyles['layer-title']}>

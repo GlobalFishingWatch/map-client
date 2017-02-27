@@ -20,7 +20,7 @@ const INPUT_RANGE_DEFAULT_CONFIG = {
   }
 };
 
-class LayerOptionsTooltip extends Component {
+class LayerBlendingOptionsTooltip extends Component {
 
   constructor(props) {
     super(props);
@@ -138,7 +138,7 @@ class LayerOptionsTooltip extends Component {
   }
 }
 
-LayerOptionsTooltip.propTypes = {
+LayerBlendingOptionsTooltip.propTypes = {
   displayHue: React.PropTypes.bool,
   displayOpacity: React.PropTypes.bool,
   hueValue: React.PropTypes.number,
@@ -150,4 +150,4 @@ LayerOptionsTooltip.propTypes = {
   visible: React.PropTypes.bool
 };
 
-export default LayerOptionsTooltip;
+export default LayerBlendingOptionsTooltip;
