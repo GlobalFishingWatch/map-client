@@ -9,6 +9,7 @@ import {
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
+import { addVessel } from 'actions/vesselInfo';
 import _ from 'lodash';
 
 const gaLogOuterTimelineDatesUpdated = _.debounce((dispatch, outerTimelineDates) => {
@@ -59,9 +60,21 @@ export function setFlagFilters(flagFilters_) {
     });
   };
 }
+
 export function refreshFlagFiltersLayers() {
   return (dispatch, getState) => {
     dispatch(setFlagFilters(getState().filters.flags));
+  };
+}
+
+export function refreshVesselTracks() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const shownVesselData = state.vesselInfo.vessels.filter(e => e.shownInInfoPanel === true);
+
+    if (shownVesselData.length > 0) {
+      dispatch(addVessel(shownVesselData[0].tileset, shownVesselData[0].seriesgroup));
+    }
   };
 }
 

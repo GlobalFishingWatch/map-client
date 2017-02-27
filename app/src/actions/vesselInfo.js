@@ -194,6 +194,9 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
     }
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
+    if (!currentLayer) {
+      return;
+    }
     const header = currentLayer.header;
     // TODO use URL from header
     const url = currentLayer.url;

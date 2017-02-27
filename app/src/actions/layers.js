@@ -14,7 +14,7 @@ import {
   SET_WORKSPACE_LAYER_LABEL,
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
-import { refreshFlagFiltersLayers } from 'actions/filters';
+import { refreshFlagFiltersLayers, refreshVesselTracks } from 'actions/filters';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
 
 
@@ -141,6 +141,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
       });
       dispatch(initHeatmapLayers());
       dispatch(refreshFlagFiltersLayers());
+      dispatch(refreshVesselTracks());
     }).catch((err) => {
       console.warn(err);
     });

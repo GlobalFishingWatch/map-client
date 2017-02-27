@@ -21,7 +21,7 @@ import {
 import { push } from 'react-router-redux';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
-import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
+import { setPinnedVessels, loadRecentVesselHistory, addVessel, showPinnedVesselDetails } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/hsvToRgb';
 import extractTilesetFromURL from 'util/extractTileset';
@@ -84,6 +84,15 @@ export function saveWorkspace(errorAction) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
 
+    const shownVesselData = state.vesselInfo.vessels.filter(e => e.shownInInfoPanel === true);
+    let shownVessel = null;
+    if (shownVesselData.length > 0) {
+      shownVessel = {
+        seriesgroup: shownVesselData[0].seriesgroup,
+        tileset: shownVesselData[0].tileset
+      };
+    }
+
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
@@ -101,6 +110,7 @@ export function saveWorkspace(errorAction) {
             title: e.title,
             hue: e.hue
           })),
+          shownVessel,
           basemap: state.map.activeBasemap,
           timeline: {
             // We store the timestamp
@@ -163,6 +173,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(loadRecentVesselHistory());
 
   dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+
+  if (workspaceData.shownVessel) {
+    dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup));
+    dispatch(showPinnedVesselDetails(workspaceData.shownVessel.seriesgroup));
+  }
 }
 
 function processNewWorkspace(data) {
@@ -176,6 +191,7 @@ function processNewWorkspace(data) {
     basemap: workspace.basemap,
     layers: workspace.map.layers,
     filters: workspace.filters,
+    shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset
@@ -236,6 +252,9 @@ function processLegacyWorkspace(data, dispatch) {
     tileset: getTilesetFromVesselURL(l.url)
   }));
 
+  // TODO: load selected vessel
+  const shownVessel = null;
+
   return {
     zoom: workspace.state.zoom,
     center: [workspace.state.lat, workspace.state.lon],
@@ -245,6 +264,7 @@ function processLegacyWorkspace(data, dispatch) {
     layers,
     pinnedVessels,
     tilesetUrl,
+    shownVessel,
     filters,
     tilesetID: extractTilesetFromURL(tilesetUrl)
   };
