@@ -104,7 +104,7 @@ export function saveWorkspace(errorAction) {
             innerExtent: state.filters.timelineInnerExtent.map(e => +e),
             outerExtent: state.filters.timelineOuterExtent.map(e => +e)
           },
-          flag: state.filters.flag
+          filters: state.filters.flags
         }
       })
     })
@@ -155,7 +155,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
 
-  dispatch(setFlagFilters(workspaceData.flagFilters));
+  dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselHistory());
 
@@ -172,7 +172,7 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     basemap: workspace.basemap,
     layers: workspace.map.layers,
-    flagFilters: workspace.map.flagFilters,
+    filters: workspace.filters,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset
@@ -219,7 +219,9 @@ function processLegacyWorkspace(data, dispatch) {
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const tilesetUrl = vesselLayer.url;
 
-  // TODO: implement legacy workspace loading of pinned vessels
+  // TODO: implement legacy workspace loading of filters
+  const filters = [];
+
   const pinnedVessels = layersData.filter(l => l.type === 'VesselTrackAnimation').map(l => ({
     title: l.title,
     hue: hexToHue(l.color),
@@ -236,6 +238,7 @@ function processLegacyWorkspace(data, dispatch) {
     layers,
     pinnedVessels,
     tilesetUrl,
+    filters,
     tilesetID: extractTilesetFromURL(tilesetUrl)
   };
 }
