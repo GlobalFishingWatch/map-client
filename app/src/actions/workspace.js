@@ -3,7 +3,9 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE
+  TIMELINE_DEFAULT_INNER_END_DATE,
+  FLAGS,
+  FLAGS_LANDLOCKED
 } from 'constants';
 import {
   SET_ZOOM,
@@ -23,6 +25,7 @@ import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/hsvToRgb';
 import extractTilesetFromURL from 'util/extractTileset';
+import _ from 'lodash';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL } from 'util/handlePinnedVesselLegacyURL';
 
 
@@ -215,12 +218,16 @@ function processLegacyWorkspace(data, dispatch) {
     layer.id = calculateLayerId(layer);
   });
 
-  const layers = layersData.filter(l => l.type !== 'VesselTrackAnimation');
+  const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const tilesetUrl = vesselLayer.url;
 
-  // TODO: implement legacy workspace loading of filters
-  const filters = [];
+  const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
+  const filters = _.uniq(rawVesselLayer.args.selections.Flags.data.category)
+    .filter(flag => (Array.prototype.hasOwnProperty.call(FLAGS, flag) && !_.includes(FLAGS_LANDLOCKED, FLAGS[flag])))
+    .map(flag => ({
+      flag
+    }));
 
   const pinnedVessels = layersData.filter(l => l.type === 'VesselTrackAnimation').map(l => ({
     title: l.title,
