@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 import BaseStyles from 'styles/_base.scss';
 import IconStyles from 'styles/icons.scss';
@@ -82,45 +81,45 @@ class Footer extends Component {
               <div className={FooterStyles['map-section']} >
                 <ul className={FooterStyles['nav-list']} >
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/map" >Map</Link>
+                    <a className={FooterStyles['nav-link']} to="#" >Map</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
                     <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={FooterStyles['nav-link']} >Blog</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link
+                    <a
                       className={FooterStyles['nav-link']}
-                      to="/articles-publications"
+                      href={`${SITE_URL}/articles-publications`}
                     >
                       Articles and Publications
-                    </Link>
+                    </a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/faq" >FAQ</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/faq`} >FAQ</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/tutorials" >Tutorials</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/tutorials`} >Tutorials</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/definitions" >Definitions</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/definitions`} >Definitions</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/the-project" >The project</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/the-project`} >The project</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/partners" >Partners</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/partners`} >Partners</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/research-program" >Research program</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/research-program`} >Research program</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/contact-us" >Contact us</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/contact-us`} >Contact us</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/terms-of-use" >Terms of use</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/terms-of-use`} >Terms of use</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
-                    <Link className={FooterStyles['nav-link']} to="/privacy-policy" >Privacy policy</Link>
+                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/privacy-policy`} >Privacy policy</a>
                   </li>
                   {this.props.isMap &&
                   <li className={FooterStyles['nav-item']} >

@@ -110,21 +110,9 @@ Endpoint of the API (vessel tiles, workspace, contact, etc)
 
 URL of the blog
 
-#### FAQ_JSON_URL
+#### SITE_URL
 
-Endpoint of the FAQ section content
-
-#### DEFINITIONS_JSON_URL
-
-Endpoint of the Definitions section content
-
-#### ART_PUB_JSON_URL
-
-Endpoint of the Articles & publications section content
-
-#### HOME_SLIDER_JSON_URL
-
-Endpoint of the homepage slider section content
+URL of the main site
 
 #### REQUIRE_MAP_LOGIN
 

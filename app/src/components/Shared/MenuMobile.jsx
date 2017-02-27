@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import menuMobile from 'styles/components/c-mobile-menu.scss';
-import { Link } from 'react-router';
 
 class MenuMobile extends Component {
 
@@ -39,7 +38,7 @@ class MenuMobile extends Component {
           >
             log in
           </button>
-          <p className={menuMobile['forgot-text']}>
+          <p className={menuMobile['forgot-text']} >
             <a
               href="https://trial-globalfishingwatch.cs43.force.com/gfw/GFWResetPassword"
               className={menuMobile['forgot-password']}
@@ -56,26 +55,26 @@ class MenuMobile extends Component {
         onClick={this.props.onClose}
         className={backClass}
       />
-      <div className={cssClass}>
+      <div className={cssClass} >
         <ul>
-          <li><Link to="/map">Map</Link></li>
+          <li><a href="#" >Map</a></li>
           <li>News</li>
-          <ul className={menuMobile['submenu-mobile']}>
-            <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer">Blog</a></li>
-            <li><Link to="/articles-publications">Articles and Publications</Link></li>
+          <ul className={menuMobile['submenu-mobile']} >
+            <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer" >Blog</a></li>
+            <li><a href={`${SITE_URL}/articles-publications`} >Articles and Publications</a></li>
           </ul>
           <li>How to</li>
-          <ul className={menuMobile['submenu-mobile']}>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/tutorials">Tutorials</Link></li>
-            <li><Link to="/definitions">Definitions</Link></li>
+          <ul className={menuMobile['submenu-mobile']} >
+            <li><a href={`${SITE_URL}/faq`} >FAQ</a></li>
+            <li><a href={`${SITE_URL}/tutorials`} >Tutorials</a></li>
+            <li><a href={`${SITE_URL}/definitions`} >Definitions</a></li>
           </ul>
           <li>About</li>
-          <ul className={menuMobile['submenu-mobile']}>
-            <li><Link to="/the-project">The Project</Link></li>
-            <li><Link to="/partners">Partners</Link></li>
-            <li><Link to="/research-program">Research Program</Link></li>
-            <li><Link to="/contact-us">Contact Us</Link></li>
+          <ul className={menuMobile['submenu-mobile']} >
+            <li><a href={`${SITE_URL}/the-project`} >The Project</a></li>
+            <li><a href={`${SITE_URL}/partners`} >Partners</a></li>
+            <li><a href={`${SITE_URL}/research-program`} >Research Program</a></li>
+            <li><a href={`${SITE_URL}/contact-us`} >Contact Us</a></li>
           </ul>
         </ul>
         {userLinks}

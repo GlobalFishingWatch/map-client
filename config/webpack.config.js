@@ -45,14 +45,11 @@ const webpackConfig = {
       EMBED_MAP_URL: JSON.stringify(envVariables.EMBED_MAP_URL),
       MAP_API_ENDPOINT: JSON.stringify(envVariables.MAP_API_ENDPOINT),
       BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
-      FAQ_JSON_URL: JSON.stringify(envVariables.FAQ_JSON_URL),
-      DEFINITIONS_JSON_URL: JSON.stringify(envVariables.DEFINITIONS_JSON_URL),
-      ART_PUB_JSON_URL: JSON.stringify(envVariables.ART_PUB_JSON_URL),
+      SITE_URL: JSON.stringify(envVariables.SITE_URL),
       REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,
       DEFAULT_WORKSPACE: JSON.stringify(envVariables.DEFAULT_WORKSPACE),
       LOCAL_WORKSPACE: JSON.stringify(envVariables.LOCAL_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
-      HOME_SLIDER_JSON_URL: JSON.stringify(envVariables.HOME_SLIDER_JSON_URL),
       DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true',
       WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY)
     })

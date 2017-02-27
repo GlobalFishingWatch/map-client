@@ -64,6 +64,9 @@ export const SHARE_MODAL_OPEN = 'SHARE_MODAL_OPEN';
 export const SET_SHARE_MODAL_ERROR = 'SET_SHARE_MODAL_ERROR';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
 
+// Contact actions
+export const FORM_RESPONSE = 'FORM_RESPONSE';
+
 // Vessel info actions
 export const ADD_VESSEL = 'ADD_VESSEL';
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS';

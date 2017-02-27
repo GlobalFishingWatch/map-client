@@ -4,7 +4,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { browserHistory } from 'react-router';
-import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import _ from 'lodash';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
@@ -49,8 +49,6 @@ const reducer = combineReducers({
   timebar: timebarReducer
 });
 
-const middlewareRouter = routerMiddleware(browserHistory);
-
 /**
  * Global state
  * @info(http://redux.js.org/docs/basics/Store.html)
@@ -58,7 +56,7 @@ const middlewareRouter = routerMiddleware(browserHistory);
  */
 const store = createStore(
   reducer,
-  applyMiddleware(analyticsMiddleware, middlewareRouter, thunk)
+  applyMiddleware(analyticsMiddleware, thunk)
 );
 
 /**
