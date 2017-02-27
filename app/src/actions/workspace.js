@@ -5,7 +5,6 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE
 } from 'constants';
-
 import {
   SET_ZOOM,
   SET_CENTER,
@@ -22,7 +21,9 @@ import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
+import { hexToHue } from 'util/hsvToRgb';
 import extractTilesetFromURL from 'util/extractTileset';
+import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL } from 'util/handlePinnedVesselLegacyURL';
 
 
 export function setUrlWorkspaceId(workspaceId) {
@@ -93,7 +94,7 @@ export function saveWorkspace(errorAction) {
           },
           pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
             seriesgroup: e.seriesgroup,
-            tileset: e.seriesgroup,
+            tileset: e.tileset,
             title: e.title,
             hue: e.hue
           })),
@@ -203,21 +204,28 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_BASEMAP, payload: workspace.basemap
   });
 
-  const layers = workspace.map.animations.map(l => ({
+  const layersData = workspace.map.animations.map(l => ({
     title: l.args.title,
     color: l.args.color,
     visible: l.args.visible,
     type: l.type,
     url: l.args.source.args.url
   }));
-  layers.forEach((layer) => {
+  layersData.forEach((layer) => {
     layer.id = calculateLayerId(layer);
   });
+
+  const layers = layersData.filter(l => l.type !== 'VesselTrackAnimation');
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const tilesetUrl = vesselLayer.url;
 
   // TODO: implement legacy workspace loading of pinned vessels
-  const pinnedVessels = [];
+  const pinnedVessels = layersData.filter(l => l.type === 'VesselTrackAnimation').map(l => ({
+    title: l.title,
+    hue: hexToHue(l.color),
+    seriesgroup: getSeriesGroupsFromVesselURL(l.url),
+    tileset: getTilesetFromVesselURL(l.url)
+  }));
 
   return {
     zoom: workspace.state.zoom,

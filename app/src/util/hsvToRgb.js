@@ -85,3 +85,19 @@ export const hueToRgbaString = (hue, alpha) => {
   const rgb = hueToRgbDefaults(hue);
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
 };
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+export const hexToHue = (hex) => {
+  const rgb = hexToRgb(hex);
+  const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+  return hsv[0] * 360;
+};
+

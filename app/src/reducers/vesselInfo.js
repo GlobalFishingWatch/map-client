@@ -32,6 +32,7 @@ export default function (state = initialState, action) {
     case ADD_VESSEL: {
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
+        tileset: action.payload.layerId,
         visible: false,
         pinned: false,
         shownInInfoPanel: false,

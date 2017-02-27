@@ -13,12 +13,16 @@ export default (layer) => {
     if (cartoVizzJsonMatches) {
       return cartoVizzJsonMatches[1];
     }
-
+    const fishingEffortUrlRegex = /v1\/tilesets\/((\w|-)*)$/g;
+    const fishingEffortUrlMatches = fishingEffortUrlRegex.exec(layer.url);
+    if (fishingEffortUrlMatches) {
+      return fishingEffortUrlMatches[1];
+    }
     // Simply hash the URL
-    return layer.url.split('').reduce((a, b) => {
+    return `${layer.url.split('').reduce((a, b) => {
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
-    }, 0);
+    }, 0)}`;
   }
 
   console.warn('Could not determine layer id, using random string instead.', layer);
