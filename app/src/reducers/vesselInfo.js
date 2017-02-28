@@ -36,6 +36,7 @@ export default function (state = initialState, action) {
 
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
+        series: action.payload.series,
         tileset: action.payload.layerId,
         visible: false,
         pinned: false,

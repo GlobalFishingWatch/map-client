@@ -298,6 +298,7 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
       type: ADD_VESSEL,
       payload: {
         seriesgroup,
+        series,
         layerId
       }
     });

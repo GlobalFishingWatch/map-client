@@ -21,7 +21,7 @@ import {
 import { push } from 'react-router-redux';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
-import { setPinnedVessels, loadRecentVesselHistory, addVessel, showPinnedVesselDetails } from 'actions/vesselInfo';
+import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/hsvToRgb';
 import extractTilesetFromURL from 'util/extractTileset';
@@ -84,44 +84,47 @@ export function saveWorkspace(errorAction) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
 
-    const shownVesselData = state.vesselInfo.vessels.filter(e => e.shownInInfoPanel === true);
+    const shownVesselData = state.vesselInfo.vessels.find(e => e.shownInInfoPanel === true);
     let shownVessel = null;
-    if (shownVesselData.length > 0) {
+    if (shownVesselData !== undefined) {
       shownVessel = {
-        seriesgroup: shownVesselData[0].seriesgroup,
-        tileset: shownVesselData[0].tileset
+        seriesgroup: shownVesselData.seriesgroup,
+        tileset: shownVesselData.tileset
       };
+      if (shownVesselData.series !== null) {
+        shownVessel.series = shownVesselData.series;
+      }
     }
 
-    console.log(shownVessel)
+    const workspaceData = {
+      workspace: {
+        tileset: state.map.tilesetId,
+        map: {
+          center: state.map.center,
+          zoom: state.map.zoom,
+          layers: state.layers.workspaceLayers.filter(layer => layer.added)
+        },
+        pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
+          seriesgroup: e.seriesgroup,
+          tileset: e.tileset,
+          title: e.title,
+          hue: e.hue
+        })),
+        shownVessel,
+        basemap: state.map.activeBasemap,
+        timeline: {
+          // We store the timestamp
+          innerExtent: state.filters.timelineInnerExtent.map(e => +e),
+          outerExtent: state.filters.timelineOuterExtent.map(e => +e)
+        },
+        filters: state.filters.flags
+      }
+    };
 
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({
-        workspace: {
-          tileset: state.map.tilesetId,
-          map: {
-            center: state.map.center,
-            zoom: state.map.zoom,
-            layers: state.layers.workspaceLayers.filter(layer => layer.added)
-          },
-          pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
-            seriesgroup: e.seriesgroup,
-            tileset: e.tileset,
-            title: e.title,
-            hue: e.hue
-          })),
-          shownVessel,
-          basemap: state.map.activeBasemap,
-          timeline: {
-            // We store the timestamp
-            innerExtent: state.filters.timelineInnerExtent.map(e => +e),
-            outerExtent: state.filters.timelineOuterExtent.map(e => +e)
-          },
-          filters: state.filters.flags
-        }
-      })
+      body: JSON.stringify(workspaceData)
     })
       .then(res => res.json())
       .then((data) => {
@@ -169,8 +172,9 @@ function dispatchActions(workspaceData, dispatch, getState) {
   });
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
+    // we need heatmap layers headers to be loaded before loading track
     if (workspaceData.shownVessel) {
-      dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup));
+      dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
     }
   });
 
