@@ -141,10 +141,11 @@ export function initLayers(workspaceLayers, libraryLayers) {
       });
       dispatch(initHeatmapLayers());
       dispatch(refreshFlagFiltersLayers());
-      dispatch(refreshVesselTracks());
     }).catch((err) => {
       console.warn(err);
     });
+
+    return headersPromise;
   };
 }
 

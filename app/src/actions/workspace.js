@@ -93,6 +93,8 @@ export function saveWorkspace(errorAction) {
       };
     }
 
+    console.log(shownVessel)
+
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
@@ -166,18 +168,17 @@ function dispatchActions(workspaceData, dispatch, getState) {
     payload: workspaceData.tilesetId
   });
 
-  dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
+  dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
+    if (workspaceData.shownVessel) {
+      dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup));
+    }
+  });
 
   dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselHistory());
 
   dispatch(setPinnedVessels(workspaceData.pinnedVessels));
-
-  if (workspaceData.shownVessel) {
-    dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup));
-    dispatch(showPinnedVesselDetails(workspaceData.shownVessel.seriesgroup));
-  }
 }
 
 function processNewWorkspace(data) {
