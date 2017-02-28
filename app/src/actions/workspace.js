@@ -241,6 +241,7 @@ function processLegacyWorkspace(data, dispatch) {
 
   const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
+  // vesselLayer.id = '849-tileset-tms';
   const tilesetUrl = vesselLayer.url;
 
   const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
@@ -256,9 +257,15 @@ function processLegacyWorkspace(data, dispatch) {
     seriesgroup: getSeriesGroupsFromVesselURL(l.url),
     tileset: getTilesetFromVesselURL(l.url)
   }));
-
-  // TODO: load selected vessel
-  const shownVessel = null;
+  let shownVessel = null;
+  if (rawVesselLayer.args.selections && rawVesselLayer.args.selections.selected) {
+    shownVessel = {
+      series: rawVesselLayer.args.selections.selected.data.series[0],
+      seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
+      tileset: vesselLayer.id
+    };
+    // shownVessel.tileset = '849-tileset-tms';
+  }
 
   return {
     zoom: workspace.state.zoom,

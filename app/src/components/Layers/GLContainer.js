@@ -182,6 +182,10 @@ export default class GLContainer extends BaseOverlay {
   }
 
   updateTracks(tracks, drawParams) {
+    if (!this.mapProjection) {
+      console.warn('trying to add tracks on a layer not yet added');
+      return;
+    }
     this.tracksLayer.update(tracks, drawParams, this._getOffsets());
   }
 
