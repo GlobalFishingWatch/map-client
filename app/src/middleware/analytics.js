@@ -12,7 +12,6 @@ import {
   SET_FLAG_FILTERS
 } from 'actions';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
-import ga from 'ga-react-router';
 
 const GA_ACTION_WHITELIST = [
   {
@@ -136,7 +135,7 @@ const googleAnalyticsMiddleware = store => next => (action) => {
         gaEvent.eventLabel = gaAction.getPayload(action, state);
       }
       if (gaEvent.eventLabel !== null && typeof gaEvent.eventLabel !== 'undefined') {
-        ga('send', gaEvent);
+        window.ga('send', gaEvent);
       }
     }
   }

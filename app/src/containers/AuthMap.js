@@ -3,9 +3,7 @@ import AuthMap from 'components/AuthMap';
 import { login } from 'actions/user';
 
 const mapStateToProps = (state, { location }) => ({
-  token: state.user.token,
-  canRedirect: location.query && !!location.query.redirect_login,
-  workspaceId: location.query && location.query.workspace
+  token: state.user.token
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -13,4 +11,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthMap);
-

@@ -17,7 +17,6 @@ import {
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID
 } from 'actions';
-import { push } from 'react-router-redux';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
@@ -54,8 +53,8 @@ export function setWorkspaceId(workspaceId) {
  */
 export function updateURL() {
   return (dispatch, getState) => {
-    const state = getState();
-    dispatch(push(`/map?workspace=${state.map.workspaceId}`));
+    const newURL = `${window.location.protocol}//${window.location.host}?workspace=${getState().map.workspaceId}`;
+    window.history.pushState({ path: newURL }, '', newURL);
   };
 }
 

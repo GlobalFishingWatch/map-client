@@ -1,46 +1,22 @@
 import {
-  SET_USER_PERMISSIONS, SET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT, SET_CURRENT_PATHNAME
+  SET_USER_PERMISSIONS, SET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT
 } from 'actions';
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
 import _ from 'lodash';
-import { browserHistory } from 'react-router';
-import ga from 'ga-react-router';
 
-const setGAPageView = (pathname) => {
-  ga('set', 'page', pathname);
-  ga('send', 'pageview');
-};
 
-const setGAUserDimension = (user, currentPathname) => {
+const setGAUserDimension = (user) => {
   if (user !== false) {
-    window.ga('set', 'dimension1', user.identity.userId);
+    // TODO import Google Analytics not through ga-react-router
+    // window.ga('set', 'dimension1', user.identity.userId);
   }
-
-  // trigger initial page view
-  setGAPageView(currentPathname);
 };
 
 const unsetGAUserDimension = () => {
-  window.ga('set', 'dimension1', '');
+  // TODO import Google Analytics not through ga-react-router
+  // window.ga('set', 'dimension1', '');
 };
-
-export function triggerAnalyticsPageView(pathname) {
-  return (dispatch, getState) => {
-    dispatch({
-      type: SET_CURRENT_PATHNAME,
-      payload: {
-        pathname
-      }
-    });
-    if (getState().user.loggedUser === undefined) {
-      // auth process did not start yet: loggedUser will later be either an object, or null, but not undefined
-      // we'll trigger initial page view after auth finished (successfully or not), in setGAUserDimension()
-      return;
-    }
-    setGAPageView(pathname);
-  };
-}
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_SESSION, token);
@@ -79,7 +55,7 @@ export function getLoggedUser() {
         type: SET_USER_PERMISSIONS,
         payload: GUEST_PERMISSION_SET
       });
-      setGAUserDimension(false, state.user.currentPathname);
+      setGAUserDimension(false);
       return;
     }
 
@@ -96,10 +72,11 @@ export function getLoggedUser() {
         type: SET_TOKEN,
         payload: null
       });
-      setGAUserDimension(false, state.user.currentPathname);
+      setGAUserDimension(false);
       return null;
     }).then((payload) => {
-      window.ga('set', 'dimension1', payload.identity.userId);
+      // TODO import Google Analytics not through ga-react-router
+      // window.ga('set', 'dimension1', payload.identity.userId);
       dispatch({
         type: SET_USER,
         payload: getUserData(payload)
@@ -108,7 +85,7 @@ export function getLoggedUser() {
         type: SET_USER_PERMISSIONS,
         payload: _.uniq(AUTH_PERMISSION_SET.concat(getAclData(payload)))
       });
-      setGAUserDimension(payload, state.user.currentPathname);
+      setGAUserDimension(payload);
     });
   };
 }
@@ -122,7 +99,7 @@ export function logout() {
     unsetGAUserDimension();
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
     if (window.location.pathname.match('^/map')) {
-      browserHistory.push('/');
+      history.pushState({}, '', '/');
     }
   };
 }
