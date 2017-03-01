@@ -5,7 +5,8 @@ import {
   SET_FLAG_FILTERS,
   SET_PLAYING_STATUS,
   SET_TIMELINE_HOVER_DATES,
-  SET_OVERALL_TIMELINE_DATES
+  SET_OVERALL_TIMELINE_DATES,
+  REWIND_TIMELINE
 } from 'actions';
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -78,6 +79,13 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelineOverExtent: action.payload
       });
+    case REWIND_TIMELINE: {
+      const currentInnerDelta = state.timelineInnerExtent[1].getTime() - state.timelineInnerExtent[0].getTime();
+      const newTimelineInnerEnd = new Date(state.timelineOuterExtent[0].getTime() + currentInnerDelta);
+      return Object.assign({}, state, {
+        timelineInnerExtent: [state.timelineOuterExtent[0], newTimelineInnerEnd]
+      });
+    }
     default:
       return state;
   }
