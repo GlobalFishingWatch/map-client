@@ -11,44 +11,101 @@
     margin-bottom: 10px;
   }
 
-  > .intro {
-    color: $color-4;
-    font-family: $font-family-1;
-    font-size: $font-size-small;
-    font-weight: $font-weight-bold;
-    margin: 0;
-    text-transform: uppercase;
-  }
-
-  > form {
-    display: flex;
-    justify-content: center;
-    margin: 10px 0 0;
-    padding: 0;
-  }
-
-  > form > .url-input {
-    background-color: transparent;
+  > .content-switcher {
+    align-items: center;
     border: 1px solid $color-14;
-    color: rgba($color-4, .3);
-    font-size: $font-size-small;
-    height: 40px;
-    max-width: 225px;
-    padding: 0 0 0 5px;
-    text-overflow: ellipsis;
-    width: calc(100% - 70px);
-  }
-
-  > form > .copy-button {
-    background-color: $color-3;
-    border: 0;
-    color: $color-4;
-    cursor: pointer;
-    font-size: $font-size-small;
+    border-radius: 100px;
+    display: flex;
     font-weight: $font-weight-bold;
     height: 40px;
-    text-transform: uppercase;
-    width: 70px;
+    justify-content: space-around;
+    margin: 25px auto;
+    max-width: 304px;
+
+    > .content-option {
+      color: $color-4;
+      cursor: pointer;
+      font-size: $font-size-xs-small;
+      position: relative;
+      text-align: center;
+      text-transform: uppercase;
+      width: calc(50% - 9px);
+      z-index: 1;
+
+      &.-selected {
+        color: $color-1;
+
+        &::before {
+          background-color: $color-4;
+          border-radius: 100px;
+          content: '';
+          display: inline-block;
+          height: 30px;
+          left: 50%;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          z-index: -1;
+        }
+      }
+
+    }
+  }
+
+  > .content {
+    > .intro {
+      color: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-small;
+      font-weight: $font-weight-bold;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    > form {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 0;
+      padding: 0;
+    }
+
+    > form > .url-input {
+      background-color: transparent;
+      border: 1px solid $color-14;
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      height: 40px;
+      max-width: 225px;
+      padding: 0 0 0 5px;
+      text-overflow: ellipsis;
+      width: calc(100% - 70px);
+    }
+
+    > form > .embed-input {
+      background-color: transparent;
+      border: 1px solid $color-14;
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      height: 40px;
+      max-width: 225px;
+      padding: 0 0 0 5px;
+      text-overflow: ellipsis;
+      width: calc(100% - 70px);
+    }
+
+    > form > .copy-button {
+      background-color: $color-3;
+      border: 0;
+      color: $color-4;
+      cursor: pointer;
+      font-size: $font-size-small;
+      font-weight: $font-weight-bold;
+      height: 40px;
+      text-transform: uppercase;
+      width: 70px;
+    }
+
   }
 
   .separator {
@@ -82,7 +139,6 @@
   .social-links {
     display: flex;
     flex-direction: column;
-
 
     @media #{$mq-tablet} {
       flex-direction: row;

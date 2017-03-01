@@ -103,6 +103,25 @@ export const REPORT_STATUS = {
   sent: 'sent'
 };
 
+export const DEFAULT_EMBED_SIZE = 'Small';
+export const EMBED_SIZE_SETTINGS = [
+  {
+    name: 'Small',
+    width: 400,
+    height: 300
+  },
+  {
+    name: 'Medium',
+    width: 600,
+    height: 400
+  },
+  {
+    name: 'Large',
+    width: 800,
+    height: 600
+  }
+];
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',
