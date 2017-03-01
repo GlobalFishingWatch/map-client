@@ -194,6 +194,10 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
     }
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
+    if (!currentLayer) {
+      console.warn('trying to get a vessel track on a layer that doesnt exist', state.layers.workspaceLayers);
+      return;
+    }
     const header = currentLayer.header;
     // TODO use URL from header
     const url = currentLayer.url;
@@ -294,6 +298,7 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
       type: ADD_VESSEL,
       payload: {
         seriesgroup,
+        series,
         layerId
       }
     });

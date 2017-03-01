@@ -30,8 +30,13 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_VESSEL: {
+      if (_.find(state.vessels, l => l.seriesgroup === action.payload.seriesgroup)) {
+        return state;
+      }
+
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
+        series: action.payload.series,
         tileset: action.payload.layerId,
         visible: false,
         pinned: false,
@@ -50,7 +55,6 @@ export default function (state = initialState, action) {
       const newVessel = Object.assign({
         title: action.payload.vesselname
       }, currentVessel, action.payload);
-      console.warn(newVessel);
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],

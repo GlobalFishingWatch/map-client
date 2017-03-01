@@ -144,6 +144,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }).catch((err) => {
       console.warn(err);
     });
+
+    return headersPromise;
   };
 }
 

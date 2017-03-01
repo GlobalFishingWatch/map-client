@@ -1,6 +1,6 @@
 {
   "state": {
-    "zoom": 3,
+    "zoom": 7,
     "time": {
       "__jsonclass__": [
         "Date",
@@ -9,19 +9,18 @@
     },
     "timeExtent": 2588378089,
     "title": "Development Daily Update",
-    "lat": -5.707547445489973,
-    "lon": -3.885040283203125,
     "timeFocus": {
       "__jsonclass__": [
         "Date",
-        "2016-08-22T17:01:30.417Z"
+        "2016-07-20T12:16:10.514Z"
       ]
     },
     "offset": 20,
     "maxoffset": 100,
+    "lat": 37.091335251095146,
+    "lon": -27.862701416015625,
     "paused": true,
-    "edit": false,
-    "editing": true
+    "edit": false
   },
   "map": {
     "animations": [
@@ -140,14 +139,199 @@
                     },
                     "max_range_count": 1,
                     "sortcols": []
+                  },
+                  "active_category": {
+                    "header": {
+                      "length": 2
+                    },
+                    "data": {
+                      "category": [
+                        {
+                          "__jsonclass__": [
+                            "Number",
+                            "-Infinity"
+                          ]
+                        },
+                        {
+                          "__jsonclass__": [
+                            "Number",
+                            "Infinity"
+                          ]
+                        }
+                      ]
+                    },
+                    "sortcols": [
+                      "category"
+                    ],
+                    "max_range_count": 3
+                  },
+                  "hover": {
+                    "header": {
+                      "length": 0
+                    },
+                    "data": {
+                      "series": []
+                    },
+                    "sortcols": [
+                      "series"
+                    ],
+                    "max_range_count": 1
+                  },
+                  "bbox": {
+                    "header": {
+                      "length": 0
+                    },
+                    "data": {
+                      "seriesgroup": []
+                    },
+                    "sortcols": [
+                      "seriesgroup"
+                    ],
+                    "max_range_count": 1
+                  },
+                  "timerange": {
+                    "header": {
+                      "length": 1
+                    },
+                    "data": {
+                      "datetime": [
+                        1470033757126,
+                        1472622135215
+                      ]
+                    },
+                    "sortcols": [
+                      "datetime"
+                    ],
+                    "max_range_count": 1
                   }
                 },
-                "category": "Vessels"
+                "category": "Vessels",
+                "columns": {
+                  "longitude": {
+                    "type": "Float32",
+                    "hidden": true,
+                    "source": {
+                      "longitude": 1
+                    },
+                    "name": "longitude"
+                  },
+                  "latitude": {
+                    "type": "Float32",
+                    "hidden": true,
+                    "source": {
+                      "latitude": 1
+                    },
+                    "name": "latitude"
+                  },
+                  "sigma": {
+                    "type": "Float32",
+                    "source": {
+                      "sigma": 1
+                    },
+                    "min": 0,
+                    "max": 1,
+                    "name": "sigma"
+                  },
+                  "weight": {
+                    "type": "Float32",
+                    "source": {
+                      "weight": 1
+                    },
+                    "min": 0,
+                    "max": 1,
+                    "name": "weight"
+                  },
+                  "time": {
+                    "type": "Float32",
+                    "hidden": true,
+                    "source": {
+                      "datetime": 1
+                    },
+                    "name": "time"
+                  },
+                  "filter": {
+                    "type": "Float32",
+                    "source": {
+                      "_": null,
+                      "timerange": -1,
+                      "active_category": -1
+                    },
+                    "name": "filter"
+                  }
+                },
+                "uniforms": {
+                  "high_red": {
+                    "value": 0.4,
+                    "min": 0,
+                    "max": 1,
+                    "name": "high_red"
+                  },
+                  "high_green": {
+                    "value": 0.6,
+                    "min": 0,
+                    "max": 1,
+                    "name": "high_green"
+                  },
+                  "high_blue": {
+                    "value": 0.9,
+                    "min": 0,
+                    "max": 1,
+                    "name": "high_blue"
+                  },
+                  "high_alpha": {
+                    "value": 1,
+                    "min": 0,
+                    "max": 1,
+                    "name": "high_alpha"
+                  },
+                  "low_red": {
+                    "value": 0.4,
+                    "min": 0,
+                    "max": 1,
+                    "name": "low_red"
+                  },
+                  "low_green": {
+                    "value": 0.6,
+                    "min": 0,
+                    "max": 1,
+                    "name": "low_green"
+                  },
+                  "low_blue": {
+                    "value": 0.9,
+                    "min": 0,
+                    "max": 1,
+                    "name": "low_blue"
+                  },
+                  "low_alpha": {
+                    "value": 1,
+                    "min": 0,
+                    "max": 1,
+                    "name": "low_alpha"
+                  },
+                  "focus_red": {
+                    "value": 1,
+                    "min": 0,
+                    "max": 1,
+                    "name": "focus_red"
+                  },
+                  "focus_green": {
+                    "value": 1,
+                    "min": 0,
+                    "max": 1,
+                    "name": "focus_green"
+                  },
+                  "focus_blue": {
+                    "value": 1,
+                    "min": 0,
+                    "max": 1,
+                    "name": "focus_blue"
+                  }
+                }
               }
             }
           ],
           "category": "",
-          "color": "#df10df",
+          "color": "orange",
           "columns": {
             "longitude": {
               "type": "Float32",
@@ -229,19 +413,19 @@
               "name": "heatmap_zoom"
             },
             "red": {
-              "value": 0.8745098039215686,
+              "value": 1,
               "min": 0,
               "max": 1,
               "name": "red"
             },
             "green": {
-              "value": 0.06274509803921569,
+              "value": 0.6,
               "min": 0,
               "max": 1,
               "name": "green"
             },
             "blue": {
-              "value": 0.8745098039215686,
+              "value": 0.4,
               "min": 0,
               "max": 1,
               "name": "blue"
@@ -286,10 +470,53 @@
           "selections": {
             "selected": {
               "header": {
-                "length": 0
+                "length": 1
               },
               "data": {
-                "seriesgroup": []
+                "seriesgroup": [
+                  3955019,
+                  3955019
+                ],
+                "source": [
+                  "TiledBinFormat: https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2",
+                  "TiledBinFormat: https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2"
+                ],
+                "tile": [
+                  "2016-01-01T00:00:00.000Z,2017-01-01T00:00:00.000Z;-33.75,36.5625,-28.125,39.375 (Idx: 95, Usage: 1, Level: 6, Rows: 8000, wanted, loaded, CLUSTER, REDUCE_vessel)\n",
+                  "2016-01-01T00:00:00.000Z,2017-01-01T00:00:00.000Z;-33.75,36.5625,-28.125,39.375 (Idx: 95, Usage: 1, Level: 6, Rows: 8000, wanted, loaded, CLUSTER, REDUCE_vessel)\n"
+                ],
+                "rowidx": [
+                  7293,
+                  7293
+                ],
+                "category": [
+                  164,
+                  164
+                ],
+                "datetime": [
+                  1472486703104,
+                  1472486703104
+                ],
+                "latitude": [
+                  38.33885192871094,
+                  38.33885192871094
+                ],
+                "longitude": [
+                  -28.631528854370117,
+                  -28.631528854370117
+                ],
+                "series": [
+                  39246,
+                  39246
+                ],
+                "sigma": [
+                  0.004534692969173193,
+                  0.004534692969173193
+                ],
+                "weight": [
+                  7.423333168029785,
+                  7.423333168029785
+                ]
               },
               "sortcols": [
                 "seriesgroup"
@@ -353,10 +580,18 @@
               },
               "data": {
                 "category": [
-                  8,
-                  8,
-                  36,
-                  36
+                  {
+                    "__jsonclass__": [
+                      "Number",
+                      "-Infinity"
+                    ]
+                  },
+                  {
+                    "__jsonclass__": [
+                      "Number",
+                      "Infinity"
+                    ]
+                  }
                 ]
               },
               "sortcols": [
@@ -515,11 +750,11 @@
     }
   },
   "metadata": {
-    "id": "udw-e1861eb3-e245-4561-9e98-7fecd9c2315c",
+    "id": "udw-d80b9566-cd7a-4b14-846d-275374638cdf",
     "urls": {
       "save": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces",
-      "load": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces/udw-e1861eb3-e245-4561-9e98-7fecd9c2315c",
-      "visualization": "http://globalfishingwatch.org/map/workspace/udw-e1861eb3-e245-4561-9e98-7fecd9c2315c"
+      "load": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces/udw-d80b9566-cd7a-4b14-846d-275374638cdf",
+      "visualization": "http://globalfishingwatch.org/map/workspace/udw-d80b9566-cd7a-4b14-846d-275374638cdf"
     }
   }
 }
