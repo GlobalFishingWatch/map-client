@@ -24,9 +24,8 @@ import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/hsvToRgb';
-import extractTilesetFromURL from 'util/extractTileset';
 import _ from 'lodash';
-import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL } from 'util/handlePinnedVesselLegacyURL';
+import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
 
 export function setUrlWorkspaceId(workspaceId) {
@@ -257,14 +256,14 @@ function processLegacyWorkspace(data, dispatch) {
     seriesgroup: getSeriesGroupsFromVesselURL(l.url),
     tileset: getTilesetFromVesselURL(l.url)
   }));
+
   let shownVessel = null;
   if (rawVesselLayer.args.selections && rawVesselLayer.args.selections.selected) {
     shownVessel = {
       series: rawVesselLayer.args.selections.selected.data.series[0],
       seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
-      tileset: vesselLayer.id
+      tileset: getTilesetFromLayerURL(rawVesselLayer.args.selections.selected.data.source[0])
     };
-    // shownVessel.tileset = '849-tileset-tms';
   }
 
   return {
@@ -278,7 +277,7 @@ function processLegacyWorkspace(data, dispatch) {
     tilesetUrl,
     shownVessel,
     filters,
-    tilesetID: extractTilesetFromURL(tilesetUrl)
+    tilesetID: getTilesetFromLayerURL(tilesetUrl)
   };
 }
 
