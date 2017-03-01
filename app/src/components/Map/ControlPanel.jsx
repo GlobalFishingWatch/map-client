@@ -160,7 +160,7 @@ class ControlPanel extends Component {
       <div className={controlPanelStyle['resume-display']} >
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
-            <span className={controlPanelStyle['counter-description']} >vessels</span>
+            <span className={controlPanelStyle['counter-description']} >Fishing hours</span>
             <span className={controlPanelStyle.total} >{this.calculateVesselCount()}</span>
           </div>
         </div>
