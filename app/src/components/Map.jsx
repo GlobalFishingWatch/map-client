@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL } from 'constants';
+import { MIN_ZOOM_LEVEL, REQUIRE_MAP_LOGIN, EMBEDDED } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -181,8 +181,52 @@ class Map extends Component {
     }
   }
 
+  renderSidebar() {
+    if (!EMBEDDED) {
+      return [<Modal
+        opened={this.props.layerIdPromptedForRemoval !== false}
+        isSmall
+        close={this.props.closeLayerRemovalModal}
+      >
+        <PromptLayerRemoval />
+      </Modal>,
+        <Modal
+          opened={this.props.recentVesselModalOpen}
+          closeable
+          close={this.props.closeRecentVesselModal}
+        >
+          <RecentVesselsModal />
+        </Modal>,
+        <Modal
+          opened={this.props.layerManagementModal}
+          closeable
+          close={this.props.closeLayerManagementModal}
+        >
+          <LayerLibrary />
+        </Modal>,
+        <Modal
+          opened={this.props.searchModalOpen}
+          closeable
+          close={this.props.closeSearchModal}
+        >
+          <SearchModal />
+        </Modal>,
+        <Modal
+          opened={this.props.layerModal.open}
+          closeable
+          close={this.props.closeLayerInfoModal}
+          zIndex={1003}
+        >
+          <LayerInfo />
+        </Modal>,
+        <ControlPanel />];
+    }
+    return null;
+  }
+
   render() {
     const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+
     return (<div className="full-height-container">
       <Modal
         opened={!this.props.token && REQUIRE_MAP_LOGIN}
@@ -198,40 +242,11 @@ class Map extends Component {
       </Modal>
       }
       <Modal
-        opened={this.props.layerModal.open}
-        closeable
-        close={this.props.closeLayerInfoModal}
-        zIndex={1003}
-      >
-        <LayerInfo />
-      </Modal>
-      <Modal
         opened={this.props.supportModal.open}
         closeable
         close={this.props.closeSupportModal}
       >
         <SupportForm />
-      </Modal>
-      <Modal
-        opened={this.props.layerManagementModal}
-        closeable
-        close={this.props.closeLayerManagementModal}
-      >
-        <LayerLibrary />
-      </Modal>
-      <Modal
-        opened={this.props.searchModalOpen}
-        closeable
-        close={this.props.closeSearchModal}
-      >
-        <SearchModal />
-      </Modal>
-      <Modal
-        opened={this.props.recentVesselModalOpen}
-        closeable
-        close={this.props.closeRecentVesselModal}
-      >
-        <RecentVesselsModal />
       </Modal>
       <Modal
         opened={this.props.welcomeModalOpen}
@@ -240,13 +255,7 @@ class Map extends Component {
       >
         <WelcomeModal />
       </Modal>
-      <Modal
-        opened={this.props.layerIdPromptedForRemoval !== false}
-        isSmall
-        close={this.props.closeLayerRemovalModal}
-      >
-        <PromptLayerRemoval />
-      </Modal>
+      { this.renderSidebar() }
       <Header />
       <div className={mapCss['map-container']} ref="mapContainer">
         <div className={mapCss.latlon}>
@@ -271,8 +280,7 @@ class Map extends Component {
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
-        <ControlPanel />
-        <div className={mapCss['attributions-container']}>
+        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: EMBEDDED })}>
           <span className={mapCss['mobile-map-attributions']}>
             <a
               className={mapCss.link}
