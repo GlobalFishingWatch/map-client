@@ -27,9 +27,11 @@ export default class TracksLayerGL {
    * Draw a single track (line + points)
    *
    * @param data
-   * @param series
+   * @param queriedSeries
+   * @param hue
    * @param drawParams
-   * @param projectionData An object containing the world top and left and the scale factor (dependent on zoom).
+   * @param offsets -
+   * An object containing the world top and left and the scale factor (dependent on zoom).
    * This is used to convert world coordinates to pixels
    */
   _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
@@ -53,6 +55,7 @@ export default class TracksLayerGL {
       }
     };
 
+
     for (let i = 0, length = data.worldX.length; i < length; i++) {
       prevSeries = currentSeries;
       currentSeries = data.series[i];
@@ -61,7 +64,7 @@ export default class TracksLayerGL {
       }
       const worldX = data.worldX[i];
       let originX = offsets.left;
-      if (originX > worldX) {
+      if (originX > worldX && (originX + worldX) > 256) {
         originX -= 256;
       }
       const x = ((data.worldX[i] - originX) * offsets.scale);
