@@ -131,7 +131,7 @@ class Share extends Component {
           Copy and paste the link into an email or IM
         </p>
         <form>
-          <input className={ShareStyles['url-input']} type="text" readOnly value={url} ref="input" />
+          <input className={ShareStyles['share-input']} type="text" readOnly value={url} ref="input" />
           <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
             {this.state.copied ? 'Copied!' : 'Copy'}
           </button>
@@ -151,17 +151,35 @@ class Share extends Component {
 
     return (
       <div className={ShareStyles.content} >
-        <p className={ShareStyles.intro} >
-          Embed the following code snippet in your site
-        </p>
         <form>
-          <select className={ShareStyles['url-input']} onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName} >
-            {selectOptions}
-          </select>
-          <input className={ShareStyles['embed-input']} type="text" readOnly value={embed} ref="input" />
-          <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
-            {this.state.copied ? 'Copied!' : 'Copy'}
-          </button>
+
+          <div className={ShareStyles.column}>
+            <div className={ShareStyles.row}>
+              <p className={ShareStyles.intro} >
+                Embed Size
+              </p>
+              <select
+                className={classnames([ShareStyles['share-input'], ShareStyles['-embed-select']])}
+                onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
+              >
+                {selectOptions}
+              </select>
+            </div>
+            <div className={ShareStyles.row}>
+              <p className={ShareStyles.intro} >
+                Embed in your site
+              </p>
+              <div>
+                <input
+                  className={classnames([ShareStyles['share-input'], ShareStyles['-embed-input']])}
+                  type="text" readOnly value={embed} ref="input"
+                />
+                <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
+                  {this.state.copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     );

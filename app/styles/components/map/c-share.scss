@@ -54,7 +54,8 @@
   }
 
   > .content {
-    > .intro {
+
+    .intro {
       color: $color-4;
       font-family: $font-family-1;
       font-size: $font-size-small;
@@ -70,40 +71,71 @@
       padding: 0;
     }
 
-    > form > .url-input {
-      background-color: transparent;
-      border: 1px solid $color-14;
-      color: rgba($color-4, .3);
-      font-size: $font-size-small;
-      height: 40px;
-      max-width: 225px;
-      padding: 0 0 0 5px;
-      text-overflow: ellipsis;
-      width: calc(100% - 70px);
+    > form {
+
+      .share-input {
+        background-color: transparent;
+        border: 1px solid $color-14;
+        color: rgba($color-4, .3);
+        font-size: $font-size-small;
+        height: 40px;
+        max-width: 225px;
+        padding: 0 0 0 5px;
+        text-overflow: ellipsis;
+        width: calc(100% - 70px);
+
+        &.-embed-input {
+          max-width: unset;
+        }
+
+        &.-embed-select {
+          width: unset;
+          max-width: unset;
+        }
+
+      }
+
+
+      .copy-button {
+        background-color: $color-3;
+        border: 0;
+        color: $color-4;
+        cursor: pointer;
+        font-size: $font-size-small;
+        font-weight: $font-weight-bold;
+        height: 40px;
+        text-transform: uppercase;
+        width: 70px;
+      }
     }
 
-    > form > .embed-input {
-      background-color: transparent;
-      border: 1px solid $color-14;
-      color: rgba($color-4, .3);
-      font-size: $font-size-small;
-      height: 40px;
-      max-width: 225px;
-      padding: 0 0 0 5px;
-      text-overflow: ellipsis;
-      width: calc(100% - 70px);
+    .column {
+      display: flex;
+      flex-basis: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &:not(:first-child) {
+        margin: 15px 0 0;
+      }
+
+      @media #{$mq-tablet} {
+        flex-basis: calc(50% - 13px);
+
+        &:not(:first-child) {
+          margin: 0;
+        }
+      }
     }
 
-    > form > .copy-button {
-      background-color: $color-3;
-      border: 0;
-      color: $color-4;
-      cursor: pointer;
-      font-size: $font-size-small;
-      font-weight: $font-weight-bold;
-      height: 40px;
-      text-transform: uppercase;
-      width: 70px;
+    .row {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      &:not(:first-child) {
+        margin: 15px 0 0;
+      }
     }
 
   }
