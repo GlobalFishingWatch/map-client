@@ -64,7 +64,7 @@ export default class TracksLayerGL {
       }
       const worldX = data.worldX[i];
       let originX = offsets.left;
-      if (originX > worldX && (originX + worldX) > 256) {
+      if (originX > worldX || (originX + worldX) > 256) {
         originX -= 256;
       }
       const x = ((data.worldX[i] - originX) * offsets.scale);
