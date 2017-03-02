@@ -461,7 +461,6 @@ class Timebar extends Component {
     const endOfTime = this.props.timelineOuterExtent[1];
     const isAtEndOfTime = x(offsetInnerExtent[1]) >= x(endOfTime);
 
-
     // if we're at the end of time, just stop playing
     if (isAtEndOfTime) {
       const innerExtentDelta = offsetInnerExtent[1].getTime() - offsetInnerExtent[0].getTime();
@@ -481,6 +480,16 @@ class Timebar extends Component {
   }
 
   onPauseToggle() {
+    const playStep = this.getPlayStep(this.props.timelineOuterExtent);
+    const realTimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep);
+    const offsetInnerExtent = this.props.timelineInnerExtent.map(d => new Date(d.getTime() + realTimePlayStep));
+    const endOfTime = this.props.timelineOuterExtent[1];
+    const isAtEndOfTime = x(offsetInnerExtent[1]) >= x(endOfTime);
+
+    if (isAtEndOfTime) {
+      this.props.rewind();
+    }
+
     lastTimestamp = null;
     const paused = !this.props.timelinePaused;
     this.props.updatePlayingStatus(paused);
@@ -564,6 +573,7 @@ Timebar.propTypes = {
   updateOuterTimelineDates: React.PropTypes.func,
   updatePlayingStatus: React.PropTypes.func,
   updateTimelineOverDates: React.PropTypes.func,
+  rewind: React.PropTypes.func,
   timelineOverallExtent: React.PropTypes.array,
   timelineOuterExtent: React.PropTypes.array,
   timelineInnerExtent: React.PropTypes.array,

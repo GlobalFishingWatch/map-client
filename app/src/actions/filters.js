@@ -5,7 +5,8 @@ import {
   SET_PLAYING_STATUS,
   SET_TIMELINE_HOVER_DATES,
   GA_PLAY_STATUS_TOGGLED,
-  GA_OUTER_TIMELINE_DATES_UPDATED
+  GA_OUTER_TIMELINE_DATES_UPDATED,
+  REWIND_TIMELINE
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
@@ -109,5 +110,11 @@ export function setTimelineHoverDates(overDates) {
   return {
     type: SET_TIMELINE_HOVER_DATES,
     payload: overDates
+  };
+}
+
+export function rewindTimeline() {
+  return {
+    type: REWIND_TIMELINE
   };
 }
