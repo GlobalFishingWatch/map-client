@@ -98,6 +98,9 @@ Environment in which the node server will run (production/development)
 
 If set, an auth wall will be placed in front of the whole node server
 
+### COMPLETE_MAP_RENDER
+If true, the map will display the header, and footer on the map page.
+
 #### EMBED_MAP_URL
 
 If set, the given URL will be loaded using an iframe element, instead of the built in map

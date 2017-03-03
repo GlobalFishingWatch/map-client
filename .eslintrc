@@ -17,7 +17,8 @@
     "GA_TRACKING_CODE": true,
     "LOCAL_WORKSPACE": true,
     "DISABLE_WELCOME_MODAL": true,
-    "WELCOME_MODAL_COOKIE_KEY": true
+    "WELCOME_MODAL_COOKIE_KEY": true,
+    "COMPLETE_MAP_RENDER": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
