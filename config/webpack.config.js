@@ -51,7 +51,8 @@ const webpackConfig = {
       LOCAL_WORKSPACE: JSON.stringify(envVariables.LOCAL_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
       DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true',
-      WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY)
+      WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY),
+      COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true'
     })
   ],
 
