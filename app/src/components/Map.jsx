@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL, COMPLETE_MAP_RENDER } from 'constants';
+import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
