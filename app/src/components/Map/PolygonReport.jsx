@@ -107,5 +107,6 @@ PolygonReport.propTypes = {
   latLng: React.PropTypes.array,
   isInReport: React.PropTypes.bool,
   toggleReportPolygon: React.PropTypes.func,
-  clearPolygon: React.PropTypes.func
+  clearPolygon: React.PropTypes.func,
+  map: React.PropTypes.object
 };

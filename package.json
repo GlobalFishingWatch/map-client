@@ -61,7 +61,6 @@
     "react-redux": "^4.4.5",
     "react-responsive": "^1.2.6",
     "react-sanfona": "daviferreira/react-sanfona#086ef6dd3db5fa8b6cc357e9d9c580fce4053c17",
-    "react-slick": "^0.13.6",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "resolve-url-loader": "1.6.0",
