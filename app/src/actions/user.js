@@ -8,14 +8,12 @@ import _ from 'lodash';
 
 const setGAUserDimension = (user) => {
   if (user !== false) {
-    // TODO import Google Analytics not through ga-react-router
-    // window.ga('set', 'dimension1', user.identity.userId);
+    window.ga('set', 'dimension1', user.identity.userId);
   }
 };
 
 const unsetGAUserDimension = () => {
-  // TODO import Google Analytics not through ga-react-router
-  // window.ga('set', 'dimension1', '');
+  window.ga('set', 'dimension1', '');
 };
 
 export function setToken(token) {
