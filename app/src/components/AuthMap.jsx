@@ -5,13 +5,17 @@ import getURLParameterByName from 'lib/getURLParameterByName';
 
 class AuthMap extends Component {
 
-  componentWillMount() {
-    this.setState({
-      canRedirect: getURLParameterByName('redirect_login'),
+  constructor(props) {
+    super(props);
+
+    const canRedirect = getURLParameterByName('redirect_login');
+    this.state = {
+      canRedirect,
       workspaceId: getURLParameterByName('workspace')
-    });
-    if (!this.props.token && this.state.canRedirect) {
-      this.props.login();
+    };
+
+    if (!props.token && canRedirect) {
+      props.login();
     }
   }
 

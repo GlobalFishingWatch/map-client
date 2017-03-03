@@ -122,7 +122,7 @@ const GA_ACTION_WHITELIST = [
 ];
 
 const googleAnalyticsMiddleware = store => next => (action) => {
-  if (typeof ga !== 'undefined' && typeof action.type !== 'undefined') {
+  if (typeof window.ga !== 'undefined' && typeof action.type !== 'undefined') {
     const state = store.getState();
     const gaAction = GA_ACTION_WHITELIST.find(whitelistAction => action.type === whitelistAction.type);
     if (gaAction) {
