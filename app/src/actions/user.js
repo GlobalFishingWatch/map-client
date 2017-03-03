@@ -73,8 +73,7 @@ export function getLoggedUser() {
       setGAUserDimension(false);
       return null;
     }).then((payload) => {
-      // TODO import Google Analytics not through ga-react-router
-      // window.ga('set', 'dimension1', payload.identity.userId);
+      window.ga('set', 'dimension1', payload.identity.userId);
       dispatch({
         type: SET_USER,
         payload: getUserData(payload)
