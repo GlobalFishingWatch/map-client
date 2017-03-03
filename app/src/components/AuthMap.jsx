@@ -11,7 +11,8 @@ class AuthMap extends Component {
     const canRedirect = getURLParameterByName('redirect_login');
     this.state = {
       canRedirect,
-      workspaceId: getURLParameterByName('workspace')
+      workspaceId: getURLParameterByName('workspace'),
+      isEmbedded: getURLParameterByName('embedded')
     };
 
     if (!props.token && canRedirect) {
@@ -21,7 +22,7 @@ class AuthMap extends Component {
 
   render() {
     return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.state.workspaceId} /> :
-    <MapContainer workspaceId={this.state.workspaceId} />;
+    <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />;
   }
 }
 

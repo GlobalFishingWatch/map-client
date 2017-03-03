@@ -15,7 +15,8 @@ function MapIFrame(props) {
   const workspace = props.workspaceId || DEFAULT_WORKSPACE;
   const urlParams = {
     headers: props.token && encodeURIComponent(JSON.stringify({ Authorization: `Bearer ${props.token}` })),
-    workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/v1/workspaces/${workspace}`)
+    workspace: encodeURIComponent(`${MAP_API_ENDPOINT}/v1/workspaces/${workspace}`),
+    embedded: true
   };
 
   /**
