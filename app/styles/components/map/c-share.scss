@@ -83,16 +83,6 @@
         padding: 0 0 0 5px;
         text-overflow: ellipsis;
         width: calc(100% - 70px);
-
-        &.-embed-input {
-          max-width: unset;
-        }
-
-        &.-embed-select {
-          width: unset;
-          max-width: unset;
-        }
-
       }
 
 
@@ -109,33 +99,12 @@
       }
     }
 
-    .column {
+    .embed-container {
       display: flex;
       flex-basis: 100%;
       flex-direction: column;
-      justify-content: space-between;
-
-      &:not(:first-child) {
-        margin: 15px 0 0;
-      }
-
-      @media #{$mq-tablet} {
-        flex-basis: calc(50% - 13px);
-
-        &:not(:first-child) {
-          margin: 0;
-        }
-      }
-    }
-
-    .row {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-
-      &:not(:first-child) {
-        margin: 15px 0 0;
-      }
+      justify-content: center;
+      align-items: center;
     }
 
   }

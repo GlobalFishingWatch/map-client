@@ -153,31 +153,29 @@ class Share extends Component {
       <div className={ShareStyles.content} >
         <form>
 
-          <div className={ShareStyles.column}>
-            <div className={ShareStyles.row}>
-              <p className={ShareStyles.intro} >
-                Embed Size
-              </p>
-              <select
-                className={classnames([ShareStyles['share-input'], ShareStyles['-embed-select']])}
-                onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
-              >
-                {selectOptions}
-              </select>
-            </div>
-            <div className={ShareStyles.row}>
-              <p className={ShareStyles.intro} >
-                Embed in your site
-              </p>
-              <div>
-                <input
-                  className={classnames([ShareStyles['share-input'], ShareStyles['-embed-input']])}
-                  type="text" readOnly value={embed} ref="input"
-                />
-                <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
-                  {this.state.copied ? 'Copied!' : 'Copy'}
-                </button>
-              </div>
+          <div className={ShareStyles['embed-container']}>
+            <p className={ShareStyles.intro} >
+              Embed Size
+            </p>
+            <select
+              className={ShareStyles['share-input']}
+              onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
+            >
+              {selectOptions}
+            </select>
+          </div>
+          <div className={ShareStyles['embed-container']}>
+            <p className={ShareStyles.intro} >
+              Embed in your site
+            </p>
+            <div>
+              <input
+                className={ShareStyles['share-input']}
+                type="text" readOnly value={embed} ref="input"
+              />
+              <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
+                {this.state.copied ? 'Copied!' : 'Copy'}
+              </button>
             </div>
           </div>
         </form>
