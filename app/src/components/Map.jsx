@@ -171,7 +171,7 @@ class Map extends Component {
   }
 
   render() {
-    const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="full-height-container">
       {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
@@ -246,7 +246,10 @@ class Map extends Component {
         <Share />
       </Modal>
       }
-      <div className={mapCss['map-container']} ref="mapContainer">
+      <div
+        className={classnames(mapCss['map-container'], { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER })}
+        ref="mapContainer"
+      >
         <div className={mapCss.latlon}>
           {this.state.latlon}
         </div>
