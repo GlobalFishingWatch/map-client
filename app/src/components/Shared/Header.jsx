@@ -25,6 +25,7 @@ class Header extends Component {
   }
 
   render() {
+    const LOGO_LINK = this.props.isEmbedded ? `${SITE_URL}/map` : `${SITE_URL}/`;
     let userLinks;
     if (this.props.loggedUser) {
       const name = this.props.loggedUser.displayName.split(' ');
@@ -73,7 +74,7 @@ class Header extends Component {
                 alt="Menu toggle icon"
               />
               <a
-                href={`${SITE_URL}/`}
+                href={`${LOGO_LINK}`}
                 className={styles['app-logo']}
               >
                 <img
@@ -151,7 +152,8 @@ Header.propTypes = {
   loggedUser: React.PropTypes.object,
   openShareModal: React.PropTypes.func,
   setSupportModalVisibility: React.PropTypes.func,
-  setVisibleMenu: React.PropTypes.func
+  setVisibleMenu: React.PropTypes.func,
+  isEmbedded: React.PropTypes.bool
 };
 
 export default Header;

@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL, REQUIRE_MAP_LOGIN, EMBEDDED } from 'constants';
+import { MIN_ZOOM_LEVEL, REQUIRE_MAP_LOGIN } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -174,8 +174,8 @@ class Map extends Component {
     const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="full-height-container">
-      {COMPLETE_MAP_RENDER &&
-      <Header />
+      {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
+      <Header isEmbedded={this.props.isEmbedded} />
       }
       {!this.props.isEmbedded &&
       <div>
@@ -270,7 +270,7 @@ class Map extends Component {
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
-        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: EMBEDDED })}>
+        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: this.props.isEmbedded })}>
           <span className={mapCss['mobile-map-attributions']}>
 
             <a
@@ -340,7 +340,7 @@ class Map extends Component {
       <div className={mapCss['timebar-container']}>
         <Timebar />
       </div>
-      {COMPLETE_MAP_RENDER &&
+      {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
       <MapFooter
         onOpenSupportModal={this.props.openSupportModal}
       />
