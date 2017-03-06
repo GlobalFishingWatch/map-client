@@ -185,7 +185,6 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
   return (dispatch, getState) => {
     const state = getState();
     const map = state.map.googleMaps;
-    console.warn('seriesgroup', seriesgroup, 'series', series);
 
     let layerId_ = layerId;
     // TODO remove when layerId is passed around when using search
@@ -195,6 +194,10 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
     }
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
+    if (!currentLayer) {
+      console.warn('trying to get a vessel track on a layer that doesnt exist', state.layers.workspaceLayers);
+      return;
+    }
     const header = currentLayer.header;
     // TODO use URL from header
     const url = currentLayer.url;
@@ -294,7 +297,9 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
     dispatch({
       type: ADD_VESSEL,
       payload: {
-        seriesgroup
+        seriesgroup,
+        series,
+        layerId
       }
     });
     if (state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
@@ -351,7 +356,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
       }
     });
     if (visible === true && currentVessel.track === undefined) {
-      dispatch(getVesselTrack(currentVessel.layerId, seriesgroup, null, true));
+      dispatch(getVesselTrack(currentVessel.tileset, seriesgroup, null, true));
     }
   };
 }

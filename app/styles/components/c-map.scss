@@ -42,6 +42,10 @@
   @media #{$mq-tablet} {
     display: none;
   }
+
+  &.-embed {
+    top: $header-height-mobile;
+  }
 }
 
 .attributions-container > .mobile-map-attributions {

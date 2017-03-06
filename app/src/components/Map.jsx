@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL } from 'constants';
+import { MIN_ZOOM_LEVEL, REQUIRE_MAP_LOGIN, EMBEDDED } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -172,6 +172,7 @@ class Map extends Component {
 
   render() {
     const canShareWorkspaces = (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+
     return (<div className="full-height-container">
       {COMPLETE_MAP_RENDER &&
       <Header />
@@ -269,8 +270,9 @@ class Map extends Component {
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
-        <div className={mapCss['attributions-container']} >
-          <span className={mapCss['mobile-map-attributions']} >
+        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: EMBEDDED })}>
+          <span className={mapCss['mobile-map-attributions']}>
+
             <a
               className={mapCss.link}
               href="https://carto.com/"

@@ -109,7 +109,7 @@ class FilterPanel extends Component {
           index={i}
           key={i}
           filter={flagFilter}
-          removeFilter={() => this.removeFilter()}
+          removeFilter={index => this.removeFilter(index)}
           updateFilters={(filter, index) => this.updateFilters(filter, index)}
           onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
           showBlending={this.state.currentBlendingOptionsShown === i}

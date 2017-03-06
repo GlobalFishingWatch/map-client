@@ -29,13 +29,15 @@
 
     @media #{$mq-tablet} {
       min-width: 620px;
-      max-height: 65%;
+      height: 65%;
+      max-height: 494px;
 
     }
 
     @media #{$mq-laptop} {
       width: 860px;
       height: 60%;
+      max-height: 494px;
     }
 
     .contain-content {

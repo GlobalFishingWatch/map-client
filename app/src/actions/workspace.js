@@ -3,9 +3,10 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE
+  TIMELINE_DEFAULT_INNER_END_DATE,
+  FLAGS,
+  FLAGS_LANDLOCKED
 } from 'constants';
-
 import {
   SET_ZOOM,
   SET_CENTER,
@@ -19,9 +20,11 @@ import {
 } from 'actions';
 import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
-import { setPinnedVessels, loadRecentVesselHistory } from 'actions/vesselInfo';
+import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
-import extractTilesetFromURL from 'util/extractTileset';
+import { hexToHue } from 'util/hsvToRgb';
+import _ from 'lodash';
+import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
 
 export function setUrlWorkspaceId(workspaceId) {
@@ -79,32 +82,47 @@ export function saveWorkspace(errorAction) {
       headers.Authorization = `Bearer ${state.user.token}`;
     }
 
+    const shownVesselData = state.vesselInfo.vessels.find(e => e.shownInInfoPanel === true);
+    let shownVessel = null;
+    if (shownVesselData !== undefined) {
+      shownVessel = {
+        seriesgroup: shownVesselData.seriesgroup,
+        tileset: shownVesselData.tileset
+      };
+      if (shownVesselData.series !== null) {
+        shownVessel.series = shownVesselData.series;
+      }
+    }
+
+    const workspaceData = {
+      workspace: {
+        tileset: state.map.tilesetId,
+        map: {
+          center: state.map.center,
+          zoom: state.map.zoom,
+          layers: state.layers.workspaceLayers.filter(layer => layer.added)
+        },
+        pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
+          seriesgroup: e.seriesgroup,
+          tileset: e.tileset,
+          title: e.title,
+          hue: e.hue
+        })),
+        shownVessel,
+        basemap: state.map.activeBasemap,
+        timeline: {
+          // We store the timestamp
+          innerExtent: state.filters.timelineInnerExtent.map(e => +e),
+          outerExtent: state.filters.timelineOuterExtent.map(e => +e)
+        },
+        filters: state.filters.flags
+      }
+    };
+
     fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
       method: 'POST',
       headers,
-      body: JSON.stringify({
-        workspace: {
-          tileset: state.map.tilesetId,
-          map: {
-            center: state.map.center,
-            zoom: state.map.zoom,
-            layers: state.layers.workspaceLayers.filter(layer => layer.added)
-          },
-          pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
-            seriesgroup: e.seriesgroup,
-            tileset: e.seriesgroup,
-            title: e.title,
-            hue: e.hue
-          })),
-          basemap: state.map.activeBasemap,
-          timeline: {
-            // We store the timestamp
-            innerExtent: state.filters.timelineInnerExtent.map(e => +e),
-            outerExtent: state.filters.timelineOuterExtent.map(e => +e)
-          },
-          flag: state.filters.flag
-        }
-      })
+      body: JSON.stringify(workspaceData)
     })
       .then(res => res.json())
       .then((data) => {
@@ -151,9 +169,14 @@ function dispatchActions(workspaceData, dispatch, getState) {
     payload: workspaceData.tilesetId
   });
 
-  dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers));
+  dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
+    // we need heatmap layers headers to be loaded before loading track
+    if (workspaceData.shownVessel) {
+      dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+    }
+  });
 
-  dispatch(setFlagFilters(workspaceData.flagFilters));
+  dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselHistory());
 
@@ -170,7 +193,8 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     basemap: workspace.basemap,
     layers: workspace.map.layers,
-    flagFilters: workspace.map.flagFilters,
+    filters: workspace.filters,
+    shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset
@@ -202,21 +226,44 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_BASEMAP, payload: workspace.basemap
   });
 
-  const layers = workspace.map.animations.map(l => ({
+  const layersData = workspace.map.animations.map(l => ({
     title: l.args.title,
     color: l.args.color,
     visible: l.args.visible,
     type: l.type,
     url: l.args.source.args.url
   }));
-  layers.forEach((layer) => {
+  layersData.forEach((layer) => {
     layer.id = calculateLayerId(layer);
   });
+
+  const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
+  // vesselLayer.id = '849-tileset-tms';
   const tilesetUrl = vesselLayer.url;
 
-  // TODO: implement legacy workspace loading of pinned vessels
-  const pinnedVessels = [];
+  const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
+  const filters = _.uniq(rawVesselLayer.args.selections.Flags.data.category)
+    .filter(flag => (Array.prototype.hasOwnProperty.call(FLAGS, flag) && !_.includes(FLAGS_LANDLOCKED, FLAGS[flag])))
+    .map(flag => ({
+      flag
+    }));
+
+  const pinnedVessels = layersData.filter(l => l.type === 'VesselTrackAnimation').map(l => ({
+    title: l.title,
+    hue: hexToHue(l.color),
+    seriesgroup: getSeriesGroupsFromVesselURL(l.url),
+    tileset: getTilesetFromVesselURL(l.url)
+  }));
+
+  let shownVessel = null;
+  if (rawVesselLayer.args.selections && rawVesselLayer.args.selections.selected) {
+    shownVessel = {
+      series: rawVesselLayer.args.selections.selected.data.series[0],
+      seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
+      tileset: getTilesetFromLayerURL(rawVesselLayer.args.selections.selected.data.source[0])
+    };
+  }
 
   return {
     zoom: workspace.state.zoom,
@@ -227,7 +274,9 @@ function processLegacyWorkspace(data, dispatch) {
     layers,
     pinnedVessels,
     tilesetUrl,
-    tilesetID: extractTilesetFromURL(tilesetUrl)
+    shownVessel,
+    filters,
+    tilesetID: getTilesetFromLayerURL(tilesetUrl)
   };
 }
 

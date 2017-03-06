@@ -1,6 +1,6 @@
 {
   "state": {
-    "zoom": 8,
+    "zoom": 7,
     "time": {
       "__jsonclass__": [
         "Date",
@@ -12,16 +12,15 @@
     "timeFocus": {
       "__jsonclass__": [
         "Date",
-        "2016-08-22T17:01:30.417Z"
+        "2016-07-20T12:16:10.514Z"
       ]
     },
     "offset": 20,
     "maxoffset": 100,
-    "lat": 50.029798758822366,
-    "lon": -10.759735107421875,
+    "lat": 37.091335251095146,
+    "lon": -27.862701416015625,
     "paused": true,
-    "edit": false,
-    "editing": true
+    "edit": false
   },
   "map": {
     "animations": [
@@ -471,10 +470,53 @@
           "selections": {
             "selected": {
               "header": {
-                "length": 0
+                "length": 1
               },
               "data": {
-                "seriesgroup": []
+                "seriesgroup": [
+                  3955019,
+                  3955019
+                ],
+                "source": [
+                  "TiledBinFormat: https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2",
+                  "TiledBinFormat: https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2"
+                ],
+                "tile": [
+                  "2016-01-01T00:00:00.000Z,2017-01-01T00:00:00.000Z;-33.75,36.5625,-28.125,39.375 (Idx: 95, Usage: 1, Level: 6, Rows: 8000, wanted, loaded, CLUSTER, REDUCE_vessel)\n",
+                  "2016-01-01T00:00:00.000Z,2017-01-01T00:00:00.000Z;-33.75,36.5625,-28.125,39.375 (Idx: 95, Usage: 1, Level: 6, Rows: 8000, wanted, loaded, CLUSTER, REDUCE_vessel)\n"
+                ],
+                "rowidx": [
+                  7293,
+                  7293
+                ],
+                "category": [
+                  164,
+                  164
+                ],
+                "datetime": [
+                  1472486703104,
+                  1472486703104
+                ],
+                "latitude": [
+                  38.33885192871094,
+                  38.33885192871094
+                ],
+                "longitude": [
+                  -28.631528854370117,
+                  -28.631528854370117
+                ],
+                "series": [
+                  39246,
+                  39246
+                ],
+                "sigma": [
+                  0.004534692969173193,
+                  0.004534692969173193
+                ],
+                "weight": [
+                  7.423333168029785,
+                  7.423333168029785
+                ]
               },
               "sortcols": [
                 "seriesgroup"
@@ -575,442 +617,6 @@
           "category": ""
         },
         "type": "CartoDBAnimation"
-      },
-      {
-        "args": {
-          "title": "F/V GURE AMETZA",
-          "color": "#bd1717",
-          "visible": true,
-          "source": {
-            "type": "TiledBinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2/sub/seriesgroup=1438045"
-            }
-          },
-          "category": "Vessels",
-          "columns": {
-            "longitude": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "longitude": 1
-              },
-              "name": "longitude"
-            },
-            "latitude": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "latitude": 1
-              },
-              "name": "latitude"
-            },
-            "sigma": {
-              "type": "Float32",
-              "source": {
-                "sigma": 1
-              },
-              "min": 0,
-              "max": 1,
-              "name": "sigma"
-            },
-            "weight": {
-              "type": "Float32",
-              "source": {
-                "weight": 1
-              },
-              "min": 0,
-              "max": 1,
-              "name": "weight"
-            },
-            "time": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "datetime": 1
-              },
-              "name": "time"
-            },
-            "filter": {
-              "type": "Float32",
-              "source": {
-                "_": null,
-                "timerange": -1,
-                "active_category": -1
-              },
-              "name": "filter"
-            }
-          },
-          "uniforms": {
-            "high_red": {
-              "value": 0.7411764705882353,
-              "min": 0,
-              "max": 1,
-              "name": "high_red"
-            },
-            "high_green": {
-              "value": 0.09019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "high_green"
-            },
-            "high_blue": {
-              "value": 0.09019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "high_blue"
-            },
-            "high_alpha": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "high_alpha"
-            },
-            "low_red": {
-              "value": 0.7411764705882353,
-              "min": 0,
-              "max": 1,
-              "name": "low_red"
-            },
-            "low_green": {
-              "value": 0.09019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "low_green"
-            },
-            "low_blue": {
-              "value": 0.09019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "low_blue"
-            },
-            "low_alpha": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "low_alpha"
-            },
-            "focus_red": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_red"
-            },
-            "focus_green": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_green"
-            },
-            "focus_blue": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_blue"
-            }
-          },
-          "selections": {
-            "active_category": {
-              "header": {
-                "length": 2
-              },
-              "data": {
-                "category": [
-                  {
-                    "__jsonclass__": [
-                      "Number",
-                      "-Infinity"
-                    ]
-                  },
-                  {
-                    "__jsonclass__": [
-                      "Number",
-                      "Infinity"
-                    ]
-                  }
-                ]
-              },
-              "sortcols": [
-                "category"
-              ],
-              "max_range_count": 3
-            },
-            "selected": {
-              "header": {
-                "length": 0
-              },
-              "data": {},
-              "sortcols": [],
-              "max_range_count": 1
-            },
-            "info": {
-              "header": {
-                "length": 0
-              },
-              "data": {},
-              "sortcols": [],
-              "max_range_count": 1
-            },
-            "hover": {
-              "header": {
-                "length": 0
-              },
-              "data": {
-                "series": []
-              },
-              "sortcols": [
-                "series"
-              ],
-              "max_range_count": 1
-            },
-            "bbox": {
-              "header": {
-                "length": 0
-              },
-              "data": {
-                "seriesgroup": []
-              },
-              "sortcols": [
-                "seriesgroup"
-              ],
-              "max_range_count": 1
-            },
-            "timerange": {
-              "header": {
-                "length": 1
-              },
-              "data": {
-                "datetime": [
-                  1470033757126,
-                  1472622135215
-                ]
-              },
-              "sortcols": [
-                "datetime"
-              ],
-              "max_range_count": 1
-            }
-          }
-        },
-        "type": "VesselTrackAnimation"
-      },
-      {
-        "args": {
-          "title": "LAURA LENA",
-          "color": "#0d8069",
-          "visible": true,
-          "source": {
-            "type": "TiledBinFormat",
-            "args": {
-              "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/tilesets/801-tileset-nz2/sub/seriesgroup=5812524"
-            }
-          },
-          "category": "Vessels",
-          "columns": {
-            "longitude": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "longitude": 1
-              },
-              "name": "longitude"
-            },
-            "latitude": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "latitude": 1
-              },
-              "name": "latitude"
-            },
-            "sigma": {
-              "type": "Float32",
-              "source": {
-                "sigma": 1
-              },
-              "min": 0,
-              "max": 1,
-              "name": "sigma"
-            },
-            "weight": {
-              "type": "Float32",
-              "source": {
-                "weight": 1
-              },
-              "min": 0,
-              "max": 1,
-              "name": "weight"
-            },
-            "time": {
-              "type": "Float32",
-              "hidden": true,
-              "source": {
-                "datetime": 1
-              },
-              "name": "time"
-            },
-            "filter": {
-              "type": "Float32",
-              "source": {
-                "_": null,
-                "timerange": -1,
-                "active_category": -1
-              },
-              "name": "filter"
-            }
-          },
-          "uniforms": {
-            "high_red": {
-              "value": 0.050980392156862744,
-              "min": 0,
-              "max": 1,
-              "name": "high_red"
-            },
-            "high_green": {
-              "value": 0.5019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "high_green"
-            },
-            "high_blue": {
-              "value": 0.4117647058823529,
-              "min": 0,
-              "max": 1,
-              "name": "high_blue"
-            },
-            "high_alpha": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "high_alpha"
-            },
-            "low_red": {
-              "value": 0.050980392156862744,
-              "min": 0,
-              "max": 1,
-              "name": "low_red"
-            },
-            "low_green": {
-              "value": 0.5019607843137255,
-              "min": 0,
-              "max": 1,
-              "name": "low_green"
-            },
-            "low_blue": {
-              "value": 0.4117647058823529,
-              "min": 0,
-              "max": 1,
-              "name": "low_blue"
-            },
-            "low_alpha": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "low_alpha"
-            },
-            "focus_red": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_red"
-            },
-            "focus_green": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_green"
-            },
-            "focus_blue": {
-              "value": 1,
-              "min": 0,
-              "max": 1,
-              "name": "focus_blue"
-            }
-          },
-          "selections": {
-            "active_category": {
-              "header": {
-                "length": 2
-              },
-              "data": {
-                "category": [
-                  {
-                    "__jsonclass__": [
-                      "Number",
-                      "-Infinity"
-                    ]
-                  },
-                  {
-                    "__jsonclass__": [
-                      "Number",
-                      "Infinity"
-                    ]
-                  }
-                ]
-              },
-              "sortcols": [
-                "category"
-              ],
-              "max_range_count": 3
-            },
-            "selected": {
-              "header": {
-                "length": 0
-              },
-              "data": {},
-              "sortcols": [],
-              "max_range_count": 1
-            },
-            "info": {
-              "header": {
-                "length": 0
-              },
-              "data": {},
-              "sortcols": [],
-              "max_range_count": 1
-            },
-            "hover": {
-              "header": {
-                "length": 0
-              },
-              "data": {
-                "series": []
-              },
-              "sortcols": [
-                "series"
-              ],
-              "max_range_count": 1
-            },
-            "bbox": {
-              "header": {
-                "length": 0
-              },
-              "data": {
-                "seriesgroup": []
-              },
-              "sortcols": [
-                "seriesgroup"
-              ],
-              "max_range_count": 1
-            },
-            "timerange": {
-              "header": {
-                "length": 1
-              },
-              "data": {
-                "datetime": [
-                  1470033757126,
-                  1472622135215
-                ]
-              },
-              "sortcols": [
-                "datetime"
-              ],
-              "max_range_count": 1
-            }
-          }
-        },
-        "type": "VesselTrackAnimation"
       }
     ],
     "options": {
@@ -1144,11 +750,11 @@
     }
   },
   "metadata": {
-    "id": "udw-b9bd98e3-7d13-440c-bae4-fd7198c12b78",
+    "id": "udw-d80b9566-cd7a-4b14-846d-275374638cdf",
     "urls": {
       "save": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces",
-      "load": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces/udw-b9bd98e3-7d13-440c-bae4-fd7198c12b78",
-      "visualization": "http://globalfishingwatch.org/map/workspace/udw-b9bd98e3-7d13-440c-bae4-fd7198c12b78"
+      "load": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/workspaces/udw-d80b9566-cd7a-4b14-846d-275374638cdf",
+      "visualization": "http://globalfishingwatch.org/map/workspace/udw-d80b9566-cd7a-4b14-846d-275374638cdf"
     }
   }
 }
