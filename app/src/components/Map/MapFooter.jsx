@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import classnames from 'classnames';
 import Footer from 'components/Shared/Footer';
 
@@ -94,10 +93,10 @@ class MapFooter extends Component {
             >
               Support
             </span>
-            <Link
+            <a
               className={classnames(MapFooterStyles.link, MapFooterStyles['-terms-of-use'])}
-              to="/terms-of-use"
-            >Terms of use</Link>
+              href={`${SITE_URL}/terms-of-use`}
+            >Terms of use</a>
           </div>
         </div>
         <Footer

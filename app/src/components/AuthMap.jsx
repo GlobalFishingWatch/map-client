@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import MapContainer from 'containers/Map';
 import MapIFrameContainer from 'containers/MapIFrame';
+import getURLParameterByName from 'lib/getURLParameterByName';
 
 class AuthMap extends Component {
 
-  componentWillMount() {
-    if (!this.props.token && this.props.canRedirect) {
-      this.props.login();
+  constructor(props) {
+    super(props);
+
+    const canRedirect = getURLParameterByName('redirect_login');
+    this.state = {
+      canRedirect,
+      workspaceId: getURLParameterByName('workspace')
+    };
+
+    if (!props.token && canRedirect) {
+      props.login();
     }
   }
 
   render() {
-    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.props.workspaceId} /> :
-    <MapContainer workspaceId={this.props.workspaceId} />;
+    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.state.workspaceId} /> :
+    <MapContainer workspaceId={this.state.workspaceId} />;
   }
 }
 
