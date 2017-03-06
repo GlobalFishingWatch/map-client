@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapContainer from 'containers/Map';
-import MapIFrameContainer from 'containers/MapIFrame';
 import getURLParameterByName from 'lib/getURLParameterByName';
 
 class AuthMap extends Component {
@@ -21,8 +20,7 @@ class AuthMap extends Component {
   }
 
   render() {
-    return (EMBED_MAP_URL) ? <MapIFrameContainer workspaceId={this.state.workspaceId} /> :
-    <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />;
+    return <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />;
   }
 }
 
