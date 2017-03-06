@@ -99,7 +99,7 @@ Environment in which the node server will run (production/development)
 If set, an auth wall will be placed in front of the whole node server
 
 ### COMPLETE_MAP_RENDER
-If true, the map will display the header, and footer on the map page.
+If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.
 
 #### EMBED_MAP_URL
 
@@ -139,4 +139,4 @@ Disable welcome modal. Typically enabled in a dev environment, disabled in prod
 
 #### WELCOME_MODAL_COOKIE_KEY
 
-Key used to read the welcome modal's url cookie
+Key used to read the welcome modal's url cookie. On load, the app will look for a cookie named with the specified key. If any cookie matches the WELCOME_MODAL_COOKIE_KEY and the url of the cookie is new, the html content will be loaded in a modal. EXAMPLE: If WELCOME_MODAL_COOKIE_KEY is set to GlobalFishingWatchNewsletter the cookie's name must also be GlobalFishingWatchNewsletter.
