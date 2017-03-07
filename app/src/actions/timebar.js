@@ -5,10 +5,22 @@ import {
   SET_TIMEBAR_CHART_DATA
 } from 'actions';
 
-export function loadTimebarChartData() {
+export function loadTimebarChartData(start, end) {
   return (dispatch) => {
-    fetch('/timebarData.json')
-    .then(res => res.json())
+    const chartData = [];
+    for (let i = 0; i < (end - start); i += 1) {
+      const req = fetch(`${TIMEBAR_DATA_URL}/${start + i}-${start + 1 + i}.json`)
+        .then(res => res.json());
+      chartData.push(req);
+    }
+    Promise.all(chartData)
+      .then((jsonList) => {
+        let payload = [];
+        jsonList.forEach((list) => {
+          payload = [...payload, ...list];
+        });
+        return payload;
+      })
     .then((data) => {
       dispatch({
         type: SET_TIMEBAR_CHART_DATA,

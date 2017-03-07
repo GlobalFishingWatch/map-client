@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   loadInitialState: () => {
     dispatch(setUrlWorkspaceId(ownProps.workspaceId));
-    dispatch(loadTimebarChartData());
+    dispatch(loadTimebarChartData(2012, 2018));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));
