@@ -107,6 +107,10 @@
   height: $timebar-height;
   left: 0;
   width: 100%;
+
+  &.-no-footer {
+    bottom: 0;
+  }
 }
 
 .map-container {
@@ -126,7 +130,7 @@
     display: none !important; // sass-lint:disable-line no-important
   }
 
-  &.-no-footer{
+  &.-no-footer {
     height: calc(100% - #{$timebar-height});
   }
 }
