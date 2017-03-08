@@ -5,19 +5,25 @@ import { GA_SEARCH_RESULT_CLICKED, GA_VESSEL_POINT_CLICKED, GA_MAP_POINT_CLICKED
  * These aim at removing ambiguities in other actions.
  */
 export function trackSearchResultClicked(tilesetUrl, seriesgroup) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+    const name = state.vesselInfo.vessels[vesselIndex].vesselname;
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
-      payload: { tilesetUrl, seriesgroup }
+      payload: { tilesetUrl, seriesgroup, name }
     });
   };
 }
 
 export function trackVesselPointClicked(tilesetUrl, seriesgroup) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    const vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+    const name = state.vesselInfo.vessels[vesselIndex].vesselname;
     dispatch({
       type: GA_VESSEL_POINT_CLICKED,
-      payload: { tilesetUrl, seriesgroup }
+      payload: { tilesetUrl, seriesgroup, name }
     });
   };
 }

@@ -75,12 +75,6 @@ function setCurrentVessel(layerId, seriesgroup, fromSearch) {
       const data = JSON.parse(request.responseText);
       delete data.series;
 
-      if (fromSearch) {
-        dispatch(trackSearchResultClicked(state.map.tilesetUrl, seriesgroup));
-      } else {
-        dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
-      }
-
       data.layerId = layerId;
 
       dispatch({
@@ -93,6 +87,12 @@ function setCurrentVessel(layerId, seriesgroup, fromSearch) {
           seriesgroup: data.seriesgroup
         }
       });
+
+      if (fromSearch) {
+        dispatch(trackSearchResultClicked(state.map.tilesetUrl, seriesgroup));
+      } else {
+        dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
+      }
 
       dispatch(setRecentVesselHistory(data.seriesgroup));
     };

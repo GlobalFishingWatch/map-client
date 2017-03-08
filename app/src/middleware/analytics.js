@@ -9,7 +9,8 @@ import {
   SET_INNER_TIMELINE_DATES,
   GA_OUTER_TIMELINE_DATES_UPDATED,
   SET_WORKSPACE_ID,
-  SET_FLAG_FILTERS
+  SET_FLAG_FILTERS,
+  ADD_CUSTOM_LAYER
 } from 'actions';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
@@ -36,6 +37,17 @@ const GA_ACTION_WHITELIST = [
       {
         layerId: action.payload.layerId,
         visibility: action.payload.added
+      }
+    )
+  },
+  {
+    type: ADD_CUSTOM_LAYER,
+    category: 'Layer',
+    action: 'Add user generated layer',
+    getPayload: ({ payload }) => (
+      {
+        layerId: payload.id,
+        name: payload.name
       }
     )
   },
