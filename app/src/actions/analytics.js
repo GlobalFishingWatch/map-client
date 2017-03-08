@@ -8,6 +8,7 @@ export function trackSearchResultClicked(tilesetUrl, seriesgroup) {
   return (dispatch, getState) => {
     const state = getState();
     const vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+    // name can be undefinedl, but GA doesn't support objects as a label, so if undefined name will be removed on stringify
     const name = state.vesselInfo.vessels[vesselIndex].vesselname;
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
@@ -20,6 +21,7 @@ export function trackVesselPointClicked(tilesetUrl, seriesgroup) {
   return (dispatch, getState) => {
     const state = getState();
     const vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+    // name can be undefinedl, but GA doesn't support objects as a label, so if undefined name will be removed on stringify
     const name = state.vesselInfo.vessels[vesselIndex].vesselname;
     dispatch({
       type: GA_VESSEL_POINT_CLICKED,

@@ -124,12 +124,16 @@ const GA_ACTION_WHITELIST = [
     type: SET_FLAG_FILTERS,
     category: 'Settings',
     action: 'Filter by Country',
-    getPayload: action => action.payload.flagFilters.map((flagFilter) => {
-      if (flagFilter.flag) {
-        return FLAGS[flagFilter.flag];
+    getPayload: ({ payload }) => {
+      const filters = payload.flagFilters.filter(flagFilter => typeof flagFilter.flag !== 'undefined');
+      if (filters.length) {
+        return filters.map((flagFilter) => {
+          if (flagFilter.flag) return FLAGS[flagFilter.flag];
+          return 'ALL';
+        });
       }
-      return 'ALL';
-    })
+      return null;
+    }
   }
 ];
 
