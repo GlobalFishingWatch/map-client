@@ -51,7 +51,8 @@ const webpackConfig = {
       LOCAL_WORKSPACE: JSON.stringify(envVariables.LOCAL_WORKSPACE),
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
       DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true',
-      WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY)
+      WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY),
+      TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL)
     })
   ],
 
