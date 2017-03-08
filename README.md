@@ -114,7 +114,7 @@ URL of the blog
 
 URL of the main site
 
-#### EMBED_MAP_URL
+#### MAP_URL
 
 URL of the map on the main site
 
@@ -141,3 +141,7 @@ Disable welcome modal. Typically enabled in a dev environment, disabled in prod
 #### WELCOME_MODAL_COOKIE_KEY
 
 Key used to read the welcome modal's url cookie. On load, the app will look for a cookie named with the specified key. If any cookie matches the WELCOME_MODAL_COOKIE_KEY and the url of the cookie is new, the html content will be loaded in a modal. EXAMPLE: If WELCOME_MODAL_COOKIE_KEY is set to GlobalFishingWatchNewsletter the cookie's name must also be GlobalFishingWatchNewsletter.
+
+#### TIMEBAR_DATA_URL
+
+Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`.

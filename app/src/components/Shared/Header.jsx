@@ -25,7 +25,7 @@ class Header extends Component {
   }
 
   render() {
-    const logoUrl = this.props.isEmbedded ? `${EMBED_MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
+    const logoUrl = this.props.isEmbedded ? `${MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
     let userLinks;
     if (this.props.loggedUser) {
       const name = this.props.loggedUser.displayName.split(' ');
