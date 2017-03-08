@@ -21,6 +21,7 @@ import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
 import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
 import { loadTimebarChartData } from 'actions/timebar';
+import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -47,7 +48,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   loadInitialState: () => {
     dispatch(setUrlWorkspaceId(ownProps.workspaceId));
-    dispatch(loadTimebarChartData());
+    dispatch(loadTimebarChartData(TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE));
   },
   toggleLayerVisibility: (layer) => {
     dispatch(toggleLayerVisibility(layer));

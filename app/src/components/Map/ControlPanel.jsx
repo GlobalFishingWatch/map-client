@@ -32,7 +32,7 @@ class ControlPanel extends Component {
     }
   }
 
-  calculateVesselCount() {
+  calculateFishingHours() {
     const min = this.props.timelineInnerExtent[0].getTime();
     const max = this.props.timelineInnerExtent[1].getTime();
 
@@ -47,7 +47,7 @@ class ControlPanel extends Component {
       return acc;
     }, 0);
 
-    return result.toLocaleString();
+    return Math.round(result).toLocaleString();
   }
 
   renderSearch() {
@@ -161,7 +161,7 @@ class ControlPanel extends Component {
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
             <span className={controlPanelStyle['counter-description']} >Fishing hours</span>
-            <span className={controlPanelStyle.total} >{this.calculateVesselCount()}</span>
+            <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
           </div>
         </div>
       </div>
