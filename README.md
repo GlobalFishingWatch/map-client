@@ -137,3 +137,6 @@ Disable welcome modal. Typically enabled in a dev environment, disabled in prod
 #### WELCOME_MODAL_COOKIE_KEY
 
 Key used to read the welcome modal's url cookie
+
+#### TIMEBAR_DATA_URL
+Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`.
