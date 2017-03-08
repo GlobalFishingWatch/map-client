@@ -11,7 +11,7 @@ class AuthMap extends Component {
     this.state = {
       canRedirect,
       workspaceId: getURLParameterByName('workspace'),
-      isEmbedded: getURLParameterByName('embedded')
+      isEmbedded: !!getURLParameterByName('embedded')
     };
 
     if (!props.token && canRedirect) {

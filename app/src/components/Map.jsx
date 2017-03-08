@@ -346,6 +346,7 @@ class Map extends Component {
       {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
       <MapFooter
         onOpenSupportModal={this.props.openSupportModal}
+        isEmbedded={this.props.isEmbedded}
       />
       }
     </div>);

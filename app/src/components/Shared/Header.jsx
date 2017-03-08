@@ -25,7 +25,6 @@ class Header extends Component {
   }
 
   render() {
-    const LOGO_LINK = this.props.isEmbedded ? `${SITE_URL}/map` : `${SITE_URL}/`;
     let userLinks;
     if (this.props.loggedUser) {
       const name = this.props.loggedUser.displayName.split(' ');
@@ -49,13 +48,17 @@ class Header extends Component {
       );
     }
 
+    const target = this.props.isEmbedded ? '_parent' : '';
+
     return (
       <div>
+        {!this.props.isEmbedded &&
         <MenuMobile
           visible={this.state.mobileMenuVisible}
           onClose={this.closeMobileMenu}
           onOpenSupportModal={this.props.setSupportModalVisibility}
         />
+        }
         <nav
           className={
             classnames({ [styles['c-header']]: true, [styles['-map']]: true })
@@ -67,14 +70,17 @@ class Header extends Component {
             }
           >
             <div className={styles['contain-nav']} >
+              {!this.props.isEmbedded &&
               <img
                 onClick={() => this.setState({ mobileMenuVisible: true })}
                 className={styles['icon-menu-mobile']}
                 src={menuicon}
                 alt="Menu toggle icon"
               />
+              }
               <a
-                href={`${LOGO_LINK}`}
+                target={target}
+                href={`${SITE_URL}`}
                 className={styles['app-logo']}
               >
                 <img
@@ -82,11 +88,12 @@ class Header extends Component {
                   alt="Global Fishing Watch"
                 />
               </a>
-
+              {!this.props.isEmbedded &&
               <ShareIcon
                 className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
                 onClick={this.props.openShareModal}
-              />
+              />}
+              {!this.props.isEmbedded &&
               <ul className={styles.menu} >
                 <li>
                   <a className={styles['-active']} href="#" >Map</a>
@@ -138,6 +145,7 @@ class Header extends Component {
                 </li>
                 {userLinks}
               </ul>
+              }
             </div>
           </div>
         </nav>
