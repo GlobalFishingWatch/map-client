@@ -4,6 +4,10 @@
   position: relative;
   width: 50%;
 
+  > svg {
+    display: block;
+  }
+
   @media #{$mq-mobile-large} {
     flex: 1;
   }

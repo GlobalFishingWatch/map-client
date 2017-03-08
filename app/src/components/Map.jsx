@@ -247,7 +247,7 @@ class Map extends Component {
       </Modal>
       }
       <div
-        className={classnames(mapCss['map-container'], { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER })}
+        className={classnames(mapCss['map-container'], { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}
         ref="mapContainer"
       >
         <div className={mapCss.latlon}>
@@ -340,7 +340,7 @@ class Map extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <div className={mapCss['timebar-container']}>
+      <div className={classnames(mapCss['timebar-container'], { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}>
         <Timebar />
       </div>
       {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
