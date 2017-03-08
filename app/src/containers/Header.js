@@ -1,17 +1,12 @@
 import { connect } from 'react-redux';
 import Header from 'components/Shared/Header';
 import { login, logout } from 'actions/user';
-import {
-  setShareModalError,
-  openShareModal
-} from 'actions/map';
-import {
-  saveWorkspace,
-  getWorkspace
-} from 'actions/workspace';
+import { setShareModalError, openShareModal } from 'actions/map';
+import { saveWorkspace, getWorkspace } from 'actions/workspace';
 
 const mapStateToProps = state => ({
-  loggedUser: state.user.loggedUser
+  loggedUser: state.user.loggedUser,
+  urlWorkspaceId: state.map.urlWorkspaceId
 });
 
 const mapDispatchToProps = dispatch => ({

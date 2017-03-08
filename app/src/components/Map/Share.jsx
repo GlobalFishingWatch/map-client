@@ -143,7 +143,7 @@ class Share extends Component {
   renderEmbed() {
     const url = this.getURLWithWorkspace();
     const size = EMBED_SIZE_SETTINGS.find(elem => elem.name === this.state.embedSizeName);
-    const embed = `<iframe allowfullscreen="true" width="${size.width}" height="${size.height}" src="${url}" />`;
+    const embed = `<iframe allowfullscreen="true" width="${size.width}" height="${size.height}" src="${url}&embedded=true" />`;
 
     const selectOptions = EMBED_SIZE_SETTINGS.map(option => (
       <option key={option.name} value={option.name}>{option.name} ({option.width}x{option.height})</option>)
@@ -153,31 +153,29 @@ class Share extends Component {
       <div className={ShareStyles.content} >
         <form>
 
-          <div className={ShareStyles.column}>
-            <div className={ShareStyles.row}>
-              <p className={ShareStyles.intro} >
-                Embed Size
-              </p>
-              <select
-                className={classnames([ShareStyles['share-input'], ShareStyles['-embed-select']])}
-                onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
-              >
-                {selectOptions}
-              </select>
-            </div>
-            <div className={ShareStyles.row}>
-              <p className={ShareStyles.intro} >
-                Embed in your site
-              </p>
-              <div>
-                <input
-                  className={classnames([ShareStyles['share-input'], ShareStyles['-embed-input']])}
-                  type="text" readOnly value={embed} ref="input"
-                />
-                <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
-                  {this.state.copied ? 'Copied!' : 'Copy'}
-                </button>
-              </div>
+          <div className={ShareStyles['embed-container']}>
+            <p className={ShareStyles.intro} >
+              Embed Size
+            </p>
+            <select
+              className={ShareStyles['share-input']}
+              onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
+            >
+              {selectOptions}
+            </select>
+          </div>
+          <div className={ShareStyles['embed-container']}>
+            <p className={ShareStyles.intro} >
+              Embed in your site
+            </p>
+            <div>
+              <input
+                className={ShareStyles['share-input']}
+                type="text" readOnly value={embed} ref="input"
+              />
+              <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
+                {this.state.copied ? 'Copied!' : 'Copy'}
+              </button>
             </div>
           </div>
         </form>

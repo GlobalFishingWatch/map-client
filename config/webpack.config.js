@@ -42,7 +42,7 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
-      EMBED_MAP_URL: JSON.stringify(envVariables.EMBED_MAP_URL),
+      MAP_URL: JSON.stringify(envVariables.MAP_URL),
       MAP_API_ENDPOINT: JSON.stringify(envVariables.MAP_API_ENDPOINT),
       BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
       SITE_URL: JSON.stringify(envVariables.SITE_URL),
@@ -52,6 +52,7 @@ const webpackConfig = {
       GA_TRACKING_CODE: JSON.stringify(envVariables.GA_TRACKING_CODE),
       DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true',
       WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY),
+      COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL)
     })
   ],

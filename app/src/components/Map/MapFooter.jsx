@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import Footer from 'components/Shared/Footer';
-
 import MapFooterStyles from 'styles/components/map/c-map-footer.scss';
-
 import OceanaLogo from 'assets/logos/oceana_logo_white.png';
 import SkytruthLogo from 'assets/logos/skytruth_white.png';
 import GoogleLogo from 'assets/logos/google_logo.png';
@@ -34,9 +32,9 @@ class MapFooter extends Component {
     const toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
     return (
-      <div className={MapFooterStyles['overflow-container']}>
-        <div className={MapFooterStyles['c-map-footer']}>
-          <div className={MapFooterStyles['logo-list']}>
+      <div className={MapFooterStyles['overflow-container']} >
+        <div className={MapFooterStyles['c-map-footer']} >
+          <div className={MapFooterStyles['logo-list']} >
             <img
               className={classnames(MapFooterStyles.logo, MapFooterStyles['-oceana'])}
               src={OceanaLogo}
@@ -53,14 +51,17 @@ class MapFooter extends Component {
               alt="Google"
             />
           </div>
-          <div className={MapFooterStyles.options}>
+
+          <div className={classnames(MapFooterStyles.options, { [MapFooterStyles['-embed']]: this.props.isEmbedded })} >
+            {!this.props.isEmbedded &&
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles['-footer'])}
               onClick={() => this.toggleFooter()}
             >
               {toggleLabel}
             </span>
-            <span className={classnames(MapFooterStyles.link, MapFooterStyles['-attributions'])}>
+            }
+            <span className={classnames(MapFooterStyles.link, MapFooterStyles['-attributions'])} >
               <a
                 className={MapFooterStyles.link}
                 href="https://carto.com/"
@@ -111,7 +112,8 @@ class MapFooter extends Component {
 }
 
 MapFooter.propTypes = {
-  onOpenSupportModal: React.PropTypes.func
+  onOpenSupportModal: React.PropTypes.func,
+  isEmbedded: React.PropTypes.bool
 };
 
 export default MapFooter;

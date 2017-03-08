@@ -8,7 +8,7 @@
   "globals": {
     "google": true,
     "cartodb": true,
-    "EMBED_MAP_URL": true,
+    "MAP_URL": true,
     "MAP_API_ENDPOINT": true,
     "BLOG_URL": true,
     "SITE_URL": true,
@@ -18,6 +18,7 @@
     "LOCAL_WORKSPACE": true,
     "DISABLE_WELCOME_MODAL": true,
     "WELCOME_MODAL_COOKIE_KEY": true,
+    "COMPLETE_MAP_RENDER": true,
     "TIMEBAR_DATA_URL": true
   },
   "parserOptions": {
