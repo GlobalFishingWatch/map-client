@@ -52,7 +52,7 @@ class MapFooter extends Component {
             />
           </div>
 
-          <div className={MapFooterStyles.options} >
+          <div className={classnames(MapFooterStyles.options, { [MapFooterStyles['-embed']]: this.props.isEmbedded })} >
             {!this.props.isEmbedded &&
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles['-footer'])}
