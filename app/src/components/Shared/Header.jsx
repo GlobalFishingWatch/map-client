@@ -25,6 +25,7 @@ class Header extends Component {
   }
 
   render() {
+    const logoUrl = this.props.isEmbedded ? `${EMBED_MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
     let userLinks;
     if (this.props.loggedUser) {
       const name = this.props.loggedUser.displayName.split(' ');
@@ -80,7 +81,7 @@ class Header extends Component {
               }
               <a
                 target={target}
-                href={`${SITE_URL}`}
+                href={logoUrl}
                 className={styles['app-logo']}
               >
                 <img
@@ -161,7 +162,8 @@ Header.propTypes = {
   openShareModal: React.PropTypes.func,
   setSupportModalVisibility: React.PropTypes.func,
   setVisibleMenu: React.PropTypes.func,
-  isEmbedded: React.PropTypes.bool
+  isEmbedded: React.PropTypes.bool,
+  urlWorkspaceId: React.PropTypes.string
 };
 
 export default Header;

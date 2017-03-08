@@ -102,10 +102,6 @@ If set, an auth wall will be placed in front of the whole node server
 
 If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.
 
-#### EMBED_MAP_URL
-
-If set, the given URL will be loaded using an iframe element, instead of the built in map
-
 #### MAP_API_ENDPOINT
 
 Endpoint of the API (vessel tiles, workspace, contact, etc)
@@ -117,6 +113,10 @@ URL of the blog
 #### SITE_URL
 
 URL of the main site
+
+#### EMBED_MAP_URL
+
+URL of the map on the main site
 
 #### REQUIRE_MAP_LOGIN
 
