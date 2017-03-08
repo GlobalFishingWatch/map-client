@@ -5,11 +5,8 @@ import {
 } from 'actions';
 
 export function loadTimebarChartData(startDate, endDate) {
-  let start = new Date(startDate.valueOf() + (startDate.getTimezoneOffset() * 60000));
-  start = parseInt(start.getFullYear(), 10);
-  let end = new Date(endDate.valueOf() + (endDate.getTimezoneOffset() * 60000));
-  end = parseInt(end.getFullYear(), 10);
-
+  const start = parseInt(startDate.getUTCFullYear(), 10);
+  const end = parseInt(endDate.getUTCFullYear(), 10);
   return (dispatch) => {
     const chartData = [];
     for (let i = 0; i <= (end - start); i += 1) {
