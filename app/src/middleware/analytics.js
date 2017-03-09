@@ -10,7 +10,8 @@ import {
   GA_OUTER_TIMELINE_DATES_UPDATED,
   SET_WORKSPACE_ID,
   SET_FLAG_FILTERS,
-  ADD_CUSTOM_LAYER
+  ADD_CUSTOM_LAYER,
+  GA_OUTSIDE_LINK_CLICKED
 } from 'actions';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
@@ -134,6 +135,12 @@ const GA_ACTION_WHITELIST = [
       }
       return null;
     }
+  },
+  {
+    type: GA_OUTSIDE_LINK_CLICKED,
+    category: 'External Link',
+    action: 'Click to leave',
+    getPayload: ({ payload }) => payload
   }
 ];
 

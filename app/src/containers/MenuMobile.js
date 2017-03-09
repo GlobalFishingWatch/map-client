@@ -4,6 +4,7 @@ import MenuMobile from 'components/Shared/MenuMobile';
 import { login, logout } from 'actions/user';
 import { setSupportModalVisibility } from 'actions/map';
 import { getWorkspace } from 'actions/workspace';
+import { trackOutsideLinkClicked } from 'actions/analytics';
 
 const mapStateToProps = state => ({
   loggedUser: state.user.loggedUser
@@ -21,6 +22,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setSupportModalVisibility: () => {
     dispatch(setSupportModalVisibility(true));
+  },
+  beforeLeave: (link) => {
+    dispatch(trackOutsideLinkClicked(link));
   }
 });
 

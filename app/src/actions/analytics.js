@@ -1,4 +1,9 @@
-import { GA_SEARCH_RESULT_CLICKED, GA_VESSEL_POINT_CLICKED, GA_MAP_POINT_CLICKED } from 'actions';
+import {
+  GA_SEARCH_RESULT_CLICKED,
+  GA_VESSEL_POINT_CLICKED,
+  GA_MAP_POINT_CLICKED,
+  GA_OUTSIDE_LINK_CLICKED
+} from 'actions';
 
 /**
  * Only add here actions that are GA-exclusive.
@@ -37,4 +42,8 @@ export function trackMapClicked(lat, long, type) {
       payload: { lat, long, type }
     });
   };
+}
+
+export function trackOutsideLinkClicked(link) {
+  return dispatch => dispatch({ type: GA_OUTSIDE_LINK_CLICKED, payload: link });
 }
