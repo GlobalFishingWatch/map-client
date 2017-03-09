@@ -44,6 +44,9 @@ export function trackMapClicked(lat, long, type) {
   };
 }
 
-export function trackOutsideLinkClicked(link) {
-  return dispatch => dispatch({ type: GA_OUTSIDE_LINK_CLICKED, payload: link });
+export function trackExternalLinkClicked(link) {
+  return (dispatch) => {
+    dispatch({ type: GA_OUTSIDE_LINK_CLICKED, payload: link });
+    window.location = link;
+  };
 }

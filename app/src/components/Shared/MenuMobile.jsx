@@ -3,23 +3,11 @@ import menuMobile from 'styles/components/c-mobile-menu.scss';
 
 class MenuMobile extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.beforeLeave = this.beforeLeave.bind(this);
-  }
-
   onClickSupoport(e) {
     e.preventDefault();
 
     this.props.onClose();
     this.props.setSupportModalVisibility(true);
-  }
-
-  beforeLeave(e) {
-    e.preventDefault();
-    const link = e.target.href;
-    this.props.beforeLeave(link);
   }
 
   render() {
@@ -68,7 +56,7 @@ class MenuMobile extends Component {
         className={backClass}
       />
       <div className={cssClass} >
-        <ul onClick={this.beforeLeave}>
+        <ul>
           <li><a href="#" >Map</a></li>
           <li>News</li>
           <ul className={menuMobile['submenu-mobile']} >
