@@ -2,7 +2,7 @@ import {
   GA_SEARCH_RESULT_CLICKED,
   GA_VESSEL_POINT_CLICKED,
   GA_MAP_POINT_CLICKED,
-  GA_OUTSIDE_LINK_CLICKED
+  GA_EXTERNAL_LINK_CLICKED
 } from 'actions';
 
 /**
@@ -46,7 +46,7 @@ export function trackMapClicked(lat, long, type) {
 
 export function trackExternalLinkClicked(link) {
   return (dispatch) => {
-    dispatch({ type: GA_OUTSIDE_LINK_CLICKED, payload: link });
+    dispatch({ type: GA_EXTERNAL_LINK_CLICKED, payload: link });
     window.location = link;
   };
 }

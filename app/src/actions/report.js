@@ -6,7 +6,9 @@ import {
   START_REPORT,
   DISCARD_REPORT,
   SET_REPORT_STATUS_SENT,
-  SET_REPORT_STATUS_ERROR
+  SET_REPORT_STATUS_ERROR,
+  GA_MPA_REPORT,
+  GA_EEZ_REPORT
 } from 'actions';
 import { toggleLayerVisibility, setLayerOpacity } from 'actions/layers';
 import { FLAGS } from 'constants';
@@ -68,6 +70,17 @@ function startReport(layerId) {
         reportId: workspaceLayer.reportId
       }
     });
+    if (layerId === 'mparu' || layerId === 'mpant') {
+      dispatch({
+        type: GA_MPA_REPORT,
+        payload: workspaceLayer.title
+      });
+    } else if (layerId === 'eez') {
+      dispatch({
+        type: GA_EEZ_REPORT,
+        payload: workspaceLayer.title
+      });
+    }
   };
 }
 

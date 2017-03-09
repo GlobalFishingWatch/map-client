@@ -11,7 +11,10 @@ import {
   SET_WORKSPACE_ID,
   SET_FLAG_FILTERS,
   ADD_CUSTOM_LAYER,
-  GA_OUTSIDE_LINK_CLICKED
+  GA_EXTERNAL_LINK_CLICKED,
+  SHOW_POLYGON,
+  GA_MPA_REPORT,
+  GA_EEZ_REPORT
 } from 'actions';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
@@ -137,9 +140,33 @@ const GA_ACTION_WHITELIST = [
     }
   },
   {
-    type: GA_OUTSIDE_LINK_CLICKED,
+    type: GA_EXTERNAL_LINK_CLICKED,
     category: 'External Link',
     action: 'Click to leave',
+    getPayload: ({ payload }) => payload
+  },
+  {
+    type: SHOW_POLYGON,
+    category: 'Map Interaction',
+    action: 'Click on polygon',
+    getPayload: ({ payload }) => {
+      const { polygonData } = payload;
+      return {
+        latLng: payload.latLng,
+        polygonData: polygonData.content
+      };
+    }
+  },
+  {
+    type: GA_MPA_REPORT,
+    category: 'Layers',
+    action: 'Click an MPA',
+    getPayload: ({ payload }) => payload
+  },
+  {
+    type: GA_EEZ_REPORT,
+    category: 'Layers',
+    action: 'Click an EEZ',
     getPayload: ({ payload }) => payload
   }
 ];
