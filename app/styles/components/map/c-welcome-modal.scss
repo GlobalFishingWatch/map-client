@@ -7,13 +7,20 @@
   justify-content: center;
   flex-direction: column;
   position: relative;
-  max-height: 50vh;
+
+  @media #{$mq-tablet} {
+    max-height: 50vh;
+  }
 
   > .content {
     overflow: auto;
-    max-height: 40vh;
+    max-height: 80vh;
     text-align: center;
     padding: 45px 0;
+
+    @media #{$mq-tablet} {
+      max-height: 40vh;
+    }
 
     h1, h2 {
       font-size: $font-size-x-normal;

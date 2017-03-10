@@ -226,7 +226,9 @@ class ControlPanel extends Component {
               <Accordion
                 activeItems={6}
                 allowMultiple={false}
-                className={controlPanelStyle['map-options']}
+                className={classnames(controlPanelStyle['map-options'], {
+                  [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+                })}
               >
                 {this.renderSearch()}
                 {this.renderBasemap()}

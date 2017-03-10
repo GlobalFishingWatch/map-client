@@ -221,6 +221,20 @@
     :global .react-sanfona-item-expanded > .react-sanfona-item-body {
       max-width: none;
     }
+
+    &.-no-header {
+
+      :global .react-sanfona-item-body {
+
+        > .react-sanfona-item-body-wrapper {
+          height: calc(100vh - #{$accordion-mobile-height + $timebar-height});
+
+          @media #{$mq-tablet} {
+            height: auto;
+          }
+        }
+      }
+    }
   }
 
   .pinned-item-count {
