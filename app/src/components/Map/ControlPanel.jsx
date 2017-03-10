@@ -194,7 +194,10 @@ class ControlPanel extends Component {
         {(matches) => {
           if (matches) {
             return (
-              <div className={controlPanelStyle.controlpanel} >
+              <div
+                className={classnames(controlPanelStyle.controlpanel,
+                  { [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}
+              >
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
                   <VesselInfoPanel />
@@ -212,20 +215,25 @@ class ControlPanel extends Component {
               </div>);
           }
 
-          return (<div className={controlPanelStyle.controlpanel} >
-            {this.renderResume()}
-            <VesselInfoPanel />
-            <Accordion
-              activeItems={6}
-              allowMultiple={false}
-              className={controlPanelStyle['map-options']}
+          return (
+            <div
+              className={classnames(controlPanelStyle.controlpanel, {
+                [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+              })}
             >
-              {this.renderSearch()}
-              {this.renderBasemap()}
-              {this.renderLayerPicker()}
-              {this.renderFilters()}
-            </Accordion>
-          </div>);
+              {this.renderResume()}
+              <VesselInfoPanel />
+              <Accordion
+                activeItems={6}
+                allowMultiple={false}
+                className={controlPanelStyle['map-options']}
+              >
+                {this.renderSearch()}
+                {this.renderBasemap()}
+                {this.renderLayerPicker()}
+                {this.renderFilters()}
+              </Accordion>
+            </div>);
         }}
       </MediaQuery>
     );
@@ -243,7 +251,8 @@ ControlPanel.propTypes = {
   hideSearchResults: React.PropTypes.func,
   pinnedVesselEditMode: React.PropTypes.bool,
   layerPanelEditMode: React.PropTypes.bool,
-  timelineInnerExtent: React.PropTypes.array
+  timelineInnerExtent: React.PropTypes.array,
+  isEmbedded: React.PropTypes.bool
 };
 
 export default ControlPanel;

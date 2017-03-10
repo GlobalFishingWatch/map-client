@@ -10,6 +10,10 @@
   width: 100%;
   z-index: 102;
 
+  &.-no-header {
+    top: 0;
+  }
+
   @media #{$mq-tablet} {
     background: transparent;
     height: auto;

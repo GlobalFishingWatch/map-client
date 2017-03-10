@@ -237,7 +237,7 @@ class Map extends Component {
         >
           <PromptLayerRemoval />
         </Modal>
-        <ControlPanel />
+        <ControlPanel isEmbedded={this.props.isEmbedded} />
         <ReportPanel />
       </div>
       }
@@ -273,7 +273,12 @@ class Map extends Component {
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
-        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: this.props.isEmbedded })}>
+        <div
+          className={classnames(mapCss['attributions-container'], {
+            [mapCss['-embed']]: this.props.isEmbedded,
+            [mapCss['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+          })}
+        >
           <span className={mapCss['mobile-map-attributions']}>
 
             <a
