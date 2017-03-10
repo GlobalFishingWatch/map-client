@@ -135,7 +135,7 @@ class VesselInfoPanel extends Component {
             target="_blank"
             rel="noopener noreferrer"
             href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
-          >Check it on MarineTraffic.com
+          >Check it out on MarineTraffic.com
           </a>
           }
           {!canSeeVesselId && <a
