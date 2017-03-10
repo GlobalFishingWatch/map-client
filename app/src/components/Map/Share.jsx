@@ -62,7 +62,8 @@ class Share extends Component {
    * @returns {string} URL
    */
   getURLWithWorkspace() {
-    return `${location.origin}${location.pathname.replace(/\/$/g, '')}?workspace=${this.props.workspaceId}`;
+    const baseURL = SHARE_BASE_URL || `${location.origin}${location.pathname.replace(/\/$/g, '')}`;
+    return `${baseURL}?workspace=${this.props.workspaceId}`;
   }
 
   updateEmbedSize(event) {
