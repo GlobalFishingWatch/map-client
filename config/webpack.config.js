@@ -53,7 +53,8 @@ const webpackConfig = {
       DISABLE_WELCOME_MODAL: envVariables.DISABLE_WELCOME_MODAL === 'true',
       WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY),
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
-      TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL)
+      TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
+      SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL)
     })
   ],
 

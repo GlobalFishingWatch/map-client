@@ -145,3 +145,7 @@ Key used to read the welcome modal's url cookie. On load, the app will look for 
 #### TIMEBAR_DATA_URL
 
 Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`.
+
+#### SHARE_BASE_URL
+
+Base URL used on the share feature.
