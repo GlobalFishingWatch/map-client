@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
-import { MIN_ZOOM_LEVEL, REQUIRE_MAP_LOGIN } from 'constants';
+import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
@@ -174,9 +174,7 @@ class Map extends Component {
     const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="full-height-container">
-      {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
-      <Header isEmbedded={this.props.isEmbedded} />
-      }
+      <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
       {!this.props.isEmbedded &&
       <div>
         <Modal
@@ -237,7 +235,7 @@ class Map extends Component {
         >
           <PromptLayerRemoval />
         </Modal>
-        <ControlPanel />
+        <ControlPanel isEmbedded={this.props.isEmbedded} />
         <ReportPanel />
       </div>
       }
@@ -273,7 +271,11 @@ class Map extends Component {
             <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
           </span>
         </div>
-        <div className={classnames(mapCss['attributions-container'], { [mapCss['-embed']]: this.props.isEmbedded })}>
+        <div
+          className={classnames(mapCss['attributions-container'], {
+            [mapCss['-embed']]: this.props.isEmbedded
+          })}
+        >
           <span className={mapCss['mobile-map-attributions']}>
 
             <a

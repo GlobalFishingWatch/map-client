@@ -10,6 +10,10 @@
   width: 100%;
   z-index: 102;
 
+  &.-no-header {
+    top: 0;
+  }
+
   @media #{$mq-tablet} {
     background: transparent;
     height: auto;
@@ -216,6 +220,20 @@
 
     :global .react-sanfona-item-expanded > .react-sanfona-item-body {
       max-width: none;
+    }
+
+    &.-no-footer {
+
+      :global .react-sanfona-item-body {
+
+        > .react-sanfona-item-body-wrapper {
+          height: calc(100vh - #{$accordion-mobile-height + $header-height-mobile});
+
+          @media #{$mq-tablet} {
+            height: auto;
+          }
+        }
+      }
     }
   }
 
