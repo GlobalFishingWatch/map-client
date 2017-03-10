@@ -194,10 +194,7 @@ class ControlPanel extends Component {
         {(matches) => {
           if (matches) {
             return (
-              <div
-                className={classnames(controlPanelStyle.controlpanel,
-                  { [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}
-              >
+              <div className={classnames(controlPanelStyle.controlpanel)}>
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
                   <VesselInfoPanel />
@@ -216,18 +213,14 @@ class ControlPanel extends Component {
           }
 
           return (
-            <div
-              className={classnames(controlPanelStyle.controlpanel, {
-                [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
-              })}
-            >
+            <div className={controlPanelStyle.controlpanel} >
               {this.renderResume()}
               <VesselInfoPanel />
               <Accordion
                 activeItems={6}
                 allowMultiple={false}
                 className={classnames(controlPanelStyle['map-options'], {
-                  [controlPanelStyle['-no-header']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
                 })}
               >
                 {this.renderSearch()}

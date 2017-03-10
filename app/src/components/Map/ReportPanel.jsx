@@ -28,7 +28,11 @@ class ReportPanel extends Component {
     if (this.props.visible === false) return null;
 
     const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
-      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized']) : ReportPanelStyles['c-report-panel'];
+      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized'], {
+        [ReportPanelStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+      }) : classnames(ReportPanelStyles['c-report-panel'], {
+        [ReportPanelStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+      });
 
     const containerClass = this.state.expanded ?
       classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']) : ReportPanelStyles.container;

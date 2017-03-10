@@ -222,12 +222,12 @@
       max-width: none;
     }
 
-    &.-no-header {
+    &.-no-footer {
 
       :global .react-sanfona-item-body {
 
         > .react-sanfona-item-body-wrapper {
-          height: calc(100vh - #{$accordion-mobile-height + $timebar-height});
+          height: calc(100vh - #{$accordion-mobile-height + $header-height-mobile});
 
           @media #{$mq-tablet} {
             height: auto;

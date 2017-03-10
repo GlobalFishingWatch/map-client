@@ -26,34 +26,12 @@ class Header extends Component {
 
   render() {
     const logoUrl = this.props.isEmbedded ? `${MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
-    let userLinks;
-    if (this.props.loggedUser) {
-      const name = this.props.loggedUser.displayName.split(' ');
-      userLinks = (
-        <li className={styles.dropdown} >
-          <a className={styles['login-a']} >{name[0]}</a>
-          <ul className={styles['dropdown-content']} >
-            <li>
-              <a onClick={this.logout} >
-                Logout
-              </a>
-            </li>
-          </ul>
-        </li>
-      );
-    } else {
-      userLinks = (
-        <li>
-          <a onClick={this.login} >Login</a>
-        </li>
-      );
-    }
 
     const target = this.props.isEmbedded ? '_parent' : '';
 
     return (
       <div>
-        {!this.props.isEmbedded &&
+        {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
         <MenuMobile
           visible={this.state.mobileMenuVisible}
           onClose={this.closeMobileMenu}
@@ -71,7 +49,7 @@ class Header extends Component {
             }
           >
             <div className={styles['contain-nav']} >
-              {!this.props.isEmbedded &&
+              {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
               <img
                 onClick={() => this.setState({ mobileMenuVisible: true })}
                 className={styles['icon-menu-mobile']}
@@ -79,6 +57,7 @@ class Header extends Component {
                 alt="Menu toggle icon"
               />
               }
+              {(this.props.isEmbedded || COMPLETE_MAP_RENDER) &&
               <a
                 target={target}
                 href={logoUrl}
@@ -89,63 +68,12 @@ class Header extends Component {
                   alt="Global Fishing Watch"
                 />
               </a>
-              {!this.props.isEmbedded &&
-              <ShareIcon
-                className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
-                onClick={this.props.openShareModal}
-              />}
-              {!this.props.isEmbedded &&
-              <ul className={styles.menu} >
-                <li>
-                  <a className={styles['-active']} href="#" >Map</a>
-                </li>
-                <li className={styles.dropdown} >
-                  <a
-                    className={
-                      /\/articles-publications/.test(location.pathname)
-                        ? classnames(styles['-active'], styles['-no-cursor']) : styles['-no-cursor']
-                    }
-                  >
-                    News
-                  </a>
-                  <ul className={styles['dropdown-content']} >
-                    <li>
-                      <a
-                        href={BLOG_URL}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >Blog</a>
-                    </li>
-                    <li><a href={`${SITE_URL}/articles-publications`} >Articles and Publications</a></li>
-                  </ul>
-                </li>
-                <li className={styles.dropdown} >
-                  <a
-                    className={styles['-no-cursor']}
-                  >
-                    How to
-                  </a>
-                  <ul className={styles['dropdown-content']} >
-                    <li><a href={`${SITE_URL}/faq`} >FAQ</a></li>
-                    <li><a href={`${SITE_URL}/tutorials`} >Tutorials</a></li>
-                    <li><a href={`${SITE_URL}/definitions`} >Definitions</a></li>
-                  </ul>
-                </li>
-                <li className={styles.dropdown} >
-                  <a
-                    className={styles['-no-cursor']}
-                  >
-                    About
-                  </a>
-                  <ul className={styles['dropdown-content']} >
-                    <li><a href={`${SITE_URL}/the-project`} >The project</a></li>
-                    <li><a href={`${SITE_URL}/partners`} >Partners</a></li>
-                    <li><a href={`${SITE_URL}/research-program`} >Research program</a></li>
-                    <li><a href={`${SITE_URL}/contact-us`} >Contact us</a></li>
-                  </ul>
-                </li>
-                {userLinks}
-              </ul>
+              }
+              {this.props.canShareWorkspaces &&
+                <ShareIcon
+                  className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
+                  onClick={this.props.openShareModal}
+                />
               }
             </div>
           </div>
@@ -163,7 +91,8 @@ Header.propTypes = {
   setSupportModalVisibility: React.PropTypes.func,
   setVisibleMenu: React.PropTypes.func,
   isEmbedded: React.PropTypes.bool,
-  urlWorkspaceId: React.PropTypes.string
+  urlWorkspaceId: React.PropTypes.string,
+  canShareWorkspaces: React.PropTypes.bool
 };
 
 export default Header;
