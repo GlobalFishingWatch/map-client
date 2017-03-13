@@ -62,8 +62,10 @@ class Share extends Component {
    * @returns {string} URL
    */
   getURLWithWorkspace() {
-    const baseURL = SHARE_BASE_URL || `${location.origin}${location.pathname.replace(/\/$/g, '')}`;
-    return `${baseURL}?workspace=${this.props.workspaceId}`;
+    if (SHARE_BASE_URL) {
+      return SHARE_BASE_URL.replace('{workspace_id}', this.props.workspaceId);
+    }
+    return `${location.origin}${location.pathname.replace(/\/$/g, '')}?workspace=${this.props.workspaceId}`;
   }
 
   updateEmbedSize(event) {
@@ -147,14 +149,14 @@ class Share extends Component {
     const embed = `<iframe allowfullscreen="true" width="${size.width}" height="${size.height}" src="${url}&embedded=true" />`;
 
     const selectOptions = EMBED_SIZE_SETTINGS.map(option => (
-      <option key={option.name} value={option.name}>{option.name} ({option.width}x{option.height})</option>)
+      <option key={option.name} value={option.name} >{option.name} ({option.width}x{option.height})</option>)
     );
 
     return (
       <div className={ShareStyles.content} >
         <form>
 
-          <div className={ShareStyles['embed-container']}>
+          <div className={ShareStyles['embed-container']} >
             <p className={ShareStyles.intro} >
               Embed Size
             </p>
@@ -165,7 +167,7 @@ class Share extends Component {
               {selectOptions}
             </select>
           </div>
-          <div className={ShareStyles['embed-container']}>
+          <div className={ShareStyles['embed-container']} >
             <p className={ShareStyles.intro} >
               Embed in your site
             </p>

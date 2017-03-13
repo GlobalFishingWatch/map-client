@@ -148,4 +148,4 @@ Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`
 
 #### SHARE_BASE_URL
 
-Base URL used on the share feature.
+URL pattern used on the share feature. It must be of type http://your-site.com/?workspace={workspace_id}, where {workspace_id} will be replaced by the actual workspace ID
