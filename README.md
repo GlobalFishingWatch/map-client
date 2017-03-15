@@ -98,9 +98,9 @@ Environment in which the node server will run (production/development)
 
 If set, an auth wall will be placed in front of the whole node server
 
-#### EMBED_MAP_URL
+#### COMPLETE_MAP_RENDER
 
-If set, the given URL will be loaded using an iframe element, instead of the built in map
+If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.
 
 #### MAP_API_ENDPOINT
 
@@ -110,21 +110,13 @@ Endpoint of the API (vessel tiles, workspace, contact, etc)
 
 URL of the blog
 
-#### FAQ_JSON_URL
+#### SITE_URL
 
-Endpoint of the FAQ section content
+URL of the main site
 
-#### DEFINITIONS_JSON_URL
+#### MAP_URL
 
-Endpoint of the Definitions section content
-
-#### ART_PUB_JSON_URL
-
-Endpoint of the Articles & publications section content
-
-#### HOME_SLIDER_JSON_URL
-
-Endpoint of the homepage slider section content
+URL of the map on the main site
 
 #### REQUIRE_MAP_LOGIN
 
@@ -148,4 +140,12 @@ Disable welcome modal. Typically enabled in a dev environment, disabled in prod
 
 #### WELCOME_MODAL_COOKIE_KEY
 
-Key used to read the welcome modal's url cookie
+Key used to read the welcome modal's url cookie. On load, the app will look for a cookie named with the specified key. If any cookie matches the WELCOME_MODAL_COOKIE_KEY and the url of the cookie is new, the html content will be loaded in a modal. EXAMPLE: If WELCOME_MODAL_COOKIE_KEY is set to GlobalFishingWatchNewsletter the cookie's name must also be GlobalFishingWatchNewsletter.
+
+#### TIMEBAR_DATA_URL
+
+Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`.
+
+#### SHARE_BASE_URL
+
+URL pattern used on the share feature. It must be of type http://your-site.com/?workspace={workspace_id}, where {workspace_id} will be replaced by the actual workspace ID

@@ -71,10 +71,9 @@
   > .options {
     align-items: center;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
     @media #{$mq-tablet} {
-      justify-content: space-between;
       max-width: 425px;
       width: 100%;
     }
@@ -117,6 +116,10 @@
       &.-support {
         display: none;
       }
+    }
+
+    &.-embed {
+      justify-content: flex-end;
     }
   }
 }

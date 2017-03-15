@@ -27,6 +27,12 @@
     }
   }
 
+  &.-no-footer {
+    @media #{$mq-mobile-large} {
+      bottom: $timebar-height;
+    }
+  }
+
   > .menu {
     align-items: center;
     background-color: $color-13;

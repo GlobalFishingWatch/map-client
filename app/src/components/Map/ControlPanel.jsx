@@ -32,7 +32,7 @@ class ControlPanel extends Component {
     }
   }
 
-  calculateVesselCount() {
+  calculateFishingHours() {
     const min = this.props.timelineInnerExtent[0].getTime();
     const max = this.props.timelineInnerExtent[1].getTime();
 
@@ -47,7 +47,7 @@ class ControlPanel extends Component {
       return acc;
     }, 0);
 
-    return result.toLocaleString();
+    return Math.round(result).toLocaleString();
   }
 
   renderSearch() {
@@ -161,7 +161,7 @@ class ControlPanel extends Component {
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
             <span className={controlPanelStyle['counter-description']} >Fishing hours</span>
-            <span className={controlPanelStyle.total} >{this.calculateVesselCount()}</span>
+            <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
           </div>
         </div>
       </div>
@@ -194,7 +194,7 @@ class ControlPanel extends Component {
         {(matches) => {
           if (matches) {
             return (
-              <div className={controlPanelStyle.controlpanel} >
+              <div className={classnames(controlPanelStyle.controlpanel)}>
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
                   <VesselInfoPanel />
@@ -212,20 +212,23 @@ class ControlPanel extends Component {
               </div>);
           }
 
-          return (<div className={controlPanelStyle.controlpanel} >
-            {this.renderResume()}
-            <VesselInfoPanel />
-            <Accordion
-              activeItems={6}
-              allowMultiple={false}
-              className={controlPanelStyle['map-options']}
-            >
-              {this.renderSearch()}
-              {this.renderBasemap()}
-              {this.renderLayerPicker()}
-              {this.renderFilters()}
-            </Accordion>
-          </div>);
+          return (
+            <div className={controlPanelStyle.controlpanel} >
+              {this.renderResume()}
+              <VesselInfoPanel />
+              <Accordion
+                activeItems={6}
+                allowMultiple={false}
+                className={classnames(controlPanelStyle['map-options'], {
+                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+                })}
+              >
+                {this.renderSearch()}
+                {this.renderBasemap()}
+                {this.renderLayerPicker()}
+                {this.renderFilters()}
+              </Accordion>
+            </div>);
         }}
       </MediaQuery>
     );
@@ -243,7 +246,8 @@ ControlPanel.propTypes = {
   hideSearchResults: React.PropTypes.func,
   pinnedVesselEditMode: React.PropTypes.bool,
   layerPanelEditMode: React.PropTypes.bool,
-  timelineInnerExtent: React.PropTypes.array
+  timelineInnerExtent: React.PropTypes.array,
+  isEmbedded: React.PropTypes.bool
 };
 
 export default ControlPanel;
