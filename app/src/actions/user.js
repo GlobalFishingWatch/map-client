@@ -5,15 +5,12 @@ import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
 import _ from 'lodash';
 
-
 const setGAUserDimension = (user) => {
   if (user !== false) {
     window.ga('set', 'dimension1', user.identity.userId);
+  } else {
+    window.ga('set', 'dimension1', '');
   }
-};
-
-const unsetGAUserDimension = () => {
-  window.ga('set', 'dimension1', '');
 };
 
 export function setToken(token) {
@@ -25,6 +22,10 @@ export function setToken(token) {
 }
 
 function getUserData(data) {
+  if (data === undefined) {
+    return null;
+  }
+
   return {
     displayName: data.displayName,
     email: data.email
@@ -44,24 +45,20 @@ export function getLoggedUser() {
       dispatch(setToken(token));
     }
 
+    let headers = {};
+    let basePermissions;
     if (!token) {
-      dispatch({
-        type: SET_USER,
-        payload: null
-      });
-      dispatch({
-        type: SET_USER_PERMISSIONS,
-        payload: GUEST_PERMISSION_SET
-      });
-      setGAUserDimension(false);
-      return;
+      basePermissions = GUEST_PERMISSION_SET;
+    } else {
+      basePermissions = AUTH_PERMISSION_SET;
+      headers = {
+        Authorization: `Bearer ${token}`
+      };
     }
 
     fetch(`${MAP_API_ENDPOINT}/v1/me`, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers
     }).then((response) => {
       if (response.ok) {
         return response.json();
@@ -73,16 +70,19 @@ export function getLoggedUser() {
       setGAUserDimension(false);
       return null;
     }).then((payload) => {
-      window.ga('set', 'dimension1', payload.identity.userId);
+      if (payload.identity) {
+        setGAUserDimension(payload);
+      } else {
+        setGAUserDimension(false);
+      }
       dispatch({
         type: SET_USER,
         payload: getUserData(payload)
       });
       dispatch({
         type: SET_USER_PERMISSIONS,
-        payload: _.uniq(AUTH_PERMISSION_SET.concat(getAclData(payload)))
+        payload: _.uniq(basePermissions.concat(getAclData(payload)))
       });
-      setGAUserDimension(payload);
     });
   };
 }
@@ -93,7 +93,7 @@ export function logout() {
     dispatch({
       type: LOGOUT
     });
-    unsetGAUserDimension();
+    setGAUserDimension(false);
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
     if (window.location.pathname.match('^/map')) {
       history.pushState({}, '', '/');

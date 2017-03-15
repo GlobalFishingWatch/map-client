@@ -178,7 +178,7 @@ class Map extends Component {
       {!this.props.isEmbedded &&
       <div>
         <Modal
-          opened={!this.props.token && REQUIRE_MAP_LOGIN}
+          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || this.props.userPermissions.indexOf('seeMap') === -1}
           closeable={false}
           close={() => {
           }}
