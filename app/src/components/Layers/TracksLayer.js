@@ -2,7 +2,8 @@
 import 'pixi.js';
 import {
   TRACK_SEGMENT_TYPES,
-  TRACKS_DOTS_STYLE_ZOOM_THRESHOLD
+  TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
+  HALF_WORLD
 } from 'constants';
 import { hueToRgbHexString } from 'util/hsvToRgb';
 
@@ -55,6 +56,7 @@ export default class TracksLayerGL {
       }
     };
 
+    const viewportWorldX = offsets.left;
 
     for (let i = 0, length = data.worldX.length; i < length; i++) {
       prevSeries = currentSeries;
@@ -62,12 +64,15 @@ export default class TracksLayerGL {
       if (queriedSeries && queriedSeries !== currentSeries) {
         continue;
       }
-      const worldX = data.worldX[i];
-      let originX = offsets.left;
-      if (originX > worldX || (originX + worldX) > 256) {
-        originX -= 256;
+
+      let pointWorldX = data.worldX[i];
+
+      // Add a whole world to x coordinate, when point is after antimeridian and part of the world shown is the after the prime meridian.
+      // This way we move the new point to the "second world" on the right avoiding issues when rendring tracks that cross antimeridian.
+      if (viewportWorldX > HALF_WORLD && pointWorldX < HALF_WORLD) {
+        pointWorldX += 256;
       }
-      const x = ((data.worldX[i] - originX) * offsets.scale);
+      const x = ((pointWorldX - viewportWorldX) * offsets.scale);
       const y = ((data.worldY[i] - offsets.top) * offsets.scale);
 
       const drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
