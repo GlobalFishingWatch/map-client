@@ -66,7 +66,7 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OV
 
 // radius of vessels lookup in pixels,
 // ie how large the clicked region should be for including vessels
-export const VESSEL_CLICK_TOLERANCE_PX = 2;
+export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // time range options in the duration picker menu
 export const DURATION_PICKER_OPTIONS = [
