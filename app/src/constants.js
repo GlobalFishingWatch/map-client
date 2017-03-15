@@ -59,6 +59,9 @@ export const TRACK_SEGMENT_TYPES = {
 export const DEFAULT_TRACK_HUE = 180;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 5;
 
+// half a world, in projected world units
+export const HALF_WORLD = 256 / 2;
+
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
