@@ -10,8 +10,8 @@
       "zoom": 3,
       "layers": [
         {
-          "title": "Bathimetry",
-          "description": "Bathimetry of the oceans",
+          "title": "Ocean Contrast",
+          "description": "Adds a high contrast coarse bathymetry layer to the ocean areas.",
           "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
           "visible": false,
           "hue": 212,
@@ -28,7 +28,7 @@
           "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
         },
         {
-          "title": "Fishing effort",
+          "title": "Fishing Effort",
           "description": "Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
           "visible": true,

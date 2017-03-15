@@ -171,7 +171,7 @@ class ControlPanel extends Component {
   renderFilters() {
     const title = (
       <div className={controlPanelStyle['accordion-header']} >
-        <h2 className={controlPanelStyle['accordion-title']} >Filters</h2>
+        <h2 className={controlPanelStyle['accordion-title']} >Flag Filter</h2>
         <FiltersIcon className={classnames(iconStyles.icons, controlPanelStyle['filters-icon'])} />
       </div>);
 
