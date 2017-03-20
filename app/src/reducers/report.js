@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
     case SHOW_POLYGON: {
       const polygonData = action.payload.polygonData;
       const id = polygonData.cartodb_id;
-      const reportingId = (polygonData.reportingId !== undefined) ? polygonData.reportingId : polygonData.cartodb_id;
+      const reportingId = (polygonData.reporting_id !== undefined) ? polygonData.reporting_id : polygonData.cartodb_id;
       const name = (polygonData.name !== undefined) ? polygonData.name : polygonData.cartodb_id.toString();
       const isInReport = !!state.polygons.find(polygon => polygon.id === id);
       return Object.assign({}, state, {
