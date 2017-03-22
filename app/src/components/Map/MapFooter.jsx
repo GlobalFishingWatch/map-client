@@ -14,6 +14,7 @@ class MapFooter extends Component {
     this.state = {
       footerExpanded: false
     };
+    this.onExternalLink = this.onExternalLink.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -26,6 +27,14 @@ class MapFooter extends Component {
 
   toggleFooter() {
     this.setState({ footerExpanded: !this.state.footerExpanded });
+  }
+
+  onExternalLink(e) {
+    e.preventDefault();
+    const link = e.target.href;
+    if (typeof link !== 'undefined') {
+      this.props.onExternalLink(link);
+    }
   }
 
   render() {
@@ -61,7 +70,10 @@ class MapFooter extends Component {
               {toggleLabel}
             </span>
             }
-            <span className={classnames(MapFooterStyles.link, MapFooterStyles['-attributions'])} >
+            <span
+              className={classnames(MapFooterStyles.link, MapFooterStyles['-attributions'])}
+              onClick={this.onExternalLink}
+            >
               <a
                 className={MapFooterStyles.link}
                 href="https://carto.com/"
@@ -113,7 +125,8 @@ class MapFooter extends Component {
 
 MapFooter.propTypes = {
   onOpenSupportModal: React.PropTypes.func,
-  isEmbedded: React.PropTypes.bool
+  isEmbedded: React.PropTypes.bool,
+  onExternalLink: React.PropTypes.func
 };
 
 export default MapFooter;

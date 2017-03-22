@@ -349,6 +349,7 @@ class Map extends Component {
       <MapFooter
         onOpenSupportModal={this.props.openSupportModal}
         isEmbedded={this.props.isEmbedded}
+        onExternalLink={this.props.onExternalLink}
       />
       }
     </div>);
@@ -396,6 +397,7 @@ Map.propTypes = {
   closeWelcomeModal: React.PropTypes.func,
   closeLayerRemovalModal: React.PropTypes.func,
   layerIdPromptedForRemoval: React.PropTypes.any,
-  isEmbedded: React.PropTypes.bool
+  isEmbedded: React.PropTypes.bool,
+  onExternalLink: React.PropTypes.func
 };
 export default Map;

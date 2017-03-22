@@ -22,6 +22,7 @@ import { clearPolygon } from 'actions/report';
 import { setSearchModalVisibility } from 'actions/search';
 import { loadTimebarChartData } from 'actions/timebar';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
+import { trackExternalLinkClicked } from 'actions/analytics';
 
 const mapStateToProps = state => ({
   center: state.map.center,
@@ -93,6 +94,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   closeLayerRemovalModal: () => {
     dispatch(confirmLayerRemoval(false));
+  },
+  onExternalLink: (link) => {
+    dispatch(trackExternalLinkClicked(link));
   }
 });
 

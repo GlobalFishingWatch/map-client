@@ -89,7 +89,8 @@ MenuMobile.propTypes = {
   logout: React.PropTypes.func,
   login: React.PropTypes.func,
   loggedUser: React.PropTypes.object,
-  setSupportModalVisibility: React.PropTypes.func
+  setSupportModalVisibility: React.PropTypes.func,
+  beforeLeave: React.PropTypes.func
 };
 
 export default MenuMobile;
