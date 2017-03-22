@@ -1,59 +1,49 @@
 import {
-  TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  SET_SEARCH_TERM,
-  GA_SEARCH_RESULT_CLICKED,
-  GA_VESSEL_POINT_CLICKED,
-  GA_MAP_POINT_CLICKED,
-  GA_PLAY_STATUS_TOGGLED,
-  SET_INNER_TIMELINE_DATES,
-  GA_OUTER_TIMELINE_DATES_UPDATED,
-  SET_WORKSPACE_ID,
-  SET_FLAG_FILTERS,
   ADD_CUSTOM_LAYER,
   GA_EXTERNAL_LINK_CLICKED,
+  GA_MAP_POINT_CLICKED,
+  GA_OUTER_TIMELINE_DATES_UPDATED,
+  GA_PLAY_STATUS_TOGGLED,
+  ADD_REPORT_POLYGON,
+  DELETE_REPORT_POLYGON,
+  GA_SEARCH_RESULT_CLICKED,
+  GA_VESSEL_POINT_CLICKED,
+  SET_FLAG_FILTERS,
+  SET_INNER_TIMELINE_DATES,
+  SET_SEARCH_TERM,
+  SET_WORKSPACE_ID,
   SHOW_POLYGON,
-  GA_MPA_REPORT,
-  GA_EEZ_REPORT
+  TOGGLE_LAYER_VISIBILITY,
+  TOGGLE_LAYER_WORKSPACE_PRESENCE,
+  SET_REPORT_STATUS_SENT,
+  GA_DISCARD_REPORT
 } from 'actions';
+import _ from 'lodash';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
 const GA_ACTION_WHITELIST = [
   {
     type: TOGGLE_LAYER_VISIBILITY,
     category: 'Layer',
-    action: 'Toggle layer visibility',
-    getPayload: (action, state) => {
+    action: (action, state) => {
       const layerIndex = state.layers.workspaceLayers.findIndex(l => l.id === action.payload.layerId);
       const changedLayer = state.layers.workspaceLayers[layerIndex];
-
-      return {
-        layerId: action.payload.layerId,
-        visibility: action.payload.forceStatus !== null ? action.payload.forceStatus : !changedLayer.visible
-      };
-    }
+      const isVisible = action.payload.forceStatus !== null ? action.payload.forceStatus : !changedLayer.visible;
+      return isVisible ? 'Turn Layer On' : 'Turn Layer Off';
+    },
+    getPayload: action => action.payload.layerId
   },
   {
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
     category: 'Layer',
-    action: 'Add from GFW Library',
-    getPayload: action => (
-      {
-        layerId: action.payload.layerId,
-        visibility: action.payload.added
-      }
-    )
+    action: action => (action.payload.added ? 'Add from GFW Library' : 'Remove from GFW Library'),
+    getPayload: action => action.payload.layerId
   },
   {
     type: ADD_CUSTOM_LAYER,
     category: 'Layer',
     action: 'Add user generated layer',
-    getPayload: ({ payload }) => (
-      {
-        layerId: payload.id,
-        name: payload.name
-      }
-    )
+    getPayload: action => action.payload.layerId
   },
   {
     type: SET_SEARCH_TERM,
@@ -70,25 +60,25 @@ const GA_ACTION_WHITELIST = [
     type: GA_SEARCH_RESULT_CLICKED,
     category: 'Search',
     action: 'Search result selected',
-    getPayload: action => action.payload
+    getPayload: action => action.payload.name
   },
   {
     type: GA_VESSEL_POINT_CLICKED,
     category: 'Map Interaction',
     action: 'Loaded a vessel data',
-    getPayload: action => action.payload
+    getPayload: action => `${action.payload.name}:${action.payload.tilesetId}:${action.payload.seriesgroup}`
   },
   {
     type: GA_MAP_POINT_CLICKED,
     category: 'Map Interaction',
     action: 'Click a vessel point',
-    getPayload: action => action.payload
+    getPayload: action => `${action.payload.lat}:${action.payload.long}:${action.payload.type}`
   },
   {
     type: GA_OUTER_TIMELINE_DATES_UPDATED,
     category: 'Timeline',
     action: 'Outer period changed',
-    getPayload: action => action.payload
+    getPayload: action => `${action.payload[0].getTime()}:${action.payload[1].getTime()}`
   },
   {
     type: SET_INNER_TIMELINE_DATES,
@@ -98,7 +88,7 @@ const GA_ACTION_WHITELIST = [
       if (state.filters.timelinePaused === false) {
         return null;
       }
-      return action.payload;
+      return `${action.payload[0].getTime()}:${action.payload[1].getTime()}`;
     }
   },
   {
@@ -107,15 +97,9 @@ const GA_ACTION_WHITELIST = [
     action: 'Press Play',
     getPayload: (action, state) => {
       if (action.payload === false) { // pressed play
-        return {
-          play: true,
-          timeStart: state.filters.timelineInnerExtent[0]
-        };
+        return `play:${state.filters.timelineInnerExtent[0].getTime()}`;
       }
-      return {
-        play: false,
-        timeEnd: state.filters.timelineInnerExtent[1]
-      };
+      return `pause:${state.filters.timelineInnerExtent[1].getTime()}`;
     }
   },
   {
@@ -147,27 +131,33 @@ const GA_ACTION_WHITELIST = [
   },
   {
     type: SHOW_POLYGON,
-    category: 'Map Interaction',
+    category: 'Report Interaction',
     action: 'Click on polygon',
-    getPayload: ({ payload }) => {
-      const { polygonData } = payload;
-      return {
-        latLng: payload.latLng,
-        polygonData: polygonData.content
-      };
-    }
+    getPayload: (action, state) => `${state.report.layerId}:${action.payload.polygonData.name}`
   },
   {
-    type: GA_MPA_REPORT,
-    category: 'Layers',
-    action: 'Click an MPA',
-    getPayload: ({ payload }) => payload
+    type: ADD_REPORT_POLYGON,
+    category: 'Report Interaction',
+    action: 'Add polygon to report',
+    getPayload: (action, state) => `${state.report.layerId}:${state.report.currentPolygon.name}`
   },
   {
-    type: GA_EEZ_REPORT,
-    category: 'Layers',
-    action: 'Click an EEZ',
-    getPayload: ({ payload }) => payload
+    type: DELETE_REPORT_POLYGON,
+    category: 'Report Interaction',
+    action: 'Add polygon to report',
+    getPayload: (action, state) => `${state.report.layerId}:${state.report.polygons[action.payload.polygonIndex].name}`
+  },
+  {
+    type: GA_DISCARD_REPORT,
+    category: 'Report Interaction',
+    action: 'Discard report',
+    getPayload: (action, state) => `${state.report.layerId}:${state.report.polygons.map(elem => elem.name).join(':')}`
+  },
+  {
+    type: SET_REPORT_STATUS_SENT,
+    category: 'Report Interaction',
+    action: 'Report sent',
+    getPayload: (action, state) => `${state.report.layerId}:${state.report.polygons.map(elem => elem.name).join(':')}`
   }
 ];
 
@@ -178,9 +168,13 @@ const googleAnalyticsMiddleware = store => next => (action) => {
     if (gaAction) {
       const gaEvent = {
         hitType: 'event',
-        eventCategory: gaAction.category,
-        eventAction: gaAction.action
+        eventCategory: gaAction.category
       };
+      if (_.isFunction(gaAction.action)) {
+        gaEvent.eventAction = gaAction.action(action, state);
+      } else {
+        gaEvent.eventAction = gaAction.action;
+      }
       if (gaAction.getPayload) {
         gaEvent.eventLabel = gaAction.getPayload(action, state);
       }

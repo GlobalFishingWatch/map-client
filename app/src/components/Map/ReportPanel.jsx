@@ -76,7 +76,7 @@ class ReportPanel extends Component {
       </div>);
     } else if (this.props.status === REPORT_STATUS.sent) {
       buttons = (<div className={ReportPanelStyles['report-options']}>
-        <button className={classnames(ReportPanelStyles['report-button'], ReportPanelStyles['-wide'])} onClick={this.props.onDiscardReport}>close</button>
+        <button className={classnames(ReportPanelStyles['report-button'], ReportPanelStyles['-wide'])} onClick={this.props.onReportClose}>close</button>
       </div>);
     }
 
@@ -104,6 +104,7 @@ ReportPanel.defaultProps = {
 };
 
 ReportPanel.propTypes = {
+  onReportClose: React.PropTypes.func,
   onDiscardReport: React.PropTypes.func,
   onRemovePolygon: React.PropTypes.func,
   onSendReport: React.PropTypes.func,

@@ -89,9 +89,9 @@ function setCurrentVessel(layerId, seriesgroup, fromSearch) {
       });
 
       if (fromSearch) {
-        dispatch(trackSearchResultClicked(state.map.tilesetUrl, seriesgroup));
+        dispatch(trackSearchResultClicked(state.map.tilesetId, seriesgroup));
       } else {
-        dispatch(trackVesselPointClicked(state.map.tilesetUrl, seriesgroup));
+        dispatch(trackVesselPointClicked(state.map.tilesetId, seriesgroup));
       }
 
       dispatch(setRecentVesselHistory(data.seriesgroup));
