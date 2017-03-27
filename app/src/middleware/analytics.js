@@ -16,7 +16,8 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_REPORT_STATUS_SENT,
-  GA_DISCARD_REPORT
+  GA_DISCARD_REPORT,
+  GA_MAP_CENTER_TILE
 } from 'actions';
 import _ from 'lodash';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -158,6 +159,12 @@ const GA_ACTION_WHITELIST = [
     category: 'Report Interaction',
     action: 'Report sent',
     getPayload: (action, state) => `${state.report.layerId}:${state.report.polygons.map(elem => elem.name).join(':')}`
+  },
+  {
+    type: GA_MAP_CENTER_TILE,
+    category: 'Map Interaction',
+    action: 'Changed area',
+    getPayload: action => `${action.payload.x},${action.payload.y}`
   }
 ];
 
