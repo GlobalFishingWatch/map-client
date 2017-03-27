@@ -16,7 +16,8 @@ import {
   SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY,
+  SET_CENTER_TILE
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -47,6 +48,7 @@ const initialState = {
   tilesetUrl: null,
   tilesetId: null,
   center: [0, 0],
+  centerTile: { x: 0, y: 0 },
   shareModal: {
     open: false,
     error: null
@@ -89,6 +91,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { maxZoom: Math.min(action.payload, state.maxZoom) });
     case SET_CENTER:
       return Object.assign({}, state, { center: action.payload });
+    case SET_CENTER_TILE:
+      return Object.assign({}, state, { centerTile: action.payload });
     case SET_BASEMAP:
       return Object.assign({}, state, { activeBasemap: action.payload || state.activeBasemap });
     case SHARE_MODAL_OPEN: {

@@ -3,7 +3,8 @@ import {
   GA_VESSEL_POINT_CLICKED,
   GA_MAP_POINT_CLICKED,
   GA_EXTERNAL_LINK_CLICKED,
-  GA_DISCARD_REPORT
+  GA_DISCARD_REPORT,
+  GA_MAP_CENTER_TILE
 } from 'actions';
 
 /**
@@ -60,3 +61,9 @@ export function trackDiscardReport() {
   };
 }
 
+export function trackCenterTile(x, y) {
+  return {
+    type: GA_MAP_CENTER_TILE,
+    payload: { x, y }
+  };
+}

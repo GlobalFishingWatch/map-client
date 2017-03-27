@@ -54,7 +54,7 @@ class Map extends Component {
     // We also need to update the center of the map as it can be changed
     // when double clicking or scrolling on the map
     const center = this.map.getCenter();
-    this.props.setCenter([center.lat(), center.lng()]);
+    this.props.setCenter([center.lat(), center.lng()], this._getCenterWorld(center));
   }
 
   componentDidMount() {
@@ -111,7 +111,12 @@ class Map extends Component {
     if (wrappedLongitude > 180 || wrappedLongitude < -180) {
       wrappedLongitude -= Math.floor((wrappedLongitude + 180) / 360) * 360;
     }
-    this.props.setCenter([Math.max(Math.min(center.lat(), 85), -85), wrappedLongitude]);
+
+    this.props.setCenter([Math.max(Math.min(center.lat(), 85), -85), wrappedLongitude], this._getCenterWorld(center));
+  }
+
+  _getCenterWorld(center) {
+    return this.map.getProjection().fromLatLngToPoint(center);
   }
 
   /**

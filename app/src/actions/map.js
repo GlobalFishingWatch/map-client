@@ -9,9 +9,12 @@ import {
   SET_BASEMAP,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY
+  SET_RECENT_VESSELS_VISIBILITY,
+  SET_CENTER_TILE
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
+import { trackCenterTile } from 'actions/analytics';
+import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM } from 'constants';
 
 // store the original google maps in the app state.
 // this is needed in the heatmap actions/reducers, to avoid constantly passing
@@ -42,10 +45,28 @@ export function setZoom(zoom) {
     }
   };
 }
-export function setCenter(center) {
-  return {
-    type: SET_CENTER,
-    payload: center
+export function setCenter(center, centerWorld) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SET_CENTER,
+      payload: center
+    });
+
+
+    if (centerWorld !== undefined && getState().map.zoom >= ANALYTICS_TRACK_DRAG_FROM_ZOOM) {
+      const x = Math.floor(centerWorld.x * (ANALYTICS_TILE_COORDS_SCALE / 256));
+      const y = Math.floor(centerWorld.y * (ANALYTICS_TILE_COORDS_SCALE / 256));
+
+      const prevCenterTile = getState().map.centerTile;
+
+      if (prevCenterTile.x !== x && prevCenterTile.x !== y) {
+        dispatch({
+          type: SET_CENTER_TILE,
+          payload: { x, y }
+        });
+        dispatch(trackCenterTile(x, y));
+      }
+    }
   };
 }
 

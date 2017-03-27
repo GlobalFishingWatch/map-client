@@ -55,7 +55,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(toggleLayerVisibility(layer));
   },
   setZoom: zoom => dispatch(setZoom(zoom)),
-  setCenter: center => dispatch(setCenter(center)),
+  setCenter: (center, centerWorld) => dispatch(setCenter(center, centerWorld)),
 
   openShareModal: () => {
     dispatch(openShareModal(true));
