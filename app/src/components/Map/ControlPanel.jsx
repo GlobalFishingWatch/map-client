@@ -194,7 +194,12 @@ class ControlPanel extends Component {
         {(matches) => {
           if (matches) {
             return (
-              <div className={classnames(controlPanelStyle.controlpanel)}>
+              <div
+                className={classnames(
+                  controlPanelStyle.controlpanel,
+                  { [`${controlPanelStyle['-is-report-visible']}`]: this.props.isReportStarted }
+                )}
+              >
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
                   <VesselInfoPanel />
@@ -247,7 +252,8 @@ ControlPanel.propTypes = {
   pinnedVesselEditMode: React.PropTypes.bool,
   layerPanelEditMode: React.PropTypes.bool,
   timelineInnerExtent: React.PropTypes.array,
-  isEmbedded: React.PropTypes.bool
+  isEmbedded: React.PropTypes.bool,
+  isReportStarted: React.PropTypes.bool
 };
 
 export default ControlPanel;
