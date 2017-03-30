@@ -13,6 +13,18 @@ class DurationPicker extends Component {
   constructor(props) {
     super(props);
 
+    // replace moment humanized duration: use '1 month' instead of 'one month'
+    // https://momentjs.com/docs/#/customization/relative-time/
+    moment.updateLocale('en', {
+      relativeTime: {
+        m: '1 minute',
+        h: '1 hour',
+        d: '1 day',
+        M: '1 month',
+        y: '1 year'
+      }
+    });
+
     this.state = {
       showSettingsMenu: false
     };
