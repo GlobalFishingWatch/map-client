@@ -317,21 +317,42 @@ export function clearVesselInfo() {
   };
 }
 
-export function toggleActiveVesselPin() {
+function _getPinAction(state, seriesgroup) {
+  let vesselIndex;
+  if (seriesgroup === undefined) {
+    // use vessel in info panel
+    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.shownInInfoPanel === true);
+  } else {
+    // look for vessel with given seriesgoup if provided
+    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+  }
+  const pinned = !state.vesselInfo.vessels[vesselIndex].pinned;
+
+  let visible = false;
+
+  // when pinning the vessel currently in info panel, should be initially visible
+  if (seriesgroup === undefined && pinned === true) {
+    visible = true;
+  }
   return {
     type: TOGGLE_VESSEL_PIN,
     payload: {
-      useVesselCurrentlyInInfoPanel: true
+      vesselIndex,
+      pinned,
+      visible
     }
   };
 }
 
+export function toggleActiveVesselPin() {
+  return (dispatch, getState) => {
+    dispatch(_getPinAction(getState()));
+  };
+}
+
 export function toggleVesselPin(seriesgroup) {
-  return {
-    type: TOGGLE_VESSEL_PIN,
-    payload: {
-      seriesgroup
-    }
+  return (dispatch, getState) => {
+    dispatch(_getPinAction(getState(seriesgroup)));
   };
 }
 
