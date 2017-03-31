@@ -326,7 +326,8 @@ function _getPinAction(state, seriesgroup) {
     // look for vessel with given seriesgoup if provided
     vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
   }
-  const pinned = !state.vesselInfo.vessels[vesselIndex].pinned;
+  const vessel = state.vesselInfo.vessels[vesselIndex];
+  const pinned = !vessel.pinned;
 
   let visible = false;
 
@@ -339,7 +340,10 @@ function _getPinAction(state, seriesgroup) {
     payload: {
       vesselIndex,
       pinned,
-      visible
+      visible,
+      seriesgroup: vessel.seriesgroup,
+      vesselname: vessel.vesselname,
+      tilesetId: vessel.layerId
     }
   };
 }
