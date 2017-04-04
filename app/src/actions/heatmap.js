@@ -290,6 +290,15 @@ export function loadTilesExtraTimeRange() {
   };
 }
 
+
+const _getCurrentFlagsForLayer = (state, layerId) => {
+  if (layerId === undefined) {
+    return undefined;
+  }
+  const flags = state.filters.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
+  return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
+};
+
 const _queryHeatmap = (state, tileQuery) => {
   const layers = state.heatmap.heatmapLayers;
   const timelineExtent = state.filters.timelineInnerExtentIndexes;
@@ -299,10 +308,11 @@ const _queryHeatmap = (state, tileQuery) => {
   Object.keys(layers).forEach((layerId) => {
     const layer = layers[layerId];
     const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
+    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
     if (queriedTile !== undefined && queriedTile.data !== undefined) {
       layersVessels.push({
         layerId,
-        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
+        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex, currentFlags)
       });
     }
   });
@@ -344,11 +354,13 @@ const _queryHeatmap = (state, tileQuery) => {
 
 export function highlightVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
-    const { isEmpty, isCluster, layerId, seriesgroup, series } = _queryHeatmap(getState(), tileQuery);
+    const state = getState();
+    const { isEmpty, isCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
+    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
     dispatch({
       type: HIGHLIGHT_VESSEL,
       payload: {
-        isEmpty, isCluster, layerId, seriesgroup, series
+        isEmpty, isCluster, layerId, seriesgroup, series, currentFlags
       }
     });
   };

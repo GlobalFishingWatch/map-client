@@ -191,7 +191,7 @@ export default class GLContainer extends BaseOverlay {
     this._renderStage();
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup }) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup, currentFlags }) {
     if (seriesgroup === undefined) {
       this.heatmapHighlight.stage.visible = false;
       return;
@@ -200,6 +200,7 @@ export default class GLContainer extends BaseOverlay {
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
     this.heatmapHighlight.setSeries(series, seriesgroup);
+    this.heatmapHighlight.setFlags(currentFlags);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
     this.heatmapHighlight.stage.visible = true;
   }

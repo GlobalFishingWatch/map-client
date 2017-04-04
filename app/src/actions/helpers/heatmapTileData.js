@@ -221,7 +221,7 @@ export const addTracksPointRadius = (data, zoom) => {
   return data;
 };
 
-export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex) => {
+export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFlags) => {
   const vessels = [];
 
   // convert px tolerance/radius to world units
@@ -234,7 +234,8 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
     for (let i = 0; i < frame.worldX.length; i++) {
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
-      if (wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
+      if ((currentFlags === undefined || currentFlags.indexOf(frame.category[i]) !== -1) &&
+          wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         vessels.push({
           category: frame.category[i],
