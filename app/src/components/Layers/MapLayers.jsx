@@ -103,6 +103,11 @@ class MapLayers extends Component {
       isGLContainerDirty = true;
     }
 
+    if (nextProps.highlightedVessel.series !== this.props.highlightedVessel.series) {
+      this.updateHeatmapHighlighted(nextProps);
+      isGLContainerDirty = true;
+    }
+
     if (isGLContainerDirty === true) {
       this.renderGLContainer();
     }
@@ -259,7 +264,11 @@ class MapLayers extends Component {
   }
 
   updateHeatmap(props) {
-    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes);
+    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+  }
+
+  updateHeatmapHighlighted(props) {
+    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
   }
 
   updateHeatmapWithCurrentProps() {
@@ -489,7 +498,7 @@ class MapLayers extends Component {
     }
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    this.props.highlightVesselTrackFromHeatmap(tileQuery);
+    this.props.highlightVesselFromHeatmap(tileQuery);
   }
 
   render() {
@@ -508,6 +517,7 @@ MapLayers.propTypes = {
   layers: React.PropTypes.array,
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
+  highlightedVessel: React.PropTypes.object,
   zoom: React.PropTypes.number,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,
@@ -520,7 +530,7 @@ MapLayers.propTypes = {
   reportLayerId: React.PropTypes.string,
   reportedPolygonsIds: React.PropTypes.array,
   getVesselFromHeatmap: React.PropTypes.func,
-  highlightVesselTrackFromHeatmap: React.PropTypes.func,
+  highlightVesselFromHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,
   releaseTile: React.PropTypes.func

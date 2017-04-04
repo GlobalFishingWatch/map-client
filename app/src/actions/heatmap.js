@@ -8,7 +8,8 @@ import {
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER,
   INIT_HEATMAP_LAYERS,
-  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES
+  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
+  HIGHLIGHT_VESSEL
 } from 'actions';
 import {
   getTilePelagosPromises,
@@ -298,7 +299,7 @@ const _queryHeatmap = (state, tileQuery) => {
   Object.keys(layers).forEach((layerId) => {
     const layer = layers[layerId];
     const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-    if (queriedTile.data !== undefined) {
+    if (queriedTile !== undefined && queriedTile.data !== undefined) {
       layersVessels.push({
         layerId,
         vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
@@ -341,10 +342,15 @@ const _queryHeatmap = (state, tileQuery) => {
   return { isEmpty, isCluster, layerId, seriesgroup, series };
 };
 
-export function highlightVesselTrackFromHeatmap(tileQuery) {
+export function highlightVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
-    const { isEmpty, isCluster, seriesgroup, series } = _queryHeatmap(getState(), tileQuery);
-    console.log(series, seriesgroup);
+    const { isEmpty, isCluster, layerId, seriesgroup, series } = _queryHeatmap(getState(), tileQuery);
+    dispatch({
+      type: HIGHLIGHT_VESSEL,
+      payload: {
+        isEmpty, isCluster, layerId, seriesgroup, series
+      }
+    });
   };
 }
 

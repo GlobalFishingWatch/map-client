@@ -33,6 +33,11 @@ export default class HeatmapSubLayer {
     this._setTextureFrame(null, hue);
   }
 
+  setSeries(series, seriesgroup) {
+    this.series = series;
+    this.seriesgroup = seriesgroup;
+  }
+
   setRenderingStyle(useHeatmapStyle) {
     this._setTextureFrame(useHeatmapStyle);
   }
@@ -116,6 +121,9 @@ export default class HeatmapSubLayer {
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
         if (this.flag && this.flag !== frame.category[index]) {
+          continue;
+        }
+        if (this.series && (this.series !== frame.series[index])) {
           continue;
         }
         this.numSprites++;

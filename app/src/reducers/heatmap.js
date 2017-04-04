@@ -6,7 +6,8 @@ import {
   REMOVE_HEATMAP_LAYER,
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
-  UPDATE_HEATMAP_TILES
+  UPDATE_HEATMAP_TILES,
+  HIGHLIGHT_VESSEL
 } from '../actions';
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
   heatmapLayers: {},
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
-  referenceTiles: []
+  referenceTiles: [],
+  highlightedVessel: { series: null }
 };
 
 export default function (state = initialState, action) {
@@ -73,6 +75,14 @@ export default function (state = initialState, action) {
         heatmapLayers[layerId] = newHeatmapLayers[layerId];
       });
       return Object.assign({}, state, { heatmapLayers });
+    }
+
+
+    case HIGHLIGHT_VESSEL: {
+      if (action.payload.isCluster || action.payload.isEmpty) {
+        return Object.assign({}, state, { highlightedVessel: { series: null } });
+      }
+      return Object.assign({}, state, { highlightedVessel: action.payload });
     }
 
     default:
