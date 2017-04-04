@@ -24,6 +24,7 @@ class MapLayers extends Component {
     this.addedLayers = {};
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
+    this.onMapMoveBound = this.onMapMove.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
@@ -155,6 +156,7 @@ class MapLayers extends Component {
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
+    this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
   }
 
@@ -478,7 +480,16 @@ class MapLayers extends Component {
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
 
-    this.props.queryHeatmap(tileQuery, event.latLng);
+    this.props.getVesselFromHeatmap(tileQuery, event.latLng);
+  }
+
+  onMapMove(event) {
+    if (!event || !this.glContainer || this.glContainer.interactive === false) {
+      return;
+    }
+
+    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
+    this.props.highlightVesselTrackFromHeatmap(tileQuery);
   }
 
   render() {
@@ -508,7 +519,8 @@ MapLayers.propTypes = {
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.string,
   reportedPolygonsIds: React.PropTypes.array,
-  queryHeatmap: React.PropTypes.func,
+  getVesselFromHeatmap: React.PropTypes.func,
+  highlightVesselTrackFromHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,
   releaseTile: React.PropTypes.func
