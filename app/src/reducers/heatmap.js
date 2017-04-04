@@ -79,9 +79,6 @@ export default function (state = initialState, action) {
 
 
     case HIGHLIGHT_VESSEL: {
-      if (action.payload.isCluster || action.payload.isEmpty) {
-        return Object.assign({}, state, { highlightedVessel: { series: null } });
-      }
       return Object.assign({}, state, { highlightedVessel: action.payload });
     }
 
