@@ -215,10 +215,12 @@ export default class GLContainer extends BaseOverlay {
       console.warn('trying to add tracks on a layer not yet added');
       return;
     }
+    this.hasTracks = true;
     this.tracksLayer.update(tracks, drawParams, this._getOffsets());
   }
 
   clearTracks() {
+    this.hasTracks = false;
     this.tracksLayer.clear();
   }
 
@@ -250,6 +252,9 @@ export default class GLContainer extends BaseOverlay {
   }
 
   undimHeatmap() {
+    if (this.hasTracks === true) {
+      return;
+    }
     this.toggleHeatmapDimming(false);
     this._renderStage();
   }
