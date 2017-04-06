@@ -72,9 +72,11 @@ class MapLayers extends Component {
     const nextTracks = getTracks(nextProps.vesselTracks);
 
     if (!nextTracks || nextTracks.length === 0) {
-      this.glContainer.clearTracks();
-      this.glContainer.toggleHeatmapDimming(false);
-      isGLContainerDirty = true;
+      if (this.props.vesselTracks && this.props.vesselTracks.length) {
+        this.glContainer.clearTracks();
+        this.glContainer.toggleHeatmapDimming(false);
+        isGLContainerDirty = true;
+      }
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextTracks,

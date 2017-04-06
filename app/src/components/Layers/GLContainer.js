@@ -1,5 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
+import _ from 'lodash';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
@@ -24,6 +25,7 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
+    this.undimHeatmapDebounced = _.debounce(this.undimHeatmap, 500);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -194,6 +196,7 @@ export default class GLContainer extends BaseOverlay {
   updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup, currentFlags }) {
     if (seriesgroup === undefined) {
       this.heatmapHighlight.stage.visible = false;
+      this.undimHeatmapDebounced();
       return;
     }
     const startIndex = timelineInnerExtentIndexes[0];
@@ -203,6 +206,8 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setFlags(currentFlags);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
     this.heatmapHighlight.stage.visible = true;
+    this.undimHeatmapDebounced.cancel();
+    this.toggleHeatmapDimming(true);
   }
 
   updateTracks(tracks, drawParams) {
@@ -242,6 +247,11 @@ export default class GLContainer extends BaseOverlay {
       layer.setSubLayers(layerFlags, useHeatmapStyle);
     });
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
+  }
+
+  undimHeatmap() {
+    this.toggleHeatmapDimming(false);
+    this._renderStage();
   }
 
   toggleHeatmapDimming(dim) {
