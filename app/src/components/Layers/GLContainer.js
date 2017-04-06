@@ -215,6 +215,9 @@ export default class GLContainer extends BaseOverlay {
       console.warn('trying to add tracks on a layer not yet added');
       return;
     }
+    if (tracks === undefined || !tracks.length) {
+      return;
+    }
     this.hasTracks = true;
     this.tracksLayer.update(tracks, drawParams, this._getOffsets());
   }
