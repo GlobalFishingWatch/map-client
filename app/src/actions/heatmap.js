@@ -8,7 +8,8 @@ import {
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER,
   INIT_HEATMAP_LAYERS,
-  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES
+  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
+  HIGHLIGHT_VESSEL
 } from 'actions';
 import {
   getTilePelagosPromises,
@@ -289,7 +290,93 @@ export function loadTilesExtraTimeRange() {
   };
 }
 
-export function queryHeatmap(tileQuery, latLng) {
+
+const _getCurrentFlagsForLayer = (state, layerId) => {
+  if (layerId === undefined) {
+    return undefined;
+  }
+  const flags = state.filters.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
+  return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
+};
+
+const _queryHeatmap = (state, tileQuery) => {
+  const layers = state.heatmap.heatmapLayers;
+  const timelineExtent = state.filters.timelineInnerExtentIndexes;
+  const startIndex = timelineExtent[0];
+  const endIndex = timelineExtent[1];
+  const layersVessels = [];
+  Object.keys(layers).forEach((layerId) => {
+    const layer = layers[layerId];
+    const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
+    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
+    if (queriedTile !== undefined && queriedTile.data !== undefined) {
+      layersVessels.push({
+        layerId,
+        vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex, currentFlags)
+      });
+    }
+  });
+
+  const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
+
+  // it's a cluster because of aggregation on the server side
+  let isCluster;
+  // it's a cluster because there are multiple points udner mouse click radius
+  let isMouseCluster;
+  let isEmpty;
+  let seriesgroup;
+  let series;
+  let layerId;
+
+  if (layersVesselsResult.length === 0) {
+    isEmpty = true;
+  } else if (layersVesselsResult.length > 1) {
+    // if there are points over multiple layers, consider this a cluster
+    isCluster = true;
+  } else {
+    // we can get multiple points with similar series and seriesgroup, in which case
+    // we should treat that as a successful vessel query, not a cluster
+    layerId = layersVesselsResult[0].layerId;
+    const vessels = layersVesselsResult[0].vessels;
+
+    if (vessels.length === 0) {
+      isEmpty = true;
+    } else {
+      // look up for any non-negative seriesgroup (not clusters on the server side)
+      const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
+
+      if (nonClusteredVessels.length) {
+        seriesgroup = nonClusteredVessels[0].seriesgroup;
+        series = nonClusteredVessels[0].series;
+        isMouseCluster = _.uniq(nonClusteredVessels.map(v => v.seriesgroup)).length > 1;
+        isCluster = isMouseCluster;
+      } else {
+        isCluster = true;
+      }
+    }
+  }
+
+  return { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series };
+};
+
+export function highlightVesselFromHeatmap(tileQuery) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
+    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
+
+    const payload = ((isCluster === true && isMouseCluster === false) || isEmpty === true)
+      ? { series: null }
+      : { layerId, series, seriesgroup, currentFlags };
+
+    dispatch({
+      type: HIGHLIGHT_VESSEL,
+      payload
+    });
+  };
+}
+
+export function getVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -297,57 +384,7 @@ export function queryHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const layers = state.heatmap.heatmapLayers;
-    const timelineExtent = state.filters.timelineInnerExtentIndexes;
-    const startIndex = timelineExtent[0];
-    const endIndex = timelineExtent[1];
-    const layersVessels = [];
-    Object.keys(layers).forEach((layerId) => {
-      const layer = layers[layerId];
-      const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      if (queriedTile.data !== undefined) {
-        layersVessels.push({
-          layerId,
-          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex)
-        });
-      }
-    });
-
-    const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
-
-    let isCluster;
-    let isEmpty;
-    let seriesgroup;
-    let series;
-    let layerId;
-
-    if (layersVesselsResult.length === 0) {
-      isEmpty = true;
-    } else if (layersVesselsResult.length > 1) {
-      // if there are points over multiple layers, consider this a cluster
-      isCluster = true;
-    } else {
-      // we can get multiple points with similar series and seriesgroup, in which case
-      // we should treat that as a successful vessel query, not a cluster
-      layerId = layersVesselsResult[0].layerId;
-      const vessels = layersVesselsResult[0].vessels;
-      const allSeriesGroups = _.uniq(vessels.map(v => v.seriesgroup));
-      const allSeries = _.uniq(vessels.map(v => v.series));
-      seriesgroup = allSeriesGroups[0];
-      series = allSeries[0];
-
-      if (vessels.length === 0) {
-        isEmpty = true;
-      } else if (allSeriesGroups.length > 1 || allSeries.length > 1 || seriesgroup <= 0) {
-        // one seriesGroup, one series, and seriesGroup is > 0
-        // (less than 0 means that points have been clustered server side)
-        isCluster = true;
-        if (allSeriesGroups[0] <= 0) {
-          console.warn('negative seriesgroup:', allSeriesGroups[0]);
-        }
-      }
-    }
-
+    const { isEmpty, isCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 

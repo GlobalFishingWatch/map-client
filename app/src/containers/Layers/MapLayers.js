@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import MapLayers from 'components/Layers/MapLayers';
 import { showPolygon } from 'actions/report';
-import { getTile, releaseTile, queryHeatmap } from 'actions/heatmap';
+import { getTile, releaseTile, getVesselFromHeatmap, highlightVesselFromHeatmap } from 'actions/heatmap';
 
 const mapStateToProps = state => ({
   token: state.user.token,
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers,
   flagsLayers: state.filters.flagsLayers,
   heatmap: state.heatmap.heatmapLayers,
+  highlightedVessel: state.heatmap.highlightedVessel,
   timelineInnerExtent: state.filters.timelineInnerExtent,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   timelineOuterExtent: state.filters.timelineOuterExtent,
@@ -29,8 +30,11 @@ const mapDispatchToProps = dispatch => ({
   releaseTile: (uid) => {
     dispatch(releaseTile(uid));
   },
-  queryHeatmap: (tileQuery, latLng) => {
-    dispatch(queryHeatmap(tileQuery, latLng));
+  getVesselFromHeatmap: (tileQuery, latLng) => {
+    dispatch(getVesselFromHeatmap(tileQuery, latLng));
+  },
+  highlightVesselFromHeatmap: (tileQuery) => {
+    dispatch(highlightVesselFromHeatmap(tileQuery));
   }
 });
 
