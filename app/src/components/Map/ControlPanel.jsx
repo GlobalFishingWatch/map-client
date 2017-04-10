@@ -195,10 +195,7 @@ class ControlPanel extends Component {
           if (matches) {
             return (
               <div
-                className={classnames(
-                  controlPanelStyle.controlpanel,
-                  { [`${controlPanelStyle['-is-report-visible']}`]: this.props.isReportStarted }
-                )}
+                className={controlPanelStyle.controlpanel}
               >
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
