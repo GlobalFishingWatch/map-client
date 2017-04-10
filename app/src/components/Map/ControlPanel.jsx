@@ -18,6 +18,12 @@ import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
 
+  componentDidUpdate() {
+    if (this.props.isReportStarted === true) {
+      this.controlPanelRef.scrollTop = this.controlPanelRef.clientHeight;
+    }
+  }
+
   onCloseSearch() {
     this.props.hideSearchResults();
 
@@ -189,6 +195,7 @@ class ControlPanel extends Component {
   }
 
   render() {
+    // TODO WTF DRY
     return (
       <MediaQuery minWidth={768} >
         {(matches) => {
@@ -196,6 +203,7 @@ class ControlPanel extends Component {
             return (
               <div
                 className={controlPanelStyle.controlpanel}
+                ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
               >
                 <div className={controlPanelStyle['bg-wrapper']} >
                   {this.renderResume()}
@@ -215,7 +223,10 @@ class ControlPanel extends Component {
           }
 
           return (
-            <div className={controlPanelStyle.controlpanel} >
+            <div
+              className={controlPanelStyle.controlpanel}
+              ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
+            >
               {this.renderResume()}
               <VesselInfoPanel />
               <Accordion
