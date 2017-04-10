@@ -26,6 +26,10 @@
   > .bg-wrapper {
     background: rgba($color-1, .95);
     box-shadow: 29px 0 4px 0 rgba($color-12, .5);
+
+    @media #{$mq-tablet} {
+      margin-left: $control-panel-left-offset;
+    }
   }
 
   .resume-display {
