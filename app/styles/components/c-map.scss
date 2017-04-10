@@ -63,6 +63,21 @@
   }
 }
 
+.map-loader {
+  left: 35px;
+  z-index: 6;
+  position: absolute;
+  bottom: 35px;
+
+  @media #{$mq-tablet} {
+    bottom: 170px;
+  }
+
+  @media #{$mq-desktop} {
+    bottom: 270px;
+  }
+}
+
 .zoom-controls {
   display: none;
 
