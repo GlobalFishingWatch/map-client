@@ -2,6 +2,7 @@
 
 .c-loader {
   position: relative;
+
   &.-absolute {
     position: absolute;
     z-index: 103;
@@ -19,9 +20,34 @@
     }
   }
 
+  &.-tiny {
+    align-items: center;
+    background-color: $color-19;
+    border-radius: 50%;
+    box-shadow: 0 0 8px 0 rgba($color-22, .3);
+    color: $color-4;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    text-align: center;
+    width: 40px;
+
+    .loader-container {
+      position: absolute;
+      width: 20px;
+      height: 25px;
+      background-color: transparent;
+
+      > .loader-bubble::before {
+        height: 5px;
+        width: 5px;
+      }
+    }
+  }
+
   .loader-container {
     width: 65px;
-    margin: 90px auto;
+    margin: 0 auto;
     height: 65px;
     background-color: rgba($color-1, 0.7);
 
