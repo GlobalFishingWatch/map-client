@@ -1,20 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
+import classnames from 'classnames';
 import loaderStyle from 'styles/components/c-loader.scss';
 
-class Loader extends Component {
-
-  render() {
-    return (<div className={loaderStyle['c-loader']}>
-      <div className={[loaderStyle['sk-circle1'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle2'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle3'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle4'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle5'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle6'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle7'], loaderStyle['sk-child']].join(' ')} />
-      <div className={[loaderStyle['sk-circle8'], loaderStyle['sk-child']].join(' ')} />
-    </div>);
-  }
+export default function Loader(props) {
+  const { visible, absolute, tiny } = props;
+  const loader = (
+    <div
+      className={classnames([loaderStyle['c-loader'], {
+        [loaderStyle['-absolute']]: absolute,
+        [loaderStyle['-tiny']]: tiny
+      }])}
+    >
+      <div className={loaderStyle['loader-container']}>
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+        <div className={loaderStyle['loader-bubble']} />
+      </div>
+    </div>
+  );
+  return visible ? loader : false;
 }
 
-export default Loader;
+Loader.propTypes = {
+  visible: React.PropTypes.bool,
+  absolute: React.PropTypes.bool
+};
