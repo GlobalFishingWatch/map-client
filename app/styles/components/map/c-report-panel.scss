@@ -104,6 +104,10 @@
         padding: 0 0 10px;
       }
 
+      &:only-child {
+        padding: 10px 0;
+      }
+
       > .polygon-name {
         color: $color-1;
         font-size: $font-size-xxs-small;
