@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
@@ -19,10 +18,7 @@ import {
   LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
-import {
-  setInnerTimelineDates,
-  setOuterTimelineDates
-} from 'actions/filters';
+import { fitTimelineToTrack } from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import {
   getTilePelagosPromises,
@@ -164,7 +160,7 @@ export function showNoVesselsInfo() {
   };
 }
 
-function getTrackTimeExtent(data, series = null) {
+function _getTrackTimeExtent(data, series = null) {
   let start = Infinity;
   let end = 0;
   for (let i = 0, length = data.datetime.length; i < length; i++) {
@@ -181,7 +177,7 @@ function getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = false) {
+function _getVesselTrack({ layerId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
     const map = state.map.googleMaps;
@@ -236,37 +232,10 @@ function getVesselTrack(layerId, seriesgroup, series = null, zoomToBounds = fals
           }
         });
 
-        // change Timebar bounds, so that
-        // - outer bounds fits time range of tracks (filtered by series if applicable)
-        // - outer bounds is not less than a week
-        // - inner bounds start is moved to beginning of outer bounds if it's outside
-        // - inner bounds end is moved to fit in outer bounds
-        const tracksExtent = getTrackTimeExtent(groupedData, series);
-        let tracksDuration = tracksExtent[1] - tracksExtent[0];
-
-        if (tracksDuration < TIMELINE_MIN_INNER_EXTENT) {
-          tracksExtent[1] = tracksExtent[0] + TIMELINE_MIN_INNER_EXTENT;
-          tracksDuration = TIMELINE_MIN_INNER_EXTENT;
+        if (updateTimelineBounds === true) {
+          const tracksExtent = _getTrackTimeExtent(groupedData, series);
+          dispatch(fitTimelineToTrack(tracksExtent));
         }
-
-        const currentInnerExtent = state.filters.timelineInnerExtent;
-        const currentInnerExtentStart = currentInnerExtent[0].getTime();
-        const currentInnerExtentEnd = currentInnerExtent[1].getTime();
-        const currentInnerDuration = currentInnerExtentEnd - currentInnerExtentStart;
-        let newInnerExtentStart = currentInnerExtentStart;
-        let newInnerExtentEnd = currentInnerExtentEnd;
-
-        if (newInnerExtentStart < tracksExtent[0] || newInnerExtentStart > tracksExtent[1]) {
-          newInnerExtentStart = tracksExtent[0];
-          newInnerExtentEnd = newInnerExtentStart + currentInnerDuration;
-        }
-
-        if (newInnerExtentEnd > tracksExtent[1]) {
-          newInnerExtentEnd = newInnerExtentStart + (tracksDuration * 0.1);
-        }
-
-        dispatch(setInnerTimelineDates([new Date(newInnerExtentStart), new Date(newInnerExtentEnd)]));
-        dispatch(setOuterTimelineDates([new Date(tracksExtent[0]), new Date(tracksExtent[1])]));
 
         if (zoomToBounds) {
           // should this be computed server side ?
@@ -307,7 +276,13 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
     } else {
       dispatch(hideVesselsInfoPanel());
     }
-    dispatch(getVesselTrack(layerId, seriesgroup, series, zoomToBounds));
+    dispatch(_getVesselTrack({
+      layerId,
+      seriesgroup,
+      series,
+      zoomToBounds,
+      updateTimelineBounds: fromSearch === true
+    }));
   };
 }
 
@@ -317,21 +292,46 @@ export function clearVesselInfo() {
   };
 }
 
-export function toggleActiveVesselPin() {
+function _getPinAction(state, seriesgroup) {
+  let vesselIndex;
+  if (seriesgroup === undefined) {
+    // use vessel in info panel
+    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.shownInInfoPanel === true);
+  } else {
+    // look for vessel with given seriesgoup if provided
+    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+  }
+  const vessel = state.vesselInfo.vessels[vesselIndex];
+  const pinned = !vessel.pinned;
+
+  let visible = false;
+
+  // when pinning the vessel currently in info panel, should be initially visible
+  if (seriesgroup === undefined && pinned === true) {
+    visible = true;
+  }
   return {
     type: TOGGLE_VESSEL_PIN,
     payload: {
-      useVesselCurrentlyInInfoPanel: true
+      vesselIndex,
+      pinned,
+      visible,
+      seriesgroup: vessel.seriesgroup,
+      vesselname: vessel.vesselname,
+      tilesetId: vessel.layerId
     }
   };
 }
 
+export function toggleActiveVesselPin() {
+  return (dispatch, getState) => {
+    dispatch(_getPinAction(getState()));
+  };
+}
+
 export function toggleVesselPin(seriesgroup) {
-  return {
-    type: TOGGLE_VESSEL_PIN,
-    payload: {
-      seriesgroup
-    }
+  return (dispatch, getState) => {
+    dispatch(_getPinAction(getState(seriesgroup)));
   };
 }
 
@@ -356,7 +356,13 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
       }
     });
     if (visible === true && currentVessel.track === undefined) {
-      dispatch(getVesselTrack(currentVessel.tileset, seriesgroup, null, true));
+      dispatch(_getVesselTrack({
+        layerId: currentVessel.tileset,
+        seriesgroup,
+        series: null,
+        zoomToBounds: true,
+        updateTimelineBounds: false
+      }));
     }
   };
 }

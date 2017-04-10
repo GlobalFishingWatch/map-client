@@ -29,8 +29,17 @@ export default class HeatmapSubLayer {
 
 
   setFilters(flag, hue) {
-    this.flag = (flag === 'ALL') ? undefined : flag;
+    this.flags = (flag === 'ALL') ? undefined : [flag];
     this._setTextureFrame(null, hue);
+  }
+
+  setFlags(flags) {
+    this.flags = flags;
+  }
+
+  setSeries(series, seriesgroup) {
+    this.series = series;
+    this.seriesgroup = seriesgroup;
   }
 
   setRenderingStyle(useHeatmapStyle) {
@@ -115,7 +124,10 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        if (this.flag && this.flag !== frame.category[index]) {
+        if (this.flags !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+          continue;
+        }
+        if (this.series && (this.series !== frame.series[index])) {
           continue;
         }
         this.numSprites++;
@@ -145,7 +157,7 @@ export default class HeatmapSubLayer {
         const frame = tile.data[timeIndex];
         if (!frame) continue;
         for (let index = 0, len = frame.worldX.length; index < len; index++) {
-          if (this.flag && this.flag !== frame.category[index]) {
+          if (this.flags !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
             continue;
           }
           numSprites++;

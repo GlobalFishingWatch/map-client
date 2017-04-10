@@ -4,7 +4,6 @@ import { setToken, getLoggedUser } from 'actions/user';
 import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
 
 const mapStateToProps = state => ({
-  loading: state.map.loading,
   welcomeModalUrl: state.modal.welcome.url
 });
 

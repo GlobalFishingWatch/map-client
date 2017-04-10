@@ -144,20 +144,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { trackBounds: action.trackBounds });
     }
     case TOGGLE_VESSEL_PIN: {
-      let vesselIndex;
-      if (action.payload.useVesselCurrentlyInInfoPanel === true) {
-        vesselIndex = state.vessels.findIndex(vessel => vessel.shownInInfoPanel === true);
-      } else {
-        // look for vessel with given seriesgoup if provided
-        vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      }
+      const vesselIndex = action.payload.vesselIndex;
       const newVessel = _.cloneDeep(state.vessels[vesselIndex]);
-      newVessel.pinned = !newVessel.pinned;
-
-      // when pinning the vessel currently in info panel, should be initially visible
-      if (newVessel.pinned === true && action.payload.useVesselCurrentlyInInfoPanel === true) {
-        newVessel.visible = true;
-      }
+      newVessel.pinned = action.payload.pinned;
+      newVessel.visible = action.payload.visible;
 
       const newVessels = [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)];
       return Object.assign({}, state, {

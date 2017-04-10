@@ -19,15 +19,6 @@
           "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
         },
         {
-          "title": "Ports",
-          "description": "Ports of the world. Zoom in to show smaller ports",
-          "url": "https://simbiotica.carto.com/api/v2/viz/ec536c24-5afb-11e6-9b54-0ef7f98ade21/viz.json",
-          "visible": false,
-          "hue": 212,
-          "type": "CartoDBAnimation",
-          "id": "ec536c24-5afb-11e6-9b54-0ef7f98ade21"
-        },
-        {
           "title": "Fishing Effort",
           "description": "Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",

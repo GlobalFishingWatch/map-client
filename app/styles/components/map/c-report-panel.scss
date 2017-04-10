@@ -2,33 +2,31 @@
 @import '../../mixins';
 
 .c-report-panel {
-  left: 0;
+  bottom: $offset-panel-control-mobile;
   position: absolute;
-  top: calc(#{$header-height} + #{$accordion-mobile-height});
   transform: translate(0, 0);
   transition: transform .25s ease;
   width: 100%;
-  z-index: 5;
+  z-index: 103;
 
-  @media #{$mq-mobile-large} {
-    bottom: calc(#{$timebar-height} + #{$map-footer-height});
-    left: auto;
-    min-width: 320px;
-    right: 0;
-    top: auto;
-    width: auto;
+  @media #{$mq-tablet} {
+    flex: 0 0 auto;
+    margin-left: $control-panel-left-offset;
+    position: relative;
+    top: 0;
+    width: calc(100% - #{$control-panel-left-offset});
   }
 
   &.-minimized {
     transform: translate(0, calc(-100% - #{$report-panel-menu-height}));
 
-    @media #{$mq-mobile-large} {
+    @media #{$mq-tablet} {
       transform: translate(0, 0);
     }
   }
 
   &.-no-footer {
-    @media #{$mq-mobile-large} {
+    @media #{$mq-tablet} {
       bottom: $timebar-height;
     }
   }
