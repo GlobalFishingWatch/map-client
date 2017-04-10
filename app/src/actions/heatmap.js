@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
-  COMPLETE_TILE_LOAD,
   SET_VESSEL_CLUSTER_CENTER,
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
@@ -19,10 +18,10 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, LOADERS } from 'constants';
 import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
 import { trackMapClicked } from 'actions/analytics';
-
+import { addLoader, removeLoader } from 'actions/map';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -119,6 +118,8 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, tem
  */
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
   return (dispatch, getState) => {
+    const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
+    dispatch(addLoader(loaderId));
     const layers = getState().heatmap.heatmapLayers;
     const token = getState().user.token;
     const map = getState().map.googleMaps;
@@ -167,10 +168,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
     });
 
     Promise.all(allPromises).then(() => {
-      // TODO this does nothing for now, use it for loading status indicators
-      dispatch({
-        type: COMPLETE_TILE_LOAD
-      });
+      dispatch(removeLoader(loaderId));
     });
   };
 }
