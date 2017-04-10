@@ -9,9 +9,8 @@ $wrap-tablet: 55px;
 $wrap-desktop: 115px;
 $map-footer-height: 38px;
 $max-map-footer-height: 485px;
-$offset-panel-control-mobile: 110px;
+$offset-panel-control-mobile: 108px;
 $offset-panel-control: 20px;
-$offset-panel-control-with-report: 170px;
 
 
 $header-height-mobile: 60px;
@@ -19,13 +18,16 @@ $header-height: 95px;
 $accordion-mobile-height: 60px;
 $vessel-info-height: 70px;
 
+$map-panels-width: 320px;
+$control-panel-left-offset: 14px;
+
 
 // Map
 $timebar-height: 70px;
 $duration-picker-height: 24px;
 $report-panel-menu-height: 48px;
 
-$panel-control-base-height: $timebar-height + $duration-picker-height + $map-footer-height;
+$panel-control-base-height: $timebar-height + $map-footer-height;
 
 
 // Font sizes

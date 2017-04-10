@@ -23,6 +23,7 @@ import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import iconStyles from 'styles/icons.scss';
+import mapPanelsStyles from 'styles/components/c-map-panels.scss';
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
@@ -241,8 +242,10 @@ class Map extends Component {
         >
           <PromptLayerRemoval />
         </Modal>
-        <ControlPanel isEmbedded={this.props.isEmbedded} />
-        <ReportPanel />
+        <div className={mapPanelsStyles['map-panels']}>
+          <ControlPanel isEmbedded={this.props.isEmbedded} />
+          <ReportPanel />
+        </div>
       </div>
       }
       {canShareWorkspaces &&

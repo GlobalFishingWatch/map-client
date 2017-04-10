@@ -1,0 +1,15 @@
+@import '../settings';
+
+.map-panels {
+  z-index: 102;
+
+  @media #{$mq-tablet} {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - #{$panel-control-base-height});
+    justify-content: space-between;
+    position: absolute;
+    right: 0;
+    width: $map-panels-width + $control-panel-left-offset;
+  }
+}
