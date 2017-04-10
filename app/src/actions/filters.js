@@ -8,7 +8,7 @@ import {
   GA_OUTER_TIMELINE_DATES_UPDATED,
   REWIND_TIMELINE
 } from 'actions';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
 import _ from 'lodash';
 
@@ -116,5 +116,40 @@ export function setTimelineHoverDates(overDates) {
 export function rewindTimeline() {
   return {
     type: REWIND_TIMELINE
+  };
+}
+
+// change Timebar bounds, so that
+// - outer bounds fits time range of tracks (filtered by series if applicable)
+// - outer bounds is not less than a week
+// - inner bounds start is moved to beginning of outer bounds if it's outside
+// - inner bounds end is moved to fit in outer bounds
+export function fitTimelineToTrack(tracksExtent) {
+  return (dispatch, getState) => {
+    let tracksDuration = tracksExtent[1] - tracksExtent[0];
+
+    if (tracksDuration < TIMELINE_MIN_INNER_EXTENT) {
+      tracksExtent[1] = tracksExtent[0] + TIMELINE_MIN_INNER_EXTENT;
+      tracksDuration = TIMELINE_MIN_INNER_EXTENT;
+    }
+
+    const currentInnerExtent = getState().filters.timelineInnerExtent;
+    const currentInnerExtentStart = currentInnerExtent[0].getTime();
+    const currentInnerExtentEnd = currentInnerExtent[1].getTime();
+    const currentInnerDuration = currentInnerExtentEnd - currentInnerExtentStart;
+    let newInnerExtentStart = currentInnerExtentStart;
+    let newInnerExtentEnd = currentInnerExtentEnd;
+
+    if (newInnerExtentStart < tracksExtent[0] || newInnerExtentStart > tracksExtent[1]) {
+      newInnerExtentStart = tracksExtent[0];
+      newInnerExtentEnd = newInnerExtentStart + currentInnerDuration;
+    }
+
+    if (newInnerExtentEnd > tracksExtent[1]) {
+      newInnerExtentEnd = newInnerExtentStart + (tracksDuration * 0.1);
+    }
+
+    dispatch(setInnerTimelineDates([new Date(newInnerExtentStart), new Date(newInnerExtentEnd)]));
+    dispatch(setOuterTimelineDates([new Date(tracksExtent[0]), new Date(tracksExtent[1])]));
   };
 }
