@@ -17,7 +17,7 @@ const initialState = {
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
   referenceTiles: [],
-  highlightedVessel: { series: null }
+  highlightedVessels: { isEmpty: true }
 };
 
 export default function (state = initialState, action) {

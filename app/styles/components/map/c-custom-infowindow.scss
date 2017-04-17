@@ -1,6 +1,6 @@
 @import '../../settings';
 
-.c-polygon-report {
+.c-custom-infowindow {
   background: $color-13;
   bottom: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
@@ -21,6 +21,10 @@
   .title,
   .description {
     pointer-events: none;
+  }
+
+  .description {
+    margin-top: 10px;
   }
 
   .title,

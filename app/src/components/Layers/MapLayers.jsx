@@ -6,6 +6,7 @@ import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
+import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
 import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
@@ -500,12 +501,15 @@ class MapLayers extends Component {
     }
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    this.props.highlightVesselFromHeatmap(tileQuery);
+    this.props.highlightVesselFromHeatmap(tileQuery, event.latLng);
   }
 
   render() {
     return (<div>
       <PolygonReport
+        map={this.map}
+      />
+      <ClusterInfoWindow
         map={this.map}
       />
     </div>);

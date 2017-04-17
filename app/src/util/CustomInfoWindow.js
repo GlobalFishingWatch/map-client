@@ -4,8 +4,10 @@
 // See PolygonReport.jsx for an example of implementation.
 
 export default class CustomInfoWindow extends google.maps.OverlayView {
-  constructor() {
+  constructor(map) {
     super();
+
+    this.setMap(map);
     this.latLng = { lat: 0, lng: 0 };
     this.div = document.createElement('div');
     this.div.style.borderStyle = 'none';
@@ -26,7 +28,7 @@ export default class CustomInfoWindow extends google.maps.OverlayView {
   }
 
   setLatLng(latLng) {
-    this.latLng = { lat: latLng[0], lng: latLng[1] };
+    this.latLng = (latLng.lat) ? { lat: latLng.lat(), lng: latLng.lng() } : { lat: latLng[0], lng: latLng[1] };
     this.draw();
   }
 }

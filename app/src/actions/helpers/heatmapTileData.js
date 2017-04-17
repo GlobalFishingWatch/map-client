@@ -179,7 +179,9 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
+    /* eslint-disable prefer-template */
     const seriesUid = vectorArray.series[index] + '' + vectorArray.seriesgroup[index];
+    /* eslint-enable prefer-template */
 
     if (!tilePlaybackData[timeIndex]) {
       const frame = {

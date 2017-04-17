@@ -360,7 +360,7 @@ const _queryHeatmap = (state, tileQuery) => {
   return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId, seriesgroup, series };
 };
 
-export function highlightVesselFromHeatmap(tileQuery) {
+export function highlightVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
     const { layerId, isEmpty, isCluster, seriesUids } = _queryHeatmap(state, tileQuery);
@@ -374,6 +374,7 @@ export function highlightVesselFromHeatmap(tileQuery) {
         isEmpty,
         isCluster,
         seriesUids,
+        latLng,
         currentFlags: _getCurrentFlagsForLayer(state, layerId)
       }
     });

@@ -33,8 +33,8 @@ const mapDispatchToProps = dispatch => ({
   getVesselFromHeatmap: (tileQuery, latLng) => {
     dispatch(getVesselFromHeatmap(tileQuery, latLng));
   },
-  highlightVesselFromHeatmap: (tileQuery) => {
-    dispatch(highlightVesselFromHeatmap(tileQuery));
+  highlightVesselFromHeatmap: (tileQuery, latLng) => {
+    dispatch(highlightVesselFromHeatmap(tileQuery, latLng));
   }
 });
 
