@@ -24,8 +24,8 @@ class MapLayers extends Component {
     super(props);
     this.addedLayers = {};
     this.onMapIdleBound = this.onMapIdle.bind(this);
-    this.onMapClickBound = this.onMapClick.bind(this);
-    this.onMapMoveBound = this.onMapMove.bind(this);
+    this.onMapClickBound = this.onMapInteraction.bind(this, 'click');
+    this.onMapMoveBound = this.onMapInteraction.bind(this, 'move');
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
@@ -478,30 +478,14 @@ class MapLayers extends Component {
     }
   }
 
-  /**
-   * Detects and handles map clicks
-   * Detects collisions with current vessel data
-   * Draws tracks and loads vessel details
-   *
-   * @param event
-   */
-  onMapClick(event) {
+  onMapInteraction(type, event) {
     if (!event || !this.glContainer || this.glContainer.interactive === false) {
       return;
     }
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-
-    this.props.getVesselFromHeatmap(tileQuery, event.latLng);
-  }
-
-  onMapMove(event) {
-    if (!event || !this.glContainer || this.glContainer.interactive === false) {
-      return;
-    }
-
-    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    this.props.highlightVesselFromHeatmap(tileQuery, event.latLng);
+    const callback = (type === 'click') ? this.props.getVesselFromHeatmap : this.props.highlightVesselFromHeatmap;
+    callback(tileQuery, event.latLng);
   }
 
   render() {
