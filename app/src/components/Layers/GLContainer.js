@@ -156,7 +156,7 @@ export default class GLContainer extends BaseOverlay {
     };
   }
 
-  updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessel) {
+  updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessels) {
     if (!this.mapProjection) {
       return;
     }
@@ -186,28 +186,33 @@ export default class GLContainer extends BaseOverlay {
       layer.render(tiles, startIndex, endIndex, this._getOffsets());
     }
 
-    if (highlightedVessel !== undefined) {
-      this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessel);
+    if (highlightedVessels !== undefined) {
+      this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessels);
     }
 
     this._renderStage();
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup, currentFlags }) {
-    if (seriesgroup === undefined) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, isCluster, isEmpty, seriesUids }) {
+    if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
       this.undimHeatmapDebounced();
       return;
     }
+    this.toggleHeatmapDimming(true);
+
+    if (isCluster === true) {
+      return;
+    }
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
-    this.heatmapHighlight.setSeries(series, seriesgroup);
+    this.heatmapHighlight.setSeriesUids(seriesUids);
     this.heatmapHighlight.setFlags(currentFlags);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
     this.heatmapHighlight.stage.visible = true;
     this.undimHeatmapDebounced.cancel();
-    this.toggleHeatmapDimming(true);
   }
 
   updateTracks(tracks, drawParams) {

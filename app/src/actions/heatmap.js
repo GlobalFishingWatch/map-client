@@ -8,7 +8,7 @@ import {
   REMOVE_HEATMAP_LAYER,
   INIT_HEATMAP_LAYERS,
   UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
-  HIGHLIGHT_VESSEL
+  HIGHLIGHT_VESSELS
 } from 'actions';
 import {
   getTilePelagosPromises,
@@ -326,6 +326,8 @@ const _queryHeatmap = (state, tileQuery) => {
   let series;
   let layerId;
 
+  let seriesUids;
+
   if (layersVesselsResult.length === 0) {
     isEmpty = true;
   } else if (layersVesselsResult.length > 1) {
@@ -347,30 +349,47 @@ const _queryHeatmap = (state, tileQuery) => {
         seriesgroup = nonClusteredVessels[0].seriesgroup;
         series = nonClusteredVessels[0].series;
         isMouseCluster = _.uniq(nonClusteredVessels.map(v => v.seriesgroup)).length > 1;
-        isCluster = isMouseCluster;
+        // isCluster = isMouseCluster;
+        seriesUids = _.uniq(nonClusteredVessels.map(v => v.seriesUid));
       } else {
         isCluster = true;
       }
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series };
+  return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId, seriesgroup, series };
 };
 
 export function highlightVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
     const state = getState();
-    const { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
-    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
+    const { layerId, isEmpty, isCluster, seriesUids } = _queryHeatmap(state, tileQuery);
 
-    const payload = ((isCluster === true && isMouseCluster === false) || isEmpty === true)
-      ? { series: null }
-      : { layerId, series, seriesgroup, currentFlags };
+    // console.log(seriesUids, isCluster)
 
     dispatch({
-      type: HIGHLIGHT_VESSEL,
-      payload
+      type: HIGHLIGHT_VESSELS,
+      payload: {
+        layerId,
+        isEmpty,
+        isCluster,
+        seriesUids,
+        currentFlags: _getCurrentFlagsForLayer(state, layerId)
+      }
     });
+
+
+    // const { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
+    // const currentFlags = _getCurrentFlagsForLayer(state, layerId);
+    //
+    // const payload = ((isCluster === true && isMouseCluster === false) || isEmpty === true)
+    //   ? { series: null }
+    //   : { layerId, series, seriesgroup, currentFlags };
+    //
+    // dispatch({
+    //   type: HIGHLIGHT_VESSEL,
+    //   payload
+    // });
   };
 }
 

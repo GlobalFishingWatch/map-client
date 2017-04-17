@@ -105,7 +105,7 @@ class MapLayers extends Component {
       isGLContainerDirty = true;
     }
 
-    if (nextProps.highlightedVessel.series !== this.props.highlightedVessel.series) {
+    if (nextProps.highlightedVessels !== this.props.highlightedVessels) {
       this.updateHeatmapHighlighted(nextProps);
       isGLContainerDirty = true;
     }
@@ -266,11 +266,11 @@ class MapLayers extends Component {
   }
 
   updateHeatmap(props) {
-    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessels);
   }
 
   updateHeatmapHighlighted(props) {
-    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessels);
   }
 
   updateHeatmapWithCurrentProps() {
@@ -519,7 +519,7 @@ MapLayers.propTypes = {
   layers: React.PropTypes.array,
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
-  highlightedVessel: React.PropTypes.object,
+  highlightedVessels: React.PropTypes.object,
   zoom: React.PropTypes.number,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,

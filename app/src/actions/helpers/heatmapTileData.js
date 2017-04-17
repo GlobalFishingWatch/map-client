@@ -158,7 +158,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   const extraColumns = _
     .chain(columns)
     .concat([])
-    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity') // those are mandatory thus manually added
+    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid') // those are mandatory thus manually added
     .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
     .uniq()
     .value();
@@ -179,6 +179,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
+    const seriesUid = vectorArray.series[index] + '' + vectorArray.seriesgroup[index];
+
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
         worldX: [worldX],
@@ -186,7 +188,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
         weight: [weight],
         sigma: [sigma],
         radius: [radius],
-        opacity: [opacity]
+        opacity: [opacity],
+        seriesUid: [seriesUid]
       };
       extraColumns.forEach((column) => {
         frame[column] = [vectorArray[column][index]];
@@ -201,6 +204,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     frame.sigma.push(sigma);
     frame.radius.push(radius);
     frame.opacity.push(opacity);
+    frame.seriesUid.push(seriesUid);
     extraColumns.forEach((column) => {
       frame[column].push(vectorArray[column][index]);
     });
@@ -240,7 +244,8 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
         vessels.push({
           category: frame.category[i],
           series: frame.series[i],
-          seriesgroup: frame.seriesgroup[i]
+          seriesgroup: frame.seriesgroup[i],
+          seriesUid: frame.seriesUid[i]
         });
       }
     }

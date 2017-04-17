@@ -7,7 +7,7 @@ import {
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   UPDATE_HEATMAP_TILES,
-  HIGHLIGHT_VESSEL
+  HIGHLIGHT_VESSELS
 } from '../actions';
 
 const initialState = {
@@ -78,8 +78,8 @@ export default function (state = initialState, action) {
     }
 
 
-    case HIGHLIGHT_VESSEL: {
-      return Object.assign({}, state, { highlightedVessel: action.payload });
+    case HIGHLIGHT_VESSELS: {
+      return Object.assign({}, state, { highlightedVessels: action.payload });
     }
 
     default:
