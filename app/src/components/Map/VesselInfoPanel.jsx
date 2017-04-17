@@ -163,7 +163,6 @@ VesselInfoPanel.propTypes = {
   infoPanelStatus: React.PropTypes.object,
   userPermissions: React.PropTypes.array,
   hide: React.PropTypes.func,
-  zoomIntoVesselCenter: React.PropTypes.func,
   onTogglePin: React.PropTypes.func,
   login: React.PropTypes.func
 };
