@@ -151,10 +151,10 @@ export function setLayerInfoModal(modalParams) {
   };
 }
 
-export function zoomIntoVesselCenter() {
+export function zoomIntoVesselCenter(latLng) {
   return (dispatch, getState) => {
     dispatch(setZoom(getState().map.zoom + 3));
-    dispatch(setCenter(getState().map.vesselClusterCenter));
+    dispatch(setCenter([latLng.lat(), latLng.lng()]));
   };
 }
 

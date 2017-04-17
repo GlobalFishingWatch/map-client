@@ -14,7 +14,7 @@ export default class ClusterInfoWindow extends Component {
 
   // avoids updating when props.map changes
   shouldComponentUpdate(nextProps) {
-    if (nextProps.latLng !== this.props.latLng || nextProps.isCluster !== this.props.isCluster) {
+    if (nextProps.latLng !== this.props.latLng || nextProps.clickableCluster !== this.props.clickableCluster) {
       return true;
     }
     return false;
@@ -29,7 +29,7 @@ export default class ClusterInfoWindow extends Component {
   }
 
   render() {
-    this.element = (this.props.isCluster !== true) ? <div /> : (<div
+    this.element = (this.props.clickableCluster !== true) ? <div /> : (<div
       className={classnames(CustomInfowindowStyles['c-custom-infowindow'], 'js-polygon-report')}
     >
       <div className={CustomInfowindowStyles.title}>
@@ -46,6 +46,6 @@ export default class ClusterInfoWindow extends Component {
 
 ClusterInfoWindow.propTypes = {
   latLng: React.PropTypes.object,
-  isCluster: React.PropTypes.bool,
+  clickableCluster: React.PropTypes.bool,
   map: React.PropTypes.object
 };

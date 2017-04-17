@@ -38,7 +38,6 @@ export default class HeatmapSubLayer {
   }
 
   setSeriesUids(seriesUids) {
-    console.log(seriesUids)
     this.seriesUids = seriesUids;
   }
 

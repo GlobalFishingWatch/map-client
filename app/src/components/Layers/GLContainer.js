@@ -193,7 +193,7 @@ export default class GLContainer extends BaseOverlay {
     this._renderStage();
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, isCluster, isEmpty, seriesUids }) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, seriesUids }) {
     if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
       this.undimHeatmapDebounced();
@@ -201,7 +201,7 @@ export default class GLContainer extends BaseOverlay {
     }
     this.toggleHeatmapDimming(true);
 
-    if (isCluster === true) {
+    if (highlightableCluster !== true) {
       return;
     }
 

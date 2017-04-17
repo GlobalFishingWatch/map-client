@@ -3,7 +3,7 @@ import ClusterInfoWindow from 'components/Map/ClusterInfoWindow';
 // import { toggleReportPolygon, clearPolygon } from 'actions/report';
 
 const mapStateToProps = state => ({
-  isCluster: state.heatmap.highlightedVessels.isCluster,
+  clickableCluster: state.heatmap.highlightedVessels.clickableCluster,
   latLng: state.heatmap.highlightedVessels.latLng
 });
 
