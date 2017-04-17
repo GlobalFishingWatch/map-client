@@ -3,6 +3,7 @@
 
 .c-report-panel {
   bottom: $offset-panel-control-mobile;
+  pointer-events: auto;
   position: absolute;
   transform: translate(0, 0);
   transition: transform .25s ease;

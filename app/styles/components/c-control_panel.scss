@@ -29,6 +29,7 @@
 
     @media #{$mq-tablet} {
       margin-left: $control-panel-left-offset;
+      pointer-events: auto;
     }
   }
 
