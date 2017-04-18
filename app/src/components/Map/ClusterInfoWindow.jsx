@@ -30,7 +30,11 @@ export default class ClusterInfoWindow extends Component {
 
   render() {
     this.element = (this.props.clickableCluster !== true) ? <div /> : (<div
-      className={classnames(CustomInfowindowStyles['c-custom-infowindow'], 'js-polygon-report')}
+      className={classnames(
+        CustomInfowindowStyles['c-custom-infowindow'],
+        CustomInfowindowStyles['-small'],
+        CustomInfowindowStyles['-topleft']
+      )}
     >
       <div className={CustomInfowindowStyles.title}>
         There are multiple vessels at this location
