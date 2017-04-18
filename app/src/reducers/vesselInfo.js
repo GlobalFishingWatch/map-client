@@ -18,7 +18,7 @@ import {
   LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
-import { DEFAULT_TRACK_HUE } from 'constants';
+import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'constants';
 
 const initialState = {
   vessels: [],
@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
         visible: false,
         pinned: false,
         shownInInfoPanel: false,
-        hue: DEFAULT_TRACK_HUE
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE
       };
       return Object.assign({}, state, {
         infoPanelStatus: { isLoading: true },
@@ -81,7 +81,7 @@ export default function (state = initialState, action) {
         shownInInfoPanel: false,
         pinned: true,
         title: action.payload.title || action.payload.vesselname,
-        hue: action.payload.hue || DEFAULT_TRACK_HUE
+        hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE
       }, action.payload);
 
       return Object.assign({}, state, {

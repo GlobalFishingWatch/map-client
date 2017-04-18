@@ -11,7 +11,8 @@ import {
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
   VESSELS_HUES_INCREMENT,
-  TIMELINE_MAX_STEPS
+  TIMELINE_MAX_STEPS,
+  HEATMAP_TRACK_HIGHLIGHT_HUE
 } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
@@ -52,7 +53,7 @@ export default class GLContainer extends BaseOverlay {
     this.stage.addChild(this.heatmapStage);
 
     this.heatmapHighlight = new HeatmapSubLayer(this.baseTexture, this._getNumSprites(), true);
-    this.heatmapHighlight.setFilters('ALL', 324);
+    this.heatmapHighlight.setFilters('ALL', HEATMAP_TRACK_HIGHLIGHT_HUE);
     this.stage.addChild(this.heatmapHighlight.stage);
 
     this.tracksLayer = new TracksLayer();
@@ -263,7 +264,7 @@ export default class GLContainer extends BaseOverlay {
   }
 
   toggleHeatmapDimming(dim) {
-    this.heatmapStage.alpha = (dim === true) ? 0.25 : 1;
+    this.heatmapStage.alpha = (dim === true) ? 0.5 : 1;
   }
 
   updateViewportSize(viewportWidth, viewportHeight) {
