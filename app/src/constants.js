@@ -74,6 +74,18 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OV
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // time range options in the duration picker menu
+// replace moment humanized duration: use '1 month' instead of 'one month'
+// https://momentjs.com/docs/#/customization/relative-time/
+moment.updateLocale('en', {
+  relativeTime: {
+    m: '1 minute',
+    h: '1 hour',
+    d: '1 day',
+    M: '1 month',
+    y: '1 year'
+  }
+});
+
 export const DURATION_PICKER_OPTIONS = [
   moment.duration(1, 'week'),
   moment.duration(15, 'days'),
