@@ -37,9 +37,8 @@ export default class HeatmapSubLayer {
     this.flags = flags;
   }
 
-  setSeries(series, seriesgroup) {
-    this.series = series;
-    this.seriesgroup = seriesgroup;
+  setSeriesUids(seriesUids) {
+    this.seriesUids = seriesUids;
   }
 
   setRenderingStyle(useHeatmapStyle) {
@@ -127,7 +126,7 @@ export default class HeatmapSubLayer {
         if (this.flags !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
-        if (this.series && (this.series !== frame.series[index])) {
+        if (this.seriesUids && (this.seriesUids.indexOf(frame.seriesUid[index]) === -1)) {
           continue;
         }
         this.numSprites++;

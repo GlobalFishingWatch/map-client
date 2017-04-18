@@ -1,6 +1,5 @@
 /* global PIXI */
 import 'pixi.js';
-import _ from 'lodash';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
@@ -12,7 +11,8 @@ import {
   VESSELS_HUES_INCREMENTS_NUM,
   VESSELS_HUES_INCREMENT,
   TIMELINE_MAX_STEPS,
-  HEATMAP_TRACK_HIGHLIGHT_HUE
+  HEATMAP_TRACK_HIGHLIGHT_HUE,
+  VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
@@ -26,7 +26,7 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this.undimHeatmapDebounced = _.debounce(this.undimHeatmap, 500);
+    this.heatmapFadeinStepBound = this.heatmapFadeinStep.bind(this);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -157,7 +157,7 @@ export default class GLContainer extends BaseOverlay {
     };
   }
 
-  updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessel) {
+  updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessels) {
     if (!this.mapProjection) {
       return;
     }
@@ -187,28 +187,32 @@ export default class GLContainer extends BaseOverlay {
       layer.render(tiles, startIndex, endIndex, this._getOffsets());
     }
 
-    if (highlightedVessel !== undefined) {
-      this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessel);
+    if (highlightedVessels !== undefined) {
+      this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessels);
     }
 
     this._renderStage();
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup, currentFlags }) {
-    if (seriesgroup === undefined) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, seriesUids }) {
+    if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
-      this.undimHeatmapDebounced();
+      this.startHeatmapFadein();
       return;
     }
+    this.toggleHeatmapDimming(true);
+
+    if (highlightableCluster !== true) {
+      return;
+    }
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
-    this.heatmapHighlight.setSeries(series, seriesgroup);
+    this.heatmapHighlight.setSeriesUids(seriesUids);
     this.heatmapHighlight.setFlags(currentFlags);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
     this.heatmapHighlight.stage.visible = true;
-    this.undimHeatmapDebounced.cancel();
-    this.toggleHeatmapDimming(true);
   }
 
   updateTracks(tracks, drawParams) {
@@ -255,16 +259,38 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
-  undimHeatmap() {
+  startHeatmapFadein() {
     if (this.hasTracks === true) {
       return;
     }
-    this.toggleHeatmapDimming(false);
+    this.heatmapFadingIn = true;
+    this.heatmapFadeinStartTimestamp = undefined;
+    window.requestAnimationFrame(this.heatmapFadeinStepBound);
+  }
+
+  heatmapFadeinStep(timestamp) {
+    if (this.heatmapFadeinStartTimestamp === undefined) {
+      this.heatmapFadeinStartTimestamp = timestamp;
+    }
+    const timeElapsed = (timestamp - this.heatmapFadeinStartTimestamp) / 1000;
+    let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
+    if (alpha >= 1) {
+      alpha = 1;
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = alpha;
     this._renderStage();
+
+    if (this.heatmapFadingIn === true && alpha < 1) {
+      window.requestAnimationFrame(this.heatmapFadeinStepBound);
+    }
   }
 
   toggleHeatmapDimming(dim) {
-    this.heatmapStage.alpha = (dim === true) ? 0.5 : 1;
+    if (dim === true) {
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
   updateViewportSize(viewportWidth, viewportHeight) {

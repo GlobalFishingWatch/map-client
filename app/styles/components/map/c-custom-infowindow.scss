@@ -1,21 +1,31 @@
 @import '../../settings';
 
-.c-polygon-report {
+.c-custom-infowindow {
   background: $color-13;
   bottom: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
   left: -130px;
   opacity: .95;
-  padding: 24px;
+  padding: 16px;
   position: absolute;
   width: 260px;
+
+  &.-topleft {
+    bottom: auto;
+    left: 15px;
+    top: 10px;
+  }
+
+  &.-small {
+    width: 190px;
+  }
 
   .title,
   .description,
   .toggle {
     color: $color-4;
     font-family: $font-family-1;
-    font-size: 15px;
+    font-size: $font-size-xs-small;
   }
 
   .title,
@@ -39,7 +49,7 @@
 
   .toggle {
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
 
     &::before {
       background: $color-4;

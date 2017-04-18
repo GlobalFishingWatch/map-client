@@ -39,25 +39,10 @@ class VesselInfoPanel extends Component {
 
     let vesselInfoContents = null;
 
-    if (status.isEmpty || status.isCluster || status.isLoading) {
-      let message;
-      if (status.isEmpty) {
-        message = <div>There are no vessels at this location</div>;
-      } else if (status.isLoading) {
-        message = <div>Loading vessel information...</div>;
-      } else {
-        message = (
-          <div>
-            There are multiple vessels at this location.
-            <a onClick={() => this.props.zoomIntoVesselCenter()} className={vesselPanelStyles.zoom}>
-              Zoom in to see individual points.
-            </a>
-          </div>
-        );
-      }
+    if (status.isLoading) {
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
-          {message}
+          <div>Loading vessel information...</div>
         </div>
       );
     } else if (this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
@@ -178,7 +163,6 @@ VesselInfoPanel.propTypes = {
   infoPanelStatus: React.PropTypes.object,
   userPermissions: React.PropTypes.array,
   hide: React.PropTypes.func,
-  zoomIntoVesselCenter: React.PropTypes.func,
   onTogglePin: React.PropTypes.func,
   login: React.PropTypes.func
 };

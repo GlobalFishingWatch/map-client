@@ -5,8 +5,6 @@ import {
   SET_VESSEL_TRACK,
   CLEAR_VESSEL_INFO,
   SET_TRACK_BOUNDS,
-  SHOW_VESSEL_CLUSTER_INFO,
-  SHOW_NO_VESSELS_INFO,
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
   SHOW_VESSEL_DETAILS,
@@ -128,14 +126,7 @@ export default function (state = initialState, action) {
         infoPanelStatus: null
       });
     }
-    case SHOW_VESSEL_CLUSTER_INFO:
-      return Object.assign({}, state, {
-        infoPanelStatus: { isCluster: true }
-      });
-    case SHOW_NO_VESSELS_INFO:
-      return Object.assign({}, state, {
-        infoPanelStatus: { isEmpty: true }
-      });
+
     case HIDE_VESSELS_INFO_PANEL:
       return Object.assign({}, state, {
         detailsStatus: null
