@@ -391,6 +391,10 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
       dispatch(hideVesselsInfoPanel());
       dispatch(zoomIntoVesselCenter(latLng));
+      dispatch({
+        type: HIGHLIGHT_VESSELS,
+        payload: { isEmpty: true }
+      });
     } else {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
       const seriesUid = seriesUids[0];
