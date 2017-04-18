@@ -10,6 +10,7 @@ import { hueToRgbHexString } from 'util/hsvToRgb';
 export default class TracksLayerGL {
   constructor() {
     this.stage = new PIXI.Graphics();
+    this.stage.nativeLines = true;
   }
 
   clear() {
@@ -78,7 +79,7 @@ export default class TracksLayerGL {
       const drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
       if (prevDrawStyle !== drawStyle) {
         if (drawStyle === TRACK_SEGMENT_TYPES.OutOfInnerRange) {
-          this.stage.lineStyle(0.5, color, 0.3);
+          this.stage.lineStyle(1, color, 0.3);
         } else if (drawStyle === TRACK_SEGMENT_TYPES.InInnerRange) {
           this.stage.lineStyle(2, color, 1);
         } else if (drawStyle === TRACK_SEGMENT_TYPES.Highlighted) {
@@ -94,6 +95,16 @@ export default class TracksLayerGL {
         this.stage.moveTo(x, y);
       }
       this.stage.lineTo(x, y);
+
+      // 'lineNative' rendering style fixes various rendering issues, but does not allow
+      // for lines thickness different than 1. We double the line and offset it to give the illusion of
+      // a 2px wide line
+      if (drawStyle !== TRACK_SEGMENT_TYPES.OutOfInnerRange) {
+        this.stage.moveTo((prevX || x) + 1, prevY || y);
+        this.stage.lineTo(x + 1, y);
+        this.stage.moveTo(x, y);
+      }
+
       if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
         if (drawStyle === TRACK_SEGMENT_TYPES.Highlighted) {
           circlePoints.over.x.push(x);
