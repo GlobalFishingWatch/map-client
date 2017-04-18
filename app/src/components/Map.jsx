@@ -254,7 +254,12 @@ class Map extends Component {
       </Modal>
       }
       <div
-        className={classnames(mapCss['map-container'], { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}
+        className={classnames(
+          mapCss['map-container'],
+          { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) },
+          { '-map-pointer': this.props.showMapCursorPointer },
+          { '-map-zoom': this.props.showMapCursorZoom }
+        )}
         ref="mapContainer"
       >
         <div className={mapCss['map-loader']}>
@@ -411,6 +416,8 @@ Map.propTypes = {
   closeLayerRemovalModal: React.PropTypes.func,
   layerIdPromptedForRemoval: React.PropTypes.any,
   isEmbedded: React.PropTypes.bool,
-  onExternalLink: React.PropTypes.func
+  onExternalLink: React.PropTypes.func,
+  showMapCursorPointer: React.PropTypes.bool,
+  showMapCursorZoom: React.PropTypes.bool
 };
 export default Map;

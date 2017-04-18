@@ -6,6 +6,7 @@ import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
+import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
 import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
@@ -23,8 +24,8 @@ class MapLayers extends Component {
     super(props);
     this.addedLayers = {};
     this.onMapIdleBound = this.onMapIdle.bind(this);
-    this.onMapClickBound = this.onMapClick.bind(this);
-    this.onMapMoveBound = this.onMapMove.bind(this);
+    this.onMapClickBound = this.onMapInteraction.bind(this, 'click');
+    this.onMapMoveBound = this.onMapInteraction.bind(this, 'move');
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
@@ -105,7 +106,7 @@ class MapLayers extends Component {
       isGLContainerDirty = true;
     }
 
-    if (nextProps.highlightedVessel.series !== this.props.highlightedVessel.series) {
+    if (nextProps.highlightedVessels !== this.props.highlightedVessels) {
       this.updateHeatmapHighlighted(nextProps);
       isGLContainerDirty = true;
     }
@@ -266,11 +267,11 @@ class MapLayers extends Component {
   }
 
   updateHeatmap(props) {
-    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessels);
   }
 
   updateHeatmapHighlighted(props) {
-    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessels);
   }
 
   updateHeatmapWithCurrentProps() {
@@ -477,35 +478,22 @@ class MapLayers extends Component {
     }
   }
 
-  /**
-   * Detects and handles map clicks
-   * Detects collisions with current vessel data
-   * Draws tracks and loads vessel details
-   *
-   * @param event
-   */
-  onMapClick(event) {
+  onMapInteraction(type, event) {
     if (!event || !this.glContainer || this.glContainer.interactive === false) {
       return;
     }
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-
-    this.props.getVesselFromHeatmap(tileQuery, event.latLng);
-  }
-
-  onMapMove(event) {
-    if (!event || !this.glContainer || this.glContainer.interactive === false) {
-      return;
-    }
-
-    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    this.props.highlightVesselFromHeatmap(tileQuery);
+    const callback = (type === 'click') ? this.props.getVesselFromHeatmap : this.props.highlightVesselFromHeatmap;
+    callback(tileQuery, event.latLng);
   }
 
   render() {
     return (<div>
       <PolygonReport
+        map={this.map}
+      />
+      <ClusterInfoWindow
         map={this.map}
       />
     </div>);
@@ -519,7 +507,7 @@ MapLayers.propTypes = {
   layers: React.PropTypes.array,
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
-  highlightedVessel: React.PropTypes.object,
+  highlightedVessels: React.PropTypes.object,
   zoom: React.PropTypes.number,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,

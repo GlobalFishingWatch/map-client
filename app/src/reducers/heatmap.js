@@ -7,7 +7,7 @@ import {
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   UPDATE_HEATMAP_TILES,
-  HIGHLIGHT_VESSEL
+  HIGHLIGHT_VESSELS
 } from '../actions';
 
 const initialState = {
@@ -17,7 +17,7 @@ const initialState = {
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
   referenceTiles: [],
-  highlightedVessel: { series: null }
+  highlightedVessels: { isEmpty: true }
 };
 
 export default function (state = initialState, action) {
@@ -78,8 +78,8 @@ export default function (state = initialState, action) {
     }
 
 
-    case HIGHLIGHT_VESSEL: {
-      return Object.assign({}, state, { highlightedVessel: action.payload });
+    case HIGHLIGHT_VESSELS: {
+      return Object.assign({}, state, { highlightedVessels: action.payload });
     }
 
     default:

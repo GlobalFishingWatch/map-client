@@ -3,9 +3,7 @@ import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
   CLEAR_VESSEL_INFO,
-  SHOW_VESSEL_CLUSTER_INFO,
   SET_TRACK_BOUNDS,
-  SHOW_NO_VESSELS_INFO,
   TOGGLE_VESSEL_PIN,
   ADD_VESSEL,
   SHOW_VESSEL_DETAILS,
@@ -145,18 +143,6 @@ export function setPinnedVessels(pinnedVessels) {
       };
       request.send(null);
     });
-  };
-}
-
-export function showVesselClusterInfo() {
-  return {
-    type: SHOW_VESSEL_CLUSTER_INFO
-  };
-}
-
-export function showNoVesselsInfo() {
-  return {
-    type: SHOW_NO_VESSELS_INFO
   };
 }
 

@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers,
   flagsLayers: state.filters.flagsLayers,
   heatmap: state.heatmap.heatmapLayers,
-  highlightedVessel: state.heatmap.highlightedVessel,
+  highlightedVessels: state.heatmap.highlightedVessels,
   timelineInnerExtent: state.filters.timelineInnerExtent,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   timelineOuterExtent: state.filters.timelineOuterExtent,
@@ -33,8 +33,8 @@ const mapDispatchToProps = dispatch => ({
   getVesselFromHeatmap: (tileQuery, latLng) => {
     dispatch(getVesselFromHeatmap(tileQuery, latLng));
   },
-  highlightVesselFromHeatmap: (tileQuery) => {
-    dispatch(highlightVesselFromHeatmap(tileQuery));
+  highlightVesselFromHeatmap: (tileQuery, latLng) => {
+    dispatch(highlightVesselFromHeatmap(tileQuery, latLng));
   }
 });
 

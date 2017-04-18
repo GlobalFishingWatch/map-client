@@ -1,14 +1,13 @@
 import _ from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
-  SET_VESSEL_CLUSTER_CENTER,
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   ADD_HEATMAP_LAYER,
   REMOVE_HEATMAP_LAYER,
   INIT_HEATMAP_LAYERS,
   UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
-  HIGHLIGHT_VESSEL
+  HIGHLIGHT_VESSELS
 } from 'actions';
 import {
   getTilePelagosPromises,
@@ -19,9 +18,9 @@ import {
   selectVesselsAt
 } from 'actions/helpers/heatmapTileData';
 import { LAYER_TYPES, LOADERS } from 'constants';
-import { clearVesselInfo, showNoVesselsInfo, addVessel, showVesselClusterInfo } from 'actions/vesselInfo';
+import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
 import { trackMapClicked } from 'actions/analytics';
-import { addLoader, removeLoader } from 'actions/map';
+import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -319,12 +318,11 @@ const _queryHeatmap = (state, tileQuery) => {
 
   // it's a cluster because of aggregation on the server side
   let isCluster;
-  // it's a cluster because there are multiple points udner mouse click radius
+  // its a cluster because or multiple vessels under mouse
   let isMouseCluster;
   let isEmpty;
-  let seriesgroup;
-  let series;
   let layerId;
+  let seriesUids;
 
   if (layersVesselsResult.length === 0) {
     isEmpty = true;
@@ -344,32 +342,33 @@ const _queryHeatmap = (state, tileQuery) => {
       const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
 
       if (nonClusteredVessels.length) {
-        seriesgroup = nonClusteredVessels[0].seriesgroup;
-        series = nonClusteredVessels[0].series;
-        isMouseCluster = _.uniq(nonClusteredVessels.map(v => v.seriesgroup)).length > 1;
-        isCluster = isMouseCluster;
+        seriesUids = _.uniq(nonClusteredVessels.map(v => v.seriesUid));
+        isMouseCluster = seriesUids.length > 1;
       } else {
         isCluster = true;
       }
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series };
+  return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId };
 };
 
-export function highlightVesselFromHeatmap(tileQuery) {
+export function highlightVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
-    const { isEmpty, isCluster, isMouseCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
-    const currentFlags = _getCurrentFlagsForLayer(state, layerId);
-
-    const payload = ((isCluster === true && isMouseCluster === false) || isEmpty === true)
-      ? { series: null }
-      : { layerId, series, seriesgroup, currentFlags };
+    const { layerId, isEmpty, isCluster, isMouseCluster, seriesUids } = _queryHeatmap(state, tileQuery);
 
     dispatch({
-      type: HIGHLIGHT_VESSEL,
-      payload
+      type: HIGHLIGHT_VESSELS,
+      payload: {
+        layerId,
+        isEmpty,
+        clickableCluster: isCluster === true || isMouseCluster === true,
+        highlightableCluster: isCluster !== true,
+        seriesUids,
+        latLng,
+        currentFlags: _getCurrentFlagsForLayer(state, layerId)
+      }
     });
   };
 }
@@ -382,22 +381,26 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { isEmpty, isCluster, layerId, seriesgroup, series } = _queryHeatmap(state, tileQuery);
+    const { isEmpty, isCluster, isMouseCluster, layerId, seriesUids } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
     if (isEmpty === true) {
-      dispatch(showNoVesselsInfo());
-    } else if (isCluster === true) {
+      // nothing to see here
+    } else if (isCluster === true || isMouseCluster === true) {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
-      // the following solely sets the cluster center in the state to be
-      // reused later if user clicks on 'zoom to see more'
+      dispatch(hideVesselsInfoPanel());
+      dispatch(zoomIntoVesselCenter(latLng));
       dispatch({
-        type: SET_VESSEL_CLUSTER_CENTER, payload: latLng
+        type: HIGHLIGHT_VESSELS,
+        payload: { isEmpty: true }
       });
-      dispatch(showVesselClusterInfo());
     } else {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
+      const seriesUid = seriesUids[0];
+      const seriesgroup = parseInt(seriesUid.split('-')[0], 10);
+      const series = parseInt(seriesUid.split('-')[1], 10);
+
       dispatch(addVessel(layerId, seriesgroup, series));
     }
   };

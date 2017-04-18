@@ -15,7 +15,6 @@ import {
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_TILESET_ID,
-  SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_RECENT_VESSELS_VISIBILITY,
@@ -127,8 +126,7 @@ export default function (state = initialState, action) {
       };
       return newState;
     }
-    case SET_VESSEL_CLUSTER_CENTER:
-      return Object.assign({}, state, { vesselClusterCenter: [action.payload.lat(), action.payload.lng()] });
+
     case SET_SUPPORT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.supportModal = {

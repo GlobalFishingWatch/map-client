@@ -1,38 +1,10 @@
-// import BaseOverlay from 'components/Layers/BaseOverlay';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import PolygonReportStyles from 'styles/components/map/c-polygon-report.scss';
+import CustomInfowindowStyles from 'styles/components/map/c-custom-infowindow.scss';
 import buttonCloseStyles from 'styles/components/c-button-close.scss';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
-
-class PolygonReportInfoWindow extends google.maps.OverlayView {
-  constructor() {
-    super();
-    this.latLng = { lat: 0, lng: 0 };
-    this.div = document.createElement('div');
-    this.div.style.borderStyle = 'none';
-    this.div.style.borderWidth = '0px';
-    this.div.style.position = 'absolute';
-  }
-
-  onAdd() {
-    const panes = this.getPanes();
-    panes.floatPane.appendChild(this.div);
-  }
-
-  draw() {
-    const overlayProjection = this.getProjection();
-    const sw = overlayProjection.fromLatLngToDivPixel(new google.maps.LatLng(this.latLng));
-    this.div.style.left = `${sw.x}px`;
-    this.div.style.top = `${sw.y}px`;
-  }
-
-  setLatLng(latLng) {
-    this.latLng = { lat: latLng[0], lng: latLng[1] };
-    this.draw();
-  }
-}
+import CustomInfoWindow from 'util/CustomInfoWindow';
 
 export default class PolygonReport extends Component {
   constructor() {
@@ -42,8 +14,7 @@ export default class PolygonReport extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.map && nextProps.map) {
-      this.infoWindow = new PolygonReportInfoWindow();
-      this.infoWindow.setMap(nextProps.map);
+      this.infoWindow = new CustomInfoWindow(nextProps.map);
       this.infoWindow.div.addEventListener('click', this.onInfoWindowClickBound);
       this.map = nextProps.map;
     }
@@ -75,20 +46,20 @@ export default class PolygonReport extends Component {
 
   render() {
     const toggleButtonText = (this.props.isInReport) ? 'remove from report' : 'add to report';
-    let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', PolygonReportStyles.toggle);
+    let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', CustomInfowindowStyles.toggle);
     if (this.props.isInReport) {
-      toggleButtonClassName += ` ${PolygonReportStyles['-remove']}`;
+      toggleButtonClassName += ` ${CustomInfowindowStyles['-remove']}`;
     }
     this.element = (this.props.id === undefined) ? <div /> : (<div
-      className={classnames(PolygonReportStyles['c-polygon-report'], 'js-polygon-report')}
+      className={classnames(CustomInfowindowStyles['c-custom-infowindow'], 'js-polygon-report')}
     >
-      <div className={PolygonReportStyles.title}>
+      <div className={CustomInfowindowStyles.title}>
         {this.props.name}
       </div>
-      <div className={PolygonReportStyles.description}>
+      <div className={CustomInfowindowStyles.description}>
         {this.props.description}
       </div>
-      <button className={classnames('js-close', PolygonReportStyles.close, buttonCloseStyles['c-button-close'])}>
+      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles['c-button-close'])}>
         <CloseIcon className={buttonCloseStyles.cross} />
       </button>
       <button className={toggleButtonClassName}>
