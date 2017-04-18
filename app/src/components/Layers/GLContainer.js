@@ -1,6 +1,5 @@
 /* global PIXI */
 import 'pixi.js';
-import _ from 'lodash';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
@@ -11,7 +10,8 @@ import {
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
   VESSELS_HUES_INCREMENT,
-  TIMELINE_MAX_STEPS
+  TIMELINE_MAX_STEPS,
+  VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
@@ -25,7 +25,7 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this.undimHeatmapDebounced = _.debounce(this.undimHeatmap, 500);
+    this.heatmapFadeinStepBound = this.heatmapFadeinStep.bind(this);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -196,7 +196,7 @@ export default class GLContainer extends BaseOverlay {
   updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, seriesUids }) {
     if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
-      this.undimHeatmapDebounced();
+      this.startHeatmapFadein();
       return;
     }
     this.toggleHeatmapDimming(true);
@@ -212,7 +212,6 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setFlags(currentFlags);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
     this.heatmapHighlight.stage.visible = true;
-    this.undimHeatmapDebounced.cancel();
   }
 
   updateTracks(tracks, drawParams) {
@@ -259,16 +258,38 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
-  undimHeatmap() {
+  startHeatmapFadein() {
     if (this.hasTracks === true) {
       return;
     }
-    this.toggleHeatmapDimming(false);
+    this.heatmapFadingIn = true;
+    this.heatmapFadeinStartTimestamp = undefined;
+    window.requestAnimationFrame(this.heatmapFadeinStepBound);
+  }
+
+  heatmapFadeinStep(timestamp) {
+    if (this.heatmapFadeinStartTimestamp === undefined) {
+      this.heatmapFadeinStartTimestamp = timestamp;
+    }
+    const timeElapsed = (timestamp - this.heatmapFadeinStartTimestamp) / 1000;
+    let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
+    if (alpha >= 1) {
+      alpha = 1;
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = alpha;
     this._renderStage();
+
+    if (this.heatmapFadingIn === true && alpha < 1) {
+      window.requestAnimationFrame(this.heatmapFadeinStepBound);
+    }
   }
 
   toggleHeatmapDimming(dim) {
-    this.heatmapStage.alpha = (dim === true) ? 0.25 : 1;
+    if (dim === true) {
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
   updateViewportSize(viewportWidth, viewportHeight) {
