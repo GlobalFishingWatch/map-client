@@ -43,6 +43,7 @@ export default class TracksLayerGL {
     let currentSeries;
     let prevX;
     let prevY;
+    let newLine;
 
     const circlePoints = {
       inner: {
@@ -58,7 +59,6 @@ export default class TracksLayerGL {
     };
 
     const viewportWorldX = offsets.left;
-
     for (let i = 0, length = data.worldX.length; i < length; i++) {
       prevSeries = currentSeries;
       currentSeries = data.series[i];
@@ -90,17 +90,19 @@ export default class TracksLayerGL {
           }
         }
         this.stage.moveTo(prevX || x, prevY || y);
+        newLine = true;
       }
       if (prevSeries !== currentSeries) {
         this.stage.moveTo(x, y);
+        newLine = true;
       }
       this.stage.lineTo(x, y);
 
       // 'lineNative' rendering style fixes various rendering issues, but does not allow
       // for lines thickness different than 1. We double the line and offset it to give the illusion of
       // a 2px wide line
-      if (drawStyle !== TRACK_SEGMENT_TYPES.OutOfInnerRange) {
-        this.stage.moveTo((prevX || x) + 1, prevY || y);
+      if (drawStyle !== TRACK_SEGMENT_TYPES.OutOfInnerRange && newLine !== true) {
+        this.stage.moveTo(prevX + 1, prevY);
         this.stage.lineTo(x + 1, y);
         this.stage.moveTo(x, y);
       }
@@ -119,6 +121,7 @@ export default class TracksLayerGL {
       prevDrawStyle = drawStyle;
       prevX = x;
       prevY = y;
+      newLine = false;
     }
 
     this.stage.lineStyle(0);
