@@ -36,11 +36,8 @@ export default class ClusterInfoWindow extends Component {
         CustomInfowindowStyles['-topleft']
       )}
     >
-      <div className={CustomInfowindowStyles.title}>
-        There are multiple vessels at this location
-      </div>
       <div className={CustomInfowindowStyles.description}>
-        Click to zoom in
+        There are multiple vessels at this location
       </div>
     </div>);
 

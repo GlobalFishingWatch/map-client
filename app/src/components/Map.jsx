@@ -257,7 +257,8 @@ class Map extends Component {
         className={classnames(
           mapCss['map-container'],
           { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) },
-          { '-map-pointer': this.props.showMapPointer }
+          { '-map-pointer': this.props.showMapCursorPointer },
+          { '-map-zoom': this.props.showMapCursorZoom }
         )}
         ref="mapContainer"
       >
@@ -416,6 +417,7 @@ Map.propTypes = {
   layerIdPromptedForRemoval: React.PropTypes.any,
   isEmbedded: React.PropTypes.bool,
   onExternalLink: React.PropTypes.func,
-  showMapPointer: React.PropTypes.bool
+  showMapCursorPointer: React.PropTypes.bool,
+  showMapCursorZoom: React.PropTypes.bool
 };
 export default Map;
