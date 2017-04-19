@@ -1,8 +1,7 @@
 import { SET_USER_PERMISSIONS, SET_USER, SET_TOKEN, LOGOUT, SET_CURRENT_PATHNAME } from 'actions';
-import { GUEST_PERMISSION_SET } from 'constants';
 
 const initialState = {
-  userPermissions: GUEST_PERMISSION_SET
+  userPermissions: null
 };
 
 export default function (state = initialState, action) {

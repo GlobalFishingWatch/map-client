@@ -58,7 +58,7 @@ class LayerItem extends Component {
 
   render() {
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === this.props.layer.id;
-    const canReport = (this.props.userPermissions.indexOf('reporting') !== -1);
+    const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
 
     let actions;
     if (this.props.layerPanelEditMode === true) {

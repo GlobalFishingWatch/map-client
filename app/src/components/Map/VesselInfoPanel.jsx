@@ -45,7 +45,7 @@ class VesselInfoPanel extends Component {
           <div>Loading vessel information...</div>
         </div>
       );
-    } else if (this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
+    } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
     } else if (vesselInfo !== undefined) {
       let iso = null;
@@ -70,11 +70,11 @@ class VesselInfoPanel extends Component {
         });
       }
 
-      const canSeeVesselId = (this.props.userPermissions.indexOf('info') !== -1);
+      const canSeeVesselId = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']}>
-          {(this.props.userPermissions.indexOf('pin-vessel') !== -1 || vesselInfo.pinned) &&
+          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
           <PinIcon
             className={classnames(iconStyles.icon, iconStyles['pin-icon'],
               vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
