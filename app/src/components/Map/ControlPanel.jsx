@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
+import TetherComponent from 'react-tether';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
@@ -163,11 +164,21 @@ class ControlPanel extends Component {
 
   renderResume() {
     return (
+
       <div className={controlPanelStyle['resume-display']} >
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
             <span className={controlPanelStyle['counter-description']} >Worldwide Fishing hours</span>
-            <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
+            <TetherComponent
+              attachment="top right"
+              constraints={[{
+                to: 'window'
+              }]}
+              targetOffset="0px 100%"
+            >
+              <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
+              <p>LOREM IPSUM DOLOR TEST</p>
+            </TetherComponent>
           </div>
         </div>
       </div>
