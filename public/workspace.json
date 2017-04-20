@@ -21,7 +21,7 @@
         {
           "title": "Fishing Effort",
           "description": "Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v1/tilesets/849-tileset-tms",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/849-tileset-tms",
           "visible": true,
           "hue": 182,
           "type": "ClusterAnimation",
@@ -96,8 +96,8 @@
   "metadata": {
     "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
     "urls": {
-      "save": "https://skytruth-pleuston.appspot.com/v1/workspaces",
-      "load": "https://skytruth-pleuston.appspot.com/v1/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+      "save": "https://skytruth-pleuston.appspot.com/v2/workspaces",
+      "load": "https://skytruth-pleuston.appspot.com/v2/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
       "visualization": "https://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
     }
   }
