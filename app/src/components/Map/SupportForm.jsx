@@ -45,7 +45,7 @@ class SupportForm extends Component {
       return false;
     }
 
-    this.props.onFormSubmit(this.state, '/v1/contact/support');
+    this.props.onFormSubmit(this.state, '/contact/support');
     return true;
   }
 

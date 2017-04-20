@@ -25,7 +25,7 @@ export const getTilesetFromVesselURL = (url) => {
 };
 
 export const getTilesetFromLayerURL = (layerURL) => {
-  const apiIndirectionUrlRegex = /v1\/tilesets\/((\w|-)*)$/g;
+  const apiIndirectionUrlRegex = /v(1|2)\/tilesets\/((\w|-)*)$/g;
   const apiIndirectionUrlMatches = apiIndirectionUrlRegex.exec(layerURL);
   if (apiIndirectionUrlMatches) {
     return apiIndirectionUrlMatches[1];

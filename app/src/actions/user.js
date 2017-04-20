@@ -56,7 +56,7 @@ export function getLoggedUser() {
       };
     }
 
-    fetch(`${MAP_API_ENDPOINT}/v1/me`, {
+    fetch(`${V2_API_ENDPOINT}/me`, {
       method: 'GET',
       headers
     }).then((response) => {
@@ -102,6 +102,6 @@ export function logout() {
 }
 
 export function login() {
-  window.location = `${MAP_API_ENDPOINT}/v1/authorize?\
+  window.location = `${V2_API_ENDPOINT}/authorize?\
 response_type=token&client_id=asddafd&redirect_uri=${window.location}`;
 }

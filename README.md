@@ -102,7 +102,7 @@ If set, an auth wall will be placed in front of the whole node server
 
 If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.
 
-#### MAP_API_ENDPOINT
+#### V2_API_ENDPOINT
 
 Endpoint of the API (vessel tiles, workspace, contact, etc)
 
