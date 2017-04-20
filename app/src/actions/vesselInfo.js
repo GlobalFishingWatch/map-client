@@ -168,14 +168,7 @@ function _getVesselTrack({ layerId, seriesgroup, series, zoomToBounds, updateTim
     const state = getState();
     const map = state.map.googleMaps;
 
-    let layerId_ = layerId;
-    // TODO remove when layerId is passed around when using search
-    if (layerId === null || layerId === undefined) {
-      console.warn('layerId not sent, using default tileset');
-      layerId_ = '849-tileset-tms';
-    }
-
-    const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId_);
+    const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
     if (!currentLayer) {
       console.warn('trying to get a vessel track on a layer that doesnt exist', state.layers.workspaceLayers);
       return;

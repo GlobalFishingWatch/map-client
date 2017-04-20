@@ -7,10 +7,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  drawVessel: (vesselDetails) => {
+  drawVessel: (vesselDetails, layerId) => {
     dispatch(clearVesselInfo());
-    // TODO send      layerId
-    dispatch(addVessel(null, vesselDetails.seriesgroup, null, true, true));
+    dispatch(addVessel(layerId, vesselDetails.seriesgroup, null, true, true));
   }
 });
 
