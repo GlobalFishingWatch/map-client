@@ -1,10 +1,8 @@
 /* global PIXI */
 import 'pixi.js';
-import _ from 'lodash';
 import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
-import HeatmapSubLayer from 'components/Layers/HeatmapSubLayer';
 import TracksLayer from 'components/Layers/TracksLayer';
 import {
   VESSELS_BASE_RADIUS,
@@ -25,7 +23,6 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this.undimHeatmapDebounced = _.debounce(this.undimHeatmap, 500);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -50,10 +47,6 @@ export default class GLContainer extends BaseOverlay {
 
     this.heatmapStage = new PIXI.Container();
     this.stage.addChild(this.heatmapStage);
-
-    this.heatmapHighlight = new HeatmapSubLayer(this.baseTexture, this._getNumSprites(), true);
-    this.heatmapHighlight.setFilters('ALL', 324);
-    this.stage.addChild(this.heatmapHighlight.stage);
 
     this.tracksLayer = new TracksLayer();
     this.stage.addChild(this.tracksLayer.stage);
@@ -132,7 +125,7 @@ export default class GLContainer extends BaseOverlay {
 
   // Layer management
   addLayer(layerSettings) {
-    const maxSprites = this._getNumSprites();
+    const maxSprites = this._getSpritesPerStep() * TIMELINE_MAX_STEPS;
     const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites, this._renderStage.bind(this));
     this.heatmapStage.addChild(layer.stage);
     this.layers.push(layer);
@@ -156,7 +149,7 @@ export default class GLContainer extends BaseOverlay {
     };
   }
 
-  updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessel) {
+  updateHeatmap(data, timelineInnerExtentIndexes) {
     if (!this.mapProjection) {
       return;
     }
@@ -185,29 +178,7 @@ export default class GLContainer extends BaseOverlay {
       const tiles = layerData.tiles;
       layer.render(tiles, startIndex, endIndex, this._getOffsets());
     }
-
-    if (highlightedVessel !== undefined) {
-      this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessel);
-    }
-
     this._renderStage();
-  }
-
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, series, seriesgroup, currentFlags }) {
-    if (seriesgroup === undefined) {
-      this.heatmapHighlight.stage.visible = false;
-      this.undimHeatmapDebounced();
-      return;
-    }
-    const startIndex = timelineInnerExtentIndexes[0];
-    const endIndex = timelineInnerExtentIndexes[1];
-    const layerData = data[layerId];
-    this.heatmapHighlight.setSeries(series, seriesgroup);
-    this.heatmapHighlight.setFlags(currentFlags);
-    this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
-    this.heatmapHighlight.stage.visible = true;
-    this.undimHeatmapDebounced.cancel();
-    this.toggleHeatmapDimming(true);
   }
 
   updateTracks(tracks, drawParams) {
@@ -215,15 +186,10 @@ export default class GLContainer extends BaseOverlay {
       console.warn('trying to add tracks on a layer not yet added');
       return;
     }
-    if (tracks === undefined || !tracks.length) {
-      return;
-    }
-    this.hasTracks = true;
     this.tracksLayer.update(tracks, drawParams, this._getOffsets());
   }
 
   clearTracks() {
-    this.hasTracks = false;
     this.tracksLayer.clear();
   }
 
@@ -239,7 +205,6 @@ export default class GLContainer extends BaseOverlay {
     for (let i = 0; i < this.layers.length; i++) {
       this.layers[i].setRenderingStyle(useHeatmapStyle);
     }
-    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
     this._renderStage();
   }
 
@@ -251,15 +216,6 @@ export default class GLContainer extends BaseOverlay {
       const layerFlags = flags[layer.id];
       layer.setSubLayers(layerFlags, useHeatmapStyle);
     });
-    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
-  }
-
-  undimHeatmap() {
-    if (this.hasTracks === true) {
-      return;
-    }
-    this.toggleHeatmapDimming(false);
-    this._renderStage();
   }
 
   toggleHeatmapDimming(dim) {
@@ -283,12 +239,8 @@ export default class GLContainer extends BaseOverlay {
   //   }
   // }
   //
-  _getNumSpritesPerStep() {
+  _getSpritesPerStep() {
     return Math.round(this.viewportWidth * this.viewportHeight * MAX_SPRITES_FACTOR);
-  }
-
-  _getNumSprites() {
-    return this._getNumSpritesPerStep() * TIMELINE_MAX_STEPS;
   }
 
 }

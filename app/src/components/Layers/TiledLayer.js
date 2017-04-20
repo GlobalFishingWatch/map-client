@@ -85,6 +85,6 @@ export default class TiledLayer {
       }
     }
     console.warn('no tile was found at', x, y);
-    return { uid: null };
+    return null;
   }
 }

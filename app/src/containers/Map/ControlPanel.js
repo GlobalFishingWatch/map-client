@@ -12,8 +12,7 @@ const mapStateToProps = state => ({
   userPermissions: state.user.userPermissions,
   vessels: state.vesselInfo.vessels,
   chartData: state.timebar.chartData,
-  timelineInnerExtent: state.filters.timelineInnerExtent,
-  isReportStarted: state.report.layerId !== null
+  timelineInnerExtent: state.filters.timelineInnerExtent
 });
 
 const mapDispatchToProps = dispatch => ({

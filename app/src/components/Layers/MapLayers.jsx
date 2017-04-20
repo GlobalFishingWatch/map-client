@@ -24,7 +24,6 @@ class MapLayers extends Component {
     this.addedLayers = {};
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapClick.bind(this);
-    this.onMapMoveBound = this.onMapMove.bind(this);
     this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
@@ -72,11 +71,9 @@ class MapLayers extends Component {
     const nextTracks = getTracks(nextProps.vesselTracks);
 
     if (!nextTracks || nextTracks.length === 0) {
-      if (this.props.vesselTracks && this.props.vesselTracks.length) {
-        this.glContainer.clearTracks();
-        this.glContainer.toggleHeatmapDimming(false);
-        isGLContainerDirty = true;
-      }
+      this.glContainer.clearTracks();
+      this.glContainer.toggleHeatmapDimming(false);
+      isGLContainerDirty = true;
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextTracks,
@@ -102,11 +99,6 @@ class MapLayers extends Component {
     if (nextProps.flagsLayers !== this.props.flagsLayers) {
       this.setHeatmapFlags(nextProps);
       this.updateHeatmap(nextProps);
-      isGLContainerDirty = true;
-    }
-
-    if (nextProps.highlightedVessel.series !== this.props.highlightedVessel.series) {
-      this.updateHeatmapHighlighted(nextProps);
       isGLContainerDirty = true;
     }
 
@@ -163,7 +155,6 @@ class MapLayers extends Component {
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
-    this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('center_changed', this.onMapCenterChangedBound);
   }
 
@@ -266,11 +257,7 @@ class MapLayers extends Component {
   }
 
   updateHeatmap(props) {
-    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
-  }
-
-  updateHeatmapHighlighted(props) {
-    this.glContainer.updateHeatmapHighlighted(props.heatmap, props.timelineInnerExtentIndexes, props.highlightedVessel);
+    this.glContainer.updateHeatmap(props.heatmap, props.timelineInnerExtentIndexes);
   }
 
   updateHeatmapWithCurrentProps() {
@@ -491,16 +478,7 @@ class MapLayers extends Component {
 
     const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
 
-    this.props.getVesselFromHeatmap(tileQuery, event.latLng);
-  }
-
-  onMapMove(event) {
-    if (!event || !this.glContainer || this.glContainer.interactive === false) {
-      return;
-    }
-
-    const tileQuery = this.tiledLayer.getTileQueryAt(event.pixel.x, event.pixel.y);
-    this.props.highlightVesselFromHeatmap(tileQuery);
+    this.props.queryHeatmap(tileQuery, event.latLng);
   }
 
   render() {
@@ -519,7 +497,6 @@ MapLayers.propTypes = {
   layers: React.PropTypes.array,
   flagsLayers: React.PropTypes.object,
   heatmap: React.PropTypes.object,
-  highlightedVessel: React.PropTypes.object,
   zoom: React.PropTypes.number,
   timelineInnerExtent: React.PropTypes.array,
   timelineInnerExtentIndexes: React.PropTypes.array,
@@ -531,8 +508,7 @@ MapLayers.propTypes = {
   viewportHeight: React.PropTypes.number,
   reportLayerId: React.PropTypes.string,
   reportedPolygonsIds: React.PropTypes.array,
-  getVesselFromHeatmap: React.PropTypes.func,
-  highlightVesselFromHeatmap: React.PropTypes.func,
+  queryHeatmap: React.PropTypes.func,
   showPolygon: React.PropTypes.func,
   createTile: React.PropTypes.func,
   releaseTile: React.PropTypes.func

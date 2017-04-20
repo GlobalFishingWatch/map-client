@@ -17,8 +17,7 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   SET_REPORT_STATUS_SENT,
   GA_DISCARD_REPORT,
-  GA_MAP_CENTER_TILE,
-  TOGGLE_VESSEL_PIN
+  GA_MAP_CENTER_TILE
 } from 'actions';
 import _ from 'lodash';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -63,15 +62,6 @@ const GA_ACTION_WHITELIST = [
     category: 'Search',
     action: 'Search result selected',
     getPayload: action => action.payload.name
-  },
-  {
-    type: TOGGLE_VESSEL_PIN,
-    category: 'Search',
-    action: (action) => {
-      const actionLabel = (action.payload.pinned === true) ? 'Pin a vessel' : 'Unpin a vessel';
-      return actionLabel;
-    },
-    getPayload: action => `${action.payload.tilesetId}:${action.payload.seriesgroup}:${action.payload.vesselname}`
   },
   {
     type: GA_VESSEL_POINT_CLICKED,

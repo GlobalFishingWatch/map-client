@@ -34,6 +34,7 @@ class App extends Component {
   render() {
     return (
       <div className="full-height-container">
+        {this.props.loading && <div>Loading....</div>}
         {this.props.children}
       </div>
     );
@@ -42,6 +43,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+  loading: React.PropTypes.bool,
   children: React.PropTypes.object,
   setToken: React.PropTypes.func,
   getLoggedUser: React.PropTypes.func,
