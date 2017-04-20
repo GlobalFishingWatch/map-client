@@ -257,7 +257,17 @@ function processLegacyWorkspace(data, dispatch) {
   }));
 
   let shownVessel = null;
-  if (rawVesselLayer.args.selections && rawVesselLayer.args.selections.selected) {
+  if (
+    rawVesselLayer.args.selections &&
+    rawVesselLayer.args.selections.selected &&
+    rawVesselLayer.args.selections.selected.data &&
+    rawVesselLayer.args.selections.selected.data.series &&
+    rawVesselLayer.args.selections.selected.data.series[0] &&
+    rawVesselLayer.args.selections.selected.data.seriesgroup &&
+    rawVesselLayer.args.selections.selected.data.seriesgroup[0] &&
+    rawVesselLayer.args.selections.selected.data.source &&
+    rawVesselLayer.args.selections.selected.data.source[0]
+  ) {
     shownVessel = {
       series: rawVesselLayer.args.selections.selected.data.series[0],
       seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
