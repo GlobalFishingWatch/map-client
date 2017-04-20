@@ -178,14 +178,14 @@ class Map extends Component {
   }
 
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="full-height-container">
       <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
       {!this.props.isEmbedded &&
       <div>
         <Modal
-          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || this.props.userPermissions.indexOf('seeMap') === -1}
+          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeMap') === -1)}
           closeable={false}
           close={() => {
           }}

@@ -86,7 +86,7 @@ class ControlPanel extends Component {
       </div>);
 
 
-    if (this.props.userPermissions.indexOf('search') === -1) {
+    if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1) {
       return (
         <AccordionItem
           title={title}

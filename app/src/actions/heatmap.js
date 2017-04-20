@@ -377,7 +377,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
 
-    if (state.user.userPermissions.indexOf('selectVessel') === -1) {
+    if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') === -1) {
       return;
     }
 

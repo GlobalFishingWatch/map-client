@@ -29,7 +29,7 @@ class CustomLayer extends Component {
   }
 
   render() {
-    if (this.props.userPermissions.indexOf('custom-layer') === -1) {
+    if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('custom-layer') === -1) {
       return (
         <div className={CustomLayerStyles['c-custom-layer']} >
           <div className={CustomLayerStyles['no-access']} >

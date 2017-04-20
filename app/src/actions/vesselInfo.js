@@ -257,7 +257,7 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
         layerId
       }
     });
-    if (state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
+    if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
       dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
     } else {
       dispatch(hideVesselsInfoPanel());
