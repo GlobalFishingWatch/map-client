@@ -5,8 +5,6 @@ import {
   SET_VESSEL_TRACK,
   CLEAR_VESSEL_INFO,
   SET_TRACK_BOUNDS,
-  SHOW_VESSEL_CLUSTER_INFO,
-  SHOW_NO_VESSELS_INFO,
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
   SHOW_VESSEL_DETAILS,
@@ -18,7 +16,7 @@ import {
   LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
-import { DEFAULT_TRACK_HUE } from 'constants';
+import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'constants';
 
 const initialState = {
   vessels: [],
@@ -41,7 +39,7 @@ export default function (state = initialState, action) {
         visible: false,
         pinned: false,
         shownInInfoPanel: false,
-        hue: DEFAULT_TRACK_HUE
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE
       };
       return Object.assign({}, state, {
         infoPanelStatus: { isLoading: true },
@@ -81,7 +79,7 @@ export default function (state = initialState, action) {
         shownInInfoPanel: false,
         pinned: true,
         title: action.payload.title || action.payload.vesselname,
-        hue: action.payload.hue || DEFAULT_TRACK_HUE
+        hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE
       }, action.payload);
 
       return Object.assign({}, state, {
@@ -128,14 +126,7 @@ export default function (state = initialState, action) {
         infoPanelStatus: null
       });
     }
-    case SHOW_VESSEL_CLUSTER_INFO:
-      return Object.assign({}, state, {
-        infoPanelStatus: { isCluster: true }
-      });
-    case SHOW_NO_VESSELS_INFO:
-      return Object.assign({}, state, {
-        infoPanelStatus: { isEmpty: true }
-      });
+
     case HIDE_VESSELS_INFO_PANEL:
       return Object.assign({}, state, {
         detailsStatus: null
@@ -144,20 +135,10 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { trackBounds: action.trackBounds });
     }
     case TOGGLE_VESSEL_PIN: {
-      let vesselIndex;
-      if (action.payload.useVesselCurrentlyInInfoPanel === true) {
-        vesselIndex = state.vessels.findIndex(vessel => vessel.shownInInfoPanel === true);
-      } else {
-        // look for vessel with given seriesgoup if provided
-        vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      }
+      const vesselIndex = action.payload.vesselIndex;
       const newVessel = _.cloneDeep(state.vessels[vesselIndex]);
-      newVessel.pinned = !newVessel.pinned;
-
-      // when pinning the vessel currently in info panel, should be initially visible
-      if (newVessel.pinned === true && action.payload.useVesselCurrentlyInInfoPanel === true) {
-        newVessel.visible = true;
-      }
+      newVessel.pinned = action.payload.pinned;
+      newVessel.visible = action.payload.visible;
 
       const newVessels = [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)];
       return Object.assign({}, state, {

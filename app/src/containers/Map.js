@@ -40,7 +40,9 @@ const mapStateToProps = state => ({
   searchModalOpen: state.search.searchModalOpen,
   recentVesselModalOpen: state.map.recentVesselModal.open,
   welcomeModalOpen: state.modal.welcome.open,
-  layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval
+  layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
+  showMapCursorPointer: state.heatmap.highlightedVessels.isEmpty !== true && state.heatmap.highlightedVessels.clickableCluster !== true,
+  showMapCursorZoom: state.heatmap.highlightedVessels.clickableCluster === true
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

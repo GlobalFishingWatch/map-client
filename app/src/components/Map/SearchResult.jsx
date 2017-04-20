@@ -6,7 +6,7 @@ import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 class SearchResult extends Component {
 
   onDrawVessel() {
-    this.props.drawVessel(this.props.vesselInfo);
+    this.props.drawVessel(this.props.vesselInfo, this.props.layerId);
     this.props.closeSearch();
   }
 
@@ -44,7 +44,8 @@ SearchResult.propTypes = {
   closeSearch: React.PropTypes.func,
   drawVessel: React.PropTypes.func,
   searchTerm: React.PropTypes.string,
-  vesselInfo: React.PropTypes.object
+  vesselInfo: React.PropTypes.object,
+  layerId: React.PropTypes.string
 };
 
 export default SearchResult;

@@ -2,6 +2,8 @@
 import {
   INIT_GOOGLE_MAPS,
   SET_ZOOM,
+  SET_LOADING,
+  SET_LOADERS,
   SET_MAX_ZOOM,
   SET_CENTER,
   SHARE_MODAL_OPEN,
@@ -13,7 +15,6 @@ import {
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_TILESET_ID,
-  SET_VESSEL_CLUSTER_CENTER,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_RECENT_VESSELS_VISIBILITY,
@@ -43,6 +44,7 @@ const initialState = {
     }
   ],
   loading: false,
+  loaders: {},
   zoom: 3,
   maxZoom: MAX_ZOOM_LEVEL,
   tilesetUrl: null,
@@ -99,7 +101,10 @@ export default function (state = initialState, action) {
       const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
       return Object.assign({}, state, { shareModal });
     }
-
+    case SET_LOADING:
+      return Object.assign({}, state, { loading: action.payload });
+    case SET_LOADERS:
+      return Object.assign({}, state, { loaders: action.payload });
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
@@ -121,8 +126,7 @@ export default function (state = initialState, action) {
       };
       return newState;
     }
-    case SET_VESSEL_CLUSTER_CENTER:
-      return Object.assign({}, state, { vesselClusterCenter: [action.payload.lat(), action.payload.lng()] });
+
     case SET_SUPPORT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.supportModal = {

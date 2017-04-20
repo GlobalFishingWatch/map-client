@@ -119,7 +119,7 @@ export function saveWorkspace(errorAction) {
       }
     };
 
-    fetch(`${MAP_API_ENDPOINT}/v1/workspaces`, {
+    fetch(`${V2_API_ENDPOINT}/workspaces`, {
       method: 'POST',
       headers,
       body: JSON.stringify(workspaceData)
@@ -196,7 +196,7 @@ function processNewWorkspace(data) {
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
-    tilesetUrl: `${MAP_API_ENDPOINT}/v1/tilesets/${workspace.tileset}`,
+    tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset
   };
 }
@@ -257,7 +257,17 @@ function processLegacyWorkspace(data, dispatch) {
   }));
 
   let shownVessel = null;
-  if (rawVesselLayer.args.selections && rawVesselLayer.args.selections.selected) {
+  if (
+    rawVesselLayer.args.selections &&
+    rawVesselLayer.args.selections.selected &&
+    rawVesselLayer.args.selections.selected.data &&
+    rawVesselLayer.args.selections.selected.data.series &&
+    rawVesselLayer.args.selections.selected.data.series[0] &&
+    rawVesselLayer.args.selections.selected.data.seriesgroup &&
+    rawVesselLayer.args.selections.selected.data.seriesgroup[0] &&
+    rawVesselLayer.args.selections.selected.data.source &&
+    rawVesselLayer.args.selections.selected.data.source[0]
+  ) {
     shownVessel = {
       series: rawVesselLayer.args.selections.selected.data.series[0],
       seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
@@ -299,7 +309,7 @@ export function getWorkspace() {
     if (!workspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE;
     } else {
-      url = `${MAP_API_ENDPOINT}/v1/workspaces/${ID}`;
+      url = `${V2_API_ENDPOINT}/workspaces/${ID}`;
     }
 
     const options = {};

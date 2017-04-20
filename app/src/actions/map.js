@@ -2,6 +2,8 @@ import {
   INIT_GOOGLE_MAPS,
   SET_ZOOM,
   SET_CENTER,
+  SET_LOADING,
+  SET_LOADERS,
   SHARE_MODAL_OPEN,
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
@@ -45,6 +47,7 @@ export function setZoom(zoom) {
     }
   };
 }
+
 export function setCenter(center, centerWorld) {
   return (dispatch, getState) => {
     dispatch({
@@ -66,6 +69,37 @@ export function setCenter(center, centerWorld) {
         });
         dispatch(trackCenterTile(x, y));
       }
+    }
+  };
+}
+
+export function addLoader(loaderId) {
+  return (dispatch, getState) => {
+    const loaders = Object.assign({}, getState().map.loaders, { [loaderId]: true });
+    dispatch({
+      type: SET_LOADERS,
+      payload: loaders
+    });
+    dispatch({
+      type: SET_LOADING,
+      payload: true
+    });
+  };
+}
+
+export function removeLoader(loaderId) {
+  return (dispatch, getState) => {
+    const loaders = Object.assign({}, getState().map.loaders);
+    delete loaders[loaderId];
+    dispatch({
+      type: SET_LOADERS,
+      payload: loaders
+    });
+    if (!Object.keys(loaders).length) {
+      dispatch({
+        type: SET_LOADING,
+        payload: false
+      });
     }
   };
 }
@@ -117,10 +151,10 @@ export function setLayerInfoModal(modalParams) {
   };
 }
 
-export function zoomIntoVesselCenter() {
+export function zoomIntoVesselCenter(latLng) {
   return (dispatch, getState) => {
     dispatch(setZoom(getState().map.zoom + 3));
-    dispatch(setCenter(getState().map.vesselClusterCenter));
+    dispatch(setCenter([latLng.lat(), latLng.lng()]));
   };
 }
 

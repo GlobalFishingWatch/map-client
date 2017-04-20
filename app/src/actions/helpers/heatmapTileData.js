@@ -158,7 +158,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   const extraColumns = _
     .chain(columns)
     .concat([])
-    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity') // those are mandatory thus manually added
+    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid') // those are mandatory thus manually added
     .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
     .uniq()
     .value();
@@ -179,6 +179,10 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
+    /* eslint-disable prefer-template */
+    const seriesUid = vectorArray.seriesgroup[index] + '-' + vectorArray.series[index];
+    /* eslint-enable prefer-template */
+
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
         worldX: [worldX],
@@ -186,7 +190,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
         weight: [weight],
         sigma: [sigma],
         radius: [radius],
-        opacity: [opacity]
+        opacity: [opacity],
+        seriesUid: [seriesUid]
       };
       extraColumns.forEach((column) => {
         frame[column] = [vectorArray[column][index]];
@@ -201,6 +206,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     frame.sigma.push(sigma);
     frame.radius.push(radius);
     frame.opacity.push(opacity);
+    frame.seriesUid.push(seriesUid);
     extraColumns.forEach((column) => {
       frame[column].push(vectorArray[column][index]);
     });
@@ -221,7 +227,7 @@ export const addTracksPointRadius = (data, zoom) => {
   return data;
 };
 
-export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex) => {
+export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFlags) => {
   const vessels = [];
 
   // convert px tolerance/radius to world units
@@ -234,12 +240,14 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
     for (let i = 0; i < frame.worldX.length; i++) {
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
-      if (wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
+      if ((currentFlags === undefined || currentFlags.indexOf(frame.category[i]) !== -1) &&
+          wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         vessels.push({
           category: frame.category[i],
           series: frame.series[i],
-          seriesgroup: frame.seriesgroup[i]
+          seriesgroup: frame.seriesgroup[i],
+          seriesUid: frame.seriesUid[i]
         });
       }
     }

@@ -23,9 +23,11 @@ import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
 import iconStyles from 'styles/icons.scss';
+import mapPanelsStyles from 'styles/components/c-map-panels.scss';
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
+import Loader from 'containers/Map/Loader';
 
 class Map extends Component {
   constructor(props) {
@@ -176,14 +178,14 @@ class Map extends Component {
   }
 
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="full-height-container">
       <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
       {!this.props.isEmbedded &&
       <div>
         <Modal
-          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || this.props.userPermissions.indexOf('seeMap') === -1}
+          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeMap') === -1)}
           closeable={false}
           close={() => {
           }}
@@ -240,8 +242,10 @@ class Map extends Component {
         >
           <PromptLayerRemoval />
         </Modal>
-        <ControlPanel isEmbedded={this.props.isEmbedded} />
-        <ReportPanel />
+        <div className={mapPanelsStyles['map-panels']}>
+          <ControlPanel isEmbedded={this.props.isEmbedded} />
+          <ReportPanel />
+        </div>
       </div>
       }
       {canShareWorkspaces &&
@@ -250,9 +254,17 @@ class Map extends Component {
       </Modal>
       }
       <div
-        className={classnames(mapCss['map-container'], { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}
+        className={classnames(
+          mapCss['map-container'],
+          { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) },
+          { '-map-pointer': this.props.showMapCursorPointer },
+          { '-map-zoom': this.props.showMapCursorZoom }
+        )}
         ref="mapContainer"
       >
+        <div className={mapCss['map-loader']}>
+          <Loader tiny />
+        </div>
         <div className={mapCss.latlon}>
           {this.state.latlon}
         </div>
@@ -369,6 +381,7 @@ Map.propTypes = {
   setZoom: React.PropTypes.func,
   loadInitialState: React.PropTypes.func,
   setCenter: React.PropTypes.func,
+  loading: React.PropTypes.bool,
   center: React.PropTypes.array,
   zoom: React.PropTypes.number,
   maxZoom: React.PropTypes.number,
@@ -403,6 +416,8 @@ Map.propTypes = {
   closeLayerRemovalModal: React.PropTypes.func,
   layerIdPromptedForRemoval: React.PropTypes.any,
   isEmbedded: React.PropTypes.bool,
-  onExternalLink: React.PropTypes.func
+  onExternalLink: React.PropTypes.func,
+  showMapCursorPointer: React.PropTypes.bool,
+  showMapCursorZoom: React.PropTypes.bool
 };
 export default Map;

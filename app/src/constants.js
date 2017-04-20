@@ -4,6 +4,9 @@ import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP / 4; // 1 day
+export const LOADERS = {
+  HEATMAP_TILES: 'HEATMAP_TILES'
+};
 
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
@@ -43,6 +46,7 @@ export const VESSELS_HUES_INCREMENTS_NUM = 10;
 export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
 
 export const VESSELS_MINIMUM_OPACITY = 0.5;
+export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
 // tracks
 export const TRACK_SEGMENT_TYPES = {
@@ -51,7 +55,7 @@ export const TRACK_SEGMENT_TYPES = {
   InInnerRange: 2,
   Highlighted: 3
 };
-export const DEFAULT_TRACK_HUE = 180;
+export const HEATMAP_TRACK_HIGHLIGHT_HUE = 324;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 5;
 
 // half a world, in projected world units
@@ -71,6 +75,18 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OV
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // time range options in the duration picker menu
+// replace moment humanized duration: use '1 month' instead of 'one month'
+// https://momentjs.com/docs/#/customization/relative-time/
+moment.updateLocale('en', {
+  relativeTime: {
+    m: '1 minute',
+    h: '1 hour',
+    d: '1 day',
+    M: '1 month',
+    y: '1 year'
+  }
+});
+
 export const DURATION_PICKER_OPTIONS = [
   moment.duration(1, 'week'),
   moment.duration(15, 'days'),

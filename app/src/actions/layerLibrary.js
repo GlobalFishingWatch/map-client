@@ -16,7 +16,7 @@ export function getLayerLibrary() {
       };
     }
 
-    fetch(`${MAP_API_ENDPOINT}/v1/directory`, options)
+    fetch(`${V2_API_ENDPOINT}/directory`, options)
       .then(res => res.json())
       .then((data) => {
         const layers = data.entries.map((l) => {

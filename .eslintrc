@@ -9,7 +9,7 @@
     "google": true,
     "cartodb": true,
     "MAP_URL": true,
-    "MAP_API_ENDPOINT": true,
+    "V2_API_ENDPOINT": true,
     "BLOG_URL": true,
     "SITE_URL": true,
     "DEFAULT_WORKSPACE": true,

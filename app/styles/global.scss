@@ -154,3 +154,11 @@ button {
   background-color: transparent;
   border: 0;
 }
+
+:global .-map-pointer .gm-style > div {
+  cursor: pointer !important;
+}
+
+:global .-map-zoom .gm-style > div {
+  cursor: zoom-in !important;
+}
