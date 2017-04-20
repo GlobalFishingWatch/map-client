@@ -43,7 +43,7 @@ const webpackConfig = {
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
       MAP_URL: JSON.stringify(envVariables.MAP_URL),
-      MAP_API_ENDPOINT: JSON.stringify(envVariables.MAP_API_ENDPOINT),
+      V2_API_ENDPOINT: JSON.stringify(envVariables.V2_API_ENDPOINT),
       BLOG_URL: JSON.stringify(envVariables.BLOG_URL),
       SITE_URL: JSON.stringify(envVariables.SITE_URL),
       REQUIRE_MAP_LOGIN: envVariables.REQUIRE_MAP_LOGIN,

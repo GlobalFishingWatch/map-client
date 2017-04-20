@@ -3,7 +3,7 @@ export default (layer) => {
     return layer.id;
   }
   if (layer.url !== undefined) {
-    const apiIndirectionUrlRegex = /v1\/directory\/(\w*)\/source$/g;
+    const apiIndirectionUrlRegex = /v(1|2)\/directory\/(\w*)\/source$/g;
     const apiIndirectionUrlMatches = apiIndirectionUrlRegex.exec(layer.url);
     if (apiIndirectionUrlMatches) {
       return apiIndirectionUrlMatches[1];
@@ -13,7 +13,7 @@ export default (layer) => {
     if (cartoVizzJsonMatches) {
       return cartoVizzJsonMatches[1];
     }
-    const fishingEffortUrlRegex = /v1\/tilesets\/((\w|-)*)$/g;
+    const fishingEffortUrlRegex = /v(1|2)\/tilesets\/((\w|-)*)$/g;
     const fishingEffortUrlMatches = fishingEffortUrlRegex.exec(layer.url);
     if (fishingEffortUrlMatches) {
       return fishingEffortUrlMatches[1];
