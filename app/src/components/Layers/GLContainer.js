@@ -11,6 +11,7 @@ import {
   VESSELS_HUES_INCREMENTS_NUM,
   VESSELS_HUES_INCREMENT,
   TIMELINE_MAX_STEPS,
+  HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'constants';
 
@@ -52,7 +53,7 @@ export default class GLContainer extends BaseOverlay {
     this.stage.addChild(this.heatmapStage);
 
     this.heatmapHighlight = new HeatmapSubLayer(this.baseTexture, this._getNumSprites(), true);
-    this.heatmapHighlight.setFilters('ALL', 324);
+    this.heatmapHighlight.setFilters('ALL', HEATMAP_TRACK_HIGHLIGHT_HUE);
     this.stage.addChild(this.heatmapHighlight.stage);
 
     this.tracksLayer = new TracksLayer();

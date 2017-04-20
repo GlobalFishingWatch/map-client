@@ -46,7 +46,7 @@ export const VESSELS_HUES_INCREMENTS_NUM = 10;
 export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
 
 export const VESSELS_MINIMUM_OPACITY = 0.5;
-export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.25;
+export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
 // tracks
 export const TRACK_SEGMENT_TYPES = {
@@ -55,7 +55,7 @@ export const TRACK_SEGMENT_TYPES = {
   InInnerRange: 2,
   Highlighted: 3
 };
-export const DEFAULT_TRACK_HUE = 180;
+export const HEATMAP_TRACK_HIGHLIGHT_HUE = 324;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 5;
 
 // half a world, in projected world units
