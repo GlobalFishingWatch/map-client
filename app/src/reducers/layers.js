@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import {
-  SET_LAYERS,
-  SET_LAYER_HEADER,
-  TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  SET_LAYER_OPACITY,
-  SET_LAYER_HUE,
   ADD_CUSTOM_LAYER,
-  TOGGLE_LAYER_PANEL_EDIT_MODE,
+  SET_LAYER_HEADER,
+  SET_LAYER_HUE,
+  SET_LAYER_OPACITY,
+  SET_LAYERS,
   SET_WORKSPACE_LAYER_LABEL,
-  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
+  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE,
+  TOGGLE_LAYER_PANEL_EDIT_MODE,
+  TOGGLE_LAYER_VISIBILITY,
+  TOGGLE_LAYER_WORKSPACE_PRESENCE
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
 
@@ -72,21 +72,27 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { workspaceLayers });
     }
     case ADD_CUSTOM_LAYER: {
-      const workspaceLayers = [
-        ...state.workspaceLayers,
-        {
-          id: action.payload.id,
-          url: action.payload.url,
-          title: action.payload.name,
-          label: action.payload.name,
-          description: action.payload.description,
-          type: LAYER_TYPES.Custom,
-          visible: true,
-          opacity: 1,
-          added: true
-        }
-      ];
-      return Object.assign({}, state, { workspaceLayers });
+      const heatmapLayerPosition = _.findIndex(state.workspaceLayers, layer => layer.type === LAYER_TYPES.Heatmap);
+
+      const newLayer = {
+        id: action.payload.id,
+        url: action.payload.url,
+        title: action.payload.name,
+        label: action.payload.name,
+        description: action.payload.description,
+        type: LAYER_TYPES.Custom,
+        visible: true,
+        opacity: 1,
+        added: true
+      };
+
+      return Object.assign({}, state, {
+        workspaceLayers: [
+          ...state.workspaceLayers.slice(0, heatmapLayerPosition),
+          newLayer,
+          ...state.workspaceLayers.slice(heatmapLayerPosition)
+        ]
+      });
     }
     case TOGGLE_LAYER_PANEL_EDIT_MODE: {
       const newState = Object.assign({}, state, {
