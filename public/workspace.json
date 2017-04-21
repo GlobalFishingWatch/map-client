@@ -26,7 +26,8 @@
           "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
-          "id": "849-tileset-tms"
+          "tilesetId": "849-tileset-tms",
+          "id": "fishing"
         },
         {
           "title": "MPA - No Take",

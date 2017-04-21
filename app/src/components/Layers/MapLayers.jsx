@@ -225,7 +225,7 @@ class MapLayers extends Component {
       }
 
       // If the layer is already on the map and its visibility changed, we update it
-      if (this.addedLayers[newLayer.id] && oldLayer.visible !== newLayer.visible) {
+      if (this.addedLayers[newLayer.id] && oldLayer && oldLayer.visible !== newLayer.visible) {
         this.toggleLayerVisibility(newLayer);
         continue;
       }

@@ -57,6 +57,7 @@ export function initHeatmapLayers() {
         heatmapLayers[workspaceLayer.id] = {
           url: workspaceLayer.url,
           tiles: [],
+          tilesetId: workspaceLayer.tilesetId,
           // initially attach which of the temporal extents indices are visible with initial outerExtent
           temporalExtentsLoadedIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
         };
@@ -309,6 +310,7 @@ const _queryHeatmap = (state, tileQuery) => {
     if (queriedTile !== undefined && queriedTile.data !== undefined) {
       layersVessels.push({
         layerId,
+        tilesetId: layer.tilesetId,
         vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex, currentFlags)
       });
     }
@@ -322,6 +324,7 @@ const _queryHeatmap = (state, tileQuery) => {
   let isMouseCluster;
   let isEmpty;
   let layerId;
+  let tilesetId;
   let seriesUids;
 
   if (layersVesselsResult.length === 0) {
@@ -333,6 +336,7 @@ const _queryHeatmap = (state, tileQuery) => {
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a successful vessel query, not a cluster
     layerId = layersVesselsResult[0].layerId;
+    tilesetId = layersVesselsResult[0].tilesetId;
     const vessels = layersVesselsResult[0].vessels;
 
     if (vessels.length === 0) {
@@ -350,7 +354,7 @@ const _queryHeatmap = (state, tileQuery) => {
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId };
+  return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId, tilesetId };
 };
 
 export function highlightVesselFromHeatmap(tileQuery, latLng) {
@@ -381,7 +385,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { isEmpty, isCluster, isMouseCluster, layerId, seriesUids } = _queryHeatmap(state, tileQuery);
+    const { isEmpty, isCluster, isMouseCluster, tilesetId, seriesUids } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
@@ -401,7 +405,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const seriesgroup = parseInt(seriesUid.split('-')[0], 10);
       const series = parseInt(seriesUid.split('-')[1], 10);
 
-      dispatch(addVessel(layerId, seriesgroup, series));
+      dispatch(addVessel(tilesetId, seriesgroup, series));
     }
   };
 }

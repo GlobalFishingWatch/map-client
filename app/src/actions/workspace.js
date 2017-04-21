@@ -235,6 +235,9 @@ function processLegacyWorkspace(data, dispatch) {
   }));
   layersData.forEach((layer) => {
     layer.id = calculateLayerId(layer);
+    if (layer.type === LAYER_TYPES.Heatmap) {
+      layer.tilesetId = layer.id;
+    }
   });
 
   const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
