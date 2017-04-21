@@ -226,7 +226,7 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_BASEMAP, payload: workspace.basemap
   });
 
-  const layersData = workspace.map.animations.map(l => ({
+  const layersData = workspace.map.animations.filter(l => l.args.source.args.url).map(l => ({
     title: l.args.title,
     color: l.args.color,
     visible: l.args.visible,
