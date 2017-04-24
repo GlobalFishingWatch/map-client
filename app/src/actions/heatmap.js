@@ -91,6 +91,7 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, tem
 
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
+      // console.time('test');
       const cleanVectorArrays = getCleanVectorArrays(rawTileData);
       const groupedData = groupData(cleanVectorArrays, columns);
       const vectorArray = addWorldCoordinates(groupedData, map);
@@ -100,6 +101,7 @@ function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, tem
         columns,
         prevPlaybackData
       );
+      // console.timeEnd('test');
       resolve(data);
     });
   });
