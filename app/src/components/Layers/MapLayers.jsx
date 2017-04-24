@@ -26,10 +26,14 @@ class MapLayers extends Component {
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapInteraction.bind(this, 'click');
     this.onMapMoveBound = this.onMapInteraction.bind(this, 'move');
+    this.onMapDragStartBound = this.onMapDragStart.bind(this);
+    this.onMapDragEndBound = this.onMapDragEnd.bind(this);
+    this.onMapZoomChangedBound = this.onMapZoomChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('--------receive props---------')
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
       this.build();
@@ -67,7 +71,6 @@ class MapLayers extends Component {
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtent, nextProps.timelineInnerExtent);
     const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
     const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
-    let isGLContainerDirty = false;
 
     const nextTracks = getTracks(nextProps.vesselTracks);
 
@@ -75,7 +78,6 @@ class MapLayers extends Component {
       if (this.props.vesselTracks && this.props.vesselTracks.length) {
         this.glContainer.clearTracks();
         this.glContainer.toggleHeatmapDimming(false);
-        isGLContainerDirty = true;
       }
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
@@ -88,7 +90,6 @@ class MapLayers extends Component {
         zoom: nextProps.zoom
       });
       this.glContainer.toggleHeatmapDimming(true);
-      isGLContainerDirty = true;
     }
 
     // update heatmap layer when:
@@ -97,7 +98,6 @@ class MapLayers extends Component {
     if (this.props.heatmap !== nextProps.heatmap ||
       innerExtentChanged) {
       this.updateHeatmap(nextProps);
-      isGLContainerDirty = true;
     }
     // if (innerExtentChanged) {
     //     this.updateHeatmap(nextProps);
@@ -106,16 +106,10 @@ class MapLayers extends Component {
     if (nextProps.flagsLayers !== this.props.flagsLayers) {
       this.setHeatmapFlags(nextProps);
       this.updateHeatmap(nextProps);
-      isGLContainerDirty = true;
     }
 
     if (nextProps.highlightedVessels !== this.props.highlightedVessels) {
       this.updateHeatmapHighlighted(nextProps);
-      isGLContainerDirty = true;
-    }
-
-    if (isGLContainerDirty === true) {
-      this.renderGLContainer();
     }
   }
 
@@ -168,6 +162,9 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('mousemove', this.onMapMoveBound);
+    this.map.addListener('dragstart', this.onMapDragStartBound);
+    this.map.addListener('dragend', this.onMapDragEndBound);
+    this.map.addListener('zoom_changed', this.onMapZoomChangedBound);
   }
 
   componentWillUnmount() {
@@ -256,12 +253,10 @@ class MapLayers extends Component {
 
   addHeatmapLayer(newLayer) {
     this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer);
-    this.renderGLContainer();
   }
 
   removeHeatmapLayer(layer) {
     this.glContainer.removeLayer(layer.id);
-    this.renderGLContainer();
   }
 
   setHeatmapFlags(props) {
@@ -278,10 +273,6 @@ class MapLayers extends Component {
 
   updateHeatmapWithCurrentProps() {
     this.updateHeatmap(this.props);
-  }
-
-  renderGLContainer() {
-    this.glContainer.render();
   }
 
   addCustomLayer(layer) {
@@ -393,11 +384,6 @@ class MapLayers extends Component {
     } else {
       this.addedLayers[layerSettings.id].hide();
     }
-
-    if (layerSettings.type === LAYER_TYPES.Heatmap) {
-      this.updateHeatmapWithCurrentProps();
-      this.renderGLContainer();
-    }
   }
 
   /**
@@ -408,11 +394,6 @@ class MapLayers extends Component {
     if (!Object.keys(this.addedLayers).length) return;
 
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
-
-    if (layerSettings.type === LAYER_TYPES.Heatmap) {
-      this.updateHeatmapWithCurrentProps();
-      this.renderGLContainer();
-    }
   }
 
   updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent, zoom }) {
@@ -465,7 +446,24 @@ class MapLayers extends Component {
     if (this.glContainer) {
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
-      this.renderGLContainer();
+      // this.glContainer.enableRendering();
+    }
+  }
+
+  onMapDragStart() {
+    if (this.glContainer) {
+      this.glContainer.disableRendering();
+    }
+  }
+  onMapDragEnd() {
+    if (this.glContainer) {
+      this.glContainer.enableRendering();
+    }
+  }
+
+  onMapZoomChanged() {
+    if (this.glContainer) {
+      // this.glContainer.disableRendering();
     }
   }
 
