@@ -446,7 +446,6 @@ class MapLayers extends Component {
     if (this.glContainer) {
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
-      // this.glContainer.enableRendering();
     }
   }
 
@@ -457,6 +456,8 @@ class MapLayers extends Component {
   }
   onMapDragEnd() {
     if (this.glContainer) {
+      this.updateTrackLayerWithCurrentProps();
+      this.updateHeatmapWithCurrentProps();
       this.glContainer.enableRendering();
     }
   }
