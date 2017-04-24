@@ -26,7 +26,6 @@ class MapLayers extends Component {
     this.onMapIdleBound = this.onMapIdle.bind(this);
     this.onMapClickBound = this.onMapInteraction.bind(this, 'click');
     this.onMapMoveBound = this.onMapInteraction.bind(this, 'move');
-    this.onMapCenterChangedBound = this.onMapCenterChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
 
@@ -100,6 +99,10 @@ class MapLayers extends Component {
       this.updateHeatmap(nextProps);
       isGLContainerDirty = true;
     }
+    // if (innerExtentChanged) {
+    //     this.updateHeatmap(nextProps);
+    //     isGLContainerDirty = true;
+    // }
     if (nextProps.flagsLayers !== this.props.flagsLayers) {
       this.setHeatmapFlags(nextProps);
       this.updateHeatmap(nextProps);
@@ -165,7 +168,6 @@ class MapLayers extends Component {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
     this.map.addListener('mousemove', this.onMapMoveBound);
-    this.map.addListener('center_changed', this.onMapCenterChangedBound);
   }
 
   componentWillUnmount() {
@@ -461,17 +463,6 @@ class MapLayers extends Component {
    */
   onMapIdle() {
     if (this.glContainer) {
-      this.glContainer.reposition();
-      this.updateTrackLayerWithCurrentProps();
-      this.updateHeatmapWithCurrentProps();
-      this.renderGLContainer();
-    }
-  }
-
-  onMapCenterChanged() {
-    // TODO instead of rerendering everything while moving, just offset the webGL canvas
-    if (this.glContainer) {
-      this.glContainer.reposition();
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
       this.renderGLContainer();

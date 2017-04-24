@@ -166,10 +166,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     .uniq()
     .value();
 
-  console.log(vectorArray.seriesgroup[0],vectorArray.series[0]);
-  console.log(vectorArray.seriesgroup[1],vectorArray.series[1]);
-  console.log(vectorArray.seriesgroup[2],vectorArray.series[2]);
-  console.log(vectorArray.seriesgroup[3],vectorArray.series[3]);
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
 

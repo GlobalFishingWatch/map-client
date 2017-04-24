@@ -116,18 +116,13 @@ export default class GLContainer extends BaseOverlay {
 
   onRemove() {}
 
-  draw() {
-    this.reposition();
-  }
+  draw() {}
 
   reposition() {
     if (!this.container) return;
     const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
     this.container.style.left = `${offset.x}px`;
     this.container.style.top = `${offset.y}px`;
-    this.renderer.resize(this.viewportWidth, this.viewportHeight);
-    this.canvas.style.width = `${this.viewportWidth}px`;
-    this.canvas.style.height = `${this.viewportHeight}px`;
   }
 
 
@@ -177,6 +172,9 @@ export default class GLContainer extends BaseOverlay {
       }
     }
 
+    const currentOffsets = this._getOffsets();
+    this.reposition();
+
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
       const layerData = data[layer.id];
@@ -184,7 +182,7 @@ export default class GLContainer extends BaseOverlay {
         continue;
       }
       const tiles = layerData.tiles;
-      layer.render(tiles, startIndex, endIndex, this._getOffsets());
+      layer.render(tiles, startIndex, endIndex, currentOffsets);
     }
 
     if (highlightedVessels !== undefined) {
@@ -233,6 +231,7 @@ export default class GLContainer extends BaseOverlay {
   }
 
   render() {
+    console.log('render')
     this._renderStage();
   }
 
@@ -297,7 +296,9 @@ export default class GLContainer extends BaseOverlay {
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
     // this.resizeSpritesPool();
-    this.reposition();
+    this.renderer.resize(this.viewportWidth, this.viewportHeight);
+    this.canvas.style.width = `${this.viewportWidth}px`;
+    this.canvas.style.height = `${this.viewportHeight}px`;
   }
   //
   // resizeSpritesPool() {
