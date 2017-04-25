@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   // a dict of heatmap layers (key is layer id)
-  // each containing url, tiles, temporalExtentsLoadedIndices
+  // each containing url, tiles, visibleTemporalExtentsIndices
   heatmapLayers: {},
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
@@ -28,9 +28,9 @@ export default function (state = initialState, action) {
 
     case UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES: {
       const heatmapLayers = state.heatmapLayers;
-      let indices = heatmapLayers[action.payload.layerId].temporalExtentsLoadedIndices;
+      let indices = heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices;
       indices = _.uniq(indices.concat(action.payload.diff));
-      heatmapLayers[action.payload.layerId].temporalExtentsLoadedIndices = indices;
+      heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices = indices;
       return Object.assign({}, state, heatmapLayers);
     }
 

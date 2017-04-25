@@ -58,7 +58,7 @@ export function initHeatmapLayers() {
           url: workspaceLayer.url,
           tiles: [],
           // initially attach which of the temporal extents indices are visible with initial outerExtent
-          temporalExtentsLoadedIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
+          visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
         };
       }
     });
@@ -72,43 +72,53 @@ export function initHeatmapLayers() {
 
 
 /**
- * loadLayerTile - loads and parse an heatmap tile.
+ * loadLayerTile - loads an heatmap tile.
  *
- * @param  {object} referenceTile        the reference tile object, used to get tile properties regardless of layer
+ * @param  {object} tileCoordinates        tile coordinates from reference tile
  * @param  {string} layerUrl             the base layer url
  * @param  {string} token                the user's token
- * @param  {object} map                  a reference to the Google Map object. This is required to access projection data.
  * @param  {array} temporalExtents       all of the layer's header temporal extents
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
- * @param  {array} columns               names of the columns present in the raw tiles that need to be included in the final playback data
- * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
- * @return {Promise}                     a Promise that will be resolved when tile is loaded and parsed into playback data
+ * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(referenceTile, layerUrl, token, map, temporalExtents, temporalExtentsIndices, columns, prevPlaybackData) {
-  const tileCoordinates = referenceTile.tileCoordinates;
+function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsIndices) {
+  // const tileCoordinates = referenceTile.tileCoordinates;
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsIndices });
   const allLayerPromises = Promise.all(pelagosPromises);
 
   const layerTilePromise = new Promise((resolve) => {
     allLayerPromises.then((rawTileData) => {
-      // console.time('test');
-      const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-      const groupedData = groupData(cleanVectorArrays, columns);
-      const vectorArray = addWorldCoordinates(groupedData, map);
-      const data = getTilePlaybackData(
-        tileCoordinates.zoom,
-        vectorArray,
-        columns,
-        prevPlaybackData
-      );
-      // console.timeEnd('test');
-      resolve(data);
+      resolve(rawTileData);
     });
   });
 
   return layerTilePromise;
 }
 
+/**
+ * parseLayerTile - parses an heatmap tile to a playback-ready format.
+ *
+ * @param  {object} tileCoordinates      tile coordinates from reference tile
+ * @param  {array} columns               names of the columns present in the raw tiles that need to be included in the final playback data
+ * @param  {object} map                  a reference to the Google Map object. This is required to access projection data.
+ * @param  {Object} rawTileData
+ * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
+ * @return {Object}                      playback-ready merged data
+ */
+function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlaybackData) {
+  // console.time('test')
+  const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+  const groupedData = groupData(cleanVectorArrays, columns);
+  const vectorArray = addWorldCoordinates(groupedData, map);
+  const data = getTilePlaybackData(
+    tileCoordinates.zoom,
+    vectorArray,
+    columns,
+    prevPlaybackData
+  );
+  return data;
+  // console.timeEnd('test');
+}
 
 /**
  * getTiles - loads a bunch of heatmap tiles
@@ -142,25 +152,37 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
             canvas: referenceTile.canvas
           };
           layers[layerId].tiles.push(tile);
+          // console.log(tile)
+        } else {
+          // console.log(tile)
+          // console.log(layers[layerId].visibleTemporalExtentsIndices)
         }
         const temporalExtentsToLoad = (newTemporalExtentsToLoad === undefined)
-          ? layers[layerId].temporalExtentsLoadedIndices
+          ? layers[layerId].visibleTemporalExtentsIndices
           : newTemporalExtentsToLoad[layerId];
 
+
+        console.log(referenceTile.tileCoordinates)
+        console.log(temporalExtentsToLoad, layers[layerId].visibleTemporalExtentsIndices)
         const tilePromise = loadLayerTile(
-          referenceTile,
+          referenceTile.tileCoordinates,
           // TODO use URL from header
           layers[layerId].url,
           token,
-          map,
           layerHeader.temporalExtents,
-          temporalExtentsToLoad,
-          Object.keys(layerHeader.colsByName),
-          tile.data
+          temporalExtentsToLoad
         );
+
         allPromises.push(tilePromise);
-        tilePromise.then((newData) => {
-          tile.data = newData;
+
+        tilePromise.then((rawTileData) => {
+          tile.data = parseLayerTile(
+            referenceTile.tileCoordinates,
+            Object.keys(layerHeader.colsByName),
+            map,
+            rawTileData,
+            tile.data
+          );
           dispatch({
             type: UPDATE_HEATMAP_TILES, payload: layers
           });
@@ -196,7 +218,13 @@ export function getTile(uid, tileCoordinates, canvas) {
       payload: referenceTile
     });
 
-    dispatch(getTiles(Object.keys(getState().heatmap.heatmapLayers), [referenceTile]));
+    const visibleHeatmapLayers = getState().layers.workspaceLayers.filter(workspaceLayer =>
+      workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
+      .map(layer => layer.id);
+
+    dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
+
+    // dispatch(getTiles(Object.keys(getState().heatmap.heatmapLayers), [referenceTile]));
   };
 }
 
@@ -229,8 +257,16 @@ export function releaseTile(uid) {
 }
 
 
-export function addHeatmapLayerFromLibrary(layerId, url) {
+export function loadAllTilesForLayer(layerId) {
   return (dispatch, getState) => {
+    //                current layer, all reference tiles
+    dispatch(getTiles([layerId], getState().heatmap.referenceTiles));
+  };
+}
+
+
+export function addHeatmapLayerFromLibrary(layerId, url) {
+  return (dispatch) => {
     dispatch({
       type: ADD_HEATMAP_LAYER,
       payload: {
@@ -239,7 +275,7 @@ export function addHeatmapLayerFromLibrary(layerId, url) {
       }
     });
 
-    dispatch(getTiles([layerId], getState().heatmap.referenceTiles));
+    dispatch(loadAllTilesForLayer(layerId));
   };
 }
 
@@ -266,7 +302,7 @@ export function loadTilesExtraTimeRange() {
     Object.keys(heatmapLayers).forEach((layerId) => {
       const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
       const heatmapLayer = heatmapLayers[layerId];
-      const oldVisibleTemporalExtents = heatmapLayer.temporalExtentsLoadedIndices;
+      const oldVisibleTemporalExtents = heatmapLayer.visibleTemporalExtentsIndices;
       const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents);
       const diff = _.difference(newVisibleTemporalExtents, oldVisibleTemporalExtents);
       if (diff.length) {

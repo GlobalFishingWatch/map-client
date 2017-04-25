@@ -33,7 +33,6 @@ class MapLayers extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('--------receive props---------')
     if (!this.map && nextProps.map) {
       this.map = nextProps.map;
       this.build();
@@ -99,10 +98,7 @@ class MapLayers extends Component {
       innerExtentChanged) {
       this.updateHeatmap(nextProps);
     }
-    // if (innerExtentChanged) {
-    //     this.updateHeatmap(nextProps);
-    //     isGLContainerDirty = true;
-    // }
+
     if (nextProps.flagsLayers !== this.props.flagsLayers) {
       this.setHeatmapFlags(nextProps);
       this.updateHeatmap(nextProps);
