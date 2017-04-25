@@ -138,6 +138,7 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
   return radius;
 };
 
+
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
@@ -152,7 +153,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
   const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
 
-  const zoomFactorOpacity = (zoom - 1) ** 3.5;
+  const zoomFactorOpacity = ((zoom - 1) ** 3.5) / 1000;
 
   // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
   const extraColumns = _
@@ -172,7 +173,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     const weight = vectorArray.weight[index];
     const sigma = vectorArray.sigma[index];
     const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
-    let opacity = 3 + Math.log((weight * zoomFactorOpacity) / 1000);
+    let opacity = 3 + Math.log(weight * zoomFactorOpacity);
     // TODO quick hack to avoid negative values, check why that happens
     opacity = Math.max(0, opacity);
     opacity = 3 + Math.log(opacity);
@@ -187,8 +188,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       const frame = {
         worldX: [worldX],
         worldY: [worldY],
-        weight: [weight],
-        sigma: [sigma],
         radius: [radius],
         opacity: [opacity],
         seriesUid: [seriesUid]
@@ -202,8 +201,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     const frame = tilePlaybackData[timeIndex];
     frame.worldX.push(worldX);
     frame.worldY.push(worldY);
-    frame.weight.push(weight);
-    frame.sigma.push(sigma);
     frame.radius.push(radius);
     frame.opacity.push(opacity);
     frame.seriesUid.push(seriesUid);
@@ -211,7 +208,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       frame[column].push(vectorArray[column][index]);
     });
   }
-
   return tilePlaybackData;
 };
 
