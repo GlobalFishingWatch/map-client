@@ -149,7 +149,8 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         if (!tile) {
           tile = {
             uid: referenceTile.uid,
-            canvas: referenceTile.canvas
+            canvas: referenceTile.canvas,
+            temporalExtentsIndicesLoaded: []
           };
           layers[layerId].tiles.push(tile);
           // console.log(tile)
@@ -157,25 +158,29 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           // console.log(tile)
           // console.log(layers[layerId].visibleTemporalExtentsIndices)
         }
-        const temporalExtentsToLoad = (newTemporalExtentsToLoad === undefined)
+        const queriedTemporalExtentsIndices = (newTemporalExtentsToLoad === undefined)
           ? layers[layerId].visibleTemporalExtentsIndices
           : newTemporalExtentsToLoad[layerId];
 
-
         console.log(referenceTile.tileCoordinates)
-        console.log(temporalExtentsToLoad, layers[layerId].visibleTemporalExtentsIndices)
+        console.log('temporal extents already loaded', tile.temporalExtentsIndicesLoaded)
+
+        const temporalExtentsIndicesToLoad = _.difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
+        console.log('temporal extents to load', temporalExtentsIndicesToLoad)
+
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
           // TODO use URL from header
           layers[layerId].url,
           token,
           layerHeader.temporalExtents,
-          temporalExtentsToLoad
+          temporalExtentsIndicesToLoad
         );
 
         allPromises.push(tilePromise);
 
         tilePromise.then((rawTileData) => {
+          tile.temporalExtentsIndicesLoaded = _.uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
             referenceTile.tileCoordinates,
             Object.keys(layerHeader.colsByName),
