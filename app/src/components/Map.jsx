@@ -168,7 +168,7 @@ class Map extends Component {
     const newZoomLevel = (event.currentTarget.id === 'zoom_up')
       ? this.map.getZoom() + 1
       : this.map.getZoom() - 1;
-    this.map.setZoom(newZoomLevel);
+    this.props.setZoom(newZoomLevel);
   }
 
   onMapContainerClick(event) {
