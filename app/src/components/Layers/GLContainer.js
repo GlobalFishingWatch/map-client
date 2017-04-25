@@ -139,11 +139,19 @@ export default class GLContainer extends BaseOverlay {
 
   enableRendering() {
     this.renderingEnabled = true;
-    this._render();
   }
 
   disableRendering() {
     this.renderingEnabled = false;
+    this._render();
+  }
+
+  show() {
+    this.stage.visible = true;
+  }
+
+  hide() {
+    this.stage.visible = false;
   }
 
 

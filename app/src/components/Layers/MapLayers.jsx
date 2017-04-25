@@ -442,6 +442,12 @@ class MapLayers extends Component {
     if (this.glContainer) {
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
+
+      if (this.nativeMapZoomChanged === true) {
+        this.glContainer.show();
+        this.glContainer.enableRendering();
+        this.nativeMapZoomChanged = false;
+      }
     }
   }
 
@@ -460,7 +466,9 @@ class MapLayers extends Component {
 
   onMapZoomChanged() {
     if (this.glContainer) {
-      // this.glContainer.disableRendering();
+      this.nativeMapZoomChanged = true;
+      this.glContainer.hide();
+      this.glContainer.disableRendering();
     }
   }
 
