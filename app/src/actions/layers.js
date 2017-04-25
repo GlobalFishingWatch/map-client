@@ -161,8 +161,6 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
       }
     });
 
-    console.log('----')
-
     if (visibility === true) {
       // TODO clean tile first, if zoom has changed
       dispatch(loadAllTilesForLayer(layerId));

@@ -175,7 +175,6 @@ export default class GLContainer extends BaseOverlay {
 
   reposition() {
     if (!this.container) return;
-    // console.log('repos')
 
     const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
     this.container.style.left = `${offset.x}px`;
@@ -186,8 +185,6 @@ export default class GLContainer extends BaseOverlay {
     if (!this.mapProjection || !this.renderingEnabled) {
       return;
     }
-
-    // console.log('updateHeatmap')
 
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
@@ -285,7 +282,6 @@ export default class GLContainer extends BaseOverlay {
     }
     this.heatmapFadingIn = true;
     this.heatmapFadeinStartTimestamp = undefined;
-    // window.requestAnimationFrame(this._heatmapFadeinStepBound);
   }
 
   _heatmapFadeinStep(timestamp) {

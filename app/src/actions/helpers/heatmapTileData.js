@@ -147,9 +147,7 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
  * @param columns the columns present on the dataset, determined by tileset headers
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
- // const times = [];
 export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData) => {
-  // const time = performance.now();
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
@@ -190,8 +188,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       const frame = {
         worldX: [worldX],
         worldY: [worldY],
-        // weight: [weight],
-        // sigma: [sigma],
         radius: [radius],
         opacity: [opacity],
         seriesUid: [seriesUid]
@@ -205,8 +201,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     const frame = tilePlaybackData[timeIndex];
     frame.worldX.push(worldX);
     frame.worldY.push(worldY);
-    // frame.weight.push(weight);
-    // frame.sigma.push(sigma);
     frame.radius.push(radius);
     frame.opacity.push(opacity);
     frame.seriesUid.push(seriesUid);
@@ -214,10 +208,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       frame[column].push(vectorArray[column][index]);
     });
   }
-  // const deltaTime = performance.now() - time;
-  // times.push(deltaTime);
-  // console.log(deltaTime, 'ms', vectorArray.latitude.length, 'elements')
-  // console.log(_.sum(times) / times.length, 'ms avg')
   return tilePlaybackData;
 };
 

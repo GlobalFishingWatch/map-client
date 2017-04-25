@@ -153,20 +153,13 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
             temporalExtentsIndicesLoaded: []
           };
           layers[layerId].tiles.push(tile);
-          // console.log(tile)
-        } else {
-          // console.log(tile)
-          // console.log(layers[layerId].visibleTemporalExtentsIndices)
         }
+
         const queriedTemporalExtentsIndices = (newTemporalExtentsToLoad === undefined)
           ? layers[layerId].visibleTemporalExtentsIndices
           : newTemporalExtentsToLoad[layerId];
 
-        console.log(referenceTile.tileCoordinates)
-        console.log('temporal extents already loaded', tile.temporalExtentsIndicesLoaded)
-
         const temporalExtentsIndicesToLoad = _.difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
-        console.log('temporal extents to load', temporalExtentsIndicesToLoad)
 
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
@@ -228,8 +221,6 @@ export function getTile(uid, tileCoordinates, canvas) {
       .map(layer => layer.id);
 
     dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
-
-    // dispatch(getTiles(Object.keys(getState().heatmap.heatmapLayers), [referenceTile]));
   };
 }
 
