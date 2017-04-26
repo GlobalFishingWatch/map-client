@@ -64,7 +64,6 @@ class SearchPanel extends Component {
           searchTerm={this.props.searchTerm}
           closeSearch={() => this.closeSearch()}
           vesselInfo={this.props.entries[i]}
-          layerId={this.props.searchLayerId}
         />);
       }
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
@@ -142,11 +141,7 @@ SearchPanel.propTypes = {
   /*
    Search term to search for
    */
-  searchTerm: React.PropTypes.string,
-  /*
-   Search layer ID
-   */
-  searchLayerId: React.PropTypes.string
+  searchTerm: React.PropTypes.string
 };
 
 export default SearchPanel;

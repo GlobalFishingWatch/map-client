@@ -226,7 +226,7 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_BASEMAP, payload: workspace.basemap
   });
 
-  const layersData = workspace.map.animations.map(l => ({
+  const layersData = workspace.map.animations.filter(l => l.args.source.args.url).map(l => ({
     title: l.args.title,
     color: l.args.color,
     visible: l.args.visible,
@@ -235,6 +235,9 @@ function processLegacyWorkspace(data, dispatch) {
   }));
   layersData.forEach((layer) => {
     layer.id = calculateLayerId(layer);
+    if (layer.type === LAYER_TYPES.Heatmap) {
+      layer.tilesetId = layer.id;
+    }
   });
 
   const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);

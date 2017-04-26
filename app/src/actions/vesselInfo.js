@@ -42,7 +42,7 @@ export function loadRecentVesselHistory() {
   };
 }
 
-function setCurrentVessel(layerId, seriesgroup, fromSearch) {
+function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
@@ -69,7 +69,7 @@ function setCurrentVessel(layerId, seriesgroup, fromSearch) {
       const data = JSON.parse(request.responseText);
       delete data.series;
 
-      data.layerId = layerId;
+      data.tilesetId = tilesetId;
 
       dispatch({
         type: SET_VESSEL_DETAILS,
@@ -83,9 +83,9 @@ function setCurrentVessel(layerId, seriesgroup, fromSearch) {
       });
 
       if (fromSearch) {
-        dispatch(trackSearchResultClicked(state.map.tilesetId, seriesgroup));
+        dispatch(trackSearchResultClicked(tilesetId, seriesgroup));
       } else {
-        dispatch(trackVesselPointClicked(state.map.tilesetId, seriesgroup));
+        dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
 
       dispatch(setRecentVesselHistory(data.seriesgroup));
@@ -163,19 +163,18 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-function _getVesselTrack({ layerId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
     const map = state.map.googleMaps;
 
-    const currentLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
+    const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
     if (!currentLayer) {
-      console.warn('trying to get a vessel track on a layer that doesnt exist', state.layers.workspaceLayers);
+      console.warn('trying to get a vessel track on a layer that doesn\'t exist', state.layers.workspaceLayers);
       return;
     }
     const header = currentLayer.header;
-    // TODO use URL from header
-    const url = currentLayer.url;
+    const url = header.urls.search[0] || currentLayer.url;
     const promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     Promise.all(promises.map(p => p.catch(e => e)))
@@ -239,7 +238,7 @@ export function hideVesselsInfoPanel() {
   };
 }
 
-export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
+export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
   return (dispatch, getState) => {
     const state = getState();
     dispatch({
@@ -247,16 +246,16 @@ export function addVessel(layerId, seriesgroup, series = null, zoomToBounds = fa
       payload: {
         seriesgroup,
         series,
-        layerId
+        tilesetId
       }
     });
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
-      dispatch(setCurrentVessel(layerId, seriesgroup, fromSearch));
+      dispatch(setCurrentVessel(tilesetId, seriesgroup, fromSearch));
     } else {
       dispatch(hideVesselsInfoPanel());
     }
     dispatch(_getVesselTrack({
-      layerId,
+      tilesetId,
       seriesgroup,
       series,
       zoomToBounds,
@@ -336,7 +335,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
     });
     if (visible === true && currentVessel.track === undefined) {
       dispatch(_getVesselTrack({
-        layerId: currentVessel.tileset,
+        tilesetId: currentVessel.tileset,
         seriesgroup,
         series: null,
         zoomToBounds: true,
