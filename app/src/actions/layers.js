@@ -160,7 +160,7 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
       }
     });
 
-    if (visibility === true) {
+    if (layer.type === LAYER_TYPES.Heatmap && visibility === true) {
       // TODO clean tile first, if zoom has changed
       dispatch(loadAllTilesForLayer(layerId));
     }
