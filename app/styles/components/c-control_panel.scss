@@ -43,6 +43,11 @@
       display: flex;
     }
 
+    .fishing-hours {
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
     .counter-description {
       color: rgba($color-3, .5);
       font-family: $font-family-1;

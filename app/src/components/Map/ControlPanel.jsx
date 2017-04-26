@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
-import TetherComponent from 'react-tether';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
@@ -15,6 +14,7 @@ import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=Search
 import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
 import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
@@ -168,17 +168,11 @@ class ControlPanel extends Component {
       <div className={controlPanelStyle['resume-display']} >
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
-            <span className={controlPanelStyle['counter-description']} >Worldwide Fishing hours</span>
-            <TetherComponent
-              attachment="top right"
-              constraints={[{
-                to: 'window'
-              }]}
-              targetOffset="0px 100%"
-            >
-              <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
-              <p>LOREM IPSUM DOLOR TEST</p>
-            </TetherComponent>
+            <span className={controlPanelStyle['counter-description']} >
+              Worldwide Fishing hours
+              <InfoIcon className={controlPanelStyle['fishing-hours']} onClick={() => this.props.openLayerInfoModal()} />
+            </span>
+            <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
           </div>
         </div>
       </div>
@@ -249,7 +243,8 @@ ControlPanel.propTypes = {
   layerPanelEditMode: React.PropTypes.bool,
   timelineInnerExtent: React.PropTypes.array,
   isEmbedded: React.PropTypes.bool,
-  isReportStarted: React.PropTypes.bool
+  isReportStarted: React.PropTypes.bool,
+  openLayerInfoModal: React.PropTypes.func
 };
 
 export default ControlPanel;
