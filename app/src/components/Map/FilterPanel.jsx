@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import _ from 'lodash';
+import platform from 'platform';
 import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
@@ -52,8 +53,13 @@ class FilterPanel extends Component {
 
     countryOptions.push(<option key="" value="">All countries</option>);
 
+    const supportsEmojiFlags =
+      ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
+      platform.os.toString().match('Windows 10');
+
     countryNames.forEach((country) => {
-      countryOptions.push(<option key={country.id} value={country.id}>{country.name}&nbsp;&nbsp;{country.icon}</option>);
+      const label = (supportsEmojiFlags) ? `${country.name} ${country.icon}` : country.name;
+      countryOptions.push(<option key={country.id} value={country.id}>{label}</option>);
     });
 
     return countryOptions;

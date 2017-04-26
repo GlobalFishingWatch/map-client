@@ -6,7 +6,7 @@ export function submitForm(data, endpoint) {
     const token = state.user.token;
 
     const request = new XMLHttpRequest();
-    request.open('POST', MAP_API_ENDPOINT + endpoint, true);
+    request.open('POST', V2_API_ENDPOINT + endpoint, true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     if (token) {
       request.setRequestHeader('Authorization', `Bearer ${token}`);

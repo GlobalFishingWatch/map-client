@@ -46,7 +46,7 @@ export default function (state = initialState, action) {
     }
     case TOGGLE_LAYER_VISIBILITY: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
-        changedLayer.visible = (action.payload.forceStatus !== null) ? action.payload.forceStatus : !changedLayer.visible;
+        changedLayer.visible = action.payload.visibility;
       });
       return Object.assign({}, state, { workspaceLayers });
     }

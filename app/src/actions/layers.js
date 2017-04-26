@@ -15,7 +15,7 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { refreshFlagFiltersLayers } from 'actions/filters';
-import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary } from 'actions/heatmap';
+import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -82,7 +82,6 @@ function setLayerHeader(layerId, header) {
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState();
-
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
       workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
       libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
@@ -150,11 +149,20 @@ export function initLayers(workspaceLayers, libraryLayers) {
 }
 
 export function toggleLayerVisibility(layerId, forceStatus = null) {
-  return {
-    type: TOGGLE_LAYER_VISIBILITY,
-    payload: {
-      layerId,
-      forceStatus
+  return (dispatch, getState) => {
+    const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
+    const visibility = (forceStatus !== null) ? forceStatus : !layer.visible;
+    dispatch({
+      type: TOGGLE_LAYER_VISIBILITY,
+      payload: {
+        layerId,
+        visibility
+      }
+    });
+
+    if (visibility === true) {
+      // TODO clean tile first, if zoom has changed
+      dispatch(loadAllTilesForLayer(layerId));
     }
   };
 }

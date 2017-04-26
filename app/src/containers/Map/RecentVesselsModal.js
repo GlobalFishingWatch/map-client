@@ -12,9 +12,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setRecentVesselsModalVisibility(false));
   },
 
-  drawVessel: (layerId, seriesgroup, series) => {
+  drawVessel: (tilesetId, seriesgroup, series) => {
     dispatch(clearVesselInfo());
-    dispatch(addVessel(layerId, seriesgroup, series, true));
+    dispatch(addVessel(tilesetId, seriesgroup, series, true));
     dispatch(setRecentVesselsModalVisibility(false));
   }
 });

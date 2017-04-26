@@ -22,14 +22,19 @@ export default class GLContainer extends BaseOverlay {
     super();
     this.layers = [];
     this.timeIndexDelta = 0;
+    this.renderingEnabled = true;
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this.heatmapFadeinStepBound = this.heatmapFadeinStep.bind(this);
+    this._heatmapFadeinStepBound = this._heatmapFadeinStep.bind(this);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
+
+    this._frameBound = this._frame.bind(this);
+    window.requestAnimationFrame(this._frameBound);
+
     this._build();
   }
 
@@ -116,25 +121,44 @@ export default class GLContainer extends BaseOverlay {
 
   onRemove() {}
 
-  draw() {
-    this.reposition();
+  draw() {}
+
+  _frame(timestamp) {
+    if (this.renderingEnabled) {
+      if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
+        this._heatmapFadeinStep(timestamp);
+      }
+      this._render();
+    }
+    window.requestAnimationFrame(this._frameBound);
   }
 
-  reposition() {
-    if (!this.container) return;
-    const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
-    this.container.style.left = `${offset.x}px`;
-    this.container.style.top = `${offset.y}px`;
-    this.renderer.resize(this.viewportWidth, this.viewportHeight);
-    this.canvas.style.width = `${this.viewportWidth}px`;
-    this.canvas.style.height = `${this.viewportHeight}px`;
+  _render() {
+    this.renderer.render(this.stage);
+  }
+
+  enableRendering() {
+    this.renderingEnabled = true;
+  }
+
+  disableRendering() {
+    this.renderingEnabled = false;
+    this._render();
+  }
+
+  show() {
+    this.stage.visible = true;
+  }
+
+  hide() {
+    this.stage.visible = false;
   }
 
 
   // Layer management
   addLayer(layerSettings) {
     const maxSprites = this._getNumSprites();
-    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites, this._renderStage.bind(this));
+    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites);
     this.heatmapStage.addChild(layer.stage);
     this.layers.push(layer);
     return layer;
@@ -157,8 +181,16 @@ export default class GLContainer extends BaseOverlay {
     };
   }
 
+  reposition() {
+    if (!this.container) return;
+
+    const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
+    this.container.style.left = `${offset.x}px`;
+    this.container.style.top = `${offset.y}px`;
+  }
+
   updateHeatmap(data, timelineInnerExtentIndexes, highlightedVessels) {
-    if (!this.mapProjection) {
+    if (!this.mapProjection || !this.renderingEnabled) {
       return;
     }
 
@@ -177,6 +209,9 @@ export default class GLContainer extends BaseOverlay {
       }
     }
 
+    const currentOffsets = this._getOffsets();
+    this.reposition();
+
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
       const layerData = data[layer.id];
@@ -184,20 +219,18 @@ export default class GLContainer extends BaseOverlay {
         continue;
       }
       const tiles = layerData.tiles;
-      layer.render(tiles, startIndex, endIndex, this._getOffsets());
+      layer.render(tiles, startIndex, endIndex, currentOffsets);
     }
 
     if (highlightedVessels !== undefined) {
       this.updateHeatmapHighlighted(data, timelineInnerExtentIndexes, highlightedVessels);
     }
-
-    this._renderStage();
   }
 
   updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, seriesUids }) {
     if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
-      this.startHeatmapFadein();
+      this._startHeatmapFadein();
       return;
     }
     this.toggleHeatmapDimming(true);
@@ -223,6 +256,7 @@ export default class GLContainer extends BaseOverlay {
     if (tracks === undefined || !tracks.length) {
       return;
     }
+
     this.hasTracks = true;
     this.tracksLayer.update(tracks, drawParams, this._getOffsets());
   }
@@ -232,20 +266,11 @@ export default class GLContainer extends BaseOverlay {
     this.tracksLayer.clear();
   }
 
-  render() {
-    this._renderStage();
-  }
-
-  _renderStage() {
-    this.renderer.render(this.stage);
-  }
-
   setStyle(useHeatmapStyle) {
     for (let i = 0; i < this.layers.length; i++) {
       this.layers[i].setRenderingStyle(useHeatmapStyle);
     }
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
-    this._renderStage();
   }
 
   setFlags(flags, useHeatmapStyle) {
@@ -259,16 +284,15 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
-  startHeatmapFadein() {
+  _startHeatmapFadein() {
     if (this.hasTracks === true) {
       return;
     }
     this.heatmapFadingIn = true;
     this.heatmapFadeinStartTimestamp = undefined;
-    window.requestAnimationFrame(this.heatmapFadeinStepBound);
   }
 
-  heatmapFadeinStep(timestamp) {
+  _heatmapFadeinStep(timestamp) {
     if (this.heatmapFadeinStartTimestamp === undefined) {
       this.heatmapFadeinStartTimestamp = timestamp;
     }
@@ -279,11 +303,6 @@ export default class GLContainer extends BaseOverlay {
       this.heatmapFadingIn = false;
     }
     this.heatmapStage.alpha = alpha;
-    this._renderStage();
-
-    if (this.heatmapFadingIn === true && alpha < 1) {
-      window.requestAnimationFrame(this.heatmapFadeinStepBound);
-    }
   }
 
   toggleHeatmapDimming(dim) {
@@ -297,7 +316,9 @@ export default class GLContainer extends BaseOverlay {
     this.viewportWidth = viewportWidth;
     this.viewportHeight = viewportHeight;
     // this.resizeSpritesPool();
-    this.reposition();
+    this.renderer.resize(this.viewportWidth, this.viewportHeight);
+    this.canvas.style.width = `${this.viewportWidth}px`;
+    this.canvas.style.height = `${this.viewportHeight}px`;
   }
   //
   // resizeSpritesPool() {

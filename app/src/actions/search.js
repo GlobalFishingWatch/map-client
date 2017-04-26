@@ -42,6 +42,8 @@ const loadSearchResults = _.debounce((searchTerm, page, state, dispatch) => {
         return;
       }
 
+      // TODO: Remove in favor of doing a serch per vessel layer
+      result.entries.forEach((entry) => { entry.tilesetId = state.map.tilesetId; });
       dispatch({
         type: SET_SEARCH_RESULTS,
         payload: {

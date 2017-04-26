@@ -16,7 +16,7 @@ export default function uploadCustomLayer(url, name, description) {
       payload: 'pending'
     });
 
-    fetch(`${MAP_API_ENDPOINT}/v1/directory`, {
+    fetch(`${V2_API_ENDPOINT}/directory`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
