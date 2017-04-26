@@ -16,7 +16,7 @@ import {
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 import { trackCenterTile } from 'actions/analytics';
-import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM } from 'constants';
+import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'constants';
 
 // store the original google maps in the app state.
 // this is needed in the heatmap actions/reducers, to avoid constantly passing
@@ -153,7 +153,7 @@ export function setLayerInfoModal(modalParams) {
 
 export function zoomIntoVesselCenter(latLng) {
   return (dispatch, getState) => {
-    dispatch(setZoom(getState().map.zoom + 3));
+    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT));
     dispatch(setCenter([latLng.lat(), latLng.lng()]));
   };
 }
