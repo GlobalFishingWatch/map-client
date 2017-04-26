@@ -98,7 +98,7 @@
       max-width: 90%;
 
       > span {
-        overflow-y: hidden;
+        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
