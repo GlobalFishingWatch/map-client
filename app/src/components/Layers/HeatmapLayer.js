@@ -54,7 +54,7 @@ export default class HeatmapLayer {
   }
 
   render(tiles, startIndex, endIndex, offsets) {
-    if (this.stage.visible === false) return;
+    // if (this.stage.visible === false) return;
 
     this.subLayers.forEach((subLayer) => {
       subLayer.render(tiles, startIndex, endIndex, offsets);
