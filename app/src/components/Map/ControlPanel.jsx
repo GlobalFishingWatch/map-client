@@ -14,6 +14,7 @@ import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=Search
 import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
 import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
+import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
@@ -163,10 +164,14 @@ class ControlPanel extends Component {
 
   renderResume() {
     return (
+
       <div className={controlPanelStyle['resume-display']} >
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
-            <span className={controlPanelStyle['counter-description']} >Fishing hours</span>
+            <span className={controlPanelStyle['counter-description']} >
+              Worldwide Fishing hours
+              <InfoIcon className={controlPanelStyle['fishing-hours']} onClick={() => this.props.openLayerInfoModal()} />
+            </span>
             <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
           </div>
         </div>
@@ -195,45 +200,21 @@ class ControlPanel extends Component {
   }
 
   render() {
-    // TODO WTF DRY
     return (
       <MediaQuery minWidth={768} >
-        {(matches) => {
-          if (matches) {
-            return (
-              <div
-                className={controlPanelStyle.controlpanel}
-                ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
-              >
-                <div className={controlPanelStyle['bg-wrapper']} >
-                  {this.renderResume()}
-                  <VesselInfoPanel />
-                  <Accordion
-                    activeItems={6}
-                    allowMultiple={false}
-                    className={controlPanelStyle['map-options']}
-                  >
-                    {this.renderSearch()}
-                    {this.renderBasemap()}
-                    {this.renderLayerPicker()}
-                    {this.renderFilters()}
-                  </Accordion>
-                </div>
-              </div>);
-          }
-
-          return (
-            <div
-              className={controlPanelStyle.controlpanel}
-              ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
-            >
+        {matches => (
+          <div
+            className={controlPanelStyle.controlpanel}
+            ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
+          >
+            <div className={classnames({ [controlPanelStyle['bg-wrapper']]: matches })} >
               {this.renderResume()}
               <VesselInfoPanel />
               <Accordion
                 activeItems={6}
                 allowMultiple={false}
                 className={classnames(controlPanelStyle['map-options'], {
-                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded)
+                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded && !matches)
                 })}
               >
                 {this.renderSearch()}
@@ -241,8 +222,9 @@ class ControlPanel extends Component {
                 {this.renderLayerPicker()}
                 {this.renderFilters()}
               </Accordion>
-            </div>);
-        }}
+            </div>
+          </div>)
+        }
       </MediaQuery>
     );
   }
@@ -261,7 +243,8 @@ ControlPanel.propTypes = {
   layerPanelEditMode: React.PropTypes.bool,
   timelineInnerExtent: React.PropTypes.array,
   isEmbedded: React.PropTypes.bool,
-  isReportStarted: React.PropTypes.bool
+  isReportStarted: React.PropTypes.bool,
+  openLayerInfoModal: React.PropTypes.func
 };
 
 export default ControlPanel;

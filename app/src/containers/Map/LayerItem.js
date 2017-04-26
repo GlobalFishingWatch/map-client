@@ -41,9 +41,6 @@ const mapDispatchToProps = dispatch => ({
   toggleReport: (layerId) => {
     dispatch(toggleReport(layerId));
   },
-  setLayerInfoModal: (open) => {
-    dispatch(setLayerInfoModal(open));
-  },
   openLayerInfoModal: (modalParams) => {
     dispatch(setLayerInfoModal(modalParams));
   }
