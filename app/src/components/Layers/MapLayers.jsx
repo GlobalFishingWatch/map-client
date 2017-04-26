@@ -345,13 +345,23 @@ class MapLayers extends Component {
     this._setCartoLayerSQL(reportLayerId, 'false isinreport');
   }
 
+  /**
+   * Replaces original carto sublayer SQL to select the reported polygons
+   */
   _setCartoLayerSQL(reportLayerId, isinreportCol) {
     const cartoLayer = this.addedLayers[reportLayerId];
     const sql = cartoLayer.getSubLayer(0).getSQL();
-    const newSql = sql.replace(/SELECT ((.|\n)+),[\n|\s]*(false|cartodb_id IN \([\d\s,]+\))[\n|\s]+isinreport[\n|\s]+FROM/gi,
-    (match, selectSubmatch) =>
-      `SELECT ${selectSubmatch}, ${isinreportCol} FROM`
-    );
+    const newSql = sql.replace(/SELECT((.|\n)+)FROM/gi, (match, cols) => {
+      const newCols = cols.split(',').map((col) => {
+        let newCol = col.trim();
+        const reportRx = /false|cartodb_id IN \([\d\s,]+\)[\n|\s]+isinreport/gi;
+        if (newCol.match(reportRx)) {
+          newCol = isinreportCol;
+        }
+        return newCol;
+      }).join(', ');
+      return `SELECT ${newCols} FROM`;
+    });
     cartoLayer.getSubLayer(0).setSQL(newSql);
   }
 
