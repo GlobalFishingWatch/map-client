@@ -112,7 +112,9 @@ export default class GLContainer extends BaseOverlay {
   // GMaps overlay logic
   onAdd() {
     const panes = this.getPanes();
-    panes.overlayLayer.appendChild(this.container);
+    // GLContainer always stays on top, using overlayImage pane instead of default overlayLayer
+    // see https://developers.google.com/maps/documentation/javascript/customoverlays
+    panes.overlayImage.appendChild(this.container);
     this.map = this.getMap();
     this.layerProjection = this.getProjection();
     this.mapProjection = this.map.getProjection();
