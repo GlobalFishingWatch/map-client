@@ -102,9 +102,6 @@ export function initLayers(workspaceLayers, libraryLayers) {
           description: libraryLayer.description || matchedWorkspaceLayer.description,
           reportId: libraryLayer.reportId
         });
-        if (matchedWorkspaceLayer.type === LAYER_TYPES.Heatmap) {
-          matchedWorkspaceLayer.url = libraryLayer.url || matchedWorkspaceLayer.url;
-        }
       } else {
         workspaceLayers.push(Object.assign(libraryLayer, { added: false }));
       }
