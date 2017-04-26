@@ -35,9 +35,9 @@ export default function (state = initialState, action) {
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
         series: action.payload.series,
-        tileset: action.payload.layerId,
         visible: false,
         pinned: false,
+        tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
         hue: HEATMAP_TRACK_HIGHLIGHT_HUE
       };
@@ -191,7 +191,7 @@ export default function (state = initialState, action) {
         seriesgroup: currentVessel.seriesgroup,
         vesselname: currentVessel.vesselname,
         pinned: currentVessel.pinned,
-        layerId: currentVessel.layerId
+        tilesetId: currentVessel.tilesetId
       });
 
       if (vesselHistoryIndex !== -1) {

@@ -82,7 +82,6 @@ function setLayerHeader(layerId, header) {
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState();
-
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselsLayers') === -1) {
       workspaceLayers = workspaceLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);
       libraryLayers = libraryLayers.filter(l => l.type !== LAYER_TYPES.Heatmap);

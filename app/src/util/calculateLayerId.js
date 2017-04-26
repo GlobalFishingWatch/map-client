@@ -6,7 +6,7 @@ export default (layer) => {
     const apiIndirectionUrlRegex = /v(1|2)\/directory\/(\w*)\/source$/g;
     const apiIndirectionUrlMatches = apiIndirectionUrlRegex.exec(layer.url);
     if (apiIndirectionUrlMatches) {
-      return apiIndirectionUrlMatches[1];
+      return apiIndirectionUrlMatches[2];
     }
     const cartoVizzJsonRegex = /\/(\w|-)*\/viz.json$/g;
     const cartoVizzJsonMatches = cartoVizzJsonRegex.exec(layer.url);
@@ -16,7 +16,7 @@ export default (layer) => {
     const fishingEffortUrlRegex = /v(1|2)\/tilesets\/((\w|-)*)$/g;
     const fishingEffortUrlMatches = fishingEffortUrlRegex.exec(layer.url);
     if (fishingEffortUrlMatches) {
-      return fishingEffortUrlMatches[1];
+      return fishingEffortUrlMatches[2];
     }
     // Simply hash the URL
     return `${layer.url.split('').reduce((a, b) => {
