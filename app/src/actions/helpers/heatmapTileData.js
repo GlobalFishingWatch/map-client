@@ -211,14 +211,11 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   return tilePlaybackData;
 };
 
-export const addTracksPointRadius = (data, zoom) => {
-  const zoomFactorRadius = _getZoomFactorRadius(zoom);
-  const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
+export const addTracksPointsRenderingData = (data) => {
+  data.hasFishing = [];
 
-  data.radius = new Float32Array(data.latitude.length);
-
-  for (let index = 0, length = data.latitude.length; index < length; index++) {
-    data.radius[index] = _getRadius(data.sigma[index], zoomFactorRadiusRenderingMode, zoomFactorRadius);
+  for (let index = 0, length = data.weight.length; index < length; index++) {
+    data.hasFishing[index] = data.weight[index] > 0;
   }
   return data;
 };

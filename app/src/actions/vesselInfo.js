@@ -23,7 +23,7 @@ import {
   getCleanVectorArrays,
   groupData,
   addWorldCoordinates,
-  addTracksPointRadius
+  addTracksPointsRenderingData
 } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
@@ -196,8 +196,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
 
         let vectorArray = addWorldCoordinates(groupedData, map);
 
-        const zoom = state.map.zoom;
-        vectorArray = addTracksPointRadius(groupedData, zoom);
+        vectorArray = addTracksPointsRenderingData(groupedData);
 
         dispatch({
           type: SET_VESSEL_TRACK,
