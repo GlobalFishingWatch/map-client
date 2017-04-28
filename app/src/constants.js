@@ -56,7 +56,7 @@ export const TRACK_SEGMENT_TYPES = {
   InInnerRange: 2,
   Highlighted: 4
 };
-export const HEATMAP_TRACK_HIGHLIGHT_HUE = 324;
+export const HEATMAP_TRACK_HIGHLIGHT_HUE = 312;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 2;
 
 // half a world, in projected world units

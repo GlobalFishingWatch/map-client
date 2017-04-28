@@ -5,7 +5,7 @@ import {
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
   HALF_WORLD
 } from 'constants';
-import { hueToRgbHexString } from 'util/colors';
+import { hueToRgbHexString, wrapHue } from 'util/colors';
 
 export default class TracksLayerGL {
   constructor() {
@@ -37,7 +37,7 @@ export default class TracksLayerGL {
    * This is used to convert world coordinates to pixels
    */
   _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
-    const color = hueToRgbHexString(hue);
+    const color = hueToRgbHexString(Math.min(359, hue));
     let prevDrawStyle;
     let prevSeries;
     let currentSeries;
@@ -115,7 +115,7 @@ export default class TracksLayerGL {
     this.stage.lineStyle(0);
 
     if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
-      this.stage.beginFill(hueToRgbHexString(hue + 64), 1);
+      this.stage.beginFill(hueToRgbHexString(wrapHue(hue + 50)), 1);
       for (let i = 0, circlesLength = circlePoints.x.length; i < circlesLength; i++) {
         this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], 2);
       }
