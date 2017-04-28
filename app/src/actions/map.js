@@ -151,6 +151,21 @@ export function setLayerInfoModal(modalParams) {
   };
 }
 
+export function openTimebarInfoModal() {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(setLayerInfoModal(
+      {
+        open: true,
+        info: {
+          title: 'Worldwide Fishing hours',
+          description: state.literals.fishing_hours_description
+        }
+      }
+    ));
+  };
+}
+
 export function zoomIntoVesselCenter(latLng) {
   return (dispatch, getState) => {
     dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT));

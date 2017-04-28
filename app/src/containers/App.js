@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import App from 'components/App';
 import { setToken, getLoggedUser } from 'actions/user';
 import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
+import { loadLiterals } from 'actions/literals';
 
 const mapStateToProps = state => ({
   welcomeModalUrl: state.modal.welcome.url
 });
 
 const mapDispatchToProps = dispatch => ({
+  loadLiterals: () => dispatch(loadLiterals()),
   setToken: token => dispatch(setToken(token)),
   getLoggedUser: () => dispatch(getLoggedUser()),
   setWelcomeModalUrl: () => dispatch(setWelcomeModalUrl()),
