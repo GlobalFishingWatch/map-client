@@ -81,10 +81,23 @@ export const hueToRgbString = (hue) => {
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
 
+export const rgbToHexString = (rgb) => {
+  const str = ['r', 'g', 'b'].map((channelName) => {
+    const channelValue = rgb[channelName];
+    let channelStr = channelValue.toString(16);
+    if (channelValue < 16) {
+      channelStr = `0${channelStr}`;
+    }
+    return channelStr;
+  }).join('');
+  return `0x${str}`;
+};
+
 export const hueToRgbHexString = (hue) => {
   const rgb = hueToRgbDefaults(hue);
-  return `0x${rgb.r.toString(16)}${rgb.g.toString(16)}${rgb.b.toString(16)}`;
+  return rgbToHexString(rgb);
 };
+
 
 export const hueToRgbaString = (hue, alpha) => {
   const rgb = hueToRgbDefaults(hue);
