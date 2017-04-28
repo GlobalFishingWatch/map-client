@@ -90,10 +90,6 @@ class VesselInfoPanel extends Component {
             <span className={vesselPanelStyles.value}>{vesselInfo.imo || '---'}</span>
           </div>
           }
-          <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>Class</span>
-            <span className={vesselPanelStyles.value}>{vesselInfo.shiptype_text || '---'}</span>
-          </div>
           {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
             <span className={vesselPanelStyles.key}>MMSI</span>
             <span className={vesselPanelStyles.value}>{vesselInfo.mmsi || '---'}</span>
