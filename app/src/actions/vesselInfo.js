@@ -308,7 +308,7 @@ export function toggleActiveVesselPin() {
 
 export function toggleVesselPin(seriesgroup) {
   return (dispatch, getState) => {
-    dispatch(_getPinAction(getState(seriesgroup)));
+    dispatch(_getPinAction(getState(), seriesgroup));
   };
 }
 
