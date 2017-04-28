@@ -145,7 +145,6 @@ export default class GLContainer extends BaseOverlay {
 
   disableRendering() {
     this.renderingEnabled = false;
-    this._render();
   }
 
   show() {
@@ -155,7 +154,6 @@ export default class GLContainer extends BaseOverlay {
   hide() {
     this.stage.visible = false;
   }
-
 
   // Layer management
   addLayer(layerSettings) {
@@ -214,6 +212,8 @@ export default class GLContainer extends BaseOverlay {
     const currentOffsets = this._getOffsets();
     this.reposition();
 
+    let immediateRender = false;
+
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
       const layerData = data[layer.id];
@@ -221,7 +221,14 @@ export default class GLContainer extends BaseOverlay {
         continue;
       }
       const tiles = layerData.tiles;
+      if (!tiles.length) {
+        immediateRender = true;
+      }
       layer.render(tiles, startIndex, endIndex, currentOffsets);
+    }
+
+    if (immediateRender) {
+      this._render();
     }
 
     if (highlightedVessels !== undefined) {
