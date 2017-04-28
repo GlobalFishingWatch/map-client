@@ -116,8 +116,9 @@ export default class TracksLayerGL {
 
     if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
       this.stage.beginFill(hueToRgbHexString(wrapHue(hue + 50)), 1);
+      const radius = (drawParams.zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD);
       for (let i = 0, circlesLength = circlePoints.x.length; i < circlesLength; i++) {
-        this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], 2);
+        this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], radius);
       }
       this.stage.endFill();
     }
