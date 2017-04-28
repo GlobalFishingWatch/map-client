@@ -128,3 +128,6 @@ export const GA_MAP_CENTER_TILE = 'GA_MAP_CENTER_TILE';
 
 // Timebar
 export const SET_TIMEBAR_CHART_DATA = 'SET_TIMEBAR_CHART_DATA';
+
+// Literals
+export const LOAD_LITERALS = 'LOAD_LITERALS';

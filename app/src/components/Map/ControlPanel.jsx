@@ -164,13 +164,12 @@ class ControlPanel extends Component {
 
   renderResume() {
     return (
-
       <div className={controlPanelStyle['resume-display']} >
         <div className={controlPanelStyle['categories-display']} >
           <div className={controlPanelStyle['vessel-display']} >
             <span className={controlPanelStyle['counter-description']} >
               Worldwide Fishing hours
-              <InfoIcon className={controlPanelStyle['fishing-hours']} onClick={() => this.props.openLayerInfoModal()} />
+              <InfoIcon className={controlPanelStyle['fishing-hours']} onClick={() => this.props.openTimebarInfoModal()} />
             </span>
             <span className={controlPanelStyle.total} >{this.calculateFishingHours()}</span>
           </div>
@@ -244,7 +243,7 @@ ControlPanel.propTypes = {
   timelineInnerExtent: React.PropTypes.array,
   isEmbedded: React.PropTypes.bool,
   isReportStarted: React.PropTypes.bool,
-  openLayerInfoModal: React.PropTypes.func
+  openTimebarInfoModal: React.PropTypes.func
 };
 
 export default ControlPanel;

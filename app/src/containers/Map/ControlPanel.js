@@ -4,7 +4,7 @@ import { setSearchResulVisibility } from 'actions/search';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'actions/layers';
 import { login } from 'actions/user';
-import { setLayerInfoModal } from 'actions/map';
+import { openTimebarInfoModal } from 'actions/map';
 
 
 const mapStateToProps = state => ({
@@ -31,14 +31,8 @@ const mapDispatchToProps = dispatch => ({
   hideSearchResults: () => {
     dispatch(setSearchResulVisibility(false));
   },
-  openLayerInfoModal: () => {
-    dispatch(setLayerInfoModal({
-      open: true,
-      info: {
-        title: 'Worldwide Fishing hours',
-        description: 'Worldwide Fishing hours'
-      }
-    }));
+  openTimebarInfoModal: () => {
+    dispatch(openTimebarInfoModal());
   }
 });
 

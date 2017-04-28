@@ -19,6 +19,7 @@ import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'reducers/customLayer';
 import modalReducer from 'reducers/modal';
 import timebarReducer from 'reducers/timebar';
+import literalsReducer from 'reducers/literals';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 import ReactGA from 'react-ga';
@@ -45,7 +46,8 @@ const reducer = combineReducers({
   layers: layersReducer,
   customLayer: customLayerReducer,
   modal: modalReducer,
-  timebar: timebarReducer
+  timebar: timebarReducer,
+  literals: literalsReducer
 });
 
 /**
