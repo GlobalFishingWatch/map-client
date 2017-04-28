@@ -52,7 +52,6 @@ class Map extends Component {
    */
   onZoomChanged() {
     if (!this.map) return;
-    this.props.setZoom(this.map.getZoom());
     // We also need to update the center of the map as it can be changed
     // when double clicking or scrolling on the map
     const center = this.map.getCenter();
@@ -80,7 +79,9 @@ class Map extends Component {
       this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
     }
     if (this.props.zoom !== nextProps.zoom) {
-      this.map.setZoom(nextProps.zoom);
+      // this guarantees that tiles updates coming from the state are flushed to MapLayer's GLContainer
+      // the goal is to avoid having the heatmap 'frozen' while zooming
+      _.delay(() => { this.map.setZoom(nextProps.zoom); }, 50);
     }
     if (nextProps.trackBounds) {
       if (!this.props.trackBounds || !nextProps.trackBounds.equals(this.props.trackBounds)) {

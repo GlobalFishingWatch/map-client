@@ -16,3 +16,6 @@
 
 # Compiled files
 /dist
+
+# PT integration
+.tracker.cson

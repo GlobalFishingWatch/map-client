@@ -199,7 +199,6 @@ export default class HeatmapSubLayer {
     }
   }
 
-
   _clear(render = false) {
     for (let i = 0, poolSize = this.spritesPool.length; i < poolSize; i++) {
       // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport

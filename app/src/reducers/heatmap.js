@@ -77,7 +77,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { heatmapLayers });
     }
 
-
     case HIGHLIGHT_VESSELS: {
       return Object.assign({}, state, { highlightedVessels: action.payload });
     }

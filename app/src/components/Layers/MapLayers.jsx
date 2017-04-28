@@ -28,7 +28,6 @@ class MapLayers extends Component {
     this.onMapMoveBound = this.onMapInteraction.bind(this, 'move');
     this.onMapDragStartBound = this.onMapDragStart.bind(this);
     this.onMapDragEndBound = this.onMapDragEnd.bind(this);
-    this.onMapZoomChangedBound = this.onMapZoomChanged.bind(this);
     this.onCartoLayerFeatureClickBound = this.onCartoLayerFeatureClick.bind(this);
   }
 
@@ -160,7 +159,6 @@ class MapLayers extends Component {
     this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('dragstart', this.onMapDragStartBound);
     this.map.addListener('dragend', this.onMapDragEndBound);
-    this.map.addListener('zoom_changed', this.onMapZoomChangedBound);
   }
 
   componentWillUnmount() {
@@ -452,12 +450,6 @@ class MapLayers extends Component {
     if (this.glContainer) {
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
-
-      if (this.nativeMapZoomChanged === true) {
-        this.glContainer.show();
-        this.glContainer.enableRendering();
-        this.nativeMapZoomChanged = false;
-      }
     }
   }
 
@@ -471,14 +463,6 @@ class MapLayers extends Component {
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
       this.glContainer.enableRendering();
-    }
-  }
-
-  onMapZoomChanged() {
-    if (this.glContainer) {
-      this.nativeMapZoomChanged = true;
-      this.glContainer.hide();
-      this.glContainer.disableRendering();
     }
   }
 
