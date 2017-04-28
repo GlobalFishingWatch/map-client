@@ -132,7 +132,7 @@
         }
 
         &::before {
-          background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+          background: linear-gradient(to right, rgb(204, 41, 41), rgb(204, 139, 41), rgb(171, 204, 41), rgb(73, 204, 41), rgb(41, 204, 106), rgb(41, 204, 204), rgb(41, 106, 204), rgb(73, 41, 204), rgb(171, 41, 204), rgb(204, 41, 139),  rgb(204, 41, 41));
         }
       }
 

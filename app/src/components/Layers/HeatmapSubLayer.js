@@ -2,9 +2,9 @@
 import 'pixi.js';
 import {
   VESSELS_BASE_RADIUS,
-  VESSELS_HUES_INCREMENTS_NUM,
-  VESSELS_HUES_INCREMENT
+  VESSELS_HUES_INCREMENTS_NUM
 } from 'constants';
+import { hueToHueIncrement } from 'util/colors';
 
 export default class HeatmapSubLayer {
   constructor(baseTexture, maxSprites, useHeatmapStyle) {
@@ -65,9 +65,8 @@ export default class HeatmapSubLayer {
     }
 
     if (hue !== null) {
-      // 0 - 360 -> 0 -> 10
-      let hueIncrement = hue / VESSELS_HUES_INCREMENT;
-      if (hueIncrement === VESSELS_HUES_INCREMENTS_NUM) {
+      let hueIncrement = hueToHueIncrement(hue);
+      if (hueIncrement === VESSELS_HUES_INCREMENTS_NUM - 1) {
         hueIncrement = 0;
       }
       textureFrame.y = hueIncrement * VESSELS_BASE_RADIUS * 2;

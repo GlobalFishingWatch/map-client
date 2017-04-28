@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/c-toggle.scss';
 import classnames from 'classnames';
-import { hueToRgbString } from 'util/hsvToRgb';
+import { hueToRgbString } from 'util/colors';
 
 class Toggle extends Component {
   getColor() {

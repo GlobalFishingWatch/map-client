@@ -1,3 +1,8 @@
+import {
+  VESSELS_HUES_INCREMENTS_NUM,
+  VESSELS_HUES_INCREMENT
+} from 'constants';
+
 const RGB_MAX = 255;
 const HUE_MAX = 360;
 const SV_MAX = 100;
@@ -101,3 +106,8 @@ export const hexToHue = (hex) => {
   return hsv[0] * 360;
 };
 
+export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INCREMENT;
+
+export const hueToHueIncrement = hue => Math.round((hue / 360) * (VESSELS_HUES_INCREMENTS_NUM - 1));
+
+export const wrapHue = hue => hue % 360;
