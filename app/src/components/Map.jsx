@@ -54,6 +54,9 @@ class Map extends Component {
     if (!this.map) return;
     // We also need to update the center of the map as it can be changed
     // when double clicking or scrolling on the map
+    if (this.map.getZoom() !== this.props.zoom) {
+      this.props.setZoom(this.map.getZoom());
+    }
     const center = this.map.getCenter();
     this.props.setCenter([center.lat(), center.lng()], this._getCenterWorld(center));
   }
