@@ -22,7 +22,7 @@ export function setToken(token) {
 }
 
 function getUserData(data) {
-  if (data === undefined) {
+  if (data === undefined || data.displayName === undefined || data.email === undefined) {
     return null;
   }
 
