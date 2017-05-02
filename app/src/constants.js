@@ -3,7 +3,7 @@ import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
-export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP / 4; // 1 day
+export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP; // 1 day
 export const LOADERS = {
   HEATMAP_TILES: 'HEATMAP_TILES'
 };
