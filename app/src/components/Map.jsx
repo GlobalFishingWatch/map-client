@@ -76,14 +76,21 @@ class Map extends Component {
     this.updateBasemap(nextProps);
 
     if (this.props.zoom !== nextProps.zoom) {
-      // this guarantees that tiles updates coming from the state are flushed to MapLayer's GLContainer
-      // the goal is to avoid having the heatmap 'frozen' while zooming
-      _.delay(() => {
-        this.map.setZoom(nextProps.zoom);
-        if (nextProps.center) {
-          this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
-        }
-      }, 50);
+      // do not update the map zoom if it is already matching state
+      // (it means the map has been zoomed internally, ie mousewheel)
+      if (this.map.getZoom() !== nextProps.zoom) {
+        // the delay guarantees that tiles updates coming from the state are flushed to MapLayer's GLContainer
+        // before starting the zoom animation
+        // the goal is to avoid having the heatmap 'frozen' while zooming
+        _.delay(() => {
+          this.map.setZoom(nextProps.zoom);
+
+          // update the center with zoom - useful when zooming to a cluster
+          if (nextProps.center) {
+            this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
+          }
+        }, 51);
+      }
     } else if (nextProps.center && (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1])) {
       this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
     }
