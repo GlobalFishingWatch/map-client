@@ -22,7 +22,7 @@ export function setToken(token) {
 }
 
 function getUserData(data) {
-  if (data === undefined || data.displayName === undefined || data.email === undefined) {
+  if (data === undefined || data === null || data.displayName === undefined || data.email === undefined) {
     return null;
   }
 
@@ -70,7 +70,7 @@ export function getLoggedUser() {
       setGAUserDimension(false);
       return null;
     }).then((payload) => {
-      if (payload.identity) {
+      if (payload && payload.identity) {
         setGAUserDimension(payload);
       } else {
         setGAUserDimension(false);

@@ -236,12 +236,15 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
       if ((currentFlags === undefined || currentFlags.indexOf(frame.category[i]) !== -1) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
-        vessels.push({
-          category: frame.category[i],
+        const vessel = {
           series: frame.series[i],
           seriesgroup: frame.seriesgroup[i],
           seriesUid: frame.seriesUid[i]
-        });
+        };
+
+        if (frame.category !== undefined) {
+          vessel.category = frame.category[i];
+        }
       }
     }
   }

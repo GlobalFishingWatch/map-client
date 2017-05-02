@@ -215,7 +215,7 @@ function processLegacyWorkspace(data, dispatch) {
     endOuterDate = new Date(serializedStartDate[1]);
     startOuterDate = new Date(endOuterDate.getTime() - workspace.state.timeExtent);
     startInnerDate = startOuterDate;
-    endInnerDate = new Date(startInnerDate.getTime() + Math.min(workspace.state.timeExtent, 15778476000));
+    endInnerDate = new Date(startInnerDate.getTime() + Math.min(workspace.state.timeExtent / 2, 15778476000));
   }
 
   dispatch({
@@ -281,8 +281,8 @@ function processLegacyWorkspace(data, dispatch) {
   return {
     zoom: workspace.state.zoom,
     center: [workspace.state.lat, workspace.state.lon],
-    timelineInnerDates: [startOuterDate, endOuterDate],
-    timelineOuterDates: [startInnerDate, endInnerDate],
+    timelineInnerDates: [startInnerDate, endInnerDate],
+    timelineOuterDates: [startOuterDate, endOuterDate],
     basemap: workspace.basemap,
     layers,
     pinnedVessels,
