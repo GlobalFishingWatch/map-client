@@ -56,7 +56,7 @@ export const rgbToHsv = (_r, _g, _b) => {
 
 // converts hue, saturation, luminance to an rgb object
 export const hsvToRgb = (h_, s_, v_) => {
-  const h = (h_ === HUE_MAX) ? 1 : (((h_ % HUE_MAX) / parseFloat(HUE_MAX)) * 6);
+  const h = (((h_ % HUE_MAX) / parseFloat(HUE_MAX)) * 6);
   const s = (s_ === SV_MAX) ? 1 : ((s_ % SV_MAX) / parseFloat(SV_MAX));
   const v = (v_ === SV_MAX) ? 1 : ((v_ % SV_MAX) / parseFloat(SV_MAX));
 
