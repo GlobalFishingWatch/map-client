@@ -54,7 +54,7 @@
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
           "visible": true,
-          "hue": 140,
+          "hue": 216,
           "type": "CartoDBAnimation",
           "opacity": 0.6,
           "id": "eez"

@@ -22,7 +22,7 @@ import { initLayers } from 'actions/layers';
 import { setFlagFilters } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
-import { hexToHue } from 'util/hsvToRgb';
+import { hexToHue } from 'util/colors';
 import _ from 'lodash';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 

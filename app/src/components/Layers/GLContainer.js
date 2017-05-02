@@ -1,6 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
-import { hsvToRgb, hueToRgbString } from 'util/hsvToRgb';
+import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'util/colors';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
 import HeatmapSubLayer from 'components/Layers/HeatmapSubLayer';
@@ -9,7 +9,6 @@ import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
-  VESSELS_HUES_INCREMENT,
   TIMELINE_MAX_STEPS,
   HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA
@@ -88,11 +87,11 @@ export default class GLContainer extends BaseOverlay {
       // heatmap style
       let x = radius;
       const gradient = tplCtx.createRadialGradient(x, yCenter, radius * blurFactor, x, yCenter, radius);
-      const hue = hueIncrement * VESSELS_HUES_INCREMENT;
+      const hue = hueIncrementToHue(hueIncrement);
       const rgbString = hueToRgbString(hue);
       gradient.addColorStop(0, rgbString);
 
-      const rgbOuter = hsvToRgb(Math.min(360, hue + 30), 80, 100);
+      const rgbOuter = hsvToRgb(wrapHue(hue + 30), 80, 100);
       gradient.addColorStop(1, `rgba(${rgbOuter.r}, ${rgbOuter.g}, ${rgbOuter.b}, 0)`);
 
       tplCtx.fillStyle = gradient;
@@ -157,6 +156,7 @@ export default class GLContainer extends BaseOverlay {
   hide() {
     this.stage.visible = false;
   }
+
 
   // Layer management
   addLayer(layerSettings) {

@@ -43,8 +43,8 @@ export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
 
-export const VESSELS_HUES_INCREMENTS_NUM = 10;
-export const VESSELS_HUES_INCREMENT = 360 / VESSELS_HUES_INCREMENTS_NUM;
+export const VESSELS_HUES_INCREMENTS_NUM = 31; // 360 / VESSELS_HUES_INCREMENTS_NUM - 1  should give a round number
+export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
 export const VESSELS_MINIMUM_OPACITY = 0.5;
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
@@ -56,7 +56,7 @@ export const TRACK_SEGMENT_TYPES = {
   InInnerRange: 2,
   Highlighted: 4
 };
-export const HEATMAP_TRACK_HIGHLIGHT_HUE = 324;
+export const HEATMAP_TRACK_HIGHLIGHT_HUE = 312;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 2;
 
 // half a world, in projected world units

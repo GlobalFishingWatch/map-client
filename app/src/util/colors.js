@@ -1,3 +1,8 @@
+import {
+  VESSELS_HUES_INCREMENTS_NUM,
+  VESSELS_HUES_INCREMENT
+} from 'constants';
+
 const RGB_MAX = 255;
 const HUE_MAX = 360;
 const SV_MAX = 100;
@@ -51,7 +56,7 @@ export const rgbToHsv = (_r, _g, _b) => {
 
 // converts hue, saturation, luminance to an rgb object
 export const hsvToRgb = (h_, s_, v_) => {
-  const h = (h_ === HUE_MAX) ? 1 : (((h_ % HUE_MAX) / parseFloat(HUE_MAX)) * 6);
+  const h = (((h_ % HUE_MAX) / parseFloat(HUE_MAX)) * 6);
   const s = (s_ === SV_MAX) ? 1 : ((s_ % SV_MAX) / parseFloat(SV_MAX));
   const v = (v_ === SV_MAX) ? 1 : ((v_ % SV_MAX) / parseFloat(SV_MAX));
 
@@ -76,10 +81,23 @@ export const hueToRgbString = (hue) => {
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
 
+export const rgbToHexString = (rgb) => {
+  const str = ['r', 'g', 'b'].map((channelName) => {
+    const channelValue = rgb[channelName];
+    let channelStr = channelValue.toString(16);
+    if (channelValue < 16) {
+      channelStr = `0${channelStr}`;
+    }
+    return channelStr;
+  }).join('');
+  return `0x${str}`;
+};
+
 export const hueToRgbHexString = (hue) => {
   const rgb = hueToRgbDefaults(hue);
-  return `0x${rgb.r.toString(16)}${rgb.g.toString(16)}${rgb.b.toString(16)}`;
+  return rgbToHexString(rgb);
 };
+
 
 export const hueToRgbaString = (hue, alpha) => {
   const rgb = hueToRgbDefaults(hue);
@@ -101,3 +119,8 @@ export const hexToHue = (hex) => {
   return hsv[0] * 360;
 };
 
+export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INCREMENT;
+
+export const hueToHueIncrement = hue => Math.round((hue / 360) * (VESSELS_HUES_INCREMENTS_NUM - 1));
+
+export const wrapHue = hue => hue % 360;
