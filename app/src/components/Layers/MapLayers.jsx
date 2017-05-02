@@ -48,6 +48,8 @@ class MapLayers extends Component {
     }
 
     if (this.props.zoom !== nextProps.zoom && this.glContainer) {
+      // zooming started: hide gl container, show again when map is idle
+      this.glContainer.hide();
       this.glContainer.setStyle(useHeatmapStyle(nextProps.zoom));
     }
 
@@ -448,6 +450,7 @@ class MapLayers extends Component {
    */
   onMapIdle() {
     if (this.glContainer) {
+      this.glContainer.show();
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
     }
@@ -460,9 +463,9 @@ class MapLayers extends Component {
   }
   onMapDragEnd() {
     if (this.glContainer) {
+      this.glContainer.enableRendering();
       this.updateTrackLayerWithCurrentProps();
       this.updateHeatmapWithCurrentProps();
-      this.glContainer.enableRendering();
     }
   }
 

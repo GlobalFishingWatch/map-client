@@ -35,11 +35,14 @@ export function setBasemap(basemap) {
   };
 }
 
-export function setZoom(zoom) {
+export function setZoom(zoom, latLng = null) {
   return (dispatch, getState) => {
     dispatch({
       type: SET_ZOOM,
-      payload: zoom
+      payload: {
+        zoom,
+        zoomCenter: latLng
+      }
     });
     if (getState().vesselInfo && getState().vesselInfo.details &&
       (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
@@ -168,8 +171,7 @@ export function openTimebarInfoModal() {
 
 export function zoomIntoVesselCenter(latLng) {
   return (dispatch, getState) => {
-    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT));
-    dispatch(setCenter([latLng.lat(), latLng.lng()]));
+    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT, [latLng.lat(), latLng.lng()]));
   };
 }
 

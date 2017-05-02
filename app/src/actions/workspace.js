@@ -138,7 +138,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   // We update the zoom level
   dispatch({
-    type: SET_ZOOM, payload: workspaceData.zoom
+    type: SET_ZOOM, payload: { zoom: workspaceData.zoom }
   });
 
   // We update the center of the map
