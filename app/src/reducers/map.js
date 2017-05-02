@@ -87,8 +87,15 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { tilesetId: action.payload });
     case SET_TILESET_URL:
       return Object.assign({}, state, { tilesetUrl: action.payload });
-    case SET_ZOOM:
-      return Object.assign({}, state, { zoom: action.payload });
+    case SET_ZOOM: {
+      const newState = {
+        zoom: action.payload.zoom
+      };
+      if (action.payload.zoomCenter !== null && action.payload.zoomCenter !== undefined) {
+        newState.center = action.payload.zoomCenter;
+      }
+      return Object.assign({}, state, newState);
+    }
     case SET_MAX_ZOOM:
       return Object.assign({}, state, { maxZoom: Math.min(action.payload, state.maxZoom) });
     case SET_CENTER:

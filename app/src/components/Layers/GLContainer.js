@@ -126,7 +126,7 @@ export default class GLContainer extends BaseOverlay {
   draw() {}
 
   _frame(timestamp) {
-    if (this.renderingEnabled) {
+    if (this.renderingEnabled && this.layerProjection) {
       if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
         this._heatmapFadeinStep(timestamp);
       }
@@ -136,10 +136,13 @@ export default class GLContainer extends BaseOverlay {
   }
 
   _render() {
+    this.reposition();
+    this.currentOffsets = this._getOffsets();
     this.renderer.render(this.stage);
   }
 
   enableRendering() {
+    this.currentOffsets = this._getOffsets();
     this.renderingEnabled = true;
   }
 
@@ -209,11 +212,6 @@ export default class GLContainer extends BaseOverlay {
       }
     }
 
-    const currentOffsets = this._getOffsets();
-    this.reposition();
-
-    let immediateRender = false;
-
     for (let i = 0; i < this.layers.length; i++) {
       const layer = this.layers[i];
       const layerData = data[layer.id];
@@ -221,14 +219,7 @@ export default class GLContainer extends BaseOverlay {
         continue;
       }
       const tiles = layerData.tiles;
-      if (!tiles.length) {
-        immediateRender = true;
-      }
-      layer.render(tiles, startIndex, endIndex, currentOffsets);
-    }
-
-    if (immediateRender) {
-      this._render();
+      layer.render(tiles, startIndex, endIndex, this.currentOffsets);
     }
 
     if (highlightedVessels !== undefined) {
@@ -253,7 +244,7 @@ export default class GLContainer extends BaseOverlay {
     const layerData = data[layerId];
     this.heatmapHighlight.setSeriesUids(seriesUids);
     this.heatmapHighlight.setFlags(currentFlags);
-    this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this._getOffsets());
+    this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
   }
 
@@ -267,7 +258,7 @@ export default class GLContainer extends BaseOverlay {
     }
 
     this.hasTracks = true;
-    this.tracksLayer.update(tracks, drawParams, this._getOffsets());
+    this.tracksLayer.update(tracks, drawParams, this.currentOffsets);
   }
 
   clearTracks() {

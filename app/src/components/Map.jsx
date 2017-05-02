@@ -47,13 +47,9 @@ class Map extends Component {
 
   /**
    * Zoom change handler
-   * Enforces min and max zoom levels
-   * Resets vessel layer data on change
    */
   onZoomChanged() {
     if (!this.map) return;
-    // We also need to update the center of the map as it can be changed
-    // when double clicking or scrolling on the map
     if (this.map.getZoom() !== this.props.zoom) {
       this.props.setZoom(this.map.getZoom());
     }
@@ -78,14 +74,20 @@ class Map extends Component {
       return;
     }
     this.updateBasemap(nextProps);
-    if (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1]) {
-      this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
-    }
+
     if (this.props.zoom !== nextProps.zoom) {
       // this guarantees that tiles updates coming from the state are flushed to MapLayer's GLContainer
       // the goal is to avoid having the heatmap 'frozen' while zooming
-      _.delay(() => { this.map.setZoom(nextProps.zoom); }, 50);
+      _.delay(() => {
+        this.map.setZoom(nextProps.zoom);
+        if (nextProps.center) {
+          this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
+        }
+      }, 50);
+    } else if (nextProps.center && (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1])) {
+      this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
     }
+
     if (nextProps.trackBounds) {
       if (!this.props.trackBounds || !nextProps.trackBounds.equals(this.props.trackBounds)) {
         this.map.fitBounds(nextProps.trackBounds);
