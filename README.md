@@ -149,3 +149,47 @@ Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`
 #### SHARE_BASE_URL
 
 URL pattern used on the share feature. It must be of type http://your-site.com/?workspace={workspace_id}, where {workspace_id} will be replaced by the actual workspace ID.
+
+# Permission keys description
+
+On load, the application will call the /me API endpoint to load user permissions. These are the supported values:
+
+#### selectVessel
+
+Allows a user to select a vessel by clicking on it on the heatmap
+
+#### seeVesselsLayers
+
+Allows a user to see a vessel layer (filters by layer type)
+
+#### seeVesselBasicInfo
+
+Allows a user to see vessel's basic info
+
+#### info
+
+Allows a user to see all available vessel info
+
+#### shareWorkspace
+
+Allows a user to use the "share" feature
+
+#### seeMap
+
+Allows a user to see the map
+
+#### search
+
+Allows a user to use the search feature
+
+#### custom-layer
+
+Allows a user to upload custom layers
+
+#### reporting
+
+Allows a user to report on report-enabled layers
+
+#### pin-vessel
+
+Allows a user to pin a vessel
