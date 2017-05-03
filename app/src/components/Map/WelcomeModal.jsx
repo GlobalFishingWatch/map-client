@@ -8,7 +8,6 @@ class WelcomeModal extends Component {
     return (
       <div className={styles['c-welcome-modal']}>
         <div className={styles.content} dangerouslySetInnerHTML={{ __html: this.props.content }} />
-        <a className={styles['btn-action']} onClick={this.props.closeModal}>close</a>
       </div>
     );
   }
