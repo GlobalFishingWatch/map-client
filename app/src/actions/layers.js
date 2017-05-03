@@ -1,21 +1,26 @@
 import _ from 'lodash';
 import { LAYER_TYPES } from 'constants';
 import {
-  SET_LAYERS,
+  ADD_CUSTOM_LAYER,
   SET_LAYER_HEADER,
-  TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  SET_LAYER_OPACITY,
   SET_LAYER_HUE,
+  SET_LAYER_OPACITY,
+  SET_LAYERS,
   SET_MAX_ZOOM,
   SET_OVERALL_TIMELINE_DATES,
-  ADD_CUSTOM_LAYER,
-  TOGGLE_LAYER_PANEL_EDIT_MODE,
   SET_WORKSPACE_LAYER_LABEL,
-  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
+  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE,
+  TOGGLE_LAYER_PANEL_EDIT_MODE,
+  TOGGLE_LAYER_VISIBILITY,
+  TOGGLE_LAYER_WORKSPACE_PRESENCE
 } from 'actions';
 import { refreshFlagFiltersLayers } from 'actions/filters';
-import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
+import {
+  addHeatmapLayerFromLibrary,
+  initHeatmapLayers,
+  loadAllTilesForLayer,
+  removeHeatmapLayerFromLibrary
+} from 'actions/heatmap';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -102,6 +107,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
           description: libraryLayer.description || matchedWorkspaceLayer.description,
           reportId: libraryLayer.reportId
         });
+        if (matchedWorkspaceLayer.type === LAYER_TYPES.Heatmap) {
+          matchedWorkspaceLayer.url = libraryLayer.url || matchedWorkspaceLayer.url;
+        }
       } else {
         workspaceLayers.push(Object.assign(libraryLayer, { added: false }));
       }
