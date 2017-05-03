@@ -2,6 +2,7 @@
 
 ## 2.0.0 RC9
 - Fix regression on heatmap interactivity
+- Have map follow the COMPLETE_MAP_RENDER value on embedded mode 
 
 ## 2.0.0 RC8
 - Detect missing tileset ids

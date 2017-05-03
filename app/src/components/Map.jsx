@@ -269,7 +269,7 @@ class Map extends Component {
       <div
         className={classnames(
           mapCss['map-container'],
-          { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) },
+          { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER },
           { '-map-pointer': this.props.showMapCursorPointer },
           { '-map-zoom': this.props.showMapCursorZoom }
         )}
@@ -372,10 +372,10 @@ class Map extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <div className={classnames(mapCss['timebar-container'], { [mapCss['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded) })}>
+      <div className={classnames(mapCss['timebar-container'], { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER })}>
         <Timebar />
       </div>
-      {(COMPLETE_MAP_RENDER || this.props.isEmbedded) &&
+      {COMPLETE_MAP_RENDER &&
       <MapFooter
         onOpenSupportModal={this.props.openSupportModal}
         isEmbedded={this.props.isEmbedded}

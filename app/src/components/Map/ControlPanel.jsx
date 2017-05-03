@@ -213,7 +213,7 @@ class ControlPanel extends Component {
                 activeItems={6}
                 allowMultiple={false}
                 className={classnames(controlPanelStyle['map-options'], {
-                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !this.props.isEmbedded && !matches)
+                  [controlPanelStyle['-no-footer']]: (!COMPLETE_MAP_RENDER && !matches)
                 })}
               >
                 {this.renderSearch()}
