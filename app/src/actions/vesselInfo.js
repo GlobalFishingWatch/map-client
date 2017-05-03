@@ -27,11 +27,17 @@ import {
 } from 'actions/helpers/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
-  return {
-    type: SET_RECENT_VESSEL_HISTORY,
-    payload: {
-      seriesgroup
+  return (dispatch, getState) => {
+    const state = getState();
+    if (state.user.loggedUser == null) {
+      return;
     }
+    dispatch({
+      type: SET_RECENT_VESSEL_HISTORY,
+      payload: {
+        seriesgroup
+      }
+    });
   };
 }
 
