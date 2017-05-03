@@ -1,6 +1,6 @@
 # Changelog
 
-##2.0.0 RC8
+## 2.0.0 RC8
 - Detect missing tileset ids
 - Disable vessel history for guest users
 - Fix extends and heatmap lookup on legacy workspaces
