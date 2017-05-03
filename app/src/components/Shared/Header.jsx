@@ -31,7 +31,7 @@ class Header extends Component {
 
     return (
       <div>
-        {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
+        {COMPLETE_MAP_RENDER &&
         <MenuMobile
           visible={this.state.mobileMenuVisible}
           onClose={this.closeMobileMenu}
@@ -49,7 +49,7 @@ class Header extends Component {
             }
           >
             <div className={styles['contain-nav']} >
-              {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
+              {COMPLETE_MAP_RENDER &&
               <img
                 onClick={() => this.setState({ mobileMenuVisible: true })}
                 className={styles['icon-menu-mobile']}
@@ -57,7 +57,7 @@ class Header extends Component {
                 alt="Menu toggle icon"
               />
               }
-              {(this.props.isEmbedded || COMPLETE_MAP_RENDER) &&
+              {COMPLETE_MAP_RENDER &&
               <a
                 target={target}
                 href={logoUrl}
