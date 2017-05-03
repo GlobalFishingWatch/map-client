@@ -58,12 +58,14 @@ class PinnedTracks extends Component {
         {pinnedItemsHeading}
         {pinnedItems}
         <div className={pinnedTracksStyles['pinned-button-container']}>
-          <button
-            className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'])}
-            onClick={() => this.props.openRecentVesselModal()}
-          >
-            recent vessels
-          </button>
+          {this.props.loggedUser != null &&
+            <button
+              className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'])}
+              onClick={() => this.props.openRecentVesselModal()}
+            >
+              recent vessels
+            </button>
+          }
           <button
             className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
               { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
@@ -81,6 +83,7 @@ class PinnedTracks extends Component {
 PinnedTracks.propTypes = {
   vessels: React.PropTypes.array,
   pinnedVesselEditMode: React.PropTypes.bool,
+  loggedUser: React.PropTypes.object,
   onUpdatedItem: React.PropTypes.func,
   onRemoveClicked: React.PropTypes.func,
   setPinnedVesselHue: React.PropTypes.func,
