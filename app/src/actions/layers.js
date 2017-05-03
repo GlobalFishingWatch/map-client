@@ -16,6 +16,7 @@ import {
 } from 'actions';
 import { refreshFlagFiltersLayers } from 'actions/filters';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
+import calculateLayerId from 'util/calculateLayerId';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -88,6 +89,10 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
+      if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
+        layer.tilesetId = calculateLayerId({ url: layer.url });
+        console.warn(`Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${layer.url}`);
+      }
       layer.label = layer.label || layer.title;
       layer.added = true;
       layer.library = false;
