@@ -245,6 +245,7 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
         if (frame.category !== undefined) {
           vessel.category = frame.category[i];
         }
+        vessels.push(vessel);
       }
     }
   }

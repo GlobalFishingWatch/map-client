@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0 RC9
+- Fix regression on heatmap interactivity
+
 ## 2.0.0 RC8
 - Detect missing tileset ids
 - Disable vessel history for guest users
