@@ -6,7 +6,7 @@ import {
   SET_SEARCH_PAGE,
   SET_SEARCH_RESULTS_VISIBILITY
 } from 'actions';
-import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'constants';
+import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import _ from 'lodash';
 
@@ -35,22 +35,35 @@ const loadSearchResults = _.debounce((searchTerm, page, state, dispatch) => {
   };
   const queryArgs = Object.keys(searchParams).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(searchParams[k])}`).join('&');
 
-  fetch(`${state.map.tilesetUrl}/search/?${queryArgs}`, options)
-    .then(response => response.json()).then((result) => {
-    // We ensure to only show the results of the last request
-      if (queryID !== searchQueryID) {
-        return;
-      }
+  let searchResultList = [];
+  let searchResultCount = 0;
 
-      // TODO: Remove in favor of doing a serch per vessel layer
-      result.entries.forEach((entry) => { entry.tilesetId = state.map.tilesetId; });
+  const searchLayerPromises = state.layers.workspaceLayers
+    .filter(layer => layer.type === LAYER_TYPES.Heatmap)
+    .map(layer =>
+      fetch(`${layer.url}/search/?${queryArgs}`, options)
+        .then(response => response.json())
+        .then((result) => {
+          if (queryID !== searchQueryID) {
+            return;
+          }
+
+          result.entries.forEach((entry) => { entry.tilesetId = layer.tilesetId; });
+          searchResultList = searchResultList.concat(result.entries);
+          searchResultCount += result.total;
+        })
+    );
+
+  Promise.all(searchLayerPromises)
+    .then(() => {
       dispatch({
         type: SET_SEARCH_RESULTS,
         payload: {
-          entries: result.entries, count: result.total
+          entries: searchResultList, count: searchResultCount
         }
       });
-    });
+    }
+  );
 }, 200);
 
 export function setSearchPage(page) {
