@@ -1,5 +1,6 @@
 # Changelog
 
+- Fix map center loading from workspace
 - Have map follow the COMPLETE_MAP_RENDER value on embedded mode
  
 ## 2.0.0 RC9
