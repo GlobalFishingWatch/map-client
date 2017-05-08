@@ -1,5 +1,7 @@
 # Changelog
 
+- Fixed sidebar scrolling issues
+- Fixed panel gap when embedding map without footer 
 - Welcome modal responsive for desktop
 - Search vessels across multiple heatmap layers
 - Fixed various issue with reports and reports polygons
