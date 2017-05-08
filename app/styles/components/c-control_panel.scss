@@ -15,9 +15,11 @@
 
   @media #{$mq-tablet} {
     background: transparent;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     height: auto;
     overflow-y: auto;
+    // cancels pointer-events: none of c-map-panels
+    pointer-events: auto;
     position: relative;
     top: 0;
     width: 100%;
@@ -29,7 +31,6 @@
 
     @media #{$mq-tablet} {
       margin-left: $control-panel-left-offset;
-      pointer-events: auto;
     }
   }
 
