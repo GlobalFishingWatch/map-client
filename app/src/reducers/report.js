@@ -80,10 +80,12 @@ export default function (state = initialState, action) {
         layerId: action.payload.layerId,
         reportId: action.payload.reportId,
         layerTitle: action.payload.layerTitle,
-        status: REPORT_STATUS.idle
+        status: REPORT_STATUS.idle,
+        polygonsIds: [],
+        currentPolygon: {}
       });
     case DISCARD_REPORT:
-      return Object.assign({}, state, { polygons: [], layerId: null });
+      return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
 
     case SET_REPORT_STATUS_SENT:
       return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
