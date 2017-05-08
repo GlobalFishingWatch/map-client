@@ -255,7 +255,14 @@ class Map extends Component {
         >
           <PromptLayerRemoval />
         </Modal>
-        <div className={mapPanelsStyles['map-panels']}>
+        <div
+          className={classnames(
+            mapPanelsStyles['map-panels'],
+            {
+              [mapPanelsStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+            }
+          )}
+        >
           <ControlPanel isEmbedded={this.props.isEmbedded} />
           <ReportPanel />
         </div>
