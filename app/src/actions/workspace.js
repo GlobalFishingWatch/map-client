@@ -94,13 +94,18 @@ export function saveWorkspace(errorAction) {
       }
     }
 
+    const layers = state.layers.workspaceLayers.filter(layer => layer.added).map((layer) => {
+      delete layer.header;
+      return layer;
+    });
+
     const workspaceData = {
       workspace: {
         tileset: state.map.tilesetId,
         map: {
           center: state.map.center,
           zoom: state.map.zoom,
-          layers: state.layers.workspaceLayers.filter(layer => layer.added)
+          layers
         },
         pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
           seriesgroup: e.seriesgroup,
