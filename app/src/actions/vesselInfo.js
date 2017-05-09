@@ -16,6 +16,7 @@ import {
   LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
+import { LAYER_TYPES } from 'constants';
 import { fitTimelineToTrack } from 'actions/filters';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
 import {
@@ -59,9 +60,11 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
     } else {
       throw new Error('XMLHttpRequest is disabled');
     }
+
+    const searchLayer = state.layers.workspaceLayers.find(layer => layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === tilesetId);
     request.open(
       'GET',
-      `${state.map.tilesetUrl}/sub/seriesgroup=${seriesgroup}/info`,
+      `${searchLayer.url}/sub/seriesgroup=${seriesgroup}/info`,
       true
     );
     if (token) {
@@ -340,7 +343,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
     });
     if (visible === true && currentVessel.track === undefined) {
       dispatch(_getVesselTrack({
-        tilesetId: currentVessel.tileset,
+        tilesetId: currentVessel.tilesetId,
         seriesgroup,
         series: null,
         zoomToBounds: true,

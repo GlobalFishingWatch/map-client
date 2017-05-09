@@ -87,7 +87,7 @@ export function saveWorkspace(errorAction) {
     if (shownVesselData !== undefined) {
       shownVessel = {
         seriesgroup: shownVesselData.seriesgroup,
-        tileset: shownVesselData.tileset
+        tilesetId: shownVesselData.tilesetId
       };
       if (shownVesselData.series !== null) {
         shownVessel.series = shownVesselData.series;
@@ -104,7 +104,7 @@ export function saveWorkspace(errorAction) {
         },
         pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
           seriesgroup: e.seriesgroup,
-          tileset: e.tileset,
+          tilesetId: e.tilesetId,
           title: e.title,
           hue: e.hue
         })),
@@ -172,7 +172,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
     // we need heatmap layers headers to be loaded before loading track
     if (workspaceData.shownVessel) {
-      dispatch(addVessel(workspaceData.shownVessel.tileset, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+      dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
     }
   });
 
@@ -256,7 +256,7 @@ function processLegacyWorkspace(data, dispatch) {
     title: l.title,
     hue: hexToHue(l.color),
     seriesgroup: getSeriesGroupsFromVesselURL(l.url),
-    tileset: getTilesetFromVesselURL(l.url)
+    tilesetId: getTilesetFromVesselURL(l.url)
   }));
 
   let shownVessel = null;
@@ -274,7 +274,7 @@ function processLegacyWorkspace(data, dispatch) {
     shownVessel = {
       series: rawVesselLayer.args.selections.selected.data.series[0],
       seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
-      tileset: getTilesetFromLayerURL(rawVesselLayer.args.selections.selected.data.source[0])
+      tilesetId: getTilesetFromLayerURL(rawVesselLayer.args.selections.selected.data.source[0])
     };
   }
 

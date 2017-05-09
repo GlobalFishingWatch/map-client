@@ -1,5 +1,6 @@
 # Changelog
 
+- Search vessels across multiple heatmap layers
 - Fixed various issue with reports and reports polygons
 - Fixed share embedded URL
 - Fix map center loading from workspace
