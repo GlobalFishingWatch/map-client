@@ -113,9 +113,8 @@ export function sendReport() {
 
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
-        name: state.report.reportId,
-        reporting_id: polygon.reportingId.toString(),
-        reporting_name: polygon.name.toString()
+        id: polygon.reportingId.toString(),
+        name: polygon.name.toString()
       });
     });
     const body = JSON.stringify(payload);
