@@ -111,6 +111,7 @@ export function saveWorkspace(errorAction) {
           seriesgroup: e.seriesgroup,
           tilesetId: e.tilesetId,
           title: e.title,
+          visible: e.visible,
           hue: e.hue
         })),
         shownVessel,
@@ -179,13 +180,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
     if (workspaceData.shownVessel) {
       dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
     }
+
+    dispatch(setPinnedVessels(workspaceData.pinnedVessels));
   });
 
   dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselHistory());
-
-  dispatch(setPinnedVessels(workspaceData.pinnedVessels));
 }
 
 function processNewWorkspace(data) {
@@ -294,7 +295,7 @@ function processLegacyWorkspace(data, dispatch) {
     tilesetUrl,
     shownVessel,
     filters,
-    tilesetID: getTilesetFromLayerURL(tilesetUrl)
+    tilesetId: getTilesetFromLayerURL(tilesetUrl)
   };
 }
 

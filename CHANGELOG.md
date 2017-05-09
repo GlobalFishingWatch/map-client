@@ -1,5 +1,6 @@
 # Changelog
 
+- Fix issues with loading pinned and selected vessels from workspace
 - Fixed sidebar scrolling issues
 - Fixed panel gap when embedding map without footer 
 - Welcome modal responsive for desktop

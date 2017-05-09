@@ -103,58 +103,6 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
   };
 }
 
-export function setPinnedVessels(pinnedVessels) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const options = {
-      Accept: '*/*'
-    };
-
-    options.headers = {
-      Authorization: `Bearer ${state.user.token}`
-    };
-
-    pinnedVessels.forEach((pinnedVessel) => {
-      let request;
-
-      if (typeof XMLHttpRequest !== 'undefined') {
-        request = new XMLHttpRequest();
-      } else {
-        throw new Error('XMLHttpRequest is disabled');
-      }
-
-      const baseURL = pinnedVessel.tilesetUrl || state.map.tilesetUrl;
-      request.open(
-        'GET',
-        `${baseURL}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
-        true
-      );
-      if (state.user.token) {
-        request.setRequestHeader('Authorization', `Bearer ${state.user.token}`);
-      }
-      request.setRequestHeader('Accept', 'application/json');
-      request.onreadystatechange = () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.responseText === 'Not Found') {
-          console.warn('vessel info not found');
-          return;
-        }
-        const data = JSON.parse(request.responseText);
-        delete data.series;
-        dispatch({
-          type: LOAD_PINNED_VESSEL,
-          payload: Object.assign({}, pinnedVessel, data)
-        });
-
-        dispatch(setRecentVesselHistory(pinnedVessel.seriesgroup));
-      };
-      request.send(null);
-    });
-  };
-}
-
 function _getTrackTimeExtent(data, series = null) {
   let start = Infinity;
   let end = 0;
@@ -237,6 +185,67 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
           });
         }
       });
+  };
+}
+
+export function setPinnedVessels(pinnedVessels) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const options = {
+      Accept: '*/*'
+    };
+
+    options.headers = {
+      Authorization: `Bearer ${state.user.token}`
+    };
+
+    pinnedVessels.forEach((pinnedVessel) => {
+      let request;
+
+      if (typeof XMLHttpRequest !== 'undefined') {
+        request = new XMLHttpRequest();
+      } else {
+        throw new Error('XMLHttpRequest is disabled');
+      }
+
+      const baseURL = pinnedVessel.tilesetUrl || state.map.tilesetUrl;
+      request.open(
+        'GET',
+        `${baseURL}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
+        true
+      );
+      if (state.user.token) {
+        request.setRequestHeader('Authorization', `Bearer ${state.user.token}`);
+      }
+      request.setRequestHeader('Accept', 'application/json');
+      request.onreadystatechange = () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.responseText === 'Not Found') {
+          console.warn('vessel info not found');
+          return;
+        }
+        const data = JSON.parse(request.responseText);
+        delete data.series;
+        dispatch({
+          type: LOAD_PINNED_VESSEL,
+          payload: Object.assign({}, pinnedVessel, data)
+        });
+        if (pinnedVessel.visible === true) {
+          dispatch(_getVesselTrack({
+            tilesetId: pinnedVessel.tilesetId,
+            seriesgroup: pinnedVessel.seriesgroup,
+            series: null,
+            zoomToBounds: false,
+            updateTimelineBounds: false
+          }));
+        }
+
+        dispatch(setRecentVesselHistory(pinnedVessel.seriesgroup));
+      };
+      request.send(null);
+    });
   };
 }
 
