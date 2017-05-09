@@ -144,9 +144,12 @@ class Share extends Component {
   }
 
   renderEmbed() {
+    // TODO share url should be built in a more centralized wayee from a reducer
     const url = this.getURLWithWorkspace();
+    const urlSeparator = (url.match(/\?/gi)) ? '&' : '?';
     const size = EMBED_SIZE_SETTINGS.find(elem => elem.name === this.state.embedSizeName);
-    const embed = `<iframe allowfullscreen="true" width="${size.width}" height="${size.height}" src="${url}&embedded=true" />`;
+    const embed = `<iframe allowfullscreen="true"
+    width="${size.width}" height="${size.height}" src="${url}${urlSeparator}embedded=true" />`;
 
     const selectOptions = EMBED_SIZE_SETTINGS.map(option => (
       <option key={option.name} value={option.name} >{option.name} ({option.width}x{option.height})</option>)
