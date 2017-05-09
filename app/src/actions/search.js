@@ -38,8 +38,11 @@ const loadSearchResults = _.debounce((searchTerm, page, state, dispatch) => {
   let searchResultList = [];
   let searchResultCount = 0;
 
-  const searchLayerPromises = state.layers.workspaceLayers
+  const layers = state.layers.workspaceLayers
     .filter(layer => layer.type === LAYER_TYPES.Heatmap)
+    .filter(layer => layer.visible === true);
+
+  const searchLayerPromises = layers
     .map(layer =>
       fetch(`${layer.url}/search/?${queryArgs}`, options)
         .then(response => response.json())
