@@ -2,12 +2,15 @@
 
 .c-welcome-modal {
   display: flex;
-  font-family: $font-family-1;
   flex-direction: column;
+  font-family: $font-family-1;
   position: relative;
 
   @media #{$mq-tablet} {
     max-height: 50vh;
+  }
+  @media #{$mq-tablet} {
+    max-height: 80vh;
   }
 
   > .content {
@@ -16,17 +19,33 @@
     @media #{$mq-tablet} {
       max-height: 40vh;
     }
-
-    h1, h2 {
-      font-size: $font-size-x-normal;
-      font-weight: $font-weight-bold;
-      margin: 0 0 10px;
-      text-align: center;
+    @media #{$mq-desktop} {
+      max-height: 80vh;
     }
 
-    p, ul {
+    h1,
+    h2 {
+      font-weight: $font-weight-bold;
+      margin: 24px 0 12px;
+      text-align: left;
+
+      &:first-child {
+        margin: 0 0 12px;
+      }
+    }
+
+    h1 {
+      font-size: $font-size-medium;
+    }
+
+    h2 {
+      font-size: $font-size-normal;
+    }
+
+    p,
+    ul {
       font-size: $font-size-x-small;
-      margin: 25px 0;
+      margin: 12px 0;
 
       &:first-child {
         margin: 0;
@@ -34,7 +53,7 @@
     }
 
     li {
-      margin: 10px 0 0 1em;
+      margin: 12px 0 0 1em;
     }
 
     ul {
@@ -42,13 +61,30 @@
     }
 
     a {
-      display: inline-block;
-      color: $color-4;
-      font-family: $font-family-1;
-      font-weight: $font-weight-bold;
-      font-size: $font-size-normal;
-      margin-bottom: 5px;
       border-bottom: solid 1px $color-29;
+      color: $color-4;
+      display: inline-block;
+      font-family: $font-family-1;
+      font-size: $font-size-x-small;
+      font-weight: $font-weight-bold;
+      margin-bottom: 5px;
+    }
+
+    @media #{$mq-desktop} {
+      h1 {
+        font-size: $font-size-xx-big;
+      }
+
+      h2 {
+        font-size: $font-size-big;
+      }
+
+      p,
+      ul,
+      li,
+      a {
+        font-size: $font-size-medium;
+      }
     }
   }
 }
