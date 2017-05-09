@@ -1,5 +1,6 @@
 # Changelog
 
+- Welcome modal responsive for desktop
 - Search vessels across multiple heatmap layers
 - Fixed various issue with reports and reports polygons
 - Fixed share embedded URL
