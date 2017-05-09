@@ -35,7 +35,7 @@ export default function (state = initialState, action) {
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
         series: action.payload.series,
-        visible: false,
+        visible: action.payload.visible || false,
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
@@ -74,6 +74,19 @@ export default function (state = initialState, action) {
     }
 
     case LOAD_PINNED_VESSEL: {
+      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      if (vesselIndex > -1) {
+        const newVessel = Object.assign(state.vessels[vesselIndex], {
+          hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE,
+          pinned: true,
+          visible: action.payload.visible
+        });
+
+        return Object.assign({}, state, {
+          vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]
+        });
+      }
+
       const newVessel = Object.assign({
         visible: false,
         shownInInfoPanel: false,
@@ -114,6 +127,7 @@ export default function (state = initialState, action) {
       if (currentlyVisibleVessel.pinned === true) {
         currentlyVisibleVessel = _.cloneDeep(currentlyVisibleVessel);
         currentlyVisibleVessel.shownInInfoPanel = false;
+        currentlyVisibleVessel.visible = false;
         return Object.assign({}, state, {
           vessels: [...state.vessels.slice(0, vesselIndex), currentlyVisibleVessel, ...state.vessels.slice(vesselIndex + 1)],
           infoPanelStatus: null
