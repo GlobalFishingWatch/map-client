@@ -1,5 +1,6 @@
 # Changelog
 
+- Fixed various issue with reports and reports polygons
 - Fixed share embedded URL
 - Fix map center loading from workspace
 - Have map follow the COMPLETE_MAP_RENDER value on embedded mode
