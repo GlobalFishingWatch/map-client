@@ -415,6 +415,16 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
   };
 }
 
+export function clearHighlightedVessels() {
+  return {
+    type: HIGHLIGHT_VESSELS,
+    payload: {
+      isEmpty: true,
+      clickableCluster: false
+    }
+  };
+}
+
 export function getVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
