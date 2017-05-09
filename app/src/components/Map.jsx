@@ -86,13 +86,13 @@ class Map extends Component {
           this.map.setZoom(nextProps.zoom);
 
           // update the center with zoom - useful when zooming to a cluster
-          if (nextProps.center) {
-            this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
+          if (nextProps.centerLat || nextProps.centerLong) {
+            this.map.setCenter({ lat: nextProps.centerLat, lng: nextProps.centerLong });
           }
         }, 51);
       }
-    } else if (nextProps.center && (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1])) {
-      this.map.setCenter({ lat: nextProps.center[0], lng: nextProps.center[1] });
+    } else if ((nextProps.centerLat || nextProps.centerLong) && (this.props.centerLat !== nextProps.centerLat || this.props.centerLong !== nextProps.centerLong)) {
+      this.map.setCenter({ lat: nextProps.centerLat, lng: nextProps.centerLong });
     }
 
     if (nextProps.trackBounds) {
@@ -347,7 +347,7 @@ class Map extends Component {
             <GoogleMap
               ref="map"
               defaultZoom={this.props.zoom}
-              defaultCenter={{ lat: this.props.center[0], lng: this.props.center[1] }}
+              defaultCenter={{ lat: this.props.centerLat, lng: this.props.centerLong }}
               defaultZoomControl={false}
               defaultOptions={{
                 streetViewControl: false,
@@ -395,7 +395,8 @@ Map.propTypes = {
   loadInitialState: React.PropTypes.func,
   setCenter: React.PropTypes.func,
   loading: React.PropTypes.bool,
-  center: React.PropTypes.array,
+  centerLat: React.PropTypes.number,
+  centerLong: React.PropTypes.number,
   zoom: React.PropTypes.number,
   maxZoom: React.PropTypes.number,
   /**

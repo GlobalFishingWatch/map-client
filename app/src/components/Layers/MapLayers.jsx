@@ -352,15 +352,16 @@ class MapLayers extends Component {
     const cartoLayer = this.addedLayers[reportLayerId];
     const sql = cartoLayer.getSubLayer(0).getSQL();
     const newSql = sql.replace(/SELECT((.|\n)+)FROM/gi, (match, cols) => {
-      const newCols = cols.split(',').map((col) => {
-        let newCol = col.trim();
-        const reportRx = /false|cartodb_id IN \([\d\s,]+\)[\n|\s]+isinreport/gi;
-        if (newCol.match(reportRx)) {
-          newCol = isinreportCol;
-        }
+      const reportRx = /,|false[\n|\s]+isinreport|cartodb_id IN \([\d\s,]+\)[\n|\s]+isinreport/gi;
+      let newCols = cols.split(reportRx).map((col) => {
+        const newCol = col.trim();
         return newCol;
-      }).join(', ');
-      return `SELECT ${newCols} FROM`;
+      });
+
+      newCols = _.compact(newCols);
+      newCols.push(isinreportCol);
+      const newColsStr = newCols.join(', ');
+      return `SELECT ${newColsStr} FROM`;
     });
     cartoLayer.getSubLayer(0).setSQL(newSql);
   }

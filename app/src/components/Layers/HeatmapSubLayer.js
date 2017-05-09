@@ -82,6 +82,11 @@ export default class HeatmapSubLayer {
   render(tiles, startIndex, endIndex, offsets) {
     if (tiles.length === 0) return;
 
+    if (offsets === undefined) {
+      console.warn('map offsets not set yet while trying to render gl sublayer');
+      return;
+    }
+
     const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
     const numSpritesNeededWithMargin = numSpritesNeeded * 2;
 

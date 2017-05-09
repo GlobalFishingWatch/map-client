@@ -9,6 +9,7 @@ import {
   SET_REPORT_STATUS_ERROR
 } from 'actions';
 import { toggleLayerVisibility, setLayerOpacity } from 'actions/layers';
+import { clearHighlightedVessels } from 'actions/heatmap';
 import { FLAGS } from 'constants';
 
 export function showPolygon(polygonData, latLng) {
@@ -58,6 +59,7 @@ function startReport(layerId) {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(setLayerOpacity(1, layerId));
     dispatch(clearPolygon());
+    dispatch(clearHighlightedVessels());
 
     const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     dispatch({
@@ -112,7 +114,8 @@ export function sendReport() {
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
         name: state.report.reportId,
-        value: polygon.reportingId.toString()
+        reporting_id: polygon.reportingId.toString(),
+        reporting_name: polygon.name.toString()
       });
     });
     const body = JSON.stringify(payload);
