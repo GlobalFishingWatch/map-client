@@ -50,8 +50,13 @@ export default function (state = initialState, action) {
     case SET_VESSEL_DETAILS: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const currentVessel = state.vessels[vesselIndex];
+      const defaultTitle =
+        [action.payload.vesselname, action.payload.mmsi, action.payload.imo, action.payload.callsign, action.payload.seriesgroup]
+        .find(t => t !== undefined);
+
       const newVessel = Object.assign({
-        title: action.payload.vesselname
+        defaultTitle,
+        title: defaultTitle
       }, currentVessel, action.payload);
 
       return Object.assign({}, state, {
@@ -179,7 +184,7 @@ export default function (state = initialState, action) {
     }
     case SET_PINNED_VESSEL_TITLE: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = _.cloneDeep(state.vessels[vesselIndex]);
+      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.title = action.payload.title;
 
       return Object.assign({}, state, {
@@ -252,8 +257,8 @@ export default function (state = initialState, action) {
         newState.vessels = _.cloneDeep(state.vessels);
 
         newState.vessels.forEach((vesselDetail) => {
-          if (!vesselDetail.title || /^\s*$/.test(vesselDetail.title)) {
-            vesselDetail.title = vesselDetail.vesselname;
+          if (vesselDetail.title.trim() === '') {
+            vesselDetail.title = vesselDetail.defaultTitle;
           }
         });
       }
