@@ -71,7 +71,7 @@ class ReportPanel extends Component {
     let buttons;
     if (this.props.status === REPORT_STATUS.idle || this.props.status === REPORT_STATUS.error) {
       buttons = (<div className={ReportPanelStyles['report-options']}>
-        <button className={classnames(ReportPanelStyles['report-button'], { [ReportPanelStyles['-disabled']]: this.props.polygons.length !== 1 })} onClick={this.props.onSendReport}>send report</button>
+        <button className={ReportPanelStyles['report-button']} onClick={this.props.onSendReport}>send report</button>
         <button className={ReportPanelStyles['report-button']} onClick={this.props.onDiscardReport}>discard</button>
       </div>);
     } else if (this.props.status === REPORT_STATUS.sent) {

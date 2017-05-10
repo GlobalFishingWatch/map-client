@@ -19,9 +19,9 @@ export default class TracksLayerGL {
 
   update(tracks, drawParams, offsets) {
     this.clear();
-
+    let n = 0; // eslint-disable-line no-unused-vars
     tracks.forEach((track) => {
-      this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
+      n += this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
     });
   }
 
@@ -50,6 +50,8 @@ export default class TracksLayerGL {
       y: []
     };
 
+    let n = 0;
+
     const viewportWorldX = offsets.left;
     for (let i = 0, length = data.worldX.length; i < length; i++) {
       prevSeries = currentSeries;
@@ -57,6 +59,12 @@ export default class TracksLayerGL {
       if (queriedSeries && queriedSeries !== currentSeries) {
         continue;
       }
+
+      // TODO temporary fix for track performance: do not display out of inner range tracks
+      if (data.datetime[i] < drawParams.startTimestamp || data.datetime[i] > drawParams.endTimestamp) {
+        continue;
+      }
+      n++;
 
       let pointWorldX = data.worldX[i];
 
@@ -73,13 +81,9 @@ export default class TracksLayerGL {
         if (drawStyle === TRACK_SEGMENT_TYPES.OutOfInnerRange) {
           this.stage.lineStyle(1, color, 0.3);
         } else if (drawStyle & TRACK_SEGMENT_TYPES.Highlighted) {
-          if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
-            this.stage.lineStyle(2, '0xFFFFFF', 1);
-          } else {
-            this.stage.lineStyle(4, '0xFFFFFF', 1);
-          }
+          this.stage.lineStyle(1, '0xFFFFFF', 1);
         } else if (drawStyle & TRACK_SEGMENT_TYPES.InInnerRange) {
-          this.stage.lineStyle(2, color, 1);
+          this.stage.lineStyle(1, color, 1);
         }
         this.stage.moveTo(prevX || x, prevY || y);
         newLine = true;
@@ -123,6 +127,8 @@ export default class TracksLayerGL {
       }
       this.stage.endFill();
     }
+
+    return n;
   }
 
   getDrawStyle(timestamp, { startTimestamp, endTimestamp, overStartTimestamp, overEndTimestamp }) {

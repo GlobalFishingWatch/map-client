@@ -472,11 +472,11 @@ class Timebar extends Component {
   }
 
   onStartDatePickerChange(startDate) {
-    this.props.updateOuterTimelineDates([startDate, this.props.timelineOuterExtent[1]]);
+    this.props.updateOuterTimelineDates([startDate, this.props.timelineOuterExtent[1]], true);
   }
 
   onEndDatePickerChange(endDate) {
-    this.props.updateOuterTimelineDates([this.props.timelineOuterExtent[0], endDate]);
+    this.props.updateOuterTimelineDates([this.props.timelineOuterExtent[0], endDate], false);
   }
 
   onPauseToggle() {
@@ -531,7 +531,7 @@ class Timebar extends Component {
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[0]}
             onChange={this.onStartDatePickerChange}
             minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
-            maxDate={this.props.timelineInnerExtent && this.props.timelineInnerExtent[0]}
+            maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
             literalDate={window.innerWidth < 1024 ? ' start' : 'start date'}
           />
         </div>
@@ -539,7 +539,7 @@ class Timebar extends Component {
           <DatePicker
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[1]}
             onChange={this.onEndDatePickerChange}
-            minDate={this.props.timelineInnerExtent && this.props.timelineInnerExtent[1]}
+            minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
             maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
             literalDate={window.innerWidth < 1024 ? 'end' : 'end date'}
           />
