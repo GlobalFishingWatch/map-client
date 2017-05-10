@@ -97,12 +97,13 @@ export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
     if (outerTimelineDates[0] >= currentInnerTimelineDates[0] ||
         outerTimelineDates[1] <= currentInnerTimelineDates[1]) {
       const newInner = [];
+      const currentOverallTimelineDates = getState().filters.timelineOverallExtent;
       if (outerTimelineDates[0] >= currentInnerTimelineDates[0]) {
         newInner[0] = outerTimelineDates[0];
-        newInner[1] = new Date(outerTimelineDates[0].getTime() + currentInnerDuration);
+        newInner[1] = new Date(Math.min(outerTimelineDates[0].getTime() + currentInnerDuration, currentOverallTimelineDates[1].getTime()));
       } else {
         newInner[1] = outerTimelineDates[1];
-        newInner[0] = new Date(outerTimelineDates[1].getTime() - currentInnerDuration);
+        newInner[0] = new Date(Math.max(outerTimelineDates[1].getTime() - currentInnerDuration, currentOverallTimelineDates[0].getTime()));
       }
       dispatch(setInnerTimelineDates(newInner));
     }
