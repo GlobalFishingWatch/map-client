@@ -53,7 +53,7 @@
     "promise-polyfill": "^6.0.2",
     "react": "^15.2.0",
     "react-addons-create-fragment": "^15.3.0",
-    "react-datepicker": "^0.28.2",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^15.0.2",
     "react-ga": "^2.1.2",
     "react-google-maps": "^4.11.0",
