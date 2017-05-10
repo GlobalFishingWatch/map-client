@@ -1,5 +1,6 @@
 # Changelog
 
+- Fallback to canvas when WebGL is not available and display a performance warning
 - Don't resize viewport on toggle custom layer visibility
 - Fixed loader style on Safari
 - Pinned vessels: fixed a bug where typing a custom would be very slow when pinned track was visible
