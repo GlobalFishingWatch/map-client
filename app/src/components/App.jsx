@@ -41,7 +41,7 @@ class App extends Component {
       <div>
         {isWebGLSupported === false &&
           <div className={AppStyles['nowebgl-banner']}>
-            There is a problem with your current configuration (WebGL is disabled or unavailable).
+            ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
             The map will be displayed with degraded performance.
           </div>
         }
