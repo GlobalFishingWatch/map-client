@@ -1,8 +1,10 @@
 # Changelog
 
+- Pinned vessels: fixed a bug where typing a custom would be very slow when pinned track was visible
+- Pinned vessels: fallback title when vessel name is not present 
 - Fix issues with loading pinned and selected vessels from workspace
 - Fixed sidebar scrolling issues
-- Fixed panel gap when embedding map without footer 
+- Fixed panel gap when embedding map without footer
 - Welcome modal responsive for desktop
 - Search vessels across multiple heatmap layers
 - Fixed various issue with reports and reports polygons
