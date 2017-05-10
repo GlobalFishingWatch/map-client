@@ -112,7 +112,7 @@ export function sendReport() {
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
-        layer: state.report.reportId,
+        layer: state.layers.workspaceLayers.find(layer => layer.reportId === state.report.reportId).label,
         id: polygon.reportingId.toString(),
         name: polygon.name.toString()
       });
