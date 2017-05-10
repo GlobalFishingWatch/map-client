@@ -1,5 +1,6 @@
 # Changelog
 
+- Temporarily remove rendering of vessel track outside of inner time range
 - Don't resize viewport on toggle custom layer visibility
 - Fixed loader style on Safari
 - Pinned vessels: fixed a bug where typing a custom would be very slow when pinned track was visible
