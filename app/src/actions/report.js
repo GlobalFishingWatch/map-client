@@ -110,9 +110,9 @@ export function sendReport() {
 
     payload.flags = currentFlags;
     payload.regions = [];
-
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
+        layer: state.report.reportId,
         id: polygon.reportingId.toString(),
         name: polygon.name.toString()
       });
