@@ -1,5 +1,7 @@
 # Changelog
 
+- Allow multiple polygons in report
+- Send layer name to report
 - Temporarily remove rendering of vessel track outside of inner time range
 - Don't resize viewport on toggle custom layer visibility
 - Fixed loader style on Safari
