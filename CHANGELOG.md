@@ -1,5 +1,6 @@
 # Changelog
 
+## 2.0.0 RC10
 - Date pickers years selectors
 - Date pickers now allows selection anywhere in the overall time range
 - Allow multiple polygons in report
