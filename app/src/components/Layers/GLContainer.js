@@ -31,8 +31,7 @@ export default class GLContainer extends BaseOverlay {
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
 
-    this._frameBound = this._frame.bind(this);
-    window.requestAnimationFrame(this._frameBound);
+    this._onTickBound = this._onTick.bind(this);
 
     this._build();
   }
@@ -42,6 +41,9 @@ export default class GLContainer extends BaseOverlay {
     this.container.style.position = 'absolute';
 
     this.pixi = new PIXI.Application({ width: this.viewportWidth, height: this.viewportHeight, transparent: true, antialias: true });
+
+    this.pixi.ticker.add(this._onTickBound);
+
     this.renderer = this.pixi.renderer;
     this.canvas = this.pixi.view;
     this.canvas.style.position = 'absolute';
@@ -124,14 +126,13 @@ export default class GLContainer extends BaseOverlay {
 
   draw() {}
 
-  _frame(timestamp) {
+  _onTick() {
     if (this.renderingEnabled && this.layerProjection) {
       if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
-        this._heatmapFadeinStep(timestamp);
+        this._heatmapFadeinStep();
       }
       this._render();
     }
-    window.requestAnimationFrame(this._frameBound);
   }
 
   _render() {
@@ -292,11 +293,11 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapFadeinStartTimestamp = undefined;
   }
 
-  _heatmapFadeinStep(timestamp) {
+  _heatmapFadeinStep() {
     if (this.heatmapFadeinStartTimestamp === undefined) {
-      this.heatmapFadeinStartTimestamp = timestamp;
+      this.heatmapFadeinStartTimestamp = Date.now();
     }
-    const timeElapsed = (timestamp - this.heatmapFadeinStartTimestamp) / 1000;
+    const timeElapsed = (Date.now() - this.heatmapFadeinStartTimestamp) / 1000;
     let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
     if (alpha >= 1) {
       alpha = 1;
