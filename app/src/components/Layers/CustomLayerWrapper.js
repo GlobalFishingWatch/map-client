@@ -10,7 +10,7 @@ export default class CustomLayerWrapper {
     });
     this.handleZoomLevel = this.handleZoomLevel.bind(this);
 
-    this.zoomListener = google.maps.event.addListener(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
+    this.zoomListener = google.maps.event.addListenerOnce(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
   }
 
   show() {

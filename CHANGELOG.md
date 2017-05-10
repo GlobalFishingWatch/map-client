@@ -1,5 +1,6 @@
 # Changelog
 
+- Don't resize viewport on toggle custom layer visibility
 - Fixed loader style on Safari
 - Pinned vessels: fixed a bug where typing a custom would be very slow when pinned track was visible
 - Pinned vessels: fallback title when vessel name is not present
