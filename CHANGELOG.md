@@ -1,5 +1,7 @@
 # Changelog
 
+- Date pickers years selectors
+- Date pickers now allows selection anywhere in the overall time range
 - Allow multiple polygons in report
 - Send layer name to report
 - Temporarily remove rendering of vessel track outside of inner time range
