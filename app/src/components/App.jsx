@@ -1,4 +1,7 @@
+/* global PIXI */
 import React, { Component } from 'react';
+import classnames from 'classnames';
+import AppStyles from 'styles/components/c-app.scss';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
@@ -33,9 +36,18 @@ class App extends Component {
   }
 
   render() {
+    const isWebGLSupported = PIXI.utils.isWebGLSupported();
     return (
-      <div className="full-height-container">
-        {this.props.children}
+      <div>
+        {isWebGLSupported === false &&
+          <div className={AppStyles['nowebgl-banner']}>
+            There is a problem with your current configuration (WebGL is disabled or unavailable).
+            The map will be displayed with degraded performance.
+          </div>
+        }
+        <div className={classnames('full-height-container', AppStyles['c-app'], { [`${AppStyles['-nowebgl']}`]: !isWebGLSupported })}>
+          {this.props.children}
+        </div>
       </div>
     );
   }
