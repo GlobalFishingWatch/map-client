@@ -40,6 +40,7 @@ class DatePicker extends Component {
         </div>
         <ReactDatePicker
           fixedHeight
+          showYearDropdown
           selected={moment(this.props.selected)}
           minDate={moment(this.props.minDate)}
           maxDate={moment(this.props.maxDate)}
