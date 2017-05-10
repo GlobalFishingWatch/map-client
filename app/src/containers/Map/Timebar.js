@@ -20,8 +20,8 @@ const mapDispatchToProps = dispatch => ({
   updateInnerTimelineDates: (dates) => {
     dispatch(setInnerTimelineDates(dates));
   },
-  updateOuterTimelineDates: (dates) => {
-    dispatch(setOuterTimelineDates(dates));
+  updateOuterTimelineDates: (dates, startChanged) => {
+    dispatch(setOuterTimelineDates(dates, startChanged));
   },
   updatePlayingStatus: (paused) => {
     dispatch(setPlayingStatus(paused));
