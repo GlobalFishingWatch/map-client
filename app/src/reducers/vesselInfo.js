@@ -127,7 +127,6 @@ export default function (state = initialState, action) {
       if (currentlyVisibleVessel.pinned === true) {
         currentlyVisibleVessel = _.cloneDeep(currentlyVisibleVessel);
         currentlyVisibleVessel.shownInInfoPanel = false;
-        currentlyVisibleVessel.visible = false;
         return Object.assign({}, state, {
           vessels: [...state.vessels.slice(0, vesselIndex), currentlyVisibleVessel, ...state.vessels.slice(vesselIndex + 1)],
           infoPanelStatus: null
