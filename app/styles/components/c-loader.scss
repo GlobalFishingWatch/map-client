@@ -26,17 +26,18 @@
     border-radius: 50%;
     box-shadow: 0 0 8px 0 rgba($color-22, .3);
     color: $color-4;
-    display: flex;
     height: 40px;
     justify-content: center;
     text-align: center;
     width: 40px;
 
     .loader-container {
-      position: absolute;
-      width: 20px;
-      height: 25px;
       background-color: transparent;
+      height: 26px;
+      left: 8px;
+      position: absolute;
+      top: 7px;
+      width: 26px;
 
       > .loader-bubble::before {
         height: 5px;

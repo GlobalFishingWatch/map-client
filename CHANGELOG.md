@@ -1,7 +1,8 @@
 # Changelog
 
+- Fixed loader style on Safari
 - Pinned vessels: fixed a bug where typing a custom would be very slow when pinned track was visible
-- Pinned vessels: fallback title when vessel name is not present 
+- Pinned vessels: fallback title when vessel name is not present
 - Fix issues with loading pinned and selected vessels from workspace
 - Fixed sidebar scrolling issues
 - Fixed panel gap when embedding map without footer
