@@ -41,14 +41,14 @@ export default class GLContainer extends BaseOverlay {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
 
-    this.renderer = new PIXI.WebGLRenderer(this.viewportWidth, this.viewportHeight, { transparent: true, antialias: true });
-
-    this.canvas = this.renderer.view;
+    this.pixi = new PIXI.Application({ width: this.viewportWidth, height: this.viewportHeight, transparent: true, antialias: true });
+    this.renderer = this.pixi.renderer;
+    this.canvas = this.pixi.view;
     this.canvas.style.position = 'absolute';
 
     this.container.appendChild(this.canvas);
 
-    this.stage = new PIXI.Container();
+    this.stage = this.pixi.stage;
 
     const baseTextureCanvas = this._getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR);
     this.baseTexture = PIXI.Texture.fromCanvas(baseTextureCanvas);
