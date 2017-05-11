@@ -33,8 +33,11 @@
         display: block;
         fill: $color-4;
         font-family: $font-family-1;
-        font-size: $font-size-xs-small;
+        font-size: $font-size-xxs-small;
         user-select: none;
+      }
+      @media #{$mq-laptop} {
+        font-size: $font-size-xs-small;
       }
     }
   }

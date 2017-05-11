@@ -45,7 +45,7 @@ const customTickFormat = (date, index, allDates) => {
     if (index === 0) {
       format = '%b %Y';
     } else {
-      format = (allDates.length >= 15) ? '%b' : '%B';
+      format = (allDates.length >= 15 || window.innerWidth < 1024) ? '%b' : '%B';
     }
   } else {
     format = '%Y';
