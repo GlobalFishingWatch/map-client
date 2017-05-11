@@ -532,7 +532,7 @@ class Timebar extends Component {
             onChange={this.onStartDatePickerChange}
             minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
             maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
-            literalDate={window.innerWidth < 1024 ? ' start' : 'start date'}
+            label={'start'}
           />
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
@@ -541,7 +541,7 @@ class Timebar extends Component {
             onChange={this.onEndDatePickerChange}
             minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
             maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
-            literalDate={window.innerWidth < 1024 ? 'end' : 'end date'}
+            label={'end'}
           />
         </div>
         <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>

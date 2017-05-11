@@ -8,40 +8,25 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-
-    this.state = {};
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      selected: nextProps.selected
-    });
   }
 
   onChange(m) {
     // convert moment to date
     this.props.onChange(m.clone().toDate());
-
-    this.setState({
-      selected: m
-    });
   }
 
   render() {
-    const stringDate = this.state.selected ? moment(this.state.selected).format('DD MMM YYYY') : '-';
-
     return (
       <div className="c-datepicker">
         <div className="c-datepicker-title">
-          {this.props.literalDate}
-        </div>
-        <div className="datepicker-date">
-          {stringDate}
+          {this.props.label}
         </div>
         <ReactDatePicker
           fixedHeight
           showYearDropdown
           dropdownMode="select"
+          readOnly
+          dateFormat="DD MMM YYYY"
           selected={moment(this.props.selected)}
           minDate={moment(this.props.minDate)}
           maxDate={moment(this.props.maxDate)}
@@ -57,7 +42,7 @@ DatePicker.propTypes = {
   /**
   * title of the datepicker
   */
-  literalDate: React.PropTypes.string,
+  label: React.PropTypes.string,
   /**
    * Current  date set (a Date object)
    */
