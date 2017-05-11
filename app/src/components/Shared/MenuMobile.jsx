@@ -3,13 +3,6 @@ import menuMobile from 'styles/components/c-mobile-menu.scss';
 
 class MenuMobile extends Component {
 
-  onClickSupoport(e) {
-    e.preventDefault();
-
-    this.props.onClose();
-    this.props.setSupportModalVisibility(true);
-  }
-
   render() {
     const cssClass = this.props.visible ?
       `${menuMobile['c-mobile-menu']} ${menuMobile['-show']}` : `${menuMobile['c-mobile-menu']}`;

@@ -10,7 +10,6 @@ import {
 import {
   SET_ZOOM,
   SET_CENTER,
-  SET_OUTER_TIMELINE_DATES,
   SET_BASEMAP,
   SET_TILESET_URL,
   SET_TILESET_ID,
@@ -19,7 +18,7 @@ import {
   SET_WORKSPACE_ID
 } from 'actions';
 import { initLayers } from 'actions/layers';
-import { setFlagFilters } from 'actions/filters';
+import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/colors';
@@ -157,9 +156,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: workspaceData.timelineInnerDates
   });
 
-  dispatch({
-    type: SET_OUTER_TIMELINE_DATES, payload: workspaceData.timelineOuterDates
-  });
+  dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
 
   dispatch({
     type: SET_BASEMAP, payload: workspaceData.basemap
