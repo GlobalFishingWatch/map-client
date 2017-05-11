@@ -21,12 +21,12 @@
         {
           "title": "Fishing Effort",
           "description": "Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/849-tileset-tms",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v2-tms",
           "visible": true,
           "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
-          "tilesetId": "849-tileset-tms",
+          "tilesetId": "429-resample-v2-tms",
           "id": "fishing"
         },
         {

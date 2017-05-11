@@ -221,7 +221,7 @@ export function getTile(uid, tileCoordinates, canvas) {
       workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
       .map(layer => layer.id);
 
-    // dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
+    dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
   };
 }
 
