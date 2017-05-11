@@ -1,5 +1,7 @@
 # Changelog
 
+- Shorter timeline labels for small viewports 
+- Fix date pickers on iOs
 - Hide site menu on embed mode
 
 ## 2.0.0 RC10
