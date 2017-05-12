@@ -109,6 +109,13 @@ class Timebar extends Component {
     this.innerBrushFunc.on('end', null);
   }
 
+  tickCounter() {
+    if (window.innerWidth < 767) {
+      return 6;
+    }
+    return null;
+  }
+
   build(chartData) {
     const container = d3.select('#timeline_svg_container');
     const computedStyles = window.getComputedStyle(container.node());
@@ -118,7 +125,7 @@ class Timebar extends Component {
 
     x = d3.scaleTime().range([0, width]);
     y = d3.scaleLinear().range([height, 0]);
-    xAxis = d3.axisTop().scale(x)
+    xAxis = d3.axisTop().scale(x).ticks(this.tickCounter())
       .tickFormat(customTickFormat);
 
     // define the way the timeline chart is going to be drawn
