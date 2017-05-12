@@ -95,12 +95,7 @@ class MapLayers extends Component {
     // update heatmap layer when:
     // - tiled data changed
     // - selected inner extent changed
-    if (this.props.heatmap !== nextProps.heatmap ||
-      innerExtentChanged) {
-      this.updateHeatmap(nextProps);
-    }
-
-    if (nextProps.flagsLayers !== this.props.flagsLayers) {
+    if (this.props.heatmap !== nextProps.heatmap || innerExtentChanged || nextProps.flagsLayers !== this.props.flagsLayers) {
       this.setHeatmapFlags(nextProps);
       this.updateHeatmap(nextProps);
     }
