@@ -27,7 +27,7 @@ class Header extends Component {
   render() {
     const logoUrl = this.props.isEmbedded ? `${MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
 
-    const target = this.props.isEmbedded ? '_parent' : '';
+    const target = this.props.isEmbedded ? '_blank' : '';
 
     return (
       <div>
