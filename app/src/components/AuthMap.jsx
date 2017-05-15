@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MapContainer from 'containers/Map';
-import getURLParameterByName from 'lib/getURLParameterByName';
+import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
 
 class AuthMap extends Component {
 
@@ -10,7 +10,7 @@ class AuthMap extends Component {
     const canRedirect = getURLParameterByName('redirect_login');
     this.state = {
       canRedirect,
-      workspaceId: getURLParameterByName('workspace'),
+      workspaceId: getURLParameterByName('workspace') || getURLPieceByName('workspace'),
       isEmbedded: !!getURLParameterByName('embedded')
     };
 
