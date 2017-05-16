@@ -22,8 +22,7 @@ const webpackConfig = {
 
   output: {
     path: path.join(rootPath, 'dist/'),
-    filename: '[name]-[hash].js',
-    publicPath: '/'
+    filename: '[name]-[hash].js'
   },
 
   plugins: [
