@@ -54,7 +54,7 @@ const webpackConfig = {
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
-      BANNER: JSON.stringify(envVariables.BANNER)
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     })
   ],
 

@@ -5,7 +5,8 @@ import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
 import { loadLiterals } from 'actions/literals';
 
 const mapStateToProps = state => ({
-  welcomeModalUrl: state.modal.welcome.url
+  welcomeModalUrl: state.modal.welcome.url,
+  banner: state.literals.banner
 });
 
 const mapDispatchToProps = dispatch => ({

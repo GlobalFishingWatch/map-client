@@ -51,9 +51,11 @@ class App extends Component {
 
   render() {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
-    const showBanner = (isWebGLSupported === false || BANNER !== undefined) && this.state.bannerDismissed === false;
-    const bannerContent = (BANNER !== undefined) ? (<span
-      dangerouslySetInnerHTML={{ __html: BANNER }}
+    const showBanner =
+      (isWebGLSupported === false || (SHOW_BANNER === true && this.props.banner !== undefined))
+      && this.state.bannerDismissed === false;
+    const bannerContent = (SHOW_BANNER === true) ? (<span
+      dangerouslySetInnerHTML={{ __html: this.props.banner }}
     />) : (<span>
       ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
       The map will be displayed with degraded performance.
@@ -85,7 +87,8 @@ App.propTypes = {
   setWelcomeModalUrl: React.PropTypes.func,
   setWelcomeModalContent: React.PropTypes.func,
   loadLiterals: React.PropTypes.func,
-  welcomeModalUrl: React.PropTypes.string
+  welcomeModalUrl: React.PropTypes.string,
+  banner: React.PropTypes.string
 };
 
 
