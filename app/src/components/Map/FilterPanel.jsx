@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import platform from 'platform';
 import FilterItem from 'components/Map/FilterItem';
@@ -142,8 +143,8 @@ class FilterPanel extends Component {
 }
 
 FilterPanel.propTypes = {
-  flags: React.PropTypes.array,
-  setFlagFilters: React.PropTypes.func
+  flags: PropTypes.array,
+  setFlagFilters: PropTypes.func
 };
 
 export default FilterPanel;

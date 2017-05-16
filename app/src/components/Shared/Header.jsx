@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
@@ -84,15 +85,15 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  logout: React.PropTypes.func,
-  login: React.PropTypes.func,
-  loggedUser: React.PropTypes.object,
-  openShareModal: React.PropTypes.func,
-  setSupportModalVisibility: React.PropTypes.func,
-  setVisibleMenu: React.PropTypes.func,
-  isEmbedded: React.PropTypes.bool,
-  urlWorkspaceId: React.PropTypes.string,
-  canShareWorkspaces: React.PropTypes.bool
+  logout: PropTypes.func,
+  login: PropTypes.func,
+  loggedUser: PropTypes.object,
+  openShareModal: PropTypes.func,
+  setSupportModalVisibility: PropTypes.func,
+  setVisibleMenu: PropTypes.func,
+  isEmbedded: PropTypes.bool,
+  urlWorkspaceId: PropTypes.string,
+  canShareWorkspaces: PropTypes.bool
 };
 
 export default Header;

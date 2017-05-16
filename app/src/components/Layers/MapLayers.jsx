@@ -1,4 +1,5 @@
 /* eslint-disable react/sort-comp  */
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import compact from 'lodash/compact';
 import isEqual from 'lodash/isEqual';
@@ -490,28 +491,28 @@ class MapLayers extends Component {
 
 
 MapLayers.propTypes = {
-  map: React.PropTypes.object,
-  token: React.PropTypes.string,
-  layers: React.PropTypes.array,
-  flagsLayers: React.PropTypes.object,
-  heatmap: React.PropTypes.object,
-  highlightedVessels: React.PropTypes.object,
-  zoom: React.PropTypes.number,
-  timelineInnerExtent: React.PropTypes.array,
-  timelineInnerExtentIndexes: React.PropTypes.array,
-  timelineOuterExtent: React.PropTypes.array,
-  timelineOverExtent: React.PropTypes.array,
-  timelinePaused: React.PropTypes.bool,
-  vesselTracks: React.PropTypes.array,
-  viewportWidth: React.PropTypes.number,
-  viewportHeight: React.PropTypes.number,
-  reportLayerId: React.PropTypes.string,
-  reportedPolygonsIds: React.PropTypes.array,
-  getVesselFromHeatmap: React.PropTypes.func,
-  highlightVesselFromHeatmap: React.PropTypes.func,
-  showPolygon: React.PropTypes.func,
-  createTile: React.PropTypes.func,
-  releaseTile: React.PropTypes.func
+  map: PropTypes.object,
+  token: PropTypes.string,
+  layers: PropTypes.array,
+  flagsLayers: PropTypes.object,
+  heatmap: PropTypes.object,
+  highlightedVessels: PropTypes.object,
+  zoom: PropTypes.number,
+  timelineInnerExtent: PropTypes.array,
+  timelineInnerExtentIndexes: PropTypes.array,
+  timelineOuterExtent: PropTypes.array,
+  timelineOverExtent: PropTypes.array,
+  timelinePaused: PropTypes.bool,
+  vesselTracks: PropTypes.array,
+  viewportWidth: PropTypes.number,
+  viewportHeight: PropTypes.number,
+  reportLayerId: PropTypes.string,
+  reportedPolygonsIds: PropTypes.array,
+  getVesselFromHeatmap: PropTypes.func,
+  highlightVesselFromHeatmap: PropTypes.func,
+  showPolygon: PropTypes.func,
+  createTile: PropTypes.func,
+  releaseTile: PropTypes.func
 };
 
 

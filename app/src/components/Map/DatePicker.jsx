@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
@@ -38,23 +39,23 @@ class DatePicker extends Component {
 }
 
 DatePicker.propTypes = {
-  onChange: React.PropTypes.func,
+  onChange: PropTypes.func,
   /**
   * title of the datepicker
   */
-  label: React.PropTypes.string,
+  label: PropTypes.string,
   /**
    * Current  date set (a Date object)
    */
-  selected: React.PropTypes.object,
+  selected: PropTypes.object,
   /**
    * Minimum allowed start date (a Date object).
    */
-  minDate: React.PropTypes.object,
+  minDate: PropTypes.object,
   /**
    * Maximum allowed start date (a Date object).
    */
-  maxDate: React.PropTypes.object
+  maxDate: PropTypes.object
 };
 
 export default DatePicker;

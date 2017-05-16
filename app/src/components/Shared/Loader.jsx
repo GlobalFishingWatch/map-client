@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import loaderStyle from 'styles/components/c-loader.scss';
@@ -27,6 +28,6 @@ export default function Loader(props) {
 }
 
 Loader.propTypes = {
-  visible: React.PropTypes.bool,
-  absolute: React.PropTypes.bool
+  visible: PropTypes.bool,
+  absolute: PropTypes.bool
 };

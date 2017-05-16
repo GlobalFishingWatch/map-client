@@ -1,5 +1,6 @@
 /* global PIXI */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/c-app.scss';
 
@@ -55,13 +56,13 @@ class App extends Component {
 }
 
 App.propTypes = {
-  children: React.PropTypes.object,
-  setToken: React.PropTypes.func,
-  getLoggedUser: React.PropTypes.func,
-  setWelcomeModalUrl: React.PropTypes.func,
-  setWelcomeModalContent: React.PropTypes.func,
-  loadLiterals: React.PropTypes.func,
-  welcomeModalUrl: React.PropTypes.string
+  children: PropTypes.object,
+  setToken: PropTypes.func,
+  getLoggedUser: PropTypes.func,
+  setWelcomeModalUrl: PropTypes.func,
+  setWelcomeModalContent: PropTypes.func,
+  loadLiterals: PropTypes.func,
+  welcomeModalUrl: PropTypes.string
 };
 
 

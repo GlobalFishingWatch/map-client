@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import Footer from 'components/Shared/Footer';
@@ -124,9 +125,9 @@ class MapFooter extends Component {
 }
 
 MapFooter.propTypes = {
-  onOpenSupportModal: React.PropTypes.func,
-  isEmbedded: React.PropTypes.bool,
-  onExternalLink: React.PropTypes.func
+  onOpenSupportModal: PropTypes.func,
+  isEmbedded: PropTypes.bool,
+  onExternalLink: PropTypes.func
 };
 
 export default MapFooter;

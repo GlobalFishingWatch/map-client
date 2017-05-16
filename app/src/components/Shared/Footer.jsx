@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import BaseStyles from 'styles/_base.scss';
@@ -175,10 +176,10 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  isMap: React.PropTypes.bool,
-  isExpanded: React.PropTypes.bool,
-  onClose: React.PropTypes.func,
-  onOpenSupportModal: React.PropTypes.func
+  isMap: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  onClose: PropTypes.func,
+  onOpenSupportModal: PropTypes.func
 };
 
 Footer.defaultProps = {

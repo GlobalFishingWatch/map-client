@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
@@ -136,29 +137,29 @@ LayerItem.propTypes = {
   /*
    list of restricted actions a user is allowed to perform
    */
-  userPermissions: React.PropTypes.array,
-  layerIndex: React.PropTypes.number,
+  userPermissions: PropTypes.array,
+  layerIndex: PropTypes.number,
   /*
    layer object
    */
-  layer: React.PropTypes.object,
-  currentlyReportedLayerId: React.PropTypes.string,
-  toggleLayerVisibility: React.PropTypes.func,
-  toggleLayerWorkspacePresence: React.PropTypes.func,
-  toggleReport: React.PropTypes.func,
-  setLayerOpacity: React.PropTypes.func,
-  setLayerHue: React.PropTypes.func,
-  openLayerInfoModal: React.PropTypes.func,
-  onLayerBlendingToggled: React.PropTypes.func,
+  layer: PropTypes.object,
+  currentlyReportedLayerId: PropTypes.string,
+  toggleLayerVisibility: PropTypes.func,
+  toggleLayerWorkspacePresence: PropTypes.func,
+  toggleReport: PropTypes.func,
+  setLayerOpacity: PropTypes.func,
+  setLayerHue: PropTypes.func,
+  openLayerInfoModal: PropTypes.func,
+  onLayerBlendingToggled: PropTypes.func,
   /*
    Called when a layer title changes
    */
-  setLayerLabel: React.PropTypes.func,
-  showBlending: React.PropTypes.bool,
+  setLayerLabel: PropTypes.func,
+  showBlending: PropTypes.bool,
   /*
    If layer labels are editable or not
    */
-  layerPanelEditMode: React.PropTypes.bool
+  layerPanelEditMode: PropTypes.bool
 };
 
 export default LayerItem;

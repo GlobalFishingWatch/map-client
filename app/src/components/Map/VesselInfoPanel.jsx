@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iso3311a2 from 'iso-3166-1-alpha-2';
@@ -155,12 +156,12 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  vessels: React.PropTypes.array,
-  infoPanelStatus: React.PropTypes.object,
-  userPermissions: React.PropTypes.array,
-  hide: React.PropTypes.func,
-  onTogglePin: React.PropTypes.func,
-  login: React.PropTypes.func
+  vessels: PropTypes.array,
+  infoPanelStatus: PropTypes.object,
+  userPermissions: PropTypes.array,
+  hide: PropTypes.func,
+  onTogglePin: PropTypes.func,
+  login: PropTypes.func
 };
 
 export default VesselInfoPanel;

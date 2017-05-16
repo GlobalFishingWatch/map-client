@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -115,33 +116,33 @@ class SearchPanel extends Component {
 }
 
 SearchPanel.propTypes = {
-  setSearchTerm: React.PropTypes.func,
-  openSearchModal: React.PropTypes.func,
-  setSearchResultsVisibility: React.PropTypes.func,
+  setSearchTerm: PropTypes.func,
+  openSearchModal: PropTypes.func,
+  setSearchResultsVisibility: PropTypes.func,
   /*
    Search results
    */
-  entries: React.PropTypes.array,
+  entries: PropTypes.array,
   /*
    Number of total search results
    */
-  count: React.PropTypes.number,
+  count: PropTypes.number,
   /*
    If search is in progress
    */
-  searching: React.PropTypes.bool,
+  searching: PropTypes.bool,
   /*
    If search modal is open
    */
-  searchModalOpen: React.PropTypes.bool,
+  searchModalOpen: PropTypes.bool,
   /*
    If search result is open
    */
-  searchResultsOpen: React.PropTypes.bool,
+  searchResultsOpen: PropTypes.bool,
   /*
    Search term to search for
    */
-  searchTerm: React.PropTypes.string
+  searchTerm: PropTypes.string
 };
 
 export default SearchPanel;
