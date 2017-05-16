@@ -5,13 +5,14 @@
   width: 100%;
 }
 
-.-nowebgl {
+.-has-banner {
   height: calc(100% - 60px);
   top: 60px;
 }
 
-.nowebgl-banner {
+.banner {
   background-color: $color-19;
+  border-bottom: 1px solid $color-1;
   color: $color-4;
   display: flex;
   flex-direction: column;
@@ -20,5 +21,27 @@
   font-weight: bold;
   height: 60px;
   justify-content: center;
-  padding: 0 10px;
+  padding: 0 30px 0 10px;
+
+  a {
+    color: $color-4;
+    text-decoration: underline;
+  }
+
+  .close-button {
+    background-color: $color-4;
+    border: 0;
+    border-radius: 100%;
+    cursor: pointer;
+    height: 20px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 20px;
+
+    > .icon {
+      top: -1px;
+      position: relative;
+    }
+  }
 }

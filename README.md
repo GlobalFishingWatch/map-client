@@ -150,6 +150,11 @@ Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`
 
 URL pattern used on the share feature. It must be of type http://your-site.com/?workspace={workspace_id}, where {workspace_id} will be replaced by the actual workspace ID.
 
+#### BANNER
+
+Display this message in a dismissable banner on top of the map. If omitted, the banner is not shown.
+
+
 # Permission keys description
 
 On load, the application will call the /me API endpoint to load user permissions. These are the supported values:
