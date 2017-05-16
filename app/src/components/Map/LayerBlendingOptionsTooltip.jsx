@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { cloneDeep, assign } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import assign from 'lodash/assign';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';

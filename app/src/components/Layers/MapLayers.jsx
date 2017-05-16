@@ -1,6 +1,7 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
-import { isEqual, compact } from 'lodash';
+import compact from 'lodash/compact';
+import isEqual from 'lodash/isEqual';
 import extentChanged from 'util/extentChanged';
 import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'components/Layers/GLContainer';

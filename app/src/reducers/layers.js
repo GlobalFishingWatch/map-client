@@ -1,4 +1,5 @@
-import { cloneDeep, findIndex } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import findIndex from 'lodash/findIndex';
 import {
   ADD_CUSTOM_LAYER,
   SET_LAYER_HEADER,

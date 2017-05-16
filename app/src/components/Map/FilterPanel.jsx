@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { Component } from 'react';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import platform from 'platform';
 import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';

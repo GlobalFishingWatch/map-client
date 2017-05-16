@@ -20,7 +20,7 @@ import {
   GA_MAP_CENTER_TILE,
   TOGGLE_VESSEL_PIN
 } from 'actions';
-import { isFunction } from 'lodash';
+import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
 const GA_ACTION_WHITELIST = [

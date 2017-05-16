@@ -2,7 +2,9 @@
 /* eslint-disable max-len  */
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { delay, template, templateSettings } from 'lodash';
+import delay from 'lodash/delay';
+import template from 'lodash/template';
+import templateSettings from 'lodash/templateSettings';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
