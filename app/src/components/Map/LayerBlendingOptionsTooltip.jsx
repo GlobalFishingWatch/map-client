@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import assign from 'lodash/assign';
@@ -140,15 +141,15 @@ class LayerBlendingOptionsTooltip extends Component {
 }
 
 LayerBlendingOptionsTooltip.propTypes = {
-  displayHue: React.PropTypes.bool,
-  displayOpacity: React.PropTypes.bool,
-  hueValue: React.PropTypes.number,
-  opacityValue: React.PropTypes.number,
-  onChangeHue: React.PropTypes.func,
-  onChangeOpacity: React.PropTypes.func,
-  isReverse: React.PropTypes.bool,
-  toggleVisibility: React.PropTypes.func,
-  visible: React.PropTypes.bool
+  displayHue: PropTypes.bool,
+  displayOpacity: PropTypes.bool,
+  hueValue: PropTypes.number,
+  opacityValue: PropTypes.number,
+  onChangeHue: PropTypes.func,
+  onChangeOpacity: PropTypes.func,
+  isReverse: PropTypes.bool,
+  toggleVisibility: PropTypes.func,
+  visible: PropTypes.bool
 };
 
 export default LayerBlendingOptionsTooltip;

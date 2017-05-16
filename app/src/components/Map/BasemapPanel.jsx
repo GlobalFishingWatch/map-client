@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
@@ -62,10 +63,10 @@ class BasemapPanel extends Component {
 }
 
 BasemapPanel.propTypes = {
-  basemaps: React.PropTypes.array,
-  activeBasemap: React.PropTypes.string,
-  openLayerInfoModal: React.PropTypes.func,
-  setBasemap: React.PropTypes.func
+  basemaps: PropTypes.array,
+  activeBasemap: PropTypes.string,
+  openLayerInfoModal: PropTypes.func,
+  setBasemap: PropTypes.func
 };
 
 export default BasemapPanel;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import styles from 'styles/components/map/c-no-login.scss';
 
@@ -20,7 +21,7 @@ class NoLogin extends Component {
 }
 
 NoLogin.propTypes = {
-  login: React.PropTypes.func
+  login: PropTypes.func
 };
 
 export default NoLogin;

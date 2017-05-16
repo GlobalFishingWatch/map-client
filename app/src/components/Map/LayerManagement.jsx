@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerManagementStyles from 'styles/components/map/c-layer-management.scss';
@@ -28,10 +29,10 @@ class LayerManagement extends Component {
 }
 
 LayerManagement.propTypes = {
-  openModal: React.PropTypes.func,
-  workspaceLayers: React.PropTypes.array,
-  toggleLayerPanelEditMode: React.PropTypes.func,
-  layerPanelEditMode: React.PropTypes.bool
+  openModal: PropTypes.func,
+  workspaceLayers: PropTypes.array,
+  toggleLayerPanelEditMode: PropTypes.func,
+  layerPanelEditMode: PropTypes.bool
 };
 
 export default LayerManagement;

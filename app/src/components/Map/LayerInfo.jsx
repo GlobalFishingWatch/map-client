@@ -1,6 +1,7 @@
 /* eslint-disable react/no-danger */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import LayerInfoStyles from 'styles/components/map/c-layer-info.scss';
 
 class LayerInfo extends Component {
@@ -33,7 +34,7 @@ class LayerInfo extends Component {
 }
 
 LayerInfo.propTypes = {
-  info: React.PropTypes.object
+  info: PropTypes.object
 };
 
 export default LayerInfo;

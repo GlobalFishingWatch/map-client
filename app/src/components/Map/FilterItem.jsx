@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import classnames from 'classnames';
@@ -85,13 +86,13 @@ class FilterItem extends Component {
 }
 
 FilterItem.propTypes = {
-  countryOptions: React.PropTypes.array,
-  index: React.PropTypes.number,
-  filter: React.PropTypes.object,
-  showBlending: React.PropTypes.bool,
-  removeFilter: React.PropTypes.func,
-  updateFilters: React.PropTypes.func,
-  onLayerBlendingToggled: React.PropTypes.func
+  countryOptions: PropTypes.array,
+  index: PropTypes.number,
+  filter: PropTypes.object,
+  showBlending: PropTypes.bool,
+  removeFilter: PropTypes.func,
+  updateFilters: PropTypes.func,
+  onLayerBlendingToggled: PropTypes.func
 };
 
 export default FilterItem;

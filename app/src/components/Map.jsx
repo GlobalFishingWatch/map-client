@@ -1,6 +1,7 @@
 /* eslint react/sort-comp:0 */
 /* eslint-disable max-len  */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import delay from 'lodash/delay';
 import template from 'lodash/template';
@@ -395,52 +396,52 @@ class Map extends Component {
   }
 }
 Map.propTypes = {
-  initMap: React.PropTypes.func,
-  activeBasemap: React.PropTypes.string,
-  basemaps: React.PropTypes.array,
-  token: React.PropTypes.string,
-  tilesetUrl: React.PropTypes.string,
-  setZoom: React.PropTypes.func,
-  loadInitialState: React.PropTypes.func,
-  setCenter: React.PropTypes.func,
-  loading: React.PropTypes.bool,
-  centerLat: React.PropTypes.number,
-  centerLong: React.PropTypes.number,
-  zoom: React.PropTypes.number,
-  maxZoom: React.PropTypes.number,
+  initMap: PropTypes.func,
+  activeBasemap: PropTypes.string,
+  basemaps: PropTypes.array,
+  token: PropTypes.string,
+  tilesetUrl: PropTypes.string,
+  setZoom: PropTypes.func,
+  loadInitialState: PropTypes.func,
+  setCenter: PropTypes.func,
+  loading: PropTypes.bool,
+  centerLat: PropTypes.number,
+  centerLong: PropTypes.number,
+  zoom: PropTypes.number,
+  maxZoom: PropTypes.number,
   /**
    * If share modal is open or closed
    */
-  shareModalOpenState: React.PropTypes.bool,
+  shareModalOpenState: PropTypes.bool,
   /**
    * Open the share modal
    */
-  openShareModal: React.PropTypes.func,
+  openShareModal: PropTypes.func,
   /**
    * Close the share modal
    */
-  supportModal: React.PropTypes.object,
-  closeShareModal: React.PropTypes.func,
-  layerModal: React.PropTypes.object,
-  closeLayerInfoModal: React.PropTypes.func,
-  trackBounds: React.PropTypes.object,
-  closeSupportModal: React.PropTypes.func,
-  openSupportModal: React.PropTypes.func,
-  layerManagementModal: React.PropTypes.bool,
-  closeLayerManagementModal: React.PropTypes.func,
-  userPermissions: React.PropTypes.array,
-  clearReportPolygon: React.PropTypes.func,
-  searchModalOpen: React.PropTypes.bool,
-  closeSearchModal: React.PropTypes.func,
-  recentVesselModalOpen: React.PropTypes.bool,
-  closeRecentVesselModal: React.PropTypes.func,
-  welcomeModalOpen: React.PropTypes.bool,
-  closeWelcomeModal: React.PropTypes.func,
-  closeLayerRemovalModal: React.PropTypes.func,
-  layerIdPromptedForRemoval: React.PropTypes.any,
-  isEmbedded: React.PropTypes.bool,
-  onExternalLink: React.PropTypes.func,
-  showMapCursorPointer: React.PropTypes.bool,
-  showMapCursorZoom: React.PropTypes.bool
+  supportModal: PropTypes.object,
+  closeShareModal: PropTypes.func,
+  layerModal: PropTypes.object,
+  closeLayerInfoModal: PropTypes.func,
+  trackBounds: PropTypes.object,
+  closeSupportModal: PropTypes.func,
+  openSupportModal: PropTypes.func,
+  layerManagementModal: PropTypes.bool,
+  closeLayerManagementModal: PropTypes.func,
+  userPermissions: PropTypes.array,
+  clearReportPolygon: PropTypes.func,
+  searchModalOpen: PropTypes.bool,
+  closeSearchModal: PropTypes.func,
+  recentVesselModalOpen: PropTypes.bool,
+  closeRecentVesselModal: PropTypes.func,
+  welcomeModalOpen: PropTypes.bool,
+  closeWelcomeModal: PropTypes.func,
+  closeLayerRemovalModal: PropTypes.func,
+  layerIdPromptedForRemoval: PropTypes.any,
+  isEmbedded: PropTypes.bool,
+  onExternalLink: PropTypes.func,
+  showMapCursorPointer: PropTypes.bool,
+  showMapCursorZoom: PropTypes.bool
 };
 export default Map;

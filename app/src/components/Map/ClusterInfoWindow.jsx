@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
@@ -46,7 +47,7 @@ export default class ClusterInfoWindow extends Component {
 }
 
 ClusterInfoWindow.propTypes = {
-  latLng: React.PropTypes.object,
-  clickableCluster: React.PropTypes.bool,
-  map: React.PropTypes.object
+  latLng: PropTypes.object,
+  clickableCluster: PropTypes.bool,
+  map: PropTypes.object
 };

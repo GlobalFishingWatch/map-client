@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import ShareStyles from 'styles/components/map/c-share.scss';
@@ -262,11 +263,11 @@ Share.propTypes = {
   /**
    * Id of the created workspace
    */
-  workspaceId: React.PropTypes.string,
+  workspaceId: PropTypes.string,
   /**
    * Possible error due to failed request to save the workspace
    */
-  error: React.PropTypes.string
+  error: PropTypes.string
 };
 
 export default Share;

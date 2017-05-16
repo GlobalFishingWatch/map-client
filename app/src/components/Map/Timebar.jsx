@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 // ye who enter here, fear not
 // this is the first time I used D3, please dont hate me
 /* eslint react/sort-comp:0 */
@@ -589,15 +590,15 @@ class Timebar extends Component {
 }
 
 Timebar.propTypes = {
-  timebarChartData: React.PropTypes.array,
-  updateInnerTimelineDates: React.PropTypes.func,
-  updateOuterTimelineDates: React.PropTypes.func,
-  updatePlayingStatus: React.PropTypes.func,
-  updateTimelineOverDates: React.PropTypes.func,
-  rewind: React.PropTypes.func,
-  timelineOverallExtent: React.PropTypes.array,
-  timelineOuterExtent: React.PropTypes.array,
-  timelineInnerExtent: React.PropTypes.array,
-  timelinePaused: React.PropTypes.bool
+  timebarChartData: PropTypes.array,
+  updateInnerTimelineDates: PropTypes.func,
+  updateOuterTimelineDates: PropTypes.func,
+  updatePlayingStatus: PropTypes.func,
+  updateTimelineOverDates: PropTypes.func,
+  rewind: PropTypes.func,
+  timelineOverallExtent: PropTypes.array,
+  timelineOuterExtent: PropTypes.array,
+  timelineInnerExtent: PropTypes.array,
+  timelinePaused: PropTypes.bool
 };
 export default Timebar;

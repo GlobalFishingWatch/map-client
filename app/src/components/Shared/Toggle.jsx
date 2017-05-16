@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/c-toggle.scss';
 import classnames from 'classnames';
@@ -33,10 +34,10 @@ class Toggle extends Component {
 }
 
 Toggle.propTypes = {
-  on: React.PropTypes.bool,
-  hue: React.PropTypes.number,
-  color: React.PropTypes.string,
-  onToggled: React.PropTypes.func
+  on: PropTypes.bool,
+  hue: PropTypes.number,
+  color: PropTypes.string,
+  onToggled: PropTypes.func
 };
 
 export default Toggle;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import iconBlueBox from 'assets/icons/arrow_box.svg';
 import iconWhiteBox from 'assets/icons/arrow_box_white.svg';
@@ -14,10 +15,10 @@ class Rhombus extends Component {
 }
 
 Rhombus.propTypes = {
-  children: React.PropTypes.node,
-  direction: React.PropTypes.string,
-  color: React.PropTypes.string,
-  onClick: React.PropTypes.func
+  children: PropTypes.node,
+  direction: PropTypes.string,
+  color: PropTypes.string,
+  onClick: PropTypes.func
 };
 
 export default Rhombus;

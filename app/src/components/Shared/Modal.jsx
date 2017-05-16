@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import styles from 'styles/components/shared/c-modal.scss';
@@ -89,26 +90,26 @@ Modal.propTypes = {
   /**
    * The callback method when closing the modal
    */
-  close: React.PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
   /**
    * Define whether the modal is opened or not
    */
-  opened: React.PropTypes.bool.isRequired,
+  opened: PropTypes.bool.isRequired,
   /**
    * Define the content of the modal
    * Required
    */
-  children: React.PropTypes.any,
+  children: PropTypes.any,
   /**
    * Define the modal box can be closed by the user
    * Required
    */
-  closeable: React.PropTypes.bool,
+  closeable: PropTypes.bool,
   /**
    * Sets z-index of the modal
    */
-  isSmall: React.PropTypes.bool,
-  zIndex: React.PropTypes.number
+  isSmall: PropTypes.bool,
+  zIndex: PropTypes.number
 };
 
 

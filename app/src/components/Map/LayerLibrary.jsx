@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
@@ -90,15 +91,15 @@ class LayerLibraryModal extends Component {
 
 LayerLibraryModal.propTypes = {
   // array of layers available in the library
-  layers: React.PropTypes.array,
+  layers: PropTypes.array,
   // triggers when user adds a layer
-  addLayer: React.PropTypes.func,
+  addLayer: PropTypes.func,
   // function to close the modal
-  closeModal: React.PropTypes.func,
+  closeModal: PropTypes.func,
   // triggers when user removes a layer
-  removeLayer: React.PropTypes.func,
+  removeLayer: PropTypes.func,
   // sets modal with info about the current layer
-  setLayerInfoModal: React.PropTypes.func
+  setLayerInfoModal: PropTypes.func
 };
 
 export default LayerLibraryModal;

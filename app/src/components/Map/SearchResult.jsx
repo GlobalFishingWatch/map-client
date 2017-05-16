@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
 
 import React, { Component } from 'react';
@@ -40,11 +41,11 @@ class SearchResult extends Component {
 }
 
 SearchResult.propTypes = {
-  className: React.PropTypes.string,
-  closeSearch: React.PropTypes.func,
-  drawVessel: React.PropTypes.func,
-  searchTerm: React.PropTypes.string,
-  vesselInfo: React.PropTypes.object
+  className: PropTypes.string,
+  closeSearch: PropTypes.func,
+  drawVessel: PropTypes.func,
+  searchTerm: PropTypes.string,
+  vesselInfo: PropTypes.object
 };
 
 export default SearchResult;
