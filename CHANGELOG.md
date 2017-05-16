@@ -1,5 +1,6 @@
 # Changelog
 
+- Dismissible legacy version banner
 - Fixed loading error when loading map from a custom path, ie not at the root of the website
 - Fix issue where fishing layers loaded as invisible would never load when made visible
 - Load workspace id from legacy structure
@@ -28,7 +29,7 @@
 - Fixed share embedded URL
 - Fix map center loading from workspace
 - Have map follow the COMPLETE_MAP_RENDER value on embedded mode
-
+}
 ## 2.0.0 RC9
 - Fix regression on heatmap interactivity
 

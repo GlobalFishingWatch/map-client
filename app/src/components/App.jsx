@@ -1,4 +1,5 @@
 /* global PIXI */
+/* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/c-app.scss';
@@ -6,6 +7,13 @@ import AppStyles from 'styles/components/c-app.scss';
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      bannerDismissed: false
+    };
+  }
 
   componentWillMount() {
     this.props.loadLiterals();
@@ -35,17 +43,33 @@ class App extends Component {
     }
   }
 
+  dismissBanner() {
+    this.setState({
+      bannerDismissed: true
+    });
+  }
+
   render() {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
+    const showBanner = (isWebGLSupported === false || BANNER !== undefined) && this.state.bannerDismissed === false;
+    const bannerContent = (BANNER !== undefined) ? (<span
+      dangerouslySetInnerHTML={{ __html: BANNER }}
+    />) : (<span>
+      ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
+      The map will be displayed with degraded performance.
+    </span>);
+
     return (
       <div>
-        {isWebGLSupported === false &&
-          <div className={AppStyles['nowebgl-banner']}>
-            ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
-            The map will be displayed with degraded performance.
+        {showBanner === true &&
+          <div className={AppStyles.banner}>
+            {bannerContent}
+            <button className={AppStyles['close-button']} onClick={() => this.dismissBanner()}>
+              <span className={AppStyles.icon}>✕</span>
+            </button>
           </div>
         }
-        <div className={classnames('full-height-container', AppStyles['c-app'], { [`${AppStyles['-nowebgl']}`]: !isWebGLSupported })}>
+        <div className={classnames('full-height-container', AppStyles['c-app'], { [`${AppStyles['-has-banner']}`]: showBanner })}>
           {this.props.children}
         </div>
       </div>
