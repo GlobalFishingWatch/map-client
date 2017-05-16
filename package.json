@@ -9,6 +9,7 @@
     "lint-js": "./node_modules/.bin/eslint -c .eslintrc --ext .jsx,.js app",
     "lint:js": "npm run lint-js",
     "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
+    "analyze-bundle": "webpack --config ./config/webpack.config.js --json | webpack-bundle-size-analyzer",
     "postinstall": "npm run build"
   },
   "repository": {
@@ -80,7 +81,8 @@
     "sass-loader": "^3.2.0",
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7",
-    "webpack-dev-middleware": "^1.9.0"
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack-bundle-size-analyzer": "^2.6.0"
   },
   "engines": {
     "node": "5.10.x",
