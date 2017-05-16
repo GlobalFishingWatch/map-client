@@ -3,7 +3,7 @@ import {
 } from 'actions';
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
-import _ from 'lodash';
+import { uniq } from 'lodash';
 
 const setGAUserDimension = (user) => {
   if (user !== false) {
@@ -81,7 +81,7 @@ export function getLoggedUser() {
       });
       dispatch({
         type: SET_USER_PERMISSIONS,
-        payload: _.uniq(basePermissions.concat(getAclData(payload)))
+        payload: uniq(basePermissions.concat(getAclData(payload)))
       });
     });
   };

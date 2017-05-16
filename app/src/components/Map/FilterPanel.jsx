@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import platform from 'platform';
 import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
@@ -66,7 +66,7 @@ class FilterPanel extends Component {
   }
 
   updateFilters(filter, index) {
-    const updatedFilters = _.cloneDeep(this.props.flags);
+    const updatedFilters = cloneDeep(this.props.flags);
     if (!updatedFilters[index]) return;
 
     Object.assign(updatedFilters[index], filter);
@@ -87,7 +87,7 @@ class FilterPanel extends Component {
   }
 
   removeFilter(index) {
-    const filters = _.cloneDeep(this.props.flags);
+    const filters = cloneDeep(this.props.flags);
     filters.splice(index, 1);
 
     this.props.setFlagFilters(filters);

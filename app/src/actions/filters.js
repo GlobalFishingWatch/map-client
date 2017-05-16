@@ -10,9 +10,9 @@ import {
 } from 'actions';
 import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 
-const gaLogOuterTimelineDatesUpdated = _.debounce((dispatch, outerTimelineDates) => {
+const gaLogOuterTimelineDatesUpdated = debounce((dispatch, outerTimelineDates) => {
   dispatch({
     type: GA_OUTER_TIMELINE_DATES_UPDATED,
     payload: outerTimelineDates

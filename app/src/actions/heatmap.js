@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { difference, uniq } from 'lodash';
 import {
   UPDATE_HEATMAP_TILES,
   ADD_REFERENCE_TILE,
@@ -160,7 +160,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           ? layers[layerId].visibleTemporalExtentsIndices
           : newTemporalExtentsToLoad[layerId];
 
-        const temporalExtentsIndicesToLoad = _.difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
+        const temporalExtentsIndicesToLoad = difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
 
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
@@ -174,7 +174,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         allPromises.push(tilePromise);
 
         tilePromise.then((rawTileData) => {
-          tile.temporalExtentsIndicesLoaded = _.uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
+          tile.temporalExtentsIndicesLoaded = uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
             referenceTile.tileCoordinates,
             Object.keys(layerHeader.colsByName),
@@ -301,7 +301,7 @@ export function loadTilesExtraTimeRange() {
       const heatmapLayer = heatmapLayers[layerId];
       const oldVisibleTemporalExtents = heatmapLayer.visibleTemporalExtentsIndices;
       const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents);
-      const diff = _.difference(newVisibleTemporalExtents, oldVisibleTemporalExtents);
+      const diff = difference(newVisibleTemporalExtents, oldVisibleTemporalExtents);
       if (diff.length) {
         // add new loaded indices to heatmap layer if applicable
         layersToUpdate[layerId] = diff;
@@ -384,7 +384,7 @@ const _queryHeatmap = (state, tileQuery) => {
       const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
 
       if (nonClusteredVessels.length) {
-        seriesUids = _.uniq(nonClusteredVessels.map(v => v.seriesUid));
+        seriesUids = uniq(nonClusteredVessels.map(v => v.seriesUid));
         isMouseCluster = seriesUids.length > 1;
       } else {
         isCluster = true;
