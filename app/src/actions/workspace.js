@@ -22,7 +22,8 @@ import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/colors';
-import { uniq, includes } from 'lodash';
+import uniq from 'lodash/uniq';
+import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
 

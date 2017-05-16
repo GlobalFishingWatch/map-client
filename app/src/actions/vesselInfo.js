@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,

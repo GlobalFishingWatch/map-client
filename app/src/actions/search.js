@@ -8,7 +8,7 @@ import {
 } from 'actions';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 
 let searchQueryID = 0;
 

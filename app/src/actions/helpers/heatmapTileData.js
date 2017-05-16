@@ -1,5 +1,6 @@
 import PelagosClient from 'lib/pelagosClient';
-import { flattenDeep, sumBy } from 'lodash';
+import flattenDeep from 'lodash/flattenDeep';
+import sumBy from 'lodash/sumBy';
 import * as d3 from 'd3';
 import {
   PLAYBACK_PRECISION,

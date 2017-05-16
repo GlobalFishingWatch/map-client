@@ -3,7 +3,7 @@ import {
 } from 'actions';
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 
 const setGAUserDimension = (user) => {
   if (user !== false) {

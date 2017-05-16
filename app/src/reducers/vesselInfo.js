@@ -1,4 +1,5 @@
-import { cloneDeep, find } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import find from 'lodash/find';
 import {
   ADD_VESSEL,
   SET_VESSEL_DETAILS,

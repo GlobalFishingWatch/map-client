@@ -1,4 +1,5 @@
-import { difference, uniq } from 'lodash';
+import difference from 'lodash/difference';
+import uniq from 'lodash/uniq';
 import {
   UPDATE_HEATMAP_TILES,
   ADD_REFERENCE_TILE,

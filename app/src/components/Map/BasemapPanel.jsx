@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { camelCase } from 'lodash';
+import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
