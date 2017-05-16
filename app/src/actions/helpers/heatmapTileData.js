@@ -1,5 +1,5 @@
 import PelagosClient from 'lib/pelagosClient';
-import _ from 'lodash';
+import { flattenDeep, sumBy } from 'lodash';
 import * as d3 from 'd3';
 import {
   PLAYBACK_PRECISION,
@@ -91,7 +91,7 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
 export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
 
-  const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
+  const totalVectorArraysLength = sumBy(cleanVectorArrays, a => a.longitude.length);
 
   const filteredColumns = columns.filter((column) => {
     if (cleanVectorArrays[0] && cleanVectorArrays[0][column] === undefined) {
@@ -265,7 +265,7 @@ export const getHistogram = (tiles, propName = 'weight') => {
     .filter(tile => tile.ready)
     .map(tile => tile.data
       .map(frame => frame[propName]));
-  data = _.flattenDeep(data);
+  data = flattenDeep(data);
   if (data.length) {
     const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
     const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);

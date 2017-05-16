@@ -8,11 +8,11 @@ import {
 } from 'actions';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 
 let searchQueryID = 0;
 
-const loadSearchResults = _.debounce((searchTerm, page, state, dispatch) => {
+const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   if (searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT) {
     return;
   }

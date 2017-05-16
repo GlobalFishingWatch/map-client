@@ -1,6 +1,6 @@
 /* eslint-disable react/sort-comp  */
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { isEqual, compact } from 'lodash';
 import extentChanged from 'util/extentChanged';
 import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'components/Layers/GLContainer';
@@ -53,7 +53,7 @@ class MapLayers extends Component {
       this.glContainer.setStyle(useHeatmapStyle(nextProps.zoom));
     }
 
-    if (!_.isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
+    if (!isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
       this.highlightReportedPolygons(nextProps.reportedPolygonsIds, this.props.reportLayerId);
     }
 
@@ -353,7 +353,7 @@ class MapLayers extends Component {
         return newCol;
       });
 
-      newCols = _.compact(newCols);
+      newCols = compact(newCols);
       newCols.push(isinreportCol);
       const newColsStr = newCols.join(', ');
       return `SELECT ${newColsStr} FROM`;

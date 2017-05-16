@@ -2,7 +2,7 @@
 /* eslint-disable max-len  */
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import { delay, template, templateSettings } from 'lodash';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
@@ -82,7 +82,7 @@ class Map extends Component {
         // the delay guarantees that tiles updates coming from the state are flushed to MapLayer's GLContainer
         // before starting the zoom animation
         // the goal is to avoid having the heatmap 'frozen' while zooming
-        _.delay(() => {
+        delay(() => {
           this.map.setZoom(nextProps.zoom);
 
           // update the center with zoom - useful when zooming to a cluster
@@ -160,9 +160,9 @@ class Map extends Component {
   }
 
   defineBasemaps(basemaps) {
-    _.templateSettings.interpolate = /{([\s\S]+?)}/g;
+    templateSettings.interpolate = /{([\s\S]+?)}/g;
     basemaps.filter(b => b.type === 'Basemap').forEach((basemap) => {
-      const urlTemplate = _.template(basemap.url);
+      const urlTemplate = template(basemap.url);
       this.map.mapTypes.set(basemap.title, new google.maps.ImageMapType({
         getTileUrl: (coord, zoom) => urlTemplate({ x: coord.x, y: coord.y, z: zoom }),
         tileSize: new google.maps.Size(256, 256),

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
+import { cloneDeep, assign } from 'lodash';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';
@@ -25,16 +25,16 @@ class LayerBlendingOptionsTooltip extends Component {
   constructor(props) {
     super(props);
 
-    this.opacityRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.opacityRangeConfig, {
+    this.opacityRangeConfig = cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    assign(this.opacityRangeConfig, {
       minValue: 10,
       maxValue: 100,
       step: 1,
       value: this.props.opacityValue * 100
     });
 
-    this.hueRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.hueRangeConfig, {
+    this.hueRangeConfig = cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    assign(this.hueRangeConfig, {
       minValue: 0,
       maxValue: 360,
       step: VESSELS_HUES_INCREMENT,

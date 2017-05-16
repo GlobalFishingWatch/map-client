@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { find } from 'lodash';
 import { LAYER_TYPES } from 'constants';
 import {
   SET_LAYERS,
@@ -99,7 +99,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
     });
 
     libraryLayers.forEach((libraryLayer) => {
-      const matchedWorkspaceLayer = _.find(workspaceLayers, workspaceLayer => libraryLayer.id === workspaceLayer.id);
+      const matchedWorkspaceLayer = find(workspaceLayers, workspaceLayer => libraryLayer.id === workspaceLayer.id);
       if (matchedWorkspaceLayer) {
         Object.assign(matchedWorkspaceLayer, {
           library: true,
