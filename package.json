@@ -8,8 +8,9 @@
     "lint-sass": "sass-lint -v -q",
     "lint-js": "./node_modules/.bin/eslint -c .eslintrc --ext .jsx,.js app",
     "lint:js": "npm run lint-js",
-    "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
-    "analyze-bundle": "webpack --config ./config/webpack.config.js --json | webpack-bundle-size-analyzer"
+    "build": "webpack -p --config ./config/webpack.config.js --progress --profile --colors",
+    "analyze-bundle": "webpack --config ./config/webpack.config.js --json | webpack-bundle-size-analyzer",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
