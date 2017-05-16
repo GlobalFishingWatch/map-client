@@ -57,6 +57,7 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL)
     }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new BundleAnalyzerPlugin()
     // new webpack.optimize.UglifyJsPlugin({
     //   compress: {
