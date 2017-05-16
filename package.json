@@ -53,7 +53,6 @@
     "react-sanfona": "daviferreira/react-sanfona#086ef6dd3db5fa8b6cc357e9d9c580fce4053c17",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "webpack": "^1.13.0",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
@@ -82,7 +81,8 @@
     "style-loader": "^0.13.1",
     "svg-react-loader": "^0.3.7",
     "webpack-dev-middleware": "^1.9.0",
-    "webpack-bundle-size-analyzer": "^2.6.0"
+    "webpack-bundle-size-analyzer": "^2.6.0",
+    "webpack": "^1.13.0"
   },
   "engines": {
     "node": "5.10.x",
