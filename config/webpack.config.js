@@ -22,7 +22,8 @@ const webpackConfig = {
 
   output: {
     path: path.join(rootPath, 'dist/'),
-    filename: '[name]-[hash].js'
+    filename: '[name]-[hash].js',
+    publicPath: envVariables.PUBLIC_PATH,
   },
 
   plugins: [
@@ -83,7 +84,7 @@ const webpackConfig = {
         loader: 'babel'
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg|ico)$/i,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
           'image-webpack'
@@ -98,8 +99,17 @@ const webpackConfig = {
         loader: 'style-loader!css-loader!postcss-loader'
       },
       {
+        test: /manifest.json$/,
+        loader: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
+      },
+      {
         test: /\.json$/,
+        exclude: /manifest.json$/,
         loader: 'json-loader'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html?interpolate=require',
       }
     ]
   },
