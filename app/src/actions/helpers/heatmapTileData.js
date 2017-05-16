@@ -1,5 +1,7 @@
 import PelagosClient from 'lib/pelagosClient';
 import flattenDeep from 'lodash/flattenDeep';
+import pull from 'lodash/pull';
+import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
 import * as d3 from 'd3';
 import {
@@ -157,13 +159,10 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   const zoomFactorOpacity = ((zoom - 1) ** 3.5) / 1000;
 
   // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
-  const extraColumns = _
-    .chain(columns)
-    .concat([])
-    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid') // those are mandatory thus manually added
-    .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
-    .uniq()
-    .value();
+  let extraColumns = [].concat(columns);
+  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid');  // those are mandatory thus manually added
+  pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
+  extraColumns = uniq(extraColumns);
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
