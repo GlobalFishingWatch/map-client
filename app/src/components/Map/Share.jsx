@@ -165,7 +165,8 @@ class Share extends Component {
             </p>
             <select
               className={ShareStyles['share-input']}
-              onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
+              onChange={event => this.updateEmbedSize(event)}
+              value={this.state.embedSizeName}
             >
               {selectOptions}
             </select>
@@ -177,7 +178,10 @@ class Share extends Component {
             <div>
               <input
                 className={ShareStyles['share-input']}
-                type="text" readOnly value={embed} ref="input"
+                type="text"
+                readOnly
+                value={embed}
+                ref="input"
               />
               <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
                 {this.state.copied ? 'Copied!' : 'Copy'}
