@@ -1,9 +1,8 @@
 import PelagosClient from 'lib/pelagosClient';
-import flattenDeep from 'lodash/flattenDeep';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
-import * as d3 from 'd3';
+
 import {
   PLAYBACK_PRECISION,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
@@ -260,6 +259,7 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
   return vessels;
 };
 
+/*
 export const getHistogram = (tiles, propName = 'weight') => {
   let data = tiles
     .filter(tile => tile.ready)
@@ -269,7 +269,6 @@ export const getHistogram = (tiles, propName = 'weight') => {
   if (data.length) {
     const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
     const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
-    /* eslint no-console:0 */
     console.table(bins.filter(bin => bin.length).map((bin) => {
       const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
       const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
@@ -281,3 +280,4 @@ export const getHistogram = (tiles, propName = 'weight') => {
     }));
   }
 };
+*/

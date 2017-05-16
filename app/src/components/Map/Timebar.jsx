@@ -1,8 +1,22 @@
 // ye who enter here, fear not
 // this is the first time I used D3, please dont hate me
 /* eslint react/sort-comp:0 */
+/* eslint import/no-extraneous-dependencies:0 */
 import React, { Component } from 'react';
-import * as d3 from 'd3'; // TODO: namespace and only do the necessary imports
+import { event as d3event, select as d3select } from 'd3-selection';
+import {
+  timeDay as d3timeDay,
+  timeMonth as d3timeMonth,
+  timeWeek as d3timeWeek,
+  timeYear as d3timeYear
+} from 'd3-time';
+import { timeFormat as d3timeFormat } from 'd3-time-format';
+import { scaleTime as d3scaleTime, scaleLinear as d3scaleLinear } from 'd3-scale';
+import { axisTop as d3axisTop } from 'd3-axis';
+import { area as d3area } from 'd3-shape';
+import { max as d3max } from 'd3-array';
+import { brushX as d3brushX } from 'd3-brush';
+
 import classnames from 'classnames';
 import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
 import timebarCss from 'styles/components/map/c-timebar.scss';
@@ -37,11 +51,11 @@ let innerBrushMiddle;
 
 const customTickFormat = (date, index, allDates) => {
   let format;
-  if (d3.timeDay(date) < date) {
+  if (d3timeDay(date) < date) {
     format = '%I %p';
-  } else if (d3.timeMonth(date) < date) {
-    format = d3.timeWeek(date) < date ? '%a %d' : '%b %d';
-  } else if (d3.timeYear(date) < date) {
+  } else if (d3timeMonth(date) < date) {
+    format = d3timeWeek(date) < date ? '%a %d' : '%b %d';
+  } else if (d3timeYear(date) < date) {
     if (index === 0) {
       format = '%b %Y';
     } else {
@@ -50,7 +64,7 @@ const customTickFormat = (date, index, allDates) => {
   } else {
     format = '%Y';
   }
-  return d3.timeFormat(format)(date);
+  return d3timeFormat(format)(date);
 };
 
 class Timebar extends Component {
@@ -104,8 +118,8 @@ class Timebar extends Component {
 
     outerBrushHandleLeft.on('mousedown', null);
     outerBrushHandleRight.on('mousedown', null);
-    d3.select('body').on('mousemove', null);
-    d3.select('body').on('mouseup', null);
+    d3select('body').on('mousemove', null);
+    d3select('body').on('mouseup', null);
     this.innerBrushFunc.on('end', null);
   }
 
@@ -117,24 +131,24 @@ class Timebar extends Component {
   }
 
   build(chartData) {
-    const container = d3.select('#timeline_svg_container');
+    const container = d3select('#timeline_svg_container');
     const computedStyles = window.getComputedStyle(container.node());
     leftOffset = container.node().offsetLeft;
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
 
-    x = d3.scaleTime().range([0, width]);
-    y = d3.scaleLinear().range([height, 0]);
-    xAxis = d3.axisTop().scale(x).ticks(this.tickCounter())
+    x = d3scaleTime().range([0, width]);
+    y = d3scaleLinear().range([height, 0]);
+    xAxis = d3axisTop().scale(x).ticks(this.tickCounter())
       .tickFormat(customTickFormat);
 
     // define the way the timeline chart is going to be drawn
-    area = d3.area()
+    area = d3area()
       .x(d => x(d.date))
       .y0(height)
       .y1(d => y(d.value));
     x.domain(this.props.timelineOverallExtent);
-    y.domain([0, d3.max(chartData.map(d => d.value))]);
+    y.domain([0, d3max(chartData.map(d => d.value))]);
 
     this.svg = container.append('svg')
       .attr('width', width + 34)
@@ -154,7 +168,7 @@ class Timebar extends Component {
       .call(xAxis);
 
     // set up brush generators
-    brush = () => d3.brushX().extent([[0, 0], [width, height]]);
+    brush = () => d3brushX().extent([[0, 0], [width, height]]);
     this.innerBrushFunc = brush();
 
     this.innerBrush = this.group.append('g')
@@ -198,15 +212,15 @@ class Timebar extends Component {
     outerBrushHandleRight.on('mousedown', this.onOuterHandleClick.bind(this));
 
     this.group.on('mousemove', () => {
-      this.onMouseOver(d3.event.offsetX);
+      this.onMouseOver(d3event.offsetX);
     });
     this.group.on('mouseout', () => {
       this.onMouseOut();
     });
 
-    d3.select('body').on('mousemove', () => {
+    d3select('body').on('mousemove', () => {
       if (dragging) {
-        const nx = d3.event.pageX - leftOffset - X_OVERFLOW_OFFSET;
+        const nx = d3event.pageX - leftOffset - X_OVERFLOW_OFFSET;
         if (currentHandleIsWest) {
           currentOuterPxExtent[0] = nx;
         } else {
@@ -214,7 +228,7 @@ class Timebar extends Component {
         }
       }
     });
-    d3.select('body').on('mouseup', () => {
+    d3select('body').on('mouseup', () => {
       dragging = false;
       if (this.isZoomingIn(currentOuterPxExtent)) {
         // release, actually do the zoom in (when zooming out this is done at each tick)
@@ -247,8 +261,8 @@ class Timebar extends Component {
     if (!this.props.timelinePaused) {
       this.props.updatePlayingStatus(true);
     }
-    d3.event.preventDefault();
-    currentHandleIsWest = outerBrushHandleLeft.node() === d3.event.currentTarget;
+    d3event.preventDefault();
+    currentHandleIsWest = outerBrushHandleLeft.node() === d3event.currentTarget;
     dragging = true;
     this.disableInnerBrush();
     this.startTick();
@@ -308,8 +322,8 @@ class Timebar extends Component {
   }
 
   onInnerBrushMoved() {
-    let newExtentPx = d3.event.selection;
-    const newExtent = this.getExtent(d3.event.selection);
+    let newExtentPx = d3event.selection;
+    const newExtent = this.getExtent(d3event.selection);
 
     // time range is too long
     if (newExtent[1].getTime() - newExtent[0].getTime() > TIMELINE_MAX_TIME) {
