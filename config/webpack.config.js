@@ -13,8 +13,7 @@ const rootPath = process.cwd();
 const envVariables = process.env;
 
 const webpackConfig = {
-
-  entry: [
+entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
     path.join(rootPath, 'app/src/index.jsx')
@@ -34,13 +33,13 @@ const webpackConfig = {
       template: 'app/index.html',
       inject: 'body',
       filename: 'index.html',
-      key: envVariables.GOOGLE_API_KEY
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
+      GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
+      ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
       MAP_URL: JSON.stringify(envVariables.MAP_URL),
       V2_API_ENDPOINT: JSON.stringify(envVariables.V2_API_ENDPOINT),
@@ -109,13 +108,13 @@ const webpackConfig = {
       },
       {
         test: /\.html$/,
-        loader: 'html?interpolate=require',
+        loader: 'html?interpolate',
       }
     ]
   },
 
   imageWebpackLoader: {
-    optimizationLevel: (process.env.NODE_ENV === 'development' ? 0 : 7),
+    optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7),
     bypassOnDebug: true,
     interlaced: false
   },
@@ -125,7 +124,7 @@ const webpackConfig = {
 };
 
 // Environment configuration
-if (process.env.NODE_ENV === 'production') {
+if (envVariables.NODE_ENV === 'production') {
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
@@ -135,6 +134,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     comments: false
   }));
+  webpackConfig.devtool = 'source-map';
 } else {
   webpackConfig.devtool = 'eval-source-map';
 }
