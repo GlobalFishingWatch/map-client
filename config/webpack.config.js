@@ -8,7 +8,7 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJSON = require('../package.json');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const rootPath = process.cwd();
 const envVariables = process.env;
@@ -38,7 +38,7 @@ const webpackConfig = {
       key: envVariables.GOOGLE_API_KEY
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
@@ -57,15 +57,8 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL)
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new BundleAnalyzerPlugin()
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   },
-    //   minimize: true
-    // }),
-    // new webpack.optimize.OccurrenceOrderPlugin()
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    // new BundleAnalyzerPlugin()
   ],
 
   resolve: {
