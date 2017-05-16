@@ -1,10 +1,11 @@
 # Changelog
 
+- Fixed loading error when loading map from a custom path, ie not at the root of the website
 - Fix issue where fishing layers loaded as invisible would never load when made visible
 - Load workspace id from legacy structure
 - On embedded mode, open site on new tab
 - Fallback to canvas when WebGL is not available and display a performance warning
-- Shorter timeline labels for small viewports 
+- Shorter timeline labels for small viewports
 - Fix date pickers on iOs
 - Hide site menu on embed mode
 
