@@ -72,7 +72,9 @@
     "jsx-a11y/label-has-for": 0,
     "class-methods-use-this": 0,
     "import/no-webpack-loader-syntax": 0,
-    "import/extensions": 0
+    "import/extensions": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "jsx-a11y/accessible-emoji": 0
   },
   "settings": {
     "import/resolver": {

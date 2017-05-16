@@ -41,13 +41,13 @@ class PinnedTracks extends Component {
       pinnedItems = (
         <ul className={pinnedTracksStyles['pinned-item-list']}>
           {pinnedVessels.map((pinnedVessel, index) =>
-            <PinnedTracksItem
+            (<PinnedTracksItem
               index={index}
               key={index}
               onLayerBlendingToggled={() => this.onBlendingClicked(index)}
               showBlending={this.state.currentBlendingOptionsShown === index}
               vessel={pinnedVessel}
-            />
+            />)
           )}
         </ul>
       );
