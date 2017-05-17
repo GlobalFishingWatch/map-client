@@ -26,7 +26,7 @@ class BasemapPanel extends Component {
 
     this.props.basemaps.forEach((basemap) => {
       const imageName = _.camelCase(basemap.title);
-      const urlThumbnail = `/basemaps/${imageName}.png`;
+      const urlThumbnail = `./basemaps/${imageName}.png`;
       const itemLayer = (
         <li
           className={classnames(LayerListStyles['layer-item'],
