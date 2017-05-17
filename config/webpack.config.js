@@ -38,6 +38,7 @@ entry: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
+      PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
       GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
