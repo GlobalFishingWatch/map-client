@@ -53,7 +53,8 @@ class App extends Component {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
     const showBanner =
       (isWebGLSupported === false || (SHOW_BANNER === true && this.props.banner !== undefined))
-      && this.state.bannerDismissed === false;
+      && this.state.bannerDismissed === false
+      && window.innerWidth > 768;
     const bannerContent = (SHOW_BANNER === true) ? (<span
       dangerouslySetInnerHTML={{ __html: this.props.banner }}
     />) : (<span>
