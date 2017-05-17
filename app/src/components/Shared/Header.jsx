@@ -40,7 +40,7 @@ class Header extends Component {
         }
         <nav
           className={
-            classnames({ [styles['c-header']]: true, [styles['-map']]: true })
+            classnames('c-header', { [styles['c-header']]: true, [styles['-map']]: true })
           }
         >
           <div

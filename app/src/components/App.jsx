@@ -58,8 +58,10 @@ class App extends Component {
       dangerouslySetInnerHTML={{ __html: this.props.banner }}
     />) : (<span>
       ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
-      The map will be displayed with degraded performance.
+      The map will be shown with degraded performance.
     </span>);
+
+    document.body.classList.toggle('-has-banner', showBanner);
 
     return (
       <div>
@@ -71,7 +73,7 @@ class App extends Component {
             </button>
           </div>
         }
-        <div className={classnames('full-height-container', AppStyles['c-app'], { [`${AppStyles['-has-banner']}`]: showBanner })}>
+        <div className={classnames('full-height-container', AppStyles['c-app'])}>
           {this.props.children}
         </div>
       </div>
