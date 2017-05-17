@@ -1,5 +1,8 @@
 # Changelog
 
+
+
+## 2.0.0
 - Do not redirect to base domain on logout
 - Decouple basemap label from name
 - Replace "satellite" basemap with "hybrid"
