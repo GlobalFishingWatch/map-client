@@ -1,5 +1,6 @@
 # Changelog
 
+- Do not redirect to base domain on logout
 - Decouple basemap label from name
 - Replace "satellite" basemap with "hybrid"
 - Remove "Map" and add "Home" to menus
