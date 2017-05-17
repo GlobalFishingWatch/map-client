@@ -220,7 +220,7 @@ class MapLayers extends Component {
         continue;
       }
 
-      if (this.addedLayers[newLayer.id] && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
+      if (this.addedLayers[newLayer.id] && oldLayer && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
         continue;
       }
