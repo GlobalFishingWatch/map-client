@@ -1,5 +1,6 @@
 # Changelog
 
+- Replace "satellite" basemap with "hybrid"
 - Remove "Map" and add "Home" to menus
 - Dismissible legacy version banner
 - Fixed loading error when loading map from a custom path, ie not at the root of the website
