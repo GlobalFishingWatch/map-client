@@ -6,7 +6,7 @@
         0,
         0
       ],
-      "basemap": "satellite",
+      "basemap": "hybrid",
       "zoom": 3,
       "layers": [
         {
@@ -82,7 +82,7 @@
       ]
     },
     "pinnedVessels": [],
-    "basemap": "satellite",
+    "basemap": "hybrid",
     "timeline": {
       "innerExtent": [
         1464739200000,

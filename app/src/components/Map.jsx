@@ -365,7 +365,7 @@ class Map extends Component {
                 maxZoom: this.props.maxZoom,
                 minZoom: MIN_ZOOM_LEVEL
               }}
-              defaultMapTypeId={google.maps.MapTypeId.SATELLITE}
+              defaultMapTypeId={google.maps.MapTypeId.HYBRID}
               onMousemove={this.onMouseMove}
               onZoomChanged={this.onZoomChanged}
               onDragend={this.onDragEnd}
