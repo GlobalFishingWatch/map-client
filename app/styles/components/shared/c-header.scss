@@ -1,5 +1,11 @@
 @import '../../settings';
 
+:global .-has-banner .c-header {
+  @media #{$mq-tablet} {
+    top: 50px;
+  }
+}
+
 .c-header {
   background-color: $color-13;
   box-shadow: 0 2px 4px 0 rgba($color-12, .5);
@@ -8,6 +14,7 @@
 
   @media #{$mq-tablet} {
     background-color: transparent;
+    box-shadow: none;
   }
 
   .contain-nav {
@@ -20,10 +27,6 @@
       height: $header-height;
       justify-content: space-between;
     }
-  }
-
-  @media #{$mq-tablet} {
-    box-shadow: none;
   }
 
   .icon-menu-mobile {
