@@ -1,5 +1,6 @@
 # Changelog
 
+- Decouple basemap label from name
 - Replace "satellite" basemap with "hybrid"
 - Remove "Map" and add "Home" to menus
 - Dismissible legacy version banner
