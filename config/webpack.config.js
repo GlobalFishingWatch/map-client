@@ -13,7 +13,7 @@ const rootPath = process.cwd();
 const envVariables = process.env;
 
 const webpackConfig = {
-entry: [
+  entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
     path.join(rootPath, 'app/src/index.jsx')
