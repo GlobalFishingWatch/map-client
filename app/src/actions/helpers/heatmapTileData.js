@@ -93,7 +93,15 @@ export const groupData = (cleanVectorArrays, columns) => {
 
   const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
 
-  columns.forEach((key) => {
+  const filteredColumns = columns.filter((column) => {
+    if (cleanVectorArrays[0] && cleanVectorArrays[0][column] === undefined) {
+      console.warn(`column ${column} is present in layerHeader.colsByName but not in tile data`);
+      return false;
+    }
+    return true;
+  });
+
+  filteredColumns.forEach((key) => {
     data[key] = new Float32Array(totalVectorArraysLength);
   });
 
@@ -106,7 +114,7 @@ export const groupData = (cleanVectorArrays, columns) => {
 
   for (let index = 0, length = cleanVectorArrays.length; index < length; index++) {
     currentArray = cleanVectorArrays[index];
-    columns.forEach(appendValues);
+    filteredColumns.forEach(appendValues);
     cumulatedOffsets += currentArray.longitude.length;
   }
   return data;

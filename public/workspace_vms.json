@@ -1,0 +1,107 @@
+{
+  "workspace": {
+    "tileset": "429-resample-v1-tms",
+    "map": {
+      "center": [
+        0,
+        0
+      ],
+      "basemap": "satellite",
+      "zoom": 3,
+      "layers": [
+        {
+          "title": "AIS Fishing effort",
+          "description": "AIS Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v1-tms",
+          "visible": true,
+          "hue": 182,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "fishing2",
+          "tilesetId": "429-resample-v1-tms"
+        },
+        {
+          "title": "VMS Fishing effort",
+          "description": "VMS Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-with-no-info-v2",
+          "visible": true,
+          "hue": 182,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "fishing",
+          "tilesetId": "483-indo-public-with-no-info-v2"
+        },
+        {
+          "title": "MPA - No Take",
+          "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/mpant/source",
+          "visible": true,
+          "hue": 0,
+          "type": "CartoDBAnimation",
+          "opacity": 1,
+          "id": "mpant"
+        },
+        {
+          "title": "MPA - Restricted Use",
+          "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/mparu/source",
+          "visible": false,
+          "hue": 29,
+          "type": "CartoDBAnimation",
+          "opacity": 1,
+          "id": "mparu"
+        },
+        {
+          "title": "EEZ",
+          "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/eez/source",
+          "visible": true,
+          "hue": 140,
+          "type": "CartoDBAnimation",
+          "opacity": 0.6,
+          "id": "eez"
+        },
+        {
+          "title": "High Seas Pocket",
+          "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/highseas/source",
+          "visible": true,
+          "hue": 240,
+          "type": "CartoDBAnimation",
+          "opacity": 1,
+          "id": "highseas"
+        },
+        {
+          "title": "RFMO",
+          "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/rfmo/source",
+          "visible": false,
+          "hue": 200,
+          "type": "CartoDBAnimation",
+          "opacity": 1,
+          "id": "rfmo"
+        }
+      ]
+    },
+    "pinnedVessels": [],
+    "basemap": "satellite",
+    "timeline": {
+      "innerExtent": [
+        1464739200000,
+        1467331200000
+      ],
+      "outerExtent": [
+        1451689200000,
+        1480550400000
+      ]
+    }
+  },
+  "metadata": {
+    "id": "world-fishing-vizz-indo-no-info-ais-v1",
+    "urls": {
+      "save": "https://api-dot-world-fishing-827.appspot.com/v2/workspaces",
+      "load": "https://api-dot-world-fishing-827.appspot.com/v2/workspaces/world-fishing-vizz-indo-no-info-ais-v1",
+      "visualization": "http://dev.globalfishingwatch.org/map/workspace/world-fishing-vizz-indo-no-info-ais-v1"
+    }
+  }
+}
