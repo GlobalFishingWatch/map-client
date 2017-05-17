@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/c-app.scss';
+import { getURLParameterByName } from 'lib/getURLParameterByName';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
@@ -54,7 +55,8 @@ class App extends Component {
     const showBanner =
       (isWebGLSupported === false || (SHOW_BANNER === true && this.props.banner !== undefined))
       && this.state.bannerDismissed === false
-      && window.innerWidth > 768;
+      && window.innerWidth > 768
+      && getURLParameterByName('embedded') !== 'true';
     const bannerContent = (SHOW_BANNER === true) ? (<span
       dangerouslySetInnerHTML={{ __html: this.props.banner }}
     />) : (<span>
