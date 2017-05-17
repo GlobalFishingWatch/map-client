@@ -86,6 +86,10 @@ On server error, the `/public/500.html` page should be displayed.
 
 Port in which the node server will listen for incoming connections
 
+### PUBLIC_PATH
+
+Server subpath over which the application will be served. May be empty if the application should load through relative urls, or a static path for loading through an absolute url. If not empty, it must start and end with a `/` character (such as `/map/`).
+
 #### GOOGLE_API_KEY
 
 API key for Google Maps
