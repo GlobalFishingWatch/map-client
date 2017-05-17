@@ -23,10 +23,10 @@ import {
 import { MAX_ZOOM_LEVEL } from 'constants';
 
 const initialState = {
-  activeBasemap: 'satellite',
+  activeBasemap: 'hybrid',
   basemaps: [
     {
-      title: 'satellite',
+      title: 'hybrid',
       description: 'The default satellite image view',
       type: 'GoogleBasemap'
     },
