@@ -38,7 +38,7 @@ class BasemapPanel extends Component {
             onClick={event => this.onSelectBasemap(event, basemap)}
           >
             <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles['layer-thumbnail']} />
-            <span className={LayerListStyles['layer-title']}>{basemap.title}</span>
+            <span className={LayerListStyles['layer-title']}>{basemap.label}</span>
           </div>
           <ul className={LayerListStyles['layer-option-list']}>
             <li
