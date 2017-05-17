@@ -81,7 +81,7 @@ class Footer extends Component {
               <div className={FooterStyles['map-section']} >
                 <ul className={FooterStyles['nav-list']} >
                   <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} to="#" >Map</a>
+                    <a className={FooterStyles['nav-link']} href={SITE_URL} >Home</a>
                   </li>
                   <li className={FooterStyles['nav-item']} >
                     <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={FooterStyles['nav-link']} >Blog</a>
