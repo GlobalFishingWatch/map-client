@@ -175,7 +175,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
     // we need heatmap layers headers to be loaded before loading track
     if (workspaceData.shownVessel) {
-      dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+      if (workspaceData.shownVessel.seriesgroup === undefined) {
+        console.warn(`attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no seriesgroup`);
+      } else {
+        dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+      }
     }
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
