@@ -1,5 +1,7 @@
 # Changelog
 
+- Fix issue where welcome modal would show unneeded scrollbars on desktop screen sizes
+
 ## 2.0.1
 - Fix issue where welcome modal would not be closeable on certain screen resolutions
 
