@@ -107,9 +107,13 @@
     left: 0;
     position: absolute;
     top: 20px;
-    transform: translate(-50%, 0);
+    transform: translate(-150%, 0);
     width: 26px;
     z-index: 1;
+
+    @media #{$mq-mobile-large} {
+      transform: translate(-50%, 0);
+    }
 
     @media #{$mq-tablet} {
       height: 40px;
