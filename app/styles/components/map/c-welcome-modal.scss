@@ -7,9 +7,6 @@
   position: relative;
 
   @media #{$mq-tablet} {
-    max-height: 50vh;
-  }
-  @media #{$mq-tablet} {
     max-height: 80vh;
   }
 
@@ -17,7 +14,7 @@
     overflow: auto;
 
     @media #{$mq-tablet} {
-      max-height: 40vh;
+      max-height: 60vh;
     }
     @media #{$mq-desktop} {
       max-height: 80vh;
