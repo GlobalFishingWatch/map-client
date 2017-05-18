@@ -1,6 +1,7 @@
 # Changelog
 
-
+## 2.0.1
+- Fix issue where welcome modal would not be closeable on certain screen resolutions
 
 ## 2.0.0
 - Do not redirect to base domain on logout
