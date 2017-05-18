@@ -51,7 +51,12 @@
       background-color: $color-2;
       border: 1px solid rgba($color-3, .3);
       color: $color-4;
+      height: 100%;
       width: 100%;
+
+      @media #{$mq-tablet} {
+        height: auto;
+      }
 
       .contain-button {
         position: absolute;
@@ -61,7 +66,7 @@
       .contain-padding {
         padding: 40px 20px 20px;
         height: 100%;
-        overflow-y: auto;
+        overflow-y: scroll;
 
         @media #{$mq-tablet} {
           padding: 60px;
@@ -102,9 +107,13 @@
     left: 0;
     position: absolute;
     top: 20px;
-    transform: translate(-50%, 0);
+    transform: translate(-150%, 0);
     width: 26px;
     z-index: 1;
+
+    @media #{$mq-mobile-large} {
+      transform: translate(-50%, 0);
+    }
 
     @media #{$mq-tablet} {
       height: 40px;

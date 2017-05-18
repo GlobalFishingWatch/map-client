@@ -1,12 +1,21 @@
 /* global PIXI */
+/* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/c-app.scss';
+import { getURLParameterByName } from 'lib/getURLParameterByName';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      bannerDismissed: false
+    };
+  }
 
   componentWillMount() {
     this.props.loadLiterals();
@@ -36,17 +45,39 @@ class App extends Component {
     }
   }
 
+  dismissBanner() {
+    this.setState({
+      bannerDismissed: true
+    });
+  }
+
   render() {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
+    const showBanner =
+      (isWebGLSupported === false || (SHOW_BANNER === true && this.props.banner !== undefined))
+      && this.state.bannerDismissed === false
+      && window.innerWidth > 768
+      && getURLParameterByName('embedded') !== 'true';
+    const bannerContent = (SHOW_BANNER === true) ? (<span
+      dangerouslySetInnerHTML={{ __html: this.props.banner }}
+    />) : (<span>
+      ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
+      The map will be shown with degraded performance.
+    </span>);
+
+    document.body.classList.toggle('-has-banner', showBanner);
+
     return (
       <div>
-        {isWebGLSupported === false &&
-          <div className={AppStyles['nowebgl-banner']}>
-            ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
-            The map will be displayed with degraded performance.
+        {showBanner === true &&
+          <div className={AppStyles.banner}>
+            {bannerContent}
+            <button className={AppStyles['close-button']} onClick={() => this.dismissBanner()}>
+              <span className={AppStyles.icon}>✕</span>
+            </button>
           </div>
         }
-        <div className={classnames('full-height-container', AppStyles['c-app'], { [`${AppStyles['-nowebgl']}`]: !isWebGLSupported })}>
+        <div className={classnames('full-height-container', AppStyles['c-app'])}>
           {this.props.children}
         </div>
       </div>
@@ -62,7 +93,8 @@ App.propTypes = {
   setWelcomeModalUrl: PropTypes.func,
   setWelcomeModalContent: PropTypes.func,
   loadLiterals: PropTypes.func,
-  welcomeModalUrl: PropTypes.string
+  welcomeModalUrl: PropTypes.string,
+  banner: PropTypes.string
 };
 
 

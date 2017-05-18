@@ -2,7 +2,7 @@ import { LOAD_LITERALS } from 'actions';
 
 export function loadLiterals() {
   return (dispatch) => {
-    fetch('/literals.json')
+    fetch(`${PUBLIC_PATH}literals.json`)
       .then(res => res.json())
       .then((data) => {
         dispatch({

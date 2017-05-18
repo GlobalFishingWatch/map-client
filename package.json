@@ -57,6 +57,7 @@
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
+    "html-loader": "^0.4.5",
     "autoprefixer": "^6.5.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",

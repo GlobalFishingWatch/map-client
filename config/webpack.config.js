@@ -14,7 +14,6 @@ const rootPath = process.cwd();
 const envVariables = process.env;
 
 const webpackConfig = {
-
   entry: [
     'whatwg-fetch',
     path.join(rootPath, 'app/src/util/assignPolyfill.js'),
@@ -24,7 +23,7 @@ const webpackConfig = {
   output: {
     path: path.join(rootPath, 'dist/'),
     filename: '[name]-[hash].js',
-    publicPath: '/'
+    publicPath: envVariables.PUBLIC_PATH,
   },
 
   plugins: [
@@ -35,13 +34,14 @@ const webpackConfig = {
       template: 'app/index.html',
       inject: 'body',
       filename: 'index.html',
-      key: envVariables.GOOGLE_API_KEY
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || 'development'),
+      PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
+      GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
+      ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
       MAP_URL: JSON.stringify(envVariables.MAP_URL),
       V2_API_ENDPOINT: JSON.stringify(envVariables.V2_API_ENDPOINT),
@@ -55,7 +55,8 @@ const webpackConfig = {
       WELCOME_MODAL_COOKIE_KEY: JSON.stringify(envVariables.WELCOME_MODAL_COOKIE_KEY),
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
-      SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL)
+      SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     // new BundleAnalyzerPlugin()
@@ -86,7 +87,7 @@ const webpackConfig = {
         loader: 'babel'
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif|svg|ico)$/i,
         loaders: [
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
           'image-webpack'
@@ -101,14 +102,23 @@ const webpackConfig = {
         loader: 'style-loader!css-loader!postcss-loader'
       },
       {
+        test: /manifest.json$/,
+        loader: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
+      },
+      {
         test: /\.json$/,
+        exclude: /manifest.json$/,
         loader: 'json-loader'
+      },
+      {
+        test: /\.html$/,
+        loader: 'html?interpolate',
       }
     ]
   },
 
   imageWebpackLoader: {
-    optimizationLevel: (process.env.NODE_ENV === 'development' ? 0 : 7),
+    optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7),
     bypassOnDebug: true,
     interlaced: false
   },
@@ -118,7 +128,7 @@ const webpackConfig = {
 };
 
 // Environment configuration
-if (process.env.NODE_ENV === 'production') {
+if (envVariables.NODE_ENV === 'production') {
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false,
@@ -128,6 +138,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     comments: false
   }));
+  webpackConfig.devtool = 'source-map';
 } else {
   webpackConfig.devtool = 'eval-source-map';
 }

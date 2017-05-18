@@ -27,7 +27,8 @@ class BasemapPanel extends Component {
 
     this.props.basemaps.forEach((basemap) => {
       const imageName = camelCase(basemap.title);
-      const urlThumbnail = `/basemaps/${imageName}.png`;
+      const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
+
       const itemLayer = (
         <li
           className={classnames(LayerListStyles['layer-item'],
@@ -39,7 +40,7 @@ class BasemapPanel extends Component {
             onClick={event => this.onSelectBasemap(event, basemap)}
           >
             <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles['layer-thumbnail']} />
-            <span className={LayerListStyles['layer-title']}>{basemap.title}</span>
+            <span className={LayerListStyles['layer-title']}>{basemap.label}</span>
           </div>
           <ul className={LayerListStyles['layer-option-list']}>
             <li

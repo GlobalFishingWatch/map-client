@@ -43,7 +43,7 @@ class MenuMobile extends Component {
       />
       <div className={cssClass} >
         <ul>
-          <li><a href="#" >Map</a></li>
+          <li><a href={SITE_URL} >Home</a></li>
           <li>News</li>
           <ul className={menuMobile['submenu-mobile']} >
             <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer" >Blog</a></li>

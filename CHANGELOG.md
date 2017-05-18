@@ -1,10 +1,19 @@
 # Changelog
 
+
+
+## 2.0.0
+- Do not redirect to base domain on logout
+- Decouple basemap label from name
+- Replace "satellite" basemap with "hybrid"
+- Remove "Map" and add "Home" to menus
+- Dismissible legacy version banner
+- Fixed loading error when loading map from a custom path, ie not at the root of the website
 - Fix issue where fishing layers loaded as invisible would never load when made visible
 - Load workspace id from legacy structure
 - On embedded mode, open site on new tab
 - Fallback to canvas when WebGL is not available and display a performance warning
-- Shorter timeline labels for small viewports 
+- Shorter timeline labels for small viewports
 - Fix date pickers on iOs
 - Hide site menu on embed mode
 
@@ -27,7 +36,7 @@
 - Fixed share embedded URL
 - Fix map center loading from workspace
 - Have map follow the COMPLETE_MAP_RENDER value on embedded mode
-
+}
 ## 2.0.0 RC9
 - Fix regression on heatmap interactivity
 

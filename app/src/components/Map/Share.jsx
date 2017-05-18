@@ -66,7 +66,7 @@ class Share extends Component {
     if (SHARE_BASE_URL) {
       return SHARE_BASE_URL.replace('{workspace_id}', this.props.workspaceId);
     }
-    return `${location.origin}${location.pathname.replace(/\/$/g, '')}?workspace=${this.props.workspaceId}`;
+    return `${location.origin}${location.pathname.replace(/\/$/g, '')}/?workspace=${this.props.workspaceId}`;
   }
 
   updateEmbedSize(event) {

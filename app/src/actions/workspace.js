@@ -56,7 +56,7 @@ export function setWorkspaceId(workspaceId) {
  */
 export function updateURL() {
   return (dispatch, getState) => {
-    const newURL = `${window.location.protocol}//${window.location.host}?workspace=${getState().map.workspaceId}`;
+    const newURL = `${window.location.origin}${window.location.pathname.replace(/\/$/g, '')}/?workspace=${getState().map.workspaceId}`;
     window.history.pushState({ path: newURL }, '', newURL);
   };
 }
