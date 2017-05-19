@@ -1,5 +1,6 @@
 # Changelog
 
+## 2.0.2
 - Fix issue where welcome modal would show unneeded scrollbars on desktop screen sizes
 
 ## 2.0.1
