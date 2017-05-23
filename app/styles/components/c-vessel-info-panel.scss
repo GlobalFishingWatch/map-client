@@ -83,11 +83,11 @@
       text-decoration: underline;
     }
 
-    .rfmo-list {
+    .link-list {
       display: flex;
       flex-wrap: wrap;
 
-      > .rfmo-item {
+      > .link-list-item {
         width: calc(50% - 3px);
 
         &:nth-child(2n) {
@@ -95,7 +95,7 @@
         }
       }
 
-      > .rfmo-item > .external-link {
+      > .link-list-item > .external-link {
         margin: 10px 0 0;
       }
     }

@@ -17,6 +17,46 @@ class VesselInfoPanel extends Component {
   constructor(props) {
     super(props);
 
+    // TODO: this is a temporary workaround for the fact that the AIS layer is missing data in the headers.
+    this.fakeVesselInfo = [
+      {
+        id: 'vesselname',
+        display: 'Name',
+        anonymous: true
+      },
+      {
+        id: 'imo',
+        display: 'IMO',
+        anonymous: true
+      },
+      {
+        id: 'mmsi',
+        display: 'MMSI',
+        anonymous: true
+      },
+      {
+        id: 'flag',
+        display: 'Country',
+        kind: 'flag',
+        anonymous: false
+      },
+      {
+        id: 'callsign',
+        display: 'Callsign',
+        anonymous: true
+      },
+      {
+        id: 'rfmo_registry_info',
+        display: 'RFMO',
+        kind: 'list_link',
+        anonymous: true
+      },
+      {
+        id: 'seriesgroup',
+        display: false,
+        anonymous: true
+      }
+    ];
     this.state = {
       isExpanded: true // expanded by default to hide the fact that accordion will remain opened.
       // TODO: close the accordion when the info panel appears.
@@ -42,77 +82,76 @@ class VesselInfoPanel extends Component {
 
     if (status.isLoading) {
       vesselInfoContents = (
-        <div className={vesselPanelStyles['vessel-metadata']}>
+        <div className={vesselPanelStyles['vessel-metadata']} >
           <div>Loading vessel information...</div>
         </div>
       );
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
     } else if (vesselInfo !== undefined) {
-      let iso = null;
-      if (vesselInfo.flag) {
-        iso = iso3311a2.getCountry(vesselInfo.flag);
+      const currentLayer = this.props.layers.find(layer => layer.tilesetId === vesselInfo.tilesetId);
+      let layerFields = this.fakeVesselInfo;
+      if (currentLayer !== undefined && currentLayer.header !== undefined && currentLayer.header.vesselFields !== undefined) {
+        layerFields = currentLayer.header.vesselFields;
       }
 
-      let RFMORegistry = null;
-      if (vesselInfo.rfmo_registry_info) {
-        RFMORegistry = [];
-        vesselInfo.rfmo_registry_info.forEach((registry) => {
-          RFMORegistry.push(<li key={registry.rfmo} className={vesselPanelStyles['rfmo-item']}>
-            <a
-              className={vesselPanelStyles['external-link']}
-              href={`${registry.url}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {registry.rfmo}
-            </a>
-          </li>);
-        });
-      }
+      const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
-      const canSeeVesselId = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
+      const renderedFieldList = [];
+
+      layerFields.filter(field => field.display !== false && (canSeeVesselDetails || !field.anonymous)).forEach((field) => {
+        let linkList;
+        if (vesselInfo[field.id] === undefined) {
+          return;
+        }
+        switch (field.kind) {
+          case 'list_link':
+            linkList = [];
+            vesselInfo[field.id].forEach((registry) => {
+              linkList.push(<li key={registry.rfmo} className={vesselPanelStyles['link-list-item']} >
+                <a
+                  className={vesselPanelStyles['external-link']}
+                  href={`${registry.url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {registry.rfmo}
+                </a>
+              </li>);
+            });
+            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+              <span className={vesselPanelStyles.key} >{field.display}</span>
+              <ul className={vesselPanelStyles['link-list']} >
+                {linkList}
+              </ul>
+            </div>);
+            break;
+          case 'flag':
+            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+              <span className={vesselPanelStyles.key} >{field.display}</span>
+              <span className={vesselPanelStyles.value} >{iso3311a2.getCountry(vesselInfo[field.id]) || '---'}</span>
+            </div>);
+            break;
+          default:
+            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+              <span className={vesselPanelStyles.key} >{field.display}</span>
+              <span className={vesselPanelStyles.value} >{vesselInfo[field.id] || '---'}</span>
+            </div>);
+        }
+      });
 
       vesselInfoContents = (
-        <div className={vesselPanelStyles['vessel-metadata']}>
+        <div className={vesselPanelStyles['vessel-metadata']} >
           {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
           <PinIcon
             className={classnames(iconStyles.icon, iconStyles['pin-icon'],
               vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
-            onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
+            onClick={() => {
+              this.props.onTogglePin(vesselInfo.seriesgroup);
+            }}
           />}
-          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>Name</span>
-            <span className={vesselPanelStyles.value}>{vesselInfo.vesselname || '---'}</span>
-          </div>
-          }
-          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>IMO</span>
-            <span className={vesselPanelStyles.value}>{vesselInfo.imo || '---'}</span>
-          </div>
-          }
-          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>MMSI</span>
-            <span className={vesselPanelStyles.value}>{vesselInfo.mmsi || '---'}</span>
-          </div>
-          }
-          <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>Country</span>
-            <span className={vesselPanelStyles.value}>{iso || '---'}</span>
-          </div>
-          {canSeeVesselId && <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>Callsign</span>
-            <span className={vesselPanelStyles.value}>{vesselInfo.callsign || '---'}</span>
-          </div>
-          }
-          {canSeeVesselId && RFMORegistry && <div className={vesselPanelStyles['row-info']}>
-            <span className={vesselPanelStyles.key}>RFMO</span>
-            <ul className={vesselPanelStyles['rfmo-list']}>
-              {RFMORegistry}
-            </ul>
-          </div>
-          }
-          {canSeeVesselId && vesselInfo.mmsi && <a
+          {renderedFieldList}
+          {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={vesselPanelStyles['external-link']}
             target="_blank"
             rel="noopener noreferrer"
@@ -120,7 +159,7 @@ class VesselInfoPanel extends Component {
           >Check it out on MarineTraffic.com
           </a>
           }
-          {!canSeeVesselId && <a
+          {!canSeeVesselDetails && <a
             className={vesselPanelStyles['external-link']}
             onClick={this.props.login}
           >Click here to login and see more details</a>
@@ -134,9 +173,9 @@ class VesselInfoPanel extends Component {
         className={classnames(vesselPanelStyles['c-vessel-info-panel'],
           { [`${vesselPanelStyles['-expanded']}`]: this.state.isExpanded })}
       >
-        <div className={vesselPanelStyles['buttons-container']}>
+        <div className={vesselPanelStyles['buttons-container']} >
 
-          <MediaQuery maxWidth={789}>
+          <MediaQuery maxWidth={789} >
             <ExpandButton
               onExpand={() => this.onExpand()}
               isExpanded={this.state.isExpanded}
@@ -156,6 +195,7 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
+  layers: PropTypes.array,
   vessels: PropTypes.array,
   infoPanelStatus: PropTypes.object,
   userPermissions: PropTypes.array,
