@@ -1,5 +1,8 @@
 # Changelog
 
+- Fix support for multiple fishing event layers
+- Add support for dynamic vessel detail info
+
 ## 2.0.3
 - Replace "CartoDB" with "CARTO"
 
