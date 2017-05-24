@@ -17,46 +17,6 @@ class VesselInfoPanel extends Component {
   constructor(props) {
     super(props);
 
-    // TODO: this is a temporary workaround for the fact that the AIS layer is missing data in the headers.
-    this.fakeVesselInfo = [
-      {
-        id: 'vesselname',
-        display: 'Name',
-        anonymous: true
-      },
-      {
-        id: 'imo',
-        display: 'IMO',
-        anonymous: true
-      },
-      {
-        id: 'mmsi',
-        display: 'MMSI',
-        anonymous: true
-      },
-      {
-        id: 'flag',
-        display: 'Country',
-        kind: 'flag',
-        anonymous: false
-      },
-      {
-        id: 'callsign',
-        display: 'Callsign',
-        anonymous: true
-      },
-      {
-        id: 'rfmo_registry_info',
-        display: 'RFMO',
-        kind: 'list_link',
-        anonymous: true
-      },
-      {
-        id: 'seriesgroup',
-        display: false,
-        anonymous: true
-      }
-    ];
     this.state = {
       isExpanded: true // expanded by default to hide the fact that accordion will remain opened.
       // TODO: close the accordion when the info panel appears.
@@ -90,7 +50,7 @@ class VesselInfoPanel extends Component {
       return null;
     } else if (vesselInfo !== undefined) {
       const currentLayer = this.props.layers.find(layer => layer.tilesetId === vesselInfo.tilesetId);
-      let layerFields = this.fakeVesselInfo;
+      let layerFields;
       if (currentLayer !== undefined && currentLayer.header !== undefined && currentLayer.header.vesselFields !== undefined) {
         layerFields = currentLayer.header.vesselFields;
       }
@@ -105,7 +65,24 @@ class VesselInfoPanel extends Component {
           return;
         }
         switch (field.kind) {
-          case 'list_link':
+          case 'prefixedCSVMultiLink':
+            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+              <span className={vesselPanelStyles.key} >{field.display}</span>
+              <ul className={vesselPanelStyles['link-list']} >
+                <li className={vesselPanelStyles['link-list-item']} >
+                  <a
+                    className={vesselPanelStyles['external-link']}
+                    href={`${field.prefix}${vesselInfo[field.id]}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {vesselInfo[field.id]}
+                  </a>
+                </li>
+              </ul>
+            </div>);
+            break;
+          case 'objectArrayMultiLink':
             linkList = [];
             vesselInfo[field.id].forEach((registry) => {
               linkList.push(<li key={registry.rfmo} className={vesselPanelStyles['link-list-item']} >

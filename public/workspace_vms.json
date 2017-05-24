@@ -25,7 +25,7 @@
           "description": "VMS Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-with-no-info-v2",
           "visible": true,
-          "hue": 182,
+          "color": "#42ec20",
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "fishing",
