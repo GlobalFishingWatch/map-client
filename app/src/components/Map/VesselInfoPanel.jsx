@@ -59,13 +59,16 @@ class VesselInfoPanel extends Component {
 
       const renderedFieldList = [];
 
-      layerFields.filter(field => field.display !== false && (canSeeVesselDetails || !field.anonymous)).forEach((field) => {
+      layerFields.filter(field => field.display !== false && (canSeeVesselDetails || field.anonymous)).forEach((field) => {
         let linkList;
         if (vesselInfo[field.id] === undefined) {
           return;
         }
         switch (field.kind) {
           case 'prefixedCSVMultiLink':
+            if (!vesselInfo[field.id]) {
+              break;
+            }
             renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
               <span className={vesselPanelStyles.key} >{field.display}</span>
               <ul className={vesselPanelStyles['link-list']} >
