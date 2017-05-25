@@ -80,7 +80,7 @@ class MapFooter extends Component {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                CartoDB
+                CARTO
               </a>
               {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, <br />TerraMetrics, EEZs:{' '}
               <a

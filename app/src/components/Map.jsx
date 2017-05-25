@@ -321,7 +321,7 @@ class Map extends Component {
               target="_blank"
               rel="noopener noreferrer"
             >
-              CartoDB
+              CARTO
             </a>
             {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
             <a
