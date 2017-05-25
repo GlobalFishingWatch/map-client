@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import menuMobile from 'styles/components/c-mobile-menu.scss';
 
@@ -69,13 +70,13 @@ class MenuMobile extends Component {
 }
 
 MenuMobile.propTypes = {
-  visible: React.PropTypes.bool,
-  onClose: React.PropTypes.func,
-  logout: React.PropTypes.func,
-  login: React.PropTypes.func,
-  loggedUser: React.PropTypes.object,
-  setSupportModalVisibility: React.PropTypes.func,
-  beforeLeave: React.PropTypes.func
+  visible: PropTypes.bool,
+  onClose: PropTypes.func,
+  logout: PropTypes.func,
+  login: PropTypes.func,
+  loggedUser: PropTypes.object,
+  setSupportModalVisibility: PropTypes.func,
+  beforeLeave: PropTypes.func
 };
 
 export default MenuMobile;

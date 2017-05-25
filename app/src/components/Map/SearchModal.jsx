@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import SearchResult from 'containers/Map/SearchResult';
@@ -102,23 +103,23 @@ class SearchModal extends Component {
 }
 
 SearchModal.propTypes = {
-  closeSearchModal: React.PropTypes.func,
-  setSearchTerm: React.PropTypes.func,
-  setSearchPage: React.PropTypes.func,
+  closeSearchModal: PropTypes.func,
+  setSearchTerm: PropTypes.func,
+  setSearchPage: PropTypes.func,
   /*
    Search results
    */
-  entries: React.PropTypes.array, /*
+  entries: PropTypes.array, /*
    Number of total search results
    */
-  count: React.PropTypes.number, /*
+  count: PropTypes.number, /*
    If search is in progress
    */
-  searching: React.PropTypes.bool, /*
+  searching: PropTypes.bool, /*
    Search term to use
    */
-  searchTerm: React.PropTypes.string,
-  page: React.PropTypes.number
+  searchTerm: PropTypes.string,
+  page: PropTypes.number
 };
 
 export default SearchModal;

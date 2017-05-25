@@ -1,6 +1,7 @@
 /* eslint-disable max-len  */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { REPORT_STATUS } from 'constants';
 import iconStyles from 'styles/icons.scss';
@@ -104,15 +105,15 @@ ReportPanel.defaultProps = {
 };
 
 ReportPanel.propTypes = {
-  onReportClose: React.PropTypes.func,
-  onDiscardReport: React.PropTypes.func,
-  onRemovePolygon: React.PropTypes.func,
-  onSendReport: React.PropTypes.func,
-  polygons: React.PropTypes.array,
-  layerTitle: React.PropTypes.string,
-  visible: React.PropTypes.bool,
-  status: React.PropTypes.string,
-  statusText: React.PropTypes.string
+  onReportClose: PropTypes.func,
+  onDiscardReport: PropTypes.func,
+  onRemovePolygon: PropTypes.func,
+  onSendReport: PropTypes.func,
+  polygons: PropTypes.array,
+  layerTitle: PropTypes.string,
+  visible: PropTypes.bool,
+  status: PropTypes.string,
+  statusText: PropTypes.string
 };
 
 export default ReportPanel;

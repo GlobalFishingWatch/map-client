@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import assign from 'lodash/assign';
 import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';
@@ -25,16 +27,16 @@ class LayerBlendingOptionsTooltip extends Component {
   constructor(props) {
     super(props);
 
-    this.opacityRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.opacityRangeConfig, {
+    this.opacityRangeConfig = cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    assign(this.opacityRangeConfig, {
       minValue: 10,
       maxValue: 100,
       step: 1,
       value: this.props.opacityValue * 100
     });
 
-    this.hueRangeConfig = _.cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
-    _.assign(this.hueRangeConfig, {
+    this.hueRangeConfig = cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
+    assign(this.hueRangeConfig, {
       minValue: 0,
       maxValue: 360,
       step: VESSELS_HUES_INCREMENT,
@@ -139,15 +141,15 @@ class LayerBlendingOptionsTooltip extends Component {
 }
 
 LayerBlendingOptionsTooltip.propTypes = {
-  displayHue: React.PropTypes.bool,
-  displayOpacity: React.PropTypes.bool,
-  hueValue: React.PropTypes.number,
-  opacityValue: React.PropTypes.number,
-  onChangeHue: React.PropTypes.func,
-  onChangeOpacity: React.PropTypes.func,
-  isReverse: React.PropTypes.bool,
-  toggleVisibility: React.PropTypes.func,
-  visible: React.PropTypes.bool
+  displayHue: PropTypes.bool,
+  displayOpacity: PropTypes.bool,
+  hueValue: PropTypes.number,
+  opacityValue: PropTypes.number,
+  onChangeHue: PropTypes.func,
+  onChangeOpacity: PropTypes.func,
+  isReverse: PropTypes.bool,
+  toggleVisibility: PropTypes.func,
+  visible: PropTypes.bool
 };
 
 export default LayerBlendingOptionsTooltip;

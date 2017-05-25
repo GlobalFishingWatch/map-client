@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import uniq from 'lodash/uniq';
 import {
   INIT_HEATMAP_LAYERS,
   UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
@@ -29,7 +29,7 @@ export default function (state = initialState, action) {
     case UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES: {
       const heatmapLayers = state.heatmapLayers;
       let indices = heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices;
-      indices = _.uniq(indices.concat(action.payload.diff));
+      indices = uniq(indices.concat(action.payload.diff));
       heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices = indices;
       return Object.assign({}, state, heatmapLayers);
     }

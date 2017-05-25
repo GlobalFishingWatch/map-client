@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
 
 import React, { Component } from 'react';
@@ -30,7 +31,7 @@ class ToolTipJSON extends Component {
 }
 
 ToolTipJSON.propTypes = {
-  html: React.PropTypes.string
+  html: PropTypes.string
 };
 
 export default ToolTipJSON;

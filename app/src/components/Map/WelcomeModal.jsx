@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
 import styles from 'styles/components/map/c-welcome-modal.scss';
@@ -14,8 +15,8 @@ class WelcomeModal extends Component {
 }
 
 WelcomeModal.propTypes = {
-  closeModal: React.PropTypes.func,
-  content: React.PropTypes.string
+  closeModal: PropTypes.func,
+  content: PropTypes.string
 };
 
 export default WelcomeModal;

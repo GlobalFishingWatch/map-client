@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import supportFormStyle from 'styles/components/c-support-form.scss';
@@ -164,11 +165,11 @@ class SupportForm extends Component {
 }
 
 SupportForm.propTypes = {
-  contactStatus: React.PropTypes.any,
-  onFormSubmit: React.PropTypes.func,
-  defaultUserName: React.PropTypes.string,
-  defaultUserEmail: React.PropTypes.string,
-  close: React.PropTypes.func
+  contactStatus: PropTypes.any,
+  onFormSubmit: PropTypes.func,
+  defaultUserName: PropTypes.string,
+  defaultUserEmail: PropTypes.string,
+  close: PropTypes.func
 };
 
 export default SupportForm;

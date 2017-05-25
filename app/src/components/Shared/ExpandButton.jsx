@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
@@ -17,8 +18,8 @@ class ExpandButton extends Component {
 }
 
 ExpandButton.propTypes = {
-  isExpanded: React.PropTypes.bool,
-  onExpand: React.PropTypes.func
+  isExpanded: PropTypes.bool,
+  onExpand: PropTypes.func
 };
 
 export default ExpandButton;

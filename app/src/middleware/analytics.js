@@ -20,7 +20,7 @@ import {
   GA_MAP_CENTER_TILE,
   TOGGLE_VESSEL_PIN
 } from 'actions';
-import _ from 'lodash';
+import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 
 const GA_ACTION_WHITELIST = [
@@ -187,7 +187,7 @@ const googleAnalyticsMiddleware = store => next => (action) => {
         hitType: 'event',
         eventCategory: gaAction.category
       };
-      if (_.isFunction(gaAction.action)) {
+      if (isFunction(gaAction.action)) {
         gaEvent.eventAction = gaAction.action(action, state);
       } else {
         gaEvent.eventAction = gaAction.action;

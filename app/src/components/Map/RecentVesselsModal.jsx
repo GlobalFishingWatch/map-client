@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
@@ -57,9 +58,9 @@ class RecentVesselsModal extends Component {
 }
 
 RecentVesselsModal.propTypes = {
-  closeModal: React.PropTypes.func,
-  drawVessel: React.PropTypes.func,
-  history: React.PropTypes.array
+  closeModal: PropTypes.func,
+  drawVessel: PropTypes.func,
+  history: PropTypes.array
 };
 
 export default RecentVesselsModal;

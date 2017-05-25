@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
@@ -99,16 +100,16 @@ class PinnedTracksItem extends Component {
 }
 
 PinnedTracksItem.propTypes = {
-  pinnedVesselEditMode: React.PropTypes.bool,
-  index: React.PropTypes.number,
-  togglePinnedVesselVisibility: React.PropTypes.func,
-  onLayerBlendingToggled: React.PropTypes.func,
-  onRemoveClicked: React.PropTypes.func,
-  setPinnedVesselTitle: React.PropTypes.func,
-  onVesselClicked: React.PropTypes.func,
-  setPinnedVesselHue: React.PropTypes.func,
-  showBlending: React.PropTypes.bool,
-  vessel: React.PropTypes.object
+  pinnedVesselEditMode: PropTypes.bool,
+  index: PropTypes.number,
+  togglePinnedVesselVisibility: PropTypes.func,
+  onLayerBlendingToggled: PropTypes.func,
+  onRemoveClicked: PropTypes.func,
+  setPinnedVesselTitle: PropTypes.func,
+  onVesselClicked: PropTypes.func,
+  setPinnedVesselHue: PropTypes.func,
+  showBlending: PropTypes.bool,
+  vessel: PropTypes.object
 };
 
 export default PinnedTracksItem;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
@@ -230,20 +231,20 @@ class ControlPanel extends Component {
 }
 
 ControlPanel.propTypes = {
-  login: React.PropTypes.func,
-  layers: React.PropTypes.array,
-  vessels: React.PropTypes.array,
-  chartData: React.PropTypes.array,
-  userPermissions: React.PropTypes.array,
-  disableSearchEditMode: React.PropTypes.func,
-  disableLayerPanelEditMode: React.PropTypes.func,
-  hideSearchResults: React.PropTypes.func,
-  pinnedVesselEditMode: React.PropTypes.bool,
-  layerPanelEditMode: React.PropTypes.bool,
-  timelineInnerExtent: React.PropTypes.array,
-  isEmbedded: React.PropTypes.bool,
-  isReportStarted: React.PropTypes.bool,
-  openTimebarInfoModal: React.PropTypes.func
+  login: PropTypes.func,
+  layers: PropTypes.array,
+  vessels: PropTypes.array,
+  chartData: PropTypes.array,
+  userPermissions: PropTypes.array,
+  disableSearchEditMode: PropTypes.func,
+  disableLayerPanelEditMode: PropTypes.func,
+  hideSearchResults: PropTypes.func,
+  pinnedVesselEditMode: PropTypes.bool,
+  layerPanelEditMode: PropTypes.bool,
+  timelineInnerExtent: PropTypes.array,
+  isEmbedded: PropTypes.bool,
+  isReportStarted: PropTypes.bool,
+  openTimebarInfoModal: PropTypes.func
 };
 
 export default ControlPanel;

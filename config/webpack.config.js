@@ -8,6 +8,7 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJSON = require('../package.json');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const rootPath = process.cwd();
 const envVariables = process.env;
@@ -35,7 +36,7 @@ const webpackConfig = {
       filename: 'index.html',
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
@@ -56,7 +57,9 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
-    })
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    // new BundleAnalyzerPlugin()
   ],
 
   resolve: {

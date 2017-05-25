@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class TogglePauseButton extends Component {
@@ -20,8 +21,8 @@ class TogglePauseButton extends Component {
 }
 
 TogglePauseButton.propTypes = {
-  onToggle: React.PropTypes.func,
-  paused: React.PropTypes.bool
+  onToggle: PropTypes.func,
+  paused: PropTypes.bool
 };
 
 export default TogglePauseButton;
