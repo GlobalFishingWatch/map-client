@@ -31,7 +31,10 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const vesselInfo = this.props.vessels.find(vessel => vessel.shownInInfoPanel === true);
+    // const vesselInfo = this.props.vessels.find(vessel => vessel.shownInInfoPanel === true);
+    // instead directly use:
+    const vesselInfo = this.props.currentlyShownVessel.vessel;
+
     const status = this.props.infoPanelStatus;
 
     if (status === null && vesselInfo === undefined) {
@@ -49,7 +52,10 @@ class VesselInfoPanel extends Component {
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
     } else if (vesselInfo !== undefined) {
-      const currentLayer = this.props.layers.find(layer => layer.tilesetId === vesselInfo.tilesetId);
+      // const currentLayer = this.props.layers.find(layer => layer.tilesetId === vesselInfo.tilesetId);
+      // instead directly use:
+      const currentLayer = this.props.currentlyShownVessel.layer;
+      // I haven't checked but we could probably go further directly collecting vesselFields in the action, instead of sending the whole layer
       let layerFields;
       if (currentLayer !== undefined && currentLayer.header !== undefined && currentLayer.header.vesselFields !== undefined) {
         layerFields = currentLayer.header.vesselFields;
