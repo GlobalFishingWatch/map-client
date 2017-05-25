@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
@@ -139,10 +140,10 @@ class DurationPicker extends Component {
 }
 
 DurationPicker.propTypes = {
-  extent: React.PropTypes.array,
-  extentPx: React.PropTypes.array,
-  timelineOuterExtent: React.PropTypes.array,
-  onTimeRangeSelected: React.PropTypes.func
+  extent: PropTypes.array,
+  extentPx: PropTypes.array,
+  timelineOuterExtent: PropTypes.array,
+  onTimeRangeSelected: PropTypes.func
 };
 
 export default DurationPicker;

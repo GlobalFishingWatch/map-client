@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
@@ -72,12 +73,12 @@ export default class PolygonReport extends Component {
 }
 
 PolygonReport.propTypes = {
-  id: React.PropTypes.number,
-  name: React.PropTypes.string,
-  description: React.PropTypes.string,
-  latLng: React.PropTypes.array,
-  isInReport: React.PropTypes.bool,
-  toggleReportPolygon: React.PropTypes.func,
-  clearPolygon: React.PropTypes.func,
-  map: React.PropTypes.object
+  id: PropTypes.number,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  latLng: PropTypes.array,
+  isInReport: PropTypes.bool,
+  toggleReportPolygon: PropTypes.func,
+  clearPolygon: PropTypes.func,
+  map: PropTypes.object
 };

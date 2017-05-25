@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MapContainer from 'containers/Map';
 import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
@@ -28,19 +29,19 @@ AuthMap.propTypes = {
   /**
    * User token for the map
    */
-  token: React.PropTypes.string,
+  token: PropTypes.string,
   /**
    * Whether the user can be redirected to SalesForce to get the token
    */
-  canRedirect: React.PropTypes.bool,
+  canRedirect: PropTypes.bool,
   /**
    * Method to redirect the user to SalesForce to login and get the token
    */
-  login: React.PropTypes.func,
+  login: PropTypes.func,
   /**
    * Workspace ID retrieved from the URL
    */
-  workspaceId: React.PropTypes.string
+  workspaceId: PropTypes.string
 };
 
 export default AuthMap;

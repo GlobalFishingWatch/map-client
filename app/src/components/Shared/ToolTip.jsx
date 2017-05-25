@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iconInfoBlack from 'assets/icons/info_black.svg';
@@ -156,12 +157,12 @@ class ToolTip extends Component {
 }
 
 ToolTip.propTypes = {
-  iconColor: React.PropTypes.string,
-  text: React.PropTypes.string,
-  href: React.PropTypes.string,
-  children: React.PropTypes.oneOfType([
-    React.PropTypes.string,
-    React.PropTypes.element
+  iconColor: PropTypes.string,
+  text: PropTypes.string,
+  href: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element
   ])
 };
 

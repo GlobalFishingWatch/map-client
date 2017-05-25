@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import uniq from 'lodash/uniq';
 import {
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
@@ -160,7 +160,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
           payload: {
             seriesgroup,
             seriesGroupData: vectorArray,
-            series: _.uniq(groupedData.series),
+            series: uniq(groupedData.series),
             selectedSeries: series,
             tilesetUrl: state.map.tilesetUrl
           }

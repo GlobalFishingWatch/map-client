@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import ShareStyles from 'styles/components/map/c-share.scss';
@@ -165,7 +166,8 @@ class Share extends Component {
             </p>
             <select
               className={ShareStyles['share-input']}
-              onChange={event => this.updateEmbedSize(event)} value={this.state.embedSizeName}
+              onChange={event => this.updateEmbedSize(event)}
+              value={this.state.embedSizeName}
             >
               {selectOptions}
             </select>
@@ -177,7 +179,10 @@ class Share extends Component {
             <div>
               <input
                 className={ShareStyles['share-input']}
-                type="text" readOnly value={embed} ref="input"
+                type="text"
+                readOnly
+                value={embed}
+                ref="input"
               />
               <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
                 {this.state.copied ? 'Copied!' : 'Copy'}
@@ -258,11 +263,11 @@ Share.propTypes = {
   /**
    * Id of the created workspace
    */
-  workspaceId: React.PropTypes.string,
+  workspaceId: PropTypes.string,
   /**
    * Possible error due to failed request to save the workspace
    */
-  error: React.PropTypes.string
+  error: PropTypes.string
 };
 
 export default Share;

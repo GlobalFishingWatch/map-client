@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'containers/Map/LayerItem';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
@@ -44,13 +45,13 @@ class LayerPanel extends Component {
 }
 
 LayerPanel.propTypes = {
-  layers: React.PropTypes.array,
-  currentlyReportedLayerId: React.PropTypes.string,
-  toggleLayerVisibility: React.PropTypes.func,
-  setLayerInfoModal: React.PropTypes.func,
-  setLayerOpacity: React.PropTypes.func,
-  setLayerHue: React.PropTypes.func,
-  userPermissions: React.PropTypes.array
+  layers: PropTypes.array,
+  currentlyReportedLayerId: PropTypes.string,
+  toggleLayerVisibility: PropTypes.func,
+  setLayerInfoModal: PropTypes.func,
+  setLayerOpacity: PropTypes.func,
+  setLayerHue: PropTypes.func,
+  userPermissions: PropTypes.array
 };
 
 

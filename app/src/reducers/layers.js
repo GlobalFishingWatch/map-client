@@ -1,4 +1,5 @@
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import findIndex from 'lodash/findIndex';
 import {
   ADD_CUSTOM_LAYER,
   SET_LAYER_HEADER,
@@ -14,7 +15,7 @@ import {
 import { LAYER_TYPES } from 'constants';
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
-  const layers = _.cloneDeep(state.workspaceLayers);
+  const layers = cloneDeep(state.workspaceLayers);
   const layerIndex = layers.findIndex(l => l.id === action.payload.layerId);
   const changedLayer = layers[layerIndex];
 
@@ -38,7 +39,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { workspaceLayers: action.payload.concat() });
     case SET_LAYER_HEADER: {
       const layerIndex = state.workspaceLayers.findIndex(layer => layer.id === action.payload.layerId);
-      const layer = _.cloneDeep(state.workspaceLayers[layerIndex]);
+      const layer = cloneDeep(state.workspaceLayers[layerIndex]);
       layer.header = action.payload.header;
       return Object.assign({}, state, {
         workspaceLayers: [...state.workspaceLayers.slice(0, layerIndex), layer, ...state.workspaceLayers.slice(layerIndex + 1)]
@@ -72,7 +73,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { workspaceLayers });
     }
     case ADD_CUSTOM_LAYER: {
-      const heatmapLayerPosition = _.findIndex(state.workspaceLayers, layer => layer.type === LAYER_TYPES.Heatmap);
+      const heatmapLayerPosition = findIndex(state.workspaceLayers, layer => layer.type === LAYER_TYPES.Heatmap);
 
       const newLayer = {
         id: action.payload.id,
@@ -100,7 +101,7 @@ export default function (state = initialState, action) {
       });
 
       if (newState.layerPanelEditMode === false) {
-        newState.workspaceLayers = _.cloneDeep(state.workspaceLayers);
+        newState.workspaceLayers = cloneDeep(state.workspaceLayers);
 
 
         newState.workspaceLayers.forEach((layer) => {
@@ -114,7 +115,7 @@ export default function (state = initialState, action) {
     }
     case SET_WORKSPACE_LAYER_LABEL: {
       const layerIndex = state.workspaceLayers.findIndex(layer => layer.id === action.payload.layerId);
-      const newLayer = _.cloneDeep(state.workspaceLayers[layerIndex]);
+      const newLayer = cloneDeep(state.workspaceLayers[layerIndex]);
       newLayer.label = action.payload.label;
 
       return Object.assign({}, state, {

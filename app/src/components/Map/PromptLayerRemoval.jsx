@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import ModalStyles from 'styles/components/shared/c-modal.scss';
@@ -43,9 +44,9 @@ class PromptLayerRemoval extends Component {
 }
 
 PromptLayerRemoval.propTypes = {
-  layerIdPromptedForRemoval: React.PropTypes.any,
-  removeLayer: React.PropTypes.func,
-  keepLayer: React.PropTypes.func
+  layerIdPromptedForRemoval: PropTypes.any,
+  removeLayer: PropTypes.func,
+  keepLayer: PropTypes.func
 };
 
 export default PromptLayerRemoval;

@@ -1,6 +1,8 @@
 import PelagosClient from 'lib/pelagosClient';
-import _ from 'lodash';
-import * as d3 from 'd3';
+import pull from 'lodash/pull';
+import uniq from 'lodash/uniq';
+import sumBy from 'lodash/sumBy';
+
 import {
   PLAYBACK_PRECISION,
   VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
@@ -91,7 +93,7 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
 export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
 
-  const totalVectorArraysLength = _.sumBy(cleanVectorArrays, a => a.longitude.length);
+  const totalVectorArraysLength = sumBy(cleanVectorArrays, a => a.longitude.length);
 
   const filteredColumns = columns.filter((column) => {
     if (cleanVectorArrays[0] && cleanVectorArrays[0][column] === undefined) {
@@ -164,13 +166,10 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   const zoomFactorOpacity = ((zoom - 1) ** 3.5) / 1000;
 
   // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
-  const extraColumns = _
-    .chain(columns)
-    .concat([])
-    .pull('x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid') // those are mandatory thus manually added
-    .pull('latitude', 'longitude', 'datetime') // we only need projected coordinates, ie x/y
-    .uniq()
-    .value();
+  let extraColumns = [].concat(columns);
+  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid');  // those are mandatory thus manually added
+  pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
+  extraColumns = uniq(extraColumns);
 
   for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
@@ -260,16 +259,16 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
   return vessels;
 };
 
+/*
 export const getHistogram = (tiles, propName = 'weight') => {
   let data = tiles
     .filter(tile => tile.ready)
     .map(tile => tile.data
       .map(frame => frame[propName]));
-  data = _.flattenDeep(data);
+  data = flattenDeep(data);
   if (data.length) {
     const bins = d3.histogram().thresholds(d3.thresholdScott)(data);
     const x = d3.scaleLinear().domain([0, d3.max(bins, d => d.length)]).range([0, 50]);
-    /* eslint no-console:0 */
     console.table(bins.filter(bin => bin.length).map((bin) => {
       const binMin = d3.min(bin).toLocaleString({ maximumFractionDigits: 2 });
       const binMax = d3.max(bin).toLocaleString({ maximumFractionDigits: 2 });
@@ -281,3 +280,4 @@ export const getHistogram = (tiles, propName = 'weight') => {
     }));
   }
 };
+*/

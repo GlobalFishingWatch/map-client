@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import CustomLayerStyles from 'styles/components/map/c-custom-layer.scss';
@@ -107,10 +108,10 @@ class CustomLayer extends Component {
 
 CustomLayer.propTypes = {
   // function triggered once the form is submitted
-  onCustomLayer: React.PropTypes.func,
-  error: React.PropTypes.string,
-  login: React.PropTypes.func,
-  userPermissions: React.PropTypes.array
+  onCustomLayer: PropTypes.func,
+  error: PropTypes.string,
+  login: PropTypes.func,
+  userPermissions: PropTypes.array
 };
 
 export default CustomLayer;

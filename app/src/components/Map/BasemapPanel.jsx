@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import _ from 'lodash';
+import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';
@@ -25,7 +26,7 @@ class BasemapPanel extends Component {
     const items = [];
 
     this.props.basemaps.forEach((basemap) => {
-      const imageName = _.camelCase(basemap.title);
+      const imageName = camelCase(basemap.title);
       const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
       const itemLayer = (
         <li
@@ -62,10 +63,10 @@ class BasemapPanel extends Component {
 }
 
 BasemapPanel.propTypes = {
-  basemaps: React.PropTypes.array,
-  activeBasemap: React.PropTypes.string,
-  openLayerInfoModal: React.PropTypes.func,
-  setBasemap: React.PropTypes.func
+  basemaps: PropTypes.array,
+  activeBasemap: PropTypes.string,
+  openLayerInfoModal: PropTypes.func,
+  setBasemap: PropTypes.func
 };
 
 export default BasemapPanel;
