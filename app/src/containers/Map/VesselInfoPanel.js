@@ -4,8 +4,9 @@ import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory } from '
 import { login } from 'actions/user';
 
 const mapStateToProps = state => ({
-  layers: state.layers.workspaceLayers,
-  vessels: state.vesselInfo.vessels,
+  // layers: state.layers.workspaceLayers,
+  // vessels: state.vesselInfo.vessels,
+  currentlyShownVessel: state.vesselInfo.currentlyShownVessel,
   infoPanelStatus: state.vesselInfo.infoPanelStatus,
   userPermissions: state.user.userPermissions
 });

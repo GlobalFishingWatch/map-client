@@ -49,6 +49,18 @@ export function loadRecentVesselHistory() {
   };
 }
 
+function showVesselDetails(seriesgroup) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SHOW_VESSEL_DETAILS,
+      payload: {
+        seriesgroup,
+        layer: 'collect layer with getState here, instead of in view'
+      }
+    });
+  };
+}
+
 function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
@@ -84,12 +96,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         type: SET_VESSEL_DETAILS,
         payload: data
       });
-      dispatch({
-        type: SHOW_VESSEL_DETAILS,
-        payload: {
-          seriesgroup: data.seriesgroup
-        }
-      });
+      dispatch(showVesselDetails(data.seriesgroup));
 
       if (fromSearch) {
         dispatch(trackSearchResultClicked(tilesetId, seriesgroup));
@@ -365,12 +372,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
 export function showPinnedVesselDetails(seriesgroup) {
   return (dispatch) => {
     dispatch(clearVesselInfo());
-    dispatch({
-      type: SHOW_VESSEL_DETAILS,
-      payload: {
-        seriesgroup
-      }
-    });
+    dispatch(showVesselDetails(seriesgroup));
     dispatch(togglePinnedVesselVisibility(seriesgroup, true));
   };
 }

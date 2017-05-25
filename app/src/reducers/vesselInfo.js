@@ -113,7 +113,11 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
-        infoPanelStatus: { isLoaded: true }
+        infoPanelStatus: { isLoaded: true },
+        currentlyShownVessel: {
+          vessel: newVessel,
+          layer: action.payload.layer
+        }
       });
     }
 
