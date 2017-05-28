@@ -51,9 +51,13 @@ export default function (state = initialState, action) {
     case SET_VESSEL_DETAILS: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const currentVessel = state.vessels[vesselIndex];
-      const defaultTitle =
-        [action.payload.vesselname, action.payload.mmsi, action.payload.imo, action.payload.callsign, action.payload.seriesgroup]
-        .find(t => t !== undefined);
+      const defaultTitle = [
+        action.payload.vesselname,
+        action.payload.mmsi,
+        action.payload.imo,
+        action.payload.callsign,
+        action.payload.seriesgroup
+      ].find(t => t !== undefined);
 
       const newVessel = Object.assign({
         defaultTitle,
@@ -108,16 +112,13 @@ export default function (state = initialState, action) {
 
     case SHOW_VESSEL_DETAILS: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = cloneDeep(state.vessels[vesselIndex]);
-      newVessel.shownInInfoPanel = true;
+      const currentlyShownVessel = cloneDeep(state.vessels[vesselIndex]);
+      currentlyShownVessel.shownInInfoPanel = true;
 
       return Object.assign({}, state, {
-        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
+        vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
         infoPanelStatus: { isLoaded: true },
-        currentlyShownVessel: {
-          vessel: newVessel,
-          layer: action.payload.layer
-        }
+        currentlyShownVessel
       });
     }
 
@@ -127,26 +128,29 @@ export default function (state = initialState, action) {
       // no vessel currently shown: just reset infoPanelStatus
       if (vesselIndex === -1) {
         return Object.assign({}, state, {
-          infoPanelStatus: null
+          infoPanelStatus: null,
+          currentlyShownVessel: null
         });
       }
 
-      let currentlyVisibleVessel = state.vessels[vesselIndex];
+      let currentlyShownVessel = state.vessels[vesselIndex];
 
       // vessel is pinned: set info to shownInInfoPanel = false
-      if (currentlyVisibleVessel.pinned === true) {
-        currentlyVisibleVessel = cloneDeep(currentlyVisibleVessel);
-        currentlyVisibleVessel.shownInInfoPanel = false;
+      if (currentlyShownVessel.pinned === true) {
+        currentlyShownVessel = cloneDeep(currentlyShownVessel);
+        currentlyShownVessel.shownInInfoPanel = false;
         return Object.assign({}, state, {
-          vessels: [...state.vessels.slice(0, vesselIndex), currentlyVisibleVessel, ...state.vessels.slice(vesselIndex + 1)],
-          infoPanelStatus: null
+          vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
+          infoPanelStatus: { isLoaded: true },
+          currentlyShownVessel
         });
       }
 
       // vessel is not pinned: get rid of vessel
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), ...state.vessels.slice(vesselIndex + 1)],
-        infoPanelStatus: null
+        infoPanelStatus: null,
+        currentlyShownVessel: null
       });
     }
 
@@ -163,10 +167,21 @@ export default function (state = initialState, action) {
       newVessel.pinned = action.payload.pinned;
       newVessel.visible = action.payload.visible;
 
+      let currentlyShownVessel = state.currentlyShownVessel;
+      if (
+        state.currentlyShownVessel &&
+        newVessel.seriesgroup === state.currentlyShownVessel.seriesgroup &&
+        newVessel.tilesetId === state.currentlyShownVessel.tilesetId
+      ) {
+        currentlyShownVessel = cloneDeep(state.currentlyShownVessel);
+        currentlyShownVessel.pinned = action.payload.pinned;
+      }
+
       const newVessels = [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)];
       return Object.assign({}, state, {
         vessels: newVessels,
-        pinnedVesselEditMode: state.pinnedVesselEditMode && newVessels.filter(e => e.pinned === true).length > 0
+        pinnedVesselEditMode: state.pinnedVesselEditMode && newVessels.filter(e => e.pinned === true).length > 0,
+        currentlyShownVessel
       });
     }
     case SET_PINNED_VESSEL_HUE: {

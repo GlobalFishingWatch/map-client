@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import iso3311a2 from 'iso-3166-1-alpha-2';
+import { getCountry } from 'iso-3166-1-alpha-2';
 import MediaQuery from 'react-responsive';
 import ExpandButton from 'components/Shared/ExpandButton';
 
@@ -31,13 +31,10 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    // const vesselInfo = this.props.vessels.find(vessel => vessel.shownInInfoPanel === true);
-    // instead directly use:
-    const vesselInfo = this.props.currentlyShownVessel.vessel;
-
+    const vesselInfo = this.props.currentlyShownVessel;
     const status = this.props.infoPanelStatus;
 
-    if (status === null && vesselInfo === undefined) {
+    if (!status && !vesselInfo) {
       return null;
     }
 
@@ -51,80 +48,12 @@ class VesselInfoPanel extends Component {
       );
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
-    } else if (vesselInfo !== undefined) {
-      // const currentLayer = this.props.layers.find(layer => layer.tilesetId === vesselInfo.tilesetId);
-      // instead directly use:
-      const currentLayer = this.props.currentlyShownVessel.layer;
-      // I haven't checked but we could probably go further directly collecting vesselFields in the action, instead of sending the whole layer
-      let layerFields;
-      if (currentLayer !== undefined && currentLayer.header !== undefined && currentLayer.header.vesselFields !== undefined) {
-        layerFields = currentLayer.header.vesselFields;
-      }
+    } else if (vesselInfo) {
+      let layerFields = this.props.layerFieldsHeaders;
 
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
-      const renderedFieldList = [];
-
-      layerFields.filter(field => field.display !== false && (canSeeVesselDetails || field.anonymous)).forEach((field) => {
-        let linkList;
-        if (vesselInfo[field.id] === undefined) {
-          return;
-        }
-        switch (field.kind) {
-          case 'prefixedCSVMultiLink':
-            if (!vesselInfo[field.id]) {
-              break;
-            }
-            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
-              <span className={vesselPanelStyles.key} >{field.display}</span>
-              <ul className={vesselPanelStyles['link-list']} >
-                <li className={vesselPanelStyles['link-list-item']} >
-                  <a
-                    className={vesselPanelStyles['external-link']}
-                    href={`${field.prefix}${vesselInfo[field.id]}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {vesselInfo[field.id]}
-                  </a>
-                </li>
-              </ul>
-            </div>);
-            break;
-          case 'objectArrayMultiLink':
-            linkList = [];
-            vesselInfo[field.id].forEach((registry) => {
-              linkList.push(<li key={registry.rfmo} className={vesselPanelStyles['link-list-item']} >
-                <a
-                  className={vesselPanelStyles['external-link']}
-                  href={`${registry.url}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {registry.rfmo}
-                </a>
-              </li>);
-            });
-            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
-              <span className={vesselPanelStyles.key} >{field.display}</span>
-              <ul className={vesselPanelStyles['link-list']} >
-                {linkList}
-              </ul>
-            </div>);
-            break;
-          case 'flag':
-            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
-              <span className={vesselPanelStyles.key} >{field.display}</span>
-              <span className={vesselPanelStyles.value} >{iso3311a2.getCountry(vesselInfo[field.id]) || '---'}</span>
-            </div>);
-            break;
-          default:
-            renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
-              <span className={vesselPanelStyles.key} >{field.display}</span>
-              <span className={vesselPanelStyles.value} >{vesselInfo[field.id] || '---'}</span>
-            </div>);
-        }
-      });
+      const renderedFieldList = this.generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo);
 
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']} >
@@ -178,11 +107,78 @@ class VesselInfoPanel extends Component {
         {vesselInfoContents}
       </div>);
   }
+
+  generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo) {
+    const renderedFieldList = [];
+
+    layerFields.filter(field => field.display !== false && (canSeeVesselDetails || field.anonymous)).forEach((field) => {
+      let linkList;
+      if (vesselInfo[field.id] === undefined) {
+        return;
+      }
+      switch (field.kind) {
+        case 'prefixedCSVMultiLink':
+          if (!vesselInfo[field.id]) {
+            break;
+          }
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+            <span className={vesselPanelStyles.key} >{field.display}</span>
+            <ul className={vesselPanelStyles['link-list']} >
+              <li className={vesselPanelStyles['link-list-item']} >
+                <a
+                  className={vesselPanelStyles['external-link']}
+                  href={`${field.prefix}${vesselInfo[field.id]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {vesselInfo[field.id]}
+                </a>
+              </li>
+            </ul>
+          </div>);
+          break;
+        case 'objectArrayMultiLink':
+          linkList = [];
+          vesselInfo[field.id].forEach((registry) => {
+            linkList.push(<li key={registry.rfmo} className={vesselPanelStyles['link-list-item']} >
+              <a
+                className={vesselPanelStyles['external-link']}
+                href={`${registry.url}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {registry.rfmo}
+              </a>
+            </li>);
+          });
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+            <span className={vesselPanelStyles.key} >{field.display}</span>
+            <ul className={vesselPanelStyles['link-list']} >
+              {linkList}
+            </ul>
+          </div>);
+          break;
+        case 'flag':
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+            <span className={vesselPanelStyles.key} >{field.display}</span>
+            <span className={vesselPanelStyles.value} >{getCountry(vesselInfo[field.id]) || '---'}</span>
+          </div>);
+          break;
+        default:
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+            <span className={vesselPanelStyles.key} >{field.display}</span>
+            <span className={vesselPanelStyles.value} >{vesselInfo[field.id] || '---'}</span>
+          </div>);
+      }
+    });
+
+    return renderedFieldList;
+  }
 }
 
 VesselInfoPanel.propTypes = {
-  layers: PropTypes.array,
-  vessels: PropTypes.array,
+  layerFieldsHeaders: PropTypes.array,
+  currentlyShownVessel: PropTypes.object,
   infoPanelStatus: PropTypes.object,
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
