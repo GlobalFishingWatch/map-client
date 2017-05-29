@@ -17,11 +17,11 @@ import {
   LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
-import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'constants';
+import { HEATMAP_TRACK_HIGHLIGHT_HUE, VESSEL_INFO_HIDDEN, VESSEL_INFO_LOADED, VESSEL_INFO_LOADING } from 'constants';
 
 const initialState = {
   vessels: [],
-  infoPanelStatus: null,
+  infoPanelStatus: VESSEL_INFO_HIDDEN,
   pinnedVesselEditMode: false,
   history: []
 };
@@ -29,7 +29,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case ADD_VESSEL: {
-      if (find(state.vessels, l => l.seriesgroup === action.payload.seriesgroup)) {
+      if (find(state.vessels, l => l.seriesgroup === action.payload.seriesgroup && l.tilesetId === action.payload.tilesetId)) {
         return state;
       }
 
@@ -43,7 +43,7 @@ export default function (state = initialState, action) {
         hue: HEATMAP_TRACK_HIGHLIGHT_HUE
       };
       return Object.assign({}, state, {
-        infoPanelStatus: { isLoading: true },
+        infoPanelStatus: VESSEL_INFO_LOADING,
         vessels: [...state.vessels, newVessel]
       });
     }
@@ -66,7 +66,7 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
-        infoPanelStatus: { isLoaded: true }
+        infoPanelStatus: VESSEL_INFO_LOADED
       });
     }
 
@@ -84,7 +84,8 @@ export default function (state = initialState, action) {
     }
 
     case LOAD_PINNED_VESSEL: {
-      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      const vesselIndex = state.vessels
+        .findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup && vessel.tilesetId === action.payload.tilesetId);
       if (vesselIndex > -1) {
         const newVessel = Object.assign(state.vessels[vesselIndex], {
           hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE,
@@ -92,8 +93,15 @@ export default function (state = initialState, action) {
           visible: action.payload.visible
         });
 
+        let currentlyShownVessel = state.currentlyShownVessel;
+        if (newVessel.seriesgroup === currentlyShownVessel.seriesgroup && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
+          currentlyShownVessel = cloneDeep(currentlyShownVessel);
+          currentlyShownVessel.pinned = true;
+        }
+
         return Object.assign({}, state, {
-          vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]
+          vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
+          currentlyShownVessel
         });
       }
 
@@ -117,7 +125,7 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
-        infoPanelStatus: { isLoaded: true },
+        infoPanelStatus: VESSEL_INFO_LOADED,
         currentlyShownVessel
       });
     }
@@ -128,7 +136,7 @@ export default function (state = initialState, action) {
       // no vessel currently shown: just reset infoPanelStatus
       if (vesselIndex === -1) {
         return Object.assign({}, state, {
-          infoPanelStatus: null,
+          infoPanelStatus: VESSEL_INFO_HIDDEN,
           currentlyShownVessel: null
         });
       }
@@ -141,15 +149,15 @@ export default function (state = initialState, action) {
         currentlyShownVessel.shownInInfoPanel = false;
         return Object.assign({}, state, {
           vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
-          infoPanelStatus: { isLoaded: true },
-          currentlyShownVessel
+          infoPanelStatus: VESSEL_INFO_LOADED,
+          currentlyShownVessel: null
         });
       }
 
       // vessel is not pinned: get rid of vessel
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), ...state.vessels.slice(vesselIndex + 1)],
-        infoPanelStatus: null,
+        infoPanelStatus: VESSEL_INFO_HIDDEN,
         currentlyShownVessel: null
       });
     }
