@@ -127,7 +127,7 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        if (this.flags !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+        if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
         if (this.seriesUids && (this.seriesUids.indexOf(frame.seriesUid[index]) === -1)) {
@@ -160,7 +160,7 @@ export default class HeatmapSubLayer {
         const frame = tile.data[timeIndex];
         if (!frame) continue;
         for (let index = 0, len = frame.worldX.length; index < len; index++) {
-          if (this.flags !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+          if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
             continue;
           }
           numSprites++;
