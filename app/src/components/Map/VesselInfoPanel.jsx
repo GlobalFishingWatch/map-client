@@ -12,7 +12,7 @@ import iconStyles from 'styles/icons.scss';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
-import { VESSEL_INFO_HIDDEN, VESSEL_INFO_LOADING, VESSEL_INFO_LOADED } from 'constants';
+import { VESSEL_INFO_STATUS } from 'constants';
 
 class VesselInfoPanel extends Component {
 
@@ -36,13 +36,13 @@ class VesselInfoPanel extends Component {
     const vesselInfo = this.props.currentlyShownVessel;
     const status = this.props.infoPanelStatus;
 
-    if (status !== VESSEL_INFO_LOADING && !vesselInfo) {
+    if (status !== VESSEL_INFO_STATUS.LOADING && vesselInfo === null) {
       return null;
     }
 
     let vesselInfoContents = null;
 
-    if (status === VESSEL_INFO_LOADING) {
+    if (status === VESSEL_INFO_STATUS.LOADING) {
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']} >
           <div>Loading vessel information...</div>
@@ -50,7 +50,7 @@ class VesselInfoPanel extends Component {
       );
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
-    } else if (status === VESSEL_INFO_LOADED && vesselInfo) {
+    } else if (status === VESSEL_INFO_STATUS.LOADED && vesselInfo) {
       const layerFields = this.props.layerFieldsHeaders;
 
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
