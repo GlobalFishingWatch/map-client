@@ -12,6 +12,8 @@ import iconStyles from 'styles/icons.scss';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
+import { VESSEL_INFO_HIDDEN, VESSEL_INFO_LOADING, VESSEL_INFO_LOADED } from 'constants';
+
 class VesselInfoPanel extends Component {
 
   constructor(props) {
@@ -34,13 +36,13 @@ class VesselInfoPanel extends Component {
     const vesselInfo = this.props.currentlyShownVessel;
     const status = this.props.infoPanelStatus;
 
-    if (!status && !vesselInfo) {
+    if (status !== VESSEL_INFO_LOADING && !vesselInfo) {
       return null;
     }
 
     let vesselInfoContents = null;
 
-    if (status.isLoading) {
+    if (status === VESSEL_INFO_LOADING) {
       vesselInfoContents = (
         <div className={vesselPanelStyles['vessel-metadata']} >
           <div>Loading vessel information...</div>
@@ -48,8 +50,8 @@ class VesselInfoPanel extends Component {
       );
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
-    } else if (vesselInfo) {
-      let layerFields = this.props.layerFieldsHeaders;
+    } else if (status === VESSEL_INFO_LOADED && vesselInfo) {
+      const layerFields = this.props.layerFieldsHeaders;
 
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
@@ -179,7 +181,7 @@ class VesselInfoPanel extends Component {
 VesselInfoPanel.propTypes = {
   layerFieldsHeaders: PropTypes.array,
   currentlyShownVessel: PropTypes.object,
-  infoPanelStatus: PropTypes.object,
+  infoPanelStatus: PropTypes.number,
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,

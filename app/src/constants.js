@@ -122,6 +122,10 @@ export const REPORT_STATUS = {
   sent: 'sent'
 };
 
+export const VESSEL_INFO_HIDDEN = 1;
+export const VESSEL_INFO_LOADING = 2;
+export const VESSEL_INFO_LOADED = 3;
+
 export const DEFAULT_EMBED_SIZE = 'Small';
 export const EMBED_SIZE_SETTINGS = [
   {
