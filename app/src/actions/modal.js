@@ -11,8 +11,13 @@ import 'whatwg-fetch';
  */
 
 export function setWelcomeModalUrl() {
+  if (!WELCOME_MODAL_COOKIE_KEY) {
+    return { type: SET_WELCOME_MODAL_URL, payload: null };
+  }
   const cookie = document.cookie.split(WELCOME_MODAL_COOKIE_KEY);
-  if (cookie.length < 2) return { type: SET_WELCOME_MODAL_URL, payload: null };
+  if (cookie.length < 2) {
+    return { type: SET_WELCOME_MODAL_URL, payload: null };
+  }
   const url = cookie[1].split('=')[1].split(';')[0] || null;
   return { type: SET_WELCOME_MODAL_URL, payload: url };
 }
