@@ -240,7 +240,7 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
     for (let i = 0; i < frame.worldX.length; i++) {
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
-      if ((currentFlags === undefined || currentFlags.indexOf(frame.category[i]) !== -1) &&
+      if ((currentFlags === undefined || (frame.category !== undefined && currentFlags.indexOf(frame.category[i]) !== -1)) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {
