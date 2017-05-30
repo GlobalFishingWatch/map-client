@@ -76,7 +76,7 @@
 
   > .container > .content {
     background-color: $color-4;
-    padding: 20px 0 20px 30px;
+    padding: 16px 0 20px 30px;
 
     > .polygon-list {
       max-height: 100px;
@@ -109,22 +109,23 @@
         padding: 10px 0;
       }
 
-      > .polygon-name {
+      .polygon-name,
+      .polygon-message {
         color: $color-1;
         font-size: $font-size-xxs-small;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 18px;
         text-transform: uppercase;
-        white-space: nowrap;
         width: 240px;
       }
 
+      > .polygon-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
       > .polygon-message {
-        color: $color-1;
-        font-size: $font-size-xxs-small;
         font-weight: bold;
-        text-transform: uppercase;
-        width: 240px;
       }
 
       > .polygon-remove {
@@ -158,6 +159,27 @@
     }
   }
 
+  .warning {
+    color: $color-13;
+    font-size: $font-size-xxs-small;
+    line-height: 18px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    width: 240px;
+
+    .warning-icon {
+      display: block;
+      float: left;
+      margin-bottom: 10px;
+      margin-right: 6px;
+      width: 15px;
+
+      path {
+        fill: $color-13;
+      }
+    }
+  }
+
   > .container > .report-options > .report-button {
     background-color: $color-4;
     border-top: 1px solid rgba($color-19, .3);
@@ -184,4 +206,6 @@
       width: 100%;
     }
   }
+
+
 }
