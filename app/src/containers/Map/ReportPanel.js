@@ -8,7 +8,9 @@ const mapStateToProps = state => ({
   visible: state.report.layerId !== null,
   layerTitle: state.report.layerTitle,
   status: state.report.status,
-  statusText: state.report.statusText
+  statusText: state.report.statusText,
+  reportWarning: state.literals.report_warning,
+  reportableHeatmapLayers: 'Fishing Effort'
 });
 
 const mapDispatchToProps = dispatch => ({

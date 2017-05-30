@@ -1,4 +1,5 @@
 {
   "fishing_hours_description": "Description of what fishing hours are",
-  "banner": "You are viewing a new version of the map. <a href='http://globalfishingwatch.org/map'>See legacy map</a>."
+  "banner": "You are viewing a new version of the map. <a href='http://globalfishingwatch.org/map'>See legacy map</a>.",
+  "report_warning": "Only the following layers will be reported: $REPORTABLE_LAYERS"
 }

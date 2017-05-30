@@ -8,6 +8,8 @@ import iconStyles from 'styles/icons.scss';
 import ReportPanelStyles from 'styles/components/map/c-report-panel.scss';
 
 import RemovePolygonIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=RemovePolygonIcon';
+import AlertIcon from 'babel!svg-react!assets/icons/alert.svg?name=AlertIcon';
+
 
 class ReportPanel extends Component {
 
@@ -92,6 +94,10 @@ class ReportPanel extends Component {
             <ul className={ReportPanelStyles['polygon-list']}>
               {content}
             </ul>
+            <div className={ReportPanelStyles.warning}>
+              <AlertIcon className={ReportPanelStyles['warning-icon']} />
+              {this.props.reportWarning.replace('$REPORTABLE_LAYERS', this.props.reportableHeatmapLayers)}
+            </div>
           </div>
           {buttons}
         </div>
@@ -113,7 +119,9 @@ ReportPanel.propTypes = {
   layerTitle: PropTypes.string,
   visible: PropTypes.bool,
   status: PropTypes.string,
-  statusText: PropTypes.string
+  statusText: PropTypes.string,
+  reportWarning: PropTypes.string,
+  reportableHeatmapLayers: PropTypes.string
 };
 
 export default ReportPanel;
