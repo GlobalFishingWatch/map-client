@@ -94,10 +94,12 @@ class ReportPanel extends Component {
             <ul className={ReportPanelStyles['polygon-list']}>
               {content}
             </ul>
+            {this.props.reportableInfo.hasNonReportableLayers &&
             <div className={ReportPanelStyles.warning}>
               <AlertIcon className={ReportPanelStyles['warning-icon']} />
-              {this.props.reportWarning.replace('$REPORTABLE_LAYERS', this.props.reportableHeatmapLayers)}
+              {this.props.reportWarning.replace('$REPORTABLE_LAYERS', this.props.reportableInfo.reportableLayersNames)}
             </div>
+            }
           </div>
           {buttons}
         </div>
@@ -121,7 +123,7 @@ ReportPanel.propTypes = {
   status: PropTypes.string,
   statusText: PropTypes.string,
   reportWarning: PropTypes.string,
-  reportableHeatmapLayers: PropTypes.string
+  reportableInfo: PropTypes.object
 };
 
 export default ReportPanel;
