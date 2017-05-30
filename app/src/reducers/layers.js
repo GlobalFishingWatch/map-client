@@ -25,10 +25,25 @@ const getUpdatedLayers = (state, action, changedLayerCallback) => {
   return layers;
 };
 
+const getReportableInfo = layers => ({
+  hasNonReportableLayers: layers.some(layer => layer.type === LAYER_TYPES.Heatmap &&
+    layer.visible === true &&
+    layer.header.reports === undefined
+  ),
+  reportableLayersNames: layers.filter(layer => layer.type === LAYER_TYPES.Heatmap &&
+    layer.visible === true &&
+    layer.header.reports !== undefined).map(layer => layer.title)
+});
+
+
 const initialState = {
   workspaceLayers: [],
   layerPanelEditMode: false,
-  layerIdPromptedForRemoval: false
+  layerIdPromptedForRemoval: false,
+  reportableInfo: {
+    hasNonReportableLayers: true,
+    reportableLayersNames: []
+  }
 };
 
 export default function (state = initialState, action) {
@@ -36,7 +51,7 @@ export default function (state = initialState, action) {
     case SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE:
       return Object.assign({}, state, { layerIdPromptedForRemoval: action.payload });
     case SET_LAYERS:
-      return Object.assign({}, state, { workspaceLayers: action.payload.concat() });
+      return Object.assign({}, state, { workspaceLayers: action.payload.concat(), reportableInfo: getReportableInfo(action.payload) });
     case SET_LAYER_HEADER: {
       const layerIndex = state.workspaceLayers.findIndex(layer => layer.id === action.payload.layerId);
       const layer = cloneDeep(state.workspaceLayers[layerIndex]);
@@ -49,7 +64,7 @@ export default function (state = initialState, action) {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.visible = action.payload.visibility;
       });
-      return Object.assign({}, state, { workspaceLayers });
+      return Object.assign({}, state, { workspaceLayers, reportableInfo: getReportableInfo(workspaceLayers) });
     }
     case TOGGLE_LAYER_WORKSPACE_PRESENCE: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {

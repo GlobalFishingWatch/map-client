@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
   status: state.report.status,
   statusText: state.report.statusText,
   reportWarning: state.literals.report_warning,
-  reportableHeatmapLayers: 'Fishing Effort'
+  reportableInfo: state.layers.reportableInfo
 });
 
 const mapDispatchToProps = dispatch => ({
