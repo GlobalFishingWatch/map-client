@@ -11,7 +11,7 @@ class CustomLayer extends Component {
     super(props);
 
     this.state = {
-      name: 'layer name',
+      name: 'Layer name',
       description: ''
     };
   }
@@ -56,7 +56,7 @@ class CustomLayer extends Component {
                 className={MapFormStyles['text-input']}
                 type="text"
                 name="name"
-                placeholder="layer name"
+                placeholder="Layer name"
                 onChange={e => this.onChange(e.currentTarget)}
                 required
               />

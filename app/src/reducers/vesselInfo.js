@@ -50,20 +50,24 @@ export default function (state = initialState, action) {
     }
 
     case SET_VESSEL_DETAILS: {
-      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      const vesselData = action.payload.vesselData;
+      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === vesselData.seriesgroup);
       const currentVessel = state.vessels[vesselIndex];
-      const defaultTitle = [
-        action.payload.vesselname,
-        action.payload.mmsi,
-        action.payload.imo,
-        action.payload.callsign,
-        action.payload.seriesgroup
-      ].find(t => t !== undefined);
+
+      const vesselFields = action.payload.layer.header.vesselFields;
+      const vesselFieldPriorities = vesselFields
+        .filter(v => v.titlePriority !== undefined)
+        .sort(
+          (a, b) => a.titlePriority > b.titlePriority
+        );
+      const vesselFieldValues = vesselFieldPriorities.map(v => vesselData[v.id]);
+
+      const defaultTitle = vesselFieldValues.find(t => t !== undefined);
 
       const newVessel = Object.assign({
         defaultTitle,
         title: defaultTitle
-      }, currentVessel, action.payload);
+      }, currentVessel, vesselData);
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
