@@ -1,5 +1,6 @@
 # Changelog
 
+- Add warning when reporting with non-reportable layers
 - Fix support for multiple fishing event layers
 - Add support for dynamic vessel detail info
 
