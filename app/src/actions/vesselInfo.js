@@ -92,7 +92,10 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
 
       dispatch({
         type: SET_VESSEL_DETAILS,
-        payload: data
+        payload: {
+          vesselData: data,
+          layer: searchLayer
+        }
       });
       dispatch(showVesselDetails(tilesetId, seriesgroup));
 
