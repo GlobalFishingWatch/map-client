@@ -40,7 +40,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
 
   const layers = state.layers.workspaceLayers
     .filter(layer => layer.type === LAYER_TYPES.Heatmap)
-    .filter(layer => layer.visible === true);
+    .filter(layer => layer.added === true);
 
   const searchLayerPromises = layers
     .map(layer =>
