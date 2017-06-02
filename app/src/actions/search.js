@@ -124,7 +124,7 @@ export function setSearchModalVisibility(visibility) {
   };
 }
 
-export function setSearchResulVisibility(visibility) {
+export function setSearchResultVisibility(visibility) {
   return {
     type: SET_SEARCH_RESULTS_VISIBILITY, payload: visibility
   };

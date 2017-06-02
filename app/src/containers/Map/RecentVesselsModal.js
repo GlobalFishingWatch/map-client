@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import RecentVesselsModal from 'components/Map/RecentVesselsModal';
 import { addVessel, clearVesselInfo } from 'actions/vesselInfo';
 import { setRecentVesselsModalVisibility } from 'actions/map';
+import { toggleLayerVisibility } from 'actions/layers';
 
 const mapStateToProps = state => ({
   history: state.vesselInfo.history
@@ -13,6 +14,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   drawVessel: (tilesetId, seriesgroup, series) => {
+    dispatch(toggleLayerVisibility(tilesetId, true));
     dispatch(clearVesselInfo());
     dispatch(addVessel(tilesetId, seriesgroup, series, true));
     dispatch(setRecentVesselsModalVisibility(false));

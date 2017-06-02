@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ControlPanel from 'components/Map/ControlPanel';
-import { setSearchResulVisibility } from 'actions/search';
+import { setSearchResultVisibility } from 'actions/search';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'actions/layers';
 import { login } from 'actions/user';
@@ -29,7 +29,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(toggleLayerPanelEditMode(false));
   },
   hideSearchResults: () => {
-    dispatch(setSearchResulVisibility(false));
+    dispatch(setSearchResultVisibility(false));
   },
   openTimebarInfoModal: () => {
     dispatch(openTimebarInfoModal());

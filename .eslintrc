@@ -21,7 +21,8 @@
     "COMPLETE_MAP_RENDER": true,
     "SHARE_BASE_URL": true,
     "TIMEBAR_DATA_URL": true,
-    "SHOW_BANNER": true
+    "SHOW_BANNER": true,
+    "PUBLIC_PATH": true
   },
   "parserOptions": {
     "ecmaVersion": 7,

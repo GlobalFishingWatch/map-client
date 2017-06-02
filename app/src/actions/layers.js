@@ -155,19 +155,27 @@ export function initLayers(workspaceLayers, libraryLayers) {
 
 export function toggleLayerVisibility(layerId, forceStatus = null) {
   return (dispatch, getState) => {
-    const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
+    const layer = getState().layers.workspaceLayers.find(l => l.id === layerId || l.tilesetId === layerId);
+    if (layer === undefined) {
+      console.error(
+        `Attempting to toggle layer visibility for layer id "${layerId}", 
+        could only find ids "${getState().layers.workspaceLayers.map(l => l.id).join()}"`
+      );
+      return;
+    }
+
     const visibility = (forceStatus !== null) ? forceStatus : !layer.visible;
     dispatch({
       type: TOGGLE_LAYER_VISIBILITY,
       payload: {
-        layerId,
+        layerId: layer.id,
         visibility
       }
     });
 
     if (layer.type === LAYER_TYPES.Heatmap && visibility === true) {
       // TODO clean tile first, if zoom has changed
-      dispatch(loadAllTilesForLayer(layerId));
+      dispatch(loadAllTilesForLayer(layer.id));
     }
   };
 }
