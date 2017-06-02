@@ -9,6 +9,7 @@ import {
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
+import getVesselName from 'util/getVesselName';
 
 let searchQueryID = 0;
 
@@ -51,7 +52,10 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
             return;
           }
 
-          result.entries.forEach((entry) => { entry.tilesetId = layer.tilesetId; });
+          result.entries.forEach((entry) => {
+            entry.tilesetId = layer.tilesetId;
+            entry.title = getVesselName(entry, layer.header.vesselFields);
+          });
           searchResultList = searchResultList.concat(result.entries);
           searchResultCount += result.total;
         })

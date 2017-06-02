@@ -1,5 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import getVesselName from 'util/getVesselName';
 import {
   ADD_VESSEL,
   SET_VESSEL_DETAILS,
@@ -54,15 +55,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === vesselData.seriesgroup);
       const currentVessel = state.vessels[vesselIndex];
 
-      const vesselFields = action.payload.layer.header.vesselFields;
-      const vesselFieldPriorities = vesselFields
-        .filter(v => v.titlePriority !== undefined)
-        .sort(
-          (a, b) => a.titlePriority > b.titlePriority
-        );
-      const vesselFieldValues = vesselFieldPriorities.map(v => vesselData[v.id]);
-
-      const defaultTitle = vesselFieldValues.find(t => t !== undefined);
+      const defaultTitle = getVesselName(vesselData, action.payload.layer.header.vesselFields);
 
       const newVessel = Object.assign({
         defaultTitle,
