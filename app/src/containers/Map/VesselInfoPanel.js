@@ -4,10 +4,15 @@ import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory } from '
 import { login } from 'actions/user';
 
 const mapStateToProps = (state) => {
-  const currentlyShownLayer = state.layers.workspaceLayers.find(layer => state.vesselInfo.currentlyShownVessel && layer.tilesetId === state.vesselInfo.currentlyShownVessel.tilesetId);
+  const currentlyShownLayer = state.layers.workspaceLayers
+    .find(layer => state.vesselInfo.currentlyShownVessel && layer.tilesetId === state.vesselInfo.currentlyShownVessel.tilesetId);
 
   let layerFieldsHeaders;
-  if (currentlyShownLayer !== undefined && currentlyShownLayer.header !== undefined && currentlyShownLayer.header.vesselFields !== undefined) {
+  if (
+    currentlyShownLayer !== undefined &&
+    currentlyShownLayer.header !== undefined &&
+    currentlyShownLayer.header.vesselFields !== undefined
+  ) {
     layerFieldsHeaders = currentlyShownLayer.header.vesselFields;
   }
   return {
@@ -16,7 +21,7 @@ const mapStateToProps = (state) => {
     infoPanelStatus: state.vesselInfo.infoPanelStatus,
     userPermissions: state.user.userPermissions
   };
-}
+};
 
 const mapDispatchToProps = dispatch => ({
   login: () => {
