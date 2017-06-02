@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
-
 import React, { Component } from 'react';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 
@@ -19,9 +18,9 @@ class SearchResult extends Component {
   }
 
   render() {
-    const vesselName = this.props.vesselInfo.vesselname;
-    const MMSI = this.props.vesselInfo.mmsi;
-    const highlightName = this.highlightWord(this.props.searchTerm, vesselName);
+    const title = this.props.vesselInfo.title;
+    const MMSI = (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title) ? '' : this.props.vesselInfo.mmsi;
+    const highlightName = this.highlightWord(this.props.searchTerm, title);
     const highlightMMSI = this.highlightWord(this.props.searchTerm, MMSI);
 
     return (
@@ -32,9 +31,9 @@ class SearchResult extends Component {
         <span
           dangerouslySetInnerHTML={{ __html: highlightName }}
         />
-        <span
+        {MMSI && <span
           dangerouslySetInnerHTML={{ __html: `, ${highlightMMSI}` }}
-        />
+        />}
       </li>
     );
   }

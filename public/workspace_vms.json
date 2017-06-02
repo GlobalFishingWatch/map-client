@@ -23,13 +23,13 @@
         {
           "title": "VMS Fishing effort",
           "description": "VMS Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-with-no-info-v2",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-v5",
           "visible": true,
           "hue": 60,
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "fishing",
-          "tilesetId": "483-indo-public-with-no-info-v2"
+          "tilesetId": "483-indo-public-v5"
         },
         {
           "title": "MPA - No Take",
