@@ -6,5 +6,5 @@ export default (vesselData, vesselFields) => {
     );
   const vesselFieldValues = vesselFieldPriorities.map(v => vesselData[v.id]);
 
-  return vesselFieldValues.find(t => t !== undefined);
+  return vesselFieldValues.find(t => t !== undefined && t !== '').toString();
 };
