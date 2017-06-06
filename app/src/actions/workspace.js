@@ -95,8 +95,9 @@ export function saveWorkspace(errorAction) {
     }
 
     const layers = state.layers.workspaceLayers.filter(layer => layer.added).map((layer) => {
-      delete layer.header;
-      return layer;
+      const newLayer = Object.assign({}, layer);
+      delete newLayer.header;
+      return newLayer;
     });
 
     const workspaceData = {
