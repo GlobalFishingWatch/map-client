@@ -216,7 +216,14 @@ export function setPinnedVessels(pinnedVessels) {
         throw new Error('XMLHttpRequest is disabled');
       }
 
-      const baseURL = pinnedVessel.tilesetUrl || state.map.tilesetUrl;
+      let baseURL = state.map.tilesetUrl;
+      const layer = state.layers.workspaceLayers.find(l => l.tilesetId === pinnedVessel.tilesetId);
+      if (layer !== undefined) {
+        baseURL = layer.url;
+      } else if (pinnedVessel.tilesetUrl !== undefined) {
+        baseURL = pinnedVessel.tilesetUrl;
+      }
+
       request.open(
         'GET',
         `${baseURL}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
