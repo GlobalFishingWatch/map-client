@@ -1,5 +1,9 @@
 # Changelog
 
+- Fix bug that prevents first attempt to save workspace for sharing
+- Fix issue on loading pinned vessels tileset
+
+## 2.1.0 Beta 2
 - Search on added but disabled fishing effort layers
 - Add warning when reporting with non-reportable layers
 - Fix support for multiple fishing event layers
