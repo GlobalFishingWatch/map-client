@@ -1,5 +1,6 @@
 # Changelog
 
+## 2.1.0
 - Fix bug that prevents first attempt to save workspace for sharing
 - Fix issue on loading pinned vessels tileset
 
