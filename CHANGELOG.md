@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.2
+- Update basemap URLs
+
 ## 2.1.1
 - Fix permissions issue on logout
 - Fix vessel info loading for guest users
