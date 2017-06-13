@@ -36,14 +36,14 @@ const initialState = {
       label: 'Deep Blue',
       description: 'Custom basemap that highlights the data about fishing activity',
       type: 'Basemap',
-      url: 'https://api.mapbox.com/styles/v1/globalfishing/civmm3zwz00rp2jqls9pue7cw/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
+      url: 'https://api.mapbox.com/styles/v1/enriquetuya/cj3vr6qy802b72so7jvennfkg/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ'
     },
     {
       title: 'High Contrast',
       label: 'High Contrast',
       description: 'High contrast basemap, that highlights borders and shore. Ideal for usage with projectors',
       type: 'Basemap',
-      url: 'https://api.mapbox.com/styles/v1/globalfishing/civmoj3y900r92io7gqgcdppq/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvYmFsZmlzaGluZyIsImEiOiJjaXZtbHNlM2YwMGIxMnVxa2VwamZ5MHpwIn0.PucgGhXlmxEMryOGR7f1yw'
+      url: 'https://api.mapbox.com/styles/v1/enriquetuya/cj3vr7wzg02cy2rpcx1kteotc/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ'
     }
   ],
   loading: false,
