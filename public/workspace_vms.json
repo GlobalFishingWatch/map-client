@@ -6,13 +6,12 @@
         0,
         0
       ],
-      "basemap": "satellite",
       "zoom": 3,
       "layers": [
         {
           "title": "AIS Fishing effort",
           "description": "AIS Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v1-tms",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v2-tms",
           "visible": true,
           "hue": 182,
           "type": "ClusterAnimation",
@@ -23,7 +22,7 @@
         {
           "title": "VMS Fishing effort",
           "description": "VMS Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-v5",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-v6",
           "visible": true,
           "hue": 60,
           "type": "ClusterAnimation",
@@ -84,7 +83,7 @@
       ]
     },
     "pinnedVessels": [],
-    "basemap": "satellite",
+    "basemap": "hybrid",
     "timeline": {
       "innerExtent": [
         1464739200000,

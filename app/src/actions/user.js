@@ -93,6 +93,7 @@ export function logout() {
     dispatch({
       type: LOGOUT
     });
+    dispatch(getLoggedUser());
     setGAUserDimension(false);
     window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '');
   };
