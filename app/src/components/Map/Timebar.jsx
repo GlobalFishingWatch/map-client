@@ -72,6 +72,9 @@ class Timebar extends Component {
 
   constructor(props) {
     super(props);
+
+    window.speed = 1;
+
     this.onStartDatePickerChange = this.onStartDatePickerChange.bind(this);
     this.onEndDatePickerChange = this.onEndDatePickerChange.bind(this);
     this.onPauseToggle = this.onPauseToggle.bind(this);
@@ -477,7 +480,7 @@ class Timebar extends Component {
   playStep(deltaTick) {
     // compute new basePlayStep (used for playback), because we want it to depend on the zoom levels
     const playStep = this.getPlayStep(this.props.timelineOuterExtent);
-    const realtimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep * deltaTick);
+    const realtimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep * deltaTick) * window.speed;
     const previousInnerExtent = this.props.timelineInnerExtent;
     let offsetInnerExtent = previousInnerExtent.map(d => new Date(d.getTime() + realtimePlayStep));
     const endOfTime = this.props.timelineOuterExtent[1];
@@ -503,7 +506,7 @@ class Timebar extends Component {
 
   onPauseToggle() {
     const playStep = this.getPlayStep(this.props.timelineOuterExtent);
-    const realTimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep);
+    const realTimePlayStep = Math.max(MIN_FRAME_LENGTH_MS, playStep) * window.speed;
     const offsetInnerExtent = this.props.timelineInnerExtent.map(d => new Date(d.getTime() + realTimePlayStep));
     const endOfTime = this.props.timelineOuterExtent[1];
     const isAtEndOfTime = x(offsetInnerExtent[1]) >= x(endOfTime);
