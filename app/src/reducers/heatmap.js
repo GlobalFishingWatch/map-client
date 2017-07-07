@@ -20,6 +20,39 @@ const initialState = {
   highlightedVessels: { isEmpty: true }
 };
 
+window.export = function () {
+  const layer = window.layer;
+  const g = {
+    type: 'FeatureCollection',
+    features: []
+  };
+  layer.tiles.forEach((tile) => {
+    // const frames = tile.data.slice(0, 1500);
+    const frames = tile.data;
+    frames.forEach((frame, frameIndex) => {
+      for (let i = 0; i < frame.latitude.length; i++) {
+        const pt = {
+          type: 'Feature',
+          properties: {
+            t: frameIndex
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [
+              frame.longitude[i],
+              frame.latitude[i]
+            ]
+          }
+        };
+        g.features.push(pt);
+      }
+    });
+  });
+  console.log(g);
+  const blob = new Blob([JSON.stringify(g)], { type: 'text/plain;charset=utf-8' });
+  saveAs(blob, 'vessels.json');
+};
+
 export default function (state = initialState, action) {
   switch (action.type) {
     case INIT_HEATMAP_LAYERS: {
@@ -74,6 +107,7 @@ export default function (state = initialState, action) {
       Object.keys(newHeatmapLayers).forEach((layerId) => {
         heatmapLayers[layerId] = newHeatmapLayers[layerId];
       });
+      window.layer = heatmapLayers.fishing2;
       return Object.assign({}, state, { heatmapLayers });
     }
 

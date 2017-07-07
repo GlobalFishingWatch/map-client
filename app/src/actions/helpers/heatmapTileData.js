@@ -193,6 +193,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
 
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
+        latitude: [vectorArray.latitude[index]],
+        longitude: [vectorArray.longitude[index]],
         worldX: [worldX],
         worldY: [worldY],
         radius: [radius],
@@ -211,6 +213,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     frame.radius.push(radius);
     frame.opacity.push(opacity);
     frame.seriesUid.push(seriesUid);
+    frame.latitude.push(vectorArray.latitude[index]);
+    frame.longitude.push(vectorArray.longitude[index]);
     extraColumns.forEach((column) => {
       frame[column].push(vectorArray[column][index]);
     });
