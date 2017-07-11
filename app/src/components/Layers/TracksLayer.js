@@ -83,7 +83,7 @@ export default class TracksLayerGL {
         } else if (drawStyle & TRACK_SEGMENT_TYPES.Highlighted) {
           this.stage.lineStyle(1, '0xFFFFFF', 1);
         } else if (drawStyle & TRACK_SEGMENT_TYPES.InInnerRange) {
-          this.stage.lineStyle(1, color, 1);
+          this.stage.lineStyle(1, '0xC10C0C', 1);
         }
         this.stage.moveTo(prevX || x, prevY || y);
         newLine = true;
@@ -116,12 +116,13 @@ export default class TracksLayerGL {
       newLine = false;
     }
 
-    this.stage.lineStyle(0);
+    this.stage.lineStyle(1, 0x671212, 1);
 
     if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
       const dotColor = rgbToHexString(hsvToRgb(hue, 100, 100));
       const radius = 1 + ((drawParams.zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) * 0.5);
-      this.stage.beginFill(dotColor, 1);
+      // const radius = 4.5;
+      this.stage.beginFill('0xC10C0C', .8);
       for (let i = 0, circlesLength = circlePoints.x.length; i < circlesLength; i++) {
         this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], radius);
       }

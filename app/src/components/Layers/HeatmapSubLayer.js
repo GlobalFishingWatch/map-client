@@ -14,9 +14,11 @@ export default class HeatmapSubLayer {
       scale: true,
       alpha: true,
       position: true,
+      tint: true,
       uvs: true
     });
     this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
+    this.stage.tint = 0xFF8080;
 
     this.spritesPool = [];
 
