@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.3
+- Add support for accelerated playback using console commands
+
 ## 2.1.2
 - Update basemap URLs
 
