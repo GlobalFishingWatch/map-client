@@ -1,6 +1,6 @@
 {
   "workspace": {
-    "tileset": "849-tileset-tms",
+    "tileset": "429-resample-v1-tms",
     "map": {
       "center": [
         0,
@@ -9,30 +9,32 @@
       "zoom": 3,
       "layers": [
         {
-          "title": "Ocean Contrast",
-          "description": "Adds a high contrast coarse bathymetry layer to the ocean areas.",
-          "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
-          "visible": false,
-          "hue": 212,
-          "type": "CartoDBAnimation",
-          "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
-        },
-        {
-          "title": "Fishing Effort",
-          "description": "Fishing effort",
+          "title": "AIS Fishing effort",
+          "description": "AIS Fishing effort",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v2-tms",
           "visible": true,
-          "hue": 0,
+          "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
-          "tilesetId": "429-resample-v2-tms",
-          "id": "fishing"
+          "id": "fishing2",
+          "tilesetId": "429-resample-v1-tms"
+        },
+        {
+          "title": "VMS Fishing effort",
+          "description": "VMS Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/483-indo-public-v6",
+          "visible": true,
+          "hue": 60,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "fishing",
+          "tilesetId": "483-indo-public-v5"
         },
         {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/3d8e8416-866c-11e6-8c6b-0242ac110006/viz.json",
-          "visible": false,
+          "url": "./vizjson/mpant.json",
+          "visible": true,
           "hue": 0,
           "type": "CartoDBAnimation",
           "opacity": 1,
@@ -41,8 +43,8 @@
         {
           "title": "MPA - Restricted Use",
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/f65c6e80-8983-11e6-bd2f-0242ac110006/viz.json",
-          "visible": true,
+          "url": "./vizjson/mparu.json",
+          "visible": false,
           "hue": 29,
           "type": "CartoDBAnimation",
           "opacity": 1,
@@ -51,9 +53,9 @@
         {
           "title": "EEZ",
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
+          "url": "./vizjson/eez.json",
           "visible": true,
-          "hue": 216,
+          "hue": 140,
           "type": "CartoDBAnimation",
           "opacity": 0.6,
           "id": "eez"
@@ -61,7 +63,7 @@
         {
           "title": "High Seas Pocket",
           "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source",
+          "url": "./vizjson/highseas.json",
           "visible": true,
           "hue": 240,
           "type": "CartoDBAnimation",
@@ -71,7 +73,7 @@
         {
           "title": "RFMO",
           "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/fbafc1dc-e731-11e6-9ac1-0242ac110006/viz.json",
+          "url": "./vizjson/rfmo.json",
           "visible": false,
           "hue": 200,
           "type": "CartoDBAnimation",
@@ -94,11 +96,11 @@
     }
   },
   "metadata": {
-    "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+    "id": "world-fishing-vizz-indo-no-info-ais-v1",
     "urls": {
-      "save": "https://skytruth-pleuston.appspot.com/v2/workspaces",
-      "load": "https://skytruth-pleuston.appspot.com/v2/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
-      "visualization": "https://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
+      "save": "https://api-dot-world-fishing-827.appspot.com/v2/workspaces",
+      "load": "https://api-dot-world-fishing-827.appspot.com/v2/workspaces/world-fishing-vizz-indo-no-info-ais-v1",
+      "visualization": "http://dev.globalfishingwatch.org/map/workspace/world-fishing-vizz-indo-no-info-ais-v1"
     }
   }
 }

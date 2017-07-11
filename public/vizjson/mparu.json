@@ -1,0 +1,200 @@
+vizjson({
+  "id": "c1edd0c4-feab-11e6-aa79-0242ac110006",
+  "version": "0.1.0",
+  "title": "Marine Protected Area Restricted Use Polygon",
+  "likes": 0,
+  "description": null,
+  "scrollwheel": false,
+  "legends": true,
+  "url": null,
+  "map_provider": "leaflet",
+  "bounds": [
+    [
+      -28.071980301779845,
+      -276.416015625
+    ],
+    [
+      16.04581345375217,
+      -159.169921875
+    ]
+  ],
+  "center": "[-6.489983332670651, -217.79296875]",
+  "zoom": 4,
+  "updated_at": "2017-06-07T18:13:10+00:00",
+  "layers": [
+    {
+      "options": {
+        "default": true,
+        "url": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        "subdomains": "abcd",
+        "minZoom": "0",
+        "maxZoom": "18",
+        "name": "Positron",
+        "className": "positron_rainbow",
+        "attribution": "© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors © <a href= \"http://cartodb.com/attributions#basemaps\">CartoDB</a>",
+        "urlTemplate": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+      },
+      "infowindow": null,
+      "tooltip": null,
+      "id": "dbce86fb-4d74-431a-a107-73f4472b32c0",
+      "order": 0,
+      "parent_id": null,
+      "children": [],
+      "type": "tiled"
+    },
+    {
+      "type": "layergroup",
+      "options": {
+        "user_name": "production",
+        "maps_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "sql_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "tiler_protocol": "http",
+        "tiler_domain": "cartodb.skytruth.org",
+        "tiler_port": "80",
+        "sql_api_protocol": "http",
+        "sql_api_domain": "cartodb.skytruth.org",
+        "sql_api_endpoint": "/api/v2/sql",
+        "sql_api_port": 80,
+        "filter": "mapnik",
+        "layer_definition": {
+          "stat_tag": "c1edd0c4-feab-11e6-aa79-0242ac110006",
+          "version": "1.0.1",
+          "layers": [
+            {
+              "id": "b72b2fa9-5703-4dfa-8e79-2d5f5d0be8a1",
+              "parent_id": null,
+              "children": [],
+              "type": "CartoDB",
+              "infowindow": {
+                "fields": [
+                  {
+                    "name": "name",
+                    "title": true,
+                    "position": 1
+                  },
+                  {
+                    "name": "region_id",
+                    "title": true,
+                    "position": 2
+                  }
+                ],
+                "template_name": "table/views/infowindow_light",
+                "template": "<div class=\"cartodb-popup v2\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n  <div class=\"cartodb-popup-content-wrapper\">\n    <div class=\"cartodb-popup-content\">\n      {{#content.fields}}\n        {{#title}}<h4>{{title}}</h4>{{/title}}\n        {{#value}}\n          <p {{#type}}class=\"{{ type }}\"{{/type}}>{{{ value }}}</p>\n        {{/value}}\n        {{^value}}\n          <p class=\"empty\">null</p>\n        {{/value}}\n      {{/content.fields}}\n    </div>\n  </div>\n  <div class=\"cartodb-popup-tip-container\"></div>\n</div>\n",
+                "alternative_names": {},
+                "width": 226,
+                "maxHeight": 180
+              },
+              "tooltip": {
+                "fields": [
+                  {
+                    "position": 1,
+                    "name": "name",
+                    "title": true
+                  },
+                  {
+                    "position": 2,
+                    "name": "region_id",
+                    "title": true
+                  },
+                  {
+                    "name": "reporting_name",
+                    "title": true,
+                    "position": 4
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "isinreport",
+                    "title": true
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "reporting_id",
+                    "title": true
+                  }
+                ],
+                "template_name": "",
+                "template": "<div class=\"cartodb-tooltip-content-wrapper\">\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{name}}</p>\n  </div>\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{reporting_id}}</p>\n  </div>\n</div>",
+                "alternative_names": {},
+                "maxHeight": 180
+              },
+              "legend": {
+                "type": "none",
+                "show_title": false,
+                "title": "",
+                "template": "",
+                "visible": true
+              },
+              "order": 1,
+              "visible": true,
+              "options": {
+                "sql": "SELECT \n\tthe_geom,\n\tthe_geom_webmercator,\n\tcartodb_id,\n\tname,\n    name as reporting_name,\n\t'mparu:' || mpa_id as region_id,\n\t'mparu:' || mpa_id as reporting_id,\n\tfalse isinreport\nFROM table_467_mpa_restricted_use_polygons",
+                "layer_name": "table_467_mpa_restricted_use_polygons",
+                "cartocss": "/** simple visualization */\n\n#table_467_mpa_restricted_use_polygons{\n  polygon-opacity: 0;\n  line-color: #ff6600;\n  line-width: 1.5;\n  line-opacity: 1;\n}\n\n#layer[isinreport=true]{\n    polygon-pattern-file: url(https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/1da6833382feea3a33b4ef56ca64dde1e200119b/public/map/pattern.png);\n  polygon-pattern-opacity: .4;\n   image-filters:colorize-alpha(#ff6600);\n}\n\n#layer::top{\n  polygon-opacity: 0;\n  line-color: #2167AB;\n  line-width: 1;\n  line-opacity: 0;\n}",
+                "cartocss_version": "2.1.1",
+                "interactivity": "cartodb_id,name,region_id,reporting_name,isinreport,reporting_id",
+                "table_name": "\"\"."
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "overlays": [
+    {
+      "type": "share",
+      "order": 2,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "search",
+      "order": 3,
+      "options": {
+        "display": true,
+        "x": 60,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "zoom",
+      "order": 6,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": "<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"
+    },
+    {
+      "type": "loader",
+      "order": 8,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 150
+      },
+      "template": "<div class=\"loader\" original-title=\"\"></div>"
+    },
+    {
+      "type": "logo",
+      "order": 9,
+      "options": {
+        "display": true,
+        "x": 10,
+        "y": 40
+      },
+      "template": ""
+    }
+  ],
+  "prev": null,
+  "next": null,
+  "transition_options": {
+    "time": 0
+  }
+})

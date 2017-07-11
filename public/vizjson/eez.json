@@ -1,0 +1,248 @@
+vizjson({
+  "id": "a8fc4d18-e72f-11e6-82a9-0242ac110006",
+  "version": "0.1.0",
+  "title": "Exclusive Economic Zone Polygon",
+  "likes": 0,
+  "description": null,
+  "scrollwheel": false,
+  "legends": true,
+  "url": null,
+  "map_provider": "leaflet",
+  "bounds": [
+    [
+      -69.7789517764676,
+      -150.29296875
+    ],
+    [
+      0.8788717828324276,
+      84.19921875
+    ]
+  ],
+  "center": "[-43.89789239125796, -33.046875]",
+  "zoom": 3,
+  "updated_at": "2017-05-12T19:21:53+00:00",
+  "layers": [
+    {
+      "options": {
+        "visible": true,
+        "type": "Tiled",
+        "default": true,
+        "url": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        "subdomains": "abcd",
+        "minZoom": "0",
+        "maxZoom": "18",
+        "name": "Positron",
+        "className": "httpsbasemapscartocdncomlight_allzxypng",
+        "attribution": "© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors © <a href= \"http://cartodb.com/attributions#basemaps\">CartoDB</a>",
+        "urlTemplate": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        "id": "feecf289-7c8e-4d74-8b1c-db1da8f5cafe",
+        "order": 0,
+        "parent_id": null
+      },
+      "infowindow": null,
+      "tooltip": null,
+      "id": "feecf289-7c8e-4d74-8b1c-db1da8f5cafe",
+      "order": 0,
+      "parent_id": null,
+      "children": [],
+      "type": "tiled"
+    },
+    {
+      "type": "layergroup",
+      "options": {
+        "user_name": "production",
+        "maps_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "sql_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "tiler_protocol": "http",
+        "tiler_domain": "cartodb.skytruth.org",
+        "tiler_port": "80",
+        "sql_api_protocol": "http",
+        "sql_api_domain": "cartodb.skytruth.org",
+        "sql_api_endpoint": "/api/v2/sql",
+        "sql_api_port": 80,
+        "filter": "mapnik",
+        "layer_definition": {
+          "stat_tag": "a8fc4d18-e72f-11e6-82a9-0242ac110006",
+          "version": "1.0.1",
+          "layers": [
+            {
+              "id": "13926f9c-0ab7-49d6-abe6-01a7be1c8287",
+              "parent_id": null,
+              "children": [],
+              "type": "CartoDB",
+              "infowindow": {
+                "fields": [
+                  {
+                    "name": "region_id",
+                    "title": true,
+                    "position": 24
+                  },
+                  {
+                    "name": "name",
+                    "title": true,
+                    "position": 1.7976931348623157e+308
+                  },
+                  {
+                    "name": "reporting_id",
+                    "title": true,
+                    "position": 1.7976931348623157e+308
+                  }
+                ],
+                "template_name": "table/views/infowindow_light",
+                "template": "<div class=\"cartodb-popup v2\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n  <div class=\"cartodb-popup-content-wrapper\">\n    <div class=\"cartodb-popup-content\">\n      {{#content.fields}}\n        {{#title}}<h4>{{title}}</h4>{{/title}}\n        {{#value}}\n          <p {{#type}}class=\"{{ type }}\"{{/type}}>{{{ value }}}</p>\n        {{/value}}\n        {{^value}}\n          <p class=\"empty\">null</p>\n        {{/value}}\n      {{/content.fields}}\n    </div>\n  </div>\n  <div class=\"cartodb-popup-tip-container\"></div>\n</div>\n",
+                "alternative_names": {},
+                "width": 226,
+                "maxHeight": 180
+              },
+              "tooltip": {
+                "fields": [
+                  {
+                    "name": "reporting_id",
+                    "title": true,
+                    "position": 3
+                  },
+                  {
+                    "name": "reporting_name",
+                    "title": true,
+                    "position": 4
+                  },
+                  {
+                    "position": 20,
+                    "name": "name",
+                    "title": true
+                  },
+                  {
+                    "position": 35,
+                    "name": "region_id",
+                    "title": true
+                  },
+                  {
+                    "position": 36,
+                    "name": "isinreport",
+                    "title": true
+                  }
+                ],
+                "template_name": "",
+                "template": "<div class=\"cartodb-tooltip-content-wrapper\">\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{name}}</p>\n  </div>\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{reporting_id}}</p>\n  </div>\n</div>",
+                "alternative_names": {},
+                "maxHeight": 180
+              },
+              "legend": {
+                "type": "none",
+                "show_title": false,
+                "title": "",
+                "template": "",
+                "visible": true
+              },
+              "order": 1,
+              "visible": true,
+              "options": {
+                "sql": "SELECT \n\tcartodb_id, \n\tthe_geom, \n\tthe_geom_webmercator, \n\tgeoname as name, \n\t'eez:' || mrgid as region_id, \t\n\tfalse isinreport,\n\tgeoname as reporting_name,\n\t'eez:' || mrgid as reporting_id\nFROM eez_polygon_01_25_world_maritime_version9_agentinianeez_updat",
+                "layer_name": "eez_polygon_01_25_world_maritime_version9_agentinianeez_updat",
+                "cartocss": "/** simple visualization */\n\n#eez_polygon_01_25_world_maritime_version9_agentinianeez_updat{\n  polygon-fill: #FF6600;\n  polygon-opacity: 0;\n  line-color: #2167AB;\n  line-width: 1.0;\n  line-opacity: 0;\n}\n\n#layer[isinreport=true]{\n    polygon-pattern-file: url(https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/1da6833382feea3a33b4ef56ca64dde1e200119b/public/map/pattern.png);\n  polygon-pattern-opacity: .4;\n   image-filters:colorize-alpha(#80F0FF);\n}\n\n#layer::top{\n  polygon-opacity: 0;\n  line-color: #2167AB;\n  line-width: 1;\n  line-opacity: 0;\n}",
+                "cartocss_version": "2.1.1",
+                "interactivity": "cartodb_id,reporting_id,reporting_name,name,region_id,isinreport",
+                "table_name": "\"\"."
+              }
+            },
+            {
+              "id": "cfb6166e-b62f-492c-9b2e-ba6af665f6f8",
+              "parent_id": null,
+              "children": [],
+              "type": "CartoDB",
+              "infowindow": {
+                "fields": [],
+                "template_name": "table/views/infowindow_light",
+                "template": "<div class=\"cartodb-popup v2\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n  <div class=\"cartodb-popup-content-wrapper\">\n    <div class=\"cartodb-popup-content\">\n      {{#content.fields}}\n        {{#title}}<h4>{{title}}</h4>{{/title}}\n        {{#value}}\n          <p {{#type}}class=\"{{ type }}\"{{/type}}>{{{ value }}}</p>\n        {{/value}}\n        {{^value}}\n          <p class=\"empty\">null</p>\n        {{/value}}\n      {{/content.fields}}\n    </div>\n  </div>\n  <div class=\"cartodb-popup-tip-container\"></div>\n</div>\n",
+                "alternative_names": {},
+                "width": 226,
+                "maxHeight": 180
+              },
+              "tooltip": {
+                "fields": [],
+                "template_name": "tooltip_light",
+                "template": "<div class=\"cartodb-tooltip-content-wrapper\">\n  <div class=\"cartodb-tooltip-content\">\n  {{#fields}}\n    {{#title}}\n    <h4>{{title}}</h4>\n    {{/title}}\n    <p>{{{ value }}}</p>\n  {{/fields}}\n  </div>\n<div>",
+                "alternative_names": {},
+                "maxHeight": 180
+              },
+              "legend": {
+                "type": "none",
+                "show_title": false,
+                "title": "",
+                "template": "",
+                "visible": true
+              },
+              "order": 2,
+              "visible": true,
+              "options": {
+                "sql": "SELECT * FROM eez_boundaries_01_25_world_maritime_version9_agentinianeez_up",
+                "layer_name": "eez boundaries 01 25 world maritime version9 agentinianeez up",
+                "cartocss": "/** simple visualization */\n\n#eez_boundaries_01_25_world_maritime_version9_agentinianeez_up{\n  line-color: #2167AB;\n  line-width: 1.5;\n  line-opacity: 1;\n}",
+                "cartocss_version": "2.1.1",
+                "interactivity": "cartodb_id",
+                "table_name": "\"\"."
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "overlays": [
+    {
+      "type": "share",
+      "order": 2,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "search",
+      "order": 3,
+      "options": {
+        "display": true,
+        "x": 60,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "zoom",
+      "order": 6,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": "<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"
+    },
+    {
+      "type": "loader",
+      "order": 8,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 150
+      },
+      "template": "<div class=\"loader\" original-title=\"\"></div>"
+    },
+    {
+      "type": "logo",
+      "order": 9,
+      "options": {
+        "display": true,
+        "x": 10,
+        "y": 40
+      },
+      "template": ""
+    }
+  ],
+  "prev": null,
+  "next": null,
+  "transition_options": {
+    "time": 0
+  }
+})
