@@ -202,3 +202,16 @@ Allows a user to report on report-enabled layers
 #### pin-vessel
 
 Allows a user to pin a vessel
+
+
+# Google Analytics events
+
+#### GA_MAP_CENTER_TILE
+
+`x, y` represent tile coordinates at zoom level 5.
+
+Triggered when an user changed the viewed area. It is not triggered below zoom level 5. To match an `x, y` value with an area of the planet, one can go on <a href="http://www.maptiler.org/google-maps-coordinates-tile-bounds-projection/">this page</a>, zoom at level 5 and compare with values written within the tiles under "Google: (x, y)".
+
+For example, the coast along Peru and Argentina would be `9, 17` here:
+
+<img src="https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/develop/documentation/ga-area.png">
