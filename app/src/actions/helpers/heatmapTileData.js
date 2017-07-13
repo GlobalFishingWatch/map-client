@@ -84,7 +84,7 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
 };
 
 
-export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null);
+export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null && vectorArray !== undefined && vectorArray.longitude !== undefined);
 
 /**
  * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
@@ -95,7 +95,7 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
  */
 export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
-
+  console.log(cleanVectorArrays)
   const totalVectorArraysLength = sumBy(cleanVectorArrays, a => a.longitude.length);
 
   const filteredColumns = columns.filter((column) => {
