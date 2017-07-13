@@ -16,7 +16,8 @@ import {
   groupData,
   addWorldCoordinates,
   getTilePlaybackData,
-  selectVesselsAt
+  selectVesselsAt,
+  getTilePlaybackDataFromVectorTile
 } from 'actions/helpers/heatmapTileData';
 import { LAYER_TYPES, LOADERS } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
@@ -107,19 +108,33 @@ function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, tempor
  * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
  * @return {Object}                      playback-ready merged data
  */
+
+window.cumulatedTime = 0;
+window.cumulatedTiles = 0;
 function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlaybackData) {
-  // console.time('test')
-  const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-  const groupedData = groupData(cleanVectorArrays, columns);
-  const vectorArray = addWorldCoordinates(groupedData, map);
-  const data = getTilePlaybackData(
-    tileCoordinates.zoom,
-    vectorArray,
-    columns,
-    prevPlaybackData
-  );
+  // console.log(rawTileData)
+  const ts = performance.now();
+  let data;
+  if (rawTileData[0] && rawTileData[0].constructor.name === 'VectorTile') {
+    data = getTilePlaybackDataFromVectorTile(rawTileData[0], prevPlaybackData);
+    // console.log(data);
+  } else {
+    const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+    const groupedData = groupData(cleanVectorArrays, columns);
+    const vectorArray = addWorldCoordinates(groupedData, map);
+    data = getTilePlaybackData(
+      tileCoordinates.zoom,
+      vectorArray,
+      columns,
+      prevPlaybackData
+    );
+    // console.log(data)
+  }
+  cumulatedTiles++;
+  cumulatedTime += performance.now() - ts;
+  console.log('cumulatedTime', cumulatedTime);
+  console.log('cumulatedTiles', cumulatedTiles);
   return data;
-  // console.timeEnd('test');
 }
 
 /**

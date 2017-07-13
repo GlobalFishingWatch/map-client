@@ -34,7 +34,15 @@ window.export = function () {
         const pt = {
           type: 'Feature',
           properties: {
-            t: frameIndex
+            t: frameIndex,
+            category: frame.category[i],
+            opacity: frame.opacity[i],
+            radius: frame.radius[i],
+            series: frame.series[i],
+            seriesUid: frame.seriesUid[i],
+            seriesgroup: frame.seriesgroup[i],
+            worldX: frame.worldX[i],
+            worldY: frame.worldY[i]
           },
           geometry: {
             type: 'Point',
@@ -107,7 +115,7 @@ export default function (state = initialState, action) {
       Object.keys(newHeatmapLayers).forEach((layerId) => {
         heatmapLayers[layerId] = newHeatmapLayers[layerId];
       });
-      window.layer = heatmapLayers.fishing2;
+      window.layer = heatmapLayers.fishing;
       return Object.assign({}, state, { heatmapLayers });
     }
 

@@ -1,4 +1,10 @@
 import Pack from 'lib/Pack';
+window.cumulatedDecTime = 0;
+
+function measure(ts) {
+  cumulatedDecTime += performance.now() - ts;
+  console.log('cumulatedDecTime',cumulatedDecTime)
+}
 
 class PelagosClient {
 
@@ -29,6 +35,7 @@ class PelagosClient {
   }
 
   handleData() {
+    const ts = performance.now();
     var self = this;
     if (!this.request) {
       return;
@@ -138,6 +145,7 @@ class PelagosClient {
       }
       if (self.rowidx == self.header.length) {
         // self.allLoaded();
+        measure(ts)
         this.resolve(result);
       } else {
         // self.batchLoaded();
@@ -157,10 +165,12 @@ class PelagosClient {
         }
 
         // self.allLoaded();
+        measure(ts)
         this.resolve(result);
         return true;
       }
     }
+
   }
 }
 

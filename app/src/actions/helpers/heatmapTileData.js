@@ -10,7 +10,8 @@ import {
   VESSELS_MINIMUM_RADIUS_FACTOR,
   VESSELS_MINIMUM_OPACITY,
   VESSEL_CLICK_TOLERANCE_PX,
-  TIMELINE_OVERALL_START_DATE_OFFSET
+  TIMELINE_OVERALL_START_DATE_OFFSET,
+  VECTOR
 } from 'constants';
 
 /**
@@ -69,16 +70,19 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
  */
 export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
-  const urls = getTemporalTileURLs(
-    tilesetUrl,
-    temporalExtents,
-    params
-  );
-  for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-    promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
-  }
 
-  promises.push(getVectorTile(params));
+  if (VECTOR) {
+    promises.push(getVectorTile(params));
+  } else {
+    const urls = getTemporalTileURLs(
+      tilesetUrl,
+      temporalExtents,
+      params
+    );
+    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+      promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    }
+  }
 
   return promises;
 };
@@ -95,7 +99,7 @@ export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArra
  */
 export const groupData = (cleanVectorArrays, columns) => {
   const data = {};
-  console.log(cleanVectorArrays)
+
   const totalVectorArraysLength = sumBy(cleanVectorArrays, a => a.longitude.length);
 
   const filteredColumns = columns.filter((column) => {
@@ -151,6 +155,70 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
   return radius;
 };
 
+
+export const getTilePlaybackDataFromVectorTile = (vectorTile, prevPlaybackData) => {
+  const vessels = vectorTile.layers.vessels;
+  if (!vessels) {
+    return prevPlaybackData;
+  }
+  const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
+
+  const numFeatures = vessels.length;
+  for (let i = 0; i < numFeatures; i++) {
+    const feature = vessels.feature(i).properties;
+    if (!tilePlaybackData[feature.t]) {
+      const frame = {
+        category: [feature.category],
+        opacity: [feature.opacity],
+        radius: [feature.radius],
+        series: [feature.series],
+        seriesUid: [feature.seriesUid],
+        seriesgroup: [feature.seriesgroup],
+        worldX: [feature.worldX],
+        worldY: [feature.worldY]
+      };
+      tilePlaybackData[feature.t] = frame;
+    } else {
+      const frame = tilePlaybackData[feature.t];
+      frame.category.push(feature.category);
+      frame.opacity.push(feature.opacity);
+      frame.radius.push(feature.radius);
+      frame.series.push(feature.series);
+      frame.seriesUid.push(feature.seriesUid);
+      frame.seriesgroup.push(feature.seriesgroup);
+      frame.worldX.push(feature.worldX);
+      frame.worldY.push(feature.worldY);
+    }
+  }
+  // const keys = vectorTile.layers.vessels._keys;
+  // const numKeys = keys.length;
+  // let currentTimeIndex;
+  //
+  // vectorTile.layers.vessels._values.forEach((value, index) => {
+  //   const keyIndex = index % numKeys;
+  //   if (keyIndex === 0) {
+  //     currentTimeIndex = value;
+  //
+  //     if (!tilePlaybackData[currentTimeIndex]) {
+  //       const frame = {
+  //         category: [],
+  //         opacity: [],
+  //         radius: [],
+  //         series: [],
+  //         seriesUid: [],
+  //         seriesgroup: [],
+  //         worldX: [],
+  //         worldY: []
+  //       };
+  //       tilePlaybackData[currentTimeIndex] = frame;
+  //     }
+  //   } else {
+  //     const key = keys[keyIndex];
+  //     tilePlaybackData[currentTimeIndex][key].push(value);
+  //   }
+  // });
+  return tilePlaybackData;
+};
 
 /**
  * Converts Vector Array data to Playback format and stores it locally
