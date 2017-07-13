@@ -11,6 +11,7 @@ export default class TracksLayerGL {
   constructor() {
     this.stage = new PIXI.Graphics();
     this.stage.nativeLines = true;
+    // this.stage.cacheAsBitmap = true;
   }
 
   clear() {
@@ -23,6 +24,7 @@ export default class TracksLayerGL {
     tracks.forEach((track) => {
       n += this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
     });
+    console.log(n)
   }
 
   /**
@@ -61,9 +63,9 @@ export default class TracksLayerGL {
       }
 
       // TODO temporary fix for track performance: do not display out of inner range tracks
-      if (data.datetime[i] < drawParams.startTimestamp || data.datetime[i] > drawParams.endTimestamp) {
-        continue;
-      }
+      // if (data.datetime[i] < drawParams.startTimestamp || data.datetime[i] > drawParams.endTimestamp) {
+      //   continue;
+      // }
       n++;
 
       let pointWorldX = data.worldX[i];
@@ -94,7 +96,7 @@ export default class TracksLayerGL {
       }
       this.stage.lineTo(x, y);
 
-      // 'lineNative' rendering style fixes various rendering issues, but does not allow
+      // 'nativeLines' rendering style fixes various rendering issues, but does not allow
       // for lines thickness different than 1. We double the line and offset it to give the illusion of
       // a 2px wide line
       if (drawStyle & (TRACK_SEGMENT_TYPES.Highlighted | TRACK_SEGMENT_TYPES.InInnerRange) && newLine !== true) {
