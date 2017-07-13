@@ -2,6 +2,7 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import getVectorTile from './vectorTile'
 
 import {
   PLAYBACK_PRECISION,
@@ -76,6 +77,8 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
     promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
   }
+
+  promises.push(getVectorTile(params));
 
   return promises;
 };
