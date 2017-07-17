@@ -1,3 +1,5 @@
+http://localhost:3000/?workspace=udw-v2-6a974c26-35e6-46e2-9064-15023ca8eed6
+
 # Global Fishing Watch
 
 This repository will host the Global Fishing Watch client application developed by [vizzuality](http://www.vizzuality.com/)
