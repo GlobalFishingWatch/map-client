@@ -17,6 +17,7 @@ const getTracks = vessels => vessels
     .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
     .map(vessel => ({
       data: vessel.track.data,
+      points: vessel.track.points,
       selectedSeries: vessel.track.selectedSeries,
       hue: vessel.hue
     }));

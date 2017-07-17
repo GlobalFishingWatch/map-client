@@ -2,6 +2,7 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import simplify from 'simplify-js';
 
 import {
   PLAYBACK_PRECISION,
@@ -138,6 +139,21 @@ export const addWorldCoordinates = (vectorArray, map) => {
     data.worldY[index] = worldPoint.y;
   }
   return data;
+};
+
+export const simplifyTrack = (data) => {
+  const points = new Array(data.latitude.length);
+  for (let index = 0, length = data.latitude.length; index < length; index++) {
+    points[index] = {
+      x: data.worldX[index],
+      y: data.worldY[index],
+      series: data.series[index],
+      datetime: data.datetime[index],
+      hasFishing: data.hasFishing[index]
+    };
+  }
+  // return points;
+  return simplify(points, 0.05);
 };
 
 const _getZoomFactorRadiusRenderingMode = zoom => ((zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.15);

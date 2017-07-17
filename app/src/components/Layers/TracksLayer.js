@@ -22,7 +22,7 @@ export default class TracksLayerGL {
     this.clear();
     let n = 0; // eslint-disable-line no-unused-vars
     tracks.forEach((track) => {
-      n += this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
+      n += this._drawTrack(track.points, track.selectedSeries, track.hue, drawParams, offsets);
     });
     console.log(n)
   }
@@ -38,7 +38,7 @@ export default class TracksLayerGL {
    * An object containing the world top and left and the scale factor (dependent on zoom).
    * This is used to convert world coordinates to pixels
    */
-  _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
+  _drawTrack(points, queriedSeries, hue, drawParams, offsets) {
     const color = hueToRgbHexString(Math.min(359, hue));
     let prevDrawStyle;
     let prevSeries;
@@ -55,20 +55,21 @@ export default class TracksLayerGL {
     let n = 0;
 
     const viewportWorldX = offsets.left;
-    for (let i = 0, length = data.worldX.length; i < length; i++) {
+    for (let i = 0, length = points.length; i < length; i++) {
+      const point = points[i];
       prevSeries = currentSeries;
-      currentSeries = data.series[i];
+      currentSeries = point.series;
       if (queriedSeries && queriedSeries !== currentSeries) {
         continue;
       }
 
       // TODO temporary fix for track performance: do not display out of inner range tracks
-      // if (data.datetime[i] < drawParams.startTimestamp || data.datetime[i] > drawParams.endTimestamp) {
-      //   continue;
-      // }
+      if (point.datetime < drawParams.startTimestamp || point.datetime > drawParams.endTimestamp) {
+        continue;
+      }
       n++;
 
-      let pointWorldX = data.worldX[i];
+      let pointWorldX = point.x;
 
       // Add a whole world to x coordinate, when point is after antimeridian and part of the world shown is the after the prime meridian.
       // This way we move the new point to the "second world" on the right avoiding issues when rendring tracks that cross antimeridian.
@@ -76,9 +77,9 @@ export default class TracksLayerGL {
         pointWorldX += 256;
       }
       const x = ((pointWorldX - viewportWorldX) * offsets.scale);
-      const y = ((data.worldY[i] - offsets.top) * offsets.scale);
+      const y = ((point.y - offsets.top) * offsets.scale);
 
-      const drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
+      const drawStyle = this.getDrawStyle(point.datetime, drawParams);
       if (prevDrawStyle !== drawStyle) {
         if (drawStyle === TRACK_SEGMENT_TYPES.OutOfInnerRange) {
           this.stage.lineStyle(1, color, 0.3);
@@ -106,7 +107,7 @@ export default class TracksLayerGL {
       }
 
       if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
-        if (data.hasFishing[i] === true &&
+        if (point.hasFishing === true &&
           (drawStyle & TRACK_SEGMENT_TYPES.InInnerRange)) {
           circlePoints.x.push(x);
           circlePoints.y.push(y);

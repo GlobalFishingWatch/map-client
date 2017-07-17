@@ -53,6 +53,7 @@
     "react-sanfona": "daviferreira/react-sanfona#086ef6dd3db5fa8b6cc357e9d9c580fce4053c17",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
+    "simplify-js": "^1.2.1",
     "webpack-bundle-analyzer": "^2.8.1",
     "whatwg-fetch": "^1.0.0"
   },
