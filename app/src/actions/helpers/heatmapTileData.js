@@ -165,29 +165,28 @@ export const getTilePlaybackDataFromVectorTile = (vectorTile, prevPlaybackData) 
 
   const numFeatures = vessels.length;
   for (let i = 0; i < numFeatures; i++) {
-    const feature = vessels.feature(i).properties;
-    if (!tilePlaybackData[feature.t]) {
+    const feature = vessels.feature(i);
+    const properties = feature.properties;
+    if (!tilePlaybackData[properties.t]) {
       const frame = {
-        category: [feature.category],
-        opacity: [feature.opacity],
-        radius: [feature.radius],
-        series: [feature.series],
-        seriesUid: [feature.seriesUid],
-        seriesgroup: [feature.seriesgroup],
-        worldX: [feature.worldX],
-        worldY: [feature.worldY]
+        category: [properties.category],
+        opacity: [properties.opacity/8],
+        radius: [properties.radius/8],
+        series: [properties.series],
+        seriesgroup: [properties.seriesgroup],
+        worldX: [properties.worldX/4],
+        worldY: [properties.worldY/4]
       };
-      tilePlaybackData[feature.t] = frame;
+      tilePlaybackData[properties.t] = frame;
     } else {
-      const frame = tilePlaybackData[feature.t];
-      frame.category.push(feature.category);
-      frame.opacity.push(feature.opacity);
-      frame.radius.push(feature.radius);
-      frame.series.push(feature.series);
-      frame.seriesUid.push(feature.seriesUid);
-      frame.seriesgroup.push(feature.seriesgroup);
-      frame.worldX.push(feature.worldX);
-      frame.worldY.push(feature.worldY);
+      const frame = tilePlaybackData[properties.t];
+      frame.category.push(properties.category);
+      frame.opacity.push(properties.opacity/8);
+      frame.radius.push(properties.radius/8);
+      frame.series.push(properties.series);
+      frame.seriesgroup.push(properties.seriesgroup);
+      frame.worldX.push(properties.worldX/4);
+      frame.worldY.push(properties.worldY/4);
     }
   }
   // const keys = vectorTile.layers.vessels._keys;
@@ -205,7 +204,6 @@ export const getTilePlaybackDataFromVectorTile = (vectorTile, prevPlaybackData) 
   //         opacity: [],
   //         radius: [],
   //         series: [],
-  //         seriesUid: [],
   //         seriesgroup: [],
   //         worldX: [],
   //         worldY: []
@@ -274,6 +272,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       continue;
     }
     const frame = tilePlaybackData[timeIndex];
+    frame.latitude.push(vectorArray.latitude[index]);
+    frame.longitude.push(vectorArray.longitude[index]);
     frame.worldX.push(worldX);
     frame.worldY.push(worldY);
     frame.radius.push(radius);

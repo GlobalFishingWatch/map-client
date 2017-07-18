@@ -29,32 +29,37 @@ window.export = function () {
   layer.tiles.forEach((tile) => {
     // const frames = tile.data.slice(0, 1500);
     const frames = tile.data;
-    frames.forEach((frame, frameIndex) => {
-      for (let i = 0; i < frame.latitude.length; i++) {
-        const pt = {
-          type: 'Feature',
-          properties: {
-            t: frameIndex,
-            category: frame.category[i],
-            opacity: frame.opacity[i],
-            radius: frame.radius[i],
-            series: frame.series[i],
-            seriesUid: frame.seriesUid[i],
-            seriesgroup: frame.seriesgroup[i],
-            worldX: frame.worldX[i],
-            worldY: frame.worldY[i]
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [
-              frame.longitude[i],
-              frame.latitude[i]
-            ]
-          }
-        };
-        g.features.push(pt);
-      }
-    });
+    if (frames) {
+      frames.forEach((frame, frameIndex) => {
+        for (let i = 0; i < frame.latitude.length; i++) {
+          const pt = {
+            type: 'Feature',
+            properties: {
+              t: frameIndex,
+              category: frame.category[i],
+              opacity: Math.round(frame.opacity[i] * 8),
+              radius: Math.round(frame.radius[i] * 8),
+              series: frame.series[i],
+              seriesgroup: frame.seriesgroup[i],
+              // worldX: frame.worldX[i],
+              // worldY: frame.worldY[i]
+              worldX: Math.round(frame.worldX[i] * 4),
+              worldY: Math.round(frame.worldY[i] * 4)
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [
+                frame.longitude[i],
+                frame.latitude[i]
+              ]
+            }
+          };
+          g.features.push(pt);
+        }
+      });
+    } else {
+      console.log('missing data on feature')
+    }
   });
   console.log(g);
   const blob = new Blob([JSON.stringify(g)], { type: 'text/plain;charset=utf-8' });
