@@ -167,7 +167,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
 
   // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
   let extraColumns = [].concat(columns);
-  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity', 'seriesUid');  // those are mandatory thus manually added
+  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity');  // those are mandatory thus manually added
   pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
   extraColumns = uniq(extraColumns);
 
@@ -187,17 +187,12 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     opacity = 0.1 + (0.2 * opacity);
     opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
 
-    /* eslint-disable prefer-template */
-    const seriesUid = vectorArray.seriesgroup[index] + '-' + vectorArray.series[index];
-    /* eslint-enable prefer-template */
-
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
         worldX: [worldX],
         worldY: [worldY],
         radius: [radius],
-        opacity: [opacity],
-        seriesUid: [seriesUid]
+        opacity: [opacity]
       };
       extraColumns.forEach((column) => {
         frame[column] = [vectorArray[column][index]];
@@ -210,7 +205,6 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     frame.worldY.push(worldY);
     frame.radius.push(radius);
     frame.opacity.push(opacity);
-    frame.seriesUid.push(seriesUid);
     extraColumns.forEach((column) => {
       frame[column].push(vectorArray[column][index]);
     });
@@ -245,8 +239,7 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {
           series: frame.series[i],
-          seriesgroup: frame.seriesgroup[i],
-          seriesUid: frame.seriesUid[i]
+          seriesgroup: frame.seriesgroup[i]
         };
 
         if (frame.category !== undefined) {
