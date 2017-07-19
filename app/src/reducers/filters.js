@@ -75,10 +75,17 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelinePaused: action.payload
       });
-    case SET_TIMELINE_HOVER_DATES:
+    case SET_TIMELINE_HOVER_DATES: {
+      const timelineOverExtent = action.payload;
+      const startTimestamp = timelineOverExtent[0].getTime();
+      const endTimestamp = timelineOverExtent[1].getTime();
+      const startIndex = getOffsetedTimeAtPrecision(startTimestamp);
+      const endIndex = getOffsetedTimeAtPrecision(endTimestamp);
+      const timelineOverExtentIndexes = [startIndex, endIndex];
       return Object.assign({}, state, {
-        timelineOverExtent: action.payload
+        timelineOverExtentIndexes
       });
+    }
     case REWIND_TIMELINE: {
       const currentInnerDelta = state.timelineInnerExtent[1].getTime() - state.timelineInnerExtent[0].getTime();
       const newTimelineInnerEnd = new Date(state.timelineOuterExtent[0].getTime() + currentInnerDelta);

@@ -259,7 +259,7 @@ export default class GLContainer extends BaseOverlay {
     }
 
     this.hasTracks = true;
-    this.tracksLayer.update(tracks, drawParams, this.currentOffsets);
+    this.tracksLayer.update(tracks, drawParams, this.currentOffsets, this._render.bind(this));
   }
 
   clearTracks() {

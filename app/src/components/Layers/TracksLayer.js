@@ -1,16 +1,15 @@
 /* global PIXI */
 import 'pixi.js';
 import {
-  TRACK_SEGMENT_TYPES,
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
   HALF_WORLD
 } from 'constants';
-import { hueToRgbHexString, rgbToHexString, hsvToRgb } from 'util/colors';
+import { hueToRgbHexString } from 'util/colors';
 
 export default class TracksLayerGL {
   constructor() {
     this.stage = new PIXI.Graphics();
-    this.stage.nativeLines = true;
+    // this.stage.nativeLines = true;
   }
 
   clear() {
@@ -20,130 +19,119 @@ export default class TracksLayerGL {
   update(tracks, drawParams, offsets) {
     this.clear();
     let n = 0; // eslint-disable-line no-unused-vars
+
+    const drawFishingCircles = drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD;
+    const fishingCirclesRadius = 1 + ((drawParams.zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) * 0.5);
+    const drawOverTrack = drawParams.timelineOverExtentIndexes !== undefined &&
+        drawParams.timelineOverExtentIndexes[0] > 0 && drawParams.timelineOverExtentIndexes[1] > 0;
+
     tracks.forEach((track) => {
-      n += this._drawTrack(track.data, track.selectedSeries, track.hue, drawParams, offsets);
+      const color = hueToRgbHexString(Math.min(359, track.hue));
+
+      n += this._drawTrack({
+        data: track.data,
+        extent: drawParams.timelineInnerExtentIndexes,
+        series: track.selectedSeries,
+        offsets,
+        drawFishingCircles,
+        fishingCirclesRadius,
+        color,
+        lineThickness: 1,
+        lineOpacity: 1
+      });
+
+      if (drawOverTrack === true) {
+        n += this._drawTrack({
+          data: track.data,
+          extent: drawParams.timelineOverExtentIndexes,
+          series: track.selectedSeries,
+          offsets,
+          drawFishingCircles,
+          fishingCirclesRadius,
+          color: '0xFFFFFF',
+          lineThickness: 2,
+          lineOpacity: 1
+        });
+      }
     });
+
+    // console.log(n);
   }
 
   /**
-   * Draw a single track (line + points)
+   * Draws a single track (line + points)
    *
-   * @param data
-   * @param queriedSeries
-   * @param hue
-   * @param drawParams
-   * @param offsets -
-   * An object containing the world top and left and the scale factor (dependent on zoom).
-   * This is used to convert world coordinates to pixels
+   * @param data track points data in 'playback form' (ie organized by days)
+   * @param extent extent, in day indices
+   * @param series (optional) used to filter points by series
+   * @param offset object containing info about the current situation of the map viewport, used to compute screen coords
+   * @param drawFishingCircles whether to draw fishing circles or not
+   * @param fishingCirclesRadius radius of the fishing circles
+   * @param color
+   * @param lineThickness
+   * @param lineOpacity
    */
-  _drawTrack(data, queriedSeries, hue, drawParams, offsets) {
-    const color = hueToRgbHexString(Math.min(359, hue));
-    let prevDrawStyle;
+  _drawTrack({ data, extent, series, offsets, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
+    const startIndex = extent[0];
+    const endIndex = extent[1];
+    const viewportWorldX = offsets.left;
+
+    let n = 0;
     let prevSeries;
-    let currentSeries;
-    let prevX;
-    let prevY;
-    let newLine;
 
     const circlePoints = {
       x: [],
       y: []
     };
 
-    let n = 0;
+    this.stage.lineStyle(lineThickness, color, lineOpacity);
 
-    const viewportWorldX = offsets.left;
-    for (let i = 0, length = data.worldX.length; i < length; i++) {
-      prevSeries = currentSeries;
-      currentSeries = data.series[i];
-      if (queriedSeries && queriedSeries !== currentSeries) {
-        continue;
-      }
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
+      const frame = data[timeIndex];
 
-      // TODO temporary fix for track performance: do not display out of inner range tracks
-      if (data.datetime[i] < drawParams.startTimestamp || data.datetime[i] > drawParams.endTimestamp) {
-        continue;
-      }
-      n++;
+      if (!frame) continue;
 
-      let pointWorldX = data.worldX[i];
-
-      // Add a whole world to x coordinate, when point is after antimeridian and part of the world shown is the after the prime meridian.
-      // This way we move the new point to the "second world" on the right avoiding issues when rendring tracks that cross antimeridian.
-      if (viewportWorldX > HALF_WORLD && pointWorldX < HALF_WORLD) {
-        pointWorldX += 256;
-      }
-      const x = ((pointWorldX - viewportWorldX) * offsets.scale);
-      const y = ((data.worldY[i] - offsets.top) * offsets.scale);
-
-      const drawStyle = this.getDrawStyle(data.datetime[i], drawParams);
-      if (prevDrawStyle !== drawStyle) {
-        if (drawStyle === TRACK_SEGMENT_TYPES.OutOfInnerRange) {
-          this.stage.lineStyle(1, color, 0.3);
-        } else if (drawStyle & TRACK_SEGMENT_TYPES.Highlighted) {
-          this.stage.lineStyle(1, '0xFFFFFF', 1);
-        } else if (drawStyle & TRACK_SEGMENT_TYPES.InInnerRange) {
-          this.stage.lineStyle(1, color, 1);
+      for (let i = 0, len = frame.series.length; i < len; i++) {
+        const currentSeries = frame.series[i];
+        if (series && series !== currentSeries) {
+          continue;
         }
-        this.stage.moveTo(prevX || x, prevY || y);
-        newLine = true;
-      }
-      if (prevSeries !== currentSeries) {
-        this.stage.moveTo(x, y);
-        newLine = true;
-      }
-      this.stage.lineTo(x, y);
 
-      // 'lineNative' rendering style fixes various rendering issues, but does not allow
-      // for lines thickness different than 1. We double the line and offset it to give the illusion of
-      // a 2px wide line
-      if (drawStyle & (TRACK_SEGMENT_TYPES.Highlighted | TRACK_SEGMENT_TYPES.InInnerRange) && newLine !== true) {
-        this.stage.moveTo(prevX + 1, prevY);
-        this.stage.lineTo(x + 1, y);
-        this.stage.moveTo(x, y);
-      }
+        n++;
 
-      if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
-        if (data.hasFishing[i] === true &&
-          (drawStyle & TRACK_SEGMENT_TYPES.InInnerRange)) {
+        let pointWorldX = frame.worldX[i];
+
+        // Add a whole world to x coordinate, when point is after antimeridian and part of the world shown is the after the prime meridian.
+        // This way we move the new point to the "second world" on the right avoiding issues when rendring tracks that cross antimeridian.
+        if (viewportWorldX > HALF_WORLD && pointWorldX < HALF_WORLD) {
+          pointWorldX += 256;
+        }
+        const x = ((pointWorldX - viewportWorldX) * offsets.scale);
+        const y = ((frame.worldY[i] - offsets.top) * offsets.scale);
+
+        if (prevSeries !== currentSeries) {
+          this.stage.moveTo(x, y);
+        }
+        this.stage.lineTo(x, y);
+
+        if (drawFishingCircles && frame.hasFishing[i] === true) {
           circlePoints.x.push(x);
           circlePoints.y.push(y);
         }
+
+        prevSeries = currentSeries;
       }
-      prevDrawStyle = drawStyle;
-      prevX = x;
-      prevY = y;
-      newLine = false;
     }
 
-    this.stage.lineStyle(0);
-
-    if (drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) {
-      const dotColor = rgbToHexString(hsvToRgb(hue, 100, 100));
-      const radius = 1 + ((drawParams.zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) * 0.5);
-      this.stage.beginFill(dotColor, 1);
+    if (drawFishingCircles) {
+      this.stage.lineStyle(0);
+      this.stage.beginFill(color, 1);
       for (let i = 0, circlesLength = circlePoints.x.length; i < circlesLength; i++) {
-        this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], radius);
+        this.stage.drawCircle(circlePoints.x[i], circlePoints.y[i], fishingCirclesRadius);
       }
       this.stage.endFill();
     }
 
     return n;
-  }
-
-  getDrawStyle(timestamp, { startTimestamp, endTimestamp, overStartTimestamp, overEndTimestamp }) {
-    let flags = 0;
-    if (overStartTimestamp && overEndTimestamp &&
-        timestamp > overStartTimestamp && timestamp < overEndTimestamp) {
-      // over style
-      flags |= TRACK_SEGMENT_TYPES.Highlighted;
-    }
-    if (timestamp > startTimestamp && timestamp < endTimestamp) {
-      // inner style
-      flags |= TRACK_SEGMENT_TYPES.InInnerRange;
-    } else {
-      flags |= TRACK_SEGMENT_TYPES.OutOfInnerRange;
-    }
-    return flags;
   }
 }
