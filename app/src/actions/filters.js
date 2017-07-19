@@ -5,19 +5,11 @@ import {
   SET_PLAYING_STATUS,
   SET_TIMELINE_HOVER_DATES,
   GA_PLAY_STATUS_TOGGLED,
-  GA_OUTER_TIMELINE_DATES_UPDATED,
   REWIND_TIMELINE
 } from 'actions';
 import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
-import debounce from 'lodash/debounce';
-
-const gaLogOuterTimelineDatesUpdated = debounce((dispatch, outerTimelineDates) => {
-  dispatch({
-    type: GA_OUTER_TIMELINE_DATES_UPDATED,
-    payload: outerTimelineDates
-  });
-}, 1000);
+import { trackInnerTimelineChange, trackOuterTimelineChange } from 'actions/analytics';
 
 const getRangeDuration = range => range[1].getTime() - range[0].getTime();
 
@@ -70,15 +62,19 @@ export function refreshFlagFiltersLayers() {
 }
 
 export function setInnerTimelineDates(innerTimelineDates) {
-  return {
-    type: SET_INNER_TIMELINE_DATES,
-    payload: innerTimelineDates
+  return (dispatch, getState) => {
+    trackInnerTimelineChange(dispatch, innerTimelineDates, getState().filters.timelineInnerExtent, getState().filters.timelinePaused);
+
+    dispatch({
+      type: SET_INNER_TIMELINE_DATES,
+      payload: innerTimelineDates
+    });
   };
 }
 
 export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
   return (dispatch, getState) => {
-    gaLogOuterTimelineDatesUpdated(dispatch, outerTimelineDates);
+    trackOuterTimelineChange(dispatch, outerTimelineDates);
 
     const currentInnerTimelineDates = getState().filters.timelineInnerExtent;
     const currentInnerDuration = getRangeDuration(currentInnerTimelineDates);

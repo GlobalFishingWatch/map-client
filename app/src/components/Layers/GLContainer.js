@@ -138,7 +138,6 @@ export default class GLContainer extends BaseOverlay {
   _render() {
     this.reposition();
     this.currentOffsets = this._getOffsets();
-    this.renderer.render(this.stage);
   }
 
   enableRendering() {

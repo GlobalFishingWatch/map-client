@@ -9,7 +9,6 @@ import {
   GA_SEARCH_RESULT_CLICKED,
   GA_VESSEL_POINT_CLICKED,
   SET_FLAG_FILTERS,
-  SET_INNER_TIMELINE_DATES,
   SET_SEARCH_TERM,
   SET_WORKSPACE_ID,
   SHOW_POLYGON,
@@ -18,7 +17,9 @@ import {
   SET_REPORT_STATUS_SENT,
   GA_DISCARD_REPORT,
   GA_MAP_CENTER_TILE,
-  TOGGLE_VESSEL_PIN
+  TOGGLE_VESSEL_PIN,
+  GA_INNER_TIMELINE_DATES_UPDATED,
+  GA_INNER_TIMELINE_EXTENT_CHANGED
 } from 'actions';
 import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -92,15 +93,16 @@ const GA_ACTION_WHITELIST = [
     getPayload: action => `${action.payload[0].getTime()}:${action.payload[1].getTime()}`
   },
   {
-    type: SET_INNER_TIMELINE_DATES,
+    type: GA_INNER_TIMELINE_DATES_UPDATED,
     category: 'Timeline',
-    action: 'Inner period changed',
-    getPayload: (action, state) => {
-      if (state.filters.timelinePaused === false) {
-        return null;
-      }
-      return `${action.payload[0].getTime()}:${action.payload[1].getTime()}`;
-    }
+    action: 'Inner dates changed',
+    getPayload: action => `${action.payload[0].getTime()}:${action.payload[1].getTime()}`
+  },
+  {
+    type: GA_INNER_TIMELINE_EXTENT_CHANGED,
+    category: 'Timeline',
+    action: 'Inner extent changed',
+    getPayload: action => action.payload.toString()
   },
   {
     type: GA_PLAY_STATUS_TOGGLED,

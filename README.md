@@ -215,3 +215,7 @@ Triggered when an user changed the viewed area. It is not triggered below zoom l
 For example, the coast along Peru and Argentina would be `9, 17` here:
 
 <img src="https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/develop/documentation/ga-area.png">
+
+#### GA_INNER_TIMELINE_EXTENT_CHANGED
+
+Returns the length of the new inner extent in days.
