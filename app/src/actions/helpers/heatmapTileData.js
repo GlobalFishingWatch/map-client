@@ -218,6 +218,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   return tilePlaybackData;
 };
 
+
 export const addTracksPointsRenderingData = (data) => {
   data.hasFishing = [];
 
@@ -226,6 +227,39 @@ export const addTracksPointsRenderingData = (data) => {
   }
   return data;
 };
+
+
+/**
+ * A simplified version of getTilePlaybackData for tracks
+ * Converts Vector Array data to Playback format (organized by days) and stores it locally
+ * @param vectorArray the source data before indexing by day
+ */
+export const getTracksPlaybackData = (vectorArray) => {
+  const playbackData = [];
+
+  for (let index = 0, length = vectorArray.series.length; index < length; index++) {
+    const datetime = vectorArray.datetime[index];
+    const timeIndex = getOffsetedTimeAtPrecision(datetime);
+
+    if (!playbackData[timeIndex]) {
+      const frame = {
+        worldX: [vectorArray.worldX[index]],
+        worldY: [vectorArray.worldY[index]],
+        series: [vectorArray.series[index]],
+        hasFishing: [vectorArray.hasFishing[index]]
+      };
+      playbackData[timeIndex] = frame;
+      continue;
+    }
+    const frame = playbackData[timeIndex];
+    frame.worldX.push(vectorArray.worldX[index]);
+    frame.worldY.push(vectorArray.worldY[index]);
+    frame.series.push(vectorArray.series[index]);
+    frame.hasFishing.push(vectorArray.hasFishing[index]);
+  }
+  return playbackData;
+};
+
 
 export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFlags) => {
   const vessels = [];

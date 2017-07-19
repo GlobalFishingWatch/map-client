@@ -72,7 +72,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = cloneDeep(state.vessels[vesselIndex]);
       newVessel.track = {
-        data: action.payload.seriesGroupData,
+        data: action.payload.data,
         selectedSeries: action.payload.selectedSeries
       };
 
