@@ -7,7 +7,6 @@ import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=Faceboo
 import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
 import GooglePlusIcon from 'babel!svg-react!assets/icons/google-plus.svg?name=GooglePlusIcon';
 import { EMBED_SIZE_SETTINGS, DEFAULT_EMBED_SIZE } from 'constants';
-import 'linkref/polyfill';
 
 class Share extends Component {
 
@@ -39,7 +38,7 @@ class Share extends Component {
   onCopy(e) {
     e.preventDefault();
 
-    this.refs.input.select(); // eslint-disable-line react/no-string-refs
+    this.input.select();
 
     let error = false;
     try {
@@ -141,7 +140,7 @@ class Share extends Component {
             type="text"
             readOnly
             value={url}
-            ref={this.linkRef('input')}
+            ref={(input) => { this.input = input; }}
           />
           <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
             {this.state.copied ? 'Copied!' : 'Copy'}
@@ -189,7 +188,7 @@ class Share extends Component {
                 type="text"
                 readOnly
                 value={embed}
-                ref={this.linkRef('input')}
+                ref={(input) => { this.input = input; }}
               />
               <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
                 {this.state.copied ? 'Copied!' : 'Copy'}

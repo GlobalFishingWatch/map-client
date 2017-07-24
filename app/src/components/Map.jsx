@@ -31,7 +31,6 @@ import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIco
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 import Loader from 'containers/Map/Loader';
-import 'linkref/polyfill';
 
 class Map extends Component {
   constructor(props) {
@@ -144,7 +143,7 @@ class Map extends Component {
    */
   onMapIdle() {
     if (!this.map) {
-      this.map = this.refs.map.props.map; // eslint-disable-line react/no-string-refs
+      this.map = this.mapRef.props.map; // eslint-disable-line react/no-string-refs
       this.props.initMap(this.map);
       this.props.loadInitialState();
       this.defineBasemaps(this.props.basemaps);
@@ -156,7 +155,7 @@ class Map extends Component {
   }
 
   getViewportSize() {
-    const rect = this.refs.mapContainer.getBoundingClientRect();
+    const rect = this.mapContainerRef.getBoundingClientRect();
     return {
       viewportWidth: rect.width,
       viewportHeight: rect.height
@@ -284,7 +283,7 @@ class Map extends Component {
           { '-map-pointer': this.props.showMapCursorPointer },
           { '-map-zoom': this.props.showMapCursorZoom }
         )}
-        ref={this.linkRef('mapContainer')}
+        ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
       >
         <div className={mapCss['map-loader']}>
           <Loader tiny />
@@ -356,7 +355,7 @@ class Map extends Component {
             }
           googleMapElement={
             <GoogleMap
-              ref={this.linkRef('map')}
+              ref={(mapRef) => { this.mapRef = mapRef; }}
               defaultZoom={this.props.zoom}
               defaultCenter={{ lat: this.props.centerLat, lng: this.props.centerLong }}
               defaultZoomControl={false}
