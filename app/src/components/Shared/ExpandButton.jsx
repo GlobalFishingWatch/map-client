@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 
 import ExpandButtonStyles from 'styles/components/shared/c-expand-button.scss';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 import SearchResult from 'containers/Map/SearchResult';
@@ -81,11 +81,12 @@ class SearchPanel extends Component {
         <input
           type="text"
           onBlur={() => this.onSearchInputBlur()}
-          onChange={e => this.onSearchInputChange(e)}
+          onInput={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles['search-accordion']}
           placeholder="Search vessel"
           value={this.props.searchTerm}
+          // eslint-disable-next-line no-return-assign
           ref={ref => (this.searchField = ref)}
         />
         {this.props.searchTerm.length > 0 && <CloseIcon

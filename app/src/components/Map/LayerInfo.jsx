@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import LayerInfoStyles from 'styles/components/map/c-layer-info.scss';
 
@@ -17,6 +17,10 @@ class LayerInfo extends Component {
   }
 
   render() {
+    if (this.props.info === undefined) {
+      return null;
+    }
+
     const description = this.props.info.description || this.defaults.messages.noDescription;
 
     return (

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import LayerLibrary from 'containers/Map/LayerLibrary';
 import CustomLayer from 'containers/Map/CustomLayer';

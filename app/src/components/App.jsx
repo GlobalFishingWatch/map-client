@@ -1,6 +1,6 @@
 /* global PIXI */
 /* eslint-disable react/no-danger */
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/c-app.scss';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
 import ModalStyles from 'styles/components/shared/c-modal.scss';

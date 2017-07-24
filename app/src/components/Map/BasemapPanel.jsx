@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 

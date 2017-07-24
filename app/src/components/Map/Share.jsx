@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import ShareStyles from 'styles/components/map/c-share.scss';
 import iconStyles from 'styles/icons.scss';
@@ -7,6 +7,7 @@ import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=Faceboo
 import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
 import GooglePlusIcon from 'babel!svg-react!assets/icons/google-plus.svg?name=GooglePlusIcon';
 import { EMBED_SIZE_SETTINGS, DEFAULT_EMBED_SIZE } from 'constants';
+import 'linkref/polyfill';
 
 class Share extends Component {
 
@@ -135,7 +136,13 @@ class Share extends Component {
           Copy and paste the link into an email or IM
         </p>
         <form>
-          <input className={ShareStyles['share-input']} type="text" readOnly value={url} ref="input" />
+          <input
+            className={ShareStyles['share-input']}
+            type="text"
+            readOnly
+            value={url}
+            ref={this.linkRef('input')}
+          />
           <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
             {this.state.copied ? 'Copied!' : 'Copy'}
           </button>
@@ -182,7 +189,7 @@ class Share extends Component {
                 type="text"
                 readOnly
                 value={embed}
-                ref="input"
+                ref={this.linkRef('input')}
               />
               <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
                 {this.state.copied ? 'Copied!' : 'Copy'}

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import ResultListStyles from 'styles/components/shared/c-result-list.scss';
 
 class SearchResult extends Component {

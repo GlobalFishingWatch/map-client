@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import styles from 'styles/components/map/c-welcome-modal.scss';
 
 class WelcomeModal extends Component {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import cloneDeep from 'lodash/cloneDeep';
 import assign from 'lodash/assign';
 import classnames from 'classnames';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import LayerManagementStyles from 'styles/components/map/c-layer-management.scss';
 import MapButtonStyles from 'styles/components/map/c-button.scss';
