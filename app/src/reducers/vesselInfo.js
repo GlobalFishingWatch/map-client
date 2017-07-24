@@ -73,6 +73,7 @@ export default function (state = initialState, action) {
       const newVessel = cloneDeep(state.vessels[vesselIndex]);
       newVessel.track = {
         data: action.payload.seriesGroupData,
+        points: action.payload.points,
         selectedSeries: action.payload.selectedSeries
       };
 
