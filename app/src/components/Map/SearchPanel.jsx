@@ -86,8 +86,6 @@ class SearchPanel extends Component {
           className={searchPanelStyles['search-accordion']}
           placeholder="Search vessel"
           value={this.props.searchTerm}
-          // eslint-disable-next-line no-return-assign
-          ref={ref => (this.searchField = ref)}
         />
         {this.props.searchTerm.length > 0 && <CloseIcon
           className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
