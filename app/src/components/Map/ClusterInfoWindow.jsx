@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { render, Component } from 'preact';
 import classnames from 'classnames';
 import CustomInfowindowStyles from 'styles/components/map/c-custom-infowindow.scss';
 import CustomInfoWindow from 'util/CustomInfoWindow';
@@ -23,7 +22,7 @@ export default class ClusterInfoWindow extends Component {
 
   componentDidUpdate() {
     if (!this.infoWindow) return;
-    ReactDOM.render(this.element, this.infoWindow.div);
+    render(this.element, this.infoWindow.div, this.infoWindow.div.lastElementChild);
     if (this.props.latLng) {
       this.infoWindow.setLatLng(this.props.latLng);
     }

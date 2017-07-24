@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import BaseStyles from 'styles/_base.scss';
 import IconStyles from 'styles/icons.scss';

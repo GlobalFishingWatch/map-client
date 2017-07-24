@@ -1,6 +1,6 @@
 /* eslint react/sort-comp:0 */
 /* eslint-disable max-len  */
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import delay from 'lodash/delay';
@@ -31,6 +31,7 @@ import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIco
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 import Loader from 'containers/Map/Loader';
+import 'linkref/polyfill';
 
 class Map extends Component {
   constructor(props) {
@@ -283,7 +284,7 @@ class Map extends Component {
           { '-map-pointer': this.props.showMapCursorPointer },
           { '-map-zoom': this.props.showMapCursorZoom }
         )}
-        ref="mapContainer"
+        ref={this.linkRef('mapContainer')}
       >
         <div className={mapCss['map-loader']}>
           <Loader tiny />
@@ -355,7 +356,7 @@ class Map extends Component {
             }
           googleMapElement={
             <GoogleMap
-              ref="map"
+              ref={this.linkRef('map')}
               defaultZoom={this.props.zoom}
               defaultCenter={{ lat: this.props.centerLat, lng: this.props.centerLong }}
               defaultZoomControl={false}

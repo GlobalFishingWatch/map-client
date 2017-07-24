@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import MapContainer from 'containers/Map';
 import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
 

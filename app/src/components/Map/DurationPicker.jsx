@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import moment from 'moment';
 import classnames from 'classnames';
 import { DURATION_PICKER_OPTIONS } from 'constants';

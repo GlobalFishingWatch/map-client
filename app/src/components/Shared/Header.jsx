@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
 import menuicon from 'assets/icons/menu_icon.svg';

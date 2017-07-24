@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import supportFormStyle from 'styles/components/c-support-form.scss';
 import buttonStyle from 'styles/components/c-button.scss';

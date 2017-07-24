@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React from 'preact';
 import classnames from 'classnames';
 import styles from 'styles/components/shared/c-modal.scss';
 import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React from 'preact';
 import classnames from 'classnames';
 import loaderStyle from 'styles/components/c-loader.scss';
 

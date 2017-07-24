@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
 import LayerListStyles from 'styles/components/map/c-layer-list.scss';

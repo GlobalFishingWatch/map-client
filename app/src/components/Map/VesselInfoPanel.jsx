@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import { getCountry } from 'iso-3166-1-alpha-2';
 import MediaQuery from 'react-responsive';
