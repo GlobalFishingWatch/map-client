@@ -37,9 +37,9 @@ class LayerBlendingOptionsTooltip extends Component {
 
     this.hueRangeConfig = cloneDeep(INPUT_RANGE_DEFAULT_CONFIG);
     assign(this.hueRangeConfig, {
-      minValue: 0,
-      maxValue: 360,
-      step: VESSELS_HUES_INCREMENT,
+      minValue: 160,
+      maxValue: 260,
+      step: 1,
       value: this.props.hueValue
     });
 

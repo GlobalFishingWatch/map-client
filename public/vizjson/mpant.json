@@ -1,0 +1,215 @@
+vizjson({
+  "id": "3d8e8416-866c-11e6-8c6b-0242ac110006",
+  "version": "0.1.0",
+  "title": "Marine Protected Area No Take",
+  "likes": 0,
+  "description": "<p><a href=\"http://globalfishingwatch.io/pelagos-content/mpant.json\">Metadata</a></p>\n",
+  "scrollwheel": false,
+  "legends": true,
+  "url": null,
+  "map_provider": "leaflet",
+  "bounds": [
+    [
+      -33.87041555094182,
+      -260.595703125
+    ],
+    [
+      10.31491928581316,
+      -156.357421875
+    ]
+  ],
+  "center": "[-12.726084296948184, -208.4765625]",
+  "zoom": 4,
+  "updated_at": "2017-06-07T18:13:21+00:00",
+  "layers": [
+    {
+      "options": {
+        "default": true,
+        "url": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        "subdomains": "abcd",
+        "minZoom": "0",
+        "maxZoom": "18",
+        "name": "Positron",
+        "className": "positron_rainbow",
+        "attribution": "© <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors © <a href= \"http://cartodb.com/attributions#basemaps\">CartoDB</a>",
+        "urlTemplate": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+      },
+      "infowindow": null,
+      "tooltip": null,
+      "id": "60f66327-2cc7-401a-909e-f937a346b170",
+      "order": 0,
+      "parent_id": null,
+      "children": [],
+      "type": "tiled"
+    },
+    {
+      "type": "layergroup",
+      "options": {
+        "user_name": "production",
+        "maps_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "sql_api_template": "http://cartodb.skytruth.org:80/user/{user}",
+        "tiler_protocol": "http",
+        "tiler_domain": "cartodb.skytruth.org",
+        "tiler_port": "80",
+        "sql_api_protocol": "http",
+        "sql_api_domain": "cartodb.skytruth.org",
+        "sql_api_endpoint": "/api/v2/sql",
+        "sql_api_port": 80,
+        "filter": "mapnik",
+        "layer_definition": {
+          "stat_tag": "3d8e8416-866c-11e6-8c6b-0242ac110006",
+          "version": "1.0.1",
+          "layers": [
+            {
+              "id": "819ad1af-900c-47f3-8f31-0ab506539a1c",
+              "parent_id": null,
+              "children": [],
+              "type": "CartoDB",
+              "infowindow": {
+                "fields": [
+                  {
+                    "name": "reporting_id",
+                    "title": true,
+                    "position": 3
+                  },
+                  {
+                    "name": "reporting_name",
+                    "title": true,
+                    "position": 4
+                  },
+                  {
+                    "name": "isinreport",
+                    "title": true,
+                    "position": 67
+                  },
+                  {
+                    "name": "region_id",
+                    "title": true,
+                    "position": 68
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "name",
+                    "title": true
+                  }
+                ],
+                "template_name": "",
+                "template": "<div class=\"cartodb-popup v2\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n  <div class=\"cartodb-popup-content-wrapper\">\n    <div class=\"cartodb-popup-content\">\n      <h4>Name</h4>\n      <p>{{name}}</p>\n      <h4>MPA Link</h4>\n      <p><a href=\"{{mpa_url}}\" target=\"new\" style=\"color:gray\">{{mpa_url}}</a></p>\n      <h4>SOURCE</h4>\n\t\t\t<p><a href=\"http://mpatlas.org/\" target=\"_new\" style=\"color:gray\">\n  mpatlas.org</a></p>\n    </div>\n  </div>\n  <div class=\"cartodb-popup-tip-container\"></div>\n</div>",
+                "alternative_names": {},
+                "width": 226,
+                "maxHeight": 180
+              },
+              "tooltip": {
+                "fields": [
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "isinreport",
+                    "title": true
+                  },
+                  {
+                    "position": 35,
+                    "name": "name",
+                    "title": true
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "region_id",
+                    "title": true
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "reporting_id",
+                    "title": true
+                  },
+                  {
+                    "position": 1.7976931348623157e+308,
+                    "name": "reporting_name",
+                    "title": true
+                  }
+                ],
+                "template_name": "",
+                "template": "<div class=\"cartodb-tooltip-content-wrapper\">\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{name}}</p>\n  </div>\n  <div class=\"cartodb-tooltip-content\">\n    <p>{{reporting_id}}</p>\n  </div>\n</div>",
+                "alternative_names": {},
+                "maxHeight": 180
+              },
+              "legend": {
+                "type": "none",
+                "show_title": false,
+                "title": "",
+                "template": "",
+                "visible": true
+              },
+              "order": 1,
+              "visible": true,
+              "options": {
+                "sql": "SELECT\n\tthe_geom,\n\tthe_geom_webmercator,\n\tcartodb_id,\n\tname,\n\tname as reporting_name,\n\t'mpant:' || mpa_id as region_id, \n\t'mpant:' || mpa_id as reporting_id, \n\tfalse isinreport \nFROM no_take_mpas_9_28_wgs_urls",
+                "layer_name": "MPA No Take",
+                "cartocss": "/** simple visualization */\n\n#no_take_mpas_9_28_wgs_urls{\n  polygon-fill: #FFFFFF;\n  polygon-opacity: 0;\n  line-color: #F11810;\n  line-width: 1.5;\n  line-opacity: 1;\n}\n\n#layer[isinreport=true]{\n    polygon-pattern-file: url(https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/1da6833382feea3a33b4ef56ca64dde1e200119b/public/map/pattern.png);\n  polygon-pattern-opacity: .4;\n   image-filters:colorize-alpha(#F11810);\n}\n\n#layer::top{\n  polygon-opacity: 0;\n  line-color: #F11810;\n  line-width: 2;\n  line-opacity: 1;\n}",
+                "cartocss_version": "2.1.1",
+                "interactivity": "cartodb_id,isinreport,name,region_id,reporting_id,reporting_name",
+                "table_name": "\"\"."
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "overlays": [
+    {
+      "type": "share",
+      "order": 2,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "search",
+      "order": 3,
+      "options": {
+        "display": true,
+        "x": 60,
+        "y": 20
+      },
+      "template": ""
+    },
+    {
+      "type": "zoom",
+      "order": 6,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 20
+      },
+      "template": "<a href=\"#zoom_in\" class=\"zoom_in\">+</a> <a href=\"#zoom_out\" class=\"zoom_out\">-</a>"
+    },
+    {
+      "type": "loader",
+      "order": 8,
+      "options": {
+        "display": true,
+        "x": 20,
+        "y": 150
+      },
+      "template": "<div class=\"loader\" original-title=\"\"></div>"
+    },
+    {
+      "type": "logo",
+      "order": 9,
+      "options": {
+        "display": true,
+        "x": 10,
+        "y": 40
+      },
+      "template": ""
+    }
+  ],
+  "prev": null,
+  "next": null,
+  "transition_options": {
+    "time": 0
+  }
+})
