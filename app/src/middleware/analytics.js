@@ -19,7 +19,8 @@ import {
   GA_MAP_CENTER_TILE,
   TOGGLE_VESSEL_PIN,
   GA_INNER_TIMELINE_DATES_UPDATED,
-  GA_INNER_TIMELINE_EXTENT_CHANGED
+  GA_INNER_TIMELINE_EXTENT_CHANGED,
+  GA_SET_LAYER_OPACITY
 } from 'actions';
 import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -35,6 +36,12 @@ const GA_ACTION_WHITELIST = [
       return isVisible ? 'Turn Layer On' : 'Turn Layer Off';
     },
     getPayload: action => action.payload.layerId
+  },
+  {
+    type: GA_SET_LAYER_OPACITY,
+    category: 'Layer',
+    action: 'Set layer opacity',
+    getPayload: action => `${action.payload.layerId}:${action.payload.opacity}`
   },
   {
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,

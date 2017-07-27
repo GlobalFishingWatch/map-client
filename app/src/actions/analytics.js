@@ -10,13 +10,20 @@ import {
   GA_MAP_CENTER_TILE,
   GA_OUTER_TIMELINE_DATES_UPDATED,
   GA_INNER_TIMELINE_DATES_UPDATED,
-  GA_INNER_TIMELINE_EXTENT_CHANGED
+  GA_INNER_TIMELINE_EXTENT_CHANGED,
+  GA_SET_LAYER_OPACITY
 } from 'actions';
 
 /**
  * Only add here actions that are GA-exclusive.
  * These aim at removing ambiguities in other actions.
  */
+export const trackLayerOpacityChange = debounce((dispatch, opacity, layerId) => {
+  dispatch({
+    type: GA_SET_LAYER_OPACITY,
+    payload: { opacity, layerId }
+  });
+}, 1000);
 export const trackOuterTimelineChange = debounce((dispatch, outerTimelineDates) => {
   dispatch({
     type: GA_OUTER_TIMELINE_DATES_UPDATED,
