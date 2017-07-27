@@ -156,11 +156,6 @@ class MapLayers extends Component {
     this.map.addListener('dragend', this.onMapDragEndBound);
   }
 
-  componentWillUnmount() {
-    google.maps.event.clearInstanceListeners(this.map);
-    this.map.overlayMapTypes.clear();
-  }
-
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
