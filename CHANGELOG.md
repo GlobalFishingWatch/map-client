@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.5
+- Fix issue preventing map from rendering on some situations
+
 ## 2.1.4
 - Fix issue on track rendering
 - Improve performance on track rendering
