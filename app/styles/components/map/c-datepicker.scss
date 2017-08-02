@@ -14,6 +14,7 @@
   }
 
   .c-datepicker-title {
+    border-right: 1px solid $color-7;
     position: relative;
     padding-bottom: 5px;
     color: rgba($color-3, .5);
@@ -36,6 +37,7 @@
   }
 
   .react-datepicker__input-container {
+    border-right: 1px solid $color-7;
     height: 100%;
   }
 
