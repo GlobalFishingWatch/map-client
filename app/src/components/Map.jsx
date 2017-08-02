@@ -6,12 +6,13 @@ import classnames from 'classnames';
 import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
-import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+import { GoogleMapLoader, GoogleMap, DrawingManager } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
 import mapCss from 'styles/components/c-map.scss';
 import Timebar from 'containers/Map/Timebar';
+// import DrawArea from 'components/Map/DrawArea';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
 import LayerInfo from 'containers/Map/LayerInfo';
@@ -191,6 +192,20 @@ class Map extends Component {
     if (event.target.className.match('js-polygon-report') === null) {
       this.props.clearReportPolygon();
     }
+  }
+
+  handleFinish(event) {
+    console.info(event);
+    // const overlay = event.overlay; // regular Google maps API object
+    // Use react-google-maps instead of the created overlay object
+    // google.maps.event.clearInstanceListeners(overlay);
+    // overlay.setMap(null);
+
+    // Ok, now we can handle the event in a "controlled" way
+    // ex:
+    // let radius = overlay.getRadius();
+    // let center = overlay.getCenter();
+    // this.setState({ area: [ ...this.state.area, overlay]});
   }
 
   render() {
@@ -373,7 +388,25 @@ class Map extends Component {
               onZoomChanged={this.onZoomChanged}
               onDragend={this.onDragEnd}
               onIdle={this.onMapIdle}
-            />
+            >
+              <DrawingManager
+                defaultDrawingMode={google.maps.drawing.OverlayType.POLYGON}
+                onOverlaycomplete={this.handleFinish}
+                defaultOptions={{
+                  drawingControl: false,
+                  polygonOptions: {
+                    fillColor: '#174084',
+                    strokeColor: '#174084',
+                    fillOpacity: 0.5,
+                    strokeWeight: 3,
+                    clickable: false,
+                    editable: true,
+                    zIndex: 1
+                  }
+                }}
+              />
+              {/* <DrawArea polygonType={google.maps.drawing.OverlayType.POLYGON} /> */}
+            </GoogleMap>
           }
         />
       </div>
