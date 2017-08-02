@@ -14,12 +14,11 @@
   }
 
   .c-datepicker-title {
-    position: relative !important;
+    position: relative;
+    padding-bottom: 5px;
     color: rgba($color-3, .5);
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
-    padding-bottom: 20px;
-    position: absolute;
     text-align: center;
     text-transform: uppercase;
     top: 16px;
