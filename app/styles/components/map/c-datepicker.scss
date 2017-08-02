@@ -1,9 +1,6 @@
 @import '../../settings';
 
 :global .c-datepicker {
-  height: 100%;
-  position: relative;
-
   &::after {
     background-color: rgba($color-3, .4);
     content: '';
@@ -17,6 +14,7 @@
   }
 
   .c-datepicker-title {
+    position: relative !important;
     color: rgba($color-3, .5);
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
