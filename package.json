@@ -75,7 +75,7 @@
     "html-webpack-plugin": "^2.19.0",
     "image-webpack-loader": "^2.0.0",
     "morgan": "^1.7.0",
-    "node-sass": "^3.7.0",
+    "node-sass": "^4.5.0",
     "postcss-loader": "^1.1.0",
     "resolve-url-loader": "1.6.0",
     "sass-lint": "^1.10.2",
@@ -87,7 +87,7 @@
     "webpack-dev-middleware": "^1.9.0"
   },
   "engines": {
-    "node": "5.10.x",
-    "npm": "3.8.x"
+    "node": "8.2.x",
+    "npm": "5.3.x"
   }
 }
