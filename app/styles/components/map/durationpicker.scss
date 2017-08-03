@@ -1,0 +1,84 @@
+@import '../../settings';
+
+.durationpicker {
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  top: -$duration-picker-height;
+  transform: translate(15px, 0);
+  z-index: 5;
+
+  > .container {
+    align-items: center;
+    background-color: $color-19;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: flex;
+    height: $duration-picker-height;
+    justify-content: center;
+    min-width: 85px;
+    padding: 4px 4px 4px 18px;
+    position: relative;
+
+    > .durationpickerText {
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+      color: $color-4;
+      font-size: $font-size-xxs-small;
+      font-weight: bold;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    > .iconSettings  {
+      height: 12px;
+      left: 5px;
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+      width: 12px;
+    }
+
+    > .setttingsPanel {
+      background-color: rgba($color-1, .9);
+      bottom: 27px;
+      left: -30px;
+      min-width: 84px;
+      padding: 10px 5px;
+      position: absolute;
+
+      &::before {
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba($color-1, .9);
+        bottom: -6px;
+
+        content: '';
+        display: inline-block;
+        height: 0;
+        left: 50%;
+        position: absolute;
+        transform: translate(-50%, 0);
+
+        width: 0;
+      }
+    }
+
+    > .setttingsPanel > .settingsList {
+
+      > .settingsItem {
+        color: $color-4;
+        cursor: pointer;
+        font-size: $font-size-xxs-small;
+        padding: 5px 10px;
+        text-align: center;
+
+        &:hover {
+          background-color: rgba($color-3, .6);
+        }
+      }
+    }
+  }
+}

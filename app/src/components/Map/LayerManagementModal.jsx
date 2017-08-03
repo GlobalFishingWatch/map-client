@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import LayerLibrary from 'containers/Map/LayerLibrary';
 import CustomLayer from 'containers/Map/CustomLayer';
 
-import LayerManagementModalStyles from 'styles/components/map/c-layer-management-modal.scss';
+import LayerManagementModalStyles from 'styles/components/map/layer-management-modal.scss';
 
 class LayerLibraryModal extends Component {
 
@@ -26,23 +26,23 @@ class LayerLibraryModal extends Component {
     return (
       <div
         className={classnames(
-          LayerManagementModalStyles['c-layer-management-modal'],
-          { [`${LayerManagementModalStyles['-disabled']}`]: this.props.status === 'pending' }
+          LayerManagementModalStyles.layerManagementModal,
+          { [`${LayerManagementModalStyles._disabled}`]: this.props.status === 'pending' }
         )}
       >
         <h3 className={LayerManagementModalStyles.title}>Add layer</h3>
-        <div className={LayerManagementModalStyles['content-switcher']}>
+        <div className={LayerManagementModalStyles.contentSwitcher}>
           <span
-            className={classnames(LayerManagementModalStyles['content-option'],
-              { [`${LayerManagementModalStyles['-selected']}`]: this.state.display === 'library' })}
+            className={classnames(LayerManagementModalStyles.contentOption,
+              { [`${LayerManagementModalStyles._selected}`]: this.state.display === 'library' })}
             onClick={() => this.setDisplay('library')}
           >
             layers library
           </span>
           <span
-            className={classnames(LayerManagementModalStyles['content-option'],
+            className={classnames(LayerManagementModalStyles.contentOption,
               {
-                [`${LayerManagementModalStyles['-selected']}`]: this.state.display === 'customLayer'
+                [`${LayerManagementModalStyles._selected}`]: this.state.display === 'customLayer'
               })}
             onClick={() => this.setDisplay('customLayer')}
           >

@@ -1,0 +1,144 @@
+@import '../../settings';
+@import '../../mixins';
+
+.blending {
+  display: flex;
+
+  .blendingTooltip {
+    background-color: $color-1;
+    border: solid 1px rgba($color-3, .4);
+    bottom: 27px;
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-xxs-small;
+    max-height: none;
+    padding: 20px;
+    position: absolute;
+    right: -30px;
+    text-transform: uppercase;
+    width: 270px;
+    z-index: 11;
+
+    &::before {
+      @include arrow(12px, 1px, rgba($color-3, .4), 'down');
+      background-color: $color-1;
+      bottom: -7px;
+      position: absolute;
+      right: 31px;
+    }
+
+    @media screen and (max-width: $breakpoint-tablet) {
+      &._reverse {
+        bottom: auto;
+        top: 27px;
+
+        &::before {
+          @include arrow(12px, 1px, rgba($color-3, .4), 'up');
+          background-color: $color-1;
+          position: absolute;
+          right: 31px;
+          top: -7px;
+        }
+      }
+    }
+
+    :global .blendingRange {
+      appearance: none;
+      background: transparent;
+      height: 40px;
+      position: relative;
+      top: 5px;
+      width: 100%;
+
+      :global .trackContainer {
+        background-color: transparent;
+        cursor: pointer;
+        height: 15px;
+        position: relative;
+
+        .trackActive {
+          background-color: $color-4;
+          height: 3px;
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+        }
+
+        &::before {
+          background: $color-13;
+          content: '';
+          display: inline-block;
+          height: 3px;
+          left: 0;
+          position: absolute;
+          top: 50%;
+          transform: translate(0, -50%);
+          width: 100%;
+        }
+      }
+
+      :global .thumbContainer {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+      }
+
+      :global .thumb {
+        background-color: $color-2;
+        border: 2px solid $color-4;
+        display: inline-block;
+        height: 8px;
+        left: 0;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+      }
+
+      :global .label {
+        position: absolute;
+
+        &._min,
+        &._max {
+          bottom: 10px;
+        }
+
+        &._current {
+          display: none;
+        }
+
+        &._min {
+          left: 0;
+        }
+
+        &._max {
+          right: 0;
+        }
+
+        > span {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-tiny;
+        }
+      }
+    }
+
+    :global .blendingRange._hue {
+      height: 25px;
+
+      :global .trackContainer {
+        .trackActive {
+          display: none;
+        }
+
+        &::before {
+          background: linear-gradient(to right, rgb(204, 41, 41), rgb(204, 139, 41), rgb(171, 204, 41), rgb(73, 204, 41), rgb(41, 204, 106), rgb(41, 204, 204), rgb(41, 106, 204), rgb(73, 41, 204), rgb(171, 41, 204), rgb(204, 41, 139),  rgb(204, 41, 41));
+        }
+      }
+
+      :global .label {
+        display: none;
+      }
+    }
+  }
+}

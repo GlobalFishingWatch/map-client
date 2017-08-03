@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'preact';
-import ToggleStyles from 'styles/components/shared/c-toggle.scss';
+import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
 import { hueToRgbString } from 'util/colors';
 
@@ -14,7 +14,7 @@ class Toggle extends Component {
 
   render() {
     return (<div
-      className={classnames(ToggleStyles['c-toggle'], { [ToggleStyles['-active']]: this.props.on })}
+      className={classnames(ToggleStyles.toggle, { [ToggleStyles._active]: this.props.on })}
       style={this.props.on ? { background: this.getColor() } : null}
     >
       <input
@@ -23,9 +23,9 @@ class Toggle extends Component {
         checked={this.props.on}
         readOnly
       />
-      <div className={ToggleStyles['toggle-ball']}>
+      <div className={ToggleStyles.toggleBall}>
         <span
-          className={ToggleStyles['toggle-inner-ball']}
+          className={ToggleStyles.toggleInnerBall}
           style={this.props.on ? { background: this.getColor() } : null}
         />
       </div>

@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'preact';
-import menuMobile from 'styles/components/c-mobile-menu.scss';
+import MenuMobileStyles from 'styles/components/mobile-menu.scss';
 
 class MenuMobile extends Component {
 
   render() {
     const cssClass = this.props.visible ?
-      `${menuMobile['c-mobile-menu']} ${menuMobile['-show']}` : `${menuMobile['c-mobile-menu']}`;
+      `${MenuMobileStyles.mobileMenu} ${MenuMobileStyles._show}` : `${MenuMobileStyles.mobileMenu}`;
 
     const backClass = this.props.visible ?
-      `${menuMobile['menu-back']} ${menuMobile['-show']}` : `${menuMobile['menu-back']}`;
+      `${MenuMobileStyles.menuBack} ${MenuMobileStyles._show}` : `${MenuMobileStyles.menuBack}`;
 
     let userLinks;
     if (this.props.loggedUser) {
       userLinks = (
         <div>
           <button
-            className={menuMobile['button-login']}
+            className={MenuMobileStyles.buttonLogin}
             onClick={this.props.logout}
           >
             log out
@@ -27,7 +27,7 @@ class MenuMobile extends Component {
       userLinks = (
         <div>
           <button
-            className={menuMobile['button-login']}
+            className={MenuMobileStyles.buttonLogin}
             onClick={this.props.login}
           >
             log in
@@ -45,18 +45,18 @@ class MenuMobile extends Component {
         <ul>
           <li><a href={SITE_URL} >Home</a></li>
           <li>News</li>
-          <ul className={menuMobile['submenu-mobile']} >
+          <ul className={MenuMobileStyles.submenuMobile} >
             <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer" >Blog</a></li>
             <li><a href={`${SITE_URL}/articles-publications`} >Articles and Publications</a></li>
           </ul>
           <li>How to</li>
-          <ul className={menuMobile['submenu-mobile']} >
+          <ul className={MenuMobileStyles.submenuMobile} >
             <li><a href={`${SITE_URL}/faq`} >FAQ</a></li>
             <li><a href={`${SITE_URL}/tutorials`} >Tutorials</a></li>
             <li><a href={`${SITE_URL}/definitions`} >Definitions</a></li>
           </ul>
           <li>About</li>
-          <ul className={menuMobile['submenu-mobile']} >
+          <ul className={MenuMobileStyles.submenuMobile} >
             <li><a href={`${SITE_URL}/the-project`} >The Project</a></li>
             <li><a href={`${SITE_URL}/partners`} >Partners</a></li>
             <li><a href={`${SITE_URL}/research-program`} >Research Program</a></li>

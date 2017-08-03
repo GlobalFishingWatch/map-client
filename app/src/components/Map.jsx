@@ -7,10 +7,11 @@ import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
 import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
+
 import { MIN_ZOOM_LEVEL } from 'constants';
+
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
-import mapCss from 'styles/components/c-map.scss';
 import Timebar from 'containers/Map/Timebar';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
@@ -25,11 +26,15 @@ import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
+
+import mapStyles from 'styles/components/map.scss';
 import iconStyles from 'styles/icons.scss';
-import mapPanelsStyles from 'styles/components/c-map-panels.scss';
+import mapPanelsStyles from 'styles/components/map-panels.scss';
+
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
+
 import Loader from 'containers/Map/Loader';
 
 class Map extends Component {
@@ -196,7 +201,7 @@ class Map extends Component {
   render() {
     const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
-    return (<div className="full-height-container">
+    return (<div className="fullHeightContainer">
       <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
       {!this.props.isEmbedded &&
       <div>
@@ -260,9 +265,9 @@ class Map extends Component {
         </Modal>
         <div
           className={classnames(
-            mapPanelsStyles['map-panels'],
+            mapPanelsStyles.mapPanels,
             {
-              [mapPanelsStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+              [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
             }
           )}
         >
@@ -278,48 +283,48 @@ class Map extends Component {
       }
       <div
         className={classnames(
-          mapCss['map-container'],
-          { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER },
+          mapStyles.mapContainer,
+          { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER },
           { '-map-pointer': this.props.showMapCursorPointer },
           { '-map-zoom': this.props.showMapCursorZoom }
         )}
         ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
       >
-        <div className={mapCss['map-loader']}>
+        <div className={mapStyles.mapLoader}>
           <Loader tiny />
         </div>
-        <div className={mapCss.latlon}>
+        <div className={mapStyles.latlon}>
           {this.state.latlon}
         </div>
-        <div className={mapCss['zoom-controls']}>
+        <div className={mapStyles.zoomControls}>
           {canShareWorkspaces &&
-          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal} >
-            <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
+          <span className={mapStyles.control} id="share_map" onClick={this.props.openShareModal} >
+            <ShareIcon className={classnames(iconStyles.icon, iconStyles.iconShare)} />
           </span>}
           <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom >= this.props.maxZoom })}
+            className={classnames(mapStyles.control, { [mapStyles._disabled]: this.props.zoom >= this.props.maxZoom })}
             id="zoom_up"
             onClick={this.changeZoomLevel}
           >
-            <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
+            <ZoomInIcon className={classnames(iconStyles.icon, iconStyles.iconZoomIn)} />
           </span>
           <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom <= MIN_ZOOM_LEVEL })}
+            className={classnames(mapStyles.control, { [mapStyles._disabled]: this.props.zoom <= MIN_ZOOM_LEVEL })}
             id="zoom_down"
             onClick={this.changeZoomLevel}
           >
-            <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
+            <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles.iconZoomOut)} />
           </span>
         </div>
         <div
-          className={classnames(mapCss['attributions-container'], {
-            [mapCss['-embed']]: this.props.isEmbedded
+          className={classnames(mapStyles.attributionsContainer, {
+            [mapStyles._embed]: this.props.isEmbedded
           })}
         >
-          <span className={mapCss['mobile-map-attributions']}>
+          <span className={mapStyles.mobileMapAttributions}>
 
             <a
-              className={mapCss.link}
+              className={mapStyles.link}
               href="https://carto.com/"
               target="_blank"
               rel="noopener noreferrer"
@@ -328,7 +333,7 @@ class Map extends Component {
             </a>
             {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
             <a
-              className={mapCss.link}
+              className={mapStyles.link}
               href="http://marineregions.org/"
               target="_blank"
               rel="noopener noreferrer"
@@ -336,7 +341,7 @@ class Map extends Component {
               marineregions.org
             </a>, MPAs:{' '}
             <a
-              className={mapCss.link}
+              className={mapStyles.link}
               href="http://mpatlas.org/"
               target="_blank"
               rel="noopener noreferrer"
@@ -348,7 +353,7 @@ class Map extends Component {
         <GoogleMapLoader
           containerElement={
             <div
-              className={mapCss.map}
+              className={mapStyles.map}
               style={{ height: '100%' }}
               onClick={this.onMapContainerClickBound}
             />
@@ -382,7 +387,7 @@ class Map extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <div className={classnames(mapCss['timebar-container'], { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER })}>
+      <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })}>
         <Timebar />
       </div>
       {COMPLETE_MAP_RENDER &&

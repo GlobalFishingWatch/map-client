@@ -1,0 +1,211 @@
+@import '../../settings';
+@import '../../mixins';
+
+.reportPanel {
+  bottom: $offset-panel-control-mobile;
+  pointer-events: auto;
+  position: absolute;
+  transform: translate(0, 0);
+  transition: transform .25s ease;
+  width: 100%;
+  z-index: 103;
+
+  @media #{$mq-tablet} {
+    flex: 0 0 auto;
+    margin-left: $control-panel-left-offset;
+    position: relative;
+    top: 0;
+    width: calc(100% - #{$control-panel-left-offset});
+  }
+
+  &._minimized {
+    transform: translate(0, calc(-100% - #{$report-panel-menu-height}));
+
+    @media #{$mq-tablet} {
+      transform: translate(0, 0);
+    }
+  }
+
+  &._noFooter {
+    @media #{$mq-tablet} {
+      bottom: $timebar-height;
+    }
+  }
+
+  > .menu {
+    align-items: center;
+    background-color: $color-13;
+    cursor: pointer;
+    display: flex;
+    height: $report-panel-menu-height;
+    justify-content: space-between;
+    padding: 0 25px 0 30px;
+    position: relative;
+  }
+
+  > .menu > .reportTotal {
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
+
+  > .menu > .toggle {
+    @include arrow(12px, 2px, $color-4, 'down');
+    position: absolute;
+    right: 27px;
+    top: calc(50% - 4px);
+    transform: translate(0, -50%) rotate(45deg);
+    transition: transform .25s ease;
+
+    &._expanded {
+      top: calc(50% + 4px);
+      transform: translate(0, -50%) rotate(-135deg);
+    }
+  }
+
+  > .container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .25s ease;
+
+    &._expanded {
+      max-height: 270px;
+    }
+  }
+
+  > .container > .content {
+    background-color: $color-4;
+    padding: 16px 0 20px 30px;
+
+    > .polygonList {
+      max-height: 100px;
+      overflow-y: auto;
+
+      @media #{$mq-desktop} {
+        max-height: 200px;
+      }
+    }
+
+    > .polygonList > .polygonItem {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+
+      &:not(:first-child) {
+        margin: 15px 0 0;
+      }
+
+      &:first-child {
+        padding: 10px 0 0;
+      }
+
+      &:last-child {
+        padding: 0 0 10px;
+      }
+
+      &:only-child {
+        padding: 10px 0;
+      }
+
+      .polygonName,
+      .polygonMessage {
+        color: $color-1;
+        font-size: $font-size-xxs-small;
+        line-height: 18px;
+        text-transform: uppercase;
+        width: 240px;
+      }
+
+      > .polygonName {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      > .polygonMessage {
+        font-weight: bold;
+      }
+
+      > .polygonRemove {
+        display: inline-flex;
+        position: absolute;
+        right: 28px;
+
+        &:hover {
+          &::before {
+            background-color: rgba($color-3, .4);
+            border-radius: 50%;
+            content: '';
+            display: inline-block;
+            height: 31px;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 31px;
+          }
+        }
+
+        > .iconRemovePolygon {
+          cursor: pointer;
+          fill: $color-7;
+          height: 16px;
+          position: relative;
+          width: 10px;
+        }
+      }
+    }
+  }
+
+  .warning {
+    color: $color-13;
+    font-size: $font-size-xxs-small;
+    line-height: 18px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    width: 240px;
+
+    .warningIcon {
+      display: block;
+      float: left;
+      margin-bottom: 10px;
+      margin-right: 6px;
+      width: 15px;
+
+      path {
+        fill: $color-13;
+      }
+    }
+  }
+
+  > .container > .reportOptions > .reportButton {
+    background-color: $color-4;
+    border-top: 1px solid rgba($color-19, .3);
+    color: $color-19;
+    cursor: pointer;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-bold;
+    letter-spacing: -.1px;
+    outline: none;
+    padding: 15px 0;
+    text-transform: uppercase;
+    width: 50%;
+
+    &:not(:first-child) {
+      border-left: 1px solid rgba($color-19, .3);
+    }
+
+    &._disabled {
+      color: rgba($color-19, .5);
+      pointer-events: none;
+    }
+
+    &._wide {
+      width: 100%;
+    }
+  }
+
+
+}

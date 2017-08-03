@@ -4,9 +4,9 @@ import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTool
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_FILTERS_MOBILE } from 'constants';
 
-import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
+import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
-import selectorStyles from 'styles/components/shared/c-selector.scss';
+import selectorStyles from 'styles/components/shared/selector.scss';
 
 import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
@@ -47,10 +47,10 @@ class FilterItem extends Component {
 
     return (
       <li
-        className={flagFilterStyles['filter-item']}
+        className={flagFilterStyles.filterItem}
         key={this.props.index}
       >
-        <div className={selectorStyles['c-selector']}>
+        <div className={selectorStyles.selector}>
           <select
             name="country"
             onChange={e => this.onChangeCountry(e.target.value)}
@@ -60,9 +60,9 @@ class FilterItem extends Component {
             {this.props.countryOptions}
           </select>
         </div>
-        <div className={flagFilterStyles['filter-option']}>
-          <ul className={flagFilterStyles['filter-option-list']}>
-            <li className={flagFilterStyles['filter-option-item']}>
+        <div className={flagFilterStyles.filterOption}>
+          <ul className={flagFilterStyles.filterOptionList}>
+            <li className={flagFilterStyles.filterOptionItem}>
               <LayerBlendingOptionsTooltip
                 displayHue
                 hueValue={hueValue}
@@ -72,9 +72,9 @@ class FilterItem extends Component {
                 toggleVisibility={() => this.toggleBlending()}
               />
             </li>
-            <li className={flagFilterStyles['filter-option-item']}>
+            <li className={flagFilterStyles.filterOptionItem}>
               <RemoveFilterIcon
-                className={classnames(IconStyles.icon, IconStyles['delete-cross-icon'], flagFilterStyles['icon-delete-cross'])}
+                className={classnames(IconStyles.icon, IconStyles.deleteCrossIcon, flagFilterStyles.iconDeleteCross)}
                 onClick={() => this.onRemoveFilter()}
               />
             </li>
