@@ -42,6 +42,12 @@ class MapLayers extends Component {
       this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
     }
+
+    // edge case where gl container is there but not yet added to map
+    if (this.glContainer && !this.glContainer.mapProjection) {
+      return;
+    }
+
     if (nextProps.layers.length) {
       if (!this.glContainer) {
         this.initHeatmap();
