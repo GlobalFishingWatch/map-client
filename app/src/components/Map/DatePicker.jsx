@@ -25,7 +25,6 @@ class DatePicker extends Component {
         <ReactDatePicker
           fixedHeight
           showYearDropdown
-          dropdownMode="select"
           readOnly
           dateFormat="DD MMM YYYY"
           selected={moment(this.props.selected)}
