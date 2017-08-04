@@ -24,12 +24,10 @@ import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
-import iconStyles from 'styles/icons.scss';
 import mapPanelsStyles from 'styles/components/c-map-panels.scss';
-import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
-import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
-import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 import Loader from 'containers/Map/Loader';
+import Attributions from 'components/Map/Attributions';
+import ZoomControls from 'components/Map/ZoomControls';
 
 class Map extends Component {
   constructor(props) {
