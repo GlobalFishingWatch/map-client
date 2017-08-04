@@ -19,60 +19,60 @@
   &._small {
     width: 190px;
   }
+}
 
-  .title,
-  .description,
-  .toggle {
-    color: $color-4;
-    font-family: $font-family-1;
-    font-size: $font-size-xs-small;
-  }
+.title,
+.description,
+.toggle {
+  color: $color-4;
+  font-family: $font-family-1;
+  font-size: $font-size-xs-small;
+}
 
-  .title,
-  .description {
+.title,
+.description {
+  pointer-events: none;
+}
+
+.title,
+.toggle {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.close {
+  right: -26px;
+  top: 0;
+
+  & * {
     pointer-events: none;
   }
+}
 
-  .title,
-  .toggle {
-    font-weight: bold;
-    text-transform: uppercase;
+.toggle {
+  cursor: pointer;
+  margin-top: 10px;
+
+  &::before {
+    background: $color-4;
+    color: $color-13;
+    content: '+';
+    display: inline-block;
+    margin-right: 8px;
+    width: 20px;
   }
 
-  .close {
-    right: -26px;
-    top: 0;
-
-    & * {
-      pointer-events: none;
-    }
-  }
-
-  .toggle {
-    cursor: pointer;
-    margin-top: 10px;
-
+  &._remove {
     &::before {
-      background: $color-4;
-      color: $color-13;
-      content: '+';
-      display: inline-block;
-      margin-right: 8px;
-      width: 20px;
-    }
-
-    &._remove {
-      &::before {
-        content: '-';
-      }
+      content: '-';
     }
   }
+}
 
-  .close,
-  .toggle {
-    &:focus {
-      outline: none;
-    }
+.close,
+.toggle {
+  &:focus {
+    outline: none;
   }
 }
 

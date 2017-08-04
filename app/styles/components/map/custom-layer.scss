@@ -3,74 +3,74 @@
 .customLayer {
   height: 100%;
   overflow-y: auto;
+}
 
-  .noAccess {
+.noAccess {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.uploadForm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .submitContainer {
+    align-items: center;
     display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  > .uploadForm {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    .submitContainer {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      margin: 55px 0 0;
-
-      @media #{$mq-tablet} {
-        margin: 45px 0 0;
-      }
-    }
-
-    .submitContainer > .submitButton {
-      width: 180px;
-    }
-
-    .submitError {
-      color: $color-6;
-      font-family: $font-family-1;
-      font-size: $font-size-small;
-      font-weight: $font-weight-bold;
-      margin-bottom: 55px;
-      text-align: center;
-
-      @media #{$mq-tablet} {
-        margin: 45px 0 0;
-      }
-    }
-  }
-
-  .column {
-    display: flex;
-    flex-basis: 100%;
     flex-direction: column;
     justify-content: space-between;
-
-    &:not(:first-child) {
-      margin: 15px 0 0;
-    }
+    margin: 55px 0 0;
 
     @media #{$mq-tablet} {
-      flex-basis: calc(50% - 13px);
-
-      &:not(:first-child) {
-        margin: 0;
-      }
+      margin: 45px 0 0;
     }
   }
 
-  .row {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  .submitContainer > .submitButton {
+    width: 180px;
+  }
+
+  .submitError {
+    color: $color-6;
+    font-family: $font-family-1;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
+    margin-bottom: 55px;
+    text-align: center;
+
+    @media #{$mq-tablet} {
+      margin: 45px 0 0;
+    }
+  }
+}
+
+.column {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin: 15px 0 0;
+  }
+
+  @media #{$mq-tablet} {
+    flex-basis: calc(50% - 13px);
 
     &:not(:first-child) {
-      margin: 15px 0 0;
+      margin: 0;
     }
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &:not(:first-child) {
+    margin: 15px 0 0;
   }
 }

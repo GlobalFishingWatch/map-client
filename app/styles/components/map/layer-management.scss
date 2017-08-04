@@ -4,8 +4,8 @@
   display: flex;
   justify-content: space-between;
   margin: 10px 0 0;
+}
 
-  > .layerButton {
-    width: calc(50% - 1px);
-  }
+.layerButton {
+  width: calc(50% - 1px);
 }

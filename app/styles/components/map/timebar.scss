@@ -10,39 +10,39 @@
   @media #{$mq-mobile-large} {
     padding: 0 0 0 10px;
   }
+}
 
-  .timebarElement {
+.timebarElement {
+  height: 100%;
+}
+
+.timebarDatepicker {
+  width: 20%;
+
+  @media #{$mq-mobile-large} {
+    width: 100px;
+  }
+}
+
+.timebarPlayback {
+  text-align: center;
+  width: 10%;
+
+  @media #{$mq-mobile-large} {
+    width: 50px;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    color: $color-3;
+    cursor: pointer;
+    font-size: $font-size-x-small;
     height: 100%;
-  }
+    width: 100%;
 
-  .timebarDatepicker {
-    width: 20%;
-
-    @media #{$mq-mobile-large} {
-      width: 100px;
-    }
-  }
-
-  .timebarPlayback {
-    text-align: center;
-    width: 10%;
-
-    @media #{$mq-mobile-large} {
-      width: 50px;
-    }
-
-    button {
-      background: none;
-      border: 0;
-      color: $color-3;
-      cursor: pointer;
-      font-size: $font-size-x-small;
-      height: 100%;
-      width: 100%;
-
-      &:focus {
-        outline: none;
-      }
+    &:focus {
+      outline: none;
     }
   }
 }

@@ -1,56 +1,55 @@
 @import '../../settings';
 
 .flagFilters {
-
   @media #{$mq-tablet} {
     max-height: none;
     overflow-y: visible;
   }
+}
 
-  > .filterList > .filterItem {
-    align-items: center;
-    display: flex;
-    position: relative;
+.filterItem {
+  align-items: center;
+  display: flex;
+  position: relative;
 
-    &:not(:first-child) {
-      margin: 10px 0 0;
-    }
-
-    .filterOption {
-      flex: 1;
-
-      @media #{mq-tablet} {
-        width: 20%;
-      }
-    }
-
-    .filterOptionList {
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      margin: 0 0 0 10px;
-
-      > .filterOptionItem {
-        display: inline-flex;
-        position: relative;
-
-        &:not(:first-child) {
-          margin: 0 0 0 15px;
-        }
-      }
-    }
-  }
-
-  > .filterButton {
-    height: 40px;
+  &:not(:first-child) {
     margin: 10px 0 0;
-    max-width: 80%;
-    width: 100%;
+  }
+}
 
-    @media #{$mq-tablet} {
-      height: 30px;
-      max-width: none;
-      width: 215px;
-    }
+.filterOption {
+  flex: 1;
+
+  @media #{mq-tablet} {
+    width: 20%;
+  }
+}
+
+.filterOptionList {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 0 10px;
+}
+
+.filterOptionItem {
+  display: inline-flex;
+  position: relative;
+
+  &:not(:first-child) {
+    margin: 0 0 0 15px;
+  }
+}
+
+.filterButton {
+  height: 40px;
+  margin: 10px 0 0;
+  max-width: 80%;
+  width: 100%;
+
+  @media #{$mq-tablet} {
+    height: 30px;
+    max-width: none;
+    width: 215px;
   }
 }

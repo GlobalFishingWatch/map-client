@@ -123,14 +123,14 @@ class DurationPicker extends Component {
           />
 
           {this.state.showSettingsMenu &&
-          <div className={durationPickerStyles.setttingsPanel} ref={(elem) => { this.el = elem; }}>
+          <div className={durationPickerStyles.settingsPanel} ref={(elem) => { this.el = elem; }}>
             <ul className={durationPickerStyles.settingsList}>
               {durations}
             </ul>
           </div>
         }
 
-          <div className={durationPickerStyles.durationpickerText}>
+          <div className={durationPickerStyles.text}>
             {humanizedDuration}
           </div>
         </div>

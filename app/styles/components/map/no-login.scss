@@ -1,19 +1,15 @@
 @import '../../settings';
 
-.noLogin {
+.title {
+  font-size: $font-size-x-normal;
+  font-weight: $font-weight-bold;
+  margin: 0 0 10px;
+  text-align: center;
+}
 
-  > .title {
-    font-size: $font-size-x-normal;
-    font-weight: $font-weight-bold;
-    margin: 0 0 10px;
-    text-align: center;
-  }
-
-  > .content {
-    text-align: center;
-  }
-
-  > .content > p {
+.content {
+  text-align: center;
+  & > p {
     color: $color-4;
     font-size: $font-size-x-small;
     margin: 25px 0;
@@ -23,32 +19,32 @@
       line-height: 1.2;
     }
   }
+}
 
-  > .content > .btnAction {
-    background-color: $color-3;
-    border: 0;
-    color: $color-4;
-    cursor: pointer;
-    display: inline-block;
-    font-size: $font-size-x-small;
-    font-weight: $font-weight-bold;
-    letter-spacing: -.1px;
-    margin: 10px 0;
-    padding: 10px 25px;
-    text-transform: uppercase;
-  }
+.btnAction {
+  background-color: $color-3;
+  border: 0;
+  color: $color-4;
+  cursor: pointer;
+  display: inline-block;
+  font-size: $font-size-x-small;
+  font-weight: $font-weight-bold;
+  letter-spacing: -.1px;
+  margin: 10px 0;
+  padding: 10px 25px;
+  text-transform: uppercase;
+}
 
-  > .content .back {
-    color: $color-4;
-    cursor: pointer;
-    display: inline-block;
+.back {
+  color: $color-4;
+  cursor: pointer;
+  display: inline-block;
 
-    &::after {
-      background-color: $color-6;
-      content: '';
-      display: block;
-      height: 1px;
-      margin: 1px 0 0;
-    }
+  &::after {
+    background-color: $color-6;
+    content: '';
+    display: block;
+    height: 1px;
+    margin: 1px 0 0;
   }
 }

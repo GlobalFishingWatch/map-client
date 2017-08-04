@@ -40,7 +40,7 @@ class PinnedTracks extends Component {
         </div>);
 
       pinnedItems = (
-        <ul className={pinnedTracksStyles.pinnedItemList}>
+        <ul>
           {pinnedVessels.map((pinnedVessel, index) =>
             (<PinnedTracksItem
               index={index}

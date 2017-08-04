@@ -52,7 +52,7 @@ class SearchModal extends Component {
     }
 
     return (
-      <div className={SearchModalStyles.searchModal}>
+      <div>
         <h3 className={ModalStyles.modalTitle}>Search vessel</h3>
         <div className={SearchModalStyles.searchContainer}>
           <div className={SearchModalStyles.searchInputContainer}>

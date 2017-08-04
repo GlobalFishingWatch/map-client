@@ -3,26 +3,26 @@
 .resultList {
   display: flex;
   flex-wrap: wrap;
+}
 
-  > .resultItem {
-    border-radius: 4px;
-    color: rgba($color-4, .7);
-    cursor: pointer;
-    font-size: $font-size-small;
-    padding: 6px 10px;
+.resultItem {
+  border-radius: 4px;
+  color: rgba($color-4, .7);
+  cursor: pointer;
+  font-size: $font-size-small;
+  padding: 6px 10px;
 
-    &:hover {
-      background-color: rgba($color-3, .2);
-    }
-
-    .highlight {
-      color: $color-4;
-      font-weight: $font-weight-bold;
-    }
+  &:hover {
+    background-color: rgba($color-3, .2);
   }
 
-  > .statusMessage {
+  .highlight {
     color: $color-4;
-    font-size: $font-size-xs-small;
+    font-weight: $font-weight-bold;
   }
+}
+
+.statusMessage {
+  color: $color-4;
+  font-size: $font-size-xs-small;
 }

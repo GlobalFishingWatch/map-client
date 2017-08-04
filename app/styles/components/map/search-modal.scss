@@ -1,75 +1,72 @@
 @import '../../settings';
 
-.searchModal {
+.searchContainer {
+  margin: 20px 0 0;
+}
 
-  > .searchContainer {
-    margin: 20px 0 0;
+.searchInputContainer {
+  position: relative;
+}
 
-    > .searchInputContainer {
-      position: relative;
+.searchInput {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba($color-3, .3);
+  color: $color-4;
+  font-size: $font-size-x-small;
+  outline: none;
+  padding: 0 0 3px;
+  width: 100%;
 
-      > .searchInput {
-        background-color: transparent;
-        border: 0;
-        border-bottom: 1px solid rgba($color-3, .3);
-        color: $color-4;
-        font-size: $font-size-x-small;
-        outline: none;
-        padding: 0 0 3px;
-        width: 100%;
-
-        ::-webkit-input-placeholder {
-          color: rgba($color-3, .3);
-        }
-
-        ::-moz-placeholder {
-          color: rgba($color-3, .3);
-        }
-
-        :-ms-input-placeholder {
-          color: rgba($color-3, .3);
-        }
-      }
-
-      > .searchIcon,
-      > .deleteIcon {
-        position: absolute;
-        top: 50%;
-        transform: translate(0, -50%);
-      }
-
-      > .searchIcon {
-        fill: rgba($color-3, .3);
-        right: 0;
-      }
-
-      > .deleteIcon {
-        right: 3px;
-        stroke: rgba($color-3, .3);
-      }
-    }
-
-    > .searchResultList {
-      margin: 20px 0 0;
-
-      .searchResultItem {
-        flex: 0 0 33.333%;
-        margin: 0 0 15px;
-        overflow-y: hidden;
-        padding: 0 20px 0 0;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        &:hover {
-          background-color: transparent;
-        }
-      }
-    }
+  ::-webkit-input-placeholder {
+    color: rgba($color-3, .3);
   }
 
-  > .paginatorContainer {
-    display: flex;
-    justify-content: center;
-    margin: 40px 0 0;
+  ::-moz-placeholder {
+    color: rgba($color-3, .3);
   }
+
+  :-ms-input-placeholder {
+    color: rgba($color-3, .3);
+  }
+}
+
+.searchIcon,
+.deleteIcon {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.searchIcon {
+  fill: rgba($color-3, .3);
+  right: 0;
+}
+
+.deleteIcon {
+  right: 3px;
+  stroke: rgba($color-3, .3);
+}
+
+.searchResultList {
+  margin: 20px 0 0;
+}
+
+.searchResultItem {
+  flex: 0 0 33.333%;
+  margin: 0 0 15px;
+  overflow-y: hidden;
+  padding: 0 20px 0 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.paginatorContainer {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 0;
 }

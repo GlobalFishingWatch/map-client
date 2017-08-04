@@ -285,8 +285,8 @@ class Map extends Component {
         className={classnames(
           mapStyles.mapContainer,
           { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER },
-          { '-map-pointer': this.props.showMapCursorPointer },
-          { '-map-zoom': this.props.showMapCursorZoom }
+          { _mapPointer: this.props.showMapCursorPointer },
+          { _mapZoom: this.props.showMapCursorZoom }
         )}
         ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
       >
