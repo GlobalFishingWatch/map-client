@@ -292,8 +292,8 @@ class Map extends Component {
         ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
       >
         <div
-          className={mapCss.map}
           id="map"
+          className={mapCss.map}
           style={{ height: '100%' }}
           onClick={this.onMapContainerClick}
         />
@@ -303,61 +303,14 @@ class Map extends Component {
         <div className={mapCss.latlon}>
           {this.state.latlon}
         </div>
-        <div className={mapCss['zoom-controls']}>
-          {canShareWorkspaces &&
-          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal} >
-            <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
-          </span>}
-          <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom >= this.props.maxZoom })}
-            id="zoom_up"
-            onClick={this.changeZoomLevel}
-          >
-            <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
-          </span>
-          <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom <= MIN_ZOOM_LEVEL })}
-            id="zoom_down"
-            onClick={this.changeZoomLevel}
-          >
-            <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
-          </span>
-        </div>
-        <div
-          className={classnames(mapCss['attributions-container'], {
-            [mapCss['-embed']]: this.props.isEmbedded
-          })}
-        >
-          <span className={mapCss['mobile-map-attributions']}>
-
-            <a
-              className={mapCss.link}
-              href="https://carto.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CARTO
-            </a>
-            {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
-            <a
-              className={mapCss.link}
-              href="http://marineregions.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              marineregions.org
-            </a>, MPAs:{' '}
-            <a
-              className={mapCss.link}
-              href="http://mpatlas.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              mpatlas.org
-            </a>
-          </span>
-        </div>
-
+        <ZoomControls
+          canShareWorkspaces={canShareWorkspaces}
+          openShareModal={this.props.openShareModal}
+          zoom={this.props.zoom}
+          maxZoom={this.props.maxZoom}
+          changeZoomLevel={this.changeZoomLevel}
+        />
+        <Attributions isEmbedded={this.props.isEmbedded} />
       </div>
       <MapLayers
         map={this.state.map}
