@@ -45,7 +45,6 @@
     "react-addons-create-fragment": "^15.3.0",
     "react-datepicker": "^0.46.0",
     "react-ga": "^2.1.2",
-    "react-google-maps": "^4.11.0",
     "react-input-range": "^0.9.3",
     "react-paginate": "^4.1.1",
     "react-redux": "^4.4.5",
