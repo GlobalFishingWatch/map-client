@@ -3,6 +3,7 @@ import React, { Component } from 'preact';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import { Accordion, AccordionItem } from 'react-sanfona';
+import AreasPanel from 'containers/Map/AreasPanel';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
 import LayerPanel from 'containers/Map/LayerPanel';
@@ -199,6 +200,26 @@ class ControlPanel extends Component {
       </AccordionItem>);
   }
 
+  renderAreas() {
+    const title = (
+      <div className={ControlPanelStyles.accordionHeader} >
+        <h2 className={ControlPanelStyles.accordionTitle} >Area of interest</h2>
+        <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
+      </div>);
+
+    return (
+      <AccordionItem
+        title={title}
+        key="Areas"
+        className={ControlPanelStyles.accordionItem}
+        titleClassName={ControlPanelStyles.titleAccordion}
+      >
+        <div className={ControlPanelStyles.contentAccordion} >
+          <AreasPanel />
+        </div>
+      </AccordionItem>);
+  }
+
   render() {
     return (
       <MediaQuery minWidth={768} >
@@ -221,6 +242,7 @@ class ControlPanel extends Component {
                 {this.renderBasemap()}
                 {this.renderLayerPicker()}
                 {this.renderFilters()}
+                {this.renderAreas()}
               </Accordion>
             </div>
           </div>)
