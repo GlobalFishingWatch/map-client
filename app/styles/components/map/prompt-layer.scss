@@ -1,0 +1,38 @@
+@import '../../settings';
+
+.promptLayer {
+  margin: 20px 0 0;
+}
+
+.layerDescription {
+  font-family: $font-family-1;
+  text-align: center;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 20px 0 0;
+
+  @media #{$mq-mobile-large} {
+    flex-direction: row;
+    margin: 40px 0 0;
+  }
+}
+
+.modalBtn {
+  height: 42px;
+  width: 150px;
+
+  &:not(:first-child) {
+    margin: 8px 0 0;
+  }
+
+  @media #{$mq-mobile-large} {
+    &:not(:first-child) {
+      margin: 0 0 0 8px;
+    }
+  }
+}

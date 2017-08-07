@@ -4,7 +4,7 @@ import moment from 'moment';
 import classnames from 'classnames';
 import { DURATION_PICKER_OPTIONS } from 'constants';
 
-import css from 'styles/components/map/c-durationpicker.scss';
+import durationPickerStyles from 'styles/components/map/durationpicker.scss';
 import iconStyles from 'styles/icons.scss';
 
 import SettingsIcon from 'assets/icons/duration_settings.svg';
@@ -100,7 +100,7 @@ class DurationPicker extends Component {
       durations = DURATION_PICKER_OPTIONS.filter(filterFunc)
       .map((duration, i) =>
         (<li
-          className={css['settings-item']}
+          className={durationPickerStyles.settingsItem}
           data-index={i}
           key={i}
           onClick={e => this.setTimeRange(e)}
@@ -111,26 +111,26 @@ class DurationPicker extends Component {
     return (
       <div
         style={style}
-        className={css['c-durationpicker']}
+        className={durationPickerStyles.durationpicker}
         onClick={() => this.toggleSettingsMenu()}
         ref={(elem) => { this.svg = elem; }}
       >
-        <div className={css.container}>
+        <div className={durationPickerStyles.container}>
           <img
             alt="settings duration"
             src={SettingsIcon}
-            className={classnames(iconStyles.icon, css['icon-settings'])}
+            className={classnames(iconStyles.icon, durationPickerStyles.iconSettings)}
           />
 
           {this.state.showSettingsMenu &&
-          <div className={css['setttings-panel']} ref={(elem) => { this.el = elem; }}>
-            <ul className={css['settings-list']}>
+          <div className={durationPickerStyles.settingsPanel} ref={(elem) => { this.el = elem; }}>
+            <ul className={durationPickerStyles.settingsList}>
               {durations}
             </ul>
           </div>
         }
 
-          <div className={css['c-durationpicker-text']}>
+          <div className={durationPickerStyles.text}>
             {humanizedDuration}
           </div>
         </div>

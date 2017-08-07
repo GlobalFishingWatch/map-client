@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
 import menuicon from 'assets/icons/menu_icon.svg';
 import MenuMobile from 'containers/MenuMobile';
-import baseStyle from 'styles/_base.scss';
-import styles from 'styles/components/shared/c-header.scss';
+import BaseStyles from 'styles/_base.scss';
+import HeaderStyles from 'styles/components/shared/header.scss';
 import iconStyles from 'styles/icons.scss';
 import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
 
@@ -41,19 +41,19 @@ class Header extends Component {
         }
         <nav
           className={
-            classnames('c-header', { [styles['c-header']]: true, [styles['-map']]: true })
+            classnames('c-header', { [HeaderStyles.header]: true, [HeaderStyles._map]: true })
           }
         >
           <div
             className={
-              classnames({ [baseStyle.wrap]: true, [baseStyle['-map']]: true })
+              classnames({ [BaseStyles.wrap]: true, [BaseStyles._map]: true })
             }
           >
-            <div className={styles['contain-nav']} >
+            <div className={HeaderStyles.containNav} >
               {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
               <img
                 onClick={() => this.setState({ mobileMenuVisible: true })}
-                className={styles['icon-menu-mobile']}
+                className={HeaderStyles.iconMenuMobile}
                 src={menuicon}
                 alt="Menu toggle icon"
               />
@@ -62,7 +62,7 @@ class Header extends Component {
               <a
                 target={target}
                 href={logoUrl}
-                className={styles['app-logo']}
+                className={HeaderStyles.appLogo}
               >
                 <img
                   src={betaLogo}
@@ -72,7 +72,7 @@ class Header extends Component {
               }
               {this.props.canShareWorkspaces &&
                 <ShareIcon
-                  className={classnames(iconStyles.icon, iconStyles['icon-share'], styles['icon-share'])}
+                  className={classnames(iconStyles.icon, iconStyles.iconShare, HeaderStyles.iconShare)}
                   onClick={this.props.openShareModal}
                 />
               }

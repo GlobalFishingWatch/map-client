@@ -1,0 +1,144 @@
+@import '../../settings';
+
+.layerList {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  @media #{mq-tablet} {
+    max-height: 0;
+  }
+}
+
+.layerItem {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+
+  &:not(:first-child) {
+    margin: 5px 0 0;
+  }
+
+  &:first-child > .layerInfo {
+    margin: 0 0 5px;
+  }
+
+  &:not(:first-child) > .layerInfo {
+    margin: 5px 0;
+  }
+
+  &._selected {
+    > .layerInfo > .layerThumbnail {
+      border: 2px solid $color-4;
+    }
+  }
+}
+
+.layerInfo {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  max-width: 90%;
+
+  @media #{$mq-tablet} {
+    max-width: 195px;
+  }
+}
+
+.layerThumbnail {
+  border: 1px solid $color-19;
+  height: 30px;
+  margin: 0 10px 0 0;
+  width: 30px;
+}
+
+.layerTitle {
+  color: $color-4;
+  flex-grow: 2;
+  font-family: $font-family-1;
+  font-weight: $font-weight-normal;
+  line-height: 2;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemName {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  color: $color-4;
+  flex-grow: 2;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  height: 24px;
+  margin: 0;
+  max-width: 85%;
+  outline: none;
+  text-overflow: ellipsis;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemRename {
+  border-bottom-color: rgba($color-3, .3);
+  padding: 0 20px 0 0;
+}
+
+.renameIcon {
+  position: absolute;
+  right: 30px;
+  stroke: rgba($color-3, .3);
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.editionMenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.deleteIcon {
+  cursor: pointer;
+  fill: $color-19;
+  height: 16px;
+  width: 10px;
+}
+
+.layerOptionList {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+
+  ._highlighted {
+    path {
+      &:first-child {
+        fill: $color-4;
+      }
+
+      &:last-child {
+        fill: $color-13;
+      }
+    }
+  }
+}
+
+.layerOptionItem {
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+
+  &:not(:first-child) {
+    margin: 0 0 0 15px;
+  }
+}

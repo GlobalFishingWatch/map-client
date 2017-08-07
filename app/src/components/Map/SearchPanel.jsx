@@ -4,9 +4,9 @@ import classnames from 'classnames';
 import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
 import SearchResult from 'containers/Map/SearchResult';
 import iconsStyles from 'styles/icons.scss';
-import searchPanelStyles from 'styles/components/map/c-search-panel.scss';
-import ResultListStyles from 'styles/components/shared/c-result-list.scss';
-import MapButtonStyles from 'styles/components/map/c-button.scss';
+import searchPanelStyles from 'styles/components/map/search-panel.scss';
+import ResultListStyles from 'styles/components/shared/result-list.scss';
+import MapButtonStyles from 'styles/components/map/button.scss';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {
@@ -53,14 +53,14 @@ class SearchPanel extends Component {
     let searchResults = null;
 
     if (this.props.searching) {
-      searchResults = <li className={ResultListStyles['status-message']} >Searching...</li>;
+      searchResults = <li className={ResultListStyles.statusMessage} >Searching...</li>;
     } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
       const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT);
 
       for (let i = 0, length = total; i < length; i++) {
         searchResults.push(<SearchResult
-          className={classnames(ResultListStyles['result-item'], searchPanelStyles.result)}
+          className={classnames(ResultListStyles.resultItem, searchPanelStyles.result)}
           key={i}
           searchTerm={this.props.searchTerm}
           closeSearch={() => this.closeSearch()}
@@ -69,41 +69,41 @@ class SearchPanel extends Component {
       }
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = (
-        <li className={ResultListStyles['status-message']} >
+        <li className={ResultListStyles.statusMessage} >
           Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
         </li>);
     } else {
-      searchResults = <li className={ResultListStyles['status-message']} >No result</li>;
+      searchResults = <li className={ResultListStyles.statusMessage} >No result</li>;
     }
 
     return (
-      <div className={searchPanelStyles['c-search-panel']} >
+      <div className={searchPanelStyles.searchPanel} >
         <input
           type="text"
           onBlur={() => this.onSearchInputBlur()}
           onInput={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
-          className={searchPanelStyles['search-accordion']}
+          className={searchPanelStyles.searchAccordion}
           placeholder="Search vessel"
           value={this.props.searchTerm}
         />
         {this.props.searchTerm.length > 0 && <CloseIcon
-          className={classnames(iconsStyles.icon, iconsStyles['icon-close'], searchPanelStyles['clean-query-button'])}
+          className={classnames(iconsStyles.icon, iconsStyles.iconClose, searchPanelStyles.cleanQueryButton)}
           onClick={() => this.cleanResults()}
         />}
         <div
-          className={classnames(searchPanelStyles['results-container'],
-            { [`${searchPanelStyles['-open']}`]: this.props.searchResultsOpen })}
+          className={classnames(searchPanelStyles.resultsContainer,
+            { [`${searchPanelStyles._open}`]: this.props.searchResultsOpen })}
         >
           <ul
-            className={classnames(ResultListStyles['c-result-list'], searchPanelStyles['search-list'])}
+            className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}
           >
             {searchResults}
           </ul>
           {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT && !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
-          <div className={searchPanelStyles['pagination-container']} >
+          <div className={searchPanelStyles.paginationContainer} >
             <button
-              className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], searchPanelStyles['more-results-button'])}
+              className={classnames(MapButtonStyles.button, MapButtonStyles._filled, searchPanelStyles.moreResultsButton)}
               onClick={() => this.onClickMoreResults()}
             >
               more results

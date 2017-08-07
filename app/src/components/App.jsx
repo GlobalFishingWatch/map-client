@@ -3,7 +3,7 @@
 import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import AppStyles from 'styles/components/c-app.scss';
+import AppStyles from 'styles/components/app.scss';
 import { getURLParameterByName } from 'lib/getURLParameterByName';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
@@ -72,12 +72,12 @@ class App extends Component {
         {showBanner === true &&
           <div className={AppStyles.banner}>
             {bannerContent}
-            <button className={AppStyles['close-button']} onClick={() => this.dismissBanner()}>
+            <button className={AppStyles.closeButton} onClick={() => this.dismissBanner()}>
               <span className={AppStyles.icon}>✕</span>
             </button>
           </div>
         }
-        <div className={classnames('full-height-container', AppStyles['c-app'])}>
+        <div className={classnames('fullHeightContainer', AppStyles.app)}>
           {this.props.children}
         </div>
       </div>

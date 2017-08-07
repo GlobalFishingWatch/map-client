@@ -1,0 +1,357 @@
+@import '../settings';
+
+.footer {
+  background-color: $color-19;
+  padding: 55px 0 0;
+
+  &._map {
+    height: calc(100% - #{$map-footer-height} - 30px);
+    left: 0;
+    max-height: 100%;
+    padding: 0;
+    position: fixed;
+    transform: translate(0, 0);
+    transition: max-height .25s ease, transform .25s ease;
+    width: 100%;
+    z-index: 106;
+
+    .scrollContainer {
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .closeButton {
+      display: none;
+    }
+
+    @media #{$mq-tablet} {
+      height: $max-map-footer-height;
+    }
+  }
+
+  &._expanded {
+    padding: 55px 0 0;
+    transform: translateY(-100%) translateY(-#{$map-footer-height}); //IE 11
+
+    .scrollContainer {
+      max-height: 100%;
+      overflow: auto;
+
+      @media#{$mq-tablet} {
+        overflow: visible;
+      }
+    }
+
+    .closeButton {
+      display: inline-block;
+    }
+  }
+
+  .logosFooter {
+    border-bottom: 1px solid rgba($color-4, .2);
+    padding: 0 0 30px;
+
+    @media screen and (min-width: 845px) {
+      align-items: flex-end;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .partnerSection,
+    .funderSection {
+      > .logoList {
+        align-items: center;
+        display: flex;
+      }
+
+      .logoItem {
+        &:not(:first-child) {
+          margin: 0 0 0 20px;
+        }
+
+        @media #{$mq-laptop} {
+          &:not(:first-child) {
+            margin: 0 0 0 50px;
+          }
+        }
+      }
+
+      .logoItem > .logo {
+        display: block;
+        max-width: 130px;
+        width: 100%;
+
+        &._oceana {
+          max-width: 130px;
+        }
+
+        &._skytruthLogo {
+          max-width: 190px;
+        }
+      }
+
+      .logoItem > .logoLdf {
+        height: auto;
+        max-width: 130px;
+        width: calc(100% / 3);
+
+        @media #{$mq-tablet} {
+          width: 100%;
+        }
+
+        @media screen and (min-width: 845px) {
+          max-width: 200px;
+          position: relative;
+          top: 12px;
+        }
+      }
+    }
+
+    > .partnerSection {
+      > .partnerText {
+        color: $color-16;
+        display: inline-block;
+        font-size: $font-size-normal;
+        margin: 0 0 15px;
+
+        @media #{$mq-laptop} {
+          margin: 0 0 35px;
+        }
+      }
+    }
+
+    > .funderSection {
+      > .logoFunderList {
+        border-top: 1px solid rgba($color-4, .2);
+        margin: 30px 0 0;
+        padding: 30px 0 0;
+
+        @media screen and (min-width: 845px) {
+          border-top: 0;
+          margin: 0;
+          padding: 0;
+          width: 200px;
+        }
+      }
+    }
+  }
+
+  .mapSection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 30px 0 0;
+
+    @media #{$mq-tablet} {
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      padding: 55px 0 calc(60px - 20px);
+    }
+
+    .navList {
+      column-count: 2;
+      margin: 0 0 30px;
+      width: 100%;
+
+      @media #{$mq-tablet} {
+        column-count: 3;
+        column-gap: 60px;
+        margin: 0 35px 0 0;
+      }
+
+      > .navItem {
+        &:not(:last-child) > .navLink {
+          margin: 0 0 20px;
+        }
+      }
+
+      > .navItem > .navLink {
+        color: $color-16;
+        cursor: pointer;
+        display: inline-block;
+        font-size: $font-size-x-small;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .socialSection {
+    align-items: center;
+    border-top: 1px solid rgba($color-4, .2);
+    display: flex;
+    flex-direction: column;
+    padding: 35px 0;
+    width: 100%;
+
+    @media #{$mq-tablet} {
+      align-items: center;
+      border-top: 0;
+      display: block;
+      padding: 0;
+      width: auto;
+    }
+
+    // Get rid of this, this is a button component, someday..
+    .buttonSubscribe {
+      align-items: baseline;
+      background-color: $color-6;
+      border-radius: 1px;
+      color: $color-4;
+      display: flex;
+      font-size: $font-size-x-small;
+      padding: 10px 15px;
+      text-transform: uppercase;
+
+      @media #{$mq-tablet} {
+        align-items: center;
+        max-width: 230px;
+      }
+
+      > .iconSubscribe {
+        fill: $color-4;
+        height: 11px;
+        margin: 0 0 0 15px;
+        max-width: 18px;
+        width: 100%;
+
+        @media #{$mq-tablet} {
+          margin: 0;
+        }
+      }
+    }
+
+    > .socialLinks {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin: 25px 0 0;
+
+      @media #{$mq-tablet} {
+        justify-content: flex-start;
+        margin: 35px 0 0;
+      }
+
+      > .socialText {
+        color: $color-16;
+        font-weight: $font-weight-normal;
+        text-transform: uppercase;
+      }
+
+      > .socialList {
+        align-items: center;
+        display: flex;
+        margin: 0 0 0 15px;
+
+        > .socialItem {
+          align-items: center;
+          border: solid 1px $color-4;
+          border-radius: 100%;
+          display: inline-flex;
+          height: 32px;
+          justify-content: center;
+          width: 32px;
+
+          &:not(:first-child) {
+            margin: 0 0 0 15px;
+          }
+
+          > a {
+            align-items: center;
+            border-radius: 50%;
+            display: inline-flex;
+            height: 100%;
+            justify-content: center;
+            width: 100%;
+
+            > .iconTwitter {
+              fill: $color-4;
+              height: 14px;
+              width: 17px;
+            }
+
+            > .iconFacebook {
+              fill: $color-4;
+              height: 19px;
+              width: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .subFooter {
+    align-items: center;
+    background-color: $color-12;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    padding: 5px 0;
+
+    > .logoGfw {
+      height: 100%;
+    }
+
+    > .subFooterText {
+      color: $color-4;
+      font-size: $font-size-x-small;
+      font-weight: $font-weight-light;
+      margin-left: 10px;
+    }
+  }
+
+  .closeButton {
+    background-color: $color-4;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    height: 39px;
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transform: translate(0, -50%);
+    width: 39px;
+
+    > .cross {
+      display: inline-block;
+      height: 18px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+
+      &::before,
+      &::after {
+        background-color: $color-7;
+
+        content: '';
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        width: 3px;
+      }
+
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+}
+
+.veil {
+  background-color: rgba($color-12, .8);
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 102;
+}

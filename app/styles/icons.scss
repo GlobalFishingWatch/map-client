@@ -9,69 +9,69 @@
   width: 1em;
 }
 
-:global .icon-search {
+:global .iconSearch {
   width: .9375em;
 }
 
-:global .icon-filter {
+:global .iconFilter {
   width: 1.154296875em;
 }
 
-.icon-layers-icon {
+.iconLayersIcon {
   width: .89453125em;
 }
 
-.icon-report-icon {
+.iconReportIcon {
   width: .8125em;
 }
 
-.icon-share {
+.iconShare {
   fill: $color-4;
   height: 16px;
   width: 19px;
 }
 
-.icon-zoom-in {
+.iconZoomIn {
   fill: $color-4;
   height: 13px;
   width: 13px;
 }
 
-.icon-zoom-out {
+.iconZoomOut {
   fill: $color-4;
   height: 3px;
   width: 13px;
 }
 
-.icon-close {
+.iconClose {
   cursor: pointer;
   height: 10px;
   width: 10px;
 }
 
-.info-icon {
+.infoIcon {
   cursor: pointer;
 }
 
-.blending-icon {
+.blendingIcon {
   cursor: pointer;
   fill: $color-19;
   height: 15px;
   width: 15px;
 
-  &.-white {
+  &._white {
     fill: $color-4;
   }
 }
 
-.delete-cross-icon {
+.deleteCrossIcon {
   cursor: pointer;
   fill: $color-19;
   height: 15px;
   width: 15px;
 }
 
-.pin-icon {
+.pinIcon {
   cursor: pointer;
   height: 16px;
   width: 11px;

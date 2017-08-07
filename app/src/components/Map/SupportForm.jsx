@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'preact';
 import classnames from 'classnames';
-import supportFormStyle from 'styles/components/c-support-form.scss';
-import buttonStyle from 'styles/components/c-button.scss';
+import SupportFormStyles from 'styles/components/support-form.scss';
+import ButtonStyles from 'styles/components/button.scss';
 
 class SupportForm extends Component {
   constructor(props) {
@@ -58,17 +58,17 @@ class SupportForm extends Component {
       } else {
         message = 'There was a problem submitting your contact request. Please try again later';
       }
-      return (<section className={supportFormStyle['c-support-form']}>
-        <h1 className={supportFormStyle['message-after']}>{message}</h1>
-        <button className={buttonStyle['c-button-submit-small']} onClick={() => this.props.close()}>Close</button>
+      return (<section className={SupportFormStyles.supportForm}>
+        <h1 className={SupportFormStyles.messageAfter}>{message}</h1>
+        <button className={ButtonStyles.buttonSubmitSmall} onClick={() => this.props.close()}>Close</button>
       </section>);
     }
 
     return (
       <section
         className={classnames({
-          [supportFormStyle['c-support-form']]: true,
-          [supportFormStyle.validated]: this.state.validated
+          [SupportFormStyles.supportForm]: true,
+          [SupportFormStyles.validated]: this.state.validated
         })}
       >
         <h1>
@@ -82,14 +82,14 @@ class SupportForm extends Component {
         >
           <div
             className={classnames({
-              [supportFormStyle['contain-form']]: true,
-              [supportFormStyle.validated]: this.state.validated
+              [SupportFormStyles.containForm]: true,
+              [SupportFormStyles.validated]: this.state.validated
             })}
           >
-            <div className={supportFormStyle['container-inputs']}>
+            <div className={SupportFormStyles.containerInputs}>
               <label htmlFor="support_name">Name</label>
               <input
-                className={supportFormStyle['input-text']}
+                className={SupportFormStyles.inputText}
                 type="name"
                 id="support_name"
                 placeholder="Name"
@@ -99,7 +99,7 @@ class SupportForm extends Component {
               />
               <label htmlFor="support_email">Email</label>
               <input
-                className={supportFormStyle['input-text']}
+                className={SupportFormStyles.inputText}
                 type="email"
                 id="support_email"
                 placeholder="Email"
@@ -108,12 +108,12 @@ class SupportForm extends Component {
                 required
               />
               <label htmlFor="support_type">Type</label>
-              <div className={supportFormStyle['select-container']}>
+              <div className={SupportFormStyles.selectContainer}>
                 <select
                   id="support_type"
                   onChange={(event) => { this.handleChange(event); }}
                   name="selectCompany"
-                  className={supportFormStyle[this.state.classSelect]}
+                  className={SupportFormStyles[this.state.classSelect]}
                   required
                 >
                   <option value="" disabled={this.state.disabledOption}>Select an option</option>
@@ -125,7 +125,7 @@ class SupportForm extends Component {
 
               <label htmlFor="support_subject">Subject</label>
               <input
-                className={supportFormStyle['input-text']}
+                className={SupportFormStyles.inputText}
                 type="text"
                 id="support_subject"
                 placeholder="Subject"
@@ -133,12 +133,12 @@ class SupportForm extends Component {
                 onChange={(event) => { this.handleChange(event); }}
               />
             </div>
-            <div className={supportFormStyle['container-textarea']}>
+            <div className={SupportFormStyles.containerTextarea}>
               <label htmlFor="support_description">description</label>
               <textarea
                 id="support_description"
                 placeholder="Please let us know how we can help!"
-                className={supportFormStyle['textarea-form']}
+                className={SupportFormStyles.textareaForm}
                 required
                 onChange={(event) => { this.handleChange(event); }}
               />
@@ -151,10 +151,10 @@ class SupportForm extends Component {
             value={window.location}
             onChange={(event) => { this.handleChange(event); }}
           />
-          <div className={supportFormStyle['container-submit']}>
+          <div className={SupportFormStyles.containerSubmit}>
             <button
               type="submit"
-              className={buttonStyle['c-button-submit-small']}
+              className={ButtonStyles.buttonSubmitSmall}
             >
             Send
             </button>

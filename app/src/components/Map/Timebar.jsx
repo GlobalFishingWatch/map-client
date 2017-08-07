@@ -20,8 +20,8 @@ import { brushX as d3brushX } from 'd3-brush';
 
 import classnames from 'classnames';
 import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
-import timebarCss from 'styles/components/map/c-timebar.scss';
-import timelineCss from 'styles/components/map/c-timeline.scss';
+import TimebarStyles from 'styles/components/map/timebar.scss';
+import TimelineStyles from 'styles/components/map/timeline.scss';
 import extentChanged from 'util/extentChanged';
 import DatePicker from 'components/Map/DatePicker';
 import TogglePauseButton from 'components/Map/TogglePauseButton';
@@ -163,11 +163,11 @@ class Timebar extends Component {
 
     this.group.append('path')
       .datum(chartData)
-      .attr('class', timelineCss['c-timeline-area'])
+      .attr('class', TimelineStyles.timelineArea)
       .attr('d', area);
 
     this.group.append('g')
-      .attr('class', timelineCss['c-timeline-x-axis'])
+      .attr('class', TimelineStyles.timelineXAxis)
       .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
 
@@ -176,7 +176,7 @@ class Timebar extends Component {
     this.innerBrushFunc = brush();
 
     this.innerBrush = this.group.append('g')
-      .attr('class', timelineCss['c-timeline-inner-brush'])
+      .attr('class', TimelineStyles.timelineInnerBrush)
       .call(this.innerBrushFunc);
 
     outerBrushHandleLeft = this.createOuterHandle();
@@ -186,26 +186,26 @@ class Timebar extends Component {
 
     this.innerBrush.select('.selection')
       .attr('height', height)
-      .classed(timelineCss['c-timeline-inner-brush-selection'], true);
+      .classed(TimelineStyles.timelineInnerBrushSelection, true);
 
     const innerBrushCircles = this.innerBrush.append('g')
-      .classed(timelineCss['c-timeline-inner-brush-circles'], true);
+      .classed(TimelineStyles.timelineInnerBrushCircles, true);
 
     innerBrushLeftCircle = innerBrushCircles.append('circle');
     innerBrushRightCircle = innerBrushCircles.append('circle');
     innerBrushCircles.selectAll('circle')
       .attr('cy', height / 2)
       .attr('r', 5)
-      .classed(timelineCss['c-timeline-inner-brush-circle'], true);
+      .classed(TimelineStyles.timelineInnerBrushCircle, true);
 
     innerBrushMiddle = this.innerBrush.append('g')
-      .classed(timelineCss['c-timeline-inner-brush-middle'], true);
+      .classed(TimelineStyles.timelineInnerBrushMiddle, true);
     innerBrushMiddle.append('path')
       .attr('d', `M 0 0 L 0 ${height}`);
     innerBrushMiddle.append('circle')
       .attr('r', 5)
       .attr('cy', height / 2)
-      .classed(timelineCss['c-timeline-inner-brush-circle'], true);
+      .classed(TimelineStyles.timelineInnerBrushCircle, true);
 
     // move both brushes to initial position
     this.resetOuterBrush();
@@ -247,7 +247,7 @@ class Timebar extends Component {
 
   createOuterHandle() {
     const handle = this.group.append('g')
-      .classed(timelineCss['c-timeline-outer-brush-handle'], true);
+      .classed(TimelineStyles.timelineOuterBrushHandle, true);
 
     handle
       .append('path')
@@ -311,16 +311,16 @@ class Timebar extends Component {
     x.domain(newOuterTimeExtent);
 
     // redraw components
-    this.group.select(`.${timelineCss['c-timeline-area']}`).transition().duration(isLargerThanBefore ? 0 : 500)
+    this.group.select(`.${TimelineStyles.timelineArea}`).transition().duration(isLargerThanBefore ? 0 : 500)
       .attr('d', area);
-    this.group.select(`.${timelineCss['c-timeline-x-axis']}`).transition().duration(isLargerThanBefore ? 0 : 500)
+    this.group.select(`.${TimelineStyles.timelineXAxis}`).transition().duration(isLargerThanBefore ? 0 : 500)
       .call(xAxis);
 
     // calculate new inner extent, using old inner extent on new x scale
     this.redrawInnerBrush(prevInnerTimeExtent);
 
     this.svg.selectAll('g.tick text')
-      .classed(timelineCss['c-timeline-full-year'], function isFullYear() { return this.innerHTML.match(/^\d{4}$/); });
+      .classed(TimelineStyles.timelineFullYear, function isFullYear() { return this.innerHTML.match(/^\d{4}$/); });
 
     return newOuterTimeExtent;
   }
@@ -550,8 +550,8 @@ class Timebar extends Component {
 
   render() {
     return (
-      <div className={timebarCss['c-timebar']}>
-        <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
+      <div className={TimebarStyles.timebar}>
+        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
           <DatePicker
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[0]}
             onChange={this.onStartDatePickerChange}
@@ -560,7 +560,7 @@ class Timebar extends Component {
             label={'start'}
           />
         </div>
-        <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-datepicker'])}>
+        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
           <DatePicker
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[1]}
             onChange={this.onEndDatePickerChange}
@@ -569,7 +569,7 @@ class Timebar extends Component {
             label={'end'}
           />
         </div>
-        <div className={classnames(timebarCss['c-timebar-element'], timebarCss['c-timebar-playback'])}>
+        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarPlayback)}>
           <TogglePauseButton
             onToggle={this.onPauseToggle}
             paused={this.props.timelinePaused}
@@ -577,7 +577,7 @@ class Timebar extends Component {
         </div>
 
         <div
-          className={classnames(timebarCss['c-timebar-element'], timelineCss['c-timeline'])}
+          className={classnames(TimebarStyles.timebarElement, TimelineStyles.timeline)}
           id="timeline_svg_container"
         >
           <DurationPicker

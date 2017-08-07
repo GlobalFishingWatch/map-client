@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'preact';
 import classnames from 'classnames';
-import mapCss from 'styles/components/c-map.scss';
+import MapStyles from 'styles/components/map.scss';
 
 function Attributions({ isEmbedded }) {
   return (
     <div
-      className={classnames(mapCss['attributions-container'], {
-        [mapCss['-embed']]: isEmbedded
+      className={classnames(MapStyles.attributionsContainer, {
+        [MapStyles._embed]: isEmbedded
       })}
     >
-      <span className={mapCss['mobile-map-attributions']}>
+      <span className={MapStyles.mobileMapAttributions}>
 
         <a
-          className={mapCss.link}
+          className={MapStyles.link}
           href="https://carto.com/"
           target="_blank"
           rel="noopener noreferrer"
@@ -22,7 +22,7 @@ function Attributions({ isEmbedded }) {
         </a>
         {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
         <a
-          className={mapCss.link}
+          className={MapStyles.link}
           href="http://marineregions.org/"
           target="_blank"
           rel="noopener noreferrer"
@@ -30,7 +30,7 @@ function Attributions({ isEmbedded }) {
           marineregions.org
         </a>, MPAs:{' '}
         <a
-          className={mapCss.link}
+          className={MapStyles.link}
           href="http://mpatlas.org/"
           target="_blank"
           rel="noopener noreferrer"

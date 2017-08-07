@@ -3,7 +3,7 @@ import React, { Component } from 'preact';
 import classnames from 'classnames';
 import BaseStyles from 'styles/_base.scss';
 import IconStyles from 'styles/icons.scss';
-import FooterStyles from 'styles/components/c-footer.scss';
+import FooterStyles from 'styles/components/footer.scss';
 import OceanaLogo from 'assets/logos/oceana_logo_white.png';
 import SkytruthLogo from 'assets/logos/skytruth_white.png';
 import GoogleLogo from 'assets/logos/google_logo.png';
@@ -19,11 +19,11 @@ class Footer extends Component {
     let footerClass;
 
     if (this.props.isMap && this.props.isExpanded) {
-      footerClass = classnames(FooterStyles['c-footer'], FooterStyles['-map'], FooterStyles['-expanded']);
+      footerClass = classnames(FooterStyles.footer, FooterStyles._map, FooterStyles._expanded);
     } else if (this.props.isMap) {
-      footerClass = classnames(FooterStyles['c-footer'], FooterStyles['-map']);
+      footerClass = classnames(FooterStyles.footer, FooterStyles._map);
     } else {
-      footerClass = FooterStyles['c-footer'];
+      footerClass = FooterStyles.footer;
     }
 
     return (
@@ -37,32 +37,32 @@ class Footer extends Component {
         <footer className={footerClass} >
           {this.props.isMap &&
           <div
-            className={FooterStyles['close-button']}
+            className={FooterStyles.closeButton}
             onClick={this.props.onClose}
           >
             <span className={FooterStyles.cross} />
           </div>}
-          <div className={FooterStyles['scroll-container']} >
+          <div className={FooterStyles.scrollContainer} >
             <div className={BaseStyles.wrap} >
-              <div className={FooterStyles['logos-footer']} >
-                <div className={FooterStyles['partner-section']} >
-                  <span className={FooterStyles['partner-text']} >Founding Partners</span>
-                  <ul className={FooterStyles['logo-list']} >
-                    <li className={FooterStyles['logo-item']} >
+              <div className={FooterStyles.logosFooter} >
+                <div className={FooterStyles.partnerSection} >
+                  <span className={FooterStyles.partnerText} >Founding Partners</span>
+                  <ul className={FooterStyles.logoList} >
+                    <li className={FooterStyles.logoItem} >
                       <img
-                        className={classnames(FooterStyles.logo, FooterStyles['-oceana'])}
+                        className={classnames(FooterStyles.logo, FooterStyles._oceana)}
                         src={OceanaLogo}
                         alt="Oceana"
                       />
                     </li>
-                    <li className={FooterStyles['logo-item']} >
+                    <li className={FooterStyles.logoItem} >
                       <img
-                        className={classnames(FooterStyles.logo, FooterStyles['-skytruth-logo'])}
+                        className={classnames(FooterStyles.logo, FooterStyles._skytruthLogo)}
                         src={SkytruthLogo}
                         alt="Skytruth"
                       />
                     </li>
-                    <li className={FooterStyles['logo-item']} >
+                    <li className={FooterStyles.logoItem} >
                       <img
                         className={FooterStyles.logo}
                         src={GoogleLogo}
@@ -71,91 +71,91 @@ class Footer extends Component {
                     </li>
                   </ul>
                 </div>
-                <div className={FooterStyles['funder-section']} >
-                  <ul className={FooterStyles['logo-funder-list']} >
-                    <li className={FooterStyles['logo-item']} >
-                      <LDFLogo className={classnames(IconStyles.icon, FooterStyles['logo-ldf'])} />
+                <div className={FooterStyles.funderSection} >
+                  <ul className={FooterStyles.logoFunderList} >
+                    <li className={FooterStyles.logoItem} >
+                      <LDFLogo className={classnames(IconStyles.icon, FooterStyles.logoLdf)} />
                     </li>
                   </ul>
                 </div>
               </div>
-              <div className={FooterStyles['map-section']} >
-                <ul className={FooterStyles['nav-list']} >
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={SITE_URL} >Home</a>
+              <div className={FooterStyles.mapSection} >
+                <ul className={FooterStyles.navList} >
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={SITE_URL} >Home</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={FooterStyles['nav-link']} >Blog</a>
+                  <li className={FooterStyles.navItem} >
+                    <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={FooterStyles.navLink} >Blog</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
+                  <li className={FooterStyles.navItem} >
                     <a
-                      className={FooterStyles['nav-link']}
+                      className={FooterStyles.navLink}
                       href={`${SITE_URL}/articles-publications`}
                     >
                       Articles and Publications
                     </a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/faq`} >FAQ</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/faq`} >FAQ</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/tutorials`} >Tutorials</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/tutorials`} >Tutorials</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/definitions`} >Definitions</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/definitions`} >Definitions</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/the-project`} >The project</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/the-project`} >The project</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/partners`} >Partners</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/partners`} >Partners</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/research-program`} >Research program</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/research-program`} >Research program</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/contact-us`} >Contact us</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/contact-us`} >Contact us</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/terms-of-use`} >Terms of use</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/terms-of-use`} >Terms of use</a>
                   </li>
-                  <li className={FooterStyles['nav-item']} >
-                    <a className={FooterStyles['nav-link']} href={`${SITE_URL}/privacy-policy`} >Privacy policy</a>
+                  <li className={FooterStyles.navItem} >
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/privacy-policy`} >Privacy policy</a>
                   </li>
                   {this.props.isMap &&
-                  <li className={FooterStyles['nav-item']} >
-                    <span className={FooterStyles['nav-link']} onClick={this.props.onOpenSupportModal} >Support</span>
+                  <li className={FooterStyles.navItem} >
+                    <span className={FooterStyles.navLink} onClick={this.props.onOpenSupportModal} >Support</span>
                   </li>}
                 </ul>
-                <div className={FooterStyles['social-section']} >
+                <div className={FooterStyles.socialSection} >
                   <a
-                    className={FooterStyles['button-subscribe']}
+                    className={FooterStyles.buttonSubscribe}
                     href="http://info.globalfishingwatch.org/catch_signup"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     sign up for email updates!
-                    <SubscribeIcon className={classnames(IconStyles.icon, FooterStyles['icon-subscribe'])} />
+                    <SubscribeIcon className={classnames(IconStyles.icon, FooterStyles.iconSubscribe)} />
                   </a>
-                  <div className={FooterStyles['social-links']} >
-                    <span className={FooterStyles['social-text']} >Follow us</span>
-                    <ul className={FooterStyles['social-list']} >
-                      <li className={FooterStyles['social-item']} >
+                  <div className={FooterStyles.socialLinks} >
+                    <span className={FooterStyles.socialText} >Follow us</span>
+                    <ul className={FooterStyles.socialList} >
+                      <li className={FooterStyles.socialItem} >
                         <a
                           href="https://twitter.com/GlobalFishWatch"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <TwitterIcon className={classnames(IconStyles.icon, FooterStyles['icon-twitter'])} />
+                          <TwitterIcon className={classnames(IconStyles.icon, FooterStyles.iconTwitter)} />
                         </a>
                       </li>
-                      <li className={FooterStyles['social-item']} >
+                      <li className={FooterStyles.socialItem} >
                         <a
                           href="https://www.facebook.com/GlobalFishingWatch/"
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          <FacebookIcon className={classnames(IconStyles.icon, FooterStyles['icon-facebook'])} />
+                          <FacebookIcon className={classnames(IconStyles.icon, FooterStyles.iconFacebook)} />
                         </a>
                       </li>
                     </ul>
@@ -164,9 +164,9 @@ class Footer extends Component {
               </div>
             </div>
             {!this.props.isMap &&
-            <div className={FooterStyles['sub-footer']} >
-              <img className={FooterStyles['logo-gfw']} src={GFWLogo} alt="Global Fishing Watch" />
-              <span className={FooterStyles['sub-footer-text']} >Global Fishing Watch</span>
+            <div className={FooterStyles.subFooter} >
+              <img className={FooterStyles.logoGfw} src={GFWLogo} alt="Global Fishing Watch" />
+              <span className={FooterStyles.subFooterText} >Global Fishing Watch</span>
             </div>}
           </div>
         </footer>
