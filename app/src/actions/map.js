@@ -3,6 +3,7 @@ import {
   SET_ZOOM,
   SET_CENTER,
   SET_LOADING,
+  SET_DRAWING,
   SET_LOADERS,
   SHARE_MODAL_OPEN,
   DELETE_WORKSPACE_ID,
@@ -151,6 +152,13 @@ export function setLayerInfoModal(modalParams) {
   return {
     type: SET_LAYER_INFO_MODAL,
     payload: modalParams
+  };
+}
+
+export function setDrawingMode(value) {
+  return {
+    type: SET_DRAWING,
+    payload: value
   };
 }
 

@@ -13,13 +13,18 @@ const POLYGON_OPTIONS = {
 };
 
 class DrawingManager extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       drawingManager: null,
       polygon: null,
       coordinates: null
     };
+    this.updateCoordinates = this.updateCoordinates.bind(this);
+    this.addEditablePolygonToMap = this.addEditablePolygonToMap.bind(this);
+    if (this.props.map) {
+      this.initDrawingManager(props.map);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,12 +51,7 @@ class DrawingManager extends Component {
     this.deletePolygonFromMap(polygon);
     this.toggleDrawingManager();
     this.addEditablePolygonToMap(coordinates);
-    this.setState({ coordinates });
-  }
-
-  onSaveArea() {
-    this.deletePolygonFromMap(this.state.polygon);
-    this.props.createArea(this.state.coordinates);
+    this.props.saveCoordinates({ coordinates });
   }
 
   componentWillUnmount() {
@@ -82,10 +82,18 @@ class DrawingManager extends Component {
     });
   }
 
+  updateCoordinates(polygon) {
+    const coordinates = this.getPolygonCoordinates(polygon);
+    this.props.saveCoordinates({ coordinates });
+  }
+
   addEditablePolygonToMap(coords) {
     const polygon = new google.maps.Polygon(Object.assign(POLYGON_OPTIONS, { paths: coords }));
-    polygon.setMap(this.props.map);
     this.setState({ polygon });
+    ['set_at', 'insert_at', 'remove_at'].forEach((action) => {
+      google.maps.event.addListener(polygon.getPath(), action, () => this.updateCoordinates(polygon));
+    });
+    polygon.setMap(this.props.map);
   }
 
   render() {
@@ -95,7 +103,7 @@ class DrawingManager extends Component {
 
 DrawingManager.propTypes = {
   map: PropTypes.object.isRequired,
-  createArea: PropTypes.func.isRequired
+  saveCoordinates: PropTypes.func.isRequired
 };
 
 export default DrawingManager;

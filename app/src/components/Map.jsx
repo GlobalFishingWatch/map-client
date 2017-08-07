@@ -38,8 +38,7 @@ class Map extends Component {
     super(props);
     this.state = {
       lastCenter: null,
-      latlon: '',
-      drawArea: true
+      latlon: ''
     };
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
@@ -314,7 +313,7 @@ class Map extends Component {
           onClick={this.onMapContainerClick}
         />
 
-        {this.state.drawArea && <DrawingManager />}
+        {this.props.drawing && <DrawingManager />}
         <div className={mapStyles.mapLoader}>
           <Loader tiny />
         </div>
@@ -350,6 +349,7 @@ class Map extends Component {
 }
 Map.propTypes = {
   areas: PropTypes.array.isRequired,
+  drawing: PropTypes.bool.isRequired,
   initMap: PropTypes.func,
   activeBasemap: PropTypes.string,
   basemaps: PropTypes.array,

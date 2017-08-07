@@ -3,6 +3,7 @@ import {
   INIT_GOOGLE_MAPS,
   SET_ZOOM,
   SET_LOADING,
+  SET_DRAWING,
   SET_LOADERS,
   SET_MAX_ZOOM,
   SET_CENTER,
@@ -113,6 +114,8 @@ export default function (state = initialState, action) {
     }
     case SET_LOADING:
       return Object.assign({}, state, { loading: action.payload });
+    case SET_DRAWING:
+      return Object.assign({}, state, { drawing: action.payload });
     case SET_LOADERS:
       return Object.assign({}, state, { loaders: action.payload });
     case SET_URL_WORKSPACE_ID:

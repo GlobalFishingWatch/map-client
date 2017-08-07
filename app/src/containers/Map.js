@@ -25,7 +25,8 @@ import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constant
 import { trackExternalLinkClicked } from 'actions/analytics';
 
 const mapStateToProps = state => ({
-  areas: state.areas,
+  areas: state.areas.data,
+  drawing: state.map.drawing,
   centerLat: state.map.center[0],
   centerLong: state.map.center[1],
   zoom: state.map.zoom,

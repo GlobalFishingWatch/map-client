@@ -1,5 +1,6 @@
 // areas
 export const CREATE_AREA = 'CREATE_AREA';
+export const SAVE_COORDS = 'SAVE_COORDS';
 
 // map
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
@@ -19,6 +20,7 @@ export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
+export const SET_DRAWING = 'SET_DRAWING';
 
 
 // modals
