@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import PinnedTracksItem from 'containers/Map/PinnedTracksItem';
-import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
-import MapButtonStyles from 'styles/components/map/c-button.scss';
+import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
+import MapButtonStyles from 'styles/components/map/button.scss';
 
 class PinnedTracks extends Component {
   constructor(props) {
@@ -30,17 +30,17 @@ class PinnedTracks extends Component {
     let pinnedItemsHeading = null;
 
     if (!pinnedVessels.length) {
-      pinnedItemsHeading = (<div className={pinnedTracksStyles['no-pinned-items']}>
-        <span className={pinnedTracksStyles['no-pin-literal']}>No pinned vessels</span>
+      pinnedItemsHeading = (<div className={pinnedTracksStyles.noPinnedItems}>
+        <span className={pinnedTracksStyles.noPinLiteral}>No pinned vessels</span>
       </div>);
     } else {
       pinnedItemsHeading = (
-        <div className={pinnedTracksStyles['pinned-tracks-heading']}>
+        <div className={pinnedTracksStyles.pinnedTracksHeading}>
           pinned vessels
         </div>);
 
       pinnedItems = (
-        <ul className={pinnedTracksStyles['pinned-item-list']}>
+        <ul>
           {pinnedVessels.map((pinnedVessel, index) =>
             (<PinnedTracksItem
               index={index}
@@ -55,22 +55,22 @@ class PinnedTracks extends Component {
     }
 
     return (
-      <div className={pinnedTracksStyles['c-pinned-tracks']}>
+      <div className={pinnedTracksStyles.pinnedTracks}>
         {pinnedItemsHeading}
         {pinnedItems}
-        <div className={pinnedTracksStyles['pinned-button-container']}>
+        <div className={pinnedTracksStyles.pinnedButtonContainer}>
           {this.props.loggedUser != null &&
             <button
-              className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'])}
+              className={classnames(MapButtonStyles.button, pinnedTracksStyles.pinnedButton)}
               onClick={() => this.props.openRecentVesselModal()}
             >
               recent vessels
             </button>
           }
           <button
-            className={classnames(MapButtonStyles['c-button'], pinnedTracksStyles['pinned-button'],
-              { [`${MapButtonStyles['-disabled']}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles['-filled']}`]: !!this.props.pinnedVesselEditMode })}
+            className={classnames(MapButtonStyles.button, pinnedTracksStyles.pinnedButton,
+              { [`${MapButtonStyles._disabled}`]: !pinnedVessels.length },
+              { [`${MapButtonStyles._filled}`]: !!this.props.pinnedVesselEditMode })}
             onClick={() => { this.props.togglePinnedVesselEditMode(); }}
           >
             {editButtonText}

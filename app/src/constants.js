@@ -52,12 +52,6 @@ export const VESSELS_MINIMUM_OPACITY = 0.5;
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
 // tracks
-export const TRACK_SEGMENT_TYPES = {
-  Hidden: 0,
-  OutOfInnerRange: 1,
-  InInnerRange: 2,
-  Highlighted: 4
-};
 export const HEATMAP_TRACK_HIGHLIGHT_HUE = 312;
 export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 2;
 

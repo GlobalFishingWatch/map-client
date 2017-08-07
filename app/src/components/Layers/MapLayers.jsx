@@ -1,6 +1,6 @@
 /* eslint-disable react/sort-comp  */
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import compact from 'lodash/compact';
 import isEqual from 'lodash/isEqual';
 import extentChanged from 'util/extentChanged';
@@ -42,6 +42,12 @@ class MapLayers extends Component {
       this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
         // TODO update tracks layer viewport as well
     }
+
+    // edge case where gl container is there but not yet added to map
+    if (this.glContainer && !this.glContainer.mapProjection) {
+      return;
+    }
+
     if (nextProps.layers.length) {
       if (!this.glContainer) {
         this.initHeatmap();
@@ -66,13 +72,11 @@ class MapLayers extends Component {
       this.setLayersInteraction(nextProps.reportLayerId);
     }
 
-    if (!this.glContainer || !nextProps.timelineOuterExtent || !nextProps.timelineInnerExtent) {
+    if (!this.glContainer || !nextProps.timelineOuterExtent || !nextProps.timelineInnerExtentIndexes) {
       return;
     }
 
-    const innerExtentChanged = extentChanged(this.props.timelineInnerExtent, nextProps.timelineInnerExtent);
-    const startTimestamp = nextProps.timelineInnerExtent[0].getTime();
-    const endTimestamp = nextProps.timelineInnerExtent[1].getTime();
+    const innerExtentChanged = extentChanged(this.props.timelineInnerExtentIndexes, nextProps.timelineInnerExtentIndexes);
 
     const nextTracks = getTracks(nextProps.vesselTracks);
 
@@ -84,11 +88,9 @@ class MapLayers extends Component {
     } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
       this.updateTrackLayer({
         data: nextTracks,
-        // TODO directly use timelineInnerExtentIndexes
-        startTimestamp,
-        endTimestamp,
+        timelineInnerExtentIndexes: nextProps.timelineInnerExtentIndexes,
+        timelineOverExtentIndexes: nextProps.timelineOverExtentIndexes,
         timelinePaused: nextProps.timelinePaused,
-        timelineOverExtent: nextProps.timelineOverExtent,
         zoom: nextProps.zoom
       });
       this.glContainer.toggleHeatmapDimming(true);
@@ -143,7 +145,7 @@ class MapLayers extends Component {
     if (this.props.timelinePaused !== nextProps.timelinePaused) {
       return true;
     }
-    if (extentChanged(this.props.timelineOverExtent, nextProps.timelineOverExtent)) {
+    if (extentChanged(this.props.timelineOverExtentIndexes, nextProps.timelineOverExtentIndexes)) {
       return true;
     }
     if (innerExtentChanged) {
@@ -158,11 +160,6 @@ class MapLayers extends Component {
     this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('dragstart', this.onMapDragStartBound);
     this.map.addListener('dragend', this.onMapDragEndBound);
-  }
-
-  componentWillUnmount() {
-    google.maps.event.clearInstanceListeners(this.map);
-    this.map.overlayMapTypes.clear();
   }
 
   initHeatmap() {
@@ -400,26 +397,22 @@ class MapLayers extends Component {
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
   }
 
-  updateTrackLayer({ data, startTimestamp, endTimestamp, timelinePaused, timelineOverExtent, zoom }) {
+  updateTrackLayer({ data, timelineInnerExtentIndexes, timelineOverExtentIndexes, timelinePaused, zoom }) {
     if (!this.glContainer || !data) {
       return;
     }
 
-    let overStartTimestamp;
-    let overEndTimestamp;
-    if (timelineOverExtent) {
-      overStartTimestamp = timelineOverExtent[0].getTime();
-      overEndTimestamp = timelineOverExtent[1].getTime();
-    }
+    const overInInner = (timelineOverExtentIndexes === undefined) ? undefined : [
+      Math.max(timelineInnerExtentIndexes[0], timelineOverExtentIndexes[0]),
+      Math.min(timelineInnerExtentIndexes[1], timelineOverExtentIndexes[1])
+    ];
 
     this.glContainer.updateTracks(
       data,
       {
-        startTimestamp,
-        endTimestamp,
+        timelineInnerExtentIndexes,
+        timelineOverExtentIndexes: (overInInner && overInInner[1] - overInInner[0] > 0) ? overInInner : undefined,
         timelinePaused,
-        overStartTimestamp,
-        overEndTimestamp,
         zoom
       }
     );
@@ -434,10 +427,9 @@ class MapLayers extends Component {
 
     this.updateTrackLayer({
       data: tracks,
-      startTimestamp: this.props.timelineInnerExtent[0].getTime(),
-      endTimestamp: this.props.timelineInnerExtent[1].getTime(),
+      timelineInnerExtentIndexes: this.props.timelineInnerExtentIndexes,
+      timelineOverExtentIndexes: this.props.timelineOverExtentIndexes,
       timelinePaused: this.props.timelinePaused,
-      timelineOverExtent: this.props.timelineOverExtent,
       zoom: this.props.zoom
     });
   }
@@ -498,10 +490,9 @@ MapLayers.propTypes = {
   heatmap: PropTypes.object,
   highlightedVessels: PropTypes.object,
   zoom: PropTypes.number,
-  timelineInnerExtent: PropTypes.array,
   timelineInnerExtentIndexes: PropTypes.array,
   timelineOuterExtent: PropTypes.array,
-  timelineOverExtent: PropTypes.array,
+  timelineOverExtentIndexes: PropTypes.array,
   timelinePaused: PropTypes.bool,
   vesselTracks: PropTypes.array,
   viewportWidth: PropTypes.number,

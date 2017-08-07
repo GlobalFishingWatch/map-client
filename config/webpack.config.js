@@ -71,7 +71,9 @@ const webpackConfig = {
       middleware: 'src/middleware',
       reducers: 'src/reducers',
       styles: 'styles',
-      util: 'src/util'
+      util: 'src/util',
+      react: 'preact-compat',
+      'react-dom': 'preact-compat'
     },
     extensions: ['', '.js', '.jsx']
   },

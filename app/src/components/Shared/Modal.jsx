@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React from 'preact';
 import classnames from 'classnames';
-import styles from 'styles/components/shared/c-modal.scss';
+import ModalStyles from 'styles/components/shared/modal.scss';
 import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
@@ -20,7 +20,7 @@ class Modal extends React.Component {
     /* If the modal is opened at instantiation, we want the keydown handler to be active */
     if (props.opened) {
       document.addEventListener('keydown', this.onKeyDown);
-      document.body.classList.add(styles['-no-bg-overlay']);
+      document.body.classList.add(ModalStyles._noBgOverlay);
     }
   }
 
@@ -28,9 +28,9 @@ class Modal extends React.Component {
     /* We attach the keydown handler only if the modal gets to be visible */
     if (!this.props.opened && nextProps.opened) {
       document.addEventListener('keydown', this.onKeyDown);
-      document.body.classList.add(styles['-no-bg-overlay']);
+      document.body.classList.add(ModalStyles._noBgOverlay);
     } else if (this.props.opened && !nextProps.opened) {
-      document.body.classList.remove(styles['-no-bg-overlay']);
+      document.body.classList.remove(ModalStyles._noBgOverlay);
     }
 
     return true;
@@ -38,7 +38,7 @@ class Modal extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.onKeyDown);
-    document.body.classList.remove(styles['-no-bg-overlay']);
+    document.body.classList.remove(ModalStyles._noBgOverlay);
   }
 
   onClickOverlay(e) {
@@ -56,26 +56,26 @@ class Modal extends React.Component {
     };
 
     if (this.props.closeable) {
-      closeButton = (<button className={styles['close-button']} onClick={() => this.props.close()}>
-        <Icon className={styles.icon} title="Close this modal" />
+      closeButton = (<button className={ModalStyles.closeButton} onClick={() => this.props.close()}>
+        <Icon className={ModalStyles.icon} title="Close this modal" />
       </button>);
     }
 
     return (
       <div
         style={customStyles}
-        className={classnames(styles['c-modal'], { [styles['-small']]: this.props.isSmall })}
+        className={classnames(ModalStyles.modal, { [ModalStyles._small]: this.props.isSmall })}
         onClick={e => this.onClickOverlay(e)}
       >
         <div
-          className={styles.content}
+          className={ModalStyles.content}
           onClick={e => this.onClickOverlay(e)}
         >
-          <div className={styles['contain-content']}>
-            <div className={styles['contain-button']}>
+          <div className={ModalStyles.containContent}>
+            <div className={ModalStyles.containButton}>
               {closeButton}
             </div>
-            <div className={styles['contain-padding']}>
+            <div className={ModalStyles.containPadding}>
               {this.props.children}
             </div>
           </div>

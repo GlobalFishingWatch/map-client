@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import 'styles/components/map/c-datepicker.scss';
+import 'styles/components/map/datepicker.scss';
 
 class DatePicker extends Component {
   constructor(props) {
@@ -18,8 +18,8 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <div className="c-datepicker">
-        <div className="c-datepicker-title">
+      <div className="datepicker">
+        <div className="datepickerTitle">
           {this.props.label}
         </div>
         <ReactDatePicker

@@ -16,3 +16,5 @@
 
 # Compiled files
 /dist
+
+bin/*.csv

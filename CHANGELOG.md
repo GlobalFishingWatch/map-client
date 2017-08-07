@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.5
+- Fix issue preventing map from rendering on some situations
+
+## 2.1.4
+- Fix issue on track rendering
+- Improve performance on track rendering
+- Replace React with Preact
+- Distinct GA events for inner position and extent
+- Add GA event for layer opacity
+
+## 2.1.3
+- Add support for accelerated playback using console commands
+
+## 2.1.2
+- Update basemap URLs
+
 ## 2.1.1
 - Fix permissions issue on logout
 - Fix vessel info loading for guest users

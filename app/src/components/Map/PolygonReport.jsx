@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { render, Component } from 'preact';
 import classnames from 'classnames';
-import CustomInfowindowStyles from 'styles/components/map/c-custom-infowindow.scss';
-import buttonCloseStyles from 'styles/components/c-button-close.scss';
+import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
+import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
 import CustomInfoWindow from 'util/CustomInfoWindow';
 
@@ -31,7 +30,7 @@ export default class PolygonReport extends Component {
 
   componentDidUpdate() {
     if (!this.infoWindow) return;
-    ReactDOM.render(this.element, this.infoWindow.div);
+    render(this.element, this.infoWindow.div, this.infoWindow.div.lastElementChild);
     if (this.props.latLng) {
       this.infoWindow.setLatLng(this.props.latLng);
     }
@@ -49,10 +48,10 @@ export default class PolygonReport extends Component {
     const toggleButtonText = (this.props.isInReport) ? 'remove from report' : 'add to report';
     let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', CustomInfowindowStyles.toggle);
     if (this.props.isInReport) {
-      toggleButtonClassName += ` ${CustomInfowindowStyles['-remove']}`;
+      toggleButtonClassName += ` ${CustomInfowindowStyles._remove}`;
     }
     this.element = (this.props.id === undefined) ? <div /> : (<div
-      className={classnames(CustomInfowindowStyles['c-custom-infowindow'], 'js-polygon-report')}
+      className={classnames(CustomInfowindowStyles.customInfowindow, 'js-polygon-report')}
     >
       <div className={CustomInfowindowStyles.title}>
         {this.props.name}
@@ -60,7 +59,7 @@ export default class PolygonReport extends Component {
       <div className={CustomInfowindowStyles.description}>
         {this.props.description}
       </div>
-      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles['c-button-close'])}>
+      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles.buttonClose)}>
         <CloseIcon className={buttonCloseStyles.cross} />
       </button>
       <button className={toggleButtonClassName}>

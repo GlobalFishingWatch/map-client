@@ -1,16 +1,15 @@
 /* eslint react/sort-comp:0 */
 /* eslint-disable max-len  */
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
-import { GoogleMapLoader, GoogleMap } from 'react-google-maps';
 import { MIN_ZOOM_LEVEL } from 'constants';
+
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'containers/Header';
-import mapCss from 'styles/components/c-map.scss';
 import Timebar from 'containers/Map/Timebar';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
@@ -25,12 +24,13 @@ import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import MapFooter from 'components/Map/MapFooter';
-import iconStyles from 'styles/icons.scss';
-import mapPanelsStyles from 'styles/components/c-map-panels.scss';
-import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
-import ZoomInIcon from 'babel!svg-react!assets/icons/zoom-in.svg?name=ZoomInIcon';
-import ZoomOutIcon from 'babel!svg-react!assets/icons/zoom-out.svg?name=ZoomOutIcon';
+
+import mapStyles from 'styles/components/map.scss';
+import mapPanelsStyles from 'styles/components/map-panels.scss';
+
 import Loader from 'containers/Map/Loader';
+import Attributions from 'components/Map/Attributions';
+import ZoomControls from 'components/Map/ZoomControls';
 
 class Map extends Component {
   constructor(props) {
@@ -42,17 +42,16 @@ class Map extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.onMapIdle = this.onMapIdle.bind(this);
+    this.onMapInit = this.onMapInit.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.onWindowResizeBound = this.onWindowResize.bind(this);
-    this.onMapContainerClickBound = this.onMapContainerClick.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
+    this.onMapContainerClick = this.onMapContainerClick.bind(this);
   }
 
   /**
    * Zoom change handler
    */
   onZoomChanged() {
-    if (!this.map) return;
     if (this.map.getZoom() !== this.props.zoom) {
       this.props.setZoom(this.map.getZoom());
     }
@@ -61,15 +60,31 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResizeBound);
+    const mapDefaultOptions = {
+      streetViewControl: false,
+      mapTypeControl: false,
+      zoomControl: false,
+      zoom: this.props.zoom,
+      center: { lat: this.props.centerLat, lng: this.props.centerLong },
+      mapTypeId: google.maps.MapTypeId.HYBRID,
+      maxZoom: this.props.maxZoom,
+      minZoom: MIN_ZOOM_LEVEL
+    };
+    // Create the map and initialize on the first idle event
+    this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
+    google.maps.event.addListener(this.map, 'idle', this.onMapInit);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResizeBound);
+    window.removeEventListener('resize', this.onWindowResize);
   }
 
   onWindowResize() {
-    this.setState(this.getViewportSize());
+    const vpSize = this.getViewportSize();
+    if (vpSize) {
+      this.setState(vpSize);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,7 +92,9 @@ class Map extends Component {
       return;
     }
     this.updateBasemap(nextProps);
-
+    if (this.props.maxZoom !== nextProps.maxZoom) {
+      this.map.set('maxZoom', nextProps.maxZoom);
+    }
     if (this.props.zoom !== nextProps.zoom) {
       // do not update the map zoom if it is already matching state
       // (it means the map has been zoomed internally, ie mousewheel)
@@ -111,9 +128,6 @@ class Map extends Component {
   }
 
   onMouseMove(point) {
-    if (!this.map) {
-      return;
-    }
     this.map.setOptions({ draggableCursor: 'default' });
     this.setState({
       latlon: `${point.latLng.lat().toFixed(4)}, ${point.latLng.lng().toFixed(4)}`
@@ -121,9 +135,6 @@ class Map extends Component {
   }
 
   onDragEnd() {
-    if (!this.map) {
-      return;
-    }
     const center = this.map.getCenter();
     let wrappedLongitude = center.lng();
     if (wrappedLongitude > 180 || wrappedLongitude < -180) {
@@ -141,21 +152,30 @@ class Map extends Component {
    * Handles map idle event (once loading is done)
    * Used here to do the initial load of the layers
    */
-  onMapIdle() {
-    if (!this.map) {
-      this.map = this.refs.map.props.map; // eslint-disable-line react/no-string-refs
-      this.props.initMap(this.map);
-      this.props.loadInitialState();
-      this.defineBasemaps(this.props.basemaps);
-      // pass map and viewport dimensions down to MapLayers
-      const stateUpdate = this.getViewportSize();
-      stateUpdate.map = this.map;
-      this.setState(stateUpdate);
+  onMapInit() {
+    if (!this.mapContainerRef) {
+      console.warn('GMaps fired init but React container is not ready');
+      return;
     }
+    google.maps.event.clearInstanceListeners(this.map);
+    google.maps.event.addListener(this.map, 'dragend', this.onDragEnd);
+    google.maps.event.addListener(this.map, 'zoom_changed', this.onZoomChanged);
+    google.maps.event.addListener(this.map, 'mousemove', this.onMouseMove);
+    this.props.initMap(this.map);
+    this.props.loadInitialState();
+    this.defineBasemaps(this.props.basemaps);
+    // pass map and viewport dimensions down to MapLayers
+    const stateUpdate = this.getViewportSize();
+    stateUpdate.map = this.map;
+    this.setState(stateUpdate);
   }
 
   getViewportSize() {
-    const rect = this.refs.mapContainer.getBoundingClientRect();
+    if (!this.mapContainerRef) {
+      console.warn('map container is not ready');
+      return null;
+    }
+    const rect = this.mapContainerRef.getBoundingClientRect();
     return {
       viewportWidth: rect.width,
       viewportHeight: rect.height
@@ -196,7 +216,7 @@ class Map extends Component {
   render() {
     const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
-    return (<div className="full-height-container">
+    return (<div className="fullHeightContainer">
       <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
       {!this.props.isEmbedded &&
       <div>
@@ -260,9 +280,9 @@ class Map extends Component {
         </Modal>
         <div
           className={classnames(
-            mapPanelsStyles['map-panels'],
+            mapPanelsStyles.mapPanels,
             {
-              [mapPanelsStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+              [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
             }
           )}
         >
@@ -278,111 +298,40 @@ class Map extends Component {
       }
       <div
         className={classnames(
-          mapCss['map-container'],
-          { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER },
-          { '-map-pointer': this.props.showMapCursorPointer },
-          { '-map-zoom': this.props.showMapCursorZoom }
+          mapStyles.mapContainer,
+          { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER },
+          { _mapPointer: this.props.showMapCursorPointer },
+          { _mapZoom: this.props.showMapCursorZoom }
         )}
-        ref="mapContainer"
+        ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
       >
-        <div className={mapCss['map-loader']}>
+        <div
+          id="map"
+          className={mapStyles.map}
+          style={{ height: '100%' }}
+          onClick={this.onMapContainerClick}
+        />
+        <div className={mapStyles.mapLoader}>
           <Loader tiny />
         </div>
-        <div className={mapCss.latlon}>
+        <div className={mapStyles.latlon}>
           {this.state.latlon}
         </div>
-        <div className={mapCss['zoom-controls']}>
-          {canShareWorkspaces &&
-          <span className={mapCss.control} id="share_map" onClick={this.props.openShareModal} >
-            <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
-          </span>}
-          <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom >= this.props.maxZoom })}
-            id="zoom_up"
-            onClick={this.changeZoomLevel}
-          >
-            <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
-          </span>
-          <span
-            className={classnames(mapCss.control, { [`${mapCss['-disabled']}`]: this.props.zoom <= MIN_ZOOM_LEVEL })}
-            id="zoom_down"
-            onClick={this.changeZoomLevel}
-          >
-            <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
-          </span>
-        </div>
-        <div
-          className={classnames(mapCss['attributions-container'], {
-            [mapCss['-embed']]: this.props.isEmbedded
-          })}
-        >
-          <span className={mapCss['mobile-map-attributions']}>
-
-            <a
-              className={mapCss.link}
-              href="https://carto.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              CARTO
-            </a>
-            {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, TerraMetrics, EEZs:{' '}
-            <a
-              className={mapCss.link}
-              href="http://marineregions.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              marineregions.org
-            </a>, MPAs:{' '}
-            <a
-              className={mapCss.link}
-              href="http://mpatlas.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              mpatlas.org
-            </a>
-          </span>
-        </div>
-        <GoogleMapLoader
-          containerElement={
-            <div
-              className={mapCss.map}
-              style={{ height: '100%' }}
-              onClick={this.onMapContainerClickBound}
-            />
-            }
-          googleMapElement={
-            <GoogleMap
-              ref="map"
-              defaultZoom={this.props.zoom}
-              defaultCenter={{ lat: this.props.centerLat, lng: this.props.centerLong }}
-              defaultZoomControl={false}
-              defaultOptions={{
-                streetViewControl: false,
-                mapTypeControl: false,
-                zoomControl: false
-              }}
-              options={{
-                maxZoom: this.props.maxZoom,
-                minZoom: MIN_ZOOM_LEVEL
-              }}
-              defaultMapTypeId={google.maps.MapTypeId.HYBRID}
-              onMousemove={this.onMouseMove}
-              onZoomChanged={this.onZoomChanged}
-              onDragend={this.onDragEnd}
-              onIdle={this.onMapIdle}
-            />
-          }
+        <ZoomControls
+          canShareWorkspaces={canShareWorkspaces}
+          openShareModal={this.props.openShareModal}
+          zoom={this.props.zoom}
+          maxZoom={this.props.maxZoom}
+          changeZoomLevel={this.changeZoomLevel}
         />
+        <Attributions isEmbedded={this.props.isEmbedded} />
       </div>
       <MapLayers
         map={this.state.map}
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <div className={classnames(mapCss['timebar-container'], { [mapCss['-no-footer']]: !COMPLETE_MAP_RENDER })}>
+      <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })}>
         <Timebar />
       </div>
       {COMPLETE_MAP_RENDER &&

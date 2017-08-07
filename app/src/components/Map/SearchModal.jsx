@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
 import SearchResult from 'containers/Map/SearchResult';
-import PaginatorStyles from 'styles/components/shared/c-paginator.scss';
+import PaginatorStyles from 'styles/components/shared/paginator.scss';
 import ReactPaginate from 'react-paginate';
 import Rhombus from 'components/Shared/Rhombus';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'constants';
-import ModalStyles from 'styles/components/shared/c-modal.scss';
-import ResultListStyles from 'styles/components/shared/c-result-list.scss';
-import SearchModalStyles from 'styles/components/map/c-search-modal.scss';
+import ModalStyles from 'styles/components/shared/modal.scss';
+import ResultListStyles from 'styles/components/shared/result-list.scss';
+import SearchModalStyles from 'styles/components/map/search-modal.scss';
 import iconsStyles from 'styles/icons.scss';
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
@@ -31,12 +31,12 @@ class SearchModal extends Component {
     let searchResults;
 
     if (this.props.searching) {
-      searchResults = <li className={ResultListStyles['status-message']}>Searching...</li>;
+      searchResults = <li className={ResultListStyles.statusMessage}>Searching...</li>;
     } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = [];
       for (let i = 0, length = this.props.entries.length; i < length; i++) {
         searchResults.push(<SearchResult
-          className={classnames(ResultListStyles['result-item'], SearchModalStyles['search-result-item'])}
+          className={classnames(ResultListStyles.resultItem, SearchModalStyles.searchResultItem)}
           key={i}
           closeSearch={() => this.props.closeSearchModal()}
           vesselInfo={this.props.entries[i]}
@@ -44,40 +44,40 @@ class SearchModal extends Component {
       }
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = (
-        <li className={ResultListStyles['status-message']}>
+        <li className={ResultListStyles.statusMessage}>
           Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
         </li>);
     } else {
-      searchResults = <li className={ResultListStyles['status-message']}>No result</li>;
+      searchResults = <li className={ResultListStyles.statusMessage}>No result</li>;
     }
 
     return (
-      <div className={SearchModalStyles['c-search-modal']}>
-        <h3 className={ModalStyles['modal-title']}>Search vessel</h3>
-        <div className={SearchModalStyles['search-container']}>
-          <div className={SearchModalStyles['search-input-container']}>
+      <div>
+        <h3 className={ModalStyles.modalTitle}>Search vessel</h3>
+        <div className={SearchModalStyles.searchContainer}>
+          <div className={SearchModalStyles.searchInputContainer}>
             <input
-              className={SearchModalStyles['search-input']}
+              className={SearchModalStyles.searchInput}
               onChange={e => this.onSearchInputChange(e.target.value)}
               placeholder="Search vessel"
               value={this.props.searchTerm}
             />
             {this.props.searchTerm.length === 0 && <SearchIcon
-              className={classnames(iconsStyles.icon, SearchModalStyles['search-icon'])}
+              className={classnames(iconsStyles.icon, SearchModalStyles.searchIcon)}
             />}
             {this.props.searchTerm.length > 0 && <CloseIcon
-              className={classnames(iconsStyles.icon, iconsStyles['icon-close'], SearchModalStyles['delete-icon'])}
+              className={classnames(iconsStyles.icon, iconsStyles.iconClose, SearchModalStyles.deleteIcon)}
               onClick={() => this.cleanResults()}
             />}
           </div>
-          {searchResults && <ul className={classnames(ResultListStyles['c-result-list'], SearchModalStyles['search-result-list'])}>
+          {searchResults && <ul className={classnames(ResultListStyles.resultList, SearchModalStyles.searchResultList)}>
             {searchResults}
           </ul>
           }
         </div>
-        <div className={SearchModalStyles['paginator-container']}>
+        <div className={SearchModalStyles.paginatorContainer}>
           <div
-            className={PaginatorStyles['c-paginator']}
+            className={PaginatorStyles.paginator}
           >
             {!this.props.searching && this.props.entries.length > 0 && <ReactPaginate
               previousLabel={<Rhombus />}
@@ -85,15 +85,15 @@ class SearchModal extends Component {
               nextClassName={PaginatorStyles.next}
               previousClassName={PaginatorStyles.previous}
               breakLabel={<span>...</span>}
-              pageClassName={PaginatorStyles['page-item']}
-              breakClassName={PaginatorStyles['page-item']}
+              pageClassName={PaginatorStyles.pageItem}
+              breakClassName={PaginatorStyles.pageItem}
               pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
               pageRangeDisplayed={3}
               onPageChange={e => this.onPageChange(e.selected)}
               forcePage={this.props.page}
-              containerClassName={PaginatorStyles['page-list']}
-              activeClassName={PaginatorStyles['-current']}
-              disabledClassName={PaginatorStyles['-disabled']}
+              containerClassName={PaginatorStyles.pageList}
+              activeClassName={PaginatorStyles._current}
+              disabledClassName={PaginatorStyles._disabled}
             />
             }
           </div>

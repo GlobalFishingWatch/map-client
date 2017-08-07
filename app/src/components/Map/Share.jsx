@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
-import ShareStyles from 'styles/components/map/c-share.scss';
+import ShareStyles from 'styles/components/map/share.scss';
 import iconStyles from 'styles/icons.scss';
 import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=FacebookIcon';
 import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
@@ -38,7 +38,7 @@ class Share extends Component {
   onCopy(e) {
     e.preventDefault();
 
-    this.refs.input.select(); // eslint-disable-line react/no-string-refs
+    this.input.select();
 
     let error = false;
     try {
@@ -95,32 +95,32 @@ class Share extends Component {
 
   renderSocialNetworks() {
     return (
-      <div className={ShareStyles['social-links']} >
+      <div className={ShareStyles.socialLinks} >
         <button
-          className={classnames(ShareStyles['social-button'], ShareStyles['-facebook'])}
+          className={classnames(ShareStyles.socialButton, ShareStyles._facebook)}
           onClick={e => this.openFacebook(e)}
         >
-          <span className={ShareStyles['button-container']} >
-            <FacebookIcon className={classnames(iconStyles.icon, ShareStyles['facebook-icon'])} />
-            <span className={ShareStyles['button-text']} >facebook</span>
+          <span className={ShareStyles.buttonContainer} >
+            <FacebookIcon className={classnames(iconStyles.icon, ShareStyles.facebookIcon)} />
+            <span className={ShareStyles.buttonText} >facebook</span>
           </span>
         </button>
         <button
-          className={classnames(ShareStyles['social-button'], ShareStyles['-googleplus'])}
+          className={classnames(ShareStyles.socialButton, ShareStyles._googleplus)}
           onClick={e => this.openGooglePlus(e)}
         >
-          <span className={ShareStyles['button-container']} >
-            <GooglePlusIcon className={classnames(iconStyles.icon, ShareStyles['google-plus-icon'])} />
-            <span className={ShareStyles['button-text']} >Google</span>
+          <span className={ShareStyles.buttonContainer} >
+            <GooglePlusIcon className={classnames(iconStyles.icon, ShareStyles.googlePlusIcon)} />
+            <span className={ShareStyles.buttonText} >Google</span>
           </span>
         </button>
         <button
-          className={classnames(ShareStyles['social-button'], ShareStyles['-twitter'])}
+          className={classnames(ShareStyles.socialButton, ShareStyles._twitter)}
           onClick={e => this.openTwitter(e)}
         >
-          <span className={ShareStyles['button-container']} >
-            <TwitterIcon className={classnames(iconStyles.icon, ShareStyles['twitter-icon'])} />
-            <span className={ShareStyles['button-text']} >Twitter</span>
+          <span className={ShareStyles.buttonContainer} >
+            <TwitterIcon className={classnames(iconStyles.icon, ShareStyles.twitterIcon)} />
+            <span className={ShareStyles.buttonText} >Twitter</span>
           </span>
         </button>
       </div>
@@ -135,8 +135,14 @@ class Share extends Component {
           Copy and paste the link into an email or IM
         </p>
         <form>
-          <input className={ShareStyles['share-input']} type="text" readOnly value={url} ref="input" />
-          <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
+          <input
+            className={ShareStyles.shareInput}
+            type="text"
+            readOnly
+            value={url}
+            ref={(input) => { this.input = input; }}
+          />
+          <button className={ShareStyles.copyButton} type="submit" onClick={e => this.onCopy(e)} >
             {this.state.copied ? 'Copied!' : 'Copy'}
           </button>
         </form>
@@ -160,31 +166,31 @@ class Share extends Component {
       <div className={ShareStyles.content} >
         <form>
 
-          <div className={ShareStyles['embed-container']} >
+          <div className={ShareStyles.embedContainer} >
             <p className={ShareStyles.intro} >
               Embed Size
             </p>
             <select
-              className={ShareStyles['share-input']}
+              className={ShareStyles.shareInput}
               onChange={event => this.updateEmbedSize(event)}
               value={this.state.embedSizeName}
             >
               {selectOptions}
             </select>
           </div>
-          <div className={ShareStyles['embed-container']} >
+          <div className={ShareStyles.embedContainer} >
             <p className={ShareStyles.intro} >
               Embed in your site
             </p>
             <div>
               <input
-                className={ShareStyles['share-input']}
+                className={ShareStyles.shareInput}
                 type="text"
                 readOnly
                 value={embed}
-                ref="input"
+                ref={(input) => { this.input = input; }}
               />
-              <button className={ShareStyles['copy-button']} type="submit" onClick={e => this.onCopy(e)} >
+              <button className={ShareStyles.copyButton} type="submit" onClick={e => this.onCopy(e)} >
                 {this.state.copied ? 'Copied!' : 'Copy'}
               </button>
             </div>
@@ -197,7 +203,7 @@ class Share extends Component {
   render() {
     if (this.props.error) {
       return (
-        <div className={ShareStyles['c-share']} >
+        <div className={ShareStyles.share} >
           <h2 className={ShareStyles.title} >Share this map</h2>
           <p>
             Sorry, an error prevented the workspace to be saved. Try again.
@@ -209,7 +215,7 @@ class Share extends Component {
 
     if (!this.props.workspaceId) {
       return (
-        <div className={ShareStyles['c-share']} >
+        <div className={ShareStyles.share} >
           <h2 className={ShareStyles.title} >Share this map</h2>
           <p>
             Saving your workspace...
@@ -219,27 +225,27 @@ class Share extends Component {
     }
 
     const copyError = (
-      <p className={ShareStyles['copy-error']} >
+      <p className={ShareStyles.copyError} >
         Sorry, the link couldn&#39;t be copied. Please right click on the input and copy it manually.
       </p>
     );
     const socialNetworks = this.renderSocialNetworks();
 
     return (
-      <div className={ShareStyles['c-share']} >
+      <div className={ShareStyles.share} >
         <h2 className={ShareStyles.title} >Share this map</h2>
-        <div className={ShareStyles['content-switcher']} >
+        <div className={ShareStyles.contentSwitcher} >
           <span
-            className={classnames(ShareStyles['content-option'],
-              { [`${ShareStyles['-selected']}`]: this.state.display === 'link' })}
+            className={classnames(ShareStyles.contentOption,
+              { [`${ShareStyles._selected}`]: this.state.display === 'link' })}
             onClick={() => this.setDisplay('link')}
           >
               Link
           </span>
           <span
-            className={classnames(ShareStyles['content-option'],
+            className={classnames(ShareStyles.contentOption,
               {
-                [`${ShareStyles['-selected']}`]: this.state.display === 'embed'
+                [`${ShareStyles._selected}`]: this.state.display === 'embed'
               })}
             onClick={() => this.setDisplay('embed')}
           >
@@ -249,7 +255,7 @@ class Share extends Component {
         {this.state.display === 'link' && this.renderLink()}
         {this.state.display === 'embed' && this.renderEmbed()}
         <div className={ShareStyles.separator} >
-          <span className={ShareStyles['word-separator']} >or</span>
+          <span className={ShareStyles.wordSeparator} >or</span>
         </div>
         {socialNetworks}
         {this.state.error && copyError}

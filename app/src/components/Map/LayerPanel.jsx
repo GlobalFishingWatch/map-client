@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import LayerItem from 'containers/Map/LayerItem';
-import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import LayerListStyles from 'styles/components/map/layer-list.scss';
 
 class LayerPanel extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class LayerPanel extends Component {
     }
 
     return (
-      <ul className={LayerListStyles['c-layer-list']}>
+      <ul className={LayerListStyles.layerList}>
         {layers}
       </ul>
     );

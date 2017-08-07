@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
-import LayerLibraryStyles from 'styles/components/map/c-layer-library.scss';
-import LayerListStyles from 'styles/components/map/c-layer-list.scss';
-import ButtonStyles from 'styles/components/map/c-button.scss';
+import LayerLibraryStyles from 'styles/components/map/layer-library.scss';
+import LayerListStyles from 'styles/components/map/layer-list.scss';
+import ButtonStyles from 'styles/components/map/button.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -37,7 +37,7 @@ class LayerLibraryModal extends Component {
       this.props.layers.forEach((layer) => {
         if (!layer.library) return;
         library.push(<li
-          className={LayerLibraryStyles['layer-item']}
+          className={LayerLibraryStyles.layerItem}
           key={layer.title}
         >
           <label>
@@ -46,13 +46,13 @@ class LayerLibraryModal extends Component {
               hue={layer.hue}
               onToggled={() => this.onChange(layer)}
             />
-            <span className={LayerListStyles['layer-title']}>
+            <span className={LayerListStyles.layerTitle}>
               {layer.title}
             </span>
           </label>
-          <ul className={LayerListStyles['layer-option-list']}>
+          <ul className={LayerListStyles.layerOptionList}>
             <li
-              className={LayerListStyles['layer-option-item']}
+              className={LayerListStyles.layerOptionItem}
               onClick={() => this.onClickInfo(layer)}
             >
               <InfoIcon />
@@ -63,22 +63,22 @@ class LayerLibraryModal extends Component {
     }
 
     return (
-      <div className={LayerLibraryStyles['c-layer-library']}>
-        {SHOW_SEARCH && <div className={LayerLibraryStyles['search-container']}>
-          <input className={LayerLibraryStyles['search-input']} placeholder="Search layer" />
-          <SearchIcon className={LayerLibraryStyles['search-icon']} />
+      <div className={LayerLibraryStyles.layerLibrary}>
+        {SHOW_SEARCH && <div className={LayerLibraryStyles.searchContainer}>
+          <input className={LayerLibraryStyles.searchInput} placeholder="Search layer" />
+          <SearchIcon className={LayerLibraryStyles.searchIcon} />
         </div>
         }
         {library &&
           <div className={LayerLibraryStyles.wrapper}>
-            <ul className={LayerLibraryStyles['layer-list']}>
+            <ul className={LayerLibraryStyles.layerList}>
               {library}
             </ul>
           </div>}
-        <div className={LayerLibraryStyles['footer-container']}>
+        <div className={LayerLibraryStyles.footerContainer}>
           <button
-            className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
-              ButtonStyles['-big'], LayerLibraryStyles['done-button'])}
+            className={classnames(ButtonStyles.button, ButtonStyles._filled,
+              ButtonStyles._big, LayerLibraryStyles.doneButton)}
             onClick={() => this.props.closeModal()}
           >
             done

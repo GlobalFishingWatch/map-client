@@ -1,0 +1,218 @@
+@import '../settings';
+
+.supportForm {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+
+  h1 {
+    color: $color-4;
+    font-size: $font-size-x-normal;
+    font-weight: $font-weight-bold;
+    line-height: 2.21;
+    margin-bottom: 20px;
+    margin-top: 0;
+    text-align: center;
+  }
+
+  .messageAfter {
+    color: $color-4;
+    font-size: $font-size-big;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  form {
+
+    input,
+    textarea,
+    select {
+
+      &:disabled {
+        opacity: 1; //neccesary on IOS
+      }
+    }
+
+    .containForm {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      @media #{$mq-tablet} {
+        flex-wrap: nowrap;
+      }
+
+      label {
+        color: $color-4;
+        display: block;
+        font-size: $font-size-small;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+
+      .containerInputs {
+        width: 100%;
+
+        @media #{$mq-tablet} {
+          padding-right: 20px;
+        }
+
+        .inputText {
+          background-color: transparent;
+          border: solid 1px $color-14;
+          border-radius: 0;
+          color: $color-4;
+          display: block;
+          font-size: $font-size-small;
+          font-weight: $font-weight-normal;
+          margin-bottom: 10px;
+          outline: 0;
+          padding: 10px;
+          width: 100%;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          &:required {
+            box-shadow: none;
+          }
+
+        }
+
+        .selectContainer {
+          margin-bottom: 10px;
+          position: relative;
+          width: 100%;
+
+          &::after {
+            background: transparent;
+            border-bottom: $color-4 2px solid;
+            border-left: $color-4 2px solid;
+            content: '';
+            height: 10px;
+            position: absolute;
+            right: 15px;
+            top: 12px;
+            transform: rotate(-45deg);
+            width: 10px;
+          }
+
+          select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: solid 1px $color-14;
+            border-radius: 0;
+            color: rgba($color-4, .3);
+            cursor: pointer;
+            display: block;
+            font-size: $font-size-small;
+            outline: 0;
+            padding: 10px;
+            width: 100%;
+
+            option {
+              background-color: rgba($color-2, .9);
+              color: $color-4;
+            }
+
+            &::-ms-expand {
+              display: none;
+            }
+
+            &:required {
+              box-shadow: none;
+            }
+
+            &:focus {
+              background-color: rgba($color-2, 1);
+            }
+          }
+
+          .selectSelected {
+            color: $color-4;
+          }
+        }
+    }
+
+      .containerTextarea {
+        margin-top: 20px;
+        width: 100%;
+
+        @media #{$mq-tablet} {
+          padding-left: 20px;
+        }
+
+        .textareaForm {
+          background-color: transparent;
+          border: solid 1px $color-14;
+          border-radius: 0;
+          color: $color-4;
+          display: block;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          min-height: 245px;
+          outline: 0;
+          padding: 10px;
+          resize: none;
+          width: 100%;
+
+          &:required {
+            box-shadow: none;
+          }
+        }
+      }
+    }
+
+    .containerSubmit {
+      display: block;
+      width: 100%;
+
+      button {
+        border-radius: 0;
+      }
+    }
+
+    ::-webkit-input-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+
+    ::-moz-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+
+    :-ms-input-placeholder {
+      color: rgba($color-4, .3);
+      font-size: $font-size-small;
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  .containForm {
+    &.validated {
+      input {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      textarea {
+        &:invalid {
+          border: 1px solid $color-6;
+        }
+      }
+
+      .selectContainer {
+        select {
+          &:invalid {
+            border: 1px solid $color-6;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
-import CustomLayerStyles from 'styles/components/map/c-custom-layer.scss';
-import MapFormStyles from 'styles/components/map/c-form.scss';
-import ButtonStyles from 'styles/components/map/c-button.scss';
+import CustomLayerStyles from 'styles/components/map/custom-layer.scss';
+import MapFormStyles from 'styles/components/map/form.scss';
+import ButtonStyles from 'styles/components/map/button.scss';
 
 class CustomLayer extends Component {
 
@@ -32,10 +32,10 @@ class CustomLayer extends Component {
   render() {
     if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('custom-layer') === -1) {
       return (
-        <div className={CustomLayerStyles['c-custom-layer']} >
-          <div className={CustomLayerStyles['no-access']} >
+        <div className={CustomLayerStyles.customLayer} >
+          <div className={CustomLayerStyles.noAccess} >
             <a
-              className="login-required-link"
+              className="loginRequiredLink"
               onClick={this.props.login}
             >Only registered users can upload custom layers. Click here to log in.</a>
           </div>
@@ -44,16 +44,16 @@ class CustomLayer extends Component {
     }
 
     return (
-      <div className={CustomLayerStyles['c-custom-layer']} >
+      <div className={CustomLayerStyles.customLayer} >
         <form
-          className={classnames(MapFormStyles['c-form'], CustomLayerStyles['upload-form'])}
+          className={classnames(MapFormStyles.form, CustomLayerStyles.uploadForm)}
           onSubmit={e => this.onSubmit(e)}
         >
           <div className={CustomLayerStyles.column} >
             <div className={CustomLayerStyles.row} >
-              <label className={MapFormStyles['field-name']} htmlFor="name" >name</label>
+              <label className={MapFormStyles.fieldName} htmlFor="name" >name</label>
               <input
-                className={MapFormStyles['text-input']}
+                className={MapFormStyles.textInput}
                 type="text"
                 name="name"
                 placeholder="Layer name"
@@ -63,9 +63,9 @@ class CustomLayer extends Component {
             </div>
 
             <div className={CustomLayerStyles.row} >
-              <label className={MapFormStyles['field-name']} htmlFor="url" >url</label>
+              <label className={MapFormStyles.fieldName} htmlFor="url" >url</label>
               <input
-                className={MapFormStyles['text-input']}
+                className={MapFormStyles.textInput}
                 name="url"
                 placeholder="Insert a link to a .kml layer file"
                 type="text"
@@ -76,7 +76,7 @@ class CustomLayer extends Component {
           </div>
           <div className={CustomLayerStyles.column} >
             <div className={CustomLayerStyles.row} >
-              <label className={MapFormStyles['field-name']} htmlFor="description" >description</label>
+              <label className={MapFormStyles.fieldName} htmlFor="description" >description</label>
               <textarea
                 className={MapFormStyles.textarea}
                 name="description"
@@ -89,12 +89,12 @@ class CustomLayer extends Component {
 
           <div className={CustomLayerStyles.row} >
             {this.props.error &&
-            <span className={CustomLayerStyles['submit-error']} > Whoops! Something went wrong. </span>
+            <span className={CustomLayerStyles.submitError} > Whoops! Something went wrong. </span>
             }
-            <div className={CustomLayerStyles['submit-container']} >
+            <div className={CustomLayerStyles.submitContainer} >
               <input
-                className={classnames(ButtonStyles['c-button'], ButtonStyles['-filled'],
-                  ButtonStyles['-big'], CustomLayerStyles['submit-button'])}
+                className={classnames(ButtonStyles.button, ButtonStyles._filled,
+                  ButtonStyles._big, CustomLayerStyles.submitButton)}
                 type="submit"
                 value="done"
               />

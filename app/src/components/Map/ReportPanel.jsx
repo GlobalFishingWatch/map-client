@@ -1,11 +1,11 @@
 /* eslint-disable max-len  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { REPORT_STATUS } from 'constants';
 import iconStyles from 'styles/icons.scss';
-import ReportPanelStyles from 'styles/components/map/c-report-panel.scss';
+import ReportPanelStyles from 'styles/components/map/report-panel.scss';
 
 import RemovePolygonIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=RemovePolygonIcon';
 import AlertIcon from 'babel!svg-react!assets/icons/alert.svg?name=AlertIcon';
@@ -31,33 +31,33 @@ class ReportPanel extends Component {
     if (this.props.visible === false) return null;
 
     const panelClass = this.state.expanded && window.innerWidth >= 1024 ?
-      classnames(ReportPanelStyles['c-report-panel'], ReportPanelStyles['-minimized'], {
-        [ReportPanelStyles['-no-footer']]: !COMPLETE_MAP_RENDER
-      }) : classnames(ReportPanelStyles['c-report-panel'], {
-        [ReportPanelStyles['-no-footer']]: !COMPLETE_MAP_RENDER
+      classnames(ReportPanelStyles.reportPanel, ReportPanelStyles._minimized, {
+        [ReportPanelStyles._noFooter]: !COMPLETE_MAP_RENDER
+      }) : classnames(ReportPanelStyles.reportPanel, {
+        [ReportPanelStyles._noFooter]: !COMPLETE_MAP_RENDER
       });
 
     const containerClass = this.state.expanded ?
-      classnames(ReportPanelStyles.container, ReportPanelStyles['-expanded']) : ReportPanelStyles.container;
+      classnames(ReportPanelStyles.container, ReportPanelStyles._expanded) : ReportPanelStyles.container;
 
     const toggleClass = this.state.expanded ?
-      ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles['-expanded']);
+      ReportPanelStyles.toggle : classnames(ReportPanelStyles.toggle, ReportPanelStyles._expanded);
 
     let content;
 
     if (this.props.status === REPORT_STATUS.sent || this.props.status === REPORT_STATUS.error) {
-      content = (<li className={ReportPanelStyles['polygon-item']}>
-        <span className={ReportPanelStyles['polygon-message']}>{this.props.statusText}</span>
+      content = (<li className={ReportPanelStyles.polygonItem}>
+        <span className={ReportPanelStyles.polygonMessage}>{this.props.statusText}</span>
       </li>);
     } else if (this.props.polygons.length) {
       content = [];
       this.props.polygons.map((polygon, index) => (
         content.push((
-          <li className={ReportPanelStyles['polygon-item']} key={polygon.id}>
-            <span className={ReportPanelStyles['polygon-name']}>{polygon.name}</span>
-            <span className={ReportPanelStyles['polygon-remove']}>
+          <li className={ReportPanelStyles.polygonItem} key={polygon.id}>
+            <span className={ReportPanelStyles.polygonName}>{polygon.name}</span>
+            <span className={ReportPanelStyles.polygonRemove}>
               <RemovePolygonIcon
-                className={classnames(iconStyles.icon, ReportPanelStyles['icon-remove-polygon'])}
+                className={classnames(iconStyles.icon, ReportPanelStyles.iconRemovePolygon)}
                 id={polygon.id}
                 onClick={() => this.props.onRemovePolygon(index)}
               />
@@ -66,37 +66,37 @@ class ReportPanel extends Component {
         ))
       ));
     } else {
-      content = (<li className={ReportPanelStyles['polygon-item']}>
-        <span className={ReportPanelStyles['polygon-name']}>No regions added yet.<br /> Select regions on the map.</span>
+      content = (<li className={ReportPanelStyles.polygonItem}>
+        <span className={ReportPanelStyles.polygonName}>No regions added yet.<br /> Select regions on the map.</span>
       </li>);
     }
 
     let buttons;
     if (this.props.status === REPORT_STATUS.idle || this.props.status === REPORT_STATUS.error) {
-      buttons = (<div className={ReportPanelStyles['report-options']}>
-        <button className={ReportPanelStyles['report-button']} onClick={this.props.onSendReport}>send report</button>
-        <button className={ReportPanelStyles['report-button']} onClick={this.props.onDiscardReport}>discard</button>
+      buttons = (<div className={ReportPanelStyles.reportOptions}>
+        <button className={ReportPanelStyles.reportButton} onClick={this.props.onSendReport}>send report</button>
+        <button className={ReportPanelStyles.reportButton} onClick={this.props.onDiscardReport}>discard</button>
       </div>);
     } else if (this.props.status === REPORT_STATUS.sent) {
-      buttons = (<div className={ReportPanelStyles['report-options']}>
-        <button className={classnames(ReportPanelStyles['report-button'], ReportPanelStyles['-wide'])} onClick={this.props.onReportClose}>close</button>
+      buttons = (<div className={ReportPanelStyles.reportOptions}>
+        <button className={classnames(ReportPanelStyles.reportButton, ReportPanelStyles._wide)} onClick={this.props.onReportClose}>close</button>
       </div>);
     }
 
     return (
       <div className={panelClass}>
         <div className={ReportPanelStyles.menu} onClick={() => this.onTogglePanel()}>
-          <span className={ReportPanelStyles['report-total']}>{this.props.layerTitle}: {this.props.polygons.length} added</span>
+          <span className={ReportPanelStyles.reportTotal}>{this.props.layerTitle}: {this.props.polygons.length} added</span>
           <span className={toggleClass} />
         </div>
         <div className={containerClass}>
           <div className={ReportPanelStyles.content}>
-            <ul className={ReportPanelStyles['polygon-list']}>
+            <ul className={ReportPanelStyles.polygonList}>
               {content}
             </ul>
             {this.props.reportableInfo.hasNonReportableLayers &&
             <div className={ReportPanelStyles.warning}>
-              <AlertIcon className={ReportPanelStyles['warning-icon']} />
+              <AlertIcon className={ReportPanelStyles.warningIcon} />
               {this.props.reportWarning.replace('$REPORTABLE_LAYERS', this.props.reportableInfo.reportableLayersNames)}
             </div>
             }

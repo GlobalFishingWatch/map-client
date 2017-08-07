@@ -138,7 +138,6 @@ export default class GLContainer extends BaseOverlay {
   _render() {
     this.reposition();
     this.currentOffsets = this._getOffsets();
-    this.renderer.render(this.stage);
   }
 
   enableRendering() {
@@ -259,7 +258,7 @@ export default class GLContainer extends BaseOverlay {
     }
 
     this.hasTracks = true;
-    this.tracksLayer.update(tracks, drawParams, this.currentOffsets);
+    this.tracksLayer.update(tracks, drawParams, this.currentOffsets, this._render.bind(this));
   }
 
   clearTracks() {

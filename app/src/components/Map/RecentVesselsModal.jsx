@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import classnames from 'classnames';
-import recentVesselStyles from 'styles/components/map/c-recent-vessels.scss';
-import ModalStyles from 'styles/components/shared/c-modal.scss';
+import recentVesselStyles from 'styles/components/map/recent-vessels.scss';
+import ModalStyles from 'styles/components/shared/modal.scss';
 import IconStyles from 'styles/icons.scss';
-import MapButtonStyles from 'styles/components/map/c-button.scss';
-import ResultListStyles from 'styles/components/shared/c-result-list.scss';
+import MapButtonStyles from 'styles/components/map/button.scss';
+import ResultListStyles from 'styles/components/shared/result-list.scss';
 
 import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
 
@@ -18,35 +18,35 @@ class RecentVesselsModal extends Component {
       this.props.history.map((entry, i) => (
         historyItems.push(
           <li
-            className={classnames(ResultListStyles['result-item'], recentVesselStyles['history-item'])}
+            className={classnames(ResultListStyles.resultItem, recentVesselStyles.historyItem)}
             key={i}
             onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
           >
             {entry.pinned === true &&
               <PinIcon
-                className={classnames(IconStyles.icon, IconStyles['pin-icon'], recentVesselStyles.pinned)}
+                className={classnames(IconStyles.icon, IconStyles.pinIcon, recentVesselStyles.pinned)}
               />}
-            <span className={recentVesselStyles['history-item-name']}>{`${entry.vesselname}, ${entry.mmsi}`}</span>
+            <span className={recentVesselStyles.historyItemName}>{`${entry.vesselname}, ${entry.mmsi}`}</span>
           </li>)
       ));
     }
 
     return (
-      <div className={recentVesselStyles['c-recent-vessels']}>
-        <h3 className={ModalStyles['modal-title']}>Recent vessels</h3>
-        <div className={recentVesselStyles['history-container']}>
+      <div className={recentVesselStyles.recentVessels}>
+        <h3 className={ModalStyles.modalTitle}>Recent vessels</h3>
+        <div className={recentVesselStyles.historyContainer}>
           {historyItems.length === 0 &&
-            <div className={recentVesselStyles['empty-history']}>
+            <div className={recentVesselStyles.emptyHistory}>
               <span>Your history is currently empty</span>
             </div>}
           {historyItems.length > 0 &&
-            <ul className={classnames(ResultListStyles['c-result-list'], recentVesselStyles['history-list'])}>
+            <ul className={classnames(ResultListStyles.resultList, recentVesselStyles.historyList)}>
               {historyItems}
             </ul>}
         </div>
         <div className={recentVesselStyles.footer}>
           <button
-            className={classnames(MapButtonStyles['c-button'], MapButtonStyles['-filled'], recentVesselStyles['btn-done'])}
+            className={classnames(MapButtonStyles.button, MapButtonStyles._filled, recentVesselStyles.btnDone)}
             onClick={() => this.props.closeModal()}
           >
             done

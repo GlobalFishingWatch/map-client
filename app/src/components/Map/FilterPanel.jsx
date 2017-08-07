@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { Component } from 'react';
+import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import platform from 'platform';
@@ -9,8 +9,8 @@ import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'c
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
 
-import flagFilterStyles from 'styles/components/map/c-flag-filters.scss';
-import MapButtonStyles from 'styles/components/map/c-button.scss';
+import flagFilterStyles from 'styles/components/map/flag-filters.scss';
+import MapButtonStyles from 'styles/components/map/button.scss';
 
 class FilterPanel extends Component {
   constructor(props) {
@@ -125,14 +125,14 @@ class FilterPanel extends Component {
     });
 
     return (
-      <div className={flagFilterStyles['c-flag-filters']}>
+      <div className={flagFilterStyles.flagFilters}>
         {filterSelectors &&
-          <ul className={flagFilterStyles['filter-list']}>
+          <ul className={flagFilterStyles.filterList}>
             {filterSelectors}
           </ul>}
         {this.props.flags.length < FLAG_FILTERS_LIMIT &&
           <button
-            className={classnames(MapButtonStyles['c-button'], flagFilterStyles['filter-button'])}
+            className={classnames(MapButtonStyles.button, flagFilterStyles.filterButton)}
             onClick={() => this.addFilter()}
           >
             add filter

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
-import React, { Component } from 'react';
-import ResultListStyles from 'styles/components/shared/c-result-list.scss';
+import React, { Component } from 'preact';
+import ResultListStyles from 'styles/components/shared/result-list.scss';
 
 class SearchResult extends Component {
 

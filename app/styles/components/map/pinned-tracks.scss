@@ -1,0 +1,111 @@
+@import '../../settings';
+
+.pinnedTracks {
+  margin: 10px 0 0;
+}
+
+.pinnedTracksHeading {
+  color: $color-4;
+  display: flex;
+  font-family: $font-family-1;
+  font-size: $font-size-xxs-small;
+  font-weight: $font-weight-bold;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xs-small;
+  }
+}
+
+.noPinnedItems {
+  align-items: center;
+  display: flex;
+  height: 24px;
+  justify-content: space-between;
+
+  > .noPinLiteral {
+    color: $color-4;
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.pinnedItem {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+
+  &:not(:first-child) {
+    margin: 10px 0 0;
+  }
+}
+
+.itemName {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  color: $color-4;
+  cursor: pointer;
+  flex: 1;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  height: 24px;
+  margin: 0 15px 0 0;
+  max-width: 90%;
+  outline: none;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemRename {
+  border-bottom-color: rgba($color-3, .3);
+}
+
+.renameIcon {
+  position: absolute;
+  right: 28px;
+  stroke: rgba($color-3, .3);
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.deleteIcon {
+  cursor: pointer;
+  fill: $color-19;
+  height: 16px;
+  width: 10px;
+}
+
+
+.pinnedItemActionList {
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.pinnedItemActionItem {
+  display: flex;
+  position: relative;
+
+  &:not(:first-child) {
+    margin: 0 0 0 10px;
+  }
+}
+
+.pinnedButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 0;
+}
+
+.pinnedButton {
+  width: calc(50% - 1px);
+}
