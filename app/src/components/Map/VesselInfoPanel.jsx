@@ -5,8 +5,8 @@ import { getCountry } from 'iso-3166-1-alpha-2';
 import MediaQuery from 'react-responsive';
 import ExpandButton from 'components/Shared/ExpandButton';
 
-import vesselPanelStyles from 'styles/components/c-vessel-info-panel.scss';
-import buttonCloseStyles from 'styles/components/c-button-close.scss';
+import vesselPanelStyles from 'styles/components/vessel-info-panel.scss';
+import buttonCloseStyles from 'styles/components/button-close.scss';
 import iconStyles from 'styles/icons.scss';
 
 import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
@@ -44,7 +44,7 @@ class VesselInfoPanel extends Component {
 
     if (status === VESSEL_INFO_STATUS.LOADING) {
       vesselInfoContents = (
-        <div className={vesselPanelStyles['vessel-metadata']} >
+        <div className={vesselPanelStyles.vesselMetadata} >
           <div>Loading vessel information...</div>
         </div>
       );
@@ -58,18 +58,18 @@ class VesselInfoPanel extends Component {
       const renderedFieldList = this.generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo);
 
       vesselInfoContents = (
-        <div className={vesselPanelStyles['vessel-metadata']} >
+        <div className={vesselPanelStyles.vesselMetadata} >
           {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
           <PinIcon
-            className={classnames(iconStyles.icon, iconStyles['pin-icon'],
-              vesselPanelStyles.pin, { [`${vesselPanelStyles['-pinned']}`]: vesselInfo.pinned })}
+            className={classnames(iconStyles.icon, iconStyles.pinIcon,
+              vesselPanelStyles.pin, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
             onClick={() => {
               this.props.onTogglePin(vesselInfo.seriesgroup);
             }}
           />}
           {renderedFieldList}
           {canSeeVesselDetails && vesselInfo.mmsi && <a
-            className={vesselPanelStyles['external-link']}
+            className={vesselPanelStyles.externalLink}
             target="_blank"
             rel="noopener noreferrer"
             href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
@@ -77,7 +77,7 @@ class VesselInfoPanel extends Component {
           </a>
           }
           {!canSeeVesselDetails && <a
-            className={vesselPanelStyles['external-link']}
+            className={vesselPanelStyles.externalLink}
             onClick={this.props.login}
           >Click here to login and see more details</a>
           }
@@ -87,10 +87,10 @@ class VesselInfoPanel extends Component {
 
     return (
       <div
-        className={classnames(vesselPanelStyles['c-vessel-info-panel'],
-          { [`${vesselPanelStyles['-expanded']}`]: this.state.isExpanded })}
+        className={classnames(vesselPanelStyles.vesselInfoPanel,
+          { [`${vesselPanelStyles._expanded}`]: this.state.isExpanded })}
       >
-        <div className={vesselPanelStyles['buttons-container']} >
+        <div className={vesselPanelStyles.buttonsContainer} >
 
           <MediaQuery maxWidth={789} >
             <ExpandButton
@@ -101,7 +101,7 @@ class VesselInfoPanel extends Component {
 
           <button
             onClick={() => this.props.hide()}
-            className={classnames(buttonCloseStyles['c-button-close'], vesselPanelStyles['close-btn'])}
+            className={classnames(buttonCloseStyles.buttonClose, vesselPanelStyles.closeBtn)}
           >
             <CloseIcon className={buttonCloseStyles.cross} />
           </button>
@@ -123,12 +123,12 @@ class VesselInfoPanel extends Component {
           if (!vesselInfo[field.id]) {
             break;
           }
-          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles.rowInfo} >
             <span className={vesselPanelStyles.key} >{field.display}</span>
-            <ul className={vesselPanelStyles['link-list']} >
-              <li className={vesselPanelStyles['link-list-item']} >
+            <ul className={vesselPanelStyles.linkList} >
+              <li className={vesselPanelStyles.linkListItem} >
                 <a
-                  className={vesselPanelStyles['external-link']}
+                  className={vesselPanelStyles.externalLink}
                   href={`${field.prefix}${vesselInfo[field.id]}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -142,9 +142,9 @@ class VesselInfoPanel extends Component {
         case 'objectArrayMultiLink':
           linkList = [];
           vesselInfo[field.id].forEach((registry) => {
-            linkList.push(<li key={registry.rfmo} className={vesselPanelStyles['link-list-item']} >
+            linkList.push(<li key={registry.rfmo} className={vesselPanelStyles.linkListItem} >
               <a
-                className={vesselPanelStyles['external-link']}
+                className={vesselPanelStyles.externalLink}
                 href={`${registry.url}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -153,21 +153,21 @@ class VesselInfoPanel extends Component {
               </a>
             </li>);
           });
-          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles.rowInfo} >
             <span className={vesselPanelStyles.key} >{field.display}</span>
-            <ul className={vesselPanelStyles['link-list']} >
+            <ul className={vesselPanelStyles.linkList} >
               {linkList}
             </ul>
           </div>);
           break;
         case 'flag':
-          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles.rowInfo} >
             <span className={vesselPanelStyles.key} >{field.display}</span>
             <span className={vesselPanelStyles.value} >{getCountry(vesselInfo[field.id]) || '---'}</span>
           </div>);
           break;
         default:
-          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles['row-info']} >
+          renderedFieldList.push(<div key={field.id} className={vesselPanelStyles.rowInfo} >
             <span className={vesselPanelStyles.key} >{field.display}</span>
             <span className={vesselPanelStyles.value} >{vesselInfo[field.id] || '---'}</span>
           </div>);

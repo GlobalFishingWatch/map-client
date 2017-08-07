@@ -3,7 +3,7 @@ import React, { Component } from 'preact';
 import classnames from 'classnames';
 import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
-import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import LayerListStyles from 'styles/components/map/layer-list.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
@@ -64,9 +64,9 @@ class LayerItem extends Component {
     let actions;
     if (this.props.layerPanelEditMode === true) {
       actions = (
-        <div className={LayerListStyles['edition-menu']}>
+        <div className={LayerListStyles.editionMenu}>
           <DeleteIcon
-            className={classnames(icons.icon, LayerListStyles['delete-icon'])}
+            className={classnames(icons.icon, LayerListStyles.deleteIcon)}
             onClick={() => {
               this.props.toggleLayerWorkspacePresence(this.props.layer);
             }}
@@ -75,17 +75,17 @@ class LayerItem extends Component {
       );
     } else {
       actions = (
-        <ul className={LayerListStyles['layer-option-list']}>
+        <ul className={LayerListStyles.layerOptionList}>
           {canReport && this.props.layer.reportId !== undefined && <li
-            className={LayerListStyles['layer-option-item']}
+            className={LayerListStyles.layerOptionItem}
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
-              className={classnames({ [`${LayerListStyles['-highlighted']}`]: isCurrentlyReportedLayer })}
+              className={classnames({ [`${LayerListStyles._highlighted}`]: isCurrentlyReportedLayer })}
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
-          <li className={LayerListStyles['layer-option-item']}>
+          <li className={LayerListStyles.layerOptionItem}>
             <LayerBlendingOptionsTooltip
               displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
               displayOpacity
@@ -99,7 +99,7 @@ class LayerItem extends Component {
             />
           </li>}
           <li
-            className={LayerListStyles['layer-option-item']}
+            className={LayerListStyles.layerOptionItem}
             onClick={() => this.onClickInfo()}
           >
             <InfoIcon />
@@ -110,7 +110,7 @@ class LayerItem extends Component {
 
     return (
       <li
-        className={LayerListStyles['layer-item']}
+        className={LayerListStyles.layerItem}
       >
         <Toggle
           on={this.props.layer.visible}
@@ -119,7 +119,7 @@ class LayerItem extends Component {
           onToggled={() => this.onChangeVisibility()}
         />
         <input
-          className={classnames(LayerListStyles['item-name'], { [LayerListStyles['item-rename']]: this.props.layerPanelEditMode })}
+          className={classnames(LayerListStyles.itemName, { [LayerListStyles.itemRename]: this.props.layerPanelEditMode })}
           onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
           readOnly={!this.props.layerPanelEditMode}
           value={this.props.layer.label}

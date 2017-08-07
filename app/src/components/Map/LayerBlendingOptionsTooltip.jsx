@@ -6,18 +6,18 @@ import classnames from 'classnames';
 import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';
 import icons from 'styles/icons.scss';
-import BlendingStyles from 'styles/components/map/c-layer-blending.scss';
+import BlendingStyles from 'styles/components/map/layer-blending.scss';
 import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
 
 const INPUT_RANGE_DEFAULT_CONFIG = {
   classnames: {
-    component: 'blending-range',
-    labelMax: 'label -max',
-    labelMin: 'label -min',
-    labelValue: 'label -current',
-    trackActive: 'track-active',
-    trackContainer: 'track-container',
-    sliderContainer: 'thumb-container',
+    component: 'blendingRange',
+    labelMax: 'label _max',
+    labelMin: 'label _min',
+    labelValue: 'label _current',
+    trackActive: 'trackActive',
+    trackContainer: 'trackContainer',
+    sliderContainer: 'thumbContainer',
     slider: 'thumb'
   }
 };
@@ -43,7 +43,7 @@ class LayerBlendingOptionsTooltip extends Component {
       value: this.props.hueValue
     });
 
-    this.hueRangeConfig.classnames.component = 'blending-range -hue';
+    this.hueRangeConfig.classnames.component = 'blendingRange _hue';
 
     this.state = {
       opacityRangeValue: this.opacityRangeConfig.value,
@@ -97,19 +97,19 @@ class LayerBlendingOptionsTooltip extends Component {
   render() {
     return (
       <div
-        className={classnames(BlendingStyles['c-blending'])}
+        className={classnames(BlendingStyles.blending)}
         ref={(ref) => { this.tooltip = ref; }}
       >
         <BlendingIcon
           onClick={() => this.props.toggleVisibility()}
-          className={classnames(icons['blending-icon'],
-            { [`${icons['-white']}`]: this.props.visible })}
+          className={classnames(icons.blendingIcon,
+            { [icons._white]: this.props.visible })}
         />
         {this.props.visible &&
         <div
           className={classnames(
-            BlendingStyles['blending-tooltip'],
-            { [`${BlendingStyles['-reverse']}`]: this.props.isReverse })
+            BlendingStyles.blendingTooltip,
+            { [BlendingStyles._reverse]: this.props.isReverse })
           }
         >
           {this.props.displayHue && <div>

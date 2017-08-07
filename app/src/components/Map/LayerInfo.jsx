@@ -2,7 +2,7 @@
 
 import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
-import LayerInfoStyles from 'styles/components/map/c-layer-info.scss';
+import LayerInfoStyles from 'styles/components/map/layer-info.scss';
 
 class LayerInfo extends Component {
 
@@ -24,10 +24,10 @@ class LayerInfo extends Component {
     const description = this.props.info.description || this.defaults.messages.noDescription;
 
     return (
-      <div className={LayerInfoStyles['c-layer-info']}>
-        <h2 className={LayerInfoStyles['layer-title']}>{this.props.info.title}</h2>
+      <div className={LayerInfoStyles.layerInfo}>
+        <h2 className={LayerInfoStyles.layerTitle}>{this.props.info.title}</h2>
         <p
-          className={LayerInfoStyles['layer-description']}
+          className={LayerInfoStyles.layerDescription}
           dangerouslySetInnerHTML={{
             __html: description
           }}

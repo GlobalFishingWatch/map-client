@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { render, Component } from 'preact';
 import classnames from 'classnames';
-import CustomInfowindowStyles from 'styles/components/map/c-custom-infowindow.scss';
+import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
 import CustomInfoWindow from 'util/CustomInfoWindow';
 
 export default class ClusterInfoWindow extends Component {
@@ -31,9 +31,9 @@ export default class ClusterInfoWindow extends Component {
   render() {
     this.element = (this.props.clickableCluster !== true) ? <div /> : (<div
       className={classnames(
-        CustomInfowindowStyles['c-custom-infowindow'],
-        CustomInfowindowStyles['-small'],
-        CustomInfowindowStyles['-topleft']
+        CustomInfowindowStyles.customInfowindow,
+        CustomInfowindowStyles._small,
+        CustomInfowindowStyles._topleft
       )}
     >
       <div className={CustomInfowindowStyles.description}>

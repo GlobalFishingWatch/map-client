@@ -1,0 +1,20 @@
+@import '../settings';
+
+.mapPanels {
+  z-index: 102;
+
+  @media #{$mq-tablet} {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - #{$timebar-height + $map-footer-height});
+    justify-content: space-between;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    width: $map-panels-width + $control-panel-left-offset;
+
+    &._noFooter {
+      height: calc(100vh - #{$timebar-height});
+    }
+  }
+}

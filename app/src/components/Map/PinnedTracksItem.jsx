@@ -3,7 +3,7 @@ import React, { Component } from 'preact';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
-import pinnedTracksStyles from 'styles/components/map/c-pinned-tracks.scss';
+import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import icons from 'styles/icons.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
@@ -42,9 +42,9 @@ class PinnedTracksItem extends Component {
 
     if (this.props.pinnedVesselEditMode === true) {
       actions = (
-        <div className={pinnedTracksStyles['edition-menu']} >
+        <div className={pinnedTracksStyles.editionMenu} >
           <DeleteIcon
-            className={classnames(icons.icon, pinnedTracksStyles['delete-icon'])}
+            className={classnames(icons.icon, pinnedTracksStyles.deleteIcon)}
             onClick={() => {
               this.props.onRemoveClicked(this.props.vessel.seriesgroup);
             }}
@@ -53,8 +53,8 @@ class PinnedTracksItem extends Component {
       );
     } else {
       actions = (
-        <ul className={pinnedTracksStyles['pinned-item-action-list']} >
-          <li className={pinnedTracksStyles['pinned-item-action-item']}>
+        <ul className={pinnedTracksStyles.pinnedItemActionList} >
+          <li className={pinnedTracksStyles.pinnedItemActionItem}>
             <LayerBlendingOptionsTooltip
               displayHue
               hueValue={this.props.vessel.hue}
@@ -65,7 +65,7 @@ class PinnedTracksItem extends Component {
             />
           </li>
           <li
-            className={pinnedTracksStyles['pinned-item-action-item']}
+            className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={e => this.onVesselLabelClick(e)}
           >
             <InfoIcon className={classnames(icons.icon, icons['info-icon'])} />
@@ -76,7 +76,7 @@ class PinnedTracksItem extends Component {
 
     return (
       <li
-        className={pinnedTracksStyles['pinned-item']}
+        className={pinnedTracksStyles.pinnedItem}
         key={this.props.vessel.seriesgroup}
       >
         <Toggle
@@ -85,7 +85,7 @@ class PinnedTracksItem extends Component {
           onToggled={() => this.onChangeVisibility()}
         />
         <input
-          className={classnames(pinnedTracksStyles['item-name'], { [pinnedTracksStyles['item-rename']]: this.props.pinnedVesselEditMode })}
+          className={classnames(pinnedTracksStyles.itemName, { [pinnedTracksStyles.itemRename]: this.props.pinnedVesselEditMode })}
           onChange={e => this.onChangeName(e.currentTarget.value)}
           readOnly={!this.props.pinnedVesselEditMode}
           value={this.props.vessel.title}

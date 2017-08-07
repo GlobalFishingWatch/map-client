@@ -1,26 +1,26 @@
 import PropTypes from 'prop-types';
 import React from 'preact';
 import classnames from 'classnames';
-import loaderStyle from 'styles/components/c-loader.scss';
+import LoaderStyles from 'styles/components/loader.scss';
 
 export default function Loader(props) {
   const { visible, absolute, tiny } = props;
   const loader = (
     <div
-      className={classnames([loaderStyle['c-loader'], {
-        [loaderStyle['-absolute']]: absolute,
-        [loaderStyle['-tiny']]: tiny
+      className={classnames([LoaderStyles.loader, {
+        [LoaderStyles._absolute]: absolute,
+        [LoaderStyles._tiny]: tiny
       }])}
     >
-      <div className={loaderStyle['loader-container']}>
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
-        <div className={loaderStyle['loader-bubble']} />
+      <div className={LoaderStyles.loaderContainer}>
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
+        <div className={LoaderStyles.loaderBubble} />
       </div>
     </div>
   );

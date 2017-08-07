@@ -1,0 +1,136 @@
+@import '../settings';
+
+.vesselInfoPanel {
+  background-color: $color-7;
+  color: $color-4;
+  display: block;
+  font-family: $font-family-1;
+  position: absolute;
+  top: $accordion-mobile-height;
+  width: 100%;
+  z-index: 1;
+
+  @media #{$mq-tablet} {
+    position: relative;
+    top: 0;
+  }
+
+  &._expanded {
+
+    > .vesselMetadata {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+  > .vesselMetadata {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-height: $vessel-info-height;
+    overflow: hidden;
+    padding: 20px 20px 15px;
+
+    @media #{$mq-tablet} {
+      max-height: none;
+    }
+
+
+    .pin {
+      fill: $color-3;
+      position: absolute;
+      right: 20px;
+
+      &._pinned {
+        fill: $color-4;
+      }
+    }
+
+    .rowInfo {
+      display: flex;
+      flex-basis: calc(50% - 10px);
+      flex-direction: column;
+      flex-wrap: wrap;
+      padding: 4px 0 10px;
+
+      &:nth-child(2n) {
+        margin: 0 0 0 5px;
+      }
+
+      > .key,
+      > .value {
+        color: $color-4;
+        font-size: $font-size-xxs-small;
+      }
+
+      > .key {
+        font-weight: $font-weight-bold;
+      }
+
+      > .value {
+        padding: 5px 0 0;
+      }
+    }
+
+
+    .externalLink {
+      color: $color-3;
+      cursor: pointer;
+      display: inline-block;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      margin: 15px 0 0;
+      text-decoration: underline;
+    }
+
+    .linkList {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .linkListItem {
+        width: calc(50% - 3px);
+
+        &:nth-child(2n) {
+          margin: 0 0 0 6px;
+        }
+      }
+
+      > .linkListItem > .externalLink {
+        margin: 10px 0 0;
+      }
+    }
+
+    .zoom {
+      color: $color-3;
+      cursor: pointer;
+      display: block;
+      font-family: $font-family-1;
+      text-decoration: underline;
+    }
+  }
+
+  .buttonsContainer {
+    bottom: 0;
+    display: flex;
+    position: absolute;
+    right: 10px;
+    transform: translate(0, 50%);
+
+    > button {
+      position: relative;
+      transform: none;
+
+      &:not(:first-child) {
+        margin: 0 0 0 10px;
+      }
+    }
+
+    @media #{$mq-tablet} {
+      bottom: auto;
+      left: 0;
+      right: auto;
+      top: 0;
+      transform: translate(-50%, -50%);
+    }
+  }
+}

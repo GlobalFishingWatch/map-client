@@ -3,7 +3,7 @@ import React, { Component } from 'preact';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 
-import LayerListStyles from 'styles/components/map/c-layer-list.scss';
+import LayerListStyles from 'styles/components/map/layer-list.scss';
 
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
@@ -30,20 +30,20 @@ class BasemapPanel extends Component {
       const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
       const itemLayer = (
         <li
-          className={classnames(LayerListStyles['layer-item'],
-            this.props.activeBasemap === basemap.title ? LayerListStyles['-selected'] : null)}
+          className={classnames(LayerListStyles.layerItem,
+            this.props.activeBasemap === basemap.title ? LayerListStyles._selected : null)}
           key={basemap.title}
         >
           <div
-            className={LayerListStyles['layer-info']}
+            className={LayerListStyles.layerInfo}
             onClick={event => this.onSelectBasemap(event, basemap)}
           >
-            <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles['layer-thumbnail']} />
-            <span className={LayerListStyles['layer-title']}>{basemap.label}</span>
+            <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
+            <span className={LayerListStyles.layerTitle}>{basemap.label}</span>
           </div>
-          <ul className={LayerListStyles['layer-option-list']}>
+          <ul className={LayerListStyles.layerOptionList}>
             <li
-              className={LayerListStyles['layer-option-item']}
+              className={LayerListStyles.layerOptionItem}
               onClick={() => this.onClickInfo(basemap)}
             >
               <InfoIcon />
@@ -55,7 +55,7 @@ class BasemapPanel extends Component {
     });
 
     return (
-      <ul className={LayerListStyles['c-layer-list']}>
+      <ul className={LayerListStyles.layerList}>
         {items}
       </ul>
     );
