@@ -41,7 +41,7 @@ class Map extends Component {
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onMapInit = this.onMapInit.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
-    this.onWindowResizeBound = this.onWindowResize.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
     this.onMapContainerClick = this.onMapContainerClick.bind(this);
   }
 
@@ -70,11 +70,11 @@ class Map extends Component {
     // Create the map and initialize on the first idle event
     this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
     google.maps.event.addListenerOnce(this.map, 'idle', this.onMapInit);
-    window.addEventListener('resize', this.onWindowResizeBound);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResizeBound);
+    window.removeEventListener('resize', this.onWindowResize);
   }
 
   onWindowResize() {
