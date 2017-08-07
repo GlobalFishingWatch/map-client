@@ -72,7 +72,7 @@ class Map extends Component {
     };
     // Create the map and initialize on the first idle event
     this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
-    google.maps.event.addListenerOnce(this.map, 'idle', this.onMapInit);
+    google.maps.event.addListener(this.map, 'idle', this.onMapInit);
     window.addEventListener('resize', this.onWindowResize);
   }
 
@@ -81,7 +81,10 @@ class Map extends Component {
   }
 
   onWindowResize() {
-    this.setState(this.getViewportSize());
+    const vpSize = this.getViewportSize();
+    if (vpSize) {
+      this.setState(vpSize);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -150,6 +153,11 @@ class Map extends Component {
    * Used here to do the initial load of the layers
    */
   onMapInit() {
+    if (!this.mapContainerRef) {
+      console.warn('GMaps fired init but React container is not ready');
+      return;
+    }
+    google.maps.event.clearInstanceListeners(this.map);
     google.maps.event.addListener(this.map, 'dragend', this.onDragEnd);
     google.maps.event.addListener(this.map, 'zoom_changed', this.onZoomChanged);
     google.maps.event.addListener(this.map, 'mousemove', this.onMouseMove);
@@ -163,6 +171,10 @@ class Map extends Component {
   }
 
   getViewportSize() {
+    if (!this.mapContainerRef) {
+      console.warn('map container is not ready');
+      return null;
+    }
     const rect = this.mapContainerRef.getBoundingClientRect();
     return {
       viewportWidth: rect.width,
@@ -201,7 +213,7 @@ class Map extends Component {
     }
   }
 
-  render() { 
+  render() {
     const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (<div className="fullHeightContainer">
