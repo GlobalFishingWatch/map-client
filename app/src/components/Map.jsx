@@ -35,7 +35,8 @@ class Map extends Component {
     super(props);
     this.state = {
       lastCenter: null,
-      latlon: ''
+      latlon: '',
+      drawArea: true
     };
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
@@ -296,7 +297,8 @@ class Map extends Component {
           style={{ height: '100%' }}
           onClick={this.onMapContainerClick}
         />
-        <DrawingManager />
+
+        {this.state.drawArea && <DrawingManager />}
         <div className={mapCss['map-loader']}>
           <Loader tiny />
         </div>

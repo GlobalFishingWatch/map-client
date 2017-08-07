@@ -1,11 +1,24 @@
 import PropTypes from 'prop-types';
 import { Component } from 'preact';
 
+const POLYGON_OPTIONS = {
+  fillColor: '#174084',
+  strokeColor: '#2b4f93',
+  strokeOpacity: 1,
+  fillOpacity: 0.5,
+  strokeWeight: 3,
+  clickable: false,
+  editable: true,
+  zIndex: 1
+};
+
 class DrawingManager extends Component {
   constructor() {
     super();
     this.state = {
-      drawingManager: null
+      drawingManager: null,
+      polygon: null,
+      coordinates: null
     };
   }
 
@@ -32,23 +45,26 @@ class DrawingManager extends Component {
     const coordinates = this.getPolygonCoordinates(polygon);
     this.deletePolygonFromMap(polygon);
     this.toggleDrawingManager();
-    this.props.createArea(coordinates);
+    this.addEditablePolygonToMap(coordinates);
+    this.setState({ coordinates });
+  }
+
+  onSaveArea() {
+    this.deletePolygonFromMap(this.state.polygon);
+    this.props.createArea(this.state.coordinates);
+  }
+
+  componentWillUnmount() {
+    this.state.drawingManager.setOptions({ drawingMode: null });
+    this.state.drawingManager.setMap(null);
+    this.deletePolygonFromMap(this.state.polygon);
   }
 
   initDrawingManager(map) {
     const drawingOptions = {
       drawingMode: google.maps.drawing.OverlayType.POLYGON,
       drawingControl: false,
-      polygonOptions: {
-        fillColor: '#174084',
-        strokeColor: '#2b4f93',
-        strokeOpacity: 1,
-        fillOpacity: 0.5,
-        strokeWeight: 3,
-        clickable: false,
-        editable: true,
-        zIndex: 1
-      }
+      polygonOptions: POLYGON_OPTIONS
     };
     const drawingManager = new google.maps.drawing.DrawingManager(drawingOptions);
     drawingManager.setMap(map);
@@ -66,7 +82,15 @@ class DrawingManager extends Component {
     });
   }
 
-  render() { return null; }
+  addEditablePolygonToMap(coords) {
+    const polygon = new google.maps.Polygon(Object.assign(POLYGON_OPTIONS, { paths: coords }));
+    polygon.setMap(this.props.map);
+    this.setState({ polygon });
+  }
+
+  render() {
+    return null;
+  }
 }
 
 DrawingManager.propTypes = {
