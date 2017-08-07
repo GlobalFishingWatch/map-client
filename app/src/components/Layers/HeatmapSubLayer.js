@@ -37,8 +37,8 @@ export default class HeatmapSubLayer {
     this.flags = flags;
   }
 
-  setSeriesUids(seriesUids) {
-    this.seriesUids = seriesUids;
+  setSeriesFilter(foundVessels) {
+    this.foundVessels = foundVessels;
   }
 
   setRenderingStyle(useHeatmapStyle) {
@@ -130,7 +130,8 @@ export default class HeatmapSubLayer {
         if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
-        if (this.seriesUids && (this.seriesUids.indexOf(frame.seriesUid[index]) === -1)) {
+        if (this.foundVessels &&
+            (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
           continue;
         }
         this.numSprites++;

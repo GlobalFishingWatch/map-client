@@ -1,5 +1,6 @@
 import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
+import uniqBy from 'lodash/uniqBy';
 import {
   UPDATE_HEATMAP_TILES,
   ADD_REFERENCE_TILE,
@@ -364,7 +365,7 @@ const _queryHeatmap = (state, tileQuery) => {
   let isEmpty;
   let layerId;
   let tilesetId;
-  let seriesUids;
+  let foundVessels
 
   if (layersVesselsResult.length === 0) {
     isEmpty = true;
@@ -385,21 +386,24 @@ const _queryHeatmap = (state, tileQuery) => {
       const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
 
       if (nonClusteredVessels.length) {
-        seriesUids = uniq(nonClusteredVessels.map(v => v.seriesUid));
-        isMouseCluster = seriesUids.length > 1;
+        foundVessels = uniqBy(nonClusteredVessels, v => v.series).map(v => ({
+          series: v.series,
+          seriesgroup: v.seriesgroup
+        }));
+        isMouseCluster = foundVessels.length > 1;
       } else {
         isCluster = true;
       }
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, seriesUids, layerId, tilesetId };
+  return { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId };
 };
 
 export function highlightVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
-    const { layerId, isEmpty, isCluster, isMouseCluster, seriesUids } = _queryHeatmap(state, tileQuery);
+    const { layerId, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch({
       type: HIGHLIGHT_VESSELS,
@@ -408,7 +412,7 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
         isEmpty,
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
-        seriesUids,
+        foundVessels,
         latLng,
         currentFlags: _getCurrentFlagsForLayer(state, layerId)
       }
@@ -434,7 +438,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { isEmpty, isCluster, isMouseCluster, tilesetId, seriesUids } = _queryHeatmap(state, tileQuery);
+    const { isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
@@ -450,11 +454,10 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       });
     } else {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
-      const seriesUid = seriesUids[0];
-      const seriesgroup = parseInt(seriesUid.split('-')[0], 10);
-      const series = parseInt(seriesUid.split('-')[1], 10);
+      const selectedSeries = foundVessels[0].series;
+      const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
-      dispatch(addVessel(tilesetId, seriesgroup, series));
+      dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
     }
   };
 }
