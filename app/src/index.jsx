@@ -10,6 +10,7 @@ import layerLibraryReducer from 'reducers/layersLibrary';
 import layersReducer from 'reducers/layers';
 import mapReducer from 'reducers/map';
 import analyticsMiddleware from 'middleware/analytics';
+import areasReducer from 'reducers/areas';
 import userReducer from 'reducers/user';
 import filtersReducer from 'reducers/filters';
 import contactReducer from 'reducers/contact';
@@ -33,6 +34,7 @@ window.Promise = window.Promise || Promise;
  * @type {Object}
  */
 const reducer = combineReducers({
+  areas: areasReducer,
   map: mapReducer,
   user: userReducer,
   filters: filtersReducer,

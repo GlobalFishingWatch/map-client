@@ -1,3 +1,6 @@
+// areas
+export const CREATE_AREA = 'CREATE_AREA';
+
 // map
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
 export const SET_LAYERS = 'SET_LAYERS';

@@ -23,6 +23,7 @@ import RecentVesselsModal from 'containers/Map/RecentVesselsModal';
 import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
+import DrawingManager from 'containers/Map/DrawingManager';
 import MapFooter from 'components/Map/MapFooter';
 import mapPanelsStyles from 'styles/components/c-map-panels.scss';
 import Loader from 'containers/Map/Loader';
@@ -295,6 +296,7 @@ class Map extends Component {
           style={{ height: '100%' }}
           onClick={this.onMapContainerClick}
         />
+        <DrawingManager />
         <div className={mapCss['map-loader']}>
           <Loader tiny />
         </div>
@@ -329,6 +331,7 @@ class Map extends Component {
   }
 }
 Map.propTypes = {
+  areas: PropTypes.array.isRequired,
   initMap: PropTypes.func,
   activeBasemap: PropTypes.string,
   basemaps: PropTypes.array,
