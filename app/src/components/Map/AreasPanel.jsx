@@ -13,7 +13,19 @@ class AreasPanel extends Component {
     this.state = {
       name: ''
     };
+    this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
+    this.onCancel = this.onCancel.bind(this);
+  }
+
+  onAddArea() {
+    this.setState({ name: '' });
+    this.props.setDrawingMode(true);
+  }
+
+  onCancel() {
+    this.setState({ name: '' });
+    this.props.setDrawingMode(false);
   }
 
   onAreaSave() {
@@ -41,12 +53,12 @@ class AreasPanel extends Component {
               onChange={e => this.onNameChange(e)}
               className={searchPanelStyles.searchAccordion}
               placeholder="Area name"
-              value={this.props.editingArea.name || ''}
+              value={this.state.name}
             />
           </div>
           <button
             className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
-            onClick={() => this.props.setDrawingMode(false)}
+            onClick={this.onCancel}
           >
             Cancel
           </button>
@@ -60,7 +72,7 @@ class AreasPanel extends Component {
         <div>
           <button
             className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
-            onClick={() => this.props.setDrawingMode(true)}
+            onClick={this.onAddArea}
           >
             Add area
           </button>
