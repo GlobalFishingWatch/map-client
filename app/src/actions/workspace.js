@@ -18,6 +18,7 @@ import {
   SET_WORKSPACE_ID
 } from 'actions';
 import { initLayers } from 'actions/layers';
+import { saveAreas } from 'actions/areas';
 import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
@@ -122,7 +123,8 @@ export function saveWorkspace(errorAction) {
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),
           outerExtent: state.filters.timelineOuterExtent.map(e => +e)
         },
-        filters: state.filters.flags
+        filters: state.filters.flags,
+        areas: state.areas.data
       }
     };
 
@@ -190,6 +192,8 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselHistory());
+
+  dispatch(saveAreas(workspaceData.areas));
 }
 
 function processNewWorkspace(data) {
@@ -206,7 +210,8 @@ function processNewWorkspace(data) {
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
-    tilesetId: workspace.tileset
+    tilesetId: workspace.tileset,
+    areas: workspace.areas
   };
 }
 

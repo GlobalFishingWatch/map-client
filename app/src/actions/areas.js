@@ -10,6 +10,17 @@ export function saveArea(name) {
   };
 }
 
+export function saveAreas(areas) {
+  return (dispatch) => {
+    areas.forEach((area) => {
+      dispatch({
+        type: SAVE_AREA,
+        payload: { area }
+      });
+    });
+  };
+}
+
 export function saveCoordinates(coordinates) {
   return (dispatch) => {
     dispatch({
