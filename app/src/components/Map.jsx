@@ -43,7 +43,6 @@ class Map extends Component {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.onMapInit = this.onMapInit.bind(this);
     this.changeZoomLevel = this.changeZoomLevel.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
     this.onMapContainerClick = this.onMapContainerClick.bind(this);
@@ -73,7 +72,8 @@ class Map extends Component {
     };
     // Create the map and initialize on the first idle event
     this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
-    google.maps.event.addListener(this.map, 'idle', this.onMapInit);
+    // do not use a bound function here as @#$%^ GMaps does not know how to unsubscribe from events attached to them
+    google.maps.event.addListenerOnce(this.map, 'idle', () => { this.onMapInit(); });
     window.addEventListener('resize', this.onWindowResize);
   }
 
@@ -158,7 +158,6 @@ class Map extends Component {
       console.warn('GMaps fired init but React container is not ready');
       return;
     }
-    google.maps.event.clearInstanceListeners(this.map);
     google.maps.event.addListener(this.map, 'dragend', this.onDragEnd);
     google.maps.event.addListener(this.map, 'zoom_changed', this.onZoomChanged);
     google.maps.event.addListener(this.map, 'mousemove', this.onMouseMove);

@@ -17,11 +17,13 @@
   }
 
   .datepickerTitle {
+    position: relative !important;
+    border-right: 1px solid $color-7;
+    position: relative;
+    padding-bottom: 5px;
     color: rgba($color-3, .5);
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
-    padding-bottom: 20px;
-    position: absolute;
     text-align: center;
     text-transform: uppercase;
     top: 16px;
@@ -39,6 +41,7 @@
   }
 
   .react-datepicker__input-container {
+    border-right: 1px solid $color-7;
     height: 100%;
   }
 
@@ -55,5 +58,8 @@
     text-transform: uppercase;
     width: 100%;
     word-wrap: break-word;
+  }
+  .DayPickerInput-Overlay {
+    bottom: 50px;
   }
 }
