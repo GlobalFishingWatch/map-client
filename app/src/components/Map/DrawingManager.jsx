@@ -20,11 +20,11 @@ class DrawingManager extends Component {
       polygon: null,
       coordinates: null
     };
+
     this.updateCoordinates = this.updateCoordinates.bind(this);
     this.addEditablePolygonToMap = this.addEditablePolygonToMap.bind(this);
-    if (this.props.map) {
-      this.initDrawingManager(props.map);
-    }
+
+    if (this.props.map) this.initDrawingManager(props.map);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,7 +57,7 @@ class DrawingManager extends Component {
   componentWillUnmount() {
     this.state.drawingManager.setOptions({ drawingMode: null });
     this.state.drawingManager.setMap(null);
-    this.deletePolygonFromMap(this.state.polygon);
+    if (this.state.polygon) this.deletePolygonFromMap(this.state.polygon);
   }
 
   initDrawingManager(map) {
