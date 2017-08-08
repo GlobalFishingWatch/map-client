@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.6 RC1
+- Replace `react-datepicker` with `react-day-picker`
+- Remove `react-google-maps` for a native goggle maps usage
+- Update `react-sanfona`, `node-sass` and `sass-loader`
+- Bump `node` and `npm` version dependencies
+- Refactor CSS structure
+- Improve vessel rendering by removing part of the frames
+
 ## 2.1.5
 - Fix issue preventing map from rendering on some situations
 
