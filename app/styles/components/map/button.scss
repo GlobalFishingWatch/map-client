@@ -27,4 +27,13 @@
   &._big {
     height: 40px;
   }
+
+  &._wide {
+    width: 100%;
+  }
+
+  &._primary {
+    background-color: $color-button-primary;
+    color: $color-4;
+  }
 }

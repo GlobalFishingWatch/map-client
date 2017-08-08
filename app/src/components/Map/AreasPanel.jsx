@@ -1,10 +1,8 @@
 import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import LayerManagementStyles from 'styles/components/map/layer-management.scss';
-import searchPanelStyles from 'styles/components/map/search-panel.scss';
-
-import MapButtonStyles from 'styles/components/map/button.scss';
+import areasPanelStyles from 'styles/components/map/areas-panel.scss';
+import buttonStyles from 'styles/components/map/button.scss';
 
 
 class AreasPanel extends Component {
@@ -46,32 +44,32 @@ class AreasPanel extends Component {
   render() {
     return (
       (this.props.drawing ?
-        <div className={LayerManagementStyles.layerManagement} >
-          <div className={searchPanelStyles.searchPanel} >
-            <input
-              type="text"
-              onChange={e => this.onNameChange(e)}
-              className={searchPanelStyles.searchAccordion}
-              placeholder="Area name"
-              value={this.state.name}
-            />
+        <div className={areasPanelStyles.areasPanel} >
+          <input
+            type="text"
+            onChange={e => this.onNameChange(e)}
+            className={areasPanelStyles.nameInput}
+            placeholder="Area name"
+            value={this.state.name}
+          />
+          <div className={classnames(areasPanelStyles.actionButtons)}>
+            <button
+              className={classnames([buttonStyles.button])}
+              onClick={this.onCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              onClick={this.onAreaSave}
+            >
+              Save
+            </button>
           </div>
-          <button
-            className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
-            onClick={this.onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
-            onClick={this.onAreaSave}
-          >
-            Save
-          </button>
         </div> :
         <div>
           <button
-            className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
+            className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
             onClick={this.onAddArea}
           >
             Add area

@@ -241,8 +241,8 @@ class ControlPanel extends Component {
                 {this.renderSearch()}
                 {this.renderBasemap()}
                 {this.renderLayerPicker()}
-                {this.renderFilters()}
                 {this.renderAreas()}
+                {this.renderFilters()}
               </Accordion>
             </div>
           </div>)
