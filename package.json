@@ -43,7 +43,7 @@
     "promise-polyfill": "^6.0.2",
     "prop-types": "^15.5.10",
     "react-addons-create-fragment": "^15.3.0",
-    "react-datepicker": "^0.46.0",
+    "react-day-picker": "^6.1.0",
     "react-ga": "^2.1.2",
     "react-input-range": "^0.9.3",
     "react-paginate": "^4.1.1",
