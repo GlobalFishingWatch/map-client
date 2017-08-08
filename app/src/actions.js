@@ -1,5 +1,5 @@
 // areas
-export const CREATE_AREA = 'CREATE_AREA';
+export const SAVE_AREA = 'SAVE_AREA';
 export const SAVE_COORDS = 'SAVE_COORDS';
 
 // map

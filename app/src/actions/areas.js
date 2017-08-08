@@ -1,10 +1,11 @@
-import { CREATE_AREA, SAVE_COORDS } from 'actions';
+import { SAVE_AREA, SAVE_COORDS } from 'actions';
 
-export function createArea(coordinates) {
-  return (dispatch) => {
+export function saveArea(name) {
+  return (dispatch, getState) => {
+    const area = Object.assign(getState().areas.editingArea, { name });
     dispatch({
-      type: CREATE_AREA,
-      payload: { area: coordinates }
+      type: SAVE_AREA,
+      payload: { area }
     });
   };
 }
@@ -17,5 +18,3 @@ export function saveCoordinates(coordinates) {
     });
   };
 }
-
-export { createArea as default };

@@ -8,6 +8,29 @@ import MapButtonStyles from 'styles/components/map/button.scss';
 
 
 class AreasPanel extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: ''
+    };
+    this.onAreaSave = this.onAreaSave.bind(this);
+  }
+
+  onAreaSave() {
+    if (this.props.editingArea.coordinates.length > 0 && this.state.name) {
+      this.props.saveArea(this.state.name);
+      this.setState({ name: '' });
+      this.props.setDrawingMode(false);
+    } else {
+      console.info('You need a name and to draw a polygon');
+    }
+  }
+
+  onNameChange(event) {
+    const name = event.target.value;
+    this.setState({ name });
+  }
+
   render() {
     return (
       (this.props.drawing ?
@@ -15,7 +38,7 @@ class AreasPanel extends Component {
           <div className={searchPanelStyles.searchPanel} >
             <input
               type="text"
-              onInput={e => this.onSearchInputChange(e)}
+              onChange={e => this.onNameChange(e)}
               className={searchPanelStyles.searchAccordion}
               placeholder="Area name"
               value={this.props.editingArea.name || ''}
@@ -29,7 +52,7 @@ class AreasPanel extends Component {
           </button>
           <button
             className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton)}
-            onClick={() => this.props.setDrawingMode(false)}
+            onClick={this.onAreaSave}
           >
             Save
           </button>
@@ -48,6 +71,7 @@ class AreasPanel extends Component {
 
 AreasPanel.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
+  saveArea: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
 };
