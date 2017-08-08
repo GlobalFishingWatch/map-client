@@ -35,6 +35,7 @@
     "iso-3166-1-alpha-2": "^1.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.14.1",
+    "pbf": "^3.0.5",
     "pixi.js": "^4.5.0",
     "platform": "^1.3.4",
     "preact": "^8.2.1",
@@ -52,6 +53,7 @@
     "react-sanfona": "^0.2.3",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
+    "vector-tile": "^1.3.0",
     "webpack-bundle-analyzer": "^2.8.1",
     "whatwg-fetch": "^1.0.0"
   },

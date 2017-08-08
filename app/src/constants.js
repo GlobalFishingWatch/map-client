@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
 
+export const VECTOR = false;
+
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP; // 1 day

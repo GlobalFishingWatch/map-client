@@ -2,6 +2,7 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import getVectorTile from './vectorTile'
 
 import {
   PLAYBACK_PRECISION,
@@ -9,7 +10,8 @@ import {
   VESSELS_MINIMUM_RADIUS_FACTOR,
   VESSELS_MINIMUM_OPACITY,
   VESSEL_CLICK_TOLERANCE_PX,
-  TIMELINE_OVERALL_START_DATE_OFFSET
+  TIMELINE_OVERALL_START_DATE_OFFSET,
+  VECTOR
 } from 'constants';
 
 /**
@@ -68,20 +70,25 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
  */
 export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
-  const urls = getTemporalTileURLs(
-    tilesetUrl,
-    temporalExtents,
-    params
-  );
-  for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-    promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+
+  if (VECTOR) {
+    promises.push(getVectorTile(params));
+  } else {
+    const urls = getTemporalTileURLs(
+      tilesetUrl,
+      temporalExtents,
+      params
+    );
+    for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
+      promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    }
   }
 
   return promises;
 };
 
 
-export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null);
+export const getCleanVectorArrays = rawTileData => rawTileData.filter(vectorArray => vectorArray !== null && vectorArray !== undefined && vectorArray.longitude !== undefined);
 
 /**
  * As data will come in multiple arrays (1 per API query/year basically), they need to be merged here
@@ -149,6 +156,68 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
 };
 
 
+export const getTilePlaybackDataFromVectorTile = (vectorTile, prevPlaybackData) => {
+  const vessels = vectorTile.layers.vessels;
+  if (!vessels) {
+    return prevPlaybackData;
+  }
+  const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
+
+  const numFeatures = vessels.length;
+  for (let i = 0; i < numFeatures; i++) {
+    const feature = vessels.feature(i);
+    const properties = feature.properties;
+    if (!tilePlaybackData[properties.t]) {
+      const frame = {
+        category: [properties.category],
+        opacity: [properties.opacity/8],
+        radius: [properties.radius/8],
+        series: [properties.series],
+        seriesgroup: [properties.seriesgroup],
+        worldX: [properties.worldX/4],
+        worldY: [properties.worldY/4]
+      };
+      tilePlaybackData[properties.t] = frame;
+    } else {
+      const frame = tilePlaybackData[properties.t];
+      frame.category.push(properties.category);
+      frame.opacity.push(properties.opacity/8);
+      frame.radius.push(properties.radius/8);
+      frame.series.push(properties.series);
+      frame.seriesgroup.push(properties.seriesgroup);
+      frame.worldX.push(properties.worldX/4);
+      frame.worldY.push(properties.worldY/4);
+    }
+  }
+  // const keys = vectorTile.layers.vessels._keys;
+  // const numKeys = keys.length;
+  // let currentTimeIndex;
+  //
+  // vectorTile.layers.vessels._values.forEach((value, index) => {
+  //   const keyIndex = index % numKeys;
+  //   if (keyIndex === 0) {
+  //     currentTimeIndex = value;
+  //
+  //     if (!tilePlaybackData[currentTimeIndex]) {
+  //       const frame = {
+  //         category: [],
+  //         opacity: [],
+  //         radius: [],
+  //         series: [],
+  //         seriesgroup: [],
+  //         worldX: [],
+  //         worldY: []
+  //       };
+  //       tilePlaybackData[currentTimeIndex] = frame;
+  //     }
+  //   } else {
+  //     const key = keys[keyIndex];
+  //     tilePlaybackData[currentTimeIndex][key].push(value);
+  //   }
+  // });
+  return tilePlaybackData;
+};
+
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
@@ -189,6 +258,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
 
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
+        latitude: [vectorArray.latitude[index]],
+        longitude: [vectorArray.longitude[index]],
         worldX: [worldX],
         worldY: [worldY],
         radius: [radius],
@@ -201,6 +272,8 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
       continue;
     }
     const frame = tilePlaybackData[timeIndex];
+    frame.latitude.push(vectorArray.latitude[index]);
+    frame.longitude.push(vectorArray.longitude[index]);
     frame.worldX.push(worldX);
     frame.worldY.push(worldY);
     frame.radius.push(radius);
