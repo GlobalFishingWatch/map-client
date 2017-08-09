@@ -8,8 +8,11 @@ function measure(ts) {
 }
 
 export default (params) => {
-  const tileCoords = `${params.tileCoordinates.zoom}/${params.tileCoordinates.x}/${params.tileCoordinates.y}`;
-  const tileUrl = `http://localhost:7070/${tileCoords}.pbf`;
+//   const tileCoords = `${params.tileCoordinates.zoom}/${params.tileCoordinates.x}/${params.tileCoordinates.y}`;
+//   const tileUrl = `http://localhost:7070/${tileCoords}.pbf`;
+
+  const tileCoords = `${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
+  const tileUrl = `http://localhost:8009/data/tiles/${tileCoords}.pbf`;
 
   const vectorTilePromise = fetch(tileUrl).then((response) => {
     if (!response.ok) {
@@ -24,8 +27,10 @@ export default (params) => {
           console.log(`reading tile ${tileCoords}`);
           const ts = performance.now();
           const pbf = new Pbf(reader.result);
-          // console.log(pbf)
+          console.log(pbf)
+          console.log('vector tile?')
           const vectorTile = new VectorTile(pbf);
+          console.log('vector tile')
           measure(ts)
           console.log(vectorTile)
           return resolve(vectorTile);
