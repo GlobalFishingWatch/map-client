@@ -32,9 +32,17 @@ class DrawingManager extends Component {
       this.initDrawingManager(nextProps.map);
     }
     if (this.props.polygonColor !== nextProps.polygonColor) {
+      this.updatePolygonColor(nextProps.polygonColor);
+    }
+  }
+
+  updatePolygonColor(color) {
+    const hexColor = COLORS[color];
+    this.polygonOptions.fillColor = hexColor;
+    this.polygonOptions.strokeColor = hexColor;
+    if (this.state.polygon) {
       this.state.polygon.setOptions({
-        fillColor: COLORS[nextProps.polygonColor],
-        strokeColor: COLORS[nextProps.polygonColor]
+        fillColor: hexColor, strokeColor: hexColor
       });
     }
   }
