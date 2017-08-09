@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/app.scss';
 import { getURLParameterByName } from 'lib/getURLParameterByName';
+import ReactGA from 'react-ga';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
@@ -15,6 +16,8 @@ class App extends Component {
     this.state = {
       bannerDismissed: false
     };
+    ReactGA.initialize(GA_TRACKING_CODE);
+    ReactGA.pageview(window.location.pathname);
   }
 
   componentWillMount() {
