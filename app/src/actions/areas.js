@@ -1,8 +1,8 @@
 import { SAVE_AREA, SAVE_EDITING_AREA } from 'actions';
 
-export function saveArea(name, color) {
+export function saveArea() {
   return (dispatch, getState) => {
-    const area = Object.assign(getState().areas.editingArea, { name, color });
+    const area = Object.assign(getState().areas.editingArea);
     dispatch({
       type: SAVE_AREA,
       payload: { area }

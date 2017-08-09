@@ -12,8 +12,8 @@ const mapDispatchToProps = dispatch => ({
   setDrawingMode: (value) => {
     dispatch(setDrawingMode(value));
   },
-  saveArea: (name, color) => {
-    dispatch(saveArea(name, color));
+  saveArea: () => {
+    dispatch(saveArea());
   },
   saveEditingArea: (area) => {
     dispatch(saveEditingArea(area));
