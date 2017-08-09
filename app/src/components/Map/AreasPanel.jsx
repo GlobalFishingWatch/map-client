@@ -46,7 +46,7 @@ class AreasPanel extends Component {
   }
 
   onColorChange(color) {
-    this.setState({ color });
+    this.props.saveEditingArea({ color });
   }
 
   render() {
@@ -61,7 +61,7 @@ class AreasPanel extends Component {
             value={this.state.name}
           />
           <div className={classnames(controlPanelStyles.lightPanel)}>
-            <ColorPicker color={this.state.color} onColorChange={this.onColorChange} />
+            <ColorPicker color={this.props.editingArea.color} onColorChange={this.onColorChange} />
           </div>
           <div className={classnames(areasPanelStyles.actionButtons)}>
             <button
@@ -93,6 +93,7 @@ class AreasPanel extends Component {
 AreasPanel.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
   saveArea: PropTypes.func.isRequired,
+  saveEditingArea: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
 };
