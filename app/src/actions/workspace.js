@@ -193,7 +193,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(loadRecentVesselHistory());
 
-  dispatch(saveAreas(workspaceData.areas));
+  if (workspaceData.areas) dispatch(saveAreas(workspaceData.areas));
 }
 
 function processNewWorkspace(data) {
