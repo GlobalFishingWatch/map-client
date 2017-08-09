@@ -11,10 +11,6 @@ import buttonStyles from 'styles/components/map/button.scss';
 class AreasPanel extends Component {
   constructor() {
     super();
-    this.state = {
-      name: '',
-      color: Object.keys(COLORS)[0]
-    };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -22,19 +18,23 @@ class AreasPanel extends Component {
   }
 
   onAddArea() {
-    this.setState({ name: '' });
     this.props.setDrawingMode(true);
   }
 
   onCancel() {
-    this.setState({ name: '' });
+    this.resetForm();
     this.props.setDrawingMode(false);
   }
 
+  resetForm() {
+    const resetedEditingArea = { name: null, color: Object.keys(COLORS)[0], coordinates: [] };
+    this.props.saveEditingArea(resetedEditingArea);
+  }
+
   onAreaSave() {
-    if (this.props.editingArea.coordinates.length > 0 && this.state.name) {
-      this.props.saveArea(this.state.name, this.state.color);
-      this.setState({ name: '', color: Object.keys(COLORS)[0] });
+    if (this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name) {
+      this.props.saveArea();
+      this.resetForm();
       this.props.setDrawingMode(false);
     } else {
       console.info('You need a name and to draw a polygon');
@@ -43,7 +43,7 @@ class AreasPanel extends Component {
 
   onNameChange(event) {
     const name = event.target.value;
-    this.setState({ name });
+    this.props.saveEditingArea({ name });
   }
 
   onColorChange(color) {
@@ -51,6 +51,7 @@ class AreasPanel extends Component {
   }
 
   render() {
+    const { name, color } = this.props.editingArea;
     return (
       (this.props.drawing ?
         <div className={areasPanelStyles.areasPanel} >
@@ -59,10 +60,10 @@ class AreasPanel extends Component {
             onChange={e => this.onNameChange(e)}
             className={areasPanelStyles.nameInput}
             placeholder="Area name"
-            value={this.state.name}
+            value={name}
           />
           <div className={classnames(controlPanelStyles.lightPanel)}>
-            <ColorPicker color={this.props.editingArea.color} onColorChange={this.onColorChange} />
+            <ColorPicker color={color} onColorChange={this.onColorChange} />
           </div>
           <div className={classnames(areasPanelStyles.actionButtons)}>
             <button

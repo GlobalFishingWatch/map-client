@@ -20,9 +20,11 @@ export default function (state = initialState, action) {
       return state;
     case SAVE_EDITING_AREA:
       if (action.payload) {
+        // Use null to reset field
+        const name = action.payload.name === null ? '' : action.payload.name || state.editingArea.name;
         return Object.assign({}, state, {
           editingArea: {
-            name: action.payload.name || state.editingArea.name,
+            name,
             color: action.payload.color || state.editingArea.color,
             coordinates: action.payload.coordinates || state.editingArea.coordinates
           }
