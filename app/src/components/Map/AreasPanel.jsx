@@ -33,12 +33,7 @@ class AreasPanel extends Component {
 }
 
 AreasPanel.propTypes = {
-  setDrawingMode: PropTypes.func.isRequired,
-  saveAreaOfInterest: PropTypes.func.isRequired,
-  updateWorkingAreaOfInterest: PropTypes.func.isRequired,
-  drawing: PropTypes.bool.isRequired,
   areas: PropTypes.array.isRequired,
-  editingArea: PropTypes.object.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired
 };
 
