@@ -1,6 +1,6 @@
 // areas
 export const SAVE_AREA = 'SAVE_AREA';
-export const SAVE_COORDS = 'SAVE_COORDS';
+export const SAVE_EDITING_AREA = 'SAVE_EDITING_AREA';
 
 // map
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';

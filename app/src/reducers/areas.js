@@ -1,4 +1,4 @@
-import { SAVE_AREA, SAVE_COORDS } from 'actions';
+import { SAVE_AREA, SAVE_EDITING_AREA } from 'actions';
 
 const initialState = {
   data: [],
@@ -16,12 +16,13 @@ export default function (state = initialState, action) {
         return Object.assign({}, state, { data: areas.concat([action.payload.area]) });
       }
       return state;
-    case SAVE_COORDS:
-      if (action.payload.coordinates) {
+    case SAVE_EDITING_AREA:
+      if (action.payload) {
         return Object.assign({}, state, {
           editingArea: {
-            name: state.editingArea.name,
-            coordinates: action.payload.coordinates
+            name: action.payload.name || state.editingArea.name,
+            color: action.payload.color || state.editingArea.color,
+            coordinates: action.payload.coordinates || state.editingArea.coordinates
           }
         });
       }
