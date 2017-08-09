@@ -1,6 +1,7 @@
 // areas of interest
 export const SAVE_AREA_OF_INTEREST = 'SAVE_AREA_OF_INTEREST'; // Save the current working AoI as a "permanent" AoI
 export const UPDATE_WORKING_AREA_OF_INTEREST = 'UPDATE_WORKING_AREA_OF_INTEREST'; // Updates the current working AoI
+export const TOGGLE_AREA_VISIBILITY = 'TOGGLE_AREA_VISIBILITY';
 
 // map
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
