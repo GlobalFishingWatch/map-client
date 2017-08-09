@@ -70,7 +70,13 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OV
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // Colors of the layers, areas, ...
-export const COLORS = ['yellow', 'lightBlue', 'purple', 'orange', 'pink'];
+export const COLORS = {
+  yellow: '#FBFF8B',
+  lightBlue: '#67FBFE',
+  purple: '#7D84FA',
+  orange: '#CC4E4E',
+  pink: '#CC68C4'
+};
 
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'

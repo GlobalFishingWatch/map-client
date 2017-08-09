@@ -29,7 +29,7 @@ class ExpandButton extends Component {
     return (
       <div className={classnames(colorPickerStyles.colorPicker)}>
         <div>Color</div>
-        { COLORS.map((color, i) => this.renderInput(color, i))}
+        { Object.keys(COLORS).map((color, i) => this.renderInput(color, i))}
       </div>
     );
   }

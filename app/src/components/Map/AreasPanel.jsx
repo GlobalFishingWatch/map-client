@@ -2,6 +2,7 @@ import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ColorPicker from 'components/Shared/ColorPicker';
+import { COLORS } from 'constants';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
 import controlPanelStyles from 'styles/components/control_panel.scss';
 import buttonStyles from 'styles/components/map/button.scss';
@@ -12,7 +13,7 @@ class AreasPanel extends Component {
     super();
     this.state = {
       name: '',
-      color: null
+      color: Object.keys(COLORS)[0]
     };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
@@ -32,8 +33,8 @@ class AreasPanel extends Component {
 
   onAreaSave() {
     if (this.props.editingArea.coordinates.length > 0 && this.state.name) {
-      this.props.saveArea(this.state.name);
-      this.setState({ name: '' });
+      this.props.saveArea(this.state.name, this.state.color);
+      this.setState({ name: '', color: Object.keys(COLORS)[0] });
       this.props.setDrawingMode(false);
     } else {
       console.info('You need a name and to draw a polygon');

@@ -1,16 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'preact';
-
-const POLYGON_OPTIONS = {
-  fillColor: '#174084',
-  strokeColor: '#2b4f93',
-  strokeOpacity: 1,
-  fillOpacity: 0.5,
-  strokeWeight: 3,
-  clickable: false,
-  editable: true,
-  zIndex: 1
-};
+import { COLORS } from 'constants';
 
 class DrawingManager extends Component {
   constructor(props) {
@@ -19,6 +9,16 @@ class DrawingManager extends Component {
       drawingManager: null,
       polygon: null,
       coordinates: null
+    };
+    this.polygonOptions = {
+      fillColor: COLORS[props.polygonColor],
+      strokeColor: COLORS[props.polygonColor],
+      strokeOpacity: 1,
+      fillOpacity: 0.5,
+      strokeWeight: 3,
+      clickable: false,
+      editable: true,
+      zIndex: 1
     };
 
     this.updateCoordinates = this.updateCoordinates.bind(this);
@@ -30,6 +30,12 @@ class DrawingManager extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.map !== nextProps.map) {
       this.initDrawingManager(nextProps.map);
+    }
+    if (this.props.polygonColor !== nextProps.polygonColor) {
+      this.state.polygon.setOptions({
+        fillColor: COLORS[nextProps.polygonColor],
+        strokeColor: COLORS[nextProps.polygonColor]
+      });
     }
   }
 
@@ -64,7 +70,7 @@ class DrawingManager extends Component {
     const drawingOptions = {
       drawingMode: google.maps.drawing.OverlayType.POLYGON,
       drawingControl: false,
-      polygonOptions: POLYGON_OPTIONS
+      polygonOptions: this.polygonOptions
     };
     const drawingManager = new google.maps.drawing.DrawingManager(drawingOptions);
     drawingManager.setMap(map);
@@ -88,7 +94,7 @@ class DrawingManager extends Component {
   }
 
   addEditablePolygonToMap(coords) {
-    const polygon = new google.maps.Polygon(Object.assign(POLYGON_OPTIONS, { paths: coords }));
+    const polygon = new google.maps.Polygon(Object.assign(this.polygonOptions, { paths: coords }));
     this.setState({ polygon });
     ['set_at', 'insert_at', 'remove_at'].forEach((action) => {
       google.maps.event.addListener(polygon.getPath(), action, () => this.updateCoordinates(polygon));
@@ -104,6 +110,7 @@ class DrawingManager extends Component {
 DrawingManager.propTypes = {
   map: PropTypes.object.isRequired,
   saveEditingArea: PropTypes.func.isRequired,
+  polygonColor: PropTypes.string
 };
 
 export default DrawingManager;

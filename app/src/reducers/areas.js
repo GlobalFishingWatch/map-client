@@ -1,9 +1,11 @@
 import { SAVE_AREA, SAVE_EDITING_AREA } from 'actions';
+import { COLORS } from 'constants';
 
 const initialState = {
   data: [],
   editingArea: {
     name: '',
+    color: Object.keys(COLORS)[0],
     coordinates: []
   }
 };
