@@ -69,6 +69,9 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OV
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
+// Colors of the layers, areas, ...
+export const COLORS = ['yellow', 'lightBlue', 'purple', 'orange', 'pink'];
+
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'
 // https://momentjs.com/docs/#/customization/relative-time/

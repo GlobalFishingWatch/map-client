@@ -249,3 +249,13 @@
     text-transform: uppercase;
   }
 }
+
+.lightPanel {
+  background-color: $color-mid-blue;
+  margin-right: -25px;
+  margin-left: -25px;
+  padding-left: 25px;
+  color: $color-white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

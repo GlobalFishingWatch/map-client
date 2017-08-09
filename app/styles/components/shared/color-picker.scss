@@ -1,0 +1,40 @@
+@import '../../settings';
+@import '../../mixins';
+
+.lightBlue {
+  background-color: $light-blue;
+}
+.orange {
+  background-color: $orange;
+}
+.purple {
+  background-color: $purple;
+}
+.pink {
+  background-color: $pink;
+}
+.yellow {
+  background-color: $yellow;
+}
+
+.colorInput {
+  display: inline-block;
+}
+
+.colorPicker {
+  input[type="radio"] {
+    display: none;
+    &:checked + label {
+      box-shadow: 0px 0px 0px 2px $color-white;
+    }
+  }
+
+  label {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    padding: 1px;
+    border-radius: 50%;
+  }
+}
