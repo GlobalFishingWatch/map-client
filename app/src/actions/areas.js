@@ -1,4 +1,4 @@
-import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST } from 'actions';
+import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY } from 'actions';
 
 export function saveAreaOfInterest() {
   return (dispatch, getState) => {
@@ -16,6 +16,15 @@ export function updateWorkingAreaOfInterest(area) {
     dispatch({
       type: UPDATE_WORKING_AREA_OF_INTEREST,
       payload: { coordinates, name, color }
+    });
+  };
+}
+
+export function toggleAreaVisibility(areaIndex) {
+  return (dispatch) => {
+    dispatch({
+      type: TOGGLE_AREA_VISIBILITY,
+      payload: { areaIndex }
     });
   };
 }

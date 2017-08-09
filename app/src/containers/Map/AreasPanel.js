@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import AreasPanel from 'components/Map/AreasPanel';
 import { setDrawingMode } from 'actions/map';
-import { saveAreaOfInterest, updateWorkingAreaOfInterest } from 'actions/areas';
+import { saveAreaOfInterest, updateWorkingAreaOfInterest, toggleAreaVisibility } from 'actions/areas';
 
 const mapStateToProps = state => ({
-  drawing: state.map.drawing,
-  editingArea: state.areas.editingArea
+  areas: state.areas.data
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,6 +16,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateWorkingAreaOfInterest: (area) => {
     dispatch(updateWorkingAreaOfInterest(area));
+  },
+  toggleAreaVisibility: (areaIndex) => {
+    dispatch(toggleAreaVisibility(areaIndex));
   }
 });
 

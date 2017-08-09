@@ -4,6 +4,7 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 10px 0 0;
+
   .actionButtons {
     button {
       width: calc(50% - 20px);
@@ -39,4 +40,14 @@
       color: rgba($color-3, .3);
     }
   }
+
+  .areaItem {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    .name {
+      padding-left: 14px;
+    }
+  }
 }
+
