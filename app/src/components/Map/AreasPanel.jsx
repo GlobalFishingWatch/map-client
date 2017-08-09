@@ -1,7 +1,9 @@
 import React, { Component } from 'preact';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import ColorPicker from 'components/Shared/ColorPicker';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
+import controlPanelStyles from 'styles/components/control_panel.scss';
 import buttonStyles from 'styles/components/map/button.scss';
 
 
@@ -9,11 +11,13 @@ class AreasPanel extends Component {
   constructor() {
     super();
     this.state = {
-      name: ''
+      name: '',
+      color: null
     };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
     this.onCancel = this.onCancel.bind(this);
+    this.onColorChange = this.onColorChange.bind(this);
   }
 
   onAddArea() {
@@ -41,6 +45,10 @@ class AreasPanel extends Component {
     this.setState({ name });
   }
 
+  onColorChange(color) {
+    this.setState({ color });
+  }
+
   render() {
     return (
       (this.props.drawing ?
@@ -52,6 +60,9 @@ class AreasPanel extends Component {
             placeholder="Area name"
             value={this.state.name}
           />
+          <div className={classnames(controlPanelStyles.lightPanel)}>
+            <ColorPicker color={this.state.color} onColorChange={this.onColorChange} />
+          </div>
           <div className={classnames(areasPanelStyles.actionButtons)}>
             <button
               className={classnames([buttonStyles.button])}
