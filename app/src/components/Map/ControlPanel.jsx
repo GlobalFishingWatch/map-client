@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import { Accordion, AccordionItem } from 'react-sanfona';
 import AreasPanel from 'containers/Map/AreasPanel';
+import MenuLink from 'components/Map/MenuLink';
+import SubMenu from 'components/Map/SubMenu';
 import FilterPanel from 'containers/Map/FilterPanel';
 import BasemapPanel from 'containers/Map/BasemapPanel';
 import LayerPanel from 'containers/Map/LayerPanel';
@@ -20,6 +22,13 @@ import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {
+  constructor() {
+    super();
+    this.state = {
+      activeSubMenu: null
+    };
+    this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
+  }
 
   componentDidUpdate() {
     if (this.props.isReportStarted === true) {
@@ -220,7 +229,27 @@ class ControlPanel extends Component {
       </AccordionItem>);
   }
 
+  changeActiveSubmenu(submenuName) {
+    this.setState({ activeSubmenu: submenuName });
+  }
   render() {
+    const filtersIcon = (
+      <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
+    );
+
+    const { activeSubmenu } = this.state;
+
+    const areaSubMenu = (
+      <SubMenu title="Area of interest" icon={filtersIcon} onBack={() => this.setState({ activeSubmenu: null })}>
+        <div className={ControlPanelStyles.contentAccordion} >
+          <AreasPanel />
+        </div>
+      </SubMenu>
+    );
+
+    const subMenus = {
+      AREAS: areaSubMenu
+    };
     return (
       <MediaQuery minWidth={768} >
         {matches => (
@@ -228,25 +257,33 @@ class ControlPanel extends Component {
             className={ControlPanelStyles.controlpanel}
             ref={(controlPanel) => { this.controlPanelRef = controlPanel; }}
           >
-            <div className={classnames({ [ControlPanelStyles.bgWrapper]: matches })} >
-              {this.renderResume()}
-              <VesselInfoPanel />
-              <Accordion
-                activeItems={6}
-                allowMultiple={false}
-                className={classnames(ControlPanelStyles.mapOptions, {
-                  [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches)
-                })}
-              >
-                {this.renderSearch()}
-                {this.renderBasemap()}
-                {this.renderLayerPicker()}
-                {this.renderAreas()}
-                {this.renderFilters()}
-              </Accordion>
+            <div className={classnames({ [ControlPanelStyles.bgWrapper]: matches })}>
+              { activeSubmenu ?
+                subMenus[activeSubmenu] :
+                (<div>
+                  {this.renderResume()}
+                  <VesselInfoPanel />
+                  <Accordion
+                    activeItems={6}
+                    allowMultiple={false}
+                    className={classnames(ControlPanelStyles.mapOptions, {
+                      [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches)
+                    })}
+                  >
+                    {this.renderSearch()}
+                    {this.renderBasemap()}
+                    {this.renderLayerPicker()}
+                    {this.renderAreas()}
+                    {this.renderFilters()}
+                  </Accordion>
+                  <div className={classnames(ControlPanelStyles.mapOptions)}>
+                    <MenuLink title="Area of interest" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('AREAS')} />
+                  </div>
+                </div>)
+              }
             </div>
-          </div>)
-        }
+          </div>
+        )}
       </MediaQuery>
     );
   }
