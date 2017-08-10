@@ -3,13 +3,14 @@ import React from 'preact';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
-function SubMenu({ title, icon, children, onBack }) {
+function SubMenu({ title, icon, extraHeader, children, onBack }) {
   return (
     <div className={ControlPanelStyles.submenu}>
       <div className={ControlPanelStyles.submenuHeader} >
         <InfoIcon onClick={onBack} />
         <h2 className={ControlPanelStyles.submenuTitle} >{title}</h2>
-        {icon}
+        {extraHeader}
+        <div className={ControlPanelStyles.icon} >{icon}</div>
       </div>
       {children}
     </div>
@@ -18,7 +19,8 @@ function SubMenu({ title, icon, children, onBack }) {
 
 SubMenu.propTypes = {
   title: PropTypes.string.isRequired,
-  icon: PropTypes.object.isRequired,
+  icon: PropTypes.object,
+  extraHeader: PropTypes.object,
   children: PropTypes.node.isRequired,
   onBack: PropTypes.func.isRequired
 };

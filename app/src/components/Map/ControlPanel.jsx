@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'preact';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
-import { Accordion, AccordionItem } from 'react-sanfona';
 import AreasPanel from 'containers/Map/AreasPanel';
 import MenuLink from 'components/Map/MenuLink';
 import SubMenu from 'components/Map/SubMenu';
@@ -69,111 +68,6 @@ class ControlPanel extends Component {
     return Math.round(result).toLocaleString();
   }
 
-  renderSearch() {
-    const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
-
-    const title = (
-      <div>
-        <MediaQuery maxWidth={767} >
-          <div className={classnames(ControlPanelStyles.accordionHeader, ControlPanelStyles._search)} >
-            <SearchIcon className={classnames(iconStyles.icons, ControlPanelStyles.searchIcon)} />
-            <div className={ControlPanelStyles.headerSearchInfo} >
-              <h2 className={ControlPanelStyles.accordionTitle} >vessels</h2>
-              {numPinnedVessels > 0 &&
-              <div className={ControlPanelStyles.pinnedItemCount} >
-                ({numPinnedVessels})
-              </div>}
-            </div>
-          </div>
-        </MediaQuery>
-        <MediaQuery minWidth={768} >
-          <div className={ControlPanelStyles.accordionHeader} >
-            <h2 className={ControlPanelStyles.accordionTitle} >vessels</h2>
-            {numPinnedVessels > 0 &&
-            <div className={ControlPanelStyles.pinnedItemCount} >
-              {numPinnedVessels} pinned
-            </div>}
-            <SearchIcon className={classnames(iconStyles.icons, ControlPanelStyles.searchIcon)} />
-          </div>
-        </MediaQuery>
-      </div>);
-
-
-    if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1) {
-      return (
-        <AccordionItem
-          title={title}
-          key="search"
-          className={ControlPanelStyles.accordionItem}
-        >
-          <div className={ControlPanelStyles.contentAccordion} >
-            <a
-              className="loginRequiredLink"
-              onClick={this.props.login}
-            >Only registered users can use the search feature. Click here to log in.</a>
-            <PinnedTracks />
-          </div>
-        </AccordionItem>);
-    }
-
-    return (
-      <AccordionItem
-        title={title}
-        key="search"
-        className={ControlPanelStyles.accordionItem}
-        onClose={() => this.onCloseSearch()}
-      >
-        <div className={ControlPanelStyles.contentAccordion} >
-          <SearchPanel />
-          <PinnedTracks />
-        </div>
-      </AccordionItem>);
-  }
-
-  renderBasemap() {
-    const title = (
-      <div className={ControlPanelStyles.accordionHeader} >
-        <h2 className={ControlPanelStyles.accordionTitle} >Basemap</h2>
-        <BasemapIcon className={classnames(iconStyles.icons, ControlPanelStyles.basemapIcon)} />
-      </div>);
-
-    return (
-      <AccordionItem
-        title={title}
-        key="basemap"
-        className={ControlPanelStyles.accordionItem}
-        titleClassName={ControlPanelStyles.titleAccordion}
-      >
-        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._basemaps)} >
-          <BasemapPanel />
-        </div>
-      </AccordionItem>);
-  }
-
-  renderLayerPicker() {
-    const title = (
-      <div className={ControlPanelStyles.accordionHeader} >
-        <h2 className={ControlPanelStyles.accordionTitle} >Layers</h2>
-        <LayersIcon className={classnames(iconStyles.icons, ControlPanelStyles.layersIcon)} />
-      </div>);
-
-    return (
-      <AccordionItem
-        title={title}
-        key="layers"
-        className={ControlPanelStyles.accordionItem}
-        titleClassName={ControlPanelStyles.titleAccordion}
-        onClose={() => this.onCloseLayerPicker()}
-      >
-        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
-          <div className={ControlPanelStyles.wrapper} >
-            <LayerPanel />
-            <LayerManagement />
-          </div>
-        </div>
-      </AccordionItem>);
-  }
-
   renderResume() {
     return (
       <div className={ControlPanelStyles.resumeDisplay} >
@@ -190,46 +84,6 @@ class ControlPanel extends Component {
     );
   }
 
-  renderFilters() {
-    const title = (
-      <div className={ControlPanelStyles.accordionHeader} >
-        <h2 className={ControlPanelStyles.accordionTitle} >Flag Filter</h2>
-        <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
-      </div>);
-
-    return (
-      <AccordionItem
-        title={title}
-        key="filters"
-        className={ControlPanelStyles.accordionItem}
-        titleClassName={ControlPanelStyles.titleAccordion}
-      >
-        <div className={ControlPanelStyles.contentAccordion} >
-          <FilterPanel />
-        </div>
-      </AccordionItem>);
-  }
-
-  renderAreas() {
-    const title = (
-      <div className={ControlPanelStyles.accordionHeader} >
-        <h2 className={ControlPanelStyles.accordionTitle} >Area of interest</h2>
-        <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
-      </div>);
-
-    return (
-      <AccordionItem
-        title={title}
-        key="Areas"
-        className={ControlPanelStyles.accordionItem}
-        titleClassName={ControlPanelStyles.titleAccordion}
-      >
-        <div className={ControlPanelStyles.contentAccordion} >
-          <AreasPanel />
-        </div>
-      </AccordionItem>);
-  }
-
   changeActiveSubmenu(submenuName) {
     this.props.setSubmenu(submenuName);
   }
@@ -241,9 +95,92 @@ class ControlPanel extends Component {
 
   render() {
     const { activeSubmenu } = this.props;
+    const searchIcon = (
+      <SearchIcon className={classnames(iconStyles.icons, ControlPanelStyles.searchIcon)} />
+    );
+
+    const basemapIcon = (
+      <BasemapIcon className={classnames(iconStyles.icons, ControlPanelStyles.basemapIcon)} />
+    );
 
     const filtersIcon = (
       <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
+    );
+
+    const layersIcon = (
+      <LayersIcon className={classnames(iconStyles.icons, ControlPanelStyles.layersIcon)} />
+    );
+
+    const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
+
+    const searchHeader = (
+      <div>
+        <MediaQuery maxWidth={767} >
+          {numPinnedVessels > 0 &&
+          <div className={ControlPanelStyles.pinnedItemCount} >
+            ({numPinnedVessels})
+          </div>}
+        </MediaQuery>
+        <MediaQuery minWidth={768} >
+          {numPinnedVessels > 0 &&
+          <div className={ControlPanelStyles.pinnedItemCount} >
+            {numPinnedVessels} pinned
+          </div>}
+        </MediaQuery>
+      </div>);
+
+    const searchSubmenu = (
+      <SubMenu title="Vessels" icon={searchIcon} extraHeader={searchHeader} onBack={this.onBack}>
+        <VesselInfoPanel />
+        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
+          <div className={ControlPanelStyles.wrapper} >
+            <div className={ControlPanelStyles.contentAccordion} >
+              { this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
+                <div className={ControlPanelStyles.contentAccordion} >
+                  <a
+                    className="loginRequiredLink"
+                    onClick={this.props.login}
+                  >Only registered users can use the search feature. Click here to log in.</a>
+                  <PinnedTracks />
+                </div> :
+                <div className={ControlPanelStyles.contentAccordion} >
+                  <SearchPanel />
+                  <PinnedTracks />
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </SubMenu>
+    );
+
+    const basemapSubmenu = (
+      <SubMenu title="Basemap" icon={basemapIcon} onBack={this.onBack}>
+        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
+          <div className={ControlPanelStyles.wrapper} >
+            <BasemapPanel />
+          </div>
+        </div>
+      </SubMenu>
+    );
+
+    const layerSubmenu = (
+      <SubMenu title="Layers" icon={layersIcon} onBack={this.onBack}>
+        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
+          <div className={ControlPanelStyles.wrapper} >
+            <LayerPanel />
+            <LayerManagement />
+          </div>
+        </div>
+      </SubMenu>
+    );
+
+    const filterSubmenu = (
+      <SubMenu title="Filters" icon={filtersIcon} onBack={this.onBack}>
+        <div className={ControlPanelStyles.contentAccordion} >
+          <FilterPanel />
+        </div>
+      </SubMenu>
     );
 
     const areaSubmenu = (
@@ -255,7 +192,11 @@ class ControlPanel extends Component {
     );
 
     const submenus = {
-      AREAS: areaSubmenu
+      AREAS: areaSubmenu,
+      FILTERS: filterSubmenu,
+      LAYERS: layerSubmenu,
+      BASE_MAP: basemapSubmenu,
+      VESSELS: searchSubmenu
     };
 
     return (
@@ -268,26 +209,16 @@ class ControlPanel extends Component {
             <div className={classnames({ [ControlPanelStyles.bgWrapper]: matches })}>
               { activeSubmenu ?
                 submenus[activeSubmenu] :
-                (<div>
+                <div className={classnames(ControlPanelStyles.mapOptions, {
+                  [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches) })}
+                >
                   {this.renderResume()}
-                  <VesselInfoPanel />
-                  <Accordion
-                    activeItems={6}
-                    allowMultiple={false}
-                    className={classnames(ControlPanelStyles.mapOptions, {
-                      [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches)
-                    })}
-                  >
-                    {this.renderSearch()}
-                    {this.renderBasemap()}
-                    {this.renderLayerPicker()}
-                    {this.renderAreas()}
-                    {this.renderFilters()}
-                  </Accordion>
-                  <div className={classnames(ControlPanelStyles.mapOptions)}>
-                    <MenuLink title="Area of interest" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('AREAS')} />
-                  </div>
-                </div>)
+                  <MenuLink title="Vessels" icon={searchIcon} onClick={() => this.changeActiveSubmenu('VESSELS')} />
+                  <MenuLink title="Basemap" icon={basemapIcon} onClick={() => this.changeActiveSubmenu('BASE_MAP')} />
+                  <MenuLink title="Layers" icon={layersIcon} onClick={() => this.changeActiveSubmenu('LAYERS')} />
+                  <MenuLink title="Filters" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('FILTERS')} />
+                  <MenuLink title="Area of interest" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('AREAS')} />
+                </div>
               }
             </div>
           </div>
