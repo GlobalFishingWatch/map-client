@@ -24,6 +24,7 @@ import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import DrawingManager from 'containers/Map/DrawingManager';
+import Areas from 'containers/Map/Areas';
 import MapFooter from 'components/Map/MapFooter';
 
 import mapStyles from 'styles/components/map.scss';
@@ -313,6 +314,7 @@ class Map extends Component {
         />
 
         {this.props.drawing && <DrawingManager />}
+        <Areas />
         <div className={mapStyles.mapLoader}>
           <Loader tiny />
         </div>
