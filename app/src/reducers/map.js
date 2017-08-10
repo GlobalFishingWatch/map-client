@@ -19,7 +19,8 @@ import {
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_RECENT_VESSELS_VISIBILITY,
-  SET_CENTER_TILE
+  SET_CENTER_TILE,
+  SET_SUBMENU
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -72,7 +73,8 @@ const initialState = {
   recentVesselModal: {
     open: false
   },
-  workspaceId: null
+  workspaceId: null,
+  activeSubmenu: null
 };
 
 /**
@@ -122,6 +124,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: action.payload });
+    case SET_SUBMENU:
+      return Object.assign({}, state, { activeSubmenu: action.payload });
 
     case DELETE_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: null });

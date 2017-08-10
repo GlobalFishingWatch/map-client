@@ -13,7 +13,8 @@ import {
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_RECENT_VESSELS_VISIBILITY,
-  SET_CENTER_TILE
+  SET_CENTER_TILE,
+  SET_SUBMENU
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 import { trackCenterTile } from 'actions/analytics';
@@ -33,6 +34,13 @@ export function setBasemap(basemap) {
   return {
     type: SET_BASEMAP,
     payload: basemap
+  };
+}
+
+export function setSubmenu(submenuName) {
+  return {
+    type: SET_SUBMENU,
+    payload: submenuName
   };
 }
 

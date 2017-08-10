@@ -28,6 +28,7 @@ class ControlPanel extends Component {
       activeSubMenu: null
     };
     this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
+    this.onBack = this.onBack.bind(this);
   }
 
   componentDidUpdate() {
@@ -230,26 +231,33 @@ class ControlPanel extends Component {
   }
 
   changeActiveSubmenu(submenuName) {
-    this.setState({ activeSubmenu: submenuName });
+    this.props.setSubmenu(submenuName);
   }
+
+  onBack() {
+    if (this.props.activeSubmenu === 'AREAS') this.props.setRecentlyCreated(false);
+    this.props.setSubmenu(null);
+  }
+
   render() {
+    const { activeSubmenu } = this.props;
+
     const filtersIcon = (
       <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
     );
 
-    const { activeSubmenu } = this.state;
-
-    const areaSubMenu = (
-      <SubMenu title="Area of interest" icon={filtersIcon} onBack={() => this.setState({ activeSubmenu: null })}>
+    const areaSubmenu = (
+      <SubMenu title="Area of interest" icon={filtersIcon} onBack={this.onBack}>
         <div className={ControlPanelStyles.contentAccordion} >
           <AreasPanel />
         </div>
       </SubMenu>
     );
 
-    const subMenus = {
-      AREAS: areaSubMenu
+    const submenus = {
+      AREAS: areaSubmenu
     };
+
     return (
       <MediaQuery minWidth={768} >
         {matches => (
@@ -259,7 +267,7 @@ class ControlPanel extends Component {
           >
             <div className={classnames({ [ControlPanelStyles.bgWrapper]: matches })}>
               { activeSubmenu ?
-                subMenus[activeSubmenu] :
+                submenus[activeSubmenu] :
                 (<div>
                   {this.renderResume()}
                   <VesselInfoPanel />
@@ -298,11 +306,14 @@ ControlPanel.propTypes = {
   disableSearchEditMode: PropTypes.func,
   disableLayerPanelEditMode: PropTypes.func,
   hideSearchResults: PropTypes.func,
+  setRecentlyCreated: PropTypes.func.isRequired,
   pinnedVesselEditMode: PropTypes.bool,
   layerPanelEditMode: PropTypes.bool,
   timelineInnerExtent: PropTypes.array,
   isEmbedded: PropTypes.bool,
   isReportStarted: PropTypes.bool,
+  setSubmenu: PropTypes.func.isRequired,
+  activeSubmenu: PropTypes.string.isRequired,
   openTimebarInfoModal: PropTypes.func
 };
 
