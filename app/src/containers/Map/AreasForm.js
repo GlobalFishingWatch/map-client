@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import AreasForm from 'components/Map/AreasForm';
 import { setDrawingMode } from 'actions/map';
-import { saveArea, updateWorkingAreaOfInterest } from 'actions/areas';
+import { saveAreaOfInterest, updateWorkingAreaOfInterest } from 'actions/areas';
 
 const mapStateToProps = state => ({
   drawing: state.map.drawing,
@@ -12,8 +12,8 @@ const mapDispatchToProps = dispatch => ({
   setDrawingMode: (value) => {
     dispatch(setDrawingMode(value));
   },
-  saveArea: () => {
-    dispatch(saveArea());
+  saveAreaOfInterest: () => {
+    dispatch(saveAreaOfInterest());
   },
   updateWorkingAreaOfInterest: (area) => {
     dispatch(updateWorkingAreaOfInterest(area));
