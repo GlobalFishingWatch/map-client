@@ -5,10 +5,10 @@ import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 
 function SubMenu({ title, icon, children, onBack }) {
   return (
-    <div className={ControlPanelStyles.accordionItem}>
-      <div className={ControlPanelStyles.accordionHeader} >
+    <div className={ControlPanelStyles.submenu}>
+      <div className={ControlPanelStyles.submenuHeader} >
         <InfoIcon onClick={onBack} />
-        <h2 className={ControlPanelStyles.accordionTitle} >{title}</h2>
+        <h2 className={ControlPanelStyles.submenuTitle} >{title}</h2>
         {icon}
       </div>
       {children}

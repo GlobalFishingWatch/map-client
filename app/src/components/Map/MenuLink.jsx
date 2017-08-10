@@ -7,7 +7,7 @@ function MenuLink({ title, icon, onClick }) {
     <div className={ControlPanelStyles.accordionItem} onClick={onClick}>
       <div className={ControlPanelStyles.accordionHeader} >
         <h2 className={ControlPanelStyles.accordionTitle} >{title}</h2>
-        {icon}
+        <div className={ControlPanelStyles.icon} >{icon}</div>
       </div>
     </div>
   );
