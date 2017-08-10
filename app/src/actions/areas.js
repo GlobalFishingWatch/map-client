@@ -20,6 +20,15 @@ export function updateWorkingAreaOfInterest(area) {
   };
 }
 
+export function setRecentlyCreated(value) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_RECENTLY_CREATED,
+      payload: value
+    });
+  };
+}
+
 export function toggleAreaVisibility(areaIndex) {
   return (dispatch) => {
     dispatch({

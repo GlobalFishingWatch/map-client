@@ -23,6 +23,7 @@ export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
 export const SET_DRAWING = 'SET_DRAWING';
+export const SET_SUBMENU = 'SET_SUBMENU';
 
 
 // modals
