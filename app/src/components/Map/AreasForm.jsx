@@ -27,12 +27,12 @@ class AreasForm extends Component {
 
   resetForm() {
     const resetedEditingArea = { name: null, color: Object.keys(COLORS)[0], coordinates: [] };
-    this.props.saveEditingArea(resetedEditingArea);
+    this.props.updateWorkingAreaOfInterest(resetedEditingArea);
   }
 
   onAreaSave() {
     if (this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name) {
-      this.props.saveArea();
+      this.props.saveAreaOfInterest();
       this.resetForm();
       this.props.setDrawingMode(false);
     } else {
@@ -42,11 +42,11 @@ class AreasForm extends Component {
 
   onNameChange(event) {
     const name = event.target.value;
-    this.props.saveEditingArea({ name });
+    this.props.updateWorkingAreaOfInterest({ name });
   }
 
   onColorChange(color) {
-    this.props.saveEditingArea({ color });
+    this.props.updateWorkingAreaOfInterest({ color });
   }
 
   render() {
@@ -104,8 +104,8 @@ class AreasForm extends Component {
 
 AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
-  saveArea: PropTypes.func.isRequired,
-  saveEditingArea: PropTypes.func.isRequired,
+  saveAreaOfInterest: PropTypes.func.isRequired,
+  updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
 };

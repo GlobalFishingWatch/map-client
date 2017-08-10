@@ -4,7 +4,8 @@ import { setDrawingMode } from 'actions/map';
 import { saveAreaOfInterest, updateWorkingAreaOfInterest, toggleAreaVisibility } from 'actions/areas';
 
 const mapStateToProps = state => ({
-  areas: state.areas.data
+  areas: state.areas.data,
+  recentlyCreated: state.areas.recentlyCreated
 });
 
 const mapDispatchToProps = dispatch => ({

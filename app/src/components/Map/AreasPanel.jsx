@@ -9,23 +9,35 @@ import Toggle from 'components/Shared/Toggle';
 
 class AreasPanel extends Component {
   render() {
-    const { areas, toggleAreaVisibility } = this.props;
+    const { areas, recentlyCreated, toggleAreaVisibility } = this.props;
     return (
       <div className={areasPanelStyles.areasPanel} >
         <div className={areasPanelStyles.areasList} >
-          {areas && areas.map((area, i) => (
-            <div key={i} className={classnames([controlPanelStyles.panel, areasPanelStyles.areaItem])} >
-              <Toggle
-                on={area.visible}
-                color={COLORS[area.color]}
-                onToggled={() => toggleAreaVisibility(i)}
-              />
-              <div className={classnames([areasPanelStyles.name])} >
-                {area.name}
-              </div >
-            </div >
-          ))}
-        </div >
+          { areas && areas.map((area, i) => {
+            let recentLastArea = false;
+            let itemClassNames = [controlPanelStyles.panel];
+            if (recentlyCreated && i === (areas.length - 1)) {
+              recentLastArea = true;
+              itemClassNames = itemClassNames.concat([areasPanelStyles.newItem]);
+            }
+            return (
+              <div key={i} className={classnames(itemClassNames)}>
+                {recentLastArea && <div className={classnames([areasPanelStyles.recentLabel])}>Area added recently</div>}
+                <div className={classnames([areasPanelStyles.areaItem])}>
+                  <Toggle
+                    on={area.visible}
+                    color={COLORS[area.color]}
+                    onToggled={() => toggleAreaVisibility(i)}
+                  />
+                  <div className={classnames([areasPanelStyles.name])}>
+                    { area.name }
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          )}
+        </div>
         <AreasForm />
       </div >
     );
@@ -34,6 +46,7 @@ class AreasPanel extends Component {
 
 AreasPanel.propTypes = {
   areas: PropTypes.array.isRequired,
+  recentlyCreated: PropTypes.bool.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired
 };
 

@@ -1,4 +1,4 @@
-import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY } from 'actions';
+import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY, SET_RECENTLY_CREATED } from 'actions';
 import { COLORS } from 'constants';
 
 const initialState = {
@@ -8,7 +8,8 @@ const initialState = {
     color: Object.keys(COLORS)[0],
     coordinates: [],
     visible: true
-  }
+  },
+  recentlyCreated: false
 };
 
 export default function (state = initialState, action) {
@@ -24,16 +25,21 @@ export default function (state = initialState, action) {
         editingArea: {
           name: action.payload.name === null ? '' : action.payload.name || state.editingArea.name,
           color: action.payload.color || state.editingArea.color,
-          coordinates: action.payload.coordinates || state.editingArea.coordinates
+          coordinates: action.payload.coordinates || state.editingArea.coordinates,
+          visible: state.editingArea.visible
         }
       });
     case TOGGLE_AREA_VISIBILITY: {
       const updatedAreas = state.data.map((area, i) => {
-        if (i === action.payload.areaIndex) area.visible = !area.visible;
+        if (i === action.payload.areaIndex) {
+          area.visible = !area.visible;
+        }
         return area;
       });
       return Object.assign({}, state, { data: updatedAreas });
     }
+    case SET_RECENTLY_CREATED:
+      return Object.assign({}, state, { recentlyCreated: action.payload });
     default:
       return state;
   }
