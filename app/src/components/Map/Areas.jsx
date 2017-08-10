@@ -9,8 +9,13 @@ class Areas extends Component {
     this.polygons = [];
   }
 
+  componentWillUnmount() {
+    this.polygons.forEach((polygon) => {
+      this.deletePolygonFromMap(polygon);
+    });
+  }
   componentWillReceiveProps(nextProps) {
-    if (this.props.map !== nextProps.map) {
+    if (!this.props.map && nextProps.map) {
       this.initAreas(nextProps.areas);
     }
     if (this.props.areas !== nextProps.areas) {
