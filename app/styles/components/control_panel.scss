@@ -304,13 +304,14 @@
       }
     }
 
-    .icon {
-      fill: $color-4;
-      min-height: 18px;
+  }
+}
 
-      @media #{$mq-tablet} {
-        min-height: none;
-      }
-    }
+.icon {
+  fill: $color-4;
+  min-height: 18px;
+
+  @media #{$mq-tablet} {
+    min-height: none;
   }
 }
