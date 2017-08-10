@@ -24,7 +24,7 @@ class DrawingManager extends Component {
     this.updateCoordinates = this.updateCoordinates.bind(this);
     this.addEditablePolygonToMap = this.addEditablePolygonToMap.bind(this);
 
-    if (this.props.map) this.initDrawingManager(props.map);
+    if (props.map) this.initDrawingManager(props.map);
   }
 
   componentWillReceiveProps(nextProps) {
