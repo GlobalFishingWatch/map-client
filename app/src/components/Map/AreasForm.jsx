@@ -94,7 +94,7 @@ class AreasForm extends Component {
 
 AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
-  saveAreaOfInterestOfInterest: PropTypes.func.isRequired,
+  saveAreaOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
