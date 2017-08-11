@@ -83,7 +83,7 @@ class SearchPanel extends Component {
           onBlur={() => this.onSearchInputBlur()}
           onInput={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
-          className={searchPanelStyles.searchAccordion}
+          className={searchPanelStyles.searchInput}
           placeholder="Search vessel"
           value={this.props.searchTerm}
         />
