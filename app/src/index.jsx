@@ -22,9 +22,6 @@ import timebarReducer from 'reducers/timebar';
 import literalsReducer from 'reducers/literals';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
-import ReactGA from 'react-ga';
-
-ReactGA.initialize(GA_TRACKING_CODE);
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
