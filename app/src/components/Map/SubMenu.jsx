@@ -12,7 +12,9 @@ function SubMenu({ title, icon, extraHeader, children, onBack }) {
         {extraHeader}
         <div className={ControlPanelStyles.icon} >{icon}</div>
       </div>
-      {children}
+      <div className={ControlPanelStyles.submenuContent} >
+        {children}
+      </div>
     </div>
   );
 }

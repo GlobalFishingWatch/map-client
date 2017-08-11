@@ -5,7 +5,7 @@ import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'actions/layers';
 import { setRecentlyCreated } from 'actions/areas';
 import { login } from 'actions/user';
-import { openTimebarInfoModal, setSubmenu } from 'actions/map';
+import { openTimebarInfoModal, setSubmenu, setDrawingMode } from 'actions/map';
 
 
 const mapStateToProps = state => ({
@@ -41,6 +41,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setSubmenu: (submenuName) => {
     dispatch(setSubmenu(submenuName));
+  },
+  setDrawingMode: (value) => {
+    dispatch(setDrawingMode(value));
   }
 });
 

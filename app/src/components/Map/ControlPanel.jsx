@@ -74,7 +74,7 @@ class ControlPanel extends Component {
         <div className={ControlPanelStyles.categoriesDisplay} >
           <div className={ControlPanelStyles.vesselDisplay} >
             <span className={ControlPanelStyles.counterDescription} >
-              Worldwide Fishing hours
+              Vessels activity
               <InfoIcon className={ControlPanelStyles.fishingHours} onClick={() => this.props.openTimebarInfoModal()} />
             </span>
             <span className={ControlPanelStyles.total} >{this.calculateFishingHours()}</span>
@@ -89,28 +89,26 @@ class ControlPanel extends Component {
   }
 
   onBack() {
-    if (this.props.activeSubmenu === 'AREAS') this.props.setRecentlyCreated(false);
+    if (this.props.activeSubmenu === 'AREAS') {
+      this.props.setRecentlyCreated(false);
+      this.props.setDrawingMode(false);
+    }
     this.props.setSubmenu(null);
+  }
+
+  renderIcon(iconName) {
+    const iconComponents = {
+      vessels: SearchIcon,
+      basemap: BasemapIcon,
+      layers: LayersIcon,
+      filters: FiltersIcon
+    };
+    const IconName = iconComponents[iconName];
+    return <IconName className={classnames([iconStyles.icons, ControlPanelStyles[`${iconName}Icon`]])} />;
   }
 
   render() {
     const { activeSubmenu } = this.props;
-    const searchIcon = (
-      <SearchIcon className={classnames(iconStyles.icons, ControlPanelStyles.searchIcon)} />
-    );
-
-    const basemapIcon = (
-      <BasemapIcon className={classnames(iconStyles.icons, ControlPanelStyles.basemapIcon)} />
-    );
-
-    const filtersIcon = (
-      <FiltersIcon className={classnames(iconStyles.icons, ControlPanelStyles.filtersIcon)} />
-    );
-
-    const layersIcon = (
-      <LayersIcon className={classnames(iconStyles.icons, ControlPanelStyles.layersIcon)} />
-    );
-
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
     const searchHeader = (
@@ -130,64 +128,46 @@ class ControlPanel extends Component {
       </div>);
 
     const searchSubmenu = (
-      <SubMenu title="Vessels" icon={searchIcon} extraHeader={searchHeader} onBack={this.onBack}>
+      <SubMenu title="Vessels" icon={this.renderIcon('vessels')} extraHeader={searchHeader} onBack={this.onBack}>
         <VesselInfoPanel />
-        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
-          <div className={ControlPanelStyles.wrapper} >
-            <div className={ControlPanelStyles.contentAccordion} >
-              { this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
-                <div className={ControlPanelStyles.contentAccordion} >
-                  <a
-                    className="loginRequiredLink"
-                    onClick={this.props.login}
-                  >Only registered users can use the search feature. Click here to log in.</a>
-                  <PinnedTracks />
-                </div> :
-                <div className={ControlPanelStyles.contentAccordion} >
-                  <SearchPanel />
-                  <PinnedTracks />
-                </div>
-              }
-            </div>
+        { this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
+          <div>
+            <a
+              className="loginRequiredLink"
+              onClick={this.props.login}
+            >Only registered users can use the search feature. Click here to log in.</a>
+            <PinnedTracks />
+          </div> :
+          <div>
+            <SearchPanel />
+            <PinnedTracks />
           </div>
-        </div>
+        }
       </SubMenu>
     );
 
     const basemapSubmenu = (
-      <SubMenu title="Basemap" icon={basemapIcon} onBack={this.onBack}>
-        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
-          <div className={ControlPanelStyles.wrapper} >
-            <BasemapPanel />
-          </div>
-        </div>
+      <SubMenu title="Basemap" icon={this.renderIcon('basemap')} onBack={this.onBack}>
+        <BasemapPanel />
       </SubMenu>
     );
 
     const layerSubmenu = (
-      <SubMenu title="Layers" icon={layersIcon} onBack={this.onBack}>
-        <div className={classnames(ControlPanelStyles.contentAccordion, ControlPanelStyles._layers)} >
-          <div className={ControlPanelStyles.wrapper} >
-            <LayerPanel />
-            <LayerManagement />
-          </div>
-        </div>
+      <SubMenu title="Layers" icon={this.renderIcon('layers')} onBack={this.onBack}>
+        <LayerPanel />
+        <LayerManagement />
       </SubMenu>
     );
 
     const filterSubmenu = (
-      <SubMenu title="Filters" icon={filtersIcon} onBack={this.onBack}>
-        <div className={ControlPanelStyles.contentAccordion} >
-          <FilterPanel />
-        </div>
+      <SubMenu title="Filters" icon={this.renderIcon('filters')} onBack={this.onBack}>
+        <FilterPanel />
       </SubMenu>
     );
 
     const areaSubmenu = (
-      <SubMenu title="Area of interest" icon={filtersIcon} onBack={this.onBack}>
-        <div className={ControlPanelStyles.contentAccordion} >
-          <AreasPanel />
-        </div>
+      <SubMenu title="Area of interest" icon={this.renderIcon('filters')} onBack={this.onBack}>
+        <AreasPanel />
       </SubMenu>
     );
 
@@ -213,11 +193,11 @@ class ControlPanel extends Component {
                   [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches) })}
                 >
                   {this.renderResume()}
-                  <MenuLink title="Vessels" icon={searchIcon} onClick={() => this.changeActiveSubmenu('VESSELS')} />
-                  <MenuLink title="Basemap" icon={basemapIcon} onClick={() => this.changeActiveSubmenu('BASE_MAP')} />
-                  <MenuLink title="Layers" icon={layersIcon} onClick={() => this.changeActiveSubmenu('LAYERS')} />
-                  <MenuLink title="Filters" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('FILTERS')} />
-                  <MenuLink title="Area of interest" icon={filtersIcon} onClick={() => this.changeActiveSubmenu('AREAS')} />
+                  <MenuLink title="Vessels" icon={this.renderIcon('vessels')} onClick={() => this.changeActiveSubmenu('VESSELS')} />
+                  <MenuLink title="Layers" icon={this.renderIcon('layers')} onClick={() => this.changeActiveSubmenu('LAYERS')} />
+                  <MenuLink title="Filters" icon={this.renderIcon('filters')} onClick={() => this.changeActiveSubmenu('FILTERS')} />
+                  <MenuLink title="Area of interest" icon={this.renderIcon('filters')} onClick={() => this.changeActiveSubmenu('AREAS')} />
+                  <MenuLink title="Basemap" icon={this.renderIcon('basemap')} onClick={() => this.changeActiveSubmenu('BASE_MAP')} />
                 </div>
               }
             </div>
@@ -245,7 +225,8 @@ ControlPanel.propTypes = {
   isReportStarted: PropTypes.bool,
   setSubmenu: PropTypes.func.isRequired,
   activeSubmenu: PropTypes.string.isRequired,
-  openTimebarInfoModal: PropTypes.func
+  openTimebarInfoModal: PropTypes.func,
+  setDrawingMode: PropTypes.func
 };
 
 export default ControlPanel;
