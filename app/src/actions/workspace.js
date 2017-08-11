@@ -18,7 +18,7 @@ import {
   SET_WORKSPACE_ID
 } from 'actions';
 import { initLayers } from 'actions/layers';
-import { saveAreas } from 'actions/areas';
+import { saveAreaOfInterest } from 'actions/areas';
 import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
@@ -193,7 +193,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(loadRecentVesselHistory());
 
-  if (workspaceData.areas) dispatch(saveAreas(workspaceData.areas));
+  if (workspaceData.areas) {
+    workspaceData.areas.forEach((area) => {
+      dispatch(saveAreaOfInterest(area));
+    });
+  }
 }
 
 function processNewWorkspace(data) {

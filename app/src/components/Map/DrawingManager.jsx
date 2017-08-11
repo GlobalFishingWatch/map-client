@@ -65,7 +65,7 @@ class DrawingManager extends Component {
     this.deletePolygonFromMap(polygon);
     this.toggleDrawingManager();
     this.addEditablePolygonToMap(coordinates);
-    this.props.saveEditingArea({ coordinates });
+    this.props.updateWorkingAreaOfInterest({ coordinates });
   }
 
   componentWillUnmount() {
@@ -98,7 +98,7 @@ class DrawingManager extends Component {
 
   updateCoordinates(polygon) {
     const coordinates = this.getPolygonCoordinates(polygon);
-    this.props.saveEditingArea({ coordinates });
+    this.props.updateWorkingAreaOfInterest({ coordinates });
   }
 
   addEditablePolygonToMap(coords) {
@@ -117,7 +117,7 @@ class DrawingManager extends Component {
 
 DrawingManager.propTypes = {
   map: PropTypes.object.isRequired,
-  saveEditingArea: PropTypes.func.isRequired,
+  updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   polygonColor: PropTypes.string
 };
 
