@@ -26,18 +26,14 @@ class AreasForm extends Component {
   }
 
   resetForm() {
-    const resetedEditingArea = { name: null, color: Object.keys(COLORS)[0], coordinates: [] };
+    const resetedEditingArea = { name: '', color: Object.keys(COLORS)[0], coordinates: [] };
     this.props.updateWorkingAreaOfInterest(resetedEditingArea);
   }
 
   onAreaSave() {
-    if (this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name) {
-      this.props.saveAreaOfInterest();
-      this.resetForm();
-      this.props.setDrawingMode(false);
-    } else {
-      console.info('You need a name and to draw a polygon');
-    }
+    this.props.saveAreaOfInterest();
+    this.resetForm();
+    this.props.setDrawingMode(false);
   }
 
   onNameChange(event) {
@@ -50,61 +46,55 @@ class AreasForm extends Component {
   }
 
   render() {
-    const { name, coordinates, color } = this.props.editingArea;
-
-    if (!this.props.drawing) {
-      return (
-        <div >
-          <button
-            className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
-            onClick={this.onAddArea}
-          >
-            Add area
-          </button >
-        </div >
-      );
-    }
-
-    const saveButtonEnabled = coordinates.length !== 0 && name.length !== 0;
-
+    const { drawing } = this.props;
+    const { name, color } = this.props.editingArea;
+    const saveAllowed = this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name;
     return (
       <div className={areasPanelStyles.areasPanel} >
-        <input
-          type="text"
-          onInput={e => this.onNameChange(e)}
-          className={areasPanelStyles.nameInput}
-          placeholder="Area name"
-          value={name}
-        />
-        <div className={classnames(controlPanelStyles.lightPanel)} >
-          <ColorPicker color={color} onColorChange={this.onColorChange} />
-        </div >
-        <div className={classnames(areasPanelStyles.actionButtons)} >
-          <button
-            className={classnames([buttonStyles.button])}
-            onClick={this.onCancel}
-          >
-            Cancel
-          </button >
-          <button
-            disabled={!saveButtonEnabled}
-            className={classnames(buttonStyles.button,
-              { [`${buttonStyles._primary}`]: saveButtonEnabled },
-              { [`${buttonStyles._disabled}`]: !saveButtonEnabled }
-            )}
-            onClick={this.onAreaSave}
-          >
-            Save
-          </button >
-        </div >
-      </div >
+        { drawing ?
+          <div className={areasPanelStyles.areasPanel} >
+            <input
+              type="text"
+              onInput={e => this.onNameChange(e)}
+              className={areasPanelStyles.nameInput}
+              placeholder="Area name"
+              value={name}
+            />
+
+            <div className={classnames(controlPanelStyles.lightItem)}>
+              <ColorPicker color={color} onColorChange={this.onColorChange} />
+            </div>
+            <div className={classnames(areasPanelStyles.actionButtons)}>
+              <button
+                className={classnames([buttonStyles.button])}
+                onClick={this.onCancel}
+              >
+                Cancel
+              </button>
+              {saveAllowed && <button
+                className={classnames([buttonStyles.button, buttonStyles._primary])}
+                onClick={this.onAreaSave}
+              >
+                Save
+              </button>}
+            </div>
+          </div> :
+          <div>
+            <button
+              className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
+              onClick={this.onAddArea}
+            >
+              Add area of interest
+            </button>
+          </div> }
+      </div>
     );
   }
 }
 
 AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
-  saveAreaOfInterest: PropTypes.func.isRequired,
+  saveAreaOfInterestOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
