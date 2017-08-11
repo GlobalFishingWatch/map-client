@@ -20,9 +20,7 @@ class VesselInfoPanel extends Component {
     super(props);
 
     this.state = {
-      isExpanded: true // expanded by default to hide the fact that accordion will remain opened.
-      // TODO: close the accordion when the info panel appears.
-      // TODO: replace accordion component
+      isExpanded: true
     };
   }
 

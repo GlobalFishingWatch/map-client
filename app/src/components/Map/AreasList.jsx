@@ -12,7 +12,7 @@ function AreasList({ areas, recentlyCreated, toggleAreaVisibility, deleteArea })
     <div className={areasPanelStyles.areasList} >
       { areas && areas.map((area, i) => {
         let recentLastArea = false;
-        let itemClassNames = [controlPanelStyles.panel];
+        let itemClassNames = [controlPanelStyles.item];
         if (recentlyCreated && i === (areas.length - 1)) {
           recentLastArea = true;
           itemClassNames = itemClassNames.concat([areasPanelStyles.newItem]);

@@ -34,7 +34,7 @@
   left: 50%;
   position: absolute;
   text-align: center;
-  top: calc(#{$header-height-mobile} + #{$accordion-mobile-height});
+  top: calc(#{$header-height-mobile} + #{$mobile-height});
   transform: translate(-50%, 0);
   width: 100%;
   z-index: 101;

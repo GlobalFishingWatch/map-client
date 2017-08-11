@@ -1,0 +1,53 @@
+@import '../settings';
+
+.menuLink {
+  align-items: center;
+  color: $color-5;
+  display: inline-flex;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @media #{$mq-mobile-large} {
+    border-bottom: 1px solid $color-7;
+    display: block;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .header {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding: 10px 15px;
+    
+    @media #{$mq-mobile-large} {
+      flex-direction: row;
+
+      &:hover {
+        background-color: rgba($color-3, .2);
+        border-radius: 4px;
+      }
+    }
+  }
+
+
+  .title {
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-xxs-small;
+    font-weight: $font-weight-bold;
+    margin: 5px 0 0;
+    text-align: center;
+    text-transform: uppercase;
+
+    @media #{$mq-mobile-large} {
+      font-size: $font-size-x-small;
+      margin: 0;
+      text-align: left;
+    }
+  }
+}
