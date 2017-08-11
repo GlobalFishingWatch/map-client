@@ -27,13 +27,13 @@ class AreasPanel extends Component {
   }
 
   resetForm() {
-    const resetedEditingArea = { name: null, color: Object.keys(COLORS)[0], coordinates: [] };
-    this.props.saveEditingArea(resetedEditingArea);
+    const resetEditingArea = { name: null, color: Object.keys(COLORS)[0], coordinates: [] };
+    this.props.updateWorkingAreaOfInterest(resetEditingArea);
   }
 
   onAreaSave() {
     if (this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name) {
-      this.props.saveArea();
+      this.props.saveAreaOfInterest();
       this.resetForm();
       this.props.setDrawingMode(false);
     } else {
@@ -43,59 +43,70 @@ class AreasPanel extends Component {
 
   onNameChange(event) {
     const name = event.target.value;
-    this.props.saveEditingArea({ name });
+    this.props.updateWorkingAreaOfInterest({ name });
   }
 
   onColorChange(color) {
-    this.props.saveEditingArea({ color });
+    this.props.updateWorkingAreaOfInterest({ color });
   }
 
   render() {
-    const { name, color } = this.props.editingArea;
-    return (
-      (this.props.drawing ?
-        <div className={areasPanelStyles.areasPanel} >
-          <input
-            type="text"
-            onChange={e => this.onNameChange(e)}
-            className={areasPanelStyles.nameInput}
-            placeholder="Area name"
-            value={name}
-          />
-          <div className={classnames(controlPanelStyles.lightPanel)}>
-            <ColorPicker color={color} onColorChange={this.onColorChange} />
-          </div>
-          <div className={classnames(areasPanelStyles.actionButtons)}>
-            <button
-              className={classnames([buttonStyles.button])}
-              onClick={this.onCancel}
-            >
-              Cancel
-            </button>
-            <button
-              className={classnames([buttonStyles.button, buttonStyles._primary])}
-              onClick={this.onAreaSave}
-            >
-              Save
-            </button>
-          </div>
-        </div> :
-        <div>
+    const { name, coordinates, color } = this.props.editingArea;
+
+    if (!this.props.drawing) {
+      return (
+        <div >
           <button
             className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
             onClick={this.onAddArea}
           >
             Add area
-          </button>
-        </div>)
+          </button >
+        </div >
+      );
+    }
+
+    const saveButtonEnabled = coordinates.length !== 0 && name.length !== 0;
+
+    return (
+      <div className={areasPanelStyles.areasPanel} >
+        <input
+          type="text"
+          onInput={e => this.onNameChange(e)}
+          className={areasPanelStyles.nameInput}
+          placeholder="Area name"
+          value={name}
+        />
+        <div className={classnames(controlPanelStyles.lightPanel)} >
+          <ColorPicker color={color} onColorChange={this.onColorChange} />
+        </div >
+        <div className={classnames(areasPanelStyles.actionButtons)} >
+          <button
+            className={classnames([buttonStyles.button])}
+            onClick={this.onCancel}
+          >
+            Cancel
+          </button >
+          <button
+            disabled={!saveButtonEnabled}
+            className={classnames(buttonStyles.button,
+              { [`${buttonStyles._primary}`]: saveButtonEnabled },
+              { [`${buttonStyles._disabled}`]: !saveButtonEnabled }
+            )}
+            onClick={this.onAreaSave}
+          >
+            Save
+          </button >
+        </div >
+      </div >
     );
   }
 }
 
 AreasPanel.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
-  saveArea: PropTypes.func.isRequired,
-  saveEditingArea: PropTypes.func.isRequired,
+  saveAreaOfInterest: PropTypes.func.isRequired,
+  updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   drawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
 };

@@ -1,31 +1,20 @@
-import { SAVE_AREA, SAVE_EDITING_AREA } from 'actions';
+import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST } from 'actions';
 
-export function saveArea() {
+export function saveAreaOfInterest() {
   return (dispatch, getState) => {
     const area = Object.assign(getState().areas.editingArea);
     dispatch({
-      type: SAVE_AREA,
+      type: SAVE_AREA_OF_INTEREST,
       payload: { area }
     });
   };
 }
 
-export function saveAreas(areas) {
-  return (dispatch) => {
-    areas.forEach((area) => {
-      dispatch({
-        type: SAVE_AREA,
-        payload: { area }
-      });
-    });
-  };
-}
-
-export function saveEditingArea(area) {
+export function updateWorkingAreaOfInterest(area) {
   const { coordinates, name, color } = area;
   return (dispatch) => {
     dispatch({
-      type: SAVE_EDITING_AREA,
+      type: UPDATE_WORKING_AREA_OF_INTEREST,
       payload: { coordinates, name, color }
     });
   };
