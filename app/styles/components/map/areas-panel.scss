@@ -50,11 +50,15 @@
   }
 
   .areaItem {
-    align-items: center;
     display: flex;
-    flex-wrap: wrap;
-    .name {
-      padding-left: 14px;
+    justify-content: space-between;
+    .nameContainer {
+      display: flex;
+      align-items: center;
+
+      .name {
+        padding-left: 14px;
+      }
     }
   }
 }

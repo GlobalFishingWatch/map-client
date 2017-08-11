@@ -1,4 +1,4 @@
-import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY, SET_RECENTLY_CREATED } from 'actions';
+import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY, SET_RECENTLY_CREATED, DELETE_AREA } from 'actions';
 import { COLORS } from 'constants';
 
 const initialState = {
@@ -29,6 +29,10 @@ export default function (state = initialState, action) {
           visible: state.editingArea.visible
         }
       });
+    case DELETE_AREA: {
+      const updatedAreas = state.data.filter((area, i) => i !== action.payload.areaIndex);
+      return Object.assign({}, state, { data: updatedAreas });
+    }
     case TOGGLE_AREA_VISIBILITY: {
       const updatedAreas = state.data.map((area, i) => {
         if (i === action.payload.areaIndex) {

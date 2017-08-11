@@ -1,4 +1,4 @@
-import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY } from 'actions';
+import { SAVE_AREA_OF_INTEREST, UPDATE_WORKING_AREA_OF_INTEREST, TOGGLE_AREA_VISIBILITY, SET_RECENTLY_CREATED, DELETE_AREA } from 'actions';
 
 export function saveAreaOfInterest() {
   return (dispatch, getState) => {
@@ -30,10 +30,15 @@ export function setRecentlyCreated(value) {
 }
 
 export function toggleAreaVisibility(areaIndex) {
-  return (dispatch) => {
-    dispatch({
-      type: TOGGLE_AREA_VISIBILITY,
-      payload: { areaIndex }
-    });
+  return {
+    type: TOGGLE_AREA_VISIBILITY,
+    payload: { areaIndex }
+  };
+}
+
+export function deleteArea(areaIndex) {
+  return {
+    type: DELETE_AREA,
+    payload: { areaIndex }
   };
 }
