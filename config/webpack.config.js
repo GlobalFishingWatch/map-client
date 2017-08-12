@@ -118,6 +118,7 @@ const webpackConfig = {
             {
               loader: 'css-loader',
               options: {
+                minimize: (envVariables.NODE_ENV === 'production'),
                 sourceMap: true,
                 modules: true,
                 importLoaders: 1,
@@ -149,7 +150,10 @@ const webpackConfig = {
           'style-loader',
           {
             loader: 'css-loader',
-            options: { importLoaders: 1 }
+            options: {
+              importLoaders: 1,
+              minimize: (envVariables.NODE_ENV === 'production')
+            }
           },
           {
             loader: 'postcss-loader',

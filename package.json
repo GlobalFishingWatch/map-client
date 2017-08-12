@@ -1,6 +1,6 @@
 {
   "name": "global-fishing-watch",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
   "main": "server.js",
   "scripts": {
@@ -78,8 +78,8 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "svg-react-loader": "^0.4.4",
-    "webpack": "^2.7.0",
-    "webpack-bundle-analyzer": "^1.5.3",
+    "webpack": "^3.5.4",
+    "webpack-bundle-analyzer": "^2.9.0",
     "webpack-bundle-size-analyzer": "^2.7.0",
     "webpack-dev-middleware": "^1.12.0"
   },
