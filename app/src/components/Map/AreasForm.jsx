@@ -49,45 +49,52 @@ class AreasForm extends Component {
     const { drawing } = this.props;
     const { name, color } = this.props.editingArea;
     const saveAllowed = this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name;
-    return (
-      <div className={areasPanelStyles.areasPanel} >
-        { drawing ?
-          <div className={areasPanelStyles.areasPanel} >
-            <input
-              type="text"
-              onInput={e => this.onNameChange(e)}
-              className={areasPanelStyles.nameInput}
-              placeholder="Area name"
-              value={name}
-            />
 
-            <div className={classnames(controlPanelStyles.lightItem)}>
-              <ColorPicker color={color} onColorChange={this.onColorChange} />
-            </div>
-            <div className={classnames(areasPanelStyles.actionButtons)}>
-              <button
-                className={classnames([buttonStyles.button])}
-                onClick={this.onCancel}
-              >
-                Cancel
-              </button>
-              {saveAllowed && <button
-                className={classnames([buttonStyles.button, buttonStyles._primary])}
-                onClick={this.onAreaSave}
-              >
-                Save
-              </button>}
-            </div>
-          </div> :
-          <div>
+    if (!drawing) {
+      return (
+        <div className={areasPanelStyles.areasPanel} >
+          <div >
             <button
               className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
               onClick={this.onAddArea}
             >
               Add area of interest
-            </button>
-          </div> }
-      </div>
+            </button >
+          </div >
+        </div >
+      );
+    }
+
+    return (
+      <div className={areasPanelStyles.areasPanel} >
+        <div className={areasPanelStyles.areasPanel} >
+          <input
+            type="text"
+            onInput={e => this.onNameChange(e)}
+            className={areasPanelStyles.nameInput}
+            placeholder="Area name"
+            value={name}
+          />
+
+          <div className={classnames(controlPanelStyles.lightItem)} >
+            <ColorPicker color={color} onColorChange={this.onColorChange} />
+          </div >
+          <div className={classnames(areasPanelStyles.actionButtons)} >
+            <button
+              className={classnames([buttonStyles.button])}
+              onClick={this.onCancel}
+            >
+              Cancel
+            </button >
+            {saveAllowed && <button
+              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              onClick={this.onAreaSave}
+            >
+              Save
+            </button >}
+          </div >
+        </div >
+      </div >
     );
   }
 }
