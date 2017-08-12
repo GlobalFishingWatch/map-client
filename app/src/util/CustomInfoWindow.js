@@ -1,7 +1,7 @@
 // makes an InfowWindow out of a generic OverlayView in order to allow for full
 // customization of the infowindow. This should be instanciated by a React component,
 // which will render html into the CustomInfoWindow's div property.
-// See PolygonReport.jsx for an example of implementation.
+// See from '.jsx for an example of implementation.
 
 export default class CustomInfoWindow extends google.maps.OverlayView {
   constructor(map) {

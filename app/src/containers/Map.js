@@ -17,12 +17,12 @@ import {
   setUrlWorkspaceId,
   saveWorkspace
 } from 'actions/workspace';
-import { toggleLayerVisibility, confirmLayerRemoval } from 'actions/layers';
-import { clearPolygon } from 'actions/report';
-import { setSearchModalVisibility } from 'actions/search';
-import { loadTimebarChartData } from 'actions/timebar';
+import { toggleLayerVisibility, confirmLayerRemoval } from 'layers/layersActions';
+import { clearPolygon } from 'report/reportActions';
+import { setSearchModalVisibility } from 'search/searchActions';
+import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
-import { trackExternalLinkClicked } from 'actions/analytics';
+import { trackExternalLinkClicked } from 'analytics/analyticsActions';
 
 const mapStateToProps = state => ({
   areas: state.areas.data,
@@ -34,7 +34,7 @@ const mapStateToProps = state => ({
   trackBounds: state.vesselInfo.trackBounds,
   token: state.user.token,
   shareModalOpenState: state.map.shareModal.open,
-  basemaps: state.map.basemaps,
+  basemaps: state.basemap.basemaps,
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
   supportModal: state.map.supportModal,

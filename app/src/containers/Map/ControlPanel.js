@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import ControlPanel from 'components/Map/ControlPanel';
-import { setSearchResultVisibility } from 'actions/search';
+import { setSearchResultVisibility } from 'search/searchActions';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
-import { toggleLayerPanelEditMode } from 'actions/layers';
-import { setRecentlyCreated } from 'actions/areas';
+import { toggleLayerPanelEditMode } from 'layers/layersActions';
+import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
 import { login } from 'actions/user';
 import { openTimebarInfoModal, setSubmenu, setDrawingMode } from 'actions/map';
 

@@ -5,22 +5,23 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
-import reportReducer from 'reducers/report';
+import reportReducer from 'report/reportReducer';
 import heatmapReducer from 'reducers/heatmap';
-import layerLibraryReducer from 'reducers/layersLibrary';
-import layersReducer from 'reducers/layers';
+import layerLibraryReducer from 'layers/layersLibraryReducer';
+import layersReducer from 'layers/layersReducer';
 import mapReducer from 'reducers/map';
-import analyticsMiddleware from 'middleware/analytics';
-import areasReducer from 'reducers/areas';
+import analyticsMiddleware from 'analytics/analyticsMiddleware';
+import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
 import userReducer from 'reducers/user';
-import filtersReducer from 'reducers/filters';
-import contactReducer from 'reducers/contact';
-import searchReducer from 'reducers/search';
+import filtersReducer from 'filters/filtersReducer';
+import contactReducer from 'siteNav/contactReducer';
+import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
-import customLayerReducer from 'reducers/customLayer';
+import customLayerReducer from 'layers/customLayerReducer';
 import modalReducer from 'reducers/modal';
-import timebarReducer from 'reducers/timebar';
-import literalsReducer from 'reducers/literals';
+import timebarReducer from 'timebar/timebarReducer';
+import literalsReducer from 'siteNav/literalsReducer';
+import basemapReducer from 'basemap/basemapReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 
@@ -32,7 +33,7 @@ window.Promise = window.Promise || Promise;
  * @type {Object}
  */
 const reducer = combineReducers({
-  areas: areasReducer,
+  areas: areasOfInterestReducer,
   map: mapReducer,
   user: userReducer,
   filters: filtersReducer,
@@ -46,7 +47,8 @@ const reducer = combineReducers({
   customLayer: customLayerReducer,
   modal: modalReducer,
   timebar: timebarReducer,
-  literals: literalsReducer
+  literals: literalsReducer,
+  basemap: basemapReducer
 });
 
 /**

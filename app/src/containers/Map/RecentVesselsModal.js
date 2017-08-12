@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import RecentVesselsModal from 'components/Map/RecentVesselsModal';
 import { addVessel, clearVesselInfo } from 'actions/vesselInfo';
 import { setRecentVesselsModalVisibility } from 'actions/map';
-import { toggleLayerVisibility } from 'actions/layers';
+import { toggleLayerVisibility } from 'layers/layersActions';
 
 const mapStateToProps = state => ({
   history: state.vesselInfo.history

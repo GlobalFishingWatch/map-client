@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PolygonReport from 'components/Map/PolygonReport';
-import { toggleReportPolygon, clearPolygon } from 'actions/report';
+import { toggleReportPolygon, clearPolygon } from 'report/reportActions';
 
 const mapStateToProps = state => ({
   id: state.report.currentPolygon.id,

@@ -1,4 +1,3 @@
-/* eslint-disable max-len  */
 import {
   INIT_GOOGLE_MAPS,
   SET_ZOOM,
@@ -13,7 +12,6 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
-  SET_BASEMAP,
   SET_TILESET_URL,
   SET_TILESET_ID,
   SET_SUPPORT_MODAL_VISIBILITY,
@@ -25,29 +23,6 @@ import {
 import { MAX_ZOOM_LEVEL } from 'constants';
 
 const initialState = {
-  activeBasemap: 'hybrid',
-  basemaps: [
-    {
-      title: 'hybrid',
-      label: 'Satellite',
-      description: 'The default satellite image view',
-      type: 'GoogleBasemap'
-    },
-    {
-      title: 'Deep Blue',
-      label: 'Deep Blue',
-      description: 'Custom basemap that highlights the data about fishing activity',
-      type: 'Basemap',
-      url: 'https://api.mapbox.com/styles/v1/enriquetuya/cj3vr6qy802b72so7jvennfkg/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ'
-    },
-    {
-      title: 'High Contrast',
-      label: 'High Contrast',
-      description: 'High contrast basemap, that highlights borders and shore. Ideal for usage with projectors',
-      type: 'Basemap',
-      url: 'https://api.mapbox.com/styles/v1/enriquetuya/cj3vr7wzg02cy2rpcx1kteotc/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ'
-    }
-  ],
   drawing: false,
   loading: false,
   loaders: {},
@@ -109,8 +84,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { center: action.payload });
     case SET_CENTER_TILE:
       return Object.assign({}, state, { centerTile: action.payload });
-    case SET_BASEMAP:
-      return Object.assign({}, state, { activeBasemap: action.payload || state.activeBasemap });
     case SHARE_MODAL_OPEN: {
       const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
       return Object.assign({}, state, { shareModal });

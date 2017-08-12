@@ -79,7 +79,8 @@
     "jsx-a11y/accessible-emoji": 0,
     "padded-blocks": 0,
     "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
-    "react/jsx-first-prop-new-line": ["error", "multiline"]
+    "react/jsx-first-prop-new-line": ["error", "multiline"],
+    "import/prefer-default-export": 0
   },
   "settings": {
     "import/resolver": {

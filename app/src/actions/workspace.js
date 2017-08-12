@@ -17,9 +17,9 @@ import {
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID
 } from 'actions';
-import { initLayers } from 'actions/layers';
-import { saveAreaOfInterest } from 'actions/areas';
-import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
+import { initLayers } from 'layers/layersActions';
+import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
+import { setFlagFilters, setOuterTimelineDates } from 'filters/filtersActions';
 import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/colors';
