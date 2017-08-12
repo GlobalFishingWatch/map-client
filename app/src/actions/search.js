@@ -70,7 +70,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
         }
       });
     }
-  );
+    );
 }, 200);
 
 export function setSearchPage(page) {

@@ -98,14 +98,14 @@ class DurationPicker extends Component {
     let durations;
     if (this.state.showSettingsMenu) {
       durations = DURATION_PICKER_OPTIONS.filter(filterFunc)
-      .map((duration, i) =>
-        (<li
-          className={durationPickerStyles.settingsItem}
-          data-index={i}
-          key={i}
-          onClick={e => this.setTimeRange(e)}
-        >{duration.humanize()}</li>)
-      );
+        .map((duration, i) =>
+          (<li
+            className={durationPickerStyles.settingsItem}
+            data-index={i}
+            key={i}
+            onClick={e => this.setTimeRange(e)}
+          >{duration.humanize()}</li >)
+        );
     }
 
     return (
@@ -113,9 +113,11 @@ class DurationPicker extends Component {
         style={style}
         className={durationPickerStyles.durationpicker}
         onClick={() => this.toggleSettingsMenu()}
-        ref={(elem) => { this.svg = elem; }}
+        ref={(elem) => {
+          this.svg = elem;
+        }}
       >
-        <div className={durationPickerStyles.container}>
+        <div className={durationPickerStyles.container} >
           <img
             alt="settings duration"
             src={SettingsIcon}
@@ -123,18 +125,23 @@ class DurationPicker extends Component {
           />
 
           {this.state.showSettingsMenu &&
-          <div className={durationPickerStyles.settingsPanel} ref={(elem) => { this.el = elem; }}>
-            <ul className={durationPickerStyles.settingsList}>
+          <div
+            className={durationPickerStyles.settingsPanel}
+            ref={(elem) => {
+              this.el = elem;
+            }}
+          >
+            <ul className={durationPickerStyles.settingsList} >
               {durations}
-            </ul>
-          </div>
-        }
+            </ul >
+          </div >
+          }
 
-          <div className={durationPickerStyles.text}>
+          <div className={durationPickerStyles.text} >
             {humanizedDuration}
-          </div>
-        </div>
-      </div>
+          </div >
+        </div >
+      </div >
     );
   }
 }
