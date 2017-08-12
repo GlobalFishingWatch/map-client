@@ -13,11 +13,11 @@ import SearchPanel from 'containers/Map/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
-import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
-import BasemapIcon from 'babel!svg-react!assets/icons/basemap-icon.svg?name=BasemapIcon';
-import LayersIcon from 'babel!svg-react!assets/icons/layers-icon.svg?name=LayersIcon';
-import FiltersIcon from 'babel!svg-react!assets/icons/filters-icon.svg?name=FiltersIcon';
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
+import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
+import BasemapIcon from '-!babel-loader!svg-react-loader!assets/icons/basemap-icon.svg?name=BasemapIcon';
+import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
+import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 import PinnedTracks from 'containers/Map/PinnedTracks';
 
 class ControlPanel extends Component {

@@ -7,8 +7,8 @@ import { REPORT_STATUS } from 'constants';
 import iconStyles from 'styles/icons.scss';
 import ReportPanelStyles from 'styles/components/map/report-panel.scss';
 
-import RemovePolygonIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=RemovePolygonIcon';
-import AlertIcon from 'babel!svg-react!assets/icons/alert.svg?name=AlertIcon';
+import RemovePolygonIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=RemovePolygonIcon';
+import AlertIcon from '-!babel-loader!svg-react-loader!assets/icons/alert.svg?name=AlertIcon';
 
 
 class ReportPanel extends Component {

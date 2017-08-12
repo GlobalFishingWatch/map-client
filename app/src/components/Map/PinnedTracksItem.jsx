@@ -5,8 +5,8 @@ import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import icons from 'styles/icons.scss';
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
-import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class PinnedTracksItem extends Component {

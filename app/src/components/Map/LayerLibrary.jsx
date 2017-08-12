@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/layer-library.scss';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
-import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
 import Toggle from 'components/Shared/Toggle';
 
 const SHOW_SEARCH = false;

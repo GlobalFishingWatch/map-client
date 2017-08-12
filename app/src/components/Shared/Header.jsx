@@ -7,7 +7,7 @@ import MenuMobile from 'containers/MenuMobile';
 import BaseStyles from 'styles/_base.scss';
 import HeaderStyles from 'styles/components/shared/header.scss';
 import iconStyles from 'styles/icons.scss';
-import ShareIcon from 'babel!svg-react!assets/icons/share-icon.svg?name=ShareIcon';
+import ShareIcon from '-!babel-loader!svg-react-loader!assets/icons/share-icon.svg?name=ShareIcon';
 
 class Header extends Component {
 

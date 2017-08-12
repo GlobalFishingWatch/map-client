@@ -7,7 +7,7 @@ import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/selector.scss';
 
-import RemoveFilterIcon from 'babel!svg-react!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
+import RemoveFilterIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
 class FilterItem extends Component {
 

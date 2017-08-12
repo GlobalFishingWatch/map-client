@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import ModalStyles from 'styles/components/shared/modal.scss';
-import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
+import Icon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
 

@@ -7,7 +7,7 @@ import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'constants';
 import icons from 'styles/icons.scss';
 import BlendingStyles from 'styles/components/map/layer-blending.scss';
-import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=BlendingIcon';
+import BlendingIcon from '-!babel-loader!svg-react-loader!assets/icons/blending-icon.svg?name=BlendingIcon';
 
 const INPUT_RANGE_DEFAULT_CONFIG = {
   classnames: {

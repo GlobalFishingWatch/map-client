@@ -2,10 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
-
 import LayerListStyles from 'styles/components/map/layer-list.scss';
-
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 
 class BasemapPanel extends Component {
 
