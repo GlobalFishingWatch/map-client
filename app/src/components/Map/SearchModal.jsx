@@ -10,8 +10,8 @@ import ModalStyles from 'styles/components/shared/modal.scss';
 import ResultListStyles from 'styles/components/shared/result-list.scss';
 import SearchModalStyles from 'styles/components/map/search-modal.scss';
 import iconsStyles from 'styles/icons.scss';
-import SearchIcon from 'babel!svg-react!assets/icons/search-icon.svg?name=SearchIcon';
-import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=CloseIcon';
+import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
+import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
 
 class SearchModal extends Component {
 

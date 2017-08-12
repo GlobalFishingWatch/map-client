@@ -22,20 +22,20 @@ const webpackConfig = {
   output: {
     path: path.join(rootPath, 'dist/'),
     filename: '[name]-[hash].js',
-    publicPath: envVariables.PUBLIC_PATH,
+    publicPath: envVariables.PUBLIC_PATH
   },
 
   plugins: [
-    new ExtractTextPlugin('styles.css', {
-      allChunks: true
+    new ExtractTextPlugin({
+      filename: 'styles.css', allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',
       inject: 'body',
-      filename: 'index.html',
+      filename: 'index.html'
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
       GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
@@ -56,11 +56,21 @@ const webpackConfig = {
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: [
+          autoprefixer()
+        ]
+      }
+    })
   ],
 
   resolve: {
-    root: `${process.cwd()}/app`,
+    modules: [
+      `${process.cwd()}/app`,
+      'node_modules'
+    ],
     alias: {
       assets: 'assets',
       actions: 'src/actions',
@@ -73,54 +83,115 @@ const webpackConfig = {
       styles: 'styles',
       util: 'src/util'
     },
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel'
+        use: 'babel-loader'
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image-webpack'
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            query: {
+              optipng: {
+                optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7)
+              },
+              bypassOnDebug: true,
+              gifsicle: {
+                interlaced: true
+              }
+            }
+          }
         ]
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!resolve-url!postcss-loader!sass?sourceMap')
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                modules: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]___[hash:base64:5]'
+              }
+            },
+            'resolve-url-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true,
+                config: {
+                  path: './config/postcss.config.js'
+                }
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true
+              }
+            }
+          ]
+        })
       },
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader!postcss-loader'
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: { importLoaders: 1 }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                path: './config/postcss.config.js'
+              }
+            }
+          }
+        ]
       },
       {
         test: /manifest.json$/,
-        loader: 'file?hash=sha512&digest=hex&name=[hash].[ext]'
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              hashType: 'sha512',
+              digestType: 'hex',
+              name: '[hash].[ext]'
+            }
+          }
+        ]
       },
       {
         test: /\.json$/,
         exclude: /manifest.json$/,
-        loader: 'json-loader'
+        use: 'json-loader'
       },
       {
         test: /\.html$/,
-        loader: 'html?interpolate',
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              interpolate: true,
+              minimize: (envVariables.NODE_ENV === 'production')
+            }
+          }
+        ]
       }
     ]
-  },
-
-  imageWebpackLoader: {
-    optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7),
-    bypassOnDebug: true,
-    interlaced: false
-  },
-  postcss() {
-    return [autoprefixer];
   }
 };
 

@@ -5,9 +5,9 @@ import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
 import icons from 'styles/icons.scss';
-import ReportIcon from 'babel!svg-react!assets/icons/report-icon.svg?name=ReportIcon';
-import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
-import DeleteIcon from 'babel!svg-react!assets/icons/delete-icon.svg?name=DeleteIcon';
+import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report-icon.svg?name=ReportIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {

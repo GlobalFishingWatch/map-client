@@ -8,10 +8,10 @@ import OceanaLogo from 'assets/logos/oceana_logo_white.png';
 import SkytruthLogo from 'assets/logos/skytruth_white.png';
 import GoogleLogo from 'assets/logos/google_logo.png';
 import GFWLogo from 'assets/logos/gfw_logo.png';
-import LDFLogo from 'babel!svg-react!assets/logos/ldf_logo_white.svg?name=LDFLogo';
-import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=FacebookIcon';
-import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
-import SubscribeIcon from 'babel!svg-react!assets/icons/subscribe.svg?name=SubscribeIcon';
+import LDFLogo from '-!babel-loader!svg-react-loader!assets/logos/ldf_logo_white.svg?name=LDFLogo';
+import FacebookIcon from '-!babel-loader!svg-react-loader!assets/icons/facebook.svg?name=FacebookIcon';
+import TwitterIcon from '-!babel-loader!svg-react-loader!assets/icons/twitter.svg?name=TwitterIcon';
+import SubscribeIcon from '-!babel-loader!svg-react-loader!assets/icons/subscribe.svg?name=SubscribeIcon';
 
 class Footer extends Component {
 

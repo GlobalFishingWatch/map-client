@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ShareStyles from 'styles/components/map/share.scss';
 import iconStyles from 'styles/icons.scss';
-import FacebookIcon from 'babel!svg-react!assets/icons/facebook.svg?name=FacebookIcon';
-import TwitterIcon from 'babel!svg-react!assets/icons/twitter.svg?name=TwitterIcon';
-import GooglePlusIcon from 'babel!svg-react!assets/icons/google-plus.svg?name=GooglePlusIcon';
+import FacebookIcon from '-!babel-loader!svg-react-loader!assets/icons/facebook.svg?name=FacebookIcon';
+import TwitterIcon from '-!babel-loader!svg-react-loader!assets/icons/twitter.svg?name=TwitterIcon';
+import GooglePlusIcon from '-!babel-loader!svg-react-loader!assets/icons/google-plus.svg?name=GooglePlusIcon';
 import { EMBED_SIZE_SETTINGS, DEFAULT_EMBED_SIZE } from 'constants';
 
 class Share extends Component {

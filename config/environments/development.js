@@ -6,14 +6,14 @@ const PrettyError = require('pretty-error');
 
 const indexPath = path.join(process.cwd(), 'dist/index.html');
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Webpack middleware
   const webpack = require('webpack');
-  const webpackMiddleware = require('webpack-dev-middleware');
+  const webpackDevMiddleware = require('webpack-dev-middleware');
   const config = require('../webpack.config.js');
 
   const compiler = webpack(config);
-  const middleware = webpackMiddleware(compiler, {
+  const middleware = webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
     contentBase: 'src',
     stats: {

@@ -9,8 +9,8 @@ import vesselPanelStyles from 'styles/components/vessel-info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import iconStyles from 'styles/icons.scss';
 
-import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
-import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
+import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
+import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin-icon.svg?name=PinIcon';
 
 import { VESSEL_INFO_STATUS } from 'constants';
 

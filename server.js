@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({silent: true});
+require('dotenv').config({ silent: true });
 
 const port = process.env.PORT || 3000;
 const app = require('./config/application');
