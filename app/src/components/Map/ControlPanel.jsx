@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import AreasPanel from 'containers/Map/AreasPanel';
@@ -224,7 +224,7 @@ ControlPanel.propTypes = {
   isEmbedded: PropTypes.bool,
   isReportStarted: PropTypes.bool,
   setSubmenu: PropTypes.func.isRequired,
-  activeSubmenu: PropTypes.string.isRequired,
+  activeSubmenu: PropTypes.string,
   openTimebarInfoModal: PropTypes.func,
   setDrawingMode: PropTypes.func
 };

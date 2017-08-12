@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import ModalStyles from 'styles/components/shared/modal.scss';
 import PromptLayerStyles from 'styles/components/map/prompt-layer.scss';

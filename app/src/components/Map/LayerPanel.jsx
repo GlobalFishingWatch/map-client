@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import LayerItem from 'containers/Map/LayerItem';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
 

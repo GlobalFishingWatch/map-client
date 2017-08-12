@@ -1,4 +1,4 @@
-import React from 'preact';
+import React from 'react';
 import PropTypes from 'prop-types';
 import AreasForm from 'containers/Map/AreasForm';
 import AreasList from 'containers/Map/AreasList';

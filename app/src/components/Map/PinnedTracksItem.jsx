@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import Footer from 'components/Shared/Footer';
 import MapFooterStyles from 'styles/components/map/map-footer.scss';

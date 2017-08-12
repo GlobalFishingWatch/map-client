@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PinnedTracksItem from 'containers/Map/PinnedTracksItem';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';

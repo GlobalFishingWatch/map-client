@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // this is the first time I used D3, please dont hate me
 /* eslint react/sort-comp:0 */
 /* eslint import/no-extraneous-dependencies:0 */
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import { event as d3event, select as d3select } from 'd3-selection';
 import {
   timeDay as d3timeDay,

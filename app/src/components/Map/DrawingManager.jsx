@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component } from 'preact';
+import { Component } from 'react';
 import { COLORS } from 'constants';
 
 class DrawingManager extends Component {

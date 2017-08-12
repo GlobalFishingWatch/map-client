@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config({silent: true});
+require('dotenv').config({ silent: true });
 
 const path = require('path');
 const express = require('express');
@@ -11,7 +11,7 @@ const rootPath = path.join(process.cwd());
 const app = express();
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 // Serving assets from public folder

@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import platform from 'platform';
@@ -8,7 +8,6 @@ import FilterItem from 'components/Map/FilterItem';
 import { FLAG_FILTERS_LIMIT, FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
-
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
 
@@ -52,7 +51,7 @@ class FilterPanel extends Component {
       return 0;
     });
 
-    countryOptions.push(<option key="" value="">All countries</option>);
+    countryOptions.push(<option key="" value="" >All countries</option >);
 
     const supportsEmojiFlags =
       ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
@@ -60,7 +59,7 @@ class FilterPanel extends Component {
 
     countryNames.forEach((country) => {
       const label = (supportsEmojiFlags) ? `${country.name} ${country.icon}` : country.name;
-      countryOptions.push(<option key={country.id} value={country.id}>{label}</option>);
+      countryOptions.push(<option key={country.id} value={country.id} >{label}</option >);
     });
 
     return countryOptions;
@@ -70,7 +69,7 @@ class FilterPanel extends Component {
     const updatedFilters = cloneDeep(this.props.flags);
     if (!updatedFilters[index]) return;
 
-    Object.assign(updatedFilters[index], filter);
+    updatedFilters[index] = Object.assign({}, updatedFilters[index], filter);
 
     this.props.setFlagFilters(updatedFilters);
 
@@ -125,19 +124,19 @@ class FilterPanel extends Component {
     });
 
     return (
-      <div className={flagFilterStyles.flagFilters}>
+      <div className={flagFilterStyles.flagFilters} >
         {filterSelectors &&
-          <ul className={flagFilterStyles.filterList}>
-            {filterSelectors}
-          </ul>}
+        <ul className={flagFilterStyles.filterList} >
+          {filterSelectors}
+        </ul >}
         {this.props.flags.length < FLAG_FILTERS_LIMIT &&
-          <button
-            className={classnames(MapButtonStyles.button, flagFilterStyles.filterButton)}
-            onClick={() => this.addFilter()}
-          >
-            add filter
-          </button>}
-      </div>
+        <button
+          className={classnames(MapButtonStyles.button, flagFilterStyles.filterButton)}
+          onClick={() => this.addFilter()}
+        >
+          add filter
+        </button >}
+      </div >
     );
   }
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'preact';
+import React from 'react';
 import MenuLinkStyles from 'styles/components/menu-link.scss';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 
