@@ -98,10 +98,6 @@ API key for Google Maps
 
 Environment in which the node server will run (production/development)
 
-#### AUTH_USER + AUTH_PASSWORD
-
-If set, an auth wall will be placed in front of the whole node server
-
 #### COMPLETE_MAP_RENDER
 
 If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.
