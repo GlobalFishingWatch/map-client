@@ -70,7 +70,7 @@ class AreasForm extends Component {
         <div className={areasPanelStyles.areasPanel} >
           <input
             type="text"
-            onInput={e => this.onNameChange(e)}
+            onChange={e => this.onNameChange(e)}
             className={areasPanelStyles.nameInput}
             placeholder="Area name"
             value={name}

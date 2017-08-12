@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
@@ -31,7 +31,7 @@ export default class PolygonReport extends Component {
 
   componentDidUpdate() {
     if (!this.infoWindow) return;
-    render(this.element, this.infoWindow.div);
+    ReactDOM.render(this.element, this.infoWindow.div);
     if (this.props.latLng) {
       this.infoWindow.setLatLng(this.props.latLng);
     }

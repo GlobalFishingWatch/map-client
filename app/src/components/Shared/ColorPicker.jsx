@@ -18,7 +18,7 @@ class ExpandButton extends Component {
           name="color"
           id={color}
           value={color}
-          onClick={e => this.onColorChange(e)}
+          onChange={e => this.onColorChange(e)}
           checked={this.props.color === color}
         />
         <label htmlFor={color} className={classnames(colorPickerStyles[color])} />
@@ -37,7 +37,7 @@ class ExpandButton extends Component {
 
 ExpandButton.propTypes = {
   onColorChange: PropTypes.func.isRequired,
-  color: PropTypes.func
+  color: PropTypes.string
 };
 
 export default ExpandButton;

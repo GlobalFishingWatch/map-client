@@ -23,8 +23,27 @@ class DrawingManager extends Component {
 
     this.updateCoordinates = this.updateCoordinates.bind(this);
     this.addEditablePolygonToMap = this.addEditablePolygonToMap.bind(this);
+  }
 
-    if (props.map) this.initDrawingManager(props.map);
+  componentDidMount() {
+    if (this.props.map) {
+      this.initDrawingManager(this.props.map);
+    }
+  }
+
+  initDrawingManager(map) {
+    const drawingOptions = {
+      drawingMode: google.maps.drawing.OverlayType.POLYGON,
+      drawingControl: false,
+      polygonOptions: this.polygonOptions
+    };
+    const drawingManager = new google.maps.drawing.DrawingManager(drawingOptions);
+    drawingManager.setMap(map);
+
+    google.maps.event.addListener(drawingManager, 'polygoncomplete', (polygon) => {
+      this.onPolygonComplete(polygon);
+    });
+    this.setState({ drawingManager });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,20 +93,6 @@ class DrawingManager extends Component {
     if (this.state.polygon) this.deletePolygonFromMap(this.state.polygon);
   }
 
-  initDrawingManager(map) {
-    const drawingOptions = {
-      drawingMode: google.maps.drawing.OverlayType.POLYGON,
-      drawingControl: false,
-      polygonOptions: this.polygonOptions
-    };
-    const drawingManager = new google.maps.drawing.DrawingManager(drawingOptions);
-    drawingManager.setMap(map);
-
-    google.maps.event.addListener(drawingManager, 'polygoncomplete', (polygon) => {
-      this.onPolygonComplete(polygon);
-    });
-    this.setState({ drawingManager });
-  }
 
   toggleDrawingManager() {
     const polygonMode = google.maps.drawing.OverlayType.POLYGON;
