@@ -17,8 +17,8 @@ import {
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
-import { fitTimelineToTrack } from 'actions/filters';
-import { trackSearchResultClicked, trackVesselPointClicked } from 'actions/analytics';
+import { fitTimelineToTrack } from 'filters/filtersActions';
+import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import {
   getTilePelagosPromises,
   getCleanVectorArrays,
@@ -26,7 +26,7 @@ import {
   addWorldCoordinates,
   addTracksPointsRenderingData,
   getTracksPlaybackData
-} from 'actions/helpers/heatmapTileData';
+} from 'util/heatmapTileData';
 
 export function setRecentVesselHistory(seriesgroup) {
   return (dispatch, getState) => {

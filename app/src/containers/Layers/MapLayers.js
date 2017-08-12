@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import MapLayers from 'components/Layers/MapLayers';
-import { showPolygon } from 'actions/report';
+import { showPolygon } from 'report/reportActions';
 import { getTile, releaseTile, getVesselFromHeatmap, highlightVesselFromHeatmap } from 'actions/heatmap';
 
 const mapStateToProps = state => ({

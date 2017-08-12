@@ -18,10 +18,10 @@ import {
   addWorldCoordinates,
   getTilePlaybackData,
   selectVesselsAt
-} from 'actions/helpers/heatmapTileData';
+} from 'util/heatmapTileData';
 import { LAYER_TYPES, LOADERS } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
-import { trackMapClicked } from 'actions/analytics';
+import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 
 /**

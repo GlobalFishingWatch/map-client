@@ -9,7 +9,6 @@ import {
   DELETE_WORKSPACE_ID,
   SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
-  SET_BASEMAP,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_RECENT_VESSELS_VISIBILITY,
@@ -17,7 +16,7 @@ import {
   SET_SUBMENU
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
-import { trackCenterTile } from 'actions/analytics';
+import { trackCenterTile } from 'analytics/analyticsActions';
 import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'constants';
 
 // store the original google maps in the app state.
@@ -27,13 +26,6 @@ export function initGoogleMaps(googleMaps) {
   return {
     type: INIT_GOOGLE_MAPS,
     payload: googleMaps
-  };
-}
-
-export function setBasemap(basemap) {
-  return {
-    type: SET_BASEMAP,
-    payload: basemap
   };
 }
 

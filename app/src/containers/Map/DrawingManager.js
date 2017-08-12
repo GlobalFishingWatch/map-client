@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import DrawingManager from 'components/Map/DrawingManager';
-import { updateWorkingAreaOfInterest } from 'actions/areas';
+import { updateWorkingAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
   map: state.map.googleMaps,

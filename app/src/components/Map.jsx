@@ -7,26 +7,24 @@ import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
 import { MIN_ZOOM_LEVEL } from 'constants';
-
 import ControlPanel from 'containers/Map/ControlPanel';
-import Header from 'containers/Header';
-import Timebar from 'containers/Map/Timebar';
+import Header from 'siteNav/containers/Header';
+import Timebar from 'timebar/containers/Timebar';
 import Modal from 'components/Shared/Modal';
 import Share from 'containers/Map/Share';
-import LayerInfo from 'containers/Map/LayerInfo';
-import ReportPanel from 'containers/Map/ReportPanel';
+import LayerInfo from 'layers/containers/LayerInfo';
+import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'containers/Map/LayerManagementModal';
-import SearchModal from 'containers/Map/SearchModal';
-import SupportForm from 'containers/Map/SupportForm';
+import LayerLibrary from 'layers/containers/LayerManagementModal';
+import SearchModal from 'search/containers/SearchModal';
+import SupportForm from 'siteNav/containers/SupportForm';
 import RecentVesselsModal from 'containers/Map/RecentVesselsModal';
 import WelcomeModal from 'containers/Map/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import DrawingManager from 'containers/Map/DrawingManager';
-import Areas from 'containers/Map/Areas';
-import MapFooter from 'components/Map/MapFooter';
-
+import Areas from 'areasOfInterest/containers/Areas';
+import MapFooter from 'siteNav/components/MapFooter';
 import mapStyles from 'styles/components/map.scss';
 import mapPanelsStyles from 'styles/components/map-panels.scss';
 

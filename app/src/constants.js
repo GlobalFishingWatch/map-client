@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getTimeAtPrecision } from 'actions/helpers/heatmapTileData';
+import { getTimeAtPrecision } from 'util/heatmapTileData';
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day

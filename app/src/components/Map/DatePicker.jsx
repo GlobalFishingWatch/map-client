@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
-import YearMonthForm from 'components/Map/YearMonthForm';
+import YearMonthForm from 'timebar/components/YearMonthForm';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'styles/components/map/datepicker.scss';
 import 'react-day-picker/lib/style.css';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import App from 'components/App';
 import { setToken, getLoggedUser } from 'actions/user';
 import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
-import { loadLiterals } from 'actions/literals';
+import { loadLiterals } from 'siteNav/literalsActions';
 
 const mapStateToProps = state => ({
   welcomeModalUrl: state.modal.welcome.url,
