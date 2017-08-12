@@ -11,6 +11,7 @@ class AreasList extends Component {
         {this.props.areas.map((area, index) => (
           <AreasItem
             area={area}
+            key={index}
             index={index}
           />
         ))}
