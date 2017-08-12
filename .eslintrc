@@ -76,7 +76,10 @@
     "import/no-webpack-loader-syntax": 0,
     "import/extensions": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
-    "jsx-a11y/accessible-emoji": 0
+    "jsx-a11y/accessible-emoji": 0,
+    "padded-blocks": 0,
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
+    "react/jsx-first-prop-new-line": ["error", "multiline"]
   },
   "settings": {
     "import/resolver": {

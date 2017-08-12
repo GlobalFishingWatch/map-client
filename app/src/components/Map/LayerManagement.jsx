@@ -14,16 +14,16 @@ class LayerManagement extends Component {
           onClick={() => this.props.openModal()}
         >
           add layers
-        </button>
+        </button >
         <button
           className={classnames(MapButtonStyles.button, LayerManagementStyles.layerButton,
-          { [MapButtonStyles._disabled]: !this.props.workspaceLayers.filter(e => e.added === true).length > 0 },
-          { [MapButtonStyles._filled]: !!this.props.layerPanelEditMode })}
+            { [MapButtonStyles._disabled]: !this.props.workspaceLayers.filter(e => e.added === true).length > 0 },
+            { [MapButtonStyles._filled]: !!this.props.layerPanelEditMode })}
           onClick={() => {
             this.props.toggleLayerPanelEditMode();
           }}
-        >{editButtonText}</button>
-      </div>
+        >{editButtonText}</button >
+      </div >
     );
   }
 }

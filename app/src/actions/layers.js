@@ -15,7 +15,12 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
 import { refreshFlagFiltersLayers } from 'actions/filters';
-import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
+import {
+  initHeatmapLayers,
+  addHeatmapLayerFromLibrary,
+  removeHeatmapLayerFromLibrary,
+  loadAllTilesForLayer
+} from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
 
 
@@ -34,19 +39,19 @@ function loadLayerHeader(tilesetUrl, token) {
       method: 'GET',
       headers
     })
-    .then((res) => {
-      if (res.status >= 400) {
-        console.warn(`loading of layer failed ${tilesetUrl}`);
-        Promise.reject();
-        return null;
-      }
-      return res.json();
-    })
-    .then((data) => {
-      resolve(data);
-    }).catch((err) => {
-      console.warn(err);
-    });
+      .then((res) => {
+        if (res.status >= 400) {
+          console.warn(`loading of layer failed ${tilesetUrl}`);
+          Promise.reject();
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        resolve(data);
+      }).catch((err) => {
+        console.warn(err);
+      });
   });
 }
 
@@ -138,16 +143,16 @@ export function initLayers(workspaceLayers, libraryLayers) {
 
     const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));
     headersPromise
-    .then(() => {
-      dispatch({
-        type: SET_LAYERS,
-        payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
+      .then(() => {
+        dispatch({
+          type: SET_LAYERS,
+          payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
+        });
+        dispatch(initHeatmapLayers());
+        dispatch(refreshFlagFiltersLayers());
+      }).catch((err) => {
+        console.warn(err);
       });
-      dispatch(initHeatmapLayers());
-      dispatch(refreshFlagFiltersLayers());
-    }).catch((err) => {
-      console.warn(err);
-    });
 
     return headersPromise;
   };
