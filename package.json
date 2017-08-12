@@ -26,7 +26,6 @@
   },
   "homepage": "https://github.com/Vizzuality/GlobalFishingWatch#readme",
   "dependencies": {
-    "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.15.1",
     "classnames": "^2.2.5",
     "d3": "^4.9.1",
