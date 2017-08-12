@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, { render, Component } from 'preact';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 import classnames from 'classnames';
 import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
@@ -30,7 +31,7 @@ export default class PolygonReport extends Component {
 
   componentDidUpdate() {
     if (!this.infoWindow) return;
-    render(this.element, this.infoWindow.div, this.infoWindow.div.lastElementChild);
+    render(this.element, this.infoWindow.div);
     if (this.props.latLng) {
       this.infoWindow.setLatLng(this.props.latLng);
     }
@@ -53,19 +54,19 @@ export default class PolygonReport extends Component {
     this.element = (this.props.id === undefined) ? <div /> : (<div
       className={classnames(CustomInfowindowStyles.customInfowindow, 'js-polygon-report')}
     >
-      <div className={CustomInfowindowStyles.title}>
+      <div className={CustomInfowindowStyles.title} >
         {this.props.name}
-      </div>
-      <div className={CustomInfowindowStyles.description}>
+      </div >
+      <div className={CustomInfowindowStyles.description} >
         {this.props.description}
-      </div>
-      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles.buttonClose)}>
+      </div >
+      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles.buttonClose)} >
         <CloseIcon className={buttonCloseStyles.cross} />
-      </button>
-      <button className={toggleButtonClassName}>
+      </button >
+      <button className={toggleButtonClassName} >
         {toggleButtonText}
-      </button>
-    </div>);
+      </button >
+    </div >);
 
     return null;
   }

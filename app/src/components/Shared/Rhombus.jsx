@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import iconBlueBox from 'assets/icons/arrow_box.svg';
 import iconWhiteBox from 'assets/icons/arrow_box_white.svg';
 

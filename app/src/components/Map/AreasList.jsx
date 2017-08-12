@@ -1,4 +1,4 @@
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AreasItem from 'containers/Map/AreasItem';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';

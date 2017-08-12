@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import moment from 'moment';
 import 'styles/components/map/datepicker.scss';
 import 'react-day-picker/lib/style.css';

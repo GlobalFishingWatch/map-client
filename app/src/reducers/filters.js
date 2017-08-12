@@ -67,10 +67,12 @@ export default function (state = initialState, action) {
         timelineOuterExtent
       });
     }
-    case SET_FLAG_FILTERS:
+    case SET_FLAG_FILTERS: {
       return Object.assign({}, state, {
         flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers
       });
+    }
+
     case SET_PLAYING_STATUS:
       return Object.assign({}, state, {
         timelinePaused: action.payload

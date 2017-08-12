@@ -1,6 +1,6 @@
 /* eslint-disable react/no-danger */
 
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import LayerInfoStyles from 'styles/components/map/layer-info.scss';
 

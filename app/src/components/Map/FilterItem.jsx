@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_FILTERS_MOBILE } from 'constants';
-
+import { REVERSE_TOOLTIP_FILTERS_MOBILE, DEFAULT_FILTER_HUE } from 'constants';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/selector.scss';
@@ -17,19 +16,11 @@ class FilterItem extends Component {
   }
 
   onChangeHue(hue) {
-    const filter = {};
-
-    filter.hue = hue;
-
-    this.props.updateFilters(filter, this.props.index);
+    this.props.updateFilters({ hue }, this.props.index);
   }
 
-  onChangeCountry(country) {
-    const filter = {};
-
-    filter.flag = country;
-
-    this.props.updateFilters(filter, this.props.index);
+  onChangeCountry(flag) {
+    this.props.updateFilters({ flag: flag || undefined }, this.props.index);
   }
 
   onRemoveFilter() {
@@ -43,26 +34,28 @@ class FilterItem extends Component {
   }
 
   render() {
-    const hueValue = this.props.filter.hue;
+    const hueValue = this.props.filter.hue || DEFAULT_FILTER_HUE;
 
     return (
       <li
         className={flagFilterStyles.filterItem}
         key={this.props.index}
       >
-        <div className={selectorStyles.selector}>
+        <div className={selectorStyles.selector} >
           <select
             name="country"
             onChange={e => this.onChangeCountry(e.target.value)}
             value={this.props.filter.flag}
-            ref={(selector) => { this.selector = selector; }}
+            ref={(selector) => {
+              this.selector = selector;
+            }}
           >
             {this.props.countryOptions}
-          </select>
-        </div>
-        <div className={flagFilterStyles.filterOption}>
-          <ul className={flagFilterStyles.filterOptionList}>
-            <li className={flagFilterStyles.filterOptionItem}>
+          </select >
+        </div >
+        <div className={flagFilterStyles.filterOption} >
+          <ul className={flagFilterStyles.filterOptionList} >
+            <li className={flagFilterStyles.filterOptionItem} >
               <LayerBlendingOptionsTooltip
                 displayHue
                 hueValue={hueValue}
@@ -71,16 +64,16 @@ class FilterItem extends Component {
                 visible={this.props.showBlending}
                 toggleVisibility={() => this.toggleBlending()}
               />
-            </li>
-            <li className={flagFilterStyles.filterOptionItem}>
+            </li >
+            <li className={flagFilterStyles.filterOptionItem} >
               <RemoveFilterIcon
                 className={classnames(IconStyles.icon, IconStyles.deleteCrossIcon, flagFilterStyles.iconDeleteCross)}
                 onClick={() => this.onRemoveFilter()}
               />
-            </li>
-          </ul>
-        </div>
-      </li>
+            </li >
+          </ul >
+        </div >
+      </li >
     );
   }
 }

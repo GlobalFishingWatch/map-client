@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Component } from 'preact';
+import { Component } from 'react';
 import { COLORS } from 'constants';
 
 class Areas extends Component {
@@ -65,7 +65,7 @@ class Areas extends Component {
 }
 
 Areas.propTypes = {
-  map: PropTypes.object.isRequired,
+  map: PropTypes.object,
   areas: PropTypes.array.isRequired
 };
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 import assign from 'lodash/assign';
 import classnames from 'classnames';
@@ -11,12 +11,12 @@ import BlendingIcon from 'babel!svg-react!assets/icons/blending-icon.svg?name=Bl
 
 const INPUT_RANGE_DEFAULT_CONFIG = {
   classnames: {
-    component: 'blendingRange',
-    labelMax: 'label _max',
-    labelMin: 'label _min',
-    labelValue: 'label _current',
-    trackActive: 'trackActive',
-    trackContainer: 'trackContainer',
+    inputRange: 'blendingRange',
+    maxLabel: 'label _max',
+    minLabel: 'label _min',
+    valueLabel: 'label _current',
+    activeTrack: 'trackActive',
+    track: 'trackContainer',
     sliderContainer: 'thumbContainer',
     slider: 'thumb'
   }
@@ -43,7 +43,7 @@ class LayerBlendingOptionsTooltip extends Component {
       value: this.props.hueValue
     });
 
-    this.hueRangeConfig.classnames.component = 'blendingRange _hue';
+    this.hueRangeConfig.classnames.inputRange = 'blendingRange _hue';
 
     this.state = {
       opacityRangeValue: this.opacityRangeConfig.value,
@@ -79,18 +79,10 @@ class LayerBlendingOptionsTooltip extends Component {
 
   onChangeOpacity(value) {
     const transparency = parseFloat(value) / 100;
-    this.setState({
-      opacityRangeValue: value
-    });
-
     this.props.onChangeOpacity(transparency);
   }
 
   onChangeHue(value) {
-    this.setState({
-      hueRangeValue: value
-    });
-
     this.props.onChangeHue(value);
   }
 
@@ -116,10 +108,10 @@ class LayerBlendingOptionsTooltip extends Component {
             Hue
             <InputRange
               classNames={this.hueRangeConfig.classnames}
-              value={this.state.hueRangeValue}
+              value={this.props.hueValue}
               maxValue={this.hueRangeConfig.maxValue}
               minValue={this.hueRangeConfig.minValue}
-              onChange={(component, value) => this.onChangeHue(value)}
+              onChange={value => this.onChangeHue(value)}
               step={this.hueRangeConfig.step}
             />
           </div>}
@@ -127,10 +119,10 @@ class LayerBlendingOptionsTooltip extends Component {
             Opacity
             <InputRange
               classNames={this.opacityRangeConfig.classnames}
-              value={this.state.opacityRangeValue}
+              value={this.props.opacityValue * 100}
               maxValue={this.opacityRangeConfig.maxValue}
               minValue={this.opacityRangeConfig.minValue}
-              onChange={(component, value) => this.onChangeOpacity(value)}
+              onChange={value => this.onChangeOpacity(value)}
               step={this.opacityRangeConfig.step}
             />
           </div>}

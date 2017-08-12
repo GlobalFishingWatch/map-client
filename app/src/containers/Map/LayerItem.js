@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
   },
   setLayerOpacity: (opacity, layerId) => {
     dispatch(setLayerOpacity(opacity, layerId));
-    dispatch(trackLayerOpacityChange(dispatch, opacity, layerId));
+    trackLayerOpacityChange(dispatch, opacity, layerId);
   },
   setLayerHue: (hue, layerId) => {
     dispatch(setLayerHue(hue, layerId));

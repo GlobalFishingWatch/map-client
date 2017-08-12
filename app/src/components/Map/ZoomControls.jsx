@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'preact';
+import React from 'react';
 import classnames from 'classnames';
 import MapStyles from 'styles/components/map.scss';
 import iconStyles from 'styles/icons.scss';
@@ -35,7 +35,7 @@ function ZoomControls({ canShareWorkspaces, openShareModal, zoom, maxZoom, chang
 
 ZoomControls.propTypes = {
   canShareWorkspaces: PropTypes.bool.isRequired,
-  openShareModal: PropTypes.bool.isRequired,
+  openShareModal: PropTypes.func.isRequired,
   maxZoom: PropTypes.number.isRequired,
   zoom: PropTypes.number.isRequired,
   changeZoomLevel: PropTypes.func.isRequired

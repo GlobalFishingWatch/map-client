@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import MenuMobileStyles from 'styles/components/mobile-menu.scss';
 
 class MenuMobile extends Component {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import NoLoginStyles from 'styles/components/map/no-login.scss';
 
 class NoLogin extends Component {

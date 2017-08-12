@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'preact';
+import React from 'react';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import InfoIcon from 'babel!svg-react!assets/icons/info-icon.svg?name=InfoIcon';
 

@@ -8,6 +8,8 @@ export const LOADERS = {
   HEATMAP_TILES: 'HEATMAP_TILES'
 };
 
+export const DEFAULT_FILTER_HUE = 1;
+
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
 export const TIMELINE_OVERALL_END_DATE = moment().subtract(3, 'days').toDate();
@@ -38,7 +40,7 @@ export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET;
 export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
 // the base radius, it can only be scaled down by the radius factor calculated on the dataset
 export const VESSELS_BASE_RADIUS = 8;
-// the minimum multiplicator for vessels radius. Multiply by VESSELS_BASE_RADIUS to get the final radius in px
+// the minimum multiplier for vessels radius. Multiply by VESSELS_BASE_RADIUS to get the final radius in px
 export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
