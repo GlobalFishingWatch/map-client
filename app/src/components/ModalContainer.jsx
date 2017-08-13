@@ -38,7 +38,7 @@ class ModalContainer extends Component {
           <LayerInfo />
         </Modal >
         <Modal
-          opened={this.props.supportModal.open}
+          opened={this.props.supportFormModalOpen}
           visible={!this.props.isEmbedded}
           closeable
           close={this.props.closeSupportModal}
@@ -115,7 +115,7 @@ ModalContainer.propTypes = {
   recentVesselModalOpen: PropTypes.bool,
   searchModalOpen: PropTypes.bool,
   shareModalOpenState: PropTypes.bool,
-  supportModal: PropTypes.object,
+  supportFormModalOpen: PropTypes.bool,
   token: PropTypes.string,
   userPermissions: PropTypes.array,
   welcomeModalOpen: PropTypes.bool

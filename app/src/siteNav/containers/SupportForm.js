@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import SupportForm from 'siteNav/components/SupportForm';
-import { submitForm } from 'siteNav/contactActions';
-import { setSupportModalVisibility } from 'actions/map';
+import { submitForm, setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   visibility: state.map.supportModal.open,
-  contactStatus: state.contactStatus,
+  supportRequestStatus: state.supportForm.supportRequestStatus,
   defaultUserName: state.user.loggedUser ? state.user.loggedUser.displayName : '',
   defaultUserEmail: state.user.loggedUser ? state.user.loggedUser.email : ''
 });

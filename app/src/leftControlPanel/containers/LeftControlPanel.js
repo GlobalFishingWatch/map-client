@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
-import { setSupportModalVisibility, setZoom } from 'actions/map';
+import { setZoom } from 'actions/map';
 import LeftControlPanel from 'leftControlPanel/components/LeftControlPanel';
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { saveWorkspace } from 'actions/workspace';
+import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   maxZoom: state.map.maxZoom,
@@ -12,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  openSupportModal: () => {
+  openSupportFormModal: () => {
     dispatch(setSupportModalVisibility(true));
   },
   openShareModal: () => {

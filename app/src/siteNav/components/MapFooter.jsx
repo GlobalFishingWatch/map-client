@@ -103,7 +103,7 @@ class MapFooter extends Component {
             </span>
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles._support)}
-              onClick={this.props.onOpenSupportModal}
+              onClick={this.props.onOpenSupportFormModal}
             >
               Support
             </span>
@@ -117,7 +117,7 @@ class MapFooter extends Component {
           isMap
           isExpanded={this.state.footerExpanded}
           onClose={() => this.onCloseFooter()}
-          onOpenSupportModal={this.props.onOpenSupportModal}
+          onOpenSupportModal={this.props.onOpenSupportFormModal}
         />
       </div>
     );
@@ -125,7 +125,7 @@ class MapFooter extends Component {
 }
 
 MapFooter.propTypes = {
-  onOpenSupportModal: PropTypes.func,
+  onOpenSupportFormModal: PropTypes.func,
   isEmbedded: PropTypes.bool,
   onExternalLink: PropTypes.func
 };

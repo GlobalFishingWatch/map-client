@@ -7,7 +7,7 @@ import {
   FLAGS,
   FLAGS_LANDLOCKED
 } from 'constants';
-import { SET_ZOOM, SET_CENTER, SET_TILESET_URL, SET_TILESET_ID, SET_URL_WORKSPACE_ID, SET_WORKSPACE_ID } from 'actions';
+import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
@@ -20,6 +20,10 @@ import uniq from 'lodash/uniq';
 import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
+export const SET_TILESET_ID = 'SET_TILESET_ID';
+export const SET_TILESET_URL = 'SET_TILESET_URL';
+export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
+export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {

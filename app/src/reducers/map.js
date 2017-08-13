@@ -8,16 +8,12 @@ import {
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_LOADERS,
   SET_LOADING,
-  SET_MAX_ZOOM,
   SET_MOUSE_LAT_LONG,
-  SET_SUPPORT_MODAL_VISIBILITY,
-  SET_TILESET_ID,
-  SET_TILESET_URL,
-  SET_URL_WORKSPACE_ID,
-  SET_WORKSPACE_ID,
   SET_ZOOM
-} from 'actions';
+} from 'actions/map';
 import { MAX_ZOOM_LEVEL } from 'constants';
+import { SET_MAX_ZOOM } from 'layers/layersActions';
+import { SET_TILESET_ID, SET_TILESET_URL, SET_URL_WORKSPACE_ID, SET_WORKSPACE_ID } from 'actions/workspace';
 
 const initialState = {
   isDrawing: false,
@@ -95,15 +91,6 @@ export default function (state = initialState, action) {
       };
       return newState;
     }
-
-    case SET_SUPPORT_MODAL_VISIBILITY: {
-      const newState = Object.assign({}, state);
-      newState.supportModal = {
-        open: action.payload
-      };
-      return newState;
-    }
-
     case SET_LAYER_MANAGEMENT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.layerManagementModal = {

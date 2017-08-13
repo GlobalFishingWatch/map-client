@@ -11,7 +11,7 @@ import {
   TOGGLE_LAYER_PANEL_EDIT_MODE,
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE
-} from 'actions';
+} from 'layers/layersActions';
 import { LAYER_TYPES } from 'constants';
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {

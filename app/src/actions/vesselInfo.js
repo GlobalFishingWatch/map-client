@@ -1,19 +1,4 @@
 import uniq from 'lodash/uniq';
-import {
-  SET_VESSEL_DETAILS,
-  SET_VESSEL_TRACK,
-  CLEAR_VESSEL_INFO,
-  SET_TRACK_BOUNDS,
-  TOGGLE_VESSEL_PIN,
-  ADD_VESSEL,
-  SHOW_VESSEL_DETAILS,
-  HIDE_VESSELS_INFO_PANEL,
-  SET_PINNED_VESSEL_HUE,
-  LOAD_PINNED_VESSEL,
-  SET_PINNED_VESSEL_TITLE,
-  TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_PINNED_VESSEL_TRACK_VISIBILITY
-} from 'actions';
 import { LAYER_TYPES } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
@@ -26,7 +11,22 @@ import {
   getTracksPlaybackData
 } from 'util/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
-import getVesselName from '../util/getVesselName';
+import getVesselName from 'util/getVesselName';
+
+export const ADD_VESSEL = 'ADD_VESSEL';
+export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS';
+export const SHOW_VESSEL_DETAILS = 'SHOW_VESSEL_DETAILS';
+export const SET_VESSEL_TRACK = 'SET_VESSEL_TRACK';
+export const CLEAR_VESSEL_INFO = 'CLEAR_VESSEL_INFO';
+export const HIDE_VESSELS_INFO_PANEL = 'HIDE_VESSELS_INFO_PANEL';
+export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
+export const TOGGLE_VESSEL_PIN = 'TOGGLE_VESSEL_PIN';
+export const SET_PINNED_VESSEL_HUE = 'SET_PINNED_VESSEL_HUE';
+export const SET_PINNED_VESSEL_TITLE = 'SET_PINNED_VESSEL_TITLE';
+export const LOAD_PINNED_VESSEL = 'LOAD_PINNED_VESSEL';
+export const TOGGLE_PINNED_VESSEL_EDIT_MODE = 'TOGGLE_PINNED_VESSEL_EDIT_MODE';
+export const SET_PINNED_VESSEL_TRACK_VISIBILITY = 'SET_PINNED_VESSEL_TRACK_VISIBILITY';
+
 
 function showVesselDetails(tilesetId, seriesgroup) {
   return {
