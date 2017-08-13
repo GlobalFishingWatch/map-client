@@ -8,6 +8,7 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const packageJSON = require('../package.json');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const rootPath = process.cwd();
 const envVariables = process.env;
@@ -56,6 +57,7 @@ const webpackConfig = {
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
+    new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.LoaderOptionsPlugin({
       options: {
@@ -89,7 +91,9 @@ const webpackConfig = {
       containers: 'src/containers',
       reducers: 'src/reducers',
       styles: 'styles',
-      util: 'src/util'
+      util: 'src/util',
+      react: path.join(rootPath, 'node_modules/react/dist/react.min.js'),
+      'react-dom': path.join(rootPath, 'node_modules/react-dom/dist/react-dom.min.js')
     },
     extensions: ['.js', '.jsx']
   },
@@ -99,7 +103,15 @@ const webpackConfig = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: 'babel-loader'
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: ['lodash'],
+              presets: [['env', { modules: false, targets: { node: 4 } }]]
+            }
+          }
+        ]
       },
       {
         test: /\.(jpe?g|png|gif|svg|ico)$/i,
@@ -209,15 +221,7 @@ const webpackConfig = {
 
 // Environment configuration
 if (envVariables.NODE_ENV === 'production') {
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false,
-      dead_code: true,
-      drop_debugger: true,
-      drop_console: true
-    },
-    comments: false
-  }));
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
   webpackConfig.devtool = 'source-map';
 } else {
   webpackConfig.devtool = 'eval-source-map';
