@@ -1,14 +1,9 @@
-import {
-  SET_WELCOME_MODAL_URL,
-  SET_WELCOME_MODAL_CONTENT,
-  SET_WELCOME_MODAL_CONTENT_ERROR,
-  SET_WELCOME_MODAL_VISIBILITY
-} from 'actions';
 import 'whatwg-fetch';
 
-/**
- * TODO: refactor all modals living in the ./actions/map.js file to this one.
- */
+export const SET_WELCOME_MODAL_VISIBILITY = 'SET_WELCOME_MODAL_VISIBILITY';
+export const SET_WELCOME_MODAL_CONTENT = 'SET_WELCOME_MODAL_CONTENT';
+export const SET_WELCOME_MODAL_CONTENT_ERROR = 'SET_WELCOME_MODAL_CONTENT_ERROR';
+export const SET_WELCOME_MODAL_URL = 'SET_WELCOME_MODAL_URL';
 
 export function setWelcomeModalUrl() {
   if (!WELCOME_MODAL_COOKIE_KEY) {
@@ -25,7 +20,7 @@ export function setWelcomeModalUrl() {
 export function setWelcomeModalContent() {
   return (dispatch, getState) => {
     const state = getState();
-    const url = state.modal.welcome.url;
+    const url = state.welcomeModal.url;
 
     fetch(url)
       .then((res) => {

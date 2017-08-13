@@ -1,5 +1,3 @@
-/* eslint react/sort-comp:0 */
-/* eslint-disable max-len  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -7,33 +5,26 @@ import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
 import { MIN_ZOOM_LEVEL } from 'constants';
-import ControlPanel from 'containers/Map/ControlPanel';
-import Header from 'siteNav/containers/Header';
+import ControlPanel from 'rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import DrawingManager from 'containers/Map/DrawingManager';
 import Areas from 'areasOfInterest/containers/Areas';
 import MapFooter from 'siteNav/components/MapFooter';
-import ModalContainer from 'containers/ModalContainer';
+import LeftControlPanel from 'leftControlPanel/containers/LeftControlPanel';
 import mapStyles from 'styles/components/map.scss';
 import mapPanelsStyles from 'styles/components/map-panels.scss';
-
-import Loader from 'containers/Map/Loader';
-import Attributions from 'components/Map/Attributions';
-import ZoomControls from 'components/Map/ZoomControls';
+import Attributions from 'siteNav/components/Attributions';
 
 class MapContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      lastCenter: null,
-      latlon: ''
-    };
+
+    this.state = {};
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onZoomChanged = this.onZoomChanged.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.changeZoomLevel = this.changeZoomLevel.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
     this.onMapContainerClick = this.onMapContainerClick.bind(this);
   }
@@ -104,7 +95,10 @@ class MapContainer extends Component {
           }
         }, 51);
       }
-    } else if ((nextProps.centerLat || nextProps.centerLong) && (this.props.centerLat !== nextProps.centerLat || this.props.centerLong !== nextProps.centerLong)) {
+    } else if (
+      (nextProps.centerLat || nextProps.centerLong) &&
+      (this.props.centerLat !== nextProps.centerLat || this.props.centerLong !== nextProps.centerLong)
+    ) {
       this.map.setCenter({ lat: nextProps.centerLat, lng: nextProps.centerLong });
     }
 
@@ -122,9 +116,7 @@ class MapContainer extends Component {
 
   onMouseMove(point) {
     this.map.setOptions({ draggableCursor: 'default' });
-    this.setState({
-      latlon: `${point.latLng.lat().toFixed(4)}, ${point.latLng.lng().toFixed(4)}`
-    });
+    this.props.setMouseLatLong(point.latLng.lat().toFixed(4), point.latLng.lng().toFixed(4));
   }
 
   onDragEnd() {
@@ -187,18 +179,6 @@ class MapContainer extends Component {
     });
   }
 
-  /**
-   * Handles clicks on the +/- buttons that manipulate the map zoom
-   *
-   * @param event
-   */
-  changeZoomLevel(event) {
-    const newZoomLevel = (event.currentTarget.id === 'zoom_up')
-      ? this.map.getZoom() + 1
-      : this.map.getZoom() - 1;
-    this.props.setZoom(newZoomLevel);
-  }
-
   onMapContainerClick(event) {
     if (event.target.className.match('js-polygon-report') === null) {
       this.props.clearReportPolygon();
@@ -206,13 +186,7 @@ class MapContainer extends Component {
   }
 
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
-
     return (<div className="fullHeightContainer" >
-      <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
-      <ModalContainer
-        isEmbedded={this.props.isEmbedded}
-      />
       {!this.props.isEmbedded &&
       <div
         className={classnames(
@@ -244,25 +218,13 @@ class MapContainer extends Component {
           onClick={this.onMapContainerClick}
         />
 
-        {this.props.drawing && <DrawingManager />}
+        {this.props.isDrawing && <DrawingManager />}
         <Areas />
-        <div className={mapStyles.mapLoader} >
-          <Loader tiny />
-        </div >
-        <div className={mapStyles.latlon} >
-          {this.state.latlon}
-        </div >
-        <ZoomControls
-          canShareWorkspaces={canShareWorkspaces}
-          openShareModal={this.props.openShareModal}
-          zoom={this.props.zoom}
-          maxZoom={this.props.maxZoom}
-          changeZoomLevel={this.changeZoomLevel}
-        />
+        <LeftControlPanel isEmbedded={this.props.isEmbedded} />
         <Attributions isEmbedded={this.props.isEmbedded} />
       </div >
       <MapLayers
-        map={this.state.map}
+        map={this.map}
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
@@ -281,27 +243,24 @@ class MapContainer extends Component {
 }
 
 MapContainer.propTypes = {
-  activeBasemap: PropTypes.string,
+  activeBasemap: PropTypes.string.isRequired,
   areas: PropTypes.array.isRequired,
-  basemaps: PropTypes.array,
+  basemaps: PropTypes.array.isRequired,
   centerLat: PropTypes.number,
   centerLong: PropTypes.number,
   clearReportPolygon: PropTypes.func,
-  drawing: PropTypes.bool.isRequired,
+  isDrawing: PropTypes.bool.isRequired,
   initMap: PropTypes.func,
   isEmbedded: PropTypes.bool,
-  layerIdPromptedForRemoval: PropTypes.any,
-  loading: PropTypes.bool,
   loadInitialState: PropTypes.func,
   maxZoom: PropTypes.number,
   onExternalLink: PropTypes.func,
-  openShareModal: PropTypes.func,
   openSupportModal: PropTypes.func,
   setCenter: PropTypes.func,
+  setMouseLatLong: PropTypes.func,
   setZoom: PropTypes.func,
   showMapCursorPointer: PropTypes.bool,
   showMapCursorZoom: PropTypes.bool,
-  tilesetUrl: PropTypes.string,
   token: PropTypes.string,
   trackBounds: PropTypes.object,
   userPermissions: PropTypes.array,

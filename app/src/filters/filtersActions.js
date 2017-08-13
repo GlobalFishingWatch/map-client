@@ -1,14 +1,16 @@
-import {
-  SET_FLAG_FILTERS,
-  SET_INNER_TIMELINE_DATES,
-  SET_OUTER_TIMELINE_DATES,
-  SET_PLAYING_STATUS,
-  SET_TIMELINE_HOVER_DATES,
-  REWIND_TIMELINE
-} from 'actions';
 import { GA_PLAY_STATUS_TOGGLED, trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
 import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
+
+export const REWIND_TIMELINE = 'REWIND_TIMELINE';
+export const SET_FLAG_FILTERS = 'SET_FLAG_FILTERS';
+export const SET_INNER_TIMELINE_DATES = 'SET_INNER_TIMELINE_DATES';
+export const SET_INNER_TIMELINE_DATES_FROM_WORKSPACE = 'SET_INNER_TIMELINE_DATES_FROM_WORKSPACE';
+export const SET_OUTER_TIMELINE_DATES = 'SET_OUTER_TIMELINE_DATES';
+export const SET_OVERALL_TIMELINE_DATES = 'SET_OVERALL_TIMELINE_DATES';
+export const SET_PLAYING_STATUS = 'SET_PLAYING_STATUS';
+export const SET_TIMELINE_HOVER_DATES = 'SET_TIMELINE_HOVER_DATES';
+
 
 const getRangeDuration = range => range[1].getTime() - range[0].getTime();
 

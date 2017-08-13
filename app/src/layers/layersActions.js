@@ -8,19 +8,13 @@ import {
   SET_LAYER_OPACITY,
   SET_LAYER_HUE,
   SET_MAX_ZOOM,
-  SET_OVERALL_TIMELINE_DATES,
   ADD_CUSTOM_LAYER,
   TOGGLE_LAYER_PANEL_EDIT_MODE,
   SET_WORKSPACE_LAYER_LABEL,
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
 } from 'actions';
-import { refreshFlagFiltersLayers } from 'filters/filtersActions';
-import {
-  initHeatmapLayers,
-  addHeatmapLayerFromLibrary,
-  removeHeatmapLayerFromLibrary,
-  loadAllTilesForLayer
-} from 'actions/heatmap';
+import { refreshFlagFiltersLayers, SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
+import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
 
 

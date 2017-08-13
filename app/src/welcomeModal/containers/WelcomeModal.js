@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import WelcomeModal from 'components/Map/WelcomeModal';
-import { setWelcomeModalVisibility } from 'actions/modal';
+import WelcomeModal from 'welcomeModal/components/WelcomeModal';
+import { setWelcomeModalVisibility } from 'welcomeModal/welcomeModalActions';
 
 const mapStateToProps = state => ({
-  content: state.modal.welcome.content
+  content: state.welcomeModal.content
 });
 
 const mapDispatchToProps = dispatch => ({

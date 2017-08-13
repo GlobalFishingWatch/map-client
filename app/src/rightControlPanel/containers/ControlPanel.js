@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import ControlPanel from 'components/Map/ControlPanel';
+import ControlPanel from 'rightControlPanel/components/ControlPanel';
 import { setSearchResultVisibility } from 'search/searchActions';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
 import { login } from 'user/userActions';
-import { openTimebarInfoModal, setSubmenu, setDrawingMode } from 'actions/map';
+import { openTimebarInfoModal, setDrawingMode } from 'actions/map';
+import { setSubmenu } from 'rightControlPanel/rightControlPanelActions';
 
 
 const mapStateToProps = state => ({
@@ -17,7 +18,7 @@ const mapStateToProps = state => ({
   chartData: state.timebar.chartData,
   timelineInnerExtent: state.filters.timelineInnerExtent,
   isReportStarted: state.report.layerId !== null,
-  activeSubmenu: state.map.activeSubmenu
+  activeSubmenu: state.rightControlPanel.activeSubmenu
 });
 
 const mapDispatchToProps = dispatch => ({

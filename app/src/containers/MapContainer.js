@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 import MapContainer from 'components/MapContainer';
-import { initGoogleMaps, setZoom, setCenter, setSupportModalVisibility } from 'actions/map';
-import { setUrlWorkspaceId, saveWorkspace } from 'actions/workspace';
+import { initGoogleMaps, setZoom, setCenter, setSupportModalVisibility, setMouseLatLong } from 'actions/map';
+import { setUrlWorkspaceId } from 'actions/workspace';
 import { toggleLayerVisibility } from 'layers/layersActions';
 import { clearPolygon } from 'report/reportActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
-import { openShareModal, setShareModalError } from 'share/shareActions';
 
 const mapStateToProps = state => ({
   activeBasemap: state.map.activeBasemap,
@@ -15,8 +14,7 @@ const mapStateToProps = state => ({
   basemaps: state.basemap.basemaps,
   centerLat: state.map.center[0],
   centerLong: state.map.center[1],
-  drawing: state.map.drawing,
-  layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
+  isDrawing: state.map.isDrawing,
   maxZoom: state.map.maxZoom,
   showMapCursorPointer: state.heatmap.highlightedVessels.isEmpty !== true && state.heatmap.highlightedVessels.clickableCluster !== true,
   showMapCursorZoom: state.heatmap.highlightedVessels.clickableCluster === true,
@@ -40,10 +38,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   setZoom: zoom => dispatch(setZoom(zoom)),
   setCenter: (center, centerWorld) => dispatch(setCenter(center, centerWorld)),
 
-  openShareModal: () => {
-    dispatch(openShareModal(true));
-    dispatch(saveWorkspace(setShareModalError));
-  },
   openSupportModal: () => {
     dispatch(setSupportModalVisibility(true));
   },
@@ -52,6 +46,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   onExternalLink: (link) => {
     dispatch(trackExternalLinkClicked(link));
+  },
+  setMouseLatLong: (lat, long) => {
+    dispatch(setMouseLatLong(lat, long));
   }
 });
 

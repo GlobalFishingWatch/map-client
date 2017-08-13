@@ -9,7 +9,7 @@ import {
   SET_LOADERS,
   SET_LOADING,
   SET_MAX_ZOOM,
-  SET_SUBMENU,
+  SET_MOUSE_LAT_LONG,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_TILESET_ID,
   SET_TILESET_URL,
@@ -20,7 +20,7 @@ import {
 import { MAX_ZOOM_LEVEL } from 'constants';
 
 const initialState = {
-  drawing: false,
+  isDrawing: false,
   loading: false,
   loaders: {},
   zoom: 3,
@@ -28,6 +28,7 @@ const initialState = {
   tilesetUrl: null,
   tilesetId: null,
   center: [0, 0],
+  mouseLatLong: [0, 0],
   centerTile: { x: 0, y: 0 },
   layerModal: {
     open: false,
@@ -39,8 +40,7 @@ const initialState = {
   layerManagementModal: {
     open: false
   },
-  workspaceId: null,
-  activeSubmenu: null
+  workspaceId: null
 };
 
 /**
@@ -77,16 +77,13 @@ export default function (state = initialState, action) {
     case SET_LOADING:
       return Object.assign({}, state, { loading: action.payload });
     case SET_DRAWING:
-      return Object.assign({}, state, { drawing: action.payload });
+      return Object.assign({}, state, { isDrawing: action.payload });
     case SET_LOADERS:
       return Object.assign({}, state, { loaders: action.payload });
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: action.payload });
-    case SET_SUBMENU:
-      return Object.assign({}, state, { activeSubmenu: action.payload });
-
     case DELETE_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: null });
 
@@ -111,6 +108,15 @@ export default function (state = initialState, action) {
       const newState = Object.assign({}, state);
       newState.layerManagementModal = {
         open: action.payload
+      };
+
+      return newState;
+    }
+    case SET_MOUSE_LAT_LONG: {
+      const newState = Object.assign({}, state);
+      newState.mouseLatLong = {
+        lat: action.payload.lat,
+        long: action.payload.long
       };
 
       return newState;

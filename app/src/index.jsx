@@ -18,11 +18,12 @@ import contactReducer from 'siteNav/contactReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'layers/customLayerReducer';
-import modalReducer from 'reducers/modal';
+import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
 import literalsReducer from 'siteNav/literalsReducer';
 import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
+import rightControlPanelReducer from 'rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
@@ -45,8 +46,9 @@ const reducer = combineReducers({
   layers: layersReducer,
   literals: literalsReducer,
   map: mapReducer,
-  modal: modalReducer,
+  welcomeModal: welcomeModalReducer,
   recentVessels: recentVesselsReducer,
+  rightControlPanel: rightControlPanelReducer,
   report: reportReducer,
   search: searchReducer,
   share: shareReducer,
