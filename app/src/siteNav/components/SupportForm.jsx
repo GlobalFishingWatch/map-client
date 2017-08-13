@@ -19,7 +19,7 @@ class SupportForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const showThankYou = this.props.contactStatus !== nextProps.contactStatus;
+    const showThankYou = this.props.supportRequestStatus !== nextProps.supportRequestStatus;
     this.setState({
       showFormResponse: showThankYou
     });
@@ -53,7 +53,7 @@ class SupportForm extends Component {
   render() {
     if (this.state.showFormResponse) {
       let message;
-      if (this.props.contactStatus && this.props.contactStatus.status === 200) {
+      if (this.props.supportRequestStatus && this.props.supportRequestStatus.status === 200) {
         message = 'Thank you for your inquiry';
       } else {
         message = 'There was a problem submitting your contact request. Please try again later';
@@ -165,7 +165,7 @@ class SupportForm extends Component {
 }
 
 SupportForm.propTypes = {
-  contactStatus: PropTypes.any,
+  supportRequestStatus: PropTypes.any,
   onFormSubmit: PropTypes.func,
   defaultUserName: PropTypes.string,
   defaultUserEmail: PropTypes.string,

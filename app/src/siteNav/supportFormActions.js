@@ -1,4 +1,5 @@
 export const FORM_RESPONSE = 'FORM_RESPONSE';
+export const SET_SUPPORT_MODAL_VISIBILITY = 'SET_SUPPORT_MODAL_VISIBILITY';
 
 export function submitForm(data, endpoint) {
   return (dispatch, getState) => {
@@ -30,6 +31,13 @@ export function submitForm(data, endpoint) {
     }
     const postString = postData.length ? postData.join('&') : '';
     request.send(postString);
+  };
+}
+
+export function setSupportModalVisibility(visibility) {
+  return {
+    type: SET_SUPPORT_MODAL_VISIBILITY,
+    payload: visibility
   };
 }
 

@@ -233,7 +233,7 @@ class MapContainer extends Component {
       </div >
       {COMPLETE_MAP_RENDER &&
       <MapFooter
-        onOpenSupportModal={this.props.openSupportModal}
+        onOpenSupportFormModal={this.props.openSupportFormModal}
         isEmbedded={this.props.isEmbedded}
         onExternalLink={this.props.onExternalLink}
       />
@@ -255,7 +255,7 @@ MapContainer.propTypes = {
   loadInitialState: PropTypes.func,
   maxZoom: PropTypes.number,
   onExternalLink: PropTypes.func,
-  openSupportModal: PropTypes.func,
+  openSupportFormModal: PropTypes.func,
   setCenter: PropTypes.func,
   setMouseLatLong: PropTypes.func,
   setZoom: PropTypes.func,

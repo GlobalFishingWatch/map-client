@@ -14,7 +14,7 @@ import analyticsMiddleware from 'analytics/analyticsMiddleware';
 import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
 import userReducer from 'user/userReducer';
 import filtersReducer from 'filters/filtersReducer';
-import contactReducer from 'siteNav/contactReducer';
+import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
 import customLayerReducer from 'layers/customLayerReducer';
@@ -38,7 +38,7 @@ window.Promise = window.Promise || Promise;
 const reducer = combineReducers({
   areas: areasOfInterestReducer,
   basemap: basemapReducer,
-  contactStatus: contactReducer,
+  supportForm: supportFormReducer,
   customLayer: customLayerReducer,
   filters: filtersReducer,
   heatmap: heatmapReducer,

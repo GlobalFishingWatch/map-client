@@ -1,15 +1,6 @@
-import {
-  ADD_CUSTOM_LAYER,
-  ADD_REPORT_POLYGON,
-  DELETE_REPORT_POLYGON,
-  SET_FLAG_FILTERS,
-  SET_REPORT_STATUS_SENT,
-  SET_WORKSPACE_ID,
-  SHOW_POLYGON,
-  TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  TOGGLE_VESSEL_PIN
-} from 'actions';
+import { ADD_CUSTOM_LAYER, TOGGLE_LAYER_VISIBILITY, TOGGLE_LAYER_WORKSPACE_PRESENCE } from 'layers/layersActions';
+import { ADD_REPORT_POLYGON, DELETE_REPORT_POLYGON, SET_REPORT_STATUS_SENT, SHOW_POLYGON } from 'report/reportActions';
+import { SET_FLAG_FILTERS } from 'filters/filtersActions';
 import { SET_SEARCH_TERM } from 'search/searchActions';
 import {
   GA_DISCARD_REPORT,
@@ -27,6 +18,8 @@ import {
 
 import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
+import { TOGGLE_VESSEL_PIN } from 'actions/vesselInfo';
+import { SET_WORKSPACE_ID } from 'actions/workspace';
 
 const GA_ACTION_WHITELIST = [
   {

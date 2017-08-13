@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import MapContainer from 'components/MapContainer';
-import { initGoogleMaps, setZoom, setCenter, setSupportModalVisibility, setMouseLatLong } from 'actions/map';
+import { initGoogleMaps, setZoom, setCenter, setMouseLatLong } from 'actions/map';
 import { setUrlWorkspaceId } from 'actions/workspace';
 import { toggleLayerVisibility } from 'layers/layersActions';
 import { clearPolygon } from 'report/reportActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
+import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   activeBasemap: state.map.activeBasemap,
@@ -38,7 +39,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   setZoom: zoom => dispatch(setZoom(zoom)),
   setCenter: (center, centerWorld) => dispatch(setCenter(center, centerWorld)),
 
-  openSupportModal: () => {
+  openSupportFormModal: () => {
     dispatch(setSupportModalVisibility(true));
   },
   clearReportPolygon: () => {

@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import ModalContainer from 'components/ModalContainer';
-import { deleteWorkspace, setLayerInfoModal, setSupportModalVisibility, setLayerManagementModalVisibility } from 'actions/map';
+import { deleteWorkspace, setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
 import { setWelcomeModalVisibility } from 'welcomeModal/welcomeModalActions';
 import { confirmLayerRemoval } from 'layers/layersActions';
 import { setSearchModalVisibility } from 'search/searchActions';
 import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActions';
 import { openShareModal, setShareModalError } from 'share/shareActions';
+import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
@@ -14,7 +15,7 @@ const mapStateToProps = state => ({
   recentVesselModalOpen: state.recentVessels.recentVesselModal.open,
   searchModalOpen: state.search.searchModalOpen,
   shareModalOpenState: state.share.shareModal.open,
-  supportModal: state.map.supportModal,
+  supportFormModalOpen: state.supportForm.open,
   token: state.user.token,
   userPermissions: state.user.userPermissions,
   welcomeModalOpen: state.welcomeModal.open
@@ -34,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
   closeSupportModal: () => {
     dispatch(setSupportModalVisibility(false));
   },
-  openSupportModal: () => {
+  openSupportFormModal: () => {
     dispatch(setSupportModalVisibility(true));
   },
   closeLayerManagementModal: () => {

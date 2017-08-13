@@ -1,21 +1,20 @@
 import find from 'lodash/find';
 import { LAYER_TYPES } from 'constants';
-import {
-  SET_LAYERS,
-  SET_LAYER_HEADER,
-  TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  SET_LAYER_OPACITY,
-  SET_LAYER_HUE,
-  SET_MAX_ZOOM,
-  ADD_CUSTOM_LAYER,
-  TOGGLE_LAYER_PANEL_EDIT_MODE,
-  SET_WORKSPACE_LAYER_LABEL,
-  SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE
-} from 'actions';
 import { refreshFlagFiltersLayers, SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
+
+export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
+export const SET_LAYERS = 'SET_LAYERS';
+export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
+export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
+export const TOGGLE_LAYER_WORKSPACE_PRESENCE = 'TOGGLE_LAYER_WORKSPACE_PRESENCE';
+export const SET_LAYER_HUE = 'SET_LAYER_HUE';
+export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
+export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
+export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
+export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL';
+export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE';
 
 
 function loadLayerHeader(tilesetUrl, token) {
