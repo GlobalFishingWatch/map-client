@@ -4,7 +4,7 @@ import { setDrawingMode } from 'actions/map';
 import { saveAreaOfInterest, updateWorkingAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
-  drawing: state.map.drawing,
+  isDrawing: state.map.isDrawing,
   editingArea: state.areas.editingArea
 });
 

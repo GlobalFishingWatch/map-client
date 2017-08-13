@@ -7,19 +7,11 @@ import {
   FLAGS,
   FLAGS_LANDLOCKED
 } from 'constants';
-import {
-  SET_ZOOM,
-  SET_CENTER,
-  SET_TILESET_URL,
-  SET_TILESET_ID,
-  SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-  SET_URL_WORKSPACE_ID,
-  SET_WORKSPACE_ID
-} from 'actions';
+import { SET_ZOOM, SET_CENTER, SET_TILESET_URL, SET_TILESET_ID, SET_URL_WORKSPACE_ID, SET_WORKSPACE_ID } from 'actions';
 import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
-import { setFlagFilters, setOuterTimelineDates } from 'filters/filtersActions';
+import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';

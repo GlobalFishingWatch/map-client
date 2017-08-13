@@ -4,17 +4,17 @@ import AreasForm from 'areasOfInterest/containers/AreasForm';
 import AreasList from 'areasOfInterest/containers/AreasList';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
 
-function AreasPanel({ drawing }) {
+function AreasPanel({ isDrawing }) {
   return (
     <div className={areasPanelStyles.areasPanel} >
-      {!drawing && <AreasList />}
+      {!isDrawing && <AreasList />}
       <AreasForm />
     </div>
   );
 }
 
 AreasPanel.propTypes = {
-  drawing: PropTypes.bool
+  isDrawing: PropTypes.bool
 };
 
 export default AreasPanel;

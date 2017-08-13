@@ -46,11 +46,11 @@ class AreasForm extends Component {
   }
 
   render() {
-    const { drawing } = this.props;
+    const { isDrawing } = this.props;
     const { name, color } = this.props.editingArea;
     const saveAllowed = this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name;
 
-    if (!drawing) {
+    if (!isDrawing) {
       return (
         <div className={areasPanelStyles.areasPanel} >
           <div >
@@ -103,7 +103,7 @@ AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
   saveAreaOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
-  drawing: PropTypes.bool.isRequired,
+  isDrawing: PropTypes.bool.isRequired,
   editingArea: PropTypes.object.isRequired
 };
 

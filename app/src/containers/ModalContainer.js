@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import ModalContainer from 'components/ModalContainer';
 import { deleteWorkspace, setLayerInfoModal, setSupportModalVisibility, setLayerManagementModalVisibility } from 'actions/map';
-import { setWelcomeModalVisibility } from 'actions/modal';
+import { setWelcomeModalVisibility } from 'welcomeModal/welcomeModalActions';
 import { confirmLayerRemoval } from 'layers/layersActions';
 import { setSearchModalVisibility } from 'search/searchActions';
 import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActions';
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
   supportModal: state.map.supportModal,
   token: state.user.token,
   userPermissions: state.user.userPermissions,
-  welcomeModalOpen: state.modal.welcome.open
+  welcomeModalOpen: state.welcomeModal.open
 });
 
 const mapDispatchToProps = dispatch => ({

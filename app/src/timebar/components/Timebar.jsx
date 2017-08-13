@@ -23,9 +23,9 @@ import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
 import TimebarStyles from 'styles/components/map/timebar.scss';
 import TimelineStyles from 'styles/components/map/timeline.scss';
 import extentChanged from 'util/extentChanged';
-import DatePicker from 'components/Map/DatePicker';
-import TogglePauseButton from 'components/Map/TogglePauseButton';
-import DurationPicker from 'components/Map/DurationPicker';
+import DatePicker from 'timebar/components/DatePicker';
+import TogglePauseButton from 'timebar/components/TogglePauseButton';
+import DurationPicker from 'timebar/components/DurationPicker';
 
 let width;
 let height;

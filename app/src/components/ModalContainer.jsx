@@ -9,7 +9,7 @@ import LayerLibrary from 'layers/containers/LayerManagementModal';
 import SearchModal from 'search/containers/SearchModal';
 import SupportForm from 'siteNav/containers/SupportForm';
 import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
-import WelcomeModal from 'containers/Map/WelcomeModal';
+import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 

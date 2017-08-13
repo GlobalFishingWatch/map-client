@@ -3,7 +3,8 @@ import AuthMap from 'components/AuthMap';
 import { login } from 'user/userActions';
 
 const mapStateToProps = state => ({
-  token: state.user.token
+  token: state.user.token,
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = dispatch => ({

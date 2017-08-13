@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
+import CustomInfoWindowStyles from 'styles/components/map/custom-infowindow.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 import CustomInfoWindow from 'util/CustomInfoWindow';
@@ -23,10 +23,7 @@ export default class PolygonReport extends Component {
 
   // avoids updating when props.map changes
   shouldComponentUpdate(nextProps) {
-    if (nextProps.id !== this.props.id || nextProps.isInReport !== this.props.isInReport) {
-      return true;
-    }
-    return false;
+    return (nextProps.id !== this.props.id || nextProps.isInReport !== this.props.isInReport);
   }
 
   componentDidUpdate() {
@@ -47,20 +44,20 @@ export default class PolygonReport extends Component {
 
   render() {
     const toggleButtonText = (this.props.isInReport) ? 'remove from report' : 'add to report';
-    let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', CustomInfowindowStyles.toggle);
+    let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', CustomInfoWindowStyles.toggle);
     if (this.props.isInReport) {
-      toggleButtonClassName += ` ${CustomInfowindowStyles._remove}`;
+      toggleButtonClassName += ` ${CustomInfoWindowStyles._remove}`;
     }
     this.element = (this.props.id === undefined) ? <div /> : (<div
-      className={classnames(CustomInfowindowStyles.customInfowindow, 'js-polygon-report')}
+      className={classnames(CustomInfoWindowStyles.customInfowindow, 'js-polygon-report')}
     >
-      <div className={CustomInfowindowStyles.title} >
+      <div className={CustomInfoWindowStyles.title} >
         {this.props.name}
       </div >
-      <div className={CustomInfowindowStyles.description} >
+      <div className={CustomInfoWindowStyles.description} >
         {this.props.description}
       </div >
-      <button className={classnames('js-close', CustomInfowindowStyles.close, buttonCloseStyles.buttonClose)} >
+      <button className={classnames('js-close', CustomInfoWindowStyles.close, buttonCloseStyles.buttonClose)} >
         <CloseIcon className={buttonCloseStyles.cross} />
       </button >
       <button className={toggleButtonClassName} >

@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import AreasPanel from 'areasOfInterest/containers/AreasPanel';
-import MenuLink from 'siteNav/components/MenuLink';
-import SubMenu from 'components/Map/SubMenu';
+import MenuLink from 'rightControlPanel/components/MenuLink';
+import SubMenu from 'rightControlPanel/components/SubMenu';
 import FilterPanel from 'filters/containers/FilterPanel';
 import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
@@ -23,9 +23,6 @@ import PinnedTracks from 'containers/Map/PinnedTracks';
 class ControlPanel extends Component {
   constructor() {
     super();
-    this.state = {
-      activeSubMenu: null
-    };
     this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
     this.onBack = this.onBack.bind(this);
   }
@@ -233,24 +230,24 @@ class ControlPanel extends Component {
 }
 
 ControlPanel.propTypes = {
-  login: PropTypes.func,
-  layers: PropTypes.array,
-  vessels: PropTypes.array,
+  activeSubmenu: PropTypes.string,
   chartData: PropTypes.array,
-  userPermissions: PropTypes.array,
-  disableSearchEditMode: PropTypes.func,
   disableLayerPanelEditMode: PropTypes.func,
+  disableSearchEditMode: PropTypes.func,
   hideSearchResults: PropTypes.func,
-  setRecentlyCreated: PropTypes.func.isRequired,
-  pinnedVesselEditMode: PropTypes.bool,
-  layerPanelEditMode: PropTypes.bool,
-  timelineInnerExtent: PropTypes.array,
   isEmbedded: PropTypes.bool,
   isReportStarted: PropTypes.bool,
-  setSubmenu: PropTypes.func.isRequired,
-  activeSubmenu: PropTypes.string,
+  layerPanelEditMode: PropTypes.bool,
+  layers: PropTypes.array,
+  login: PropTypes.func,
   openTimebarInfoModal: PropTypes.func,
-  setDrawingMode: PropTypes.func
+  pinnedVesselEditMode: PropTypes.bool,
+  setDrawingMode: PropTypes.func,
+  setRecentlyCreated: PropTypes.func.isRequired,
+  setSubmenu: PropTypes.func.isRequired,
+  timelineInnerExtent: PropTypes.array,
+  userPermissions: PropTypes.array,
+  vessels: PropTypes.array
 };
 
 export default ControlPanel;

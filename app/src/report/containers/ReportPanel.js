@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import ReportPanel from 'report/components/ReportPanel';
 import { deletePolygon, discardReport, sendReport } from 'report/reportActions';
-import { trackDiscardReport } from '../../analytics/analyticsActions';
+import { trackDiscardReport } from 'analytics/analyticsActions';
 
 const mapStateToProps = state => ({
   polygons: state.report.polygons,

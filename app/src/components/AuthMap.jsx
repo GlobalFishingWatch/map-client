@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MapContainer from 'containers/MapContainer';
 import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
+import Header from 'siteNav/containers/Header';
+import ModalContainer from 'containers/ModalContainer';
 
 class AuthMap extends Component {
 
@@ -21,26 +23,26 @@ class AuthMap extends Component {
   }
 
   render() {
-    return <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />;
+    const canShareWorkspaces = !this.state.isEmbedded &&
+      (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+
+    return (
+      <div className="fullHeightContainer" >
+        <Header isEmbedded={this.state.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
+        <ModalContainer
+          isEmbedded={this.state.isEmbedded}
+        />
+        <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />
+
+      </div >);
   }
 }
 
 AuthMap.propTypes = {
-  /**
-   * User token for the map
-   */
-  token: PropTypes.string,
-  /**
-   * Whether the user can be redirected to SalesForce to get the token
-   */
   canRedirect: PropTypes.bool,
-  /**
-   * Method to redirect the user to SalesForce to login and get the token
-   */
   login: PropTypes.func,
-  /**
-   * Workspace ID retrieved from the URL
-   */
+  token: PropTypes.string,
+  userPermissions: PropTypes.array,
   workspaceId: PropTypes.string
 };
 

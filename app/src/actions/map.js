@@ -10,7 +10,7 @@ import {
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_CENTER_TILE,
-  SET_SUBMENU
+  SET_MOUSE_LAT_LONG
 } from 'actions';
 import { clearVesselInfo } from 'actions/vesselInfo';
 import { trackCenterTile } from 'analytics/analyticsActions';
@@ -23,13 +23,6 @@ export function initGoogleMaps(googleMaps) {
   return {
     type: INIT_GOOGLE_MAPS,
     payload: googleMaps
-  };
-}
-
-export function setSubmenu(submenuName) {
-  return {
-    type: SET_SUBMENU,
-    payload: submenuName
   };
 }
 
@@ -163,5 +156,12 @@ export function setLayerManagementModalVisibility(visibility) {
   return {
     type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
     payload: visibility
+  };
+}
+
+export function setMouseLatLong(lat, long) {
+  return {
+    type: SET_MOUSE_LAT_LONG,
+    payload: { lat, long }
   };
 }
