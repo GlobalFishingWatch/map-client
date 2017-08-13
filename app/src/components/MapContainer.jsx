@@ -10,21 +10,12 @@ import { MIN_ZOOM_LEVEL } from 'constants';
 import ControlPanel from 'containers/Map/ControlPanel';
 import Header from 'siteNav/containers/Header';
 import Timebar from 'timebar/containers/Timebar';
-import Modal from 'components/Shared/Modal';
-import Share from 'share/containers/Share';
-import LayerInfo from 'layers/containers/LayerInfo';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
-import LayerLibrary from 'layers/containers/LayerManagementModal';
-import SearchModal from 'search/containers/SearchModal';
-import SupportForm from 'siteNav/containers/SupportForm';
-import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
-import WelcomeModal from 'containers/Map/WelcomeModal';
-import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
-import NoLogin from 'containers/Map/NoLogin';
 import DrawingManager from 'containers/Map/DrawingManager';
 import Areas from 'areasOfInterest/containers/Areas';
 import MapFooter from 'siteNav/components/MapFooter';
+import ModalContainer from 'containers/ModalContainer';
 import mapStyles from 'styles/components/map.scss';
 import mapPanelsStyles from 'styles/components/map-panels.scss';
 
@@ -32,7 +23,7 @@ import Loader from 'containers/Map/Loader';
 import Attributions from 'components/Map/Attributions';
 import ZoomControls from 'components/Map/ZoomControls';
 
-class Map extends Component {
+class MapContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -72,7 +63,9 @@ class Map extends Component {
     // Create the map and initialize on the first idle event
     this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
     // do not use a bound function here as @#$%^ GMaps does not know how to unsubscribe from events attached to them
-    google.maps.event.addListenerOnce(this.map, 'idle', () => { this.onMapInit(); });
+    google.maps.event.addListenerOnce(this.map, 'idle', () => {
+      this.onMapInit();
+    });
     window.addEventListener('resize', this.onWindowResize);
   }
 
@@ -215,85 +208,23 @@ class Map extends Component {
   render() {
     const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
-    return (<div className="fullHeightContainer">
+    return (<div className="fullHeightContainer" >
       <Header isEmbedded={this.props.isEmbedded} canShareWorkspaces={canShareWorkspaces} />
+      <ModalContainer
+        isEmbedded={this.props.isEmbedded}
+      />
       {!this.props.isEmbedded &&
-      <div>
-        <Modal
-          opened={(!this.props.token && REQUIRE_MAP_LOGIN) || (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeMap') === -1)}
-          closeable={false}
-          close={() => {
-          }}
-        >
-          <NoLogin />
-        </Modal>
-        <Modal
-          opened={this.props.layerModal.open}
-          closeable
-          close={this.props.closeLayerInfoModal}
-          zIndex={1003}
-        >
-          <LayerInfo />
-        </Modal>
-        <Modal
-          opened={this.props.supportModal.open}
-          closeable
-          close={this.props.closeSupportModal}
-        >
-          <SupportForm />
-        </Modal>
-        <Modal
-          opened={this.props.layerManagementModal}
-          closeable
-          close={this.props.closeLayerManagementModal}
-        >
-          <LayerLibrary />
-        </Modal>
-        <Modal
-          opened={this.props.searchModalOpen}
-          closeable
-          close={this.props.closeSearchModal}
-        >
-          <SearchModal />
-        </Modal>
-        <Modal
-          opened={this.props.recentVesselModalOpen}
-          closeable
-          close={this.props.closeRecentVesselModal}
-        >
-          <RecentVesselsModal />
-        </Modal>
-        <Modal
-          opened={this.props.welcomeModalOpen}
-          closeable
-          close={this.props.closeWelcomeModal}
-        >
-          <WelcomeModal />
-        </Modal>
-        <Modal
-          opened={this.props.layerIdPromptedForRemoval !== false}
-          isSmall
-          close={this.props.closeLayerRemovalModal}
-        >
-          <PromptLayerRemoval />
-        </Modal>
-        <div
-          className={classnames(
-            mapPanelsStyles.mapPanels,
-            {
-              [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
-            }
-          )}
-        >
-          <ControlPanel isEmbedded={this.props.isEmbedded} />
-          <ReportPanel />
-        </div>
-      </div>
-      }
-      {canShareWorkspaces &&
-      <Modal opened={this.props.shareModalOpenState} closeable close={this.props.closeShareModal}>
-        <Share />
-      </Modal>
+      <div
+        className={classnames(
+          mapPanelsStyles.mapPanels,
+          {
+            [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
+          }
+        )}
+      >
+        <ControlPanel isEmbedded={this.props.isEmbedded} />
+        <ReportPanel />
+      </div >
       }
       <div
         className={classnames(
@@ -302,7 +233,9 @@ class Map extends Component {
           { _mapPointer: this.props.showMapCursorPointer },
           { _mapZoom: this.props.showMapCursorZoom }
         )}
-        ref={(mapContainerRef) => { this.mapContainerRef = mapContainerRef; }}
+        ref={(mapContainerRef) => {
+          this.mapContainerRef = mapContainerRef;
+        }}
       >
         <div
           id="map"
@@ -313,12 +246,12 @@ class Map extends Component {
 
         {this.props.drawing && <DrawingManager />}
         <Areas />
-        <div className={mapStyles.mapLoader}>
+        <div className={mapStyles.mapLoader} >
           <Loader tiny />
-        </div>
-        <div className={mapStyles.latlon}>
+        </div >
+        <div className={mapStyles.latlon} >
           {this.state.latlon}
-        </div>
+        </div >
         <ZoomControls
           canShareWorkspaces={canShareWorkspaces}
           openShareModal={this.props.openShareModal}
@@ -327,15 +260,15 @@ class Map extends Component {
           changeZoomLevel={this.changeZoomLevel}
         />
         <Attributions isEmbedded={this.props.isEmbedded} />
-      </div>
+      </div >
       <MapLayers
         map={this.state.map}
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })}>
+      <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
-      </div>
+      </div >
       {COMPLETE_MAP_RENDER &&
       <MapFooter
         onOpenSupportModal={this.props.openSupportModal}
@@ -343,58 +276,36 @@ class Map extends Component {
         onExternalLink={this.props.onExternalLink}
       />
       }
-    </div>);
+    </div >);
   }
 }
-Map.propTypes = {
-  areas: PropTypes.array.isRequired,
-  drawing: PropTypes.bool.isRequired,
-  initMap: PropTypes.func,
+
+MapContainer.propTypes = {
   activeBasemap: PropTypes.string,
+  areas: PropTypes.array.isRequired,
   basemaps: PropTypes.array,
-  token: PropTypes.string,
-  tilesetUrl: PropTypes.string,
-  setZoom: PropTypes.func,
-  loadInitialState: PropTypes.func,
-  setCenter: PropTypes.func,
-  loading: PropTypes.bool,
   centerLat: PropTypes.number,
   centerLong: PropTypes.number,
-  zoom: PropTypes.number,
-  maxZoom: PropTypes.number,
-  /**
-   * If share modal is open or closed
-   */
-  shareModalOpenState: PropTypes.bool,
-  /**
-   * Open the share modal
-   */
-  openShareModal: PropTypes.func,
-  /**
-   * Close the share modal
-   */
-  supportModal: PropTypes.object,
-  closeShareModal: PropTypes.func,
-  layerModal: PropTypes.object,
-  closeLayerInfoModal: PropTypes.func,
-  trackBounds: PropTypes.object,
-  closeSupportModal: PropTypes.func,
-  openSupportModal: PropTypes.func,
-  layerManagementModal: PropTypes.bool,
-  closeLayerManagementModal: PropTypes.func,
-  userPermissions: PropTypes.array,
   clearReportPolygon: PropTypes.func,
-  searchModalOpen: PropTypes.bool,
-  closeSearchModal: PropTypes.func,
-  recentVesselModalOpen: PropTypes.bool,
-  closeRecentVesselModal: PropTypes.func,
-  welcomeModalOpen: PropTypes.bool,
-  closeWelcomeModal: PropTypes.func,
-  closeLayerRemovalModal: PropTypes.func,
-  layerIdPromptedForRemoval: PropTypes.any,
+  drawing: PropTypes.bool.isRequired,
+  initMap: PropTypes.func,
   isEmbedded: PropTypes.bool,
+  layerIdPromptedForRemoval: PropTypes.any,
+  loading: PropTypes.bool,
+  loadInitialState: PropTypes.func,
+  maxZoom: PropTypes.number,
   onExternalLink: PropTypes.func,
+  openShareModal: PropTypes.func,
+  openSupportModal: PropTypes.func,
+  setCenter: PropTypes.func,
+  setZoom: PropTypes.func,
   showMapCursorPointer: PropTypes.bool,
-  showMapCursorZoom: PropTypes.bool
+  showMapCursorZoom: PropTypes.bool,
+  tilesetUrl: PropTypes.string,
+  token: PropTypes.string,
+  trackBounds: PropTypes.object,
+  userPermissions: PropTypes.array,
+  zoom: PropTypes.number
 };
-export default Map;
+
+export default MapContainer;
