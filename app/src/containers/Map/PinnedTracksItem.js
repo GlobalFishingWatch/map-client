@@ -5,9 +5,9 @@ import {
   toggleVesselPin,
   setPinnedVesselHue,
   setPinnedVesselTitle,
-  setRecentVesselHistory,
   togglePinnedVesselVisibility
 } from 'actions/vesselInfo';
+import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 
 const mapStateToProps = state => ({
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode
@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onVesselClicked: (tilesetId, seriesgroup) => {
-    dispatch(setRecentVesselHistory(seriesgroup));
+    dispatch(addVesselToRecentVesselList(seriesgroup));
     dispatch(showPinnedVesselDetails(tilesetId, seriesgroup));
   },
   onRemoveClicked: (seriesgroup) => {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from 'components/App';
-import { setToken, getLoggedUser } from 'actions/user';
+import { setToken, getLoggedUser } from 'user/userActions';
 import { setWelcomeModalUrl, setWelcomeModalContent } from 'actions/modal';
 import { loadLiterals } from 'siteNav/literalsActions';
 

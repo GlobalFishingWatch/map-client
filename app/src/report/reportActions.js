@@ -1,16 +1,15 @@
-import {
-  SHOW_POLYGON,
-  CLEAR_POLYGON,
-  ADD_REPORT_POLYGON,
-  DELETE_REPORT_POLYGON,
-  START_REPORT,
-  DISCARD_REPORT,
-  SET_REPORT_STATUS_SENT,
-  SET_REPORT_STATUS_ERROR
-} from 'actions';
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 import { clearHighlightedVessels } from 'actions/heatmap';
 import { FLAGS } from 'constants';
+
+export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
+export const CLEAR_POLYGON = 'CLEAR_POLYGON';
+export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
+export const DISCARD_REPORT = 'DISCARD_REPORT';
+export const SET_REPORT_STATUS_ERROR = 'SET_REPORT_STATUS_ERROR';
+export const SET_REPORT_STATUS_SENT = 'SET_REPORT_STATUS_SENT';
+export const SHOW_POLYGON = 'SHOW_POLYGON';
+export const START_REPORT = 'START_REPORT';
 
 export function showPolygon(polygonData, latLng) {
   return {

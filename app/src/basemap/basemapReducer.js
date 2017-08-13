@@ -1,7 +1,7 @@
 /* eslint-disable max-len  */
 import {
   SET_BASEMAP
-} from 'actions';
+} from 'basemap/basemapActions';
 
 const initialState = {
   activeBasemap: 'hybrid',

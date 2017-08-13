@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'components/Map/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin, setRecentVesselHistory } from 'actions/vesselInfo';
-import { login } from 'actions/user';
+import { clearVesselInfo, toggleActiveVesselPin } from 'actions/vesselInfo';
+import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
+import { login } from 'user/userActions';
 
 const mapStateToProps = (state) => {
   const currentlyShownLayer = state.layers.workspaceLayers
@@ -32,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onTogglePin: (seriesgroup) => {
     dispatch(toggleActiveVesselPin());
-    dispatch(setRecentVesselHistory(seriesgroup));
+    dispatch(addVesselToRecentVesselList(seriesgroup));
   }
 });
 

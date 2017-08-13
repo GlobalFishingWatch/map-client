@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Header from 'siteNav/components/Header';
-import { login, logout } from 'actions/user';
-import { setShareModalError, openShareModal } from 'actions/map';
+import { login, logout } from 'user/userActions';
+import { setShareModalError, openShareModal } from 'share/shareActions';
 import { saveWorkspace, getWorkspace } from 'actions/workspace';
 
 const mapStateToProps = state => ({

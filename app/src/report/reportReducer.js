@@ -7,7 +7,7 @@ import {
   DISCARD_REPORT,
   SET_REPORT_STATUS_SENT,
   SET_REPORT_STATUS_ERROR
-} from 'actions';
+} from 'report/reportActions';
 import { REPORT_STATUS } from 'constants';
 
 const initialState = {

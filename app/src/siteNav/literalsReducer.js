@@ -1,4 +1,4 @@
-import { LOAD_LITERALS } from 'actions';
+import { LOAD_LITERALS } from 'siteNav/literalsActions';
 
 const initialState = {};
 

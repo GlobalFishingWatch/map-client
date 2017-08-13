@@ -1,7 +1,4 @@
-import {
-  SET_BASEMAP
-} from 'actions';
-
+export const SET_BASEMAP = 'SET_BASEMAP';
 
 export function setBasemap(basemap) {
   return {

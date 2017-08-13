@@ -2,7 +2,7 @@ import {
   CUSTOM_LAYER_UPLOAD_START,
   CUSTOM_LAYER_UPLOAD_SUCCESS,
   CUSTOM_LAYER_UPLOAD_ERROR
-} from 'actions';
+} from 'layers/customLayerActions';
 
 const initialState = {
   status: 'idle',

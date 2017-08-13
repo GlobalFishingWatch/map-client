@@ -1,9 +1,12 @@
-import {
-  SET_USER_PERMISSIONS, SET_USER, SET_TOKEN, TOKEN_SESSION, LOGOUT
-} from 'actions';
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
 import 'whatwg-fetch';
 import uniq from 'lodash/uniq';
+
+export const SET_USER = 'SET_USER';
+export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS';
+export const SET_TOKEN = 'SET_TOKEN';
+export const LOGOUT = 'LOGOUT';
+export const TOKEN_SESSION = 'TOKEN_SESSION';
 
 const setGAUserDimension = (user) => {
   if (user !== false) {

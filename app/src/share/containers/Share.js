@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import Share from 'components/Map/Share';
+import Share from 'share/components/Share';
 
 const mapStateToProps = state => ({
   workspaceId: state.map.workspaceId,
-  error: state.map.shareModal.error
+  error: state.share.shareModal.error
 });
 
 const mapDispatchToProps = () => ({});

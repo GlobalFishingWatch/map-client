@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AuthMap from 'components/AuthMap';
-import { login } from 'actions/user';
+import { login } from 'user/userActions';
 
 const mapStateToProps = state => ({
   token: state.user.token

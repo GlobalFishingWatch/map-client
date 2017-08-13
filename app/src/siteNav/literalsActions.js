@@ -1,4 +1,4 @@
-import { LOAD_LITERALS } from 'actions';
+export const LOAD_LITERALS = 'LOAD_LITERALS';
 
 export function loadLiterals() {
   return (dispatch) => {

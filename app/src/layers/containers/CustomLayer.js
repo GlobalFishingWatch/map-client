@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import CustomLayer from 'layers/components/CustomLayer';
 import { setLayerManagementModalVisibility } from 'actions/map';
 import uploadCustomLayer from 'layers/customLayerActions';
-import { login } from 'actions/user';
+import { login } from 'user/userActions';
 
 
 const mapStateToProps = state => ({

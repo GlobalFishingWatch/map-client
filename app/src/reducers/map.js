@@ -1,24 +1,21 @@
 import {
-  INIT_GOOGLE_MAPS,
-  SET_ZOOM,
-  SET_LOADING,
-  SET_DRAWING,
-  SET_LOADERS,
-  SET_MAX_ZOOM,
-  SET_CENTER,
-  SHARE_MODAL_OPEN,
-  SET_WORKSPACE_ID,
-  SET_URL_WORKSPACE_ID,
   DELETE_WORKSPACE_ID,
-  SET_SHARE_MODAL_ERROR,
-  SET_LAYER_INFO_MODAL,
-  SET_TILESET_URL,
-  SET_TILESET_ID,
-  SET_SUPPORT_MODAL_VISIBILITY,
-  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY,
+  INIT_GOOGLE_MAPS,
+  SET_CENTER,
   SET_CENTER_TILE,
-  SET_SUBMENU
+  SET_DRAWING,
+  SET_LAYER_INFO_MODAL,
+  SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
+  SET_LOADERS,
+  SET_LOADING,
+  SET_MAX_ZOOM,
+  SET_SUBMENU,
+  SET_SUPPORT_MODAL_VISIBILITY,
+  SET_TILESET_ID,
+  SET_TILESET_URL,
+  SET_URL_WORKSPACE_ID,
+  SET_WORKSPACE_ID,
+  SET_ZOOM
 } from 'actions';
 import { MAX_ZOOM_LEVEL } from 'constants';
 
@@ -32,10 +29,6 @@ const initialState = {
   tilesetId: null,
   center: [0, 0],
   centerTile: { x: 0, y: 0 },
-  shareModal: {
-    open: false,
-    error: null
-  },
   layerModal: {
     open: false,
     info: {}
@@ -44,9 +37,6 @@ const initialState = {
     open: false
   },
   layerManagementModal: {
-    open: false
-  },
-  recentVesselModal: {
     open: false
   },
   workspaceId: null,
@@ -84,10 +74,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { center: action.payload });
     case SET_CENTER_TILE:
       return Object.assign({}, state, { centerTile: action.payload });
-    case SHARE_MODAL_OPEN: {
-      const shareModal = Object.assign({}, state.shareModal, { open: action.payload });
-      return Object.assign({}, state, { shareModal });
-    }
     case SET_LOADING:
       return Object.assign({}, state, { loading: action.payload });
     case SET_DRAWING:
@@ -104,11 +90,6 @@ export default function (state = initialState, action) {
     case DELETE_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: null });
 
-    case SET_SHARE_MODAL_ERROR: {
-      const newState = Object.assign({}, state);
-      newState.shareModal.error = action.payload;
-      return newState;
-    }
     case SET_LAYER_INFO_MODAL: {
       const newState = Object.assign({}, state);
       newState.layerModal = {
@@ -129,15 +110,6 @@ export default function (state = initialState, action) {
     case SET_LAYER_MANAGEMENT_MODAL_VISIBILITY: {
       const newState = Object.assign({}, state);
       newState.layerManagementModal = {
-        open: action.payload
-      };
-
-      return newState;
-    }
-
-    case SET_RECENT_VESSELS_VISIBILITY: {
-      const newState = Object.assign({}, state);
-      newState.recentVesselModal = {
         open: action.payload
       };
 

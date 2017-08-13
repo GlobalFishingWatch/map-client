@@ -1,10 +1,9 @@
-import {
-  CUSTOM_LAYER_UPLOAD_START,
-  CUSTOM_LAYER_UPLOAD_SUCCESS,
-  CUSTOM_LAYER_UPLOAD_ERROR
-} from 'actions';
 import { setLayerManagementModalVisibility } from 'actions/map';
 import { addCustomLayer } from 'layers/layersActions';
+
+export const CUSTOM_LAYER_UPLOAD_START = 'CUSTOM_LAYER_UPLOAD_START';
+export const CUSTOM_LAYER_UPLOAD_SUCCESS = 'CUSTOM_LAYER_UPLOAD_SUCCESS';
+export const CUSTOM_LAYER_UPLOAD_ERROR = 'CUSTOM_LAYER_UPLOAD_ERROR';
 
 export default function uploadCustomLayer(url, name, description) {
   return (dispatch, getState) => {
