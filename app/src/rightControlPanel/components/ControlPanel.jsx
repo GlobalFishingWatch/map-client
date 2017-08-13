@@ -18,7 +18,7 @@ import BasemapIcon from '-!babel-loader!svg-react-loader!assets/icons/basemap-ic
 import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
-import PinnedTracks from 'containers/Map/PinnedTracks';
+import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
 
 class ControlPanel extends Component {
   constructor() {
@@ -133,11 +133,11 @@ class ControlPanel extends Component {
               className="loginRequiredLink"
               onClick={this.props.login}
             >Only registered users can use the search feature. Click here to log in.</a >
-            <PinnedTracks />
+            <PinnedVesselList />
           </div > :
           <div >
             <SearchPanel />
-            <PinnedTracks />
+            <PinnedVesselList />
           </div >
         }
       </SubMenu >

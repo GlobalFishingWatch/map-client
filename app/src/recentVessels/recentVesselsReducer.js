@@ -14,42 +14,42 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_RECENT_VESSEL_HISTORY: {
-      const newVessel = {};
-      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const currentVessel = state.vessels[vesselIndex];
-      let vesselHistoryIndex = -1;
-      let vesselHistory = {};
+
+      const { seriesgroup, label, tilesetId } = action.payload;
+
+      let vesselInHistoryIndex = -1;
+      let vesselInHistory = {};
 
       if (state.history.length > 0) {
-        vesselHistoryIndex = state.history.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-        vesselHistory = state.history[vesselHistoryIndex];
+        vesselInHistoryIndex = state.history.findIndex(vessel => vessel.seriesgroup === seriesgroup);
+        vesselInHistory = state.history[vesselInHistoryIndex];
       }
 
-      Object.assign(newVessel, vesselHistory, {
-        mmsi: currentVessel.mmsi,
-        seriesgroup: currentVessel.seriesgroup,
-        vesselname: currentVessel.vesselname,
-        pinned: currentVessel.pinned,
-        tilesetId: currentVessel.tilesetId
+      const newVessel = Object.assign({}, vesselInHistory, {
+        label: label || vesselInHistory.label,
+        seriesgroup: seriesgroup || vesselInHistory.seriesgroup,
+        tilesetId: tilesetId || vesselInHistory.tilesetId,
+        timestamp: new Date()
       });
 
-      if (vesselHistoryIndex !== -1) {
-        return Object.assign({}, state, {
-          history: [...state.history.slice(0, vesselHistoryIndex), newVessel, ...state.history.slice(vesselHistoryIndex + 1)]
-        });
+      let newHistory;
+
+      if (vesselInHistoryIndex !== -1) {
+        newHistory = [newVessel, ...state.history.slice(0, vesselInHistoryIndex), ...state.history.slice(vesselInHistoryIndex + 1)];
+      } else {
+        newHistory = [newVessel, ...state.history];
+
       }
 
       try {
-        const serializedState = JSON.stringify([newVessel, ...state.history]);
+        const serializedState = JSON.stringify(newHistory);
         localStorage.setItem('vessel_history', serializedState);
       } catch (err) {
-        return Object.assign({}, state, {
-          history: [newVessel, ...state.history]
-        });
+        console.warn('Could not save vessel history to local storage');
       }
 
       return Object.assign({}, state, {
-        history: [newVessel, ...state.history]
+        history: newHistory
       });
     }
 

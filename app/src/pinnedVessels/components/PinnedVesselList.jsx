@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import PinnedTracksItem from 'containers/Map/PinnedTracksItem';
+import PinnedVessel from 'pinnedVessels/containers/PinnedVessel';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
 
-class PinnedTracks extends Component {
+class PinnedVesselList extends Component {
   constructor(props) {
     super(props);
 
@@ -42,10 +42,10 @@ class PinnedTracks extends Component {
       pinnedItems = (
         <ul>
           {pinnedVessels.map((pinnedVessel, index) =>
-            (<PinnedTracksItem
+            (<PinnedVessel
               index={index}
               key={index}
-              onLayerBlendingToggled={() => this.onBlendingClicked(index)}
+              onPinnedVesselOptionsToggled={() => this.onBlendingClicked(index)}
               showBlending={this.state.currentBlendingOptionsShown === index}
               vessel={pinnedVessel}
             />)
@@ -81,7 +81,7 @@ class PinnedTracks extends Component {
   }
 }
 
-PinnedTracks.propTypes = {
+PinnedVesselList.propTypes = {
   vessels: PropTypes.array,
   pinnedVesselEditMode: PropTypes.bool,
   loggedUser: PropTypes.object,
@@ -92,4 +92,4 @@ PinnedTracks.propTypes = {
   openRecentVesselModal: PropTypes.func
 };
 
-export default PinnedTracks;
+export default PinnedVesselList;

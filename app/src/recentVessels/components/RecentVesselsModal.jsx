@@ -12,47 +12,53 @@ import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin-icon.svg?n
 class RecentVesselsModal extends Component {
 
   render() {
-    const historyItems = [];
+    let historyItems = [];
+    const pinnedVessels = this.props.vessels.filter(elem => elem.pinned === true);
+    const pinnedVesselSeriesGroup = pinnedVessels.length > 0 ? pinnedVessels.map(elem => elem.seriesgroup) : [];
 
     if (this.props.history.length > 0) {
-      this.props.history.map((entry, i) => (
-        historyItems.push(
-          <li
-            className={classnames(ResultListStyles.resultItem, recentVesselStyles.historyItem)}
-            key={i}
-            onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
-          >
-            {entry.pinned === true &&
+      historyItems = this.props.history.map(
+        (entry, i) => {
+          const vesselLabel = entry.label || `${entry.vesselname}, ${entry.mmsi}`;
+          return (
+            <li
+              className={classnames(ResultListStyles.resultItem, recentVesselStyles.historyItem)}
+              key={i}
+              onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
+            >
+              {pinnedVesselSeriesGroup.indexOf(entry.seriesgroup) !== -1 &&
               <PinIcon
                 className={classnames(IconStyles.icon, IconStyles.pinIcon, recentVesselStyles.pinned)}
               />}
-            <span className={recentVesselStyles.historyItemName}>{`${entry.vesselname}, ${entry.mmsi}`}</span>
-          </li>)
-      ));
+              <span className={recentVesselStyles.historyItemName} >{vesselLabel}</span >
+            </li >
+          );
+        }
+      );
     }
 
     return (
-      <div className={recentVesselStyles.recentVessels}>
-        <h3 className={ModalStyles.modalTitle}>Recent vessels</h3>
-        <div className={recentVesselStyles.historyContainer}>
+      <div className={recentVesselStyles.recentVessels} >
+        <h3 className={ModalStyles.modalTitle} >Recent vessels</h3 >
+        <div className={recentVesselStyles.historyContainer} >
           {historyItems.length === 0 &&
-            <div className={recentVesselStyles.emptyHistory}>
-              <span>Your history is currently empty</span>
-            </div>}
+          <div className={recentVesselStyles.emptyHistory} >
+            <span >Your history is currently empty</span >
+          </div >}
           {historyItems.length > 0 &&
-            <ul className={classnames(ResultListStyles.resultList, recentVesselStyles.historyList)}>
-              {historyItems}
-            </ul>}
-        </div>
-        <div className={recentVesselStyles.footer}>
+          <ul className={classnames(ResultListStyles.resultList, recentVesselStyles.historyList)} >
+            {historyItems}
+          </ul >}
+        </div >
+        <div className={recentVesselStyles.footer} >
           <button
             className={classnames(MapButtonStyles.button, MapButtonStyles._filled, recentVesselStyles.btnDone)}
             onClick={() => this.props.closeModal()}
           >
             done
-          </button>
-        </div>
-      </div>
+          </button >
+        </div >
+      </div >
     );
   }
 }
@@ -60,7 +66,8 @@ class RecentVesselsModal extends Component {
 RecentVesselsModal.propTypes = {
   closeModal: PropTypes.func,
   drawVessel: PropTypes.func,
-  history: PropTypes.array
+  history: PropTypes.array,
+  vessels: PropTypes.array
 };
 
 export default RecentVesselsModal;

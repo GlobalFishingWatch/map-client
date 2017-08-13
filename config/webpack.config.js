@@ -85,6 +85,7 @@ const webpackConfig = {
       leftControlPanel: path.join(rootPath, 'app/src/leftControlPanel'),
       rightControlPanel: path.join(rootPath, 'app/src/rightControlPanel'),
       lib: path.join(rootPath, 'app/lib'),
+      pinnedVessels: path.join(rootPath, 'app/src/pinnedVessels'),
       recentVessels: path.join(rootPath, 'app/src/recentVessels'),
       report: path.join(rootPath, 'app/src/report'),
       search: path.join(rootPath, 'app/src/search'),
