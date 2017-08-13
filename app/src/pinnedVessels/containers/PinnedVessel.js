@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PinnedTracksItem from 'components/Map/PinnedTracksItem';
+import PinnedVessel from 'pinnedVessels/components/PinnedVessel';
 import {
   showPinnedVesselDetails,
   toggleVesselPin,
@@ -14,8 +14,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onVesselClicked: (tilesetId, seriesgroup) => {
-    dispatch(addVesselToRecentVesselList(seriesgroup));
+  onVesselClicked: (seriesgroup, label, tilesetId) => {
+    dispatch(addVesselToRecentVesselList(seriesgroup, label, tilesetId));
     dispatch(showPinnedVesselDetails(tilesetId, seriesgroup));
   },
   onRemoveClicked: (seriesgroup) => {
@@ -32,4 +32,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PinnedTracksItem);
+export default connect(mapStateToProps, mapDispatchToProps)(PinnedVessel);

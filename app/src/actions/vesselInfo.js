@@ -26,6 +26,7 @@ import {
   getTracksPlaybackData
 } from 'util/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
+import getVesselName from '../util/getVesselName';
 
 function showVesselDetails(tilesetId, seriesgroup) {
   return {
@@ -88,7 +89,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
 
-      dispatch(addVesselToRecentVesselList(data.seriesgroup));
+      dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, searchLayer.header.vesselFields), tilesetId));
     };
     request.send(null);
   };
@@ -239,7 +240,11 @@ export function setPinnedVessels(pinnedVessels) {
           }));
         }
 
-        dispatch(addVesselToRecentVesselList(pinnedVessel.seriesgroup));
+        dispatch(addVesselToRecentVesselList(
+          pinnedVessel.seriesgroup,
+          getVesselName(pinnedVessel, layer.header.vesselFields),
+          pinnedVessel.tilesetId
+        ));
       };
       request.send(null);
     });
@@ -285,21 +290,14 @@ export function clearVesselInfo() {
 }
 
 function _getPinAction(state, seriesgroup) {
-  let vesselIndex;
-  if (seriesgroup === undefined) {
-    // use vessel in info panel
-    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.shownInInfoPanel === true);
-  } else {
-    // look for vessel with given seriesgoup if provided
-    vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
-  }
+  const vesselIndex = state.vesselInfo.vessels.findIndex(vessel => vessel.seriesgroup === seriesgroup);
   const vessel = state.vesselInfo.vessels[vesselIndex];
   const pinned = !vessel.pinned;
 
   let visible = false;
 
   // when pinning the vessel currently in info panel, should be initially visible
-  if (seriesgroup === undefined && pinned === true) {
+  if (pinned === true) {
     visible = true;
   }
   return {
@@ -315,9 +313,9 @@ function _getPinAction(state, seriesgroup) {
   };
 }
 
-export function toggleActiveVesselPin() {
+export function toggleActiveVesselPin(seriesgroup) {
   return (dispatch, getState) => {
-    dispatch(_getPinAction(getState()));
+    dispatch(_getPinAction(getState(), seriesgroup));
   };
 }
 

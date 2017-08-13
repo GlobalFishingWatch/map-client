@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
-import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
+import PinnedVesselOptionsTooltip from 'pinnedVessels/components/PinnedVesselOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import icons from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
-class PinnedTracksItem extends Component {
+class PinnedVessel extends Component {
 
   onChangeName(value) {
     this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
@@ -17,7 +17,7 @@ class PinnedTracksItem extends Component {
 
   onVesselLabelClick() {
     if (this.props.pinnedVesselEditMode === false) {
-      this.props.onVesselClicked(this.props.vessel.tilesetId, this.props.vessel.seriesgroup);
+      this.props.onVesselClicked(this.props.vessel.seriesgroup, this.props.vessel.title, this.props.vessel.tilesetId);
     }
   }
 
@@ -33,7 +33,7 @@ class PinnedTracksItem extends Component {
   }
 
   toggleBlending() {
-    this.props.onLayerBlendingToggled(this.props.index);
+    this.props.onPinnedVesselOptionsToggled(this.props.index);
   }
 
   render() {
@@ -55,8 +55,7 @@ class PinnedTracksItem extends Component {
       actions = (
         <ul className={pinnedTracksStyles.pinnedItemActionList} >
           <li className={pinnedTracksStyles.pinnedItemActionItem}>
-            <LayerBlendingOptionsTooltip
-              displayHue
+            <PinnedVesselOptionsTooltip
               hueValue={this.props.vessel.hue}
               onChangeHue={hue => this.onChangeHue(hue)}
               isReverse={this.props.index < REVERSE_TOOLTIP_ITEMS_MOBILE}
@@ -99,11 +98,11 @@ class PinnedTracksItem extends Component {
   }
 }
 
-PinnedTracksItem.propTypes = {
+PinnedVessel.propTypes = {
   pinnedVesselEditMode: PropTypes.bool,
   index: PropTypes.number,
   togglePinnedVesselVisibility: PropTypes.func,
-  onLayerBlendingToggled: PropTypes.func,
+  onPinnedVesselOptionsToggled: PropTypes.func,
   onRemoveClicked: PropTypes.func,
   setPinnedVesselTitle: PropTypes.func,
   onVesselClicked: PropTypes.func,
@@ -112,4 +111,4 @@ PinnedTracksItem.propTypes = {
   vessel: PropTypes.object
 };
 
-export default PinnedTracksItem;
+export default PinnedVessel;

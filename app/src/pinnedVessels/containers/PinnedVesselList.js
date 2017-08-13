@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PinnedTracks from 'components/Map/PinnedTracks';
+import PinnedVesselList from 'pinnedVessels/components/PinnedVesselList';
 import {
   toggleVesselPin,
   setPinnedVesselHue,
@@ -28,4 +28,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PinnedTracks);
+export default connect(mapStateToProps, mapDispatchToProps)(PinnedVesselList);

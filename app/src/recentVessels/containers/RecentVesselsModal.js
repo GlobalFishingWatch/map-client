@@ -5,7 +5,8 @@ import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActi
 import { toggleLayerVisibility } from 'layers/layersActions';
 
 const mapStateToProps = state => ({
-  history: state.recentVessels.history
+  history: state.recentVessels.history,
+  vessels: state.vesselInfo.vessels
 });
 
 const mapDispatchToProps = dispatch => ({
