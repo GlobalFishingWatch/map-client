@@ -10,7 +10,7 @@ import { trackExternalLinkClicked } from 'analytics/analyticsActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
-  activeBasemap: state.map.activeBasemap,
+  activeBasemap: state.basemap.activeBasemap,
   areas: state.areas.data,
   basemaps: state.basemap.basemaps,
   centerLat: state.map.center[0],
