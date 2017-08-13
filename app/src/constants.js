@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { getTimeAtPrecision } from 'util/heatmapTileData';
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
@@ -65,7 +64,7 @@ export const ANALYTICS_TILE_COORDS_SCALE = 1 << 5;
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
-export const TIMELINE_OVERALL_START_DATE_OFFSET = getTimeAtPrecision(TIMELINE_OVERALL_START_DATE);
+export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_START_DATE / PLAYBACK_PRECISION);
 
 // radius of vessels lookup in pixels,
 // ie how large the clicked region should be for including vessels
