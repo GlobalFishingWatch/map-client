@@ -1,6 +1,6 @@
 import {
   SET_TIMEBAR_CHART_DATA
-} from 'actions';
+} from 'timebar/timebarActions';
 
 const initialState = {
   chartData: []

@@ -5,13 +5,10 @@ import {
   SET_LOADING,
   SET_DRAWING,
   SET_LOADERS,
-  SHARE_MODAL_OPEN,
   DELETE_WORKSPACE_ID,
-  SET_SHARE_MODAL_ERROR,
   SET_LAYER_INFO_MODAL,
   SET_SUPPORT_MODAL_VISIBILITY,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-  SET_RECENT_VESSELS_VISIBILITY,
   SET_CENTER_TILE,
   SET_SUBMENU
 } from 'actions';
@@ -109,34 +106,6 @@ export function removeLoader(loaderId) {
 }
 
 /**
- * Open or close the share modal
- *
- * @export openShareModal
- * @param {boolean} open - true to open, false to close
- * @returns {object}
- */
-export function openShareModal(open) {
-  return {
-    type: SHARE_MODAL_OPEN,
-    payload: open
-  };
-}
-
-/**
- * Set the error to display within the share modal
- *
- * @export setShareModalError
- * @param {string} error - message to display
- * @returns {object}
- */
-export function setShareModalError(error) {
-  return {
-    type: SET_SHARE_MODAL_ERROR,
-    payload: error
-  };
-}
-
-/**
  * Delete the workspace id from the store
  *
  * @export deleteWorkspace
@@ -193,13 +162,6 @@ export function setSupportModalVisibility(visibility) {
 export function setLayerManagementModalVisibility(visibility) {
   return {
     type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
-    payload: visibility
-  };
-}
-
-export function setRecentVesselsModalVisibility(visibility) {
-  return {
-    type: SET_RECENT_VESSELS_VISIBILITY,
     payload: visibility
   };
 }

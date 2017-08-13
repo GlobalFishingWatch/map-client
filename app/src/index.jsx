@@ -5,14 +5,14 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
-import reportReducer from 'report/reportReducer';
 import heatmapReducer from 'reducers/heatmap';
+import reportReducer from 'report/reportReducer';
+import mapReducer from 'reducers/map';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
-import mapReducer from 'reducers/map';
 import analyticsMiddleware from 'analytics/analyticsMiddleware';
 import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
-import userReducer from 'reducers/user';
+import userReducer from 'user/userReducer';
 import filtersReducer from 'filters/filtersReducer';
 import contactReducer from 'siteNav/contactReducer';
 import searchReducer from 'search/searchReducer';
@@ -22,6 +22,8 @@ import modalReducer from 'reducers/modal';
 import timebarReducer from 'timebar/timebarReducer';
 import literalsReducer from 'siteNav/literalsReducer';
 import basemapReducer from 'basemap/basemapReducer';
+import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
+import shareReducer from 'share/shareReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 
@@ -34,21 +36,23 @@ window.Promise = window.Promise || Promise;
  */
 const reducer = combineReducers({
   areas: areasOfInterestReducer,
-  map: mapReducer,
-  user: userReducer,
-  filters: filtersReducer,
+  basemap: basemapReducer,
   contactStatus: contactReducer,
-  search: searchReducer,
-  vesselInfo: vesselInfoReducer,
-  report: reportReducer,
+  customLayer: customLayerReducer,
+  filters: filtersReducer,
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
-  customLayer: customLayerReducer,
-  modal: modalReducer,
-  timebar: timebarReducer,
   literals: literalsReducer,
-  basemap: basemapReducer
+  map: mapReducer,
+  modal: modalReducer,
+  recentVessels: recentVesselsReducer,
+  report: reportReducer,
+  search: searchReducer,
+  share: shareReducer,
+  timebar: timebarReducer,
+  user: userReducer,
+  vesselInfo: vesselInfoReducer
 });
 
 /**

@@ -1,4 +1,4 @@
-import { FORM_RESPONSE } from 'actions';
+import { FORM_RESPONSE } from 'siteNav/contactActions';
 
 const initialState = null;
 

@@ -10,17 +10,18 @@ import {
 import {
   SET_ZOOM,
   SET_CENTER,
-  SET_BASEMAP,
   SET_TILESET_URL,
   SET_TILESET_ID,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID
 } from 'actions';
+import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 import { setFlagFilters, setOuterTimelineDates } from 'filters/filtersActions';
-import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
+import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
+import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/colors';
 import uniq from 'lodash/uniq';
@@ -191,7 +192,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setFlagFilters(workspaceData.filters));
 
-  dispatch(loadRecentVesselHistory());
+  dispatch(loadRecentVesselsList());
 
   if (workspaceData.areas) {
     workspaceData.areas.forEach((area) => {

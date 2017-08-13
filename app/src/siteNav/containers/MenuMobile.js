@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import MenuMobile from 'siteNav/components/MenuMobile';
-import { login, logout } from 'actions/user';
+import { login, logout } from 'user/userActions';
 import { setSupportModalVisibility } from 'actions/map';
 import { getWorkspace } from 'actions/workspace';
 

@@ -1,9 +1,10 @@
-import { GET_LAYER_LIBRARY } from 'actions';
 import { DEFAULT_TRACK_HUE } from 'constants';
 import { getWorkspace } from 'actions/workspace';
 import { hexToHue } from 'util/colors';
 import calculateLayerId from 'util/calculateLayerId';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'layers/layersActions';
+
+export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY';
 
 export function getLayerLibrary() {
   return (dispatch, getState) => {

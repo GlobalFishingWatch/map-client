@@ -3,20 +3,18 @@ import find from 'lodash/find';
 import getVesselName from 'util/getVesselName';
 import {
   ADD_VESSEL,
+  CLEAR_VESSEL_INFO,
+  HIDE_VESSELS_INFO_PANEL,
+  LOAD_PINNED_VESSEL,
+  SET_PINNED_VESSEL_HUE,
+  SET_PINNED_VESSEL_TITLE,
+  SET_PINNED_VESSEL_TRACK_VISIBILITY,
+  SET_TRACK_BOUNDS,
   SET_VESSEL_DETAILS,
   SET_VESSEL_TRACK,
-  CLEAR_VESSEL_INFO,
-  SET_TRACK_BOUNDS,
-  HIDE_VESSELS_INFO_PANEL,
-  TOGGLE_VESSEL_PIN,
   SHOW_VESSEL_DETAILS,
-  SET_PINNED_VESSEL_HUE,
-  LOAD_PINNED_VESSEL,
-  SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSEL_HISTORY,
-  LOAD_RECENT_VESSEL_HISTORY,
-  SET_PINNED_VESSEL_TRACK_VISIBILITY
+  TOGGLE_VESSEL_PIN
 } from 'actions';
 import { HEATMAP_TRACK_HIGHLIGHT_HUE, VESSEL_INFO_STATUS } from 'constants';
 
@@ -24,7 +22,6 @@ const initialState = {
   vessels: [],
   infoPanelStatus: VESSEL_INFO_STATUS.HIDDEN,
   pinnedVesselEditMode: false,
-  history: [],
   currentlyShownVessel: null
 };
 
@@ -216,62 +213,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]
       });
-    }
-
-    case SET_RECENT_VESSEL_HISTORY: {
-      const newVessel = {};
-      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const currentVessel = state.vessels[vesselIndex];
-      let vesselHistoryIndex = -1;
-      let vesselHistory = {};
-
-      if (state.history.length > 0) {
-        vesselHistoryIndex = state.history.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-        vesselHistory = state.history[vesselHistoryIndex];
-      }
-
-      Object.assign(newVessel, vesselHistory, {
-        mmsi: currentVessel.mmsi,
-        seriesgroup: currentVessel.seriesgroup,
-        vesselname: currentVessel.vesselname,
-        pinned: currentVessel.pinned,
-        tilesetId: currentVessel.tilesetId
-      });
-
-      if (vesselHistoryIndex !== -1) {
-        return Object.assign({}, state, {
-          history: [...state.history.slice(0, vesselHistoryIndex), newVessel, ...state.history.slice(vesselHistoryIndex + 1)]
-        });
-      }
-
-      try {
-        const serializedState = JSON.stringify([newVessel, ...state.history]);
-        localStorage.setItem('vessel_history', serializedState);
-      } catch (err) {
-        return Object.assign({}, state, {
-          history: [newVessel, ...state.history]
-        });
-      }
-
-      return Object.assign({}, state, {
-        history: [newVessel, ...state.history]
-      });
-    }
-
-    case LOAD_RECENT_VESSEL_HISTORY: {
-      try {
-        const serializedState = localStorage.getItem('vessel_history');
-
-        if (serializedState === null) {
-          return state;
-        }
-
-        return Object.assign({}, state, {
-          history: JSON.parse(serializedState)
-        });
-      } catch (err) {
-        return state;
-      }
     }
 
     case TOGGLE_PINNED_VESSEL_EDIT_MODE: {

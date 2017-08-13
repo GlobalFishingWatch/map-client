@@ -4,13 +4,10 @@ import {
   initGoogleMaps,
   setZoom,
   setCenter,
-  openShareModal,
   deleteWorkspace,
-  setShareModalError,
   setLayerInfoModal,
   setSupportModalVisibility,
-  setLayerManagementModalVisibility,
-  setRecentVesselsModalVisibility
+  setLayerManagementModalVisibility
 } from 'actions/map';
 import { setWelcomeModalVisibility } from 'actions/modal';
 import {
@@ -23,6 +20,8 @@ import { setSearchModalVisibility } from 'search/searchActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
+import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActions';
+import { openShareModal, setShareModalError } from 'share/shareActions';
 
 const mapStateToProps = state => ({
   areas: state.areas.data,
@@ -33,7 +32,7 @@ const mapStateToProps = state => ({
   maxZoom: state.map.maxZoom,
   trackBounds: state.vesselInfo.trackBounds,
   token: state.user.token,
-  shareModalOpenState: state.map.shareModal.open,
+  shareModalOpenState: state.share.shareModal.open,
   basemaps: state.basemap.basemaps,
   activeBasemap: state.map.activeBasemap,
   layerModal: state.map.layerModal,
@@ -41,7 +40,7 @@ const mapStateToProps = state => ({
   layerManagementModal: state.map.layerManagementModal.open,
   userPermissions: state.user.userPermissions,
   searchModalOpen: state.search.searchModalOpen,
-  recentVesselModalOpen: state.map.recentVesselModal.open,
+  recentVesselModalOpen: state.recentVessels.recentVesselModal.open,
   welcomeModalOpen: state.modal.welcome.open,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
   showMapCursorPointer: state.heatmap.highlightedVessels.isEmpty !== true && state.heatmap.highlightedVessels.clickableCluster !== true,

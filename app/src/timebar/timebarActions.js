@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { getLayerLibrary } from 'layers/layerLibraryActions';
-import { SET_TIMEBAR_CHART_DATA } from 'actions';
+
+export const SET_TIMEBAR_CHART_DATA = 'SET_TIMEBAR_CHART_DATA';
 
 export function loadTimebarChartData(startDate, endDate) {
   const start = parseInt(startDate.getUTCFullYear(), 10);

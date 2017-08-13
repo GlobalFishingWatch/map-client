@@ -4,7 +4,7 @@ import {
   TOGGLE_AREA_OF_INTEREST_VISIBILITY,
   SET_RECENTLY_CREATED_AREA_OF_INTEREST,
   DELETE_AREA_OF_INTEREST
-} from 'actions';
+} from 'areasOfInterest/areasOfInterestActions';
 import { COLORS } from 'constants';
 
 const initialState = {

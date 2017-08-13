@@ -1,5 +1,4 @@
-
-import { GET_LAYER_LIBRARY } from 'actions';
+import { GET_LAYER_LIBRARY } from 'layers/layerLibraryActions';
 
 const initialState = [];
 

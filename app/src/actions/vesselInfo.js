@@ -12,8 +12,6 @@ import {
   LOAD_PINNED_VESSEL,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE,
-  SET_RECENT_VESSEL_HISTORY,
-  LOAD_RECENT_VESSEL_HISTORY,
   SET_PINNED_VESSEL_TRACK_VISIBILITY
 } from 'actions';
 import { LAYER_TYPES } from 'constants';
@@ -27,28 +25,7 @@ import {
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'util/heatmapTileData';
-
-export function setRecentVesselHistory(seriesgroup) {
-  return (dispatch, getState) => {
-    const state = getState();
-    if (state.user.loggedUser == null) {
-      return;
-    }
-    dispatch({
-      type: SET_RECENT_VESSEL_HISTORY,
-      payload: {
-        seriesgroup
-      }
-    });
-  };
-}
-
-export function loadRecentVesselHistory() {
-  return {
-    type: LOAD_RECENT_VESSEL_HISTORY,
-    payload: null
-  };
-}
+import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 
 function showVesselDetails(tilesetId, seriesgroup) {
   return {
@@ -111,7 +88,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
 
-      dispatch(setRecentVesselHistory(data.seriesgroup));
+      dispatch(addVesselToRecentVesselList(data.seriesgroup));
     };
     request.send(null);
   };
@@ -262,7 +239,7 @@ export function setPinnedVessels(pinnedVessels) {
           }));
         }
 
-        dispatch(setRecentVesselHistory(pinnedVessel.seriesgroup));
+        dispatch(addVesselToRecentVesselList(pinnedVessel.seriesgroup));
       };
       request.send(null);
     });

@@ -4,7 +4,7 @@ import { setSearchResultVisibility } from 'search/searchActions';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
-import { login } from 'actions/user';
+import { login } from 'user/userActions';
 import { openTimebarInfoModal, setSubmenu, setDrawingMode } from 'actions/map';
 
 

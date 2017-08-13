@@ -4,12 +4,11 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_PLAYING_STATUS,
   SET_TIMELINE_HOVER_DATES,
-  GA_PLAY_STATUS_TOGGLED,
   REWIND_TIMELINE
 } from 'actions';
+import { GA_PLAY_STATUS_TOGGLED, trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
 import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
-import { trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
 
 const getRangeDuration = range => range[1].getTime() - range[0].getTime();
 
@@ -91,7 +90,7 @@ export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
 
     // check inner dates, move inner range inside new outer timeline dates if needed
     if (outerTimelineDates[0] >= currentInnerTimelineDates[0] ||
-        outerTimelineDates[1] <= currentInnerTimelineDates[1]) {
+      outerTimelineDates[1] <= currentInnerTimelineDates[1]) {
       const newInner = [];
       const currentOverallTimelineDates = getState().filters.timelineOverallExtent;
       if (outerTimelineDates[0] >= currentInnerTimelineDates[0]) {

@@ -1,15 +1,14 @@
-import {
-  SET_SEARCH_RESULTS,
-  SET_SEARCH_MODAL_VISIBILITY,
-  SET_SEARCHING,
-  SET_SEARCH_TERM,
-  SET_SEARCH_PAGE,
-  SET_SEARCH_RESULTS_VISIBILITY
-} from 'actions';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
 import getVesselName from 'util/getVesselName';
+
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
+export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
+export const SET_SEARCH_PAGE = 'SET_SEARCH_PAGE';
+export const SET_SEARCHING = 'SET_SEARCHING';
+export const SET_SEARCH_MODAL_VISIBILITY = 'SET_SEARCH_MODAL_VISIBILITY';
+export const SET_SEARCH_RESULTS_VISIBILITY = 'SET_SEARCH_RESULTS_VISIBILITY';
 
 let searchQueryID = 0;
 
