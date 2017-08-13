@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import MapContainer from 'containers/Map';
+import MapContainer from 'containers/MapContainer';
 import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
 
 class AuthMap extends Component {
