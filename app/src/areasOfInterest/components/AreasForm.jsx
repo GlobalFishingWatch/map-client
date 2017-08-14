@@ -75,37 +75,35 @@ class AreasForm extends Component {
     }
 
     return (
-      <div className={areasPanelStyles.areasPanel} >
-        <div className={areasPanelStyles.areasPanel} >
-          <input
-            type="text"
-            onChange={e => this.onNameChange(e)}
-            className={areasPanelStyles.nameInput}
-            placeholder="Insert area name"
-            value={name}
-          />
-          {error &&
-            <div className={classnames(areasPanelStyles.error)} >
-              {error}
-            </div >
-          }
-          <div className={classnames(controlPanelStyles.item)} >
-            <ColorPicker color={color} onColorChange={this.onColorChange} />
+      <div className={areasPanelStyles.areasForm} >
+        <input
+          type="text"
+          onChange={e => this.onNameChange(e)}
+          className={areasPanelStyles.nameInput}
+          placeholder="Insert area name"
+          value={name}
+        />
+        {error &&
+          <div className={classnames(areasPanelStyles.error)} >
+            {error}
           </div >
-          <div className={classnames(areasPanelStyles.actionButtons)} >
-            <button
-              className={classnames([buttonStyles.button])}
-              onClick={this.onCancel}
-            >
-              Cancel
-            </button >
-            {saveAllowed && <button
-              className={classnames([buttonStyles.button, buttonStyles._primary])}
-              onClick={this.onAreaSave}
-            >
-              Save
-            </button >}
-          </div >
+        }
+        <div className={classnames(controlPanelStyles.item)} >
+          <ColorPicker color={color} onColorChange={this.onColorChange} />
+        </div >
+        <div className={classnames(areasPanelStyles.actionButtons)} >
+          <button
+            className={classnames([buttonStyles.button])}
+            onClick={this.onCancel}
+          >
+            Cancel
+          </button >
+          {saveAllowed && <button
+            className={classnames([buttonStyles.button, buttonStyles._primary])}
+            onClick={this.onAreaSave}
+          >
+            Save
+          </button >}
         </div >
       </div >
     );
