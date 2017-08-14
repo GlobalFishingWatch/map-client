@@ -1,18 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ControlPanelStyles from 'styles/components/control_panel.scss';
+import SubmenuStyles from 'styles/components/submenu.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 
 function SubMenu({ title, icon, extraHeader, children, onBack }) {
   return (
-    <div className={ControlPanelStyles.submenu}>
-      <div className={ControlPanelStyles.submenuHeader} >
-        <InfoIcon onClick={onBack} />
-        <h2 className={ControlPanelStyles.submenuTitle} >{title}</h2>
-        {extraHeader}
-        <div className={ControlPanelStyles.icon} >{icon}</div>
+    <div className={SubmenuStyles.submenu}>
+      <div className={SubmenuStyles.header} >
+        <div className={SubmenuStyles.titleContainer} >
+          <InfoIcon onClick={onBack} />
+          <h2 className={SubmenuStyles.title} >{title}</h2>
+          {extraHeader}
+        </div>
+        <div className={SubmenuStyles.icon} >{icon}</div>
       </div>
-      <div className={ControlPanelStyles.submenuContent} >
+      <div className={SubmenuStyles.content} >
         {children}
       </div>
     </div>
