@@ -36,7 +36,8 @@
   }
 
   .resumeDisplay {
-    border-bottom: 1px solid rgba($color-7, .4);
+    width: 100%;
+    border-bottom: 1px solid $color-7;
     display: none;
     flex-direction: column;
     padding: 30px 56px 25px 25px;
