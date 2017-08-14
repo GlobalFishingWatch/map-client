@@ -29,7 +29,7 @@ export default function (state = initialState, action) {
     case UPDATE_WORKING_AREA_OF_INTEREST:
       return Object.assign({}, state, {
         editingArea: {
-          name: action.payload.name === null ? '' : action.payload.name || state.editingArea.name,
+          name: action.payload.name === '' ? '' : action.payload.name || state.editingArea.name,
           color: action.payload.color || state.editingArea.color,
           coordinates: action.payload.coordinates || state.editingArea.coordinates,
           visible: state.editingArea.visible
