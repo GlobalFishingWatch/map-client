@@ -4,9 +4,9 @@ export const DELETE_AREA_OF_INTEREST = 'DELETE_AREA_OF_INTEREST';
 export const TOGGLE_AREA_OF_INTEREST_VISIBILITY = 'TOGGLE_AREA_OF_INTEREST_VISIBILITY';
 export const SET_RECENTLY_CREATED_AREA_OF_INTEREST = 'SET_RECENTLY_CREATED_AREA_OF_INTEREST';
 
-export function saveAreaOfInterest() {
+export function saveAreaOfInterest(areaOfInterest) {
   return (dispatch, getState) => {
-    const area = Object.assign(getState().areas.editingArea);
+    const area = areaOfInterest || Object.assign(getState().areas.editingArea);
     dispatch({
       type: SAVE_AREA_OF_INTEREST,
       payload: { area }
