@@ -194,6 +194,7 @@ class ControlPanel extends Component {
                   })}
                 >
                   {this.renderResume()}
+                  <VesselInfoPanel />
                   <MenuLink
                     title="Vessels"
                     icon={this.renderIcon('vessels')}

@@ -17,7 +17,8 @@
     background: transparent;
     flex: 0 1 auto;
     height: auto;
-    overflow-y: auto;
+    overflow: visible;
+
     // cancels pointer-events: none of c-map-panels
     pointer-events: auto;
     position: relative;
