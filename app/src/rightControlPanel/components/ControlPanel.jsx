@@ -178,7 +178,7 @@ class ControlPanel extends Component {
 
     return (
       <MediaQuery minWidth={768} >
-        {matches => (
+        {desktop => (
           <div
             className={ControlPanelStyles.controlpanel}
             ref={(controlPanel) => {
@@ -188,38 +188,41 @@ class ControlPanel extends Component {
             <div className={classnames([ControlPanelStyles.bgWrapper])} >
               {activeSubmenu ?
                 submenus[activeSubmenu] :
-                <div
-                  className={classnames(ControlPanelStyles.mapOptions, {
-                    [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !matches)
-                  })}
-                >
-                  {this.renderResume()}
-                  <VesselInfoPanel />
-                  <MenuLink
-                    title="Vessels"
-                    icon={this.renderIcon('vessels')}
-                    onClick={() => this.changeActiveSubmenu('VESSELS')}
-                  />
-                  <MenuLink
-                    title="Layers"
-                    icon={this.renderIcon('layers')}
-                    onClick={() => this.changeActiveSubmenu('LAYERS')}
-                  />
-                  <MenuLink
-                    title="Filters"
-                    icon={this.renderIcon('filters')}
-                    onClick={() => this.changeActiveSubmenu('FILTERS')}
-                  />
-                  <MenuLink
-                    title="Area of interest"
-                    icon={this.renderIcon('filters')}
-                    onClick={() => this.changeActiveSubmenu('AREAS')}
-                  />
-                  <MenuLink
-                    title="Basemap"
-                    icon={this.renderIcon('basemap')}
-                    onClick={() => this.changeActiveSubmenu('BASE_MAP')}
-                  />
+                <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
+                  <div
+                    className={classnames(ControlPanelStyles.mapOptions, {
+                      [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !desktop)
+                    })}
+                  >
+                    {this.renderResume()}
+                    {desktop && <VesselInfoPanel />}
+                    <MenuLink
+                      title="Vessels"
+                      icon={this.renderIcon('vessels')}
+                      onClick={() => this.changeActiveSubmenu('VESSELS')}
+                    />
+                    <MenuLink
+                      title="Layers"
+                      icon={this.renderIcon('layers')}
+                      onClick={() => this.changeActiveSubmenu('LAYERS')}
+                    />
+                    <MenuLink
+                      title="Filters"
+                      icon={this.renderIcon('filters')}
+                      onClick={() => this.changeActiveSubmenu('FILTERS')}
+                    />
+                    <MenuLink
+                      title="Area of interest"
+                      icon={this.renderIcon('filters')}
+                      onClick={() => this.changeActiveSubmenu('AREAS')}
+                    />
+                    <MenuLink
+                      title="Basemap"
+                      icon={this.renderIcon('basemap')}
+                      onClick={() => this.changeActiveSubmenu('BASE_MAP')}
+                    />
+                  </div >
+                  {!desktop && <VesselInfoPanel />}
                 </div >
               }
             </div >

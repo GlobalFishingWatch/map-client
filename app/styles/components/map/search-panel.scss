@@ -76,9 +76,14 @@
     overflow: visible;
     padding: 15px 15px 0;
     position: absolute;
-    top: 47px;
     width: 100%;
     z-index: 1;
+    
+    @media #{$mq-mobile-large} {
+      top: 47px;
+      padding-top: 24px;
+      flex-direction: row;
+    }
 
     &::after {
       @include arrow(15px, 1px, rgba($color-3, .3), 'up');
