@@ -3,7 +3,8 @@ import AreasItem from 'areasOfInterest/components/AreasItem';
 import { toggleAreaVisibility, deleteArea } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
-  recentlyCreated: state.areas.recentlyCreated
+  recentlyCreated: state.areas.recentlyCreated,
+  areas: state.areas.data
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -10,7 +10,7 @@ import Toggle from 'components/Shared/Toggle';
 export default class AreasItem extends Component {
 
   render() {
-    const area = this.props.area;
+    const area = this.props.areas[this.props.index];
     let recentLastArea = false;
     let itemClassNames = [controlPanelStyles.item];
     if (this.props.recentlyCreated) {
@@ -44,7 +44,7 @@ export default class AreasItem extends Component {
 }
 
 AreasItem.propTypes = {
-  area: PropTypes.object.isRequired,
+  areas: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   recentlyCreated: PropTypes.bool.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired,

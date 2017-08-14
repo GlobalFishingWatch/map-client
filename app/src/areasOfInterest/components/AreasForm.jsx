@@ -10,6 +10,9 @@ import buttonStyles from 'styles/components/map/button.scss';
 class AreasForm extends Component {
   constructor() {
     super();
+    this.state = {
+      errors: ''
+    };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
     this.onCancel = this.onCancel.bind(this);
@@ -31,9 +34,14 @@ class AreasForm extends Component {
   }
 
   onAreaSave() {
-    this.props.saveAreaOfInterest();
-    this.resetForm();
-    this.props.setDrawingMode(false);
+    if (this.props.editingArea.name) {
+      this.setState({ error: '' });
+      this.props.saveAreaOfInterest();
+      this.resetForm();
+      this.props.setDrawingMode(false);
+    } else {
+      this.setState({ error: 'Please fill the name field to save' });
+    }
   }
 
   onNameChange(event) {
@@ -46,9 +54,10 @@ class AreasForm extends Component {
   }
 
   render() {
+    const { error } = this.state;
     const { isDrawing } = this.props;
     const { name, color } = this.props.editingArea;
-    const saveAllowed = this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name;
+    const saveAllowed = this.props.editingArea.coordinates.length > 0;
 
     if (!isDrawing) {
       return (
@@ -72,11 +81,15 @@ class AreasForm extends Component {
             type="text"
             onChange={e => this.onNameChange(e)}
             className={areasPanelStyles.nameInput}
-            placeholder="Area name"
+            placeholder="Insert area name"
             value={name}
           />
-
-          <div className={classnames(controlPanelStyles.lightItem)} >
+          {error &&
+            <div className={classnames(areasPanelStyles.error)} >
+              {error}
+            </div >
+          }
+          <div className={classnames(controlPanelStyles.item)} >
             <ColorPicker color={color} onColorChange={this.onColorChange} />
           </div >
           <div className={classnames(areasPanelStyles.actionButtons)} >
