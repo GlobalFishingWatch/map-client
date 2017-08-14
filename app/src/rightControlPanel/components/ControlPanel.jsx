@@ -162,13 +162,14 @@ class ControlPanel extends Component {
       </SubMenu >
     );
 
-    const areaFooter = (
-      <div>
-        {isDrawing && <div>
+    let areaFooter = null;
+    if (isDrawing) {
+      areaFooter = (<div>
+        <div>
           Click over the map and create your own area of interest
-        </div >}
-      </div >
-    );
+        </div >
+      </div>);
+    }
 
     const areaSubmenu = (
       <SubMenu title="Area of interest" icon={this.renderIcon('filters')} onBack={this.onBack} footer={areaFooter} >

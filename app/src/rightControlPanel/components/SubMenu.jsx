@@ -17,9 +17,9 @@ function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
           {children}
         </div>
       </div>
-      <div className={SubmenuStyles.footer} >
+      {footer && <div className={SubmenuStyles.footer} >
         {footer}
-      </div>
+      </div>}
     </div>
   );
 }
