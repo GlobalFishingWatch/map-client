@@ -1,19 +1,24 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ControlPanelStyles from 'styles/components/control_panel.scss';
+import SubmenuStyles from 'styles/components/submenu.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 
-function SubMenu({ title, icon, extraHeader, children, onBack }) {
+function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
   return (
-    <div className={ControlPanelStyles.submenu}>
-      <div className={ControlPanelStyles.submenuHeader} >
-        <InfoIcon onClick={onBack} />
-        <h2 className={ControlPanelStyles.submenuTitle} >{title}</h2>
-        {extraHeader}
-        <div className={ControlPanelStyles.icon} >{icon}</div>
+    <div className={SubmenuStyles.submenu}>
+      <div className={SubmenuStyles.main}>
+        <div className={SubmenuStyles.header} >
+          <InfoIcon onClick={onBack} />
+          <h2 className={SubmenuStyles.title} >{title}</h2>
+          {extraHeader}
+          <div className={SubmenuStyles.icon} >{icon}</div>
+        </div>
+        <div className={SubmenuStyles.content} >
+          {children}
+        </div>
       </div>
-      <div className={ControlPanelStyles.submenuContent} >
-        {children}
+      <div className={SubmenuStyles.footer} >
+        {footer}
       </div>
     </div>
   );
@@ -22,7 +27,8 @@ function SubMenu({ title, icon, extraHeader, children, onBack }) {
 SubMenu.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.object,
-  extraHeader: PropTypes.object,
+  extraHeader: PropTypes.node,
+  footer: PropTypes.node,
   children: PropTypes.node.isRequired,
   onBack: PropTypes.func.isRequired
 };
