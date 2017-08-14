@@ -185,7 +185,7 @@ class ControlPanel extends Component {
               this.controlPanelRef = controlPanel;
             }}
           >
-            <div className={classnames({ [ControlPanelStyles.bgWrapper]: matches })} >
+            <div className={classnames([ControlPanelStyles.bgWrapper])} >
               {activeSubmenu ?
                 submenus[activeSubmenu] :
                 <div
