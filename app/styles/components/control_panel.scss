@@ -10,17 +10,14 @@
   z-index: 102;
 
   &.entering, .exiting {
-    left: $map-panels-width;
+    transform: translateX(100%);
   }
 
   &.entered, .exited {
-    left: 0;
+    transform: initial;
   }
 
   &.entered, .exited, .entering, .exiting {
-    -moz-transition: all $panel-animation-delay $panel-animation-ease;
-    -webkit-transition: all $panel-animation-delay $panel-animation-ease;
-    -o-transition: all $panel-animation-delay $panel-animation-ease;
     transition: all $panel-animation-delay $panel-animation-ease;
   }
 

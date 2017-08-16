@@ -129,22 +129,24 @@ class ControlPanel extends Component {
       </div >);
 
     const searchSubmenu = (
-      <SubMenu title="Vessels" icon={this.renderIcon('vessels')} extraHeader={searchHeader} onBack={this.onBack} >
+      <div>
+        <SubMenu title="Vessels" icon={this.renderIcon('vessels')} extraHeader={searchHeader} onBack={this.onBack} >
+          {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
+            <div >
+              <a
+                className="loginRequiredLink"
+                onClick={this.props.login}
+              >Only registered users can use the search feature. Click here to log in.</a >
+              <PinnedVesselList />
+            </div > :
+            <div >
+              <SearchPanel />
+              <PinnedVesselList />
+            </div >
+          }
+        </SubMenu >
         <VesselInfoPanel />
-        {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
-          <div >
-            <a
-              className="loginRequiredLink"
-              onClick={this.props.login}
-            >Only registered users can use the search feature. Click here to log in.</a >
-            <PinnedVesselList />
-          </div > :
-          <div >
-            <SearchPanel />
-            <PinnedVesselList />
-          </div >
-        }
-      </SubMenu >
+      </div>
     );
 
     const basemapSubmenu = (
@@ -193,7 +195,8 @@ class ControlPanel extends Component {
               >
                 <div className={classnames([ControlPanelStyles.bgWrapper])} >
                   {activeSubmenu ?
-                    submenus[activeSubmenu] :
+                    submenus[activeSubmenu]
+                    :
                     <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
                       <div
                         className={classnames(ControlPanelStyles.mapOptions, {
@@ -201,7 +204,6 @@ class ControlPanel extends Component {
                         })}
                       >
                         {this.renderResume()}
-                        {desktop && <VesselInfoPanel />}
                         <MenuLink
                           title="Vessels"
                           icon={this.renderIcon('vessels')}
@@ -228,7 +230,7 @@ class ControlPanel extends Component {
                           onClick={() => this.changeActiveSubmenu('BASE_MAP')}
                         />
                       </div >
-                      {!desktop && <VesselInfoPanel />}
+                      <VesselInfoPanel />
                     </div >
                   }
                 </div >

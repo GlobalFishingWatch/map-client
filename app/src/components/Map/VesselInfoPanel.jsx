@@ -58,6 +58,15 @@ class VesselInfoPanel extends Component {
       vesselInfoContents = (
         <div className={vesselPanelStyles.vesselMetadata} >
           {renderedFieldList}
+          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
+            <PinIcon
+              className={classnames(iconStyles.icon, iconStyles.pinIcon,
+                vesselPanelStyles.pinIcon, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
+              onClick={() => {
+                this.props.onTogglePin(vesselInfo.seriesgroup);
+              }}
+            />
+          }
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={vesselPanelStyles.externalLink}
             target="_blank"
@@ -94,16 +103,6 @@ class VesselInfoPanel extends Component {
           >
             <CloseIcon className={buttonCloseStyles.cross} />
           </button>
-          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
-          <div className={vesselPanelStyles.pinButton} >
-            <PinIcon
-              className={classnames(iconStyles.icon, iconStyles.pinIcon,
-                vesselPanelStyles.pin, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
-              onClick={() => {
-                this.props.onTogglePin(vesselInfo.seriesgroup);
-              }}
-            />
-          </div>}
         </div>
         {vesselInfoContents}
       </div>);

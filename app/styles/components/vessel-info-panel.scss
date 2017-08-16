@@ -98,12 +98,21 @@
     }
   }
 
+  .pinIcon {
+    fill: $color-3;
+    margin-top: -50px;
+
+    &._pinned {
+      fill: #fff;
+    }
+  }
+
   .buttonsContainer {
     bottom: 0;
     display: flex;
-    right: 10px;
+    right: 8px;
     transform: translate(0, 50%);
-    
+
     float: right !important;
     padding-right: 10px;
 
@@ -114,26 +123,12 @@
 
     @media #{$mq-tablet} {
       bottom: auto;
-      right: -20px;
+      left: 98px;
+      right: 0;
       top: 0;
       transform: translate(-50%, -50%);
     }
 
-    .pinButton {
-      background-color: #fff;
-      border-radius: 50%;
-      padding: 0px 7px;
-      margin-left: 10px;
-      
-      .pin {
-        margin-top: 5px;
-        fill: $color-1;
-
-        &._pinned {
-          fill: $color-3;
-        }
-      }
-    }
 
     > button {
       position: relative;
