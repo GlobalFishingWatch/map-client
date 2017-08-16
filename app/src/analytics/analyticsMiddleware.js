@@ -12,6 +12,7 @@ import {
   GA_OUTER_TIMELINE_DATES_UPDATED,
   GA_PLAY_STATUS_TOGGLED,
   GA_SEARCH_RESULT_CLICKED,
+  GA_SET_LAYER_HUE,
   GA_SET_LAYER_OPACITY,
   GA_VESSEL_POINT_CLICKED
 } from 'analytics/analyticsActions';
@@ -38,6 +39,12 @@ const GA_ACTION_WHITELIST = [
     category: 'Layer',
     action: 'Set layer opacity',
     getPayload: action => `${action.payload.layerId}:${action.payload.opacity}`
+  },
+  {
+    type: GA_SET_LAYER_HUE,
+    category: 'Layer',
+    action: 'Set layer hue',
+    getPayload: action => `${action.payload.layerId}:${action.payload.hue}`
   },
   {
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
