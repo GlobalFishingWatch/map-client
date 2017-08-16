@@ -19,12 +19,14 @@ import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
+import Transition from 'react-transition-group/Transition';
 
 class ControlPanel extends Component {
   constructor() {
     super();
     this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
     this.onBack = this.onBack.bind(this);
+    this.state = { showSubmenu: false };
   }
 
   componentDidUpdate() {
@@ -82,6 +84,7 @@ class ControlPanel extends Component {
   }
 
   changeActiveSubmenu(submenuName) {
+    this.setState({ showSubmenu: true });
     this.props.setSubmenu(submenuName);
   }
 
@@ -90,6 +93,7 @@ class ControlPanel extends Component {
       this.props.setRecentlyCreated(false);
       this.props.setDrawingMode(false);
     }
+    this.setState({ showSubmenu: false });
     this.props.setSubmenu(null);
   }
 
@@ -179,54 +183,58 @@ class ControlPanel extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          <div
-            className={ControlPanelStyles.controlpanel}
-            ref={(controlPanel) => {
-              this.controlPanelRef = controlPanel;
-            }}
-          >
-            <div className={classnames([ControlPanelStyles.bgWrapper])} >
-              {activeSubmenu ?
-                submenus[activeSubmenu] :
-                <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
-                  <div
-                    className={classnames(ControlPanelStyles.mapOptions, {
-                      [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !desktop)
-                    })}
-                  >
-                    {this.renderResume()}
-                    {desktop && <VesselInfoPanel />}
-                    <MenuLink
-                      title="Vessels"
-                      icon={this.renderIcon('vessels')}
-                      onClick={() => this.changeActiveSubmenu('VESSELS')}
-                    />
-                    <MenuLink
-                      title="Layers"
-                      icon={this.renderIcon('layers')}
-                      onClick={() => this.changeActiveSubmenu('LAYERS')}
-                    />
-                    <MenuLink
-                      title="Filters"
-                      icon={this.renderIcon('filters')}
-                      onClick={() => this.changeActiveSubmenu('FILTERS')}
-                    />
-                    <MenuLink
-                      title="Area of interest"
-                      icon={this.renderIcon('filters')}
-                      onClick={() => this.changeActiveSubmenu('AREAS')}
-                    />
-                    <MenuLink
-                      title="Basemap"
-                      icon={this.renderIcon('basemap')}
-                      onClick={() => this.changeActiveSubmenu('BASE_MAP')}
-                    />
-                  </div >
-                  {!desktop && <VesselInfoPanel />}
+          <Transition in={this.state.showSubmenu} timeout={200}>
+            {status => (
+              <div
+                className={classnames([ControlPanelStyles.controlpanel, ControlPanelStyles[status]])}
+                ref={(controlPanel) => {
+                  this.controlPanelRef = controlPanel;
+                }}
+              >
+                <div className={classnames([ControlPanelStyles.bgWrapper])} >
+                  {activeSubmenu ?
+                    submenus[activeSubmenu] :
+                    <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
+                      <div
+                        className={classnames(ControlPanelStyles.mapOptions, {
+                          [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !desktop)
+                        })}
+                      >
+                        {this.renderResume()}
+                        {desktop && <VesselInfoPanel />}
+                        <MenuLink
+                          title="Vessels"
+                          icon={this.renderIcon('vessels')}
+                          onClick={() => this.changeActiveSubmenu('VESSELS')}
+                        />
+                        <MenuLink
+                          title="Layers"
+                          icon={this.renderIcon('layers')}
+                          onClick={() => this.changeActiveSubmenu('LAYERS')}
+                        />
+                        <MenuLink
+                          title="Filters"
+                          icon={this.renderIcon('filters')}
+                          onClick={() => this.changeActiveSubmenu('FILTERS')}
+                        />
+                        {/* <MenuLink
+                          title="Area of interest"
+                          icon={this.renderIcon('filters')}
+                          onClick={() => this.changeActiveSubmenu('AREAS')}
+                        /> */}
+                        <MenuLink
+                          title="Basemap"
+                          icon={this.renderIcon('basemap')}
+                          onClick={() => this.changeActiveSubmenu('BASE_MAP')}
+                        />
+                      </div >
+                      {!desktop && <VesselInfoPanel />}
+                    </div >
+                  }
                 </div >
-              }
-            </div >
-          </div >
+              </div >
+            )}
+          </Transition>
         )}
       </MediaQuery >
     );
