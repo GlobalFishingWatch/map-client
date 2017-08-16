@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.6 RC3
+- Revert Preact to React
+- Revert `react-sanfona` update
+- Fix GA tracking of layer transparency change
+- Add GA tracking of layer hue change
+- Fix GA tracking of page view
+
+## 2.1.6 RC2
+- Add missing `YeahMonthForm` component
+
 ## 2.1.6 RC1
 - Replace `react-datepicker` with `react-day-picker`
 - Remove `react-google-maps` for a native goggle maps usage
