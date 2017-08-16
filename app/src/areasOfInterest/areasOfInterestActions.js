@@ -28,7 +28,7 @@ export function updateWorkingAreaOfInterest(area) {
 
 export function updateAreaOfInterest() {
   return (dispatch, getState) => {
-    const editIndex = getState().areas.editIndex;
+    const editIndex = getState().areas.editAreaIndex;
     const area = Object.assign(getState().areas.editingArea);
     dispatch({
       type: UPDATE_AREA_OF_INTEREST,

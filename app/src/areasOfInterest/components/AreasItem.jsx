@@ -33,12 +33,12 @@ export default class AreasItem extends Component {
             </div >
           </div >
           <button
-            className={classnames([buttonStyles.button, buttonStyles._primary])}
+            className={classnames([buttonStyles.button])}
             onClick={() => this.props.setEditAreaIndex(this.props.index)}
           >Edit
           </button >
           <button
-            className={classnames([buttonStyles.button, buttonStyles._primary])}
+            className={classnames([buttonStyles.button])}
             onClick={() => this.props.deleteArea(this.props.index)}
           >Delete
           </button >
