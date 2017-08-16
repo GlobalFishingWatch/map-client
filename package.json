@@ -49,7 +49,7 @@
     "react-paginate": "^4.1.1",
     "react-redux": "^4.4.5",
     "react-responsive": "^1.2.6",
-    "react-sanfona": "git+ssh://git@github.com:daviferreira/react-sanfona#aa3224eff630e9aa8f9a4adb4a4610c0e28330cf",
+    "react-sanfona": "tiagojsag/react-sanfona#gfw",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "webpack-bundle-analyzer": "^2.8.1",
