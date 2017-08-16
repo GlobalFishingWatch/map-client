@@ -1,4 +1,5 @@
-import React, { render } from 'preact';
+import React from 'react';
+import { render } from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -58,9 +59,9 @@ const store = createStore(
 
 render(
   <Provider store={store} >
-    <AppContainer>
+    <AppContainer >
       <AuthMapContainer />
-    </AppContainer>
-  </Provider>,
+    </AppContainer >
+  </Provider >,
   document.getElementById('app')
 );

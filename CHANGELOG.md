@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.1.6 RC3
+## 2.1.6 RC4
 - Revert Preact to React
+- Revert `react-day-picker` to `react-datepicker`
+
+## 2.1.6 RC3
 - Revert `react-sanfona` update
 - Fix GA tracking of layer transparency change
 - Add GA tracking of layer hue change

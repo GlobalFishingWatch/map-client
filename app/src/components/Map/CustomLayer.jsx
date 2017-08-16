@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import CustomLayerStyles from 'styles/components/map/custom-layer.scss';
 import MapFormStyles from 'styles/components/map/form.scss';

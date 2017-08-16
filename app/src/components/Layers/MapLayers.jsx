@@ -1,6 +1,6 @@
 /* eslint-disable react/sort-comp  */
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import compact from 'lodash/compact';
 import isEqual from 'lodash/isEqual';
 import extentChanged from 'util/extentChanged';
