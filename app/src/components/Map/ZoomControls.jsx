@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'preact';
+import React from 'react';
 import classnames from 'classnames';
 import MapStyles from 'styles/components/map.scss';
 import iconStyles from 'styles/icons.scss';

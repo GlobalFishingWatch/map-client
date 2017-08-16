@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import { Accordion, AccordionItem } from 'react-sanfona';

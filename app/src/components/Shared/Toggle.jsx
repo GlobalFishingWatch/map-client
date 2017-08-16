@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'preact';
+import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
 import { hueToRgbString } from 'util/colors';
