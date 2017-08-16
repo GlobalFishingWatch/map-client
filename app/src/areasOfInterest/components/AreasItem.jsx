@@ -34,6 +34,11 @@ export default class AreasItem extends Component {
           </div >
           <button
             className={classnames([buttonStyles.button, buttonStyles._primary])}
+            onClick={() => this.props.setEditAreaIndex(this.props.index)}
+          >Edit
+          </button >
+          <button
+            className={classnames([buttonStyles.button, buttonStyles._primary])}
             onClick={() => this.props.deleteArea(this.props.index)}
           >Delete
           </button >
@@ -48,5 +53,6 @@ AreasItem.propTypes = {
   index: PropTypes.number.isRequired,
   recentlyCreated: PropTypes.bool.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired,
-  deleteArea: PropTypes.func.isRequired
+  deleteArea: PropTypes.func.isRequired,
+  setEditAreaIndex: PropTypes.func.isRequired
 };

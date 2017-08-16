@@ -44,6 +44,17 @@ class AreasForm extends Component {
     }
   }
 
+  onAreaUpdate() {
+    if (this.props.editingArea.name) {
+      this.setState({ error: '' });
+      this.props.updateAreaOfInterest();
+      this.props.setEditAreaIndex(null);
+      this.resetForm();
+    } else {
+      this.setState({ error: 'Please fill the name field to save' });
+    }
+  }
+
   onNameChange(event) {
     const name = event.target.value;
     this.props.updateWorkingAreaOfInterest({ name });
@@ -55,11 +66,10 @@ class AreasForm extends Component {
 
   render() {
     const { error } = this.state;
-    const { isDrawing } = this.props;
+    const { isDrawing, editAreaIndex } = this.props;
     const { name, color } = this.props.editingArea;
     const saveAllowed = this.props.editingArea.coordinates.length > 0;
-
-    if (!isDrawing) {
+    if (!isDrawing && editAreaIndex !== null) {
       return (
         <div className={areasPanelStyles.areasPanel} >
           <div >
@@ -98,12 +108,19 @@ class AreasForm extends Component {
           >
             Cancel
           </button >
-          {saveAllowed && <button
-            className={classnames([buttonStyles.button, buttonStyles._primary])}
-            onClick={this.onAreaSave}
-          >
-            Save
-          </button >}
+          {saveAllowed &&
+            editAreaIndex ? <button
+              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              onClick={this.onAreaUpdate}
+            >
+              Done
+            </button >
+            :
+            <button
+              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              onClick={this.onAreaSave}
+            >Save</button >
+          }
         </div >
       </div >
     );
@@ -113,8 +130,11 @@ class AreasForm extends Component {
 AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
   saveAreaOfInterest: PropTypes.func.isRequired,
+  setEditAreaIndex: PropTypes.func.isRequired,
+  updateAreaOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   isDrawing: PropTypes.bool.isRequired,
+  editAreaIndex: PropTypes.number.isRequired,
   editingArea: PropTypes.object.isRequired
 };
 

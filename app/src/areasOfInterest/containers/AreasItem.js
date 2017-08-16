@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AreasItem from 'areasOfInterest/components/AreasItem';
-import { toggleAreaVisibility, deleteArea } from 'areasOfInterest/areasOfInterestActions';
+import { toggleAreaVisibility, deleteArea, setEditAreaIndex } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
   recentlyCreated: state.areas.recentlyCreated,
@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteArea: (areaIndex) => {
     dispatch(deleteArea(areaIndex));
+  },
+  setEditAreaIndex: (index) => {
+    dispatch(setEditAreaIndex(index));
   }
 });
 

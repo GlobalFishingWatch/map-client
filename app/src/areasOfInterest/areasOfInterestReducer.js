@@ -1,8 +1,10 @@
 import {
   SAVE_AREA_OF_INTEREST,
+  UPDATE_AREA_OF_INTEREST,
   UPDATE_WORKING_AREA_OF_INTEREST,
   TOGGLE_AREA_OF_INTEREST_VISIBILITY,
   SET_RECENTLY_CREATED_AREA_OF_INTEREST,
+  SET_EDIT_AREA_INDEX,
   DELETE_AREA_OF_INTEREST
 } from 'areasOfInterest/areasOfInterestActions';
 import { COLORS } from 'constants';
@@ -15,6 +17,7 @@ const initialState = {
     coordinates: [],
     visible: true
   },
+  editAreaIndex: null,
   recentlyCreated: false
 };
 
@@ -24,6 +27,14 @@ export default function (state = initialState, action) {
       if (action.payload.area) {
         const areas = state.data.length > 0 ? state.data : [];
         return Object.assign({}, state, { data: areas.concat([action.payload.area]) });
+      }
+      return state;
+    case UPDATE_AREA_OF_INTEREST:
+      if (action.payload.area) {
+        const areas = state.data.map((area, i) => (
+          i === action.payload.editIndex ? action.payload.area : area
+        ));
+        return Object.assign({}, state, { data: areas });
       }
       return state;
     case UPDATE_WORKING_AREA_OF_INTEREST:
@@ -50,6 +61,8 @@ export default function (state = initialState, action) {
     }
     case SET_RECENTLY_CREATED_AREA_OF_INTEREST:
       return Object.assign({}, state, { recentlyCreated: action.payload });
+    case SET_EDIT_AREA_INDEX:
+      return Object.assign({}, state, { editAreaIndex: action.payload });
     default:
       return state;
   }

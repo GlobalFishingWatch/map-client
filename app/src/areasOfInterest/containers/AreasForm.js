@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import AreasForm from 'areasOfInterest/components/AreasForm';
 import { setDrawingMode } from 'actions/map';
-import { saveAreaOfInterest, updateWorkingAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
+import { saveAreaOfInterest, updateWorkingAreaOfInterest,
+  setEditAreaIndex, updateAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
   isDrawing: state.map.isDrawing,
-  editingArea: state.areas.editingArea
+  editingArea: state.areas.editingArea,
+  editAreaIndex: state.areas.editAreaindex
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -14,6 +16,12 @@ const mapDispatchToProps = dispatch => ({
   },
   saveAreaOfInterest: () => {
     dispatch(saveAreaOfInterest());
+  },
+  setEditAreaIndex: (index) => {
+    dispatch(setEditAreaIndex(index));
+  },
+  updateAreaOfInterest: () => {
+    dispatch(updateAreaOfInterest());
   },
   updateWorkingAreaOfInterest: (area) => {
     dispatch(updateWorkingAreaOfInterest(area));
