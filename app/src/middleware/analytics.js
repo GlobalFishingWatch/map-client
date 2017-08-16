@@ -20,7 +20,8 @@ import {
   TOGGLE_VESSEL_PIN,
   GA_INNER_TIMELINE_DATES_UPDATED,
   GA_INNER_TIMELINE_EXTENT_CHANGED,
-  GA_SET_LAYER_OPACITY
+  GA_SET_LAYER_OPACITY,
+  GA_SET_LAYER_HUE
 } from 'actions';
 import isFunction from 'lodash/isFunction';
 import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
@@ -42,6 +43,12 @@ const GA_ACTION_WHITELIST = [
     category: 'Layer',
     action: 'Set layer opacity',
     getPayload: action => `${action.payload.layerId}:${action.payload.opacity}`
+  },
+  {
+    type: GA_SET_LAYER_HUE,
+    category: 'Layer',
+    action: 'Set layer hue',
+    getPayload: action => `${action.payload.layerId}:${action.payload.hue}`
   },
   {
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,
