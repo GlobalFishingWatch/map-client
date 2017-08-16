@@ -1,5 +1,10 @@
 # Changelog
 
+## Next
+- Added "North Star" basemap
+- Full update on dependencies to latest versions
+- Code refactoring for better management and extensibility
+
 ## 2.1.6 RC3
 - Revert Preact to React
 - Revert `react-sanfona` update
