@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'preact';
 import moment from 'moment';
-import YearMonthForm from 'components/Map/YearMonthForm';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import 'styles/components/map/datepicker.scss';
-import 'react-day-picker/lib/style.css';
 
 class DatePicker extends Component {
   constructor(props) {
@@ -12,52 +11,29 @@ class DatePicker extends Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  setInputsToReadOnly() {
-    const inputs = document.getElementsByClassName('date-picker-input');
-    for (let i = 0; i < inputs.length; i++) {
-      inputs[i].setAttribute('readOnly', 'readonly');
-    }
-  }
-
-  componentDidMount() {
-    this.setInputsToReadOnly();
-  }
-
   onChange(m) {
+    // convert moment to date
     this.props.onChange(m.clone().toDate());
   }
 
-  renderHeader() {
-    return (
-      <YearMonthForm
-        onChange={this.onChange}
-        minDate={this.props.minDate}
-        maxDate={this.props.maxDate}
-      />
-    );
-  }
-
   render() {
-    const dayPickerProps = {
-      enableOutsideDays: true,
-      fromMonth: this.props.minDate,
-      toMonth: this.props.maxDate,
-      captionElement: this.renderHeader()
-    };
-
     return (
       <div className="datepicker">
         <div className="datepickerTitle">
           {this.props.label}
-        </div >
-        <DayPickerInput
-          format="DD MMM YYYY"
-          className="date-picker-input"
-          value={moment(this.props.selected).format('DD MMM YYYY')}
-          onDayChange={this.onChange}
-          dayPickerProps={dayPickerProps}
+        </div>
+        <ReactDatePicker
+          fixedHeight
+          showYearDropdown
+          dropdownMode="select"
+          readOnly
+          dateFormat="DD MMM YYYY"
+          selected={moment(this.props.selected)}
+          minDate={moment(this.props.minDate)}
+          maxDate={moment(this.props.maxDate)}
+          onChange={this.onChange}
         />
-      </div >
+      </div>
     );
   }
 }
@@ -65,8 +41,8 @@ class DatePicker extends Component {
 DatePicker.propTypes = {
   onChange: PropTypes.func,
   /**
-   * title of the datepicker
-   */
+  * title of the datepicker
+  */
   label: PropTypes.string,
   /**
    * Current  date set (a Date object)
