@@ -10,7 +10,7 @@ import {
   setLayerLabel,
   confirmLayerRemoval
 } from 'layers/layersActions';
-import { trackLayerOpacityChange } from 'analytics/analyticsActions';
+import { trackLayerOpacityChange, trackLayerHueChange } from 'analytics/analyticsActions';
 
 const mapStateToProps = state => ({
   layerPanelEditMode: state.layers.layerPanelEditMode,
@@ -39,6 +39,7 @@ const mapDispatchToProps = dispatch => ({
   },
   setLayerHue: (hue, layerId) => {
     dispatch(setLayerHue(hue, layerId));
+    trackLayerHueChange(dispatch, hue, layerId);
   },
   toggleReport: (layerId) => {
     dispatch(toggleReport(layerId));

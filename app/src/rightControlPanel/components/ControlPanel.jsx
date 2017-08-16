@@ -109,7 +109,7 @@ class ControlPanel extends Component {
   }
 
   render() {
-    const { activeSubmenu } = this.props;
+    const { activeSubmenu, isDrawing } = this.props;
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
     const searchHeader = (
@@ -168,8 +168,17 @@ class ControlPanel extends Component {
       </SubMenu >
     );
 
+    let areaFooter = null;
+    if (isDrawing) {
+      areaFooter = (<div>
+        <div>
+          Click over the map and create your own area of interest
+        </div >
+      </div>);
+    }
+
     const areaSubmenu = (
-      <SubMenu title="Area of interest" icon={this.renderIcon('filters')} onBack={this.onBack} >
+      <SubMenu title="Area of interest" icon={this.renderIcon('filters')} onBack={this.onBack} footer={areaFooter} >
         <AreasPanel />
       </SubMenu >
     );
@@ -261,7 +270,8 @@ ControlPanel.propTypes = {
   setSubmenu: PropTypes.func.isRequired,
   timelineInnerExtent: PropTypes.array,
   userPermissions: PropTypes.array,
-  vessels: PropTypes.array
+  vessels: PropTypes.array,
+  isDrawing: PropTypes.bool
 };
 
 export default ControlPanel;

@@ -18,7 +18,8 @@ const mapStateToProps = state => ({
   chartData: state.timebar.chartData,
   timelineInnerExtent: state.filters.timelineInnerExtent,
   isReportStarted: state.report.layerId !== null,
-  activeSubmenu: state.rightControlPanel.activeSubmenu
+  activeSubmenu: state.rightControlPanel.activeSubmenu,
+  isDrawing: state.map.isDrawing
 });
 
 const mapDispatchToProps = dispatch => ({

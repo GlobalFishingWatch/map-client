@@ -2,67 +2,75 @@
 @import '../mixins';
 
 .submenu {
-  flex-direction: column;
-  display: flex;
-  height: 100%;
-  padding: 10px 15px;
-
-  .header {
-    align-items: center;
-    justify-content: space-between;
+  .main {
+    flex-direction: column;
     display: flex;
-    padding-bottom: 15px;
-    padding-top: 0;
+    height: 100%;
+    padding: 10px 15px;
 
-    @media #{$mq-mobile-large} {
-      padding-top: 24px;
-      flex-direction: row;
-    }
-
-
-    .titleContainer {
-      display: flex;
+    .header {
       align-items: center;
-      
-      .back {
-        @include arrow(8px, 2px, $color-4, 'left');
-        pointer-events: none;
-        margin-top: 7px;
-        transform: rotate(45deg) translate(0, -50%);
+      justify-content: space-between;
+      display: flex;
+      padding-bottom: 15px;
+
+      @media #{$mq-tablet} {
+        padding-top: 24px;
+        flex-direction: row;
       }
 
-      .title {
-        color: $color-4;
-        cursor: default;
-        font-family: $font-family-1;
-        font-size: $font-size-xxs-small;
-        font-weight: $font-weight-bold;
-        padding-left: 8px;
-        text-align: left;
-        text-transform: uppercase;
+      .titleContainer {
+        display: flex;
+        align-items: center;
 
-        @media #{$mq-tablet} {
-          font-size: $font-size-x-small;
-          margin: 0;
+        .title {
+          color: $color-4;
+          cursor: default;
+          font-family: $font-family-1;
+          font-size: $font-size-xxs-small;
+          font-weight: $font-weight-bold;
+          margin: 5px 0 0;
           text-align: left;
+          text-transform: uppercase;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+            margin-left: 5px;
+            text-align: left;
+          }
         }
+
+        .back {
+          @include arrow(8px, 2px, $color-4, 'left');
+          pointer-events: none;
+          margin-top: 7px;
+          transform: rotate(45deg) translate(0, -50%);
+        }
+      }
+    }
+
+    .content {
+      -webkit-overflow-scrolling: touch;
+      height: calc(100% - 108px);
+      overflow-y: auto;
+      padding: 15px 20px;
+
+      @media #{$mq-tablet} {
+        height: auto;
+        margin: 10px 0 0;
+        max-height: none;
+        overflow-y: visible;
+        padding: 15px 20px;
       }
     }
   }
 
-  .content {
-    -webkit-overflow-scrolling: touch;
-    height: calc(100% - 108px);
-    overflow-y: auto;
-    padding: 15px 20px;
-
-    @media #{$mq-tablet} {
-      height: auto;
-      margin: 10px 0 0;
-      max-height: none;
-      overflow-y: visible;
-      padding: 15px 20px;
-    }
+  .footer {
+    background-color: $color-mid-blue;
+    margin-bottom: 10px;
+    color: $color-white;
+    padding-top: 10px;
+    padding: 10px 35px;
   }
 
   .icon {

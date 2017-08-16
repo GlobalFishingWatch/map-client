@@ -10,10 +10,21 @@ import buttonStyles from 'styles/components/map/button.scss';
 class AreasForm extends Component {
   constructor() {
     super();
+    this.state = {
+      errors: ''
+    };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
+    this.onAreaUpdate = this.onAreaUpdate.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onColorChange = this.onColorChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editAreaIndex, areas } = this.props;
+    if ((editAreaIndex === undefined || editAreaIndex === null) && editAreaIndex !== nextProps.editAreaIndex) {
+      this.props.updateWorkingAreaOfInterest(areas[nextProps.editAreaIndex]);
+    }
   }
 
   onAddArea() {
@@ -22,6 +33,7 @@ class AreasForm extends Component {
 
   onCancel() {
     this.resetForm();
+    this.props.setEditAreaIndex(null);
     this.props.setDrawingMode(false);
   }
 
@@ -31,9 +43,25 @@ class AreasForm extends Component {
   }
 
   onAreaSave() {
-    this.props.saveAreaOfInterest();
-    this.resetForm();
-    this.props.setDrawingMode(false);
+    if (this.props.editingArea.name) {
+      this.setState({ error: '' });
+      this.props.saveAreaOfInterest();
+      this.resetForm();
+      this.props.setDrawingMode(false);
+    } else {
+      this.setState({ error: 'Please fill the name field to save' });
+    }
+  }
+
+  onAreaUpdate() {
+    if (this.props.editingArea.name) {
+      this.setState({ error: '' });
+      this.props.updateAreaOfInterest();
+      this.props.setEditAreaIndex(null);
+      this.resetForm();
+    } else {
+      this.setState({ error: 'Please fill the name field to save' });
+    }
   }
 
   onNameChange(event) {
@@ -46,11 +74,11 @@ class AreasForm extends Component {
   }
 
   render() {
-    const { isDrawing } = this.props;
+    const { error } = this.state;
+    const { isDrawing, editAreaIndex } = this.props;
     const { name, color } = this.props.editingArea;
-    const saveAllowed = this.props.editingArea.coordinates.length > 0 && this.props.editingArea.name;
-
-    if (!isDrawing) {
+    const saveAllowed = this.props.editingArea.coordinates.length > 0;
+    if (!isDrawing && (editAreaIndex === undefined || editAreaIndex === null)) {
       return (
         <div className={areasPanelStyles.areasPanel} >
           <div >
@@ -66,33 +94,42 @@ class AreasForm extends Component {
     }
 
     return (
-      <div className={areasPanelStyles.areasPanel} >
-        <div className={areasPanelStyles.areasPanel} >
-          <input
-            type="text"
-            onChange={e => this.onNameChange(e)}
-            className={areasPanelStyles.nameInput}
-            placeholder="Area name"
-            value={name}
-          />
-
-          <div className={classnames(controlPanelStyles.lightItem)} >
-            <ColorPicker color={color} onColorChange={this.onColorChange} />
+      <div className={areasPanelStyles.areasForm} >
+        <input
+          type="text"
+          onChange={e => this.onNameChange(e)}
+          className={areasPanelStyles.nameInput}
+          placeholder="Insert area name"
+          value={name}
+        />
+        {error &&
+          <div className={classnames(areasPanelStyles.error)} >
+            {error}
           </div >
-          <div className={classnames(areasPanelStyles.actionButtons)} >
-            <button
-              className={classnames([buttonStyles.button])}
-              onClick={this.onCancel}
+        }
+        <div className={classnames(controlPanelStyles.item)} >
+          <ColorPicker color={color} onColorChange={this.onColorChange} />
+        </div >
+        <div className={classnames(areasPanelStyles.actionButtons)} >
+          <button
+            className={classnames([buttonStyles.button])}
+            onClick={this.onCancel}
+          >
+            Cancel
+          </button >
+          {saveAllowed &&
+            (editAreaIndex !== undefined && editAreaIndex !== null) ? <button
+              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              onClick={this.onAreaUpdate}
             >
-              Cancel
+              Done
             </button >
-            {saveAllowed && <button
+            :
+            <button
               className={classnames([buttonStyles.button, buttonStyles._primary])}
               onClick={this.onAreaSave}
-            >
-              Save
-            </button >}
-          </div >
+            >Save</button >
+          }
         </div >
       </div >
     );
@@ -102,9 +139,13 @@ class AreasForm extends Component {
 AreasForm.propTypes = {
   setDrawingMode: PropTypes.func.isRequired,
   saveAreaOfInterest: PropTypes.func.isRequired,
+  setEditAreaIndex: PropTypes.func.isRequired,
+  updateAreaOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   isDrawing: PropTypes.bool.isRequired,
-  editingArea: PropTypes.object.isRequired
+  editAreaIndex: PropTypes.number.isRequired,
+  editingArea: PropTypes.object.isRequired,
+  areas: PropTypes.array.isRequired
 };
 
 export default AreasForm;

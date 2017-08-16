@@ -10,7 +10,7 @@ import Toggle from 'components/Shared/Toggle';
 export default class AreasItem extends Component {
 
   render() {
-    const area = this.props.area;
+    const area = this.props.areas[this.props.index];
     let recentLastArea = false;
     let itemClassNames = [controlPanelStyles.item];
     if (this.props.recentlyCreated) {
@@ -33,7 +33,12 @@ export default class AreasItem extends Component {
             </div >
           </div >
           <button
-            className={classnames([buttonStyles.button, buttonStyles._primary])}
+            className={classnames([buttonStyles.button])}
+            onClick={() => this.props.setEditAreaIndex(this.props.index)}
+          >Edit
+          </button >
+          <button
+            className={classnames([buttonStyles.button])}
             onClick={() => this.props.deleteArea(this.props.index)}
           >Delete
           </button >
@@ -44,9 +49,10 @@ export default class AreasItem extends Component {
 }
 
 AreasItem.propTypes = {
-  area: PropTypes.object.isRequired,
+  areas: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   recentlyCreated: PropTypes.bool.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired,
-  deleteArea: PropTypes.func.isRequired
+  deleteArea: PropTypes.func.isRequired,
+  setEditAreaIndex: PropTypes.func.isRequired
 };
