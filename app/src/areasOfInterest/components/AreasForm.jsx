@@ -15,8 +15,16 @@ class AreasForm extends Component {
     };
     this.onAddArea = this.onAddArea.bind(this);
     this.onAreaSave = this.onAreaSave.bind(this);
+    this.onAreaUpdate = this.onAreaUpdate.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.onColorChange = this.onColorChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { editAreaIndex, areas } = this.props;
+    if ((editAreaIndex === undefined || editAreaIndex === null) && editAreaIndex !== nextProps.editAreaIndex) {
+      this.props.updateWorkingAreaOfInterest(areas[nextProps.editAreaIndex]);
+    }
   }
 
   onAddArea() {
@@ -25,6 +33,7 @@ class AreasForm extends Component {
 
   onCancel() {
     this.resetForm();
+    this.props.setEditAreaIndex(null);
     this.props.setDrawingMode(false);
   }
 
@@ -69,7 +78,7 @@ class AreasForm extends Component {
     const { isDrawing, editAreaIndex } = this.props;
     const { name, color } = this.props.editingArea;
     const saveAllowed = this.props.editingArea.coordinates.length > 0;
-    if (!isDrawing && editAreaIndex !== null) {
+    if (!isDrawing && (editAreaIndex === undefined || editAreaIndex === null)) {
       return (
         <div className={areasPanelStyles.areasPanel} >
           <div >
@@ -109,7 +118,7 @@ class AreasForm extends Component {
             Cancel
           </button >
           {saveAllowed &&
-            editAreaIndex ? <button
+            (editAreaIndex !== undefined && editAreaIndex !== null) ? <button
               className={classnames([buttonStyles.button, buttonStyles._primary])}
               onClick={this.onAreaUpdate}
             >
@@ -135,7 +144,8 @@ AreasForm.propTypes = {
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   isDrawing: PropTypes.bool.isRequired,
   editAreaIndex: PropTypes.number.isRequired,
-  editingArea: PropTypes.object.isRequired
+  editingArea: PropTypes.object.isRequired,
+  areas: PropTypes.array.isRequired
 };
 
 export default AreasForm;

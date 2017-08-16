@@ -7,7 +7,8 @@ import { saveAreaOfInterest, updateWorkingAreaOfInterest,
 const mapStateToProps = state => ({
   isDrawing: state.map.isDrawing,
   editingArea: state.areas.editingArea,
-  editAreaIndex: state.areas.editAreaindex
+  editAreaIndex: state.areas.editAreaIndex,
+  areas: state.areas.data
 });
 
 const mapDispatchToProps = dispatch => ({
