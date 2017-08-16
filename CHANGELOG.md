@@ -4,6 +4,13 @@
 - Added "North Star" basemap
 - Full update on dependencies to latest versions
 - Code refactoring for better management and extensibility
+- Add "Area of Interest"
+   - Drawing new areas
+   - Recoloring
+   - Renaming
+   - Saving to workspace
+   - Loading from workspace
+
 
 ## 2.1.6 RC3
 - Revert Preact to React
