@@ -11,7 +11,8 @@ import {
   GA_OUTER_TIMELINE_DATES_UPDATED,
   GA_INNER_TIMELINE_DATES_UPDATED,
   GA_INNER_TIMELINE_EXTENT_CHANGED,
-  GA_SET_LAYER_OPACITY
+  GA_SET_LAYER_OPACITY,
+  GA_SET_LAYER_HUE
 } from 'actions';
 
 /**
@@ -22,6 +23,12 @@ export const trackLayerOpacityChange = debounce((dispatch, opacity, layerId) => 
   dispatch({
     type: GA_SET_LAYER_OPACITY,
     payload: { opacity, layerId }
+  });
+}, 1000);
+export const trackLayerHueChange = debounce((dispatch, hue, layerId) => {
+  dispatch({
+    type: GA_SET_LAYER_HUE,
+    payload: { hue, layerId }
   });
 }, 1000);
 export const trackOuterTimelineChange = debounce((dispatch, outerTimelineDates) => {
