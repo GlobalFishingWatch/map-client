@@ -14,6 +14,7 @@ class Areas extends Component {
       this.deletePolygonFromMap(polygon);
     });
   }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.map && nextProps.map) {
       this.initAreas(nextProps.areas);
