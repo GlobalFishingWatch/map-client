@@ -3,6 +3,7 @@
 :global .datepicker {
   height: 100%;
   position: relative;
+  z-index: 20;
 
   .datepickerTitle {
     color: $color-3;

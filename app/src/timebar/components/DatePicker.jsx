@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import classnames from 'classnames';
 import 'styles/components/map/datepicker.scss';
 
 class DatePicker extends Component {
@@ -18,7 +19,7 @@ class DatePicker extends Component {
 
   render() {
     return (
-      <div className="datepicker">
+      <div className={classnames(['datepicker', { endDatePicker: this.props.label === 'end' }])}>
         <div className="datepickerTitle">
           {this.props.label}
         </div>
