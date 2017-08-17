@@ -194,7 +194,7 @@ class ControlPanel extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          <Transition in={this.state.showSubmenu} timeout={200}>
+          <Transition in={this.state.showSubmenu} timeout={0}>
             {status => (
               <div
                 className={classnames([ControlPanelStyles.controlpanel, ControlPanelStyles[status]])}

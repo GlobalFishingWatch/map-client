@@ -29,14 +29,12 @@
           font-family: $font-family-1;
           font-size: $font-size-xxs-small;
           font-weight: $font-weight-bold;
-          margin: 5px 0 0;
           text-align: left;
           text-transform: uppercase;
+          margin-left: 10px;
 
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
-            margin-left: 10px;
-            text-align: left;
           }
         }
 

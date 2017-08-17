@@ -7,10 +7,13 @@
   position: absolute;
   top: $header-height-mobile;
   width: 100%;
-  z-index: 102;
-
+  z-index: 10;
+  
   &.entering, .exiting {
-    transform: translateX(100%);
+    transform: translateY(-700%);
+    @media #{$mq-tablet} {
+      transform: translateX(100%);
+    }
   }
 
   &.entered, .exited {
@@ -18,7 +21,7 @@
   }
 
   &.entered, .exited, .entering, .exiting {
-    transition: all $panel-animation-delay $panel-animation-ease;
+    transition: all $panel-animation-delay;
   }
 
   &._noHeader {
