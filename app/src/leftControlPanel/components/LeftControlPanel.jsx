@@ -47,10 +47,10 @@ class LeftControlPanel extends Component {
 LeftControlPanel.propTypes = {
   isEmbedded: PropTypes.bool.isRequired,
   maxZoom: PropTypes.number.isRequired,
-  mouseLatLong: PropTypes.array.isRequired,
+  mouseLatLong: PropTypes.object,
   openShareModal: PropTypes.func.isRequired,
   setZoom: PropTypes.func.isRequired,
-  userPermissions: PropTypes.array.isRequired,
+  userPermissions: PropTypes.array,
   zoom: PropTypes.number.isRequired
 };
 

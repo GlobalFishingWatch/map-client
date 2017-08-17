@@ -99,9 +99,7 @@ const webpackConfig = {
       containers: 'src/containers',
       reducers: 'src/reducers',
       styles: 'styles',
-      util: 'src/util',
-      react: path.join(rootPath, 'node_modules/react/dist/react.min.js'),
-      'react-dom': path.join(rootPath, 'node_modules/react-dom/dist/react-dom.min.js')
+      util: 'src/util'
     },
     extensions: ['.js', '.jsx']
   },
@@ -231,6 +229,8 @@ const webpackConfig = {
 if (envVariables.NODE_ENV === 'production') {
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
   webpackConfig.devtool = 'source-map';
+  webpackConfig.resolve.alias.react = path.join(rootPath, 'node_modules/react/dist/react.min.js');
+  webpackConfig.resolve.alias['react-dom'] = path.join(rootPath, 'node_modules/react-dom/dist/react-dom.min.js');
 } else {
   webpackConfig.devtool = 'eval-source-map';
 }
