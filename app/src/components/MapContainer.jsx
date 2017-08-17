@@ -188,8 +188,10 @@ class MapContainer extends Component {
   }
 
   render() {
+    const { activeSubmenu, isEmbedded, openSupportFormModal,
+      onExternalLink, isDrawing, showMapCursorPointer, showMapCursorZoom } = this.props;
     return (<div className="fullHeightContainer" >
-      {!this.props.isEmbedded &&
+      {!isEmbedded &&
       <div
         className={classnames(
           mapPanelsStyles.mapPanels,
@@ -198,7 +200,7 @@ class MapContainer extends Component {
           }
         )}
       >
-        <ControlPanel isEmbedded={this.props.isEmbedded} />
+        <ControlPanel isEmbedded={isEmbedded} />
         <ReportPanel />
       </div >
       }
@@ -206,8 +208,8 @@ class MapContainer extends Component {
         className={classnames(
           mapStyles.mapContainer,
           { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER },
-          { _mapPointer: this.props.showMapCursorPointer },
-          { _mapZoom: this.props.showMapCursorZoom }
+          { _mapPointer: showMapCursorPointer },
+          { _mapZoom: showMapCursorZoom }
         )}
         ref={(mapContainerRef) => {
           this.mapContainerRef = mapContainerRef;
@@ -220,10 +222,10 @@ class MapContainer extends Component {
           onClick={this.onMapContainerClick}
         />
 
-        {this.props.isDrawing && <DrawingManager />}
+        {isDrawing && <DrawingManager />}
         <Areas />
-        <LeftControlPanel isEmbedded={this.props.isEmbedded} />
-        <Attributions isEmbedded={this.props.isEmbedded} />
+        <LeftControlPanel isEmbedded={isEmbedded} />
+        {!activeSubmenu && <Attributions isEmbedded={isEmbedded} />}
       </div >
       <MapLayers
         map={this.map}
@@ -235,9 +237,9 @@ class MapContainer extends Component {
       </div >
       {COMPLETE_MAP_RENDER &&
       <MapFooter
-        onOpenSupportFormModal={this.props.openSupportFormModal}
-        isEmbedded={this.props.isEmbedded}
-        onExternalLink={this.props.onExternalLink}
+        onOpenSupportFormModal={openSupportFormModal}
+        isEmbedded={isEmbedded}
+        onExternalLink={onExternalLink}
       />
       }
     </div >);
@@ -266,7 +268,8 @@ MapContainer.propTypes = {
   token: PropTypes.string,
   trackBounds: PropTypes.object,
   userPermissions: PropTypes.array,
-  zoom: PropTypes.number
+  zoom: PropTypes.number,
+  activeSubmenu: PropTypes.string
 };
 
 export default MapContainer;
