@@ -34,12 +34,22 @@
 
   button {
     background: none;
-    border: 0;
     color: $color-3;
     cursor: pointer;
+    border: 1px solid $color-3;
+    border-radius: 50%;
     font-size: $font-size-x-small;
-    height: 100%;
-    width: 100%;
+
+    margin: 21px 5px;
+    height: 30px;
+    width: 30px;
+
+    @media #{$mq-mobile-large} {
+    font-size: $font-size-normal;
+      margin: 12px 5px;
+      height: 45px;
+      width: 43px;
+    }
 
     &:focus {
       outline: none;
