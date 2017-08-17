@@ -149,14 +149,9 @@ class ControlPanel extends Component {
       </div>
     );
 
-    const basemapSubmenu = (
-      <SubMenu title="Basemap" icon={this.renderIcon('basemap')} onBack={this.onBack} >
-        <BasemapPanel />
-      </SubMenu >
-    );
-
     const layerSubmenu = (
       <SubMenu title="Layers" icon={this.renderIcon('layers')} onBack={this.onBack} >
+        <BasemapPanel />
         <LayerPanel />
         <LayerManagement />
       </SubMenu >
@@ -187,7 +182,6 @@ class ControlPanel extends Component {
       AREAS: areaSubmenu,
       FILTERS: filterSubmenu,
       LAYERS: layerSubmenu,
-      BASE_MAP: basemapSubmenu,
       VESSELS: searchSubmenu
     };
 
@@ -233,11 +227,6 @@ class ControlPanel extends Component {
                           icon={this.renderIcon('filters')}
                           onClick={() => this.changeActiveSubmenu('AREAS')}
                         /> */}
-                        <MenuLink
-                          title="Basemap"
-                          icon={this.renderIcon('basemap')}
-                          onClick={() => this.changeActiveSubmenu('BASE_MAP')}
-                        />
                       </div >
                       <VesselInfoPanel />
                     </div >
