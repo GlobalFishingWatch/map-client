@@ -1,3 +1,5 @@
+/* eslint react/sort-comp:0 */
+/* eslint-disable max-len  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';

@@ -37,7 +37,7 @@
     "promise-polyfill": "^6.0.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-day-picker": "^6.1.0",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^15.6.1",
     "react-ga": "^2.2.0",
     "react-input-range": "^1.2.1",

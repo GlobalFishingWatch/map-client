@@ -24,7 +24,7 @@ const initialState = {
   tilesetUrl: null,
   tilesetId: null,
   center: [0, 0],
-  mouseLatLong: [0, 0],
+  mouseLatLong: { lat: 0, long: 0 },
   centerTile: { x: 0, y: 0 },
   layerModal: {
     open: false,
