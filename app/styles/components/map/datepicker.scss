@@ -4,20 +4,9 @@
   height: 100%;
   position: relative;
 
-  &::after {
-    background-color: rgba($color-3, .4);
-    content: '';
-    display: inline-block;
-    height: 60%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translate(0, -50%);
-    width: 1px;
-  }
-
   .datepickerTitle {
-    color: rgba($color-3, .5);
+    color: $color-3;
+    position: relative;
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
     padding-bottom: 20px;
@@ -30,12 +19,6 @@
     @media #{$mq-mobile-large} {
       font-size: $font-size-small;
     }
-
-    @media #{$mq-laptop} {
-      &::after {
-        content: ' date';
-      }
-    }
   }
 
   .react-datepicker__input-container {
@@ -43,14 +26,14 @@
   }
 
   input {
+    color: rgba($color-3, .5);
     background: transparent;
     border: 0;
-    color: $color-3;
     cursor: pointer;
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
     height: 100%;
-    padding-top: 11px;
+    margin-top: 18px;
     text-align: center;
     text-transform: uppercase;
     width: 100%;
