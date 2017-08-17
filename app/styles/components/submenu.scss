@@ -35,7 +35,7 @@
 
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
-            margin-left: 5px;
+            margin-left: 10px;
             text-align: left;
           }
         }
@@ -43,7 +43,7 @@
         .back {
           @include arrow(8px, 2px, $color-4, 'left');
           pointer-events: none;
-          margin-top: 7px;
+          margin-top: 12px;
           transform: rotate(45deg) translate(0, -50%);
         }
       }
