@@ -6,15 +6,6 @@ import LayerListStyles from 'styles/components/map/layer-list.scss';
 
 class BasemapPanel extends Component {
 
-  onClickInfo(basemap) {
-    const modalParams = {
-      open: true,
-      info: basemap
-    };
-
-    this.props.openLayerInfoModal(modalParams);
-  }
-
   onSelectBasemap(event, basemap) {
     this.props.setBasemap(basemap.title);
   }
@@ -57,7 +48,6 @@ class BasemapPanel extends Component {
 BasemapPanel.propTypes = {
   basemaps: PropTypes.array,
   activeBasemap: PropTypes.string,
-  openLayerInfoModal: PropTypes.func,
   setBasemap: PropTypes.func
 };
 
