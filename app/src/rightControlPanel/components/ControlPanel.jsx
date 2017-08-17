@@ -130,7 +130,12 @@ class ControlPanel extends Component {
 
     const searchSubmenu = (
       <div>
-        <SubMenu title="Vessels" icon={this.renderIcon('vessels')} extraHeader={searchHeader} onBack={this.onBack} >
+        <SubMenu
+          title="Vessels"
+          icon={this.renderIcon('vessels')}
+          extraHeader={searchHeader}
+          onBack={this.onBack}
+        >
           {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
             <div >
               <a
@@ -150,15 +155,23 @@ class ControlPanel extends Component {
     );
 
     const layerSubmenu = (
-      <SubMenu title="Layers" icon={this.renderIcon('layers')} onBack={this.onBack} >
-        <BasemapPanel />
+      <SubMenu
+        title="Layers"
+        icon={this.renderIcon('layers')}
+        onBack={this.onBack}
+        contentBefore={<BasemapPanel />}
+      >
         <LayerPanel />
         <LayerManagement />
       </SubMenu >
     );
 
     const filterSubmenu = (
-      <SubMenu title="Filters" icon={this.renderIcon('filters')} onBack={this.onBack} >
+      <SubMenu
+        title="Filters"
+        icon={this.renderIcon('filters')}
+        onBack={this.onBack}
+      >
         <FilterPanel />
       </SubMenu >
     );

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SubmenuStyles from 'styles/components/submenu.scss';
 
-function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
+function SubMenu({ title, icon, extraHeader, children, onBack, footer, contentBefore }) {
   return (
     <div className={SubmenuStyles.submenu}>
       <div className={SubmenuStyles.main}>
@@ -14,6 +14,7 @@ function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
           </div>
           <div className={SubmenuStyles.icon} >{icon}</div>
         </div>
+        {contentBefore}
         <div className={SubmenuStyles.content} >
           {children}
         </div>
@@ -29,6 +30,7 @@ SubMenu.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.object,
   extraHeader: PropTypes.node,
+  contentBefore: PropTypes.node,
   footer: PropTypes.node,
   children: PropTypes.node.isRequired,
   onBack: PropTypes.func.isRequired
