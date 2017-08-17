@@ -7,8 +7,8 @@ function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
     <div className={SubmenuStyles.submenu}>
       <div className={SubmenuStyles.main}>
         <div className={SubmenuStyles.header} >
-          <div className={SubmenuStyles.titleContainer} >
-            <button onClick={onBack}><span className={SubmenuStyles.back} /></button>
+          <div className={SubmenuStyles.titleContainer} onClick={onBack}>
+            <button><span className={SubmenuStyles.back} /></button>
             <h2 className={SubmenuStyles.title} >{title}</h2>
             {extraHeader}
           </div>
