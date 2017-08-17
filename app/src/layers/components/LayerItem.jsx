@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import { LAYER_TYPES } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
-import LayerListStyles from 'styles/components/map/layer-list.scss';
+import LayerListStyles from 'styles/components/map/item-list.scss';
 import icons from 'styles/icons.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report-icon.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
@@ -76,9 +76,9 @@ class LayerItem extends Component {
       );
     } else {
       actions = (
-        <ul className={LayerListStyles.layerOptionList}>
+        <ul className={LayerListStyles.itemOptionList}>
           {canReport && this.props.layer.reportId !== undefined && <li
-            className={LayerListStyles.layerOptionItem}
+            className={LayerListStyles.itemOptionItem}
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
@@ -86,7 +86,7 @@ class LayerItem extends Component {
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
-          <li className={LayerListStyles.layerOptionItem}>
+          <li className={LayerListStyles.itemOptionItem}>
             <LayerBlendingOptionsTooltip
               displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
               displayOpacity
@@ -100,7 +100,7 @@ class LayerItem extends Component {
             />
           </li>}
           <li
-            className={LayerListStyles.layerOptionItem}
+            className={LayerListStyles.itemOptionItem}
             onClick={() => this.onClickInfo()}
           >
             <InfoIcon />
@@ -111,7 +111,7 @@ class LayerItem extends Component {
 
     return (
       <li
-        className={LayerListStyles.layerItem}
+        className={LayerListStyles.listItem}
       >
         <Toggle
           on={this.props.layer.visible}

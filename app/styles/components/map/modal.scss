@@ -1,0 +1,18 @@
+@import '../../settings';
+
+.title {
+  color: $color-4;
+  font-size: $font-size-x-normal;
+  font-weight: $font-weight-bold;
+  text-align: center;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 0;
+
+  > .mainButton {
+    width: 180px;
+  }
+}

@@ -6,7 +6,10 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_OVERALL_TIMELINE_DATES,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_HOVER_DATES
+  SET_TIMELINE_HOVER_DATES,
+  SET_FILTER_GROUP_MODAL_VISIBILITY,
+  CREATE_FILTER_GROUP,
+  SET_FILTER_GROUP_VISIBILITY
 } from 'filters/filtersActions';
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -27,8 +30,12 @@ const initialState = {
     getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
+  /** @deprecated use filterGroups logic instead */
+  flagsLayers: {},
+  /** @deprecated use filterGroups logic instead */
   flags: [],
-  flagsLayers: {}
+  filterGroups: [],
+  isFilterGroupModalOpen: false
 };
 
 export default function (state = initialState, action) {
@@ -67,6 +74,7 @@ export default function (state = initialState, action) {
         timelineOuterExtent
       });
     }
+    /** @deprecated use filterGroups logic instead */
     case SET_FLAG_FILTERS: {
       return Object.assign({}, state, {
         flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers
@@ -94,6 +102,23 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelineInnerExtent: [state.timelineOuterExtent[0], newTimelineInnerEnd]
       });
+    }
+    case SET_FILTER_GROUP_MODAL_VISIBILITY: {
+      return Object.assign({}, state, { isFilterGroupModalOpen: action.payload });
+    }
+    case CREATE_FILTER_GROUP: {
+      const newFilterGroup = [action.payload, ...state.filterGroups];
+      return Object.assign({}, state, { filterGroups: newFilterGroup });
+    }
+    case SET_FILTER_GROUP_VISIBILITY: {
+      const { index, forceValue } = action.payload;
+      const visible = forceValue !== null ? forceValue : !state.filterGroups[index].visible;
+      const newFilterGroup = Object.assign({}, state.filterGroups[index], { visible });
+
+      return Object.assign({}, state, {
+        filterGroups: [...state.filterGroups.slice(0, index), newFilterGroup, ...state.filterGroups.slice(index + 1)]
+      });
+
     }
     default:
       return state;

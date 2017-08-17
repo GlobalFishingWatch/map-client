@@ -5,8 +5,9 @@
   border: 1px solid rgba($color-3, .3);
   color: $color-3;
   cursor: pointer;
+  font-family: $font-family-1;
   font-size: $font-size-xs-small;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-normal;
   height: 30px;
   outline: none;
   text-align: center;
@@ -19,7 +20,7 @@
   }
 
   &._filled {
-    background-color: $color-3;
+    background-color: $color-button-primary;
     border: 0;
     color: $color-4;
   }
@@ -30,10 +31,5 @@
 
   &._wide {
     width: 100%;
-  }
-
-  &._primary {
-    background-color: $color-button-primary;
-    color: $color-4;
   }
 }

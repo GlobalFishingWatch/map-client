@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/layer-library.scss';
-import LayerListStyles from 'styles/components/map/layer-list.scss';
+import LayerListStyles from 'styles/components/map/item-list.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
@@ -37,7 +37,7 @@ class LayerLibraryModal extends Component {
       this.props.layers.forEach((layer) => {
         if (!layer.library) return;
         library.push(<li
-          className={LayerLibraryStyles.layerItem}
+          className={LayerLibraryStyles.listItem}
           key={layer.title}
         >
           <label>
@@ -46,13 +46,13 @@ class LayerLibraryModal extends Component {
               hue={layer.hue}
               onToggled={() => this.onChange(layer)}
             />
-            <span className={LayerListStyles.layerTitle}>
+            <span className={LayerListStyles.itemTitle}>
               {layer.title}
             </span>
           </label>
-          <ul className={LayerListStyles.layerOptionList}>
+          <ul className={LayerListStyles.itemOptionList}>
             <li
-              className={LayerListStyles.layerOptionItem}
+              className={LayerListStyles.itemOptionItem}
               onClick={() => this.onClickInfo(layer)}
             >
               <InfoIcon />
@@ -71,14 +71,14 @@ class LayerLibraryModal extends Component {
         }
         {library &&
           <div className={LayerLibraryStyles.wrapper}>
-            <ul className={LayerLibraryStyles.layerList}>
+            <ul className={LayerLibraryStyles.list}>
               {library}
             </ul>
           </div>}
         <div className={LayerLibraryStyles.footerContainer}>
           <button
             className={classnames(ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, LayerLibraryStyles.doneButton)}
+              ButtonStyles._big, LayerLibraryStyles.mainButton)}
             onClick={() => this.props.closeModal()}
           >
             done

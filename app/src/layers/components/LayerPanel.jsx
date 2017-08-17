@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
-import LayerListStyles from 'styles/components/map/layer-list.scss';
 import { LAYER_TYPES } from 'constants';
 import classnames from 'classnames';
+import LayerListStyles from 'styles/components/map/item-list.scss';
 
 class LayerPanel extends Component {
   constructor(props) {
@@ -51,17 +51,17 @@ class LayerPanel extends Component {
     });
 
     return (
-      <div className={LayerListStyles.layerListContainer} >
+      <div className={LayerListStyles.list} >
         <div className={LayerListStyles.title} >
           Fishing Layers
         </div >
-        <ul className={LayerListStyles.layerList} >
+        <ul className={LayerListStyles.list} >
           {fishingLayers}
         </ul >
         <div className={classnames(LayerListStyles.title, LayerListStyles.spacedTitle)} >
           Map Layers
         </div >
-        <ul className={LayerListStyles.layerList} >
+        <ul className={LayerListStyles.list} >
           {mapLayers}
         </ul >
       </div >

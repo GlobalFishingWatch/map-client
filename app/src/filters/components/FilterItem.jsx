@@ -9,6 +9,7 @@ import selectorStyles from 'styles/components/shared/selector.scss';
 
 import RemoveFilterIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-cross-icon.svg?name=RemoveFilterIcon';
 
+/** @deprecated use filterGroups logic instead */
 class FilterItem extends Component {
 
   toggleBlending() {

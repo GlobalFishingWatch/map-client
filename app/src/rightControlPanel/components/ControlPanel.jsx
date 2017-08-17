@@ -7,6 +7,7 @@ import AreasPanel from 'areasOfInterest/containers/AreasPanel';
 import MenuLink from 'rightControlPanel/components/MenuLink';
 import SubMenu from 'rightControlPanel/containers/SubMenu';
 import FilterPanel from 'filters/containers/FilterPanel';
+import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
@@ -122,7 +123,8 @@ class ControlPanel extends Component {
         title="Filters"
         icon={this.renderIcon('filters')}
       >
-        <FilterPanel />
+        {!ENABLE_FILTER_GROUPS && <FilterPanel />}
+        {ENABLE_FILTER_GROUPS && <FilterGroupPanel />}
       </SubMenu >
     );
   }

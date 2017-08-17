@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibrary from 'layers/containers/LayerLibrary';
 import CustomLayer from 'layers/containers/CustomLayer';
-
 import LayerManagementModalStyles from 'styles/components/map/layer-management-modal.scss';
 
 class LayerLibraryModal extends Component {

@@ -83,7 +83,7 @@ class AreasForm extends Component {
         <div className={areasPanelStyles.areasPanel} >
           <div >
             <button
-              className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._primary])}
+              className={classnames([buttonStyles.button, buttonStyles._wide, buttonStyles._filled])}
               onClick={this.onAddArea}
             >
               Add area of interest
@@ -119,14 +119,14 @@ class AreasForm extends Component {
           </button >
           {saveAllowed &&
             (editAreaIndex !== undefined && editAreaIndex !== null) ? <button
-              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              className={classnames([buttonStyles.button, buttonStyles._filled])}
               onClick={this.onAreaUpdate}
             >
               Done
             </button >
             :
             <button
-              className={classnames([buttonStyles.button, buttonStyles._primary])}
+              className={classnames([buttonStyles.button, buttonStyles._filled])}
               onClick={this.onAreaSave}
             >Save</button >
           }

@@ -1,19 +1,17 @@
 /* eslint-disable react/no-array-index-key */
 
-/** @deprecated use filterGroups logic instead */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import platform from 'platform';
-import FilterItem from 'filters/components/FilterItem';
-import { FLAG_FILTERS_LIMIT } from 'config';
-import { FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'app/src/constants';
+import FilterGroupItem from 'filters/containers/FilterGroupItem';
+import { FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import buttonStyles from 'styles/components/map/button.scss';
 
-class FilterPanel extends Component {
+class FilterGroupPanel extends Component {
   constructor(props) {
     super(props);
     this.state = { currentBlendingOptionsShown: -1 };
@@ -68,31 +66,28 @@ class FilterPanel extends Component {
   }
 
   updateFilters(filter, index) {
-    const updatedFilters = cloneDeep(this.props.flags);
+    const updatedFilters = cloneDeep(this.props.filterGroups);
     if (!updatedFilters[index]) return;
 
     updatedFilters[index] = Object.assign({}, updatedFilters[index], filter);
 
-    this.props.setFlagFilters(updatedFilters);
+    // this.props.setFlagFilters(updatedFilters);
 
     if (filter.hue === undefined) {
       this.hideBlending();
     }
   }
 
-  addFilter() {
-    const currentFilters = this.props.flags;
-    currentFilters.push({});
-
-    this.props.setFlagFilters(currentFilters);
-    this.hideBlending();
+  addFilterGroup() {
+    this.hideBlending(); // TODO: replace with logic to hide quick edits and such
+    this.props.createFilterGroup();
   }
 
   removeFilter(index) {
-    const filters = cloneDeep(this.props.flags);
+    const filters = cloneDeep(this.props.filterGroups);
     filters.splice(index, 1);
 
-    this.props.setFlagFilters(filters);
+    // this.props.setFlagFilters(filters);
     this.hideBlending();
   }
 
@@ -110,17 +105,12 @@ class FilterPanel extends Component {
 
   render() {
     const filterSelectors = [];
-    this.props.flags.forEach((flagFilter, i) => {
+    this.props.filterGroups.forEach((filterGroup, i) => {
       filterSelectors.push(
-        <FilterItem
-          countryOptions={this.countryOptions}
+        <FilterGroupItem
           index={i}
           key={i}
-          filter={flagFilter}
-          removeFilter={index => this.removeFilter(index)}
-          updateFilters={(filter, index) => this.updateFilters(filter, index)}
-          onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-          showBlending={this.state.currentBlendingOptionsShown === i}
+          filterGroup={filterGroup}
         />
       );
     });
@@ -128,24 +118,23 @@ class FilterPanel extends Component {
     return (
       <div className={flagFilterStyles.flagFilters} >
         {filterSelectors &&
-        <ul className={flagFilterStyles.filterList} >
+        <ul>
           {filterSelectors}
         </ul >}
-        {this.props.flags.length < FLAG_FILTERS_LIMIT &&
         <button
-          className={classnames(MapButtonStyles.button, flagFilterStyles.filterButton)}
-          onClick={() => this.addFilter()}
+          className={classnames(buttonStyles.button, buttonStyles._wide, buttonStyles._filled, buttonStyles._big)}
+          onClick={() => this.addFilterGroup()}
         >
-          add filter
-        </button >}
+          Create Filter Group
+        </button >
       </div >
     );
   }
 }
 
-FilterPanel.propTypes = {
-  flags: PropTypes.array,
-  setFlagFilters: PropTypes.func
+FilterGroupPanel.propTypes = {
+  filterGroups: PropTypes.array,
+  createFilterGroup: PropTypes.func
 };
 
-export default FilterPanel;
+export default FilterGroupPanel;

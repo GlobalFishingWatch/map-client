@@ -12,6 +12,7 @@ import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
 import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
+import FilterGroupForm from 'filters/containers/FilterGroupForm';
 
 
 class ModalContainer extends Component {
@@ -93,12 +94,21 @@ class ModalContainer extends Component {
         >
           <Share />
         </Modal >
+        <Modal
+          opened={this.props.isFilterGroupModalOpen}
+          closeable
+          visible
+          close={this.props.closeFilterGroupModal}
+        >
+          <FilterGroupForm />
+        </Modal >
       </div >
     );
   }
 }
 
 ModalContainer.propTypes = {
+  closeFilterGroupModal: PropTypes.func,
   closeLayerInfoModal: PropTypes.func,
   closeLayerManagementModal: PropTypes.func,
   closeLayerRemovalModal: PropTypes.func,
@@ -107,6 +117,7 @@ ModalContainer.propTypes = {
   closeShareModal: PropTypes.func,
   closeSupportModal: PropTypes.func,
   closeWelcomeModal: PropTypes.func,
+  isFilterGroupModalOpen: PropTypes.bool,
   isEmbedded: PropTypes.bool,
   layerIdPromptedForRemoval: PropTypes.any,
   layerManagementModal: PropTypes.bool,

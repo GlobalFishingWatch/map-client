@@ -20,6 +20,21 @@
   }
 }
 
+.list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  @media #{mq-tablet} {
+    font-size: $font-size-small;
+  }
+
+  .basemapsTitle {
+    color: $color-4;
+    padding-bottom: 10px;
+  }
+}
+
 .title {
   color: $color-4;
   padding-bottom: 18px;
@@ -42,7 +57,7 @@
   }
 }
 
-.layerItem {
+.listItem {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -72,22 +87,22 @@
     }
   }
 
-  &:first-child > .layerInfo {
+  &:first-child > .itemInfo {
     margin: 0 0 5px;
   }
 
-  &:not(:first-child) > .layerInfo {
+  &:not(:first-child) > .itemInfo {
     margin: 5px 0;
   }
 
   &._selected {
-    > .layerInfo > .layerThumbnail {
+    > .itemInfo > .itemThumbnail {
       border: 2px solid $color-4;
     }
   }
 }
 
-.layerInfo {
+.itemInfo {
   align-items: center;
   cursor: pointer;
   display: inline-flex;
@@ -98,14 +113,14 @@
   }
 }
 
-.layerThumbnail {
+.itemThumbnail {
   border: 1px solid $color-19;
   height: 30px;
   margin: 0 10px 0 0;
   width: 30px;
 }
 
-.layerTitle {
+.itemTitle {
   color: $color-4;
   flex-grow: 2;
   font-family: $font-family-1;
@@ -165,7 +180,7 @@
   width: 10px;
 }
 
-.layerOptionList {
+.itemOptionList {
   align-items: center;
   display: flex;
   flex: 1;
@@ -184,7 +199,7 @@
   }
 }
 
-.layerOptionItem {
+.itemOptionItem {
   cursor: pointer;
   display: inline-flex;
   position: relative;
