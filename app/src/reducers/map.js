@@ -11,7 +11,7 @@ import {
   SET_MOUSE_LAT_LONG,
   SET_ZOOM
 } from 'actions/map';
-import { MAX_ZOOM_LEVEL } from 'constants';
+import { MAX_ZOOM_LEVEL } from 'config';
 import { SET_MAX_ZOOM } from 'layers/layersActions';
 import { SET_TILESET_ID, SET_TILESET_URL, SET_URL_WORKSPACE_ID, SET_WORKSPACE_ID } from 'actions/workspace';
 

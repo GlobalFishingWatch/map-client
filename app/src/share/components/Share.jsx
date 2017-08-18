@@ -6,7 +6,7 @@ import iconStyles from 'styles/icons.scss';
 import FacebookIcon from '-!babel-loader!svg-react-loader!assets/icons/facebook.svg?name=FacebookIcon';
 import TwitterIcon from '-!babel-loader!svg-react-loader!assets/icons/twitter.svg?name=TwitterIcon';
 import GooglePlusIcon from '-!babel-loader!svg-react-loader!assets/icons/google-plus.svg?name=GooglePlusIcon';
-import { EMBED_SIZE_SETTINGS, DEFAULT_EMBED_SIZE } from 'constants';
+import { EMBED_SIZE_SETTINGS, DEFAULT_EMBED_SIZE } from 'config';
 
 class Share extends Component {
 

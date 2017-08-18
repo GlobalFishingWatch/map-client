@@ -1,6 +1,6 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 import { clearHighlightedVessels } from 'actions/heatmap';
-import { FLAGS } from 'constants';
+import { FLAGS } from 'app/src/constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
 export const CLEAR_POLYGON = 'CLEAR_POLYGON';

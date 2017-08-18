@@ -1,4 +1,4 @@
-import { DEFAULT_TRACK_HUE } from 'constants';
+import { DEFAULT_TRACK_HUE } from 'config';
 import { getWorkspace } from 'actions/workspace';
 import { hexToHue } from 'util/colors';
 import calculateLayerId from 'util/calculateLayerId';

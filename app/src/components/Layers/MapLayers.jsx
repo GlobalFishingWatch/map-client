@@ -9,7 +9,8 @@ import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
-import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
+import { VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'config';
+import { LAYER_TYPES } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 

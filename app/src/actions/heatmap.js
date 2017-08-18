@@ -9,7 +9,8 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from 'util/heatmapTileData';
-import { LAYER_TYPES, LOADERS } from 'constants';
+import { LOADERS } from 'config';
+import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';

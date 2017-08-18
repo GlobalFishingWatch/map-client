@@ -10,7 +10,7 @@ import {
   VESSELS_MINIMUM_OPACITY,
   VESSEL_CLICK_TOLERANCE_PX,
   TIMELINE_OVERALL_START_DATE_OFFSET
-} from 'constants';
+} from 'config';
 
 /**
  * From a timestamp in ms returns a time with the precision set in Constants.

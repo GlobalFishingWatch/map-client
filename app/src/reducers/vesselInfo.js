@@ -1,7 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import getVesselName from 'util/getVesselName';
-import { HEATMAP_TRACK_HIGHLIGHT_HUE, VESSEL_INFO_STATUS } from 'constants';
+import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'config';
+import { VESSEL_INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
   ADD_VESSEL,

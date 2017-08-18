@@ -1,4 +1,5 @@
-import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE, LAYER_TYPES } from 'constants';
+import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
+import { LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
 import getVesselName from 'util/getVesselName';

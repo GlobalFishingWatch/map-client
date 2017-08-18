@@ -1,7 +1,7 @@
 import {
   VESSELS_HUES_INCREMENTS_NUM,
   VESSELS_HUES_INCREMENT
-} from 'constants';
+} from 'config';
 
 const RGB_MAX = 255;
 const HUE_MAX = 360;

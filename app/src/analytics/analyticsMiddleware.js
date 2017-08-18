@@ -18,7 +18,9 @@ import {
 } from 'analytics/analyticsActions';
 
 import isFunction from 'lodash/isFunction';
-import { FLAGS, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
+import { SEARCH_QUERY_MINIMUM_LIMIT } from 'config';
+
+import { FLAGS } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN } from 'actions/vesselInfo';
 import { SET_WORKSPACE_ID } from 'actions/workspace';
 

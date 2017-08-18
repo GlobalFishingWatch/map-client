@@ -3,7 +3,7 @@ import 'pixi.js';
 import {
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
   HALF_WORLD
-} from 'constants';
+} from 'config';
 import { hueToRgbHexString } from 'util/colors';
 
 export default class TracksLayerGL {

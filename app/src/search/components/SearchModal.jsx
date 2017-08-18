@@ -5,7 +5,7 @@ import SearchResult from 'search/containers/SearchResult';
 import PaginatorStyles from 'styles/components/shared/paginator.scss';
 import ReactPaginate from 'react-paginate';
 import Rhombus from 'components/Shared/Rhombus';
-import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'constants';
+import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
 import ModalStyles from 'styles/components/shared/modal.scss';
 import ResultListStyles from 'styles/components/shared/result-list.scss';
 import SearchModalStyles from 'styles/components/map/search-modal.scss';

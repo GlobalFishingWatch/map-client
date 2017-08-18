@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
-import { DURATION_PICKER_OPTIONS } from 'constants';
+import { DURATION_PICKER_OPTIONS } from 'config';
 
 import durationPickerStyles from 'styles/components/map/durationpicker.scss';
 import iconStyles from 'styles/icons.scss';

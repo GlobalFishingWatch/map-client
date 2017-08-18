@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { COLORS } from 'constants';
+import { COLORS } from 'config';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
 import controlPanelStyles from 'styles/components/control_panel.scss';
 import buttonStyles from 'styles/components/map/button.scss';

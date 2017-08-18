@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { COLORS } from 'constants';
+import { COLORS } from 'config';
 
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 

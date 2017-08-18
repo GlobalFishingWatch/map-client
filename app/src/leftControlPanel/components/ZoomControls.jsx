@@ -3,7 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import MapStyles from 'styles/components/map.scss';
 import iconStyles from 'styles/icons.scss';
-import { MIN_ZOOM_LEVEL } from 'constants';
+import { MIN_ZOOM_LEVEL } from 'config';
 import ShareIcon from '-!babel-loader!svg-react-loader!assets/icons/share-icon.svg?name=ShareIcon';
 import ZoomInIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-out.svg?name=ZoomOutIcon';

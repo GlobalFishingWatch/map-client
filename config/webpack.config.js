@@ -95,6 +95,7 @@ const webpackConfig = {
       user: path.join(rootPath, 'app/src/user'),
       welcomeModal: path.join(rootPath, 'app/src/welcomeModal'),
       components: 'src/components',
+      config: 'src/config.js',
       constants: 'src/constants.js',
       containers: 'src/containers',
       reducers: 'src/reducers',

@@ -1,4 +1,4 @@
-import { MAX_AUTO_ZOOM_LONGITUDE_SPAN } from 'constants';
+import { MAX_AUTO_ZOOM_LONGITUDE_SPAN } from 'config';
 
 export default class CustomLayerWrapper {
   constructor(map, url) {

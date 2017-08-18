@@ -7,7 +7,7 @@ import {
   SET_EDIT_AREA_INDEX,
   DELETE_AREA_OF_INTEREST
 } from 'areasOfInterest/areasOfInterestActions';
-import { COLORS } from 'constants';
+import { COLORS } from 'config';
 
 const initialState = {
   data: [],

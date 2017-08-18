@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
-import { MIN_ZOOM_LEVEL } from 'constants';
+import { MIN_ZOOM_LEVEL } from 'config';
 import ControlPanel from 'rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
 import ReportPanel from 'report/containers/ReportPanel';

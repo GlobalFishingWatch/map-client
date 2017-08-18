@@ -5,7 +5,7 @@ import { setUrlWorkspaceId } from 'actions/workspace';
 import { toggleLayerVisibility } from 'layers/layersActions';
 import { clearPolygon } from 'report/reportActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
-import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'constants';
+import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 

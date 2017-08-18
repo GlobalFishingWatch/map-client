@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
+import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import PinnedVesselOptionsTooltip from 'pinnedVessels/components/PinnedVesselOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import icons from 'styles/icons.scss';

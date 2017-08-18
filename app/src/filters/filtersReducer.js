@@ -15,7 +15,7 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_OVERALL_START_DATE,
   TIMELINE_OVERALL_END_DATE
-} from 'constants';
+} from 'config';
 import { getOffsetedTimeAtPrecision } from 'util/heatmapTileData';
 
 const initialState = {

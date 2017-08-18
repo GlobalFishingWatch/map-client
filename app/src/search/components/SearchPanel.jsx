@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'constants';
+import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'config';
 import SearchResult from 'search/containers/SearchResult';
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/components/map/search-panel.scss';

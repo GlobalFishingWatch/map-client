@@ -19,7 +19,7 @@ import { max as d3max } from 'd3-array';
 import { brushX as d3brushX } from 'd3-brush';
 
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'constants';
+import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'config';
 import TimebarStyles from 'styles/components/map/timebar.scss';
 import TimelineStyles from 'styles/components/map/timeline.scss';
 import extentChanged from 'util/extentChanged';

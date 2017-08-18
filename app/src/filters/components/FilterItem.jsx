@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_FILTERS_MOBILE, DEFAULT_FILTER_HUE } from 'constants';
+import { REVERSE_TOOLTIP_FILTERS_MOBILE, DEFAULT_FILTER_HUE } from 'config';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/selector.scss';

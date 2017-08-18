@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { LAYER_TYPES, REVERSE_TOOLTIP_ITEMS_MOBILE } from 'constants';
+import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
+import { LAYER_TYPES } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
 import icons from 'styles/icons.scss';

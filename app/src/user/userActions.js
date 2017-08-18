@@ -1,4 +1,4 @@
-import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'constants';
+import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'config';
 import 'whatwg-fetch';
 import uniq from 'lodash/uniq';
 

@@ -1,5 +1,6 @@
 import { GA_PLAY_STATUS_TOGGLED, trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
-import { LAYER_TYPES, TIMELINE_MIN_INNER_EXTENT } from 'constants';
+import { TIMELINE_MIN_INNER_EXTENT } from 'config';
+import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
 
 export const REWIND_TIMELINE = 'REWIND_TIMELINE';

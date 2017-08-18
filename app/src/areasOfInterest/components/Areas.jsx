@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { COLORS } from 'constants';
+import { COLORS } from 'config';
 
 class Areas extends Component {
   constructor(props) {

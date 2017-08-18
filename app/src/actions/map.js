@@ -1,6 +1,6 @@
 import { clearVesselInfo } from 'actions/vesselInfo';
 import { trackCenterTile } from 'analytics/analyticsActions';
-import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'constants';
+import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
 export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL_VISIBILITY';
 export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
