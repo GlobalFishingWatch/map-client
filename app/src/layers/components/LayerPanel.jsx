@@ -37,9 +37,14 @@ class LayerPanel extends Component {
     }
 
     return (
-      <ul className={LayerListStyles.layerList}>
-        {layers}
-      </ul>
+      <div className={LayerListStyles.layerListContainer}>
+        <div className={LayerListStyles.title}>
+          Map Layers
+        </div>
+        <ul className={LayerListStyles.layerList}>
+          {layers}
+        </ul>
+      </div>
     );
   }
 }

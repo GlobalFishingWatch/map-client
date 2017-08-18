@@ -36,7 +36,7 @@ class BasemapPanel extends Component {
 
     return (
       <div className={LayerListStyles.basemapsPanel} >
-        <div className={LayerListStyles.basemapsTitle} > Basemaps</div >
+        <div className={LayerListStyles.title} > Basemaps</div >
         <ul className={LayerListStyles.layerList} >
           {items}
         </ul >
