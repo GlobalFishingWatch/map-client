@@ -551,6 +551,12 @@ class Timebar extends Component {
   render() {
     return (
       <div className={TimebarStyles.timebar}>
+        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarPlayback)}>
+          <TogglePauseButton
+            onToggle={this.onPauseToggle}
+            paused={this.props.timelinePaused}
+          />
+        </div>
         <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
           <DatePicker
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[0]}
@@ -560,22 +566,6 @@ class Timebar extends Component {
             label={'start'}
           />
         </div>
-        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
-          <DatePicker
-            selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[1]}
-            onChange={this.onEndDatePickerChange}
-            minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
-            maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
-            label={'end'}
-          />
-        </div>
-        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarPlayback)}>
-          <TogglePauseButton
-            onToggle={this.onPauseToggle}
-            paused={this.props.timelinePaused}
-          />
-        </div>
-
         <div
           className={classnames(TimebarStyles.timebarElement, TimelineStyles.timeline)}
           id="timeline_svg_container"
@@ -585,6 +575,16 @@ class Timebar extends Component {
             extentPx={this.state.innerExtentPx}
             timelineOuterExtent={this.props.timelineOuterExtent}
             onTimeRangeSelected={rangeTime => this.onTimeRangeSelected(rangeTime)}
+          />
+        </div>
+        <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
+          <DatePicker
+            selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[1]}
+            onChange={this.onEndDatePickerChange}
+            minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
+            maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
+            label={'end'}
+            calendarPosition={'upLeftCalendar'}
           />
         </div>
       </div>

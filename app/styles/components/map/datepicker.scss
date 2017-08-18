@@ -3,38 +3,22 @@
 :global .datepicker {
   height: 100%;
   position: relative;
-
-  &::after {
-    background-color: rgba($color-3, .4);
-    content: '';
-    display: inline-block;
-    height: 60%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translate(0, -50%);
-    width: 1px;
-  }
+  z-index: 20;
 
   .datepickerTitle {
-    color: rgba($color-3, .5);
-    font-size: $font-size-xs-small;
+    color: $color-31;
+    position: relative;
+    font-size: $font-size-small;
     font-weight: $font-weight-bold;
     padding-bottom: 20px;
     position: absolute;
     text-align: center;
     text-transform: uppercase;
-    top: 16px;
+    top: 19px;
     width: 100%;
 
     @media #{$mq-mobile-large} {
-      font-size: $font-size-small;
-    }
-
-    @media #{$mq-laptop} {
-      &::after {
-        content: ' date';
-      }
+      font-size: $font-size-xxs-small;
     }
   }
 
@@ -42,18 +26,38 @@
     height: 100%;
   }
 
-  input {
+  .datepickerInput {
+    resize: none;
+    color: rgba($color-3, .5);
     background: transparent;
     border: 0;
-    color: $color-3;
     cursor: pointer;
     font-size: $font-size-xs-small;
+    font-family: $font-family-1;
     font-weight: $font-weight-bold;
     height: 100%;
-    padding-top: 11px;
+    padding-top: 36px;
     text-align: center;
     text-transform: uppercase;
     width: 100%;
     word-wrap: break-word;
+    //@media #{$mq-tablet} {
+    //  padding-top: 36px;
+    //}
+  }
+}
+
+:global .calendar {
+  &.upLeftCalendar {
+    left: -170px;
+    .react-datepicker__triangle {
+      left: 193px;
+    }
+    @media #{$mq-tablet} {
+      left: -146px;
+      .react-datepicker__triangle {
+        left: 193px;
+      }
+    }
   }
 }

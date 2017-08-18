@@ -8,21 +8,6 @@
   top: $header-height-mobile;
   width: 100%;
   z-index: 10;
-  
-  &.entering, .exiting {
-    transform: translateY(-700%);
-    @media #{$mq-tablet} {
-      transform: translateX(100%);
-    }
-  }
-
-  &.entered, .exited {
-    transform: initial;
-  }
-
-  &.entered, .exited, .entering, .exiting {
-    transition: all $panel-animation-delay;
-  }
 
   &._noHeader {
     top: 0;

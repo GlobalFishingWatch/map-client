@@ -122,6 +122,7 @@
   height: $timebar-height;
   left: 0;
   width: 100%;
+  z-index: 20;
 
   &._noFooter {
     bottom: 0;
