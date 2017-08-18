@@ -13,8 +13,7 @@ import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
-import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
-import BasemapIcon from '-!babel-loader!svg-react-loader!assets/icons/basemap-icon.svg?name=BasemapIcon';
+import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-icon.svg?name=VesselsIcon';
 import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
@@ -96,8 +95,7 @@ class ControlPanel extends Component {
 
   renderIcon(iconName) {
     const iconComponents = {
-      vessels: SearchIcon,
-      basemap: BasemapIcon,
+      vessels: VesselsIcon,
       layers: LayersIcon,
       filters: FiltersIcon
     };
