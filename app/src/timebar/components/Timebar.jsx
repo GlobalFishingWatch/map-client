@@ -584,6 +584,7 @@ class Timebar extends Component {
             minDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[0]}
             maxDate={this.props.timelineOverallExtent && this.props.timelineOverallExtent[1]}
             label={'end'}
+            calendarPosition={'upLeftCalendar'}
           />
         </div>
       </div>

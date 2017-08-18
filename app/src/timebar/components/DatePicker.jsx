@@ -25,7 +25,7 @@ class DatePicker extends Component {
         </div>
         <ReactDatePicker
           fixedHeight
-          calendarClassName={classnames(['calendar', { rightCalendar: this.props.label === 'end' }])}
+          calendarClassName={classnames(['calendar', this.props.calendarPosition])}
           showYearDropdown
           dropdownMode="select"
           readOnly
@@ -57,7 +57,12 @@ DatePicker.propTypes = {
   /**
    * Maximum allowed start date (a Date object).
    */
-  maxDate: PropTypes.object
+  maxDate: PropTypes.object,
+  /**
+   * Position of the tooltip calendar related to the screen 
+   * (null is down left of the screen, rightCalendar is down right)
+   */
+  calendarPosition: PropTypes.string
 };
 
 export default DatePicker;
