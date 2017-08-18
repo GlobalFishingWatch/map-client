@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
@@ -43,12 +44,43 @@ class FilterGroupForm extends Component {
     return (
       <div >
         <h3 className={ModalStyles.title} >Filter Group</h3 >
-        <div className={ItemList.wrapper} >
-          <ul >
-            {layersList}
-          </ul >
+        <div className={ModalStyles.optionsContainer} >
+          <div className={ModalStyles.column} >
+            <div className={ModalStyles.wrapper} >
+              <div className={ModalStyles.sectionTitle} >
+                Filter by:
+              </div >
+            </div >
+            <div className={ModalStyles.wrapper} >
+              <div className={ModalStyles.sectionTitle} >
+                <label htmlFor="name">Name</label>
+              </div >
+              <input
+                type="text"
+                name="name"
+                onChange={e => this.onNameChange(e)}
+                className={ModalStyles.nameInput}
+                placeholder="Insert filter group name"
+                value={name}
+              />
+            </div >
+          </div >
+          <div className={ModalStyles.column} >
+            <div className={ModalStyles.wrapper} >
+              <div className={ModalStyles.sectionTitle} >
+                Select a Fishing Layer:
+              </div >
+              <div className={ItemList.wrapper} >
+                <ul >
+                  {layersList}
+                </ul >
+              </div >
+            </div >
+            <div className={ModalStyles.wrapper} >
+              <ColorPicker color={'orange'} onColorChange={this.onColorChange} />
+            </div >
+          </div >
         </div >
-
         <div className={ModalStyles.footerContainer} >
           <button
             className={classnames(ButtonStyles.button, ButtonStyles._filled,
