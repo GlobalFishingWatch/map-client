@@ -1,0 +1,66 @@
+@import '../../settings';
+
+.c-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+  display: none;
+
+  &.-spaced {
+    margin-bottom: 8px;
+  }
+
+  input[type=checkbox] {
+    visibility: hidden;
+  }
+
+  .label {
+    margin-left: 5px;
+    border-radius: 2px;
+  }
+
+  .checkbox {
+    display: inline-block;
+    position: relative;
+    line-height: initial;
+    vertical-align: -webkit-baseline-middle;
+    padding-right: 10px;
+  }
+
+  .checkbox label {
+    cursor: pointer;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: -2px;
+    left: 0;
+    background: #fff;
+    border:1px solid #ddd;
+    border-radius: 2px;
+  }
+
+  .checkbox label:after {
+    opacity: 0.1;
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 5px;
+    background: transparent;
+    top: 5px;
+    left: 5px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+
+    transform: rotate(-45deg);
+  }
+
+  .checkbox input[type=checkbox]:checked + label {
+    background: $color-3;
+  }
+
+  .checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+  }
+}

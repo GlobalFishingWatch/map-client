@@ -6,26 +6,24 @@ import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
-import Toggle from '../../components/Shared/Toggle';
+import Checkbox from 'components/Shared/Checkbox';
 
 class FilterGroupForm extends Component {
 
   renderLayersList() {
-    return this.props.layers.map(layer => (
+    return this.props.layers.map((layer, i) => (
       <li
         className={ItemList.listItem}
         key={layer.title}
       >
-        <label >
-          <Toggle
-            on={layer.added}
-            hue={layer.hue}
-            onToggled={() => this.onChange(layer)}
-          />
-          <span className={ItemList.itemTitle} >
-            {layer.title}
-          </span >
-        </label >
+        <Checkbox
+          classNames="-spaced"
+          key={`${i}${layer.title}`}
+          id={`${i}${layer.title}`}
+          label={layer.title}
+          callback={() => this.state.checkLayer} // TODO
+          checked={layer.checked} // TODO
+        />
         <ul className={ItemList.itemOptionList} >
           <li
             className={ItemList.itemOptionItem}
