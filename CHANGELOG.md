@@ -10,6 +10,8 @@
    - Renaming
    - Saving to workspace
    - Loading from workspace
+- UI changes to optimize screen usage
+- Merged basemaps switcher into layers panel
 
 
 ## 2.1.6 RC4
