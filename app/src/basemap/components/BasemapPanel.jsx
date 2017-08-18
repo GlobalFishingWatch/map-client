@@ -27,20 +27,20 @@ class BasemapPanel extends Component {
             onClick={event => this.onSelectBasemap(event, basemap)}
           >
             <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
-            <span className={LayerListStyles.layerTitle}>{basemap.label}</span>
-          </div>
-        </li>);
+            <span className={LayerListStyles.layerTitle} >{basemap.label}</span >
+          </div >
+        </li >);
 
       items.push(itemLayer);
     });
 
     return (
-      <div className={LayerListStyles.basemapsPanel}>
-        <div className={LayerListStyles.basemapsTitle}> Basemaps</div>
-        <ul className={LayerListStyles.layerList}>
+      <div className={LayerListStyles.basemapsPanel} >
+        <div className={LayerListStyles.basemapsTitle} > Basemaps</div >
+        <ul className={LayerListStyles.layerList} >
           {items}
-        </ul>
-      </div>
+        </ul >
+      </div >
     );
   }
 }

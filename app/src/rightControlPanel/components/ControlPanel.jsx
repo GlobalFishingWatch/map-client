@@ -156,8 +156,8 @@ class ControlPanel extends Component {
         title="Layers"
         icon={this.renderIcon('layers')}
         onBack={this.onBack}
-        contentBefore={<BasemapPanel />}
       >
+        <BasemapPanel />
         <LayerPanel />
         <LayerManagement />
       </SubMenu >
