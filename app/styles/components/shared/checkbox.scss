@@ -1,11 +1,10 @@
 @import '../../settings';
 
-.c-checkbox {
+:global .c-checkbox {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 20px;
-  display: none;
+  height: 15px;
 
   &.-spaced {
     margin-bottom: 8px;
@@ -17,7 +16,6 @@
 
   .label {
     margin-left: 5px;
-    border-radius: 2px;
   }
 
   .checkbox {
@@ -31,13 +29,11 @@
   .checkbox label {
     cursor: pointer;
     position: absolute;
-    width: 20px;
-    height: 20px;
-    top: -2px;
+    width: 14px;
+    height: 14px;
     left: 0;
-    background: #fff;
-    border:1px solid #ddd;
-    border-radius: 2px;
+    background: transparent;
+    border:1px solid $color-3;
   }
 
   .checkbox label:after {
@@ -47,8 +43,8 @@
     width: 9px;
     height: 5px;
     background: transparent;
-    top: 5px;
-    left: 5px;
+    top: 2px;
+    left: 2px;
     border: 2px solid #fff;
     border-top: none;
     border-right: none;
@@ -57,7 +53,7 @@
   }
 
   .checkbox input[type=checkbox]:checked + label {
-    background: $color-3;
+    background: $color-button-primary;
   }
 
   .checkbox input[type=checkbox]:checked + label:after {

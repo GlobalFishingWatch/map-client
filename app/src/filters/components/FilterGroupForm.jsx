@@ -21,6 +21,7 @@ class FilterGroupForm extends Component {
           key={`${i}${layer.title}`}
           id={`${i}${layer.title}`}
           label={layer.title}
+          labelClassNames={ModalStyles.itemTitle}
           callback={() => this.state.checkLayer} // TODO
           checked={layer.checked} // TODO
         />

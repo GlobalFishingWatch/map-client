@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import 'styles/components/shared/checkbox.scss';
 
-function Checkbox({ id, callback, label, defaultChecked, checked, classNames, disabled }) {
+function Checkbox({ id, callback, label, labelClassNames, defaultChecked, checked, classNames, disabled }) {
   return (
     <div className={classnames(['c-checkbox', classNames])}>
       <div className="checkbox">
@@ -14,7 +14,7 @@ function Checkbox({ id, callback, label, defaultChecked, checked, classNames, di
         }
         <label htmlFor={id} />
       </div>
-      <div className="label">{label}</div>
+      <div className={classnames(['label', labelClassNames])}>{label}</div>
     </div>
   );
 }
@@ -26,6 +26,7 @@ Checkbox.propTypes = {
   disabled: PropTypes.bool,
   checked: PropTypes.bool,
   label: PropTypes.string,
+  labelClassNames: PropTypes.string,
   classNames: PropTypes.string
 };
 
