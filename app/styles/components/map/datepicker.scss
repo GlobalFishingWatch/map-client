@@ -6,19 +6,19 @@
   z-index: 20;
 
   .datepickerTitle {
-    color: $color-3;
+    color: $color-31;
     position: relative;
-    font-size: $font-size-xs-small;
+    font-size: $font-size-small;
     font-weight: $font-weight-bold;
     padding-bottom: 20px;
     position: absolute;
     text-align: center;
     text-transform: uppercase;
-    top: 16px;
+    top: 19px;
     width: 100%;
 
     @media #{$mq-mobile-large} {
-      font-size: $font-size-small;
+      font-size: $font-size-xxs-small;
     }
   }
 
@@ -34,7 +34,7 @@
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
     height: 100%;
-    margin-top: 18px;
+    padding-top: 18px;
     text-align: center;
     text-transform: uppercase;
     width: 100%;
