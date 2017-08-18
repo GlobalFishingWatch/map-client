@@ -33,17 +33,17 @@
     border: 0;
     cursor: pointer;
     font-size: $font-size-xs-small;
+    font-family: $font-family-1;
     font-weight: $font-weight-bold;
     height: 100%;
-    margin-top: 16px;
-    padding-top: 18px;
+    padding-top: 36px;
     text-align: center;
     text-transform: uppercase;
     width: 100%;
     word-wrap: break-word;
-    @media #{$mq-tablet} {
-      margin-top: 18px;
-    }
+    //@media #{$mq-tablet} {
+    //  padding-top: 36px;
+    //}
   }
 }
 

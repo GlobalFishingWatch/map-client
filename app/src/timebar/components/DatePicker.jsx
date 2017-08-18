@@ -61,7 +61,7 @@ DatePicker.propTypes = {
    */
   maxDate: PropTypes.object,
   /**
-   * Position of the tooltip calendar related to the screen 
+   * Position of the tooltip calendar related to the screen
    * (null is down left of the screen, rightCalendar is down right)
    */
   calendarPosition: PropTypes.string
