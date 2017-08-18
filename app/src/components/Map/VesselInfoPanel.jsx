@@ -57,15 +57,16 @@ class VesselInfoPanel extends Component {
 
       vesselInfoContents = (
         <div className={vesselPanelStyles.vesselMetadata} >
-          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
-          <PinIcon
-            className={classnames(iconStyles.icon, iconStyles.pinIcon,
-              vesselPanelStyles.pin, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
-            onClick={() => {
-              this.props.onTogglePin(vesselInfo.seriesgroup);
-            }}
-          />}
           {renderedFieldList}
+          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
+            <PinIcon
+              className={classnames(iconStyles.icon, iconStyles.pinIcon,
+                vesselPanelStyles.pinIcon, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
+              onClick={() => {
+                this.props.onTogglePin(vesselInfo.seriesgroup);
+              }}
+            />
+          }
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={vesselPanelStyles.externalLink}
             target="_blank"
@@ -89,7 +90,6 @@ class VesselInfoPanel extends Component {
           { [`${vesselPanelStyles._expanded}`]: this.state.isExpanded })}
       >
         <div className={vesselPanelStyles.buttonsContainer} >
-
           <MediaQuery maxWidth={789} >
             <ExpandButton
               onExpand={() => this.onExpand()}

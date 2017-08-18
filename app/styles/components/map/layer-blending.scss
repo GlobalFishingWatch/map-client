@@ -28,18 +28,16 @@
     right: 31px;
   }
 
-  @media screen and (max-width: $breakpoint-tablet) {
-    &._reverse {
-      bottom: auto;
-      top: 27px;
+  &._reverse {
+    bottom: auto;
+    top: 27px;
 
-      &::before {
-        @include arrow(12px, 1px, rgba($color-3, .4), 'up');
-        background-color: $color-1;
-        position: absolute;
-        right: 31px;
-        top: -7px;
-      }
+    &::before {
+      @include arrow(12px, 1px, rgba($color-3, .4), 'up');
+      background-color: $color-1;
+      position: absolute;
+      right: 31px;
+      top: -7px;
     }
   }
 }

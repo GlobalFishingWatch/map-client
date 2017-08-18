@@ -11,6 +11,7 @@ import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   activeBasemap: state.basemap.activeBasemap,
+  activeSubmenu: state.rightControlPanel.activeSubmenu,
   areas: state.areas.data,
   basemaps: state.basemap.basemaps,
   centerLat: state.map.center[0],

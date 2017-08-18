@@ -22,10 +22,11 @@
     display: flex;
     flex-direction: column-reverse;
     justify-content: space-between;
-    padding: 10px 15px;
+    padding: 10px 5px;
     
     @media #{$mq-mobile-large} {
       flex-direction: row;
+      padding: 10px 15px;
 
       &:hover {
         background-color: rgba($color-3, .2);

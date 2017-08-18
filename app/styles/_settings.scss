@@ -114,3 +114,7 @@ $mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
 $mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
+
+// Animation
+$panel-animation-delay: 300ms;
+$panel-animation-ease: ease-in;

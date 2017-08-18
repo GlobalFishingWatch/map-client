@@ -7,7 +7,22 @@
   position: absolute;
   top: $header-height-mobile;
   width: 100%;
-  z-index: 102;
+  z-index: 10;
+  
+  &.entering, .exiting {
+    transform: translateY(-700%);
+    @media #{$mq-tablet} {
+      transform: translateX(100%);
+    }
+  }
+
+  &.entered, .exited {
+    transform: initial;
+  }
+
+  &.entered, .exited, .entering, .exiting {
+    transition: all $panel-animation-delay;
+  }
 
   &._noHeader {
     top: 0;
@@ -17,7 +32,8 @@
     background: transparent;
     flex: 0 1 auto;
     height: auto;
-    overflow-y: auto;
+    overflow: visible;
+
     // cancels pointer-events: none of c-map-panels
     pointer-events: auto;
     position: relative;
@@ -35,7 +51,8 @@
   }
 
   .resumeDisplay {
-    border-bottom: 1px solid rgba($color-7, .4);
+    width: 100%;
+    border-bottom: 1px solid $color-7;
     display: none;
     flex-direction: column;
     padding: 30px 56px 25px 25px;
@@ -112,6 +129,7 @@
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
+    margin-left: 10px;
   }
 }
 

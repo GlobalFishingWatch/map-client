@@ -3,18 +3,8 @@ import React, { Component } from 'react';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 
 class BasemapPanel extends Component {
-
-  onClickInfo(basemap) {
-    const modalParams = {
-      open: true,
-      info: basemap
-    };
-
-    this.props.openLayerInfoModal(modalParams);
-  }
 
   onSelectBasemap(event, basemap) {
     this.props.setBasemap(basemap.title);
@@ -28,7 +18,7 @@ class BasemapPanel extends Component {
       const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
       const itemLayer = (
         <li
-          className={classnames(LayerListStyles.layerItem,
+          className={classnames(LayerListStyles.layerItem, LayerListStyles.halfRow,
             this.props.activeBasemap === basemap.title ? LayerListStyles._selected : null)}
           key={basemap.title}
         >
@@ -37,25 +27,20 @@ class BasemapPanel extends Component {
             onClick={event => this.onSelectBasemap(event, basemap)}
           >
             <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
-            <span className={LayerListStyles.layerTitle}>{basemap.label}</span>
-          </div>
-          <ul className={LayerListStyles.layerOptionList}>
-            <li
-              className={LayerListStyles.layerOptionItem}
-              onClick={() => this.onClickInfo(basemap)}
-            >
-              <InfoIcon />
-            </li>
-          </ul>
-        </li>);
+            <span className={LayerListStyles.layerTitle} >{basemap.label}</span >
+          </div >
+        </li >);
 
       items.push(itemLayer);
     });
 
     return (
-      <ul className={LayerListStyles.layerList}>
-        {items}
-      </ul>
+      <div className={LayerListStyles.basemapsPanel} >
+        <div className={LayerListStyles.title} > Basemaps</div >
+        <ul className={LayerListStyles.layerList} >
+          {items}
+        </ul >
+      </div >
     );
   }
 }
@@ -63,7 +48,6 @@ class BasemapPanel extends Component {
 BasemapPanel.propTypes = {
   basemaps: PropTypes.array,
   activeBasemap: PropTypes.string,
-  openLayerInfoModal: PropTypes.func,
   setBasemap: PropTypes.func
 };
 
