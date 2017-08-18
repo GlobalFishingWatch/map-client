@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
 import LayerListStyles from 'styles/components/map/layer-list.scss';
+import { LAYER_TYPES } from 'constants';
+import classnames from 'classnames';
 
 class LayerPanel extends Component {
   constructor(props) {
@@ -18,33 +20,51 @@ class LayerPanel extends Component {
   }
 
   render() {
-    const layers = [];
-    if (this.props.layers) {
-      for (let i = 0, length = this.props.layers.length; i < length; i++) {
-        if (this.props.layers[i].added === false) {
-          continue;
-        }
-        layers.push(
+    const mapLayers = [];
+    const fishingLayers = [];
+
+    this.props.layers.forEach((layer, index) => {
+      if (layer.added === false) {
+        return;
+      }
+      if (layer.type === LAYER_TYPES.Heatmap) {
+        fishingLayers.push(
           <LayerItem
-            key={i}
-            layerIndex={i}
-            layer={this.props.layers[i]}
+            key={index}
+            layerIndex={index}
+            layer={layer}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-            showBlending={this.state.currentBlendingOptionsShown === i}
+            showBlending={this.state.currentBlendingOptionsShown === index}
+          />
+        );
+      } else {
+        mapLayers.push(
+          <LayerItem
+            key={index}
+            layerIndex={index}
+            layer={layer}
+            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
+            showBlending={this.state.currentBlendingOptionsShown === index}
           />
         );
       }
-    }
+    });
 
     return (
-      <div className={LayerListStyles.layerListContainer}>
-        <div className={LayerListStyles.title}>
+      <div className={LayerListStyles.layerListContainer} >
+        <div className={LayerListStyles.title} >
+          Fishing Layers
+        </div >
+        <ul className={LayerListStyles.layerList} >
+          {fishingLayers}
+        </ul >
+        <div className={classnames(LayerListStyles.title, LayerListStyles.spacedTitle)} >
           Map Layers
-        </div>
-        <ul className={LayerListStyles.layerList}>
-          {layers}
-        </ul>
-      </div>
+        </div >
+        <ul className={LayerListStyles.layerList} >
+          {mapLayers}
+        </ul >
+      </div >
     );
   }
 }
