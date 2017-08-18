@@ -26,7 +26,6 @@ class ControlPanel extends Component {
     super();
     this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
     this.onBack = this.onBack.bind(this);
-    this.state = { showSubmenu: false };
   }
 
   componentDidUpdate() {
@@ -84,7 +83,6 @@ class ControlPanel extends Component {
   }
 
   changeActiveSubmenu(submenuName) {
-    this.setState({ showSubmenu: true });
     this.props.setSubmenu(submenuName);
   }
 
@@ -93,7 +91,6 @@ class ControlPanel extends Component {
       this.props.setRecentlyCreated(false);
       this.props.setDrawingMode(false);
     }
-    this.setState({ showSubmenu: false });
     this.props.setSubmenu(null);
   }
 
@@ -201,7 +198,7 @@ class ControlPanel extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          <Transition in={this.state.showSubmenu} timeout={0}>
+          <Transition in={this.props.activeSubmenu} timeout={0}>
             {status => (
               <div
                 className={classnames([ControlPanelStyles.controlpanel, ControlPanelStyles[status]])}
