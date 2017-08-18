@@ -32,6 +32,7 @@ LayerManagement.propTypes = {
   openModal: PropTypes.func,
   workspaceLayers: PropTypes.array,
   toggleLayerPanelEditMode: PropTypes.func,
+  toggleGroupLayerPanelEditMode: PropTypes.func,
   layerPanelEditMode: PropTypes.bool
 };
 

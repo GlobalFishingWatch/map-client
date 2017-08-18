@@ -138,6 +138,12 @@ class FilterPanel extends Component {
         >
           add filter
         </button >}
+        <button
+          className={classnames(MapButtonStyles.button, MapButtonStyles._wide, MapButtonStyles._filled)}
+          onClick={() => this.props.setFilterGroupModalVisibility(true)}
+        >
+          add group filter
+        </button >
       </div >
     );
   }
@@ -145,7 +151,8 @@ class FilterPanel extends Component {
 
 FilterPanel.propTypes = {
   flags: PropTypes.array,
-  setFlagFilters: PropTypes.func
+  setFlagFilters: PropTypes.func.isRequired,
+  setFilterGroupModalVisibility: PropTypes.func.isRequired
 };
 
 export default FilterPanel;
