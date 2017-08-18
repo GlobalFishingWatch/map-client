@@ -22,6 +22,7 @@
     "SHARE_BASE_URL": true,
     "TIMEBAR_DATA_URL": true,
     "SHOW_BANNER": true,
+    "ENABLE_AREA_OF_INTEREST": true,
     "PUBLIC_PATH": true
   },
   "parserOptions": {

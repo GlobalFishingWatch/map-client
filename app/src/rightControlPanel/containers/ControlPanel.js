@@ -5,21 +5,19 @@ import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
 import { login } from 'user/userActions';
-import { openTimebarInfoModal, setDrawingMode } from 'actions/map';
+import { setDrawingMode } from 'actions/map';
 import { setSubmenu } from 'rightControlPanel/rightControlPanelActions';
 
 
 const mapStateToProps = state => ({
+  activeSubmenu: state.rightControlPanel.activeSubmenu,
+  isDrawing: state.map.isDrawing,
+  isReportStarted: state.report.layerId !== null,
+  layerPanelEditMode: state.layers.layerPanelEditMode,
   layers: state.layers.workspaceLayers,
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
-  layerPanelEditMode: state.layers.layerPanelEditMode,
   userPermissions: state.user.userPermissions,
-  vessels: state.vesselInfo.vessels,
-  chartData: state.timebar.chartData,
-  timelineInnerExtent: state.filters.timelineInnerExtent,
-  isReportStarted: state.report.layerId !== null,
-  activeSubmenu: state.rightControlPanel.activeSubmenu,
-  isDrawing: state.map.isDrawing
+  vessels: state.vesselInfo.vessels
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,9 +32,6 @@ const mapDispatchToProps = dispatch => ({
   },
   hideSearchResults: () => {
     dispatch(setSearchResultVisibility(false));
-  },
-  openTimebarInfoModal: () => {
-    dispatch(openTimebarInfoModal());
   },
   setRecentlyCreated: (value) => {
     dispatch(setRecentlyCreated(value));

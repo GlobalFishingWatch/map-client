@@ -143,7 +143,7 @@ AreasForm.propTypes = {
   updateAreaOfInterest: PropTypes.func.isRequired,
   updateWorkingAreaOfInterest: PropTypes.func.isRequired,
   isDrawing: PropTypes.bool.isRequired,
-  editAreaIndex: PropTypes.number.isRequired,
+  editAreaIndex: PropTypes.number,
   editingArea: PropTypes.object.isRequired,
   areas: PropTypes.array.isRequired
 };

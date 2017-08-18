@@ -81,7 +81,7 @@ class SearchPanel extends Component {
         <input
           type="text"
           onBlur={() => this.onSearchInputBlur()}
-          onInput={e => this.onSearchInputChange(e)}
+          onChange={e => this.onSearchInputChange(e)}
           onFocus={() => this.onSearchInputFocus()}
           className={searchPanelStyles.searchInput}
           placeholder="Search vessel"

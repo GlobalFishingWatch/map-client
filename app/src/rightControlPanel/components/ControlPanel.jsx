@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { CONTROL_PANEL_MENUS } from 'constants';
 import MediaQuery from 'react-responsive';
 import AreasPanel from 'areasOfInterest/containers/AreasPanel';
 import MenuLink from 'rightControlPanel/components/MenuLink';
-import SubMenu from 'rightControlPanel/components/SubMenu';
+import SubMenu from 'rightControlPanel/containers/SubMenu';
 import FilterPanel from 'filters/containers/FilterPanel';
 import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
@@ -14,17 +15,20 @@ import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
 import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-icon.svg?name=VesselsIcon';
+import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/reports-icon.svg?name=ReportsIcon';
 import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-icon.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
 import Transition from 'react-transition-group/Transition';
+import ControlPanelHeader from '../containers/ControlPanelHeader';
 
 class ControlPanel extends Component {
   constructor() {
     super();
-    this.changeActiveSubmenu = this.changeActiveSubmenu.bind(this);
-    this.onBack = this.onBack.bind(this);
+    this.onCloseAreasOfInterestSubMenu = this.onCloseAreasOfInterestSubMenu.bind(this);
+    this.onCloseVesselsSubMenu = this.onCloseVesselsSubMenu.bind(this);
+    this.onCloseLayersSubMenu = this.onCloseLayersSubMenu.bind(this);
   }
 
   componentDidUpdate() {
@@ -33,7 +37,7 @@ class ControlPanel extends Component {
     }
   }
 
-  onCloseSearch() {
+  onCloseVesselsSubMenu() {
     this.props.hideSearchResults();
 
     if (this.props.pinnedVesselEditMode === true) {
@@ -41,70 +45,32 @@ class ControlPanel extends Component {
     }
   }
 
-  onCloseLayerPicker() {
+  onCloseLayersSubMenu() {
     if (this.props.layerPanelEditMode === true) {
       this.props.disableLayerPanelEditMode();
     }
   }
 
-  calculateFishingHours() {
-    const min = this.props.timelineInnerExtent[0].getTime();
-    const max = this.props.timelineInnerExtent[1].getTime();
-
-    if (this.props.chartData.length === 0) {
-      return '-';
-    }
-
-    const result = this.props.chartData.reduce((acc, elem) => {
-      if (elem.date >= min && elem.date <= max) {
-        return acc + elem.value;
-      }
-      return acc;
-    }, 0);
-
-    return Math.round(result).toLocaleString();
-  }
-
-  renderResume() {
-    return (
-      <div className={ControlPanelStyles.resumeDisplay} >
-        <div className={ControlPanelStyles.categoriesDisplay} >
-          <div className={ControlPanelStyles.vesselDisplay} >
-            <span className={ControlPanelStyles.counterDescription} >
-              Vessels activity
-              <InfoIcon className={ControlPanelStyles.fishingHours} onClick={() => this.props.openTimebarInfoModal()} />
-            </span >
-            <span className={ControlPanelStyles.total} >{this.calculateFishingHours()}</span >
-          </div >
-        </div >
-      </div >
-    );
-  }
-
-  changeActiveSubmenu(submenuName) {
-    this.props.setSubmenu(submenuName);
-  }
-
-  onBack() {
-    if (this.props.activeSubmenu === 'AREAS') {
+  onCloseAreasOfInterestSubMenu() {
+    if (this.props.activeSubmenu === CONTROL_PANEL_MENUS.AREAS) {
       this.props.setRecentlyCreated(false);
       this.props.setDrawingMode(false);
     }
-    this.props.setSubmenu(null);
   }
 
   renderIcon(iconName) {
     const iconComponents = {
       vessels: VesselsIcon,
       layers: LayersIcon,
-      filters: FiltersIcon
+      filters: FiltersIcon,
+      aoi: AOIIcon,
+      reports: ReportsIcon
     };
     const IconName = iconComponents[iconName];
     return <IconName className={classnames([iconStyles.icons, ControlPanelStyles[`${iconName}Icon`]])} />;
   }
 
-  render() {
-    const { activeSubmenu, isDrawing } = this.props;
+  renderVesselsSubMenu() {
     const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
 
     const searchHeader = (
@@ -123,13 +89,13 @@ class ControlPanel extends Component {
         </MediaQuery >
       </div >);
 
-    const searchSubmenu = (
+    return (
       <div>
         <SubMenu
           title="Vessels"
           icon={this.renderIcon('vessels')}
           extraHeader={searchHeader}
-          onBack={this.onBack}
+          onBack={this.onCloseVesselsSubMenu}
         >
           {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
             <div >
@@ -148,31 +114,36 @@ class ControlPanel extends Component {
         <VesselInfoPanel />
       </div>
     );
+  }
 
-    const layerSubmenu = (
+  renderFiltersSubMenu() {
+    return (
+      <SubMenu
+        title="Filters"
+        icon={this.renderIcon('filters')}
+      >
+        <FilterPanel />
+      </SubMenu >
+    );
+  }
+
+  renderLayersSubMenu() {
+    return (
       <SubMenu
         title="Layers"
         icon={this.renderIcon('layers')}
-        onBack={this.onBack}
+        onBack={this.onCloseLayersSubMenu}
       >
         <BasemapPanel />
         <LayerPanel />
         <LayerManagement />
       </SubMenu >
     );
+  }
 
-    const filterSubmenu = (
-      <SubMenu
-        title="Filters"
-        icon={this.renderIcon('filters')}
-        onBack={this.onBack}
-      >
-        <FilterPanel />
-      </SubMenu >
-    );
-
+  renderAreaOfInterestSubMenu() {
     let areaFooter = null;
-    if (isDrawing) {
+    if (this.props.isDrawing) {
       areaFooter = (<div>
         <div>
           Click over the map and create your own area of interest
@@ -180,19 +151,79 @@ class ControlPanel extends Component {
       </div>);
     }
 
-    const areaSubmenu = (
-      <SubMenu title="Area of interest" icon={this.renderIcon('filters')} onBack={this.onBack} footer={areaFooter} >
+    return (
+      <SubMenu
+        title="Area of interest"
+        icon={this.renderIcon('aoi')}
+        onBack={this.onCloseAreasOfInterestSubMenu}
+        footer={areaFooter}
+      >
         <AreasPanel />
       </SubMenu >
     );
+  }
 
-    const submenus = {
-      AREAS: areaSubmenu,
-      FILTERS: filterSubmenu,
-      LAYERS: layerSubmenu,
-      VESSELS: searchSubmenu
-    };
+  renderReportsSubMenu() {
+    return (
+      <SubMenu title="Reports" icon={this.renderIcon('reports')}>
+        <h1>Coming soon...</h1>
+      </SubMenu >
+    );
+  }
 
+  renderMainMenuNav(desktop) {
+    return (
+      <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
+        <div
+          className={classnames(ControlPanelStyles.mapOptions, {
+            [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !desktop)
+          })}
+        >
+          <ControlPanelHeader />
+          <MenuLink
+            title="Vessels"
+            icon={this.renderIcon('vessels')}
+            onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.VESSELS)}
+          />
+          <MenuLink
+            title="Layers"
+            icon={this.renderIcon('layers')}
+            onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.LAYERS)}
+          />
+          <MenuLink
+            title="Filters"
+            icon={this.renderIcon('filters')}
+            onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.FILTERS)}
+          />
+          {ENABLE_AREA_OF_INTEREST && <MenuLink
+            title="Area of interest"
+            icon={this.renderIcon('aoi')}
+            onClick={() => this.props.setSubmenu('AREAS')}
+          />}
+        </div >
+        <VesselInfoPanel />
+      </div >
+    );
+  }
+
+  renderSubMenu(desktop) {
+    switch (this.props.activeSubmenu) {
+      case CONTROL_PANEL_MENUS.VESSELS:
+        return this.renderVesselsSubMenu();
+      case CONTROL_PANEL_MENUS.LAYERS:
+        return this.renderLayersSubMenu();
+      case CONTROL_PANEL_MENUS.FILTERS:
+        return this.renderFiltersSubMenu();
+      case CONTROL_PANEL_MENUS.AREAS:
+        return this.renderAreaOfInterestSubMenu();
+      case CONTROL_PANEL_MENUS.REPORTS:
+        return this.renderReportsSubMenu();
+      default:
+        return this.renderMainMenuNav(desktop);
+    }
+  }
+
+  render() {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
@@ -205,40 +236,7 @@ class ControlPanel extends Component {
                 }}
               >
                 <div className={classnames([ControlPanelStyles.bgWrapper])} >
-                  {activeSubmenu ?
-                    submenus[activeSubmenu]
-                    :
-                    <div className={classnames[ControlPanelStyles.mapOptionsContainer]} >
-                      <div
-                        className={classnames(ControlPanelStyles.mapOptions, {
-                          [ControlPanelStyles._noFooter]: (!COMPLETE_MAP_RENDER && !desktop)
-                        })}
-                      >
-                        {this.renderResume()}
-                        <MenuLink
-                          title="Vessels"
-                          icon={this.renderIcon('vessels')}
-                          onClick={() => this.changeActiveSubmenu('VESSELS')}
-                        />
-                        <MenuLink
-                          title="Layers"
-                          icon={this.renderIcon('layers')}
-                          onClick={() => this.changeActiveSubmenu('LAYERS')}
-                        />
-                        <MenuLink
-                          title="Filters"
-                          icon={this.renderIcon('filters')}
-                          onClick={() => this.changeActiveSubmenu('FILTERS')}
-                        />
-                        {/* <MenuLink
-                          title="Area of interest"
-                          icon={this.renderIcon('filters')}
-                          onClick={() => this.changeActiveSubmenu('AREAS')}
-                        /> */}
-                      </div >
-                      <VesselInfoPanel />
-                    </div >
-                  }
+                  {this.renderSubMenu(desktop)}
                 </div >
               </div >
             )}
@@ -251,7 +249,6 @@ class ControlPanel extends Component {
 
 ControlPanel.propTypes = {
   activeSubmenu: PropTypes.string,
-  chartData: PropTypes.array,
   disableLayerPanelEditMode: PropTypes.func,
   disableSearchEditMode: PropTypes.func,
   hideSearchResults: PropTypes.func,
@@ -260,12 +257,10 @@ ControlPanel.propTypes = {
   layerPanelEditMode: PropTypes.bool,
   layers: PropTypes.array,
   login: PropTypes.func,
-  openTimebarInfoModal: PropTypes.func,
   pinnedVesselEditMode: PropTypes.bool,
   setDrawingMode: PropTypes.func,
   setRecentlyCreated: PropTypes.func.isRequired,
   setSubmenu: PropTypes.func.isRequired,
-  timelineInnerExtent: PropTypes.array,
   userPermissions: PropTypes.array,
   vessels: PropTypes.array,
   isDrawing: PropTypes.bool

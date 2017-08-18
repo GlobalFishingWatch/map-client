@@ -1,28 +1,42 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import SubmenuStyles from 'styles/components/submenu.scss';
+import React, { Component } from 'react';
 
-function SubMenu({ title, icon, extraHeader, children, onBack, footer }) {
-  return (
-    <div className={SubmenuStyles.submenu}>
-      <div className={SubmenuStyles.main}>
-        <div className={SubmenuStyles.header} >
-          <div className={SubmenuStyles.titleContainer} onClick={onBack}>
-            <button><span className={SubmenuStyles.back} /></button>
-            <h2 className={SubmenuStyles.title} >{title}</h2>
-            {extraHeader}
-          </div>
-          <div className={SubmenuStyles.icon} >{icon}</div>
-        </div>
-        <div className={SubmenuStyles.content} >
-          {children}
-        </div>
-        {footer && <div className={SubmenuStyles.footer} >
-          {footer}
-        </div>}
-      </div>
-    </div>
-  );
+class SubMenu extends Component {
+
+  constructor() {
+    super();
+    this.onBackClick = this.onBackClick.bind(this);
+  }
+
+  onBackClick() {
+    this.props.setSubmenu(null);
+    this.props.onBack();
+  }
+
+  render() {
+    const { title, icon, extraHeader, children, footer } = this.props;
+    return (
+      <div className={SubmenuStyles.submenu} >
+        <div className={SubmenuStyles.main} >
+          <div className={SubmenuStyles.header} >
+            <div className={SubmenuStyles.titleContainer} onClick={this.onBackClick} >
+              <button ><span className={SubmenuStyles.back} /></button >
+              <h2 className={SubmenuStyles.title} >{title}</h2 >
+              {extraHeader}
+            </div >
+            <div className={SubmenuStyles.icon} >{icon}</div >
+          </div >
+          <div className={SubmenuStyles.content} >
+            {children}
+          </div >
+          {footer && <div className={SubmenuStyles.footer} >
+            {footer}
+          </div >}
+        </div >
+      </div >
+    );
+  }
 }
 
 SubMenu.propTypes = {
@@ -30,6 +44,7 @@ SubMenu.propTypes = {
   icon: PropTypes.object,
   extraHeader: PropTypes.node,
   footer: PropTypes.node,
+  setSubmenu: PropTypes.func,
   children: PropTypes.node.isRequired,
   onBack: PropTypes.func.isRequired
 };

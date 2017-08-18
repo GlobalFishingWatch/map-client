@@ -1,3 +1,11 @@
+export const CONTROL_PANEL_MENUS = {
+  AREAS: 'AREAS',
+  FILTERS: 'FILTERS',
+  LAYERS: 'LAYERS',
+  VESSELS: 'VESSELS',
+  REPORTS: 'REPORTS'
+};
+
 export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
