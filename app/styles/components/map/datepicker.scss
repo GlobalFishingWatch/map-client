@@ -26,7 +26,8 @@
     height: 100%;
   }
 
-  input {
+  .datepickerInput {
+    resize: none;
     color: rgba($color-3, .5);
     background: transparent;
     border: 0;
@@ -34,11 +35,15 @@
     font-size: $font-size-xs-small;
     font-weight: $font-weight-bold;
     height: 100%;
+    margin-top: 16px;
     padding-top: 18px;
     text-align: center;
     text-transform: uppercase;
     width: 100%;
     word-wrap: break-word;
+    @media #{$mq-tablet} {
+      margin-top: 18px;
+    }
   }
 }
 

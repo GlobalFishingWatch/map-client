@@ -25,6 +25,8 @@ class DatePicker extends Component {
         </div>
         <ReactDatePicker
           fixedHeight
+          className="datepickerInput"
+          customInput={<textarea />}
           calendarClassName={classnames(['calendar', this.props.calendarPosition])}
           showYearDropdown
           dropdownMode="select"
