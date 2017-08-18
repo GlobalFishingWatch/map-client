@@ -41,3 +41,18 @@
     word-wrap: break-word;
   }
 }
+
+:global .calendar {
+  &.rightCalendar {
+    left: -170px;
+    .react-datepicker__triangle {
+      left: 193px;
+    }
+    @media #{$mq-tablet} {
+      left: -146px;
+      .react-datepicker__triangle {
+        left: 193px;
+      }
+    }
+  }
+}

@@ -25,6 +25,7 @@ class DatePicker extends Component {
         </div>
         <ReactDatePicker
           fixedHeight
+          calendarClassName={classnames(['calendar', { rightCalendar: this.props.label === 'end' }])}
           showYearDropdown
           dropdownMode="select"
           readOnly
