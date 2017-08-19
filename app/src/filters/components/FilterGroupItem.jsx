@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import ListStyles from 'styles/components/map/item-list.scss';
 import Toggle from 'components/Shared/Toggle';
 import IconStyles from 'styles/icons.scss';
-import PencilIcon from '-!babel-loader!svg-react-loader!assets/icons/pencil-icon.svg?name=PencilIcon';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
+import PencilIcon from '-!babel-loader!svg-react-loader!assets/icons/pencil.svg?name=PencilIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 
 class FilterGroupItem extends Component {
   constructor(props) {

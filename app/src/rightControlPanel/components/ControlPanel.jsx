@@ -15,11 +15,11 @@ import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
-import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-icon.svg?name=VesselsIcon';
-import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/reports-icon.svg?name=ReportsIcon';
-import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
-import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
-import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-icon.svg?name=AOIIcon';
+import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-menu.svg?name=VesselsIcon';
+import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg?name=ReportsIcon';
+import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg?name=LayersIcon';
+import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
+import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
 import Transition from 'react-transition-group/Transition';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
@@ -68,7 +68,7 @@ class ControlPanel extends Component {
       reports: ReportsIcon
     };
     const IconName = iconComponents[iconName];
-    return <IconName className={classnames([iconStyles.icons, ControlPanelStyles[`${iconName}Icon`]])} />;
+    return <IconName className={classnames([iconStyles[`${iconName}Icon`]])} />;
   }
 
   renderVesselsSubMenu() {

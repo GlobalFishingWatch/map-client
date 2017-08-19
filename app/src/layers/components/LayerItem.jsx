@@ -6,9 +6,9 @@ import { LAYER_TYPES } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import icons from 'styles/icons.scss';
-import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report-icon.svg?name=ReportIcon';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
+import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class LayerItem extends Component {

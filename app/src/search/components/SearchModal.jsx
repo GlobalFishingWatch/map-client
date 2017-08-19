@@ -4,14 +4,14 @@ import classnames from 'classnames';
 import SearchResult from 'search/containers/SearchResult';
 import PaginatorStyles from 'styles/components/shared/paginator.scss';
 import ReactPaginate from 'react-paginate';
-import Rhombus from 'components/Shared/Rhombus';
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
 import ModalStyles from 'styles/components/shared/modal.scss';
 import ResultListStyles from 'styles/components/shared/result-list.scss';
 import SearchModalStyles from 'styles/components/map/search-modal.scss';
 import iconsStyles from 'styles/icons.scss';
-import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search-icon.svg?name=SearchIcon';
+import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
+import ArrowBoxIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-box.svg?name=ArrowBoxIcon';
 
 class SearchModal extends Component {
 
@@ -80,8 +80,8 @@ class SearchModal extends Component {
             className={PaginatorStyles.paginator}
           >
             {!this.props.searching && this.props.entries.length > 0 && <ReactPaginate
-              previousLabel={<Rhombus />}
-              nextLabel={<Rhombus />}
+              previousLabel={<ArrowBoxIcon />}
+              nextLabel={<ArrowBoxIcon />}
               nextClassName={PaginatorStyles.next}
               previousClassName={PaginatorStyles.previous}
               breakLabel={<span>...</span>}

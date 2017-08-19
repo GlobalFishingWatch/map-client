@@ -7,7 +7,7 @@ import IconStyles from 'styles/icons.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
 import ResultListStyles from 'styles/components/shared/result-list.scss';
 
-import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin-icon.svg?name=PinIcon';
+import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
 
 class RecentVesselsModal extends Component {
 

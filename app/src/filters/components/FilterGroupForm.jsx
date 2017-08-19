@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import _ from 'lodash';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';

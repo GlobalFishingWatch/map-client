@@ -5,8 +5,8 @@ import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import PinnedVesselOptionsTooltip from 'pinnedVessels/components/PinnedVesselOptionsTooltip';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import icons from 'styles/icons.scss';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';
 
 class PinnedVessel extends Component {
@@ -67,7 +67,7 @@ class PinnedVessel extends Component {
             className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={e => this.onVesselLabelClick(e)}
           >
-            <InfoIcon className={classnames(icons.icon, icons['info-icon'])} />
+            <InfoIcon className={icons.icon} />
           </li>
         </ul>
       );
