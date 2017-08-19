@@ -12,12 +12,17 @@ class FilterGroupItem extends Component {
     super(props);
 
     this.onClickFilterGroupEdit = this.onClickFilterGroupEdit.bind(this);
+    this.onClickFilterGroupDelete = this.onClickFilterGroupDelete.bind(this);
   }
 
   onChangeFilterGroupVisibility() {
     // TODO: hide quick edits and such
 
     this.props.toggleFilterGroupVisibility(this.props.index);
+  }
+
+  onClickFilterGroupDelete() {
+    this.props.deleteFilterGroup(this.props.index);
   }
 
   onClickFilterGroupEdit() {
@@ -35,7 +40,7 @@ class FilterGroupItem extends Component {
         </li >
         <li
           className={ListStyles.itemOptionItem}
-          onClick={() => this.onClickInfo()}
+          onClick={this.onClickFilterGroupDelete}
         >
           <DeleteIcon className={IconStyles.deleteBucketIcon} />
         </li >
@@ -68,6 +73,7 @@ FilterGroupItem.propTypes = {
   filterGroup: PropTypes.object,
   isFilterGroupQuickEditMode: PropTypes.bool, // if currently editing this filter group
   editFilterGroup: PropTypes.func,
+  deleteFilterGroup: PropTypes.func,
   toggleFilterGroupVisibility: PropTypes.func
 };
 

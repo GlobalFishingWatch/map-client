@@ -2,6 +2,7 @@ export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
 export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY';
 export const SET_EDIT_FILTER_GROUP_INDEX = 'SET_EDIT_FILTER_GROUP_INDEX';
+export const DELETE_FILTER_GROUP = 'DELETE_FILTER_GROUP';
 
 export function setEditFilterGroupIndex(editFilterGroupIndex) {
   return {
@@ -34,5 +35,12 @@ export function saveFilterGroup(filterGroup, index = null) {
       filterGroup,
       index
     }
+  };
+}
+
+export function deleteFilterGroup(index) {
+  return {
+    type: DELETE_FILTER_GROUP,
+    payload: index
   };
 }

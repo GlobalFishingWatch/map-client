@@ -1,5 +1,5 @@
 import { SET_FILTER_GROUP_MODAL_VISIBILITY, SAVE_FILTER_GROUP, SET_FILTER_GROUP_VISIBILITY } from 'filters/filtersActions';
-import { SET_EDIT_FILTER_GROUP_INDEX } from 'filters/filterGroupsActions';
+import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP } from 'filters/filterGroupsActions';
 
 const initialState = {
   filterGroups: [{
@@ -36,6 +36,17 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         filterGroups: [...state.filterGroups.slice(0, index), newFilterGroup, ...state.filterGroups.slice(index + 1)]
+      });
+
+    }
+    case DELETE_FILTER_GROUP: {
+      if (action.payload >= state.filterGroups) {
+        console.warn('trying to delete a filterGroup that does not exist');
+        return state;
+      }
+
+      return Object.assign({}, state, {
+        filterGroups: [...state.filterGroups.slice(0, action.payload), ...state.filterGroups.slice(action.payload + 1)]
       });
 
     }
