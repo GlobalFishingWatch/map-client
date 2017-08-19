@@ -80,6 +80,21 @@ class FilterGroupForm extends Component {
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
               <div className={ModalStyles.sectionTitle} >
+                Select the Fishing Layers:
+              </div >
+              <div className={ItemList.wrapper} >
+                <ul >
+                  {layersList}
+                </ul >
+              </div >
+            </div >
+            <div className={ModalStyles.wrapper} >
+              <ColorPicker color={this.state.color} onColorChange={this.onColorChange} />
+            </div >
+          </div >
+          <div className={ModalStyles.column} >
+            <div className={ModalStyles.wrapper} >
+              <div className={ModalStyles.sectionTitle} >
                 Filter by:
               </div >
             </div >
@@ -92,24 +107,9 @@ class FilterGroupForm extends Component {
                 name="name"
                 onChange={this.onNameChange}
                 className={ModalStyles.nameInput}
-                placeholder="Insert filter group name"
+                placeholder="Filter group name"
                 value={this.state.label}
               />
-            </div >
-          </div >
-          <div className={ModalStyles.column} >
-            <div className={ModalStyles.wrapper} >
-              <div className={ModalStyles.sectionTitle} >
-                Select a Fishing Layer:
-              </div >
-              <div className={ItemList.wrapper} >
-                <ul >
-                  {layersList}
-                </ul >
-              </div >
-            </div >
-            <div className={ModalStyles.wrapper} >
-              <ColorPicker color={this.state.color} onColorChange={this.onColorChange} />
             </div >
           </div >
         </div >
