@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 import LayerListStyles from 'styles/components/map/item-list.scss';
+import BasemapStyles from 'styles/rightControlPanel/basemap-panel.scss';
 
 class BasemapPanel extends Component {
 
@@ -35,7 +36,7 @@ class BasemapPanel extends Component {
     });
 
     return (
-      <div className={LayerListStyles.basemapsPanel} >
+      <div className={BasemapStyles.basemapsPanel} >
         <div className={LayerListStyles.title} > Basemaps</div >
         <ul className={LayerListStyles.list} >
           {items}

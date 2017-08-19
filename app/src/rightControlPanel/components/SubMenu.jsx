@@ -46,7 +46,7 @@ SubMenu.propTypes = {
   footer: PropTypes.node,
   setSubmenu: PropTypes.func,
   children: PropTypes.node.isRequired,
-  onBack: PropTypes.func.isRequired
+  onBack: PropTypes.func
 };
 
 export default SubMenu;

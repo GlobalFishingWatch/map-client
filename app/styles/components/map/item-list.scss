@@ -1,25 +1,5 @@
 @import '../../settings';
 
-.basemapsPanel {
-  border-bottom: 2px solid black;
-  padding-bottom: 20px;
-  margin-left: -35px;
-  margin-right: -35px;
-  margin-bottom: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  font-size: $font-size-xs-small;
-
-  @media #{mq-tablet} {
-    font-size: $font-size-small;
-  }
-
-  .basemapsTitle {
-    color: $color-4;
-    padding-bottom: 10px;
-  }
-}
-
 .list {
   align-items: center;
   display: flex;
@@ -27,11 +7,6 @@
 
   @media #{mq-tablet} {
     font-size: $font-size-small;
-  }
-
-  .basemapsTitle {
-    color: $color-4;
-    padding-bottom: 10px;
   }
 }
 
