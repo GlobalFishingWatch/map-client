@@ -6,10 +6,7 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_OVERALL_TIMELINE_DATES,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_HOVER_DATES,
-  SET_FILTER_GROUP_MODAL_VISIBILITY,
-  CREATE_FILTER_GROUP,
-  SET_FILTER_GROUP_VISIBILITY
+  SET_TIMELINE_HOVER_DATES
 } from 'filters/filtersActions';
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -33,9 +30,7 @@ const initialState = {
   /** @deprecated use filterGroups logic instead */
   flagsLayers: {},
   /** @deprecated use filterGroups logic instead */
-  flags: [],
-  filterGroups: [],
-  isFilterGroupModalOpen: false
+  flags: []
 };
 
 export default function (state = initialState, action) {
@@ -102,23 +97,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelineInnerExtent: [state.timelineOuterExtent[0], newTimelineInnerEnd]
       });
-    }
-    case SET_FILTER_GROUP_MODAL_VISIBILITY: {
-      return Object.assign({}, state, { isFilterGroupModalOpen: action.payload });
-    }
-    case CREATE_FILTER_GROUP: {
-      const newFilterGroup = [action.payload, ...state.filterGroups];
-      return Object.assign({}, state, { filterGroups: newFilterGroup });
-    }
-    case SET_FILTER_GROUP_VISIBILITY: {
-      const { index, forceValue } = action.payload;
-      const visible = forceValue !== null ? forceValue : !state.filterGroups[index].visible;
-      const newFilterGroup = Object.assign({}, state.filterGroups[index], { visible });
-
-      return Object.assign({}, state, {
-        filterGroups: [...state.filterGroups.slice(0, index), newFilterGroup, ...state.filterGroups.slice(index + 1)]
-      });
-
     }
     default:
       return state;

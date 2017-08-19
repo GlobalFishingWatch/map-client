@@ -7,11 +7,7 @@ function Checkbox({ id, callback, label, labelClassNames, defaultChecked, checke
   return (
     <div className={classnames(['c-checkbox', classNames])}>
       <div className="checkbox">
-        { typeof checked !== 'undefined' ?
-          <input type="checkbox" id={id} onChange={callback} defaultChecked={defaultChecked} checked={checked} disabled={disabled} />
-          :
-          <input type="checkbox" id={id} onChange={callback} defaultChecked={defaultChecked} disabled={disabled} />
-        }
+        <input type="checkbox" id={id} onChange={callback} defaultChecked={defaultChecked} checked={checked === true} disabled={disabled} />
         <label htmlFor={id} />
       </div>
       <div className={classnames(['label', labelClassNames])}>{label}</div>

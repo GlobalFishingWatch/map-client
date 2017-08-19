@@ -1,16 +1,15 @@
 import { connect } from 'react-redux';
-import { toggleFilterGroupVisibility } from 'filters/filtersActions';
+import { toggleFilterGroupVisibility, setEditFilterGroupIndex, setFilterGroupModalVisibility } from 'filters/filterGroupsActions';
 import FilterGroupItem from 'filters/components/FilterGroupItem';
-
-
-const mapStateToProps = state => ({
-  filterGroups: state.filters.filterGroups
-});
 
 const mapDispatchToProps = dispatch => ({
   toggleFilterGroupVisibility: (index) => {
     dispatch(toggleFilterGroupVisibility(index));
+  },
+  editFilterGroup: (index) => {
+    dispatch(setEditFilterGroupIndex(index));
+    dispatch(setFilterGroupModalVisibility(true));
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterGroupItem);
+export default connect(null, mapDispatchToProps)(FilterGroupItem);

@@ -7,10 +7,10 @@ import { setSearchModalVisibility } from 'search/searchActions';
 import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActions';
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
-import { setFilterGroupModalVisibility } from 'filters/filtersActions';
+import { setFilterGroupModalVisibility, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
 
 const mapStateToProps = state => ({
-  isFilterGroupModalOpen: state.filters.isFilterGroupModalOpen,
+  isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
   layerManagementModal: state.map.layerManagementModal.open,
   layerModal: state.map.layerModal,
@@ -57,6 +57,7 @@ const mapDispatchToProps = dispatch => ({
   },
   closeFilterGroupModal: () => {
     dispatch(setFilterGroupModalVisibility(false));
+    dispatch(setEditFilterGroupIndex(null));
   }
 });
 

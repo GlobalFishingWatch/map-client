@@ -14,6 +14,7 @@ import analyticsMiddleware from 'analytics/analyticsMiddleware';
 import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
 import userReducer from 'user/userReducer';
 import filtersReducer from 'filters/filtersReducer';
+import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
@@ -41,6 +42,7 @@ const reducer = combineReducers({
   supportForm: supportFormReducer,
   customLayer: customLayerReducer,
   filters: filtersReducer,
+  filterGroups: filterGroupsReducer,
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,

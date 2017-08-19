@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import FilterGroupPanel from 'filters/components/FilterGroupPanel';
-import { setFilterGroupModalVisibility } from 'filters/filtersActions';
+import { setFilterGroupModalVisibility } from 'filters/filterGroupsActions';
 
 
 const mapStateToProps = state => ({
-  filterGroups: state.filters.filterGroups
+  filterGroups: state.filterGroups.filterGroups
 });
 
 const mapDispatchToProps = dispatch => ({

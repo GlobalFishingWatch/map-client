@@ -133,7 +133,7 @@ class FilterGroupPanel extends Component {
 }
 
 FilterGroupPanel.propTypes = {
-  filterGroups: PropTypes.array,
+  filterGroups: PropTypes.array.isRequired,
   createFilterGroup: PropTypes.func
 };
 

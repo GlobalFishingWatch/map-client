@@ -11,7 +11,9 @@ class SubMenu extends Component {
 
   onBackClick() {
     this.props.setSubmenu(null);
-    this.props.onBack();
+    if (typeof this.props.onBack === 'function') {
+      this.props.onBack();
+    }
   }
 
   render() {

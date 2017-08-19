@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import _ from 'lodash';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
@@ -9,21 +10,53 @@ import ItemList from 'styles/components/map/item-list.scss';
 import Checkbox from 'components/Shared/Checkbox';
 
 class FilterGroupForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onColorChange = this.onColorChange.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
+    this.onPressSave = this.onPressSave.bind(this);
+
+    this.state = Object.assign({}, {
+      checkedLayers: props.layers.map(layer => layer.visible),
+      color: 'yellow', // TODO: use a random color here
+      label: '',
+      visible: true
+    }, props.filterGroup);
+  }
+
+  onLayerChecked(index) {
+    const newCheckedLayersState = _.clone(this.state.checkedLayers);
+    newCheckedLayersState[index] = !newCheckedLayersState[index];
+    this.setState({ checkedLayers: newCheckedLayersState });
+  }
+
+  onColorChange(color) {
+    this.setState({ color });
+  }
+
+  onNameChange(event) {
+    this.setState({ label: event.target.value });
+  }
+
+  onPressSave() {
+    this.props.saveFilterGroup(this.state, this.props.editFilterGroupIndex);
+  }
 
   renderLayersList() {
-    return this.props.layers.map((layer, i) => (
+    return this.props.layers.map((layer, index) => (
       <li
         className={ItemList.listItem}
         key={layer.title}
       >
         <Checkbox
           classNames="-spaced"
-          key={`${i}${layer.title}`}
-          id={`${i}${layer.title}`}
+          key={index}
+          id={`${index}${layer.title}`}
           label={layer.title}
           labelClassNames={ModalStyles.itemTitle}
-          callback={() => this.state.checkLayer} // TODO
-          checked={layer.checked} // TODO
+          callback={() => this.onLayerChecked(index)}
+          checked={this.state.checkedLayers[index]}
         />
         <ul className={ItemList.itemOptionList} >
           <li
@@ -52,15 +85,15 @@ class FilterGroupForm extends Component {
             </div >
             <div className={ModalStyles.wrapper} >
               <div className={ModalStyles.sectionTitle} >
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name" >Name</label >
               </div >
               <input
                 type="text"
                 name="name"
-                onChange={e => this.onNameChange(e)}
+                onChange={this.onNameChange}
                 className={ModalStyles.nameInput}
                 placeholder="Insert filter group name"
-                value={name}
+                value={this.state.label}
               />
             </div >
           </div >
@@ -76,7 +109,7 @@ class FilterGroupForm extends Component {
               </div >
             </div >
             <div className={ModalStyles.wrapper} >
-              <ColorPicker color={'orange'} onColorChange={this.onColorChange} />
+              <ColorPicker color={this.state.color} onColorChange={this.onColorChange} />
             </div >
           </div >
         </div >
@@ -84,7 +117,7 @@ class FilterGroupForm extends Component {
           <button
             className={classnames(ButtonStyles.button, ButtonStyles._filled,
               ButtonStyles._big, ModalStyles.mainButton)}
-            onClick={() => this.props.createFilterGroup()}
+            onClick={this.onPressSave}
           >
             Save
           </button >
@@ -95,8 +128,10 @@ class FilterGroupForm extends Component {
 }
 
 FilterGroupForm.propTypes = {
+  editFilterGroupIndex: PropTypes.number,
   layers: PropTypes.array,
-  createFilterGroup: PropTypes.func
+  filterGroup: PropTypes.object,
+  saveFilterGroup: PropTypes.func
 };
 
 export default FilterGroupForm;

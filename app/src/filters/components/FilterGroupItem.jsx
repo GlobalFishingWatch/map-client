@@ -3,9 +3,16 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ListStyles from 'styles/components/map/item-list.scss';
 import Toggle from 'components/Shared/Toggle';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import IconStyles from 'styles/icons.scss';
+import PencilIcon from '-!babel-loader!svg-react-loader!assets/icons/pencil-icon.svg?name=PencilIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete-icon.svg?name=DeleteIcon';
 
 class FilterGroupItem extends Component {
+  constructor(props) {
+    super(props);
+
+    this.onClickFilterGroupEdit = this.onClickFilterGroupEdit.bind(this);
+  }
 
   onChangeFilterGroupVisibility() {
     // TODO: hide quick edits and such
@@ -13,14 +20,24 @@ class FilterGroupItem extends Component {
     this.props.toggleFilterGroupVisibility(this.props.index);
   }
 
+  onClickFilterGroupEdit() {
+    this.props.editFilterGroup(this.props.index);
+  }
+
   render() {
     const actionIcons = (
       <ul className={ListStyles.itemOptionList} >
         <li
           className={ListStyles.itemOptionItem}
+          onClick={this.onClickFilterGroupEdit}
+        >
+          <PencilIcon className={IconStyles.pencilIcon} />
+        </li >
+        <li
+          className={ListStyles.itemOptionItem}
           onClick={() => this.onClickInfo()}
         >
-          <InfoIcon />
+          <DeleteIcon className={IconStyles.deleteBucketIcon} />
         </li >
       </ul >
     );
@@ -39,9 +56,6 @@ class FilterGroupItem extends Component {
           onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
           readOnly={!this.props.isFilterGroupQuickEditMode}
           value={this.props.filterGroup.label}
-          ref={((elem) => {
-            this.inputName = elem;
-          })}
         />
         {actionIcons}
       </li >
@@ -53,6 +67,7 @@ FilterGroupItem.propTypes = {
   index: PropTypes.number,
   filterGroup: PropTypes.object,
   isFilterGroupQuickEditMode: PropTypes.bool, // if currently editing this filter group
+  editFilterGroup: PropTypes.func,
   toggleFilterGroupVisibility: PropTypes.func
 };
 

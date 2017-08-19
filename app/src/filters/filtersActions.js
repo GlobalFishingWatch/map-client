@@ -3,7 +3,7 @@ import { TIMELINE_MIN_INNER_EXTENT } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
 
-export const CREATE_FILTER_GROUP = 'CREATE_FILTER_GROUP';
+export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const REWIND_TIMELINE = 'REWIND_TIMELINE';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
 export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY';
@@ -183,29 +183,5 @@ export function fitTimelineToTrack(tracksExtent) {
 
     dispatch(setInnerTimelineDates([new Date(newInnerExtentStart), new Date(newInnerExtentEnd)]));
     dispatch(setOuterTimelineDates([new Date(tracksExtent[0]), new Date(tracksExtent[1])]));
-  };
-}
-
-export function setFilterGroupModalVisibility(visibility) {
-  return {
-    type: SET_FILTER_GROUP_MODAL_VISIBILITY,
-    payload: visibility
-  };
-}
-
-export function toggleFilterGroupVisibility(index, forceValue = null) {
-  return {
-    type: SET_FILTER_GROUP_VISIBILITY,
-    payload: {
-      index,
-      forceValue
-    }
-  };
-}
-
-export function createFilterGroup(filterGroup) {
-  return {
-    type: CREATE_FILTER_GROUP,
-    payload: filterGroup
   };
 }
