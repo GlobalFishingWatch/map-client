@@ -12,7 +12,9 @@
    - Loading from workspace
 - UI changes to optimize screen usage
 - Merged basemaps switcher into layers panel
-
+- Add interface for new filter group logic
+- UI changes with new icons and colors
+- UI review on vessel history and search result modals
 
 ## 2.1.6 RC4
 - Revert Preact to React
