@@ -1,0 +1,85 @@
+@import '../../settings';
+
+.title {
+  color: $color-4;
+  font-size: $font-size-x-normal;
+  font-weight: $font-weight-bold;
+  text-align: center;
+}
+
+.optionsContainer {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+
+  @media #{$mq-tablet} {
+    margin-top: 40px;
+    flex-basis: calc(50% - 13px);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  margin-right: 45px;
+  width: 100%;
+}
+
+.sectionTitle {
+  margin-bottom: 20px;
+}
+
+.itemTitle {
+  color: $color-4;
+  font-size: $font-size-small;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.nameInput {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba($color-3, .3);
+  border-radius: 0;
+  color: $color-31;
+
+  font-size: $font-size-x-small;
+  font-weight: $font-weight-normal;
+  line-height: 1.8;
+
+  outline: 0;
+  margin-bottom: 20px;
+  padding-right: 30px;
+  width: 100%;
+
+  &::-webkit-input-placeholder {
+    color: rgba($color-3, .3);
+  }
+
+  &::-moz-placeholder {
+    color: rgba($color-3, .3);
+  }
+
+  &:-ms-input-placeholder {
+    color: rgba($color-3, .3);
+  }
+}
+
+
+.wrapper{
+    padding-bottom: 40px;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 0;
+
+  > .mainButton {
+    width: 180px;
+  }
+}

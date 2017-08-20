@@ -11,7 +11,9 @@ class SubMenu extends Component {
 
   onBackClick() {
     this.props.setSubmenu(null);
-    this.props.onBack();
+    if (typeof this.props.onBack === 'function') {
+      this.props.onBack();
+    }
   }
 
   render() {
@@ -21,7 +23,9 @@ class SubMenu extends Component {
         <div className={SubmenuStyles.main} >
           <div className={SubmenuStyles.header} >
             <div className={SubmenuStyles.titleContainer} onClick={this.onBackClick} >
-              <button ><span className={SubmenuStyles.back} /></button >
+              <button className={SubmenuStyles.backButton} >
+                <span className={SubmenuStyles.back} />
+              </button >
               <h2 className={SubmenuStyles.title} >{title}</h2 >
               {extraHeader}
             </div >
@@ -46,7 +50,7 @@ SubMenu.propTypes = {
   footer: PropTypes.node,
   setSubmenu: PropTypes.func,
   children: PropTypes.node.isRequired,
-  onBack: PropTypes.func.isRequired
+  onBack: PropTypes.func
 };
 
 export default SubMenu;

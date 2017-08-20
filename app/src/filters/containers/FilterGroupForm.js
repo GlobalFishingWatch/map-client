@@ -1,0 +1,23 @@
+import { connect } from 'react-redux';
+import FilterGroupForm from 'filters/components/FilterGroupForm';
+import { setFilterGroupModalVisibility, saveFilterGroup, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
+import { LAYER_TYPES } from 'constants';
+
+const mapStateToProps = (state) => {
+  const editFilterGroupIndex = state.filterGroups.editFilterGroupIndex;
+  return {
+    layers: state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap),
+    filterGroup: editFilterGroupIndex !== null ? state.filterGroups.filterGroups[editFilterGroupIndex] : {},
+    editFilterGroupIndex
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  saveFilterGroup: (filterGroup, index) => {
+    dispatch(setFilterGroupModalVisibility(false));
+    dispatch(saveFilterGroup(filterGroup, index));
+    dispatch(setEditFilterGroupIndex(null));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterGroupForm);

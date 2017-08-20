@@ -3,7 +3,10 @@ import { TIMELINE_MIN_INNER_EXTENT } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
 
+export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const REWIND_TIMELINE = 'REWIND_TIMELINE';
+export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
+export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY';
 export const SET_FLAG_FILTERS = 'SET_FLAG_FILTERS';
 export const SET_INNER_TIMELINE_DATES = 'SET_INNER_TIMELINE_DATES';
 export const SET_INNER_TIMELINE_DATES_FROM_WORKSPACE = 'SET_INNER_TIMELINE_DATES_FROM_WORKSPACE';
@@ -15,6 +18,7 @@ export const SET_TIMELINE_HOVER_DATES = 'SET_TIMELINE_HOVER_DATES';
 
 const getRangeDuration = range => range[1].getTime() - range[0].getTime();
 
+/** @deprecated use filterGroups logic instead */
 export function setFlagFilters(flagFilters_) {
   return (dispatch, getState) => {
     // get heatmap layers and organise filters to have one sublayer per filter in each layer
@@ -57,6 +61,7 @@ export function setFlagFilters(flagFilters_) {
   };
 }
 
+/** @deprecated use filterGroups logic instead */
 export function refreshFlagFiltersLayers() {
   return (dispatch, getState) => {
     dispatch(setFlagFilters(getState().filters.flags));

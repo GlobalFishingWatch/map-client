@@ -21,8 +21,30 @@
   width: .89453125em;
 }
 
-.iconReportIcon {
+.reportIcon {
   width: .8125em;
+  height: 16px;
+  path {
+    &:first-child {
+      fill: $color-31;
+    }
+
+    &:last-child {
+      fill: $color-4;
+    }
+  }
+}
+
+.deleteIcon {
+  cursor: pointer;
+  fill: $color-31;
+  height: 16px;
+  width: 10px;
+}
+
+.aoiIcon {
+  width: 15px;
+  height: 15px;
 }
 
 .playIcon {
@@ -58,13 +80,18 @@
 
 .infoIcon {
   cursor: pointer;
-}
-
-.blendingIcon {
-  cursor: pointer;
-  fill: $color-19;
+  fill: $color-31;
   height: 15px;
   width: 15px;
+}
+
+.paintIcon {
+  cursor: pointer;
+  fill: $color-31;
+  height: 15px;
+  width: 15px;
+  position: relative;
+  top: 1px;
 
   &._white {
     fill: $color-4;
@@ -76,6 +103,19 @@
   fill: $color-19;
   height: 15px;
   width: 15px;
+}
+
+
+.pencilIcon {
+  height: 15px;
+  width: 15px;
+  fill: $color-31;
+}
+
+.deleteBucketIcon {
+  height: 15px;
+  width: 15px;
+  fill: $color-31;
 }
 
 .pinIcon {

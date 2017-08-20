@@ -4,8 +4,8 @@ import classnames from 'classnames';
 import { SEARCH_RESULTS_LIMIT, SEARCH_QUERY_MINIMUM_LIMIT } from 'config';
 import SearchResult from 'search/containers/SearchResult';
 import iconsStyles from 'styles/icons.scss';
-import searchPanelStyles from 'styles/components/map/search-panel.scss';
-import ResultListStyles from 'styles/components/shared/result-list.scss';
+import searchPanelStyles from 'styles/search/search-panel.scss';
+import ResultListStyles from 'styles/search/result-list.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
 
@@ -49,31 +49,49 @@ class SearchPanel extends Component {
     this.props.openSearchModal();
   }
 
+  renderSearchingMessage() {
+    return (<li className={ResultListStyles.statusMessage} >Searching...</li >);
+  }
+
+  renderShortSearchWordMessage() {
+    return (
+      <li className={ResultListStyles.statusMessage} >
+        Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
+      </li >
+    );
+  }
+
+  renderNoResultMessage() {
+    return (<li className={ResultListStyles.statusMessage} >No result</li >);
+  }
+
+  renderSearchResults() {
+    const searchResults = [];
+    const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT);
+
+    for (let i = 0, length = total; i < length; i++) {
+      searchResults.push(<SearchResult
+        className={classnames(ResultListStyles.resultItem, ResultListStyles.quickSearchResult, searchPanelStyles.result)}
+        key={i}
+        closeSearch={() => this.closeSearch()}
+        vesselInfo={this.props.entries[i]}
+      />);
+    }
+
+    return searchResults;
+  }
+
   render() {
     let searchResults = null;
 
     if (this.props.searching) {
-      searchResults = <li className={ResultListStyles.statusMessage} >Searching...</li>;
+      searchResults = this.renderSearchingMessage();
     } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
-      searchResults = [];
-      const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT);
-
-      for (let i = 0, length = total; i < length; i++) {
-        searchResults.push(<SearchResult
-          className={classnames(ResultListStyles.resultItem, searchPanelStyles.result)}
-          key={i}
-          searchTerm={this.props.searchTerm}
-          closeSearch={() => this.closeSearch()}
-          vesselInfo={this.props.entries[i]}
-        />);
-      }
+      searchResults = this.renderSearchResults();
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
-      searchResults = (
-        <li className={ResultListStyles.statusMessage} >
-          Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
-        </li>);
+      searchResults = this.renderShortSearchWordMessage();
     } else {
-      searchResults = <li className={ResultListStyles.statusMessage} >No result</li>;
+      searchResults = this.renderNoResultMessage();
     }
 
     return (
@@ -99,18 +117,18 @@ class SearchPanel extends Component {
             className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}
           >
             {searchResults}
-          </ul>
+          </ul >
           {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT && !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
           <div className={searchPanelStyles.paginationContainer} >
             <button
-              className={classnames(MapButtonStyles.button, MapButtonStyles._filled, searchPanelStyles.moreResultsButton)}
+              className={classnames(MapButtonStyles.button, MapButtonStyles._wide, MapButtonStyles._filled)}
               onClick={() => this.onClickMoreResults()}
             >
               more results
-            </button>
-          </div>}
-        </div>
-      </div>);
+            </button >
+          </div >}
+        </div >
+      </div >);
   }
 }
 

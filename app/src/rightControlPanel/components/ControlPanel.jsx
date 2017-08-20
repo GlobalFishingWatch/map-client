@@ -7,6 +7,7 @@ import AreasPanel from 'areasOfInterest/containers/AreasPanel';
 import MenuLink from 'rightControlPanel/components/MenuLink';
 import SubMenu from 'rightControlPanel/containers/SubMenu';
 import FilterPanel from 'filters/containers/FilterPanel';
+import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
@@ -14,11 +15,11 @@ import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
-import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-icon.svg?name=VesselsIcon';
-import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/reports-icon.svg?name=ReportsIcon';
-import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-icon.svg?name=LayersIcon';
-import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-icon.svg?name=FiltersIcon';
-import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-icon.svg?name=AOIIcon';
+import VesselsIcon from '-!babel-loader!svg-react-loader!assets/icons/vessels-menu.svg?name=VesselsIcon';
+import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg?name=ReportsIcon';
+import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg?name=LayersIcon';
+import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
+import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
 import Transition from 'react-transition-group/Transition';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
@@ -67,7 +68,7 @@ class ControlPanel extends Component {
       reports: ReportsIcon
     };
     const IconName = iconComponents[iconName];
-    return <IconName className={classnames([iconStyles.icons, ControlPanelStyles[`${iconName}Icon`]])} />;
+    return <IconName className={classnames([iconStyles[`${iconName}Icon`]])} />;
   }
 
   renderVesselsSubMenu() {
@@ -122,7 +123,8 @@ class ControlPanel extends Component {
         title="Filters"
         icon={this.renderIcon('filters')}
       >
-        <FilterPanel />
+        {!ENABLE_FILTER_GROUPS && <FilterPanel />}
+        {ENABLE_FILTER_GROUPS && <FilterGroupPanel />}
       </SubMenu >
     );
   }
@@ -230,7 +232,7 @@ class ControlPanel extends Component {
           <Transition in={!!this.props.activeSubmenu} timeout={0}>
             {status => (
               <div
-                className={classnames([ControlPanelStyles.controlpanel, ControlPanelStyles[status]])}
+                className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
                 ref={(controlPanel) => {
                   this.controlPanelRef = controlPanel;
                 }}

@@ -27,8 +27,10 @@ const initialState = {
     getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
-  flags: [],
-  flagsLayers: {}
+  /** @deprecated use filterGroups logic instead */
+  flagsLayers: {},
+  /** @deprecated use filterGroups logic instead */
+  flags: []
 };
 
 export default function (state = initialState, action) {
@@ -67,6 +69,7 @@ export default function (state = initialState, action) {
         timelineOuterExtent
       });
     }
+    /** @deprecated use filterGroups logic instead */
     case SET_FLAG_FILTERS: {
       return Object.assign({}, state, {
         flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers

@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info-icon.svg?name=InfoIcon';
+import IconStyles from 'styles/icons.scss';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class ControlPanelHeader extends Component {
   calculateFishingHours() {
@@ -29,7 +31,10 @@ class ControlPanelHeader extends Component {
           <div className={ControlPanelStyles.vesselDisplay} >
             <span className={ControlPanelStyles.counterDescription} >
               Vessels activity
-              <InfoIcon className={ControlPanelStyles.fishingHours} onClick={() => this.props.openTimebarInfoModal()} />
+              <InfoIcon
+                className={classnames(ControlPanelStyles.fishingHours, IconStyles.infoIcon)}
+                onClick={() => this.props.openTimebarInfoModal()}
+              />
             </span >
             <span className={ControlPanelStyles.total} >{this.calculateFishingHours()}</span >
           </div >

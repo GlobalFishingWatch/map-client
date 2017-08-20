@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import betaLogo from 'assets/logos/gfw_logo_beta.svg';
-import menuicon from 'assets/icons/menu_icon.svg';
+import menuicon from 'assets/icons/menu.svg';
 import MenuMobile from 'siteNav/containers/MenuMobile';
 import BaseStyles from 'styles/_base.scss';
 import HeaderStyles from 'styles/components/shared/header.scss';
 import iconStyles from 'styles/icons.scss';
-import ShareIcon from '-!babel-loader!svg-react-loader!assets/icons/share-icon.svg?name=ShareIcon';
+import ShareIcon from '-!babel-loader!svg-react-loader!assets/icons/share.svg?name=ShareIcon';
 
 class Header extends Component {
 

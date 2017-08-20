@@ -1,7 +1,6 @@
 @import '../settings';
 
-.controlpanel {
-  background: rgba($color-1, .95);
+.controlPanel {
   height: $mobile-height;
   left: 0;
   position: absolute;
@@ -27,17 +26,21 @@
   }
 
   > .bgWrapper {
-    background: rgba($color-1, .95);
-    box-shadow: 29px 0 4px 0 rgba($color-12, .5);
+    background: $color-32;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 
     @media #{$mq-tablet} {
       margin-left: $control-panel-left-offset;
     }
   }
 
+  .mapOptions {
+    background-color: $color-33;
+  }
+
   .resumeDisplay {
     width: 100%;
-    border-bottom: 1px solid $color-7;
+    border-bottom: 1px solid rgba($color-34, 0.2);
     display: none;
     flex-direction: column;
     padding: 30px 56px 25px 25px;
@@ -49,6 +52,7 @@
     .fishingHours {
       cursor: pointer;
       margin-left: 5px;
+      fill: rgba($color-3, .5);
     }
 
     .counterDescription {

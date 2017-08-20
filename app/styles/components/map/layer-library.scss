@@ -54,7 +54,7 @@
   }
 }
 
-.layerList {
+.list {
   background-image: linear-gradient(to bottom, $color-24, $color-2);
   display: flex;
   flex-wrap: wrap;
@@ -68,7 +68,7 @@
   }
 }
 
-.layerItem {
+.listItem {
   align-items: center;
   display: flex;
   flex-basis: 100%;
@@ -108,7 +108,7 @@
   justify-content: center;
   margin: 10px 0 0;
 
-  > .doneButton {
+  > .mainButton {
     width: 180px;
   }
 }

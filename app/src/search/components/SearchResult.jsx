@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
-import ResultListStyles from 'styles/components/shared/result-list.scss';
+import ResultListStyles from 'styles/search/result-list.scss';
 
 class SearchResult extends Component {
 
@@ -26,15 +26,19 @@ class SearchResult extends Component {
     return (
       <li
         className={this.props.className}
-        onClick={(event) => { this.onDrawVessel(event); }}
+        onClick={(event) => {
+          this.onDrawVessel(event);
+        }}
       >
         <span
           dangerouslySetInnerHTML={{ __html: highlightName }}
+          className={ResultListStyles.mainResultLabel}
         />
-        {MMSI && <span
-          dangerouslySetInnerHTML={{ __html: `, ${highlightMMSI}` }}
-        />}
-      </li>
+        {MMSI &&
+        <span className={ResultListStyles.subResultLabel} >
+          {highlightMMSI}
+        </span >}
+      </li >
     );
   }
 }

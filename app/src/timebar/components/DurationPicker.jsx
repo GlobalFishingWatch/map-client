@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import { DURATION_PICKER_OPTIONS } from 'config';
-
 import durationPickerStyles from 'styles/components/map/durationpicker.scss';
 import iconStyles from 'styles/icons.scss';
-
-import SettingsIcon from 'assets/icons/duration_settings.svg';
+import SettingsIcon from 'assets/icons/duration-settings.svg';
 
 class DurationPicker extends Component {
 

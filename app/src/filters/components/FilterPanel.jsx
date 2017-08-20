@@ -1,16 +1,15 @@
 /* eslint-disable react/no-array-index-key */
 
+/** @deprecated use filterGroups logic instead */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
-import platform from 'platform';
 import FilterItem from 'filters/components/FilterItem';
 import { FLAG_FILTERS_LIMIT } from 'config';
-import { FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'app/src/constants';
-import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
+import getCountryOptions from 'util/getCountryOptions';
 
 class FilterPanel extends Component {
   constructor(props) {
@@ -19,51 +18,7 @@ class FilterPanel extends Component {
   }
 
   componentWillMount() {
-    this.countryOptions = this.getCountryOptions();
-  }
-
-  getCountryOptions() {
-    const countryNames = [];
-    const countryOptions = [];
-
-    Object.keys(FLAGS)
-      .filter(key => FLAGS_LANDLOCKED.indexOf(FLAGS[key]) === -1)
-      .forEach((index) => {
-        if (iso3311a2.getCountry(FLAGS[index])) {
-          const countryCode = FLAGS[index];
-          const iconAsciiCodePoints = FLAGS_SHORTCODES[countryCode.toLowerCase()];
-          countryNames.push({
-            name: iso3311a2.getCountry(countryCode),
-            icon: String.fromCodePoint.apply(null, iconAsciiCodePoints),
-            id: index
-          });
-        }
-      });
-
-    countryNames.sort((a, b) => {
-      if (a.name > b.name) {
-        return 1;
-      }
-
-      if (b.name > a.name) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    countryOptions.push(<option key="" value="" >All countries</option >);
-
-    const supportsEmojiFlags =
-      ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
-      platform.os.toString().match('Windows 10');
-
-    countryNames.forEach((country) => {
-      const label = (supportsEmojiFlags) ? `${country.name} ${country.icon}` : country.name;
-      countryOptions.push(<option key={country.id} value={country.id} >{label}</option >);
-    });
-
-    return countryOptions;
+    this.countryOptions = getCountryOptions();
   }
 
   updateFilters(filter, index) {
@@ -137,6 +92,12 @@ class FilterPanel extends Component {
         >
           add filter
         </button >}
+        <button
+          className={classnames(MapButtonStyles.button, MapButtonStyles._wide, MapButtonStyles._filled)}
+          onClick={() => this.props.setFilterGroupModalVisibility(true)}
+        >
+          add group filter
+        </button >
       </div >
     );
   }
@@ -144,7 +105,8 @@ class FilterPanel extends Component {
 
 FilterPanel.propTypes = {
   flags: PropTypes.array,
-  setFlagFilters: PropTypes.func
+  setFlagFilters: PropTypes.func.isRequired,
+  setFilterGroupModalVisibility: PropTypes.func.isRequired
 };
 
 export default FilterPanel;

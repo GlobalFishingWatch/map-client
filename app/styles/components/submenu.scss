@@ -25,10 +25,10 @@
       .titleContainer {
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         .title {
           color: $color-4;
-          cursor: default;
           font-family: $font-family-1;
           font-size: $font-size-xxs-small;
           font-weight: $font-weight-bold;
@@ -40,6 +40,10 @@
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
           }
+        }
+
+        .backButton {
+          cursor: pointer;
         }
 
         .back {
