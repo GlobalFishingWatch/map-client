@@ -102,7 +102,7 @@ export const DURATION_PICKER_OPTIONS = [
 // search
 export const SEARCH_RESULTS_LIMIT = 4;
 export const SEARCH_QUERY_MINIMUM_LIMIT = 3;
-export const SEARCH_MODAL_PAGE_SIZE = 15;
+export const SEARCH_MODAL_PAGE_SIZE = 14;
 
 // filters
 export const FLAG_FILTERS_LIMIT = 10;

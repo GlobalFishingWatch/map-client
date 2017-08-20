@@ -1,5 +1,5 @@
-@import '../../settings';
-@import '../../mixins';
+@import '../settings';
+@import '../mixins';
 
 .searchPanel {
   z-index: 11;
@@ -32,7 +32,8 @@
   display: block;
 
   font-size: $font-size-x-small;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-bold;
+  font-family: $font-family-1;
   line-height: 1.8;
 
   outline: 0;
@@ -41,22 +42,25 @@
 
   &::-webkit-input-placeholder {
     color: rgba($color-3, .3);
+    font-weight: $font-weight-normal;
   }
 
   &::-moz-placeholder {
     color: rgba($color-3, .3);
+    font-weight: $font-weight-normal;
   }
 
   &:-ms-input-placeholder {
     color: rgba($color-3, .3);
+    font-weight: $font-weight-normal;
   }
 }
 
 .cleanQueryButton {
   position: absolute;
-  right: 29px;
+  right: 40px;
   stroke: rgba($color-3, .3);
-  top: 25px;
+  top: 72px;
 
   @media #{$mq-tablet} {
     right: 10px;
@@ -65,7 +69,7 @@
 }
 
 .resultsContainer {
-  background-color: $color-1;
+  background-color: $color-32;
   max-height: 0;
   overflow: hidden;
 
@@ -74,28 +78,19 @@
     left: 0;
     max-height: none;
     overflow: visible;
-    padding: 15px 15px 0;
+    padding: 14px 9px 0;
     position: absolute;
     width: 100%;
     z-index: 1;
-    
-    @media #{$mq-mobile-large} {
-      top: 47px;
-      padding-top: 24px;
-      flex-direction: row;
-    }
+    top: 90px;
 
-    &::after {
-      @include arrow(15px, 1px, rgba($color-3, .3), 'up');
-      background-color: $color-1;
-      left: 30px;
-      position: absolute;
-      top: -8px;
+    @media #{$mq-mobile-large} {
+      flex-direction: row;
     }
 
     @media #{$mq-tablet} {
       max-width: 310px;
-      top: 34px;
+      top: 27px;
     }
   }
 }
@@ -105,19 +100,11 @@
 
   > .result {
     width: 100%;
-
-    &:not(:first-child) {
-      margin: 5px 0 0;
-    }
   }
 }
 
 .paginationContainer {
   display: flex;
   justify-content: center;
-  padding: 5px 0 25px;
-
-  > .moreResultsButton {
-    width: 130px;
-  }
+  padding: 5px 11px 24px;
 }

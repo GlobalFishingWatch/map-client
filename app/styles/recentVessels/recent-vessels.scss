@@ -1,4 +1,4 @@
-@import '../../settings';
+@import '../settings';
 
 .emptyHistory {
   margin: 30px 0 25px;
@@ -30,38 +30,12 @@
   padding: 0 0 8px;
 }
 
-.historyItem {
-  align-items: center;
-  display: flex;
-  flex: 1;
-  flex-basis: 100%;
-  margin: 0 0 15px;
-  max-width: 100%;
-  padding: 0 0 0 20px;
-  position: relative;
-
-  @media screen and (min-width: 650px) {
-    flex: 0 0 50%;
-    max-width: 50%;
-    padding: 0 10px 0 20px;
-  }
-
-  @media #{$mq-tablet} {
-    flex: 0 0 33.333%;
-    max-width: 33.333%;
-  }
-
-  &:hover {
-    background-color: transparent;
-  }
-}
-
 .pinned {
-  fill: rgba($color-3, .5);
-  left: 0;
+  fill: $color-31;
+  left: 7px;
   margin: 0 8px 0 0;
   position: absolute;
-  top: 50%;
+  top: 23px;
   transform: translate(0, -50%);
 }
 

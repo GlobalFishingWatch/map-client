@@ -52,19 +52,6 @@
   margin: 20px 0 0;
 }
 
-.searchResultItem {
-  flex: 0 0 33.333%;
-  margin: 0 0 15px;
-  overflow-y: hidden;
-  padding: 0 20px 0 0;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  &:hover {
-    background-color: transparent;
-  }
-}
-
 .paginatorContainer {
   display: flex;
   justify-content: center;

@@ -23,7 +23,9 @@ class SubMenu extends Component {
         <div className={SubmenuStyles.main} >
           <div className={SubmenuStyles.header} >
             <div className={SubmenuStyles.titleContainer} onClick={this.onBackClick} >
-              <button ><span className={SubmenuStyles.back} /></button >
+              <button className={SubmenuStyles.backButton} >
+                <span className={SubmenuStyles.back} />
+              </button >
               <h2 className={SubmenuStyles.title} >{title}</h2 >
               {extraHeader}
             </div >

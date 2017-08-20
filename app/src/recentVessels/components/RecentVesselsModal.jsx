@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import recentVesselStyles from 'styles/components/map/recent-vessels.scss';
+import RecentVesselStyles from 'styles/recentVessels/recent-vessels.scss';
+import ModalResultListStyles from 'styles/search/result-list.scss';
 import ModalStyles from 'styles/components/shared/modal.scss';
-import IconStyles from 'styles/icons.scss';
 import MapButtonStyles from 'styles/components/map/button.scss';
-import ResultListStyles from 'styles/components/shared/result-list.scss';
-
-import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
+import RecentVesselItem from 'recentVessels/containers/RecentVesselItem';
 
 class RecentVesselsModal extends Component {
 
@@ -18,41 +16,33 @@ class RecentVesselsModal extends Component {
 
     if (this.props.history.length > 0) {
       historyItems = this.props.history.map(
-        (entry, i) => {
-          const vesselLabel = entry.label || `${entry.vesselname}, ${entry.mmsi}`;
-          return (
-            <li
-              className={classnames(ResultListStyles.resultItem, recentVesselStyles.historyItem)}
-              key={i}
-              onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
-            >
-              {pinnedVesselSeriesGroup.indexOf(entry.seriesgroup) !== -1 &&
-              <PinIcon
-                className={classnames(IconStyles.icon, IconStyles.pinIcon, recentVesselStyles.pinned)}
-              />}
-              <span className={recentVesselStyles.historyItemName} >{vesselLabel}</span >
-            </li >
-          );
-        }
+        (entry, i) => (
+          <RecentVesselItem
+            vesselInfo={entry}
+            key={i}
+            pinned={pinnedVesselSeriesGroup.indexOf(entry.seriesgroup) !== -1}
+            onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
+          />
+        )
       );
     }
 
     return (
-      <div className={recentVesselStyles.recentVessels} >
+      <div className={RecentVesselStyles.recentVessels} >
         <h3 className={ModalStyles.modalTitle} >Recent vessels</h3 >
-        <div className={recentVesselStyles.historyContainer} >
+        <div className={RecentVesselStyles.historyContainer} >
           {historyItems.length === 0 &&
-          <div className={recentVesselStyles.emptyHistory} >
+          <div className={RecentVesselStyles.emptyHistory} >
             <span >Your history is currently empty</span >
           </div >}
           {historyItems.length > 0 &&
-          <ul className={classnames(ResultListStyles.resultList, recentVesselStyles.historyList)} >
+          <ul className={classnames(ModalResultListStyles.resultList, RecentVesselStyles.historyList)} >
             {historyItems}
           </ul >}
         </div >
-        <div className={recentVesselStyles.footer} >
+        <div className={RecentVesselStyles.footer} >
           <button
-            className={classnames(MapButtonStyles.button, MapButtonStyles._filled, recentVesselStyles.btnDone)}
+            className={classnames(MapButtonStyles.button, MapButtonStyles._filled, RecentVesselStyles.btnDone)}
             onClick={() => this.props.closeModal()}
           >
             done
