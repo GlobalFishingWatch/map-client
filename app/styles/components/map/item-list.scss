@@ -148,13 +148,6 @@
   justify-content: flex-end;
 }
 
-.deleteIcon {
-  cursor: pointer;
-  fill: $color-19;
-  height: 16px;
-  width: 10px;
-}
-
 .itemOptionList {
   align-items: center;
   display: flex;
@@ -168,7 +161,7 @@
       }
 
       &:last-child {
-        fill: $color-13;
+        fill: $color-31;
       }
     }
   }

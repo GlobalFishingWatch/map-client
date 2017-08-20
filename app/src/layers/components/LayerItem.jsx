@@ -5,7 +5,7 @@ import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import { LAYER_TYPES } from 'constants';
 import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
 import LayerListStyles from 'styles/components/map/item-list.scss';
-import icons from 'styles/icons.scss';
+import IconStyles from 'styles/icons.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
@@ -67,7 +67,7 @@ class LayerItem extends Component {
       actions = (
         <div className={LayerListStyles.editionMenu}>
           <DeleteIcon
-            className={classnames(icons.icon, LayerListStyles.deleteIcon)}
+            className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
             onClick={() => {
               this.props.toggleLayerWorkspacePresence(this.props.layer);
             }}
@@ -82,7 +82,7 @@ class LayerItem extends Component {
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
-              className={classnames({ [`${LayerListStyles._highlighted}`]: isCurrentlyReportedLayer })}
+              className={classnames(IconStyles.reportIcon, { [`${LayerListStyles._highlighted}`]: isCurrentlyReportedLayer })}
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
@@ -103,7 +103,7 @@ class LayerItem extends Component {
             className={LayerListStyles.itemOptionItem}
             onClick={() => this.onClickInfo()}
           >
-            <InfoIcon />
+            <InfoIcon className={IconStyles.infoIcon} />
           </li>
         </ul>
       );

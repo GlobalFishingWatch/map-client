@@ -7,7 +7,7 @@ import InputRange from 'react-input-range';
 import { VESSELS_HUES_INCREMENT } from 'config';
 import icons from 'styles/icons.scss';
 import BlendingStyles from 'styles/components/map/layer-blending.scss';
-import BlendingIcon from '-!babel-loader!svg-react-loader!assets/icons/blending.svg?name=BlendingIcon';
+import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 
 const INPUT_RANGE_DEFAULT_CONFIG = {
   classnames: {
@@ -92,9 +92,9 @@ class LayerBlendingOptionsTooltip extends Component {
         className={classnames(BlendingStyles.blending)}
         ref={(ref) => { this.tooltip = ref; }}
       >
-        <BlendingIcon
+        <PaintIcon
           onClick={() => this.props.toggleVisibility()}
-          className={classnames(icons.blendingIcon,
+          className={classnames(icons.paintIcon,
             { [icons._white]: this.props.visible })}
         />
         {this.props.visible &&

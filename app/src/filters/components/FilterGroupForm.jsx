@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import _ from 'lodash';
+import clone from 'lodash/clone';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
+import IconStyles from 'styles/icons.scss';
 import Checkbox from 'components/Shared/Checkbox';
 
 class FilterGroupForm extends Component {
@@ -26,7 +27,7 @@ class FilterGroupForm extends Component {
   }
 
   onLayerChecked(index) {
-    const newCheckedLayersState = _.clone(this.state.checkedLayers);
+    const newCheckedLayersState = clone(this.state.checkedLayers);
     newCheckedLayersState[index] = !newCheckedLayersState[index];
     this.setState({ checkedLayers: newCheckedLayersState });
   }
@@ -63,7 +64,7 @@ class FilterGroupForm extends Component {
             className={ItemList.itemOptionItem}
             onClick={() => this.onClickInfo(layer)}
           >
-            <InfoIcon />
+            <InfoIcon className={IconStyles.infoIcon} />
           </li >
         </ul >
       </li >

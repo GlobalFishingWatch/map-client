@@ -232,7 +232,7 @@ class ControlPanel extends Component {
           <Transition in={!!this.props.activeSubmenu} timeout={0}>
             {status => (
               <div
-                className={classnames([ControlPanelStyles.controlpanel, ControlPanelStyles[status]])}
+                className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
                 ref={(controlPanel) => {
                   this.controlPanelRef = controlPanel;
                 }}

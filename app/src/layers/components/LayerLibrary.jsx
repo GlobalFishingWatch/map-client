@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import LayerLibraryStyles from 'styles/components/map/layer-library.scss';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
+import IconStyles from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -55,7 +56,7 @@ class LayerLibraryModal extends Component {
               className={LayerListStyles.itemOptionItem}
               onClick={() => this.onClickInfo(layer)}
             >
-              <InfoIcon />
+              <InfoIcon className={IconStyles.infoIcon} />
             </li>
           </ul>
         </li>);

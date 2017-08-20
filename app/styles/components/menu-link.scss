@@ -10,7 +10,7 @@
   }
 
   @media #{$mq-mobile-large} {
-    border-bottom: 1px solid $color-7;
+    border-bottom: 1px solid rgba($color-34, 0.2);
     display: block;
     padding: 10px;
     width: 100%;
@@ -23,7 +23,7 @@
     flex-direction: column-reverse;
     justify-content: space-between;
     padding: 10px 5px;
-    
+
     @media #{$mq-mobile-large} {
       flex-direction: row;
       padding: 10px 15px;
