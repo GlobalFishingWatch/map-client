@@ -33,6 +33,9 @@
   &._wide {
     width: 100%;
   }
+  &._half {
+    width: 50%;
+  }
 }
 
 .buttonSubmitSmall {
@@ -58,11 +61,11 @@
   padding: 5px;
   
   svg {
-    fill: $color-mid-blue !important;
+    fill: $color-31 !important;
   }
   
   &.active {
-    border: 1px solid $color-mid-blue;
+    border: 1px solid $color-31;
     border-radius: 50%;
 
     svg {

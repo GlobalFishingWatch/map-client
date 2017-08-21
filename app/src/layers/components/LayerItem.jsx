@@ -8,6 +8,7 @@ import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
+import SelectIcon from '-!babel-loader!svg-react-loader!assets/icons/select.svg?name=SelectIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -130,7 +131,7 @@ class LayerItem extends Component {
     }
 
     return (
-      <div>
+      <div className={LayerListStyles.listItemContainer}>
         <li
           className={LayerListStyles.listItem}
         >
@@ -158,10 +159,17 @@ class LayerItem extends Component {
           />
         </ExpandItem >
         <ExpandItem active={this.state.expand === 'INFO'}>
-          Select a Polygon to get more info
+          <div className={LayerListStyles.selectPolygon}>
+            <SelectIcon
+              className={IconStyles.selectIcon}
+            />
+            <div className={LayerListStyles.selectPolygonText}>
+              Select a Polygon to get more info
+            </div>
+          </div>
           <button
             onClick={() => this.onClickInfo()}
-            className={classnames(ButtonStyles.button, ButtonStyles._wide, ButtonStyles._filled)}
+            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half)}
           >
             INFO LAYER
           </button >

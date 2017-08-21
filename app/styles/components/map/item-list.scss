@@ -32,6 +32,10 @@
   }
 }
 
+.listItemContainer {
+  width: 100%;
+}
+
 .listItem {
   text-transform: uppercase;
   align-items: center;
@@ -141,6 +145,17 @@
   stroke: rgba($color-3, .3);
   top: 50%;
   transform: translate(0, -50%);
+}
+
+.selectPolygon {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  margin-right: 10px;
+  font-size: $font-size-small;
+  .selectPolygonText {
+    margin-top: 10px;
+  }
 }
 
 .editionMenu {
