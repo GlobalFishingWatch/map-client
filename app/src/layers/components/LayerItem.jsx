@@ -16,7 +16,7 @@ import ColorPicker from 'components/Shared/ColorPicker';
 class LayerItem extends Component {
   constructor() {
     super();
-    this.state = { expand: false };
+    this.state = { expand: null };
     this.onColorChange = this.onColorChange.bind(this);
   }
 
@@ -73,6 +73,11 @@ class LayerItem extends Component {
     this.props.onLayerBlendingToggled(this.props.layerIndex);
   }
 
+  changeExpand(value) {
+    if (value === this.state.expand) value = null;
+    this.setState({ expand: value });
+  }
+
   render() {
     const { id, color, reportId, visible } = this.props.layer;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
@@ -103,19 +108,22 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
           <li className={LayerListStyles.itemOptionItem}>
-            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand })} >
+            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'EXTRA' })} >
               <PaintIcon
-                onClick={() => this.setState({ expand: !this.state.expand })}
-                className={classnames(IconStyles.paintIcon,
-                  { [IconStyles._white]: true })}
+                className={IconStyles.paintIcon}
+                onClick={() => this.changeExpand('EXTRA')}
               />
             </button >
           </li>}
           <li
             className={LayerListStyles.itemOptionItem}
-            onClick={() => this.onClickInfo()}
           >
-            <InfoIcon className={IconStyles.infoIcon} />
+            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'INFO' })} >
+              <InfoIcon
+                className={IconStyles.infoIcon}
+                onClick={() => this.changeExpand('INFO')}
+              />
+            </button >
           </li>
         </ul>
       );
@@ -142,12 +150,21 @@ class LayerItem extends Component {
           />
           {actions}
         </li>
-        <ExpandItem active={this.state.expand}>
+        <ExpandItem active={this.state.expand === 'EXTRA'}>
           <ColorPicker
             color={color}
             onColorChange={this.onColorChange}
             id={id}
           />
+        </ExpandItem >
+        <ExpandItem active={this.state.expand === 'INFO'}>
+          Select a Polygon to get more info
+          <button
+            onClick={() => this.onClickInfo()}
+            className={classnames(ButtonStyles.button, ButtonStyles._wide, ButtonStyles._filled)}
+          >
+            INFO LAYER
+          </button >
         </ExpandItem >
       </div >
     );
