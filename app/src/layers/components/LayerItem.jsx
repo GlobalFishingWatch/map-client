@@ -17,6 +17,7 @@ class LayerItem extends Component {
   constructor() {
     super();
     this.state = { expand: false };
+    this.onColorChange = this.onColorChange.bind(this);
   }
 
   onChangeVisibility() {
@@ -43,6 +44,14 @@ class LayerItem extends Component {
     this.props.setLayerHue(hue, this.props.layer.id);
   }
 
+  onColorChange(color) {
+    if (!this.props.layer.visible) {
+      this.props.toggleLayerVisibility(this.props.layer.id);
+    }
+
+    this.props.setLayerColor(color, this.props.layer.id);
+  }
+
   onChangeLayerLabel(value) {
     this.props.setLayerLabel(this.props.layer.id, value);
   }
@@ -65,7 +74,7 @@ class LayerItem extends Component {
   }
 
   render() {
-    const { id, color, reportId, visible, hue } = this.props.layer;
+    const { id, color, reportId, visible } = this.props.layer;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
 
@@ -119,8 +128,7 @@ class LayerItem extends Component {
         >
           <Toggle
             on={visible}
-            color={color}
-            hue={hue}
+            colorName={color}
             onToggled={() => this.onChangeVisibility()}
           />
           <input
@@ -135,7 +143,11 @@ class LayerItem extends Component {
           {actions}
         </li>
         <ExpandItem active={this.state.expand}>
-          <ColorPicker color={color} onColorChange={this.onColorChange} />
+          <ColorPicker
+            color={color}
+            onColorChange={this.onColorChange}
+            id={id}
+          />
         </ExpandItem >
       </div >
     );
@@ -165,6 +177,10 @@ LayerItem.propTypes = {
    */
   setLayerLabel: PropTypes.func,
   showBlending: PropTypes.bool,
+  /*
+   Called when the color changes
+   */
+  setLayerColor: PropTypes.func,
   /*
    If layer labels are editable or not
    */

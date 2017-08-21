@@ -10,18 +10,19 @@ class ExpandButton extends Component {
     this.props.onColorChange(e.target.value);
   }
 
-  renderInput(color, i) {
+  renderInput(color, key) {
+    const id = `${key}${color}`;
     return (
-      <div className={classnames(colorPickerStyles.colorInput)} key={i}>
+      <div className={classnames(colorPickerStyles.colorInput)} key={key}>
         <input
           type="radio"
-          name="color"
-          id={color}
+          name={color}
+          id={id}
           value={color}
           onChange={e => this.onColorChange(e)}
           checked={this.props.color === color}
         />
-        <label htmlFor={color} className={classnames(colorPickerStyles[color])} />
+        <label htmlFor={id} className={classnames(colorPickerStyles[color])} />
       </div>
     );
   }
@@ -29,7 +30,7 @@ class ExpandButton extends Component {
     return (
       <div className={classnames(colorPickerStyles.colorPicker)}>
         <div>Color</div>
-        { Object.keys(COLORS).map((color, i) => this.renderInput(color, i))}
+        { Object.keys(COLORS).map((color, i) => this.renderInput(color, `${i}${this.props.id}`))}
       </div>
     );
   }
@@ -37,7 +38,8 @@ class ExpandButton extends Component {
 
 ExpandButton.propTypes = {
   onColorChange: PropTypes.func.isRequired,
-  color: PropTypes.string
+  color: PropTypes.string,
+  id: PropTypes.string
 };
 
 export default ExpandButton;

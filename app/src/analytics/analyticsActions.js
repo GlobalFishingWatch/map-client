@@ -11,6 +11,7 @@ export const GA_OUTER_TIMELINE_DATES_UPDATED = 'GA_OUTER_TIMELINE_DATES_UPDATED'
 export const GA_PLAY_STATUS_TOGGLED = 'GA_PLAY_STATUS_TOGGLED';
 export const GA_SEARCH_RESULT_CLICKED = 'GA_SEARCH_RESULT_CLICKED';
 export const GA_SET_LAYER_HUE = 'GA_SET_LAYER_HUE';
+export const GA_SET_LAYER_COLOR = 'GA_SET_LAYER_COLOR';
 export const GA_SET_LAYER_OPACITY = 'GA_SET_LAYER_OPACITY';
 export const GA_VESSEL_POINT_CLICKED = 'GA_VESSEL_POINT_CLICKED';
 
@@ -28,6 +29,12 @@ export const trackLayerHueChange = debounce((dispatch, hue, layerId) => {
   dispatch({
     type: GA_SET_LAYER_HUE,
     payload: { hue, layerId }
+  });
+}, 1000);
+export const trackLayerColorChange = debounce((dispatch, color, layerId) => {
+  dispatch({
+    type: GA_SET_LAYER_COLOR,
+    payload: { color, layerId }
   });
 }, 1000);
 export const trackOuterTimelineChange = debounce((dispatch, outerTimelineDates) => {

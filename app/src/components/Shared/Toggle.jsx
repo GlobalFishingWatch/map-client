@@ -3,11 +3,15 @@ import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
 import { hueToRgbString } from 'util/colors';
+import { COLORS } from 'config';
 
 class Toggle extends Component {
   getColor() {
     if (this.props.hue !== undefined) {
       return hueToRgbString(this.props.hue);
+    }
+    if (this.props.colorName !== undefined) {
+      return COLORS[this.props.colorName];
     }
     return this.props.color;
   }
@@ -37,6 +41,7 @@ Toggle.propTypes = {
   on: PropTypes.bool,
   hue: PropTypes.number,
   color: PropTypes.string,
+  colorName: PropTypes.string,
   onToggled: PropTypes.func
 };
 

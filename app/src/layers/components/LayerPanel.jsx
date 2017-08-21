@@ -30,7 +30,7 @@ class LayerPanel extends Component {
       if (layer.type === LAYER_TYPES.Heatmap) {
         fishingLayers.push(
           <LayerItem
-            key={index}
+            key={`${index}${layer.name}`}
             layerIndex={index}
             layer={layer}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
@@ -40,7 +40,7 @@ class LayerPanel extends Component {
       } else {
         mapLayers.push(
           <LayerItem
-            key={index}
+            key={`${index}${layer.name}`}
             layerIndex={index}
             layer={layer}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}

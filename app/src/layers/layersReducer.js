@@ -4,6 +4,7 @@ import {
   ADD_CUSTOM_LAYER,
   SET_LAYER_HEADER,
   SET_LAYER_HUE,
+  SET_LAYER_COLOR,
   SET_LAYER_OPACITY,
   SET_LAYERS,
   SET_WORKSPACE_LAYER_LABEL,
@@ -84,6 +85,12 @@ export default function (state = initialState, action) {
     case SET_LAYER_HUE: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
         changedLayer.hue = action.payload.hue;
+      });
+      return Object.assign({}, state, { workspaceLayers });
+    }
+    case SET_LAYER_COLOR: {
+      const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
+        changedLayer.color = action.payload.color;
       });
       return Object.assign({}, state, { workspaceLayers });
     }

@@ -10,6 +10,7 @@ export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 export const TOGGLE_LAYER_WORKSPACE_PRESENCE = 'TOGGLE_LAYER_WORKSPACE_PRESENCE';
 export const SET_LAYER_HUE = 'SET_LAYER_HUE';
+export const SET_LAYER_COLOR = 'SET_LAYER_COLOR';
 export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
 export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
@@ -231,6 +232,20 @@ export function setLayerHue(hue, layerId) {
       payload: {
         layerId,
         hue
+      }
+    });
+    // TODO we might want to override all filters hue settings here (see with Dani)
+    dispatch(refreshFlagFiltersLayers());
+  };
+}
+
+export function setLayerColor(color, layerId) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_LAYER_COLOR,
+      payload: {
+        layerId,
+        color
       }
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
