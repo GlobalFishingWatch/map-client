@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import getVesselName from 'util/getVesselName';
 import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'config';
@@ -68,7 +67,7 @@ export default function (state = initialState, action) {
 
     case SET_VESSEL_TRACK: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = cloneDeep(state.vessels[vesselIndex]);
+      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.track = {
         data: action.payload.data,
         selectedSeries: action.payload.selectedSeries
@@ -91,7 +90,7 @@ export default function (state = initialState, action) {
 
         let currentlyShownVessel = state.currentlyShownVessel;
         if (newVessel.seriesgroup === currentlyShownVessel.seriesgroup && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
-          currentlyShownVessel = cloneDeep(currentlyShownVessel);
+          currentlyShownVessel = Object.assign({}, currentlyShownVessel);
           currentlyShownVessel.pinned = true;
         }
 
@@ -116,7 +115,7 @@ export default function (state = initialState, action) {
 
     case SHOW_VESSEL_DETAILS: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const currentlyShownVessel = cloneDeep(state.vessels[vesselIndex]);
+      const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex]);
       currentlyShownVessel.shownInInfoPanel = true;
 
       return Object.assign({}, state, {
@@ -141,7 +140,7 @@ export default function (state = initialState, action) {
 
       // vessel is pinned: set info to shownInInfoPanel = false
       if (currentlyShownVessel.pinned === true) {
-        currentlyShownVessel = cloneDeep(currentlyShownVessel);
+        currentlyShownVessel = Object.assign({}, currentlyShownVessel);
         currentlyShownVessel.shownInInfoPanel = false;
         return Object.assign({}, state, {
           vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
@@ -167,7 +166,7 @@ export default function (state = initialState, action) {
     }
     case TOGGLE_VESSEL_PIN: {
       const vesselIndex = action.payload.vesselIndex;
-      const newVessel = cloneDeep(state.vessels[vesselIndex]);
+      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.pinned = action.payload.pinned;
       newVessel.visible = action.payload.visible;
 
@@ -177,7 +176,7 @@ export default function (state = initialState, action) {
         newVessel.seriesgroup === state.currentlyShownVessel.seriesgroup &&
         newVessel.tilesetId === state.currentlyShownVessel.tilesetId
       ) {
-        currentlyShownVessel = cloneDeep(state.currentlyShownVessel);
+        currentlyShownVessel = Object.assign({}, state.currentlyShownVessel);
         currentlyShownVessel.pinned = action.payload.pinned;
       }
 
@@ -190,7 +189,7 @@ export default function (state = initialState, action) {
     }
     case SET_PINNED_VESSEL_HUE: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = cloneDeep(state.vessels[vesselIndex]);
+      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.hue = action.payload.hue;
 
       return Object.assign({}, state, {
@@ -199,7 +198,7 @@ export default function (state = initialState, action) {
     }
     case SET_PINNED_VESSEL_TRACK_VISIBILITY: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = cloneDeep(state.vessels[vesselIndex]);
+      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.visible = action.payload.visible;
 
       return Object.assign({}, state, {
@@ -222,7 +221,7 @@ export default function (state = initialState, action) {
       });
 
       if (newState.pinnedVesselEditMode === false) {
-        newState.vessels = cloneDeep(state.vessels);
+        newState.vessels = Object.assign({}, state.vessels);
 
         newState.vessels.forEach((vesselDetail) => {
           if (vesselDetail.title.trim() === '') {
