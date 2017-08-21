@@ -10,9 +10,15 @@
   max-width: 80%;
   padding: 0 15px;
   position: relative;
-
   @media #{$mq-tablet} {
     height: 30px;
+  }
+
+  &._big {
+    @media #{$mq-tablet} {
+      margin-bottom: 10px;
+      height: 40px;
+    }
   }
 
   > select {

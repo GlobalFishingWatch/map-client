@@ -8,6 +8,7 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
+import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
 
@@ -117,14 +118,16 @@ class FilterGroupForm extends Component {
     const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
 
     const filterInputs = filtersFromLayers.map((elem, index) => (
-      <select
-        key={index}
-        name={elem.label}
-        onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
-        value={this.state.filterGroup.filterValues[elem.name]}
-      >
-        {elem.values}
-      </select >
+      <div className={classnames(selectorStyles.selector, selectorStyles._big)} >
+        <select
+          key={index}
+          name={elem.label}
+          onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
+          value={this.state.filterGroup.filterValues[elem.name]}
+        >
+          {elem.values}
+        </select >
+      </div >
     ));
 
     return (
