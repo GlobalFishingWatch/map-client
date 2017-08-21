@@ -49,7 +49,7 @@ export default class AreasItem extends Component {
 }
 
 AreasItem.propTypes = {
-  areas: PropTypes.object.isRequired,
+  areas: PropTypes.array.isRequired,
   index: PropTypes.number.isRequired,
   recentlyCreated: PropTypes.bool.isRequired,
   toggleAreaVisibility: PropTypes.func.isRequired,
