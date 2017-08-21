@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import { LAYER_TYPES } from 'constants';
-import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
+import ExpandItem from 'components/Shared/ExpandItem';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
+import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
+import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
+import ColorPicker from 'components/Shared/ColorPicker';
 
 class LayerItem extends Component {
+  constructor() {
+    super();
+    this.state = { expand: false };
+  }
 
   onChangeVisibility() {
     if (this.props.layer.visible && this.props.showBlending) {
@@ -59,7 +65,8 @@ class LayerItem extends Component {
   }
 
   render() {
-    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === this.props.layer.id;
+    const { id, color, reportId, visible, hue } = this.props.layer;
+    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
 
     let actions;
@@ -77,7 +84,7 @@ class LayerItem extends Component {
     } else {
       actions = (
         <ul className={LayerListStyles.itemOptionList}>
-          {canReport && this.props.layer.reportId !== undefined && <li
+          {canReport && reportId !== undefined && <li
             className={LayerListStyles.itemOptionItem}
             onClick={() => this.onClickReport()}
           >
@@ -87,17 +94,13 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
           <li className={LayerListStyles.itemOptionItem}>
-            <LayerBlendingOptionsTooltip
-              displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
-              displayOpacity
-              hueValue={this.props.layer.hue}
-              opacityValue={this.props.layer.opacity}
-              onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
-              onChangeHue={hue => this.onChangeHue(hue)}
-              isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
-              visible={this.props.showBlending}
-              toggleVisibility={() => this.toggleBlending()}
-            />
+            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand })} >
+              <PaintIcon
+                onClick={() => this.setState({ expand: !this.state.expand })}
+                className={classnames(IconStyles.paintIcon,
+                  { [IconStyles._white]: true })}
+              />
+            </button >
           </li>}
           <li
             className={LayerListStyles.itemOptionItem}
@@ -110,26 +113,31 @@ class LayerItem extends Component {
     }
 
     return (
-      <li
-        className={LayerListStyles.listItem}
-      >
-        <Toggle
-          on={this.props.layer.visible}
-          color={this.props.layer.color}
-          hue={this.props.layer.hue}
-          onToggled={() => this.onChangeVisibility()}
-        />
-        <input
-          className={classnames(LayerListStyles.itemName, { [LayerListStyles.itemRename]: this.props.layerPanelEditMode })}
-          onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
-          readOnly={!this.props.layerPanelEditMode}
-          value={this.props.layer.label}
-          ref={((elem) => {
-            this.inputName = elem;
-          })}
-        />
-        {actions}
-      </li>
+      <div>
+        <li
+          className={LayerListStyles.listItem}
+        >
+          <Toggle
+            on={visible}
+            color={color}
+            hue={hue}
+            onToggled={() => this.onChangeVisibility()}
+          />
+          <input
+            className={classnames(LayerListStyles.itemName, { [LayerListStyles.itemRename]: this.props.layerPanelEditMode })}
+            onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
+            readOnly={!this.props.layerPanelEditMode}
+            value={this.props.layer.label}
+            ref={((elem) => {
+              this.inputName = elem;
+            })}
+          />
+          {actions}
+        </li>
+        <ExpandItem active={this.state.expand}>
+          <ColorPicker color={color} onColorChange={this.onColorChange} />
+        </ExpandItem >
+      </div >
     );
   }
 }

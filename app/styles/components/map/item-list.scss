@@ -33,6 +33,7 @@
 }
 
 .listItem {
+  text-transform: uppercase;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -45,7 +46,6 @@
 
   &.halfRow {
     display: inline-block;
-    text-transform: uppercase;
     width: 50%;
     margin: 0;
 
@@ -153,6 +153,7 @@
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  margin-bottom: 10px;
 
   ._highlighted {
     path {

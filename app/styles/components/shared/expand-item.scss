@@ -1,0 +1,19 @@
+@import '../../settings';
+
+.expandItem {
+
+  .opened {
+    background-color: $color-mid-blue;
+    margin-bottom: 10px;
+    margin-left: -35px;
+    margin-right: -70px;
+    color: $color-white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+  }
+
+  .closed {
+    display: none;
+  }
+}
