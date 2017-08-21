@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import RecentVesselStyles from 'styles/recentVessels/recent-vessels.scss';
 import ModalResultListStyles from 'styles/search/result-list.scss';
 import ModalStyles from 'styles/components/shared/modal.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import MapButtonStyles from 'styles/components/button.scss';
 import RecentVesselItem from 'recentVessels/containers/RecentVesselItem';
 
 class RecentVesselsModal extends Component {

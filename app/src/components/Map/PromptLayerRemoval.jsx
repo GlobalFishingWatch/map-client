@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ModalStyles from 'styles/components/shared/modal.scss';
 import PromptLayerStyles from 'styles/components/map/prompt-layer.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import MapButtonStyles from 'styles/components/button.scss';
 
 class PromptLayerRemoval extends Component {
   render() {

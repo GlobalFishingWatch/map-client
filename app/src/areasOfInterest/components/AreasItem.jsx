@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { COLORS } from 'config';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
 import controlPanelStyles from 'styles/components/control_panel.scss';
-import buttonStyles from 'styles/components/map/button.scss';
+import buttonStyles from 'styles/components/button.scss';
 import Toggle from 'components/Shared/Toggle';
 
 export default class AreasItem extends Component {

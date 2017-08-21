@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
 import ModalStyles from 'styles/components/map/modal.scss';
-import ButtonStyles from 'styles/components/map/button.scss';
+import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
 import Checkbox from 'components/Shared/Checkbox';

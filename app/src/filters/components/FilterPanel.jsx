@@ -8,7 +8,7 @@ import FilterItem from 'filters/components/FilterItem';
 import { FLAG_FILTERS_LIMIT } from 'config';
 import classnames from 'classnames';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import MapButtonStyles from 'styles/components/button.scss';
 import getCountryOptions from 'util/getCountryOptions';
 
 class FilterPanel extends Component {
