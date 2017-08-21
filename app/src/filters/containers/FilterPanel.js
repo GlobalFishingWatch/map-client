@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import FilterPanel from 'filters/components/FilterPanel';
-import { setFlagFilters, setFilterGroupModalVisibility } from 'filters/filtersActions';
+import { setFlagFilters } from 'filters/filtersActions';
+import { setFilterGroupModalVisibility } from 'filters/filterGroupsActions';
 
 /** @deprecated use filterGroups logic instead */
 const mapStateToProps = state => ({
