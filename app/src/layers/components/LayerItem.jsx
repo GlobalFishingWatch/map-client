@@ -81,6 +81,7 @@ class LayerItem extends Component {
 
   render() {
     const { id, color, reportId, visible } = this.props.layer;
+    const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
 
@@ -151,14 +152,14 @@ class LayerItem extends Component {
           />
           {actions}
         </li>
-        <ExpandItem active={this.state.expand === 'EXTRA'} iconPosition={0}>
+        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} iconPosition={0}>
           <ColorPicker
             color={color}
             onColorChange={this.onColorChange}
             id={id}
           />
         </ExpandItem >
-        <ExpandItem active={this.state.expand === 'INFO'} iconPosition={1}>
+        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} iconPosition={1}>
           <div className={LayerListStyles.selectPolygon}>
             <SelectIcon
               className={IconStyles.selectIcon}
