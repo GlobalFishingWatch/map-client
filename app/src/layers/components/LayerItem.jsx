@@ -151,14 +151,14 @@ class LayerItem extends Component {
           />
           {actions}
         </li>
-        <ExpandItem active={this.state.expand === 'EXTRA'}>
+        <ExpandItem active={this.state.expand === 'EXTRA'} iconPosition={0}>
           <ColorPicker
             color={color}
             onColorChange={this.onColorChange}
             id={id}
           />
         </ExpandItem >
-        <ExpandItem active={this.state.expand === 'INFO'}>
+        <ExpandItem active={this.state.expand === 'INFO'} iconPosition={1}>
           <div className={LayerListStyles.selectPolygon}>
             <SelectIcon
               className={IconStyles.selectIcon}
