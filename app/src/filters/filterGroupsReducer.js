@@ -2,11 +2,7 @@ import { SET_FILTER_GROUP_MODAL_VISIBILITY, SAVE_FILTER_GROUP, SET_FILTER_GROUP_
 import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP } from 'filters/filterGroupsActions';
 
 const initialState = {
-  filterGroups: [{
-    color: 'yellow', // TODO: use a random color here
-    label: 'foo',
-    visible: true
-  }],
+  filterGroups: [],
   editFilterGroupIndex: null,
   isFilterGroupModalOpen: false
 };
