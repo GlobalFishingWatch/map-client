@@ -24,7 +24,8 @@
     "SITE_URL": true,
     "TIMEBAR_DATA_URL": true,
     "V2_API_ENDPOINT": true,
-    "WELCOME_MODAL_COOKIE_KEY": true
+    "WELCOME_MODAL_COOKIE_KEY": true,
+    "LIMIT_MAX_ZOOM_TO_TILESETS": true
   },
   "parserOptions": {
     "ecmaVersion": 7,

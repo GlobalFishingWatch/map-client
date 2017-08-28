@@ -16,14 +16,14 @@ function ZoomControls({ canShareWorkspaces, openShareModal, zoom, maxZoom, chang
         <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
       </span>}
       <span
-        className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom >= maxZoom })}
+        className={classnames(MapStyles.control, { [MapStyles._disabled]: LIMIT_MAX_ZOOM_TO_TILESETS === true && zoom >= maxZoom })}
         id="zoom_up"
         onClick={changeZoomLevel}
       >
         <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
       </span>
       <span
-        className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom <= MIN_ZOOM_LEVEL })}
+        className={classnames(MapStyles.control, { [MapStyles._disabled]: LIMIT_MAX_ZOOM_TO_TILESETS === true && zoom <= MIN_ZOOM_LEVEL })}
         id="zoom_down"
         onClick={changeZoomLevel}
       >

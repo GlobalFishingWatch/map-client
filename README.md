@@ -162,6 +162,10 @@ Enable usage of the new "Area of Interest" feature (experimental)
 
 Enable usage of the new "Filter group" advanced filtering (experimental)
 
+#### LIMIT_MAX_ZOOM_TO_TILESETS
+
+Use currently visible tileset headers to limit maximum available zoom.
+
 # Permission keys description
 
 On load, the application will call the /me API endpoint to load user permissions. These are the supported values:

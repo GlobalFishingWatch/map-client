@@ -50,9 +50,13 @@ class MapContainer extends Component {
       zoom: this.props.zoom,
       center: { lat: this.props.centerLat, lng: this.props.centerLong },
       mapTypeId: google.maps.MapTypeId.HYBRID,
-      maxZoom: this.props.maxZoom,
       minZoom: MIN_ZOOM_LEVEL
     };
+
+    if (LIMIT_MAX_ZOOM_TO_TILESETS === true) {
+      mapDefaultOptions.maxZoom = this.props.maxZoom;
+    }
+
     // Create the map and initialize on the first idle event
     this.map = new google.maps.Map(document.getElementById('map'), mapDefaultOptions);
     // do not use a bound function here as @#$%^ GMaps does not know how to unsubscribe from events attached to them
@@ -78,7 +82,7 @@ class MapContainer extends Component {
       return;
     }
     this.updateBasemap(nextProps);
-    if (this.props.maxZoom !== nextProps.maxZoom) {
+    if (LIMIT_MAX_ZOOM_TO_TILESETS === true && this.props.maxZoom !== nextProps.maxZoom) {
       this.map.set('maxZoom', nextProps.maxZoom);
     }
     if (this.props.zoom !== nextProps.zoom) {
