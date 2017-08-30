@@ -85,6 +85,15 @@ class FilterGroupForm extends Component {
     this.setState({ filterGroup });
   }
 
+  onClickInfo(layer) {
+    const modalParams = {
+      open: true,
+      info: layer
+    };
+
+    this.props.openLayerInfoModal(modalParams);
+  }
+
   renderLayersList() {
     return this.props.layers.map((layer, i) => (
       <li
@@ -199,7 +208,8 @@ FilterGroupForm.propTypes = {
   editFilterGroupIndex: PropTypes.number,
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
-  saveFilterGroup: PropTypes.func
+  saveFilterGroup: PropTypes.func,
+  openLayerInfoModal: PropTypes.func.isRequired
 };
 
 export default FilterGroupForm;
