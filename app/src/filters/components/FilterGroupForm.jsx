@@ -88,7 +88,7 @@ class FilterGroupForm extends Component {
   renderLayersList() {
     return this.props.layers.map(layer => (
       <li
-        className={ItemList.listItem}
+        className={classnames([ItemList.listItem, ItemList._baseline])}
         key={layer.id}
       >
         <Checkbox
@@ -100,7 +100,7 @@ class FilterGroupForm extends Component {
           callback={() => this.onLayerChecked(layer.id)}
           checked={this.state.filterGroup.checkedLayers[layer.id]}
         />
-        <ul className={ItemList.itemOptionList} >
+        <ul className={classnames([ItemList.itemOptionList, ItemList._inlineList])} >
           <li
             className={ItemList.itemOptionItem}
             onClick={() => this.onClickInfo(layer)}
@@ -147,7 +147,7 @@ class FilterGroupForm extends Component {
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
               <div className={ModalStyles.sectionTitle} >
-                Select the Fishing Layers:
+                Select a Fishing Layer:
               </div >
               <div className={ItemList.wrapper} >
                 <ul >
@@ -175,7 +175,7 @@ class FilterGroupForm extends Component {
                 name="name"
                 onChange={this.onNameChange}
                 className={ModalStyles.nameInput}
-                placeholder="Filter group name"
+                placeholder="Filter Group Name"
                 value={this.state.filterGroup.label}
               />
             </div >
