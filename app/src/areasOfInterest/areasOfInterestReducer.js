@@ -10,7 +10,7 @@ import {
 import { COLORS } from 'config';
 
 const initialState = {
-  data: [],
+  existingAreasOfInterest: [],
   editingArea: {
     name: '',
     color: Object.keys(COLORS)[0],
@@ -25,16 +25,16 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SAVE_AREA_OF_INTEREST:
       if (action.payload.area) {
-        const areas = state.data.length > 0 ? state.data : [];
-        return Object.assign({}, state, { data: areas.concat([action.payload.area]) });
+        const areas = state.existingAreasOfInterest.length > 0 ? state.existingAreasOfInterest : [];
+        return Object.assign({}, state, { existingAreasOfInterest: areas.concat([action.payload.area]) });
       }
       return state;
     case UPDATE_AREA_OF_INTEREST:
       if (action.payload.area) {
-        const areas = state.data.map((area, i) => (
+        const areas = state.existingAreasOfInterest.map((area, i) => (
           i === action.payload.editIndex ? action.payload.area : area
         ));
-        return Object.assign({}, state, { data: areas });
+        return Object.assign({}, state, { existingAreasOfInterest: areas });
       }
       return state;
     case UPDATE_WORKING_AREA_OF_INTEREST:
@@ -47,17 +47,17 @@ export default function (state = initialState, action) {
         }
       });
     case DELETE_AREA_OF_INTEREST: {
-      const updatedAreas = state.data.filter((area, i) => i !== action.payload.areaIndex);
-      return Object.assign({}, state, { data: updatedAreas });
+      const updatedAreas = state.existingAreasOfInterest.filter((area, i) => i !== action.payload.areaIndex);
+      return Object.assign({}, state, { existingAreasOfInterest: updatedAreas });
     }
     case TOGGLE_AREA_OF_INTEREST_VISIBILITY: {
-      const updatedAreas = state.data.map((area, i) => {
+      const updatedAreas = state.existingAreasOfInterest.map((area, i) => {
         if (i === action.payload.areaIndex) {
           area.visible = !area.visible;
         }
         return area;
       });
-      return Object.assign({}, state, { data: updatedAreas });
+      return Object.assign({}, state, { existingAreasOfInterest: updatedAreas });
     }
     case SET_RECENTLY_CREATED_AREA_OF_INTEREST:
       return Object.assign({}, state, { recentlyCreated: action.payload });

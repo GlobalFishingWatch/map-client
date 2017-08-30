@@ -6,7 +6,7 @@
 }
 
 .blendingTooltip {
-  background-color: $color-1;
+  background-color: $color-32;
   border: solid 1px rgba($color-3, .4);
   bottom: 27px;
   color: $color-4;
@@ -22,7 +22,7 @@
 
   &::before {
     @include arrow(12px, 1px, rgba($color-3, .4), 'down');
-    background-color: $color-1;
+    background-color: $color-32;
     bottom: -7px;
     position: absolute;
     right: 31px;
@@ -34,7 +34,7 @@
 
     &::before {
       @include arrow(12px, 1px, rgba($color-3, .4), 'up');
-      background-color: $color-1;
+      background-color: $color-32;
       position: absolute;
       right: 31px;
       top: -7px;

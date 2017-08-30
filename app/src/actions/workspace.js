@@ -123,7 +123,7 @@ export function saveWorkspace(errorAction) {
           outerExtent: state.filters.timelineOuterExtent.map(e => +e)
         },
         filters: state.filters.flags,
-        areas: state.areas.data
+        areas: state.areas.existingAreasOfInterest
       }
     };
 

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Areas from 'areasOfInterest/components/Areas';
 
 const mapStateToProps = state => ({
-  areas: state.areas.data,
+  areas: state.areas.existingAreasOfInterest,
   map: state.map.googleMaps
 });
 

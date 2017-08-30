@@ -4,7 +4,7 @@ import { toggleAreaVisibility, deleteArea, setEditAreaIndex } from 'areasOfInter
 
 const mapStateToProps = state => ({
   recentlyCreated: state.areas.recentlyCreated,
-  areas: state.areas.data
+  areas: state.areas.existingAreasOfInterest
 });
 
 const mapDispatchToProps = dispatch => ({

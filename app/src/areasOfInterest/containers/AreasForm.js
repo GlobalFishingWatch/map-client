@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   isDrawing: state.map.isDrawing,
   editingArea: state.areas.editingArea,
   editAreaIndex: state.areas.editAreaIndex,
-  areas: state.areas.data
+  areas: state.areas.existingAreasOfInterest
 });
 
 const mapDispatchToProps = dispatch => ({

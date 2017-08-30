@@ -3,7 +3,7 @@ import AreasList from 'areasOfInterest/components/AreasList';
 import { toggleAreaVisibility, deleteArea } from 'areasOfInterest/areasOfInterestActions';
 
 const mapStateToProps = state => ({
-  areas: state.areas.data,
+  areas: state.areas.existingAreasOfInterest,
   recentlyCreated: state.areas.recentlyCreated
 });
 

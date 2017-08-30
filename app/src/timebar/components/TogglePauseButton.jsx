@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import iconStyles from 'styles/icons.scss';
-import PlayIcon from '-!babel-loader!svg-react-loader!assets/icons/play.svg?name=FacebookIcon';
+import PlayIcon from '-!babel-loader!svg-react-loader!assets/icons/play.svg?name=PlayIcon';
+import PauseIcon from '-!babel-loader!svg-react-loader!assets/icons/pause.svg?name=PauseIcon';
 
 class TogglePauseButton extends Component {
   render() {
@@ -12,7 +13,7 @@ class TogglePauseButton extends Component {
         <PlayIcon className={classnames(iconStyles.icon, iconStyles.playIcon)} />
         }
         {!this.props.paused &&
-        '❚❚'
+        <PauseIcon className={classnames(iconStyles.icon, iconStyles.pauseIcon)} />
         }
       </button >
     );
