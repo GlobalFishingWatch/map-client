@@ -15,9 +15,17 @@
   }
 
   &._big {
+    border: solid 1px $color-fade-blue;
+    max-width: 100%;
+
     @media #{$mq-tablet} {
       margin-bottom: 10px;
       height: 40px;
+    }
+
+    > select {
+      color: $color-34;
+      text-transform: uppercase;
     }
   }
 

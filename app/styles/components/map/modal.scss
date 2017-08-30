@@ -43,10 +43,10 @@
 .nameInput {
   background-color: transparent;
   border: 0;
-  border-bottom: 1px solid rgba($color-34, .3);
+  border-bottom: 1px solid $color-fade-blue;
   padding-bottom: 5px;
   border-radius: 0;
-  color: $color-34;
+  color: $color-white;
 
   font-size: $font-size-x-small;
   font-weight: $font-weight-normal;
@@ -58,15 +58,15 @@
   width: 100%;
 
   &::-webkit-input-placeholder {
-    color: rgba($color-34, .3);
+    color: $color-fade-blue;
   }
 
   &::-moz-placeholder {
-    color: rgba($color-34, .3);
+    color: $color-fade-blue;
   }
 
   &:-ms-input-placeholder {
-    color: rgba($color-34, .3);
+    color: $color-fade-blue;
   }
 }
 

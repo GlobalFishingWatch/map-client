@@ -86,10 +86,10 @@ class FilterGroupForm extends Component {
   }
 
   renderLayersList() {
-    return this.props.layers.map(layer => (
+    return this.props.layers.map((layer, i) => (
       <li
         className={classnames([ItemList.listItem, ItemList._baseline])}
-        key={layer.id}
+        key={i}
       >
         <Checkbox
           classNames="-spaced"
@@ -118,7 +118,7 @@ class FilterGroupForm extends Component {
     const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
 
     const filterInputs = filtersFromLayers.map((elem, index) => (
-      <div className={classnames(selectorStyles.selector, selectorStyles._big)} >
+      <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
         <select
           key={index}
           name={elem.label}
