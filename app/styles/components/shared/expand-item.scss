@@ -4,33 +4,36 @@
 .expandItem {
 
   .opened {
-    display: flex;
-    flex-direction: row;
-    background-color: $color-mid-blue;
-    margin-bottom: 10px;
-    margin-left: -35px;
-    margin-right: -35px;
-    color: $color-white;
-    padding: 20px 35px;
-    align-items: flex-start;
+    &.notCarousel {
 
-    &.firstIcon {
-      &::after {
-        right: 82px;
+      display: flex;
+      flex-direction: row;
+      background-color: $color-mid-blue;
+      margin-bottom: 10px;
+      margin-left: -35px;
+      margin-right: -35px;
+      color: $color-white;
+      padding: 20px 35px;
+      align-items: flex-start;
+
+      &.firstIcon {
+        &::after {
+          right: 82px;
+        }
       }
-    }
 
-    &.secondIcon{
-      &::after {
-        right: 44px;
+      &.secondIcon{
+        &::after {
+          right: 44px;
+        }
       }
-    }
 
-   &::after {
-      position: absolute;
-      content: "";
-      display: inline-block;
-      @include triangle($color-mid-blue, 'up');
+      &::after {
+        position: absolute;
+        content: "";
+        display: inline-block;
+        @include triangle($color-mid-blue, 'up');
+      }
     }
   }
 

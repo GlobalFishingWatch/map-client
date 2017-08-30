@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import ExpandItemStyles from 'styles/components/shared/expand-item.scss';
 
-function ExpandItem({ active, children, iconPosition }) {
+function ExpandItem({ active, children, arrowPosition, carousel }) {
   return (
     <div
       className={classnames(ExpandItemStyles.expandItem)}
@@ -12,8 +12,9 @@ function ExpandItem({ active, children, iconPosition }) {
         className={classnames({
           [ExpandItemStyles.opened]: active === true,
           [ExpandItemStyles.closed]: active === false,
-          [ExpandItemStyles.firstIcon]: iconPosition === 0,
-          [ExpandItemStyles.secondIcon]: iconPosition === 1
+          [ExpandItemStyles.notCarousel]: !carousel,
+          [ExpandItemStyles.firstIcon]: arrowPosition === 0,
+          [ExpandItemStyles.secondIcon]: arrowPosition === 1
         })}
       >
         {children}
@@ -24,8 +25,9 @@ function ExpandItem({ active, children, iconPosition }) {
 
 ExpandItem.propTypes = {
   active: PropTypes.bool.isRequired,
+  carousel: PropTypes.bool,
   children: PropTypes.node.isRequired,
-  iconPosition: PropTypes.number.isRequired
+  arrowPosition: PropTypes.number
 };
 
 export default ExpandItem;

@@ -1,0 +1,38 @@
+@import '../../settings';
+@import '../../mixins';
+
+.carousel {
+
+  .carouselHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: -35px;
+    margin-right: -35px;
+
+    &:not(:first-child) {
+      padding-top: 20px;
+      border-top: 1px solid $color-fade-blue;
+    }
+
+    .title {
+      color: $color-4;
+      padding-bottom: 18px;
+      font-size: $font-size-small;
+    }
+
+    .expandArrowButton {
+      outline: none;
+      cursor: pointer;
+      pointer-events: none;
+      transform: rotate(45deg) translate(0, -50%);
+      @include arrow(8px, 2px, $color-4, 'down');
+
+      &.expanded {
+        @include arrow(8px, 2px, $color-4, 'up');
+      }
+    }
+  }
+}

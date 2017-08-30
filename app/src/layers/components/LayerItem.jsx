@@ -152,14 +152,14 @@ class LayerItem extends Component {
           />
           {actions}
         </li>
-        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} iconPosition={0}>
+        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
           <ColorPicker
             color={color}
             onColorChange={this.onColorChange}
             id={id}
           />
         </ExpandItem >
-        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} iconPosition={1}>
+        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
           <div className={LayerListStyles.selectPolygon}>
             <SelectIcon
               className={IconStyles.selectIcon}

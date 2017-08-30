@@ -3,12 +3,20 @@ import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
 import { LAYER_TYPES } from 'constants';
 import classnames from 'classnames';
+import ExpandItem from 'components/Shared/ExpandItem';
+import CarouselHeader from 'components/Shared/CarouselHeader';
+import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerListStyles from 'styles/components/map/item-list.scss';
+import CarouselStyles from 'styles/components/shared/carousel.scss';
 
 class LayerPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentBlendingOptionsShown: -1 };
+    this.state = {
+      currentBlendingOptionsShown: -1,
+      expand: null
+    };
+    this.openMenu = this.openMenu.bind(this);
   }
 
   onLayerBlendingToggled(layerIndex) {
@@ -17,6 +25,11 @@ class LayerPanel extends Component {
       currentBlendingOptionsShown = -1;
     }
     this.setState({ currentBlendingOptionsShown });
+  }
+
+  openMenu(value) {
+    if (value === this.state.expand) value = null;
+    this.setState({ expand: value });
   }
 
   render() {
@@ -51,19 +64,35 @@ class LayerPanel extends Component {
     });
 
     return (
-      <div className={LayerListStyles.list} >
-        <div className={LayerListStyles.title} >
-          Fishing Layers
-        </div >
-        <ul className={LayerListStyles.list} >
-          {fishingLayers}
-        </ul >
-        <div className={classnames(LayerListStyles.title, LayerListStyles.spacedTitle)} >
-          Map Layers
-        </div >
-        <ul className={LayerListStyles.list} >
-          {mapLayers}
-        </ul >
+      <div className={CarouselStyles.carousel}>
+        <CarouselHeader
+          menuName={'Basemaps'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'BASEMAPS'} carousel >
+          <BasemapPanel />
+        </ExpandItem >
+        <CarouselHeader
+          menuName={'Fishing Layers'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'FISHING_LAYERS'} carousel >
+          <ul className={LayerListStyles.list} >
+            {fishingLayers}
+          </ul >
+        </ExpandItem >
+        <CarouselHeader
+          menuName={'Map Layers'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'MAP_LAYERS'} carousel >
+          <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
+            {mapLayers}
+          </ul >
+        </ExpandItem >
       </div >
     );
   }
