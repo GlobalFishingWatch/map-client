@@ -13,7 +13,6 @@ import {
   GA_PLAY_STATUS_TOGGLED,
   GA_SEARCH_RESULT_CLICKED,
   GA_SET_LAYER_HUE,
-  GA_SET_LAYER_COLOR,
   GA_SET_LAYER_OPACITY,
   GA_VESSEL_POINT_CLICKED
 } from 'analytics/analyticsActions';
@@ -48,12 +47,6 @@ const GA_ACTION_WHITELIST = [
     category: 'Layer',
     action: 'Set layer hue',
     getPayload: action => `${action.payload.layerId}:${action.payload.hue}`
-  },
-  {
-    type: GA_SET_LAYER_COLOR,
-    category: 'Layer',
-    action: 'Set layer color',
-    getPayload: action => `${action.payload.layerId}:${action.payload.color}`
   },
   {
     type: TOGGLE_LAYER_WORKSPACE_PRESENCE,

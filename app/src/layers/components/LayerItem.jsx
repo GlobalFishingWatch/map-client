@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES } from 'constants';
+import { COLOR_HUES } from 'config';
 import ExpandItem from 'components/Shared/ExpandItem';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
@@ -37,20 +38,12 @@ class LayerItem extends Component {
     this.props.setLayerOpacity(transparency, this.props.layer.id);
   }
 
-  onChangeHue(hue) {
-    if (!this.props.layer.visible) {
-      this.props.toggleLayerVisibility(this.props.layer.id);
-    }
-
-    this.props.setLayerHue(hue, this.props.layer.id);
-  }
-
   onColorChange(color) {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerColor(color, this.props.layer.id);
+    this.props.setLayerHue(COLOR_HUES[color], this.props.layer.id);
   }
 
   onChangeLayerLabel(value) {
