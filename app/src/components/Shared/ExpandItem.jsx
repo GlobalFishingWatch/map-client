@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import ExpandItemStyles from 'styles/components/shared/expand-item.scss';
 import { VelocityTransitionGroup } from 'velocity-react';
 
-function ExpandItem({ active, children, arrowPosition, carousel }) {
+function ExpandItem({ active, children, arrowPosition, accordion }) {
   return (
     <div
       className={classnames(ExpandItemStyles.expandItem)}
@@ -15,7 +15,7 @@ function ExpandItem({ active, children, arrowPosition, carousel }) {
       >
         {active && <div
           className={classnames({
-            [ExpandItemStyles.notCarousel]: !carousel,
+            [ExpandItemStyles.notAccordion]: !accordion,
             [ExpandItemStyles.firstIcon]: arrowPosition === 0,
             [ExpandItemStyles.secondIcon]: arrowPosition === 1
           })}
@@ -30,7 +30,7 @@ function ExpandItem({ active, children, arrowPosition, carousel }) {
 
 ExpandItem.propTypes = {
   active: PropTypes.bool.isRequired,
-  carousel: PropTypes.bool,
+  accordion: PropTypes.bool,
   children: PropTypes.node.isRequired,
   arrowPosition: PropTypes.number
 };

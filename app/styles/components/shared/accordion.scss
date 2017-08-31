@@ -1,9 +1,10 @@
 @import '../../settings';
 @import '../../mixins';
 
-.carousel {
+.accordion {
 
-  .carouselHeader {
+  .accordionHeader {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: baseline;

@@ -2,7 +2,7 @@
 @import '../../mixins';
 
 .expandItem {
-  .notCarousel {
+  .notAccordion {
     display: flex;
     flex-direction: row;
     background-color: $color-mid-blue;
