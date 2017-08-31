@@ -27,7 +27,6 @@
       outline: none;
       cursor: pointer;
       pointer-events: none;
-      transform: rotate(45deg) translate(0, -50%);
       @include arrow(8px, 2px, $color-4, 'down');
 
       &.expanded {
