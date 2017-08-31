@@ -16,12 +16,14 @@
     &.firstIcon {
       &::after {
         right: 82px;
+        margin-top: -63px;
       }
     }
 
     &.secondIcon{
       &::after {
         right: 44px;
+        margin-top: -97px;
       }
     }
 
