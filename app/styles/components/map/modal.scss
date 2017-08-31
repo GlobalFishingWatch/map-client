@@ -10,11 +10,12 @@
 .optionsContainer {
   display: flex;
   flex-basis: 100%;
-  flex-direction: row;
   justify-content: space-between;
+  flex-direction: column;
   margin-top: 20px;
 
   @media #{$mq-tablet} {
+    flex-direction: row;
     margin-top: 40px;
     flex-basis: calc(50% - 13px);
   }
@@ -23,8 +24,11 @@
 .column {
   display: flex;
   flex-direction: column;
-  margin-right: 45px;
   width: 100%;
+
+  @media #{$mq-tablet} {
+    margin-right: 45px;
+  }
 }
 
 .sectionTitle {
@@ -53,9 +57,12 @@
   line-height: 1.8;
 
   outline: 0;
-  margin-bottom: 20px;
   padding-right: 30px;
   width: 100%;
+
+  @media #{$mq-tablet} {
+    margin-bottom: 20px;
+  }
 
   &::-webkit-input-placeholder {
     color: $color-fade-blue;
