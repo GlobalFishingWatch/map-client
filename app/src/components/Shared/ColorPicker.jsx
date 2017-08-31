@@ -5,7 +5,7 @@ import { COLORS } from 'config';
 
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 
-class ExpandButton extends Component {
+class ColorPicker extends Component {
   onColorChange(e) {
     this.props.onColorChange(e.target.value);
   }
@@ -16,7 +16,7 @@ class ExpandButton extends Component {
       <div className={classnames(colorPickerStyles.colorInput)} key={key}>
         <input
           type="radio"
-          name={color}
+          name={id}
           id={id}
           value={color}
           onChange={e => this.onColorChange(e)}
@@ -36,10 +36,10 @@ class ExpandButton extends Component {
   }
 }
 
-ExpandButton.propTypes = {
+ColorPicker.propTypes = {
   onColorChange: PropTypes.func.isRequired,
   color: PropTypes.string,
   id: PropTypes.string
 };
 
-export default ExpandButton;
+export default ColorPicker;

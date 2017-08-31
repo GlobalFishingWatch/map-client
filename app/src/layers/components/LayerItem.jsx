@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES } from 'config';
+import { getKeyByValue } from 'util/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
@@ -73,7 +74,9 @@ class LayerItem extends Component {
   }
 
   render() {
-    const { id, color, reportId, visible } = this.props.layer;
+    const { id, hue, reportId, visible } = this.props.layer;
+
+    const color = getKeyByValue(COLOR_HUES, hue);
     const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
@@ -196,10 +199,6 @@ LayerItem.propTypes = {
    */
   setLayerLabel: PropTypes.func,
   showBlending: PropTypes.bool,
-  /*
-   Called when the color changes
-   */
-  setLayerColor: PropTypes.func,
   /*
    If layer labels are editable or not
    */
