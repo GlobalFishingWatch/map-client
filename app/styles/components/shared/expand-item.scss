@@ -3,7 +3,6 @@
 
 .expandItem {
   .notAccordion {
-    display: flex;
     flex-direction: row;
     background-color: $color-mid-blue;
     margin-bottom: 10px;
@@ -23,7 +22,7 @@
     &.secondIcon{
       &::after {
         right: 44px;
-        margin-top: -97px;
+        margin-top: -25px;
       }
     }
 

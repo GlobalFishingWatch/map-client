@@ -166,7 +166,7 @@ class LayerItem extends Component {
           </div>
           <button
             onClick={() => this.onClickInfo()}
-            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half)}
+            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half, ButtonStyles._top)}
           >
             INFO LAYER
           </button >

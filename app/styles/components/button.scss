@@ -33,8 +33,13 @@
   &._wide {
     width: 100%;
   }
+
   &._half {
     width: 50%;
+  }
+
+  &._top {
+    vertical-align: top;
   }
 }
 
@@ -59,11 +64,11 @@
 .expandButton {
   outline: none;
   padding: 5px;
-  
+
   svg {
     fill: $color-31 !important;
   }
-  
+
   &.active {
     border: 1px solid $color-31;
     border-radius: 50%;
