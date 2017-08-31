@@ -5,7 +5,8 @@ import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES } from 'config';
 import { getKeyByValue } from 'util/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
-import LayerListStyles from 'styles/components/map/item-list.scss';
+import LayerItemStyles from 'styles/components/map/layer-item.scss';
+import ListItemStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
@@ -84,7 +85,7 @@ class LayerItem extends Component {
     let actions;
     if (this.props.layerPanelEditMode === true) {
       actions = (
-        <div className={LayerListStyles.editionMenu}>
+        <div className={LayerItemStyles.editionMenu}>
           <DeleteIcon
             className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
             onClick={() => {
@@ -95,17 +96,17 @@ class LayerItem extends Component {
       );
     } else {
       actions = (
-        <ul className={LayerListStyles.itemOptionList}>
+        <ul className={LayerItemStyles.itemOptionList}>
           {canReport && reportId !== undefined && <li
-            className={LayerListStyles.itemOptionItem}
+            className={LayerItemStyles.itemOptionItem}
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
-              className={classnames(IconStyles.reportIcon, { [`${LayerListStyles._highlighted}`]: isCurrentlyReportedLayer })}
+              className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
             />
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom &&
-          <li className={LayerListStyles.itemOptionItem}>
+          <li className={LayerItemStyles.itemOptionItem}>
             <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'EXTRA' })} >
               <PaintIcon
                 className={IconStyles.paintIcon}
@@ -114,7 +115,7 @@ class LayerItem extends Component {
             </button >
           </li>}
           <li
-            className={LayerListStyles.itemOptionItem}
+            className={LayerItemStyles.itemOptionItem}
           >
             <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'INFO' })} >
               <InfoIcon
@@ -128,24 +129,26 @@ class LayerItem extends Component {
     }
 
     return (
-      <div className={LayerListStyles.listItemContainer}>
+      <div className={ListItemStyles.listItemContainer}>
         <li
-          className={LayerListStyles.listItem}
+          className={ListItemStyles.listItem}
         >
-          <Toggle
-            on={visible}
-            colorName={color}
-            onToggled={() => this.onChangeVisibility()}
-          />
-          <input
-            className={classnames(LayerListStyles.itemName, { [LayerListStyles.itemRename]: this.props.layerPanelEditMode })}
-            onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
-            readOnly={!this.props.layerPanelEditMode}
-            value={this.props.layer.label}
-            ref={((elem) => {
-              this.inputName = elem;
-            })}
-          />
+          <div className={LayerItemStyles.layerItemHeader}>
+            <Toggle
+              on={visible}
+              colorName={color}
+              onToggled={() => this.onChangeVisibility()}
+            />
+            <input
+              className={classnames(LayerItemStyles.itemName, { [LayerItemStyles.itemRename]: this.props.layerPanelEditMode })}
+              onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
+              readOnly={!this.props.layerPanelEditMode}
+              value={this.props.layer.label}
+              ref={((elem) => {
+                this.inputName = elem;
+              })}
+            />
+          </div>
           {actions}
         </li>
         <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
@@ -156,11 +159,11 @@ class LayerItem extends Component {
           />
         </ExpandItem >
         <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
-          <div className={LayerListStyles.selectPolygon}>
+          <div className={LayerItemStyles.selectPolygon}>
             <SelectIcon
               className={IconStyles.selectIcon}
             />
-            <div className={LayerListStyles.selectPolygonText}>
+            <div className={LayerItemStyles.selectPolygonText}>
               Select a Polygon to get more info
             </div>
           </div>
