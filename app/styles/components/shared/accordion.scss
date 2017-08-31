@@ -7,7 +7,7 @@
     cursor: pointer;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: start;
     padding-left: 30px;
     padding-right: 30px;
     margin-left: -35px;
@@ -25,12 +25,14 @@
     }
 
     .expandArrowButton {
+      margin-top: 2px;
       outline: none;
       cursor: pointer;
       pointer-events: none;
       @include arrow(8px, 2px, $color-4, 'down');
 
       &.expanded {
+        margin-top: 4px;
         @include arrow(8px, 2px, $color-4, 'up');
       }
     }

@@ -187,8 +187,5 @@
   cursor: pointer;
   display: inline-flex;
   position: relative;
-
-  &:not(:first-child) {
-    margin: 0 0 0 15px;
-  }
+  margin-right: 5px;
 }
