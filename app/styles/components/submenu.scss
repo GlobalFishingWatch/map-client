@@ -28,7 +28,7 @@
         cursor: pointer;
 
         .title {
-          color: $color-4;
+          color: $color-fade-blue;
           font-family: $font-family-1;
           font-size: $font-size-xxs-small;
           font-weight: $font-weight-bold;
@@ -40,17 +40,32 @@
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
           }
+          .separator {
+            margin-right: 10px;
+          }
         }
 
         .backButton {
           cursor: pointer;
         }
 
-        .back {
+        .backIcon {
           @include arrow(8px, 2px, $color-4, 'left');
+          vertical-align: text-bottom;
           pointer-events: none;
           margin-top: 12px;
           transform: rotate(45deg) translate(0, -50%);
+        }
+        .backText {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-xxs-small;
+          font-weight: $font-weight-bold;
+          margin-left: 10px;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+          }
         }
       }
     }
