@@ -14,11 +14,11 @@
 .latlon {
   display: none;
   @media #{$mq-tablet} {
-    bottom: 45px;
+    top: 382px;
     color: rgba($color-4, .7);
     display: block;
     font-size: $font-size-xxs-small;
-    left: 95px;
+    left: 15px;
     position: absolute;
     z-index: 99;
   }
@@ -64,17 +64,13 @@
 }
 
 .mapLoader {
-  bottom: 35px;
-  left: 35px;
+  bottom: 360px;
+  left: 16px;
   position: absolute;
   z-index: 6;
 
   @media #{$mq-tablet} {
-    bottom: 170px;
-  }
-
-  @media #{$mq-desktop} {
-    bottom: 270px;
+    bottom: 230px;
   }
 }
 
@@ -82,9 +78,9 @@
   display: none;
 
   @media #{$mq-tablet} {
-    bottom: 35px;
+    top: 96px;
+    left: 16px;
     display: block;
-    left: 35px;
     position: absolute;
     z-index: 6;
   }
@@ -96,18 +92,17 @@
   > .control {
     align-items: center;
     background-color: $color-19;
-    border-radius: 50%;
     box-shadow: 0 0 8px 0 rgba($color-22, .3);
     color: $color-4;
     cursor: pointer;
     display: flex;
-    height: 40px;
+    height: 34px;
     justify-content: center;
     text-align: center;
-    width: 40px;
+    width: 34px;
 
     &:not(:first-child) {
-      margin: 5px 0 0;
+      margin: 3px 0 0;
     }
 
     &._disabled {

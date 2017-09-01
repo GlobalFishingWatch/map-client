@@ -23,20 +23,19 @@
   &._tiny {
     align-items: center;
     background-color: $color-19;
-    border-radius: 50%;
     box-shadow: 0 0 8px 0 rgba($color-22, .3);
     color: $color-4;
-    height: 40px;
+    height: 34px;
     justify-content: center;
     text-align: center;
-    width: 40px;
+    width: 34px;
 
     .loaderContainer {
       background-color: transparent;
       height: 26px;
-      left: 8px;
+      left: 4px;
       position: absolute;
-      top: 7px;
+      top: 4px;
       width: 26px;
 
       > .loaderBubble::before {
