@@ -1,0 +1,65 @@
+@import '../settings';
+
+.leyend {
+  display: none;
+
+  @media #{$mq-tablet} {
+    display: inline-block;
+    position: absolute;
+    bottom: 110px;
+    left: 0px;
+    width: $leyend-width;
+    height: 76px;
+    z-index: 10;
+    background-color: $color-base;
+    color: $color-white;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+  }
+
+  .leyendText {
+    display: flex;
+    justify-content: space-between;
+    span {
+      &:first-child{
+        margin-right: 20px;
+      }
+      font-size: $font-size-xs-small;
+    }
+  }
+
+  .leyendOvals {
+    display: flex;
+    margin: 15px 10px;
+
+    .lessFishingOval {
+      background-color: $light-blue;
+      box-shadow: 0px 0px 5px 1px $light-blue;
+      width: 5.6px;
+      height: 5.6px;
+      margin-top: 2px;
+      transform: rotate(54deg);
+      border-radius: 50%;
+    }
+
+    .moreFishingOval {
+      background-color: $light-blue;
+      box-shadow: 0px 0px 5px 1px $light-blue;
+      width: 10px;
+      height: 10px;
+      transform: rotate(54deg);
+      border-radius: 50%;
+    }
+
+    .line {
+      width: 72px;
+      margin-left: 5px;
+      margin-right: 5px;
+      height: 0;
+      margin-top: 4px;
+      opacity: 0.3;
+      border: solid 1px $color-34;
+    }
+  }
+}
