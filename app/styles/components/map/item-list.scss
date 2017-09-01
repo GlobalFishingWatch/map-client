@@ -75,6 +75,10 @@
       border: 2px solid $color-4;
     }
   }
+
+  &._baseline {
+    align-items: baseline;
+  }
 }
 
 .itemInfo {
@@ -164,6 +168,11 @@
         fill: $color-31;
       }
     }
+  }
+
+  &._inlineList {
+    justify-content: flex-start;
+    margin-left: 5px;
   }
 }
 

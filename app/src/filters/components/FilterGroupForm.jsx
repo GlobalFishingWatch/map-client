@@ -8,6 +8,7 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/map/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
+import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
 
@@ -84,11 +85,20 @@ class FilterGroupForm extends Component {
     this.setState({ filterGroup });
   }
 
+  onClickInfo(layer) {
+    const modalParams = {
+      open: true,
+      info: layer
+    };
+
+    this.props.openLayerInfoModal(modalParams);
+  }
+
   renderLayersList() {
-    return this.props.layers.map(layer => (
+    return this.props.layers.map((layer, i) => (
       <li
-        className={ItemList.listItem}
-        key={layer.id}
+        className={classnames([ItemList.listItem, ItemList._baseline])}
+        key={i}
       >
         <Checkbox
           classNames="-spaced"
@@ -99,7 +109,7 @@ class FilterGroupForm extends Component {
           callback={() => this.onLayerChecked(layer.id)}
           checked={this.state.filterGroup.checkedLayers[layer.id]}
         />
-        <ul className={ItemList.itemOptionList} >
+        <ul className={classnames([ItemList.itemOptionList, ItemList._inlineList])} >
           <li
             className={ItemList.itemOptionItem}
             onClick={() => this.onClickInfo(layer)}
@@ -117,14 +127,16 @@ class FilterGroupForm extends Component {
     const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
 
     const filterInputs = filtersFromLayers.map((elem, index) => (
-      <select
-        key={index}
-        name={elem.label}
-        onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
-        value={this.state.filterGroup.filterValues[elem.name]}
-      >
-        {elem.values}
-      </select >
+      <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
+        <select
+          key={index}
+          name={elem.label}
+          onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
+          value={this.state.filterGroup.filterValues[elem.name]}
+        >
+          {elem.values}
+        </select >
+      </div >
     ));
 
     return (
@@ -144,7 +156,7 @@ class FilterGroupForm extends Component {
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
               <div className={ModalStyles.sectionTitle} >
-                Select the Fishing Layers:
+                Select a Fishing Layer:
               </div >
               <div className={ItemList.wrapper} >
                 <ul >
@@ -172,7 +184,7 @@ class FilterGroupForm extends Component {
                 name="name"
                 onChange={this.onNameChange}
                 className={ModalStyles.nameInput}
-                placeholder="Filter group name"
+                placeholder="Filter Group Name"
                 value={this.state.filterGroup.label}
               />
             </div >
@@ -196,7 +208,8 @@ FilterGroupForm.propTypes = {
   editFilterGroupIndex: PropTypes.number,
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
-  saveFilterGroup: PropTypes.func
+  saveFilterGroup: PropTypes.func,
+  openLayerInfoModal: PropTypes.func.isRequired
 };
 
 export default FilterGroupForm;

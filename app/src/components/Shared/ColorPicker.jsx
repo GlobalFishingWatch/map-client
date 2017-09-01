@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { COLORS } from 'config';
 
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
@@ -12,7 +11,7 @@ class ExpandButton extends Component {
 
   renderInput(color, i) {
     return (
-      <div className={classnames(colorPickerStyles.colorInput)} key={i}>
+      <div className={colorPickerStyles.colorInput} key={i}>
         <input
           type="radio"
           name="color"
@@ -21,14 +20,14 @@ class ExpandButton extends Component {
           onChange={e => this.onColorChange(e)}
           checked={this.props.color === color}
         />
-        <label htmlFor={color} className={classnames(colorPickerStyles[color])} />
+        <label htmlFor={color} className={colorPickerStyles[color]} />
       </div>
     );
   }
   render() {
     return (
-      <div className={classnames(colorPickerStyles.colorPicker)}>
-        <div>Color</div>
+      <div className={colorPickerStyles.colorPicker}>
+        <div className={colorPickerStyles.title}>Color</div>
         { Object.keys(COLORS).map((color, i) => this.renderInput(color, i))}
       </div>
     );

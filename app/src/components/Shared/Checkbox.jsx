@@ -10,7 +10,7 @@ function Checkbox({ id, callback, label, labelClassNames, defaultChecked, checke
         <input type="checkbox" id={id} onChange={callback} defaultChecked={defaultChecked} checked={checked === true} disabled={disabled} />
         <label htmlFor={id} />
       </div>
-      <div className={classnames(['label', labelClassNames])}>{label}</div>
+      <div className={classnames(['label', { checkedLabel: checked }, labelClassNames])}>{label}</div>
     </div>
   );
 }

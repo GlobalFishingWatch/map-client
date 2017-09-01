@@ -16,6 +16,10 @@
 
   .label {
     margin-left: 5px;
+    color: rgba($color-34, 0.3);
+    &.checkedLabel {
+      color: $color-white;
+    }
   }
 
   .checkbox {
@@ -33,7 +37,7 @@
     height: 14px;
     left: 0;
     background: transparent;
-    border:1px solid $color-3;
+    border:1px solid rgba($color-34, 0.3);
   }
 
   .checkbox label:after {
