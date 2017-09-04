@@ -12,6 +12,14 @@
       width: 50%;
     }
 
+    .zoneMarker {
+      border: 1px solid red;
+      position: absolute;
+      left: 22px;
+      width: 22px;
+      height: 16px;
+    }
+
     display: flex;
     position: absolute;
     bottom: 110px;
