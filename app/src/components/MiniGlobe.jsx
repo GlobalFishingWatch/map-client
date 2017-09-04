@@ -3,12 +3,13 @@ import MiniGlobeStyles from 'styles/components/miniGlobe.scss';
 import { geoOrthographic, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 
-const jsonData = require('assets/topoJson/world.json');
+const jsonData = require('assets/topoJson/ne_110m_land.json');
 
 class MiniGlobe extends Component {
 
   constructor() {
     super();
+    this.worldData = feature(jsonData, jsonData.objects.land).features;
 
     this.worldData = feature(jsonData, jsonData.objects.countries).features;
   }
@@ -28,11 +29,8 @@ class MiniGlobe extends Component {
               this.worldData.map((d, i) => (
                 <path
                   key={`path-${i}`}
-                  d={geoPath().projection(this.projection())(d)}
-                  className="countries"
-                  fill="#33FF33"
-                  stroke="#FFFFFF"
-                  strokeWidth={0.5}
+                  d={geoPath().projection(this.state.projection)(d)}
+                  className="land"
                 />
               ))
             }
