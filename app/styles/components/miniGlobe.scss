@@ -1,59 +1,34 @@
 @import '../settings';
 
 .miniGlobe {
+  display: none;
+
 
   @media #{$mq-tablet} {
+    .zone {
+      color: $color-white;
+      font-size: $font-size-xs-small;
+      line-height: $font-size-small;
+      width: 50%;
+    }
+
+    display: flex;
     position: absolute;
-    bottom: 210px;
+    bottom: 110px;
     left: 0px;
     width: $leyend-width;
     height: 76px;
     z-index: 10;
     background-color: $color-base;
-    color: $color-white;
-    // padding-top: 10px;
-    // padding-bottom: 15px;
-    // padding-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
   }
 
-  .water {
-    fill: #00248F;
-  }
-
-  .land {
-    fill: #A98B6F;
-    stroke: #FFF;
-    stroke-width: 0.7px;
-  }
-
-  .land:hover {
-    fill:#33CC33;
-    stroke-width: 1px;
-  }
-
-  .focused {
-    fill: #33CC33;
-  }
-
-  select {
-    position: absolute;
-    top: 20px;
-    left: 580px;
-    border: solid #ccc 1px;
-    padding: 3px;
-    box-shadow: inset 1px 1px 2px #ddd8dc;
-  }
-
-  .countryTooltip {
-    position: absolute;
-    display: none;
-    pointer-events: none;
-    background: #fff;
-    padding: 5px;
-    text-align: left;
-    border: solid #ccc 1px;
-    color: #666;
-    font-size: 14px;
-    font-family: sans-serif;
+  .globeSvg {
+    fill: $color-base;
+    stroke: $color-base;
+    background-color: $color-34;
+    border-radius: 50%;
   }
 }
