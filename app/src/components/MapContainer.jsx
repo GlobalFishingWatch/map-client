@@ -236,6 +236,9 @@ class MapContainer extends Component {
       />
       <MiniGlobe
         center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
+        zoom={this.props.zoom}
+        viewportWidth={this.state.viewportWidth}
+        viewportHeight={this.state.viewportHeight}
       />
       <Leyend />
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >

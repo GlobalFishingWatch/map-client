@@ -5,21 +5,6 @@
 
 
   @media #{$mq-tablet} {
-    .zone {
-      color: $color-white;
-      font-size: $font-size-xs-small;
-      line-height: $font-size-small;
-      width: 50%;
-    }
-
-    .zoneMarker {
-      border: 1px solid red;
-      position: absolute;
-      left: 22px;
-      width: 22px;
-      height: 16px;
-    }
-
     display: flex;
     position: absolute;
     bottom: 110px;
@@ -31,12 +16,35 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-  }
 
-  .globeSvg {
-    fill: $color-base;
-    stroke: $color-base;
-    background-color: $color-34;
-    border-radius: 50%;
+    .zone {
+      color: $color-white;
+      font-size: $font-size-xs-small;
+      line-height: $font-size-small;
+      width: 50%;
+    }
+
+    .svgContainer {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+
+      .zoneMarker {
+        border: 1px solid red;
+        position: absolute;
+        z-index: 10;
+        flex: 1;
+        align-self: center;
+      }
+
+      .globeSvg {
+        position: absolute;
+        fill: $color-base;
+        stroke: $color-base;
+        background-color: $color-34;
+        border-radius: 50%;
+      }
+    }
   }
 }
