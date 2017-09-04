@@ -26,8 +26,12 @@ class MiniGlobe extends Component {
   }
 
   markerSize(zoom, viewportWidth, viewportHeight) {
-    const width = zoom && viewportWidth ? `${(viewportWidth * 1.1) / ((2.4 ** zoom))}px` : '20px';
-    const height = zoom && viewportHeight ? `${(viewportHeight * 1.1) / ((2.4 ** zoom))}px` : '20px';
+    const width = zoom && viewportWidth
+      ? `${(viewportWidth * MINI_GLOBE_SETTINGS.viewportRatio) / ((MINI_GLOBE_SETTINGS.zoomRatio ** zoom))}px`
+      : `${MINI_GLOBE_SETTINGS.defaultSize}px`;
+    const height = zoom && viewportHeight
+      ? `${(viewportHeight * MINI_GLOBE_SETTINGS.viewportRatio) / ((MINI_GLOBE_SETTINGS.zoomRatio ** zoom))}px`
+      : `${MINI_GLOBE_SETTINGS.defaultSize}px`;
     return { width, height };
   }
 
@@ -85,7 +89,7 @@ class MiniGlobe extends Component {
     return (
       <div id="miniGlobe" className={MiniGlobeStyles.miniGlobe} >
         <div className={MiniGlobeStyles.svgContainer} >
-          { zoom > 2 &&
+          { zoom > MINI_GLOBE_SETTINGS.minZoom &&
             <div className={MiniGlobeStyles.zoneMarker} style={{ width: markerWidth, height: markerHeight }} />
           }
           <svg
