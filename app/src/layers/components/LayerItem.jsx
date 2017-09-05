@@ -5,13 +5,13 @@ import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES } from 'config';
 import { getKeyByValue } from 'util/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
+import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';
 import ListItemStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
-// import SelectIcon from '-!babel-loader!svg-react-loader!assets/icons/select.svg?name=SelectIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -107,22 +107,22 @@ class LayerItem extends Component {
           </li>}
           {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
           <li className={LayerItemStyles.itemOptionItem}>
-            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'EXTRA' })} >
+            <ExpandItemButton active={this.state.expand === 'EXTRA'}>
               <PaintIcon
                 className={IconStyles.paintIcon}
                 onClick={() => this.changeExpand('EXTRA')}
               />
-            </button >
+            </ExpandItemButton >
           </li>}
           <li
             className={LayerItemStyles.itemOptionItem}
           >
-            <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'INFO' })} >
+            <ExpandItemButton active={this.state.expand === 'INFO'}>
               <InfoIcon
                 className={IconStyles.infoIcon}
                 onClick={() => this.changeExpand('INFO')}
               />
-            </button >
+            </ExpandItemButton >
           </li>
         </ul>
       );

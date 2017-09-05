@@ -1,5 +1,4 @@
 @import '../../settings';
-@import '../../mixins';
 
 .expandItem {
   .notAccordion {
@@ -11,26 +10,5 @@
     color: $color-white;
     padding: 20px 35px;
     align-items: flex-start;
-
-    &.firstIcon {
-      &::after {
-        right: 82px;
-        margin-top: -68px;
-      }
-    }
-
-    &.secondIcon{
-      &::after {
-        right: 50px;
-        margin-top: -25px;
-      }
-    }
-
-    &::after {
-      display: inline-block;
-      position: absolute;
-      content: "";
-      @include triangle($color-mid-blue, 'up');
-    }
   }
 }
