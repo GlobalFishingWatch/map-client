@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import PinnedVessel from 'pinnedVessels/components/PinnedVessel';
+
 import {
   showPinnedVesselDetails,
   toggleVesselPin,
   setPinnedVesselHue,
   setPinnedVesselTitle,
-  togglePinnedVesselVisibility
+  togglePinnedVesselVisibility,
+  toggleActiveVesselPin
 } from 'actions/vesselInfo';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 
@@ -29,6 +31,9 @@ const mapDispatchToProps = dispatch => ({
   },
   togglePinnedVesselVisibility(seriesgroup) {
     dispatch(togglePinnedVesselVisibility(seriesgroup));
+  },
+  onTogglePin: (seriesgroup) => {
+    dispatch(toggleActiveVesselPin(seriesgroup));
   }
 });
 

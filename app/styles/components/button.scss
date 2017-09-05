@@ -60,3 +60,23 @@
   text-transform: uppercase;
   width: 100%;
 }
+
+.pinVesselIcon {
+  outline: none;
+  padding: 7px 9px 3px 9px;
+
+  svg {
+    fill: $color-31 !important;
+  }
+
+  &.pinned {
+    background-color: $color-31;
+    border-radius: 50%;
+
+    svg {
+      fill: $color-4 !important;
+    }
+  }
+}
+
+

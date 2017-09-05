@@ -4,10 +4,12 @@ import classnames from 'classnames';
 import Toggle from 'components/Shared/Toggle';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import IconStyles from 'styles/icons.scss';
+import ButtonStyles from 'styles/components/button.scss';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
+import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
 import { COLOR_HUES } from 'config';
@@ -48,6 +50,11 @@ class PinnedVessel extends Component {
     this.setState({ expand: value });
   }
 
+  togglePin() {
+    this.props.onTogglePin(this.props.vessel.seriesgroup);
+    this.setState({ pinned: !this.state.pinned });
+  }
+
   render() {
     let actions;
     if (this.props.vessel.title === undefined) return false;
@@ -79,6 +86,14 @@ class PinnedVessel extends Component {
                 onClick={() => this.changeExpand('COLOR')}
               />
             </ExpandItemButton >
+          </li>
+          <li className={pinnedTracksStyles.pinnedItemActionItem}>
+            <button className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: this.props.vessel.pinned })}>
+              <PinIcon
+                className={IconStyles.pinIcon}
+                onClick={() => this.togglePin()}
+              />
+            </button>
           </li>
         </ul>
       );
@@ -129,6 +144,7 @@ PinnedVessel.propTypes = {
   setPinnedVesselTitle: PropTypes.func,
   onVesselClicked: PropTypes.func,
   setPinnedVesselHue: PropTypes.func,
+  onTogglePin: PropTypes.func.isRequired,
   showBlending: PropTypes.bool,
   vessel: PropTypes.object
 };

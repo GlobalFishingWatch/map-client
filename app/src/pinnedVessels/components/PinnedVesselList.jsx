@@ -23,14 +23,15 @@ class PinnedVesselList extends Component {
   }
 
   render() {
-    const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
+    const unpinnedVessels = this.props.vessels.filter(vessel => !vessel.pinned);
+    const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned);
 
     let pinnedItems = null;
 
-    if (pinnedVessels.length) {
+    if (unpinnedVessels.length || pinnedVessels.length) {
       pinnedItems = (
         <ul>
-          {pinnedVessels.map((pinnedVessel, index) =>
+          {unpinnedVessels.concat(pinnedVessels).map((pinnedVessel, index) =>
             (<PinnedVessel
               index={index}
               key={index}
