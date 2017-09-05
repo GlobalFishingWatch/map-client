@@ -11,7 +11,7 @@ import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
-import SelectIcon from '-!babel-loader!svg-react-loader!assets/icons/select.svg?name=SelectIcon';
+// import SelectIcon from '-!babel-loader!svg-react-loader!assets/icons/select.svg?name=SelectIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
@@ -105,7 +105,7 @@ class LayerItem extends Component {
               className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
             />
           </li>}
-          {this.props.layer.type !== LAYER_TYPES.Custom &&
+          {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
           <li className={LayerItemStyles.itemOptionItem}>
             <button className={classnames(ButtonStyles.expandButton, { [ButtonStyles.active]: this.state.expand === 'EXTRA' })} >
               <PaintIcon
@@ -151,22 +151,24 @@ class LayerItem extends Component {
           </div>
           {actions}
         </li>
-        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
-          <ColorPicker
-            color={color}
-            onColorChange={this.onColorChange}
-            id={id}
-          />
-        </ExpandItem >
+        {this.props.enableColorPicker &&
+          <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
+            <ColorPicker
+              color={color}
+              onColorChange={this.onColorChange}
+              id={id}
+            />
+          </ExpandItem >
+        }
         <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
-          <div className={LayerItemStyles.selectPolygon}>
+          {/* <div className={LayerItemStyles.selectPolygon}>
             <SelectIcon
               className={IconStyles.selectIcon}
             />
             <div className={LayerItemStyles.selectPolygonText}>
               Select a Polygon to get more info
             </div>
-          </div>
+          </div> */}
           <button
             onClick={() => this.onClickInfo()}
             className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half, ButtonStyles._top)}
@@ -205,7 +207,8 @@ LayerItem.propTypes = {
   /*
    If layer labels are editable or not
    */
-  layerPanelEditMode: PropTypes.bool
+  layerPanelEditMode: PropTypes.bool,
+  enableColorPicker: PropTypes.bool
 };
 
 export default LayerItem;

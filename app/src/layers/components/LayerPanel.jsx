@@ -48,6 +48,7 @@ class LayerPanel extends Component {
             layer={layer}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
             showBlending={this.state.currentBlendingOptionsShown === index}
+            enableColorPicker
           />
         );
       } else {
@@ -58,6 +59,7 @@ class LayerPanel extends Component {
             layer={layer}
             onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
             showBlending={this.state.currentBlendingOptionsShown === index}
+            enableColorPicker={false}
           />
         );
       }
