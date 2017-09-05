@@ -40,29 +40,14 @@ class LayerPanel extends Component {
       if (layer.added === false) {
         return;
       }
-      if (layer.type === LAYER_TYPES.Heatmap) {
-        fishingLayers.push(
-          <LayerItem
-            key={`${index}${layer.id}`}
-            layerIndex={index}
-            layer={layer}
-            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-            showBlending={this.state.currentBlendingOptionsShown === index}
-            enableColorPicker
-          />
-        );
-      } else {
-        mapLayers.push(
-          <LayerItem
-            key={`${index}${layer.id}`}
-            layerIndex={index}
-            layer={layer}
-            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-            showBlending={this.state.currentBlendingOptionsShown === index}
-            enableColorPicker={false}
-          />
-        );
-      }
+      const layerItem = (<LayerItem
+        key={`${index}${layer.id}`}
+        layerIndex={index}
+        layer={layer}
+        onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
+        showBlending={this.state.currentBlendingOptionsShown === index}
+      />);
+      ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : mapLayers).push(layerItem);
     });
 
     return (
