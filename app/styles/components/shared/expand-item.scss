@@ -15,7 +15,7 @@
     &.firstIcon {
       &::after {
         right: 82px;
-        margin-top: -63px;
+        margin-top: -68px;
       }
     }
 
@@ -27,9 +27,9 @@
     }
 
     &::after {
+      display: inline-block;
       position: absolute;
       content: "";
-      display: inline-block;
       @include triangle($color-mid-blue, 'up');
     }
   }
