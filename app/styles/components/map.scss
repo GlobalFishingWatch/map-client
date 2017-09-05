@@ -96,10 +96,10 @@
     color: $color-4;
     cursor: pointer;
     display: flex;
-    height: 34px;
+    width: 44px;
+    height: 44px;
     justify-content: center;
     text-align: center;
-    width: 34px;
 
     &:not(:first-child) {
       margin: 3px 0 0;
