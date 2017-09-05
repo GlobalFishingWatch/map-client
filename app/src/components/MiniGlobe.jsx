@@ -111,11 +111,11 @@ class MiniGlobe extends Component {
             </g>
           </svg>
         </div>
-        <div className={MiniGlobeStyles.zone}>
+        {/* <div className={MiniGlobeStyles.zone}>
           <span>
             Zone
           </span>
-        </div>
+        </div> */}
       </div>
     );
   }
