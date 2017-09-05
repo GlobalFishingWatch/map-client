@@ -1,15 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
-import PinnedVesselOptionsTooltip from 'pinnedVessels/components/PinnedVesselOptionsTooltip';
+import Toggle from 'components/Shared/Toggle';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import IconStyles from 'styles/icons.scss';
+import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
-import Toggle from 'components/Shared/Toggle';
+import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
+import ExpandItem from 'components/Shared/ExpandItem';
+import ColorPicker from 'components/Shared/ColorPicker';
+import { COLOR_HUES } from 'config';
+import { getKeyByValue } from 'util/colors';
 
 class PinnedVessel extends Component {
+  constructor() {
+    super();
+    this.state = { expand: null };
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeHue = this.onChangeHue.bind(this);
+    this.onChangeVisibility = this.onChangeVisibility.bind(this);
+  }
 
   onChangeName(value) {
     this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
@@ -21,19 +32,20 @@ class PinnedVessel extends Component {
     }
   }
 
-  onChangeHue(hue) {
+  onChangeHue(color) {
     if (!this.props.vessel.visible) {
       this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
     }
-    this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, hue);
+    this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, COLOR_HUES[color]);
   }
 
   onChangeVisibility() {
     this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
-  toggleBlending() {
-    this.props.onPinnedVesselOptionsToggled(this.props.index);
+  changeExpand(value) {
+    if (value === this.state.expand) value = null;
+    this.setState({ expand: value });
   }
 
   render() {
@@ -54,47 +66,57 @@ class PinnedVessel extends Component {
     } else {
       actions = (
         <ul className={pinnedTracksStyles.pinnedItemActionList} >
-          <li className={pinnedTracksStyles.pinnedItemActionItem}>
-            <PinnedVesselOptionsTooltip
-              hueValue={this.props.vessel.hue}
-              onChangeHue={hue => this.onChangeHue(hue)}
-              isReverse={this.props.index < REVERSE_TOOLTIP_ITEMS_MOBILE}
-              visible={this.props.showBlending}
-              toggleVisibility={() => this.toggleBlending()}
-            />
-          </li>
           <li
             className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={e => this.onVesselLabelClick(e)}
           >
             <InfoIcon className={IconStyles.infoIcon} />
           </li>
+          <li className={pinnedTracksStyles.pinnedItemActionItem}>
+            <ExpandItemButton active={this.state.expand === 'COLOR'} >
+              <PaintIcon
+                className={IconStyles.paintIcon}
+                onClick={() => this.changeExpand('COLOR')}
+              />
+            </ExpandItemButton >
+          </li>
         </ul>
       );
     }
 
+    const color = getKeyByValue(COLOR_HUES, this.props.vessel.hue);
     return (
       <li
         className={pinnedTracksStyles.pinnedItem}
         key={this.props.vessel.seriesgroup}
       >
-        <Toggle
-          on={this.props.vessel.visible}
-          hue={this.props.vessel.hue}
-          onToggled={() => this.onChangeVisibility()}
-        />
-        <input
-          className={classnames(pinnedTracksStyles.itemName, { [pinnedTracksStyles.itemRename]: this.props.pinnedVesselEditMode })}
-          onChange={e => this.onChangeName(e.currentTarget.value)}
-          readOnly={!this.props.pinnedVesselEditMode}
-          value={this.props.vessel.title}
-          ref={((elem) => {
-            this.inputName = elem;
-          })}
-          onClick={e => this.onVesselLabelClick(e)}
-        />
-        {actions}
-      </li>);
+        <div className={pinnedTracksStyles.itemHeader}>
+          <Toggle
+            on={this.props.vessel.visible}
+            hue={this.props.vessel.hue}
+            onToggled={() => this.onChangeVisibility()}
+          />
+          <input
+            className={classnames(pinnedTracksStyles.itemName, { [pinnedTracksStyles.itemRename]: this.props.pinnedVesselEditMode })}
+            onChange={e => this.onChangeName(e.currentTarget.value)}
+            readOnly={!this.props.pinnedVesselEditMode}
+            value={this.props.vessel.title}
+            ref={((elem) => {
+              this.inputName = elem;
+            })}
+            onClick={e => this.onVesselLabelClick(e)}
+          />
+          {actions}
+        </div>
+        <ExpandItem active={this.state.expand === 'COLOR'} arrowPosition={0}>
+          <ColorPicker
+            color={color}
+            onColorChange={this.onChangeHue}
+            id={this.props.vessel.title}
+          />
+        </ExpandItem >
+      </li>
+    );
   }
 }
 
