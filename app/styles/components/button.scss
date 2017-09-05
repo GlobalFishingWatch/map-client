@@ -61,29 +61,6 @@
   width: 100%;
 }
 
-.expandButton {
-  outline: none;
-  padding: 5px 6px;
-  margin-left: 0px;
-  width: 30px;
-  height: 30px;
-
-  svg {
-    fill: $color-31 !important;
-  }
-
-  &.active {
-    border: 1px solid $color-31;
-    border-radius: 50%;
-    margin-left: -1px;
-    margin-right: -1px;
-
-    svg {
-      fill: $color-4 !important;
-    }
-  }
-}
-
 .deleteButton {
   width: 30px;
   height: 30px;
