@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import FilterGroupForm from 'filters/components/FilterGroupForm';
 import { setFilterGroupModalVisibility, saveFilterGroup, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
 import { LAYER_TYPES } from 'constants';
+import { setLayerInfoModal } from 'actions/map';
 
 const mapStateToProps = (state) => {
   const editFilterGroupIndex = state.filterGroups.editFilterGroupIndex;
@@ -17,6 +18,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setFilterGroupModalVisibility(false));
     dispatch(saveFilterGroup(filterGroup, index));
     dispatch(setEditFilterGroupIndex(null));
+  },
+  openLayerInfoModal: (modalParams) => {
+    dispatch(setLayerInfoModal(modalParams));
   }
 });
 

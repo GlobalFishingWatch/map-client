@@ -43,10 +43,10 @@
 
 .filterButton {
   height: 40px;
-  margin: 10px 0 0;
+  margin: 10px 0;
   max-width: 80%;
   width: 100%;
-
+  
   @media #{$mq-tablet} {
     height: 30px;
     max-width: none;

@@ -29,7 +29,7 @@ class ColorPicker extends Component {
   render() {
     return (
       <div className={classnames(colorPickerStyles.colorPicker)}>
-        <div>Color</div>
+        <div className={colorPickerStyles.title}>Color</div>
         { Object.keys(COLORS).map((color, i) => this.renderInput(color, `${i}${this.props.id}`))}
       </div>
     );
