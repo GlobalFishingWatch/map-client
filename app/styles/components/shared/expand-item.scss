@@ -1,6 +1,19 @@
 @import '../../settings';
 
+._mobileScroll {
+
+  > .expandItem {
+    overflow-y: auto;
+    max-height: 218px;
+
+    @media #{$mq-tablet} {
+      max-height: 500px;
+    }
+  }
+}
+
 .expandItem {
+
   .notAccordion {
     flex-direction: row;
     background-color: $color-mid-blue;
