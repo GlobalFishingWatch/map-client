@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PinnedVessel from 'pinnedVessels/containers/PinnedVessel';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import MapButtonStyles from 'styles/components/button.scss';
 
 class PinnedVesselList extends Component {
   constructor(props) {

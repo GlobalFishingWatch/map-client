@@ -1,17 +1,28 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { REVERSE_TOOLTIP_ITEMS_MOBILE } from 'config';
 import { LAYER_TYPES } from 'constants';
-import LayerBlendingOptionsTooltip from 'components/Map/LayerBlendingOptionsTooltip';
-import LayerListStyles from 'styles/components/map/item-list.scss';
+import { COLOR_HUES } from 'config';
+import { getKeyByValue } from 'util/colors';
+import ExpandItem from 'components/Shared/ExpandItem';
+import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import LayerItemStyles from 'styles/components/map/layer-item.scss';
+import ListItemStyles from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
+import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
+import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
+import ColorPicker from 'components/Shared/ColorPicker';
 
 class LayerItem extends Component {
+  constructor() {
+    super();
+    this.state = { expand: null };
+    this.onColorChange = this.onColorChange.bind(this);
+  }
 
   onChangeVisibility() {
     if (this.props.layer.visible && this.props.showBlending) {
@@ -29,12 +40,12 @@ class LayerItem extends Component {
     this.props.setLayerOpacity(transparency, this.props.layer.id);
   }
 
-  onChangeHue(hue) {
+  onColorChange(color) {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerHue(hue, this.props.layer.id);
+    this.props.setLayerHue(COLOR_HUES[color], this.props.layer.id);
   }
 
   onChangeLayerLabel(value) {
@@ -58,78 +69,118 @@ class LayerItem extends Component {
     this.props.onLayerBlendingToggled(this.props.layerIndex);
   }
 
+  changeExpand(value) {
+    if (value === this.state.expand) value = null;
+    this.setState({ expand: value });
+  }
+
   render() {
-    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === this.props.layer.id;
+    const { id, hue, reportId, visible } = this.props.layer;
+
+    const color = getKeyByValue(COLOR_HUES, hue);
+    const { layerPanelEditMode } = this.props;
+    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
 
     let actions;
     if (this.props.layerPanelEditMode === true) {
       actions = (
-        <div className={LayerListStyles.editionMenu}>
-          <DeleteIcon
-            className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
-            onClick={() => {
-              this.props.toggleLayerWorkspacePresence(this.props.layer);
-            }}
-          />
-        </div>
+        <ul className={LayerItemStyles.itemOptionList}>
+          <li className={LayerItemStyles.itemOptionItem}>
+            <button className={ButtonStyles.deleteButton}>
+              <DeleteIcon
+                className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
+                onClick={() => {
+                  this.props.toggleLayerWorkspacePresence(this.props.layer);
+                }}
+              />
+            </button>
+          </li>
+        </ul>
       );
     } else {
       actions = (
-        <ul className={LayerListStyles.itemOptionList}>
-          {canReport && this.props.layer.reportId !== undefined && <li
-            className={LayerListStyles.itemOptionItem}
+        <ul className={LayerItemStyles.itemOptionList}>
+          {canReport && reportId !== undefined && <li
+            className={LayerItemStyles.itemOptionItem}
             onClick={() => this.onClickReport()}
           >
             <ReportIcon
-              className={classnames(IconStyles.reportIcon, { [`${LayerListStyles._highlighted}`]: isCurrentlyReportedLayer })}
+              className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
             />
           </li>}
-          {this.props.layer.type !== LAYER_TYPES.Custom &&
-          <li className={LayerListStyles.itemOptionItem}>
-            <LayerBlendingOptionsTooltip
-              displayHue={this.props.layer.type === LAYER_TYPES.Heatmap}
-              displayOpacity
-              hueValue={this.props.layer.hue}
-              opacityValue={this.props.layer.opacity}
-              onChangeOpacity={opacity => this.onChangeOpacity(opacity)}
-              onChangeHue={hue => this.onChangeHue(hue)}
-              isReverse={this.props.layerIndex < REVERSE_TOOLTIP_ITEMS_MOBILE}
-              visible={this.props.showBlending}
-              toggleVisibility={() => this.toggleBlending()}
-            />
+          {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
+          <li className={LayerItemStyles.itemOptionItem}>
+            <ExpandItemButton active={this.state.expand === 'EXTRA'}>
+              <PaintIcon
+                className={IconStyles.paintIcon}
+                onClick={() => this.changeExpand('EXTRA')}
+              />
+            </ExpandItemButton >
           </li>}
           <li
-            className={LayerListStyles.itemOptionItem}
-            onClick={() => this.onClickInfo()}
+            className={LayerItemStyles.itemOptionItem}
           >
-            <InfoIcon className={IconStyles.infoIcon} />
+            <ExpandItemButton active={this.state.expand === 'INFO'}>
+              <InfoIcon
+                className={IconStyles.infoIcon}
+                onClick={() => this.changeExpand('INFO')}
+              />
+            </ExpandItemButton >
           </li>
         </ul>
       );
     }
 
     return (
-      <li
-        className={LayerListStyles.listItem}
-      >
-        <Toggle
-          on={this.props.layer.visible}
-          color={this.props.layer.color}
-          hue={this.props.layer.hue}
-          onToggled={() => this.onChangeVisibility()}
-        />
-        <input
-          className={classnames(LayerListStyles.itemName, { [LayerListStyles.itemRename]: this.props.layerPanelEditMode })}
-          onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
-          readOnly={!this.props.layerPanelEditMode}
-          value={this.props.layer.label}
-          ref={((elem) => {
-            this.inputName = elem;
-          })}
-        />
-        {actions}
-      </li>
+      <div className={ListItemStyles.listItemContainer}>
+        <li
+          className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}
+        >
+          <div className={LayerItemStyles.layerItemHeader}>
+            <Toggle
+              on={visible}
+              colorName={color}
+              onToggled={() => this.onChangeVisibility()}
+            />
+            <input
+              className={classnames(LayerItemStyles.itemName, { [LayerItemStyles.itemRename]: this.props.layerPanelEditMode })}
+              onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
+              readOnly={!this.props.layerPanelEditMode}
+              value={this.props.layer.label}
+              ref={((elem) => {
+                this.inputName = elem;
+              })}
+            />
+          </div>
+          {actions}
+        </li>
+        {this.props.enableColorPicker &&
+          <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
+            <ColorPicker
+              color={color}
+              onColorChange={this.onColorChange}
+              id={id}
+            />
+          </ExpandItem >
+        }
+        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
+          {/* <div className={LayerItemStyles.selectPolygon}>
+            <SelectIcon
+              className={IconStyles.selectIcon}
+            />
+            <div className={LayerItemStyles.selectPolygonText}>
+              Select a Polygon to get more info
+            </div>
+          </div> */}
+          <button
+            onClick={() => this.onClickInfo()}
+            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half, ButtonStyles._top)}
+          >
+            INFO LAYER
+          </button >
+        </ExpandItem >
+      </div >
     );
   }
 }
@@ -160,7 +211,8 @@ LayerItem.propTypes = {
   /*
    If layer labels are editable or not
    */
-  layerPanelEditMode: PropTypes.bool
+  layerPanelEditMode: PropTypes.bool,
+  enableColorPicker: PropTypes.bool
 };
 
 export default LayerItem;

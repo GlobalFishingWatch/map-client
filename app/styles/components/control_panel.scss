@@ -12,6 +12,25 @@
     top: 0;
   }
 
+  @keyframes move {
+    from {transform: translateX(100%);}
+    to {transform: translateX(0px);}
+  }
+
+  &.entering, &.exiting {
+    display: none;
+  }
+
+  &.entered {
+    .bgWrapper{
+      animation: move 0.4s ease-in;
+    }
+  }
+
+  &.exited {
+    animation: move 0.4s ease-in;
+  }
+
   @media #{$mq-tablet} {
     background: transparent;
     flex: 0 1 auto;
@@ -69,6 +88,7 @@
       font-family: $font-family-1;
       font-size: $font-size-s-medium;
       font-weight: $font-weight-bold;
+      margin-top: 5px;
     }
 
     > .categoriesDisplay {

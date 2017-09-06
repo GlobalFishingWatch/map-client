@@ -124,3 +124,11 @@ export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INC
 export const hueToHueIncrement = hue => Math.round((hue / 360) * (VESSELS_HUES_INCREMENTS_NUM - 1));
 
 export const wrapHue = hue => hue % 360;
+
+export const getKeyByValue = (obj, value) => {
+  let result = null;
+  Object.entries(obj).forEach((entry) => {
+    if (entry[1] === value) result = entry[0];
+  });
+  return result;
+};

@@ -5,7 +5,7 @@ import ColorPicker from 'components/Shared/ColorPicker';
 import { COLORS } from 'config';
 import areasPanelStyles from 'styles/components/map/areas-panel.scss';
 import controlPanelStyles from 'styles/components/control_panel.scss';
-import buttonStyles from 'styles/components/map/button.scss';
+import buttonStyles from 'styles/components/button.scss';
 
 class AreasForm extends Component {
   constructor() {
