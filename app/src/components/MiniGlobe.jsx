@@ -11,28 +11,14 @@ class MiniGlobe extends Component {
 
   constructor(props) {
     super();
-    this.worldData = feature(jsonData, jsonData.objects.land).features;
-    const viewportWidth = props.viewportWidth;
-    const viewportHeight = props.viewportHeight;
-    const size = this.markerSize(props.zoom, viewportWidth, viewportHeight);
-
-    this.setState({
-    });
     this.state = {
       projection: null,
-      markerWidth: size.width,
-      markerHeight: size.height
+      markerWidth: `${MINI_GLOBE_SETTINGS.defaultSize}px`,
+      markerHeight: `${MINI_GLOBE_SETTINGS.defaultSize}px`
     };
-  }
 
-  markerSize(zoom, viewportWidth, viewportHeight) {
-    const width = zoom && viewportWidth
-      ? `${(viewportWidth * MINI_GLOBE_SETTINGS.viewportRatio) / ((MINI_GLOBE_SETTINGS.zoomRatio ** zoom))}px`
-      : `${MINI_GLOBE_SETTINGS.defaultSize}px`;
-    const height = zoom && viewportHeight
-      ? `${(viewportHeight * MINI_GLOBE_SETTINGS.viewportRatio) / ((MINI_GLOBE_SETTINGS.zoomRatio ** zoom))}px`
-      : `${MINI_GLOBE_SETTINGS.defaultSize}px`;
-    return { width, height };
+    this.worldData = feature(jsonData, jsonData.objects.land).features;
+    this.setMarkerSize(props.zoom, props.viewportWidth, props.viewportHeight);
   }
 
   componentDidMount() {
@@ -49,6 +35,16 @@ class MiniGlobe extends Component {
         this.props.viewportHeight !== nextProps.viewportHeight
     ) {
       this.changeZoom();
+    }
+  }
+
+  setMarkerSize(zoom, viewportWidth, viewportHeight) {
+    if (zoom && viewportWidth && viewportHeight) {
+      const zoomRelation = MINI_GLOBE_SETTINGS.zoomRatio ** zoom;
+      const markerWidth = `${(viewportWidth * MINI_GLOBE_SETTINGS.viewportRatio) / zoomRelation}px`;
+      const markerHeight = `${(viewportHeight * MINI_GLOBE_SETTINGS.viewportRatio) / zoomRelation}px`;
+
+      this.setState({ markerWidth, markerHeight });
     }
   }
 
@@ -74,11 +70,7 @@ class MiniGlobe extends Component {
   changeZoom() {
     const { zoom, viewportWidth, viewportHeight } = this.props;
     if (zoom && viewportWidth && viewportHeight) {
-      const size = this.markerSize(zoom, viewportWidth, viewportHeight);
-      this.setState({
-        markerWidth: size.width,
-        markerHeight: size.height
-      });
+      this.setMarkerSize(zoom, viewportWidth, viewportHeight);
     }
   }
 
@@ -123,8 +115,8 @@ class MiniGlobe extends Component {
 
 MiniGlobe.propTypes = {
   center: PropTypes.object.isRequired,
-  viewportWidth: PropTypes.object,
-  viewportHeight: PropTypes.object,
+  viewportWidth: PropTypes.number,
+  viewportHeight: PropTypes.number,
   zoom: PropTypes.number.isRequired
 };
 
