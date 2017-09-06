@@ -76,7 +76,7 @@ class LayerPanel extends Component {
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />
-        <ExpandItem active={this.state.expand === 'MAP_LAYERS'} accordion scroll >
+        <ExpandItem active={this.state.expand === 'MAP_LAYERS'} accordion >
           <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
             {mapLayers}
           </ul >
