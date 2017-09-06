@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import CustomLayerStyles from 'styles/components/map/custom-layer.scss';
 import MapFormStyles from 'styles/components/map/form.scss';
-import ButtonStyles from 'styles/components/map/button.scss';
+import ButtonStyles from 'styles/components/button.scss';
 
 class CustomLayer extends Component {
 

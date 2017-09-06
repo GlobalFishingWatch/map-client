@@ -8,7 +8,6 @@ import MenuLink from 'rightControlPanel/components/MenuLink';
 import SubMenu from 'rightControlPanel/containers/SubMenu';
 import FilterPanel from 'filters/containers/FilterPanel';
 import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
-import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
 import SearchPanel from 'search/containers/SearchPanel';
@@ -136,7 +135,6 @@ class ControlPanel extends Component {
         icon={this.renderIcon('layers')}
         onBack={this.onCloseLayersSubMenu}
       >
-        <BasemapPanel />
         <LayerPanel />
         <LayerManagement />
       </SubMenu >

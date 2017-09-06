@@ -32,7 +32,12 @@
   }
 }
 
+.listItemContainer {
+  width: 100%;
+}
+
 .listItem {
+  text-transform: uppercase;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -43,9 +48,12 @@
     margin: 5px 0 0;
   }
 
+  &._fixed {
+    height: 40px;
+  }
+
   &.halfRow {
     display: inline-block;
-    text-transform: uppercase;
     width: 50%;
     margin: 0;
 
@@ -71,7 +79,7 @@
   }
 
   &._selected {
-    > .itemInfo > .itemThumbnail {
+    > .itemInfo > .layerThumbnail {
       border: 2px solid $color-4;
     }
   }
@@ -147,6 +155,17 @@
   transform: translate(0, -50%);
 }
 
+.selectPolygon {
+  display: inline-block;
+  flex-direction: column;
+  width: 45%;
+  margin-right: 10px;
+  font-size: $font-size-small;
+  .selectPolygonText {
+    margin-top: 10px;
+  }
+}
+
 .editionMenu {
   display: flex;
   justify-content: flex-end;
@@ -157,6 +176,7 @@
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  margin-bottom: 10px;
 
   ._highlighted {
     path {
@@ -173,15 +193,5 @@
   &._inlineList {
     justify-content: flex-start;
     margin-left: 5px;
-  }
-}
-
-.itemOptionItem {
-  cursor: pointer;
-  display: inline-flex;
-  position: relative;
-
-  &:not(:first-child) {
-    margin: 0 0 0 15px;
   }
 }

@@ -3,12 +3,20 @@ import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
 import { LAYER_TYPES } from 'constants';
 import classnames from 'classnames';
+import ExpandItem from 'components/Shared/ExpandItem';
+import AccordionHeader from 'components/Shared/AccordionHeader';
+import BasemapPanel from 'basemap/containers/BasemapPanel';
 import LayerListStyles from 'styles/components/map/item-list.scss';
+import AccordionStyles from 'styles/components/shared/accordion.scss';
 
 class LayerPanel extends Component {
   constructor(props) {
     super(props);
-    this.state = { currentBlendingOptionsShown: -1 };
+    this.state = {
+      currentBlendingOptionsShown: -1,
+      expand: null
+    };
+    this.openMenu = this.openMenu.bind(this);
   }
 
   onLayerBlendingToggled(layerIndex) {
@@ -19,6 +27,11 @@ class LayerPanel extends Component {
     this.setState({ currentBlendingOptionsShown });
   }
 
+  openMenu(value) {
+    if (value === this.state.expand) value = null;
+    this.setState({ expand: value });
+  }
+
   render() {
     const mapLayers = [];
     const fishingLayers = [];
@@ -27,43 +40,47 @@ class LayerPanel extends Component {
       if (layer.added === false) {
         return;
       }
-      if (layer.type === LAYER_TYPES.Heatmap) {
-        fishingLayers.push(
-          <LayerItem
-            key={index}
-            layerIndex={index}
-            layer={layer}
-            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-            showBlending={this.state.currentBlendingOptionsShown === index}
-          />
-        );
-      } else {
-        mapLayers.push(
-          <LayerItem
-            key={index}
-            layerIndex={index}
-            layer={layer}
-            onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
-            showBlending={this.state.currentBlendingOptionsShown === index}
-          />
-        );
-      }
+      const layerItem = (<LayerItem
+        key={`${index}${layer.id}`}
+        layerIndex={index}
+        layer={layer}
+        onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
+        showBlending={this.state.currentBlendingOptionsShown === index}
+        enableColorPicker={layer.type === LAYER_TYPES.Heatmap}
+      />);
+      ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : mapLayers).push(layerItem);
     });
 
     return (
-      <div className={LayerListStyles.list} >
-        <div className={LayerListStyles.title} >
-          Fishing Layers
-        </div >
-        <ul className={LayerListStyles.list} >
-          {fishingLayers}
-        </ul >
-        <div className={classnames(LayerListStyles.title, LayerListStyles.spacedTitle)} >
-          Map Layers
-        </div >
-        <ul className={LayerListStyles.list} >
-          {mapLayers}
-        </ul >
+      <div className={AccordionStyles.accordion}>
+        <AccordionHeader
+          menuName={'Basemaps'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'BASEMAPS'} accordion >
+          <BasemapPanel />
+        </ExpandItem >
+        <AccordionHeader
+          menuName={'Fishing Layers'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'FISHING_LAYERS'} accordion >
+          <ul className={LayerListStyles.list} >
+            {fishingLayers}
+          </ul >
+        </ExpandItem >
+        <AccordionHeader
+          menuName={'Map Layers'}
+          openMenu={this.openMenu}
+          expandState={this.state.expand}
+        />
+        <ExpandItem active={this.state.expand === 'MAP_LAYERS'} accordion >
+          <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
+            {mapLayers}
+          </ul >
+        </ExpandItem >
       </div >
     );
   }

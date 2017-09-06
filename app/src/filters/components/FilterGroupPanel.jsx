@@ -9,7 +9,7 @@ import { FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 import classnames from 'classnames';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
-import buttonStyles from 'styles/components/map/button.scss';
+import buttonStyles from 'styles/components/button.scss';
 
 class FilterGroupPanel extends Component {
   constructor(props) {

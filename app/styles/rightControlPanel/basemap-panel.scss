@@ -1,13 +1,7 @@
 @import '../settings';
 
 .basemapsPanel {
-  border-bottom: 2px solid black;
   padding-bottom: 20px;
-  margin-left: -35px;
-  margin-right: -35px;
-  margin-bottom: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
   font-size: $font-size-xs-small;
 
   @media #{mq-tablet} {

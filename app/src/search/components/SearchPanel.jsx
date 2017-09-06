@@ -6,7 +6,7 @@ import SearchResult from 'search/containers/SearchResult';
 import iconsStyles from 'styles/icons.scss';
 import searchPanelStyles from 'styles/search/search-panel.scss';
 import ResultListStyles from 'styles/search/result-list.scss';
-import MapButtonStyles from 'styles/components/map/button.scss';
+import MapButtonStyles from 'styles/components/button.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
 
 class SearchPanel extends Component {

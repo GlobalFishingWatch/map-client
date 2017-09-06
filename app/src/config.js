@@ -79,6 +79,15 @@ export const COLORS = {
   pink: '#CC68C4'
 };
 
+// Hue for each color
+export const COLOR_HUES = {
+  yellow: 65,
+  lightBlue: 181,
+  purple: 236,
+  orange: 0,
+  pink: 305
+};
+
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'
 // https://momentjs.com/docs/#/customization/relative-time/

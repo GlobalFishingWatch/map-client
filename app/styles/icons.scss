@@ -22,6 +22,7 @@
 }
 
 .reportIcon {
+  margin-right: 10px;
   width: .8125em;
   height: 16px;
   path {
@@ -39,7 +40,7 @@
   cursor: pointer;
   fill: $color-31;
   height: 16px;
-  width: 10px;
+  width: 12px;
 }
 
 .aoiIcon {
@@ -88,6 +89,13 @@
   fill: $color-31;
   height: 15px;
   width: 15px;
+}
+
+.selectIcon {
+  cursor: pointer;
+  fill: $color-4;
+  width: 22px;
+  height: 30px;
 }
 
 .paintIcon {
