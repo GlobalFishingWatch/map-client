@@ -9,6 +9,7 @@ import templateSettings from 'lodash/templateSettings';
 import { MIN_ZOOM_LEVEL } from 'config';
 import ControlPanel from 'rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
+import Leyend from 'components/Leyend';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import DrawingManager from 'containers/Map/DrawingManager';
@@ -232,6 +233,7 @@ class MapContainer extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
+      <Leyend />
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
       </div >

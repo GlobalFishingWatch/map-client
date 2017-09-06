@@ -11,24 +11,24 @@ import ZoomOutIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-out.s
 function ZoomControls({ canShareWorkspaces, openShareModal, zoom, maxZoom, changeZoomLevel }) {
   return (
     <div className={MapStyles.zoomControls}>
-      {canShareWorkspaces &&
-      <span className={MapStyles.control} id="share_map" onClick={openShareModal} >
-        <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
-      </span>}
       <span
         className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom >= maxZoom })}
         id="zoom_up"
         onClick={changeZoomLevel}
       >
-        <ZoomInIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-in'])} />
+        <ZoomInIcon className={classnames(iconStyles.icon, iconStyles.iconZoomIn)} />
       </span>
       <span
         className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom <= MIN_ZOOM_LEVEL })}
         id="zoom_down"
         onClick={changeZoomLevel}
       >
-        <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles['icon-zoom-out'])} />
+        <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles.iconZoomOut)} />
       </span>
+      {canShareWorkspaces &&
+      <span className={MapStyles.control} id="share_map" onClick={openShareModal} >
+        <ShareIcon className={classnames(iconStyles.icon, iconStyles['icon-share'])} />
+      </span>}
     </div>
   );
 }
