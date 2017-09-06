@@ -14,17 +14,17 @@
 .latlon {
   display: none;
   @media #{$mq-tablet} {
-    top: 382px;
+    top: 76px;
     color: rgba($color-4, .7);
     display: block;
     font-size: $font-size-xxs-small;
-    left: 15px;
+    left: 18px;
     position: absolute;
     z-index: 99;
   }
 
   @media #{$mq-desktop} {
-    left: 45px;
+    left: 16px;
   }
 }
 

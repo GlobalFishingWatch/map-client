@@ -10,6 +10,7 @@ import { MIN_ZOOM_LEVEL } from 'config';
 import ControlPanel from 'rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
 import Leyend from 'components/Leyend';
+import MiniGlobe from 'components/MiniGlobe';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import DrawingManager from 'containers/Map/DrawingManager';
@@ -230,6 +231,12 @@ class MapContainer extends Component {
       </div >
       <MapLayers
         map={this.map}
+        viewportWidth={this.state.viewportWidth}
+        viewportHeight={this.state.viewportHeight}
+      />
+      <MiniGlobe
+        center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
+        zoom={this.props.zoom}
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
