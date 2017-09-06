@@ -46,6 +46,7 @@ class LayerPanel extends Component {
         layer={layer}
         onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
         showBlending={this.state.currentBlendingOptionsShown === index}
+        enableColorPicker={layer.type === LAYER_TYPES.Heatmap}
       />);
       ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : mapLayers).push(layerItem);
     });
