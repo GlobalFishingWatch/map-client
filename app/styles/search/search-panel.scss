@@ -3,6 +3,8 @@
 
 .searchPanel {
   z-index: 11;
+  padding-left: 30px;
+  padding-right: 40px;
 
   @media #{$mq-tablet} {
     position: relative;
@@ -63,7 +65,7 @@
   top: 72px;
 
   @media #{$mq-tablet} {
-    right: 10px;
+    right: 40px;
     top: 10px;
   }
 }

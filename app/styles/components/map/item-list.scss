@@ -43,6 +43,8 @@
   flex-wrap: wrap;
   position: relative;
   width: 100%;
+  padding-left: 30px;
+  padding-right: 12px;
 
   &:not(:first-child) {
     margin: 5px 0 0;
@@ -50,6 +52,12 @@
 
   &._fixed {
     height: 40px;
+  }
+
+  &._alignLeft {
+    @media #{$mq-tablet} {
+      padding-right: 4px;
+    }
   }
 
   &.halfRow {

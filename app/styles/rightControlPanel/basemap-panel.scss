@@ -3,6 +3,7 @@
 .basemapsPanel {
   padding-bottom: 20px;
   font-size: $font-size-xs-small;
+  padding-right: 40px;
 
   @media #{mq-tablet} {
     font-size: $font-size-small;
