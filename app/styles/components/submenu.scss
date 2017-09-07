@@ -12,9 +12,11 @@
       align-items: center;
       justify-content: space-between;
       display: flex;
-      padding-bottom: 15px;
-      margin-left: 10px;
-      margin-right: 22px;
+      padding-left: $menu-mobile-left-padding;
+      padding-right: $menu-right-padding;
+      padding-top: 15px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid $color-fade-blue;
 
       @media #{$mq-tablet} {
         padding-top: 24px;
@@ -30,7 +32,7 @@
         .title {
           color: $color-fade-blue;
           font-family: $font-family-1;
-          font-size: $font-size-xxs-small;
+          font-size: $font-size-small;
           font-weight: $font-weight-bold;
           text-align: left;
           text-transform: uppercase;
@@ -59,7 +61,7 @@
         .backText {
           color: $color-4;
           font-family: $font-family-1;
-          font-size: $font-size-xxs-small;
+          font-size: $font-size-small;
           font-weight: $font-weight-bold;
           margin-left: 10px;
 

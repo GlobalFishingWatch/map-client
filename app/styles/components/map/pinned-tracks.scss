@@ -2,8 +2,13 @@
 
 .pinnedTracks {
   margin: 10px 0 0;
-  padding-left: 30px;
-  padding-right: 40px;
+  padding-left: $menu-mobile-left-padding;
+  padding-right: $menu-mobile-right-padding;
+
+  @media #{$mq-tablet} {
+    padding-left: $menu-left-padding;
+    padding-right: $menu-right-padding;
+  }
 }
 
 .pinnedTracksHeading {

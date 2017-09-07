@@ -1,6 +1,8 @@
 @import '../../settings';
 
 .flagFilters {
+  padding-left: $menu-left-padding;;
+  padding-right: 22px;
   @media #{$mq-tablet} {
     max-height: none;
     overflow-y: visible;
