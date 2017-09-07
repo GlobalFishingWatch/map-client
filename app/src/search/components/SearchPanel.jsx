@@ -114,7 +114,7 @@ class SearchPanel extends Component {
             { [`${searchPanelStyles._open}`]: this.props.searchResultsOpen })}
         >
           <ul
-            className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}
+            className={classnames(ResultListStyles.resultList, ResultListStyles._short, searchPanelStyles.searchList)}
           >
             {searchResults}
           </ul >

@@ -3,11 +3,14 @@
 .resultList {
   display: flex;
   flex-wrap: wrap;
-  max-height: 106px;
   overflow: auto;
 
   @media #{$mq-tablet} {
     max-height: none;
+  }
+
+  &._short{
+    max-height: 106px;
   }
 }
 
