@@ -31,9 +31,13 @@
   }
 
   &._wide {
-    width: 84%;
-    margin-left: $menu-left-padding;
-    margin-right: 30px;
+    width: 85%;
+    margin-left: $menu-mobile-left-padding;
+    @media #{$mq-tablet} {
+      width: 84%;
+      margin-left: $menu-left-padding;
+      margin-right: $menu-right-padding;
+    }
   }
 
   &._half {

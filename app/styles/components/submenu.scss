@@ -19,6 +19,7 @@
       border-bottom: 1px solid $color-fade-blue;
 
       @media #{$mq-tablet} {
+        padding-left: 12px;
         padding-top: 24px;
         flex-direction: row;
       }
