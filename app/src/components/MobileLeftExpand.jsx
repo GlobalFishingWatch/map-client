@@ -19,7 +19,7 @@ class MobileLeftExpand extends Component {
             { [MobileLeftExpandStyles.expanded]: this.state.expanded }
           )}
       >
-        <div 
+        <div
           className={MobileLeftExpandStyles.expandButtonLeft}
           onClick={() => this.setState({ expanded: !this.state.expanded })}
         >
