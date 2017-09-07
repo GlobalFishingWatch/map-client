@@ -11,6 +11,7 @@ import ControlPanel from 'rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
 import Leyend from 'components/Leyend';
 import MiniGlobe from 'components/MiniGlobe';
+import MobileLeftExpand from 'components/MobileLeftExpand';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import DrawingManager from 'containers/Map/DrawingManager';
@@ -234,13 +235,15 @@ class MapContainer extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <MiniGlobe
-        center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
-        zoom={this.props.zoom}
-        viewportWidth={this.state.viewportWidth}
-        viewportHeight={this.state.viewportHeight}
-      />
-      <Leyend />
+      <MobileLeftExpand>
+        <MiniGlobe
+          center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
+          zoom={this.props.zoom}
+          viewportWidth={this.state.viewportWidth}
+          viewportHeight={this.state.viewportHeight}
+        />
+        <Leyend />
+      </MobileLeftExpand>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
       </div >
