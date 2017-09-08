@@ -81,8 +81,8 @@ export const COLORS = {
 
 // Hue for each color
 export const COLOR_HUES = {
-  yellow: 65,
-  lightBlue: 181,
+  yellow: 60,
+  lightBlue: 182,
   purple: 236,
   orange: 0,
   pink: 305

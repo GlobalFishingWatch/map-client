@@ -13,7 +13,7 @@
           "description": "Adds a high contrast coarse bathymetry layer to the ocean areas.",
           "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
           "visible": false,
-          "hue": 212,
+          "hue": 60,
           "type": "CartoDBAnimation",
           "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
         },
@@ -53,7 +53,7 @@
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
           "visible": true,
-          "hue": 216,
+          "hue": 236,
           "type": "CartoDBAnimation",
           "opacity": 0.6,
           "id": "eez"
@@ -63,7 +63,7 @@
           "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
           "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source",
           "visible": true,
-          "hue": 240,
+          "hue": 305,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "highseas"
@@ -73,7 +73,7 @@
           "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
           "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/fbafc1dc-e731-11e6-9ac1-0242ac110006/viz.json",
           "visible": false,
-          "hue": 200,
+          "hue": 60,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "rfmo"
