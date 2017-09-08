@@ -2,12 +2,18 @@
 
 .pinnedTracks {
   margin: 10px 0 0;
-  ul {
+  .tracksList {
     max-height: 75px;
     overflow: auto;
+    &.noInfo{
+      max-height: 266px;
+    }
    
     @media #{$mq-tablet} {
       max-height: 218px;
+      &.noInfo{
+        max-height: 458px;
+      }
     }
   }
 }
