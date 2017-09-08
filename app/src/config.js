@@ -138,3 +138,16 @@ export const EMBED_SIZE_SETTINGS = [
     height: 800
   }
 ];
+
+export const MINI_GLOBE_SETTINGS = {
+  viewBoxX: -75,
+  viewBoxY: -75,
+  viewBoxWidth: 200,
+  viewBoxHeight: 200,
+  svgWidth: 50,
+  scale: 100,
+  viewportRatio: 1.1,
+  zoomRatio: 2.4,
+  defaultSize: 20,
+  minZoom: 3
+};

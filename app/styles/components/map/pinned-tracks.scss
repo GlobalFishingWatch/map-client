@@ -2,6 +2,13 @@
 
 .pinnedTracks {
   margin: 10px 0 0;
+  // padding-left: $menu-mobile-left-padding;
+  // padding-right: $menu-mobile-right-padding;
+
+  @media #{$mq-tablet} {
+    // padding-left: $menu-left-padding;
+    // padding-right: 26px;
+  }
 }
 
 .pinnedTracksHeading {
@@ -44,6 +51,13 @@
 
   margin-top: 10px;
   margin-bottom: 10px;
+  padding-left: $menu-mobile-left-padding;
+  padding-right: $menu-mobile-right-padding;
+
+  @media #{$mq-tablet} {
+    padding-left: $menu-left-padding;
+    padding-right: 36px;
+  }
 }
 
 .itemName {
@@ -57,7 +71,7 @@
   font-family: $font-family-1;
   font-size: $font-size-normal;
   height: 24px;
-  margin: 0 15px 0 0;
+  margin-left: 5px;
   max-width: 90%;
   outline: none;
   overflow-y: hidden;
@@ -97,9 +111,10 @@
 .pinnedItemActionItem {
   display: flex;
   position: relative;
+  margin-left: 6px;
 
-  &:not(:first-child) {
-    margin: 0 0 0 10px;
+  &:first-child{
+    margin-right: 4px;
   }
 }
 

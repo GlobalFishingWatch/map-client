@@ -100,7 +100,13 @@
 
   .pinIcon {
     fill: $color-3;
-    margin-top: -50px;
+    position: absolute;
+    right: 86px;
+    
+    @media #{$mq-tablet} {
+      right: 30px;
+      margin-top: 5px;
+    }
 
     &._pinned {
       fill: #fff;
@@ -119,9 +125,6 @@
     @media #{$mq-tablet} {
       padding-right: 0px;
       position: absolute;
-    }
-
-    @media #{$mq-tablet} {
       bottom: auto;
       left: 98px;
       right: 0;

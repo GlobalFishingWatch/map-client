@@ -85,14 +85,18 @@ class LayerItem extends Component {
     let actions;
     if (this.props.layerPanelEditMode === true) {
       actions = (
-        <div className={LayerItemStyles.editionMenu}>
-          <DeleteIcon
-            className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
-            onClick={() => {
-              this.props.toggleLayerWorkspacePresence(this.props.layer);
-            }}
-          />
-        </div>
+        <ul className={LayerItemStyles.itemOptionList}>
+          <li className={LayerItemStyles.itemOptionItem}>
+            <button className={ButtonStyles.deleteButton}>
+              <DeleteIcon
+                className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
+                onClick={() => {
+                  this.props.toggleLayerWorkspacePresence(this.props.layer);
+                }}
+              />
+            </button>
+          </li>
+        </ul>
       );
     } else {
       actions = (
@@ -131,7 +135,7 @@ class LayerItem extends Component {
     return (
       <div className={ListItemStyles.listItemContainer}>
         <li
-          className={ListItemStyles.listItem}
+          className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}
         >
           <div className={LayerItemStyles.layerItemHeader}>
             <Toggle

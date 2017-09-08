@@ -33,10 +33,10 @@
     cursor: pointer;
     display: block;
     margin: 0 21px 0 0;
-    width: 21px;
+    width: 14px;
 
     @media #{$mq-mobile-large} {
-      margin: 0;
+      margin: 6px;
     }
 
     @media #{$mq-tablet} {

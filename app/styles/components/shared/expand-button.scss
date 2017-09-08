@@ -21,8 +21,8 @@
   &._expanded {
     &::after {
       @include arrow(8px, 2px, $color-19, 'up');
-      left: calc(50% - 3px);
-      top: calc(50% + 4px);
+      left: calc(50% - 4px);
+      top: calc(50% + 3px);
       transform: rotate(45deg) translate(-50%, -50%);
     }
   }

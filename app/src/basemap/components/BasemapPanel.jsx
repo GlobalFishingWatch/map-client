@@ -19,7 +19,7 @@ class BasemapPanel extends Component {
       const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
       const itemLayer = (
         <li
-          className={classnames(LayerListStyles.listItem, LayerListStyles.halfRow,
+          className={classnames(LayerListStyles.listItem, LayerListStyles._noMobileRightPadding, LayerListStyles.halfRow,
             this.props.activeBasemap === basemap.title ? LayerListStyles._selected : null)}
           key={basemap.title}
         >

@@ -3,8 +3,14 @@
 
 .searchPanel {
   z-index: 11;
-
+  padding-right: 25px;
+  padding-right: 25px;
+  padding-top: 15px;
+  padding-left: $menu-mobile-left-padding;
+  
   @media #{$mq-tablet} {
+  padding-right: $menu-right-padding;
+  padding-left: $menu-left-padding;
     position: relative;
   }
 
@@ -58,13 +64,12 @@
 
 .cleanQueryButton {
   position: absolute;
-  right: 40px;
+  right: 45px;
   stroke: rgba($color-3, .3);
-  top: 72px;
+  top: 104px;
 
   @media #{$mq-tablet} {
-    right: 10px;
-    top: 10px;
+    top: 24px;
   }
 }
 
@@ -82,15 +87,15 @@
     position: absolute;
     width: 100%;
     z-index: 1;
-    top: 90px;
+    top: 123px;
 
     @media #{$mq-mobile-large} {
       flex-direction: row;
     }
 
     @media #{$mq-tablet} {
-      max-width: 310px;
-      top: 27px;
+      max-width: 320px;
+      top: 42px;
     }
   }
 }

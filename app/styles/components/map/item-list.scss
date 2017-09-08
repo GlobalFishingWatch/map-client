@@ -43,9 +43,42 @@
   flex-wrap: wrap;
   position: relative;
   width: 100%;
+  padding-left: $menu-mobile-left-padding;
+  padding-right: 12px;
+  @media #{$mq-tablet} {
+    padding-right: 32px;
+    padding-left: $menu-left-padding;
+
+    &._alignLeft {
+      padding-right: 4px;
+    }
+
+  }
+
+  &._noMobilePadding {
+    padding-right: 0;
+    padding-left: 0;
+
+    @media #{$mq-tablet} {
+      padding-right: 0;
+      padding-left: $menu-left-padding;
+    }
+  }
+
+  &._noMobileRightPadding {
+    padding-right: 0;
+
+    @media #{$mq-tablet} {
+      padding-right: 32px;
+    }
+  }
 
   &:not(:first-child) {
     margin: 5px 0 0;
+  }
+
+  &._fixed {
+    height: 40px;
   }
 
   &.halfRow {
@@ -75,7 +108,7 @@
   }
 
   &._selected {
-    > .itemInfo > .itemThumbnail {
+    > .itemInfo > .layerThumbnail {
       border: 2px solid $color-4;
     }
   }
@@ -184,6 +217,11 @@
         fill: $color-31;
       }
     }
+  }
+
+  .itemOptionItem {
+    margin-right: 15px;
+    margin-bottom: -10px;
   }
 
   &._inlineList {

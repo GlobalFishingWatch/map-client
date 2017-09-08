@@ -31,7 +31,13 @@
   }
 
   &._wide {
-    width: 100%;
+    width: 76%;
+    margin-left: 40px;
+    @media #{$mq-tablet} {
+      width: 84%;
+      margin-left: $menu-left-padding;
+      margin-right: $menu-right-padding;
+    }
   }
 
   &._half {
@@ -77,6 +83,12 @@
       fill: $color-4 !important;
     }
   }
+}
+
+.deleteButton {
+  width: 27px;
+  height: 27px;
+  padding-top: 2px;
 }
 
 

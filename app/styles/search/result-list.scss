@@ -3,6 +3,15 @@
 .resultList {
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
+
+  @media #{$mq-tablet} {
+    max-height: none;
+  }
+
+  &._short{
+    max-height: 106px;
+  }
 }
 
 .modalResult {

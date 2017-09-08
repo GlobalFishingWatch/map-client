@@ -17,18 +17,26 @@
 }
 
 .timebarDatepicker {
-  width: 20%;
+  width: 15%;
+  margin-left: 8px;
+  border-left: 1px solid $color-fade-blue;
 
   @media #{$mq-mobile-large} {
+    width: 20%;
+    margin-left: 0;
     width: 100px;
+    border-left: none;
   }
 }
 
 .timebarPlayback {
   text-align: center;
-  width: 10%;
+  width: 12%;
+  margin-left: 6px;
 
   @media #{$mq-mobile-large} {
+    margin-left: 0;
+    width: 10%;
     width: 50px;
   }
 
@@ -40,12 +48,11 @@
     border-radius: 50%;
     font-size: $font-size-x-small;
 
-    margin: 21px 5px;
-    height: 30px;
-    width: 30px;
+    margin: 21px 4px;
+    height: 40px;
+    width: 40px;
 
     @media #{$mq-mobile-large} {
-    font-size: $font-size-normal;
       margin: 12px 5px;
       height: 45px;
       width: 45px;

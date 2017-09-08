@@ -8,7 +8,7 @@
   .datepickerTitle {
     color: $color-34;
     position: relative;
-    font-size: $font-size-small;
+    font-size: $font-size-tiny;
     font-weight: $font-weight-bold;
     padding-bottom: 20px;
     position: absolute;
@@ -32,7 +32,7 @@
     background: transparent;
     border: 0;
     cursor: pointer;
-    font-size: $font-size-xs-small;
+    font-size: $font-size-tiny;
     font-family: $font-family-1;
     font-weight: $font-weight-bold;
     height: 100%;
@@ -41,9 +41,10 @@
     text-transform: uppercase;
     width: 100%;
     word-wrap: break-word;
-    //@media #{$mq-tablet} {
-    //  padding-top: 36px;
-    //}
+
+    @media #{$mq-mobile-large} {
+      font-size: $font-size-xxs-small;
+    }
   }
 }
 
