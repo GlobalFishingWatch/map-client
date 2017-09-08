@@ -3,7 +3,7 @@
 .pinnedTracks {
   margin: 10px 0 0;
   ul {
-    max-height: 170px;
+    max-height: 75px;
     overflow: auto;
    
     @media #{$mq-tablet} {
