@@ -1,4 +1,4 @@
-import { SET_SUBMENU } from 'components/MapPanels/rightControlPanel/rightControlPanelActions';
+import { SET_SUBMENU } from 'mapPanels/rightControlPanel/rightControlPanelActions';
 
 const initialState = {
   activeSubMenu: null
