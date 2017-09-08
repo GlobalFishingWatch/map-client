@@ -94,6 +94,7 @@ const webpackConfig = {
       share: path.join(rootPath, 'app/src/share'),
       siteNav: path.join(rootPath, 'app/src/siteNav'),
       timebar: path.join(rootPath, 'app/src/timebar'),
+      mapPanels: path.join(rootPath, 'app/src/mapPanels'),
       user: path.join(rootPath, 'app/src/user'),
       welcomeModal: path.join(rootPath, 'app/src/welcomeModal'),
       components: 'src/components',

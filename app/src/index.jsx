@@ -24,7 +24,7 @@ import timebarReducer from 'timebar/timebarReducer';
 import literalsReducer from 'siteNav/literalsReducer';
 import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
-import rightControlPanelReducer from 'components/MapPanels/rightControlPanel/rightControlPanelReducer';
+import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
