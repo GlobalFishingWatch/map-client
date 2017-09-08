@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Loader from 'components/MapPanels/leftControlPanel/containers/Loader';
-import ZoomControls from 'components/MapPanels/leftControlPanel/components/ZoomControls';
+import Loader from 'mapPanels/leftControlPanel/containers/Loader';
+import ZoomControls from 'mapPanels/leftControlPanel/components/ZoomControls';
 import mapStyles from 'styles/components/map.scss';
 
 

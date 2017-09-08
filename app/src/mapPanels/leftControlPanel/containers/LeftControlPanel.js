@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { setZoom } from 'actions/map';
-import LeftControlPanel from 'components/MapPanels/leftControlPanel/components/LeftControlPanel';
+import LeftControlPanel from 'mapPanels/leftControlPanel/components/LeftControlPanel';
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { saveWorkspace } from 'actions/workspace';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
