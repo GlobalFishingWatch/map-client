@@ -33,6 +33,7 @@ class MobileLeftExpand extends Component {
       </div>
     );
   }
+
   render() {
     return (
       <MediaQuery minWidth={768} >
