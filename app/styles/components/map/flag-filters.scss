@@ -3,17 +3,23 @@
 .flagFilters {
   padding-left: $menu-mobile-left-padding;
   padding-right: 16px;
-  .item-list{
-    &.listItem{
+
+  @media #{$mq-tablet} {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 22px;
+    padding-left: 0;
+    
+    &.singleFilters {
+      padding-left: $menu-left-padding;
+    }
+  }
+
+  .item-list {
+    &.listItem {
       padding-right: 0;
       padding-left: 0;
     }  
-  }
-  @media #{$mq-tablet} {
-    padding-right: 22px;
-    padding-left: 0;
-    max-height: none;
-    overflow-y: visible;
   }
 }
 

@@ -80,7 +80,7 @@ class FilterPanel extends Component {
     });
 
     return (
-      <div className={flagFilterStyles.flagFilters} >
+      <div className={classnames(flagFilterStyles.flagFilters, flagFilterStyles.singleFilters)} >
         {filterSelectors &&
         <ul className={flagFilterStyles.filterList} >
           {filterSelectors}
