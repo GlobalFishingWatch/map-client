@@ -337,29 +337,30 @@ export function togglePinnedVesselEditMode(forceMode = null) {
 export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   return (dispatch, getState) => {
     const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
-    const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
-    dispatch({
-      type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
-      payload: {
-        seriesgroup,
-        visible
+    if (currentVessel) {
+      const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
+      dispatch({
+        type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
+        payload: {
+          seriesgroup,
+          visible
+        }
+      });
+      if (visible === true && currentVessel.track === undefined) {
+        dispatch(_getVesselTrack({
+          tilesetId: currentVessel.tilesetId,
+          seriesgroup,
+          series: null,
+          zoomToBounds: true,
+          updateTimelineBounds: false
+        }));
       }
-    });
-    if (visible === true && currentVessel.track === undefined) {
-      dispatch(_getVesselTrack({
-        tilesetId: currentVessel.tilesetId,
-        seriesgroup,
-        series: null,
-        zoomToBounds: true,
-        updateTimelineBounds: false
-      }));
     }
   };
 }
 
 export function showPinnedVesselDetails(tilesetId, seriesgroup) {
   return (dispatch) => {
-    dispatch(clearVesselInfo());
     dispatch(showVesselDetails(tilesetId, seriesgroup));
     dispatch(togglePinnedVesselVisibility(seriesgroup, true));
   };
