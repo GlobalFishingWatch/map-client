@@ -101,30 +101,34 @@ class LayerItem extends Component {
     } else {
       actions = (
         <ul className={LayerItemStyles.itemOptionList}>
-          {canReport && reportId !== undefined && <li
-            className={LayerItemStyles.itemOptionItem}
-            onClick={() => this.onClickReport()}
-          >
-            <ReportIcon
-              className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
-            />
-          </li>}
+          {canReport && reportId !== undefined &&
+            <li
+              className={LayerItemStyles.itemOptionItem}
+              onClick={() => this.onClickReport()}
+            >
+              <ReportIcon
+                className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
+              />
+            </li>
+          }
           {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
-          <li className={LayerItemStyles.itemOptionItem}>
-            <ExpandItemButton active={this.state.expand === 'EXTRA'}>
+          <li
+            className={LayerItemStyles.itemOptionItem} 
+            onClick={() => this.changeExpand('EXTRA')}
+          >
+            <ExpandItemButton active={this.state.expand === 'EXTRA'} >
               <PaintIcon
                 className={IconStyles.paintIcon}
-                onClick={() => this.changeExpand('EXTRA')}
               />
             </ExpandItemButton >
           </li>}
           <li
             className={LayerItemStyles.itemOptionItem}
+            onClick={() => this.changeExpand('INFO')}
           >
             <ExpandItemButton active={this.state.expand === 'INFO'}>
               <InfoIcon
                 className={IconStyles.infoIcon}
-                onClick={() => this.changeExpand('INFO')}
               />
             </ExpandItemButton >
           </li>
