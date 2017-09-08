@@ -9,7 +9,7 @@ const jsonData = require('assets/topoJson/ne_110m_land.json');
 
 class MiniGlobe extends Component {
 
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       projection: null,
@@ -18,11 +18,11 @@ class MiniGlobe extends Component {
     };
 
     this.worldData = feature(jsonData, jsonData.objects.land).features;
-    this.setMarkerSize(props.zoom, props.viewportWidth, props.viewportHeight);
   }
 
   componentDidMount() {
     this.setProjection();
+    this.setMarkerSize(this.props.zoom, this.props.viewportWidth, this.props.viewportHeight);
   }
 
   componentDidUpdate(nextProps) {
