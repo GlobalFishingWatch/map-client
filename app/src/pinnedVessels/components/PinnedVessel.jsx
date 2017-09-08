@@ -79,19 +79,23 @@ class PinnedVessel extends Component {
           >
             <InfoIcon className={IconStyles.infoIcon} />
           </li>
-          <li className={pinnedTracksStyles.pinnedItemActionItem}>
+          <li
+            className={pinnedTracksStyles.pinnedItemActionItem}
+            onClick={() => this.changeExpand('COLOR')}
+          >
             <ExpandItemButton active={this.state.expand === 'COLOR'} >
               <PaintIcon
                 className={IconStyles.paintIcon}
-                onClick={() => this.changeExpand('COLOR')}
               />
             </ExpandItemButton >
           </li>
-          <li className={pinnedTracksStyles.pinnedItemActionItem}>
+          <li
+            className={pinnedTracksStyles.pinnedItemActionItem}
+            onClick={() => this.togglePin()}
+          >
             <button className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: this.props.vessel.pinned })}>
               <PinIcon
                 className={IconStyles.pinIcon}
-                onClick={() => this.togglePin()}
               />
             </button>
           </li>

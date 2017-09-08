@@ -45,7 +45,7 @@
           "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/mparu/source",
           "visible": false,
-          "hue": 29,
+          "hue": 0,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "mparu"
@@ -55,7 +55,7 @@
           "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/eez/source",
           "visible": true,
-          "hue": 140,
+          "hue": 336,
           "type": "CartoDBAnimation",
           "opacity": 0.6,
           "id": "eez"
@@ -65,7 +65,7 @@
           "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/highseas/source",
           "visible": true,
-          "hue": 240,
+          "hue": 182,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "highseas"
@@ -75,7 +75,7 @@
           "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/rfmo/source",
           "visible": false,
-          "hue": 200,
+          "hue": 60,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "rfmo"
