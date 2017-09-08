@@ -2,12 +2,13 @@
 
 .pinnedTracks {
   margin: 10px 0 0;
-  // padding-left: $menu-mobile-left-padding;
-  // padding-right: $menu-mobile-right-padding;
-
-  @media #{$mq-tablet} {
-    // padding-left: $menu-left-padding;
-    // padding-right: 26px;
+  ul {
+    max-height: 170px;
+    overflow: auto;
+   
+    @media #{$mq-tablet} {
+      max-height: 218px;
+    }
   }
 }
 
