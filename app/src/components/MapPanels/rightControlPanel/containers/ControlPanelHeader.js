@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ControlPanelHeader from 'rightControlPanel/components/ControlPanelHeader';
+import ControlPanelHeader from 'components/MapPanels/rightControlPanel/components/ControlPanelHeader';
 import { openTimebarInfoModal } from 'actions/map';
 
 const mapStateToProps = state => ({

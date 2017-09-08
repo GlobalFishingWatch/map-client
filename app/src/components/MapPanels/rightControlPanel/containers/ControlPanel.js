@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import ControlPanel from 'rightControlPanel/components/ControlPanel';
+import ControlPanel from 'components/MapPanels/rightControlPanel/components/ControlPanel';
 import { setSearchResultVisibility } from 'search/searchActions';
 import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
 import { login } from 'user/userActions';
 import { setDrawingMode } from 'actions/map';
-import { setSubmenu } from 'rightControlPanel/rightControlPanelActions';
+import { setSubmenu } from 'components/MapPanels/rightControlPanel/rightControlPanelActions';
 
 
 const mapStateToProps = state => ({
