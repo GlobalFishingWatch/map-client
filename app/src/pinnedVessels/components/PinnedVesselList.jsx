@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PinnedVessel from 'pinnedVessels/containers/PinnedVessel';
 import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
-import MapButtonStyles from 'styles/components/button.scss';
+import ButtonStyles from 'styles/components/button.scss';
 
 class PinnedVesselList extends Component {
   constructor(props) {
@@ -23,25 +23,16 @@ class PinnedVesselList extends Component {
   }
 
   render() {
-    const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true);
-    const editButtonText = (this.props.pinnedVesselEditMode === false) ? 'edit pinned' : 'done';
+    const isVesselInfoPanelClosed = this.props.currentlyShownVessel === null;
+    const unpinnedVessels = this.props.vessels.filter(vessel => !vessel.pinned);
+    const pinnedVessels = this.props.vessels.filter(vessel => vessel.pinned);
 
     let pinnedItems = null;
-    let pinnedItemsHeading = null;
 
-    if (!pinnedVessels.length) {
-      pinnedItemsHeading = (<div className={pinnedTracksStyles.noPinnedItems}>
-        <span className={pinnedTracksStyles.noPinLiteral}>No pinned vessels</span>
-      </div>);
-    } else {
-      pinnedItemsHeading = (
-        <div className={pinnedTracksStyles.pinnedTracksHeading}>
-          pinned vessels
-        </div>);
-
+    if (unpinnedVessels.length || pinnedVessels.length) {
       pinnedItems = (
-        <ul>
-          {pinnedVessels.map((pinnedVessel, index) =>
+        <ul className={classnames(pinnedTracksStyles.tracksList, { [pinnedTracksStyles.noInfo]: isVesselInfoPanelClosed })}>
+          {unpinnedVessels.concat(pinnedVessels).map((pinnedVessel, index) =>
             (<PinnedVessel
               index={index}
               key={index}
@@ -56,25 +47,16 @@ class PinnedVesselList extends Component {
 
     return (
       <div className={pinnedTracksStyles.pinnedTracks}>
-        {pinnedItemsHeading}
         {pinnedItems}
         <div className={pinnedTracksStyles.pinnedButtonContainer}>
           {this.props.loggedUser != null &&
             <button
-              className={classnames(MapButtonStyles.button, pinnedTracksStyles.pinnedButton)}
+              className={classnames(ButtonStyles.button, ButtonStyles._wide, ButtonStyles._big)}
               onClick={() => this.props.openRecentVesselModal()}
             >
               recent vessels
             </button>
           }
-          <button
-            className={classnames(MapButtonStyles.button, pinnedTracksStyles.pinnedButton,
-              { [`${MapButtonStyles._disabled}`]: !pinnedVessels.length },
-              { [`${MapButtonStyles._filled}`]: !!this.props.pinnedVesselEditMode })}
-            onClick={() => { this.props.togglePinnedVesselEditMode(); }}
-          >
-            {editButtonText}
-          </button>
         </div>
       </div>
     );
@@ -84,6 +66,7 @@ class PinnedVesselList extends Component {
 PinnedVesselList.propTypes = {
   vessels: PropTypes.array,
   pinnedVesselEditMode: PropTypes.bool,
+  currentlyShownVessel: PropTypes.object,
   loggedUser: PropTypes.object,
   onUpdatedItem: PropTypes.func,
   onRemoveClicked: PropTypes.func,

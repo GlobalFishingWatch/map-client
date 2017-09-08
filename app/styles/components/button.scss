@@ -31,8 +31,8 @@
   }
 
   &._wide {
-    width: 85%;
-    margin-left: $menu-mobile-left-padding;
+    width: 76%;
+    margin-left: 40px;
     @media #{$mq-tablet} {
       width: 84%;
       margin-left: $menu-left-padding;
@@ -67,8 +67,28 @@
   width: 100%;
 }
 
+.pinVesselIcon {
+  outline: none;
+  padding: 7px 9px 3px 9px;
+
+  svg {
+    fill: $color-31 !important;
+  }
+
+  &.pinned {
+    background-color: $color-31;
+    border-radius: 50%;
+
+    svg {
+      fill: $color-4 !important;
+    }
+  }
+}
+
 .deleteButton {
   width: 27px;
   height: 27px;
   padding-top: 2px;
 }
+
+

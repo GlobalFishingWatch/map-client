@@ -2,12 +2,19 @@
 
 .pinnedTracks {
   margin: 10px 0 0;
-  padding-left: $menu-mobile-left-padding;
-  padding-right: $menu-mobile-right-padding;
-
-  @media #{$mq-tablet} {
-    padding-left: $menu-left-padding;
-    padding-right: 26px;
+  .tracksList {
+    max-height: 75px;
+    overflow: auto;
+    &.noInfo{
+      max-height: 266px;
+    }
+   
+    @media #{$mq-tablet} {
+      max-height: 218px;
+      &.noInfo{
+        max-height: 458px;
+      }
+    }
   }
 }
 
@@ -39,13 +46,24 @@
 }
 
 .pinnedItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemHeader {
   align-items: center;
   display: flex;
   justify-content: space-between;
   position: relative;
 
-  &:not(:first-child) {
-    margin: 10px 0 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: $menu-mobile-left-padding;
+  padding-right: $menu-mobile-right-padding;
+
+  @media #{$mq-tablet} {
+    padding-left: $menu-left-padding;
+    padding-right: 36px;
   }
 }
 
@@ -60,7 +78,7 @@
   font-family: $font-family-1;
   font-size: $font-size-normal;
   height: 24px;
-  margin: 0 15px 0 0;
+  margin-left: 5px;
   max-width: 90%;
   outline: none;
   overflow-y: hidden;
@@ -91,7 +109,6 @@
   width: 10px;
 }
 
-
 .pinnedItemActionList {
   align-items: center;
   display: flex;
@@ -101,9 +118,10 @@
 .pinnedItemActionItem {
   display: flex;
   position: relative;
+  margin-left: 6px;
 
-  &:not(:first-child) {
-    margin: 0 0 0 10px;
+  &:first-child{
+    margin-right: 4px;
   }
 }
 
@@ -111,8 +129,4 @@
   display: flex;
   justify-content: space-between;
   margin: 10px 0 0;
-}
-
-.pinnedButton {
-  width: calc(50% - 1px);
 }
