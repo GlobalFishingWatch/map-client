@@ -7,16 +7,17 @@ import delay from 'lodash/delay';
 import template from 'lodash/template';
 import templateSettings from 'lodash/templateSettings';
 import { MIN_ZOOM_LEVEL } from 'config';
-import ControlPanel from 'rightControlPanel/containers/ControlPanel';
+import ControlPanel from 'components/MapPanels/rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
-import Leyend from 'components/Leyend';
-import MiniGlobe from 'components/MiniGlobe';
+import Leyend from 'components/MapPanels/Leyend';
+import MiniGlobe from 'components/MapPanels/MiniGlobe';
+import MobileLeftExpand from 'components/MapPanels/MobileLeftExpand';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapLayers from 'containers/Layers/MapLayers';
 import DrawingManager from 'containers/Map/DrawingManager';
 import Areas from 'areasOfInterest/containers/Areas';
 import MapFooter from 'siteNav/components/MapFooter';
-import LeftControlPanel from 'leftControlPanel/containers/LeftControlPanel';
+import LeftControlPanel from 'components/MapPanels/leftControlPanel/containers/LeftControlPanel';
 import mapStyles from 'styles/components/map.scss';
 import mapPanelsStyles from 'styles/components/map-panels.scss';
 import Attributions from 'siteNav/components/Attributions';
@@ -234,13 +235,15 @@ class MapContainer extends Component {
         viewportWidth={this.state.viewportWidth}
         viewportHeight={this.state.viewportHeight}
       />
-      <MiniGlobe
-        center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
-        zoom={this.props.zoom}
-        viewportWidth={this.state.viewportWidth}
-        viewportHeight={this.state.viewportHeight}
-      />
-      <Leyend />
+      <MobileLeftExpand>
+        <MiniGlobe
+          center={{ lat: this.props.centerLat, lng: this.props.centerLong }}
+          zoom={this.props.zoom}
+          viewportWidth={this.state.viewportWidth}
+          viewportHeight={this.state.viewportHeight}
+        />
+        <Leyend />
+      </MobileLeftExpand>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
       </div >

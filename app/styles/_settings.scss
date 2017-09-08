@@ -12,6 +12,10 @@ $max-map-footer-height: 485px;
 $offset-panel-control-mobile: 108px;
 $offset-panel-control: 20px;
 
+$menu-left-padding: 30px;
+$menu-right-padding: 40px;
+$menu-mobile-left-padding: 20px;
+$menu-mobile-right-padding: 30px;
 
 $header-height-mobile: 60px;
 $header-height: 95px;
@@ -20,6 +24,7 @@ $vessel-info-height: 70px;
 
 $map-panels-width: 320px;
 $leyend-width: 160px;
+$leyend-mobile-width: 30%;
 $control-panel-left-offset: 14px;
 
 
@@ -82,6 +87,7 @@ $hsla-begin: hsla(0, 0%, 0%, .1);
 $hsla-end: hsla(0, 0%, 100%, .1);
 
 $color-base: $color-1;
+$color-secondary: $color-13;
 $color-button-primary: $color-31;
 $color-mid-blue: $color-8;
 $color-white: $color-4;

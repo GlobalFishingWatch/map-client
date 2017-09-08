@@ -1,21 +1,22 @@
 @import '../settings';
 
 .leyend {
-  display: none;
+  display: inline-block;
+  position: absolute;
+  bottom: 182px;
+  left: 0px;
+  height: 76px;
+  z-index: 9;
+  background-color: $color-base;
+  color: $color-white;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  padding-left: 7px;
+  width: $leyend-mobile-width;
 
   @media #{$mq-tablet} {
-    display: inline-block;
-    position: absolute;
-    bottom: 189px;
-    left: 0px;
-    width: $leyend-width;
-    height: 76px;
-    z-index: 10;
-    background-color: $color-base;
-    color: $color-white;
-    padding-top: 10px;
-    padding-bottom: 15px;
     padding-left: 15px;
+    width: $leyend-width;
   }
 
   .leyendText {
@@ -25,13 +26,17 @@
       &:first-child{
         margin-right: 20px;
       }
-      font-size: $font-size-xs-small;
+      font-size: $font-size-tiny;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-small;
+      }
     }
   }
 
   .leyendOvals {
     display: flex;
-    margin: 15px 10px;
+    margin: 10px;
 
     .lessFishingOval {
       background-color: $light-blue;
@@ -53,13 +58,16 @@
     }
 
     .line {
-      width: 72px;
+      width: 47px;
       margin-left: 5px;
       margin-right: 5px;
       height: 0;
       margin-top: 4px;
       opacity: 0.3;
-      border: solid 1px $color-34;
+      border: dashed 1px $color-34;
+      @media #{$mq-tablet} {
+        width: 72px;
+      }
     }
   }
 }

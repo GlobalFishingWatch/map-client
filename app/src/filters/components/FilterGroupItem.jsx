@@ -49,7 +49,7 @@ class FilterGroupItem extends Component {
 
     return (
       <li
-        className={ListStyles.listItem}
+        className={classnames(ListStyles.listItem, ListStyles._noMobilePadding, ListStyles._fixed, ListStyles._alignLeft)}
       >
         <Toggle
           on={this.props.filterGroup.visible}

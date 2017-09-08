@@ -43,6 +43,9 @@ body {
 }
 
 :global .loginRequiredLink {
+  padding-left: 30px;
+  padding-right: 30px;
+
   color: $color-3;
   cursor: pointer;
   display: inline-block;
