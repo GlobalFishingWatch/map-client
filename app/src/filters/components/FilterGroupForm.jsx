@@ -34,11 +34,14 @@ class FilterGroupForm extends Component {
     }, props.filterGroup);
 
     // TODO: extract this from layers headers
-    const filtersFromLayers = [
+    // Until we have the real filters in the API we are going to use these
+    const fakeFiltersFromLayers = [
       {
+        id: 'flag', // If the same filter (ie. flag) is present on multiple layers, 'id' and 'label' should match.
         name: 'category',
         label: 'Country',
         values: getCountryOptions(),
+        useDefaultValues: false, // use the default (aka hardcoded values in the frontend app) for id=flag
         layers: [
           'fishing2',
           'fishing'
@@ -46,15 +49,25 @@ class FilterGroupForm extends Component {
       },
       {
         name: 'gear_type',
+        id: 'gear_type',
         label: 'Gear Type',
-        values: getCountryOptions(),
+        values: [
+          {
+            id: 0,
+            label: 'gear type 1'
+          },
+          {
+            id: 1,
+            label: 'gear type 2'
+          }
+        ],
         layers: [
           'fishing'
         ]
       }
     ];
 
-    this.state = { filterGroup, filtersFromLayers };
+    this.state = { filterGroup, filtersFromLayers: fakeFiltersFromLayers };
   }
 
   onLayerChecked(layerId) {
@@ -94,6 +107,16 @@ class FilterGroupForm extends Component {
     this.props.openLayerInfoModal(modalParams);
   }
 
+  getOptions(filter) {
+    let options = [<option key={filter.id} value="" >{filter.label}</option >];
+    options = options.concat(
+      filter.values.map(option => (
+        <option key={option.id} value={option.id} >{option.label}</option >
+      ))
+    );
+    return options;
+  }
+
   renderLayersList() {
     return this.props.layers.map((layer, i) => (
       <li
@@ -124,6 +147,7 @@ class FilterGroupForm extends Component {
   renderFilterList() {
     const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
       .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
+
     const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
 
     const filterInputs = filtersFromLayers.map((elem, index) => (
@@ -134,7 +158,7 @@ class FilterGroupForm extends Component {
           onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
           value={this.state.filterGroup.filterValues[elem.name]}
         >
-          {elem.values}
+          {elem.id === 'flag' ? getCountryOptions() : this.getOptions(elem)}
         </select >
       </div >
     ));
