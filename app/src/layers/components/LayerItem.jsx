@@ -113,7 +113,7 @@ class LayerItem extends Component {
           }
           {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
           <li
-            className={LayerItemStyles.itemOptionItem} 
+            className={LayerItemStyles.itemOptionItem}
             onClick={() => this.changeExpand('EXTRA')}
           >
             <ExpandItemButton active={this.state.expand === 'EXTRA'} >

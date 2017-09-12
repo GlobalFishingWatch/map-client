@@ -87,10 +87,10 @@
 }
 
 .timelineInnerBrushSelection {
-  fill: $color-4;
-  fill-opacity: .2;
+  fill: $color-32;
+  fill-opacity: 0.5;
   height: $timebar-height;
-  stroke-width: 0;
+  stroke-width: 2;
 }
 
 .timelineInnerBrushCircle {
