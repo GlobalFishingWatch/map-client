@@ -1,6 +1,7 @@
 import find from 'lodash/find';
 import { LAYER_TYPES } from 'constants';
-import { refreshFlagFiltersLayers, SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
+import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
+import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
 
