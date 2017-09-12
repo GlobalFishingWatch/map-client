@@ -22,76 +22,45 @@ export function setFilterGroupModalVisibility(visibility) {
   };
 }
 
-export function toggleFilterGroupVisibility(index, forceValue = null) {
-  return {
-    type: SET_FILTER_GROUP_VISIBILITY,
-    payload: {
-      index,
-      forceValue
-    }
-  };
-}
+const getSublayer = (heatmapLayer, filter) => {
+  // Filter hue overrides heatmap layer hue and filter flag overrides all flags ('ALL') when set
+  const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
+  let hue = heatmapLayer.hue;
+  let flag = 'ALL';
 
-export function saveFilterGroup(filterGroup, index = null) {
-  return {
-    type: SAVE_FILTER_GROUP,
-    payload: {
-      filterGroup,
-      index
-    }
-  };
-}
-
-export function deleteFilterGroup(index) {
-  return {
-    type: DELETE_FILTER_GROUP,
-    payload: index
-  };
-}
+  if (filter.filterValues !== undefined && filter.visible) {
+    Object.keys(filter.filterValues).forEach((filterValue) => {
+      if (filterValue === 'flag' && isLayerChecked) {
+        const flagValue = filter.filterValues.flag;
+        if (filter.color !== undefined) {
+          hue = COLOR_HUES[filter.color];
+        }
+        if (flagValue !== '') {
+          flag = parseInt(flagValue, 10);
+        }
+      }
+    });
+  }
+  return [{ flag, hue }];
+};
 
 export function setFlagFilters(filters_) {
   return (dispatch, getState) => {
-    // get heatmap layers and organise filters to have one sublayer per filter in each layer
-    // if there's only one filter and it's not set, set it to ALL
-    // for the next ones, ignore undefined filters
-    // filter hue overrides heatmap layer hue when set
+    // Get heatmap layers and organise filters to have one sublayer per filter in each layer
+    const flagFiltersLayers = {};
     const heatmapLayers = getState().layers.workspaceLayers.filter(layer =>
       layer.type === LAYER_TYPES.Heatmap && layer.added === true
     );
-    const filters = (filters_ === undefined) ? [] : filters_.slice(0);
-    // filters = filters.filter(filter => filter.filterValues.flag !== undefined);
-    const flagFiltersLayers = {};
-    if (!filters.length) {
-      filters.push({});
-    }
-
+    // slice(0) clones an array
+    const filters = (filters_ === undefined) ? [{}] : filters_.slice(0);
+    if (filters.length === 0) { filters.push({}); }
 
     heatmapLayers.forEach((heatmapLayer) => {
       filters.forEach((filter) => {
-        const layerIsChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
-        let hue = heatmapLayer.hue;
-        let flag = 'ALL';
-
-        if (filter.filterValues !== undefined) {
-          Object.keys(filter.filterValues).forEach((filterValue) => {
-            if (filterValue === 'flag') {
-              const flagValue = filter.filterValues.flag;
-              if (layerIsChecked) {
-                if (filter.color !== undefined) {
-                  hue = COLOR_HUES[filter.color];
-                }
-                if (flagValue !== '') {
-                  flag = parseInt(flagValue, 10);
-                }
-              }
-            }
-          });
-        }
-
-        const subLayer = [{ flag, hue }];
-        flagFiltersLayers[heatmapLayer.id] = subLayer;
+        flagFiltersLayers[heatmapLayer.id] = getSublayer(heatmapLayer, filter);
       });
     });
+
     dispatch({
       type: SET_FLAG_FILTERS,
       payload: {
@@ -102,8 +71,44 @@ export function setFlagFilters(filters_) {
   };
 }
 
+export function saveFilterGroup(filterGroup, index = null) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SAVE_FILTER_GROUP,
+      payload: {
+        filterGroup,
+        index
+      }
+    });
+    dispatch(setFlagFilters(getState().filterGroups.filterGroups));
+  };
+}
+
+export function deleteFilterGroup(index) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: DELETE_FILTER_GROUP,
+      payload: index
+    });
+    dispatch(setFlagFilters(getState().filterGroups.filterGroups));
+  };
+}
+
+export function toggleFilterGroupVisibility(index, forceValue = null) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SET_FILTER_GROUP_VISIBILITY,
+      payload: {
+        index,
+        forceValue
+      }
+    });
+    dispatch(setFlagFilters(getState().filterGroups.filterGroups));
+  };
+}
+
 export function refreshFlagFiltersLayers() {
   return (dispatch, getState) => {
-    dispatch(setFlagFilters(getState().filters.flags));
+    dispatch(setFlagFilters(getState().filterGroups.filterGroups));
   };
 }
