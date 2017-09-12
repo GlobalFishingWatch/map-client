@@ -13,6 +13,7 @@ import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
+import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
@@ -123,7 +124,8 @@ export function saveWorkspace(errorAction) {
           outerExtent: state.filters.timelineOuterExtent.map(e => +e)
         },
         filters: state.filters.flags,
-        areas: state.areas.existingAreasOfInterest
+        areas: state.areas.existingAreasOfInterest,
+        filterGroups: state.filterGroups.filterGroups
       }
     };
 
@@ -197,6 +199,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
       dispatch(saveAreaOfInterest(area));
     });
   }
+
+  if (workspaceData.filterGroups) {
+    workspaceData.filterGroups.forEach((filterGroup) => {
+      dispatch(saveFilterGroup(filterGroup));
+    });
+  }
+
 }
 
 function processNewWorkspace(data) {
@@ -214,7 +223,8 @@ function processNewWorkspace(data) {
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset,
-    areas: workspace.areas
+    areas: workspace.areas,
+    filterGroups: workspace.filterGroups
   };
 }
 
