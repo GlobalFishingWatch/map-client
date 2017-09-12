@@ -38,7 +38,7 @@ class FilterGroupForm extends Component {
     const fakeFiltersFromLayers = [
       {
         id: 'flag', // If the same filter (ie. flag) is present on multiple layers, 'id' and 'label' should match.
-        name: 'category',
+        name: 'flag',
         label: 'Country',
         values: getCountryOptions(),
         useDefaultValues: false, // use the default (aka hardcoded values in the frontend app) for id=flag
@@ -90,6 +90,7 @@ class FilterGroupForm extends Component {
 
   onPressSave() {
     this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
+    this.props.setFlagFilters([this.state.filterGroup]);
   }
 
   onFilterValueChange(name, value) {
@@ -233,7 +234,8 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
   saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired
+  openLayerInfoModal: PropTypes.func.isRequired,
+  setFlagFilters: PropTypes.func.isRequired
 };
 
 export default FilterGroupForm;

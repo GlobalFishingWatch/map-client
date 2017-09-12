@@ -1,5 +1,5 @@
 import { SET_FILTER_GROUP_MODAL_VISIBILITY, SAVE_FILTER_GROUP, SET_FILTER_GROUP_VISIBILITY } from 'filters/filtersActions';
-import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP } from 'filters/filterGroupsActions';
+import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP, SET_FLAG_FILTERS } from 'filters/filterGroupsActions';
 
 const initialState = {
   filterGroups: [],
@@ -45,6 +45,11 @@ export default function (state = initialState, action) {
         filterGroups: [...state.filterGroups.slice(0, action.payload), ...state.filterGroups.slice(action.payload + 1)]
       });
 
+    }
+    case SET_FLAG_FILTERS: {
+      return Object.assign({}, state, {
+        flags: action.payload.flagFilters, flagsLayers: action.payload.flagFiltersLayers
+      });
     }
     default:
       return state;

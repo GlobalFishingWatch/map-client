@@ -329,7 +329,7 @@ const _getCurrentFlagsForLayer = (state, layerId) => {
   if (layerId === undefined) {
     return undefined;
   }
-  const flags = state.filters.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
+  const flags = state.filterGroups.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
   return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
 };
 
