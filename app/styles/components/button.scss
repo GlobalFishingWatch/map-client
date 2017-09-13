@@ -91,4 +91,11 @@
   padding-top: 2px;
 }
 
+.speedButton {
+  outline: none;
+  &.decrease {
+    transform: rotate(180deg);
+  }
+}
+
 

@@ -25,6 +25,7 @@ import TimelineStyles from 'styles/components/map/timeline.scss';
 import extentChanged from 'util/extentChanged';
 import DatePicker from 'timebar/components/DatePicker';
 import TogglePauseButton from 'timebar/components/TogglePauseButton';
+import SpeedButton from 'timebar/components/SpeedButton';
 import DurationPicker from 'timebar/components/DurationPicker';
 
 let width;
@@ -551,12 +552,14 @@ class Timebar extends Component {
   render() {
     return (
       <div className={TimebarStyles.timebar}>
+        <SpeedButton decrease />
         <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarPlayback)}>
           <TogglePauseButton
             onToggle={this.onPauseToggle}
             paused={this.props.timelinePaused}
           />
         </div>
+        <SpeedButton />
         <div className={classnames(TimebarStyles.timebarElement, TimebarStyles.timebarDatepicker)}>
           <DatePicker
             selected={this.props.timelineOuterExtent && this.props.timelineOuterExtent[0]}
