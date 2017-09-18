@@ -167,11 +167,6 @@ class Timebar extends Component {
       .attr('class', TimelineStyles.timelineArea)
       .attr('d', area);
 
-    this.group.append('g')
-      .attr('class', TimelineStyles.timelineXAxis)
-      .attr('transform', `translate(0, ${height})`)
-      .call(xAxis);
-
     // set up brush generators
     brush = () => d3brushX().extent([[0, 0], [width, height]]);
     this.innerBrushFunc = brush();
@@ -208,6 +203,12 @@ class Timebar extends Component {
       .attr('cy', height / 2)
       .classed(TimelineStyles.timelineInnerBrushCircle, true);
 
+    // Create month ticks for xAxis
+    this.group.append('g')
+      .attr('class', TimelineStyles.timelineXAxis)
+      .attr('transform', `translate(0, ${height})`)
+      .call(xAxis);
+
     // move both brushes to initial position
     this.resetOuterBrush();
     this.redrawInnerBrush(this.props.timelineInnerExtent);
@@ -219,6 +220,7 @@ class Timebar extends Component {
     this.group.on('mousemove', () => {
       this.onMouseOver(d3event.offsetX);
     });
+
     this.group.on('mouseout', () => {
       this.onMouseOut();
     });
@@ -233,6 +235,7 @@ class Timebar extends Component {
         }
       }
     });
+
     d3select('body').on('mouseup', () => {
       dragging = false;
       if (this.isZoomingIn(currentOuterPxExtent)) {
