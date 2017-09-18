@@ -7,7 +7,7 @@
   padding-right: 25px;
   padding-top: 15px;
   padding-left: $menu-mobile-left-padding;
-  
+
   @media #{$mq-tablet} {
   padding-right: $menu-right-padding;
   padding-left: $menu-left-padding;
@@ -64,12 +64,22 @@
 
 .cleanQueryButton {
   position: absolute;
-  right: 45px;
+  right: 65px;
   stroke: rgba($color-3, .3);
   top: 104px;
 
   @media #{$mq-tablet} {
     top: 24px;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  right: 42px;
+  top: 102px;
+
+  @media #{$mq-tablet} {
+    top: 22px;
   }
 }
 
