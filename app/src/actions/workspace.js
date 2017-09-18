@@ -116,7 +116,7 @@ export function saveWorkspace(errorAction) {
           hue: e.hue
         })),
         shownVessel,
-        basemap: state.map.activeBasemap,
+        basemap: state.basemap.activeBasemap,
         timeline: {
           // We store the timestamp
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),
