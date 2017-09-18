@@ -12,7 +12,6 @@
   @media #{$mq-mobile-large} {
     border-bottom: 1px solid rgba($color-34, 0.2);
     display: block;
-    padding: 10px;
     width: 100%;
   }
 
@@ -22,11 +21,11 @@
     display: flex;
     flex-direction: column-reverse;
     justify-content: space-between;
-    padding: 10px 5px;
+    padding: 10px 15px;
 
     @media #{$mq-mobile-large} {
+      padding: 20px 25px;
       flex-direction: row;
-      padding: 10px 15px;
 
       &:hover {
         background-color: rgba($color-3, .2);
