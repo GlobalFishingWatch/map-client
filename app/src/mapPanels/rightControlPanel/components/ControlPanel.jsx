@@ -71,8 +71,7 @@ class ControlPanel extends Component {
   }
 
   renderVesselsSubMenu() {
-    const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
-
+    const { numPinnedVessels } = this.props;
     const searchHeader = (
       <div >
         <MediaQuery maxWidth={767} >
@@ -183,6 +182,7 @@ class ControlPanel extends Component {
           <MenuLink
             title="Vessels"
             icon={this.renderIcon('vessels')}
+            badge={this.props.numPinnedVessels}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.VESSELS)}
           />
           <MenuLink
@@ -193,6 +193,7 @@ class ControlPanel extends Component {
           <MenuLink
             title="Filters"
             icon={this.renderIcon('filters')}
+            badge={this.props.numFilters}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.FILTERS)}
           />
           {ENABLE_AREA_OF_INTEREST && <MenuLink
@@ -263,6 +264,8 @@ ControlPanel.propTypes = {
   setSubmenu: PropTypes.func.isRequired,
   userPermissions: PropTypes.array,
   vessels: PropTypes.array,
+  numPinnedVessels: PropTypes.number.isRequired,
+  numFilters: PropTypes.number.isRequired,
   isDrawing: PropTypes.bool
 };
 

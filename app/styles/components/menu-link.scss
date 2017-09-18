@@ -34,6 +34,23 @@
     }
   }
 
+  .rightIcons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .badge {
+      margin-right: 16px;
+      color: $color-4;
+      font-weight: bold;
+      font-size: $font-size-xs-small;
+      padding: 3px 7px;
+      margin-top: -2px;
+      border: 1px solid $color-fade-grey;
+      border-radius: 50%;
+    }
+  }
+
 
   .title {
     color: $color-4;
