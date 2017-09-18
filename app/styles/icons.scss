@@ -89,6 +89,11 @@
   fill: $color-button-primary;
   height: 15px;
   width: 15px;
+
+  &.small {
+    height: 13px;
+    width: 5px;
+  }
 }
 
 .selectIcon {
