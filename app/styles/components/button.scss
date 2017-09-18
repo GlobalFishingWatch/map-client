@@ -94,7 +94,11 @@
 .speedButton {
   outline: none;
   &.decrease {
+    margin-left: 5px;
     transform: rotate(180deg);
+    @media #{$mq-tablet} {
+      margin-left: 0;
+    }
   }
 }
 

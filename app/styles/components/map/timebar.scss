@@ -18,7 +18,7 @@
 
 .timebarDatepicker {
   width: 15%;
-  margin-left: 8px;
+  margin-left: 3px;
   border-left: 1px solid $color-fade-blue;
 
   @media #{$mq-mobile-large} {
@@ -32,7 +32,7 @@
 .timebarPlayback {
   text-align: center;
   width: 12%;
-  margin-top: 13px;
+  margin-top: 12px;
 
   @media #{$mq-mobile-large} {
     margin-left: 0;
@@ -48,12 +48,11 @@
     border-radius: 50%;
     font-size: $font-size-x-small;
 
-    margin: 21px 4px;
+    margin-top: 2px;
     height: 40px;
     width: 40px;
 
     @media #{$mq-mobile-large} {
-      margin: 15px 0;
       height: 40px;
       width: 40px;
     }
