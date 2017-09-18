@@ -20,7 +20,6 @@ import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
 import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
-import Transition from 'react-transition-group/Transition';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
 
 class ControlPanel extends Component {
@@ -226,21 +225,17 @@ class ControlPanel extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          <Transition in={!!this.props.activeSubmenu} timeout={0}>
-            {status => (
-              <div
-                className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
-                ref={(controlPanel) => {
-                  this.controlPanelRef = controlPanel;
-                }}
-              >
-                <div className={classnames([ControlPanelStyles.bgWrapper])} >
-                  {this.renderSubMenu(desktop)}
-                  <VesselInfoPanel />
-                </div >
-              </div >
-            )}
-          </Transition>
+          <div
+            className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
+            ref={(controlPanel) => {
+              this.controlPanelRef = controlPanel;
+            }}
+          >
+            <div className={classnames([ControlPanelStyles.bgWrapper])} >
+              {this.renderSubMenu(desktop)}
+              <VesselInfoPanel />
+            </div >
+          </div >
         )}
       </MediaQuery >
     );
