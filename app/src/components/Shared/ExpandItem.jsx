@@ -4,11 +4,14 @@ import classnames from 'classnames';
 import ExpandItemStyles from 'styles/components/shared/expand-item.scss';
 import { VelocityTransitionGroup } from 'velocity-react';
 
-function ExpandItem({ active, children, accordion }) {
+function ExpandItem({ active, children, accordion, isVesselInfoPanelOpen }) {
   return (
     <div className={ExpandItemStyles._mobileScroll}>
       <div
-        className={classnames(ExpandItemStyles.expandItem)}
+        className={classnames(
+          ExpandItemStyles.expandItem,
+          { [ExpandItemStyles.isVesselInfoPanelOpen]: isVesselInfoPanelOpen }
+        )}
       >
         <VelocityTransitionGroup
           enter={{ animation: 'slideDown', duration: 200, easing: 'easeOutCubic' }}
@@ -31,7 +34,8 @@ function ExpandItem({ active, children, accordion }) {
 ExpandItem.propTypes = {
   active: PropTypes.bool.isRequired,
   accordion: PropTypes.bool,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  isVesselInfoPanelOpen: PropTypes.bool
 };
 
 export default ExpandItem;

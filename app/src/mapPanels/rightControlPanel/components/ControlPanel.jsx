@@ -110,7 +110,6 @@ class ControlPanel extends Component {
             </div >
           }
         </SubMenu >
-        <VesselInfoPanel />
       </div>
     );
   }
@@ -202,7 +201,6 @@ class ControlPanel extends Component {
             onClick={() => this.props.setSubmenu('AREAS')}
           />}
         </div >
-        <VesselInfoPanel />
       </div >
     );
   }
@@ -238,6 +236,7 @@ class ControlPanel extends Component {
               >
                 <div className={classnames([ControlPanelStyles.bgWrapper])} >
                   {this.renderSubMenu(desktop)}
+                  <VesselInfoPanel />
                 </div >
               </div >
             )}
