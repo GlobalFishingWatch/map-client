@@ -209,6 +209,20 @@ class Timebar extends Component {
       .attr('transform', `translate(0, ${height})`)
       .call(xAxis);
 
+    // Add label for the timeline
+    const label = this.group.append('g')
+      .attr('class', TimelineStyles.timelineLabel)
+      .append('text');
+
+    label.append('tspan')
+      .attr('x', '0')
+      .text('Fishing');
+
+    label.append('tspan')
+      .attr('x', '0')
+      .attr('y', '15px')
+      .text('hours');
+
     // move both brushes to initial position
     this.resetOuterBrush();
     this.redrawInnerBrush(this.props.timelineInnerExtent);
