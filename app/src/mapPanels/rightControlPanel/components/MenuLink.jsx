@@ -9,7 +9,7 @@ function MenuLink({ title, icon, badge, onClick }) {
     <div className={MenuLinkStyles.menuLink} onClick={onClick}>
       <div className={MenuLinkStyles.header} >
         <h2 className={MenuLinkStyles.title} >{title}</h2>
-        <div className={classnames(MenuLinkStyles.rightIcons, { [MenuLinkStyles.hasBadge]: badge > 0 })} >
+        <div className={classnames(MenuLinkStyles.iconContainer, { [MenuLinkStyles.hasBadge]: badge > 0 })} >
           {(badge > 0) && <div className={MenuLinkStyles.badge} >{badge}</div>}
           <div className={ControlPanelStyles.icon} >{icon}</div>
         </div>

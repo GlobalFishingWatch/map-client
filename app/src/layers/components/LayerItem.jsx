@@ -75,6 +75,7 @@ class LayerItem extends Component {
   }
 
   render() {
+    // Expandable info panel was removed in 9c74e11
     const { id, hue, reportId, visible } = this.props.layer;
 
     const color = getKeyByValue(COLOR_HUES, hue);
