@@ -6,7 +6,8 @@ import { toggleLayerVisibility, setLayerOpacity, setLayerHue } from 'layers/laye
 const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers,
   currentlyReportedLayerId: state.report.layerId,
-  userPermissions: state.user.userPermissions
+  userPermissions: state.user.userPermissions,
+  isVesselInfoPanelOpen: state.vesselInfo.currentlyShownVessel !== null && state.vesselInfo.currentlyShownVessel !== undefined
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -75,6 +75,7 @@ class LayerItem extends Component {
   }
 
   render() {
+    // Expandable info panel was removed in 9c74e11
     const { id, hue, reportId, visible } = this.props.layer;
 
     const color = getKeyByValue(COLOR_HUES, hue);
@@ -113,7 +114,7 @@ class LayerItem extends Component {
           }
           {this.props.layer.type !== LAYER_TYPES.Custom && this.props.enableColorPicker &&
           <li
-            className={LayerItemStyles.itemOptionItem} 
+            className={LayerItemStyles.itemOptionItem}
             onClick={() => this.changeExpand('EXTRA')}
           >
             <ExpandItemButton active={this.state.expand === 'EXTRA'} >
@@ -124,13 +125,11 @@ class LayerItem extends Component {
           </li>}
           <li
             className={LayerItemStyles.itemOptionItem}
-            onClick={() => this.changeExpand('INFO')}
+            onClick={() => this.onClickInfo()}
           >
-            <ExpandItemButton active={this.state.expand === 'INFO'}>
-              <InfoIcon
-                className={IconStyles.infoIcon}
-              />
-            </ExpandItemButton >
+            <InfoIcon
+              className={IconStyles.infoIcon}
+            />
           </li>
         </ul>
       );
@@ -168,22 +167,6 @@ class LayerItem extends Component {
             />
           </ExpandItem >
         }
-        <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
-          {/* <div className={LayerItemStyles.selectPolygon}>
-            <SelectIcon
-              className={IconStyles.selectIcon}
-            />
-            <div className={LayerItemStyles.selectPolygonText}>
-              Select a Polygon to get more info
-            </div>
-          </div> */}
-          <button
-            onClick={() => this.onClickInfo()}
-            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half, ButtonStyles._top)}
-          >
-            INFO LAYER
-          </button >
-        </ExpandItem >
       </div >
     );
   }

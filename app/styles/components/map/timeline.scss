@@ -42,6 +42,28 @@
   }
 }
 
+.timelineLabel {
+  transform: translate(7px, 15px);
+
+  text {
+    display: none;
+    @media #{$mq-mobile-large} {
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+      display: block;
+      fill: $color-4;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      user-select: none;
+    }
+    @media #{$mq-laptop} {
+      font-size: $font-size-xs-small;
+    }
+  }
+}
+
 .timelineFullYear {
   font-weight: bold;
 }
@@ -87,10 +109,10 @@
 }
 
 .timelineInnerBrushSelection {
-  fill: $color-4;
-  fill-opacity: .2;
+  fill: $color-fishing-hours-timebar;
+  fill-opacity: 0.5;
   height: $timebar-height;
-  stroke-width: 0;
+  stroke-width: 1px;
 }
 
 .timelineInnerBrushCircle {

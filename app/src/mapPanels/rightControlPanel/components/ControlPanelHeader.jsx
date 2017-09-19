@@ -32,7 +32,7 @@ class ControlPanelHeader extends Component {
             <span className={ControlPanelStyles.counterDescription} >
               Vessels activity
               <InfoIcon
-                className={classnames(ControlPanelStyles.fishingHours, IconStyles.infoIcon)}
+                className={classnames(ControlPanelStyles.fishingHours, IconStyles.infoIcon, IconStyles.small)}
                 onClick={() => this.props.openTimebarInfoModal()}
               />
             </span >
