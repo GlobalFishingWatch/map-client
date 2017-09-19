@@ -5,7 +5,8 @@ import {
   setOuterTimelineDates,
   setPlayingStatus,
   setTimelineHoverDates,
-  rewindTimeline
+  rewindTimeline,
+  changeSpeed
 } from 'filters/filtersActions';
 
 const mapStateToProps = state => ({
@@ -13,7 +14,8 @@ const mapStateToProps = state => ({
   timelineOverallExtent: state.filters.timelineOverallExtent,
   timelineOuterExtent: state.filters.timelineOuterExtent,
   timelineInnerExtent: state.filters.timelineInnerExtent,
-  timelinePaused: state.filters.timelinePaused
+  timelinePaused: state.filters.timelinePaused,
+  timelineSpeed: state.filters.timelineSpeed
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,6 +33,9 @@ const mapDispatchToProps = dispatch => ({
   },
   rewind: () => {
     dispatch(rewindTimeline());
+  },
+  changeSpeed: (shouldDecrease) => {
+    dispatch(changeSpeed(shouldDecrease));
   }
 });
 

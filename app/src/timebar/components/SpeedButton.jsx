@@ -6,10 +6,8 @@ import buttonStyles from 'styles/components/button.scss';
 import SpeedArrowIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-speed.svg?name=SpeedArrowIcon';
 
 class SpeedButton extends Component {
-
   changeSpeed() {
-    const ratio = this.props.decrease ? 0.5 : 2;
-    window.speed *= ratio;
+    this.props.changeSpeed(this.props.decrease);
   }
 
   render() {
@@ -30,7 +28,8 @@ class SpeedButton extends Component {
 }
 
 SpeedButton.propTypes = {
-  decrease: PropTypes.bool
+  decrease: PropTypes.bool,
+  changeSpeed: PropTypes.func.isRequired
 };
 
 export default SpeedButton;

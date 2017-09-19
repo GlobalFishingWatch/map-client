@@ -24,6 +24,10 @@ export const TIMELINE_MIN_INNER_EXTENT = 1.21e+9; // 2 weeks
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
 
+export const TIMELINE_SPEED_CHANGE = 2; // 2 for double and half speed
+export const TIMELINE_MAX_SPEED = 16;
+export const TIMELINE_MIN_SPEED = 0.03125;
+
 export const MIN_ZOOM_LEVEL = 2;
 export const MAX_ZOOM_LEVEL = 12;
 export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
