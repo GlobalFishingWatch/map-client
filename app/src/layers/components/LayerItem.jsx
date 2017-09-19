@@ -130,17 +130,6 @@ class LayerItem extends Component {
               className={IconStyles.infoIcon}
             />
           </li>
-
-          {/* <li
-            className={LayerItemStyles.itemOptionItem}
-            onClick={() => this.changeExpand('INFO')}
-          >
-            <ExpandItemButton active={this.state.expand === 'INFO'}>
-              <InfoIcon
-                className={IconStyles.infoIcon}
-              />
-            </ExpandItemButton >
-          </li> */}
         </ul>
       );
     }
@@ -177,22 +166,6 @@ class LayerItem extends Component {
             />
           </ExpandItem >
         }
-        {/* <ExpandItem active={!layerPanelEditMode && this.state.expand === 'INFO'} arrowPosition={1}>
-          <div className={LayerItemStyles.selectPolygon}>
-            <SelectIcon
-              className={IconStyles.selectIcon}
-            />
-            <div className={LayerItemStyles.selectPolygonText}>
-              Select a Polygon to get more info
-            </div>
-          </div>
-          <button
-            onClick={() => this.onClickInfo()}
-            className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._half, ButtonStyles._top)}
-          >
-            INFO LAYER
-          </button >
-        </ExpandItem > */}
       </div >
     );
   }
