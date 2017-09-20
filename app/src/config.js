@@ -155,3 +155,5 @@ export const MINI_GLOBE_SETTINGS = {
   defaultSize: 20,
   minZoom: 3
 };
+
+export const GEAR_TYPE_ID = 'indo_registered_gear_type';

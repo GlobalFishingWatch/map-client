@@ -1,5 +1,5 @@
 import { LAYER_TYPES } from 'constants';
-import { COLOR_HUES } from 'config';
+import { GEAR_TYPE_ID, COLOR_HUES } from 'config';
 
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
@@ -47,8 +47,8 @@ const getLayerData = (heatmapLayer, filters) => {
         if (flagValue !== '') flag = parseInt(flagValue, 10);
       }
 
-      if (filter.registered_gear_type_id !== undefined) {
-        gearTypeId = filter.registered_gear_type_id;
+      if (filter[GEAR_TYPE_ID] !== undefined) {
+        gearTypeId = filter[GEAR_TYPE_ID];
       }
     }
     LayerGroupedFilters.push({ flag, hue, gearTypeId });
