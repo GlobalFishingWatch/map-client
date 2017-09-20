@@ -324,15 +324,24 @@ export function loadTilesExtraTimeRange() {
   };
 }
 
-
+/**
+ * Gets all the flags for all the filters of a Heatmap layer
+ * @param {object} state - the application state
+ * @param {string} layerId - the id of a heatmap layer
+ * @return {array} flags
+ */
 const _getCurrentFlagsForLayer = (state, layerId) => {
-  if (layerId === undefined) {
-    return undefined;
-  }
-  const flags = state.filterGroups.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
+  if (layerId === undefined) return undefined;
+  const flags = state.filterGroups.layerFilters[layerId].map(layer => layer.flag);
   return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
 };
 
+/**
+ * Returns clusters or vessels data from a tileQuery
+ * @param {object} state - the application state
+ * @param {string} tileQuery - the id of a heatmap layer
+ * @return {object} { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId }
+ */
 const _queryHeatmap = (state, tileQuery) => {
   const layers = state.heatmap.heatmapLayers;
   const timelineExtent = state.filters.timelineInnerExtentIndexes;

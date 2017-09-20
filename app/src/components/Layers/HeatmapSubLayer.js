@@ -28,9 +28,14 @@ export default class HeatmapSubLayer {
   }
 
 
-  setFilters(flag, hue) {
+  setFilters(flag, hue, gearTypeId) {
+    this.gearTypeId = gearTypeId;
     this.flags = (flag === 'ALL') ? undefined : [flag];
     this._setTextureFrame(null, hue);
+  }
+
+  setGearTypeId(gearTypeId) {
+    this.gearTypeId = gearTypeId;
   }
 
   setFlags(flags) {
@@ -130,6 +135,14 @@ export default class HeatmapSubLayer {
         if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
+
+        if (this.gearTypeId !== null &&
+            this.gearTypeId !== undefined &&
+            frame.category !== undefined &&
+            this.gearTypeId !== frame.category[index]) {
+          continue;
+        }
+
         if (this.foundVessels &&
             (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
           continue;
@@ -162,6 +175,12 @@ export default class HeatmapSubLayer {
         if (!frame) continue;
         for (let index = 0, len = frame.worldX.length; index < len; index++) {
           if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+            continue;
+          }
+          if (this.gearTypeId !== null &&
+              this.gearTypeId !== undefined &&
+              frame.category !== undefined &&
+              this.gearTypeId !== frame.category[index]) {
             continue;
           }
           numSprites++;

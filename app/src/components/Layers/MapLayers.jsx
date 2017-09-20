@@ -100,8 +100,8 @@ class MapLayers extends Component {
     // update heatmap layer when:
     // - tiled data changed
     // - selected inner extent changed
-    if (this.props.heatmap !== nextProps.heatmap || innerExtentChanged || nextProps.flagsLayers !== this.props.flagsLayers) {
-      this.setHeatmapFlags(nextProps);
+    if (this.props.heatmap !== nextProps.heatmap || innerExtentChanged || nextProps.layerFilters !== this.props.layerFilters) {
+      this.setHeatmapFilters(nextProps);
       this.updateHeatmap(nextProps);
     }
 
@@ -250,8 +250,8 @@ class MapLayers extends Component {
     this.glContainer.removeLayer(layer.id);
   }
 
-  setHeatmapFlags(props) {
-    this.glContainer.setFlags(props.flagsLayers, useHeatmapStyle(this.props.zoom));
+  setHeatmapFilters(props) {
+    this.glContainer.setFlags(props.layerFilters, useHeatmapStyle(this.props.zoom));
   }
 
   updateHeatmap(props) {
@@ -488,7 +488,7 @@ MapLayers.propTypes = {
   map: PropTypes.object,
   token: PropTypes.string,
   layers: PropTypes.array,
-  flagsLayers: PropTypes.object,
+  layerFilters: PropTypes.object,
   heatmap: PropTypes.object,
   highlightedVessels: PropTypes.object,
   zoom: PropTypes.number,

@@ -27,7 +27,7 @@ class FilterPanel extends Component {
 
     updatedFilters[index] = Object.assign({}, updatedFilters[index], filter);
 
-    this.props.setFlagFilters(updatedFilters);
+    this.props.setFilterGroups(updatedFilters);
 
     if (filter.hue === undefined) {
       this.hideBlending();
@@ -99,6 +99,7 @@ class FilterPanel extends Component {
 
 FilterPanel.propTypes = {
   flags: PropTypes.array,
+  setFilterGroups: PropTypes.func.isRequired,
   setFlagFilters: PropTypes.func.isRequired
 };
 

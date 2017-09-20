@@ -273,13 +273,18 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
-  setFlags(flags, useHeatmapStyle) {
-    if (!Object.keys(flags).length) {
+  /**
+   * Sets sublayers for each Heatmap layer
+   * @param {array} layerFilters - All filters ordered by heatmap layer
+   * @param {bool} useHeatmapStyle
+   */
+  setFlags(layerFilters, useHeatmapStyle) {
+    if (Object.keys(layerFilters).length === 0) {
       return;
     }
-    this.layers.forEach((layer) => {
-      const layerFlags = flags[layer.id];
-      layer.setSubLayers(layerFlags, useHeatmapStyle);
+    this.layers.forEach((heatmapLayer) => {
+      const filters = layerFilters[heatmapLayer.id];
+      heatmapLayer.setSubLayers(filters, useHeatmapStyle);
     });
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }

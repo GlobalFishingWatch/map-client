@@ -35,8 +35,14 @@ export default class HeatmapLayer {
     });
   }
 
-  setSubLayers(flags, useHeatmapStyle) {
-    const subLayerDelta = flags.length - this.subLayers.length;
+  /**
+   * Adds or remove sublayers and set filters to the HeatmapLayer depending on the filters provided
+   * @param {array} filters
+   * @param {bool} useHeatmapStyle
+   */
+  setSubLayers(layerFilters, useHeatmapStyle) {
+    // ??? Why subLayerDelta ???
+    const subLayerDelta = layerFilters.length - this.subLayers.length;
     if (subLayerDelta === -1) {
       const subLayer = this.subLayers.pop();
       this.destroySubLayer(subLayer);
@@ -47,9 +53,10 @@ export default class HeatmapLayer {
         this.stage.addChild(subLayer.stage);
       }
     }
+    // is there more than one subLayer for each ???
     this.subLayers.forEach((subLayer, index) => {
-      const flagData = flags[index];
-      subLayer.setFilters(flagData.flag, flagData.hue);
+      const filterData = layerFilters[index];
+      subLayer.setFilters(filterData.flag, filterData.hue, filterData.gearTypeId);
     });
   }
 

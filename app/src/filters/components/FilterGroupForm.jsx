@@ -90,7 +90,6 @@ class FilterGroupForm extends Component {
 
   onPressSave() {
     this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
-    this.props.setFlagFilters([this.state.filterGroup]);
   }
 
   onFilterValueChange(name, value) {
@@ -234,8 +233,7 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
   saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired,
-  setFlagFilters: PropTypes.func.isRequired
+  openLayerInfoModal: PropTypes.func.isRequired
 };
 
 export default FilterGroupForm;
