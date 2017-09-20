@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import intersection from 'lodash/intersection';
+import _includes from 'lodash/includes';
+import _uniqBy from 'lodash/uniqBy';
 import classnames from 'classnames';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -33,41 +34,7 @@ class FilterGroupForm extends Component {
       filterValues: {}
     }, props.filterGroup);
 
-    // TODO: extract this from layers headers
-    // Until we have the real filters in the API we are going to use these
-    const fakeFiltersFromLayers = [
-      {
-        id: 'flag', // If the same filter (ie. flag) is present on multiple layers, 'id' and 'label' should match.
-        name: 'flag',
-        label: 'Country',
-        values: getCountryOptions(),
-        useDefaultValues: false, // use the default (aka hardcoded values in the frontend app) for id=flag
-        layers: [
-          'fishing2',
-          'fishing'
-        ]
-      },
-      {
-        name: 'gear_type',
-        id: 'gear_type',
-        label: 'Gear Type',
-        values: [
-          {
-            id: 0,
-            label: 'gear type 1'
-          },
-          {
-            id: 1,
-            label: 'gear type 2'
-          }
-        ],
-        layers: [
-          'fishing'
-        ]
-      }
-    ];
-
-    this.state = { filterGroup, filtersFromLayers: fakeFiltersFromLayers };
+    this.state = { filterGroup };
   }
 
   onLayerChecked(layerId) {
@@ -109,11 +76,15 @@ class FilterGroupForm extends Component {
 
   getOptions(filter) {
     let options = [<option key={filter.id} value="" >{filter.label}</option >];
-    options = options.concat(
-      filter.values.map(option => (
-        <option key={option.id} value={option.id} >{option.label}</option >
-      ))
-    );
+    if (filter.values) {
+      options = options.concat(
+        filter.values.map(option => (
+          <option key={option.id} value={option.id} >{option.label}</option >
+        ))
+      );
+    } else {
+      console.warn('No values for filter', filter);
+    }
     return options;
   }
 
@@ -148,17 +119,22 @@ class FilterGroupForm extends Component {
     const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
       .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
 
-    const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
+    const layersToFilter = this.props.layers.filter(layer =>
+      _includes(checkedLayersId, layer.id) && layer.header.filters
+    );
 
-    const filterInputs = filtersFromLayers.map((elem, index) => (
+    const filtersFromLayers = layersToFilter.map(layer => layer.header.filters);
+    const flattenedFilters = [].concat(...filtersFromLayers);
+    const uniqueFiltersFromLayers = _uniqBy(flattenedFilters, e => e.label);
+    const filterInputs = uniqueFiltersFromLayers.map((filter, index) => (
       <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
         <select
           key={index}
-          name={elem.label}
-          onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
-          value={this.state.filterGroup.filterValues[elem.name]}
+          name={filter.label}
+          onChange={e => this.onFilterValueChange(filter.id, e.target.value)}
+          value={this.state.filterGroup.filterValues[filter.id]}
         >
-          {elem.id === 'flag' ? getCountryOptions() : this.getOptions(elem)}
+          {filter.id === 'flag' && filter.useDefaultValues === true ? getCountryOptions() : this.getOptions(filter)}
         </select >
       </div >
     ));
