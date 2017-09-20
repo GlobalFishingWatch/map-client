@@ -30,30 +30,37 @@ export function setFilterGroupModalVisibility(visibility) {
  */
 const getLayerData = (heatmapLayer, filters) => {
   const LayerGroupedFilters = [];
+  let hue = heatmapLayer.hue;
+  let flag = 'ALL';
+  let gearTypeId = null;
+
   filters.forEach((filter) => {
     // Filter hue overrides heatmap layer hue
     // Filter flag overrides all flags ('ALL')
     const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
-    let hue = heatmapLayer.hue;
-    let flag = 'ALL';
-    let gearTypeId = null;
+    if (isLayerChecked && filter.visible) {
 
-    if (filter.filterValues !== undefined && filter.visible && isLayerChecked) {
-      if (filter.filterValues.flag !== undefined) {
-        const flagValue = filter.filterValues.flag;
-        if (filter.color !== undefined) {
-          hue = COLOR_HUES[filter.color];
+      if (filter.filterValues !== undefined) {
+        if (filter.filterValues.flag !== undefined) {
+          const flagValue = filter.filterValues.flag;
+          if (filter.color !== undefined) {
+            hue = COLOR_HUES[filter.color];
+          }
+          if (flagValue !== '') flag = parseInt(flagValue, 10);
         }
-        if (flagValue !== '') flag = parseInt(flagValue, 10);
-      }
 
-      if (filter[GEAR_TYPE_ID] !== undefined) {
-        gearTypeId = filter[GEAR_TYPE_ID];
+        if (filter[GEAR_TYPE_ID] !== undefined) {
+          gearTypeId = filter[GEAR_TYPE_ID];
+        }
       }
+      LayerGroupedFilters.push({ flag, hue, gearTypeId });
     }
-    LayerGroupedFilters.push({ flag, hue, gearTypeId });
   });
 
+  // Set default sublayer if there are no filters
+  if (LayerGroupedFilters.length === 0) {
+    LayerGroupedFilters.push({ flag, hue, gearTypeId });
+  }
   return LayerGroupedFilters;
 };
 
@@ -66,7 +73,7 @@ const getLayerData = (heatmapLayer, filters) => {
 
 export function setFilterGroups(initialFilters) {
   return (dispatch, getState) => {
-    // Get heatmap layers and organise filters to have one sublayer per filter in each layer
+    // Get heatmap layers and organise filters to have one sublayer per heatmapLayer
     const heatmapLayers = getState().layers.workspaceLayers.filter(layer =>
       layer.type === LAYER_TYPES.Heatmap && layer.added === true
     );

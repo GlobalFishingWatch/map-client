@@ -278,8 +278,8 @@ export default class GLContainer extends BaseOverlay {
    * @param {array} layerFilters - All filters ordered by heatmap layer
    * @param {bool} useHeatmapStyle
    */
-  setFlags(layerFilters, useHeatmapStyle) {
-    if (Object.keys(layerFilters).length === 0) {
+  setFilters(layerFilters, useHeatmapStyle) {
+    if (Object.values(layerFilters).every(filter => filter.length === 0)) {
       return;
     }
     this.layers.forEach((heatmapLayer) => {

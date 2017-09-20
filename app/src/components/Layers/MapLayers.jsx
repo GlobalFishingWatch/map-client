@@ -251,7 +251,7 @@ class MapLayers extends Component {
   }
 
   setHeatmapFilters(props) {
-    this.glContainer.setFlags(props.layerFilters, useHeatmapStyle(this.props.zoom));
+    this.glContainer.setFilters(props.layerFilters, useHeatmapStyle(this.props.zoom));
   }
 
   updateHeatmap(props) {
