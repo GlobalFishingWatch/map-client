@@ -1,6 +1,6 @@
 import { ADD_CUSTOM_LAYER, TOGGLE_LAYER_VISIBILITY, TOGGLE_LAYER_WORKSPACE_PRESENCE } from 'layers/layersActions';
 import { ADD_REPORT_POLYGON, DELETE_REPORT_POLYGON, SET_REPORT_STATUS_SENT, SHOW_POLYGON } from 'report/reportActions';
-import { SET_FLAG_FILTERS } from 'filters/filtersActions';
+import { SET_FLAG_FILTERS, CHANGE_SPEED } from 'filters/filtersActions';
 import { SET_SEARCH_TERM } from 'search/searchActions';
 import {
   GA_DISCARD_REPORT,
@@ -18,7 +18,7 @@ import {
 } from 'analytics/analyticsActions';
 
 import isFunction from 'lodash/isFunction';
-import { SEARCH_QUERY_MINIMUM_LIMIT } from 'config';
+import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'config';
 
 import { FLAGS } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN } from 'actions/vesselInfo';
@@ -189,6 +189,16 @@ const GA_ACTION_WHITELIST = [
     category: 'Map Interaction',
     action: 'Changed area',
     getPayload: action => `${action.payload.x},${action.payload.y}`
+  },
+  {
+    type: CHANGE_SPEED,
+    category: 'Timeline',
+    action: 'Speed Control',
+    getPayload: (action, state) => {
+      const label = (action.payload.shouldDecrease ? 'Decrease speed to' : 'Increase speed to');
+      const speedChangeFactor = (action.payload.shouldDecrease ? 1 / TIMELINE_SPEED_CHANGE : TIMELINE_SPEED_CHANGE);
+      return `${label} ${state.filters.timelineSpeed * speedChangeFactor}x`;
+    }
   }
 ];
 
