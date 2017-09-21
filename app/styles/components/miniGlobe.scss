@@ -11,10 +11,10 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: $leyend-mobile-width;
+  width: $legend-mobile-width;
 
   @media #{$mq-tablet} {
-    width: $leyend-width;
+    width: $legend-width;
   }
 
   .zone {
