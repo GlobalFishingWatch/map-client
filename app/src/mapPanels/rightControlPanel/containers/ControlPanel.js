@@ -17,7 +17,9 @@ const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers,
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
   userPermissions: state.user.userPermissions,
-  vessels: state.vesselInfo.vessels
+  vessels: state.vesselInfo.vessels,
+  numPinnedVessels: state.vesselInfo.vessels.filter(vessel => vessel.pinned === true).length,
+  numFilters: state.filters.flags.filter(filter => filter.flag !== undefined).length
 });
 
 const mapDispatchToProps = dispatch => ({

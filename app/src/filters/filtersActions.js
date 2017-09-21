@@ -3,6 +3,7 @@ import { TIMELINE_MIN_INNER_EXTENT } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { loadTilesExtraTimeRange } from 'actions/heatmap';
 
+export const SET_SPEED = 'SET_SPEED';
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const REWIND_TIMELINE = 'REWIND_TIMELINE';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
@@ -142,6 +143,20 @@ export function setTimelineHoverDates(overDates) {
   return {
     type: SET_TIMELINE_HOVER_DATES,
     payload: overDates
+  };
+}
+
+export function changeSpeed(shouldDecrease) {
+  return {
+    type: SET_SPEED,
+    payload: { shouldDecrease }
+  };
+}
+
+export function setSpeed(speed) {
+  return {
+    type: SET_SPEED,
+    payload: { speed }
   };
 }
 

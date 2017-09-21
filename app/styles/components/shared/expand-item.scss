@@ -6,8 +6,16 @@
     overflow-y: auto;
     max-height: 218px;
 
+    &.isVesselInfoPanelOpen {
+      max-height: 60px;
+    }
+
     @media #{$mq-tablet} {
       max-height: 340px;
+
+      &.isVesselInfoPanelOpen {
+        max-height: 340px;
+      }
     }
   }
 }
@@ -23,7 +31,7 @@
     padding-bottom: 20px;
     padding-left: $menu-mobile-left-padding;
     padding-right: $menu-mobile-right-padding;
-    
+
     @media #{$mq-tablet} {
       padding-left: $menu-left-padding;
       padding-right: $menu-mobile-right-padding;

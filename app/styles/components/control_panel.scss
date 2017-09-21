@@ -12,30 +12,6 @@
     top: 0;
   }
 
-  @keyframes slideLeft {
-    from {transform: translateX(100%);}
-    to {transform: translateX(0px);}
-  }
-
-  @keyframes slideDown {
-    from {transform: translateY(-100%);}
-    to {transform: translateY(0px);}
-  }
-
-  &.entering {
-    display: none;
-  }
-
-  &.entered {
-
-    .bgWrapper {
-      animation: slideDown 0.4s ease-in;
-      @media #{$mq-tablet} {
-        animation: slideLeft 0.4s ease-in;
-      }
-    }
-  }
-
   @media #{$mq-tablet} {
     background: transparent;
     flex: 0 1 auto;
@@ -75,7 +51,7 @@
 
     .fishingHours {
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: 7px;
       fill: rgba($color-3, .5);
     }
 

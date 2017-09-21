@@ -20,7 +20,6 @@ import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
 import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
-import Transition from 'react-transition-group/Transition';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
 
 class ControlPanel extends Component {
@@ -71,8 +70,7 @@ class ControlPanel extends Component {
   }
 
   renderVesselsSubMenu() {
-    const numPinnedVessels = this.props.vessels.filter(vessel => vessel.pinned === true).length;
-
+    const { numPinnedVessels } = this.props;
     const searchHeader = (
       <div >
         <MediaQuery maxWidth={767} >
@@ -111,7 +109,6 @@ class ControlPanel extends Component {
             </div >
           }
         </SubMenu >
-        <VesselInfoPanel />
       </div>
     );
   }
@@ -183,6 +180,7 @@ class ControlPanel extends Component {
           <MenuLink
             title="Vessels"
             icon={this.renderIcon('vessels')}
+            badge={this.props.numPinnedVessels}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.VESSELS)}
           />
           <MenuLink
@@ -193,6 +191,7 @@ class ControlPanel extends Component {
           <MenuLink
             title="Filters"
             icon={this.renderIcon('filters')}
+            badge={this.props.numFilters}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.FILTERS)}
           />
           {ENABLE_AREA_OF_INTEREST && <MenuLink
@@ -201,7 +200,6 @@ class ControlPanel extends Component {
             onClick={() => this.props.setSubmenu('AREAS')}
           />}
         </div >
-        <VesselInfoPanel />
       </div >
     );
   }
@@ -227,20 +225,17 @@ class ControlPanel extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          <Transition in={!!this.props.activeSubmenu} timeout={0}>
-            {status => (
-              <div
-                className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
-                ref={(controlPanel) => {
-                  this.controlPanelRef = controlPanel;
-                }}
-              >
-                <div className={classnames([ControlPanelStyles.bgWrapper])} >
-                  {this.renderSubMenu(desktop)}
-                </div >
-              </div >
-            )}
-          </Transition>
+          <div
+            className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
+            ref={(controlPanel) => {
+              this.controlPanelRef = controlPanel;
+            }}
+          >
+            <div className={classnames([ControlPanelStyles.bgWrapper])} >
+              {this.renderSubMenu(desktop)}
+              <VesselInfoPanel />
+            </div >
+          </div >
         )}
       </MediaQuery >
     );
@@ -263,6 +258,8 @@ ControlPanel.propTypes = {
   setSubmenu: PropTypes.func.isRequired,
   userPermissions: PropTypes.array,
   vessels: PropTypes.array,
+  numPinnedVessels: PropTypes.number.isRequired,
+  numFilters: PropTypes.number.isRequired,
   isDrawing: PropTypes.bool
 };
 

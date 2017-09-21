@@ -76,7 +76,11 @@ class LayerPanel extends Component {
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />
-        <ExpandItem active={this.state.expand === 'MAP_LAYERS'} accordion >
+        <ExpandItem
+          active={this.state.expand === 'MAP_LAYERS'}
+          isVesselInfoPanelOpen={this.props.isVesselInfoPanelOpen}
+          accordion
+        >
           <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
             {mapLayers}
           </ul >
@@ -93,7 +97,8 @@ LayerPanel.propTypes = {
   setLayerInfoModal: PropTypes.func,
   setLayerOpacity: PropTypes.func,
   setLayerHue: PropTypes.func,
-  userPermissions: PropTypes.array
+  userPermissions: PropTypes.array,
+  isVesselInfoPanelOpen: PropTypes.bool.isRequired
 };
 
 

@@ -6,7 +6,8 @@ import {
   SET_OUTER_TIMELINE_DATES,
   SET_OVERALL_TIMELINE_DATES,
   SET_PLAYING_STATUS,
-  SET_TIMELINE_HOVER_DATES
+  SET_TIMELINE_HOVER_DATES,
+  SET_SPEED
 } from 'filters/filtersActions';
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -14,7 +15,10 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_OVERALL_START_DATE,
-  TIMELINE_OVERALL_END_DATE
+  TIMELINE_OVERALL_END_DATE,
+  TIMELINE_SPEED_CHANGE,
+  TIMELINE_MIN_SPEED,
+  TIMELINE_MAX_SPEED
 } from 'config';
 import { getOffsetedTimeAtPrecision } from 'util/heatmapTileData';
 
@@ -27,6 +31,7 @@ const initialState = {
     getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
+  timelineSpeed: 1,
   /** @deprecated use filterGroups logic instead */
   flagsLayers: {},
   /** @deprecated use filterGroups logic instead */
@@ -97,6 +102,18 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         timelineInnerExtent: [state.timelineOuterExtent[0], newTimelineInnerEnd]
       });
+    }
+    case SET_SPEED: {
+      const currentSpeed = state.timelineSpeed;
+      let timelineSpeed = action.payload.speed || currentSpeed;
+      if (action.payload.speed === undefined) {
+        const ratio = action.payload.shouldDecrease ? (1 / TIMELINE_SPEED_CHANGE) : TIMELINE_SPEED_CHANGE;
+        const isBetweenLimits = (currentSpeed * ratio > TIMELINE_MIN_SPEED) && (currentSpeed * ratio < TIMELINE_MAX_SPEED);
+        if (isBetweenLimits) {
+          timelineSpeed = currentSpeed * ratio;
+        }
+      }
+      return Object.assign({}, state, { timelineSpeed });
     }
     default:
       return state;

@@ -8,6 +8,7 @@ import searchPanelStyles from 'styles/search/search-panel.scss';
 import ResultListStyles from 'styles/search/result-list.scss';
 import MapButtonStyles from 'styles/components/button.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
+import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
 
 class SearchPanel extends Component {
 
@@ -104,6 +105,9 @@ class SearchPanel extends Component {
           className={searchPanelStyles.searchInput}
           placeholder="Search vessel"
           value={this.props.searchTerm}
+        />
+        <SearchIcon
+          className={classnames(iconsStyles.icon, iconsStyles.searchIcon, searchPanelStyles.searchIcon)}
         />
         {this.props.searchTerm.length > 0 && <CloseIcon
           className={classnames(iconsStyles.icon, iconsStyles.iconClose, searchPanelStyles.cleanQueryButton)}

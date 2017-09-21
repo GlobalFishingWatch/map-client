@@ -8,7 +8,7 @@
   z-index: 20;
 
   @media #{$mq-mobile-large} {
-    padding: 0 0 0 10px;
+    padding-left: 5px;
   }
 }
 
@@ -18,13 +18,13 @@
 
 .timebarDatepicker {
   width: 15%;
-  margin-left: 8px;
+  margin-left: 3px;
   border-left: 1px solid $color-fade-blue;
 
   @media #{$mq-mobile-large} {
     width: 20%;
     margin-left: 0;
-    width: 100px;
+    width: 98px;
     border-left: none;
   }
 }
@@ -32,7 +32,7 @@
 .timebarPlayback {
   text-align: center;
   width: 12%;
-  margin-left: 6px;
+  margin-top: 12px;
 
   @media #{$mq-mobile-large} {
     margin-left: 0;
@@ -48,14 +48,13 @@
     border-radius: 50%;
     font-size: $font-size-x-small;
 
-    margin: 21px 4px;
+    margin-top: 2px;
     height: 40px;
     width: 40px;
 
     @media #{$mq-mobile-large} {
-      margin: 12px 5px;
-      height: 45px;
-      width: 45px;
+      height: 40px;
+      width: 40px;
     }
 
     &:focus {
