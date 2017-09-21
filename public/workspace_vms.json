@@ -33,13 +33,13 @@
         {
           "title": "INDO private",
           "description": "INDO private",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-private-parametrize-v5",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-private-parametrize-v6",
           "visible": true,
           "hue": 60,
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "indo-private",
-          "tilesetId": "525-indo-private-parametrize-v5"
+          "tilesetId": "525-indo-private-parametrize-v6"
         },
         {
           "title": "INDO private transporters",
@@ -61,7 +61,7 @@
           "type": "ClusterAnimation",
           "opacity": 1,
           "id": "peruvian-vms",
-          "tilesetId": "501-peruvian-v34"
+          "tilesetId": "501-peruvian-v3"
         },
         {
           "title": "MPA - No Take",
