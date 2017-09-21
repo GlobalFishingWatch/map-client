@@ -25,15 +25,14 @@ class PinnedVesselList extends Component {
   render() {
     const { vessels, currentlyShownVessel } = this.props;
     const isVesselInfoPanelClosed = currentlyShownVessel === null;
-    const unpinnedVessels = vessels.filter(vessel => !vessel.pinned);
     const pinnedVessels = vessels.filter(vessel => vessel.pinned);
 
     let pinnedItems = null;
 
-    if (unpinnedVessels.length || pinnedVessels.length) {
+    if (pinnedVessels.length) {
       pinnedItems = (
         <ul className={classnames(pinnedTracksStyles.tracksList, { [pinnedTracksStyles.noInfo]: isVesselInfoPanelClosed })}>
-          {unpinnedVessels.concat(pinnedVessels).map((pinnedVessel, index) => {
+          {pinnedVessels.map((pinnedVessel, index) => {
             const isInfoForVesselOpened = pinnedVessel.mmsi === (currentlyShownVessel && currentlyShownVessel.mmsi);
             return (
               <PinnedVessel
