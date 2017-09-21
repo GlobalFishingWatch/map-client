@@ -332,8 +332,7 @@ export function loadTilesExtraTimeRange() {
  */
 const _getCurrentFlagsForLayer = (state, layerId) => {
   if (layerId === undefined) return undefined;
-  const flags = state.filterGroups.layerFilters[layerId].map(layer => layer.flag);
-  return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
+  return state.filterGroups.layerFilters[layerId].map(layer => layer.flag);
 };
 
 /**

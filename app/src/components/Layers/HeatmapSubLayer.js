@@ -30,12 +30,8 @@ export default class HeatmapSubLayer {
 
   setFilters(flag, hue, gearTypeId) {
     this.gearTypeId = gearTypeId;
-    this.flags = [flag];
+    this.flags = (flag === 'ALL') ? undefined : [flag];
     this._setTextureFrame(null, hue);
-  }
-
-  setGearTypeId(gearTypeId) {
-    this.gearTypeId = gearTypeId;
   }
 
   setFlags(flags) {
