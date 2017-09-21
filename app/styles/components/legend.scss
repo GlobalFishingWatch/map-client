@@ -15,7 +15,7 @@
   width: $legend-mobile-width;
 
   @media #{$mq-tablet} {
-    padding-left: 15px;
+    padding-left: 20px;
     width: $legend-width;
   }
 
@@ -37,6 +37,10 @@
   .legendOvals {
     display: flex;
     margin: 10px;
+    
+    @media #{$mq-tablet} {
+      margin-left: 16px;
+    }
 
     .lessFishingOval {
       background-color: $light-blue;
