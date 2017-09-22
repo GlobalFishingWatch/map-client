@@ -69,6 +69,12 @@ const getLayerData = (heatmapLayer, filters) => {
 
 /**
  * Sets filterGroups for the map
+ * 
+ * Filters are grouped by layer 
+ * A sublayer is created for each layerFilters information
+ * through GLContainer and HeatmapLayer
+ * Then is filtered in the _dumpTileVessels method of HeatmapSublayer
+ * 
  * @param {array} initialFilters - the original filters to process
  * @returns {array} filters - Filters to save in the store and workspace
  * @returns {array} layerFilters - Filters grouped by layer

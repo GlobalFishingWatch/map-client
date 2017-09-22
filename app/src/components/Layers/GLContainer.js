@@ -274,11 +274,12 @@ export default class GLContainer extends BaseOverlay {
   }
 
   /**
-   * Sets sublayers for each Heatmap layer
+   * Sets sublayers with the filters for each Heatmap layer
    * @param {array} layerFilters - All filters ordered by heatmap layer
    * @param {bool} useHeatmapStyle
    */
   setFilters(layerFilters, useHeatmapStyle) {
+    // Don't set subLayers if you dont have any
     if (Object.values(layerFilters).every(filter => filter.length === 0)) {
       return;
     }

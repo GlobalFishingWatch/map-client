@@ -36,12 +36,11 @@ export default class HeatmapLayer {
   }
 
   /**
-   * Adds or remove sublayers and set filters to the HeatmapLayer depending on the filters provided
+   * Add or remove sublayers and set filters to each one
    * @param {array} filters
    * @param {bool} useHeatmapStyle
    */
   setSubLayers(layerFilters, useHeatmapStyle) {
-    // ??? Why subLayerDelta ???
     const subLayerDelta = layerFilters.length - this.subLayers.length;
     if (subLayerDelta === -1) {
       const subLayer = this.subLayers.pop();
@@ -53,7 +52,6 @@ export default class HeatmapLayer {
         this.stage.addChild(subLayer.stage);
       }
     }
-    // is there more than one subLayer for each ???
     this.subLayers.forEach((subLayer, index) => {
       const filterData = layerFilters[index];
       subLayer.setFilters(filterData.flag, filterData.hue, filterData.gearTypeId);

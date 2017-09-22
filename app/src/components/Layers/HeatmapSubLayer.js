@@ -30,6 +30,7 @@ export default class HeatmapSubLayer {
 
   setFilters(flag, hue, gearTypeId) {
     this.gearTypeId = gearTypeId;
+    // Don't filter flags if 'ALL' is selected (No filters case)
     this.flags = (flag === 'ALL') ? undefined : [flag];
     this._setTextureFrame(null, hue);
   }
@@ -127,14 +128,14 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        // filter by flag (category)
+        // filter by flag (category). Skip the sprites if the flag is not in the tile data
         if (this.flags !== undefined &&
             frame.category !== undefined
             && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
 
-        // filter by gearTypeId
+        // filter by gearTypeId. Skip the sprites if the gearTypeId is not in the tile data
         if (this.gearTypeId !== null &&
             this.gearTypeId !== undefined &&
             frame.registered_gear_type_id !== undefined &&
@@ -142,6 +143,7 @@ export default class HeatmapSubLayer {
           continue;
         }
 
+        // filter by foundVessels
         if (this.foundVessels &&
             (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
           continue;
@@ -193,7 +195,6 @@ export default class HeatmapSubLayer {
   _resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
-    // console.log(currentPoolSize, '->', finalPoolSize);
     if (poolDelta > 0) {
       this._addSprites(poolDelta);
     } else {
