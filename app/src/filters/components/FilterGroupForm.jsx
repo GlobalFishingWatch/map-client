@@ -165,7 +165,7 @@ class FilterGroupForm extends Component {
               </div >
             </div >
             <div className={ModalStyles.wrapper} >
-              <ColorPicker color={this.state.filterGroup.color} onColorChange={this.onColorChange} />
+              <ColorPicker id={'filter-color'} color={this.state.filterGroup.color} onColorChange={this.onColorChange} />
             </div >
           </div >
           <div className={ModalStyles.column} >
