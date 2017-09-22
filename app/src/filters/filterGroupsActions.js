@@ -22,6 +22,15 @@ export function setFilterGroupModalVisibility(visibility) {
   };
 }
 
+const getFilterValues = (filter, field) => {
+  if (filter.filterValues !== undefined &&
+      filter.filterValues[field] !== undefined) {
+    if (field === 'flag') return parseInt(filter.filterValues.flag, 10);
+    if (field === GEAR_TYPE_ID) return filter.filterValues[GEAR_TYPE_ID];
+  }
+  return null;
+};
+
 /**
  * gets the information to create the sublayer for each layer and filter
  * @param {array} heatmapLayer
@@ -30,28 +39,22 @@ export function setFilterGroupModalVisibility(visibility) {
  */
 const getLayerData = (heatmapLayer, filters) => {
   const LayerGroupedFilters = [];
+  // Filter hue overrides heatmap layer hue
   let hue = heatmapLayer.hue;
-  let flag = 'ALL';
   let gearTypeId = null;
+  let flag = 'ALL';
 
   filters.forEach((filter) => {
-    // Filter hue overrides heatmap layer hue
-    // Filter flag overrides all flags ('ALL')
-    const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
-    if (isLayerChecked && filter.visible) {
-
-      if (filter.filterValues !== undefined) {
-        if (filter.filterValues.flag !== undefined) {
-          const flagValue = filter.filterValues.flag;
-          if (filter.color !== undefined) {
-            hue = COLOR_HUES[filter.color];
-          }
-          if (flagValue !== '') flag = parseInt(flagValue, 10);
-        }
-
-        if (filter[GEAR_TYPE_ID] !== undefined) {
-          gearTypeId = filter[GEAR_TYPE_ID];
-        }
+    gearTypeId = null;
+    flag = 'ALL';
+    if (filter.visible) {
+      hue = COLOR_HUES[filter.color];
+      const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
+      if (isLayerChecked) {
+        flag = getFilterValues(filter, 'flag') || flag;
+        gearTypeId = getFilterValues(filter, GEAR_TYPE_ID) || gearTypeId;
+      } else { // filter everything on the layer if the layer is not checked
+        flag = 'FILTERED';
       }
       LayerGroupedFilters.push({ flag, hue, gearTypeId });
     }
