@@ -75,10 +75,11 @@ class FilterGroupForm extends Component {
   }
 
   getOptions(filter) {
+    const compareById = (a, b) => (a.id < b.id ? -1 : 1);
     let options = [<option key={filter.id} value="" >{filter.label}</option >];
     if (filter.values) {
       options = options.concat(
-        filter.values.map(option => (
+        filter.values.sort(compareById).map(option => (
           <option key={option.id} value={option.id} >{option.label}</option >
         ))
       );
