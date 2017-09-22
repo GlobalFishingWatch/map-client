@@ -42,28 +42,6 @@
           "tilesetId": "525-indo-private-parametrize-v6"
         },
         {
-          "title": "INDO private transporters",
-          "description": "INDO private transporters",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-private-transporters-v4",
-          "visible": true,
-          "hue": 60,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "indo-private-transporters",
-          "tilesetId": "525-indo-private-transporters-v4"
-        },
-        {
-          "title": "Peruvian VMS",
-          "description": "Peruvian VMS",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/501-peruvian-v3",
-          "visible": true,
-          "hue": 60,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "peruvian-vms",
-          "tilesetId": "501-peruvian-v3"
-        },
-        {
           "title": "MPA - No Take",
           "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/directory/mpant/source",

@@ -53,7 +53,7 @@ const getLayerData = (heatmapLayer, filters) => {
       if (isLayerChecked) {
         flag = getFilterValues(filter, 'flag') || flag;
         gearTypeId = getFilterValues(filter, GEAR_TYPE_ID) || gearTypeId;
-      } else { // filter everything on the layer if the layer is not checked
+      } else { // filter everything on the sublayer if the layer is not checked
         flag = 'FILTERED';
       }
       LayerGroupedFilters.push({ flag, hue, gearTypeId });
@@ -68,7 +68,7 @@ const getLayerData = (heatmapLayer, filters) => {
 };
 
 /**
- * sets filterGroups for the map
+ * Sets filterGroups for the map
  * @param {array} initialFilters - the original filters to process
  * @returns {array} filters - Filters to save in the store and workspace
  * @returns {array} layerFilters - Filters grouped by layer
