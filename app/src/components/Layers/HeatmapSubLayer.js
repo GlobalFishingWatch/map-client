@@ -102,7 +102,6 @@ export default class HeatmapSubLayer {
       if (!document.body.contains(tile.canvas)) {
         console.warn('rendering tile that doesnt exist in the DOM', tile);
       }
-
       this._dumpTileVessels(startIndex, endIndex, tile.data, offsets);
     });
 
@@ -128,14 +127,18 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+        // filter by flag (category)
+        if (this.flags !== undefined &&
+            frame.category !== undefined
+            && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
 
+        // filter by gearTypeId
         if (this.gearTypeId !== null &&
             this.gearTypeId !== undefined &&
-            frame.category !== undefined &&
-            this.gearTypeId !== frame.category[index]) {
+            frame.registered_gear_type_id !== undefined &&
+            this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1) {
           continue;
         }
 
@@ -143,6 +146,7 @@ export default class HeatmapSubLayer {
             (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
           continue;
         }
+
         this.numSprites++;
         const sprite = this.spritesPool[this.numSprites];
 
@@ -175,8 +179,8 @@ export default class HeatmapSubLayer {
           }
           if (this.gearTypeId !== null &&
               this.gearTypeId !== undefined &&
-              frame.category !== undefined &&
-              this.gearTypeId !== frame.category[index]) {
+              frame.registered_gear_type_id !== undefined &&
+              this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1) {
             continue;
           }
           numSprites++;
