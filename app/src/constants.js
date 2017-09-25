@@ -20,7 +20,7 @@ export const REPORT_STATUS = {
   sent: 'sent'
 };
 
-export const VESSEL_INFO_STATUS = {
+export const INFO_STATUS = {
   HIDDEN: 1,
   LOADING: 2,
   LOADED: 3

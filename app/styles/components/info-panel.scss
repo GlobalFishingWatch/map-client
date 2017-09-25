@@ -1,6 +1,6 @@
 @import '../settings';
 
-.vesselInfoPanel {
+.infoPanel {
   background-color: $color-7;
   color: $color-4;
   display: block;
@@ -16,13 +16,13 @@
 
   &._expanded {
 
-    > .vesselMetadata {
+    > .metadata {
       max-height: none;
       overflow: visible;
     }
   }
 
-  > .vesselMetadata {
+  > .metadata {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -101,7 +101,7 @@
     fill: $color-3;
     position: absolute;
     right: 86px;
-    
+
     @media #{$mq-tablet} {
       right: 30px;
       margin-top: 5px;
