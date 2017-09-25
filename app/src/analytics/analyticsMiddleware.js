@@ -212,7 +212,7 @@ const GA_ACTION_WHITELIST = [
     type: SET_PINNED_VESSEL_HUE,
     category: 'Settings',
     action: 'Change vessel track colour',
-    getPayload: 'user changes colour'
+    getPayload: () => 'user changes colour'
   },
   {
     type: SET_RECENT_VESSELS_VISIBILITY,
