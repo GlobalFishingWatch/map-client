@@ -134,12 +134,21 @@ export default class HeatmapSubLayer {
             && this.flags.indexOf(frame.category[index]) === -1) {
           continue;
         }
-
         // filter by gearTypeId. Skip the sprites if the gearTypeId is not in the tile data
         if (this.gearTypeId !== null &&
+            this.gearTypeId !== undefined) {
+
+          // Also skip the rendering if that layer doesn't have any gear type information (e.g AIS)
+          if (frame.registered_gear_type_id === undefined ||
+              (frame.registered_gear_type_id !== undefined &&
+              this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1)) {
+            continue;
+          }
+        }
+
+        if (this.gearTypeId !== null &&
             this.gearTypeId !== undefined &&
-            frame.registered_gear_type_id !== undefined &&
-            this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1) {
+            frame.registered_gear_type_id === undefined) {
           continue;
         }
 
