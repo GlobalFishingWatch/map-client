@@ -1,20 +1,25 @@
 # Changelog
 
-## Next
+## 2.1.7 RC1
+- General design and code overhaul
+- Code refactoring for better management and extensibility
+- UI changes to optimize screen usage
+- UI review on vessel history and search result modals
+- Sidebar reorganisation, panel-based navigation replaced accordion
+- Replaced hue selectors by palette selectors
+- Added minimap
+- Added heatmap legend
+- Added playback speed controls and saving in workspace
 - Added "North Star" basemap
 - Full update on dependencies to latest versions
-- Code refactoring for better management and extensibility
 - Add "Area of Interest"
    - Drawing new areas
    - Recoloring
    - Renaming
    - Saving to workspace
    - Loading from workspace
-- UI changes to optimize screen usage
 - Merged basemaps switcher into layers panel
 - Add interface for new filter group logic
-- UI changes with new icons and colors
-- UI review on vessel history and search result modals
 
 ## 2.1.6 RC4
 - Revert Preact to React
