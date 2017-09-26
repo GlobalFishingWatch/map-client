@@ -41,10 +41,10 @@
     border-bottom: 5px solid $color;
   }
   @if($direction == 'down') {
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
 
-    border-top: 20px solid $color;
+    border-top: 5px solid $color;
   }
 }
 
@@ -58,4 +58,11 @@
   &.green { background-color: $green; }
   &.blue { background-color: $blue; }
   &.peach { background-color: $peach; }
+}
+
+@mixin line($color) {
+  width: 8px;
+  height: 3px;
+  vertical-align: middle;
+  background-color: $color;
 }

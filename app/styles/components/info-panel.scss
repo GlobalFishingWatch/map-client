@@ -1,4 +1,5 @@
 @import '../settings';
+@import '../mixins';
 
 .infoPanel {
   background-color: $color-7;
@@ -30,12 +31,91 @@
     overflow: hidden;
     padding: 20px 20px 15px;
 
+    &._noPadding {
+      padding: 0;
+    }
+
     @media #{$mq-tablet} {
       max-height: none;
     }
 
-    .rowInfo {
-      display: flex;
+    .info {
+      width: 100%;
+
+      .encountersData {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-height: 100px;
+        overflow: hidden;
+        padding: 10px 20px 8px;
+
+        @media #{$mq-tablet} {
+          max-height: none;
+        }
+      }
+
+      .header {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: $font-size-xs-small;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 1px solid $color-fade-blue;
+
+        .title {
+          display: flex;
+          align-items: center;
+          .oval {
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.5);
+            background-color: $color-salmon;
+            border: solid 1px $color-salmon;
+            border-radius: 50%;
+            display: inline-block;
+          }
+
+          .encountersTitle {
+            font-weight: bold;
+            padding-left: 10px;
+            padding-right: 5px;
+          }
+        }
+
+        .duration {
+          padding-right: 20px;
+
+          .durationLabel {
+            font-weight: bold;
+          }
+        }
+      }
+
+
+      .vesselHeader {
+        &::before {
+          display: inline-block;
+          content: "";
+          margin-right: 10px;
+          @include line($color-red);
+        }
+      }
+
+      .reeferHeader {
+        &::before {
+          display: inline-block;
+          content: "";
+          margin-right: 10px;
+          @include line($color-salmon);
+        }
+      }
+    }
+
+
+  .rowInfo {
+    display: flex;
       flex-basis: calc(50% - 10px);
       flex-direction: column;
       flex-wrap: wrap;

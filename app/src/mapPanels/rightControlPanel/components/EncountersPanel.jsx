@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import ExpandButton from 'components/Shared/ExpandButton';
-
+import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
-// import iconStyles from 'styles/icons.scss';
 
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 
@@ -15,10 +14,11 @@ import { INFO_STATUS } from 'constants';
 class EncountersPanel extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      isExpanded: true
+      isExpanded: true,
+      tabIndex: 0
     };
+    this.handleTabIndexChange = this.handleTabIndexChange.bind(this);
   }
 
   onExpand() {
@@ -31,32 +31,69 @@ class EncountersPanel extends Component {
     this.props.setEncountersInfo(); // Only until we have real API data
   }
 
+  handleTabIndexChange(tabIndex) {
+    this.setState({ tabIndex });
+  }
+
+  renderVessel(vessel) {
+    return (
+      <div className={infoPanelStyles.encountersData} >
+        <div className={infoPanelStyles.rowInfo} >
+          <span className={infoPanelStyles.key} >Date</span>
+          <span className={infoPanelStyles.value} >{vessel.date}</span>
+        </div>
+        <div className={infoPanelStyles.rowInfo} >
+          <span className={infoPanelStyles.key} >MMSI</span>
+          <span className={infoPanelStyles.value} >{vessel.MMSI}</span>
+        </div>
+        <div className={infoPanelStyles.rowInfo} >
+          <span className={infoPanelStyles.key} >Vessel</span>
+          <span className={infoPanelStyles.value} >Link to vessel</span>
+        </div>
+      </div>
+    );
+  }
+
   renderEncounterInfo() {
     const encountersInfo = this.props.encountersInfo;
-    const vesselsList = encountersInfo.vessels.map(vessel => (
-      <div key={vessel.tilesetId} className={infoPanelStyles.rowInfo} >
-        <span className={infoPanelStyles.key} >{vessel.vesselTypeName}</span>
-        <ul className={infoPanelStyles.linkList} >
-          {vessel.tilesetId}
-        </ul>
-      </div>
-    ));
+    const encounterVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName === 'ENCOUNTER_BOAT');
+    const reeferVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName !== 'ENCOUNTER_BOAT');
+
+
+    const tabOptions = [
+      <div className={infoPanelStyles.vesselHeader}>
+        Vessel
+      </div>,
+      <div className={infoPanelStyles.reeferHeader}>
+        Reefer
+      </div>];
 
     return (
-      <div className={infoPanelStyles.rowInfo} >
-        <ul className={infoPanelStyles.linkList} >
-          <li className={infoPanelStyles.linkListItem} >
-            <a
-              className={infoPanelStyles.externalLink}
-              href={`${encountersInfo.duration}${encountersInfo.duration}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {encountersInfo.duration}
-            </a>
-          </li>
-        </ul>
-        { vesselsList }
+      <div className={infoPanelStyles.info}>
+        <div className={infoPanelStyles.header} >
+          <div className={infoPanelStyles.title}>
+            <span className={infoPanelStyles.oval} />
+            <span className={infoPanelStyles.encountersTitle} >
+              ENCOUNTERS
+            </span>
+          </div>
+          <div className={infoPanelStyles.duration} >
+            <span className={infoPanelStyles.durationLabel} >
+              Duration
+            </span>
+            {encountersInfo.duration}
+          </div>
+        </div>
+        <Tab
+          options={tabOptions}
+          style={infoPanelStyles.tab}
+          selectedIndex={this.state.tabIndex}
+          handleTabIndexChange={this.handleTabIndexChange}
+        />
+        {this.state.tabIndex === 0 ?
+          this.renderVessel(encounterVessel) :
+          this.renderVessel(reeferVessel)
+        }
       </div>
     );
   }
@@ -71,7 +108,7 @@ class EncountersPanel extends Component {
       );
     } else if (infoPanelStatus === INFO_STATUS.LOADED && encountersInfo) {
       return (
-        <div className={infoPanelStyles.metadata} >
+        <div className={classnames(infoPanelStyles.metadata, infoPanelStyles._noPadding)} >
           {this.renderEncounterInfo()}
         </div>
       );
