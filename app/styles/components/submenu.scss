@@ -76,8 +76,6 @@
     .content {
       -webkit-overflow-scrolling: touch;
       padding: 15px 0;
-      overflow-y: auto;
-      max-height: calc(100vh - #{$map-footer-height + $timebar-height + $submenu-header-height});
 
       @media #{$mq-tablet} {
         margin: 10px 0 0;

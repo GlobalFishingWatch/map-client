@@ -7,6 +7,7 @@
   top: $header-height-mobile;
   width: 100%;
   z-index: 10;
+  overflow: auto;
 
   &._noHeader {
     top: 0;
@@ -16,8 +17,7 @@
     background: transparent;
     flex: 0 1 auto;
     height: auto;
-    overflow: visible;
-
+  
     // cancels pointer-events: none of c-map-panels
     pointer-events: auto;
     position: relative;
