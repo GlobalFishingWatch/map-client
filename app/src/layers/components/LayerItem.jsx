@@ -129,9 +129,11 @@ class LayerItem extends Component {
             className={LayerItemStyles.itemOptionItem}
             onClick={() => this.onClickInfo()}
           >
-            <InfoIcon
-              className={IconStyles.infoIcon}
-            />
+            <button className={ButtonStyles.infoButton}>
+              <InfoIcon
+                className={IconStyles.infoIcon}
+              />
+            </button>
           </li>
         </ul>
       );
