@@ -8,13 +8,14 @@
   height: 70px;
   z-index: 9;
   background-color: $color-base;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
   width: $legend-mobile-width;
 
   @media #{$mq-tablet} {
     width: $legend-width;
+
+    &._isEmbedded {
+      width: $legend-mobile-width;
+    }
   }
 
   .zone {
@@ -27,6 +28,8 @@
   .svgContainer {
     width: 50px;
     height: 50px;
+    margin-left: 33%;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
 

@@ -17,6 +17,26 @@
   @media #{$mq-tablet} {
     padding-left: 20px;
     width: $legend-width;
+
+    &._isEmbedded {
+      padding-left: 7px;
+      width: $legend-mobile-width;
+
+      .legendText {
+        span {
+          font-size: $font-size-tiny;
+        }
+      }
+
+      .legendOvals {
+        margin-left: 10px;
+       
+        .line {
+          width: 47px;
+        }
+      }
+
+    }
   }
 
   .legendText {
@@ -69,7 +89,7 @@
       margin-top: 4px;
       opacity: 0.3;
       border: dashed 1px $color-34;
-      @media #{$mq-tablet} {
+      @media #{$mq-tablet} {          
         width: 72px;
       }
     }

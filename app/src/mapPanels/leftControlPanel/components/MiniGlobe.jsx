@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import MiniGlobeStyles from 'styles/components/miniGlobe.scss';
 import { geoOrthographic, geoPath } from 'd3-geo'; // eslint-disable-line
 import { feature } from 'topojson-client';
+import classnames from 'classnames';
 import { MINI_GLOBE_SETTINGS } from 'config';
 
 const jsonData = require('assets/topoJson/ne_110m_land.json');
@@ -77,9 +78,15 @@ class MiniGlobe extends Component {
   render() {
     const { zoom } = this.props;
     const { markerHeight, markerWidth } = this.state;
+    const { isEmbedded } = this.props;
     const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
     return (
-      <div id="miniGlobe" className={MiniGlobeStyles.miniGlobe} >
+      <div
+        id="miniGlobe"
+        className={classnames(
+          MiniGlobeStyles.miniGlobe,
+          { [MiniGlobeStyles._isEmbedded]: isEmbedded })}
+      >
         <div className={MiniGlobeStyles.svgContainer} >
           { zoom > MINI_GLOBE_SETTINGS.minZoom &&
             <div className={MiniGlobeStyles.zoneMarker} style={{ width: markerWidth, height: markerHeight }} />
@@ -117,6 +124,7 @@ MiniGlobe.propTypes = {
   center: PropTypes.object.isRequired,
   viewportWidth: PropTypes.number,
   viewportHeight: PropTypes.number,
+  isEmbedded: PropTypes.bool.isRequired,
   zoom: PropTypes.number.isRequired
 };
 

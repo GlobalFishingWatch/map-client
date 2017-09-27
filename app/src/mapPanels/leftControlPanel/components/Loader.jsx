@@ -3,8 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import LoaderStyles from 'styles/components/loader.scss';
 
-export default function Loader(props) {
-  const { visible, absolute, tiny } = props;
+export default function Loader({ visible, absolute, tiny }) {
   const loader = (
     <div
       className={classnames([LoaderStyles.loader, {

@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LegendStyles from 'styles/components/legend.scss';
+import classnames from 'classnames';
 
-function Legend() {
+function Legend({ isEmbedded }) {
   return (
-    <div className={LegendStyles.legend} >
+    <div className={classnames(LegendStyles.legend, { [LegendStyles._isEmbedded]: isEmbedded })} >
       <ul>
         <li className={LegendStyles.legendText}>
           <span>
@@ -22,5 +24,9 @@ function Legend() {
     </div >
   );
 }
+
+Legend.propTypes = {
+  isEmbedded: PropTypes.bool.isRequired
+};
 
 export default Legend;
