@@ -75,15 +75,12 @@
 
     .content {
       -webkit-overflow-scrolling: touch;
-      height: calc(100% - 108px);
-      overflow-y: auto;
       padding: 15px 0;
+      overflow-y: auto;
+      max-height: calc(100vh - #{$map-footer-height + $timebar-height + $submenu-header-height});
 
       @media #{$mq-tablet} {
-        height: auto;
         margin: 10px 0 0;
-        max-height: none;
-        overflow-y: visible;
       }
     }
   }
