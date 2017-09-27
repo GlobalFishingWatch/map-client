@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.7 RC1
+## 2.2.0 RC1
 - General design and code overhaul
 - Code refactoring for better management and extensibility
 - UI changes to optimize screen usage
