@@ -1,0 +1,52 @@
+@import '../settings';
+
+.miniGlobe {
+  display: flex;
+  position: absolute;
+  bottom: 110px;
+  left: 0px;
+  height: 70px;
+  z-index: 9;
+  background-color: $color-base;
+  width: $legend-mobile-width;
+
+  @media #{$mq-tablet} {
+    width: $legend-width;
+
+    &._isEmbedded {
+      width: $legend-mobile-width;
+    }
+  }
+
+  .zone {
+    color: $color-white;
+    font-size: $font-size-xs-small;
+    line-height: $font-size-small;
+    width: 50%;
+  }
+
+  .svgContainer {
+    width: 50px;
+    height: 50px;
+    margin-left: 33%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+
+    .zoneMarker {
+      border: 2px solid red;
+      position: absolute;
+      z-index: 10;
+      flex: 1;
+      align-self: center;
+    }
+
+    .globeSvg {
+      position: absolute;
+      fill: $color-base;
+      stroke: $color-base;
+      background-color: $color-34;
+      border-radius: 50%;
+    }
+  }
+}

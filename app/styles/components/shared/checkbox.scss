@@ -1,0 +1,66 @@
+@import '../../settings';
+
+:global .c-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 15px;
+
+  &.-spaced {
+    margin-bottom: 8px;
+  }
+
+  input[type=checkbox] {
+    visibility: hidden;
+  }
+
+  .label {
+    margin-left: 5px;
+    color: rgba($color-34, 0.3);
+    &.checkedLabel {
+      color: $color-white;
+    }
+  }
+
+  .checkbox {
+    display: inline-block;
+    position: relative;
+    line-height: initial;
+    vertical-align: -webkit-baseline-middle;
+    padding-right: 10px;
+  }
+
+  .checkbox label {
+    cursor: pointer;
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    background: transparent;
+    border:1px solid rgba($color-34, 0.3);
+  }
+
+  .checkbox label:after {
+    opacity: 0.1;
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 5px;
+    background: transparent;
+    top: 2px;
+    left: 2px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+
+    transform: rotate(-45deg);
+  }
+
+  .checkbox input[type=checkbox]:checked + label {
+    background: $color-button-primary;
+  }
+
+  .checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+  }
+}

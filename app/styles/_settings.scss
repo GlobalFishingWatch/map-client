@@ -12,13 +12,23 @@ $max-map-footer-height: 485px;
 $offset-panel-control-mobile: 108px;
 $offset-panel-control: 20px;
 
+$menu-left-padding: 30px;
+$menu-right-padding: 40px;
+$menu-mobile-left-padding: 20px;
+$menu-mobile-right-padding: 30px;
 
 $header-height-mobile: 60px;
 $header-height: 95px;
-$accordion-mobile-height: 60px;
+$mobile-height: 60px;
+$control-panel-height: 70vh;
+$control-panel-mobile-height: 40vh;
 $vessel-info-height: 70px;
 
+$submenu-header-height: 76px;
+
 $map-panels-width: 320px;
+$legend-width: 173px;
+$legend-mobile-width: 113px;
 $control-panel-left-offset: 14px;
 
 
@@ -48,6 +58,7 @@ $font-size-huge: 100px;
 // Font weights
 $font-weight-light: 300;
 $font-weight-normal: 400;
+$font-weight-light-bold: 500;
 $font-weight-bold: 700;
 
 // Colors
@@ -60,24 +71,44 @@ $color-6: #ef4323;
 $color-7: #294480;
 $color-8: #18306d;
 $color-9: #4a4a4a; // UI kit
-$color-10: #e8f4f9;
 $color-11: #0d1a34;
 $color-12: #000;
 $color-13: #2b4f93;
 $color-19: #174084; // UI kit map
 $color-20: #bfbfbf;
-$color-21: #121a2a; // UI kit map
 $color-22: #073338; // UI kit map
-$color-23: #032044; // used for gradient at homepage
 $color-24: rgba(3, 32, 68, 0); // used for gradient at homepage
-$color-25: rgba(255, 255, 255, .7); // image attribution
-$color-26: #eee;
-$color-27: #c7c7c7;
 $color-28: #39579b;
 $color-29: #da4735;
 $color-30: #55acee;
+$color-31: #46a4b9;
+$color-32: #081c4f;
+$color-33: #000f35;
+$color-34: #99d3e1;
+$color-35: #153b78;
+$color-36: #0A1E50;
+
 $hsla-begin: hsla(0, 0%, 0%, .1);
 $hsla-end: hsla(0, 0%, 100%, .1);
+
+$color-base: $color-1;
+$color-secondary: $color-13;
+$color-highlight: $color-3;
+$color-button-primary: $color-31;
+$color-mid-blue: $color-8;
+$color-white: $color-4;
+$color-fade-blue: rgba($color-31, 0.3);
+$color-fade-grey: rgba($color-5, 0.3);
+$color-fishing-hours-timebar: $color-36;
+
+// Layers colors
+
+$yellow: #FBFF8B;
+$light-blue: #67FBFE;
+$purple: #7D84FA;
+$red: #CC4E4E;
+$orange: #EC6C33;
+$pink: #CC68C4;
 
 // Colors to review
 $color-14: #2d3a57;
@@ -100,3 +131,7 @@ $mq-mobile-large: 'screen and (min-width: #{$breakpoint-mobile-large})';
 $mq-tablet: 'screen and (min-width: #{$breakpoint-tablet})';
 $mq-laptop: 'screen and (min-width: #{$breakpoint-laptop})';
 $mq-desktop: 'screen and (min-width: #{$breakpoint-desktop})';
+
+// Animation
+$panel-animation-delay: 300ms;
+$panel-animation-ease: ease-in;

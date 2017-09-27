@@ -1,0 +1,11 @@
+@import '../settings';
+
+.basemapsPanel {
+  padding-bottom: 20px;
+  font-size: $font-size-xs-small;
+  padding-right: $menu-right-padding;
+
+  @media #{mq-tablet} {
+    font-size: $font-size-small;
+  }
+}

@@ -3,7 +3,7 @@ import 'pixi.js';
 import {
   VESSELS_BASE_RADIUS,
   VESSELS_HUES_INCREMENTS_NUM
-} from 'constants';
+} from 'config';
 import { hueToHueIncrement } from 'util/colors';
 
 export default class HeatmapSubLayer {

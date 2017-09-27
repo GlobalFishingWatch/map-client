@@ -1,0 +1,70 @@
+@import '../../settings';
+.areasPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .actionButtons {
+    button {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+
+  .nameInput {
+    background-color: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba($color-3, .3);
+    border-radius: 0;
+    color: $color-31;
+
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-normal;
+    line-height: 1.8;
+
+    outline: 0;
+    margin-bottom: 20px;
+    padding-right: 30px;
+    width: 100%;
+
+    &::-webkit-input-placeholder {
+      color: rgba($color-3, .3);
+    }
+
+    &::-moz-placeholder {
+      color: rgba($color-3, .3);
+    }
+
+    &:-ms-input-placeholder {
+      color: rgba($color-3, .3);
+    }
+  }
+
+  .newItem {
+    background-color: $color-mid-blue;
+  }
+
+  .recentLabel {
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
+
+  .areaItem {
+    display: flex;
+    justify-content: space-between;
+    .nameContainer {
+      display: flex;
+      align-items: center;
+
+      .name {
+        padding-left: 14px;
+      }
+    }
+  }
+}
+
+.error {
+  color:red;
+  margin-top: 10px;
+}
+

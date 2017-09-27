@@ -1,0 +1,34 @@
+@import '../settings';
+@import '../mixins';
+
+.mobileLeftExpand {
+  .expandButtonLeft {
+    z-index: 9;
+    display: inline-block;
+    position: absolute;
+    left: 0px;
+    bottom: 108px;
+    height: 150px;
+    background-color: $color-secondary;
+    color: $color-white;
+    width: 30px;
+
+    .arrow {
+      margin-top: 70px;
+      margin-left: 4px;
+      @include arrow(12px, 2px, $color-button-primary, 'right');
+    }
+  }
+
+  &.expanded{
+    .expandButtonLeft{
+      transform: translateX(113px);
+      margin-left: 0;
+      animation: slideLeft 0.4s ease-in;
+      .arrow {
+        margin-left: 10px;
+        transform: rotate(225deg);
+      }
+    }
+  }
+}

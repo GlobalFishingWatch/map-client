@@ -9,8 +9,8 @@ import vesselPanelStyles from 'styles/components/vessel-info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import iconStyles from 'styles/icons.scss';
 
-import CloseIcon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
-import PinIcon from 'babel!svg-react!assets/icons/pin-icon.svg?name=PinIcon';
+import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
+import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
 
 import { VESSEL_INFO_STATUS } from 'constants';
 
@@ -20,9 +20,7 @@ class VesselInfoPanel extends Component {
     super(props);
 
     this.state = {
-      isExpanded: true // expanded by default to hide the fact that accordion will remain opened.
-      // TODO: close the accordion when the info panel appears.
-      // TODO: replace accordion component
+      isExpanded: true
     };
   }
 
@@ -59,15 +57,16 @@ class VesselInfoPanel extends Component {
 
       vesselInfoContents = (
         <div className={vesselPanelStyles.vesselMetadata} >
-          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
-          <PinIcon
-            className={classnames(iconStyles.icon, iconStyles.pinIcon,
-              vesselPanelStyles.pin, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
-            onClick={() => {
-              this.props.onTogglePin(vesselInfo.seriesgroup);
-            }}
-          />}
           {renderedFieldList}
+          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
+            <PinIcon
+              className={classnames(iconStyles.icon, iconStyles.pinIcon,
+                vesselPanelStyles.pinIcon, { [`${vesselPanelStyles._pinned}`]: vesselInfo.pinned })}
+              onClick={() => {
+                this.props.onTogglePin(vesselInfo.seriesgroup);
+              }}
+            />
+          }
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={vesselPanelStyles.externalLink}
             target="_blank"
@@ -91,7 +90,6 @@ class VesselInfoPanel extends Component {
           { [`${vesselPanelStyles._expanded}`]: this.state.isExpanded })}
       >
         <div className={vesselPanelStyles.buttonsContainer} >
-
           <MediaQuery maxWidth={789} >
             <ExpandButton
               onExpand={() => this.onExpand()}

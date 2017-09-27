@@ -12,7 +12,7 @@ import {
   TIMELINE_MAX_STEPS,
   HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA
-} from 'constants';
+} from 'config';
 
 const MAX_SPRITES_FACTOR = 0.002;
 

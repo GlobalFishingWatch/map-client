@@ -2,27 +2,27 @@ import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import {
-  UPDATE_HEATMAP_TILES,
-  ADD_REFERENCE_TILE,
-  REMOVE_REFERENCE_TILE,
-  ADD_HEATMAP_LAYER,
-  REMOVE_HEATMAP_LAYER,
-  INIT_HEATMAP_LAYERS,
-  UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
-  HIGHLIGHT_VESSELS
-} from 'actions';
-import {
   getTilePelagosPromises,
   getCleanVectorArrays,
   groupData,
   addWorldCoordinates,
   getTilePlaybackData,
   selectVesselsAt
-} from 'actions/helpers/heatmapTileData';
-import { LAYER_TYPES, LOADERS } from 'constants';
+} from 'util/heatmapTileData';
+import { LOADERS } from 'config';
+import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
-import { trackMapClicked } from 'actions/analytics';
+import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
+
+export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
+export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
+export const HIGHLIGHT_VESSELS = 'HIGHLIGHT_VESSELS';
+export const INIT_HEATMAP_LAYERS = 'INIT_HEATMAP_LAYERS';
+export const REMOVE_HEATMAP_LAYER = 'REMOVE_HEATMAP_LAYER';
+export const REMOVE_REFERENCE_TILE = 'REMOVE_REFERENCE_TILE';
+export const UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES = 'UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES';
+export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -229,7 +229,7 @@ export function getTile(uid, tileCoordinates, canvas) {
 
 
 /**
-* releaseTile - This action is emitted when an existing tile is removed from panning or zooming the map
+ * releaseTile - This action is emitted when an existing tile is removed from panning or zooming the map
  * @param  {type} uid the reference tile uid
  */
 export function releaseTile(uid) {

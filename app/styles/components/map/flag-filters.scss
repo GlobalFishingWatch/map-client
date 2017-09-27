@@ -1,9 +1,25 @@
 @import '../../settings';
 
 .flagFilters {
+  padding-left: $menu-mobile-left-padding;
+  padding-right: 16px;
+
   @media #{$mq-tablet} {
     max-height: none;
     overflow-y: visible;
+    padding-right: 22px;
+    padding-left: 0;
+    
+    &.singleFilters {
+      padding-left: $menu-left-padding;
+    }
+  }
+
+  .item-list {
+    &.listItem {
+      padding-right: 0;
+      padding-left: 0;
+    }  
   }
 }
 
@@ -11,6 +27,7 @@
   align-items: center;
   display: flex;
   position: relative;
+  padding-right: 20px;
 
   &:not(:first-child) {
     margin: 10px 0 0;
@@ -43,13 +60,13 @@
 
 .filterButton {
   height: 40px;
-  margin: 10px 0 0;
-  max-width: 80%;
+  margin: 10px 0;
+  max-width: 92.5%;
   width: 100%;
-
+  
   @media #{$mq-tablet} {
     height: 30px;
     max-width: none;
-    width: 215px;
+    width: 248px;
   }
 }

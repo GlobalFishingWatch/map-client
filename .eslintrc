@@ -6,23 +6,25 @@
     "es6": true
   },
   "globals": {
-    "google": true,
-    "cartodb": true,
-    "MAP_URL": true,
-    "V2_API_ENDPOINT": true,
     "BLOG_URL": true,
-    "SITE_URL": true,
-    "DEFAULT_WORKSPACE": true,
-    "REQUIRE_MAP_LOGIN": true,
-    "GA_TRACKING_CODE": true,
-    "LOCAL_WORKSPACE": true,
-    "DISABLE_WELCOME_MODAL": true,
-    "WELCOME_MODAL_COOKIE_KEY": true,
+    "cartodb": true,
     "COMPLETE_MAP_RENDER": true,
+    "DEFAULT_WORKSPACE": true,
+    "DISABLE_WELCOME_MODAL": true,
+    "ENABLE_AREA_OF_INTEREST": true,
+    "ENABLE_FILTER_GROUPS": true,
+    "GA_TRACKING_CODE": true,
+    "google": true,
+    "LOCAL_WORKSPACE": true,
+    "MAP_URL": true,
+    "PUBLIC_PATH": true,
+    "REQUIRE_MAP_LOGIN": true,
     "SHARE_BASE_URL": true,
-    "TIMEBAR_DATA_URL": true,
     "SHOW_BANNER": true,
-    "PUBLIC_PATH": true
+    "SITE_URL": true,
+    "TIMEBAR_DATA_URL": true,
+    "V2_API_ENDPOINT": true,
+    "WELCOME_MODAL_COOKIE_KEY": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
@@ -76,7 +78,11 @@
     "import/no-webpack-loader-syntax": 0,
     "import/extensions": 0,
     "jsx-a11y/no-noninteractive-element-interactions": 0,
-    "jsx-a11y/accessible-emoji": 0
+    "jsx-a11y/accessible-emoji": 0,
+    "padded-blocks": 0,
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
+    "react/jsx-first-prop-new-line": ["error", "multiline"],
+    "import/prefer-default-export": 0
   },
   "settings": {
     "import/resolver": {

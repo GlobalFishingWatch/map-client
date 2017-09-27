@@ -1,0 +1,59 @@
+@import '../settings';
+
+.emptyHistory {
+  margin: 30px 0 25px;
+  text-align: center;
+}
+
+.historyContainer {
+  margin: 40px 0px 30px;
+  overflow: auto;
+  padding: 0 0 5px;
+  position: relative;
+  max-height: 404px;
+
+  &::after {
+    background-image: linear-gradient(to bottom, rgba(4, 20, 56, 0), $color-2);
+    bottom: 25px;
+    content: '';
+    display: inline-block;
+    height: 25px;
+    left: 0;
+    pointer-events: none;
+    position: relative;
+    width: 100%;
+  }
+}
+
+.historyList {
+  overflow-y: auto;
+  padding: 0 0 8px;
+  .resultList{
+    max-height: none;
+  }
+}
+
+.pinned {
+  fill: $color-31;
+  left: 7px;
+  margin: 0 8px 0 0;
+  position: absolute;
+  top: 23px;
+  transform: translate(0, -50%);
+}
+
+.historyItemName {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+}
+
+.btnDone {
+  height: 40px;
+  width: 180px;
+}

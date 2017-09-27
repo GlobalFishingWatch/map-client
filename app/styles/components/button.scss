@@ -1,4 +1,53 @@
 @import '../settings';
+@import '../mixins';
+
+.button {
+  background-color: $color-32;
+  border: 1px solid $color-31;
+  color: $color-4;
+  cursor: pointer;
+  font-family: $font-family-1;
+  font-size: $font-size-xs-small;
+  font-weight: $font-weight-light-bold;
+  height: 30px;
+  outline: none;
+  text-align: center;
+  text-transform: uppercase;
+
+  &._disabled {
+    border: 1px solid rgba($color-3, .25);
+    color: rgba($color-3, .5);
+    pointer-events: none;
+  }
+
+  &._filled {
+    background-color: $color-button-primary;
+    border: 0;
+    color: $color-4;
+  }
+
+  &._big {
+    height: 40px;
+  }
+
+  &._wide {
+    width: 76%;
+    margin-left: 40px;
+    @media #{$mq-tablet} {
+      width: 84%;
+      margin-left: $menu-left-padding;
+      margin-right: $menu-right-padding;
+    }
+  }
+
+  &._half {
+    width: 50%;
+  }
+
+  &._top {
+    vertical-align: top;
+  }
+}
 
 .buttonSubmitSmall {
   background-color: $color-3;
@@ -17,3 +66,44 @@
   text-transform: uppercase;
   width: 100%;
 }
+
+.pinVesselIcon {
+  outline: none;
+  padding: 7px 9px 3px 9px;
+
+  svg {
+    fill: $color-31 !important;
+  }
+
+  &.pinned {
+    background-color: $color-31;
+    border-radius: 50%;
+
+    svg {
+      fill: $color-4 !important;
+    }
+  }
+}
+
+.deleteButton {
+  width: 27px;
+  height: 27px;
+  padding-top: 2px;
+}
+
+.infoButton {
+  margin-left: 5px;
+}
+
+.speedButton {
+  outline: none;
+  &.decrease {
+    margin-left: 5px;
+    transform: rotate(180deg);
+    @media #{$mq-tablet} {
+      margin-left: 0;
+    }
+  }
+}
+
+

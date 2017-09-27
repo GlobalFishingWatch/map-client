@@ -1,0 +1,102 @@
+@import '../settings';
+@import '../mixins';
+
+.submenu {
+  .main {
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+    padding: 10px 0;
+
+    .header {
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      padding-left: $menu-mobile-left-padding;
+      padding-right: $menu-right-padding;
+      padding-top: 15px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid $color-fade-blue;
+
+      @media #{$mq-tablet} {
+        padding-left: 12px;
+        padding-top: 24px;
+        flex-direction: row;
+      }
+
+      .titleContainer {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin-top: -7px;
+
+        .title {
+          color: $color-button-primary;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          text-align: left;
+          text-transform: uppercase;
+          margin-left: 10px;
+          margin-top: 4px;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+          }
+          .separator {
+            margin-right: 10px;
+          }
+        }
+
+        .backButton {
+          cursor: pointer;
+        }
+
+        .backIcon {
+          @include arrow(8px, 2px, $color-4, 'left');
+          vertical-align: text-bottom;
+          pointer-events: none;
+          margin-top: 12px;
+          transform: rotate(45deg) translate(0, -50%);
+        }
+        .backText {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          margin-left: 10px;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+          }
+        }
+      }
+    }
+
+    .content {
+      -webkit-overflow-scrolling: touch;
+      padding: 15px 0;
+
+      @media #{$mq-tablet} {
+        margin: 10px 0 0;
+      }
+    }
+  }
+
+  .footer {
+    background-color: $color-mid-blue;
+    margin-bottom: 10px;
+    color: $color-white;
+    padding-top: 10px;
+    padding: 10px 35px;
+  }
+
+  .icon {
+    fill: $color-4;
+    min-height: 18px;
+
+    @media #{$mq-tablet} {
+      min-height: none;
+    }
+  }
+}

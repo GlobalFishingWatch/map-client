@@ -5,21 +5,27 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
-import reportReducer from 'reducers/report';
 import heatmapReducer from 'reducers/heatmap';
-import layerLibraryReducer from 'reducers/layersLibrary';
-import layersReducer from 'reducers/layers';
+import reportReducer from 'report/reportReducer';
 import mapReducer from 'reducers/map';
-import analyticsMiddleware from 'middleware/analytics';
-import userReducer from 'reducers/user';
-import filtersReducer from 'reducers/filters';
-import contactReducer from 'reducers/contact';
-import searchReducer from 'reducers/search';
+import layerLibraryReducer from 'layers/layersLibraryReducer';
+import layersReducer from 'layers/layersReducer';
+import analyticsMiddleware from 'analytics/analyticsMiddleware';
+import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
+import userReducer from 'user/userReducer';
+import filtersReducer from 'filters/filtersReducer';
+import filterGroupsReducer from 'filters/filterGroupsReducer';
+import supportFormReducer from 'siteNav/supportFormReducer';
+import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
-import customLayerReducer from 'reducers/customLayer';
-import modalReducer from 'reducers/modal';
-import timebarReducer from 'reducers/timebar';
-import literalsReducer from 'reducers/literals';
+import customLayerReducer from 'layers/customLayerReducer';
+import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
+import timebarReducer from 'timebar/timebarReducer';
+import literalsReducer from 'siteNav/literalsReducer';
+import basemapReducer from 'basemap/basemapReducer';
+import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
+import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
+import shareReducer from 'share/shareReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 
@@ -31,20 +37,26 @@ window.Promise = window.Promise || Promise;
  * @type {Object}
  */
 const reducer = combineReducers({
-  map: mapReducer,
-  user: userReducer,
+  areas: areasOfInterestReducer,
+  basemap: basemapReducer,
+  supportForm: supportFormReducer,
+  customLayer: customLayerReducer,
   filters: filtersReducer,
-  contactStatus: contactReducer,
-  search: searchReducer,
-  vesselInfo: vesselInfoReducer,
-  report: reportReducer,
+  filterGroups: filterGroupsReducer,
   heatmap: heatmapReducer,
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
-  customLayer: customLayerReducer,
-  modal: modalReducer,
+  literals: literalsReducer,
+  map: mapReducer,
+  welcomeModal: welcomeModalReducer,
+  recentVessels: recentVesselsReducer,
+  rightControlPanel: rightControlPanelReducer,
+  report: reportReducer,
+  search: searchReducer,
+  share: shareReducer,
   timebar: timebarReducer,
-  literals: literalsReducer
+  user: userReducer,
+  vesselInfo: vesselInfoReducer
 });
 
 /**

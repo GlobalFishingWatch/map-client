@@ -1,0 +1,41 @@
+@import '../../settings';
+
+._mobileScroll {
+
+  > .expandItem {
+    overflow-y: auto;
+    max-height: 218px;
+
+    &.isVesselInfoPanelOpen {
+      max-height: 60px;
+    }
+
+    @media #{$mq-tablet} {
+      max-height: 340px;
+
+      &.isVesselInfoPanelOpen {
+        max-height: 340px;
+      }
+    }
+  }
+}
+
+.expandItem {
+
+  .notAccordion {
+    flex-direction: row;
+    background-color: $color-mid-blue;
+    margin-bottom: 10px;
+    color: $color-white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: $menu-mobile-left-padding;
+    padding-right: $menu-mobile-right-padding;
+
+    @media #{$mq-tablet} {
+      padding-left: $menu-left-padding;
+      padding-right: $menu-mobile-right-padding;
+    }
+    align-items: flex-start;
+  }
+}

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PromptLayerRemoval from 'components/Map/PromptLayerRemoval';
-import { toggleLayerVisibility, toggleLayerWorkspacePresence, confirmLayerRemoval } from 'actions/layers';
+import { toggleLayerVisibility, toggleLayerWorkspacePresence, confirmLayerRemoval } from 'layers/layersActions';
 
 const mapStateToProps = state => ({
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval

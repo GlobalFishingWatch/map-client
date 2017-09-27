@@ -21,26 +21,61 @@
   width: .89453125em;
 }
 
-.iconReportIcon {
+.reportIcon {
+  margin-right: 10px;
   width: .8125em;
+  height: 16px;
+  path {
+    &:first-child {
+      fill: $color-button-primary;
+    }
+
+    &:last-child {
+      fill: $color-white;
+    }
+  }
+}
+
+.deleteIcon {
+  cursor: pointer;
+  fill: $color-button-primary;
+  height: 16px;
+  width: 12px;
+}
+
+.aoiIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.playIcon {
+  height: 100%;
+  width: 13px;
+  position: relative;
+  left: 2px;
+}
+
+.pauseIcon {
+  height: 100%;
+  width: 13px;
 }
 
 .iconShare {
-  fill: $color-4;
-  height: 16px;
-  width: 19px;
+  fill: $color-white;
+  height: 12px;
+  width: 14px;
 }
 
 .iconZoomIn {
-  fill: $color-4;
-  height: 13px;
-  width: 13px;
+  fill: $color-white;
+  height: 14px;
+  width: 14px;
 }
 
 .iconZoomOut {
-  fill: $color-4;
-  height: 3px;
-  width: 13px;
+  fill: $color-white;
+  height: 4px;
+  width: 14px;
 }
 
 .iconClose {
@@ -51,16 +86,34 @@
 
 .infoIcon {
   cursor: pointer;
+  fill: $color-button-primary;
+  height: 17px;
+  width: 10px;
+  margin-top: -2px;
+
+  &.small {
+    height: 13px;
+    width: 5px;
+  }
 }
 
-.blendingIcon {
+.selectIcon {
   cursor: pointer;
-  fill: $color-19;
+  fill: $color-white;
+  width: 22px;
+  height: 30px;
+}
+
+.paintIcon {
+  cursor: pointer;
+  fill: $color-button-primary;
   height: 15px;
   width: 15px;
+  position: relative;
+  top: 1px;
 
   &._white {
-    fill: $color-4;
+    fill: $color-white;
   }
 }
 
@@ -71,8 +124,35 @@
   width: 15px;
 }
 
+.speedIcon {
+  cursor: pointer;
+  fill: $color-highlight;
+  outline: none;
+  height: 10px;
+  width: 10px;
+}
+
+.pencilIcon {
+  cursor: pointer;
+  fill: $color-button-primary;
+  height: 15px;
+  width: 15px;
+}
+
+.deleteBucketIcon {
+  fill: $color-button-primary;
+  height: 15px;
+  width: 15px;
+}
+
 .pinIcon {
   cursor: pointer;
   height: 16px;
   width: 11px;
+}
+
+.searchIcon {
+  fill: $color-button-primary;
+  height: 15px;
+  width: 15px;
 }

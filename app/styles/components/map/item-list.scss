@@ -1,0 +1,231 @@
+@import '../../settings';
+
+.list {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  @media #{mq-tablet} {
+    font-size: $font-size-small;
+  }
+}
+
+.title {
+  color: $color-4;
+  padding-bottom: 18px;
+  font-size: $font-size-small;
+}
+
+.spacedTitle {
+  padding-top: 37px;
+}
+
+.layerListContainer {
+  .layerList {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+
+    @media #{mq-tablet} {
+      max-height: 0;
+    }
+  }
+}
+
+.listItemContainer {
+  width: 100%;
+}
+
+.listItem {
+  text-transform: uppercase;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+  padding-left: $menu-mobile-left-padding;
+  padding-right: 20px;
+  @media #{$mq-tablet} {
+    padding-right: 36px;
+    padding-left: $menu-left-padding;
+
+    &._alignLeft {
+      padding-right: 4px;
+    }
+
+  }
+
+  &._noMobilePadding {
+    padding-right: 0;
+    padding-left: 0;
+
+    @media #{$mq-tablet} {
+      padding-right: 0;
+      padding-left: $menu-left-padding;
+    }
+  }
+
+  &._noMobileRightPadding {
+    padding-right: 0;
+
+    @media #{$mq-tablet} {
+      padding-right: 32px;
+    }
+  }
+
+  &:not(:first-child) {
+    margin: 5px 0 0;
+  }
+
+  &._fixed {
+    height: 40px;
+  }
+
+  &.halfRow {
+    display: inline-block;
+    width: 50%;
+    margin: 0;
+
+    &:first-child > .layerInfo {
+      margin: 0;
+    }
+
+
+    .layerThumbnail {
+      border: 1px solid $color-19;
+      height: 20px;
+      margin: 0 10px 0 0;
+      width: 20px;
+    }
+  }
+
+  &:first-child > .itemInfo {
+    margin: 0 0 5px;
+  }
+
+  &:not(:first-child) > .itemInfo {
+    margin: 5px 0;
+  }
+
+  &._selected {
+    > .itemInfo > .layerThumbnail {
+      border: 2px solid $color-4;
+    }
+  }
+
+  &._baseline {
+    align-items: baseline;
+  }
+}
+
+.itemInfo {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  max-width: 90%;
+
+  @media #{$mq-tablet} {
+    max-width: 195px;
+  }
+}
+
+.itemThumbnail {
+  border: 1px solid $color-19;
+  height: 30px;
+  margin: 0 10px 0 0;
+  width: 30px;
+}
+
+.itemTitle {
+  color: $color-4;
+  flex-grow: 2;
+  font-family: $font-family-1;
+  font-weight: $font-weight-normal;
+  line-height: 2;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemName {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  color: $color-4;
+  flex-grow: 2;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  height: 24px;
+  margin: 0;
+  max-width: 85%;
+  outline: none;
+  text-overflow: ellipsis;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemRename {
+  border-bottom-color: rgba($color-3, .3);
+  padding: 0 20px 0 0;
+}
+
+.renameIcon {
+  position: absolute;
+  right: 30px;
+  stroke: rgba($color-3, .3);
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.selectPolygon {
+  display: inline-block;
+  flex-direction: column;
+  width: 45%;
+  margin-right: 10px;
+  font-size: $font-size-small;
+  .selectPolygonText {
+    margin-top: 10px;
+  }
+}
+
+.editionMenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.itemOptionList {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+
+  ._highlighted {
+    path {
+      &:first-child {
+        fill: $color-4;
+      }
+
+      &:last-child {
+        fill: $color-31;
+      }
+    }
+  }
+
+  .itemOptionItem {
+    margin-right: 15px;
+    margin-bottom: -10px;
+  }
+
+  &._inlineList {
+    justify-content: flex-start;
+    margin-left: 5px;
+  }
+}

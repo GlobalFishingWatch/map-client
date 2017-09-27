@@ -5,10 +5,10 @@
   color: $color-4;
   display: block;
   font-family: $font-family-1;
-  position: absolute;
-  top: $accordion-mobile-height;
+  top: $mobile-height;
   width: 100%;
   z-index: 1;
+  margin-bottom: 10px;
 
   @media #{$mq-tablet} {
     position: relative;
@@ -33,17 +33,6 @@
 
     @media #{$mq-tablet} {
       max-height: none;
-    }
-
-
-    .pin {
-      fill: $color-3;
-      position: absolute;
-      right: 20px;
-
-      &._pinned {
-        fill: $color-4;
-      }
     }
 
     .rowInfo {
@@ -109,12 +98,40 @@
     }
   }
 
+  .pinIcon {
+    fill: $color-3;
+    position: absolute;
+    right: 86px;
+    
+    @media #{$mq-tablet} {
+      right: 30px;
+      margin-top: 5px;
+    }
+
+    &._pinned {
+      fill: #fff;
+    }
+  }
+
   .buttonsContainer {
     bottom: 0;
     display: flex;
-    position: absolute;
-    right: 10px;
+    right: 8px;
     transform: translate(0, 50%);
+
+    float: right !important;
+    padding-right: 10px;
+
+    @media #{$mq-tablet} {
+      padding-right: 0px;
+      position: absolute;
+      bottom: auto;
+      left: 98px;
+      right: 0;
+      top: 0;
+      transform: translate(-50%, -50%);
+    }
+
 
     > button {
       position: relative;
@@ -123,14 +140,6 @@
       &:not(:first-child) {
         margin: 0 0 0 10px;
       }
-    }
-
-    @media #{$mq-tablet} {
-      bottom: auto;
-      left: 0;
-      right: auto;
-      top: 0;
-      transform: translate(-50%, -50%);
     }
   }
 }

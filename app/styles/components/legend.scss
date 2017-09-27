@@ -1,0 +1,97 @@
+@import '../settings';
+
+.legend {
+  display: inline-block;
+  position: absolute;
+  bottom: 182px;
+  left: 0px;
+  height: 76px;
+  z-index: 9;
+  background-color: $color-base;
+  color: $color-white;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  padding-left: 7px;
+  width: $legend-mobile-width;
+
+  @media #{$mq-tablet} {
+    padding-left: 20px;
+    width: $legend-width;
+
+    &._isEmbedded {
+      padding-left: 7px;
+      width: $legend-mobile-width;
+
+      .legendText {
+        span {
+          font-size: $font-size-tiny;
+        }
+      }
+
+      .legendOvals {
+        margin-left: 10px;
+       
+        .line {
+          width: 47px;
+        }
+      }
+
+    }
+  }
+
+  .legendText {
+    display: flex;
+    justify-content: space-between;
+    span {
+      &:first-child{
+        margin-right: 20px;
+      }
+      font-size: $font-size-tiny;
+
+      @media #{$mq-tablet} {
+        font-size: $font-size-small;
+      }
+    }
+  }
+
+  .legendOvals {
+    display: flex;
+    margin: 10px;
+    
+    @media #{$mq-tablet} {
+      margin-left: 16px;
+    }
+
+    .lessFishingOval {
+      background-color: $light-blue;
+      box-shadow: 0px 0px 5px 1px $light-blue;
+      width: 5.6px;
+      height: 5.6px;
+      margin-top: 2px;
+      transform: rotate(54deg);
+      border-radius: 50%;
+    }
+
+    .moreFishingOval {
+      background-color: $light-blue;
+      box-shadow: 0px 0px 5px 1px $light-blue;
+      width: 10px;
+      height: 10px;
+      transform: rotate(54deg);
+      border-radius: 50%;
+    }
+
+    .line {
+      width: 47px;
+      margin-left: 5px;
+      margin-right: 5px;
+      height: 0;
+      margin-top: 4px;
+      opacity: 0.3;
+      border: dashed 1px $color-34;
+      @media #{$mq-tablet} {          
+        width: 72px;
+      }
+    }
+  }
+}

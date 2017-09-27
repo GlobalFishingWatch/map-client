@@ -1,31 +1,32 @@
+import 'whatwg-fetch';
 import {
-  LAYER_TYPES,
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE,
+  TIMELINE_DEFAULT_INNER_END_DATE
+} from 'config';
+import {
+  LAYER_TYPES,
   FLAGS,
   FLAGS_LANDLOCKED
 } from 'constants';
-import {
-  SET_ZOOM,
-  SET_CENTER,
-  SET_BASEMAP,
-  SET_TILESET_URL,
-  SET_TILESET_ID,
-  SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-  SET_URL_WORKSPACE_ID,
-  SET_WORKSPACE_ID
-} from 'actions';
-import { initLayers } from 'actions/layers';
-import { setFlagFilters, setOuterTimelineDates } from 'actions/filters';
-import { setPinnedVessels, loadRecentVesselHistory, addVessel } from 'actions/vesselInfo';
+import { SET_ZOOM, SET_CENTER } from 'actions/map';
+import { SET_BASEMAP } from 'basemap/basemapActions';
+import { initLayers } from 'layers/layersActions';
+import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
+import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
+import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
+import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue } from 'util/colors';
 import uniq from 'lodash/uniq';
 import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
+export const SET_TILESET_ID = 'SET_TILESET_ID';
+export const SET_TILESET_URL = 'SET_TILESET_URL';
+export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
+export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {
@@ -116,13 +117,15 @@ export function saveWorkspace(errorAction) {
           hue: e.hue
         })),
         shownVessel,
-        basemap: state.map.activeBasemap,
+        basemap: state.basemap.activeBasemap,
         timeline: {
           // We store the timestamp
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),
           outerExtent: state.filters.timelineOuterExtent.map(e => +e)
         },
-        filters: state.filters.flags
+        filters: state.filters.flags,
+        timelineSpeed: state.filters.timelineSpeed,
+        areas: state.areas.existingAreasOfInterest
       }
     };
 
@@ -164,6 +167,8 @@ function dispatchActions(workspaceData, dispatch, getState) {
     type: SET_BASEMAP, payload: workspaceData.basemap
   });
 
+  dispatch(setSpeed(workspaceData.timelineSpeed));
+
   dispatch({
     type: SET_TILESET_URL,
     payload: workspaceData.tilesetUrl
@@ -189,7 +194,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setFlagFilters(workspaceData.filters));
 
-  dispatch(loadRecentVesselHistory());
+  dispatch(loadRecentVesselsList());
+
+  if (workspaceData.areas) {
+    workspaceData.areas.forEach((area) => {
+      dispatch(saveAreaOfInterest(area));
+    });
+  }
 }
 
 function processNewWorkspace(data) {
@@ -200,13 +211,15 @@ function processNewWorkspace(data) {
     center: workspace.map.center,
     timelineInnerDates: workspace.timeline.innerExtent.map(d => new Date(d)),
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
+    timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
     layers: workspace.map.layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
-    tilesetId: workspace.tileset
+    tilesetId: workspace.tileset,
+    areas: workspace.areas
   };
 }
 
@@ -293,6 +306,7 @@ function processLegacyWorkspace(data, dispatch) {
     timelineInnerDates: [startInnerDate, endInnerDate],
     timelineOuterDates: [startOuterDate, endOuterDate],
     basemap: workspace.basemap,
+    timelineSpeed: workspace.timelineSpeed,
     layers,
     pinnedVessels,
     tilesetUrl,

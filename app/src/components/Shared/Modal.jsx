@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
 import ModalStyles from 'styles/components/shared/modal.scss';
-import Icon from 'babel!svg-react!assets/icons/close.svg?name=Icon';
+import Icon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 
 class Modal extends React.Component {
 
@@ -48,7 +48,7 @@ class Modal extends React.Component {
   }
 
   render() {
-    if (!this.props.opened) return null;
+    if (!this.props.opened || !this.props.visible) return null;
 
     let closeButton;
     const customStyles = {
@@ -95,6 +95,10 @@ Modal.propTypes = {
    * Define whether the modal is opened or not
    */
   opened: PropTypes.bool.isRequired,
+  /**
+   * Define whether the modal is visible
+   */
+  visible: PropTypes.bool.isRequired,
   /**
    * Define the content of the modal
    * Required

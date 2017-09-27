@@ -9,17 +9,18 @@ import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
-import { LAYER_TYPES, VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'constants';
+import { VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'config';
+import { LAYER_TYPES } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 
 const getTracks = vessels => vessels
-    .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
-    .map(vessel => ({
-      data: vessel.track.data,
-      selectedSeries: vessel.track.selectedSeries,
-      hue: vessel.hue
-    }));
+  .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
+  .map(vessel => ({
+    data: vessel.track.data,
+    selectedSeries: vessel.track.selectedSeries,
+    hue: vessel.hue
+  }));
 
 class MapLayers extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class MapLayers extends Component {
     } else if ((nextProps.viewportWidth !== this.props.viewportWidth ||
         nextProps.viewportHeight !== this.props.viewportHeight) && this.glContainer !== undefined) {
       this.glContainer.updateViewportSize(nextProps.viewportWidth, nextProps.viewportHeight);
-        // TODO update tracks layer viewport as well
+      // TODO update tracks layer viewport as well
     }
 
     // edge case where gl container is there but not yet added to map
@@ -451,6 +452,7 @@ class MapLayers extends Component {
       this.glContainer.disableRendering();
     }
   }
+
   onMapDragEnd() {
     if (this.glContainer) {
       this.glContainer.enableRendering();
@@ -470,14 +472,14 @@ class MapLayers extends Component {
   }
 
   render() {
-    return (<div>
+    return (<div >
       <PolygonReport
         map={this.map}
       />
       <ClusterInfoWindow
         map={this.map}
       />
-    </div>);
+    </div >);
   }
 }
 
