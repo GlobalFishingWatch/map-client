@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import Loader from 'mapPanels/leftControlPanel/containers/Loader';
 import ZoomControls from 'mapPanels/leftControlPanel/components/ZoomControls';
 import mapStyles from 'styles/components/map.scss';
@@ -20,12 +21,13 @@ class LeftControlPanel extends Component {
   }
 
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded &&
+    const { isEmbedded } = this.props;
+    const canShareWorkspaces = !isEmbedded &&
       (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
     return (
       <div>
-        <div className={mapStyles.mapLoader} >
+        <div className={classnames(mapStyles.mapLoader, { [mapStyles._isEmbedded]: isEmbedded })} >
           <Loader tiny />
         </div >
         <div className={mapStyles.latlon} >

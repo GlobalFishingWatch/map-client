@@ -11,6 +11,7 @@ class AuthMap extends Component {
     super(props);
 
     const canRedirect = getURLParameterByName('redirect_login');
+    // TODO: Move isEmbedded to a prop
     this.state = {
       canRedirect,
       workspaceId: getURLParameterByName('workspace') || getURLPieceByName('workspace'),

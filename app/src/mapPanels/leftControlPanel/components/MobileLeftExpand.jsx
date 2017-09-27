@@ -38,7 +38,7 @@ class MobileLeftExpand extends Component {
     return (
       <MediaQuery minWidth={768} >
         {desktop => (
-          desktop ?
+          desktop && !this.props.isEmbedded ?
             <div className={MobileLeftExpandStyles.mobileLeftExpand} >
               {this.props.children}
             </div>
@@ -51,7 +51,8 @@ class MobileLeftExpand extends Component {
 }
 
 MobileLeftExpand.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  isEmbedded: PropTypes.bool.isRequired
 };
 
 export default MobileLeftExpand;

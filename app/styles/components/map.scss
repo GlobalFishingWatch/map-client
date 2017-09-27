@@ -72,6 +72,10 @@
   @media #{$mq-tablet} {
     top: 238px;
   }
+
+  &._isEmbedded{
+    top: 190px;
+  }
 }
 
 .zoomControls {
