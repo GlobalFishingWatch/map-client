@@ -64,17 +64,23 @@
 }
 
 .mapLoader {
-  bottom: 360px;
-  left: 16px;
   position: absolute;
   z-index: 6;
+  top: 130px;
+  left: 8px;
 
   @media #{$mq-tablet} {
     top: 238px;
+    left: 16px;
   }
 
   &._isEmbedded{
-    top: 190px;
+    top: 150px;
+    left: 8px;
+
+    @media #{$mq-tablet} {
+      top: 110px;
+    }
   }
 }
 
