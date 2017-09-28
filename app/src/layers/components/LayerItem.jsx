@@ -87,13 +87,15 @@ class LayerItem extends Component {
     if (this.props.layerPanelEditMode === true) {
       actions = (
         <ul className={LayerItemStyles.itemOptionList}>
-          <li className={LayerItemStyles.itemOptionItem}>
+          <li
+            className={LayerItemStyles.itemOptionItem}
+            onClick={() => {
+              this.props.toggleLayerWorkspacePresence(this.props.layer);
+            }}
+          >
             <button className={ButtonStyles.deleteButton}>
               <DeleteIcon
                 className={classnames(IconStyles.icon, IconStyles.deleteIcon)}
-                onClick={() => {
-                  this.props.toggleLayerWorkspacePresence(this.props.layer);
-                }}
               />
             </button>
           </li>
@@ -127,9 +129,11 @@ class LayerItem extends Component {
             className={LayerItemStyles.itemOptionItem}
             onClick={() => this.onClickInfo()}
           >
-            <InfoIcon
-              className={IconStyles.infoIcon}
-            />
+            <button className={ButtonStyles.infoButton}>
+              <InfoIcon
+                className={IconStyles.infoIcon}
+              />
+            </button>
           </li>
         </ul>
       );

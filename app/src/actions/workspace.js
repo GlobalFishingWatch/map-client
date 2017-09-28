@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,

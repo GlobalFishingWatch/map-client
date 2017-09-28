@@ -336,7 +336,9 @@ class Timebar extends Component {
     this.redrawInnerBrush(prevInnerTimeExtent);
 
     this.svg.selectAll('g.tick text')
-      .classed(TimelineStyles.timelineFullYear, function isFullYear() { return this.innerHTML.match(/^\d{4}$/); });
+      .classed(TimelineStyles.timelineFullYear, function isFullYear() {
+        return this.textContent.match(/^\d{4}$/);
+      });
 
     return newOuterTimeExtent;
   }

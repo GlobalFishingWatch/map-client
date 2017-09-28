@@ -1,23 +1,23 @@
 @import '../settings';
 
 .controlPanel {
-  height: $mobile-height;
   left: 0;
   position: absolute;
   top: $header-height-mobile;
   width: 100%;
   z-index: 10;
+  max-height: none;
+  overflow: visible;
 
   &._noHeader {
     top: 0;
   }
 
   @media #{$mq-tablet} {
+    overflow: auto;
     background: transparent;
     flex: 0 1 auto;
-    height: auto;
-    overflow: visible;
-
+  
     // cancels pointer-events: none of c-map-panels
     pointer-events: auto;
     position: relative;
@@ -28,8 +28,12 @@
   > .bgWrapper {
     background: $color-32;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    max-height: 71vh;
 
     @media #{$mq-tablet} {
+      overflow: visible;
+      max-height: none;
       margin-left: $control-panel-left-offset;
     }
   }
