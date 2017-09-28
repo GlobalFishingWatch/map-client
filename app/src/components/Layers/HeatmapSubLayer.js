@@ -117,7 +117,7 @@ export default class HeatmapSubLayer {
     // Skip the render by category (country-flag) if the category is not in the tile data
     return this.categories !== undefined &&
            frame.category !== undefined &&
-           this.categories.indexOf(frame.category[index]) === -1
+           this.categories.indexOf(frame.category[index]) === -1;
   }
 
   shouldSkipRenderByFoundVessels(frame, index) {

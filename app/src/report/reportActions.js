@@ -103,9 +103,13 @@ export function sendReport() {
       from: state.filters.timelineInnerExtent[0].toISOString(),
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
-    const currentFlags = state.filters.flags.map(flag => flag.flag)
-      .filter(flag => flag !== undefined)
-      .map(flag => FLAGS[flag]);
+    const currentFlags = state.filterGroups.filterGroups.filter(filter =>
+      filter.filterValues !== undefined &&
+      filter.filterValues.category !== undefined &&
+      filter.filterValues.category !== '' &&
+      filter.filterValues.category !== 'ALL' &&
+      filter.filterValues.category !== 'FILTERED'
+    ).map(filter => filter.filterValues.category).map(flag => FLAGS[flag]);
 
     payload.flags = currentFlags;
     payload.regions = [];
