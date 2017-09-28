@@ -1,5 +1,5 @@
 import { LAYER_TYPES } from 'constants';
-import { GEAR_TYPE_ID, COLOR_HUES } from 'config';
+import { COLOR_HUES } from 'config';
 
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
@@ -22,47 +22,52 @@ export function setFilterGroupModalVisibility(visibility) {
   };
 }
 
-const getFilterValues = (filter, field) => {
-  if (filter.filterValues !== undefined &&
-      filter.filterValues[field] !== undefined) {
-    if (field === 'flag') return parseInt(filter.filterValues.flag, 10);
-    if (field === GEAR_TYPE_ID) return filter.filterValues[GEAR_TYPE_ID];
+const parseCategory = (filterValues) => {
+  let category = 'ALL';
+  if (filterValues.category !== undefined && filterValues.category !== '') {
+    category = parseInt(filterValues.category, 10);
   }
-  return null;
+  return { category };
 };
 
 /**
  * gets the information to create the sublayer for each layer and filter
  * @param {array} heatmapLayer
  * @param {array} filter
- * @returns {array} [{flag, hue, gearTypeId}, {flag, hue, gearTypeId}, ...]
+ * @returns {array} [{category, hue, gearTypeId}, {category, hue, gearTypeId}, ...]
  */
 const getLayerData = (heatmapLayer, filters) => {
   const LayerGroupedFilters = [];
-  // Filter hue overrides heatmap layer hue
-  let hue = heatmapLayer.hue;
-  let gearTypeId = null;
-  let flag = 'ALL';
+  let hue = heatmapLayer.hue; // Filter hue overrides heatmap layer hue
+  let filterValues = { category: 'ALL' }; // Setting defaults
 
   filters.forEach((filter) => {
-    gearTypeId = null;
-    flag = 'ALL';
+    const filterFields = Object.keys(filter.filterValues).filter(f =>
+      f !== 'hue' && f !== 'category'
+    );
+
+    const defaultFilterFields = {};
+    filterFields.forEach((filterField) => { defaultFilterFields[filterField] = null; }); // registered_gear_type_id: null
+    filterValues = Object.assign({ category: 'ALL' }, defaultFilterFields); // Reseting defaults
+
     if (filter.visible) {
       hue = COLOR_HUES[filter.color];
       const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
       if (isLayerChecked) {
-        flag = getFilterValues(filter, 'flag') || flag;
-        gearTypeId = getFilterValues(filter, GEAR_TYPE_ID) || gearTypeId;
+        if (filter.filterValues !== undefined) {
+          filterValues = Object.assign(filterValues, filter.filterValues, parseCategory(filter.filterValues));
+        }
       } else { // filter everything on the sublayer if the layer is not checked
-        flag = 'FILTERED';
+        filterValues = { category: 'FILTERED' };
       }
-      LayerGroupedFilters.push({ flag, hue, gearTypeId });
+
+      LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
     }
   });
 
   // Set default sublayer if there are no filters
   if (LayerGroupedFilters.length === 0) {
-    LayerGroupedFilters.push({ flag, hue, gearTypeId });
+    LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
   }
   return LayerGroupedFilters;
 };

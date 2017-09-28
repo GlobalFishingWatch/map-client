@@ -325,14 +325,14 @@ export function loadTilesExtraTimeRange() {
 }
 
 /**
- * Gets all the flags for all the filters of a Heatmap layer
+ * Gets all the categories for all the filters of a Heatmap layer
  * @param {object} state - the application state
  * @param {string} layerId - the id of a heatmap layer
- * @return {array} flags
+ * @return {array} categories
  */
 const _getCurrentFlagsForLayer = (state, layerId) => {
   if (layerId === undefined) return undefined;
-  return state.filterGroups.layerFilters[layerId].map(layer => layer.flag);
+  return state.filterGroups.layerFilters[layerId].map(layer => layer.category);
 };
 
 /**

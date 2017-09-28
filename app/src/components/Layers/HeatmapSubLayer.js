@@ -28,15 +28,15 @@ export default class HeatmapSubLayer {
   }
 
 
-  setFilters(flag, hue, gearTypeId) {
-    this.gearTypeId = gearTypeId;
-    // Don't filter flags if 'ALL' is selected (No filters case)
-    this.flags = (flag === 'ALL') ? undefined : [flag];
+  setFilters(filterData) {
+    const { category, hue } = filterData;
+    // Don't filter categories if 'ALL' is selected (No filters case)
+    this.categories = (category === 'ALL') ? undefined : [category];
+    this.filterFields = Object.keys(filterData).filter(filter =>
+      filter !== 'hue' && filter !== 'category' && filter !== 'category'
+    );
+    this.filters = filterData;
     this._setTextureFrame(null, hue);
-  }
-
-  setFlags(flags) {
-    this.flags = flags;
   }
 
   setSeriesFilter(foundVessels) {
@@ -112,6 +112,40 @@ export default class HeatmapSubLayer {
     }
   }
 
+
+  shouldSkipRenderByCategories(frame, index) {
+    // Skip the render by category (country-flag) if the category is not in the tile data
+    return this.categories !== undefined &&
+           frame.category !== undefined &&
+           this.categories.indexOf(frame.category[index]) === -1
+  }
+
+  shouldSkipRenderByFoundVessels(frame, index) {
+    return (this.foundVessels &&
+      (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0));
+  }
+
+  shouldSkipRenderByFieldFilters(frame, index) {
+    // If any of the filters should apply return true
+    return this.filterFields.some((filterField) => {
+      const filterValue = this.filters[filterField];
+      const tileField = frame[filterField];
+
+      // Filter all the fields in the filters
+      if (filterValue !== undefined &&
+        tileField !== undefined &&
+        filterValue !== null &&
+        filterValue.indexOf(tileField[index]) === -1) {
+        return true;
+      }
+
+      // Skip the rendering if the filter for that layer doesn't have information (e.g AIS)
+      if (tileField === undefined && filterValue !== null) return true;
+
+      return false; // render
+    });
+  }
+
   _dumpTileVessels(startIndex, endIndex, data, offsets) {
     if (!data) {
       return;
@@ -128,33 +162,10 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        // filter by flag (category). Skip the sprites if the flag is not in the tile data
-        if (this.flags !== undefined &&
-            frame.category !== undefined
-            && this.flags.indexOf(frame.category[index]) === -1) {
-          continue;
-        }
-        // filter by gearTypeId. Skip the sprites if the gearTypeId is not in the tile data
-        if (this.gearTypeId !== null &&
-            this.gearTypeId !== undefined) {
-
-          // Also skip the rendering if that layer doesn't have any gear type information (e.g AIS)
-          if (frame.registered_gear_type_id === undefined ||
-              (frame.registered_gear_type_id !== undefined &&
-              this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1)) {
-            continue;
-          }
-        }
-
-        if (this.gearTypeId !== null &&
-            this.gearTypeId !== undefined &&
-            frame.registered_gear_type_id === undefined) {
-          continue;
-        }
-
-        // filter by foundVessels
-        if (this.foundVessels &&
-            (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
+        if (this.shouldSkipRenderByCategories(frame, index) ||
+            this.shouldSkipRenderByFieldFilters(frame, index) ||
+            this.shouldSkipRenderByFoundVessels(frame, index)
+        ) {
           continue;
         }
 
@@ -185,13 +196,8 @@ export default class HeatmapSubLayer {
         const frame = tile.data[timeIndex];
         if (!frame) continue;
         for (let index = 0, len = frame.worldX.length; index < len; index++) {
-          if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
-            continue;
-          }
-          if (this.gearTypeId !== null &&
-              this.gearTypeId !== undefined &&
-              frame.registered_gear_type_id !== undefined &&
-              this.gearTypeId.indexOf(frame.registered_gear_type_id[index]) === -1) {
+          if (this.shouldSkipRenderByCategories(frame, index) ||
+            this.shouldSkipRenderByFieldFilters(frame, index)) {
             continue;
           }
           numSprites++;

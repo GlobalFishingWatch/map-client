@@ -54,7 +54,7 @@ export default class HeatmapLayer {
     }
     this.subLayers.forEach((subLayer, index) => {
       const filterData = layerFilters[index];
-      subLayer.setFilters(filterData.flag, filterData.hue, filterData.gearTypeId);
+      subLayer.setFilters(filterData);
     });
   }
 

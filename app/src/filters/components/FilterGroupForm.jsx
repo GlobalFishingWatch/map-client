@@ -132,10 +132,10 @@ class FilterGroupForm extends Component {
         <select
           key={index}
           name={filter.label}
-          onChange={e => this.onFilterValueChange(filter.id, e.target.value)}
-          value={this.state.filterGroup.filterValues[filter.id]}
+          onChange={e => this.onFilterValueChange(filter.field, e.target.value)}
+          value={this.state.filterGroup.filterValues[filter.field]}
         >
-          {filter.id === 'flag' && filter.useDefaultValues === true ? getCountryOptions() : this.getOptions(filter)}
+          {filter.field === 'category' && filter.useDefaultValues === true ? getCountryOptions() : this.getOptions(filter)}
         </select >
       </div >
     ));
