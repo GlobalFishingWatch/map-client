@@ -84,9 +84,13 @@ export function initHeatmapLayers() {
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsIndices) {
+function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsLess, temporalExtentsIndices) {
   // const tileCoordinates = referenceTile.tileCoordinates;
-  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsIndices });
+  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, {
+    tileCoordinates,
+    temporalExtentsIndices,
+    temporalExtentsLess
+  });
   const allLayerPromises = Promise.all(pelagosPromises);
 
   const layerTilePromise = new Promise((resolve) => {
@@ -112,7 +116,10 @@ function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlayback
   // console.time('test')
   const cleanVectorArrays = getCleanVectorArrays(rawTileData);
   const groupedData = groupData(cleanVectorArrays, columns);
-  const vectorArray = addWorldCoordinates(groupedData, map);
+  if (Object.keys(groupedData).length === 0) {
+    return [];
+  }
+  const vectorArray = (columns.indexOf('latitude') > -1) ? addWorldCoordinates(groupedData, map) : groupedData;
   const data = getTilePlaybackData(
     tileCoordinates.zoom,
     vectorArray,
@@ -170,6 +177,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           layers[layerId].url,
           token,
           layerHeader.temporalExtents,
+          layerHeader.temporalExtentsLess,
           temporalExtentsIndicesToLoad
         );
 
