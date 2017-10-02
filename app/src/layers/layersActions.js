@@ -4,6 +4,7 @@ import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
+import { AIS_ID } from 'config';
 
 export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_LAYERS = 'SET_LAYERS';
@@ -127,9 +128,18 @@ export function initLayers(workspaceLayers, libraryLayers) {
       .forEach((heatmapLayer) => {
         const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
         headerPromise.then((header) => {
+          const defaultFilter = {
+            field: 'category',
+            id: 'flag',
+            label: 'Country',
+            useDefaultValues: true
+          };
           if (header !== null) {
             heatmapLayer.header = header;
             dispatch(setGlobalFiltersFromHeader(header));
+            if (heatmapLayer.id === AIS_ID && header.filters === undefined) {
+              header.filters = [defaultFilter];
+            }
           }
         });
         headersPromises.push(headerPromise);

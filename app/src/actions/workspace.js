@@ -238,38 +238,10 @@ const filtersTofilterGroups = (filters) => {
   return filterGroups;
 };
 
-/**
- * Adds default country filter to AIS legacy layer
- * This layer didn't have a country filter inside header.filters before
- *
- * @param {array} layers
- * @return {array} layers
- */
-const addCountryFilterToAISLegacyLayer = layers =>
-  layers.map((layer) => {
-    if (layer.id === AIS_ID &&
-      (layer.header === undefined || layer.header.filters === undefined)) {
-      const updatedLayer = layer;
-      const defaultFilter = {
-        field: 'category',
-        id: 'flag',
-        label: 'Country',
-        useDefaultValues: true
-      };
-      updatedLayer.header = updatedLayer.header || {};
-      updatedLayer.header.filters = updatedLayer.header.filters ?
-        updatedLayer.header.filters.concat([defaultFilter]) :
-        [defaultFilter];
-      return updatedLayer;
-    }
-    return layer;
-  });
-
 function processNewWorkspace(data) {
   const workspace = data.workspace;
   let filterGroups = workspace.filterGroups || [];
   filterGroups = filterGroups.concat(filtersTofilterGroups(workspace.filters));
-  const layers = addCountryFilterToAISLegacyLayer(workspace.map.layers);
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
@@ -277,7 +249,7 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
-    layers,
+    layers: workspace.map.layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
