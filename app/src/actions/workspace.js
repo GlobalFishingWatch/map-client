@@ -224,13 +224,13 @@ const filtersTofilterGroups = (filters) => {
   if (filters === undefined ||
      (filters.length === 1 && Object.keys(filters[0]).length !== 0)) return []; // remove empty filters
   const filterGroups = [];
-  filters.forEach((filter) => {
+  filters.forEach((filter, index) => {
     if (filter.flag) {
       filterGroups.push({
         checkedLayers: { [AIS_ID]: true },
         color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
         filterValues: { category: filter.flag },
-        label: '',
+        label: `Filter ${index + 1}`,
         visible: true
       });
     }
