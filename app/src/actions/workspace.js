@@ -4,7 +4,8 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
-  AIS_ID
+  AIS_ID,
+  COLORS
 } from 'config';
 import {
   LAYER_TYPES,
@@ -20,7 +21,7 @@ import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WO
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
-import { hexToHue } from 'util/colors';
+import { hexToHue, hueToClosestColor } from 'util/colors';
 import uniq from 'lodash/uniq';
 import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
@@ -227,7 +228,7 @@ const filtersTofilterGroups = (filters) => {
     if (filter.flag) {
       filterGroups.push({
         checkedLayers: { [AIS_ID]: true },
-        color: 'yellow',
+        color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
         filterValues: { category: filter.flag },
         label: '',
         visible: true
