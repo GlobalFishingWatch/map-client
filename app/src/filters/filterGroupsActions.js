@@ -42,6 +42,7 @@ const getLayerData = (heatmapLayer, filters) => {
   let filterValues = { category: 'ALL' }; // Setting defaults
 
   filters.forEach((filter) => {
+    if (filter.filterValues === undefined) return;
     const filterFields = Object.keys(filter.filterValues).filter(f =>
       f !== 'hue' && f !== 'category'
     );
@@ -93,6 +94,7 @@ export function setFilterGroups(initialFilters) {
     );
     // slice(0) clones an array
     const filters = (initialFilters === undefined) ? [{}] : initialFilters.slice(0);
+    filters.filter(f => Object.keys(f).length !== 0); // remove empty filters
 
     const layerFilters = {};
     heatmapLayers.forEach((heatmapLayer) => {

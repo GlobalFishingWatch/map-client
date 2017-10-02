@@ -3,7 +3,8 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE
+  TIMELINE_DEFAULT_INNER_END_DATE,
+  AIS_ID
 } from 'config';
 import {
   LAYER_TYPES,
@@ -212,9 +213,62 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
 }
 
+/**
+ * Convert filters to filterGroups whith the filter flag in the AIS layer
+ *
+ * @param {array} filters
+ * @return {array} filterGroups
+ */
+const filtersTofilterGroups = (filters) => {
+  if (filters === undefined ||
+     (filters.length === 1 && Object.keys(filters[0]).length !== 0)) return []; // remove empty filters
+  const filterGroups = [];
+  filters.forEach((filter) => {
+    if (filter.flag) {
+      filterGroups.push({
+        checkedLayers: { [AIS_ID]: true },
+        color: 'yellow',
+        filterValues: { category: filter.flag },
+        label: '',
+        visible: true
+      });
+    }
+  });
+  return filterGroups;
+};
+
+/**
+ * Adds default country filter to AIS legacy layer
+ * This layer didn't have a country filter inside header.filters before
+ *
+ * @param {array} layers
+ * @return {array} layers
+ */
+const addCountryFilterToAISLegacyLayer = layers =>
+  layers.map((layer) => {
+    if (layer.id === AIS_ID &&
+      (layer.header === undefined || layer.header.filters === undefined)) {
+      const updatedLayer = layer;
+      const defaultFilter = {
+        field: 'category',
+        id: 'flag',
+        label: 'Country',
+        useDefaultValues: true
+      };
+      updatedLayer.header = updatedLayer.header || {};
+      updatedLayer.header.filters = updatedLayer.header.filters ?
+        updatedLayer.header.filters.concat([defaultFilter]) :
+        [defaultFilter];
+      return updatedLayer;
+    }
+    return layer;
+  });
+
 function processNewWorkspace(data) {
   const workspace = data.workspace;
-
+  let filterGroups = workspace.filterGroups || [];
+  filterGroups = filterGroups.concat(filtersTofilterGroups(workspace.filters));
+  const layers = addCountryFilterToAISLegacyLayer(workspace.map.layers);
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
@@ -222,14 +276,14 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
-    layers: workspace.map.layers,
+    layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset,
     areas: workspace.areas,
-    filterGroups: workspace.filterGroups
+    filterGroups
   };
 }
 

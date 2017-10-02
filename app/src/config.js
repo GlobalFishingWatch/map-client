@@ -74,6 +74,8 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
+export const AIS_ID = 'fishing2';
+
 // Colors of the layers, areas, ...
 export const COLORS = {
   yellow: '#FBFF8B',
@@ -157,5 +159,3 @@ export const MINI_GLOBE_SETTINGS = {
   defaultSize: 20,
   minZoom: 3
 };
-
-export const GEAR_TYPE_ID = 'indo_registered_gear_type';
