@@ -64,11 +64,10 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       if (request.readyState !== 4) {
         return;
       }
-      if (request.status >= 500) {
+      if (request.status >= 500 || request.responseText === 'Not Found') {
         console.error('Error loading vessel info:', request.responseText);
         return;
       }
-
       const data = JSON.parse(request.responseText);
       delete data.series;
 
