@@ -1,5 +1,6 @@
 import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES } from 'config';
+import { trackCreateFilterGroups } from 'analytics/analyticsActions';
 
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY';
@@ -113,6 +114,11 @@ export function setFilterGroups(initialFilters) {
 
 export function saveFilterGroup(filterGroup, index = null) {
   return (dispatch, getState) => {
+    // Send analytics only if new filter is created (index === null)
+    if (index === null) {
+      dispatch(trackCreateFilterGroups(filterGroup));
+    }
+
     dispatch({
       type: SAVE_FILTER_GROUP,
       payload: {

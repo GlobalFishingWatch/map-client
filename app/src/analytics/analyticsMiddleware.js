@@ -16,13 +16,16 @@ import {
   GA_SET_LAYER_HUE,
   GA_SET_LAYER_OPACITY,
   GA_VESSEL_POINT_CLICKED,
-  GA_RECENT_VESSEL_ADDED
+  GA_RECENT_VESSEL_ADDED,
+  GA_CREATE_COUNTRY_FILTER,
+  GA_CREATE_REGISTERED_GEARTYPE,
+  GA_CREATE_INFERRED_GEARTYPE
 } from 'analytics/analyticsActions';
 
 import isFunction from 'lodash/isFunction';
 import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'config';
 
-import { FLAGS } from 'app/src/constants';
+import { FLAGS, INDO_REGISTERED_GEARTYPE } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN, SET_PINNED_VESSEL_HUE } from 'actions/vesselInfo';
 import { SET_WORKSPACE_ID } from 'actions/workspace';
 
@@ -83,7 +86,25 @@ const GA_ACTION_WHITELIST = [
     type: GA_RECENT_VESSEL_ADDED,
     category: 'Search',
     action: 'Recent Vessels',
-    getPayload: () => 'Selects a recent vessel to view'
+    getPayload: action => action.payload
+  },
+  {
+    type: GA_CREATE_COUNTRY_FILTER,
+    category: 'Filters',
+    action: 'Filter by country',
+    getPayload: action => FLAGS[action.payload]
+  },
+  {
+    type: GA_CREATE_INFERRED_GEARTYPE,
+    category: 'Filters',
+    action: 'Filter by Inferred Geartype',
+    getPayload: action => INDO_REGISTERED_GEARTYPE[action.payload]
+  },
+  {
+    type: GA_CREATE_REGISTERED_GEARTYPE,
+    category: 'Filters',
+    action: 'Filter by Registered Geartype',
+    getPayload: action => action.payload
   },
   {
     type: TOGGLE_VESSEL_PIN,

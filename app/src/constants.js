@@ -559,3 +559,24 @@ export const FLAGS_SHORTCODES = {
   zm: [127487, 127474],
   zw: [127487, 127484]
 };
+
+export const INDO_REGISTERED_GEARTYPE = {
+  1: 'Bouke ami',
+  2: 'Huhate',
+  3: 'Jala jatuh berkapal',
+  4: 'Hand Line Tuna',
+  5: 'Purse Seine (Pukat Cincin) Pelagis Kecil',
+  7: 'Pukat cincin Pelagis Besar dengan satu kapal',
+  8: 'Pancing Ulur',
+  9: 'Bubu',
+  10: 'Pukat cincin grup pelagis besar ',
+  11: 'Pukat Udang',
+  12: 'Rawai Tuna',
+  13: 'Pancing Cumi (squid jigging)',
+  14: 'Rawai dasar',
+  15: 'Pukat cincin grup pelagis kecil',
+  16: 'Jaring insang oseanik',
+  17: 'Jaring liong bun',
+  18: 'Pukat Ikan',
+  19: 'Jaring lingkar tanpa tali kerut/ Lampar'
+};
