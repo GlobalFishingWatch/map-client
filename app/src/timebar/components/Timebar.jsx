@@ -19,7 +19,7 @@ import { max as d3max } from 'd3-array';
 import { brushX as d3brushX } from 'd3-brush';
 
 import classnames from 'classnames';
-import { TIMELINE_MAX_TIME, MIN_FRAME_LENGTH_MS } from 'config';
+import { TIMELINE_MAX_TIME, TIMELINE_MIN_TIME, MIN_FRAME_LENGTH_MS } from 'config';
 import TimebarStyles from 'styles/components/map/timebar.scss';
 import TimelineStyles from 'styles/components/map/timeline.scss';
 import extentChanged from 'util/extentChanged';
@@ -357,6 +357,20 @@ class Timebar extends Component {
       } else {
         // left brush was moved
         newExtent[0] = new Date(oldExtent[1].getTime() - TIMELINE_MAX_TIME);
+      }
+      newExtentPx = this.getPxExtent(newExtent);
+      this.redrawInnerBrush(newExtent);
+    }
+    // time range is too short
+    if (newExtent[1].getTime() - newExtent[0].getTime() < TIMELINE_MIN_TIME) {
+      const oldExtent = this.props.timelineInnerExtent;
+
+      if (oldExtent[0].getTime() === newExtent[0].getTime()) {
+        // right brush was moved
+        newExtent[1] = new Date(oldExtent[0].getTime() + TIMELINE_MIN_TIME);
+      } else {
+        // left brush was moved
+        newExtent[0] = new Date(oldExtent[1].getTime() - TIMELINE_MIN_TIME);
       }
       newExtentPx = this.getPxExtent(newExtent);
       this.redrawInnerBrush(newExtent);
