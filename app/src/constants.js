@@ -560,6 +560,23 @@ export const FLAGS_SHORTCODES = {
   zw: [127487, 127484]
 };
 
+export const VMS_REGISTERED_GEARTYPE = {
+  1: 'Anchored gillnets',
+  2: 'Basic longline',
+  3: 'Fish net/dragnet',
+  4: 'Hand Line Tuna',
+  5: 'Longline Tuna',
+  6: 'Oceanic gillnet',
+  7: 'Pole-and-line',
+  8: 'Pukat cincin grup pelagis besar',
+  9: 'Purse Seine Big Pelagics with one boat',
+  10: 'Purse Seine Group (2 boat) Small Pelagics',
+  11: 'Purse Seine Small Pelagics',
+  12: 'Shrimp net',
+  13: 'Squid hooking',
+  14: 'Stick-Held lift net'
+};
+
 export const INDO_REGISTERED_GEARTYPE = {
   1: 'Bouke ami',
   2: 'Huhate',

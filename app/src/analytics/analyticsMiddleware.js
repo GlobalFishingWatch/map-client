@@ -25,7 +25,7 @@ import {
 import isFunction from 'lodash/isFunction';
 import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'config';
 
-import { FLAGS, INDO_REGISTERED_GEARTYPE } from 'app/src/constants';
+import { FLAGS, INDO_REGISTERED_GEARTYPE, VMS_REGISTERED_GEARTYPE } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN, SET_PINNED_VESSEL_HUE } from 'actions/vesselInfo';
 import { SET_WORKSPACE_ID } from 'actions/workspace';
 
@@ -104,7 +104,7 @@ const GA_ACTION_WHITELIST = [
     type: GA_CREATE_REGISTERED_GEARTYPE,
     category: 'Filters',
     action: 'Filter by Registered Geartype',
-    getPayload: action => action.payload
+    getPayload: action => VMS_REGISTERED_GEARTYPE[action.payload]
   },
   {
     type: TOGGLE_VESSEL_PIN,
