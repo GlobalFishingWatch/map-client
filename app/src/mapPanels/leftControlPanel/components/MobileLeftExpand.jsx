@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MobileLeftExpandStyles from 'styles/components/mobile-left-expand.scss';
-import MediaQuery from 'react-responsive';
 import classnames from 'classnames';
 
 class MobileLeftExpand extends Component {
   constructor() {
     super();
-    this.state = { expanded: false };
+    this.state = { expanded: true };
   }
 
   renderExpandItem() {
@@ -35,18 +34,7 @@ class MobileLeftExpand extends Component {
   }
 
   render() {
-    return (
-      <MediaQuery minWidth={768} >
-        {desktop => (
-          desktop && !this.props.isEmbedded ?
-            <div className={MobileLeftExpandStyles.mobileLeftExpand} >
-              {this.props.children}
-            </div>
-            :
-            this.renderExpandItem()
-        )}
-      </MediaQuery >
-    );
+    return (this.renderExpandItem());
   }
 }
 
