@@ -91,6 +91,21 @@ export function toggleReport(layerId) {
   };
 }
 
+/**
+ + Get current countries name from the filters only if they exist
+ * @param {object} state
+ * @returns {array} flags [{'AD'}, {'ES'}, ...]
+ */
+function getCurrentFlags(state) {
+  return state.filterGroups.filterGroups.filter(filter =>
+    filter.filterValues !== undefined &&
+    filter.filterValues.category !== undefined &&
+    filter.filterValues.category !== '' &&
+    filter.filterValues.category !== 'ALL' &&
+    filter.filterValues.category !== 'FILTERED'
+  ).map(filter => filter.filterValues.category).map(flag => FLAGS[flag]);
+}
+
 export function sendReport() {
   return (dispatch, getState) => {
     const state = getState();
@@ -103,15 +118,8 @@ export function sendReport() {
       from: state.filters.timelineInnerExtent[0].toISOString(),
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
-    const currentFlags = state.filterGroups.filterGroups.filter(filter =>
-      filter.filterValues !== undefined &&
-      filter.filterValues.category !== undefined &&
-      filter.filterValues.category !== '' &&
-      filter.filterValues.category !== 'ALL' &&
-      filter.filterValues.category !== 'FILTERED'
-    ).map(filter => filter.filterValues.category).map(flag => FLAGS[flag]);
 
-    payload.flags = currentFlags;
+    payload.flags = getCurrentFlags(state);
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
