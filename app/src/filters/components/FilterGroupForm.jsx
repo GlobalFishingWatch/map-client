@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import _includes from 'lodash/includes';
+import _pullAllWith from 'lodash/pullAllWith';
 import _uniqBy from 'lodash/uniqBy';
 import classnames from 'classnames';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
@@ -12,6 +13,8 @@ import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
+import { FLAGS } from 'constants';
+import { getCountry } from 'iso-3166-1-alpha-2';
 
 class FilterGroupForm extends Component {
   constructor(props) {
@@ -34,7 +37,7 @@ class FilterGroupForm extends Component {
       filterValues: {}
     }, props.filterGroup);
 
-    this.state = { filterGroup };
+    this.state = { filterGroup, autoGenLabel: filterGroup.label === '' };
   }
 
   onLayerChecked(layerId) {
@@ -52,7 +55,7 @@ class FilterGroupForm extends Component {
   onNameChange(event) {
     const filterGroup = this.state.filterGroup;
     filterGroup.label = event.target.value;
-    this.setState({ filterGroup });
+    this.setState({ filterGroup, autoGenLabel: event.target.value === '' });
   }
 
   onPressSave() {
@@ -62,6 +65,63 @@ class FilterGroupForm extends Component {
   onFilterValueChange(name, value) {
     const filterGroup = this.state.filterGroup;
     filterGroup.filterValues[name] = value;
+
+    this.setState({ filterGroup });
+
+    if (this.state.autoGenLabel) {
+      this.genFilterName();
+    }
+  }
+
+  genFilterName() {
+    const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
+      .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
+
+    const layersToFilter = this.props.layers.filter(layer =>
+      _includes(checkedLayersId, layer.id) && layer.header.filters
+    );
+
+    const filtersFromLayers = layersToFilter.map(layer => layer.header.filters);
+    const flattenedFilters = [].concat(...filtersFromLayers);
+    const uniqueFiltersFromLayers = [];
+
+    // obscure logic that looks for filters with the same id and merges their values into a single filter
+    while (flattenedFilters.length > 0) {
+      const key = flattenedFilters[0];
+      const matches = flattenedFilters.filter(elem => elem.id === key.id);
+      const values = [];
+
+      matches.forEach((match) => {
+        if (match.values) values.push(...match.values);
+      });
+      const uniqValues = _uniqBy(values, e => e.id);
+
+      key.values = uniqValues;
+      uniqueFiltersFromLayers.push(key);
+
+      _pullAllWith(flattenedFilters, [key], (a, b) => (a.id === b.id));
+    }
+
+    // const uniqueFiltersFromLayers = _uniqBy(flattenedFilters, e => e.label);
+
+    const selectedFilters = uniqueFiltersFromLayers.filter(filter => filter.field in this.state.filterGroup.filterValues);
+
+    const selectedFilterValues = selectedFilters.map((filter) => {
+      let value;
+
+      if (filter.field === 'category' && filter.useDefaultValues === true) {
+        value = getCountry(FLAGS[this.state.filterGroup.filterValues[filter.field]]);
+      } else {
+        const filterSetting = filter.values.find(elem => elem.id === parseInt(this.state.filterGroup.filterValues[filter.field], 10));
+        value = filterSetting ? filterSetting.label : '';
+      }
+
+      return value;
+    });
+
+    const filterGroup = this.state.filterGroup;
+    filterGroup.label = selectedFilterValues.join(' ');
+
     this.setState({ filterGroup });
   }
 
@@ -126,7 +186,25 @@ class FilterGroupForm extends Component {
 
     const filtersFromLayers = layersToFilter.map(layer => layer.header.filters);
     const flattenedFilters = [].concat(...filtersFromLayers);
-    const uniqueFiltersFromLayers = _uniqBy(flattenedFilters, e => e.label);
+    const uniqueFiltersFromLayers = [];
+
+    // obscure logic that looks for filters with the same id and merges their values into a single filter
+    while (flattenedFilters.length > 0) {
+      const key = flattenedFilters[0];
+      const matches = flattenedFilters.filter(elem => elem.id === key.id);
+      const values = [];
+
+      matches.forEach((match) => {
+        if (match.values) values.push(...match.values);
+      });
+      const uniqValues = _uniqBy(values, e => e.id);
+
+      key.values = uniqValues;
+      uniqueFiltersFromLayers.push(key);
+
+      _pullAllWith(flattenedFilters, [key], (a, b) => (a.id === b.id));
+    }
+
     const filterInputs = uniqueFiltersFromLayers.map((filter, index) => (
       <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
         <select
