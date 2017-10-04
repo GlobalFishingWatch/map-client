@@ -14,9 +14,7 @@ export const GA_SET_LAYER_HUE = 'GA_SET_LAYER_HUE';
 export const GA_SET_LAYER_OPACITY = 'GA_SET_LAYER_OPACITY';
 export const GA_VESSEL_POINT_CLICKED = 'GA_VESSEL_POINT_CLICKED';
 export const GA_RECENT_VESSEL_ADDED = 'GA_RECENT_VESSEL_ADDED';
-export const GA_CREATE_COUNTRY_FILTER = 'GA_CREATE_COUNTRY_FILTER';
-export const GA_CREATE_INFERRED_GEARTYPE = 'GA_CREATE_INFERRED_GEARTYPE';
-export const GA_CREATE_REGISTERED_GEARTYPE = 'GA_CREATE_REGISTERED_GEARTYPE';
+export const GA_CREATE_FILTER = 'GA_CREATE_FILTER';
 
 /**
  * Only add here actions that are GA-exclusive.
@@ -82,25 +80,18 @@ export function trackSearchResultClicked(tilesetId, seriesgroup) {
 
 export function trackCreateFilterGroups(filterGroup) {
   return (dispatch) => {
-    if (filterGroup.filterValues.category !== undefined &&
-      filterGroup.filterValues.category !== '') {
-      dispatch({
-        type: GA_CREATE_COUNTRY_FILTER,
-        payload: filterGroup.filterValues.category
-      });
-    }
-    if (filterGroup.filterValues.inferred_gear_type_id !== undefined) {
-      dispatch({
-        type: GA_CREATE_INFERRED_GEARTYPE,
-        payload: filterGroup.filterValues.inferred_gear_type_id
-      });
-    }
-    if (filterGroup.filterValues.registered_gear_type_id !== undefined) {
-      dispatch({
-        type: GA_CREATE_REGISTERED_GEARTYPE,
-        payload: filterGroup.filterValues.registered_gear_type_id
-      });
-    }
+    const filterValues = filterGroup.filterValues;
+    const filterFields = Object.keys(filterValues).filter(filter => filter !== 'hue');
+
+    filterFields.forEach((filterField) => {
+      if (filterValues[filterField] !== undefined &&
+          filterValues[filterField] !== '') {
+        dispatch({
+          type: GA_CREATE_FILTER,
+          payload: { filterField, value: filterValues[filterField] }
+        });
+      }
+    });
   };
 }
 

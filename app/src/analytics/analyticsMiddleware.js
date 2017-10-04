@@ -17,15 +17,13 @@ import {
   GA_SET_LAYER_OPACITY,
   GA_VESSEL_POINT_CLICKED,
   GA_RECENT_VESSEL_ADDED,
-  GA_CREATE_COUNTRY_FILTER,
-  GA_CREATE_REGISTERED_GEARTYPE,
-  GA_CREATE_INFERRED_GEARTYPE
+  GA_CREATE_FILTER
 } from 'analytics/analyticsActions';
 
 import isFunction from 'lodash/isFunction';
 import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'config';
 
-import { FLAGS, INDO_REGISTERED_GEARTYPE, VMS_REGISTERED_GEARTYPE } from 'app/src/constants';
+import { FLAGS } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN, SET_PINNED_VESSEL_HUE } from 'actions/vesselInfo';
 import { SET_WORKSPACE_ID } from 'actions/workspace';
 
@@ -89,22 +87,15 @@ const GA_ACTION_WHITELIST = [
     getPayload: action => action.payload
   },
   {
-    type: GA_CREATE_COUNTRY_FILTER,
+    type: GA_CREATE_FILTER,
     category: 'Filters',
-    action: 'Filter by country',
-    getPayload: action => FLAGS[action.payload]
-  },
-  {
-    type: GA_CREATE_INFERRED_GEARTYPE,
-    category: 'Filters',
-    action: 'Filter by Inferred Geartype',
-    getPayload: action => INDO_REGISTERED_GEARTYPE[action.payload]
-  },
-  {
-    type: GA_CREATE_REGISTERED_GEARTYPE,
-    category: 'Filters',
-    action: 'Filter by Registered Geartype',
-    getPayload: action => VMS_REGISTERED_GEARTYPE[action.payload]
+    action: action => `Filter by ${
+      action.payload.filterField === 'category' ? 'country' : action.payload.filterField}`,
+    getPayload: action => (
+      action.payload.filterField === 'category' ?
+        FLAGS[action.payload.value] :
+        action.payload.value
+    )
   },
   {
     type: TOGGLE_VESSEL_PIN,
