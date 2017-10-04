@@ -1,23 +1,40 @@
 @import '../../settings';
 @import '../../mixins';
 
+.yellow {
+  background-color: $yellow;
+}
+
 .lightBlue {
   background-color: $light-blue;
 }
-.red {
-  background-color: $red;
+
+.lime {
+  background-color: $lime;
 }
-.orange {
-  background-color: $orange;
+
+.green {
+  background-color: $green;
 }
+
+.blue {
+  background-color: $blue;
+}
+
 .purple {
   background-color: $purple;
 }
+
+.red {
+  background-color: $red;
+}
+
+.orange {
+  background-color: $orange;
+}
+
 .pink {
   background-color: $pink;
-}
-.yellow {
-  background-color: $yellow;
 }
 
 .colorInput {

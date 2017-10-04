@@ -76,21 +76,27 @@ export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // Colors of the layers, areas, ...
 export const COLORS = {
+  orange: '#F95E5E',
+  red: '#ff3b00',
   yellow: '#FBFF8B',
+  lime: '#d2ed07',
+  green: '#66BC29',
   lightBlue: '#67FBFE',
-  purple: '#7D84FA',
-  red: '#CC4E4E',
-  orange: '#EC6C33',
-  pink: '#CC68C4'
+  blue: '#7D84FA',
+  purple: '#bb00ff',
+  pink: '#FF81F5'
 };
 
 // Hue for each color
 export const COLOR_HUES = {
+  orange: 0,
+  red: 14,
   yellow: 60,
+  lime: 67,
+  green: 95,
   lightBlue: 182,
-  purple: 236,
-  red: 0,
-  orange: 36,
+  blue: 236,
+  purple: 284,
   pink: 305
 };
 
