@@ -123,5 +123,16 @@
 .paginationContainer {
   display: flex;
   justify-content: center;
-  padding: 5px 11px 24px;
+  padding: 5px 0px 24px;
+  .paginationButton {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 64%;
+
+    @media #{$mq-tablet} {
+      width: 84%;
+      margin-left: -6px;
+      margin-right: 2px;
+    }
+  }
 }

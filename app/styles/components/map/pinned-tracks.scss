@@ -114,5 +114,13 @@
 .pinnedButtonContainer {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0 0;
+  margin: 10px 0 0 20px;
+  .recentVesselsButton {
+    width: 89%;
+
+    @media #{$mq-tablet} {
+      margin-left: 11px;
+      margin-right: 40px;
+    }
+  }
 }
