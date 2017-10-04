@@ -330,9 +330,9 @@ export function loadTilesExtraTimeRange() {
  * @param {string} layerId - the id of a heatmap layer
  * @return {array} categories
  */
-const _getCurrentFlagsForLayer = (state, layerId) => {
+const _getCurrentFiltersForLayer = (state, layerId) => {
   if (layerId === undefined) return undefined;
-  return state.filterGroups.layerFilters[layerId].map(layer => layer.category);
+  return state.filterGroups.layerFilters[layerId];
 };
 
 /**
@@ -353,12 +353,13 @@ const _queryHeatmap = (state, tileQuery) => {
     if (workspaceLayer.added === true && workspaceLayer.visible === true) {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      const currentFlags = _getCurrentFlagsForLayer(state, layerId);
+      const currentFilters = _getCurrentFiltersForLayer(state, layerId);
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
           layerId,
           tilesetId: layer.tilesetId,
-          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex, currentFlags)
+          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
+            tileQuery.worldY, startIndex, endIndex, currentFilters)
         });
       }
     }
@@ -422,7 +423,7 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
         highlightableCluster: isCluster !== true,
         foundVessels,
         latLng,
-        currentFlags: _getCurrentFlagsForLayer(state, layerId)
+        currentFilters: _getCurrentFiltersForLayer(state, layerId)
       }
     });
   };

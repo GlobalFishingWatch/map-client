@@ -227,7 +227,7 @@ export default class GLContainer extends BaseOverlay {
     }
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, foundVessels }) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFilters, highlightableCluster, isEmpty, foundVessels }) {
     if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
       this._startHeatmapFadein();
@@ -243,7 +243,7 @@ export default class GLContainer extends BaseOverlay {
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
     this.heatmapHighlight.setSeriesFilter(foundVessels);
-    this.heatmapHighlight.setFlags(currentFlags);
+    this.heatmapHighlight.setFilters(currentFilters);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
   }

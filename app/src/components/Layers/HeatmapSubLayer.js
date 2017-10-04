@@ -33,7 +33,7 @@ export default class HeatmapSubLayer {
     // Don't filter categories if 'ALL' is selected (No filters case)
     this.categories = (category === 'ALL') ? undefined : [category];
     this.filterFields = Object.keys(filterData).filter(filter =>
-      filter !== 'hue' && filter !== 'category' && filter !== 'category'
+      filter !== 'hue' && filter !== 'category'
     );
     this.filters = filterData;
     this._setTextureFrame(null, hue);
@@ -135,6 +135,7 @@ export default class HeatmapSubLayer {
       if (filterValue !== undefined &&
         tileField !== undefined &&
         filterValue !== null &&
+        filterValue !== '' &&
         filterValue.indexOf(tileField[index]) === -1) {
         return true;
       }

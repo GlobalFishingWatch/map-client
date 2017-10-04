@@ -254,8 +254,20 @@ export const getTracksPlaybackData = (vectorArray) => {
   return playbackData;
 };
 
+const isFiltered = (filters, frame, index) => {
+  filters.some((filter) => {
+    const filterFields = Object.keys(filter).filter(filterField => filterField !== 'hue');
+    return filterFields.some(filterField =>
+      filterField !== undefined &&
+      filter[filterField] !== 'ALL' &&
+      filter[filterField] !== '' &&
+      frame[filterField] !== undefined &&
+      frame[filterField][index] !== filter[filterField]
+    );
+  });
+};
 
-export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFlags) => {
+export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFilters) => {
   const vessels = [];
 
   // convert px tolerance/radius to world units
@@ -268,7 +280,8 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
     for (let i = 0; i < frame.worldX.length; i++) {
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
-      if ((currentFlags === undefined || (frame.category !== undefined && currentFlags.indexOf(frame.category[i]) !== -1)) &&
+
+      if (!isFiltered(currentFilters, frame, i) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {

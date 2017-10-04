@@ -31,6 +31,15 @@ const parseCategory = (filterValues) => {
   return { category };
 };
 
+const cleanFilterValues = (filterValues) => {
+  const keys = Object.keys(filterValues);
+  const cleanedFilterValues = filterValues;
+  keys.forEach((key) => {
+    if (cleanedFilterValues[key] === '') delete cleanedFilterValues[key];
+  });
+  return cleanedFilterValues;
+};
+
 /**
  * gets the information to create the sublayer for each layer and filter
  * @param {array} heatmapLayer
@@ -57,7 +66,7 @@ const getLayerData = (heatmapLayer, filters) => {
       const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
       if (isLayerChecked) {
         if (filter.filterValues !== undefined) {
-          filterValues = Object.assign(filterValues, filter.filterValues, parseCategory(filter.filterValues));
+          filterValues = Object.assign(filterValues, cleanFilterValues(filter.filterValues), parseCategory(filter.filterValues));
         }
       } else { // filter everything on the sublayer if the layer is not checked
         filterValues = { category: 'FILTERED' };
