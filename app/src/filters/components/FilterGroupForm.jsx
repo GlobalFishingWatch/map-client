@@ -59,7 +59,12 @@ class FilterGroupForm extends Component {
   }
 
   onPressSave() {
-    this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
+    const { filterGroup } = this.state;
+    const layerKeys = Object.keys(filterGroup.checkedLayers);
+    const anyLayerChecked = layerKeys.some(key => filterGroup.checkedLayers[key] === true);
+    if (anyLayerChecked) {
+      this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
+    }
   }
 
   onFilterValueChange(name, value) {
