@@ -29,12 +29,8 @@ export default class HeatmapSubLayer {
 
 
   setFilters(filterData) {
-    const { category, hue } = filterData;
-    // Don't filter categories if 'ALL' is selected (No filters case)
-    this.categories = (category === 'ALL') ? undefined : [category];
-    this.filterFields = Object.keys(filterData).filter(filter =>
-      filter !== 'hue' && filter !== 'category'
-    );
+    const { hue } = filterData;
+    this.filterFields = Object.keys(filterData).filter(filter => filter !== 'hue');
     this.filters = filterData;
     this._setTextureFrame(null, hue);
   }
@@ -112,14 +108,6 @@ export default class HeatmapSubLayer {
     }
   }
 
-
-  shouldSkipRenderByCategories(frame, index) {
-    // Skip the render by category (country-flag) if the category is not in the tile data
-    return this.categories !== undefined &&
-           frame.category !== undefined &&
-           this.categories.indexOf(frame.category[index]) === -1;
-  }
-
   shouldSkipRenderByFoundVessels(frame, index) {
     return (this.foundVessels &&
       (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0));
@@ -132,11 +120,16 @@ export default class HeatmapSubLayer {
       const tileField = frame[filterField];
 
       // Filter all the fields in the filters
+      // Don't filter categories if 'ALL' is selected (No filters case)
+      // Don't filter any filters if '' is selected (Clear option case)
+      // TODO: Use includes or indexOf instead of passing the index
       if (filterValue !== undefined &&
         tileField !== undefined &&
+        tileField.length > index &&
         filterValue !== null &&
         filterValue !== '' &&
-        filterValue.indexOf(tileField[index]) === -1) {
+        filterValue !== 'ALL' &&
+        parseInt(filterValue, 10) !== tileField[index]) {
         return true;
       }
 
@@ -163,8 +156,7 @@ export default class HeatmapSubLayer {
       if (!frame) continue;
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        if (this.shouldSkipRenderByCategories(frame, index) ||
-            this.shouldSkipRenderByFieldFilters(frame, index) ||
+        if (this.shouldSkipRenderByFieldFilters(frame, index) ||
             this.shouldSkipRenderByFoundVessels(frame, index)
         ) {
           continue;
@@ -197,8 +189,7 @@ export default class HeatmapSubLayer {
         const frame = tile.data[timeIndex];
         if (!frame) continue;
         for (let index = 0, len = frame.worldX.length; index < len; index++) {
-          if (this.shouldSkipRenderByCategories(frame, index) ||
-            this.shouldSkipRenderByFieldFilters(frame, index)) {
+          if (this.shouldSkipRenderByFieldFilters(frame, index)) {
             continue;
           }
           numSprites++;
