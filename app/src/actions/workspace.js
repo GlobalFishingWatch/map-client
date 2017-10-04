@@ -4,7 +4,7 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
-  AIS_ID,
+  AIS_LAYER_ID,
   COLORS
 } from 'config';
 import {
@@ -215,7 +215,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 }
 
 /**
- * Convert filters to filterGroups whith the filter flag in the AIS layer
+ * Convert filters to filterGroups only with the filter flag in the AIS layer
  *
  * @param {array} filters
  * @return {array} filterGroups
@@ -227,7 +227,7 @@ const filtersTofilterGroups = (filters) => {
   filters.forEach((filter, index) => {
     if (filter.flag) {
       filterGroups.push({
-        checkedLayers: { [AIS_ID]: true },
+        checkedLayers: { [AIS_LAYER_ID]: true },
         color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
         filterValues: { category: filter.flag },
         label: `Filter ${index + 1}`,

@@ -4,8 +4,9 @@ import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
-import { AIS_ID } from 'config';
-
+// TODO: Remove this when legacy AIS layers contain filter category in headers (+2 more comments in this file)->
+import { AIS_LAYER_ID } from 'config';
+// <-
 export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_LAYERS = 'SET_LAYERS';
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
@@ -128,18 +129,22 @@ export function initLayers(workspaceLayers, libraryLayers) {
       .forEach((heatmapLayer) => {
         const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
         headerPromise.then((header) => {
+          // Remove this when legacy AIS layers contain filter category in headers ->
           const defaultFilter = {
             field: 'category',
             id: 'flag',
             label: 'Country',
             useDefaultValues: true
           };
+          // <-
           if (header !== null) {
             heatmapLayer.header = header;
             dispatch(setGlobalFiltersFromHeader(header));
-            if (heatmapLayer.id === AIS_ID && header.filters === undefined) {
+            // Remove this when legacy AIS layers contain filter category in headers ->
+            if (heatmapLayer.id === AIS_LAYER_ID && header.filters === undefined) {
               header.filters = [defaultFilter];
             }
+            // <-
           }
         });
         headersPromises.push(headerPromise);
@@ -167,7 +172,7 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
     const layer = getState().layers.workspaceLayers.find(l => l.id === layerId || l.tilesetId === layerId);
     if (layer === undefined) {
       console.error(
-        `Attempting to toggle layer visibility for layer id "${layerId}", 
+        `Attempting to toggle layer visibility for layer id "${layerId}",
         could only find ids "${getState().layers.workspaceLayers.map(l => l.id).join()}"`
       );
       return;
