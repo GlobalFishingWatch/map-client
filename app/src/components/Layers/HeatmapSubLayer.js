@@ -7,7 +7,7 @@ import {
 import { hueToHueIncrement } from 'util/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, useHeatmapStyle) {
+  constructor(baseTexture, maxSprites, useHeatmapStyle, hue) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -22,18 +22,19 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
-    this.setRenderingStyle(useHeatmapStyle);
+    // this.setRenderingStyle(useHeatmapStyle);
+    this._setTextureFrame(useHeatmapStyle, hue);
 
     this._resizeSpritesPool(10000);
   }
 
 
-  setFilters(filterData) {
-    const { hue } = filterData;
-    this.filterFields = Object.keys(filterData).filter(filter => filter !== 'hue');
-    this.filters = filterData;
-    this._setTextureFrame(null, hue);
-  }
+  // setFilters(filterData) {
+  //   const { hue } = filterData;
+  //   this.filterFields = Object.keys(filterData).filter(filter => filter !== 'hue');
+  //   this.filters = filterData;
+  //   this._setTextureFrame(null, hue);
+  // }
 
   setSeriesFilter(foundVessels) {
     this.foundVessels = foundVessels;
@@ -77,127 +78,156 @@ export default class HeatmapSubLayer {
     this.mainVesselTexture.update();
   }
 
-  render(tiles, startIndex, endIndex, offsets) {
-    if (tiles.length === 0) return;
 
-    if (offsets === undefined) {
-      console.warn('map offsets not set yet while trying to render gl sublayer');
+  render() {
+    // spritesProps is set by HeatmapLayer
+    if (this.spritesProps.length === 0) {
       return;
     }
 
-    const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
+    const numSpritesNeeded = this.spritesProps.length;
     const numSpritesNeededWithMargin = numSpritesNeeded * 2;
 
     if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
       this._resizeSpritesPool(numSpritesNeededWithMargin);
     }
 
-    this.numSprites = 0;
+    for (let i = 0; i < numSpritesNeeded; i++) {
+      const sprite = this.spritesPool[i];
+      const spriteProps = this.spritesProps[i];
 
+      sprite.position.x = spriteProps.x;
+      sprite.position.y = spriteProps.y;
+      sprite.alpha = spriteProps.alpha;
+      sprite.scale.set(spriteProps.scale);
+    }
 
-    tiles.forEach((tile) => {
-      if (!document.body.contains(tile.canvas)) {
-        console.warn('rendering tile that doesnt exist in the DOM', tile);
-      }
-      this._dumpTileVessels(startIndex, endIndex, tile.data, offsets);
-    });
-
-    // hide unused sprites
-    for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
+    for (let i = numSpritesNeeded, poolSize = this.spritesPool.length; i < poolSize; i++) {
       this.spritesPool[i].x = -100;
     }
   }
-
-  shouldSkipRenderByFoundVessels(frame, index) {
-    return (this.foundVessels &&
-      (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0));
-  }
-
-  shouldSkipRenderByFieldFilters(frame, index) {
-    // If any of the filters should apply return true
-    return this.filterFields.some((filterField) => {
-      const filterValue = this.filters[filterField];
-      const tileField = frame[filterField];
-
-      // Filter all the fields in the filters
-      // Don't filter categories if 'ALL' is selected (No filters case)
-      // Don't filter any filters if '' is selected (Clear option case)
-      // TODO: Use includes or indexOf instead of passing the index
-      if (filterValue !== undefined &&
-        tileField !== undefined &&
-        tileField.length > index &&
-        filterValue !== null &&
-        filterValue !== '' &&
-        filterValue !== 'ALL' &&
-        parseInt(filterValue, 10) !== tileField[index]) {
-        return true;
-      }
-
-      // Skip the rendering if the filter for that layer doesn't have information (e.g AIS)
-      if (tileField === undefined && filterValue !== null) return true;
-
-      return false; // render
-    });
-  }
-
-  _dumpTileVessels(startIndex, endIndex, data, offsets) {
-    if (!data) {
-      return;
-    }
-
-    if (!this.spritesPool.length) {
-      console.warn('empty sprites pool');
-      return;
-    }
-
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
-      const frame = data[timeIndex];
-
-      if (!frame) continue;
-
-      for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        if (this.shouldSkipRenderByFieldFilters(frame, index) ||
-            this.shouldSkipRenderByFoundVessels(frame, index)
-        ) {
-          continue;
-        }
-
-        this.numSprites++;
-        const sprite = this.spritesPool[this.numSprites];
-
-        // sprite.position.x = offsetX + frame.x[index];
-        // sprite.position.y = offsetY + frame.y[index];
-        const worldX = frame.worldX[index];
-        let originX = offsets.left;
-        if (originX > worldX) {
-          originX -= 256;
-        }
-        sprite.position.x = (worldX - originX) * offsets.scale;
-        sprite.position.y = ((frame.worldY[index] - offsets.top) * offsets.scale);
-        sprite.alpha = frame.opacity[index];
-        sprite.scale.set(frame.radius[index]);
-      }
-    }
-  }
-
-  _getNumSpritesNeeded(tiles, startIndex, endIndex) {
-    let numSprites = 0;
-    // get pool size
-    tiles.forEach((tile) => {
-      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
-        if (!tile.data) continue;
-        const frame = tile.data[timeIndex];
-        if (!frame) continue;
-        for (let index = 0, len = frame.worldX.length; index < len; index++) {
-          if (this.shouldSkipRenderByFieldFilters(frame, index)) {
-            continue;
-          }
-          numSprites++;
-        }
-      }
-    });
-    return numSprites;
-  }
+  //
+  // render(tiles, startIndex, endIndex, offsets) {
+  //   if (tiles.length === 0) return;
+  //
+  //   if (offsets === undefined) {
+  //     console.warn('map offsets not set yet while trying to render gl sublayer');
+  //     return;
+  //   }
+  //
+  //   const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
+  //   const numSpritesNeededWithMargin = numSpritesNeeded * 2;
+  //
+  //   if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
+  //     this._resizeSpritesPool(numSpritesNeededWithMargin);
+  //   }
+  //
+  //   this.numSprites = 0;
+  //
+  //
+  //   tiles.forEach((tile) => {
+  //     if (!document.body.contains(tile.canvas)) {
+  //       console.warn('rendering tile that doesnt exist in the DOM', tile);
+  //     }
+  //     this._dumpTileVessels(startIndex, endIndex, tile.data, offsets);
+  //   });
+  //
+  //   // hide unused sprites
+  //   for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
+  //     this.spritesPool[i].x = -100;
+  //   }
+  // }
+  //
+  // shouldSkipRenderByFoundVessels(frame, index) {
+  //   return (this.foundVessels &&
+  //     (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0));
+  // }
+  //
+  // shouldSkipRenderByFieldFilters(frame, index) {
+  //   // If any of the filters should apply return true
+  //   return this.filterFields.some((filterField) => {
+  //     const filterValue = this.filters[filterField];
+  //     const tileField = frame[filterField];
+  //
+  //     // Filter all the fields in the filters
+  //     // Don't filter categories if 'ALL' is selected (No filters case)
+  //     // Don't filter any filters if '' is selected (Clear option case)
+  //     // TODO: Use includes or indexOf instead of passing the index
+  //     if (filterValue !== undefined &&
+  //       tileField !== undefined &&
+  //       tileField.length > index &&
+  //       filterValue !== null &&
+  //       filterValue !== '' &&
+  //       filterValue !== 'ALL' &&
+  //       parseInt(filterValue, 10) !== tileField[index]) {
+  //       return true;
+  //     }
+  //
+  //     // Skip the rendering if the filter for that layer doesn't have information (e.g AIS)
+  //     if (tileField === undefined && filterValue !== null) return true;
+  //
+  //     return false; // render
+  //   });
+  // }
+  //
+  // _dumpTileVessels(startIndex, endIndex, data, offsets) {
+  //   if (!data) {
+  //     return;
+  //   }
+  //
+  //   if (!this.spritesPool.length) {
+  //     console.warn('empty sprites pool');
+  //     return;
+  //   }
+  //
+  //   for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
+  //     const frame = data[timeIndex];
+  //
+  //     if (!frame) continue;
+  //
+  //     for (let index = 0, len = frame.worldX.length; index < len; index++) {
+  //       if (this.shouldSkipRenderByFieldFilters(frame, index) ||
+  //           this.shouldSkipRenderByFoundVessels(frame, index)
+  //       ) {
+  //         continue;
+  //       }
+  //
+  //       this.numSprites++;
+  //       const sprite = this.spritesPool[this.numSprites];
+  //
+  //       // sprite.position.x = offsetX + frame.x[index];
+  //       // sprite.position.y = offsetY + frame.y[index];
+  //       const worldX = frame.worldX[index];
+  //       let originX = offsets.left;
+  //       if (originX > worldX) {
+  //         originX -= 256;
+  //       }
+  //       sprite.position.x = (worldX - originX) * offsets.scale;
+  //       sprite.position.y = ((frame.worldY[index] - offsets.top) * offsets.scale);
+  //       sprite.alpha = frame.opacity[index];
+  //       sprite.scale.set(frame.radius[index]);
+  //     }
+  //   }
+  // }
+  //
+  // _getNumSpritesNeeded(tiles, startIndex, endIndex) {
+  //   let numSprites = 0;
+  //   // get pool size
+  //   tiles.forEach((tile) => {
+  //     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
+  //       if (!tile.data) continue;
+  //       const frame = tile.data[timeIndex];
+  //       if (!frame) continue;
+  //       for (let index = 0, len = frame.worldX.length; index < len; index++) {
+  //         if (this.shouldSkipRenderByFieldFilters(frame, index)) {
+  //           continue;
+  //         }
+  //         numSprites++;
+  //       }
+  //     }
+  //   });
+  //   return numSprites;
+  // }
 
   _resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;

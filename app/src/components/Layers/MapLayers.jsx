@@ -189,6 +189,7 @@ class MapLayers extends Component {
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;
         if (layer.opacity !== currentLayers[index].opacity) return layer;
+        if (layer.hue !== currentLayers[index].hue) return layer;
         if (layer.added !== currentLayers[index].added) return layer;
         return false;
       }
@@ -222,6 +223,11 @@ class MapLayers extends Component {
 
       if (this.addedLayers[newLayer.id] && oldLayer && newLayer.visible && oldLayer.opacity !== newLayer.opacity) {
         this.setLayerOpacity(newLayer);
+        continue;
+      }
+
+      if (this.addedLayers[newLayer.id] && oldLayer && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+        this.setLayerDefaultHue(newLayer);
         continue;
       }
 
@@ -396,6 +402,16 @@ class MapLayers extends Component {
     if (!Object.keys(this.addedLayers).length) return;
 
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
+  }
+
+  /**
+   * Updates a layer's hue. Final hue can be overriden by filters.
+   * @param layerSettings
+   */
+  setLayerDefaultHue(layerSettings) {
+    if (!Object.keys(this.addedLayers).length) return;
+
+    this.addedLayers[layerSettings.id].setDefaultHue(layerSettings.hue);
   }
 
   updateTrackLayer({ data, timelineInnerExtentIndexes, timelineOverExtentIndexes, timelinePaused, zoom }) {

@@ -1,12 +1,12 @@
 /* global PIXI */
 import 'pixi.js';
-import HeatmapSubLayer from './HeatmapSubLayer';
 import uniq from 'lodash/uniq';
+import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
   constructor(layerSettings, baseTexture, maxSprites) {
     this.id = layerSettings.id;
-    this.subLayers = [];
+    this.subLayers = {};
     this.baseTexture = baseTexture;
     this.maxSprites = maxSprites;
 
@@ -15,6 +15,7 @@ export default class HeatmapLayer {
     if (layerSettings.visible === false) {
       this.hide(false);
     }
+    this.setDefaultHue(layerSettings.hue);
     this.setOpacity(layerSettings.opacity, false);
   }
 
@@ -30,10 +31,15 @@ export default class HeatmapLayer {
     this.stage.alpha = opacity;
   }
 
+  setDefaultHue(hue) {
+    this.defaultHue = hue;
+  }
+
   setRenderingStyle(useHeatmapStyle) {
-    this.subLayers.forEach((subLayer) => {
-      subLayer.setRenderingStyle(useHeatmapStyle);
-    });
+    this.useHeatmapStyle = useHeatmapStyle;
+    // this.subLayers.forEach((subLayer) => {
+    //   subLayer.setRenderingStyle(useHeatmapStyle);
+    // });
   }
 
   /**
@@ -41,55 +47,62 @@ export default class HeatmapLayer {
    * @param {array} filters
    * @param {bool} useHeatmapStyle
    */
-  setSubLayers(layerFilters, useHeatmapStyle) {
-    const subLayerDelta = layerFilters.length - this.subLayers.length;
-    if (subLayerDelta === -1) {
-      const subLayer = this.subLayers.pop();
-      this._destroySubLayer(subLayer);
-    } else if (subLayerDelta > 0) {
-      for (let i = 0; i < subLayerDelta; i++) {
-        const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites, useHeatmapStyle);
-        this.subLayers.push(subLayer);
-        this.stage.addChild(subLayer.stage);
-      }
-    }
-    this.subLayers.forEach((subLayer, index) => {
-      const filterData = layerFilters[index];
-      subLayer.setFilters(filterData);
-    });
-  }
+  // setSubLayers(layerFilters, useHeatmapStyle) {
+  //   const subLayerDelta = layerFilters.length - this.subLayers.length;
+  //   if (subLayerDelta === -1) {
+  //     const subLayer = this.subLayers.pop();
+  //     this._destroySubLayer(subLayer);
+  //   } else if (subLayerDelta > 0) {
+  //     for (let i = 0; i < subLayerDelta; i++) {
+  //       const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites, useHeatmapStyle);
+  //       this.subLayers.push(subLayer);
+  //       this.stage.addChild(subLayer.stage);
+  //     }
+  //   }
+  //   this.subLayers.forEach((subLayer, index) => {
+  //     const filterData = layerFilters[index];
+  //     subLayer.setFilters(filterData);
+  //   });
+  // }
 
   setFilters(layerFilters) {
     this.filters = layerFilters;
     this.numFilters = this.filters.length;
-
-    // TODO move to
-    this.defaultHue = layerFilters.defaultHue;
   }
 
   render(tiles, startIndex, endIndex, offsets) {
-    const allNeededHues = (this.filters.length) ? this.filters.map(f => f.hue) : [this.defaultHue];
+    const allNeededHues = (this.filters !== undefined && this.filters.length)
+      ? this.filters.map(f => f.hue.toString())
+      : [this.defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
 
     // get all hues, old and new
     const allHues = uniq(allNeededHues.concat(currentlyUsedHues));
-    for (let i = 0; i < allNeededHues.length; i++) {
+    for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
       if (allNeededHues.indexOf(hue) === -1) {
         // not on new hues: delete sublayer
         this._destroySubLayer(this.subLayers[hue]);
+        delete this.subLayers[hue];
         continue;
       }
       if (currentlyUsedHues.indexOf(hue) === -1) {
         // not on old hues: create sublayer
-        this.subLayers[hue] = this._createSublayer(hue, this.baseTexture, this.maxSprites);
+        this.subLayers[hue] = this._createSublayer(this.baseTexture, this.maxSprites, this.useHeatmapStyle, hue);
       }
-      this.subLayers[hue].spriteProps = [];
+      this.subLayers[hue].spritesProps = [];
     }
 
     tiles.forEach((tile) => {
-      this._setSubLayersSpritePropsForTile(tile.data, startIndex, endIndex, offsets);
-
+      this._setSubLayersSpritePropsForTile({
+        data: tile.data,
+        startIndex,
+        endIndex,
+        offsets,
+        filters: this.filters,
+        numFilters: this.numFilters,
+        defaultHue: this.defaultHue
+      });
     });
 
     allNeededHues.forEach((hue) => {
@@ -100,7 +113,7 @@ export default class HeatmapLayer {
     // });
   }
 
-  _setSubLayersSpritePropsForTile(data, startIndex, endIndex, offsets) {
+  _setSubLayersSpritePropsForTile({ data, startIndex, endIndex, offsets, filters, numFilters, defaultHue }) {
     if (!data) {
       return;
     }
@@ -112,12 +125,12 @@ export default class HeatmapLayer {
 
       for (let index = 0, len = frame.worldX.length; index < len; index++) {
         let hue;
-        if (!this.filters.length) {
-          hue = this.defaultHue;
+        if (filters === undefined || !filters.length) {
+          hue = defaultHue;
         }
-        for (let fi = 0; fi < this.numFilters; fi++) {
-          const filter = this.filters[fi];
-          if (this._vesselSatisfiesFilter(frame, index, filter.filterValues)) {
+        for (let fi = 0; fi < numFilters; fi++) {
+          const filter = filters[fi];
+          if (this._vesselSatisfiesFilters(frame, index, filter.filterValues)) {
             hue = filter.hue;
             break;
           }
@@ -138,7 +151,7 @@ export default class HeatmapLayer {
           x: (worldX - originX) * offsets.scale,
           y: ((frame.worldY[index] - offsets.top) * offsets.scale),
           alpha: frame.opacity[index],
-          radius: frame.radius[index]
+          scale: frame.radius[index]
         };
 
         const subLayer = this.subLayers[hue];
@@ -147,8 +160,21 @@ export default class HeatmapLayer {
     }
   }
 
-  _vesselSatisfiesFilter(frame, index, filterValues) {
+  _createSublayer(baseTexture, maxSprites, useHeatmapStyle, hue) {
+    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, useHeatmapStyle, hue);
+    this.stage.addChild(subLayer.stage);
+    return subLayer;
+  }
 
+  _vesselSatisfiesFilters(frame, index, filterValues) {
+    const satisfiesFilters = Object.keys(filterValues).every((field) => {
+      if (frame[field] === undefined) {
+        console.warn(`no ${field} field on this layer`);
+        return false;
+      }
+      return frame[field][index] === filterValues[field];
+    });
+    return satisfiesFilters;
   }
 
 
