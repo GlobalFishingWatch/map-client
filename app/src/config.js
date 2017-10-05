@@ -77,9 +77,9 @@ export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 // Colors of the layers, areas, ...
 export const COLORS = {
   orange: '#F95E5E',
-  peach: '#ffc081',
+  peach: '#fca26f',
   yellow: '#FBFF8B',
-  green: '#66BC29',
+  green: '#abff35',
   brightGreen: '#00ff6a',
   lightBlue: '#67FBFE',
   blue: '#7D84FA',
@@ -90,9 +90,9 @@ export const COLORS = {
 // Hue for each color
 export const COLOR_HUES = {
   orange: 0,
-  peach: 30,
+  peach: 22,
   yellow: 60,
-  green: 95,
+  green: 85,
   brightGreen: 145,
   lightBlue: 182,
   blue: 236,
