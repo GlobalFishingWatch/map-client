@@ -130,7 +130,7 @@ export function openTimebarInfoModal() {
       {
         open: true,
         info: {
-          title: 'Worldwide Fishing hours',
+          title: 'Worldwide Fishing Hours',
           description: state.literals.fishing_hours_description
         }
       }
