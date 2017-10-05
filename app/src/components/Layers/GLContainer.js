@@ -250,6 +250,8 @@ export default class GLContainer extends BaseOverlay {
         seriesgroup: vessel.seriesgroup
       }
     }));
+
+    // no need to reapply filters, has the found vessels have already been filtered (see selectVesselsAt)
     this.heatmapHighlight.setFilters(foundVesselsFilters);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;

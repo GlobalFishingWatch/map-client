@@ -257,7 +257,8 @@ export const getTracksPlaybackData = (vectorArray) => {
 export const vesselSatisfiesFilters = (frame, index, filterValues) => {
   const satisfiesFilters = Object.keys(filterValues).every((field) => {
     if (frame[field] === undefined) {
-      console.warn(`no ${field} field on this layer`);
+      // this field is not available on this layer. This can happen in an edge case described
+      // here: https://github.com/Vizzuality/GlobalFishingWatch/issues/661#issuecomment-334496469
       return false;
     }
     return frame[field][index] === filterValues[field];
