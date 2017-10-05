@@ -1,5 +1,7 @@
 # Changelog
 
+- Update to React 16
+
 ## 2.2.0
 - Enforce minimum 1 day period on timebar
 - Temporarily hide map legend
