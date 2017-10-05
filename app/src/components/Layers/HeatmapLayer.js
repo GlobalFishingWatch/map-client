@@ -89,7 +89,7 @@ export default class HeatmapLayer {
   }
 
   _setSubLayersSpritePropsForTile({ data, startIndex, endIndex, offsets, filters, numFilters, defaultHue }) {
-    if (!data) {
+    if (!data || offsets === undefined) {
       return;
     }
 
