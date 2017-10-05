@@ -23,64 +23,25 @@ export function setFilterGroupModalVisibility(visibility) {
   };
 }
 
-const parseCategory = (filterValues) => {
-  let category = 'ALL';
-  if (filterValues.category !== undefined && filterValues.category !== '') {
-    category = parseInt(filterValues.category, 10);
-  }
-  return { category };
-};
-
-const cleanFilterValues = (filterValues) => {
-  const keys = Object.keys(filterValues);
-  const cleanedFilterValues = filterValues;
-  keys.forEach((key) => {
-    if (cleanedFilterValues[key] === '') delete cleanedFilterValues[key];
-  });
-  return cleanedFilterValues;
-};
-
 /**
  * gets the information to create the sublayer for each layer and filter
  * @param {array} heatmapLayer
  * @param {array} filter
- * @returns {array} [{category, hue, gearTypeId}, {category, hue, gearTypeId}, ...]
+ * @returns {array} [{hue, filterValues}, {hue, filterValues}, ...]
  */
 const getLayerData = (heatmapLayer, filters) => {
-  const LayerGroupedFilters = [];
-  let hue = heatmapLayer.hue; // Filter hue overrides heatmap layer hue
-  let filterValues = { category: 'ALL' }; // Setting defaults
-
-  filters.forEach((filter) => {
-    if (filter.filterValues === undefined) return;
-    const filterFields = Object.keys(filter.filterValues).filter(f =>
-      f !== 'hue' && f !== 'category'
-    );
-
-    const defaultFilterFields = {};
-    filterFields.forEach((filterField) => { defaultFilterFields[filterField] = null; }); // registered_gear_type_id: null
-    filterValues = Object.assign({ category: 'ALL' }, defaultFilterFields); // Reseting defaults
-
-    if (filter.visible) {
-      hue = COLOR_HUES[filter.color];
-      const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
-      if (isLayerChecked) {
-        if (filter.filterValues !== undefined) {
-          filterValues = Object.assign(filterValues, cleanFilterValues(filter.filterValues), parseCategory(filter.filterValues));
-        }
-      } else { // filter everything on the sublayer if the layer is not checked
-        filterValues = { category: 'FILTERED' };
-      }
-
-      LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
-    }
-  });
-
-  // Set default sublayer if there are no filters
-  if (LayerGroupedFilters.length === 0) {
-    LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
-  }
-  return LayerGroupedFilters;
+  const layerGroupedFilters = [];
+  filters
+    .filter(f => f.visible === true)
+    .filter(f => f.checkedLayers[heatmapLayer.id] === true)
+    .forEach((filter) => {
+      const layerGroupedFilter = {
+        hue: COLOR_HUES[filter.color],
+        filterValues: filter.filterValues
+      };
+      layerGroupedFilters.push(layerGroupedFilter);
+    });
+  return layerGroupedFilters;
 };
 
 /**
@@ -118,6 +79,7 @@ export function setFilterGroups(initialFilters) {
       payload: {
         filters,
         layerFilters
+        // TODO flattened layer filters for highlight layer
       }
     });
   };

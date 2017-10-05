@@ -3,7 +3,6 @@ import 'pixi.js';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'util/colors';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
-import HeatmapSubLayer from 'components/Layers/HeatmapSubLayer';
 import TracksLayer from 'components/Layers/TracksLayer';
 import {
   VESSELS_BASE_RADIUS,
@@ -278,24 +277,22 @@ export default class GLContainer extends BaseOverlay {
    * @param {array} layerFilters - All filters ordered by heatmap layer
    * @param {bool} useHeatmapStyle
    */
-  setFilters(layerFilters, useHeatmapStyle) {
-    // Don't set subLayers if you dont have any
-    if (Object.values(layerFilters).every(filter => filter.length === 0)) {
-      return;
-    }
+  setFilters(layerFilters) {
     this.layers.forEach((heatmapLayer) => {
       const filters = layerFilters[heatmapLayer.id];
       // heatmapLayer.setSubLayers(filters, useHeatmapStyle);
-      heatmapLayer.setFilters([
-        {
-          hue: 0,
-          filterValues: {
-            registered_gear_type_id: 5
-          }
-        }
-      ]);
+      heatmapLayer.setFilters(
+        filters
+      // [
+      //   {
+      //     hue: 0,
+      //     filterValues: {
+      //       registered_gear_type_id: 5
+      //     }
+      //   }
+      // ]
+      );
     });
-    // this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
   _startHeatmapFadein() {

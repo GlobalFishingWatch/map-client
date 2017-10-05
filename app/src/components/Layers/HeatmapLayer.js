@@ -37,33 +37,10 @@ export default class HeatmapLayer {
 
   setRenderingStyle(useHeatmapStyle) {
     this.useHeatmapStyle = useHeatmapStyle;
-    // this.subLayers.forEach((subLayer) => {
-    //   subLayer.setRenderingStyle(useHeatmapStyle);
-    // });
+    Object.values(this.subLayers).forEach((subLayer) => {
+      subLayer.setRenderingStyle(useHeatmapStyle);
+    });
   }
-
-  /**
-   * Add or remove sublayers and set filters to each one
-   * @param {array} filters
-   * @param {bool} useHeatmapStyle
-   */
-  // setSubLayers(layerFilters, useHeatmapStyle) {
-  //   const subLayerDelta = layerFilters.length - this.subLayers.length;
-  //   if (subLayerDelta === -1) {
-  //     const subLayer = this.subLayers.pop();
-  //     this._destroySubLayer(subLayer);
-  //   } else if (subLayerDelta > 0) {
-  //     for (let i = 0; i < subLayerDelta; i++) {
-  //       const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites, useHeatmapStyle);
-  //       this.subLayers.push(subLayer);
-  //       this.stage.addChild(subLayer.stage);
-  //     }
-  //   }
-  //   this.subLayers.forEach((subLayer, index) => {
-  //     const filterData = layerFilters[index];
-  //     subLayer.setFilters(filterData);
-  //   });
-  // }
 
   setFilters(layerFilters) {
     this.filters = layerFilters;
@@ -108,9 +85,6 @@ export default class HeatmapLayer {
     allNeededHues.forEach((hue) => {
       this.subLayers[hue].render();
     });
-    // this.subLayers.forEach((subLayer) => {
-    //   subLayer.render(tiles, startIndex, endIndex, offsets);
-    // });
   }
 
   _setSubLayersSpritePropsForTile({ data, startIndex, endIndex, offsets, filters, numFilters, defaultHue }) {
@@ -179,7 +153,7 @@ export default class HeatmapLayer {
 
 
   destroy() {
-    this.subLayers.forEach(this._destroySubLayer);
+    Object.values(this.subLayers).forEach(this._destroySubLayer);
     this.stage.destroy({ children: true });
   }
 
