@@ -1,5 +1,7 @@
 # Changelog
 
+- Enforce minimum 1 day period on timebar
+
 ## 2.2.0 RC1
 - General design and code overhaul
 - Code refactoring for better management and extensibility
