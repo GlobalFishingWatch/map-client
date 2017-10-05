@@ -77,27 +77,27 @@ export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 // Colors of the layers, areas, ...
 export const COLORS = {
   orange: '#F95E5E',
-  red: '#ff3b00',
+  peach: '#ffc081',
   yellow: '#FBFF8B',
-  lime: '#d2ed07',
   green: '#66BC29',
+  brightGreen: '#00ff6a',
   lightBlue: '#67FBFE',
   blue: '#7D84FA',
   purple: '#bb00ff',
-  pink: '#FF81F5'
+  pink: '#ff81e5'
 };
 
 // Hue for each color
 export const COLOR_HUES = {
   orange: 0,
-  red: 14,
+  peach: 30,
   yellow: 60,
-  lime: 67,
   green: 95,
+  brightGreen: 145,
   lightBlue: 182,
   blue: 236,
   purple: 284,
-  pink: 305
+  pink: 312
 };
 
 // time range options in the duration picker menu
