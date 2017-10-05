@@ -1,6 +1,11 @@
 # Changelog
 
+## 2.2.0
 - Enforce minimum 1 day period on timebar
+- Temporarily hide map legend
+- Fix some issues regarding cross-browser compatibility
+- Fix some styling issues
+- Add more colors to layer and track color picker
 
 ## 2.2.0 RC1
 - General design and code overhaul
