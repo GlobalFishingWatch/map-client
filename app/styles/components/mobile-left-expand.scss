@@ -14,7 +14,7 @@
     width: 22px;
 
     .arrow {
-      margin-top: 28px;
+      margin-top: 30px;
       margin-left: 6px;
       @include arrow(10px, 2px, $color-button-primary, 'right');
     }
