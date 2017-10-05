@@ -43,6 +43,7 @@ class FilterGroupForm extends Component {
   onLayerChecked(layerId) {
     const filterGroup = this.state.filterGroup;
     filterGroup.checkedLayers[layerId] = !filterGroup.checkedLayers[layerId];
+
     this.setState({ filterGroup });
   }
 
@@ -58,24 +59,23 @@ class FilterGroupForm extends Component {
     this.setState({ filterGroup, autoGenLabel: event.target.value === '' });
   }
 
-  onPressSave() {
-    const { filterGroup } = this.state;
-    const layerKeys = Object.keys(filterGroup.checkedLayers);
-    const anyLayerChecked = layerKeys.some(key => filterGroup.checkedLayers[key] === true);
-    if (anyLayerChecked) {
-      this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
-    }
-  }
-
   onFilterValueChange(name, value) {
     const filterGroup = this.state.filterGroup;
-    filterGroup.filterValues[name] = value;
+    if (value === '') {
+      delete filterGroup.filterValues[name];
+    } else {
+      filterGroup.filterValues[name] = parseInt(value, 10);
+    }
 
     this.setState({ filterGroup });
 
     if (this.state.autoGenLabel) {
       this.genFilterName();
     }
+  }
+
+  onPressSave() {
+    this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
   }
 
   genFilterName() {
@@ -215,7 +215,7 @@ class FilterGroupForm extends Component {
         <select
           key={index}
           name={filter.label}
-          onChange={e => this.onFilterValueChange(filter.field, parseInt(e.target.value, 10))}
+          onChange={e => this.onFilterValueChange(filter.field, e.target.value)}
           value={this.state.filterGroup.filterValues[filter.field]}
         >
           {filter.field === 'category' && filter.useDefaultValues === true ? getCountryOptions() : this.getOptions(filter)}
@@ -232,6 +232,11 @@ class FilterGroupForm extends Component {
 
   render() {
     const layersList = this.renderLayersList();
+
+    const filterGroup = this.state.filterGroup;
+    const anyLayerChecked = Object.keys(filterGroup.checkedLayers).some(key => filterGroup.checkedLayers[key] === true);
+    const anyFilterSelected = Object.keys(filterGroup.filterValues).length > 0;
+    const disableSave = anyLayerChecked === false || anyFilterSelected === false;
 
     return (
       <div >
@@ -276,8 +281,11 @@ class FilterGroupForm extends Component {
         </div >
         <div className={ModalStyles.footerContainer} >
           <button
-            className={classnames(ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton)}
+            className={classnames(
+              ButtonStyles.button, ButtonStyles._filled,
+              ButtonStyles._big, ModalStyles.mainButton, {
+                [ButtonStyles._disabled]: disableSave
+              })}
             onClick={this.onPressSave}
           >
             Save
