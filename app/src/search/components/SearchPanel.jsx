@@ -125,7 +125,8 @@ class SearchPanel extends Component {
           {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT && !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
           <div className={searchPanelStyles.paginationContainer} >
             <button
-              className={classnames(MapButtonStyles.button, MapButtonStyles._wide, MapButtonStyles._filled)}
+              className={classnames(MapButtonStyles.button, MapButtonStyles._wide,
+                MapButtonStyles._filled, searchPanelStyles.paginationButton)}
               onClick={() => this.onClickMoreResults()}
             >
               more results

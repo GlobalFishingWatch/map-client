@@ -9,7 +9,6 @@ import templateSettings from 'lodash/templateSettings';
 import { MIN_ZOOM_LEVEL } from 'config';
 import ControlPanel from 'mapPanels/rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
-import Legend from 'mapPanels/leftControlPanel/components/Legend';
 import MiniGlobe from 'mapPanels/leftControlPanel/components/MiniGlobe';
 import MobileLeftExpand from 'mapPanels/leftControlPanel/components/MobileLeftExpand';
 import ReportPanel from 'report/containers/ReportPanel';
@@ -243,7 +242,6 @@ class MapContainer extends Component {
           viewportHeight={this.state.viewportHeight}
           isEmbedded={this.props.isEmbedded}
         />
-        <Legend isEmbedded={this.props.isEmbedded} />
       </MobileLeftExpand>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
