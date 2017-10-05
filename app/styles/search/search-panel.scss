@@ -52,12 +52,12 @@
   }
 
   &::-moz-placeholder {
-    color: rgba($color-3, .3);
+    color: $color-button-primary;
     font-weight: $font-weight-normal;
   }
 
   &:-ms-input-placeholder {
-    color: rgba($color-3, .3);
+    color: $color-button-primary;
     font-weight: $font-weight-normal;
   }
 }
