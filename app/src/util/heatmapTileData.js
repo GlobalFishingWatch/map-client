@@ -254,17 +254,20 @@ export const getTracksPlaybackData = (vectorArray) => {
   return playbackData;
 };
 
-const isFiltered = (filters, frame, index) => {
-  filters.some((filter) => {
-    const filterFields = Object.keys(filter).filter(filterField => filterField !== 'hue');
-    return filterFields.some(filterField =>
-      filterField !== undefined &&
-      filter[filterField] !== 'ALL' &&
-      filter[filterField] !== '' &&
-      frame[filterField] !== undefined &&
-      frame[filterField][index] !== filter[filterField]
-    );
+export const vesselSatisfiesFilters = (frame, index, filterValues) => {
+  const satisfiesFilters = Object.keys(filterValues).every((field) => {
+    if (frame[field] === undefined) {
+      console.warn(`no ${field} field on this layer`);
+      return false;
+    }
+    return frame[field][index] === filterValues[field];
   });
+  return satisfiesFilters;
+};
+
+const vesselSatisfiesAllFilters = (frame, index, filters) => {
+  const satisfiesAllFilters = filters.every(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
+  return satisfiesAllFilters;
 };
 
 export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFilters) => {
@@ -281,7 +284,7 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
 
-      if (!isFiltered(currentFilters, frame, i) &&
+      if ((!currentFilters.length || vesselSatisfiesAllFilters(frame, i, currentFilters)) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {

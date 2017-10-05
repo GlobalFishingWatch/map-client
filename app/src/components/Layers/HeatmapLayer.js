@@ -1,6 +1,7 @@
 /* global PIXI */
 import 'pixi.js';
 import uniq from 'lodash/uniq';
+import { vesselSatisfiesFilters } from 'util/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
@@ -16,7 +17,7 @@ export default class HeatmapLayer {
       this.hide(false);
     }
     this.setDefaultHue(layerSettings.hue);
-    this.setOpacity(layerSettings.opacity, false);
+    this.setOpacity(layerSettings.opacity);
   }
 
   show() {
@@ -104,7 +105,7 @@ export default class HeatmapLayer {
         }
         for (let fi = 0; fi < numFilters; fi++) {
           const filter = filters[fi];
-          if (this._vesselSatisfiesFilters(frame, index, filter.filterValues)) {
+          if (vesselSatisfiesFilters(frame, index, filter.filterValues)) {
             hue = filter.hue;
             break;
           }
@@ -139,18 +140,6 @@ export default class HeatmapLayer {
     this.stage.addChild(subLayer.stage);
     return subLayer;
   }
-
-  _vesselSatisfiesFilters(frame, index, filterValues) {
-    const satisfiesFilters = Object.keys(filterValues).every((field) => {
-      if (frame[field] === undefined) {
-        console.warn(`no ${field} field on this layer`);
-        return false;
-      }
-      return frame[field][index] === filterValues[field];
-    });
-    return satisfiesFilters;
-  }
-
 
   destroy() {
     Object.values(this.subLayers).forEach(this._destroySubLayer);

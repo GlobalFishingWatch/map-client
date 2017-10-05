@@ -422,8 +422,7 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
         foundVessels,
-        latLng,
-        currentFilters: _getCurrentFiltersForLayer(state, layerId)
+        latLng
       }
     });
   };

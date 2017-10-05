@@ -27,10 +27,6 @@ export default class HeatmapSubLayer {
     this._resizeSpritesPool(10000);
   }
 
-  setSeriesFilter(foundVessels) {
-    this.foundVessels = foundVessels;
-  }
-
   setRenderingStyle(useHeatmapStyle) {
     this._setTextureFrame(useHeatmapStyle);
   }

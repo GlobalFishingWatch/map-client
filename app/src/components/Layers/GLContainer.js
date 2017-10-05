@@ -57,9 +57,12 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapStage = new PIXI.Container();
     this.stage.addChild(this.heatmapStage);
 
-    // this.heatmapHighlight = new HeatmapSubLayer(this.baseTexture, this._getNumSprites(), true);
-    // this.heatmapHighlight.setFilters('ALL', HEATMAP_TRACK_HIGHLIGHT_HUE);
-    // this.stage.addChild(this.heatmapHighlight.stage);
+    this.heatmapHighlight = new HeatmapLayer(
+      { id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE },
+      this.baseTexture,
+      this._getNumSprites()
+    );
+    this.stage.addChild(this.heatmapHighlight.stage);
 
     this.tracksLayer = new TracksLayer();
     this.stage.addChild(this.tracksLayer.stage);
@@ -226,25 +229,30 @@ export default class GLContainer extends BaseOverlay {
     }
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFilters, highlightableCluster, isEmpty, foundVessels }) {
-    // if (isEmpty === true) {
-    //   this.heatmapHighlight.stage.visible = false;
-    //   this._startHeatmapFadein();
-    //   return;
-    // }
-    // this.toggleHeatmapDimming(true);
-    //
-    // if (highlightableCluster !== true) {
-    //   return;
-    // }
-    //
-    // const startIndex = timelineInnerExtentIndexes[0];
-    // const endIndex = timelineInnerExtentIndexes[1];
-    // const layerData = data[layerId];
-    // this.heatmapHighlight.setSeriesFilter(foundVessels);
-    // this.heatmapHighlight.setFilters(currentFilters);
-    // this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
-    // this.heatmapHighlight.stage.visible = true;
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels }) {
+    if (isEmpty === true) {
+      this.heatmapHighlight.stage.visible = false;
+      this._startHeatmapFadein();
+      return;
+    }
+    this.toggleHeatmapDimming(true);
+    if (highlightableCluster !== true) {
+      return;
+    }
+    const startIndex = timelineInnerExtentIndexes[0];
+    const endIndex = timelineInnerExtentIndexes[1];
+    const layerData = data[layerId];
+
+    const foundVesselsFilters = foundVessels.map(vessel => ({
+      hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+      filterValues: {
+        series: vessel.series,
+        seriesgroup: vessel.seriesgroup
+      }
+    }));
+    this.heatmapHighlight.setFilters(foundVesselsFilters);
+    this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
+    this.heatmapHighlight.stage.visible = true;
   }
 
   updateTracks(tracks, drawParams) {
@@ -269,7 +277,7 @@ export default class GLContainer extends BaseOverlay {
     for (let i = 0; i < this.layers.length; i++) {
       this.layers[i].setRenderingStyle(useHeatmapStyle);
     }
-    // this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
+    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
   /**
@@ -280,18 +288,7 @@ export default class GLContainer extends BaseOverlay {
   setFilters(layerFilters) {
     this.layers.forEach((heatmapLayer) => {
       const filters = layerFilters[heatmapLayer.id];
-      // heatmapLayer.setSubLayers(filters, useHeatmapStyle);
-      heatmapLayer.setFilters(
-        filters
-      // [
-      //   {
-      //     hue: 0,
-      //     filterValues: {
-      //       registered_gear_type_id: 5
-      //     }
-      //   }
-      // ]
-      );
+      heatmapLayer.setFilters(filters);
     });
   }
 

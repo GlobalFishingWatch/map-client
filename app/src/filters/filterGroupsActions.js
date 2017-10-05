@@ -72,14 +72,11 @@ export function setFilterGroups(initialFilters) {
       layerFilters[heatmapLayer.id] = getLayerData(heatmapLayer, filters);
     });
 
-    console.log(filters, layerFilters)
-
     dispatch({
       type: SET_FILTER_GROUPS,
       payload: {
         filters,
         layerFilters
-        // TODO flattened layer filters for highlight layer
       }
     });
   };
