@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
   return {
     layers: state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap),
     filterGroup: editFilterGroupIndex !== null ? state.filterGroups.filterGroups[editFilterGroupIndex] : {},
-    editFilterGroupIndex
+    editFilterGroupIndex,
+    defaultColorIndex: state.filterGroups.defaultColorIndex
   };
 };
 

@@ -14,6 +14,7 @@ import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
 import { FLAGS } from 'constants';
+import { COLORS } from 'config';
 import { getCountry } from 'iso-3166-1-alpha-2';
 
 class FilterGroupForm extends Component {
@@ -31,7 +32,7 @@ class FilterGroupForm extends Component {
 
     const filterGroup = Object.assign({}, {
       checkedLayers,
-      color: 'yellow', // TODO: use a random color here
+      color: Object.keys(COLORS)[props.defaultColorIndex],
       label: '',
       visible: true,
       filterValues: {}
@@ -240,7 +241,7 @@ class FilterGroupForm extends Component {
 
     return (
       <div >
-        <h3 className={ModalStyles.title} >Filter Group</h3 >
+        <h3 className={ModalStyles.title}>Filter Group</h3>
         <div className={ModalStyles.optionsContainer} >
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
@@ -301,7 +302,8 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
   saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired
+  openLayerInfoModal: PropTypes.func.isRequired,
+  defaultColorIndex: PropTypes.number
 };
 
 export default FilterGroupForm;

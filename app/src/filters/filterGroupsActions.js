@@ -8,6 +8,7 @@ export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY';
 export const SET_EDIT_FILTER_GROUP_INDEX = 'SET_EDIT_FILTER_GROUP_INDEX';
 export const DELETE_FILTER_GROUP = 'DELETE_FILTER_GROUP';
 export const SET_FILTER_GROUPS = 'SET_FILTER_GROUPS';
+export const SET_DEFAULT_COLOR = 'SET_DEFAULT_COLOR';
 
 export function setEditFilterGroupIndex(editFilterGroupIndex) {
   return {
@@ -87,6 +88,9 @@ export function saveFilterGroup(filterGroup, index = null) {
     // Send analytics only if new filter is created (index === null)
     if (index === null) {
       dispatch(trackCreateFilterGroups(filterGroup));
+      dispatch({
+        type: SET_DEFAULT_COLOR
+      });
     }
 
     dispatch({
