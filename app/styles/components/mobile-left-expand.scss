@@ -9,28 +9,25 @@
     left: 0px;
     bottom: 110px;
     height: 70px;
-    background-color: $color-secondary;
+    background-color: $color-base;
     color: $color-white;
-    width: 30px;
+    width: 22px;
 
     .arrow {
-      margin-top: 30px;
+      margin-top: 28px;
       margin-left: 6px;
-      @include arrow(12px, 2px, $color-button-primary, 'right');
+      @include arrow(10px, 2px, $color-button-primary, 'right');
     }
   }
 
-  &.expanded{
+  &.expanded {
     .expandButtonLeft{
-      transform: translateX(113px);
+      transform: translateX($legend-mobile-width);
       margin-left: 0;
       animation: slideLeft 0.4s ease-in;
-      @media #{$mq-tablet} {
-        transform: translateX(173px);
-      }
 
       .arrow {
-        margin-left: 12px;
+        margin-left: 9px;
         transform: rotate(225deg);
       }
     }

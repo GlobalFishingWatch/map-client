@@ -156,7 +156,7 @@ export const MINI_GLOBE_SETTINGS = {
   viewBoxY: -75,
   viewBoxWidth: 200,
   viewBoxHeight: 200,
-  svgWidth: 50,
+  svgWidth: 40,
   scale: 100,
   viewportRatio: 1.1,
   zoomRatio: 2.4,
