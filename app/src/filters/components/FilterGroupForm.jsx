@@ -37,7 +37,7 @@ class FilterGroupForm extends Component {
       filterValues: {}
     }, props.filterGroup);
 
-    this.state = { filterGroup, autoGenLabel: filterGroup.label === '' };
+    this.state = { filterGroup };
   }
 
   onLayerChecked(layerId) {
@@ -55,7 +55,7 @@ class FilterGroupForm extends Component {
   onNameChange(event) {
     const filterGroup = this.state.filterGroup;
     filterGroup.label = event.target.value;
-    this.setState({ filterGroup, autoGenLabel: event.target.value === '' });
+    this.setState({ filterGroup });
   }
 
   onPressSave() {
@@ -68,14 +68,15 @@ class FilterGroupForm extends Component {
   }
 
   onFilterValueChange(name, value) {
-    const filterGroup = this.state.filterGroup;
+    const previouslyGeneratedName = this.genFilterName();
+    let filterGroup = Object.assign(this.state.filterGroup);
+    const filterGroupLabel = filterGroup.label;
+    const shouldUpdateGeneratedName = filterGroupLabel === '' || previouslyGeneratedName === filterGroupLabel;
     filterGroup.filterValues[name] = value;
-
-    this.setState({ filterGroup });
-
-    if (this.state.autoGenLabel) {
-      this.genFilterName();
+    if (shouldUpdateGeneratedName) {
+      filterGroup = Object.assign(filterGroup, { label: this.genFilterName() });
     }
+    this.setState({ filterGroup });
   }
 
   genFilterName() {
@@ -123,11 +124,7 @@ class FilterGroupForm extends Component {
 
       return value;
     });
-
-    const filterGroup = this.state.filterGroup;
-    filterGroup.label = selectedFilterValues.join(' ');
-
-    this.setState({ filterGroup });
+    return selectedFilterValues.join(' ');
   }
 
   onClickInfo(layer) {
