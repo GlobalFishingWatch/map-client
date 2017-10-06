@@ -43,22 +43,32 @@ export default class HeatmapLayer {
     });
   }
 
-  setFilters(layerFilters) {
+  setFilters(layerFilters, isTheMapFiltered = false) {
     this.filters = layerFilters;
     this.numFilters = this.filters.length;
+    this.isTheMapFiltered = isTheMapFiltered;
+  }
+
+  getHuesToRender() {
+    if (this.filters !== undefined && this.filters.length) {
+      return this.filters.map(f => f.hue.toString());
+    }
+
+    if (this.isTheMapFiltered) return ['FILTERED'];
+    return [this.defaultHue.toString()];
   }
 
   render(tiles, startIndex, endIndex, offsets) {
-    const allNeededHues = (this.filters !== undefined && this.filters.length)
-      ? this.filters.map(f => f.hue.toString())
-      : [this.defaultHue.toString()];
-    const currentlyUsedHues = Object.keys(this.subLayers);
 
+    const huesToRender = this.getHuesToRender();
+    const currentlyUsedHues = Object.keys(this.subLayers);
     // get all hues, old and new
-    const allHues = uniq(allNeededHues.concat(currentlyUsedHues));
+    const allHues = uniq(huesToRender.concat(currentlyUsedHues));
+
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
-      if (allNeededHues.indexOf(hue) === -1) {
+      if (hue === 'FILTERED') continue;
+      if (huesToRender.indexOf(hue) === -1) {
         // not on new hues: delete sublayer
         this._destroySubLayer(this.subLayers[hue]);
         delete this.subLayers[hue];
@@ -83,8 +93,11 @@ export default class HeatmapLayer {
       });
     });
 
-    allNeededHues.forEach((hue) => {
-      this.subLayers[hue].render();
+    huesToRender.forEach((hue) => {
+      // dont render a FILTERED subLayer
+      if (hue !== 'FILTERED') {
+        this.subLayers[hue].render();
+      }
     });
   }
 
@@ -128,9 +141,9 @@ export default class HeatmapLayer {
           alpha: frame.opacity[index],
           scale: frame.radius[index]
         };
-
-        const subLayer = this.subLayers[hue];
-        subLayer.spritesProps.push(spriteProps);
+        if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
+          this.subLayers[hue].spritesProps.push(spriteProps);
+        }
       }
     }
   }

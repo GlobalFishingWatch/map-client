@@ -283,14 +283,22 @@ export default class GLContainer extends BaseOverlay {
   }
 
   /**
-   * Sets sublayers with the filters for each Heatmap layer
+   * Sets filters for each Heatmap layer
    * @param {array} layerFilters - All filters ordered by heatmap layer
-   * @param {bool} useHeatmapStyle
    */
   setFilters(layerFilters) {
+    // If there is at least one filter in the layers all the other ones if they are empty should be completely filtered
+    const isTheMapFiltered = Object.keys(layerFilters).some(layerId =>
+      layerFilters[layerId].length > 0
+    );
+
     this.layers.forEach((heatmapLayer) => {
       const filters = layerFilters[heatmapLayer.id];
-      heatmapLayer.setFilters(filters);
+      if (filters.length > 0) {
+        heatmapLayer.setFilters(filters);
+      } else {
+        heatmapLayer.setFilters(filters, isTheMapFiltered);
+      }
     });
   }
 
