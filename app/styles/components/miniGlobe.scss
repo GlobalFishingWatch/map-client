@@ -10,14 +10,6 @@
   background-color: $color-base;
   width: $legend-mobile-width;
 
-  @media #{$mq-tablet} {
-    width: $legend-width;
-
-    &._isEmbedded {
-      width: $legend-mobile-width;
-    }
-  }
-
   .zone {
     color: $color-white;
     font-size: $font-size-xs-small;
@@ -26,10 +18,10 @@
   }
 
   .svgContainer {
-    width: 50px;
-    height: 50px;
-    margin-left: 33%;
-    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    margin-left: 19px;
+    margin-top: 15px;
     display: flex;
     justify-content: center;
 
