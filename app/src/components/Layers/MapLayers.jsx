@@ -10,7 +10,7 @@ import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
 import { VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'config';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, ENCOUNTERS_LAYER_ID } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 
@@ -293,7 +293,7 @@ class MapLayers extends Component {
       cartodb.createLayer(this.map, layerSettings.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
-          cartoLayer.setInteraction(reportLayerId === layerSettings.id);
+          cartoLayer.setInteraction(layerSettings.id === reportLayerId || layerSettings.id === ENCOUNTERS_LAYER_ID);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
@@ -331,6 +331,10 @@ class MapLayers extends Component {
     // on Carto layers don't seem to be reliable -_-
     if (layerId === this.props.reportLayerId) {
       this.props.showPolygon(polygonData, latLng);
+    }
+
+    if (layerId === ENCOUNTERS_LAYER_ID) {
+      this.props.openEncountersPanel(polygonData, latLng);
     }
   }
 
@@ -517,11 +521,12 @@ MapLayers.propTypes = {
   viewportHeight: PropTypes.number,
   reportLayerId: PropTypes.string,
   reportedPolygonsIds: PropTypes.array,
-  getVesselFromHeatmap: PropTypes.func,
-  highlightVesselFromHeatmap: PropTypes.func,
-  showPolygon: PropTypes.func,
-  createTile: PropTypes.func,
-  releaseTile: PropTypes.func
+  openEncountersPanel: PropTypes.func.isRequired,
+  getVesselFromHeatmap: PropTypes.func.isRequired,
+  highlightVesselFromHeatmap: PropTypes.func.isRequired,
+  showPolygon: PropTypes.func.isRequired,
+  createTile: PropTypes.func.isRequired,
+  releaseTile: PropTypes.func.isRequired
 };
 
 

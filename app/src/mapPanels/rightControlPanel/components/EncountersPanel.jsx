@@ -3,106 +3,25 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import MediaQuery from 'react-responsive';
 import ExpandButton from 'components/Shared/ExpandButton';
-import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
-import iconStyles from 'styles/icons.scss';
-
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
-import ArrowLinkIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-link.svg?name=ArrowLinkIcon';
-
 import { INFO_STATUS } from 'constants';
+
+import EncountersInfo from './EncountersInfo';
 
 class EncountersPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isExpanded: true,
-      tabIndex: 0
+      isExpanded: true
     };
-    this.handleTabIndexChange = this.handleTabIndexChange.bind(this);
   }
 
   onExpand() {
     this.setState({
       isExpanded: !this.state.isExpanded
     });
-  }
-
-  componentDidMount() {
-    this.props.setEncountersInfo(); // Only until we have real API data
-  }
-
-  handleTabIndexChange(tabIndex) {
-    this.setState({ tabIndex });
-  }
-
-  renderVessel(vessel) {
-    return (
-      <div className={infoPanelStyles.encountersData} >
-        <div className={infoPanelStyles.rowInfo} >
-          <span className={infoPanelStyles.key} >Date</span>
-          <span className={infoPanelStyles.value} >{vessel.date}</span>
-        </div>
-        <div className={infoPanelStyles.rowInfo} >
-          <span className={infoPanelStyles.key} >MMSI</span>
-          <span className={infoPanelStyles.value} >{vessel.MMSI}</span>
-        </div>
-        <div className={infoPanelStyles.rowInfo} >
-          <span className={infoPanelStyles.key} >Vessel</span>
-          <span className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
-            Link to vessel
-            <span className={infoPanelStyles.arrowSvg}>{<ArrowLinkIcon className={iconStyles.iconArrowLink} />}</span>
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-  renderEncounterInfo() {
-    const encountersInfo = this.props.encountersInfo;
-    const encounterVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName === 'ENCOUNTER_BOAT');
-    const reeferVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName !== 'ENCOUNTER_BOAT');
-
-
-    const tabOptions = [
-      <div className={infoPanelStyles.vesselHeader}>
-        Vessel
-      </div>,
-      <div className={infoPanelStyles.reeferHeader}>
-        Reefer
-      </div>];
-
-    return (
-      <div className={infoPanelStyles.info}>
-        <div className={infoPanelStyles.header} >
-          <div className={infoPanelStyles.title}>
-            <span className={infoPanelStyles.ovalContainer} >
-              <span className={infoPanelStyles.oval} />
-            </span>
-            <span className={infoPanelStyles.encountersTitle} >
-              ENCOUNTERS
-            </span>
-          </div>
-          <div className={infoPanelStyles.duration} >
-            <span className={infoPanelStyles.durationLabel} >
-              Duration
-            </span>
-            {encountersInfo.duration}
-          </div>
-        </div>
-        <Tab
-          options={tabOptions}
-          style={infoPanelStyles.tab}
-          selectedIndex={this.state.tabIndex}
-          handleTabIndexChange={this.handleTabIndexChange}
-        />
-        {this.state.tabIndex === 0 ?
-          this.renderVessel(encounterVessel) :
-          this.renderVessel(reeferVessel)
-        }
-      </div>
-    );
   }
 
   renderEncountersInfoContainer() {
@@ -116,7 +35,7 @@ class EncountersPanel extends Component {
     } else if (infoPanelStatus === INFO_STATUS.LOADED && encountersInfo) {
       return (
         <div className={classnames(infoPanelStyles.metadata, infoPanelStyles._noPadding)} >
-          {this.renderEncounterInfo()}
+          <EncountersInfo encountersInfo={encountersInfo} />
         </div>
       );
     }
@@ -158,7 +77,7 @@ class EncountersPanel extends Component {
 EncountersPanel.propTypes = {
   encountersInfo: PropTypes.object,
   infoPanelStatus: PropTypes.number,
-  setEncountersInfo: PropTypes.func.isRequired,
+  openVessel: PropTypes.func.isRequired,
   hide: PropTypes.func.isRequired
 };
 

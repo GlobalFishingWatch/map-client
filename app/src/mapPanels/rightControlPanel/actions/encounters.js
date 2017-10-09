@@ -14,10 +14,11 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo() {
+export function setEncountersInfo(data) {
   return (dispatch) => {
+    // /info is called on the encounters tileset, which results in the following response structure:
     const fakeEncounter = {
-      duration: '100000',
+      duration: data.duration || '10h', // this should be a date object
       vessels: [
         {
           tilesetId: '12222',
@@ -29,6 +30,20 @@ export function setEncountersInfo() {
         }
       ]
     };
+
+    // For each vessel object in the vessels array:
+    // - if tilesetId is “SELF”:
+    //   - /info is called on the encounters tileset, retrieving data about the vessel
+    //   Query parameters: encounterId (from encounter point)
+    //   - tracks endpoint is called for all available years, on the encounters tileset.
+    //       Query parameters: encounterId(from encounter point)
+
+    // - else
+    // - /info is called on the tileset with tilesetId, retrieving data about the vessel.
+    //     Query parameters: seriesgroup (from seriesgroup array)
+    // - tracks endpoint is called for all available years, on the tileset with tilesetId.
+    //     Query parameters: seriesgroup (from seriesgroup array)
+      // fake data
 
     dispatch({
       type: SET_ENCOUNTERS_INFO,

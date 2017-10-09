@@ -13,6 +13,7 @@ export const LAYER_TYPES = {
   Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation'
 };
+export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
 
 export const REPORT_STATUS = {
   idle: 'idle',
