@@ -52,12 +52,12 @@
   }
 
   &::-moz-placeholder {
-    color: rgba($color-3, .3);
+    color: $color-button-primary;
     font-weight: $font-weight-normal;
   }
 
   &:-ms-input-placeholder {
-    color: rgba($color-3, .3);
+    color: $color-button-primary;
     font-weight: $font-weight-normal;
   }
 }
@@ -104,8 +104,10 @@
     }
 
     @media #{$mq-tablet} {
-      max-width: 320px;
-      top: 42px;
+      position: relative;
+      top: -1px;
+      margin-left: -30px;
+      width: 320px;
     }
   }
 }
@@ -121,5 +123,16 @@
 .paginationContainer {
   display: flex;
   justify-content: center;
-  padding: 5px 11px 24px;
+  padding: 5px 0px 24px;
+  .paginationButton {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 64%;
+
+    @media #{$mq-tablet} {
+      width: 84%;
+      margin-left: -6px;
+      margin-right: 2px;
+    }
+  }
 }

@@ -1,4 +1,5 @@
 @import '../../settings';
+@import '../../mixins';
 
 // this component needs crossbrowsing
 
@@ -22,6 +23,9 @@
       left: 10px;
     }
   }
+      
+  // Color classes
+  @include colorClasses();
 
   input {
     cursor: pointer;
@@ -55,6 +59,9 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: 4px;
+
+      @include colorClasses();
     }
   }
+
 }
