@@ -14,6 +14,13 @@
     padding-right: 15px;
     padding-left: 20px;
 
+    @media #{$mq-tablet} {
+      &:first-child {
+        padding-left: 28px;
+      }
+    }
+
+
     &.active {
       color: $color-white;
       border-bottom: 2px solid $color-button-primary;

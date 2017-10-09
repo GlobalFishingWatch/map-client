@@ -6,8 +6,10 @@ import ExpandButton from 'components/Shared/ExpandButton';
 import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
+import iconStyles from 'styles/icons.scss';
 
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
+import ArrowLinkIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-link.svg?name=ArrowLinkIcon';
 
 import { INFO_STATUS } from 'constants';
 
@@ -48,7 +50,10 @@ class EncountersPanel extends Component {
         </div>
         <div className={infoPanelStyles.rowInfo} >
           <span className={infoPanelStyles.key} >Vessel</span>
-          <span className={infoPanelStyles.value} >Link to vessel</span>
+          <span className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
+            Link to vessel
+            <span className={infoPanelStyles.arrowSvg}>{<ArrowLinkIcon className={iconStyles.iconArrowLink} />}</span>
+          </span>
         </div>
       </div>
     );
@@ -72,7 +77,9 @@ class EncountersPanel extends Component {
       <div className={infoPanelStyles.info}>
         <div className={infoPanelStyles.header} >
           <div className={infoPanelStyles.title}>
-            <span className={infoPanelStyles.oval} />
+            <span className={infoPanelStyles.ovalContainer} >
+              <span className={infoPanelStyles.oval} />
+            </span>
             <span className={infoPanelStyles.encountersTitle} >
               ENCOUNTERS
             </span>

@@ -48,10 +48,26 @@
         justify-content: space-between;
         max-height: 100px;
         overflow: hidden;
-        padding: 10px 20px 8px;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-bottom: 8px;
+        padding-left: 20px;
 
         @media #{$mq-tablet} {
+          padding-left: 27px;
           max-height: none;
+        }
+
+        .arrowLink {
+          color: $color-button-primary;
+          text-transform: uppercase;
+          text-decoration: underline;
+          font-weight: bold;
+
+          .arrowSvg {
+            margin-left: 5px;
+            vertical-align: sub;
+          }
         }
       }
 
@@ -67,20 +83,28 @@
         .title {
           display: flex;
           align-items: center;
-          .oval {
-            width: 20px;
-            height: 20px;
-            box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.5);
-            background-color: $color-salmon;
+
+
+          .ovalContainer {
+            width: 18px;
+            height: 18px;
             border: solid 1px $color-salmon;
             border-radius: 50%;
             display: inline-block;
+
+            .oval {
+              width: 10px;
+              height: 10px;
+              margin: 3px;
+              background-color: $color-salmon;
+              border-radius: 50%;
+              display: inline-block;
+            }
           }
 
           .encountersTitle {
             font-weight: bold;
-            padding-left: 10px;
-            padding-right: 5px;
+            padding-left: 7px;
           }
         }
 
@@ -89,6 +113,7 @@
 
           .durationLabel {
             font-weight: bold;
+            margin-right: 5px;
           }
         }
       }
@@ -196,18 +221,18 @@
     bottom: 0;
     display: flex;
     right: 8px;
-    transform: translate(0, 50%);
-
+    transform: translate(0, 30%);
     float: right !important;
+    margin-left: 5px;
     padding-right: 10px;
 
     @media #{$mq-tablet} {
       padding-right: 0px;
       position: absolute;
       bottom: auto;
-      left: 98px;
+      left: 100px;
       right: 0;
-      top: 0;
+      top: 18px;
       transform: translate(-50%, -50%);
     }
 
