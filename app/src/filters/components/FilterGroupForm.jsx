@@ -14,6 +14,7 @@ import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
 import { FLAGS } from 'constants';
+import { COLORS } from 'config';
 import { getCountry } from 'iso-3166-1-alpha-2';
 
 class FilterGroupForm extends Component {
@@ -31,7 +32,7 @@ class FilterGroupForm extends Component {
 
     const filterGroup = Object.assign({}, {
       checkedLayers,
-      color: 'yellow', // TODO: use a random color here
+      color: Object.keys(COLORS)[props.defaultColorIndex],
       label: '',
       visible: true,
       filterValues: {}
@@ -43,6 +44,7 @@ class FilterGroupForm extends Component {
   onLayerChecked(layerId) {
     const filterGroup = this.state.filterGroup;
     filterGroup.checkedLayers[layerId] = !filterGroup.checkedLayers[layerId];
+
     this.setState({ filterGroup });
   }
 
@@ -58,25 +60,24 @@ class FilterGroupForm extends Component {
     this.setState({ filterGroup });
   }
 
-  onPressSave() {
-    const { filterGroup } = this.state;
-    const layerKeys = Object.keys(filterGroup.checkedLayers);
-    const anyLayerChecked = layerKeys.some(key => filterGroup.checkedLayers[key] === true);
-    if (anyLayerChecked) {
-      this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
-    }
-  }
-
   onFilterValueChange(name, value) {
     const previouslyGeneratedName = this.genFilterName();
     let filterGroup = Object.assign(this.state.filterGroup);
     const filterGroupLabel = filterGroup.label;
     const shouldUpdateGeneratedName = filterGroupLabel === '' || previouslyGeneratedName === filterGroupLabel;
-    filterGroup.filterValues[name] = value;
+    if (value === '') {
+      delete filterGroup.filterValues[name];
+    } else {
+      filterGroup.filterValues[name] = parseInt(value, 10);
+    }
     if (shouldUpdateGeneratedName) {
       filterGroup = Object.assign(filterGroup, { label: this.genFilterName() });
     }
     this.setState({ filterGroup });
+  }
+
+  onPressSave() {
+    this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
   }
 
   genFilterName() {
@@ -215,7 +216,8 @@ class FilterGroupForm extends Component {
           onChange={e => this.onFilterValueChange(filter.field, e.target.value)}
           value={this.state.filterGroup.filterValues[filter.field]}
         >
-          {filter.field === 'category' && filter.useDefaultValues === true ? getCountryOptions() : this.getOptions(filter)}
+          {(filter.field === 'category' || filter.field === 'flag_id') && filter.useDefaultValues === true ?
+            getCountryOptions() : this.getOptions(filter)}
         </select >
       </div >
     ));
@@ -230,9 +232,14 @@ class FilterGroupForm extends Component {
   render() {
     const layersList = this.renderLayersList();
 
+    const filterGroup = this.state.filterGroup;
+    const anyLayerChecked = Object.keys(filterGroup.checkedLayers).some(key => filterGroup.checkedLayers[key] === true);
+    const anyFilterSelected = Object.keys(filterGroup.filterValues).length > 0;
+    const disableSave = anyLayerChecked === false || anyFilterSelected === false;
+
     return (
       <div >
-        <h3 className={ModalStyles.title} >Filter Group</h3 >
+        <h3 className={ModalStyles.title}>Filter Group</h3>
         <div className={ModalStyles.optionsContainer} >
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
@@ -273,8 +280,11 @@ class FilterGroupForm extends Component {
         </div >
         <div className={ModalStyles.footerContainer} >
           <button
-            className={classnames(ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton)}
+            className={classnames(
+              ButtonStyles.button, ButtonStyles._filled,
+              ButtonStyles._big, ModalStyles.mainButton, {
+                [ButtonStyles._disabled]: disableSave
+              })}
             onClick={this.onPressSave}
           >
             Save
@@ -290,7 +300,8 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
   saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired
+  openLayerInfoModal: PropTypes.func.isRequired,
+  defaultColorIndex: PropTypes.number
 };
 
 export default FilterGroupForm;

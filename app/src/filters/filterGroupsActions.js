@@ -8,6 +8,7 @@ export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY';
 export const SET_EDIT_FILTER_GROUP_INDEX = 'SET_EDIT_FILTER_GROUP_INDEX';
 export const DELETE_FILTER_GROUP = 'DELETE_FILTER_GROUP';
 export const SET_FILTER_GROUPS = 'SET_FILTER_GROUPS';
+export const SET_DEFAULT_COLOR = 'SET_DEFAULT_COLOR';
 
 export function setEditFilterGroupIndex(editFilterGroupIndex) {
   return {
@@ -23,74 +24,35 @@ export function setFilterGroupModalVisibility(visibility) {
   };
 }
 
-const parseCategory = (filterValues) => {
-  let category = 'ALL';
-  if (filterValues.category !== undefined && filterValues.category !== '') {
-    category = parseInt(filterValues.category, 10);
-  }
-  return { category };
-};
-
-const cleanFilterValues = (filterValues) => {
-  const keys = Object.keys(filterValues);
-  const cleanedFilterValues = filterValues;
-  keys.forEach((key) => {
-    if (cleanedFilterValues[key] === '') delete cleanedFilterValues[key];
-  });
-  return cleanedFilterValues;
-};
-
 /**
  * gets the information to create the sublayer for each layer and filter
  * @param {array} heatmapLayer
  * @param {array} filter
- * @returns {array} [{category, hue, gearTypeId}, {category, hue, gearTypeId}, ...]
+ * @returns {array} [{hue, filterValues}, {hue, filterValues}, ...]
  */
 const getLayerData = (heatmapLayer, filters) => {
-  const LayerGroupedFilters = [];
-  let hue = heatmapLayer.hue; // Filter hue overrides heatmap layer hue
-  let filterValues = { category: 'ALL' }; // Setting defaults
-
-  filters.forEach((filter) => {
-    if (filter.filterValues === undefined) return;
-    const filterFields = Object.keys(filter.filterValues).filter(f =>
-      f !== 'hue' && f !== 'category'
-    );
-
-    const defaultFilterFields = {};
-    filterFields.forEach((filterField) => { defaultFilterFields[filterField] = null; }); // registered_gear_type_id: null
-    filterValues = Object.assign({ category: 'ALL' }, defaultFilterFields); // Reseting defaults
-
-    if (filter.visible) {
-      hue = COLOR_HUES[filter.color];
-      const isLayerChecked = filter.checkedLayers !== undefined && filter.checkedLayers[heatmapLayer.id];
-      if (isLayerChecked) {
-        if (filter.filterValues !== undefined) {
-          filterValues = Object.assign(filterValues, cleanFilterValues(filter.filterValues), parseCategory(filter.filterValues));
-        }
-      } else { // filter everything on the sublayer if the layer is not checked
-        filterValues = { category: 'FILTERED' };
-      }
-
-      LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
-    }
-  });
-
-  // Set default sublayer if there are no filters
-  if (LayerGroupedFilters.length === 0) {
-    LayerGroupedFilters.push(Object.assign({ hue }, filterValues));
-  }
-  return LayerGroupedFilters;
+  const layerGroupedFilters = [];
+  filters
+    .filter(f => f.visible === true)
+    .filter(f => f.checkedLayers[heatmapLayer.id] === true)
+    .forEach((filter) => {
+      const layerGroupedFilter = {
+        hue: COLOR_HUES[filter.color],
+        filterValues: filter.filterValues
+      };
+      layerGroupedFilters.push(layerGroupedFilter);
+    });
+  return layerGroupedFilters;
 };
 
 /**
  * Sets filterGroups for the map
- * 
- * Filters are grouped by layer 
+ *
+ * Filters are grouped by layer
  * A sublayer is created for each layerFilters information
  * through GLContainer and HeatmapLayer
  * Then is filtered in the _dumpTileVessels method of HeatmapSublayer
- * 
+ *
  * @param {array} initialFilters - the original filters to process
  * @returns {array} filters - Filters to save in the store and workspace
  * @returns {array} layerFilters - Filters grouped by layer
@@ -126,6 +88,9 @@ export function saveFilterGroup(filterGroup, index = null) {
     // Send analytics only if new filter is created (index === null)
     if (index === null) {
       dispatch(trackCreateFilterGroups(filterGroup));
+      dispatch({
+        type: SET_DEFAULT_COLOR
+      });
     }
 
     dispatch({

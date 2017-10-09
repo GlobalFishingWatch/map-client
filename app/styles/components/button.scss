@@ -26,6 +26,10 @@
     color: $color-4;
   }
 
+  &._disabled._filled {
+    background-color: rgba($color-button-primary, .3);
+  }
+
   &._big {
     height: 40px;
   }
@@ -105,5 +109,3 @@
     }
   }
 }
-
-
