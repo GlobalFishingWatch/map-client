@@ -254,8 +254,24 @@ export const getTracksPlaybackData = (vectorArray) => {
   return playbackData;
 };
 
+export const vesselSatisfiesFilters = (frame, index, filterValues) => {
+  const satisfiesFilters = Object.keys(filterValues).every((field) => {
+    if (frame[field] === undefined) {
+      // this field is not available on this layer. This can happen in an edge case described
+      // here: https://github.com/Vizzuality/GlobalFishingWatch/issues/661#issuecomment-334496469
+      return false;
+    }
+    return frame[field][index] === filterValues[field];
+  });
+  return satisfiesFilters;
+};
 
-export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFlags) => {
+const vesselSatisfiesAllFilters = (frame, index, filters) => {
+  const satisfiesAllFilters = filters.every(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
+  return satisfiesAllFilters;
+};
+
+export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFilters) => {
   const vessels = [];
 
   // convert px tolerance/radius to world units
@@ -268,7 +284,8 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
     for (let i = 0; i < frame.worldX.length; i++) {
       const wx = frame.worldX[i];
       const wy = frame.worldY[i];
-      if ((currentFlags === undefined || (frame.category !== undefined && currentFlags.indexOf(frame.category[i]) !== -1)) &&
+
+      if ((!currentFilters.length || vesselSatisfiesAllFilters(frame, i, currentFilters)) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {

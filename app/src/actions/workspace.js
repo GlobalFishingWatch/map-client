@@ -3,7 +3,9 @@ import {
   TIMELINE_DEFAULT_OUTER_START_DATE,
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE
+  TIMELINE_DEFAULT_INNER_END_DATE,
+  AIS_LAYER_ID,
+  COLORS
 } from 'config';
 import {
   LAYER_TYPES,
@@ -14,11 +16,12 @@ import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
+import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
-import { hexToHue } from 'util/colors';
+import { hexToHue, hueToClosestColor } from 'util/colors';
 import uniq from 'lodash/uniq';
 import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
@@ -125,7 +128,8 @@ export function saveWorkspace(errorAction) {
         },
         filters: state.filters.flags,
         timelineSpeed: state.filters.timelineSpeed,
-        areas: state.areas.existingAreasOfInterest
+        areas: state.areas.existingAreasOfInterest,
+        filterGroups: state.filterGroups.filterGroups
       }
     };
 
@@ -201,11 +205,43 @@ function dispatchActions(workspaceData, dispatch, getState) {
       dispatch(saveAreaOfInterest(area));
     });
   }
+
+  if (workspaceData.filterGroups) {
+    workspaceData.filterGroups.forEach((filterGroup) => {
+      dispatch(saveFilterGroup(filterGroup));
+    });
+  }
+
 }
+
+/**
+ * Convert filters to filterGroups only with the filter flag in the AIS layer
+ *
+ * @param {array} filters
+ * @return {array} filterGroups
+ */
+const filtersTofilterGroups = (filters) => {
+  if (filters === undefined ||
+     (filters.length === 1 && Object.keys(filters[0]).length !== 0)) return []; // remove empty filters
+  const filterGroups = [];
+  filters.forEach((filter, index) => {
+    if (filter.flag) {
+      filterGroups.push({
+        checkedLayers: { [AIS_LAYER_ID]: true },
+        color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
+        filterValues: { category: filter.flag },
+        label: `Filter ${index + 1}`,
+        visible: true
+      });
+    }
+  });
+  return filterGroups;
+};
 
 function processNewWorkspace(data) {
   const workspace = data.workspace;
-
+  let filterGroups = workspace.filterGroups || [];
+  filterGroups = filterGroups.concat(filtersTofilterGroups(workspace.filters));
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
@@ -219,7 +255,8 @@ function processNewWorkspace(data) {
     pinnedVessels: workspace.pinnedVessels,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset,
-    areas: workspace.areas
+    areas: workspace.areas,
+    filterGroups
   };
 }
 

@@ -1,10 +1,13 @@
 import { SET_FILTER_GROUP_MODAL_VISIBILITY, SAVE_FILTER_GROUP, SET_FILTER_GROUP_VISIBILITY } from 'filters/filtersActions';
-import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP } from 'filters/filterGroupsActions';
+import { SET_EDIT_FILTER_GROUP_INDEX, DELETE_FILTER_GROUP, SET_FILTER_GROUPS, SET_DEFAULT_COLOR } from 'filters/filterGroupsActions';
+import { COLORS } from 'config';
 
 const initialState = {
   filterGroups: [],
   editFilterGroupIndex: null,
-  isFilterGroupModalOpen: false
+  isFilterGroupModalOpen: false,
+  // the color that is selected by default when opening a new filter group modal
+  defaultColorIndex: 0
 };
 
 export default function (state = initialState, action) {
@@ -45,6 +48,17 @@ export default function (state = initialState, action) {
         filterGroups: [...state.filterGroups.slice(0, action.payload), ...state.filterGroups.slice(action.payload + 1)]
       });
 
+    }
+    case SET_FILTER_GROUPS: {
+      const { filters, layerFilters } = action.payload;
+      return Object.assign({}, state, {
+        filters, layerFilters
+      });
+    }
+    case SET_DEFAULT_COLOR: {
+      return Object.assign({}, state, {
+        defaultColorIndex: (state.defaultColorIndex === Object.keys(COLORS).length - 1) ? 0 : state.defaultColorIndex + 1
+      });
     }
     default:
       return state;

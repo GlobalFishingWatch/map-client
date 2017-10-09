@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import intersection from 'lodash/intersection';
+import _includes from 'lodash/includes';
+import _pullAllWith from 'lodash/pullAllWith';
+import _uniqBy from 'lodash/uniqBy';
 import classnames from 'classnames';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -11,6 +13,9 @@ import IconStyles from 'styles/icons.scss';
 import selectorStyles from 'styles/components/shared/selector.scss';
 import Checkbox from 'components/Shared/Checkbox';
 import getCountryOptions from 'util/getCountryOptions';
+import { FLAGS } from 'constants';
+import { COLORS } from 'config';
+import { getCountry } from 'iso-3166-1-alpha-2';
 
 class FilterGroupForm extends Component {
   constructor(props) {
@@ -27,39 +32,19 @@ class FilterGroupForm extends Component {
 
     const filterGroup = Object.assign({}, {
       checkedLayers,
-      color: 'yellow', // TODO: use a random color here
+      color: Object.keys(COLORS)[props.defaultColorIndex],
       label: '',
       visible: true,
       filterValues: {}
     }, props.filterGroup);
 
-    // TODO: extract this from layers headers
-    const filtersFromLayers = [
-      {
-        name: 'category',
-        label: 'Country',
-        values: getCountryOptions(),
-        layers: [
-          'fishing2',
-          'fishing'
-        ]
-      },
-      {
-        name: 'gear_type',
-        label: 'Gear Type',
-        values: getCountryOptions(),
-        layers: [
-          'fishing'
-        ]
-      }
-    ];
-
-    this.state = { filterGroup, filtersFromLayers };
+    this.state = { filterGroup };
   }
 
   onLayerChecked(layerId) {
     const filterGroup = this.state.filterGroup;
     filterGroup.checkedLayers[layerId] = !filterGroup.checkedLayers[layerId];
+
     this.setState({ filterGroup });
   }
 
@@ -75,14 +60,72 @@ class FilterGroupForm extends Component {
     this.setState({ filterGroup });
   }
 
+  onFilterValueChange(name, value) {
+    const previouslyGeneratedName = this.genFilterName();
+    let filterGroup = Object.assign(this.state.filterGroup);
+    const filterGroupLabel = filterGroup.label;
+    const shouldUpdateGeneratedName = filterGroupLabel === '' || previouslyGeneratedName === filterGroupLabel;
+    if (value === '') {
+      delete filterGroup.filterValues[name];
+    } else {
+      filterGroup.filterValues[name] = parseInt(value, 10);
+    }
+    if (shouldUpdateGeneratedName) {
+      filterGroup = Object.assign(filterGroup, { label: this.genFilterName() });
+    }
+    this.setState({ filterGroup });
+  }
+
   onPressSave() {
     this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
   }
 
-  onFilterValueChange(name, value) {
-    const filterGroup = this.state.filterGroup;
-    filterGroup.filterValues[name] = value;
-    this.setState({ filterGroup });
+  genFilterName() {
+    const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
+      .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
+
+    const layersToFilter = this.props.layers.filter(layer =>
+      _includes(checkedLayersId, layer.id) && layer.header.filters
+    );
+
+    const filtersFromLayers = layersToFilter.map(layer => layer.header.filters);
+    const flattenedFilters = [].concat(...filtersFromLayers);
+    const uniqueFiltersFromLayers = [];
+
+    // obscure logic that looks for filters with the same id and merges their values into a single filter
+    while (flattenedFilters.length > 0) {
+      const key = flattenedFilters[0];
+      const matches = flattenedFilters.filter(elem => elem.id === key.id);
+      const values = [];
+
+      matches.forEach((match) => {
+        if (match.values) values.push(...match.values);
+      });
+      const uniqValues = _uniqBy(values, e => e.id);
+
+      key.values = uniqValues;
+      uniqueFiltersFromLayers.push(key);
+
+      _pullAllWith(flattenedFilters, [key], (a, b) => (a.id === b.id));
+    }
+
+    // const uniqueFiltersFromLayers = _uniqBy(flattenedFilters, e => e.label);
+
+    const selectedFilters = uniqueFiltersFromLayers.filter(filter => filter.field in this.state.filterGroup.filterValues);
+
+    const selectedFilterValues = selectedFilters.map((filter) => {
+      let value;
+
+      if (filter.field === 'category' && filter.useDefaultValues === true) {
+        value = getCountry(FLAGS[this.state.filterGroup.filterValues[filter.field]]);
+      } else {
+        const filterSetting = filter.values.find(elem => elem.id === parseInt(this.state.filterGroup.filterValues[filter.field], 10));
+        value = filterSetting ? filterSetting.label : '';
+      }
+
+      return value;
+    });
+    return selectedFilterValues.join(' ');
   }
 
   onClickInfo(layer) {
@@ -92,6 +135,21 @@ class FilterGroupForm extends Component {
     };
 
     this.props.openLayerInfoModal(modalParams);
+  }
+
+  getOptions(filter) {
+    const compareById = (a, b) => (a.id < b.id ? -1 : 1);
+    let options = [<option key={filter.id} value="" >{filter.label}</option >];
+    if (filter.values) {
+      options = options.concat(
+        filter.values.sort(compareById).map(option => (
+          <option key={option.id} value={option.id} >{option.label}</option >
+        ))
+      );
+    } else {
+      console.warn('No values for filter', filter);
+    }
+    return options;
   }
 
   renderLayersList() {
@@ -124,17 +182,42 @@ class FilterGroupForm extends Component {
   renderFilterList() {
     const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
       .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
-    const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
 
-    const filterInputs = filtersFromLayers.map((elem, index) => (
+    const layersToFilter = this.props.layers.filter(layer =>
+      _includes(checkedLayersId, layer.id) && layer.header.filters
+    );
+
+    const filtersFromLayers = layersToFilter.map(layer => layer.header.filters);
+    const flattenedFilters = [].concat(...filtersFromLayers);
+    const uniqueFiltersFromLayers = [];
+
+    // obscure logic that looks for filters with the same id and merges their values into a single filter
+    while (flattenedFilters.length > 0) {
+      const key = flattenedFilters[0];
+      const matches = flattenedFilters.filter(elem => elem.id === key.id);
+      const values = [];
+
+      matches.forEach((match) => {
+        if (match.values) values.push(...match.values);
+      });
+      const uniqValues = _uniqBy(values, e => e.id);
+
+      key.values = uniqValues;
+      uniqueFiltersFromLayers.push(key);
+
+      _pullAllWith(flattenedFilters, [key], (a, b) => (a.id === b.id));
+    }
+
+    const filterInputs = uniqueFiltersFromLayers.map((filter, index) => (
       <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
         <select
           key={index}
-          name={elem.label}
-          onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
-          value={this.state.filterGroup.filterValues[elem.name]}
+          name={filter.label}
+          onChange={e => this.onFilterValueChange(filter.field, e.target.value)}
+          value={this.state.filterGroup.filterValues[filter.field]}
         >
-          {elem.values}
+          {(filter.field === 'category' || filter.field === 'flag_id') && filter.useDefaultValues === true ?
+            getCountryOptions() : this.getOptions(filter)}
         </select >
       </div >
     ));
@@ -149,9 +232,14 @@ class FilterGroupForm extends Component {
   render() {
     const layersList = this.renderLayersList();
 
+    const filterGroup = this.state.filterGroup;
+    const anyLayerChecked = Object.keys(filterGroup.checkedLayers).some(key => filterGroup.checkedLayers[key] === true);
+    const anyFilterSelected = Object.keys(filterGroup.filterValues).length > 0;
+    const disableSave = anyLayerChecked === false || anyFilterSelected === false;
+
     return (
       <div >
-        <h3 className={ModalStyles.title} >Filter Group</h3 >
+        <h3 className={ModalStyles.title}>Filter Group</h3>
         <div className={ModalStyles.optionsContainer} >
           <div className={ModalStyles.column} >
             <div className={ModalStyles.wrapper} >
@@ -192,8 +280,11 @@ class FilterGroupForm extends Component {
         </div >
         <div className={ModalStyles.footerContainer} >
           <button
-            className={classnames(ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton)}
+            className={classnames(
+              ButtonStyles.button, ButtonStyles._filled,
+              ButtonStyles._big, ModalStyles.mainButton, {
+                [ButtonStyles._disabled]: disableSave
+              })}
             onClick={this.onPressSave}
           >
             Save
@@ -209,7 +300,8 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   filterGroup: PropTypes.object,
   saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired
+  openLayerInfoModal: PropTypes.func.isRequired,
+  defaultColorIndex: PropTypes.number
 };
 
 export default FilterGroupForm;

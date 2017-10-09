@@ -68,11 +68,7 @@ class FilterGroupPanel extends Component {
   updateFilters(filter, index) {
     const updatedFilters = cloneDeep(this.props.filterGroups);
     if (!updatedFilters[index]) return;
-
     updatedFilters[index] = Object.assign({}, updatedFilters[index], filter);
-
-    // this.props.setFlagFilters(updatedFilters);
-
     if (filter.hue === undefined) {
       this.hideBlending();
     }
@@ -86,8 +82,6 @@ class FilterGroupPanel extends Component {
   removeFilter(index) {
     const filters = cloneDeep(this.props.filterGroups);
     filters.splice(index, 1);
-
-    // this.props.setFlagFilters(filters);
     this.hideBlending();
   }
 

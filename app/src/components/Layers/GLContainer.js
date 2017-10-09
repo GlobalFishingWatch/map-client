@@ -3,7 +3,6 @@ import 'pixi.js';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'util/colors';
 import BaseOverlay from 'components/Layers/BaseOverlay';
 import HeatmapLayer from 'components/Layers/HeatmapLayer';
-import HeatmapSubLayer from 'components/Layers/HeatmapSubLayer';
 import TracksLayer from 'components/Layers/TracksLayer';
 import {
   VESSELS_BASE_RADIUS,
@@ -58,8 +57,11 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapStage = new PIXI.Container();
     this.stage.addChild(this.heatmapStage);
 
-    this.heatmapHighlight = new HeatmapSubLayer(this.baseTexture, this._getNumSprites(), true);
-    this.heatmapHighlight.setFilters('ALL', HEATMAP_TRACK_HIGHLIGHT_HUE);
+    this.heatmapHighlight = new HeatmapLayer(
+      { id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE },
+      this.baseTexture,
+      this._getNumSprites()
+    );
     this.stage.addChild(this.heatmapHighlight.stage);
 
     this.tracksLayer = new TracksLayer();
@@ -227,23 +229,30 @@ export default class GLContainer extends BaseOverlay {
     }
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, currentFlags, highlightableCluster, isEmpty, foundVessels }) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels }) {
     if (isEmpty === true) {
       this.heatmapHighlight.stage.visible = false;
       this._startHeatmapFadein();
       return;
     }
     this.toggleHeatmapDimming(true);
-
     if (highlightableCluster !== true) {
       return;
     }
-
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
-    this.heatmapHighlight.setSeriesFilter(foundVessels);
-    this.heatmapHighlight.setFlags(currentFlags);
+
+    const foundVesselsFilters = foundVessels.map(vessel => ({
+      hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+      filterValues: {
+        series: vessel.series,
+        seriesgroup: vessel.seriesgroup
+      }
+    }));
+
+    // no need to reapply filters, has the found vessels have already been filtered (see selectVesselsAt)
+    this.heatmapHighlight.setFilters(foundVesselsFilters);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
   }
@@ -273,15 +282,24 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
-  setFlags(flags, useHeatmapStyle) {
-    if (!Object.keys(flags).length) {
-      return;
-    }
-    this.layers.forEach((layer) => {
-      const layerFlags = flags[layer.id];
-      layer.setSubLayers(layerFlags, useHeatmapStyle);
+  /**
+   * Sets filters for each Heatmap layer
+   * @param {array} layerFilters - All filters ordered by heatmap layer
+   */
+  setFilters(layerFilters) {
+    // If there is at least one filter in the layers all the other ones if they are empty should be completely filtered
+    const isTheMapFiltered = Object.keys(layerFilters).some(layerId =>
+      layerFilters[layerId].length > 0
+    );
+
+    this.layers.forEach((heatmapLayer) => {
+      const filters = layerFilters[heatmapLayer.id];
+      if (filters.length > 0) {
+        heatmapLayer.setFilters(filters);
+      } else {
+        heatmapLayer.setFilters(filters, isTheMapFiltered);
+      }
     });
-    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
   }
 
   _startHeatmapFadein() {
