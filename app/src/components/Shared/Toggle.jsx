@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
 import { hueToClosestColor } from 'util/colors';
-import { COLORS } from 'config';
 
 class Toggle extends Component {
   getColor() {
@@ -11,7 +10,7 @@ class Toggle extends Component {
       return hueToClosestColor(this.props.hue);
     }
     if (this.props.colorName !== undefined) {
-      return COLORS[this.props.colorName];
+      return this.props.colorName;
     }
     return this.props.color;
   }
