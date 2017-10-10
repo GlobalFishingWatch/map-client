@@ -1,5 +1,7 @@
 # Changelog
 
+- Fix issue where latitude would be shown twice instead of lat-long
+
 ## 2.2.0
 - Enforce minimum 1 day period on timebar
 - Temporarily hide map legend
