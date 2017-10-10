@@ -51,7 +51,10 @@ export default class HeatmapLayer {
   render(tiles, startIndex, endIndex, offsets) {
 
     const allHuesToRender = (this.filters !== undefined && this.filters.length)
-      ? this.filters.map(f => f.hue.toString())
+      ? this.filters
+        // pass is set to true by filterGroupActions when none of the filters fields in the filter group is supported by the layer headers
+        .filter(f => f.pass !== true)
+        .map(f => f.hue.toString())
       : [this.defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
 
@@ -72,6 +75,8 @@ export default class HeatmapLayer {
       }
       this.subLayers[hue].spritesProps = [];
     }
+
+    if (!allHuesToRender.length) return;
 
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({

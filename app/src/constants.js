@@ -1,3 +1,5 @@
+import getFlagFilterGroupValues from 'util/getFlagFilterGroupValues';
+
 export const CONTROL_PANEL_MENUS = {
   AREAS: 'AREAS',
   FILTERS: 'FILTERS',
@@ -559,3 +561,5 @@ export const FLAGS_SHORTCODES = {
   zm: [127487, 127474],
   zw: [127487, 127484]
 };
+
+export const FLAG_FILTER_GROUP_VALUES = getFlagFilterGroupValues();
