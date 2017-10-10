@@ -26,14 +26,18 @@
     color: $color-4;
   }
 
+  &._disabled._filled {
+    background-color: rgba($color-button-primary, .3);
+  }
+
   &._big {
     height: 40px;
   }
 
   &._wide {
-    width: 76%;
-    margin-left: 40px;
+    width: 94%;
     @media #{$mq-tablet} {
+      margin-left: 40px;
       width: 84%;
       margin-left: $menu-left-padding;
       margin-right: $menu-right-padding;
@@ -105,5 +109,3 @@
     }
   }
 }
-
-

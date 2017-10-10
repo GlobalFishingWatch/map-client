@@ -14,6 +14,7 @@ export const GA_SET_LAYER_HUE = 'GA_SET_LAYER_HUE';
 export const GA_SET_LAYER_OPACITY = 'GA_SET_LAYER_OPACITY';
 export const GA_VESSEL_POINT_CLICKED = 'GA_VESSEL_POINT_CLICKED';
 export const GA_RECENT_VESSEL_ADDED = 'GA_RECENT_VESSEL_ADDED';
+export const GA_CREATE_FILTER = 'GA_CREATE_FILTER';
 
 /**
  * Only add here actions that are GA-exclusive.
@@ -73,6 +74,23 @@ export function trackSearchResultClicked(tilesetId, seriesgroup) {
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
       payload: { tilesetId, seriesgroup, name }
+    });
+  };
+}
+
+export function trackCreateFilterGroups(filterGroup) {
+  return (dispatch) => {
+    const filterValues = filterGroup.filterValues;
+    const filterFields = Object.keys(filterValues).filter(filter => filter !== 'hue');
+
+    filterFields.forEach((filterField) => {
+      if (filterValues[filterField] !== undefined &&
+          filterValues[filterField] !== '') {
+        dispatch({
+          type: GA_CREATE_FILTER,
+          payload: { filterField, value: filterValues[filterField] }
+        });
+      }
     });
   };
 }

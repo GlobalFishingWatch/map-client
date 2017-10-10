@@ -55,7 +55,7 @@ class PinnedVesselList extends Component {
         <div className={pinnedTracksStyles.pinnedButtonContainer}>
           {this.props.loggedUser != null &&
             <button
-              className={classnames(ButtonStyles.button, ButtonStyles._wide, ButtonStyles._big)}
+              className={classnames(pinnedTracksStyles.recentVesselsButton, ButtonStyles.button, ButtonStyles._wide, ButtonStyles._big)}
               onClick={() => this.props.openRecentVesselModal()}
             >
               recent vessels

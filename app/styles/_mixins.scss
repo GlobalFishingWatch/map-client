@@ -47,3 +47,15 @@
     border-top: 20px solid $color;
   }
 }
+
+@mixin colorClasses() {
+  &.lightBlue { background-color: $light-blue; }
+  &.orange { background-color: $orange; }
+  &.purple { background-color: $purple; }
+  &.pink { background-color: $pink; }
+  &.yellow { background-color: $yellow; }
+  &.brightGreen { background-color: $brightGreen; }
+  &.green { background-color: $green; }
+  &.blue { background-color: $blue; }
+  &.peach { background-color: $peach; }
+}
