@@ -44,7 +44,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
     if (params.seriesgroup) {
       url += `sub/seriesgroup=${params.seriesgroup}/`;
     }
-    if (extent !== null) {
+    if (extent !== null && params.temporalExtentsLess !== true) {
       const start = new Date(extent[0]).toISOString();
       const end = new Date(extent[1]).toISOString();
       url += `${start},${end};`;
