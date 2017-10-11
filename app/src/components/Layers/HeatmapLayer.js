@@ -2,6 +2,7 @@
 import 'pixi.js';
 import uniq from 'lodash/uniq';
 import { vesselSatisfiesFilters } from 'util/heatmapTileData';
+import { COLOR_HUES } from 'config';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
@@ -16,7 +17,8 @@ export default class HeatmapLayer {
     if (layerSettings.visible === false) {
       this.hide(false);
     }
-    this.setDefaultHue(layerSettings.hue);
+    const defaultHue = layerSettings.hue !== undefined ? layerSettings.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
+    this.setDefaultHue(defaultHue);
     this.setOpacity(layerSettings.opacity);
   }
 
