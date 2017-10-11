@@ -14,6 +14,8 @@ export const LAYER_TYPES = {
   VesselTrackAnimation: 'VesselTrackAnimation'
 };
 
+export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
+
 export const REPORT_STATUS = {
   idle: 'idle',
   error: 'error',
