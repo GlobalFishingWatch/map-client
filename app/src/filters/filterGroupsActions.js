@@ -93,8 +93,6 @@ const getLayerData = (heatmapLayer, filters) => {
  * A sublayer is created for each layerFilters information
  * through GLContainer and HeatmapLayer
  * Then is filtered in the _dumpTileVessels method of HeatmapSublayer
- *
- * @returns {array} layerFilters - Filters grouped by layer
  */
 
 export function setLayerFilters() {

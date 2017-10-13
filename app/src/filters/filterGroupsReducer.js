@@ -15,7 +15,7 @@ const initialState = {
   // the filters - structure matches how filters are visually presented
   filterGroups: [],
   // a list of filters organized by layers
-  layerFilters: [],
+  layerFilters: {},
   // the filter group currently edited in the modal
   currentlyEditedFilterGroup: null,
   // filterGroups' index of the filter group currently edited in the modal
