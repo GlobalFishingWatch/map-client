@@ -17,7 +17,7 @@ import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
-import { setFlagFilters, setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
+import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
@@ -195,8 +195,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
   });
-
-  dispatch(setFlagFilters(workspaceData.filters));
 
   dispatch(loadRecentVesselsList());
 
