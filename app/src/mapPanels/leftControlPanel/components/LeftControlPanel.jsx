@@ -31,7 +31,7 @@ class LeftControlPanel extends Component {
           <Loader tiny />
         </div >
         <div className={mapStyles.latlon} >
-          {this.props.mouseLatLong.lat}, {this.props.mouseLatLong.lat}
+          {this.props.mouseLatLong.lat}, {this.props.mouseLatLong.long}
         </div >
         <ZoomControls
           canShareWorkspaces={canShareWorkspaces}
