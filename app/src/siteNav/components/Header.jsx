@@ -26,9 +26,10 @@ class Header extends Component {
   }
 
   render() {
-    const logoUrl = this.props.isEmbedded ? `${MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
+    const isEmbedded = this.props.isEmbedded;
+    const logoUrl = isEmbedded ? `${MAP_URL}?workspace=${this.props.urlWorkspaceId}` : SITE_URL;
 
-    const target = this.props.isEmbedded ? '_blank' : '';
+    const target = isEmbedded ? '_blank' : '';
 
     return (
       <div>
@@ -50,7 +51,7 @@ class Header extends Component {
             }
           >
             <div className={HeaderStyles.containNav} >
-              {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
+              {(!isEmbedded && COMPLETE_MAP_RENDER) &&
               <img
                 onClick={() => this.setState({ mobileMenuVisible: true })}
                 className={HeaderStyles.iconMenuMobile}
@@ -62,7 +63,7 @@ class Header extends Component {
               <a
                 target={target}
                 href={logoUrl}
-                className={HeaderStyles.appLogo}
+                className={classnames(HeaderStyles.appLogo, { [HeaderStyles._isEmbedded]: isEmbedded })}
               >
                 <img
                   src={betaLogo}
