@@ -64,11 +64,14 @@ class MapFooter extends Component {
 
           <div className={classnames(MapFooterStyles.options, { [MapFooterStyles._embed]: this.props.isEmbedded })} >
             {!this.props.isEmbedded &&
-            <span
-              className={classnames(MapFooterStyles.link, MapFooterStyles._footer)}
-              onClick={() => this.toggleFooter()}
-            >
-              {toggleLabel}
+            <span>
+              <span
+                className={classnames(MapFooterStyles.link, MapFooterStyles._footer)}
+                onClick={() => this.toggleFooter()}
+              >
+                {toggleLabel}
+              </span>
+              <span className={MapFooterStyles.betaPill}>Beta</span>
             </span>
             }
             <span

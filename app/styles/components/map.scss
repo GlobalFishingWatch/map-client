@@ -75,11 +75,11 @@
   }
 
   &._isEmbedded{
-    top: 150px;
-    left: 8px;
+    left: 16px;
+    top: 110px;
 
     @media #{$mq-tablet} {
-      top: 110px;
+      top: 190px;
     }
   }
 }
