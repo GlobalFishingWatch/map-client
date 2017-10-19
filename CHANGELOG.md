@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.1 RC2
+- Fixed issue in vessel search results when highlighting MMSI
+
 ## 2.2.1 RC1
 - Fix latitude displayed twice in hover coordinates
 - Moved 'beta' label to footer while keeping the old logo for now
