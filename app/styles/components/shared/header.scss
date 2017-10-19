@@ -58,10 +58,11 @@
 
     img {
       height: 100%;
-      max-width: 250px;
+      max-width: 170px;
       width: 100%;
 
       @media #{$mq-tablet} {
+        max-width: 250px;
         width: auto;
       }
     }
