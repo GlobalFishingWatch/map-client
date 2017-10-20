@@ -100,8 +100,8 @@ class MapLayers extends Component {
     // update heatmap layer when:
     // - tiled data changed
     // - selected inner extent changed
-    if (this.props.heatmap !== nextProps.heatmap || innerExtentChanged || nextProps.flagsLayers !== this.props.flagsLayers) {
-      this.setHeatmapFlags(nextProps);
+    if (this.props.heatmap !== nextProps.heatmap || innerExtentChanged || nextProps.layerFilters !== this.props.layerFilters) {
+      this.setHeatmapFilters(nextProps);
       this.updateHeatmap(nextProps);
     }
 
@@ -189,6 +189,7 @@ class MapLayers extends Component {
         if (layer.title !== currentLayers[index].title) return layer;
         if (layer.visible !== currentLayers[index].visible) return layer;
         if (layer.opacity !== currentLayers[index].opacity) return layer;
+        if (layer.hue !== currentLayers[index].hue) return layer;
         if (layer.added !== currentLayers[index].added) return layer;
         return false;
       }
@@ -225,6 +226,11 @@ class MapLayers extends Component {
         continue;
       }
 
+      if (this.addedLayers[newLayer.id] && oldLayer && newLayer.visible && oldLayer.hue !== newLayer.hue) {
+        this.setLayerDefaultHue(newLayer);
+        continue;
+      }
+
       // If the layer is not yet on the map and is invisible, we skip it
       if (!newLayer.visible) continue;
 
@@ -250,8 +256,8 @@ class MapLayers extends Component {
     this.glContainer.removeLayer(layer.id);
   }
 
-  setHeatmapFlags(props) {
-    this.glContainer.setFlags(props.flagsLayers, useHeatmapStyle(this.props.zoom));
+  setHeatmapFilters(props) {
+    this.glContainer.setFilters(props.layerFilters, useHeatmapStyle(this.props.zoom));
   }
 
   updateHeatmap(props) {
@@ -398,6 +404,16 @@ class MapLayers extends Component {
     this.addedLayers[layerSettings.id].setOpacity(layerSettings.opacity);
   }
 
+  /**
+   * Updates a layer's hue. Final hue can be overriden by filters.
+   * @param layerSettings
+   */
+  setLayerDefaultHue(layerSettings) {
+    if (!Object.keys(this.addedLayers).length) return;
+
+    this.addedLayers[layerSettings.id].setDefaultHue(layerSettings.hue);
+  }
+
   updateTrackLayer({ data, timelineInnerExtentIndexes, timelineOverExtentIndexes, timelinePaused, zoom }) {
     if (!this.glContainer || !data) {
       return;
@@ -488,7 +504,7 @@ MapLayers.propTypes = {
   map: PropTypes.object,
   token: PropTypes.string,
   layers: PropTypes.array,
-  flagsLayers: PropTypes.object,
+  layerFilters: PropTypes.object,
   heatmap: PropTypes.object,
   highlightedVessels: PropTypes.object,
   zoom: PropTypes.number,

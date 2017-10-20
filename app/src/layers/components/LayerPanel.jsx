@@ -62,7 +62,7 @@ class LayerPanel extends Component {
           <BasemapPanel />
         </ExpandItem >
         <AccordionHeader
-          menuName={'Fishing Layers'}
+          menuName={'Activity Layers'}
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />

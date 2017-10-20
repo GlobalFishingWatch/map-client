@@ -3,7 +3,8 @@ import {
   toggleFilterGroupVisibility,
   setEditFilterGroupIndex,
   setFilterGroupModalVisibility,
-  deleteFilterGroup
+  deleteFilterGroup,
+  refreshFlagFiltersLayers
 } from 'filters/filterGroupsActions';
 import FilterGroupItem from 'filters/components/FilterGroupItem';
 
@@ -17,6 +18,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteFilterGroup: (index) => {
     dispatch(deleteFilterGroup(index));
+  },
+  refreshFlagFiltersLayers: () => {
+    dispatch(refreshFlagFiltersLayers());
   }
 });
 

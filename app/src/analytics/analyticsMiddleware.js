@@ -16,7 +16,8 @@ import {
   GA_SET_LAYER_HUE,
   GA_SET_LAYER_OPACITY,
   GA_VESSEL_POINT_CLICKED,
-  GA_RECENT_VESSEL_ADDED
+  GA_RECENT_VESSEL_ADDED,
+  GA_CREATE_FILTER
 } from 'analytics/analyticsActions';
 
 import isFunction from 'lodash/isFunction';
@@ -83,7 +84,18 @@ const GA_ACTION_WHITELIST = [
     type: GA_RECENT_VESSEL_ADDED,
     category: 'Search',
     action: 'Recent Vessels',
-    getPayload: () => 'Selects a recent vessel to view'
+    getPayload: action => action.payload
+  },
+  {
+    type: GA_CREATE_FILTER,
+    category: 'Filters',
+    action: action => `Filter by ${
+      action.payload.filterField === 'category' ? 'country' : action.payload.filterField}`,
+    getPayload: action => (
+      action.payload.filterField === 'category' ?
+        FLAGS[action.payload.value] :
+        action.payload.value
+    )
   },
   {
     type: TOGGLE_VESSEL_PIN,

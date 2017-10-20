@@ -1,97 +1,33 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import intersection from 'lodash/intersection';
 import classnames from 'classnames';
-import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
+import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
+import Checkbox from 'components/Shared/Checkbox';
 import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
-import selectorStyles from 'styles/components/shared/selector.scss';
-import Checkbox from 'components/Shared/Checkbox';
-import getCountryOptions from 'util/getCountryOptions';
+import SelectorStyles from 'styles/components/shared/selector.scss';
+import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
-  constructor(props) {
-    super(props);
 
-    this.onColorChange = this.onColorChange.bind(this);
-    this.onNameChange = this.onNameChange.bind(this);
-    this.onPressSave = this.onPressSave.bind(this);
-
-    const checkedLayers = {};
-    props.layers.forEach((layer) => {
-      checkedLayers[layer.id] = layer.visible;
-    });
-
-    const filterGroup = Object.assign({}, {
-      checkedLayers,
-      color: 'yellow', // TODO: use a random color here
-      label: '',
-      visible: true,
-      filterValues: {}
-    }, props.filterGroup);
-
-    // TODO: extract this from layers headers
-    const filtersFromLayers = [
-      {
-        name: 'category',
-        label: 'Country',
-        values: getCountryOptions(),
-        layers: [
-          'fishing2',
-          'fishing'
-        ]
-      },
-      {
-        name: 'gear_type',
-        label: 'Gear Type',
-        values: getCountryOptions(),
-        layers: [
-          'fishing'
-        ]
-      }
-    ];
-
-    this.state = { filterGroup, filtersFromLayers };
-  }
-
-  onLayerChecked(layerId) {
-    const filterGroup = this.state.filterGroup;
-    filterGroup.checkedLayers[layerId] = !filterGroup.checkedLayers[layerId];
-    this.setState({ filterGroup });
-  }
-
-  onColorChange(color) {
-    const filterGroup = this.state.filterGroup;
-    filterGroup.color = color;
-    this.setState({ filterGroup });
-  }
-
-  onNameChange(event) {
-    const filterGroup = this.state.filterGroup;
-    filterGroup.label = event.target.value;
-    this.setState({ filterGroup });
-  }
-
-  onPressSave() {
-    this.props.saveFilterGroup(this.state.filterGroup, this.props.editFilterGroupIndex);
-  }
-
-  onFilterValueChange(name, value) {
-    const filterGroup = this.state.filterGroup;
-    filterGroup.filterValues[name] = value;
-    this.setState({ filterGroup });
+  componentWillReceiveProps(nextProps) {
+    // if defaultLabel generated in container changed,
+    // and if user did not changed from the default label (label is the same as the previously generated label)
+    // force trigger a label change with the generated name
+    if (this.props.defaultLabel !== nextProps.defaultLabel &&
+        this.props.label === this.props.defaultLabel) {
+      this.props.onLabelChanged(nextProps.defaultLabel);
+    }
   }
 
   onClickInfo(layer) {
-    const modalParams = {
+    this.props.openLayerInfoModal({
       open: true,
       info: layer
-    };
-
-    this.props.openLayerInfoModal(modalParams);
+    });
   }
 
   renderLayersList() {
@@ -106,8 +42,8 @@ class FilterGroupForm extends Component {
           id={`${layer.id}${layer.title}`}
           label={layer.title}
           labelClassNames={ModalStyles.itemTitle}
-          callback={() => this.onLayerChecked(layer.id)}
-          checked={this.state.filterGroup.checkedLayers[layer.id]}
+          callback={() => this.props.onLayerChecked(layer.id)}
+          checked={layer.filterActivated}
         />
         <ul className={classnames([ItemList.itemOptionList, ItemList._inlineList])} >
           <li
@@ -121,95 +57,119 @@ class FilterGroupForm extends Component {
     ));
   }
 
-  renderFilterList() {
-    const checkedLayersId = Object.keys(this.state.filterGroup.checkedLayers)
-      .filter(elem => this.state.filterGroup.checkedLayers[elem] === true);
-    const filtersFromLayers = this.state.filtersFromLayers.filter(elem => intersection(elem.layers, checkedLayersId).length > 0);
+  renderFilterOptions(filter) {
+    let options = [<option key={filter.id} value="" >{filter.label}</option>];
 
-    const filterInputs = filtersFromLayers.map((elem, index) => (
-      <div key={index} className={classnames(selectorStyles.selector, selectorStyles._big)} >
+    const supportsEmojiFlags =
+      ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
+      platform.os.toString().match('Windows 10');
+
+    if (filter.values) {
+      options = options.concat(
+        filter.values.map((option) => {
+          const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
+          return <option key={option.id} value={option.id} >{label}</option>;
+        })
+      );
+    }
+
+    return options;
+  }
+
+  renderFiltersList() {
+    return this.props.filters.map((filter, index) => (
+      <div key={index} className={classnames(SelectorStyles.selector, SelectorStyles._big)} >
         <select
           key={index}
-          name={elem.label}
-          onChange={e => this.onFilterValueChange(elem.name, e.target.value)}
-          value={this.state.filterGroup.filterValues[elem.name]}
+          name={filter.label}
+          value={this.props.currentlyEditedFilterGroup.filterValues[filter.id]}
+          onChange={e => this.props.onFilterValueChanged(filter.id, e.target.value)}
         >
-          {elem.values}
-        </select >
-      </div >
+          {this.renderFilterOptions(filter)}
+        </select>
+      </div>
     ));
-
-    return (
-      <div >
-        {filterInputs}
-      </div >
-    );
   }
+
 
   render() {
     const layersList = this.renderLayersList();
-
+    const filtersList = this.renderFiltersList();
     return (
-      <div >
-        <h3 className={ModalStyles.title} >Filter Group</h3 >
-        <div className={ModalStyles.optionsContainer} >
-          <div className={ModalStyles.column} >
-            <div className={ModalStyles.wrapper} >
-              <div className={ModalStyles.sectionTitle} >
+      <div>
+        <h3 className={ModalStyles.title}>Filter Group</h3>
+        <div className={ModalStyles.optionsContainer}>
+          <div className={ModalStyles.column}>
+            <div className={ModalStyles.wrapper}>
+              <div className={ModalStyles.sectionTitle}>
                 Select a Fishing Layer:
-              </div >
-              <div className={ItemList.wrapper} >
-                <ul >
+              </div>
+              <div className={ItemList.wrapper}>
+                <ul>
                   {layersList}
-                </ul >
-              </div >
-            </div >
-            <div className={ModalStyles.wrapper} >
-              <ColorPicker id={'filter-color'} color={this.state.filterGroup.color} onColorChange={this.onColorChange} />
-            </div >
-          </div >
-          <div className={ModalStyles.column} >
-            <div className={ModalStyles.wrapper} >
-              <div className={ModalStyles.sectionTitle} >
+                </ul>
+              </div>
+            </div>
+            <div className={ModalStyles.wrapper}>
+              <ColorPicker
+                id={'filter-color'}
+                color={this.props.currentlyEditedFilterGroup.color}
+                onColorChange={this.props.onColorChanged}
+              />
+            </div>
+          </div>
+          <div className={ModalStyles.column}>
+            <div className={ModalStyles.wrapper}>
+              <div className={ModalStyles.sectionTitle}>
                 Filter by:
-              </div >
-              {this.renderFilterList()}
-            </div >
-            <div className={ModalStyles.wrapper} >
-              <div className={ModalStyles.sectionTitle} >
-                <label htmlFor="name" >Name</label >
+              </div>
+              {filtersList}
+            </div>
+            <div className={ModalStyles.wrapper}>
+              <div className={ModalStyles.sectionTitle}>
+                <label htmlFor="name" >Name</label>
               </div >
               <input
                 type="text"
                 name="name"
-                onChange={this.onNameChange}
+                onChange={(event) => { this.props.onLabelChanged(event.target.value); }}
                 className={ModalStyles.nameInput}
                 placeholder="Filter Group Name"
-                value={this.state.filterGroup.label}
+                value={this.props.label}
               />
-            </div >
-          </div >
-        </div >
-        <div className={ModalStyles.footerContainer} >
+            </div>
+          </div>
+        </div>
+        <div className={ModalStyles.footerContainer}>
           <button
-            className={classnames(ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton)}
-            onClick={this.onPressSave}
+            className={classnames(
+              ButtonStyles.button, ButtonStyles._filled,
+              ButtonStyles._big, ModalStyles.mainButton, {
+                [ButtonStyles._disabled]: this.props.disableSave
+              })}
+            onClick={this.props.onSaveClicked}
           >
             Save
-          </button >
-        </div >
-      </div >
+          </button>
+        </div>
+      </div>
     );
   }
 }
 
 FilterGroupForm.propTypes = {
-  editFilterGroupIndex: PropTypes.number,
   layers: PropTypes.array,
-  filterGroup: PropTypes.object,
-  saveFilterGroup: PropTypes.func,
-  openLayerInfoModal: PropTypes.func.isRequired
+  currentlyEditedFilterGroup: PropTypes.object,
+  filters: PropTypes.array,
+  defaultLabel: PropTypes.string,
+  label: PropTypes.string,
+  disableSave: PropTypes.bool,
+  onLayerChecked: PropTypes.func,
+  onColorChanged: PropTypes.func,
+  onFilterValueChanged: PropTypes.func,
+  onLabelChanged: PropTypes.func,
+  onSaveClicked: PropTypes.func,
+  openLayerInfoModal: PropTypes.func
 };
 
 export default FilterGroupForm;

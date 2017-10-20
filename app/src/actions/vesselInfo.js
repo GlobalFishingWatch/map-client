@@ -64,11 +64,10 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       if (request.readyState !== 4) {
         return;
       }
-      if (request.status >= 500) {
+      if (request.status >= 500 || request.status === 404) {
         console.error('Error loading vessel info:', request.responseText);
         return;
       }
-
       const data = JSON.parse(request.responseText);
       delete data.series;
 
@@ -220,8 +219,8 @@ export function setPinnedVessels(pinnedVessels) {
         if (request.readyState !== 4) {
           return;
         }
-        if (request.responseText === 'Not Found') {
-          console.warn('vessel info not found');
+        if (request.status === 404) {
+          console.warn('Error:', request.responseText);
           return;
         }
         const data = JSON.parse(request.responseText);
