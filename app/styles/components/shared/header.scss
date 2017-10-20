@@ -221,6 +221,9 @@
       @media #{$mq-tablet} {
         order: 1;
       }
+      &._isEmbedded {
+        margin: 0;
+      }
     }
 
     .shareHeader {
