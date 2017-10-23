@@ -33,7 +33,7 @@ class LayerPanel extends Component {
   }
 
   render() {
-    const activityLayers = [];
+    const mapLayers = [];
     const fishingLayers = [];
 
     this.props.layers.forEach((layer, index) => {
@@ -48,7 +48,7 @@ class LayerPanel extends Component {
         showBlending={this.state.currentBlendingOptionsShown === index}
         enableColorPicker={layer.type === LAYER_TYPES.Heatmap}
       />);
-      ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : activityLayers).push(layerItem);
+      ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : mapLayers).push(layerItem);
     });
 
     return (
@@ -72,17 +72,17 @@ class LayerPanel extends Component {
           </ul >
         </ExpandItem >
         <AccordionHeader
-          menuName={'Activity Layers'}
+          menuName={'Map Layers'}
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />
         <ExpandItem
-          active={this.state.expand === 'ACTIVITY_LAYERS'}
+          active={this.state.expand === 'MAP_LAYERS'}
           isVesselInfoPanelOpen={this.props.isVesselInfoPanelOpen}
           accordion
         >
           <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
-            {activityLayers}
+            {mapLayers}
           </ul >
         </ExpandItem >
       </div >
