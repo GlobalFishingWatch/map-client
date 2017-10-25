@@ -33,7 +33,7 @@ class FilterGroupForm extends Component {
   renderLayersList() {
     return this.props.layers.map((layer, i) => (
       <li
-        className={classnames([ItemList.listItem, ItemList._baseline])}
+        className={classnames([ItemList.listItem, ItemList._baseline, ItemList._noPadding])}
         key={i}
       >
         <Checkbox
@@ -44,15 +44,9 @@ class FilterGroupForm extends Component {
           labelClassNames={ModalStyles.itemTitle}
           callback={() => this.props.onLayerChecked(layer.id)}
           checked={layer.filterActivated}
-        />
-        <ul className={classnames([ItemList.itemOptionList, ItemList._inlineList])} >
-          <li
-            className={ItemList.itemOptionItem}
-            onClick={() => this.onClickInfo(layer)}
-          >
-            <InfoIcon className={IconStyles.infoIcon} />
-          </li >
-        </ul >
+        >
+          <InfoIcon onClick={() => this.onClickInfo(layer)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
+        </Checkbox>
       </li >
     ));
   }

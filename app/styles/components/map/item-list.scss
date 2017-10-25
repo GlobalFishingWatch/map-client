@@ -37,17 +37,17 @@
 }
 
 .listItem {
-  text-transform: uppercase;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  position: relative;
-  width: 100%;
   padding-left: $menu-mobile-left-padding;
   padding-right: 20px;
+  position: relative;
+  text-transform: uppercase;
+  width: 100%;
   @media #{$mq-tablet} {
-    padding-right: 36px;
     padding-left: $menu-left-padding;
+    padding-right: 36px;
 
     &._alignLeft {
       padding-right: 4px;
@@ -55,13 +55,16 @@
 
   }
 
+  &._noPadding {
+    padding: 0;
+  }
+
   &._noMobilePadding {
-    padding-right: 0;
-    padding-left: 0;
+    padding: 0;
 
     @media #{$mq-tablet} {
-      padding-right: 0;
       padding-left: $menu-left-padding;
+      padding-right: 0;
     }
   }
 
@@ -220,12 +223,16 @@
   }
 
   .itemOptionItem {
-    margin-right: 15px;
     margin-bottom: -10px;
+    margin-right: 15px;
   }
 
   &._inlineList {
     justify-content: flex-start;
     margin-left: 5px;
   }
+}
+
+.infoIcon {
+  margin-left: 5px;
 }
