@@ -267,7 +267,7 @@ export const vesselSatisfiesFilters = (frame, index, filterValues) => {
 };
 
 const vesselSatisfiesAllFilters = (frame, index, filters) => {
-  const satisfiesAllFilters = filters.every(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
+  const satisfiesAllFilters = filters.some(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
   return satisfiesAllFilters;
 };
 
