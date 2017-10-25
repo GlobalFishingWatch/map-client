@@ -23,7 +23,8 @@ Checkbox.propTypes = {
   checked: PropTypes.bool,
   label: PropTypes.string,
   labelClassNames: PropTypes.string,
-  classNames: PropTypes.string
+  classNames: PropTypes.string,
+  children: PropTypes.object
 };
 
 export default Checkbox;

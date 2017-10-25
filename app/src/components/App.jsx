@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/app.scss';
 import BannerStyles from 'styles/components/banner.scss';
+import WarningStyles from 'styles/components/shared/warning.scss';
 import { getURLParameterByName } from 'lib/getURLParameterByName';
 import ReactGA from 'react-ga';
 
@@ -74,7 +75,7 @@ class App extends Component {
     return (
       <div>
         {showBanner === true &&
-          <div className={BannerStyles.banner}>
+          <div className={classnames(BannerStyles.banner, WarningStyles.warning)}>
             {bannerContent}
             <button className={BannerStyles.closeButton} onClick={() => this.dismissBanner()}>
               <span className={BannerStyles.icon}>✕</span>
