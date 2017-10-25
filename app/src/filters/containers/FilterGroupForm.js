@@ -13,6 +13,7 @@ import { LAYER_TYPES, FLAG_FILTER_GROUP_VALUES } from 'constants';
 
 const mapStateToProps = (state) => {
   const currentlyEditedFilterGroup = state.filterGroups.currentlyEditedFilterGroup;
+  const filterValuesKeys = Object.keys(currentlyEditedFilterGroup.filterValues);
 
   // prepare layers list for component, add a filterActivated prop to set checkbox status
   const layers = state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map((l) => {
@@ -21,7 +22,8 @@ const mapStateToProps = (state) => {
   });
 
   // prepare filters: dedupe filters that have the same id, set default values
-  const availableFilters = layers.filter(l => l.filterActivated === true).map(l => l.header.filters);
+  const filteredLayers = layers.filter(l => l.filterActivated === true);
+  const availableFilters = filteredLayers.map(l => l.header.filters);
   const flattenedFilters = [].concat(...availableFilters);
   const filtersById = {};
   // this will remove duplicates by filter.id (ie category / flag_id)
@@ -36,13 +38,12 @@ const mapStateToProps = (state) => {
   const filters = Object.values(filtersById);
 
   // take all the displayed labels to set default filter group label
-  const defaultLabel = (!filters.length) ? '' : Object.keys(currentlyEditedFilterGroup.filterValues).map((filterId) => {
+  const defaultLabel = (!filters.length) ? '' : filterValuesKeys.map((filterId) => {
     const currentFilterValue = currentlyEditedFilterGroup.filterValues[filterId];
     const filterValues = filters.find(filter => filter.id === filterId).values;
     const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue).label;
     return filterValueLabel;
   }).join(' ');
-  // const label = (defaultName === currentlyEditedFilterGroup.label || ) ? defaultName : currentlyEditedFilterGroup.label;
 
   // prepare save button status: at least one layer must be checked, and at least one filter defined
   const anyLayerChecked = Object.keys(currentlyEditedFilterGroup.checkedLayers)
@@ -50,13 +51,34 @@ const mapStateToProps = (state) => {
   const anyFilterSelected = Object.keys(currentlyEditedFilterGroup.filterValues).length > 0;
   const disableSave = anyLayerChecked === false || anyFilterSelected === false;
 
+  // prepare warnings, when a filter is applied to a layer that doesn't support it
+  let warningFilterId;
+  const warningLayer = filteredLayers.find((layer) => {
+    const layerFiltersIds = layer.header.filters.map(f => f.id);
+    return !filterValuesKeys.every((filterId) => {
+      if (layerFiltersIds.indexOf(filterId) === -1) {
+        warningFilterId = filterId;
+        return false;
+      }
+      return true;
+    });
+  });
+  let warning;
+  if (warningLayer) {
+    warning = state.literals.filter_groups_warning
+      .replace('$LAYER', warningLayer.title)
+      .replace('$FILTER', filters.find(f => f.id === warningFilterId).label);
+  }
+
   return {
     layers,
     currentlyEditedFilterGroup,
     filters,
     label: currentlyEditedFilterGroup.label,
     defaultLabel,
-    disableSave
+    disableSave,
+    help: state.literals.filter_groups_help,
+    warning
   };
 };
 

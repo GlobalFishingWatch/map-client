@@ -1,29 +1,15 @@
 @import '../settings';
 
 .banner {
-  background-color: $color-19;
-  border-bottom: 1px solid $color-1;
-  color: $color-4;
-  display: flex;
-  flex-direction: column;
-  font-family: $font-family-1;
-  font-size: $font-size-xs-small;
-  font-weight: bold;
   height: 60px;
-  justify-content: center;
   padding: 0 10px 0 50px;
   position: absolute;
   width: calc(100% - 50px);
   z-index: 21;
 
-  @media #{$mq-tablet} {
-    font-size: $font-size-small;
-    width: calc(100% - #{$map-panels-width});
-  }
 
-  a {
-    color: $color-4;
-    text-decoration: underline;
+  @media #{$mq-tablet} {
+    width: calc(100% - #{$map-panels-width});
   }
 
   .closeButton {
