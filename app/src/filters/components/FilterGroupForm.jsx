@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import classnames from 'classnames';
 import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -8,7 +10,7 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
-import SelectorStyles from 'styles/components/shared/selector.scss';
+// import SelectorStyles from 'styles/components/shared/selector.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
@@ -51,38 +53,32 @@ class FilterGroupForm extends Component {
     ));
   }
 
-  renderFilterOptions(filter) {
-    let options = [<option key={filter.id} value="" >{filter.label}</option>];
-
-    const supportsEmojiFlags =
-      ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
-      platform.os.toString().match('Windows 10');
-
-    if (filter.values) {
-      options = options.concat(
-        filter.values.map((option) => {
-          const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
-          return <option key={option.id} value={option.id} >{label}</option>;
-        })
-      );
-    }
-
-    return options;
-  }
-
   renderFiltersList() {
-    return this.props.filters.map((filter, index) => (
-      <div key={index} className={classnames(SelectorStyles.selector, SelectorStyles._big)} >
-        <select
+
+    return this.props.filters.map((filter, index) => {
+      const values = this.props.currentlyEditedFilterGroup.filterValues[filter.id];
+      const valuesJoined = (values !== undefined && values.length) ? values.join(',') : null;
+      const supportsEmojiFlags =
+        ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
+        platform.os.toString().match('Windows 10');
+
+      const options = filter.values.map((option) => {
+        const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
+        return Object.assign({}, option, { label });
+      });
+
+      return (
+        <Select
           key={index}
-          name={filter.label}
-          value={this.props.currentlyEditedFilterGroup.filterValues[filter.id]}
-          onChange={e => this.props.onFilterValueChanged(filter.id, e.target.value)}
-        >
-          {this.renderFilterOptions(filter)}
-        </select>
-      </div>
-    ));
+          multi={true}
+          placeholder=""
+          valueKey="id"
+          value={valuesJoined}
+          options={options}
+          onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
+        />
+      );
+    });
   }
 
 

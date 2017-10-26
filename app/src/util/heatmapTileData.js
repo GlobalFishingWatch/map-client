@@ -261,7 +261,7 @@ export const vesselSatisfiesFilters = (frame, index, filterValues) => {
       // here: https://github.com/Vizzuality/GlobalFishingWatch/issues/661#issuecomment-334496469
       return false;
     }
-    return frame[field][index] === filterValues[field];
+    return filterValues[field].indexOf(frame[field][index]) > -1;
   });
   return satisfiesFilters;
 };
