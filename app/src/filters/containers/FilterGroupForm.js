@@ -41,7 +41,7 @@ const mapStateToProps = (state) => {
   const defaultLabel = (!filters.length) ? '' : filterValuesKeys.map((filterId) => {
     const currentFilterValue = currentlyEditedFilterGroup.filterValues[filterId];
     const filterValues = filters.find(filter => filter.id === filterId).values;
-    const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue).label;
+    const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue[0]).label;
     return filterValueLabel;
   }).join(' ');
 
@@ -92,8 +92,8 @@ const mapDispatchToProps = dispatch => ({
   onLabelChanged: (label) => {
     dispatch(setCurrentFilterGroupLabel(label));
   },
-  onFilterValueChanged: (id, value) => {
-    dispatch(setCurrentFilterValue(id, value));
+  onFilterValueChanged: (id, values) => {
+    dispatch(setCurrentFilterValue(id, values));
   },
   onSaveClicked: () => {
     dispatch(setFilterGroupModalVisibility(false));
