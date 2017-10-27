@@ -6,14 +6,14 @@ export default () => {
 
   Object.keys(FLAGS)
     .filter(key => FLAGS_LANDLOCKED.indexOf(FLAGS[key]) === -1)
-    .forEach((index) => {
-      if (iso3311a2.getCountry(FLAGS[index])) {
-        const countryCode = FLAGS[index];
+    .forEach((id) => {
+      if (iso3311a2.getCountry(FLAGS[id])) {
+        const countryCode = FLAGS[id];
         const iconAsciiCodePoints = FLAGS_SHORTCODES[countryCode.toLowerCase()];
         countryNames.push({
           label: iso3311a2.getCountry(countryCode),
           icon: String.fromCodePoint.apply(null, iconAsciiCodePoints),
-          id: index
+          id: parseInt(id, 10)
         });
       }
     });

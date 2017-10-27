@@ -65,14 +65,14 @@ class FilterGroupForm extends Component {
 
       const options = filter.values.map((option) => {
         const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
-        return Object.assign({}, option, { label });
+        return Object.assign({}, option, { label, id: option.id.toString() });
       });
 
       return (
         <Select
           key={index}
-          multi={true}
-          placeholder=""
+          multi={true} // eslint-disable-line react/jsx-boolean-value
+          placeholder={filter.label}
           valueKey="id"
           value={valuesJoined}
           options={options}
@@ -126,7 +126,7 @@ class FilterGroupForm extends Component {
             </div>
             <div className={ModalStyles.wrapper}>
               <div className={ModalStyles.sectionTitle}>
-                <label htmlFor="name" >Name</label>
+                <label htmlFor="name">Filter group name</label>
               </div >
               <input
                 type="text"
