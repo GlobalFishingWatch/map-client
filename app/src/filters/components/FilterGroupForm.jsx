@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import SelectorStyles from 'styles/components/shared/react-select.scss';
 import classnames from 'classnames';
 import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -10,7 +11,6 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
-// import SelectorStyles from 'styles/components/shared/selector.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
@@ -68,15 +68,18 @@ class FilterGroupForm extends Component {
       });
 
       return (
-        <Select
-          key={index}
-          multi={true} // eslint-disable-line react/jsx-boolean-value
-          placeholder={filter.label}
-          valueKey="id"
-          value={valuesJoined}
-          options={options}
-          onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
-        />
+        <div className={SelectorStyles.select}>
+          <Select
+            key={index}
+            multi={true} // eslint-disable-line react/jsx-boolean-value
+            placeholder={filter.label}
+            valueKey="id"
+            value={valuesJoined}
+            closeOnSelect={false}
+            options={options}
+            onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
+          />
+        </div>
       );
     });
   }
