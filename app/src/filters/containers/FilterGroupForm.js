@@ -39,9 +39,12 @@ const mapStateToProps = (state) => {
 
   // take all the displayed labels to set default filter group label
   const defaultLabel = (!filters.length) ? '' : filterValuesKeys.map((filterId) => {
-    const currentFilterValue = currentlyEditedFilterGroup.filterValues[filterId];
+    const currentFilterValues = currentlyEditedFilterGroup.filterValues[filterId];
     const filterValues = filters.find(filter => filter.id === filterId).values;
-    const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue[0]).label;
+    const filterValueLabel = filterValues
+      .filter(filterValue => currentFilterValues.indexOf(parseInt(filterValue.id, 10)) > -1)
+      .map(f => f.label)
+      .join(', ');
     return filterValueLabel;
   }).join(' ');
 
