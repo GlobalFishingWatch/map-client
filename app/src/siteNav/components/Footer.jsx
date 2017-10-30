@@ -7,7 +7,6 @@ import FooterStyles from 'styles/components/footer.scss';
 import OceanaLogo from 'assets/logos/oceana_logo_white.png';
 import SkytruthLogo from 'assets/logos/skytruth_white.png';
 import GoogleLogo from 'assets/logos/google_logo.png';
-import GFWLogo from 'assets/logos/gfw_logo.png';
 import LDFLogo from '-!babel-loader!svg-react-loader!assets/logos/ldf_logo_white.svg?name=LDFLogo';
 import FacebookIcon from '-!babel-loader!svg-react-loader!assets/icons/facebook.svg?name=FacebookIcon';
 import TwitterIcon from '-!babel-loader!svg-react-loader!assets/icons/twitter.svg?name=TwitterIcon';
@@ -18,30 +17,27 @@ class Footer extends Component {
   render() {
     let footerClass;
 
-    if (this.props.isMap && this.props.isExpanded) {
+    if (this.props.isExpanded) {
       footerClass = classnames(FooterStyles.footer, FooterStyles._map, FooterStyles._expanded);
-    } else if (this.props.isMap) {
-      footerClass = classnames(FooterStyles.footer, FooterStyles._map);
     } else {
-      footerClass = FooterStyles.footer;
+      footerClass = classnames(FooterStyles.footer, FooterStyles._map);
     }
 
     return (
       <div>
-        {this.props.isMap && this.props.isExpanded &&
+        {this.props.isExpanded &&
         <div
           className={FooterStyles.veil}
           onClick={this.props.onClose}
         />
         }
         <footer className={footerClass} >
-          {this.props.isMap &&
           <div
             className={FooterStyles.closeButton}
             onClick={this.props.onClose}
           >
             <span className={FooterStyles.cross} />
-          </div>}
+          </div>
           <div className={FooterStyles.scrollContainer} >
             <div className={BaseStyles.wrap} >
               <div className={FooterStyles.logosFooter} >
@@ -122,10 +118,9 @@ class Footer extends Component {
                   <li className={FooterStyles.navItem} >
                     <a className={FooterStyles.navLink} href={`${SITE_URL}/privacy-policy`} >Privacy policy</a>
                   </li>
-                  {this.props.isMap &&
                   <li className={FooterStyles.navItem} >
                     <span className={FooterStyles.navLink} onClick={this.props.onOpenSupportModal} >Support</span>
-                  </li>}
+                  </li>
                 </ul>
                 <div className={FooterStyles.socialSection} >
                   <a
@@ -163,11 +158,6 @@ class Footer extends Component {
                 </div>
               </div>
             </div>
-            {!this.props.isMap &&
-            <div className={FooterStyles.subFooter} >
-              <img className={FooterStyles.logoGfw} src={GFWLogo} alt="Global Fishing Watch" />
-              <span className={FooterStyles.subFooterText} >Global Fishing Watch</span>
-            </div>}
           </div>
         </footer>
       </div>
@@ -176,14 +166,12 @@ class Footer extends Component {
 }
 
 Footer.propTypes = {
-  isMap: PropTypes.bool,
   isExpanded: PropTypes.bool,
   onClose: PropTypes.func,
   onOpenSupportModal: PropTypes.func
 };
 
 Footer.defaultProps = {
-  isMap: false,
   isExpanded: false
 };
 

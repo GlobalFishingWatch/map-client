@@ -55,16 +55,6 @@
       margin-right: 0;
       width: auto;
     }
-
-    img {
-      height: 100%;
-      max-width: 250px;
-      width: 100%;
-
-      @media #{$mq-tablet} {
-        width: auto;
-      }
-    }
   }
 
   .iconShare {

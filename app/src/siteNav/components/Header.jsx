@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import betaLogo from 'assets/logos/gfw_logo.svg';
+import logo from 'assets/logos/gfw_logo_small.png';
 import menuicon from 'assets/icons/menu.svg';
 import MenuMobile from 'siteNav/containers/MenuMobile';
 import BaseStyles from 'styles/_base.scss';
@@ -66,7 +66,7 @@ class Header extends Component {
                 className={classnames(HeaderStyles.appLogo, { [HeaderStyles._isEmbedded]: isEmbedded })}
               >
                 <img
-                  src={betaLogo}
+                  src={logo}
                   alt="Global Fishing Watch"
                 />
               </a>
