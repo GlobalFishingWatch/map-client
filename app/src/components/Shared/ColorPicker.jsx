@@ -38,8 +38,8 @@ class ColorPicker extends Component {
 
 ColorPicker.propTypes = {
   onColorChange: PropTypes.func.isRequired,
-  color: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired
+  color: PropTypes.string,
+  id: PropTypes.string
 };
 
 export default ColorPicker;

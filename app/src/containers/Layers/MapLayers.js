@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
   token: state.user.token,
   zoom: state.map.zoom,
   layers: state.layers.workspaceLayers,
-  layerFilters: state.filterGroups.layerFilters,
+  flagsLayers: state.filters.flagsLayers,
   heatmap: state.heatmap.heatmapLayers,
   highlightedVessels: state.heatmap.highlightedVessels,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,

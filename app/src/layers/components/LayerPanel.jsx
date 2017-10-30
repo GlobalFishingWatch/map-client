@@ -66,7 +66,7 @@ class LayerPanel extends Component {
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />
-        <ExpandItem active={this.state.expand === 'FISHING_LAYERS'} accordion >
+        <ExpandItem active={this.state.expand === 'ACTIVITY_LAYERS'} accordion >
           <ul className={LayerListStyles.list} >
             {fishingLayers}
           </ul >

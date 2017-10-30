@@ -19,7 +19,6 @@ class FilterGroupItem extends Component {
     // TODO: hide quick edits and such
 
     this.props.toggleFilterGroupVisibility(this.props.index);
-    this.props.refreshFlagFiltersLayers();
   }
 
   onClickFilterGroupDelete() {
@@ -75,8 +74,7 @@ FilterGroupItem.propTypes = {
   isFilterGroupQuickEditMode: PropTypes.bool, // if currently editing this filter group
   editFilterGroup: PropTypes.func,
   deleteFilterGroup: PropTypes.func,
-  toggleFilterGroupVisibility: PropTypes.func,
-  refreshFlagFiltersLayers: PropTypes.func
+  toggleFilterGroupVisibility: PropTypes.func
 };
 
 FilterGroupItem.defaultProps = {

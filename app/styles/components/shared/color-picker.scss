@@ -1,31 +1,66 @@
 @import '../../settings';
 @import '../../mixins';
 
+.yellow {
+  background-color: $yellow;
+}
+
+.lightBlue {
+  background-color: $light-blue;
+}
+
+.brightGreen {
+  background-color: $brightGreen;
+}
+
+.green {
+  background-color: $green;
+}
+
+.blue {
+  background-color: $blue;
+}
+
+.purple {
+  background-color: $purple;
+}
+
+.peach {
+  background-color: $peach;
+}
+
+.orange {
+  background-color: $orange;
+}
+
+.pink {
+  background-color: $pink;
+}
+
+.colorInput {
+  display: inline-block;
+}
+
 .colorPicker {
-  .colorInput {
-    display: inline-block;
-    
-    input[type="radio"] {
-      display: none;
-      &:checked + label {
-        box-shadow: 0px 0px 0px 2px $color-white;
-      }
-    }
-
-    label {
-      @include colorClasses();
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      margin-right: 10px;
-      padding: 1px;
-      border-radius: 50%;
-    }
-  }
-
   .title {
     margin-bottom: 5px;
     font-size: $font-size-x-small;
     font-weight: $font-weight-light-bold;
+  }
+
+  input[type="radio"] {
+    display: none;
+    &:checked + label {
+      box-shadow: 0px 0px 0px 2px $color-white;
+    }
+  }
+
+  label {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    padding: 1px;
+    border-radius: 50%;
   }
 }

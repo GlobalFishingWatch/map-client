@@ -12,6 +12,7 @@
     "DEFAULT_WORKSPACE": true,
     "DISABLE_WELCOME_MODAL": true,
     "ENABLE_AREA_OF_INTEREST": true,
+    "ENABLE_FILTER_GROUPS": true,
     "GA_TRACKING_CODE": true,
     "google": true,
     "LOCAL_WORKSPACE": true,

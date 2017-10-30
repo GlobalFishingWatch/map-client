@@ -7,7 +7,7 @@ import {
 import { hueToHueIncrement } from 'util/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, useHeatmapStyle, hue) {
+  constructor(baseTexture, maxSprites, useHeatmapStyle) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -22,9 +22,23 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
-    this._setTextureFrame(useHeatmapStyle, hue);
+    this.setRenderingStyle(useHeatmapStyle);
 
     this._resizeSpritesPool(10000);
+  }
+
+
+  setFilters(flag, hue) {
+    this.flags = (flag === 'ALL') ? undefined : [flag];
+    this._setTextureFrame(null, hue);
+  }
+
+  setFlags(flags) {
+    this.flags = flags;
+  }
+
+  setSeriesFilter(foundVessels) {
+    this.foundVessels = foundVessels;
   }
 
   setRenderingStyle(useHeatmapStyle) {
@@ -65,34 +79,102 @@ export default class HeatmapSubLayer {
     this.mainVesselTexture.update();
   }
 
+  render(tiles, startIndex, endIndex, offsets) {
+    if (tiles.length === 0) return;
 
-  render() {
-    // spritesProps is set by HeatmapLayer
-    const numSpritesNeeded = this.spritesProps.length;
+    if (offsets === undefined) {
+      console.warn('map offsets not set yet while trying to render gl sublayer');
+      return;
+    }
+
+    const numSpritesNeeded = this._getNumSpritesNeeded(tiles, startIndex, endIndex);
     const numSpritesNeededWithMargin = numSpritesNeeded * 2;
 
     if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
       this._resizeSpritesPool(numSpritesNeededWithMargin);
     }
 
-    for (let i = 0; i < numSpritesNeeded; i++) {
-      const sprite = this.spritesPool[i];
-      const spriteProps = this.spritesProps[i];
+    this.numSprites = 0;
 
-      sprite.position.x = spriteProps.x;
-      sprite.position.y = spriteProps.y;
-      sprite.alpha = spriteProps.alpha;
-      sprite.scale.set(spriteProps.scale);
-    }
 
-    for (let i = numSpritesNeeded, poolSize = this.spritesPool.length; i < poolSize; i++) {
+    tiles.forEach((tile) => {
+      if (!document.body.contains(tile.canvas)) {
+        console.warn('rendering tile that doesnt exist in the DOM', tile);
+      }
+
+      this._dumpTileVessels(startIndex, endIndex, tile.data, offsets);
+    });
+
+    // hide unused sprites
+    for (let i = this.numSprites, poolSize = this.spritesPool.length; i < poolSize; i++) {
       this.spritesPool[i].x = -100;
     }
+  }
+
+  _dumpTileVessels(startIndex, endIndex, data, offsets) {
+    if (!data) {
+      return;
+    }
+
+    if (!this.spritesPool.length) {
+      console.warn('empty sprites pool');
+      return;
+    }
+
+    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
+      const frame = data[timeIndex];
+
+      if (!frame) continue;
+
+      for (let index = 0, len = frame.worldX.length; index < len; index++) {
+        if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+          continue;
+        }
+        if (this.foundVessels &&
+            (this.foundVessels.filter(v => v.series === frame.series[index] && v.seriesgroup === frame.seriesgroup[index]).length === 0)) {
+          continue;
+        }
+        this.numSprites++;
+        const sprite = this.spritesPool[this.numSprites];
+
+        // sprite.position.x = offsetX + frame.x[index];
+        // sprite.position.y = offsetY + frame.y[index];
+        const worldX = frame.worldX[index];
+        let originX = offsets.left;
+        if (originX > worldX) {
+          originX -= 256;
+        }
+        sprite.position.x = (worldX - originX) * offsets.scale;
+        sprite.position.y = ((frame.worldY[index] - offsets.top) * offsets.scale);
+        sprite.alpha = frame.opacity[index];
+        sprite.scale.set(frame.radius[index]);
+      }
+    }
+  }
+
+  _getNumSpritesNeeded(tiles, startIndex, endIndex) {
+    let numSprites = 0;
+    // get pool size
+    tiles.forEach((tile) => {
+      for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
+        if (!tile.data) continue;
+        const frame = tile.data[timeIndex];
+        if (!frame) continue;
+        for (let index = 0, len = frame.worldX.length; index < len; index++) {
+          if (this.flags !== undefined && frame.category !== undefined && this.flags.indexOf(frame.category[index]) === -1) {
+            continue;
+          }
+          numSprites++;
+        }
+      }
+    });
+    return numSprites;
   }
 
   _resizeSpritesPool(finalPoolSize) {
     const currentPoolSize = this.spritesPool.length;
     const poolDelta = finalPoolSize - currentPoolSize;
+    // console.log(currentPoolSize, '->', finalPoolSize);
     if (poolDelta > 0) {
       this._addSprites(poolDelta);
     } else {

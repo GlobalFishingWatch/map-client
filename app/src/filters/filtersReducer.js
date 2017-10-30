@@ -33,7 +33,11 @@ const initialState = {
     getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
-  timelineSpeed: 1
+  timelineSpeed: 1,
+  /** @deprecated use filterGroups logic instead */
+  flagsLayers: {},
+  /** @deprecated use filterGroups logic instead */
+  flags: []
 };
 
 export default function (state = initialState, action) {

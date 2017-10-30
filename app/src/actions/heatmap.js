@@ -84,13 +84,9 @@ export function initHeatmapLayers() {
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsLess, temporalExtentsIndices) {
+function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsIndices) {
   // const tileCoordinates = referenceTile.tileCoordinates;
-  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, {
-    tileCoordinates,
-    temporalExtentsIndices,
-    temporalExtentsLess
-  });
+  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, { tileCoordinates, temporalExtentsIndices });
   const allLayerPromises = Promise.all(pelagosPromises);
 
   const layerTilePromise = new Promise((resolve) => {
@@ -116,10 +112,7 @@ function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlayback
   // console.time('test')
   const cleanVectorArrays = getCleanVectorArrays(rawTileData);
   const groupedData = groupData(cleanVectorArrays, columns);
-  if (Object.keys(groupedData).length === 0) {
-    return [];
-  }
-  const vectorArray = (columns.indexOf('latitude') > -1) ? addWorldCoordinates(groupedData, map) : groupedData;
+  const vectorArray = addWorldCoordinates(groupedData, map);
   const data = getTilePlaybackData(
     tileCoordinates.zoom,
     vectorArray,
@@ -177,7 +170,6 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           layers[layerId].url,
           token,
           layerHeader.temporalExtents,
-          layerHeader.temporalExtentsLess,
           temporalExtentsIndicesToLoad
         );
 
@@ -332,23 +324,15 @@ export function loadTilesExtraTimeRange() {
   };
 }
 
-/**
- * Gets all the categories for all the filters of a Heatmap layer
- * @param {object} state - the application state
- * @param {string} layerId - the id of a heatmap layer
- * @return {array} categories
- */
-const _getCurrentFiltersForLayer = (state, layerId) => {
-  if (layerId === undefined) return undefined;
-  return state.filterGroups.layerFilters[layerId];
+
+const _getCurrentFlagsForLayer = (state, layerId) => {
+  if (layerId === undefined) {
+    return undefined;
+  }
+  const flags = state.filters.flagsLayers[layerId].map(flagLayer => flagLayer.flag);
+  return (flags.length === 1 && flags[0] === 'ALL') ? undefined : flags;
 };
 
-/**
- * Returns clusters or vessels data from a tileQuery
- * @param {object} state - the application state
- * @param {string} tileQuery - the id of a heatmap layer
- * @return {object} { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId }
- */
 const _queryHeatmap = (state, tileQuery) => {
   const layers = state.heatmap.heatmapLayers;
   const timelineExtent = state.filters.timelineInnerExtentIndexes;
@@ -361,13 +345,12 @@ const _queryHeatmap = (state, tileQuery) => {
     if (workspaceLayer.added === true && workspaceLayer.visible === true) {
       const layer = layers[layerId];
       const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
-      const currentFilters = _getCurrentFiltersForLayer(state, layerId);
+      const currentFlags = _getCurrentFlagsForLayer(state, layerId);
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
           layerId,
           tilesetId: layer.tilesetId,
-          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
-            tileQuery.worldY, startIndex, endIndex, currentFilters)
+          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX, tileQuery.worldY, startIndex, endIndex, currentFlags)
         });
       }
     }
@@ -430,7 +413,8 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
         foundVessels,
-        latLng
+        latLng,
+        currentFlags: _getCurrentFlagsForLayer(state, layerId)
       }
     });
   };

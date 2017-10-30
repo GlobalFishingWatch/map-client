@@ -1,14 +1,11 @@
 /* global PIXI */
 import 'pixi.js';
-import uniq from 'lodash/uniq';
-import { vesselSatisfiesFilters } from 'util/heatmapTileData';
-import { COLOR_HUES } from 'config';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
   constructor(layerSettings, baseTexture, maxSprites) {
     this.id = layerSettings.id;
-    this.subLayers = {};
+    this.subLayers = [];
     this.baseTexture = baseTexture;
     this.maxSprites = maxSprites;
 
@@ -17,9 +14,7 @@ export default class HeatmapLayer {
     if (layerSettings.visible === false) {
       this.hide(false);
     }
-    const defaultHue = layerSettings.hue !== undefined ? layerSettings.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
-    this.setDefaultHue(defaultHue);
-    this.setOpacity(layerSettings.opacity);
+    this.setOpacity(layerSettings.opacity, false);
   }
 
   show() {
@@ -34,128 +29,44 @@ export default class HeatmapLayer {
     this.stage.alpha = opacity;
   }
 
-  setDefaultHue(hue) {
-    this.defaultHue = hue;
-  }
-
   setRenderingStyle(useHeatmapStyle) {
-    this.useHeatmapStyle = useHeatmapStyle;
-    Object.values(this.subLayers).forEach((subLayer) => {
+    this.subLayers.forEach((subLayer) => {
       subLayer.setRenderingStyle(useHeatmapStyle);
     });
   }
 
-  setFilters(layerFilters) {
-    this.filters = layerFilters;
-    this.numFilters = this.filters.length;
+  setSubLayers(flags, useHeatmapStyle) {
+    const subLayerDelta = flags.length - this.subLayers.length;
+    if (subLayerDelta === -1) {
+      const subLayer = this.subLayers.pop();
+      this.destroySubLayer(subLayer);
+    } else if (subLayerDelta > 0) {
+      for (let i = 0; i < subLayerDelta; i++) {
+        const subLayer = new HeatmapSubLayer(this.baseTexture, this.maxSprites, useHeatmapStyle);
+        this.subLayers.push(subLayer);
+        this.stage.addChild(subLayer.stage);
+      }
+    }
+    this.subLayers.forEach((subLayer, index) => {
+      const flagData = flags[index];
+      subLayer.setFilters(flagData.flag, flagData.hue);
+    });
   }
 
   render(tiles, startIndex, endIndex, offsets) {
+    // if (this.stage.visible === false) return;
 
-    const allHuesToRender = (this.filters !== undefined && this.filters.length)
-      ? this.filters
-        // pass is set to true by filterGroupActions when none of the filters fields in the filter group is supported by the layer headers
-        .filter(f => f.pass !== true)
-        .map(f => f.hue.toString())
-      : [this.defaultHue.toString()];
-    const currentlyUsedHues = Object.keys(this.subLayers);
-
-    // get all hues, old and new
-    const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
-
-    for (let i = 0; i < allHues.length; i++) {
-      const hue = allHues[i];
-      if (allHuesToRender.indexOf(hue) === -1) {
-        // not on new hues: delete sublayer
-        this._destroySubLayer(this.subLayers[hue]);
-        delete this.subLayers[hue];
-        continue;
-      }
-      if (currentlyUsedHues.indexOf(hue) === -1) {
-        // not on old hues: create sublayer
-        this.subLayers[hue] = this._createSublayer(this.baseTexture, this.maxSprites, this.useHeatmapStyle, hue);
-      }
-      this.subLayers[hue].spritesProps = [];
-    }
-
-    if (!allHuesToRender.length) return;
-
-    tiles.forEach((tile) => {
-      this._setSubLayersSpritePropsForTile({
-        data: tile.data,
-        startIndex,
-        endIndex,
-        offsets,
-        filters: this.filters,
-        numFilters: this.numFilters,
-        defaultHue: this.defaultHue
-      });
+    this.subLayers.forEach((subLayer) => {
+      subLayer.render(tiles, startIndex, endIndex, offsets);
     });
-
-    allHuesToRender.forEach((hue) => {
-      this.subLayers[hue].render();
-    });
-  }
-
-  _setSubLayersSpritePropsForTile({ data, startIndex, endIndex, offsets, filters, numFilters, defaultHue }) {
-    if (!data || offsets === undefined) {
-      return;
-    }
-
-    for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
-      const frame = data[timeIndex];
-
-      if (!frame) continue;
-
-      for (let index = 0, len = frame.worldX.length; index < len; index++) {
-        let hue;
-        if (filters === undefined || !filters.length) {
-          hue = defaultHue;
-        }
-        for (let fi = 0; fi < numFilters; fi++) {
-          const filter = filters[fi];
-          if (vesselSatisfiesFilters(frame, index, filter.filterValues)) {
-            hue = filter.hue;
-            break;
-          }
-        }
-
-        // no filter passes: bail
-        if (hue === undefined) {
-          continue;
-        }
-
-        const worldX = frame.worldX[index];
-        let originX = offsets.left;
-        if (originX > worldX) {
-          originX -= 256;
-        }
-
-        const spriteProps = {
-          x: (worldX - originX) * offsets.scale,
-          y: ((frame.worldY[index] - offsets.top) * offsets.scale),
-          alpha: frame.opacity[index],
-          scale: frame.radius[index]
-        };
-        if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
-          this.subLayers[hue].spritesProps.push(spriteProps);
-        }
-      }
-    }
-  }
-
-  _createSublayer(baseTexture, maxSprites, useHeatmapStyle, hue) {
-    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, useHeatmapStyle, hue);
-    this.stage.addChild(subLayer.stage);
-    return subLayer;
   }
 
   destroy() {
-    Object.values(this.subLayers).forEach(this._destroySubLayer);
+    this.subLayers.forEach(this.destroySubLayer);
     this.stage.destroy({ children: true });
   }
 
-  _destroySubLayer(subLayer) {
+  destroySubLayer(subLayer) {
     this.stage.removeChild(subLayer.stage);
     subLayer.destroy();
   }
