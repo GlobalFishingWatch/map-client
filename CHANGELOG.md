@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.1 RC2
+## 2.2.1 RC3
 - Replaced logo
 - Rename "Fishing Layers" to "Activity Layers"
 - Fix issue where latitude would be shown twice instead of lat-long
