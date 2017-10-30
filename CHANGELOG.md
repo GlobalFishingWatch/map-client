@@ -1,11 +1,14 @@
 # Changelog
+
+- Rename "Fishing Layers" to "Activity Layers"
+- Fix issue where latitude would be shown twice instead of lat-long
+
+## 2.2.1 RC2
 - Fixed issue in vessel search results when highlighting MMSI
 
 ## 2.2.1 RC1
 - Fix latitude displayed twice in hover coordinates
 - Moved 'beta' label to footer while keeping the old logo for now
-- Rename "Fishing Layers" to "Activity Layers"
-- Fix issue where latitude would be shown twice instead of lat-long
 
 ## 2.2.0
 - Enforce minimum 1 day period on timebar
