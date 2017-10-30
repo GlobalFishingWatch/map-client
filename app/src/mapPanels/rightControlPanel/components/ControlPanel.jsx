@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive';
 import AreasPanel from 'areasOfInterest/containers/AreasPanel';
 import MenuLink from 'mapPanels/rightControlPanel/components/MenuLink';
 import SubMenu from 'mapPanels/rightControlPanel/containers/SubMenu';
+import FilterPanel from 'filters/containers/FilterPanel';
 import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
@@ -118,7 +119,8 @@ class ControlPanel extends Component {
         title="Filters"
         icon={this.renderIcon('filters')}
       >
-        <FilterGroupPanel />
+        {!ENABLE_FILTER_GROUPS && <FilterPanel />}
+        {ENABLE_FILTER_GROUPS && <FilterGroupPanel />}
       </SubMenu >
     );
   }

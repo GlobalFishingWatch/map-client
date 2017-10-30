@@ -1,81 +1,23 @@
 import { connect } from 'react-redux';
 import FilterGroupForm from 'filters/components/FilterGroupForm';
-import {
-  setCurrentFilterGroupActiveLayer,
-  setCurrentFilterGroupColor,
-  setCurrentFilterValue,
-  setCurrentFilterGroupLabel,
-  saveFilterGroup,
-  setFilterGroupModalVisibility
-} from 'filters/filterGroupsActions';
+import { setFilterGroupModalVisibility, saveFilterGroup, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
+import { LAYER_TYPES } from 'constants';
 import { setLayerInfoModal } from 'actions/map';
-import { LAYER_TYPES, FLAG_FILTER_GROUP_VALUES } from 'constants';
 
 const mapStateToProps = (state) => {
-  const currentlyEditedFilterGroup = state.filterGroups.currentlyEditedFilterGroup;
-
-  // prepare layers list for component, add a filterActivated prop to set checkbox status
-  const layers = state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map((l) => {
-    l.filterActivated = currentlyEditedFilterGroup.checkedLayers[l.id] === true;
-    return l;
-  });
-
-  // prepare filters: dedupe filters that have the same id, set default values
-  const availableFilters = layers.filter(l => l.filterActivated === true).map(l => l.header.filters);
-  const flattenedFilters = [].concat(...availableFilters);
-  const filtersById = {};
-  // this will remove duplicates by filter.id (ie category / flag_id)
-  flattenedFilters.forEach((f) => {
-    filtersById[f.id] = f;
-    if (f.useDefaultValues === true) {
-      if (f.id === 'flag') {
-        filtersById[f.id].values = FLAG_FILTER_GROUP_VALUES;
-      }
-    }
-  });
-  const filters = Object.values(filtersById);
-
-  // take all the displayed labels to set default filter group label
-  const defaultLabel = (!filters.length) ? '' : Object.keys(currentlyEditedFilterGroup.filterValues).map((filterId) => {
-    const currentFilterValue = currentlyEditedFilterGroup.filterValues[filterId];
-    const filterValues = filters.find(filter => filter.id === filterId).values;
-    const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue).label;
-    return filterValueLabel;
-  }).join(' ');
-  // const label = (defaultName === currentlyEditedFilterGroup.label || ) ? defaultName : currentlyEditedFilterGroup.label;
-
-  // prepare save button status: at least one layer must be checked, and at least one filter defined
-  const anyLayerChecked = Object.keys(currentlyEditedFilterGroup.checkedLayers)
-    .some(key => currentlyEditedFilterGroup.checkedLayers[key] === true);
-  const anyFilterSelected = Object.keys(currentlyEditedFilterGroup.filterValues).length > 0;
-  const disableSave = anyLayerChecked === false || anyFilterSelected === false;
-
+  const editFilterGroupIndex = state.filterGroups.editFilterGroupIndex;
   return {
-    layers,
-    currentlyEditedFilterGroup,
-    filters,
-    label: currentlyEditedFilterGroup.label,
-    defaultLabel,
-    disableSave
+    layers: state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap),
+    filterGroup: editFilterGroupIndex !== null ? state.filterGroups.filterGroups[editFilterGroupIndex] : {},
+    editFilterGroupIndex
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onLayerChecked: (layerId) => {
-    dispatch(setCurrentFilterGroupActiveLayer(layerId));
-  },
-  onColorChanged: (color) => {
-    dispatch(setCurrentFilterGroupColor(color));
-  },
-  onLabelChanged: (label) => {
-    dispatch(setCurrentFilterGroupLabel(label));
-  },
-  onFilterValueChanged: (id, value) => {
-    dispatch(setCurrentFilterValue(id, value));
-  },
-  onSaveClicked: () => {
+  saveFilterGroup: (filterGroup, index) => {
     dispatch(setFilterGroupModalVisibility(false));
-    dispatch(saveFilterGroup());
+    dispatch(saveFilterGroup(filterGroup, index));
+    dispatch(setEditFilterGroupIndex(null));
   },
   openLayerInfoModal: (modalParams) => {
     dispatch(setLayerInfoModal(modalParams));

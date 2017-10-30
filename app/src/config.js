@@ -75,8 +75,6 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
-export const AIS_LAYER_ID = 'fishing2';
-
 // Colors of the layers, areas, ...
 export const COLORS = {
   orange: '#F95E5E',

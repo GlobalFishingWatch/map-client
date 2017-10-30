@@ -9,7 +9,7 @@ import { hueToRgbHexString } from 'util/colors';
 export default class TracksLayerGL {
   constructor() {
     this.stage = new PIXI.Graphics();
-    this.stage.nativeLines = true;
+    // this.stage.nativeLines = true;
   }
 
   clear() {
@@ -40,7 +40,6 @@ export default class TracksLayerGL {
         lineOpacity: 1
       });
 
-      // Draw the highlight over the track when the user hovers over the Timebar
       if (drawOverTrack === true) {
         n += this._drawTrack({
           data: track.data,

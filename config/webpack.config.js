@@ -58,6 +58,7 @@ const webpackConfig = {
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
       ENABLE_AREA_OF_INTEREST: envVariables.ENABLE_AREA_OF_INTEREST === 'true',
+      ENABLE_FILTER_GROUPS: envVariables.ENABLE_FILTER_GROUPS === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

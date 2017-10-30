@@ -1,20 +1,11 @@
 import {
   VESSELS_HUES_INCREMENTS_NUM,
-  VESSELS_HUES_INCREMENT,
-  COLOR_HUES
+  VESSELS_HUES_INCREMENT
 } from 'config';
 
 const RGB_MAX = 255;
 const HUE_MAX = 360;
 const SV_MAX = 100;
-
-export const getKeyByValue = (obj, value) => {
-  let result = null;
-  Object.entries(obj).forEach((entry) => {
-    if (entry[1] === value) result = entry[0];
-  });
-  return result;
-};
 
 /**
  * Converts an RGB color value to HSV. Conversion formula
@@ -107,18 +98,6 @@ export const hueToRgbHexString = (hue) => {
   return rgbToHexString(rgb);
 };
 
-const closestNumber = (numberArray, goal) =>
-  numberArray.reduce((prev, curr) =>
-    (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev)
-  );
-
-export const hueToClosestColor = (hue) => {
-  if (hue === undefined || hue === null) return undefined;
-  const colorHueValues = Object.keys(COLOR_HUES).map(key => COLOR_HUES[key]);
-  const closestHue = closestNumber(colorHueValues, hue);
-  return getKeyByValue(COLOR_HUES, closestHue);
-};
-
 
 export const hueToRgbaString = (hue, alpha) => {
   const rgb = hueToRgbDefaults(hue);
@@ -145,3 +124,11 @@ export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INC
 export const hueToHueIncrement = hue => Math.round((hue / 360) * (VESSELS_HUES_INCREMENTS_NUM - 1));
 
 export const wrapHue = hue => hue % 360;
+
+export const getKeyByValue = (obj, value) => {
+  let result = null;
+  Object.entries(obj).forEach((entry) => {
+    if (entry[1] === value) result = entry[0];
+  });
+  return result;
+};
