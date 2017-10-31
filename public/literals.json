@@ -1,5 +1,7 @@
 {
   "fishing_hours_description": "Total fishing hours for all vessels on the selected time period are determined by the Global Fishing Watch fishing detection algorithm. Our fishing algorithm identifies each AIS broadcast as 'likely fishing' or 'not fishing.' We then assign an amount of time to each AIS point calculated from the time between each AIS broadcast. Because data from AIS is not evenly spaced in time, the amount of time assigned to each AIS point varies.",
   "banner": "You are viewing a new version of the map. <a href='http://globalfishingwatch.org/map'>See legacy map</a>.",
-  "report_warning": "Only the following layers will be reported: $REPORTABLE_LAYERS"
+  "report_warning": "Only the following layers will be reported: $REPORTABLE_LAYERS",
+  "filter_groups_help": "This tool allows you to apply one or more filters to one or more fishing layers. Start by selecting the layers you want the filters applied to, then select filters that should apply to the layer selection.",
+  "filter_groups_warning": "You selected a '$FILTER' filter, which can't be applied to the layer '$LAYER'. As a result, all the vessels of this layer will be hidden."
 }

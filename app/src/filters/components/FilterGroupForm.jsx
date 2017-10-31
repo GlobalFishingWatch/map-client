@@ -11,6 +11,7 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
+import WarningStyles from 'styles/components/shared/warning.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
@@ -92,10 +93,18 @@ class FilterGroupForm extends Component {
       <div>
         <h3 className={ModalStyles.title}>Filter Group</h3>
         <div className={ModalStyles.optionsContainer}>
+          {this.props.help}
+        </div>
+        {this.props.warning &&
+          <div className={classnames(ModalStyles.warning, WarningStyles.warning)}>
+            ⚠️ {this.props.warning}
+          </div>
+        }
+        <div className={ModalStyles.optionsContainer}>
           <div className={ModalStyles.column}>
             <div className={ModalStyles.wrapper}>
               <div className={ModalStyles.sectionTitle}>
-                Select a Fishing Layer:
+                <strong>1.</strong>Apply filters to these layers:
               </div>
               <div className={ItemList.wrapper}>
                 <ul>
@@ -114,7 +123,7 @@ class FilterGroupForm extends Component {
           <div className={ModalStyles.column}>
             <div className={ModalStyles.wrapper}>
               <div className={ModalStyles.sectionTitle}>
-                Filter by:
+                <strong>2.</strong>On the layers selected, show only:
               </div>
               {filtersList}
             </div>
@@ -162,7 +171,9 @@ FilterGroupForm.propTypes = {
   onFilterValueChanged: PropTypes.func,
   onLabelChanged: PropTypes.func,
   onSaveClicked: PropTypes.func,
-  openLayerInfoModal: PropTypes.func
+  openLayerInfoModal: PropTypes.func,
+  help: PropTypes.string,
+  warning: PropTypes.string
 };
 
 export default FilterGroupForm;
