@@ -1,12 +1,10 @@
 import find from 'lodash/find';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, HEADERLESS_LAYERS } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
 import calculateLayerId from 'util/calculateLayerId';
-// TODO: Remove this when legacy AIS layers contain filter category in headers (+2 more comments in this file)->
-import { AIS_LAYER_ID } from 'config';
-// <-
+
 export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_LAYERS = 'SET_LAYERS';
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
@@ -127,27 +125,23 @@ export function initLayers(workspaceLayers, libraryLayers) {
     workspaceLayers
       .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
       .forEach((heatmapLayer) => {
-        const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
-        headerPromise.then((header) => {
-          // Remove this when legacy AIS layers contain filter category in headers ->
-          const defaultFilter = {
-            field: 'category',
-            id: 'flag',
-            label: 'Country',
-            useDefaultValues: true
+        if (HEADERLESS_LAYERS.indexOf(heatmapLayer.tilesetId) > -1) {
+          // headerless layers are considered temporalExtents-less too
+          heatmapLayer.header = {
+            temporalExtentsLess: true,
+            temporalExtents: [[0, (new Date(2100, 0, 0)).getTime()]],
+            colsByName: []
           };
-          // <-
-          if (header !== null) {
-            heatmapLayer.header = header;
-            dispatch(setGlobalFiltersFromHeader(header));
-            // Remove this when legacy AIS layers contain filter category in headers ->
-            if (heatmapLayer.id === AIS_LAYER_ID && header.filters === undefined) {
-              header.filters = [defaultFilter];
+        } else {
+          const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
+          headerPromise.then((header) => {
+            if (header !== null) {
+              heatmapLayer.header = header;
+              dispatch(setGlobalFiltersFromHeader(header));
             }
-            // <-
-          }
-        });
-        headersPromises.push(headerPromise);
+          });
+          headersPromises.push(headerPromise);
+        }
       });
 
     const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));

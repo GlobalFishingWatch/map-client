@@ -35,9 +35,10 @@ class SearchResult extends Component {
           className={ResultListStyles.mainResultLabel}
         />
         {MMSI &&
-        <span className={ResultListStyles.subResultLabel} >
-          {highlightMMSI}
-        </span >}
+        <span
+          dangerouslySetInnerHTML={{ __html: highlightMMSI }}
+          className={ResultListStyles.subResultLabel}
+        />}
       </li >
     );
   }

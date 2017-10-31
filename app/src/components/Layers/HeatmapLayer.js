@@ -2,6 +2,7 @@
 import 'pixi.js';
 import uniq from 'lodash/uniq';
 import { vesselSatisfiesFilters } from 'util/heatmapTileData';
+import { COLOR_HUES } from 'config';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
@@ -16,7 +17,8 @@ export default class HeatmapLayer {
     if (layerSettings.visible === false) {
       this.hide(false);
     }
-    this.setDefaultHue(layerSettings.hue);
+    const defaultHue = layerSettings.hue !== undefined ? layerSettings.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
+    this.setDefaultHue(defaultHue);
     this.setOpacity(layerSettings.opacity);
   }
 
@@ -43,32 +45,27 @@ export default class HeatmapLayer {
     });
   }
 
-  setFilters(layerFilters, isTheMapFiltered = false) {
+  setFilters(layerFilters) {
     this.filters = layerFilters;
     this.numFilters = this.filters.length;
-    this.isTheMapFiltered = isTheMapFiltered;
-  }
-
-  getHuesToRender() {
-    if (this.filters !== undefined && this.filters.length) {
-      return this.filters.map(f => f.hue.toString());
-    }
-
-    if (this.isTheMapFiltered) return ['FILTERED'];
-    return [this.defaultHue.toString()];
   }
 
   render(tiles, startIndex, endIndex, offsets) {
 
-    const huesToRender = this.getHuesToRender();
+    const allHuesToRender = (this.filters !== undefined && this.filters.length)
+      ? this.filters
+        // pass is set to true by filterGroupActions when none of the filters fields in the filter group is supported by the layer headers
+        .filter(f => f.pass !== true)
+        .map(f => f.hue.toString())
+      : [this.defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
+
     // get all hues, old and new
-    const allHues = uniq(huesToRender.concat(currentlyUsedHues));
+    const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
 
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
-      if (hue === 'FILTERED') continue;
-      if (huesToRender.indexOf(hue) === -1) {
+      if (allHuesToRender.indexOf(hue) === -1) {
         // not on new hues: delete sublayer
         this._destroySubLayer(this.subLayers[hue]);
         delete this.subLayers[hue];
@@ -80,6 +77,8 @@ export default class HeatmapLayer {
       }
       this.subLayers[hue].spritesProps = [];
     }
+
+    if (!allHuesToRender.length) return;
 
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({
@@ -93,11 +92,8 @@ export default class HeatmapLayer {
       });
     });
 
-    huesToRender.forEach((hue) => {
-      // dont render a FILTERED subLayer
-      if (hue !== 'FILTERED') {
-        this.subLayers[hue].render();
-      }
+    allHuesToRender.forEach((hue) => {
+      this.subLayers[hue].render();
     });
   }
 
