@@ -106,7 +106,7 @@ export default function (state = initialState, action) {
     }
     case SET_CURRENT_FILTER_VALUE: {
       const currentlyEditedFilterGroup = Object.assign({}, state.currentlyEditedFilterGroup);
-      if (!action.payload.values.length || action.payload.values[0].id === '') {
+      if (!action.payload.values.length) {
         delete currentlyEditedFilterGroup.filterValues[action.payload.id];
       } else {
         currentlyEditedFilterGroup.filterValues[action.payload.id] = action.payload.values.map(v => parseInt(v.id, 10));
