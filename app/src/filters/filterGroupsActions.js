@@ -187,9 +187,9 @@ export function setCurrentFilterGroupLabel(label) {
   };
 }
 
-export function setCurrentFilterValue(id, value) {
+export function setCurrentFilterValue(id, values) {
   return {
     type: SET_CURRENT_FILTER_VALUE,
-    payload: { id, value }
+    payload: { id, values }
   };
 }
