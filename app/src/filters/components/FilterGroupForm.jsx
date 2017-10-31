@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import SelectorStyles from 'styles/components/shared/react-select.scss';
 import classnames from 'classnames';
 import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -8,7 +11,6 @@ import ModalStyles from 'styles/components/map/modal.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
-import SelectorStyles from 'styles/components/shared/selector.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
@@ -51,38 +53,35 @@ class FilterGroupForm extends Component {
     ));
   }
 
-  renderFilterOptions(filter) {
-    let options = [<option key={filter.id} value="" >{filter.label}</option>];
-
-    const supportsEmojiFlags =
-      ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
-      platform.os.toString().match('Windows 10');
-
-    if (filter.values) {
-      options = options.concat(
-        filter.values.map((option) => {
-          const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
-          return <option key={option.id} value={option.id} >{label}</option>;
-        })
-      );
-    }
-
-    return options;
-  }
-
   renderFiltersList() {
-    return this.props.filters.map((filter, index) => (
-      <div key={index} className={classnames(SelectorStyles.selector, SelectorStyles._big)} >
-        <select
-          key={index}
-          name={filter.label}
-          value={this.props.currentlyEditedFilterGroup.filterValues[filter.id]}
-          onChange={e => this.props.onFilterValueChanged(filter.id, e.target.value)}
-        >
-          {this.renderFilterOptions(filter)}
-        </select>
-      </div>
-    ));
+
+    return this.props.filters.map((filter, index) => {
+      const values = this.props.currentlyEditedFilterGroup.filterValues[filter.id];
+      const valuesJoined = (values !== undefined && values.length) ? values.join(',') : null;
+      const supportsEmojiFlags =
+        ['iOS', 'OS X'].indexOf(platform.os.family) > -1 ||
+        platform.os.toString().match('Windows 10');
+
+      const options = filter.values.map((option) => {
+        const label = (supportsEmojiFlags && option.icon !== undefined) ? `${option.label} ${option.icon}` : option.label;
+        return Object.assign({}, option, { label, id: option.id.toString() });
+      });
+
+      return (
+        <div className={SelectorStyles.select}>
+          <Select
+            key={index}
+            multi={true} // eslint-disable-line react/jsx-boolean-value
+            placeholder={filter.label}
+            valueKey="id"
+            value={valuesJoined}
+            closeOnSelect={false}
+            options={options}
+            onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
+          />
+        </div>
+      );
+    });
   }
 
 
@@ -121,7 +120,7 @@ class FilterGroupForm extends Component {
             </div>
             <div className={ModalStyles.wrapper}>
               <div className={ModalStyles.sectionTitle}>
-                <label htmlFor="name" >Name</label>
+                <label htmlFor="name">Filter group name</label>
               </div >
               <input
                 type="text"

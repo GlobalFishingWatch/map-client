@@ -13,6 +13,7 @@ import { LAYER_TYPES, FLAG_FILTER_GROUP_VALUES } from 'constants';
 
 const mapStateToProps = (state) => {
   const currentlyEditedFilterGroup = state.filterGroups.currentlyEditedFilterGroup;
+  const filterValuesKeys = Object.keys(currentlyEditedFilterGroup.filterValues);
 
   // prepare layers list for component, add a filterActivated prop to set checkbox status
   const layers = state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map((l) => {
@@ -21,7 +22,8 @@ const mapStateToProps = (state) => {
   });
 
   // prepare filters: dedupe filters that have the same id, set default values
-  const availableFilters = layers.filter(l => l.filterActivated === true).map(l => l.header.filters);
+  const filteredLayers = layers.filter(l => l.filterActivated === true);
+  const availableFilters = filteredLayers.map(l => l.header.filters);
   const flattenedFilters = [].concat(...availableFilters);
   const filtersById = {};
   // this will remove duplicates by filter.id (ie category / flag_id)
@@ -36,10 +38,13 @@ const mapStateToProps = (state) => {
   const filters = Object.values(filtersById);
 
   // take all the displayed labels to set default filter group label
-  const defaultLabel = (!filters.length) ? '' : Object.keys(currentlyEditedFilterGroup.filterValues).map((filterId) => {
-    const currentFilterValue = currentlyEditedFilterGroup.filterValues[filterId];
+  const defaultLabel = (!filters.length) ? '' : filterValuesKeys.map((filterId) => {
+    const currentFilterValues = currentlyEditedFilterGroup.filterValues[filterId];
     const filterValues = filters.find(filter => filter.id === filterId).values;
-    const filterValueLabel = filterValues.find(filterValue => parseInt(filterValue.id, 10) === currentFilterValue).label;
+    const filterValueLabel = filterValues
+      .filter(filterValue => currentFilterValues.indexOf(parseInt(filterValue.id, 10)) > -1)
+      .map(f => f.label)
+      .join(', ');
     return filterValueLabel;
   }).join(' ');
   // const label = (defaultName === currentlyEditedFilterGroup.label || ) ? defaultName : currentlyEditedFilterGroup.label;
@@ -70,8 +75,8 @@ const mapDispatchToProps = dispatch => ({
   onLabelChanged: (label) => {
     dispatch(setCurrentFilterGroupLabel(label));
   },
-  onFilterValueChanged: (id, value) => {
-    dispatch(setCurrentFilterValue(id, value));
+  onFilterValueChanged: (id, values) => {
+    dispatch(setCurrentFilterValue(id, values));
   },
   onSaveClicked: () => {
     dispatch(setFilterGroupModalVisibility(false));
