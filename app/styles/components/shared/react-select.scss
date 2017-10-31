@@ -1,0 +1,92 @@
+@import '../../settings';
+
+.select {
+  font-size: $font-size-small;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+
+  :global .Select-control {
+    background-color: transparent;
+    border: solid 1px $color-button-primary;
+    border-radius: 0;
+  }
+
+  :global .Select-input input {
+    color: $color-white;
+  }
+
+  :global .is-open > .Select-control {
+    background: $color-base;
+    border: solid 1px $color-button-primary;
+  }
+
+  :global .is-focused:not(.is-open) > .Select-control {
+    border: solid 1px $color-button-primary;
+  }
+
+  :global .Select-placeholder,
+  :global .Select--single > .Select-control .Select-value {
+    color: $color-button-primary;
+  }
+
+  :global .Select-arrow {
+    border-color: $color-button-primary transparent transparent;
+  }
+
+  :global .is-open > .Select-control .Select-arrow {
+    border-color: transparent transparent $color-button-primary;
+  }
+
+  :global .is-open .Select-arrow,
+  :global .Select-arrow-zone:hover > .Select-arrow {
+    border-top-color: $color-button-primary;
+  }
+
+  :global .Select-clear-zone {
+    color: $color-button-primary;
+  }
+
+  :global .Select-clear-zone:hover {
+    color: $color-29;
+  }
+
+  :global .Select-placeholder {
+    color: $color-button-primary;
+  }
+
+  :global .Select-menu-outer {
+    background: $color-base;
+    border-color: transparent $color-button-primary $color-button-primary;
+  }
+
+  :global .Select-option {
+    background: $color-base;
+    color: $color-mid-blue;
+  }
+
+  :global .Select-option:last-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  :global .Select-option.is-focused {
+    background-color: rgba($color-button-primary, .2);
+    color: $color-white;
+  }
+
+  :global .Select--multi .Select-value {
+    background-color: rgba($color-button-primary, .2);
+    border: 0;
+    border-radius: 2px;
+    color: $color-white;;
+  }
+
+  :global .Select--multi .Select-value-icon {
+    border-right-color: $color-base;
+  }
+
+  :global .Select--multi .Select-value-icon:hover,
+  :global .Select--multi .Select-value-icon:focus {
+    color: $color-29;
+  }
+}

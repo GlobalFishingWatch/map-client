@@ -246,8 +246,8 @@ export default class GLContainer extends BaseOverlay {
     const foundVesselsFilters = foundVessels.map(vessel => ({
       hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
       filterValues: {
-        series: vessel.series,
-        seriesgroup: vessel.seriesgroup
+        series: [vessel.series],
+        seriesgroup: [vessel.seriesgroup]
       }
     }));
 
