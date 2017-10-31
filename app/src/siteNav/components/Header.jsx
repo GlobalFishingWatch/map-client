@@ -33,6 +33,7 @@ class Header extends Component {
 
     return (
       <div>
+        <div className={HeaderStyles.preview} />
         {(!this.props.isEmbedded && COMPLETE_MAP_RENDER) &&
         <MenuMobile
           visible={this.state.mobileMenuVisible}

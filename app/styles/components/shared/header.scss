@@ -54,6 +54,10 @@
       display: inline-block;
       margin-right: 0;
       width: auto;
+
+      img {
+        margin-top: 11px;
+      }
     }
   }
 
@@ -206,7 +210,7 @@
     }
 
     .appLogo {
-      margin-left: 25px;
+      margin-left: 15px;
       order: 2;
       @media #{$mq-tablet} {
         order: 1;
