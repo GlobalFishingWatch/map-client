@@ -1,0 +1,9 @@
+.selectContainer {
+  align-items: center;
+  display: flex;
+  margin-bottom: 10px;
+
+  :global .Select {
+    flex: 1 1 auto;
+  }
+}

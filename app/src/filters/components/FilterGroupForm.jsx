@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import SelectorStyles from 'styles/components/shared/react-select.scss';
+import SelectContainerStyles from 'styles/components/shared/select-container.scss';
 import classnames from 'classnames';
 import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
@@ -25,10 +26,21 @@ class FilterGroupForm extends Component {
     }
   }
 
-  onClickInfo(layer) {
+  onClickLayerInfo(layer) {
     this.props.openLayerInfoModal({
       open: true,
       info: layer
+    });
+  }
+
+  onClickFilterInfo(filter) {
+    const title = `${filter.label} filter`;
+    this.props.openLayerInfoModal({
+      open: true,
+      info: {
+        title,
+        description: filter.description || title
+      }
     });
   }
 
@@ -47,7 +59,7 @@ class FilterGroupForm extends Component {
           callback={() => this.props.onLayerChecked(layer.id)}
           checked={layer.filterActivated}
         >
-          <InfoIcon onClick={() => this.onClickInfo(layer)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
+          <InfoIcon onClick={() => this.onClickLayerInfo(layer)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
         </Checkbox>
       </li >
     ));
@@ -68,9 +80,8 @@ class FilterGroupForm extends Component {
       });
 
       return (
-        <div className={SelectorStyles.select}>
+        <div className={classnames(SelectorStyles.select, SelectContainerStyles.selectContainer)} key={index}>
           <Select
-            key={index}
             multi={true} // eslint-disable-line react/jsx-boolean-value
             placeholder={filter.label}
             valueKey="id"
@@ -79,7 +90,9 @@ class FilterGroupForm extends Component {
             options={options}
             onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
           />
+          <InfoIcon onClick={() => this.onClickFilterInfo(filter)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
         </div>
+
       );
     });
   }
