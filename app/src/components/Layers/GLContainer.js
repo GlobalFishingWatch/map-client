@@ -246,8 +246,8 @@ export default class GLContainer extends BaseOverlay {
     const foundVesselsFilters = foundVessels.map(vessel => ({
       hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
       filterValues: {
-        series: vessel.series,
-        seriesgroup: vessel.seriesgroup
+        series: [vessel.series],
+        seriesgroup: [vessel.seriesgroup]
       }
     }));
 
@@ -287,18 +287,9 @@ export default class GLContainer extends BaseOverlay {
    * @param {array} layerFilters - All filters ordered by heatmap layer
    */
   setFilters(layerFilters) {
-    // If there is at least one filter in the layers all the other ones if they are empty should be completely filtered
-    const isTheMapFiltered = Object.keys(layerFilters).some(layerId =>
-      layerFilters[layerId].length > 0
-    );
-
     this.layers.forEach((heatmapLayer) => {
       const filters = layerFilters[heatmapLayer.id];
-      if (filters.length > 0) {
-        heatmapLayer.setFilters(filters);
-      } else {
-        heatmapLayer.setFilters(filters, isTheMapFiltered);
-      }
+      heatmapLayer.setFilters(filters);
     });
   }
 

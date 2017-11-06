@@ -1,3 +1,5 @@
+import getFlagFilterGroupValues from 'util/getFlagFilterGroupValues';
+
 export const CONTROL_PANEL_MENUS = {
   AREAS: 'AREAS',
   FILTERS: 'FILTERS',
@@ -14,6 +16,8 @@ export const LAYER_TYPES = {
   VesselTrackAnimation: 'VesselTrackAnimation'
 };
 export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
+
+export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
 export const REPORT_STATUS = {
   idle: 'idle',
@@ -560,3 +564,5 @@ export const FLAGS_SHORTCODES = {
   zm: [127487, 127474],
   zw: [127487, 127484]
 };
+
+export const FLAG_FILTER_GROUP_VALUES = getFlagFilterGroupValues();

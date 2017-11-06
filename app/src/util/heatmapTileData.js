@@ -44,7 +44,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
     if (params.seriesgroup) {
       url += `sub/seriesgroup=${params.seriesgroup}/`;
     }
-    if (extent !== null) {
+    if (extent !== null && params.temporalExtentsLess !== true) {
       const start = new Date(extent[0]).toISOString();
       const end = new Date(extent[1]).toISOString();
       url += `${start},${end};`;
@@ -261,13 +261,13 @@ export const vesselSatisfiesFilters = (frame, index, filterValues) => {
       // here: https://github.com/Vizzuality/GlobalFishingWatch/issues/661#issuecomment-334496469
       return false;
     }
-    return frame[field][index] === filterValues[field];
+    return filterValues[field].indexOf(frame[field][index]) > -1;
   });
   return satisfiesFilters;
 };
 
 const vesselSatisfiesAllFilters = (frame, index, filters) => {
-  const satisfiesAllFilters = filters.every(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
+  const satisfiesAllFilters = filters.some(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
   return satisfiesAllFilters;
 };
 
