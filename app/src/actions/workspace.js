@@ -9,8 +9,7 @@ import {
 } from 'config';
 import {
   LAYER_TYPES,
-  FLAGS,
-  FLAGS_LANDLOCKED
+  FLAGS
 } from 'constants';
 import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
@@ -23,7 +22,6 @@ import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue, hueToClosestColor } from 'util/colors';
 import uniq from 'lodash/uniq';
-import includes from 'lodash/includes';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
 
 export const SET_TILESET_ID = 'SET_TILESET_ID';
@@ -304,7 +302,7 @@ function processLegacyWorkspace(data, dispatch) {
 
   const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const filters = uniq(rawVesselLayer.args.selections.Flags.data.category)
-    .filter(flag => (Array.prototype.hasOwnProperty.call(FLAGS, flag) && !includes(FLAGS_LANDLOCKED, FLAGS[flag])))
+    .filter(flag => (Array.prototype.hasOwnProperty.call(FLAGS, flag)))
     .map(flag => ({
       flag
     }));
