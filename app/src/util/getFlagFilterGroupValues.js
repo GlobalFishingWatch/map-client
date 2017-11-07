@@ -1,11 +1,10 @@
-import { FLAGS, FLAGS_SHORTCODES, FLAGS_LANDLOCKED } from 'app/src/constants';
+import { FLAGS, FLAGS_SHORTCODES } from 'app/src/constants';
 import iso3311a2 from 'iso-3166-1-alpha-2';
 
 export default () => {
   const countryNames = [];
 
   Object.keys(FLAGS)
-    .filter(key => FLAGS_LANDLOCKED.indexOf(FLAGS[key]) === -1)
     .forEach((id) => {
       if (iso3311a2.getCountry(FLAGS[id])) {
         const countryCode = FLAGS[id];
