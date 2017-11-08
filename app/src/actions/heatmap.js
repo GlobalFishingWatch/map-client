@@ -86,6 +86,7 @@ export function initHeatmapLayers() {
  */
 function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsLess, temporalExtentsIndices) {
   // const tileCoordinates = referenceTile.tileCoordinates;
+  // TODO rename to getTilePromises
   const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, {
     tileCoordinates,
     temporalExtentsIndices,
@@ -170,11 +171,9 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           : newTemporalExtentsToLoad[layerId];
 
         const temporalExtentsIndicesToLoad = difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
-
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
-          // TODO use URL from header
-          layers[layerId].url,
+          layerHeader.urls.default[0][0],
           token,
           layerHeader.temporalExtents,
           layerHeader.temporalExtentsLess,

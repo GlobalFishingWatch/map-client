@@ -1,0 +1,57 @@
+{
+  "workspace": {
+    "tileset": "849-tileset-tms",
+    "map": {
+      "center": [
+        0,
+        0
+      ],
+      "zoom": 3,
+      "layers": [
+        {
+          "title": "AIS Fishing effort",
+          "description": "AIS Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2",
+          "visible": true,
+          "hue": 182,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "fishing2",
+          "tilesetId": "516-resample-v2"
+        },
+        {
+          "title": "Encounters",
+          "description": "Encounters",
+          "url": "http://127.0.0.1:9090",
+          "visible": true,
+          "hue": 182,
+          "type": "ClusterAnimation",
+          "subtype": "Encounters",
+          "opacity": 1,
+          "id": "encounters",
+          "tilesetId": "516-resample-v2"
+         }
+      ]
+    },
+    "pinnedVessels": [],
+    "basemap": "hybrid",
+    "timeline": {
+      "innerExtent": [
+        1464739200000,
+        1467331200000
+      ],
+      "outerExtent": [
+        1451689200000,
+        1480550400000
+      ]
+    }
+  },
+  "metadata": {
+    "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+    "urls": {
+      "save": "https://skytruth-pleuston.appspot.com/v2/workspaces",
+      "load": "https://skytruth-pleuston.appspot.com/v2/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+      "visualization": "https://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
+    }
+  }
+}
