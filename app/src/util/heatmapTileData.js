@@ -12,6 +12,8 @@ import {
   TIMELINE_OVERALL_START_DATE_OFFSET
 } from 'config';
 
+import getPBFTile from './getPBFTile';
+
 /**
  * From a timestamp in ms returns a time with the precision set in Constants.
  * @param timestamp
@@ -66,7 +68,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
 /**
  * See getTemporalTileURLs.
  */
-export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
+export const getTilePromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
   const urls = getTemporalTileURLs(
     tilesetUrl,
@@ -74,7 +76,11 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
     params
   );
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-    promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    if (params.isPBF === true) {
+      promises.push(getPBFTile(urls[urlIndex]));
+    } else {
+      promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    }
   }
 
   return promises;

@@ -3,7 +3,7 @@ import { LAYER_TYPES } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import {
-  getTilePelagosPromises,
+  getTilePromises,
   getCleanVectorArrays,
   groupData,
   addWorldCoordinates,
@@ -123,7 +123,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
     }
     const header = currentLayer.header;
     const url = header.urls.search[0] || currentLayer.url;
-    const promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
+    const promises = getTilePromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {

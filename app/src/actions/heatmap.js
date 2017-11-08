@@ -2,7 +2,7 @@ import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import {
-  getTilePelagosPromises,
+  getTilePromises,
   getCleanVectorArrays,
   groupData,
   addWorldCoordinates,
@@ -77,20 +77,23 @@ export function initHeatmapLayers() {
 /**
  * loadLayerTile - loads an heatmap tile.
  *
- * @param  {object} tileCoordinates        tile coordinates from reference tile
- * @param  {string} layerUrl             the base layer url
+ * @param  {object} tileCoordinates      tile coordinates from reference tile
  * @param  {string} token                the user's token
- * @param  {array} temporalExtents       all of the layer's header temporal extents
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
+ * @param  {string} layerUrl             the base layer url
+ * @param  {array} temporalExtents       all of the layer's header temporal extents
+ * @param  {bool} temporalExtentsLess    true = don't try to load different tiles based on current time extent
+ * @param  {bool} isPBF                  true = read tile as MVT + PBF tile, rather than using Pelagos client
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsLess, temporalExtentsIndices) {
-  // const tileCoordinates = referenceTile.tileCoordinates;
-  // TODO rename to getTilePromises
-  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, {
+function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, temporalExtents, temporalExtentsLess, isPBF }) {
+  // TODO not sure why urls are array of arrays, clarify with Skytruth
+  const layerUrl = urls.default[0][0];
+  const pelagosPromises = getTilePromises(layerUrl, token, temporalExtents, {
     tileCoordinates,
     temporalExtentsIndices,
-    temporalExtentsLess
+    temporalExtentsLess,
+    isPBF
   });
   const allLayerPromises = Promise.all(pelagosPromises);
 
@@ -173,11 +176,9 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         const temporalExtentsIndicesToLoad = difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
-          layerHeader.urls.default[0][0],
           token,
-          layerHeader.temporalExtents,
-          layerHeader.temporalExtentsLess,
-          temporalExtentsIndicesToLoad
+          temporalExtentsIndicesToLoad,
+          layerHeader
         );
 
         allPromises.push(tilePromise);
