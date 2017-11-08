@@ -50,6 +50,10 @@
     margin-right: 21px;
     width: 100%;
 
+    img {
+      width: 210px;
+    }
+
     @media #{$mq-tablet} {
       display: inline-block;
       margin-right: 0;

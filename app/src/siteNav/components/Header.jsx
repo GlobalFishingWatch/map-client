@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import logo from 'assets/logos/gfw_logo_small.png';
+import logo from 'assets/logos/gfw_logo.svg';
 import menuicon from 'assets/icons/menu.svg';
 import MenuMobile from 'siteNav/containers/MenuMobile';
 import BaseStyles from 'styles/_base.scss';
