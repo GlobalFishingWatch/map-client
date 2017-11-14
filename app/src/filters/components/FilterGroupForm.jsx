@@ -19,7 +19,8 @@ class FilterGroupForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      customizeClosed: true
+      customizeClosed: true,
+      validated: false
     };
   }
 
@@ -31,6 +32,12 @@ class FilterGroupForm extends Component {
         this.props.label === this.props.defaultLabel) {
       this.props.onLabelChanged(nextProps.defaultLabel);
     }
+  }
+
+  componentWillMount() {
+    this.setState({
+      validated: false
+    });
   }
 
   onClickLayerInfo(layer) {
@@ -57,6 +64,22 @@ class FilterGroupForm extends Component {
     });
   }
 
+  onClickSave() {
+    if (this.props.warning === undefined || this.state.validated === true) {
+      this.props.onSaveClicked();
+    }
+
+    this.setState({
+      validated: !this.state.validated
+    });
+  }
+
+  onClickChangeSelection() {
+    this.setState({
+      validated: false
+    });
+  }
+
   renderLayersList() {
     return this.props.layers.map((layer, i) => (
       <li
@@ -79,6 +102,9 @@ class FilterGroupForm extends Component {
   }
 
   renderFiltersList() {
+    if (!this.props.filters.length) {
+      return <div>No filters available, please select at least one activity layer.</div>;
+    }
 
     return this.props.filters.map((filter, index) => {
       const values = this.props.currentlyEditedFilterGroup.filterValues[filter.id];
@@ -110,13 +136,20 @@ class FilterGroupForm extends Component {
     });
   }
 
+  renderWarning() {
+    return (
+      <div className={ModalStyles.warning}>
+        {this.props.warning}
+      </div>
+    );
+  }
 
-  render() {
+  renderForm() {
     const layersList = this.renderLayersList();
     const filtersList = this.renderFiltersList();
     return (
       <div>
-        <h3 className={ModalStyles.title}>Filter Group</h3>
+        <h3 className={ModalStyles.title}>Create filter</h3>
         <div className={ModalStyles.optionsContainer}>
           <div className={ModalStyles.section}>
             <div className={ModalStyles.sectionTitle}>
@@ -168,14 +201,37 @@ class FilterGroupForm extends Component {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    const displayWarning = this.props.warning !== undefined && this.state.validated === true;
+    const body = (displayWarning) ? this.renderWarning() : this.renderForm();
+
+    return (
+      <div>
+        {body}
         <div className={ModalStyles.footerContainer}>
+          {displayWarning &&
+            <button
+              className={classnames(
+                ButtonStyles.button,
+                ButtonStyles._big, ModalStyles.mainButton, {
+                  [ButtonStyles._disabled]: this.props.disableSave
+                })}
+              onClick={() => this.onClickChangeSelection()}
+            >
+              Change selection
+            </button>
+          }
           <button
             className={classnames(
               ButtonStyles.button, ButtonStyles._filled,
               ButtonStyles._big, ModalStyles.mainButton, {
                 [ButtonStyles._disabled]: this.props.disableSave
               })}
-            onClick={this.props.onSaveClicked}
+            onClick={() => this.onClickSave()}
           >
             Save
           </button>
@@ -192,6 +248,7 @@ FilterGroupForm.propTypes = {
   defaultLabel: PropTypes.string,
   label: PropTypes.string,
   disableSave: PropTypes.bool,
+  warning: PropTypes.string,
   onLayerChecked: PropTypes.func,
   onColorChanged: PropTypes.func,
   onFilterValueChanged: PropTypes.func,

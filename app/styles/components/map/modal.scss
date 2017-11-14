@@ -110,7 +110,12 @@
   justify-content: center;
   margin: 10px 0 0;
 
-  > .mainButton {
+  > button {
+    margin-right: 5px;
     width: 180px;
   }
+}
+
+.warning {
+  margin: 40% 0 40px;
 }
