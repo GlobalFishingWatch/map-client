@@ -50,19 +50,17 @@
     margin-right: 21px;
     width: 100%;
 
+    img {
+      width: 210px;
+    }
+
     @media #{$mq-tablet} {
       display: inline-block;
       margin-right: 0;
       width: auto;
-    }
 
-    img {
-      height: 100%;
-      max-width: 250px;
-      width: 100%;
-
-      @media #{$mq-tablet} {
-        width: auto;
+      img {
+        margin-top: 11px;
       }
     }
   }
@@ -216,7 +214,7 @@
     }
 
     .appLogo {
-      margin-left: 25px;
+      margin-left: 15px;
       order: 2;
       @media #{$mq-tablet} {
         order: 1;

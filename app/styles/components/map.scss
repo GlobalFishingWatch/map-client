@@ -14,17 +14,14 @@
 .latlon {
   display: none;
   @media #{$mq-tablet} {
-    top: 76px;
     color: rgba($color-4, .7);
     display: block;
     font-size: $font-size-xxs-small;
-    left: 18px;
+    font-weight: bold;
+    left: 56px;
     position: absolute;
+    top: 112px;
     z-index: 99;
-  }
-
-  @media #{$mq-desktop} {
-    left: 16px;
   }
 }
 
@@ -64,22 +61,22 @@
 }
 
 .mapLoader {
-  position: absolute;
-  z-index: 6;
-  top: 130px;
   left: 8px;
+  position: absolute;
+  top: 160px;
+  z-index: 6;
 
   @media #{$mq-tablet} {
-    top: 238px;
-    left: 16px;
+    left: 6px;
+    top: 250px;
   }
 
-  &._isEmbedded{
-    left: 16px;
+  &._isEmbedded {
+    left: 6px;
     top: 110px;
 
     @media #{$mq-tablet} {
-      top: 190px;
+      top: 204px;
     }
   }
 }
@@ -88,15 +85,11 @@
   display: none;
 
   @media #{$mq-tablet} {
-    top: 96px;
-    left: 16px;
     display: block;
+    left: 6px;
     position: absolute;
+    top: 112px;
     z-index: 6;
-  }
-
-  @media #{$mq-desktop} {
-    bottom: 135px;
   }
 
   > .control {
@@ -112,7 +105,7 @@
     text-align: center;
 
     &:not(:first-child) {
-      margin: 3px 0 0;
+      margin: 2px 0 0;
     }
 
     &._disabled {
