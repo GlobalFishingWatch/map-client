@@ -242,7 +242,6 @@ export default class GLContainer extends BaseOverlay {
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const layerData = data[layerId];
-
     const foundVesselsFilters = foundVessels.map(vessel => ({
       hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
       filterValues: {
@@ -251,7 +250,8 @@ export default class GLContainer extends BaseOverlay {
       }
     }));
 
-    // no need to reapply filters, has the found vessels have already been filtered (see selectVesselsAt)
+    // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
+    // thus we only need to apply a series/seriesgroup filter
     this.heatmapHighlight.setFilters(foundVesselsFilters);
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
