@@ -16,6 +16,13 @@ import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name
 
 class FilterGroupForm extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      customizeClosed: true
+    };
+  }
+
   componentWillReceiveProps(nextProps) {
     // if defaultLabel generated in container changed,
     // and if user did not changed from the default label (label is the same as the previously generated label)
@@ -41,6 +48,12 @@ class FilterGroupForm extends Component {
         title,
         description: filter.description || title
       }
+    });
+  }
+
+  onClickCustomize() {
+    this.setState({
+      customizeClosed: !this.state.customizeClosed
     });
   }
 
@@ -105,36 +118,45 @@ class FilterGroupForm extends Component {
       <div>
         <h3 className={ModalStyles.title}>Filter Group</h3>
         <div className={ModalStyles.optionsContainer}>
-          <div className={ModalStyles.column}>
-            <div className={ModalStyles.wrapper}>
-              <div className={ModalStyles.sectionTitle}>
-                Select a Fishing Layer:
-              </div>
-              <div className={ItemList.wrapper}>
-                <ul>
-                  {layersList}
-                </ul>
-              </div>
+          <div className={ModalStyles.section}>
+            <div className={ModalStyles.sectionTitle}>
+              Select the activity layers you want to apply the filters to:
             </div>
-            <div className={ModalStyles.wrapper}>
-              <ColorPicker
-                id={'filter-color'}
-                color={this.props.currentlyEditedFilterGroup.color}
-                onColorChange={this.props.onColorChanged}
-              />
+            <div className={ItemList.wrapper}>
+              <ul>
+                {layersList}
+              </ul>
             </div>
           </div>
-          <div className={ModalStyles.column}>
-            <div className={ModalStyles.wrapper}>
-              <div className={ModalStyles.sectionTitle}>
-                Filter by:
-              </div>
-              {filtersList}
+          <div
+            className={ModalStyles.section}
+          >
+            <div className={ModalStyles.sectionTitle}>
+              Choose filters:
             </div>
-            <div className={ModalStyles.wrapper}>
+            {filtersList}
+          </div>
+          <div className={ModalStyles.section}>
+            <div
+              className={classnames(
+                ModalStyles.sectionTitle,
+                ModalStyles.foldableAction,
+                { [ModalStyles._closed]: this.state.customizeClosed })}
+              onClick={() => { this.onClickCustomize(); }}
+            >
+              Customize layer
+            </div>
+            <div className={classnames(ModalStyles.foldable, { [ModalStyles._closed]: this.state.customizeClosed })}>
+              <div className={ModalStyles._bottomPadding}>
+                <ColorPicker
+                  id={'filter-color'}
+                  color={this.props.currentlyEditedFilterGroup.color}
+                  onColorChange={this.props.onColorChanged}
+                />
+              </div>
               <div className={ModalStyles.sectionTitle}>
                 <label htmlFor="name">Filter group name</label>
-              </div >
+              </div>
               <input
                 type="text"
                 name="name"

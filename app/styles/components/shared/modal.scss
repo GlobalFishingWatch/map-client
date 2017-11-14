@@ -20,7 +20,6 @@
     position: relative;
     width: calc(100% - 45px);
 
-
     @media #{$mq-mobile-large} {
       max-width: 860px;
       min-width: 370px;
@@ -31,7 +30,6 @@
       height: 65%;
       max-height: 494px;
       min-width: 620px;
-
     }
 
     @media #{$mq-laptop} {
@@ -95,6 +93,22 @@
   &._small {
     > .content {
       max-width: 500px;
+    }
+  }
+
+
+  &._scrollable {
+    > .content {
+      // @media #{$mq-tablet} {
+      //   height: 90%;
+      //   max-height: 90%;
+      // }
+      .containContent {
+        height: 100%;
+        .containPadding {
+          height: 100%;
+        }
+      }
     }
   }
 
