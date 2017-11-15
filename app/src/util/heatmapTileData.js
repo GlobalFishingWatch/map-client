@@ -122,15 +122,20 @@ export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData)
   const zoomFactorRadiusRenderingMode = convert.getZoomFactorRadiusRenderingMode(zoom);
   const zoomFactorOpacity = convert.getZoomFactorOpacity(zoom);
 
-  // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
-  let extraColumns = [].concat(columnsArr);
-  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity');  // those are mandatory thus manually added
-  pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
-  extraColumns = uniq(extraColumns);
-
-  const numPoints = vectors.latitude.length;
+  // store all available columns as object keys
   const columns = {};
   columnsArr.forEach((c) => { columns[c] = true; });
+
+  // columns specified by layer header columns
+  let storedColumns = [].concat(columnsArr);
+  // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
+  pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
+  if (columns.sigma) storedColumns.push('radius');
+  if (columns.weight) storedColumns.push('opacity');
+  storedColumns = uniq(storedColumns);
+
+  const numPoints = vectors.latitude.length;
+
   for (let index = 0, length = numPoints; index < length; index++) {
     const point = {}; // feature(i) for PBF
     columnsArr.forEach((c) => { point[c] = vectors[c][index]; });
@@ -139,19 +144,20 @@ export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData)
       ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
     const { worldX, worldY } = (columns.worldX)
       ? { worldX: point.worldX, worldY: point.worldY } : convert.latLonToWorldCoordinates(point.latitude, point.longitude);
-    const radius = (columns.radius)
-      ? point.radius : convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
-    const opacity = (columns.opacity)
-      ? point.opacity : convert.weightToOpacity(point.weight, zoomFactorOpacity);
+
+    if (columns.sigma) {
+      point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
+    }
+    if (columns.weight) {
+      point.opacity = convert.weightToOpacity(point.weight, zoomFactorOpacity);
+    }
 
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
         worldX: [worldX],
-        worldY: [worldY],
-        radius: [radius],
-        opacity: [opacity]
+        worldY: [worldY]
       };
-      extraColumns.forEach((column) => {
+      storedColumns.forEach((column) => {
         frame[column] = [point[column]];
       });
       tilePlaybackData[timeIndex] = frame;
@@ -160,9 +166,7 @@ export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData)
     const frame = tilePlaybackData[timeIndex];
     frame.worldX.push(worldX);
     frame.worldY.push(worldY);
-    frame.radius.push(radius);
-    frame.opacity.push(opacity);
-    extraColumns.forEach((column) => {
+    storedColumns.forEach((column) => {
       frame[column].push(point[column]);
     });
   }
