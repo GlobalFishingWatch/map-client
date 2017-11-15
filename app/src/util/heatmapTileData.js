@@ -2,32 +2,11 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import convert from 'lib/GlobalFishingWatch-convert';
 
-import {
-  PLAYBACK_PRECISION,
-  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
-  VESSELS_MINIMUM_RADIUS_FACTOR,
-  VESSELS_MINIMUM_OPACITY,
-  VESSEL_CLICK_TOLERANCE_PX,
-  TIMELINE_OVERALL_START_DATE_OFFSET
-} from 'config';
+import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
 
 import getPBFTile from './getPBFTile';
-
-/**
- * From a timestamp in ms returns a time with the precision set in Constants.
- * @param timestamp
- */
-export const getTimeAtPrecision = timestamp =>
-  Math.floor(timestamp / PLAYBACK_PRECISION);
-
-/**
- * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
- * beginning of available time (outerStart)
- * @param timestamp
- */
-export const getOffsetedTimeAtPrecision = timestamp =>
-  Math.max(0, getTimeAtPrecision(timestamp) - TIMELINE_OVERALL_START_DATE_OFFSET);
 
 /**
  * Generates the URLs to load vessel track data for a tile
@@ -129,29 +108,6 @@ export const groupData = (cleanVectorArrays, columns) => {
 };
 
 /**
- * Convert raw lat/long coordinates to project world coordinates in pixels
- * @param lat latitude in degrees
- * @param lon longitude in degrees
- */
-export const getWorldCoordinates = (lat, lon) => {
-  const worldX = (lon + 180) / 360 * 256; // eslint-disable-line
-  const worldY = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2) * 256;  // eslint-disable-line
-  return {
-    worldX,
-    worldY
-  };
-};
-
-const _getZoomFactorRadiusRenderingMode = zoom => ((zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.15);
-const _getZoomFactorRadius = zoom => (zoom - 1) ** 2.5;
-const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
-  let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
-  radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
-  return radius;
-};
-
-
-/**
  * Converts Vector Array data to Playback format and stores it locally
  *
  * @param vectors the source data before indexing by day, an object containing a vector (Float32Array) for each header's column
@@ -159,36 +115,34 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
  * @param zoom the current zoom, used in radius calculations
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (vectors, columns, zoom, prevPlaybackData) => {
+export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData) => {
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
-  const zoomFactorRadius = _getZoomFactorRadius(zoom);
-  const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
-
-  const zoomFactorOpacity = ((zoom - 1) ** 3.5) / 1000;
+  const zoomFactorRadius = convert.getZoomFactorRadius(zoom);
+  const zoomFactorRadiusRenderingMode = convert.getZoomFactorRadiusRenderingMode(zoom);
+  const zoomFactorOpacity = convert.getZoomFactorOpacity(zoom);
 
   // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
-  let extraColumns = [].concat(columns);
+  let extraColumns = [].concat(columnsArr);
   pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity');  // those are mandatory thus manually added
   pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
   extraColumns = uniq(extraColumns);
 
   const numPoints = vectors.latitude.length;
-
+  const columns = {};
+  columnsArr.forEach((c) => { columns[c] = true; });
   for (let index = 0, length = numPoints; index < length; index++) {
-    const datetime = vectors.datetime[index];
+    const point = {}; // feature(i) for PBF
+    columnsArr.forEach((c) => { point[c] = vectors[c][index]; });
 
-    const timeIndex = getOffsetedTimeAtPrecision(datetime);
-    const { worldX, worldY } = getWorldCoordinates(vectors.latitude[index], vectors.longitude[index]);
-    const weight = vectors.weight[index];
-    const sigma = vectors.sigma[index];
-    const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
-    let opacity = 3 + Math.log(weight * zoomFactorOpacity);
-    // TODO quick hack to avoid negative values, check why that happens
-    opacity = Math.max(0, opacity);
-    opacity = 3 + Math.log(opacity);
-    opacity = 0.1 + (0.2 * opacity);
-    opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
+    const timeIndex = (columns.timeIndex)
+      ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
+    const { worldX, worldY } = (columns.worldX)
+      ? { worldX: point.worldX, worldY: point.worldY } : convert.latLonToWorldCoordinates(point.latitude, point.longitude);
+    const radius = (columns.radius)
+      ? point.radius : convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
+    const opacity = (columns.opacity)
+      ? point.opacity : convert.weightToOpacity(point.weight, zoomFactorOpacity);
 
     if (!tilePlaybackData[timeIndex]) {
       const frame = {
@@ -198,7 +152,7 @@ export const getTilePlaybackData = (vectors, columns, zoom, prevPlaybackData) =>
         opacity: [opacity]
       };
       extraColumns.forEach((column) => {
-        frame[column] = [vectors[column][index]];
+        frame[column] = [point[column]];
       });
       tilePlaybackData[timeIndex] = frame;
       continue;
@@ -209,7 +163,7 @@ export const getTilePlaybackData = (vectors, columns, zoom, prevPlaybackData) =>
     frame.radius.push(radius);
     frame.opacity.push(opacity);
     extraColumns.forEach((column) => {
-      frame[column].push(vectors[column][index]);
+      frame[column].push(point[column]);
     });
   }
   return tilePlaybackData;
@@ -222,7 +176,7 @@ export const addTracksPointsRenderingData = (data) => {
   data.worldY = [];
 
   for (let index = 0, length = data.weight.length; index < length; index++) {
-    const { worldX, worldY } = getWorldCoordinates(data.latitude[index], data.longitude[index]);
+    const { worldX, worldY } = convert.latLonToWorldCoordinates(data.latitude[index], data.longitude[index]);
     data.worldX[index] = worldX;
     data.worldY[index] = worldY;
     data.hasFishing[index] = data.weight[index] > 0;
@@ -241,7 +195,7 @@ export const getTracksPlaybackData = (vectorArray) => {
 
   for (let index = 0, length = vectorArray.series.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
-    const timeIndex = getOffsetedTimeAtPrecision(datetime);
+    const timeIndex = convert.getOffsetedTimeAtPrecision(datetime);
 
     if (!playbackData[timeIndex]) {
       const frame = {

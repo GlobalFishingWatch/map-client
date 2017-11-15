@@ -22,15 +22,15 @@ import {
   TIMELINE_MIN_SPEED,
   TIMELINE_MAX_SPEED
 } from 'config';
-import { getOffsetedTimeAtPrecision } from 'util/heatmapTileData';
+import convert from 'lib/GlobalFishingWatch-convert';
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
   timelineOuterExtent: [TIMELINE_DEFAULT_OUTER_START_DATE, TIMELINE_DEFAULT_OUTER_END_DATE],
   timelineInnerExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
   timelineInnerExtentIndexes: [
-    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime()),
-    getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
+    convert.getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime()),
+    convert.getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
   ],
   timelinePaused: true,
   timelineSpeed: 1
@@ -43,8 +43,8 @@ export default function (state = initialState, action) {
       const timelineInnerExtent = action.payload;
       const startTimestamp = timelineInnerExtent[0].getTime();
       const endTimestamp = Math.max(timelineInnerExtent[1].getTime(), timelineInnerExtent[0].getTime() + MIN_FRAME_LENGTH_MS);
-      const startIndex = getOffsetedTimeAtPrecision(startTimestamp);
-      const endIndex = getOffsetedTimeAtPrecision(endTimestamp);
+      const startIndex = convert.getOffsetedTimeAtPrecision(startTimestamp);
+      const endIndex = convert.getOffsetedTimeAtPrecision(endTimestamp);
       const timelineInnerExtentIndexes = [startIndex, endIndex];
 
       return Object.assign({}, state, {
@@ -87,8 +87,8 @@ export default function (state = initialState, action) {
       const timelineOverExtent = action.payload;
       const startTimestamp = timelineOverExtent[0].getTime();
       const endTimestamp = timelineOverExtent[1].getTime();
-      const startIndex = getOffsetedTimeAtPrecision(startTimestamp);
-      const endIndex = getOffsetedTimeAtPrecision(endTimestamp);
+      const startIndex = convert.getOffsetedTimeAtPrecision(startTimestamp);
+      const endIndex = convert.getOffsetedTimeAtPrecision(endTimestamp);
       const timelineOverExtentIndexes = [startIndex, endIndex];
       return Object.assign({}, state, {
         timelineOverExtentIndexes
