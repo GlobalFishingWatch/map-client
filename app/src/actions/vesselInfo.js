@@ -6,7 +6,6 @@ import {
   getTilePromises,
   getCleanVectorArrays,
   groupData,
-  addWorldCoordinates,
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'util/heatmapTileData';
@@ -114,7 +113,6 @@ function _getTrackTimeExtent(data, series = null) {
 function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
-    const map = state.map.googleMaps;
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
     if (!currentLayer) {
@@ -141,9 +139,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
           'sigma'
         ]);
 
-        let vectorArray = addWorldCoordinates(groupedData, map);
-
-        vectorArray = addTracksPointsRenderingData(groupedData);
+        const vectorArray = addTracksPointsRenderingData(groupedData);
 
         dispatch({
           type: SET_VESSEL_TRACK,

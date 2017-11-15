@@ -5,7 +5,6 @@ import {
   getTilePromises,
   getCleanVectorArrays,
   groupData,
-  addWorldCoordinates,
   getTilePlaybackData,
   selectVesselsAt
 } from 'util/heatmapTileData';
@@ -80,7 +79,7 @@ export function initHeatmapLayers() {
  * @param  {object} tileCoordinates      tile coordinates from reference tile
  * @param  {string} token                the user's token
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
- * @param  {string} layerUrl             the base layer url
+ * @param  {string} urls                 tile endpoints provided by header
  * @param  {array} temporalExtents       all of the layer's header temporal extents
  * @param  {bool} temporalExtentsLess    true = don't try to load different tiles based on current time extent
  * @param  {bool} isPBF                  true = read tile as MVT + PBF tile, rather than using Pelagos client
@@ -109,29 +108,30 @@ function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, t
 /**
  * parseLayerTile - parses an heatmap tile to a playback-ready format.
  *
- * @param  {object} tileCoordinates      tile coordinates from reference tile
+ * @param  {Object} rawTileData          the raw tile data, loaded either from the pelagos client or as a MVT/PBF vector tile
  * @param  {array} columns               names of the columns present in the raw tiles that need to be included in the final playback data
+ * @param  {object} tileCoordinates      tile coordinates from reference tile
  * @param  {object} map                  a reference to the Google Map object. This is required to access projection data.
- * @param  {Object} rawTileData
  * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
  * @return {Object}                      playback-ready merged data
  */
-function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlaybackData) {
-  // console.time('test')
+function parseLayerTile(rawTileData, columns, isPBF, tileCoordinates, map, prevPlaybackData) {
+  // let
+  // if (isPBF === true) {
+  //
+  // }
   const cleanVectorArrays = getCleanVectorArrays(rawTileData);
   const groupedData = groupData(cleanVectorArrays, columns);
   if (Object.keys(groupedData).length === 0) {
     return [];
   }
-  const vectorArray = (columns.indexOf('latitude') > -1) ? addWorldCoordinates(groupedData, map) : groupedData;
   const data = getTilePlaybackData(
-    tileCoordinates.zoom,
-    vectorArray,
+    groupedData,
     columns,
+    tileCoordinates.zoom,
     prevPlaybackData
   );
   return data;
-  // console.timeEnd('test');
 }
 
 /**
@@ -186,10 +186,11 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         tilePromise.then((rawTileData) => {
           tile.temporalExtentsIndicesLoaded = uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
-            referenceTile.tileCoordinates,
-            Object.keys(layerHeader.colsByName),
-            map,
             rawTileData,
+            Object.keys(layerHeader.colsByName),
+            layerHeader.isPBF,
+            referenceTile.tileCoordinates,
+            map,
             tile.data
           );
           dispatch({

@@ -129,21 +129,17 @@ export const groupData = (cleanVectorArrays, columns) => {
 };
 
 /**
- * Add projected lat/long values transformed as tile-relative x/y coordinates
- * @param vectorArray typed arrays, including latitude and longitude
- * @param map a reference to the original Google Map
+ * Convert raw lat/long coordinates to project world coordinates in pixels
+ * @param lat latitude in degrees
+ * @param lon longitude in degrees
  */
-export const addWorldCoordinates = (vectorArray, map) => {
-  const data = vectorArray;
-  const proj = map.getProjection();
-  data.worldX = new Float32Array(data.latitude.length);
-  data.worldY = new Float32Array(data.longitude.length);
-  for (let index = 0, length = data.latitude.length; index < length; index++) {
-    const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
-    data.worldX[index] = worldPoint.x;
-    data.worldY[index] = worldPoint.y;
-  }
-  return data;
+export const getWorldCoordinates = (lat, lon) => {
+  const worldX = (lon + 180) / 360 * 256; // eslint-disable-line
+  const worldY = ((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2) * 256;  // eslint-disable-line
+  return {
+    worldX,
+    worldY
+  };
 };
 
 const _getZoomFactorRadiusRenderingMode = zoom => ((zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.15);
@@ -158,12 +154,12 @@ const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
 /**
  * Converts Vector Array data to Playback format and stores it locally
  *
- * @param zoom the current zoom, used in radius calculations
- * @param vectorArray the source data before indexing by day
+ * @param vectors the source data before indexing by day, an object containing a vector (Float32Array) for each header's column
  * @param columns the columns present on the dataset, determined by tileset headers
+ * @param zoom the current zoom, used in radius calculations
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData) => {
+export const getTilePlaybackData = (vectors, columns, zoom, prevPlaybackData) => {
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
   const zoomFactorRadius = _getZoomFactorRadius(zoom);
@@ -177,14 +173,15 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
   pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
   extraColumns = uniq(extraColumns);
 
-  for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-    const datetime = vectorArray.datetime[index];
+  const numPoints = vectors.latitude.length;
+
+  for (let index = 0, length = numPoints; index < length; index++) {
+    const datetime = vectors.datetime[index];
 
     const timeIndex = getOffsetedTimeAtPrecision(datetime);
-    const worldX = vectorArray.worldX[index];
-    const worldY = vectorArray.worldY[index];
-    const weight = vectorArray.weight[index];
-    const sigma = vectorArray.sigma[index];
+    const { worldX, worldY } = getWorldCoordinates(vectors.latitude[index], vectors.longitude[index]);
+    const weight = vectors.weight[index];
+    const sigma = vectors.sigma[index];
     const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
     let opacity = 3 + Math.log(weight * zoomFactorOpacity);
     // TODO quick hack to avoid negative values, check why that happens
@@ -201,7 +198,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
         opacity: [opacity]
       };
       extraColumns.forEach((column) => {
-        frame[column] = [vectorArray[column][index]];
+        frame[column] = [vectors[column][index]];
       });
       tilePlaybackData[timeIndex] = frame;
       continue;
@@ -212,7 +209,7 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
     frame.radius.push(radius);
     frame.opacity.push(opacity);
     extraColumns.forEach((column) => {
-      frame[column].push(vectorArray[column][index]);
+      frame[column].push(vectors[column][index]);
     });
   }
   return tilePlaybackData;
@@ -221,8 +218,13 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
 
 export const addTracksPointsRenderingData = (data) => {
   data.hasFishing = [];
+  data.worldX = [];
+  data.worldY = [];
 
   for (let index = 0, length = data.weight.length; index < length; index++) {
+    const { worldX, worldY } = getWorldCoordinates(data.latitude[index], data.longitude[index]);
+    data.worldX[index] = worldX;
+    data.worldY[index] = worldY;
     data.hasFishing[index] = data.weight[index] > 0;
   }
   return data;
