@@ -72,16 +72,19 @@ export default class GLContainer extends BaseOverlay {
     // this.container.appendChild(baseTextureCanvas);
   }
 
-  // builds a texture spritesheet containing both the heatmap style (radial gradient)
-  // and the circle style that is used at higher zoom levels, as well as a number of hues for each
-  // in a 2D grid.
+  // builds a texture spritesheet containing 
+  // - the heatmap style (radial gradient)
+  // - the circle style that is used at higher zoom levels
+  // - the 'bullseye' style used for encounters
+  // as well as a number of hues for each in a 2D grid.
   // Then, only the texture frame (mesh UVs) is modified depending on the zoom level,
   // in order not to have to recreate sprites
   _getVesselTexture(radius, blurFactor) {
     const tplCanvas = document.createElement('canvas');
     const tplCtx = tplCanvas.getContext('2d');
     const diameter = radius * 2;
-    tplCanvas.width = (diameter * 2) + 1; // tiny offset between 2 frames
+    const NUM_STYLES = 3;
+    tplCanvas.width = (diameter * NUM_STYLES) + (NUM_STYLES - 1); // + (NUM_STYLES - 1): tiny offset between 2 frames
     tplCanvas.height = (diameter * VESSELS_HUES_INCREMENTS_NUM) + VESSELS_HUES_INCREMENTS_NUM;
 
     for (let hueIncrement = 0; hueIncrement < VESSELS_HUES_INCREMENTS_NUM; hueIncrement++) {
@@ -107,6 +110,18 @@ export default class GLContainer extends BaseOverlay {
       tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
       tplCtx.fillStyle = rgbString;
       tplCtx.fill();
+      
+      // bullseye style
+      x += diameter + 1;
+      tplCtx.beginPath();
+      tplCtx.arc(x, yCenter, radius * .5, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = rgbString;
+      tplCtx.fill();
+      tplCtx.beginPath();
+      tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
+      tplCtx.lineWidth = 2;
+      tplCtx.strokeStyle = rgbString;
+      tplCtx.stroke();
     }
 
     return tplCanvas;
@@ -162,6 +177,7 @@ export default class GLContainer extends BaseOverlay {
 
   // Layer management
   addLayer(layerSettings) {
+    console.log(layerSettings)
     const maxSprites = this._getNumSprites();
     const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites);
     this.heatmapStage.addChild(layer.stage);
