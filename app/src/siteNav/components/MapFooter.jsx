@@ -117,7 +117,6 @@ class MapFooter extends Component {
           </div>
         </div>
         <Footer
-          isMap
           isExpanded={this.state.footerExpanded}
           onClose={() => this.onCloseFooter()}
           onOpenSupportModal={this.props.onOpenSupportFormModal}

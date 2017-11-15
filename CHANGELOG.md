@@ -1,8 +1,10 @@
 # Changelog
 
-- Rename "Fishing Layers" to "Activity Layers"
+- Replaced logo
 
 ## 2.2.1
+- Rename "Fishing Layers" to "Activity Layers"
+
 ## 2.2.1 RC2
 - Fixed issue in vessel search results when highlighting MMSI
 
