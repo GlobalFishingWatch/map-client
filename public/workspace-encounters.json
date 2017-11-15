@@ -24,9 +24,8 @@
           "description": "Encounters",
           "url": "http://127.0.0.1:9090",
           "visible": true,
-          "hue": 182,
+          "hue": 0,
           "type": "ClusterAnimation",
-          "subtype": "Encounters",
           "opacity": 1,
           "id": "encounters",
           "tilesetId": "516-resample-v2"

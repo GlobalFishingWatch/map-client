@@ -108,16 +108,23 @@ export const groupData = (cleanVectorArrays, columns) => {
 };
 
 /**
- * Converts Vector Array data to Playback format and stores it locally
+ * Converts Vector Array data to Playback format and stores it locally.
+ * The data structure is an array indexed by a time unit, ie a set of points every day
+ * This preprocessing step allows playback to play smoothly as the necessary conversions and data structure set up
+ * is done once (after tile has been loaded)
  *
- * @param vectors the source data before indexing by day, an object containing a vector (Float32Array) for each header's column
+ * @param data the source data before indexing by day, an object containing
+ *  - a vector (Float32Array) for each header's column in the case of Pelagos tiles
+ *  - an array of points int the case of PBF tiles
  * @param columns the columns present on the dataset, determined by tileset headers
- * @param zoom the current zoom, used in radius calculations
+ * @param tileCoordinates x, y, z
+ * @param isPBF bool whether data is a PBF vector tile (true) or a Pelagos tile (false)
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData) => {
+export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, prevPlaybackData) => {
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
+  const zoom = tileCoordinates.zoom;
   const zoomFactorRadius = convert.getZoomFactorRadius(zoom);
   const zoomFactorRadiusRenderingMode = convert.getZoomFactorRadiusRenderingMode(zoom);
   const zoomFactorOpacity = convert.getZoomFactorOpacity(zoom);
@@ -130,15 +137,27 @@ export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData)
   let storedColumns = [].concat(columnsArr);
   // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
   pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
-  if (columns.sigma) storedColumns.push('radius');
-  if (columns.weight) storedColumns.push('opacity');
+  storedColumns.push('radius');
+  storedColumns.push('opacity');
   storedColumns = uniq(storedColumns);
 
-  const numPoints = vectors.latitude.length;
+  const numPoints = (isPBF === true) ? data.length : data.latitude.length;
 
   for (let index = 0, length = numPoints; index < length; index++) {
-    const point = {}; // feature(i) for PBF
-    columnsArr.forEach((c) => { point[c] = vectors[c][index]; });
+    let point;
+    if (isPBF === true) {
+      const feature = data.feature(index);
+      point = feature.properties;
+      // WARNING: toGeoJSON is expensive. Avoid using raw coordinates in PBF tiles, pregenerate world coords
+      if (!columns.worldX) {
+        const geom = feature.toGeoJSON(tileCoordinates.x, tileCoordinates.y, zoom).geometry.coordinates;
+        point.longitude = geom[0];
+        point.latitude = geom[1];
+      }
+    } else {
+      point = {};
+      columnsArr.forEach((c) => { point[c] = data[c][index]; });
+    }
 
     const timeIndex = (columns.timeIndex)
       ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
@@ -147,9 +166,13 @@ export const getTilePlaybackData = (vectors, columnsArr, zoom, prevPlaybackData)
 
     if (columns.sigma) {
       point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
+    } else {
+      point.radius = 1;
     }
     if (columns.weight) {
       point.opacity = convert.weightToOpacity(point.weight, zoomFactorOpacity);
+    } else {
+      point.opacity = 1;
     }
 
     if (!tilePlaybackData[timeIndex]) {

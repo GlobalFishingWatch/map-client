@@ -116,22 +116,24 @@ function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, t
  * @return {Object}                      playback-ready merged data
  */
 function parseLayerTile(rawTileData, columns, isPBF, tileCoordinates, map, prevPlaybackData) {
-  // let
-  // if (isPBF === true) {
-  //
-  // }
-  const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-  const groupedData = groupData(cleanVectorArrays, columns);
-  if (Object.keys(groupedData).length === 0) {
-    return [];
+  let data;
+  if (isPBF === true) {
+    data = rawTileData[0].layers.points;
+  } else {
+    const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+    data = groupData(cleanVectorArrays, columns);
+    if (Object.keys(data).length === 0) {
+      return [];
+    }
   }
-  const data = getTilePlaybackData(
-    groupedData,
+  const playbackData = getTilePlaybackData(
+    data,
     columns,
-    tileCoordinates.zoom,
+    tileCoordinates,
+    isPBF,
     prevPlaybackData
   );
-  return data;
+  return playbackData;
 }
 
 /**
