@@ -4,7 +4,7 @@
 .colorPicker {
   .colorInput {
     display: inline-block;
-    
+
     input[type="radio"] {
       display: none;
       &:checked + label {
@@ -21,6 +21,10 @@
       padding: 1px;
       border-radius: 50%;
     }
+  }
+
+  .colorInputs {
+    margin-left: 2px;
   }
 
   .title {

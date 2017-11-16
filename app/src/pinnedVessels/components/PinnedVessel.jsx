@@ -6,6 +6,8 @@ import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
+import ReactTooltip from 'react-tooltip';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
@@ -106,18 +108,24 @@ class PinnedVessel extends Component {
     }
 
     const color = getKeyByValue(COLOR_HUES, this.props.vessel.hue);
+    const tooltip = (this.props.vessel.title.length > 15) ? this.props.vessel.title : null;
+
     return (
       <li
         className={pinnedTracksStyles.pinnedItem}
         key={this.props.vessel.seriesgroup}
       >
         <div className={pinnedTracksStyles.itemHeader}>
+          <ReactTooltip />
           <Toggle
             on={this.props.vessel.visible}
             hue={this.props.vessel.hue}
             onToggled={() => this.onChangeVisibility()}
           />
           <input
+            data-tip={tooltip}
+            data-place="left"
+            data-class={TooltipStyles.tooltip}
             className={classnames(pinnedTracksStyles.itemName, { [pinnedTracksStyles.itemRename]: this.props.pinnedVesselEditMode })}
             onChange={e => this.onChangeName(e.currentTarget.value)}
             readOnly={!this.props.pinnedVesselEditMode}

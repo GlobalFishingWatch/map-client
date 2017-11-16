@@ -10,24 +10,48 @@
 .optionsContainer {
   display: flex;
   flex-basis: 100%;
-  justify-content: space-between;
   flex-direction: column;
-  margin-top: 20px;
-
-  @media #{$mq-tablet} {
-    flex-direction: row;
-    margin-top: 40px;
-    flex-basis: calc(50% - 13px);
-  }
+  justify-content: space-between;
+  margin-top: 50px;
 }
 
-.column {
+.section {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
 
-  @media #{$mq-tablet} {
-    margin-right: 45px;
+.section,
+._bottomPadding {
+  padding-bottom: 40px;
+}
+
+.foldableAction {
+  cursor: pointer;
+
+  &::after {
+    content: '▾';
+    margin-left: 10px;
+    transform: rotateZ(180deg);
+  }
+
+  &._closed {
+    &::after {
+      transform: rotateZ(0deg);
+    }
+  }
+}
+
+.foldable {
+  height: auto;
+  max-height: 200px;
+  overflow: hidden;
+  transition: all .4s;
+
+  &._closed {
+    height: 0;
+    max-height: 0;
+    padding: 0;
   }
 }
 
@@ -77,16 +101,21 @@
 }
 
 
-.wrapper{
-    padding-bottom: 40px;
+.wrapper {
+  padding-bottom: 40px;
 }
 
 .footerContainer {
   display: flex;
   justify-content: center;
-  margin: 10px 0 0;
+  margin: 10px 0 20px;
 
-  > .mainButton {
+  > button {
+    margin-right: 5px;
     width: 180px;
   }
+}
+
+.warning {
+  margin: 40% 0 40px;
 }

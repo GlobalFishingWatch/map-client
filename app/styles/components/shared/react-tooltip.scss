@@ -1,0 +1,11 @@
+@import '../../settings';
+
+.tooltip {
+  background-color: $color-base !important;
+  color: $color-white !important;
+  font-size: 10px !important;
+  line-height: 15px !important;
+  max-width: 200px;
+  text-transform: none;
+  white-space: pre-wrap;
+}
