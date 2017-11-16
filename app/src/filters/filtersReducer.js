@@ -22,7 +22,7 @@ import {
   TIMELINE_MIN_SPEED,
   TIMELINE_MAX_SPEED
 } from 'config';
-import convert from 'lib/GlobalFishingWatch-convert';
+import convert from 'globalfishingwatch-convert';
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],

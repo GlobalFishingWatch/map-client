@@ -2,7 +2,7 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
-import convert from 'lib/GlobalFishingWatch-convert';
+import convert from 'globalfishingwatch-convert';
 
 import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
 
