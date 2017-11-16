@@ -12,20 +12,15 @@ export default (tileUrl) => {
         reader.addEventListener('loadend', () => {
           // reader.result contains the contents of blob as a typed array
           // blob.type === 'application/x-protobuf'
-          console.log(`reading tile ${tileUrl}`);
           const pbf = new Pbf(reader.result);
-          console.log(pbf)
-          console.log('vector tile?')
           const vectorTile = new VectorTile(pbf);
-          console.log('vector tile')
-          console.log(vectorTile)
           return resolve(vectorTile);
         });
         reader.readAsArrayBuffer(blob);
       });
     });
   }).catch((err) => {
-    console.log(err);
-  })
+    console.warn(err);
+  });
   return vectorTilePromise;
 };

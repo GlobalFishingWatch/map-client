@@ -118,6 +118,9 @@ function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, t
 function parseLayerTile(rawTileData, columns, isPBF, tileCoordinates, map, prevPlaybackData) {
   let data;
   if (isPBF === true) {
+    if (rawTileData === undefined || !rawTileData.length || rawTileData[0] === undefined) {
+      return [];
+    }
     data = rawTileData[0].layers.points;
   } else {
     const cleanVectorArrays = getCleanVectorArrays(rawTileData);

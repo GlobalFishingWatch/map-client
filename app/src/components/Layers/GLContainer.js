@@ -72,7 +72,7 @@ export default class GLContainer extends BaseOverlay {
     // this.container.appendChild(baseTextureCanvas);
   }
 
-  // builds a texture spritesheet containing 
+  // builds a texture spritesheet containing
   // - the heatmap style (radial gradient)
   // - the circle style that is used at higher zoom levels
   // - the 'bullseye' style used for encounters
@@ -110,11 +110,11 @@ export default class GLContainer extends BaseOverlay {
       tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
       tplCtx.fillStyle = rgbString;
       tplCtx.fill();
-      
+
       // bullseye style
       x += diameter + 1;
       tplCtx.beginPath();
-      tplCtx.arc(x, yCenter, radius * .5, 0, 2 * Math.PI, false);
+      tplCtx.arc(x, yCenter, radius * 0.5, 0, 2 * Math.PI, false);
       tplCtx.fillStyle = rgbString;
       tplCtx.fill();
       tplCtx.beginPath();
@@ -177,7 +177,6 @@ export default class GLContainer extends BaseOverlay {
 
   // Layer management
   addLayer(layerSettings) {
-    console.log(layerSettings)
     const maxSprites = this._getNumSprites();
     const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites);
     this.heatmapStage.addChild(layer.stage);
