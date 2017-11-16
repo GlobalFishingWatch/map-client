@@ -114,12 +114,12 @@ export default class GLContainer extends BaseOverlay {
       // bullseye style
       x += diameter + 1;
       tplCtx.beginPath();
-      tplCtx.arc(x, yCenter, radius * 0.5, 0, 2 * Math.PI, false);
+      tplCtx.arc(x, yCenter, radius * 0.4, 0, 2 * Math.PI, false);
       tplCtx.fillStyle = rgbString;
       tplCtx.fill();
       tplCtx.beginPath();
-      tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
-      tplCtx.lineWidth = 2;
+      tplCtx.arc(x, yCenter, radius * 0.95, 0, 2 * Math.PI, false);
+      tplCtx.lineWidth = 1;
       tplCtx.strokeStyle = rgbString;
       tplCtx.stroke();
     }
@@ -176,9 +176,9 @@ export default class GLContainer extends BaseOverlay {
 
 
   // Layer management
-  addLayer(layerSettings) {
+  addLayer(layerSettings, useHeatmapStyle) {
     const maxSprites = this._getNumSprites();
-    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites);
+    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites, useHeatmapStyle);
     this.heatmapStage.addChild(layer.stage);
     this.layers.push(layer);
     return layer;

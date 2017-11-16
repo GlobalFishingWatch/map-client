@@ -137,8 +137,6 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
   let storedColumns = [].concat(columnsArr);
   // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
   pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
-  storedColumns.push('radius');
-  storedColumns.push('opacity');
   storedColumns = uniq(storedColumns);
 
   const numPoints = (isPBF === true) ? data.length : data.latitude.length;
@@ -166,13 +164,9 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
 
     if (columns.sigma) {
       point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
-    } else {
-      point.radius = 1;
     }
     if (columns.weight) {
       point.opacity = convert.weightToOpacity(point.weight, zoomFactorOpacity);
-    } else {
-      point.opacity = 1;
     }
 
     if (!tilePlaybackData[timeIndex]) {

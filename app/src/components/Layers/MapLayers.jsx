@@ -249,7 +249,7 @@ class MapLayers extends Component {
   }
 
   addHeatmapLayer(newLayer) {
-    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer);
+    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer, useHeatmapStyle(this.props.zoom));
   }
 
   removeHeatmapLayer(layer) {
@@ -257,7 +257,7 @@ class MapLayers extends Component {
   }
 
   setHeatmapFilters(props) {
-    this.glContainer.setFilters(props.layerFilters, useHeatmapStyle(this.props.zoom));
+    this.glContainer.setFilters(props.layerFilters);
   }
 
   updateHeatmap(props) {

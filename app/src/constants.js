@@ -30,6 +30,12 @@ export const VESSEL_INFO_STATUS = {
   LOADED: 3
 };
 
+export const RENDERING_STYLE = {
+  HEATMAP: 0,
+  CIRCLE: 1,
+  BULLSEYE: 2
+};
+
 export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];
 
 export const FLAGS = {
