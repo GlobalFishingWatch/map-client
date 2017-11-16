@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-import { LAYER_TYPES, HEADERLESS_LAYERS } from 'constants';
+import { LAYER_TYPES, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
@@ -129,13 +129,18 @@ export function initLayers(workspaceLayers, libraryLayers) {
           // headerless layers are considered temporalExtents-less too
           heatmapLayer.header = {
             temporalExtentsLess: true,
-            temporalExtents: [[0, (new Date(2100, 0, 0)).getTime()]],
+            temporalExtents: TEMPORAL_EXTENTLESS,
             colsByName: []
           };
         } else {
           const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
           headerPromise.then((header) => {
             if (header !== null) {
+              if (header.temporalExtents === undefined || header.temporalExtents === null) {
+                header.temporalExtents = TEMPORAL_EXTENTLESS;
+                header.temporalExtentsLess = true;
+              }
+
               heatmapLayer.header = header;
               dispatch(setGlobalFiltersFromHeader(header));
             }

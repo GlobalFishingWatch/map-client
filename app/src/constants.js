@@ -30,6 +30,8 @@ export const VESSEL_INFO_STATUS = {
   LOADED: 3
 };
 
+export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',
