@@ -69,9 +69,14 @@ const mapStateToProps = (state) => {
   });
   let warning;
   if (warningLayer) {
-    warning = state.literals.filter_groups_warning
-      .replace('$LAYER', warningLayer.title)
-      .replace('$FILTER', filters.find(f => f.id === warningFilterId).label);
+    if (!state.literals.filter_groups_warning) {
+      console.warn('filter_groups_warning is missing from your literals.json file.');
+      warning = '';
+    } else {
+      warning = state.literals.filter_groups_warning
+        .replace('$LAYER', warningLayer.title)
+        .replace('$FILTER', filters.find(f => f.id === warningFilterId).label);
+    }
   }
 
   return {
