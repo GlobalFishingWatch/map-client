@@ -18,6 +18,7 @@ import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
+import encountersReducer from 'mapPanels/rightControlPanel/reducers/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
@@ -56,7 +57,8 @@ const reducer = combineReducers({
   share: shareReducer,
   timebar: timebarReducer,
   user: userReducer,
-  vesselInfo: vesselInfoReducer
+  vesselInfo: vesselInfoReducer,
+  encounters: encountersReducer
 });
 
 /**

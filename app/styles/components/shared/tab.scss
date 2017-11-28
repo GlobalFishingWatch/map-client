@@ -1,0 +1,38 @@
+@import '../../settings';
+@import '../../mixins';
+
+.tab {
+  display: flex;
+  border-bottom: 1px solid $color-fade-blue;
+  font-size: $font-size-xs-small;
+
+  .tabHeader {
+    color: $color-fade-blue;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 6px;
+    padding-right: 15px;
+    padding-left: 20px;
+
+    @media #{$mq-tablet} {
+      &:first-child {
+        padding-left: 28px;
+      }
+    }
+
+
+    &.active {
+      color: $color-white;
+      border-bottom: 2px solid $color-button-primary;
+      display: inline-block;
+      // &::after {
+      //   top: 56px;
+      //   left: 30px;
+      //   display: inline-block;
+      //   position: absolute;
+      //   content: "";
+      //   @include triangle($color-button-primary, 'down');
+      // }
+    }
+  }
+}

@@ -15,6 +15,7 @@ export const LAYER_TYPES = {
   Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation'
 };
+export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
@@ -24,7 +25,7 @@ export const REPORT_STATUS = {
   sent: 'sent'
 };
 
-export const VESSEL_INFO_STATUS = {
+export const INFO_STATUS = {
   HIDDEN: 1,
   LOADING: 2,
   LOADED: 3

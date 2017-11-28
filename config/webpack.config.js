@@ -92,6 +92,7 @@ const webpackConfig = {
       report: path.join(rootPath, 'app/src/report'),
       search: path.join(rootPath, 'app/src/search'),
       share: path.join(rootPath, 'app/src/share'),
+      sharedUI: path.join(rootPath, 'app/src/sharedUI'),
       siteNav: path.join(rootPath, 'app/src/siteNav'),
       timebar: path.join(rootPath, 'app/src/timebar'),
       mapPanels: path.join(rootPath, 'app/src/mapPanels'),

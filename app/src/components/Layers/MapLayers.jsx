@@ -293,7 +293,7 @@ class MapLayers extends Component {
       cartodb.createLayer(this.map, layerSettings.url)
         .addTo(this.map, index)
         .done(((layer, cartoLayer) => {
-          cartoLayer.setInteraction(reportLayerId === layerSettings.id);
+          cartoLayer.setInteraction(layerSettings.id === reportLayerId);
           cartoLayer.on('featureClick', (event, latLng, pos, data) => {
             this.onCartoLayerFeatureClickBound(data, latLng, layer.id);
           });
@@ -517,11 +517,11 @@ MapLayers.propTypes = {
   viewportHeight: PropTypes.number,
   reportLayerId: PropTypes.string,
   reportedPolygonsIds: PropTypes.array,
-  getVesselFromHeatmap: PropTypes.func,
-  highlightVesselFromHeatmap: PropTypes.func,
-  showPolygon: PropTypes.func,
-  createTile: PropTypes.func,
-  releaseTile: PropTypes.func
+  getVesselFromHeatmap: PropTypes.func.isRequired,
+  highlightVesselFromHeatmap: PropTypes.func.isRequired,
+  showPolygon: PropTypes.func.isRequired,
+  createTile: PropTypes.func.isRequired,
+  releaseTile: PropTypes.func.isRequired
 };
 
 
