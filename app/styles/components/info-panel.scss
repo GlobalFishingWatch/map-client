@@ -1,0 +1,249 @@
+@import '../settings';
+@import '../mixins';
+
+.infoPanel {
+  background-color: $color-7;
+  color: $color-4;
+  display: block;
+  font-family: $font-family-1;
+  top: $mobile-height;
+  width: 100%;
+  z-index: 1;
+
+  @media #{$mq-tablet} {
+    position: relative;
+    top: 0;
+  }
+
+  &._expanded {
+
+    > .metadata {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
+  > .metadata {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-height: $vessel-info-height;
+    overflow: hidden;
+    padding: 20px 20px 15px;
+
+    &._noPadding {
+      padding: 0;
+    }
+
+    @media #{$mq-tablet} {
+      max-height: none;
+    }
+
+    .info {
+      width: 100%;
+
+      .encountersData {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-height: 100px;
+        overflow: hidden;
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-bottom: 8px;
+        padding-left: 20px;
+
+        @media #{$mq-tablet} {
+          padding-left: 27px;
+          max-height: none;
+        }
+
+        .arrowLink {
+          color: $color-button-primary;
+          text-transform: uppercase;
+          text-decoration: underline;
+          font-weight: bold;
+
+          .arrowSvg {
+            margin-left: 5px;
+            vertical-align: sub;
+          }
+        }
+      }
+
+      .header {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: $font-size-xs-small;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: 1px solid $color-fade-blue;
+
+        .title {
+          display: flex;
+          align-items: center;
+
+
+          .ovalContainer {
+            width: 18px;
+            height: 18px;
+            border: solid 1px $color-salmon;
+            border-radius: 50%;
+            display: inline-block;
+
+            .oval {
+              width: 10px;
+              height: 10px;
+              margin: 3px;
+              background-color: $color-salmon;
+              border-radius: 50%;
+              display: inline-block;
+            }
+          }
+
+          .encountersTitle {
+            font-weight: bold;
+            padding-left: 7px;
+          }
+        }
+
+        .duration {
+          padding-right: 20px;
+
+          .durationLabel {
+            font-weight: bold;
+            margin-right: 5px;
+          }
+        }
+      }
+
+
+      .vesselHeader {
+        &::before {
+          display: inline-block;
+          content: "";
+          margin-right: 10px;
+          @include line($color-red);
+        }
+      }
+
+      .reeferHeader {
+        &::before {
+          display: inline-block;
+          content: "";
+          margin-right: 10px;
+          @include line($color-salmon);
+        }
+      }
+    }
+
+
+  .rowInfo {
+    display: flex;
+      flex-basis: calc(50% - 10px);
+      flex-direction: column;
+      flex-wrap: wrap;
+      padding: 4px 0 10px;
+
+      &:nth-child(2n) {
+        margin: 0 0 0 5px;
+      }
+
+      > .key,
+      > .value {
+        color: $color-4;
+        font-size: $font-size-xxs-small;
+      }
+
+      > .key {
+        font-weight: $font-weight-bold;
+      }
+
+      > .value {
+        padding: 5px 0 0;
+      }
+    }
+
+
+    .externalLink {
+      color: $color-3;
+      cursor: pointer;
+      display: inline-block;
+      font-family: $font-family-1;
+      font-size: $font-size-xxs-small;
+      margin: 15px 0 0;
+      text-decoration: underline;
+    }
+
+    .linkList {
+      display: flex;
+      flex-wrap: wrap;
+
+      > .linkListItem {
+        width: calc(50% - 3px);
+
+        &:nth-child(2n) {
+          margin: 0 0 0 6px;
+        }
+      }
+
+      > .linkListItem > .externalLink {
+        margin: 10px 0 0;
+      }
+    }
+
+    .zoom {
+      color: $color-3;
+      cursor: pointer;
+      display: block;
+      font-family: $font-family-1;
+      text-decoration: underline;
+    }
+  }
+
+  .pinIcon {
+    fill: $color-3;
+    position: absolute;
+    right: 86px;
+
+    @media #{$mq-tablet} {
+      right: 30px;
+      margin-top: 5px;
+    }
+
+    &._pinned {
+      fill: #fff;
+    }
+  }
+
+  .buttonsContainer {
+    bottom: 0;
+    display: flex;
+    right: 8px;
+    transform: translate(0, 30%);
+    float: right !important;
+    margin-left: 5px;
+    padding-right: 10px;
+
+    @media #{$mq-tablet} {
+      padding-right: 0px;
+      position: absolute;
+      bottom: auto;
+      left: 96px;
+      right: 0;
+      top: 18px;
+      transform: translate(-50%, -50%);
+    }
+
+
+    > button {
+      position: relative;
+      transform: none;
+
+      &:not(:first-child) {
+        margin: 0 0 0 10px;
+      }
+    }
+  }
+}

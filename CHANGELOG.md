@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.3
+- Fix path to social network cards
+- Fix issue where header logo would overflow mobile map
+
+## 2.2.2
 - Replaced logo
 
 ## 2.2.1

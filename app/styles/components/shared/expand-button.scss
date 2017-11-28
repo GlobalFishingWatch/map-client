@@ -5,10 +5,10 @@
   background-color: $color-4;
   border-radius: 50%;
   cursor: pointer;
-  height: 26px;
+  height: 20px;
+  width: 20px;
   outline: none;
   position: relative;
-  width: 26px;
 
   &::after {
     @include arrow(8px, 2px, $color-19, 'down');

@@ -11,6 +11,7 @@ import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
 import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
+import EncountersPanel from 'mapPanels/rightControlPanel/containers/EncountersPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
 import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
@@ -232,6 +233,7 @@ class ControlPanel extends Component {
             <div className={classnames([ControlPanelStyles.bgWrapper])} >
               {this.renderSubMenu(desktop)}
               <VesselInfoPanel />
+              <EncountersPanel />
             </div >
           </div >
         )}

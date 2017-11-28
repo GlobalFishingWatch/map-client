@@ -99,6 +99,8 @@ class ModalContainer extends Component {
           closeable
           visible
           close={this.props.closeFilterGroupModal}
+          isSmall={true} // eslint-disable-line react/jsx-boolean-value
+          isScrollable={true} // eslint-disable-line react/jsx-boolean-value
         >
           <FilterGroupForm />
         </Modal >

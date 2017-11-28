@@ -55,13 +55,38 @@ const mapStateToProps = (state) => {
   const anyFilterSelected = Object.keys(currentlyEditedFilterGroup.filterValues).length > 0;
   const disableSave = anyLayerChecked === false || anyFilterSelected === false;
 
+  // prepare warnings, when a filter is applied to a layer that doesn't support it
+  let warningFilterId;
+  const warningLayer = filteredLayers.find((layer) => {
+    const layerFiltersIds = layer.header.filters.map(f => f.id);
+    return !filterValuesKeys.every((filterId) => {
+      if (layerFiltersIds.indexOf(filterId) === -1) {
+        warningFilterId = filterId;
+        return false;
+      }
+      return true;
+    });
+  });
+  let warning;
+  if (warningLayer) {
+    if (!state.literals.filter_groups_warning) {
+      console.warn('filter_groups_warning is missing from your literals.json file.');
+      warning = '';
+    } else {
+      warning = state.literals.filter_groups_warning
+        .replace('$LAYER', warningLayer.title)
+        .replace('$FILTER', filters.find(f => f.id === warningFilterId).label);
+    }
+  }
+
   return {
     layers,
     currentlyEditedFilterGroup,
     filters,
     label: currentlyEditedFilterGroup.label,
     defaultLabel,
-    disableSave
+    disableSave,
+    warning
   };
 };
 

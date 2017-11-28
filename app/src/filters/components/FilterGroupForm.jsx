@@ -16,6 +16,14 @@ import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name
 
 class FilterGroupForm extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      customizeClosed: true,
+      validated: false
+    };
+  }
+
   componentWillReceiveProps(nextProps) {
     // if defaultLabel generated in container changed,
     // and if user did not changed from the default label (label is the same as the previously generated label)
@@ -24,6 +32,12 @@ class FilterGroupForm extends Component {
         this.props.label === this.props.defaultLabel) {
       this.props.onLabelChanged(nextProps.defaultLabel);
     }
+  }
+
+  componentWillMount() {
+    this.setState({
+      validated: false
+    });
   }
 
   onClickLayerInfo(layer) {
@@ -41,6 +55,28 @@ class FilterGroupForm extends Component {
         title,
         description: filter.description || title
       }
+    });
+  }
+
+  onClickCustomize() {
+    this.setState({
+      customizeClosed: !this.state.customizeClosed
+    });
+  }
+
+  onClickSave() {
+    if (this.props.warning === undefined || this.state.validated === true) {
+      this.props.onSaveClicked();
+    }
+
+    this.setState({
+      validated: !this.state.validated
+    });
+  }
+
+  onClickChangeSelection() {
+    this.setState({
+      validated: false
     });
   }
 
@@ -66,6 +102,9 @@ class FilterGroupForm extends Component {
   }
 
   renderFiltersList() {
+    if (!this.props.filters.length) {
+      return <div>No filters available, please select at least one activity layer.</div>;
+    }
 
     return this.props.filters.map((filter, index) => {
       const values = this.props.currentlyEditedFilterGroup.filterValues[filter.id];
@@ -97,44 +136,60 @@ class FilterGroupForm extends Component {
     });
   }
 
+  renderWarning() {
+    return (
+      <div className={ModalStyles.warning}>
+        {this.props.warning}
+      </div>
+    );
+  }
 
-  render() {
+  renderForm() {
     const layersList = this.renderLayersList();
     const filtersList = this.renderFiltersList();
     return (
       <div>
-        <h3 className={ModalStyles.title}>Filter Group</h3>
+        <h3 className={ModalStyles.title}>Create filter</h3>
         <div className={ModalStyles.optionsContainer}>
-          <div className={ModalStyles.column}>
-            <div className={ModalStyles.wrapper}>
-              <div className={ModalStyles.sectionTitle}>
-                Select a Fishing Layer:
-              </div>
-              <div className={ItemList.wrapper}>
-                <ul>
-                  {layersList}
-                </ul>
-              </div>
+          <div className={ModalStyles.section}>
+            <div className={ModalStyles.sectionTitle}>
+              Select the activity layers you want to apply the filters to:
             </div>
-            <div className={ModalStyles.wrapper}>
-              <ColorPicker
-                id={'filter-color'}
-                color={this.props.currentlyEditedFilterGroup.color}
-                onColorChange={this.props.onColorChanged}
-              />
+            <div className={ItemList.wrapper}>
+              <ul>
+                {layersList}
+              </ul>
             </div>
           </div>
-          <div className={ModalStyles.column}>
-            <div className={ModalStyles.wrapper}>
-              <div className={ModalStyles.sectionTitle}>
-                Filter by:
-              </div>
-              {filtersList}
+          <div
+            className={ModalStyles.section}
+          >
+            <div className={ModalStyles.sectionTitle}>
+              Choose filters:
             </div>
-            <div className={ModalStyles.wrapper}>
+            {filtersList}
+          </div>
+          <div className={ModalStyles.section}>
+            <div
+              className={classnames(
+                ModalStyles.sectionTitle,
+                ModalStyles.foldableAction,
+                { [ModalStyles._closed]: this.state.customizeClosed })}
+              onClick={() => { this.onClickCustomize(); }}
+            >
+              Customize layer
+            </div>
+            <div className={classnames(ModalStyles.foldable, { [ModalStyles._closed]: this.state.customizeClosed })}>
+              <div className={ModalStyles._bottomPadding}>
+                <ColorPicker
+                  id={'filter-color'}
+                  color={this.props.currentlyEditedFilterGroup.color}
+                  onColorChange={this.props.onColorChanged}
+                />
+              </div>
               <div className={ModalStyles.sectionTitle}>
                 <label htmlFor="name">Filter group name</label>
-              </div >
+              </div>
               <input
                 type="text"
                 name="name"
@@ -146,14 +201,37 @@ class FilterGroupForm extends Component {
             </div>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  render() {
+    const displayWarning = this.props.warning !== undefined && this.state.validated === true;
+    const body = (displayWarning) ? this.renderWarning() : this.renderForm();
+
+    return (
+      <div>
+        {body}
         <div className={ModalStyles.footerContainer}>
+          {displayWarning &&
+            <button
+              className={classnames(
+                ButtonStyles.button,
+                ButtonStyles._big, ModalStyles.mainButton, {
+                  [ButtonStyles._disabled]: this.props.disableSave
+                })}
+              onClick={() => this.onClickChangeSelection()}
+            >
+              Change selection
+            </button>
+          }
           <button
             className={classnames(
               ButtonStyles.button, ButtonStyles._filled,
               ButtonStyles._big, ModalStyles.mainButton, {
                 [ButtonStyles._disabled]: this.props.disableSave
               })}
-            onClick={this.props.onSaveClicked}
+            onClick={() => this.onClickSave()}
           >
             Save
           </button>
@@ -170,6 +248,7 @@ FilterGroupForm.propTypes = {
   defaultLabel: PropTypes.string,
   label: PropTypes.string,
   disableSave: PropTypes.bool,
+  warning: PropTypes.string,
   onLayerChecked: PropTypes.func,
   onColorChanged: PropTypes.func,
   onFilterValueChanged: PropTypes.func,

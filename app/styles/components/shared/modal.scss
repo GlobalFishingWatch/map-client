@@ -20,7 +20,6 @@
     position: relative;
     width: calc(100% - 45px);
 
-
     @media #{$mq-mobile-large} {
       max-width: 860px;
       min-width: 370px;
@@ -28,21 +27,17 @@
     }
 
     @media #{$mq-tablet} {
-      height: 65%;
+      height: 80%;
       max-height: 494px;
       min-width: 620px;
-
     }
 
     @media #{$mq-laptop} {
-      height: 60%;
-      max-height: 494px;
+      max-height: 700px;
       width: 860px;
     }
 
     @media #{$mq-desktop} {
-      height: 80%;
-      max-height: 700px;
       width: 860px;
     }
 
@@ -95,6 +90,18 @@
   &._small {
     > .content {
       max-width: 500px;
+    }
+  }
+
+
+  &._scrollable {
+    > .content {
+      .containContent {
+        height: 100%;
+        .containPadding {
+          height: 100%;
+        }
+      }
     }
   }
 

@@ -250,7 +250,9 @@ export const vesselSatisfiesFilters = (frame, index, filterValues) => {
 };
 
 const vesselSatisfiesAllFilters = (frame, index, filters) => {
-  const satisfiesAllFilters = filters.some(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
+  const satisfiesAllFilters = filters
+    .filter(f => f.pass !== true)
+    .some(filter => vesselSatisfiesFilters(frame, index, filter.filterValues));
   return satisfiesAllFilters;
 };
 
@@ -276,9 +278,6 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
           seriesgroup: frame.seriesgroup[i]
         };
 
-        if (frame.category !== undefined) {
-          vessel.category = frame.category[i];
-        }
         vessels.push(vessel);
       }
     }

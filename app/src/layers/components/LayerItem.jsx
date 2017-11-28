@@ -8,6 +8,8 @@ import ExpandItem from 'components/Shared/ExpandItem';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';
 import ListItemStyles from 'styles/components/map/item-list.scss';
+import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
+import ReactTooltip from 'react-tooltip';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
@@ -139,8 +141,11 @@ class LayerItem extends Component {
       );
     }
 
+    const tooltip = (this.props.layer.label.length > 30) ? this.props.layer.label : null;
+
     return (
       <div className={ListItemStyles.listItemContainer}>
+        <ReactTooltip />
         <li
           className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}
         >
@@ -151,6 +156,9 @@ class LayerItem extends Component {
               onToggled={() => this.onChangeVisibility()}
             />
             <input
+              data-tip={tooltip}
+              data-place="left"
+              data-class={TooltipStyles.tooltip}
               className={classnames(LayerItemStyles.itemName, { [LayerItemStyles.itemRename]: this.props.layerPanelEditMode })}
               onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
               readOnly={!this.props.layerPanelEditMode}

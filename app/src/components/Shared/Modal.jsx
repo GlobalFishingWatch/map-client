@@ -64,7 +64,8 @@ class Modal extends React.Component {
     return (
       <div
         style={customStyles}
-        className={classnames(ModalStyles.modal, { [ModalStyles._small]: this.props.isSmall })}
+        className={
+          classnames(ModalStyles.modal, { [ModalStyles._small]: this.props.isSmall, [ModalStyles._scrollable]: this.props.isScrollable })}
         onClick={e => this.onClickOverlay(e)}
       >
         <div
@@ -113,6 +114,7 @@ Modal.propTypes = {
    * Sets z-index of the modal
    */
   isSmall: PropTypes.bool,
+  isScrollable: PropTypes.bool,
   zIndex: PropTypes.number
 };
 

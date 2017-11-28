@@ -94,16 +94,15 @@ export function toggleReport(layerId) {
 /**
  + Get current countries name from the filters only if they exist
  * @param {object} state
- * @returns {array} flags [{'AD'}, {'ES'}, ...]
+ * @returns {array} flags ['AD', 'ES', ...]
  */
 function getCurrentFlags(state) {
   return state.filterGroups.filterGroups.filter(filter =>
     filter.filterValues !== undefined &&
-    filter.filterValues.category !== undefined &&
-    filter.filterValues.category !== '' &&
-    filter.filterValues.category !== 'ALL' &&
-    filter.filterValues.category !== 'FILTERED'
-  ).map(filter => filter.filterValues.category).map(flag => FLAGS[flag]);
+    filter.filterValues.flag !== undefined)
+    .map(filter => filter.filterValues.flag)
+    .map(flags => flags.map(flag => FLAGS[flag]))
+    .reduce((a1, a2) => a1.concat(a2), []);
 }
 
 export function sendReport() {

@@ -5,13 +5,13 @@
   border-radius: 50%;
   cursor: pointer;
   display: inline-block;
-  height: 26px;
+  height: 20px;
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 26px;
+  width: 20px;
 
   > .cross {
-    height: 11px;
+    height: 9px;
     left: 50%;
     position: absolute;
     stroke: $color-7;
