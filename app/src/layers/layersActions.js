@@ -88,6 +88,13 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
+      if (layer.type === LAYER_TYPES.Encounters) {
+        layer.type = LAYER_TYPES.Heatmap;
+        layer.subtype = LAYER_TYPES.Encounters;
+      } else if (layer.type === LAYER_TYPES.Heatmap) {
+        layer.subtype = LAYER_TYPES.Heatmap;
+      }
+
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url });
         console.warn(`Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${layer.url}`);

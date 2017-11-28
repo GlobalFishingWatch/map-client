@@ -13,7 +13,8 @@ export const LAYER_TYPES = {
   CartoDBBasemap: 'CartoDBBasemap',
   Heatmap: 'ClusterAnimation',
   Custom: 'Custom',
-  VesselTrackAnimation: 'VesselTrackAnimation'
+  VesselTrackAnimation: 'VesselTrackAnimation',
+  Encounters: 'Encounters'
 };
 export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
 

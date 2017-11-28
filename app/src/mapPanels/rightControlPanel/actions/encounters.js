@@ -94,19 +94,19 @@ export function setEncountersInfo(data) {
     const encounterId = encounterPointInfo.encounterId;
     const fakeEncounter = getEncountersInfo(encounterId, token);
 
-    fakeEncounter.vessels.forEach((vessel) => {
-      if (vessel.tilesetId === 'SELF') {
-        getVesselInfo(encounterPointInfo, null, token, state.layers.workspaceLayers);
-        //   - tracks endpoint is called for all available years, on the encounters tileset.
-        //   ${tilesetUrl}/v2/tilesets/${tilesetId}/sub/seriesgroup=${seriesGroup}/${startDate},${endDate};0,0,0
-        //       Query parameters: encounterId(from encounter point)
-      } else {
-        getVesselInfo(encounterPointInfo, vessel, token, state.layers.workspaceLayers);
-        // - tracks endpoint is called for all available years, on the tileset with tilesetId.
-        //   ${tilesetUrl}/v2/tilesets/${tilesetId}/sub/seriesgroup=${seriesGroup}/${startDate},${endDate};0,0,0
-        //     Query parameters: seriesgroup (from seriesgroup array)
-      }
-    });
+    // fakeEncounter.vessels.forEach((vessel) => {
+    //   if (vessel.tilesetId === 'SELF') {
+    //     getVesselInfo(encounterPointInfo, null, token, state.layers.workspaceLayers);
+    //     //   - tracks endpoint is called for all available years, on the encounters tileset.
+    //     //   ${tilesetUrl}/v2/tilesets/${tilesetId}/sub/seriesgroup=${seriesGroup}/${startDate},${endDate};0,0,0
+    //     //       Query parameters: encounterId(from encounter point)
+    //   } else {
+    //     getVesselInfo(encounterPointInfo, vessel, token, state.layers.workspaceLayers);
+    //     // - tracks endpoint is called for all available years, on the tileset with tilesetId.
+    //     //   ${tilesetUrl}/v2/tilesets/${tilesetId}/sub/seriesgroup=${seriesGroup}/${startDate},${endDate};0,0,0
+    //     //     Query parameters: seriesgroup (from seriesgroup array)
+    //   }
+    // });
 
     dispatch({
       type: SET_ENCOUNTERS_INFO,
@@ -116,4 +116,3 @@ export function setEncountersInfo(data) {
     });
   };
 }
-

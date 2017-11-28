@@ -11,6 +11,7 @@ import {
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
+import { setEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 
@@ -59,6 +60,7 @@ export function initHeatmapLayers() {
           url: workspaceLayer.url,
           tiles: [],
           tilesetId: workspaceLayer.tilesetId,
+          subtype: workspaceLayer.subtype,
           // initially attach which of the temporal extents indices are visible with initial outerExtent
           visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
         };
@@ -371,7 +373,7 @@ const _queryHeatmap = (state, tileQuery) => {
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
           layerId,
-          type: layer.type,
+          subtype: layer.subtype,
           tilesetId: layer.tilesetId,
           vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
             tileQuery.worldY, startIndex, endIndex, currentFilters)
@@ -388,9 +390,11 @@ const _queryHeatmap = (state, tileQuery) => {
   let isMouseCluster;
   let isEmpty;
   let layerId;
+  let layerSubtype;
   let tilesetId;
   let foundVessels;
 
+  // TODO modify that logic so encounters are prioritary
   if (layersVesselsResult.length === 0) {
     isEmpty = true;
   } else if (layersVesselsResult.length > 1) {
@@ -400,6 +404,7 @@ const _queryHeatmap = (state, tileQuery) => {
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a successful vessel query, not a cluster
     layerId = layersVesselsResult[0].layerId;
+    layerSubtype = layersVesselsResult[0].subtype;
     tilesetId = layersVesselsResult[0].tilesetId;
     const vessels = layersVesselsResult[0].vessels;
 
@@ -417,7 +422,7 @@ const _queryHeatmap = (state, tileQuery) => {
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId };
+  return { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, layerSubtype, tilesetId };
 };
 
 export function highlightVesselFromHeatmap(tileQuery, latLng) {
@@ -457,7 +462,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { layerId, isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layerSubtype, isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
@@ -475,10 +480,13 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
       const selectedSeries = foundVessels[0].series;
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
-      console.log(layerId)
-      if (layerId === '')
 
-      dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
+      if (layerSubtype === LAYER_TYPES.Encounters) {
+        dispatch(setEncountersInfo(/* ... */));
+      } else {
+        dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
+      }
+
     }
   };
 }

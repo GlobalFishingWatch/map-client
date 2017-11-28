@@ -25,7 +25,7 @@
           "url": "http://127.0.0.1:9090",
           "visible": true,
           "hue": 0,
-          "type": "ClusterAnimation",
+          "type": "Encounters",
           "opacity": 1,
           "id": "encounters",
           "tilesetId": "516-resample-v2"
