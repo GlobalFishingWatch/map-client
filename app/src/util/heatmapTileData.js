@@ -135,6 +135,9 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
 
   // columns specified by layer header columns
   let storedColumns = [].concat(columnsArr);
+  if (columns.sigma === true) storedColumns.push('radius');
+  if (columns.weight === true) storedColumns.push('opacity');
+
   // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
   pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
   storedColumns = uniq(storedColumns);
