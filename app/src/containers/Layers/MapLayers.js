@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import MapLayers from 'components/Layers/MapLayers';
 import { showPolygon } from 'report/reportActions';
 import { getTile, releaseTile, getVesselFromHeatmap, highlightVesselFromHeatmap } from 'actions/heatmap';
-import { setEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
 
 const mapStateToProps = state => ({
   token: state.user.token,
@@ -32,9 +31,6 @@ const mapDispatchToProps = dispatch => ({
   },
   getVesselFromHeatmap: (tileQuery, latLng) => {
     dispatch(getVesselFromHeatmap(tileQuery, latLng));
-  },
-  openEncountersPanel: (encountersData, latLng) => {
-    dispatch(setEncountersInfo(encountersData, latLng));
   },
   highlightVesselFromHeatmap: (tileQuery, latLng) => {
     dispatch(highlightVesselFromHeatmap(tileQuery, latLng));
