@@ -371,6 +371,7 @@ const _queryHeatmap = (state, tileQuery) => {
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
           layerId,
+          type: layer.type,
           tilesetId: layer.tilesetId,
           vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
             tileQuery.worldY, startIndex, endIndex, currentFilters)
@@ -405,17 +406,13 @@ const _queryHeatmap = (state, tileQuery) => {
     if (vessels.length === 0) {
       isEmpty = true;
     } else {
-      // look up for any non-negative seriesgroup (not clusters on the server side)
-      const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
-
-      if (nonClusteredVessels.length) {
-        foundVessels = uniqBy(nonClusteredVessels, v => v.series).map(v => ({
-          series: v.series,
-          seriesgroup: v.seriesgroup
-        }));
-        isMouseCluster = foundVessels.length > 1;
-      } else {
+      // look up for any negatives seriesgroup (clusters on the server side)
+      const clusteredVessels = vessels.filter(v => v.seriesgroup < 0);
+      if (clusteredVessels.length) {
         isCluster = true;
+      } else {
+        foundVessels = uniqBy(vessels, v => v.series);
+        isMouseCluster = foundVessels.length > 1;
       }
     }
   }
@@ -460,7 +457,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layerId, isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
@@ -478,6 +475,8 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
       const selectedSeries = foundVessels[0].series;
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
+      console.log(layerId)
+      if (layerId === '')
 
       dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
     }

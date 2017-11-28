@@ -137,6 +137,10 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
   let storedColumns = [].concat(columnsArr);
   if (columns.sigma === true) storedColumns.push('radius');
   if (columns.weight === true) storedColumns.push('opacity');
+  if (columns.longitude === true) {
+    storedColumns.push('worldX');
+    storedColumns.push('worldY');
+  }
 
   // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
   pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
@@ -162,9 +166,12 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
 
     const timeIndex = (columns.timeIndex)
       ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
-    const { worldX, worldY } = (columns.worldX)
-      ? { worldX: point.worldX, worldY: point.worldY } : convert.latLonToWorldCoordinates(point.latitude, point.longitude);
 
+    if (!columns.worldX) {
+      const { worldX, worldY } = convert.latLonToWorldCoordinates(point.latitude, point.longitude);
+      point.worldX = worldX;
+      point.worldY = worldY;
+    }
     if (columns.sigma) {
       point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
     }
@@ -173,10 +180,7 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
     }
 
     if (!tilePlaybackData[timeIndex]) {
-      const frame = {
-        worldX: [worldX],
-        worldY: [worldY]
-      };
+      const frame = {};
       storedColumns.forEach((column) => {
         frame[column] = [point[column]];
       });
@@ -184,8 +188,6 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
       continue;
     }
     const frame = tilePlaybackData[timeIndex];
-    frame.worldX.push(worldX);
-    frame.worldY.push(worldY);
     storedColumns.forEach((column) => {
       frame[column].push(point[column]);
     });
@@ -276,11 +278,10 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
       if ((!currentFilters.length || vesselSatisfiesAllFilters(frame, i, currentFilters)) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
-        const vessel = {
-          series: frame.series[i],
-          seriesgroup: frame.seriesgroup[i]
-        };
-
+        const vessel = {};
+        if (frame.series) vessel.series = frame.series[i];
+        if (frame.seriesgroup) vessel.seriesgroup = frame.seriesgroup[i];
+        if (frame.encounterId) vessel.encounterId = frame.encounterId[i];
         vessels.push(vessel);
       }
     }

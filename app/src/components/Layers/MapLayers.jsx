@@ -158,7 +158,7 @@ class MapLayers extends Component {
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
-    this.map.addListener('mousemove', this.onMapMoveBound);
+    // this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('dragstart', this.onMapDragStartBound);
     this.map.addListener('dragend', this.onMapDragEndBound);
   }
