@@ -154,6 +154,22 @@ export const EMBED_SIZE_SETTINGS = [
   }
 ];
 
+export const SUBSCRIBE_DEFAULT_FREQUENCY = 'daily';
+export const SUBSCRIBE_SETTINGS = [
+  {
+    name: 'Daily report',
+    value: 'daily'
+  },
+  {
+    name: 'Weekly report',
+    value: 'weekly'
+  },
+  {
+    name: 'Monthly report',
+    value: 'monthly'
+  }
+];
+
 export const MINI_GLOBE_SETTINGS = {
   viewBoxX: -75,
   viewBoxY: -75,

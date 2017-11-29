@@ -13,6 +13,7 @@ import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
 import FilterGroupForm from 'filters/containers/FilterGroupForm';
+import SubscriptionModal from 'report/containers/SubscriptionModal';
 
 
 class ModalContainer extends Component {
@@ -104,6 +105,14 @@ class ModalContainer extends Component {
         >
           <FilterGroupForm />
         </Modal >
+        <Modal
+          opened={this.props.subscriptionModalOpen}
+          visible
+          closeable
+          close={this.props.closeSubscriptionModal}
+        >
+          <SubscriptionModal />
+        </Modal >
       </div >
     );
   }
@@ -117,6 +126,7 @@ ModalContainer.propTypes = {
   closeRecentVesselModal: PropTypes.func,
   closeSearchModal: PropTypes.func,
   closeShareModal: PropTypes.func,
+  closeSubscriptionModal: PropTypes.func,
   closeSupportModal: PropTypes.func,
   closeWelcomeModal: PropTypes.func,
   isFilterGroupModalOpen: PropTypes.bool,
@@ -128,6 +138,7 @@ ModalContainer.propTypes = {
   recentVesselModalOpen: PropTypes.bool,
   searchModalOpen: PropTypes.bool,
   shareModalOpenState: PropTypes.bool,
+  subscriptionModalOpen: PropTypes.bool,
   supportFormModalOpen: PropTypes.bool,
   token: PropTypes.string,
   userPermissions: PropTypes.array,
