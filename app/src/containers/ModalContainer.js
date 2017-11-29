@@ -8,7 +8,7 @@ import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActi
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 import { setFilterGroupModalVisibility, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
-import { toggleSubscriptionModalVisibility } from '../report/reportActions';
+import { toggleSubscriptionModalVisibility } from 'report/reportActions';
 
 const mapStateToProps = state => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
