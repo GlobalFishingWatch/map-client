@@ -158,7 +158,7 @@ class MapLayers extends Component {
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
-    // this.map.addListener('mousemove', this.onMapMoveBound);
+    this.map.addListener('mousemove', this.onMapMoveBound);
     this.map.addListener('dragstart', this.onMapDragStartBound);
     this.map.addListener('dragend', this.onMapDragEndBound);
   }
@@ -166,9 +166,13 @@ class MapLayers extends Component {
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
-    this.glContainer = new GLContainer(this.props.viewportWidth, this.props.viewportHeight, (overlayProjection) => {
-      this.tiledLayer.setProjection(overlayProjection);
-    });
+    this.glContainer = new GLContainer(
+      this.props.viewportWidth,
+      this.props.viewportHeight,
+      useHeatmapStyle(this.props.zoom),
+      (overlayProjection) => {
+        this.tiledLayer.setProjection(overlayProjection);
+      });
     this.glContainer.setMap(this.map);
   }
 

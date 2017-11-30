@@ -27,7 +27,7 @@ export default class HeatmapSubLayer {
     this._resizeSpritesPool(10000);
   }
 
-  setRenderingStyle(renderingStyleIndex) {
+  setRenderingStyleIndex(renderingStyleIndex) {
     this._setTextureFrame(renderingStyleIndex);
   }
 

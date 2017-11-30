@@ -16,7 +16,7 @@ import {
 const MAX_SPRITES_FACTOR = 0.002;
 
 export default class GLContainer extends BaseOverlay {
-  constructor(viewportWidth, viewportHeight, addedCallback) {
+  constructor(viewportWidth, viewportHeight, useHeatmapStyle, addedCallback) {
     super();
     this.layers = [];
     this.timeIndexDelta = 0;
@@ -32,10 +32,10 @@ export default class GLContainer extends BaseOverlay {
 
     this._onTickBound = this._onTick.bind(this);
 
-    this._build();
+    this._build(useHeatmapStyle);
   }
 
-  _build() {
+  _build(useHeatmapStyle) {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
 
@@ -60,7 +60,8 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight = new HeatmapLayer(
       { id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE },
       this.baseTexture,
-      this._getNumSprites()
+      this._getNumSprites(),
+      useHeatmapStyle
     );
     this.stage.addChild(this.heatmapHighlight.stage);
 

@@ -47,7 +47,7 @@ export default class HeatmapLayer {
       this.renderingStyleIndex = RENDERING_STYLE.BULLSEYE;
     }
     Object.values(this.subLayers).forEach((subLayer) => {
-      subLayer.setRenderingStyle(this.renderingStyleIndex);
+      subLayer.setRenderingStyleIndex(this.renderingStyleIndex);
     });
   }
 
