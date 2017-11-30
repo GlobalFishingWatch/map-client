@@ -395,7 +395,6 @@ const _queryHeatmap = (state, tileQuery) => {
   let foundVessels;
 
   const hasEncounters = layersVesselsResults.filter(v => v.subtype === LAYER_TYPES.Encounters).length > 0;
-  console.log(layersVesselsResults, hasEncounters);
 
   if (layersVesselsResults.length === 0) {
     isEmpty = true;

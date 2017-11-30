@@ -98,6 +98,9 @@ export function saveWorkspace(errorAction) {
 
     const layers = state.layers.workspaceLayers.filter(layer => layer.added).map((layer) => {
       const newLayer = Object.assign({}, layer);
+      if (newLayer.subtype === LAYER_TYPES.Encounters) {
+        newLayer.type = LAYER_TYPES.Encounters;
+      }
       delete newLayer.header;
       return newLayer;
     });
