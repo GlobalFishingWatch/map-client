@@ -20,8 +20,9 @@ class EncountersInfo extends Component {
 
   render() {
     const { encountersInfo } = this.props;
-    const encounterVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName === 'ENCOUNTER_BOAT');
-    const reeferVessel = encountersInfo.vessels.find(vessel => vessel.vesselTypeName !== 'ENCOUNTER_BOAT');
+    // TODO add as much tabs as needed
+    const encounterVessel = encountersInfo.vessels[0];
+    const reeferVessel = encountersInfo.vessels[1];
 
     const tabOptions = [
       <div className={infoPanelStyles.vesselHeader}>

@@ -110,7 +110,7 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -226,7 +226,7 @@ export function setPinnedVessels(pinnedVessels) {
           payload: Object.assign({}, pinnedVessel, data)
         });
         if (pinnedVessel.visible === true) {
-          dispatch(_getVesselTrack({
+          dispatch(getVesselTrack({
             tilesetId: pinnedVessel.tilesetId,
             seriesgroup: pinnedVessel.seriesgroup,
             series: null,
@@ -268,7 +268,7 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
     } else {
       dispatch(hideVesselsInfoPanel());
     }
-    dispatch(_getVesselTrack({
+    dispatch(getVesselTrack({
       tilesetId,
       seriesgroup,
       series,
@@ -342,7 +342,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
         }
       });
       if (visible === true && currentVessel.track === undefined) {
-        dispatch(_getVesselTrack({
+        dispatch(getVesselTrack({
           tilesetId: currentVessel.tilesetId,
           seriesgroup,
           series: null,

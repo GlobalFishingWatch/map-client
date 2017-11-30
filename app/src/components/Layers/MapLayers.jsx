@@ -14,6 +14,7 @@ import { LAYER_TYPES } from 'constants';
 
 const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
 
+// TODO this should be in a reducer or container
 const getTracks = vessels => vessels
   .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
   .map(vessel => ({

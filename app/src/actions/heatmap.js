@@ -490,7 +490,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layerSubtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(/* ... */));
+        dispatch(setEncountersInfo(tilesetId, selectedSeries));
       } else {
         dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
       }
