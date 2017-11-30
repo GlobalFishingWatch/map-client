@@ -22,7 +22,7 @@
         {
           "title": "Encounters",
           "description": "Encounters",
-          "url": "http://127.0.0.1:9090",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/vizz-generated-encounters-pbf-v1",
           "visible": true,
           "hue": 0,
           "type": "Encounters",
