@@ -382,7 +382,7 @@ const _queryHeatmap = (state, tileQuery) => {
     }
   });
 
-  const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
+  const layersVesselsResults = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
 
   // it's a cluster because of aggregation on the server side
   let isCluster;
@@ -394,19 +394,28 @@ const _queryHeatmap = (state, tileQuery) => {
   let tilesetId;
   let foundVessels;
 
-  // TODO modify that logic so encounters are prioritary
-  if (layersVesselsResult.length === 0) {
+  const hasEncounters = layersVesselsResults.filter(v => v.subtype === LAYER_TYPES.Encounters).length > 0;
+  console.log(layersVesselsResults, hasEncounters);
+
+  if (layersVesselsResults.length === 0) {
     isEmpty = true;
-  } else if (layersVesselsResult.length > 1) {
-    // if there are points over multiple layers, consider this a cluster
+  } else if (layersVesselsResults.length > 1 && !hasEncounters) {
+    // if there are points over multiple layers, consider this a cluster (ie don't select, zoom instead, or don't highlight)
+    // there's an exception if vessel selection contains an encounter, in which case it will take priority
     isCluster = true;
   } else {
+    // if we have a hit with an encounters layer, use it in priority
+    // if not the layersVesselsResults should contain a single result
+    const layerVesselsResults = (hasEncounters) ?
+      layersVesselsResults.find(v => v.subtype === LAYER_TYPES.Encounters) :
+      layersVesselsResults[0];
+
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a successful vessel query, not a cluster
-    layerId = layersVesselsResult[0].layerId;
-    layerSubtype = layersVesselsResult[0].subtype;
-    tilesetId = layersVesselsResult[0].tilesetId;
-    const vessels = layersVesselsResult[0].vessels;
+    layerId = layerVesselsResults.layerId;
+    layerSubtype = layerVesselsResults.subtype;
+    tilesetId = layerVesselsResults.tilesetId;
+    const vessels = layerVesselsResults.vessels;
 
     if (vessels.length === 0) {
       isEmpty = true;
