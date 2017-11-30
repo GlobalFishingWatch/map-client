@@ -215,6 +215,16 @@ For example, the coast along Peru and Argentina would be `9, 17` here:
 
 <img src="https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/develop/documentation/ga-area.png">
 
+It is possible from this data to generate a map showing a map with the most viewed parts of the world, such as:
+
+![](https://github.com/Vizzuality/GlobalFishingWatch/blob/develop/documentation/ga-carto.png?raw=truep)
+
+To do so:
+- get a CSV of the data from GA
+- save it as analytics-tiles.csv under bin
+- run `node ./bin/analytics-tiles.js`. This will convert tile coordinates to lat/lon pairs, and output the result as CSV
+- put this data into Carto
+
 #### GA_INNER_TIMELINE_EXTENT_CHANGED
 
 Returns the length of the new inner extent in days.
