@@ -177,7 +177,7 @@ class FilterGroupForm extends Component {
                 { [ModalStyles._closed]: this.state.customizeClosed })}
               onClick={() => { this.onClickCustomize(); }}
             >
-              Customize layer
+              Customize filter
             </div>
             <div className={classnames(ModalStyles.foldable, { [ModalStyles._closed]: this.state.customizeClosed })}>
               <div className={ModalStyles._bottomPadding}>
@@ -188,14 +188,14 @@ class FilterGroupForm extends Component {
                 />
               </div>
               <div className={ModalStyles.sectionTitle}>
-                <label htmlFor="name">Filter group name</label>
+                <label htmlFor="name">Filter name</label>
               </div>
               <input
                 type="text"
                 name="name"
                 onChange={(event) => { this.props.onLabelChanged(event.target.value); }}
                 className={ModalStyles.nameInput}
-                placeholder="Filter Group Name"
+                placeholder="Filter Name"
                 value={this.props.label}
               />
             </div>
