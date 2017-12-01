@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 Beta 1
+- Add new filters interface
+- Add new subscription functionality
+
 ## 2.2.3
 - Fix path to social network cards
 - Fix issue where header logo would overflow mobile map
