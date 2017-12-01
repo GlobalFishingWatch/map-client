@@ -1,0 +1,56 @@
+@import '../../settings';
+@import '../../mixins';
+
+.selector {
+  background-color: $color-38;
+  border: solid 1px $color-14;
+  display: flex;
+  flex-grow: 2;
+  height: 40px;
+  max-width: 80%;
+  padding: 0 15px;
+  position: relative;
+  @media #{$mq-tablet} {
+    height: 30px;
+  }
+
+  &._big {
+    border: solid 1px $color-fade-blue;
+    max-width: 100%;
+
+    @media #{$mq-tablet} {
+      margin-bottom: 10px;
+      height: 40px;
+    }
+
+    > select {
+      color: $color-34;
+      text-transform: uppercase;
+    }
+  }
+
+  > select {
+    appearance: none;
+    background-color: $color-38;
+    border: 0;
+    color: $color-4;
+    font-size: $font-size-small;
+    font-weight: $font-weight-normal;
+    outline: none;
+    width: 100%;
+
+    > option {
+      background: $color-4;
+      color: $color-12;
+    }
+  }
+
+  &::after {
+    @include arrow(8px, 2px, $color-31, 'down');
+    pointer-events: none;
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 3px);
+    transform: rotate(45deg) translate(0, -50%);
+  }
+}

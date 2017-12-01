@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { REPORT_STATUS } from 'constants';
-import Select from 'react-select';
-import SelectorStyles from 'styles/components/shared/react-select.scss';
+import SelectorStyles from 'styles/components/shared/selector.scss';
 import SelectContainerStyles from 'styles/components/shared/select-container.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportPanelStyles from 'styles/components/map/report-panel.scss';
@@ -60,11 +59,8 @@ class SubscriptionModal extends Component {
     }
 
     const subscriptionOptions = SUBSCRIBE_SETTINGS.map(option => (
-      {
-        label: option.name,
-        value: option.value
-      }
-    ));
+      <option key={option.name} value={option.value} > {option.name}</option >)
+    );
 
     const layerList = [];
     this.props.polygons.map(polygon => (
@@ -93,20 +89,19 @@ class SubscriptionModal extends Component {
         </div>
         <div
           className={classnames(
-            SelectorStyles.select,
+            SelectorStyles.selector,
+            SelectorStyles._big,
             SelectContainerStyles.selectContainer,
-            SelectContainerStyles.fixedWidth,
-            ReportPanelStyles.selector
+            SelectContainerStyles.fixedWidth
           )}
         >
-          <Select
+          <select
+            onChange={e => this.onChangeSubscriptionFrequency(e.target)}
             value={this.props.subscriptionFrequency}
-            options={subscriptionOptions}
-            onChange={option => this.onChangeSubscriptionFrequency(option)}
-            clearable={false}
-            searchable={false}
-          />
-        </div>
+          >
+            {subscriptionOptions}
+          </select >
+        </div >
         <div className={classnames(ReportPanelStyles.buttonContainer)}>
           <button
             className={classnames(
