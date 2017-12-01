@@ -158,6 +158,10 @@ Display message contained in literals.json's `banner` in a dismissable banner on
 
 Enable usage of the new "Area of Interest" feature (experimental)
 
+#### USE_SUBSCRIPTIONS
+
+Enable usage of the new "Subscription" feature
+
 # Permission keys description
 
 On load, the application will call the /me API endpoint to load user permissions. These are the supported values:

@@ -46,64 +46,72 @@ class ReportPanel extends Component {
     let content;
 
     if (this.props.status === REPORT_STATUS.sent || this.props.status === REPORT_STATUS.error) {
-      content = (<li className={ReportPanelStyles.polygonItem}>
-        <span className={ReportPanelStyles.polygonMessage}>{this.props.statusText}</span>
-      </li>);
+      content = (<li className={ReportPanelStyles.polygonItem} >
+        <span className={ReportPanelStyles.polygonMessage} >{this.props.statusText}</span >
+      </li >);
     } else if (this.props.polygons.length) {
       content = [];
       this.props.polygons.map((polygon, index) => (
         content.push((
-          <li className={ReportPanelStyles.polygonItem} key={polygon.id}>
-            <span className={ReportPanelStyles.polygonName}>{polygon.name}</span>
-            <span className={ReportPanelStyles.polygonRemove}>
+          <li className={ReportPanelStyles.polygonItem} key={polygon.id} >
+            <span className={ReportPanelStyles.polygonName} >{polygon.name}</span >
+            <span className={ReportPanelStyles.polygonRemove} >
               <RemovePolygonIcon
                 className={classnames(iconStyles.icon, ReportPanelStyles.iconRemovePolygon)}
                 id={polygon.id}
                 onClick={() => this.props.onRemovePolygon(index)}
               />
-            </span>
-          </li>
+            </span >
+          </li >
         ))
       ));
     } else {
-      content = (<li className={ReportPanelStyles.polygonItem}>
-        <span className={ReportPanelStyles.polygonName}>No regions added yet.<br /> Select regions on the map.</span>
-      </li>);
+      content = (<li className={ReportPanelStyles.polygonItem} >
+        <span className={ReportPanelStyles.polygonName} >No regions added yet.<br /> Select regions on the map.</span >
+      </li >);
     }
 
     let buttons;
     if (this.props.status === REPORT_STATUS.idle || this.props.status === REPORT_STATUS.error) {
-      buttons = (<div className={ReportPanelStyles.reportOptions}>
-        <button className={ReportPanelStyles.reportButton} onClick={this.props.onSendReport}>send report</button>
-        <button className={ReportPanelStyles.reportButton} onClick={this.props.onDiscardReport}>discard</button>
-      </div>);
+      buttons = (<div className={ReportPanelStyles.reportOptions} >
+        <button
+          className={classnames(ReportPanelStyles.reportButton,
+            { [ReportPanelStyles._disabled]: !this.props.polygons.length })}
+          disabled={!this.props.polygons.length}
+          onClick={this.props.onSendReport}
+        >
+          {USE_SUBSCRIPTIONS ? 'subscribe' : 'send report' }
+        </button >
+        <button className={ReportPanelStyles.reportButton} onClick={this.props.onDiscardReport} >discard</button >
+      </div >);
     } else if (this.props.status === REPORT_STATUS.sent) {
-      buttons = (<div className={ReportPanelStyles.reportOptions}>
-        <button className={classnames(ReportPanelStyles.reportButton, ReportPanelStyles._wide)} onClick={this.props.onReportClose}>close</button>
-      </div>);
+      buttons = (<div className={ReportPanelStyles.reportOptions} >
+        <button className={classnames(ReportPanelStyles.reportButton, ReportPanelStyles._wide)} onClick={this.props.onReportClose} >close
+        </button >
+      </div >);
     }
 
     return (
-      <div className={panelClass}>
-        <div className={ReportPanelStyles.menu} onClick={() => this.onTogglePanel()}>
-          <span className={ReportPanelStyles.reportTotal}>{this.props.layerTitle}: {this.props.polygons.length} added</span>
+      <div className={panelClass} >
+        <div className={ReportPanelStyles.menu} onClick={() => this.onTogglePanel()} >
+          <span className={ReportPanelStyles.reportTotal} >{this.props.layerTitle}: {this.props.polygons.length} added</span >
           <span className={toggleClass} />
-        </div>
-        <div className={containerClass}>
-          <div className={ReportPanelStyles.content}>
-            <ul className={ReportPanelStyles.polygonList}>
+        </div >
+        <div className={containerClass} >
+          <div className={ReportPanelStyles.content} >
+            <ul className={ReportPanelStyles.polygonList} >
               {content}
-            </ul>
+            </ul >
             {this.props.reportableInfo.hasNonReportableLayers &&
-            <div className={ReportPanelStyles.warning}>
+            <div className={ReportPanelStyles.warning} >
               <AlertIcon className={ReportPanelStyles.warningIcon} />
               {this.props.reportWarning.replace('$REPORTABLE_LAYERS', this.props.reportableInfo.reportableLayersNames)}
-            </div>
+            </div >
             }
-          </div>
+          </div >
           {buttons}
-        </div>
-      </div>
+        </div >
+      </div >
     );
   }
 }

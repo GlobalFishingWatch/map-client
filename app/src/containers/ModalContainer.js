@@ -8,6 +8,7 @@ import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActi
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 import { setFilterGroupModalVisibility, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
+import { toggleSubscriptionModalVisibility } from 'report/reportActions';
 
 const mapStateToProps = state => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
@@ -17,6 +18,7 @@ const mapStateToProps = state => ({
   recentVesselModalOpen: state.recentVessels.recentVesselModal.open,
   searchModalOpen: state.search.searchModalOpen,
   shareModalOpenState: state.share.shareModal.open,
+  subscriptionModalOpen: state.report.showSubscriptionModal,
   supportFormModalOpen: state.supportForm.open,
   token: state.user.token,
   userPermissions: state.user.userPermissions,
@@ -54,6 +56,9 @@ const mapDispatchToProps = dispatch => ({
   },
   closeLayerRemovalModal: () => {
     dispatch(confirmLayerRemoval(false));
+  },
+  closeSubscriptionModal: () => {
+    dispatch(toggleSubscriptionModalVisibility(false));
   },
   closeFilterGroupModal: () => {
     dispatch(setFilterGroupModalVisibility(false));

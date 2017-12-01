@@ -57,7 +57,8 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      ENABLE_AREA_OF_INTEREST: envVariables.ENABLE_AREA_OF_INTEREST === 'true'
+      ENABLE_AREA_OF_INTEREST: envVariables.ENABLE_AREA_OF_INTEREST === 'true',
+      USE_SUBSCRIPTIONS: envVariables.USE_SUBSCRIPTIONS === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

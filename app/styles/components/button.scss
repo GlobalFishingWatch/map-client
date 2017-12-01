@@ -26,6 +26,14 @@
     color: $color-4;
   }
 
+  &._transparent {
+    background-color: transparent;
+  }
+
+  &._noBorderRadius {
+    border-radius: 0;
+  }
+
   &._disabled._filled {
     background-color: rgba($color-button-primary, .3);
   }
