@@ -6,4 +6,8 @@
   :global .Select {
     flex: 1 1 auto;
   }
+  &.fixedWidth {
+    width: 256px;
+    margin: 0 auto;
+  }
 }

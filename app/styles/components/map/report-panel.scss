@@ -207,4 +207,37 @@
   &._wide {
     width: 100%;
   }
+
+}
+
+.subscriptionModal {
+  text-align: center;
+  .subscriptionTitle {
+    margin-bottom: 25px;
+  }
+
+  .subscriptionInfo {
+    margin-bottom: 25px;
+  }
+
+  .modalPolygonName {
+   	font-size: $font-size-x-small;
+	  color: $color-31;
+  }
+
+  .selector {
+    margin-bottom: 25px;
+  }
+
+  .buttonContainer {
+    width: 256px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: 49%;
+    }
+  }
+
 }
