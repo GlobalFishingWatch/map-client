@@ -227,7 +227,9 @@
 
   .modalPolygonName {
    	font-size: $font-size-x-small;
-	  color: $color-31;
+    color: $color-31;
+    text-align: center;
+    margin: 0 auto;
   }
 
   .selector {

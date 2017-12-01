@@ -75,13 +75,13 @@ class SubscriptionModal extends Component {
       <div className={ReportPanelStyles.subscriptionModal}>
         <h3 className={ReportPanelStyles.subscriptionTitle}>Subscribe</h3>
         <div className={ReportPanelStyles.subscriptionInfo}>
-          <div >
+          <div className={ReportPanelStyles.subscriptionTitle} >
             You are about to subscribe to:
           </div >
           <ul
             className={classnames(
               ReportPanelStyles.polygonList,
-              ReportPanelStyles.polygonName
+              ReportPanelStyles.modalPolygonName
             )}
           >
             {layerList}
