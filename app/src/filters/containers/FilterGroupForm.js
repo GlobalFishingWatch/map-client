@@ -6,7 +6,8 @@ import {
   setCurrentFilterValue,
   setCurrentFilterGroupLabel,
   saveFilterGroup,
-  setFilterGroupModalVisibility
+  setFilterGroupModalVisibility,
+  setEditFilterGroupIndex
 } from 'filters/filterGroupsActions';
 import { setLayerInfoModal } from 'actions/map';
 import { LAYER_TYPES, FLAG_FILTER_GROUP_VALUES } from 'constants';
@@ -109,6 +110,10 @@ const mapDispatchToProps = dispatch => ({
   },
   openLayerInfoModal: (modalParams) => {
     dispatch(setLayerInfoModal(modalParams));
+  },
+  closeFilterGroupModal: () => {
+    dispatch(setFilterGroupModalVisibility(false));
+    dispatch(setEditFilterGroupIndex(null));
   }
 });
 
