@@ -29,11 +29,32 @@ class SubscriptionModal extends Component {
   }
 
   render() {
-    if (this.props.status === REPORT_STATUS.sent || this.props.status === REPORT_STATUS.error) {
+    const { status, statusText, onSubscriptionDone } = this.props;
+    if (status === REPORT_STATUS.sent || status === REPORT_STATUS.error) {
       return (
-        <div className={ReportPanelStyles.polygonItem} >
-          <span className={ReportPanelStyles.polygonMessage} >{this.props.statusText}</span >
-          <button className={ReportPanelStyles.reportButton} onClick={this.props.onSubscriptionDone} >close</button >
+        <div className={ReportPanelStyles.subscriptionModal} >
+          <div className={ReportPanelStyles.subscriptionInfo} >
+            {statusText}
+          </div >
+          <div
+            className={classnames(
+              ReportPanelStyles.buttonContainer,
+              ReportPanelStyles.singleButton
+            )}
+          >
+            <button
+              className={classnames(
+                ButtonStyles.button,
+                ButtonStyles._big,
+                ButtonStyles._noBorderRadius,
+                ButtonStyles._transparent,
+                ReportPanelStyles.button
+              )}
+              onClick={onSubscriptionDone}
+            >
+              Close
+            </button >
+          </div >
         </div >
       );
     }
@@ -58,9 +79,9 @@ class SubscriptionModal extends Component {
       <div className={ReportPanelStyles.subscriptionModal}>
         <h3 className={ReportPanelStyles.subscriptionTitle}>Subscribe</h3>
         <div className={ReportPanelStyles.subscriptionInfo}>
-          <span >
+          <div >
             You are about to subscribe to:
-          </span >
+          </div >
           <ul
             className={classnames(
               ReportPanelStyles.polygonList,

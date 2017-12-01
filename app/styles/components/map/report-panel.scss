@@ -238,6 +238,12 @@
     button {
       width: 49%;
     }
+
+    &.singleButton {
+      button {
+        width: 100%;
+      }
+    }
   }
 
 }
