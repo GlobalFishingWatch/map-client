@@ -65,8 +65,8 @@ class SubscriptionModal extends Component {
     const layerList = [];
     this.props.polygons.map(polygon => (
       layerList.push((
-        <li className={ReportPanelStyles.polygonItem} key={polygon.id} >
-          <span className={ReportPanelStyles.polygonName} >{polygon.name}</span >
+        <li key={polygon.id} >
+          <span>{polygon.name}</span >
         </li >
       ))
     ));
@@ -128,7 +128,7 @@ class SubscriptionModal extends Component {
             onClick={() => this.onSubmitSubscription()}
             disabled={!this.state.enabled}
           >
-            Subscribe
+            Yes, subscribe
           </button >
         </div>
       </div>
