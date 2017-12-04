@@ -87,7 +87,8 @@ const mapStateToProps = (state) => {
     label: currentlyEditedFilterGroup.label,
     defaultLabel,
     disableSave,
-    warning
+    warning,
+    isNewFilter: state.filterGroups.editFilterGroupIndex === null
   };
 };
 

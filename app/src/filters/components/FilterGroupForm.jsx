@@ -149,7 +149,7 @@ class FilterGroupForm extends Component {
     const filtersList = this.renderFiltersList();
     return (
       <div >
-        <h3 className={ModalStyles.title} >Create filter</h3 >
+        <h3 className={ModalStyles.title} >{this.props.isNewFilter ? 'Create filter' : 'Edit filter'}</h3 >
         <div className={ModalStyles.optionsContainer} >
           <div className={ModalStyles.section} >
             <div className={ModalStyles.sectionTitle} >
@@ -259,10 +259,11 @@ FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   currentlyEditedFilterGroup: PropTypes.object,
   closeFilterGroupModal: PropTypes.func,
-  filters: PropTypes.array,
   defaultLabel: PropTypes.string,
-  label: PropTypes.string,
   disableSave: PropTypes.bool,
+  isNewFilter: PropTypes.bool,
+  filters: PropTypes.array,
+  label: PropTypes.string,
   warning: PropTypes.string,
   onLayerChecked: PropTypes.func,
   onColorChanged: PropTypes.func,
