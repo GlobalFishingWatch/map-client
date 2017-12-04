@@ -97,6 +97,7 @@ class ModalContainer extends Component {
         </Modal >
         <Modal
           opened={this.props.isFilterGroupModalOpen}
+          closeable
           visible
           close={this.props.closeFilterGroupModal}
           isSmall={true} // eslint-disable-line react/jsx-boolean-value
