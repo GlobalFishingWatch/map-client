@@ -76,7 +76,7 @@ class Modal extends React.Component {
             <div className={ModalStyles.containButton}>
               {closeButton}
             </div>
-            <div className={ModalStyles.containPadding}>
+            <div className={classnames(ModalStyles.containPadding, ModalStyles.scrollbar)}>
               {this.props.children}
             </div>
           </div>
