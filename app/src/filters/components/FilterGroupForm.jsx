@@ -123,11 +123,11 @@ class FilterGroupForm extends Component {
     const layersList = this.renderLayersList();
     const filtersList = this.renderFiltersList();
     return (
-      <div>
-        <h3 className={ModalStyles.title}>Create filter</h3>
-        <div className={ModalStyles.optionsContainer}>
-          <div className={ModalStyles.section}>
-            <div className={ModalStyles.sectionTitle}>
+      <div >
+        <h3 className={ModalStyles.title} >{this.props.isNewFilter ? 'Create filter' : 'Edit filter'}</h3 >
+        <div className={ModalStyles.optionsContainer} >
+          <div className={ModalStyles.section} >
+            <div className={ModalStyles.sectionTitle} >
               Select the activity layers you want to apply the filters to:
             </div>
             <div className={ItemList.wrapper}>
@@ -190,8 +190,11 @@ class FilterGroupForm extends Component {
 FilterGroupForm.propTypes = {
   layers: PropTypes.array,
   currentlyEditedFilterGroup: PropTypes.object,
-  filters: PropTypes.array,
+  closeFilterGroupModal: PropTypes.func,
   defaultLabel: PropTypes.string,
+  disableSave: PropTypes.bool,
+  isNewFilter: PropTypes.bool,
+  filters: PropTypes.array,
   label: PropTypes.string,
   warning: PropTypes.string,
   onLayerChecked: PropTypes.func,

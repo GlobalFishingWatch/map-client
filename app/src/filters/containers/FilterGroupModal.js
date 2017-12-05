@@ -81,7 +81,8 @@ const mapStateToProps = (state) => {
     currentlyEditedFilterGroup,
     filters,
     label: currentlyEditedFilterGroup && currentlyEditedFilterGroup.label,
-    defaultLabel
+    defaultLabel,
+    isNewFilter: state.filterGroups.editFilterGroupIndex === null
   };
 };
 
