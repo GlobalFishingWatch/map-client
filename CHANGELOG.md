@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 RC1
+- Add and style scroll bars for modal boxes
+- Fix new filters backwards compatibility with old workspaces 
+
 ## 2.3.0 Beta 1
 - Add new filters interface
 - Add new subscription functionality
