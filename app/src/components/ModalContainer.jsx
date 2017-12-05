@@ -12,7 +12,7 @@ import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
 import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
 import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
 import NoLogin from 'containers/Map/NoLogin';
-import FilterGroupForm from 'filters/containers/FilterGroupForm';
+import FilterGroupModal from 'filters/containers/FilterGroupModal';
 import SubscriptionModal from 'report/containers/SubscriptionModal';
 
 
@@ -95,16 +95,10 @@ class ModalContainer extends Component {
         >
           <Share />
         </Modal >
-        <Modal
+        <FilterGroupModal
           opened={this.props.isFilterGroupModalOpen}
-          closeable
-          visible
           close={this.props.closeFilterGroupModal}
-          isSmall={true} // eslint-disable-line react/jsx-boolean-value
-          isScrollable={true} // eslint-disable-line react/jsx-boolean-value
-        >
-          <FilterGroupForm />
-        </Modal >
+        />
         <Modal
           opened={this.props.subscriptionModalOpen}
           visible

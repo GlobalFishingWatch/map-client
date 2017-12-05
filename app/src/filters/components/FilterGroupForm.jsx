@@ -9,18 +9,15 @@ import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
 import Checkbox from 'components/Shared/Checkbox';
 import ModalStyles from 'styles/components/map/modal.scss';
-import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      customizeClosed: true,
-      validated: false
+      customizeClosed: true
     };
   }
 
@@ -32,12 +29,6 @@ class FilterGroupForm extends Component {
         this.props.label === this.props.defaultLabel) {
       this.props.onLabelChanged(nextProps.defaultLabel);
     }
-  }
-
-  componentWillMount() {
-    this.setState({
-      validated: false
-    });
   }
 
   onClickLayerInfo(layer) {
@@ -61,22 +52,6 @@ class FilterGroupForm extends Component {
   onClickCustomize() {
     this.setState({
       customizeClosed: !this.state.customizeClosed
-    });
-  }
-
-  onClickSave() {
-    if (this.props.warning === undefined || this.state.validated === true) {
-      this.props.onSaveClicked();
-    }
-
-    this.setState({
-      validated: !this.state.validated
-    });
-  }
-
-  onClickChangeSelection() {
-    this.setState({
-      validated: false
     });
   }
 
@@ -183,7 +158,7 @@ class FilterGroupForm extends Component {
               <div className={ModalStyles._bottomPadding}>
                 <ColorPicker
                   id={'filter-color'}
-                  color={this.props.currentlyEditedFilterGroup.color}
+                  color={this.props.currentlyEditedFilterGroup && this.props.currentlyEditedFilterGroup.color}
                   onColorChange={this.props.onColorChanged}
                 />
               </div>
@@ -206,38 +181,9 @@ class FilterGroupForm extends Component {
   }
 
   render() {
-    const displayWarning = this.props.warning !== undefined && this.state.validated === true;
-    const body = (displayWarning) ? this.renderWarning() : this.renderForm();
-
-    return (
-      <div>
-        {body}
-        <div className={ModalStyles.footerContainer}>
-          {displayWarning &&
-            <button
-              className={classnames(
-                ButtonStyles.button,
-                ButtonStyles._big, ModalStyles.mainButton, {
-                  [ButtonStyles._disabled]: this.props.disableSave
-                })}
-              onClick={() => this.onClickChangeSelection()}
-            >
-              Change selection
-            </button>
-          }
-          <button
-            className={classnames(
-              ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton, {
-                [ButtonStyles._disabled]: this.props.disableSave
-              })}
-            onClick={() => this.onClickSave()}
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    );
+    return (this.props.warning) ?
+      this.renderWarning() :
+      this.renderForm();
   }
 }
 
@@ -247,7 +193,6 @@ FilterGroupForm.propTypes = {
   filters: PropTypes.array,
   defaultLabel: PropTypes.string,
   label: PropTypes.string,
-  disableSave: PropTypes.bool,
   warning: PropTypes.string,
   onLayerChecked: PropTypes.func,
   onColorChanged: PropTypes.func,

@@ -60,12 +60,22 @@
 
       .containPadding {
         height: 100%;
+
+        &._withFooter {
+          height: 85%;
+          padding-bottom: 0;
+        }
+
         overflow-y: auto;
         padding: 40px 20px 20px;
 
         @media #{$mq-tablet} {
           height: auto;
           padding: 60px;
+
+          &._withFooter {
+            height: 85%;
+          }
         }
 
         .modalTitle {
@@ -96,13 +106,23 @@
 
   &._scrollable {
     > .content {
+
       .containContent {
         height: 100%;
+
         .containPadding {
           height: 100%;
+
+          &._withFooter {
+            height: 85%;
+          }
         }
       }
     }
+  }
+
+  .mainButton {
+    min-width: 30%;
   }
 
   .closeButton {
@@ -158,12 +178,12 @@
     width: 12px;
     background-color: transparent;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
     box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: black;
-    border: 1px solid rgba($color-3, .3);
+    background-color: rgba($color-3, .3);
   }
 
   &::-webkit-scrollbar-track {
@@ -172,4 +192,11 @@
     border-radius: 10px;
     background-color: transparent;
   }
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 30px;
+  text-align: center;
 }

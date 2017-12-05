@@ -48,15 +48,17 @@ class Modal extends React.Component {
   }
 
   render() {
-    if (!this.props.opened || !this.props.visible) return null;
+    const { opened, visible, footer, zIndex, isScrollable,
+      children, isSmall, closeable, close } = this.props;
 
+    if (!opened || !visible) return null;
     let closeButton;
     const customStyles = {
-      zIndex: this.props.zIndex || null
+      zIndex: zIndex || null
     };
 
-    if (this.props.closeable) {
-      closeButton = (<button className={ModalStyles.closeButton} onClick={() => this.props.close()}>
+    if (closeable) {
+      closeButton = (<button className={ModalStyles.closeButton} onClick={() => close()}>
         <Icon className={ModalStyles.icon} title="Close this modal" />
       </button>);
     }
@@ -65,7 +67,7 @@ class Modal extends React.Component {
       <div
         style={customStyles}
         className={
-          classnames(ModalStyles.modal, { [ModalStyles._small]: this.props.isSmall, [ModalStyles._scrollable]: this.props.isScrollable })}
+          classnames(ModalStyles.modal, { [ModalStyles._small]: isSmall, [ModalStyles._scrollable]: isScrollable })}
         onClick={e => this.onClickOverlay(e)}
       >
         <div
@@ -76,9 +78,16 @@ class Modal extends React.Component {
             <div className={ModalStyles.containButton}>
               {closeButton}
             </div>
-            <div className={classnames(ModalStyles.containPadding, ModalStyles.scrollbar)}>
-              {this.props.children}
+            <div
+              className={
+                classnames(ModalStyles.containPadding, { [ModalStyles._withFooter]: footer })
+              }
+            >
+              <div className={classnames(ModalStyles.mainContent, ModalStyles.scrollbar)}>
+                {children}
+              </div>
             </div>
+            {footer && <div className={ModalStyles.footer}>{footer}</div>}
           </div>
         </div>
       </div>
@@ -104,7 +113,12 @@ Modal.propTypes = {
    * Define the content of the modal
    * Required
    */
-  children: PropTypes.any,
+  children: PropTypes.node,
+  /**
+   * Define the content of the fixed - no scrolling footer
+   * Required
+   */
+  footer: PropTypes.node,
   /**
    * Define the modal box can be closed by the user
    * Required
