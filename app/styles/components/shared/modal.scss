@@ -28,6 +28,10 @@
 
     @media #{$mq-tablet} {
       height: 80%;
+
+      &._tallContent {
+        height: 85%;
+      }
       max-height: 494px;
       min-width: 620px;
     }
@@ -64,6 +68,10 @@
         &._withFooter {
           height: 80%;
           padding-bottom: 0;
+
+          &._tallContent {
+            height: 85%;
+          }
         }
 
         overflow-y: auto;
@@ -72,10 +80,6 @@
         @media #{$mq-tablet} {
           height: auto;
           padding: 60px;
-
-          &._withFooter {
-            height: 80%;
-          }
         }
 
         .modalTitle {
@@ -115,6 +119,10 @@
 
           &._withFooter {
             height: 80%;
+
+            &._tallContent {
+              height: 85%;
+            }
           }
         }
       }

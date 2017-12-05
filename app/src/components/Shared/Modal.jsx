@@ -49,7 +49,7 @@ class Modal extends React.Component {
 
   render() {
     const { opened, visible, footer, zIndex, isScrollable,
-      children, isSmall, closeable, close } = this.props;
+      children, isSmall, closeable, close, tallContent } = this.props;
 
     if (!opened || !visible) return null;
     let closeButton;
@@ -80,7 +80,11 @@ class Modal extends React.Component {
             </div>
             <div
               className={
-                classnames(ModalStyles.containPadding, ModalStyles.scrollbar, { [ModalStyles._withFooter]: footer })
+                classnames(
+                  ModalStyles.containPadding,
+                  ModalStyles.scrollbar,
+                  { [ModalStyles._withFooter]: footer },
+                  { [ModalStyles._tallContent]: tallContent })
               }
             >
               <div className={ModalStyles.mainContent}>
@@ -116,9 +120,12 @@ Modal.propTypes = {
   children: PropTypes.node,
   /**
    * Define the content of the fixed - no scrolling footer
-   * Required
    */
   footer: PropTypes.node,
+  /**
+   * Define the height of the main container
+   */
+  tallContent: PropTypes.bool,
   /**
    * Define the modal box can be closed by the user
    * Required
