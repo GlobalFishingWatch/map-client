@@ -63,14 +63,11 @@ class ModalContainer extends Component {
         >
           <SearchModal />
         </Modal >
-        <Modal
+        <RecentVesselsModal
           visible={!this.props.isEmbedded}
           opened={this.props.recentVesselModalOpen}
-          closeable
           close={this.props.closeRecentVesselModal}
-        >
-          <RecentVesselsModal />
-        </Modal >
+        />
         <Modal
           visible={!this.props.isEmbedded}
           opened={this.props.welcomeModalOpen}

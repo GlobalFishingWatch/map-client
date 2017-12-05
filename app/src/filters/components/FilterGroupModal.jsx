@@ -14,10 +14,6 @@ class FilterGroupModal extends Component {
     };
   }
 
-  componentDidUnmount() {
-    this.setState({ validated: false });
-  }
-
   setValidated(value) {
     this.setState({ validated: value });
   }
