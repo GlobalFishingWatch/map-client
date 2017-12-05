@@ -80,10 +80,10 @@ class Modal extends React.Component {
             </div>
             <div
               className={
-                classnames(ModalStyles.containPadding, { [ModalStyles._withFooter]: footer })
+                classnames(ModalStyles.containPadding, ModalStyles.scrollbar, { [ModalStyles._withFooter]: footer })
               }
             >
-              <div className={classnames(ModalStyles.mainContent, ModalStyles.scrollbar)}>
+              <div className={ModalStyles.mainContent}>
                 {children}
               </div>
             </div>
