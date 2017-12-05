@@ -41,6 +41,7 @@ class ModalContainer extends Component {
         </Modal >
         <Modal
           opened={this.props.supportFormModalOpen}
+          isScrollable
           visible={!this.props.isEmbedded}
           closeable
           close={this.props.closeSupportModal}
@@ -49,6 +50,7 @@ class ModalContainer extends Component {
         </Modal >
         <Modal
           opened={this.props.layerManagementModal}
+          isScrollable
           visible={!this.props.isEmbedded}
           closeable
           close={this.props.closeLayerManagementModal}
@@ -59,6 +61,7 @@ class ModalContainer extends Component {
           opened={this.props.searchModalOpen}
           visible={!this.props.isEmbedded}
           closeable
+          isScrollable
           close={this.props.closeSearchModal}
         >
           <SearchModal />
