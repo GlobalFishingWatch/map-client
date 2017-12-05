@@ -10,7 +10,7 @@ import SearchModal from 'search/containers/SearchModal';
 import SupportForm from 'siteNav/containers/SupportForm';
 import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
 import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
-import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
+import PromptLayerRemovalModal from 'containers/Map/PromptLayerRemovalModal';
 import NoLogin from 'containers/Map/NoLogin';
 import FilterGroupModal from 'filters/containers/FilterGroupModal';
 import SubscriptionModal from 'report/containers/SubscriptionModal';
@@ -79,14 +79,11 @@ class ModalContainer extends Component {
         >
           <WelcomeModal />
         </Modal >
-        <Modal
+        <PromptLayerRemovalModal
           visible={!this.props.isEmbedded}
           opened={this.props.layerIdPromptedForRemoval !== false}
-          isSmall
           close={this.props.closeLayerRemovalModal}
-        >
-          <PromptLayerRemoval />
-        </Modal >
+        />
         <Modal
           opened={this.props.shareModalOpenState}
           closeable
