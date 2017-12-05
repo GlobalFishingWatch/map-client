@@ -81,6 +81,7 @@ class Modal extends React.Component {
             </div>
           </div>
         </div>
+        <div className={classnames({ [ModalStyles.scrollbar]: this.props.isScrollable })} />
       </div>
     );
   }
