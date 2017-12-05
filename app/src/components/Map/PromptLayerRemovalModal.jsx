@@ -72,7 +72,7 @@ PromptLayerRemovalModal.propTypes = {
   keepLayer: PropTypes.func,
   opened: PropTypes.bool,
   visible: PropTypes.bool,
-  close: PropTypes.bool
+  close: PropTypes.func
 };
 
 export default PromptLayerRemovalModal;
