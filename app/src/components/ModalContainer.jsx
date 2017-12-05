@@ -10,9 +10,9 @@ import SearchModal from 'search/containers/SearchModal';
 import SupportForm from 'siteNav/containers/SupportForm';
 import RecentVesselsModal from 'recentVessels/containers/RecentVesselsModal';
 import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
-import PromptLayerRemoval from 'containers/Map/PromptLayerRemoval';
+import PromptLayerRemovalModal from 'containers/Map/PromptLayerRemovalModal';
 import NoLogin from 'containers/Map/NoLogin';
-import FilterGroupForm from 'filters/containers/FilterGroupForm';
+import FilterGroupModal from 'filters/containers/FilterGroupModal';
 import SubscriptionModal from 'report/containers/SubscriptionModal';
 
 
@@ -41,6 +41,7 @@ class ModalContainer extends Component {
         </Modal >
         <Modal
           opened={this.props.supportFormModalOpen}
+          isScrollable
           visible={!this.props.isEmbedded}
           closeable
           close={this.props.closeSupportModal}
@@ -49,28 +50,23 @@ class ModalContainer extends Component {
         </Modal >
         <Modal
           opened={this.props.layerManagementModal}
+          isScrollable
           visible={!this.props.isEmbedded}
           closeable
           close={this.props.closeLayerManagementModal}
         >
           <LayerLibrary />
         </Modal >
-        <Modal
+        <SearchModal
           opened={this.props.searchModalOpen}
           visible={!this.props.isEmbedded}
-          closeable
           close={this.props.closeSearchModal}
-        >
-          <SearchModal />
-        </Modal >
-        <Modal
+        />
+        <RecentVesselsModal
           visible={!this.props.isEmbedded}
           opened={this.props.recentVesselModalOpen}
-          closeable
           close={this.props.closeRecentVesselModal}
-        >
-          <RecentVesselsModal />
-        </Modal >
+        />
         <Modal
           visible={!this.props.isEmbedded}
           opened={this.props.welcomeModalOpen}
@@ -79,14 +75,11 @@ class ModalContainer extends Component {
         >
           <WelcomeModal />
         </Modal >
-        <Modal
+        <PromptLayerRemovalModal
           visible={!this.props.isEmbedded}
           opened={this.props.layerIdPromptedForRemoval !== false}
-          isSmall
           close={this.props.closeLayerRemovalModal}
-        >
-          <PromptLayerRemoval />
-        </Modal >
+        />
         <Modal
           opened={this.props.shareModalOpenState}
           closeable
@@ -95,15 +88,10 @@ class ModalContainer extends Component {
         >
           <Share />
         </Modal >
-        <Modal
+        <FilterGroupModal
           opened={this.props.isFilterGroupModalOpen}
-          visible
           close={this.props.closeFilterGroupModal}
-          isSmall={true} // eslint-disable-line react/jsx-boolean-value
-          isScrollable={true} // eslint-disable-line react/jsx-boolean-value
-        >
-          <FilterGroupForm />
-        </Modal >
+        />
         <Modal
           opened={this.props.subscriptionModalOpen}
           visible

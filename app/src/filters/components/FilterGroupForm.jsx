@@ -9,18 +9,15 @@ import platform from 'platform';
 import ColorPicker from 'components/Shared/ColorPicker';
 import Checkbox from 'components/Shared/Checkbox';
 import ModalStyles from 'styles/components/map/modal.scss';
-import ButtonStyles from 'styles/components/button.scss';
 import ItemList from 'styles/components/map/item-list.scss';
 import IconStyles from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 
 class FilterGroupForm extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      customizeClosed: true,
-      validated: false
+      customizeClosed: true
     };
   }
 
@@ -29,15 +26,9 @@ class FilterGroupForm extends Component {
     // and if user did not changed from the default label (label is the same as the previously generated label)
     // force trigger a label change with the generated name
     if (this.props.defaultLabel !== nextProps.defaultLabel &&
-      this.props.label === this.props.defaultLabel) {
+        this.props.label === this.props.defaultLabel) {
       this.props.onLabelChanged(nextProps.defaultLabel);
     }
-  }
-
-  componentWillMount() {
-    this.setState({
-      validated: false
-    });
   }
 
   onClickLayerInfo(layer) {
@@ -64,22 +55,6 @@ class FilterGroupForm extends Component {
     });
   }
 
-  onClickSave() {
-    if (this.props.warning === undefined || this.state.validated === true) {
-      this.props.onSaveClicked();
-    }
-
-    this.setState({
-      validated: !this.state.validated
-    });
-  }
-
-  onClickChangeSelection() {
-    this.setState({
-      validated: false
-    });
-  }
-
   renderLayersList() {
     return this.props.layers.map((layer, i) => (
       <li
@@ -96,14 +71,14 @@ class FilterGroupForm extends Component {
           checked={layer.filterActivated}
         >
           <InfoIcon onClick={() => this.onClickLayerInfo(layer)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
-        </Checkbox >
+        </Checkbox>
       </li >
     ));
   }
 
   renderFiltersList() {
     if (!this.props.filters.length) {
-      return <div >No filters available, please select at least one activity layer.</div >;
+      return <div>No filters available, please select at least one activity layer.</div>;
     }
 
     return this.props.filters.map((filter, index) => {
@@ -119,7 +94,7 @@ class FilterGroupForm extends Component {
       });
 
       return (
-        <div className={classnames(SelectorStyles.select, SelectContainerStyles.selectContainer)} key={index} >
+        <div className={classnames(SelectorStyles.select, SelectContainerStyles.selectContainer)} key={index}>
           <Select
             multi={true} // eslint-disable-line react/jsx-boolean-value
             placeholder={filter.label}
@@ -130,7 +105,7 @@ class FilterGroupForm extends Component {
             onChange={changedValues => this.props.onFilterValueChanged(filter.id, changedValues)}
           />
           <InfoIcon onClick={() => this.onClickFilterInfo(filter)} className={classnames(ItemList.infoIcon, IconStyles.infoIcon)} />
-        </div >
+        </div>
 
       );
     });
@@ -138,9 +113,9 @@ class FilterGroupForm extends Component {
 
   renderWarning() {
     return (
-      <div className={ModalStyles.warning} >
+      <div className={ModalStyles.warning}>
         {this.props.warning}
-      </div >
+      </div>
     );
   }
 
@@ -154,104 +129,61 @@ class FilterGroupForm extends Component {
           <div className={ModalStyles.section} >
             <div className={ModalStyles.sectionTitle} >
               Select the activity layers you want to apply the filters to:
-            </div >
-            <div className={ItemList.wrapper} >
-              <ul >
+            </div>
+            <div className={ItemList.wrapper}>
+              <ul>
                 {layersList}
-              </ul >
-            </div >
-          </div >
+              </ul>
+            </div>
+          </div>
           <div
             className={ModalStyles.section}
           >
-            <div className={ModalStyles.sectionTitle} >
+            <div className={ModalStyles.sectionTitle}>
               Choose filters:
-            </div >
+            </div>
             {filtersList}
-          </div >
-          <div className={ModalStyles.section} >
+          </div>
+          <div className={ModalStyles.section}>
             <div
               className={classnames(
                 ModalStyles.sectionTitle,
                 ModalStyles.foldableAction,
                 { [ModalStyles._closed]: this.state.customizeClosed })}
-              onClick={() => {
-                this.onClickCustomize();
-              }}
+              onClick={() => { this.onClickCustomize(); }}
             >
               Customize filter
-            </div >
-            <div className={classnames(ModalStyles.foldable, { [ModalStyles._closed]: this.state.customizeClosed })} >
-              <div className={ModalStyles._bottomPadding} >
+            </div>
+            <div className={classnames(ModalStyles.foldable, { [ModalStyles._closed]: this.state.customizeClosed })}>
+              <div className={ModalStyles._bottomPadding}>
                 <ColorPicker
                   id={'filter-color'}
-                  color={this.props.currentlyEditedFilterGroup.color}
+                  color={this.props.currentlyEditedFilterGroup && this.props.currentlyEditedFilterGroup.color}
                   onColorChange={this.props.onColorChanged}
                 />
-              </div >
-              <div className={ModalStyles.sectionTitle} >
-                <label htmlFor="name" >Filter name</label >
-              </div >
+              </div>
+              <div className={ModalStyles.sectionTitle}>
+                <label htmlFor="name">Filter name</label>
+              </div>
               <input
                 type="text"
                 name="name"
-                onChange={(event) => {
-                  this.props.onLabelChanged(event.target.value);
-                }}
+                onChange={(event) => { this.props.onLabelChanged(event.target.value); }}
                 className={ModalStyles.nameInput}
                 placeholder="Filter Name"
                 value={this.props.label}
               />
-            </div >
-          </div >
-        </div >
-      </div >
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 
   render() {
-    const displayWarning = this.props.warning !== undefined && this.state.validated === true;
-    const body = (displayWarning) ? this.renderWarning() : this.renderForm();
-
-    return (
-      <div >
-        {body}
-        <div className={ModalStyles.footerContainer} >
-          {displayWarning &&
-          <button
-            className={classnames(
-              ButtonStyles.button,
-              ButtonStyles._big, ModalStyles.mainButton, {
-                [ButtonStyles._disabled]: this.props.disableSave
-              })}
-            onClick={() => this.onClickChangeSelection()}
-          >
-            Change selection
-          </button >
-          }
-          <button
-            className={classnames(
-              ButtonStyles.button,
-              ButtonStyles._noBorderRadius,
-              ButtonStyles._transparent,
-              ButtonStyles._big)}
-            onClick={this.props.closeFilterGroupModal}
-          >
-            Close
-          </button >
-          <button
-            className={classnames(
-              ButtonStyles.button, ButtonStyles._filled,
-              ButtonStyles._big, ModalStyles.mainButton, {
-                [ButtonStyles._disabled]: this.props.disableSave
-              })}
-            onClick={() => this.onClickSave()}
-          >
-            Save
-          </button >
-        </div >
-      </div >
-    );
+    return (this.props.warning) ?
+      this.renderWarning() :
+      this.renderForm();
   }
 }
 
