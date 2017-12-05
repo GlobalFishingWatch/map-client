@@ -4,13 +4,9 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
-  AIS_LAYER_ID,
   COLORS
 } from 'config';
-import {
-  LAYER_TYPES,
-  FLAGS
-} from 'constants';
+import { LAYER_TYPES, FLAGS } from 'constants';
 import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
 import { initLayers } from 'layers/layersActions';
@@ -216,16 +212,20 @@ function dispatchActions(workspaceData, dispatch, getState) {
  * @param {array} filters
  * @return {array} filterGroups
  */
-const filtersTofilterGroups = (filters) => {
+const filtersToFilterGroups = (filters, layers) => {
   if (filters === undefined ||
-     (filters.length === 1 && Object.keys(filters[0]).length !== 0)) return []; // remove empty filters
+    (filters.length === 1 && Object.keys(filters[0]).length !== 0)) return []; // remove empty filters
+  const checkedLayers = {};
+  layers.filter(layer => layer.type === LAYER_TYPES.Heatmap).forEach((layer) => {
+    checkedLayers[layer.id] = true;
+  });
   const filterGroups = [];
   filters.forEach((filter, index) => {
     if (filter.flag) {
       filterGroups.push({
-        checkedLayers: { [AIS_LAYER_ID]: true },
+        checkedLayers,
         color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
-        filterValues: { category: filter.flag },
+        filterValues: { flag: [parseInt(filter.flag, 10)] },
         label: `Filter ${index + 1}`,
         visible: true
       });
@@ -237,7 +237,7 @@ const filtersTofilterGroups = (filters) => {
 function processNewWorkspace(data) {
   const workspace = data.workspace;
   let filterGroups = workspace.filterGroups || [];
-  filterGroups = filterGroups.concat(filtersTofilterGroups(workspace.filters));
+  filterGroups = filterGroups.concat(filtersToFilterGroups(workspace.filters, workspace.map.layers));
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
