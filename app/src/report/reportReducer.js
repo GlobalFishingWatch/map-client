@@ -5,8 +5,6 @@ import {
   DELETE_REPORT_POLYGON,
   START_REPORT,
   DISCARD_REPORT,
-  SET_REPORT_STATUS_SENT,
-  SET_REPORT_STATUS_ERROR,
   TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY,
   SET_SUBSCRIPTION_STATUS_SENT,
   SET_SUBSCRIPTION_STATUS_ERROR,
@@ -111,11 +109,6 @@ export default function (state = initialState, action) {
       });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
-
-    case SET_REPORT_STATUS_SENT:
-      return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
-    case SET_REPORT_STATUS_ERROR:
-      return Object.assign({}, state, { status: REPORT_STATUS.error, statusText: action.payload });
 
     case SET_SUBSCRIPTION_STATUS_SENT:
       return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });

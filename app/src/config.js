@@ -152,8 +152,12 @@ export const EMBED_SIZE_SETTINGS = [
   }
 ];
 
-export const SUBSCRIBE_DEFAULT_FREQUENCY = 'daily';
+export const SUBSCRIBE_DEFAULT_FREQUENCY = 'single';
 export const SUBSCRIBE_SETTINGS = [
+  {
+    name: 'One-time report',
+    value: 'single'
+  },
   {
     name: 'Daily report',
     value: 'daily'

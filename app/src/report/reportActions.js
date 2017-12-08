@@ -7,7 +7,6 @@ export const CLEAR_POLYGON = 'CLEAR_POLYGON';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
 export const DISCARD_REPORT = 'DISCARD_REPORT';
 export const SET_REPORT_STATUS_ERROR = 'SET_REPORT_STATUS_ERROR';
-export const SET_REPORT_STATUS_SENT = 'SET_REPORT_STATUS_SENT';
 export const SET_SUBSCRIPTION_STATUS_SENT = 'SET_SUBSCRIPTION_STATUS_SENT';
 export const SET_SUBSCRIPTION_STATUS_ERROR = 'SET_SUBSCRIPTION_STATUS_ERROR';
 export const SHOW_POLYGON = 'SHOW_POLYGON';
@@ -133,65 +132,10 @@ function getCurrentFlags(state) {
     .reduce((a1, a2) => a1.concat(a2), []);
 }
 
-/**
- * Used in the legacy report feature
- * Soon to be fully replaced with the new subscription functionality
- */
-export function sendReport() {
-  return (dispatch, getState) => {
-    const state = getState();
-    if (!state.user.token) {
-      console.warn('user is not authenticated');
-      return;
-    }
-
-    const payload = {
-      from: state.filters.timelineInnerExtent[0].toISOString(),
-      to: state.filters.timelineInnerExtent[1].toISOString()
-    };
-
-    payload.flags = getCurrentFlags(state);
-    payload.regions = [];
-    state.report.polygons.forEach((polygon) => {
-      payload.regions.push({
-        layer: state.layers.workspaceLayers.find(layer => layer.reportId === state.report.reportId).label,
-        id: polygon.reportingId.toString(),
-        name: polygon.name.toString()
-      });
-    });
-    const body = JSON.stringify(payload);
-    const options = {
-      method: 'POST',
-      body
-    };
-    options.headers = {
-      Authorization: `Bearer ${state.user.token}`,
-      'Content-Type': 'application/json'
-    };
-    fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
-      }
-      return res;
-    }).then(res => res.json())
-      .then((data) => {
-        dispatch({
-          type: SET_REPORT_STATUS_SENT,
-          payload: data.message
-        });
-      })
-      .catch((err) => {
-        dispatch({
-          type: SET_REPORT_STATUS_ERROR,
-          payload: err.message
-        });
-      });
-  };
-}
-
 export function sendSubscription() {
   return (dispatch, getState) => {
     const state = getState();
+
     if (!state.user.token) {
       console.warn('user is not authenticated');
       return;
@@ -204,7 +148,6 @@ export function sendSubscription() {
 
     payload.flags = getCurrentFlags(state);
     payload.regions = [];
-    payload.recurrency = state.report.subscriptionFrequency;
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
         layer: state.layers.workspaceLayers.find(layer => layer.reportId === state.report.reportId).label,
@@ -212,6 +155,15 @@ export function sendSubscription() {
         name: polygon.name.toString()
       });
     });
+
+    let url;
+    if (state.report.subscriptionFrequency === 'single') {
+      url = `${state.map.tilesetUrl}/reports`;
+    } else {
+      payload.recurrency = state.report.subscriptionFrequency;
+      url = `${state.map.tilesetUrl}/reports/subscriptions`;
+    }
+
     const body = JSON.stringify(payload);
     const options = {
       method: 'POST',
@@ -221,7 +173,7 @@ export function sendSubscription() {
       Authorization: `Bearer ${state.user.token}`,
       'Content-Type': 'application/json'
     };
-    fetch(`${state.map.tilesetUrl}/reports/subscriptions`, options).then((res) => {
+    fetch(url, options).then((res) => {
       if (!res.ok) {
         throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
       }

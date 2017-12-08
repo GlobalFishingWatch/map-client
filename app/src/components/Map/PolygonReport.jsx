@@ -43,7 +43,7 @@ export default class PolygonReport extends Component {
   }
 
   render() {
-    const toggleButtonText = (this.props.isInReport ? 'remove from ' : 'add to ') + (USE_SUBSCRIPTIONS ? 'subscription' : 'report');
+    const toggleButtonText = (this.props.isInReport ? 'remove from report' : 'add to report');
     let toggleButtonClassName = classnames('js-toggle', 'js-polygon-report', CustomInfoWindowStyles.toggle);
     if (this.props.isInReport) {
       toggleButtonClassName += ` ${CustomInfoWindowStyles._remove}`;

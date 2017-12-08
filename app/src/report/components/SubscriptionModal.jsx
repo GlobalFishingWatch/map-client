@@ -73,10 +73,10 @@ class SubscriptionModal extends Component {
 
     return (
       <div className={ReportPanelStyles.subscriptionModal}>
-        <h3 className={ReportPanelStyles.subscriptionTitle}>Subscribe</h3>
+        <h3 className={ReportPanelStyles.subscriptionTitle}>Report</h3>
         <div className={ReportPanelStyles.subscriptionInfo}>
           <div className={ReportPanelStyles.subscriptionTitle} >
-            You are about to subscribe to:
+            You are about to request a report for:
           </div >
           <ul
             className={classnames(
@@ -87,21 +87,23 @@ class SubscriptionModal extends Component {
             {layerList}
           </ul >
         </div>
-        <div
-          className={classnames(
-            SelectorStyles.selector,
-            SelectorStyles._big,
-            SelectContainerStyles.selectContainer,
-            SelectContainerStyles.fixedWidth
-          )}
-        >
-          <select
-            onChange={e => this.onChangeSubscriptionFrequency(e.target)}
-            value={this.props.subscriptionFrequency}
+        {USE_SUBSCRIPTIONS &&
+          <div
+            className={classnames(
+              SelectorStyles.selector,
+              SelectorStyles._big,
+              SelectContainerStyles.selectContainer,
+              SelectContainerStyles.fixedWidth
+            )}
           >
-            {subscriptionOptions}
-          </select >
-        </div >
+            <select
+              onChange={e => this.onChangeSubscriptionFrequency(e.target)}
+              value={this.props.subscriptionFrequency}
+            >
+              {subscriptionOptions}
+            </select >
+          </div >
+        }
         <div className={classnames(ReportPanelStyles.buttonContainer)}>
           <button
             className={classnames(
@@ -128,7 +130,7 @@ class SubscriptionModal extends Component {
             onClick={() => this.onSubmitSubscription()}
             disabled={!this.state.enabled}
           >
-            Yes, subscribe
+            Yes, submit
           </button >
         </div>
       </div>

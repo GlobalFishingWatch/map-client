@@ -3,7 +3,6 @@ import ReportPanel from 'report/components/ReportPanel';
 import {
   deletePolygon,
   discardReport,
-  sendReport,
   toggleSubscriptionModalVisibility,
   toggleReportPanelVisibility
 } from 'report/reportActions';
@@ -31,12 +30,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(deletePolygon(index));
   },
   onSendReport: () => {
-    if (USE_SUBSCRIPTIONS) {
-      dispatch(toggleSubscriptionModalVisibility());
-      dispatch(toggleReportPanelVisibility());
-    } else {
-      dispatch(sendReport());
-    }
+    dispatch(toggleSubscriptionModalVisibility());
+    dispatch(toggleReportPanelVisibility());
   }
 });
 

@@ -80,7 +80,7 @@ class ReportPanel extends Component {
           disabled={!this.props.polygons.length}
           onClick={this.props.onSendReport}
         >
-          {USE_SUBSCRIPTIONS ? 'subscribe' : 'send report' }
+          Request report
         </button >
         <button className={ReportPanelStyles.reportButton} onClick={this.props.onDiscardReport} >discard</button >
       </div >);
