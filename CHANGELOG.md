@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 RC2
+- Restore one-time report functionality on new subscriptions interface
+- Fix issue with filter select CSS on production settings
+- Fix issue where layers with no filter headers would crash the filters functionality
+- Fix regression on filter warning message 
+
 ## 2.3.0 RC1
 - Add and style scroll bars for modal boxes
 - Fix new filters backwards compatibility with old workspaces 
