@@ -208,3 +208,14 @@
   bottom: 30px;
   text-align: center;
 }
+
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+
+  > button {
+    margin-right: 5px;
+    width: 180px;
+  }
+}

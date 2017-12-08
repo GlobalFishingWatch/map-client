@@ -111,15 +111,7 @@ class FilterGroupForm extends Component {
     });
   }
 
-  renderWarning() {
-    return (
-      <div className={ModalStyles.warning}>
-        {this.props.warning}
-      </div>
-    );
-  }
-
-  renderForm() {
+  render() {
     const layersList = this.renderLayersList();
     const filtersList = this.renderFiltersList();
     return (
@@ -179,12 +171,6 @@ class FilterGroupForm extends Component {
       </div>
     );
   }
-
-  render() {
-    return (this.props.warning) ?
-      this.renderWarning() :
-      this.renderForm();
-  }
 }
 
 FilterGroupForm.propTypes = {
@@ -196,7 +182,6 @@ FilterGroupForm.propTypes = {
   isNewFilter: PropTypes.bool,
   filters: PropTypes.array,
   label: PropTypes.string,
-  warning: PropTypes.string,
   onLayerChecked: PropTypes.func,
   onColorChanged: PropTypes.func,
   onFilterValueChanged: PropTypes.func,

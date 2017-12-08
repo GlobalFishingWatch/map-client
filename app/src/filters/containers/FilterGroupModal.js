@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
   });
 
   // prepare filters: dedupe filters that have the same id, set default values
-  const filteredLayers = layers.filter(l => l.filterActivated === true);
+  const filteredLayers = layers.filter(l => l.filterActivated === true && l.header.filters !== undefined);
   const availableFilters = filteredLayers.map(l => l.header.filters);
   const flattenedFilters = [].concat(...availableFilters);
   const filtersById = {};

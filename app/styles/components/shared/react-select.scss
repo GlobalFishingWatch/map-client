@@ -28,8 +28,8 @@
   }
 
   :global .is-open > .Select-control {
-    background: $color-base;
-    border: solid 1px $color-button-primary;
+    background: $color-base !important;
+    border: solid 1px $color-button-primary !important;
   }
 
   :global .is-focused:not(.is-open) > .Select-control {

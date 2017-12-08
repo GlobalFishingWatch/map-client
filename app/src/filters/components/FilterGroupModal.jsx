@@ -14,36 +14,35 @@ class FilterGroupModal extends Component {
     };
   }
 
-  setValidated(value) {
-    this.setState({ validated: value });
-  }
-
   onClickSave() {
+    this.setState({ validated: !this.state.validated });
     if (this.props.warning === undefined || this.state.validated === true) {
       this.props.onSaveClicked();
     }
-    this.setState({ validated: !this.state.validated });
   }
 
   onClickChangeSelection() {
     this.setState({ validated: false });
   }
 
-  renderFooter() {
-    const { displayWarning, disableSave } = this.props;
+  onClose() {
+    this.setState({ validated: false });
+    this.props.close();
+  }
+
+  renderFooter(displayedWarning) {
+    const { disableSave } = this.props;
     return (
-      <div className={ModalStyles.footerContainer}>
-        {displayWarning &&
-          <button
-            className={classnames(
-              ButtonStyles.button,
-              ButtonStyles._big, ModalStyles.mainButton, {
-                [ButtonStyles._disabled]: disableSave
-              })}
-            onClick={() => this.onClickChangeSelection()}
-          >
-            Change selection
-          </button>
+      <div className={ModalStyles.footerContainer} >
+        {displayedWarning &&
+        <button
+          className={classnames(
+            ButtonStyles.button,
+            ButtonStyles._big, ModalStyles.mainButton)}
+          onClick={() => this.onClickChangeSelection()}
+        >
+          Change selection
+        </button >
         }
         <button
           className={classnames(
@@ -54,37 +53,41 @@ class FilterGroupModal extends Component {
           onClick={() => this.onClickSave()}
         >
           Save
-        </button>
-      </div>
+        </button >
+      </div >
     );
   }
 
-  setDisplayWarning(value) {
-    this.setState({ displayWarning: value });
+  renderForm() {
+    return (<FilterGroupForm
+      {...this.props}
+    />);
   }
 
-  setDisabledSave(value) {
-    this.setState({ disableSave: value });
+  renderWarning() {
+    return (
+      <div className={ModalStyles.warning} >
+        {this.props.warning}
+      </div >
+    );
   }
+
 
   render() {
-    const { opened, close, warning } = this.props;
-    const displayedWarning = warning !== undefined && this.state.validated === true ? warning : null;
+    const { opened, warning } = this.props;
+
+    const displayedWarning = warning !== undefined && this.state.validated === true;
     return (
       <Modal
         opened={opened}
-        close={close}
+        close={() => this.onClose()}
         visible
         closeable
         isSmall
         isScrollable
-        footer={this.renderFooter()}
+        footer={this.renderFooter(displayedWarning)}
       >
-        <FilterGroupForm
-          {...this.props}
-          warning={displayedWarning}
-          validated={this.state.validated}
-        />
+        {displayedWarning ? this.renderWarning() : this.renderForm()}
       </Modal >
     );
   }
