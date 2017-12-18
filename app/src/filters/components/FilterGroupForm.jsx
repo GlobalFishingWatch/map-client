@@ -78,7 +78,7 @@ class FilterGroupForm extends Component {
 
   renderFiltersList() {
     if (!this.props.filters.length) {
-      return <div>No filters available, please select at least one activity layer.</div>;
+      return <div className={ModalStyles.message} >No filters available, please select at least one activity layer.</div>;
     }
 
     return this.props.filters.map((filter, index) => {

@@ -18,7 +18,7 @@ export function createNewFilterGroup() {
   return (dispatch, getState) => {
     const checkedLayers = {};
     getState().layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map(l => l.id).forEach((lid) => {
-      checkedLayers[lid] = true;
+      checkedLayers[lid] = false;
     });
 
     const newFilterGroup = {
