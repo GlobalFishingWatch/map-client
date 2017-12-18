@@ -229,6 +229,14 @@ const filtersToFilterGroups = (filters, layers) => {
         label: `Filter ${index + 1}`,
         visible: true
       });
+    } else if (filter.category) {
+      filterGroups.push({
+        checkedLayers,
+        color: hueToClosestColor(filter.hue) || Object.keys(COLORS)[0],
+        filterValues: { flag: [parseInt(filter.category, 10)] },
+        label: `Filter ${index + 1}`,
+        visible: true
+      });
     }
   });
   return filterGroups;
