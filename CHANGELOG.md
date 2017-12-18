@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.0
+- Improve conversion of old filter workspaces to new filter groups
+- Show layers as unselected when creating new filters
+- Improve close interactions on subscriptions functionality
+
 ## 2.3.0 RC2
 - Restore one-time report functionality on new subscriptions interface
 - Fix issue with filter select CSS on production settings
