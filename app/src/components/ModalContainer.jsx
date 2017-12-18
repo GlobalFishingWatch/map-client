@@ -95,7 +95,7 @@ class ModalContainer extends Component {
         <Modal
           opened={this.props.subscriptionModalOpen}
           visible
-          closeable
+          closeable={this.props.reportHasPolygon}
           close={this.props.closeSubscriptionModal}
         >
           <SubscriptionModal />
@@ -123,6 +123,7 @@ ModalContainer.propTypes = {
   layerModal: PropTypes.object,
   openSupportModal: PropTypes.func,
   recentVesselModalOpen: PropTypes.bool,
+  reportHasPolygon: PropTypes.bool,
   searchModalOpen: PropTypes.bool,
   shareModalOpenState: PropTypes.bool,
   subscriptionModalOpen: PropTypes.bool,
