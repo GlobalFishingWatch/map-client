@@ -6,7 +6,6 @@ export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
 export const CLEAR_POLYGON = 'CLEAR_POLYGON';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
 export const DISCARD_REPORT = 'DISCARD_REPORT';
-export const SET_REPORT_STATUS_ERROR = 'SET_REPORT_STATUS_ERROR';
 export const SET_SUBSCRIPTION_STATUS_SENT = 'SET_SUBSCRIPTION_STATUS_SENT';
 export const SET_SUBSCRIPTION_STATUS_ERROR = 'SET_SUBSCRIPTION_STATUS_ERROR';
 export const SHOW_POLYGON = 'SHOW_POLYGON';
@@ -180,6 +179,9 @@ export function sendSubscription() {
       return res;
     }).then(res => res.json())
       .then((data) => {
+        dispatch({
+          type: CLEAR_POLYGON
+        });
         dispatch({
           type: SET_SUBSCRIPTION_STATUS_SENT,
           payload: data.message

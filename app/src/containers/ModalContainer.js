@@ -8,7 +8,8 @@ import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActi
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 import { setFilterGroupModalVisibility, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
-import { toggleSubscriptionModalVisibility } from 'report/reportActions';
+import { toggleSubscriptionModalVisibility, toggleReportPanelVisibility } from 'report/reportActions';
+import isEmpty from 'lodash/isEmpty';
 
 const mapStateToProps = state => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
@@ -16,6 +17,7 @@ const mapStateToProps = state => ({
   layerManagementModal: state.map.layerManagementModal.open,
   layerModal: state.map.layerModal,
   recentVesselModalOpen: state.recentVessels.recentVesselModal.open,
+  reportHasPolygon: !isEmpty(state.report.currentPolygon),
   searchModalOpen: state.search.searchModalOpen,
   shareModalOpenState: state.share.shareModal.open,
   subscriptionModalOpen: state.report.showSubscriptionModal,
@@ -59,6 +61,7 @@ const mapDispatchToProps = dispatch => ({
   },
   closeSubscriptionModal: () => {
     dispatch(toggleSubscriptionModalVisibility(false));
+    dispatch(toggleReportPanelVisibility());
   },
   closeFilterGroupModal: () => {
     dispatch(setFilterGroupModalVisibility(false));
