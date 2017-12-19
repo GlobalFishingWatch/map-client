@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.1
+- Fix issue where report/subscription filters were passed using the wrong API parameter
+
 ## 2.3.0
 - Improve conversion of old filter workspaces to new filter groups
 - Show layers as unselected when creating new filters

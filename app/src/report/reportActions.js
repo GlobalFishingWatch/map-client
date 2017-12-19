@@ -68,7 +68,10 @@ export function toggleReportPanelVisibility(forceMode = null) {
 
 export function toggleReportPolygon(polygonId) {
   return (dispatch, getState) => {
-    const polygonIndex = getState().report.polygons.findIndex(polygon => polygon.id === polygonId);
+    const polygonIndex = getState()
+      .report
+      .polygons
+      .findIndex(polygon => polygon.id === polygonId);
     if (polygonIndex === -1) {
       dispatch(addCurrentPolygon());
     } else {
@@ -85,7 +88,10 @@ function startReport(layerId) {
     dispatch(clearPolygon());
     dispatch(clearHighlightedVessels());
 
-    const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    const workspaceLayer = getState()
+      .layers
+      .workspaceLayers
+      .find(layer => layer.id === layerId);
     dispatch({
       type: START_REPORT,
       payload: {
@@ -145,7 +151,10 @@ export function sendSubscription() {
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
 
-    payload.flags = getCurrentFlags(state);
+    payload.filters = {
+      flags: getCurrentFlags(state)
+    };
+
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
@@ -172,12 +181,14 @@ export function sendSubscription() {
       Authorization: `Bearer ${state.user.token}`,
       'Content-Type': 'application/json'
     };
-    fetch(url, options).then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
-      }
-      return res;
-    }).then(res => res.json())
+    fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
+        }
+        return res;
+      })
+      .then(res => res.json())
       .then((data) => {
         dispatch({
           type: CLEAR_POLYGON
