@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.2
+- Fix issue where report/subscription submission would not disable report mode
+
 ## 2.3.1
 - Fix issue where report/subscription filters were passed using the wrong API parameter
 
