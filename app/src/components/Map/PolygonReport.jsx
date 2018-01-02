@@ -36,7 +36,7 @@ export default class PolygonReport extends Component {
 
   onInfoWindowClick(e) {
     if (e.target.className.indexOf('js-close') > -1) {
-      this.props.clearPolygon();
+      this.props.hidePolygonModal();
     } else if (e.target.className.indexOf('js-toggle') > -1) {
       this.props.toggleReportPolygon(this.props.id);
     }
@@ -76,6 +76,6 @@ PolygonReport.propTypes = {
   latLng: PropTypes.array,
   isInReport: PropTypes.bool,
   toggleReportPolygon: PropTypes.func,
-  clearPolygon: PropTypes.func,
+  hidePolygonModal: PropTypes.func,
   map: PropTypes.object
 };

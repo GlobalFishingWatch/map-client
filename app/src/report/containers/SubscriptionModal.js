@@ -4,7 +4,8 @@ import {
   toggleReportPanelVisibility,
   toggleSubscriptionModalVisibility,
   sendSubscription,
-  updateSubscriptionFrequency
+  updateSubscriptionFrequency,
+  discardReport
 } from 'report/reportActions';
 
 const mapStateToProps = state => ({
@@ -23,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onSubscriptionDone: () => {
     dispatch(toggleSubscriptionModalVisibility());
+    dispatch(discardReport());
   },
   onCloseSubscriptionModal: () => {
     dispatch(toggleSubscriptionModalVisibility());

@@ -1,6 +1,6 @@
 import {
   SHOW_POLYGON,
-  CLEAR_POLYGON,
+  HIDE_POLYGON_MODAL,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
@@ -48,12 +48,6 @@ export default function (state = initialState, action) {
           latLng: action.payload.latLng,
           isInReport
         }
-      });
-    }
-
-    case CLEAR_POLYGON: {
-      return Object.assign({}, state, {
-        currentPolygon: {}
       });
     }
 
@@ -107,9 +101,11 @@ export default function (state = initialState, action) {
         polygonsIds: [],
         currentPolygon: {}
       });
+
+    case HIDE_POLYGON_MODAL:
+      return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
-
     case SET_SUBSCRIPTION_STATUS_SENT:
       return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
     case SET_SUBSCRIPTION_STATUS_ERROR:

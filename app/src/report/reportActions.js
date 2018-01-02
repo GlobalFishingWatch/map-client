@@ -3,7 +3,7 @@ import { clearHighlightedVessels } from 'actions/heatmap';
 import { FLAGS } from 'app/src/constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
-export const CLEAR_POLYGON = 'CLEAR_POLYGON';
+export const HIDE_POLYGON_MODAL = 'HIDE_POLYGON_MODAL';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
 export const DISCARD_REPORT = 'DISCARD_REPORT';
 export const SET_SUBSCRIPTION_STATUS_SENT = 'SET_SUBSCRIPTION_STATUS_SENT';
@@ -24,9 +24,9 @@ export function showPolygon(polygonData, latLng) {
   };
 }
 
-export function clearPolygon() {
+export function hidePolygonModal() {
   return {
-    type: CLEAR_POLYGON
+    type: HIDE_POLYGON_MODAL
   };
 }
 
@@ -85,7 +85,7 @@ function startReport(layerId) {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(toggleReportPanelVisibility());
     dispatch(setLayerOpacity(1, layerId));
-    dispatch(clearPolygon());
+    dispatch(hidePolygonModal());
     dispatch(clearHighlightedVessels());
 
     const workspaceLayer = getState()
@@ -105,7 +105,6 @@ function startReport(layerId) {
 
 export function discardReport() {
   return (dispatch) => {
-    dispatch(clearPolygon());
     dispatch(toggleReportPanelVisibility(false));
     dispatch({
       type: DISCARD_REPORT
@@ -191,7 +190,7 @@ export function sendSubscription() {
       .then(res => res.json())
       .then((data) => {
         dispatch({
-          type: CLEAR_POLYGON
+          type: HIDE_POLYGON_MODAL
         });
         dispatch({
           type: SET_SUBSCRIPTION_STATUS_SENT,
