@@ -485,7 +485,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(layer.tilesetId, selectedSeries));
+        dispatch(setEncountersInfo(layer.tilesetId, layer.url, selectedSeries));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }

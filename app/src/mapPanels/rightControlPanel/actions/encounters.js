@@ -16,7 +16,7 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(/* tilesetId, selectedSeries */) {
+export function setEncountersInfo(tilesetId, baseUrl, selectedSeries) {
   return (dispatch) => {
     // This data simulates the result of a call to /info on the encounters endpoint
     // That call should use the provided tilesetId and selectedSeries
@@ -35,6 +35,18 @@ export function setEncountersInfo(/* tilesetId, selectedSeries */) {
         }
       ]
     };
+
+
+    fetch(`${baseUrl}/sub/seriesgroup=${selectedSeries}/info`).then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error  ${res.status} - ${res.statusText}`);
+      }
+      return res;
+    }).then(res => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+
 
     // TODO call /info on both vessels, to get vessel details
     dispatch({
