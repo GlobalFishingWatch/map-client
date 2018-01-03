@@ -372,9 +372,7 @@ const _queryHeatmap = (state, tileQuery) => {
       const currentFilters = _getCurrentFiltersForLayer(state, layerId);
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
-          layerId,
-          subtype: layer.subtype,
-          tilesetId: layer.tilesetId,
+          layer: workspaceLayer,
           vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
             tileQuery.worldY, startIndex, endIndex, currentFilters)
         });
@@ -389,12 +387,10 @@ const _queryHeatmap = (state, tileQuery) => {
   // its a cluster because or multiple vessels under mouse
   let isMouseCluster;
   let isEmpty;
-  let layerId;
-  let layerSubtype;
-  let tilesetId;
+  let layerVesselsResult;
   let foundVessels;
 
-  const hasEncounters = layersVesselsResults.filter(v => v.subtype === LAYER_TYPES.Encounters).length > 0;
+  const hasEncounters = layersVesselsResults.filter(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters).length > 0;
 
   if (layersVesselsResults.length === 0) {
     isEmpty = true;
@@ -405,16 +401,13 @@ const _queryHeatmap = (state, tileQuery) => {
   } else {
     // if we have a hit with an encounters layer, use it in priority
     // if not the layersVesselsResults should contain a single result
-    const layerVesselsResults = (hasEncounters) ?
-      layersVesselsResults.find(v => v.subtype === LAYER_TYPES.Encounters) :
+    layerVesselsResult = (hasEncounters) ?
+      layersVesselsResults.find(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters) :
       layersVesselsResults[0];
 
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a successful vessel query, not a cluster
-    layerId = layerVesselsResults.layerId;
-    layerSubtype = layerVesselsResults.subtype;
-    tilesetId = layerVesselsResults.tilesetId;
-    const vessels = layerVesselsResults.vessels;
+    const vessels = layerVesselsResult.vessels;
 
     if (vessels.length === 0) {
       isEmpty = true;
@@ -430,18 +423,20 @@ const _queryHeatmap = (state, tileQuery) => {
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, layerSubtype, tilesetId };
+  const layer = (layerVesselsResult === undefined) ? {} : layerVesselsResult.layer;
+
+  return { isEmpty, isCluster, isMouseCluster, foundVessels, layer };
 };
 
 export function highlightVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
-    const { layerId, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch({
       type: HIGHLIGHT_VESSELS,
       payload: {
-        layerId,
+        layerId: layer.id,
         isEmpty,
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
@@ -470,7 +465,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { layerSubtype, isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
 
@@ -489,10 +484,10 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeries = foundVessels[0].series;
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
-      if (layerSubtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(tilesetId, selectedSeries));
+      if (layer.subtype === LAYER_TYPES.Encounters) {
+        dispatch(setEncountersInfo(layer.tilesetId, selectedSeries));
       } else {
-        dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
+        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
 
     }
