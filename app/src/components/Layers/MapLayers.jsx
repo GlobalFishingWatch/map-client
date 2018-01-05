@@ -15,13 +15,23 @@ import { LAYER_TYPES } from 'constants';
 const useRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 
 // TODO this should be in a reducer or container
-const getTracks = vessels => vessels
+// TODO remove vesselTracks in favor of tracks
+const getTracks = (vesselTracks, tracks) => vesselTracks
   .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
   .map(vessel => ({
     data: vessel.track.data,
     selectedSeries: vessel.track.selectedSeries,
     hue: vessel.hue
-  }));
+  }))
+  .concat(
+    tracks
+      .filter(track => track.show)
+      .map(track => ({
+        data: track.data,
+        selectedSeries: track.series,
+        hue: track.hue
+      }))
+  );
 
 class MapLayers extends Component {
   constructor(props) {
@@ -80,14 +90,15 @@ class MapLayers extends Component {
 
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtentIndexes, nextProps.timelineInnerExtentIndexes);
 
-    const nextTracks = getTracks(nextProps.vesselTracks);
+    const nextTracks = getTracks(nextProps.vesselTracks, nextProps.tracks);
 
     if (!nextTracks || nextTracks.length === 0) {
-      if (this.props.vesselTracks && this.props.vesselTracks.length) {
+      if (this.props.vesselTracks && this.props.vesselTracks.length
+       && this.props.tracks && this.props.tracks.length) {
         this.glContainer.clearTracks();
         this.glContainer.toggleHeatmapDimming(false);
       }
-    } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
+    } else /* if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) */ {
       this.updateTrackLayer({
         data: nextTracks,
         timelineInnerExtentIndexes: nextProps.timelineInnerExtentIndexes,
@@ -126,6 +137,7 @@ class MapLayers extends Component {
    * @param innerExtentChanged
    * @returns {boolean}
    */
+  /*
   shouldUpdateTrackLayer(nextProps, innerExtentChanged) {
     if (!this.props.vesselTracks) {
       return true;
@@ -155,6 +167,7 @@ class MapLayers extends Component {
     }
     return false;
   }
+  */
 
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
@@ -441,11 +454,11 @@ class MapLayers extends Component {
   }
 
   updateTrackLayerWithCurrentProps() {
-    if (!this.props.vesselTracks) {
+    if (!this.props.vesselTracks && !this.props.tracks) {
       return;
     }
 
-    const tracks = getTracks(this.props.vesselTracks);
+    const tracks = getTracks(this.props.vesselTracks, this.props.tracks);
 
     this.updateTrackLayer({
       data: tracks,
@@ -518,6 +531,7 @@ MapLayers.propTypes = {
   timelineOverExtentIndexes: PropTypes.array,
   timelinePaused: PropTypes.bool,
   vesselTracks: PropTypes.array,
+  tracks: PropTypes.array,
   viewportWidth: PropTypes.number,
   viewportHeight: PropTypes.number,
   reportLayerId: PropTypes.string,

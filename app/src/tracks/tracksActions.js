@@ -1,17 +1,17 @@
 import uniq from 'lodash/uniq';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import {
-  getTilePelagosPromises,
+  getTilePromises,
   getCleanVectorArrays,
   groupData,
-  addWorldCoordinates,
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'util/heatmapTileData';
 
-export const SET_VESSEL_TRACK = 'SET_VESSEL_TRACK';
+export const INIT_TRACK = 'INIT_TRACK';
+export const SET_TRACK = 'SET_TRACK';
 export const SET_TRACK_VISIBILITY = 'SET_TRACK_VISIBILITY';
-export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
+// export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
 
 function _getTrackTimeExtent(data, series = null) {
   let start = Infinity;
@@ -30,10 +30,9 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+export function getTrack({ tilesetId, seriesgroup, series, /*zoomToBounds,*/ updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
-    const map = state.map.googleMaps;
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
     if (!currentLayer) {
@@ -42,7 +41,17 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
     }
     const header = currentLayer.header;
     const url = header.urls.search[0] || currentLayer.url;
-    const promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
+    const promises = getTilePromises(url, state.user.token, header.temporalExtents, { seriesgroup });
+
+    dispatch({
+      type: INIT_TRACK,
+      payload: {
+        // TODO make dynamic
+        hue: 0,
+        seriesgroup,
+        series
+      }
+    });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -60,18 +69,15 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
           'sigma'
         ]);
 
-        let vectorArray = addWorldCoordinates(groupedData, map);
-
-        vectorArray = addTracksPointsRenderingData(groupedData);
+        const vectorArray = addTracksPointsRenderingData(groupedData);
 
         dispatch({
-          type: SET_VESSEL_TRACK,
+          type: SET_TRACK,
           payload: {
             seriesgroup,
             data: getTracksPlaybackData(vectorArray),
-            series: uniq(groupedData.series),
-            selectedSeries: series,
-            tilesetUrl: state.map.tilesetUrl
+            // series: uniq(groupedData.series),
+            // selectedSeries: series
           }
         });
 
@@ -80,19 +86,19 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
           dispatch(fitTimelineToTrack(tracksExtent));
         }
 
-        if (zoomToBounds) {
-          // should this be computed server side ?
-          // this is half implemented because it doesn't take into account filtering and time span
-          const trackBounds = new google.maps.LatLngBounds();
-          for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
-            trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
-          }
-
-          dispatch({
-            type: SET_TRACK_BOUNDS,
-            trackBounds
-          });
-        }
+        // if (zoomToBounds) {
+        //   // should this be computed server side ?
+        //   // this is half implemented because it doesn't take into account filtering and time span
+        //   const trackBounds = new google.maps.LatLngBounds();
+        //   for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
+        //     trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
+        //   }
+        //
+        //   dispatch({
+        //     type: SET_TRACK_BOUNDS,
+        //     trackBounds
+        //   });
+        // }
       });
   };
 }

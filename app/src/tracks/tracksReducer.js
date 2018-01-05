@@ -1,43 +1,64 @@
 import {
-  SET_VESSEL_TRACK,
-  SET_TRACK_VISIBILITY,
-  SET_TRACK_BOUNDS
+  INIT_TRACK,
+  SET_TRACK,
+  SET_TRACK_VISIBILITY
+  // SET_TRACK_BOUNDS
 } from './tracksActions';
+import find from 'lodash/find';
 
 const initialState = {
-  trackBounds: null,
+  // trackBounds: null,
   tracks: []
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
 
-    case SET_VESSEL_TRACK: {
+    case INIT_TRACK: {
+      if (state.tracks.find(t => t.seriesgroup === action.payload.seriesgroup));
+
       const newTrack = {
+        show: false,
+        visible: action.payload.visible || true,
+        hue: action.payload.hue,
         seriesgroup: action.payload.seriesgroup,
-        visble: true,
-        data: action.payload.data,
-        selectedSeries: action.payload.selectedSeries
+        series: action.payload.series
       };
 
       return Object.assign({}, state, {
-        tracks: state.tracks.concat([newTrack])
+        tracks: [...state.tracks, newTrack]
       });
     }
 
-    case SET_TRACK_VISIBILITY: {
+    case SET_TRACK: {
       const trackIndex = state.tracks.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newTrack = Object.assign({}, state.tracks[trackIndex]);
-      newTrack.visible = action.payload.visible;
+      const currentTrack = state.tracks[trackIndex];
+      const newTrack = Object.assign({}, currentTrack, {
+        data: action.payload.data,
+        show: currentTrack.visible
+      });
 
       return Object.assign({}, state, {
         tracks: [...state.tracks.slice(0, trackIndex), newTrack, ...state.tracks.slice(trackIndex + 1)]
       });
     }
 
-    case SET_TRACK_BOUNDS: {
-      return Object.assign({}, state, { trackBounds: action.trackBounds });
+    case SET_TRACK_VISIBILITY: {
+      const trackIndex = state.tracks.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
+      const currentTrack = state.tracks[trackIndex];
+      const newTrack = Object.assign({}, currentTrack, {
+        visible: action.payload.visible,
+        show: currentTrack.visible && currentTrack.data !== undefined
+      });
+
+      return Object.assign({}, state, {
+        tracks: [...state.tracks.slice(0, trackIndex), newTrack, ...state.tracks.slice(trackIndex + 1)]
+      });
     }
+
+    // case SET_TRACK_BOUNDS: {
+    //   return Object.assign({}, state, { trackBounds: action.trackBounds });
+    // }
 
     default:
       return state;

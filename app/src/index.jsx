@@ -27,6 +27,7 @@ import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
+import tracksReducer from 'tracks/tracksReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 
@@ -58,7 +59,8 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
-  encounters: encountersReducer
+  encounters: encountersReducer,
+  tracks: tracksReducer
 });
 
 /**

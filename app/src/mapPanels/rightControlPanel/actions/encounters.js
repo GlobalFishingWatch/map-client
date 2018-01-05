@@ -1,4 +1,4 @@
-// import { getVesselTrack } from 'actions/vesselInfo';
+import { getTrack } from 'tracks/tracksActions';
 
 export const HIDE_ENCOUNTERS_INFO_PANEL = 'HIDE_ENCOUNTERS_INFO_PANEL';
 export const SET_ENCOUNTERS_INFO = 'SET_ENCOUNTERS_INFO';
@@ -37,18 +37,18 @@ export function setEncountersInfo(tilesetId, baseUrl, selectedSeries) {
     };
 
 
-    fetch(`${baseUrl}/sub/seriesgroup=${selectedSeries}/info`).then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error  ${res.status} - ${res.statusText}`);
-      }
-      return res;
-    }).then(res => res.json())
-      .then((data) => {
-        console.log(data);
-      });
+    // fetch(`${baseUrl}/sub/seriesgroup=${selectedSeries}/info`).then((res) => {
+    //   if (!res.ok) {
+    //     throw new Error(`Error  ${res.status} - ${res.statusText}`);
+    //   }
+    //   return res;
+    // }).then(res => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
 
 
-    // TODO call /info on both vessels, to get vessel details
+    // TODO call /info on both vessels, to get vessels details
     dispatch({
       type: SET_ENCOUNTERS_INFO,
       payload: {
@@ -58,18 +58,14 @@ export function setEncountersInfo(tilesetId, baseUrl, selectedSeries) {
 
 
     // get tracks for both vessels
-    // TODO this won't work because the vesselInfo reducer will try to add a track to an existing vessel (which doesn't exist here)
-    // either manage tracks triggered by encounters in the encounters reducer, or continue using the vesselInfo reducer,
-    // handling tracks that don't belong to any vesselInfo (which are used in vessel info panel and pinned vessels panel)
-    //
-    // encounterInfo.vessels.forEach((vessel) => {
-    //   dispatch(getVesselTrack({
-    //     tilesetId: vessel.tilesetId,
-    //     seriesgroup: vessel.seriesgroup,
-    //     series: null,
-    //     zoomToBounds: false,
-    //     updateTimelineBounds: false
-    //   }));
-    // });
+    encounterInfo.vessels.forEach((vessel) => {
+      dispatch(getTrack({
+        tilesetId: vessel.tilesetId,
+        seriesgroup: vessel.seriesgroup,
+        series: null,
+        zoomToBounds: false,
+        updateTimelineBounds: false
+      }));
+    });
   };
 }
