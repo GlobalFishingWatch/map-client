@@ -12,6 +12,7 @@ import {
   HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'config';
+import { LAYER_TYPES, BRUSH_RENDERING_STYLE } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
@@ -61,7 +62,8 @@ export default class GLContainer extends BaseOverlay {
       { id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE },
       this.baseTexture,
       this._getNumSprites(),
-      useHeatmapStyle
+      useHeatmapStyle,
+      { defaultOpacity: 1, defaultSize: 1 }
     );
     this.stage.addChild(this.heatmapHighlight.stage);
 
@@ -261,14 +263,19 @@ export default class GLContainer extends BaseOverlay {
     const foundVesselsFilters = foundVessels.map(vessel => ({
       hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
       filterValues: {
-        series: [vessel.series],
-        seriesgroup: [vessel.seriesgroup]
+        series: [vessel.series]
       }
     }));
 
     // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
     // thus we only need to apply a series/seriesgroup filter
     this.heatmapHighlight.setFilters(foundVesselsFilters);
+
+    // toggle encounters style/normal style
+    this.heatmapHighlight.setBrushRenderingStyle((layerData.subtype === LAYER_TYPES.Encounters)
+      ? BRUSH_RENDERING_STYLE.BULLSEYE
+      : BRUSH_RENDERING_STYLE.NORMAL);
+
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
   }
@@ -291,11 +298,11 @@ export default class GLContainer extends BaseOverlay {
     this.tracksLayer.clear();
   }
 
-  setStyle(useHeatmapStyle) {
+  setStyle(useRadialGradientStyle) {
     for (let i = 0; i < this.layers.length; i++) {
-      this.layers[i].setRenderingStyle(useHeatmapStyle);
+      this.layers[i].setBrushZoomRenderingStyle(useRadialGradientStyle);
     }
-    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
+    this.heatmapHighlight.setBrushZoomRenderingStyle(useRadialGradientStyle);
   }
 
   /**

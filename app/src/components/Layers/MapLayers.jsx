@@ -9,10 +9,10 @@ import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
-import { VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'config';
+import { VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD } from 'config';
 import { LAYER_TYPES } from 'constants';
 
-const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
+const useRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 
 // TODO this should be in a reducer or container
 const getTracks = vessels => vessels
@@ -60,7 +60,7 @@ class MapLayers extends Component {
     if (this.props.zoom !== nextProps.zoom && this.glContainer) {
       // zooming started: hide gl container, show again when map is idle
       this.glContainer.hide();
-      this.glContainer.setStyle(useHeatmapStyle(nextProps.zoom));
+      this.glContainer.setStyle(useRadialGradientStyle(nextProps.zoom));
     }
 
     if (!isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
@@ -170,7 +170,7 @@ class MapLayers extends Component {
     this.glContainer = new GLContainer(
       this.props.viewportWidth,
       this.props.viewportHeight,
-      useHeatmapStyle(this.props.zoom),
+      useRadialGradientStyle(this.props.zoom),
       (overlayProjection) => {
         this.tiledLayer.setProjection(overlayProjection);
       });
@@ -254,7 +254,7 @@ class MapLayers extends Component {
   }
 
   addHeatmapLayer(newLayer) {
-    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer, useHeatmapStyle(this.props.zoom));
+    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer, useRadialGradientStyle(this.props.zoom));
   }
 
   removeHeatmapLayer(layer) {

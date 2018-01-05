@@ -32,10 +32,14 @@ export const INFO_STATUS = {
   LOADED: 3
 };
 
-export const RENDERING_STYLE = {
-  HEATMAP: 0,
-  CIRCLE: 1,
+export const BRUSH_RENDERING_STYLE = {
+  NORMAL: 0,
   BULLSEYE: 2
+};
+
+export const BRUSH_ZOOM_RENDERING_STYLE = {
+  RADIAL_GRADIENT: 0,
+  CIRCLE: 1
 };
 
 export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];

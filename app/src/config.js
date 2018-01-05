@@ -41,7 +41,7 @@ export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET;
 
 // vessels rendering
 // from this zoom level and above, render using circle style instead of heatmap
-export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
+export const VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD = 6;
 // the base radius, it can only be scaled down by the radius factor calculated on the dataset
 export const VESSELS_BASE_RADIUS = 8;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
