@@ -158,6 +158,10 @@ Display message contained in literals.json's `banner` in a dismissable banner on
 
 Enable usage of the new "Area of Interest" feature (experimental)
 
+#### USE_SUBSCRIPTIONS
+
+Enable usage of the new "Subscription" feature
+
 # Permission keys description
 
 On load, the application will call the /me API endpoint to load user permissions. These are the supported values:
@@ -214,6 +218,16 @@ Triggered when an user changed the viewed area. It is not triggered below zoom l
 For example, the coast along Peru and Argentina would be `9, 17` here:
 
 <img src="https://raw.githubusercontent.com/Vizzuality/GlobalFishingWatch/develop/documentation/ga-area.png">
+
+It is possible from this data to generate a map showing a map with the most viewed parts of the world, such as:
+
+![](https://github.com/Vizzuality/GlobalFishingWatch/blob/develop/documentation/ga-carto.png?raw=truep)
+
+To do so:
+- get a CSV of the data from GA
+- save it as analytics-tiles.csv under bin
+- run `node ./bin/analytics-tiles.js`. This will convert tile coordinates to lat/lon pairs, and output the result as CSV
+- put this data into Carto
 
 #### GA_INNER_TIMELINE_EXTENT_CHANGED
 

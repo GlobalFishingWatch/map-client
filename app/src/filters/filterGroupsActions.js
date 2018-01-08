@@ -18,7 +18,7 @@ export function createNewFilterGroup() {
   return (dispatch, getState) => {
     const checkedLayers = {};
     getState().layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map(l => l.id).forEach((lid) => {
-      checkedLayers[lid] = true;
+      checkedLayers[lid] = false;
     });
 
     const newFilterGroup = {
@@ -67,6 +67,9 @@ const getLayerData = (heatmapLayer, filters) => {
       const filterValues = {};
       Object.keys(filterGroup.filterValues).forEach((filterValueKey) => {
         // set actual field name usable on layer, from filter id (ie id:flag --> filterValue:category or filterValue:flag_id)
+        if (heatmapLayer.header.filters === undefined) {
+          return;
+        }
         const originalLayerHeaderFilter = heatmapLayer.header.filters.find(layerHeaderFilter => layerHeaderFilter.id === filterValueKey);
         // check if filter is supported in layer header
         if (originalLayerHeaderFilter !== undefined) {

@@ -185,7 +185,7 @@ class MapContainer extends Component {
 
   onMapContainerClick(event) {
     if (event.target.className.match('js-polygon-report') === null) {
-      this.props.clearReportPolygon();
+      this.props.hidePolygonModal();
     }
   }
 
@@ -263,7 +263,7 @@ MapContainer.propTypes = {
   basemaps: PropTypes.array.isRequired,
   centerLat: PropTypes.number,
   centerLong: PropTypes.number,
-  clearReportPolygon: PropTypes.func,
+  hidePolygonModal: PropTypes.func,
   isDrawing: PropTypes.bool.isRequired,
   initMap: PropTypes.func,
   isEmbedded: PropTypes.bool,

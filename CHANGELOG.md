@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.3.2
+- Fix issue where report/subscription submission would not disable report mode
+
+## 2.3.1
+- Fix issue where report/subscription filters were passed using the wrong API parameter
+
+## 2.3.0
+- Improve conversion of old filter workspaces to new filter groups
+- Show layers as unselected when creating new filters
+- Improve close interactions on subscriptions functionality
+
+## 2.3.0 RC2
+- Restore one-time report functionality on new subscriptions interface
+- Fix issue with filter select CSS on production settings
+- Fix issue where layers with no filter headers would crash the filters functionality
+- Fix regression on filter warning message 
+
+## 2.3.0 RC1
+- Add and style scroll bars for modal boxes
+- Fix new filters backwards compatibility with old workspaces 
+
+## 2.3.0 Beta 1
+- Add new filters interface
+- Add new subscription functionality
+
 ## 2.2.3
 - Fix path to social network cards
 - Fix issue where header logo would overflow mobile map

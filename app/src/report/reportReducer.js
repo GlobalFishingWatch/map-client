@@ -1,14 +1,18 @@
 import {
   SHOW_POLYGON,
-  CLEAR_POLYGON,
+  HIDE_POLYGON_MODAL,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
   DISCARD_REPORT,
-  SET_REPORT_STATUS_SENT,
-  SET_REPORT_STATUS_ERROR
+  TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY,
+  SET_SUBSCRIPTION_STATUS_SENT,
+  SET_SUBSCRIPTION_STATUS_ERROR,
+  TOGGLE_REPORT_MODAL_VISIBILITY,
+  UPDATE_SUBSCRIPTION_FREQUENCY
 } from 'report/reportActions';
 import { REPORT_STATUS } from 'constants';
+import { SUBSCRIBE_DEFAULT_FREQUENCY } from '../config';
 
 const initialState = {
   currentPolygon: {},
@@ -17,7 +21,10 @@ const initialState = {
   layerTitle: null,
   layerId: null,
   status: REPORT_STATUS.idle,
-  statusText: ''
+  statusText: '',
+  showReportPanel: false,
+  showSubscriptionModal: false,
+  subscriptionFrequency: SUBSCRIBE_DEFAULT_FREQUENCY
 };
 
 export default function (state = initialState, action) {
@@ -44,9 +51,21 @@ export default function (state = initialState, action) {
       });
     }
 
-    case CLEAR_POLYGON: {
+    case UPDATE_SUBSCRIPTION_FREQUENCY: {
       return Object.assign({}, state, {
-        currentPolygon: {}
+        subscriptionFrequency: action.payload.frequency
+      });
+    }
+
+    case TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY: {
+      return Object.assign({}, state, {
+        showSubscriptionModal: action.payload.forceMode === null ? !state.showSubscriptionModal : action.payload.forceMode
+      });
+    }
+
+    case TOGGLE_REPORT_MODAL_VISIBILITY: {
+      return Object.assign({}, state, {
+        showReportPanel: action.payload.forceMode === null ? !state.showReportPanel : action.payload.forceMode
       });
     }
 
@@ -82,12 +101,14 @@ export default function (state = initialState, action) {
         polygonsIds: [],
         currentPolygon: {}
       });
+
+    case HIDE_POLYGON_MODAL:
+      return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
-
-    case SET_REPORT_STATUS_SENT:
+    case SET_SUBSCRIPTION_STATUS_SENT:
       return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
-    case SET_REPORT_STATUS_ERROR:
+    case SET_SUBSCRIPTION_STATUS_ERROR:
       return Object.assign({}, state, { status: REPORT_STATUS.error, statusText: action.payload });
 
 

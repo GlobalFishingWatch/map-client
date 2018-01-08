@@ -28,6 +28,10 @@
 
     @media #{$mq-tablet} {
       height: 80%;
+
+      &._tallContent {
+        height: 85%;
+      }
       max-height: 494px;
       min-width: 620px;
     }
@@ -60,6 +64,16 @@
 
       .containPadding {
         height: 100%;
+
+        &._withFooter {
+          height: 80%;
+          padding-bottom: 0;
+
+          &._tallContent {
+            height: 85%;
+          }
+        }
+
         overflow-y: auto;
         padding: 40px 20px 20px;
 
@@ -79,7 +93,7 @@
           color: $color-4;
         }
 
-        .footer {
+        .buttonFooter {
           display: flex;
           justify-content: center;
         }
@@ -96,13 +110,27 @@
 
   &._scrollable {
     > .content {
+
       .containContent {
         height: 100%;
+
         .containPadding {
           height: 100%;
+
+          &._withFooter {
+            height: 80%;
+
+            &._tallContent {
+              height: 85%;
+            }
+          }
         }
       }
     }
+  }
+
+  .mainButton {
+    min-width: 30%;
   }
 
   .closeButton {
@@ -147,4 +175,47 @@
 
 ._noBgOverlay {
   overflow: hidden;
+}
+
+.scrollbar {
+	margin-left: -2px;
+	float: left;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: rgba($color-3, .3);
+  }
+
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: transparent;
+  }
+}
+
+.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 30px;
+  text-align: center;
+}
+
+.footerContainer {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 20px;
+
+  > button {
+    margin-right: 5px;
+    width: 180px;
+  }
 }

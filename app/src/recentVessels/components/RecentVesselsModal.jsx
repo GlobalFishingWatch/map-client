@@ -4,12 +4,12 @@ import classnames from 'classnames';
 import RecentVesselStyles from 'styles/recentVessels/recent-vessels.scss';
 import ModalResultListStyles from 'styles/search/result-list.scss';
 import ModalStyles from 'styles/components/shared/modal.scss';
-import MapButtonStyles from 'styles/components/button.scss';
 import RecentVesselItem from 'recentVessels/containers/RecentVesselItem';
+import MapButtonStyles from 'styles/components/button.scss';
+import Modal from 'components/Shared/Modal';
 
 class RecentVesselsModal extends Component {
-
-  render() {
+  renderContent() {
     let historyItems = [];
     const pinnedVessels = this.props.vessels.filter(elem => elem.pinned === true);
     const pinnedVesselSeriesGroup = pinnedVessels.length > 0 ? pinnedVessels.map(elem => elem.seriesgroup) : [];
@@ -19,9 +19,10 @@ class RecentVesselsModal extends Component {
         (entry, i) => (
           <RecentVesselItem
             vesselInfo={entry}
-            key={i}
             pinned={pinnedVesselSeriesGroup.indexOf(entry.seriesgroup) !== -1}
             onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
+            key={i}
+            closeable
           />
         )
       );
@@ -40,15 +41,35 @@ class RecentVesselsModal extends Component {
             {historyItems}
           </ul >}
         </div >
-        <div className={RecentVesselStyles.footer} >
-          <button
-            className={classnames(MapButtonStyles.button, MapButtonStyles._filled, RecentVesselStyles.btnDone)}
-            onClick={() => this.props.closeModal()}
-          >
-            done
-          </button >
-        </div >
       </div >
+    );
+  }
+
+  renderFooter() {
+    return (
+      <div className={RecentVesselStyles.footer} >
+        <button
+          className={classnames(MapButtonStyles.button, MapButtonStyles._filled, RecentVesselStyles.btnDone)}
+          onClick={this.props.close}
+        >
+          done
+        </button >
+      </div >
+    );
+  }
+
+  render() {
+    return (
+      <Modal
+        visible={this.props.visible}
+        opened={this.props.opened}
+        closeable
+        isScrollable
+        close={this.props.close}
+        footer={this.renderFooter()}
+      >
+        {this.renderContent()}
+      </Modal >
     );
   }
 }
@@ -57,7 +78,10 @@ RecentVesselsModal.propTypes = {
   closeModal: PropTypes.func,
   drawVessel: PropTypes.func,
   history: PropTypes.array,
-  vessels: PropTypes.array
+  vessels: PropTypes.array,
+  visible: PropTypes.bool,
+  close: PropTypes.func,
+  opened: PropTypes.bool
 };
 
 export default RecentVesselsModal;

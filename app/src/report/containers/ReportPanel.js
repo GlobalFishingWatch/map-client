@@ -1,11 +1,16 @@
 import { connect } from 'react-redux';
 import ReportPanel from 'report/components/ReportPanel';
-import { deletePolygon, discardReport, sendReport } from 'report/reportActions';
+import {
+  deletePolygon,
+  discardReport,
+  toggleSubscriptionModalVisibility,
+  toggleReportPanelVisibility
+} from 'report/reportActions';
 import { trackDiscardReport } from 'analytics/analyticsActions';
 
 const mapStateToProps = state => ({
   polygons: state.report.polygons,
-  visible: state.report.layerId !== null,
+  visible: state.report.showReportPanel,
   layerTitle: state.report.layerTitle,
   status: state.report.status,
   statusText: state.report.statusText,
@@ -25,7 +30,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(deletePolygon(index));
   },
   onSendReport: () => {
-    dispatch(sendReport());
+    dispatch(toggleSubscriptionModalVisibility());
+    dispatch(toggleReportPanelVisibility());
   }
 });
 

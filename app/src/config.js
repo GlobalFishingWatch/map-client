@@ -72,8 +72,6 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
-export const AIS_LAYER_ID = 'fishing2';
-
 // Colors of the layers, areas, ...
 export const COLORS = {
   orange: '#F95E5E',
@@ -148,6 +146,26 @@ export const EMBED_SIZE_SETTINGS = [
     name: 'Large',
     width: 1000,
     height: 800
+  }
+];
+
+export const SUBSCRIBE_DEFAULT_FREQUENCY = 'single';
+export const SUBSCRIBE_SETTINGS = [
+  {
+    name: 'One-time report',
+    value: 'single'
+  },
+  {
+    name: 'Daily report',
+    value: 'daily'
+  },
+  {
+    name: 'Weekly report',
+    value: 'weekly'
+  },
+  {
+    name: 'Monthly report',
+    value: 'monthly'
   }
 ];
 

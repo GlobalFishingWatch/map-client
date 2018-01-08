@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PromptLayerRemoval from 'components/Map/PromptLayerRemoval';
+import PromptLayerRemovalModal from 'components/Map/PromptLayerRemovalModal';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence, confirmLayerRemoval } from 'layers/layersActions';
 
 const mapStateToProps = state => ({
@@ -17,4 +17,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PromptLayerRemoval);
+export default connect(mapStateToProps, mapDispatchToProps)(PromptLayerRemovalModal);

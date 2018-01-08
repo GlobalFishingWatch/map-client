@@ -3,13 +3,16 @@ import { clearHighlightedVessels } from 'actions/heatmap';
 import { FLAGS } from 'app/src/constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
-export const CLEAR_POLYGON = 'CLEAR_POLYGON';
+export const HIDE_POLYGON_MODAL = 'HIDE_POLYGON_MODAL';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
 export const DISCARD_REPORT = 'DISCARD_REPORT';
-export const SET_REPORT_STATUS_ERROR = 'SET_REPORT_STATUS_ERROR';
-export const SET_REPORT_STATUS_SENT = 'SET_REPORT_STATUS_SENT';
+export const SET_SUBSCRIPTION_STATUS_SENT = 'SET_SUBSCRIPTION_STATUS_SENT';
+export const SET_SUBSCRIPTION_STATUS_ERROR = 'SET_SUBSCRIPTION_STATUS_ERROR';
 export const SHOW_POLYGON = 'SHOW_POLYGON';
 export const START_REPORT = 'START_REPORT';
+export const TOGGLE_REPORT_MODAL_VISIBILITY = 'TOGGLE_REPORT_MODAL_VISIBILITY';
+export const TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY = 'TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY';
+export const UPDATE_SUBSCRIPTION_FREQUENCY = 'UPDATE_SUBSCRIPTION_FREQUENCY';
 
 export function showPolygon(polygonData, latLng) {
   return {
@@ -21,9 +24,9 @@ export function showPolygon(polygonData, latLng) {
   };
 }
 
-export function clearPolygon() {
+export function hidePolygonModal() {
   return {
-    type: CLEAR_POLYGON
+    type: HIDE_POLYGON_MODAL
   };
 }
 
@@ -42,9 +45,33 @@ export function deletePolygon(polygonIndex) {
   };
 }
 
+export function updateSubscriptionFrequency(frequency) {
+  return {
+    type: UPDATE_SUBSCRIPTION_FREQUENCY,
+    payload: { frequency }
+  };
+}
+
+export function toggleSubscriptionModalVisibility(forceMode = null) {
+  return {
+    type: TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY,
+    payload: { forceMode }
+  };
+}
+
+export function toggleReportPanelVisibility(forceMode = null) {
+  return {
+    type: TOGGLE_REPORT_MODAL_VISIBILITY,
+    payload: { forceMode }
+  };
+}
+
 export function toggleReportPolygon(polygonId) {
   return (dispatch, getState) => {
-    const polygonIndex = getState().report.polygons.findIndex(polygon => polygon.id === polygonId);
+    const polygonIndex = getState()
+      .report
+      .polygons
+      .findIndex(polygon => polygon.id === polygonId);
     if (polygonIndex === -1) {
       dispatch(addCurrentPolygon());
     } else {
@@ -56,11 +83,15 @@ export function toggleReportPolygon(polygonId) {
 function startReport(layerId) {
   return (dispatch, getState) => {
     dispatch(toggleLayerVisibility(layerId, true));
+    dispatch(toggleReportPanelVisibility());
     dispatch(setLayerOpacity(1, layerId));
-    dispatch(clearPolygon());
+    dispatch(hidePolygonModal());
     dispatch(clearHighlightedVessels());
 
-    const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    const workspaceLayer = getState()
+      .layers
+      .workspaceLayers
+      .find(layer => layer.id === layerId);
     dispatch({
       type: START_REPORT,
       payload: {
@@ -74,7 +105,7 @@ function startReport(layerId) {
 
 export function discardReport() {
   return (dispatch) => {
-    dispatch(clearPolygon());
+    dispatch(toggleReportPanelVisibility(false));
     dispatch({
       type: DISCARD_REPORT
     });
@@ -105,9 +136,10 @@ function getCurrentFlags(state) {
     .reduce((a1, a2) => a1.concat(a2), []);
 }
 
-export function sendReport() {
+export function sendSubscription() {
   return (dispatch, getState) => {
     const state = getState();
+
     if (!state.user.token) {
       console.warn('user is not authenticated');
       return;
@@ -118,7 +150,10 @@ export function sendReport() {
       to: state.filters.timelineInnerExtent[1].toISOString()
     };
 
-    payload.flags = getCurrentFlags(state);
+    payload.filters = {
+      flags: getCurrentFlags(state)
+    };
+
     payload.regions = [];
     state.report.polygons.forEach((polygon) => {
       payload.regions.push({
@@ -127,6 +162,15 @@ export function sendReport() {
         name: polygon.name.toString()
       });
     });
+
+    let url;
+    if (state.report.subscriptionFrequency === 'single') {
+      url = `${state.map.tilesetUrl}/reports`;
+    } else {
+      payload.recurrency = state.report.subscriptionFrequency;
+      url = `${state.map.tilesetUrl}/reports/subscriptions`;
+    }
+
     const body = JSON.stringify(payload);
     const options = {
       method: 'POST',
@@ -136,21 +180,26 @@ export function sendReport() {
       Authorization: `Bearer ${state.user.token}`,
       'Content-Type': 'application/json'
     };
-    fetch(`${state.map.tilesetUrl}/reports`, options).then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
-      }
-      return res;
-    }).then(res => res.json())
+    fetch(url, options)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error sending report ${res.status} - ${res.statusText}`);
+        }
+        return res;
+      })
+      .then(res => res.json())
       .then((data) => {
         dispatch({
-          type: SET_REPORT_STATUS_SENT,
+          type: HIDE_POLYGON_MODAL
+        });
+        dispatch({
+          type: SET_SUBSCRIPTION_STATUS_SENT,
           payload: data.message
         });
       })
       .catch((err) => {
         dispatch({
-          type: SET_REPORT_STATUS_ERROR,
+          type: SET_SUBSCRIPTION_STATUS_ERROR,
           payload: err.message
         });
       });

@@ -12,6 +12,7 @@
     "DEFAULT_WORKSPACE": true,
     "DISABLE_WELCOME_MODAL": true,
     "ENABLE_AREA_OF_INTEREST": true,
+    "USE_SUBSCRIPTIONS": true,
     "GA_TRACKING_CODE": true,
     "google": true,
     "LOCAL_WORKSPACE": true,
