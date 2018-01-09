@@ -16,7 +16,7 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(tilesetId, baseUrl, selectedSeries) {
+export function setEncountersInfo(/* tilesetId, baseUrl, selectedSeries */) {
   return (dispatch) => {
     // This data simulates the result of a call to /info on the encounters endpoint
     // That call should use the provided tilesetId and selectedSeries

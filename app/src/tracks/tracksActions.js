@@ -1,4 +1,3 @@
-import uniq from 'lodash/uniq';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import {
   getTilePromises,
@@ -30,7 +29,7 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-export function getTrack({ tilesetId, seriesgroup, series, /*zoomToBounds,*/ updateTimelineBounds }) {
+export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -75,7 +74,7 @@ export function getTrack({ tilesetId, seriesgroup, series, /*zoomToBounds,*/ upd
           type: SET_TRACK,
           payload: {
             seriesgroup,
-            data: getTracksPlaybackData(vectorArray),
+            data: getTracksPlaybackData(vectorArray)
             // series: uniq(groupedData.series),
             // selectedSeries: series
           }

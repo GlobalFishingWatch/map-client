@@ -4,7 +4,6 @@ import {
   SET_TRACK_VISIBILITY
   // SET_TRACK_BOUNDS
 } from './tracksActions';
-import find from 'lodash/find';
 
 const initialState = {
   // trackBounds: null,
