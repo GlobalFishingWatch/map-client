@@ -44,7 +44,7 @@ class FilterGroupPanel extends Component {
           className={classnames(buttonStyles.button, buttonStyles._wide, buttonStyles._filled, buttonStyles._big)}
           onClick={() => this.addFilterGroup()}
         >
-          Create Filter Group
+          Create Filter
         </button >
       </div >
     );

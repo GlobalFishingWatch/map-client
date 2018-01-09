@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import PolygonReport from 'components/Map/PolygonReport';
-import { toggleReportPolygon, clearPolygon } from 'report/reportActions';
+import { toggleReportPolygon, hidePolygonModal } from 'report/reportActions';
 
 const mapStateToProps = state => ({
   id: state.report.currentPolygon.id,
@@ -13,8 +13,8 @@ const mapDispatchToProps = dispatch => ({
   toggleReportPolygon: (polygonId) => {
     dispatch(toggleReportPolygon(polygonId));
   },
-  clearPolygon: () => {
-    dispatch(clearPolygon());
+  hidePolygonModal: () => {
+    dispatch(hidePolygonModal());
   }
 });
 

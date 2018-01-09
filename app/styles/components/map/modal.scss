@@ -7,6 +7,10 @@
   text-align: center;
 }
 
+.message {
+  color: rgba($color-34, 0.3);
+}
+
 .optionsContainer {
   display: flex;
   flex-basis: 100%;
@@ -103,17 +107,6 @@
 
 .wrapper {
   padding-bottom: 40px;
-}
-
-.footerContainer {
-  display: flex;
-  justify-content: center;
-  margin: 10px 0 20px;
-
-  > button {
-    margin-right: 5px;
-    width: 180px;
-  }
 }
 
 .warning {

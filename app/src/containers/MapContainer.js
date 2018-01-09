@@ -3,7 +3,7 @@ import MapContainer from 'components/MapContainer';
 import { initGoogleMaps, setZoom, setCenter, setMouseLatLong } from 'actions/map';
 import { setUrlWorkspaceId } from 'actions/workspace';
 import { toggleLayerVisibility } from 'layers/layersActions';
-import { clearPolygon } from 'report/reportActions';
+import { hidePolygonModal } from 'report/reportActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
@@ -43,8 +43,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   openSupportFormModal: () => {
     dispatch(setSupportModalVisibility(true));
   },
-  clearReportPolygon: () => {
-    dispatch(clearPolygon());
+  hidePolygonModal: () => {
+    dispatch(hidePolygonModal());
   },
   onExternalLink: (link) => {
     dispatch(trackExternalLinkClicked(link));

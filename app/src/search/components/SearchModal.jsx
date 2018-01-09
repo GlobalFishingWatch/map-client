@@ -12,6 +12,7 @@ import iconsStyles from 'styles/icons.scss';
 import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=CloseIcon';
 import ArrowBoxIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-box.svg?name=ArrowBoxIcon';
+import Modal from 'components/Shared/Modal';
 
 class SearchModal extends Component {
 
@@ -48,13 +49,13 @@ class SearchModal extends Component {
       <SearchResult
         className={classnames(ResultListStyles.resultItem, ResultListStyles.modalResult)}
         key={index}
-        closeSearch={() => this.props.closeSearchModal()}
+        closeSearch={() => this.props.close()}
         vesselInfo={entry}
       />)
     );
   }
 
-  render() {
+  renderMainContent() {
     let searchResults;
 
     if (this.props.searching) {
@@ -91,35 +92,59 @@ class SearchModal extends Component {
           </ul >
           }
         </div >
-        <div className={SearchModalStyles.paginatorContainer} >
-          <div
-            className={PaginatorStyles.paginator}
-          >
-            {!this.props.searching && this.props.entries.length > 0 && <ReactPaginate
-              previousLabel={<ArrowBoxIcon />}
-              nextLabel={<ArrowBoxIcon />}
-              nextClassName={PaginatorStyles.next}
-              previousClassName={PaginatorStyles.previous}
-              breakLabel={<span >...</span >}
-              pageClassName={PaginatorStyles.pageItem}
-              breakClassName={PaginatorStyles.pageItem}
-              pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
-              pageRangeDisplayed={3}
-              onPageChange={e => this.onPageChange(e.selected)}
-              forcePage={this.props.page}
-              containerClassName={PaginatorStyles.pageList}
-              activeClassName={PaginatorStyles._current}
-              disabledClassName={PaginatorStyles._disabled}
-            />
-            }
-          </div >
+      </div >
+    );
+  }
+
+  renderFooter() {
+    return (
+      <div className={SearchModalStyles.paginatorContainer} >
+        <div
+          className={PaginatorStyles.paginator}
+        >
+          {!this.props.searching && this.props.entries.length > 0 && <ReactPaginate
+            previousLabel={<ArrowBoxIcon />}
+            nextLabel={<ArrowBoxIcon />}
+            nextClassName={PaginatorStyles.next}
+            previousClassName={PaginatorStyles.previous}
+            breakLabel={<span >...</span >}
+            pageClassName={PaginatorStyles.pageItem}
+            breakClassName={PaginatorStyles.pageItem}
+            pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
+            pageRangeDisplayed={3}
+            onPageChange={e => this.onPageChange(e.selected)}
+            forcePage={this.props.page}
+            containerClassName={PaginatorStyles.pageList}
+            activeClassName={PaginatorStyles._current}
+            disabledClassName={PaginatorStyles._disabled}
+          />
+          }
         </div >
-      </div >);
+      </div >
+    );
+  }
+
+  render() {
+    return (
+      <Modal
+        visible={this.props.visible}
+        opened={this.props.opened}
+        closeable
+        isScrollable
+        tallContent
+        close={this.props.close}
+        footer={this.renderFooter()}
+      >
+        {this.renderMainContent()}
+      </Modal>
+    );
   }
 }
 
 SearchModal.propTypes = {
-  closeSearchModal: PropTypes.func,
+  close: PropTypes.func,
+  opened: PropTypes.bool,
+  visible: PropTypes.bool,
   setSearchTerm: PropTypes.func,
   setSearchPage: PropTypes.func,
   /*
