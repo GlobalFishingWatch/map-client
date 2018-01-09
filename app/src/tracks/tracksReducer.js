@@ -1,6 +1,7 @@
 import {
   INIT_TRACK,
   SET_TRACK,
+  DELETE_TRACKS,
   SET_TRACK_VISIBILITY
   // SET_TRACK_BOUNDS
 } from './tracksActions';
@@ -39,6 +40,12 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         tracks: [...state.tracks.slice(0, trackIndex), newTrack, ...state.tracks.slice(trackIndex + 1)]
+      });
+    }
+
+    case DELETE_TRACKS: {
+      return Object.assign({}, state, {
+        tracks: state.tracks.filter(t => action.payload.seriesgroupArray.indexOf(t.seriesgroup) === -1)
       });
     }
 

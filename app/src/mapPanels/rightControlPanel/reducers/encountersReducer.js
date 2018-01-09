@@ -13,6 +13,13 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_ENCOUNTERS_INFO: {
+      return Object.assign({}, state, {
+        infoPanelStatus: INFO_STATUS.LOADED,
+        encountersInfo: action.payload.encounterInfo
+      });
+    }
+
     case CLEAR_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.HIDDEN,
@@ -20,12 +27,6 @@ export default function (state = initialState, action) {
       });
     }
 
-    case SET_ENCOUNTERS_INFO: {
-      return Object.assign({}, state, {
-        infoPanelStatus: INFO_STATUS.LOADED,
-        encountersInfo: action.payload.encounterInfo
-      });
-    }
     default:
       return state;
   }

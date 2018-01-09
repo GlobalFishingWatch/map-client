@@ -11,7 +11,7 @@ import {
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
-import { setEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
+import { setEncountersInfo, clearEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 
@@ -468,6 +468,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
     const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
+    dispatch(clearEncountersInfo());
 
     if (isEmpty === true) {
       // nothing to see here

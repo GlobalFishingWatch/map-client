@@ -9,6 +9,7 @@ import {
 
 export const INIT_TRACK = 'INIT_TRACK';
 export const SET_TRACK = 'SET_TRACK';
+export const DELETE_TRACKS = 'DELETE_TRACK';
 export const SET_TRACK_VISIBILITY = 'SET_TRACK_VISIBILITY';
 // export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
 
@@ -114,6 +115,15 @@ export function toggleTrackVisibility(seriesgroup) {
           visible
         }
       });
+    }
+  };
+}
+
+export function deleteTracks(seriesgroupArray) {
+  return {
+    type: DELETE_TRACKS,
+    payload: {
+      seriesgroupArray
     }
   };
 }

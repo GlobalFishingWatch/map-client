@@ -1,4 +1,4 @@
-import { getTrack } from 'tracks/tracksActions';
+import { getTrack, deleteTracks } from 'tracks/tracksActions';
 
 export const HIDE_ENCOUNTERS_INFO_PANEL = 'HIDE_ENCOUNTERS_INFO_PANEL';
 export const SET_ENCOUNTERS_INFO = 'SET_ENCOUNTERS_INFO';
@@ -11,8 +11,16 @@ export function hideEncountersInfoPanel() {
 }
 
 export function clearEncountersInfo() {
-  return {
-    type: CLEAR_ENCOUNTERS_INFO
+  return (dispatch, getState) => {
+    const currentEncountersInfo = getState().encounters.encountersInfo;
+    if (currentEncountersInfo === null) {
+      return;
+    }
+    const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
+    dispatch(deleteTracks(seriesgroupArray));
+    dispatch({
+      type: CLEAR_ENCOUNTERS_INFO
+    });
   };
 }
 
