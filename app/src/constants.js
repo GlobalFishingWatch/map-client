@@ -12,6 +12,7 @@ export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
   Heatmap: 'ClusterAnimation',
+  HeatmapTracksOnly: 'HeatmapTracksOnly',
   Custom: 'Custom',
   VesselTrackAnimation: 'VesselTrackAnimation',
   Encounters: 'Encounters'

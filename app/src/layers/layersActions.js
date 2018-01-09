@@ -89,7 +89,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
 
     workspaceLayers.forEach((layer) => {
       // while encounters layers have a different type than heatmap in workspaces,
-      // they are treated the same way by the front-end, except on map interaction (see heatmap actions) 
+      // they are treated the same way by the front-end, except on map interaction (see heatmap actions)
       if (layer.type === LAYER_TYPES.Encounters) {
         layer.type = LAYER_TYPES.Heatmap;
         layer.subtype = LAYER_TYPES.Encounters;
@@ -132,7 +132,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
 
     const headersPromises = [];
     workspaceLayers
-      .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
+      .filter(l => (l.type === LAYER_TYPES.Heatmap || l.type === LAYER_TYPES.HeatmapTracksOnly) && l.added === true)
       .forEach((heatmapLayer) => {
         if (HEADERLESS_LAYERS.indexOf(heatmapLayer.tilesetId) > -1) {
           // headerless layers are considered temporalExtents-less too
