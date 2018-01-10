@@ -10,10 +10,6 @@ function EncountersVessel({ vessel }) {
   return (
     <div className={infoPanelStyles.encountersData} >
       <div className={infoPanelStyles.rowInfo} >
-        <span className={infoPanelStyles.key} >Date</span>
-        <span className={infoPanelStyles.value} >{vessel.date}</span>
-      </div>
-      <div className={infoPanelStyles.rowInfo} >
         <span className={infoPanelStyles.key} >MMSI</span>
         <span className={infoPanelStyles.value} >{vessel.MMSI}</span>
       </div>

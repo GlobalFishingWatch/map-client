@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import moment from 'moment';
 import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
+import { VESSEL_TYPE_REEFER } from 'constants';
 
 import EncountersVessel from './EncountersVessel';
 
@@ -20,17 +22,16 @@ class EncountersInfo extends Component {
 
   render() {
     const { encountersInfo } = this.props;
-    // TODO add as much tabs as needed
-    const encounterVessel = encountersInfo.vessels[0];
-    const reeferVessel = encountersInfo.vessels[1];
 
-    const tabOptions = [
-      <div className={infoPanelStyles.vesselHeader}>
-        Vessel
-      </div>,
-      <div className={infoPanelStyles.reeferHeader}>
-        Reefer
-      </div>];
+    const tabOptions = encountersInfo.vessels.map(vessel =>
+      (<div
+        className={(vessel.vesselTypeName === VESSEL_TYPE_REEFER)
+          ? infoPanelStyles.reeferHeader
+          : infoPanelStyles.vesselHeader}
+      >
+        {vessel.vesselTypeName}
+      </div>)
+    );
 
     return (
       <div className={infoPanelStyles.info}>
@@ -43,11 +44,15 @@ class EncountersInfo extends Component {
               ENCOUNTERS
             </span>
           </div>
-          <div className={infoPanelStyles.duration} >
-            <span className={infoPanelStyles.durationLabel} >
-              Duration
-            </span>
-            {encountersInfo.duration}
+        </div>
+        <div className={infoPanelStyles.encountersData}>
+          <div className={infoPanelStyles.rowInfo} >
+            <span className={infoPanelStyles.key} >Date</span>
+            <span className={infoPanelStyles.value} >{moment.duration(encountersInfo.duration).humanize()}</span>
+          </div>
+          <div className={infoPanelStyles.rowInfo} >
+            <span className={infoPanelStyles.key} >Duration</span>
+            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format('MMM Do YYYY')}</span>
           </div>
         </div>
         <Tab
@@ -56,7 +61,7 @@ class EncountersInfo extends Component {
           selectedIndex={this.state.tabIndex}
           handleTabIndexChange={this.handleTabIndexChange}
         />
-        <EncountersVessel vessel={this.state.tabIndex === 0 ? encounterVessel : reeferVessel} />
+        <EncountersVessel vessel={encountersInfo.vessels[this.state.tabIndex]} />
       </div>
     );
   }

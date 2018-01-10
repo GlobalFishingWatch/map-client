@@ -37,6 +37,7 @@ export function setEncountersInfo(/* tilesetId, baseUrl, selectedSeries */) {
       // That call should use the provided tilesetId and selectedSeries
       const encounterInfo = {
         duration: 50400000,
+        datetime: 1467331199,
         vessels: [
           {
             tilesetId: '516-resample-v2',
