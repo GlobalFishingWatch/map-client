@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-import { LAYER_TYPES, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
+import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
@@ -129,10 +129,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
         l.opacity = 1;
       }
     });
-
     const headersPromises = [];
     workspaceLayers
-      .filter(l => (l.type === LAYER_TYPES.Heatmap || l.type === LAYER_TYPES.HeatmapTracksOnly) && l.added === true)
+      .filter(l => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.added === true)
       .forEach((heatmapLayer) => {
         if (HEADERLESS_LAYERS.indexOf(heatmapLayer.tilesetId) > -1) {
           // headerless layers are considered temporalExtents-less too

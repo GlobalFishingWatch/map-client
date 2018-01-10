@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES, LAYER_TYPES_DISPLAYED_IN_PANELS } from 'constants';
 import classnames from 'classnames';
 import ExpandItem from 'components/Shared/ExpandItem';
 import AccordionHeader from 'components/Shared/AccordionHeader';
@@ -37,7 +37,7 @@ class LayerPanel extends Component {
     const fishingLayers = [];
 
     this.props.layers.forEach((layer, index) => {
-      if (layer.added === false) {
+      if (LAYER_TYPES_DISPLAYED_IN_PANELS.indexOf(layer.type) === -1 || layer.added === false) {
         return;
       }
       const layerItem = (<LayerItem

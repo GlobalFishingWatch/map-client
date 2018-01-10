@@ -17,7 +17,19 @@ export const LAYER_TYPES = {
   VesselTrackAnimation: 'VesselTrackAnimation',
   Encounters: 'Encounters'
 };
-export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
+
+export const LAYER_TYPES_WITH_HEADER = [
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.HeatmapTracksOnly
+];
+
+export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
+  LAYER_TYPES.CartoDBAnimation,
+  LAYER_TYPES.CartoDBBasemap,
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.Custom,
+  LAYER_TYPES.Encounters
+];
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
