@@ -5,7 +5,7 @@ import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import { VESSEL_TYPE_REEFER } from 'constants';
 
-import EncountersVessel from './EncountersVessel';
+import EncountersVessel from '../containers/EncountersVessel';
 
 class EncountersInfo extends Component {
   constructor() {
@@ -48,11 +48,11 @@ class EncountersInfo extends Component {
         <div className={infoPanelStyles.encountersData}>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Date</span>
-            <span className={infoPanelStyles.value} >{moment.duration(encountersInfo.duration).humanize()}</span>
+            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format('MMM Do YYYY')}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Duration</span>
-            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format('MMM Do YYYY')}</span>
+            <span className={infoPanelStyles.value} >{moment.duration(encountersInfo.duration).humanize()}</span>
           </div>
         </div>
         <Tab
