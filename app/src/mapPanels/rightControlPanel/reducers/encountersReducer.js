@@ -1,7 +1,8 @@
 import { INFO_STATUS } from 'constants';
 import {
-  CLEAR_ENCOUNTERS_INFO,
-  SET_ENCOUNTERS_INFO
+  LOAD_ENCOUNTERS_INFO,
+  SET_ENCOUNTERS_INFO,
+  CLEAR_ENCOUNTERS_INFO
 } from 'mapPanels/rightControlPanel/actions/encounters';
 
 
@@ -13,6 +14,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case LOAD_ENCOUNTERS_INFO: {
+      return Object.assign({}, state, {
+        infoPanelStatus: INFO_STATUS.LOADING
+      });
+    }
     case SET_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADED,
