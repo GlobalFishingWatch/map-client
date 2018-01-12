@@ -8,6 +8,7 @@ import {
 
 
 const initialState = {
+  seriesgroup: null,
   encountersInfo: null,
   infoPanelStatus: INFO_STATUS.HIDDEN
 };
@@ -16,7 +17,8 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case LOAD_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
-        infoPanelStatus: INFO_STATUS.LOADING
+        infoPanelStatus: INFO_STATUS.LOADING,
+        seriesgroup: action.payload.seriesgroup
       });
     }
 
@@ -41,7 +43,8 @@ export default function (state = initialState, action) {
     case CLEAR_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.HIDDEN,
-        encountersInfo: null
+        encountersInfo: null,
+        seriesgroup: null
       });
     }
 

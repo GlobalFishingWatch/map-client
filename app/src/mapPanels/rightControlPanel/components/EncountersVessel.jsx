@@ -37,7 +37,7 @@ function EncountersVessel({ vessel, login, userPermissions }) {
 
 EncountersVessel.propTypes = {
   vessel: PropTypes.object,
-  userPermissions: PropTypes.object,
+  userPermissions: PropTypes.array,
   login: PropTypes.func.isRequired
 };
 

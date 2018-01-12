@@ -16,22 +16,25 @@ export function hideEncountersInfoPanel() {
 export function clearEncountersInfo() {
   return (dispatch, getState) => {
     const currentEncountersInfo = getState().encounters.encountersInfo;
-    if (currentEncountersInfo === null) {
-      return;
-    }
-    const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
-    dispatch(deleteTracks(seriesgroupArray));
     dispatch({
       type: CLEAR_ENCOUNTERS_INFO
     });
+    if (currentEncountersInfo !== null) {
+      const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
+      dispatch(deleteTracks(seriesgroupArray));
+    }
   };
 }
 
-export function setEncountersInfo() {
+export function setEncountersInfo(/* seriesgroup */) {
   return (dispatch, getState) => {
 
     dispatch({
-      type: LOAD_ENCOUNTERS_INFO
+      type: LOAD_ENCOUNTERS_INFO,
+      payload: {
+        // seriesgroup
+        seriesgroup: 123
+      }
     });
 
     setTimeout(() => {
@@ -53,6 +56,14 @@ export function setEncountersInfo() {
           }
         ]
       };
+
+      // TODO call /info on both vessels, to get vessels details
+      dispatch({
+        type: SET_ENCOUNTERS_INFO,
+        payload: {
+          encounterInfo
+        }
+      });
 
       const workspaceLayers = getState().layers.workspaceLayers;
       const token = getState().user.token;
@@ -80,14 +91,6 @@ export function setEncountersInfo() {
       //   .then((data) => {
       //     console.log(data);
       //   });
-
-      // TODO call /info on both vessels, to get vessels details
-      dispatch({
-        type: SET_ENCOUNTERS_INFO,
-        payload: {
-          encounterInfo
-        }
-      });
 
       // get tracks for both vessels
       encounterInfo.vessels.forEach((vessel) => {

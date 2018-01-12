@@ -15,6 +15,7 @@ import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
+import { setEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
 import calculateLayerId from 'util/calculateLayerId';
 import { hexToHue, hueToClosestColor } from 'util/colors';
 import uniq from 'lodash/uniq';
@@ -117,6 +118,7 @@ export function saveWorkspace(errorAction) {
           hue: e.hue
         })),
         shownVessel,
+        encountersSeriesgroup: state.encounters.seriesgroup,
         basemap: state.basemap.activeBasemap,
         timeline: {
           // We store the timestamp
@@ -170,11 +172,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
+  // TODO check if needed
   dispatch({
     type: SET_TILESET_URL,
     payload: workspaceData.tilesetUrl
   });
 
+  // TODO check if needed
   dispatch({
     type: SET_TILESET_ID,
     payload: workspaceData.tilesetId
@@ -191,6 +195,10 @@ function dispatchActions(workspaceData, dispatch, getState) {
     }
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+
+    if (workspaceData.encountersSeriesgroup !== null && workspaceData.encountersSeriesgroup !== undefined) {
+      dispatch(setEncountersInfo(workspaceData.encountersSeriesgroup));
+    }
   });
 
   dispatch(loadRecentVesselsList());
@@ -260,6 +268,7 @@ function processNewWorkspace(data) {
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
+    encountersSeriesgroup: workspace.encountersSeriesgroup,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset,
     areas: workspace.areas,
