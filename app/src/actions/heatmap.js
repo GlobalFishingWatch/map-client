@@ -11,7 +11,7 @@ import {
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
-import { setEncountersInfo, clearEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
+import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 

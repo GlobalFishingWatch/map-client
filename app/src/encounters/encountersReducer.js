@@ -4,7 +4,7 @@ import {
   SET_ENCOUNTERS_INFO,
   SET_ENCOUNTERS_VESSEL_INFO,
   CLEAR_ENCOUNTERS_INFO
-} from 'mapPanels/rightControlPanel/actions/encounters';
+} from 'encounters/encountersActions';
 
 
 const initialState = {

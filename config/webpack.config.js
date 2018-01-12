@@ -86,6 +86,7 @@ const webpackConfig = {
       areasOfInterest: 'src/areasOfInterest',
       basemap: 'src/basemap',
       filters: 'src/filters',
+      encounters: 'src/encounters',
       layers: 'src/layers',
       leftControlPanel: 'src/leftControlPanel',
       rightControlPanel: 'src/rightControlPanel',

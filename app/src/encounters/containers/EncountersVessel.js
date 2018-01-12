@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import EncountersVessel from 'mapPanels/rightControlPanel/components/EncountersVessel';
+import EncountersVessel from 'encounters/components/EncountersVessel';
 import { login } from 'user/userActions';
 
 const mapStateToProps = state => ({
