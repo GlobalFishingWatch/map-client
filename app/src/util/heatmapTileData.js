@@ -116,12 +116,12 @@ export const groupData = (cleanVectorArrays, columns) => {
  * @param data the source data before indexing by day, an object containing
  *  - a vector (Float32Array) for each header's column in the case of Pelagos tiles
  *  - an array of points int the case of PBF tiles
- * @param columns the columns present on the dataset, determined by tileset headers
+ * @param colsByName the columns present on the dataset, determined by tileset headers
  * @param tileCoordinates x, y, z
  * @param isPBF bool whether data is a PBF vector tile (true) or a Pelagos tile (false)
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, prevPlaybackData) => {
+export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, prevPlaybackData) => {
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
   const zoom = tileCoordinates.zoom;
@@ -131,6 +131,7 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
 
   // store all available columns as object keys
   const columns = {};
+  const columnsArr = Object.keys(colsByName);
   columnsArr.forEach((c) => { columns[c] = true; });
 
   // columns specified by layer header columns
@@ -142,8 +143,15 @@ export const getTilePlaybackData = (data, columnsArr, tileCoordinates, isPBF, pr
     storedColumns.push('worldY');
   }
 
-  // omit values that will be transformed before being stored to playback data (ie sigma -> point radius)
-  pull(storedColumns, 'latitude', 'longitude', 'datetime', 'sigma', 'weight');
+  // omit values that will be transformed before being stored to playback data (ie lat -> worldY)
+  // only if hidden: true flag is set on header
+  ['latitude', 'longitude', 'datetime'].forEach((col) => {
+    if (colsByName[col] === undefined || colsByName[col].hidden === true) {
+      pull(storedColumns, col);
+    }
+  });
+  // always pull sigma and weight
+  pull(storedColumns, 'sigma', 'weight');
   storedColumns = uniq(storedColumns);
 
   const numPoints = (isPBF === true) ? data.length : data.latitude.length;
@@ -279,9 +287,10 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
         const vessel = {};
-        if (frame.series) vessel.series = frame.series[i];
-        if (frame.seriesgroup) vessel.seriesgroup = frame.seriesgroup[i];
-        if (frame.encounterId) vessel.encounterId = frame.encounterId[i];
+
+        Object.keys(frame).forEach((key) => {
+          vessel[key] = frame[key][i];
+        });
         vessels.push(vessel);
       }
     }

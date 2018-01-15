@@ -26,42 +26,35 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(/* seriesgroup */) {
+export function setEncountersInfo(encounter, encounterInfoEndpoint) {
   return (dispatch, getState) => {
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,
       payload: {
-        // seriesgroup
-        seriesgroup: 123
+        seriesgroup: encounter.series
       }
     });
 
-    setTimeout(() => {
-      // This data simulates the result of a call to /info on the encounters endpoint
-      // That call should use the provided tilesetId and selectedSeries
-      const encounterInfo = {
-        duration: 50400000,
-        datetime: 1467331199000,
-        vessels: [
-          {
-            tilesetId: '516-resample-v2',
-            vesselTypeName: 'Vessel',
-            seriesgroup: 7610113
-          },
-          {
-            tilesetId: '525-indo-public-parametrize-v6',
-            vesselTypeName: 'Reefer',
-            seriesgroup: 4718598
-          }
-        ]
-      };
+    const infoUrl = encounterInfoEndpoint.replace('$SERIES', encounter.series);
 
-      // TODO call /info on both vessels, to get vessels details
+    fetchEndpoint(infoUrl).then((info) => {
+      const encounterInfo = info.rows[0];
+      encounterInfo.vessels = [{
+        tilesetId: encounterInfo.vessel_1_tileset,
+        seriesgroup: encounterInfo.vessel_1_seriesgroup,
+        vesselTypeName: encounterInfo.vessel_1_type
+      }, {
+        tilesetId: encounterInfo.vessel_2_tileset,
+        seriesgroup: encounterInfo.vessel_2_seriesgroup,
+        vesselTypeName: encounterInfo.vessel_2_type
+      }];
+
       dispatch({
         type: SET_ENCOUNTERS_INFO,
         payload: {
-          encounterInfo
+          encounterInfo,
+          encounter
         }
       });
 
@@ -71,12 +64,12 @@ export function setEncountersInfo(/* seriesgroup */) {
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
         const url = workspaceLayer.url;
-        fetchEndpoint(`${url}/sub/seriesgroup=${vessel.seriesgroup}/info`, token).then((info) => {
+        fetchEndpoint(`${url}/sub/seriesgroup=${vessel.seriesgroup}/info`, token).then((vesselInfo) => {
           dispatch({
             type: SET_ENCOUNTERS_VESSEL_INFO,
             payload: {
               seriesgroup: vessel.seriesgroup,
-              info
+              vesselInfo
             }
           });
         });
@@ -102,7 +95,7 @@ export function setEncountersInfo(/* seriesgroup */) {
           updateTimelineBounds: false
         }));
       });
-    }, 200);
+    });
 
   };
 }

@@ -55,8 +55,8 @@ export const BRUSH_ZOOM_RENDERING_STYLE = {
   CIRCLE: 1
 };
 
-export const VESSEL_TYPE_VESSEL = 'Vessel';
-export const VESSEL_TYPE_REEFER = 'Reefer';
+export const VESSEL_TYPE_VESSEL = 'vessel';
+export const VESSEL_TYPE_REEFER = 'reefer';
 
 export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];
 

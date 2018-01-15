@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
     case SET_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADED,
-        encountersInfo: action.payload.encounterInfo
+        encountersInfo: Object.assign({}, action.payload.encounterInfo, action.payload.encounter)
       });
     }
 
@@ -33,7 +33,7 @@ export default function (state = initialState, action) {
       const newEncountersInfo = Object.assign({}, state.encountersInfo);
       const newVesselIndex = state.encountersInfo.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = Object.assign({}, newEncountersInfo.vessels[newVesselIndex]);
-      newVessel.info = action.payload.info;
+      newVessel.info = action.payload.vesselInfo;
       newEncountersInfo.vessels[newVesselIndex] = newVessel;
       return Object.assign({}, state, {
         encountersInfo: newEncountersInfo

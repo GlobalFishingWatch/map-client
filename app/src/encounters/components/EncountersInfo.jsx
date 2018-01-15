@@ -54,6 +54,14 @@ class EncountersInfo extends Component {
             <span className={infoPanelStyles.key} >Duration</span>
             <span className={infoPanelStyles.value} >{moment.duration(encountersInfo.duration).humanize()}</span>
           </div>
+          <div className={infoPanelStyles.rowInfo} >
+            <span className={infoPanelStyles.key} >Median distance (km)</span>
+            <span className={infoPanelStyles.value} >{encountersInfo.median_distance_km.toFixed(3)}</span>
+          </div>
+          <div className={infoPanelStyles.rowInfo} >
+            <span className={infoPanelStyles.key} >Median speed (knots)</span>
+            <span className={infoPanelStyles.value} >{encountersInfo.median_speed_knots.toFixed(3)}</span>
+          </div>
         </div>
         <Tab
           options={tabOptions}

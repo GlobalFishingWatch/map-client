@@ -111,13 +111,13 @@ function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, t
  * parseLayerTile - parses an heatmap tile to a playback-ready format.
  *
  * @param  {Object} rawTileData          the raw tile data, loaded either from the pelagos client or as a MVT/PBF vector tile
- * @param  {array} columns               names of the columns present in the raw tiles that need to be included in the final playback data
+ * @param  {array} colsByName            names of the columns present in the raw tiles that need to be included in the final playback data
  * @param  {object} tileCoordinates      tile coordinates from reference tile
  * @param  {object} map                  a reference to the Google Map object. This is required to access projection data.
  * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
  * @return {Object}                      playback-ready merged data
  */
-function parseLayerTile(rawTileData, columns, isPBF, tileCoordinates, map, prevPlaybackData) {
+function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, prevPlaybackData) {
   let data;
   if (isPBF === true) {
     if (rawTileData === undefined || !rawTileData.length || rawTileData[0] === undefined) {
@@ -126,14 +126,14 @@ function parseLayerTile(rawTileData, columns, isPBF, tileCoordinates, map, prevP
     data = rawTileData[0].layers.points;
   } else {
     const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-    data = groupData(cleanVectorArrays, columns);
+    data = groupData(cleanVectorArrays, Object.keys(colsByName));
     if (Object.keys(data).length === 0) {
       return [];
     }
   }
   const playbackData = getTilePlaybackData(
     data,
-    columns,
+    colsByName,
     tileCoordinates,
     isPBF,
     prevPlaybackData
@@ -194,7 +194,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           tile.temporalExtentsIndicesLoaded = uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
             rawTileData,
-            Object.keys(layerHeader.colsByName),
+            layerHeader.colsByName,
             layerHeader.isPBF,
             referenceTile.tileCoordinates,
             map,
@@ -486,7 +486,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(layer.tilesetId, layer.url, selectedSeries));
+        dispatch(setEncountersInfo(foundVessels[0], layer.header.urls.info[0][0]));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }

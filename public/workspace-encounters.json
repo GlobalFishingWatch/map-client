@@ -20,9 +20,20 @@
           "tilesetId": "516-resample-v2"
         },
         {
+         "title": "VMS Fishing effort",
+         "description": "VMS Fishing effort",
+         "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-public-parametrize-v4",
+         "visible": true,
+         "hue": 60,
+         "type": "ClusterAnimation",
+         "opacity": 1,
+         "id": "fishing",
+         "tilesetId": "525-indo-public-parametrize-v6"
+        },
+        {
           "title": "Encounters",
           "description": "Encounters",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/vizz-generated-encounters-pbf-v1",
+          "url": "http://127.0.0.1:9090",
           "visible": true,
           "hue": 0,
           "type": "Encounters",
@@ -31,16 +42,11 @@
           "tilesetId": "516-resample-v2"
         },
         {
-         "title": "VMS Fishing effort",
-         "description": "VMS Fishing effort",
-         "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-public-parametrize-v4",
-         "visible": true,
-         "hue": 60,
-         "type": "HeatmapTracksOnly",
-         "opacity": 1,
-         "id": "fishing",
-         "tilesetId": "525-indo-public-parametrize-v6"
-       }
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/gfw-tasks-543-reefer-encounters-v1",
+          "type": "HeatmapTracksOnly",
+          "id": "gfw-tasks-543-reefer-encounters-v1",
+          "tilesetId": "gfw-tasks-543-reefer-encounters-v1"
+        }
       ]
     },
     "pinnedVessels": [],
