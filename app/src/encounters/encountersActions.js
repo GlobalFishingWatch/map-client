@@ -1,5 +1,7 @@
 import fetchEndpoint from 'util/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
+import { VESSEL_TYPE_REEFER } from 'constants';
+import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
 
 export const LOAD_ENCOUNTERS_INFO = 'LOAD_ENCOUNTERS_INFO';
 export const SET_ENCOUNTERS_INFO = 'SET_ENCOUNTERS_INFO';
@@ -75,16 +77,6 @@ export function setEncountersInfo(encounter, encounterInfoEndpoint) {
         });
       });
 
-      // fetch(`${baseUrl}/sub/seriesgroup=${selectedSeries}/info`).then((res) => {
-      //   if (!res.ok) {
-      //     throw new Error(`Error  ${res.status} - ${res.statusText}`);
-      //   }
-      //   return res;
-      // }).then(res => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //   });
-
       // get tracks for both vessels
       encounterInfo.vessels.forEach((vessel) => {
         dispatch(getTrack({
@@ -92,7 +84,8 @@ export function setEncountersInfo(encounter, encounterInfoEndpoint) {
           seriesgroup: vessel.seriesgroup,
           series: null,
           zoomToBounds: false,
-          updateTimelineBounds: false
+          updateTimelineBounds: false,
+          color: (vessel.vesselTypeName === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
         }));
       });
     });

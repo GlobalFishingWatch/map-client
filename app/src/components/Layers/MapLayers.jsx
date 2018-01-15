@@ -29,7 +29,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
       .map(track => ({
         data: track.data,
         selectedSeries: track.series,
-        hue: track.hue
+        color: track.color
       }))
   );
 

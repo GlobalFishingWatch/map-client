@@ -30,7 +30,7 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ updateTimelineBounds }) {
+export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ updateTimelineBounds, color }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -46,8 +46,9 @@ export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ u
     dispatch({
       type: INIT_TRACK,
       payload: {
-        // TODO make dynamic
-        hue: 0,
+        // TODO implement hue/color fallback + hue to color conversion
+        // hue: 0,
+        color,
         seriesgroup,
         series
       }

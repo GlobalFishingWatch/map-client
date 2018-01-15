@@ -98,6 +98,9 @@ export const COLOR_HUES = {
   pink: 312
 };
 
+export const ENCOUNTERS_VESSEL_COLOR = '0xFF0000';
+export const ENCOUNTERS_REEFER_COLOR = '0xffbcc6';
+
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'
 // https://momentjs.com/docs/#/customization/relative-time/

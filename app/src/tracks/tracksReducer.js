@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
       const newTrack = {
         show: false,
         visible: action.payload.visible || true,
-        hue: action.payload.hue,
+        color: action.payload.color,
         seriesgroup: action.payload.seriesgroup,
         series: action.payload.series
       };
