@@ -28,17 +28,18 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(encounter, encounterInfoEndpoint) {
+export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint) {
   return (dispatch, getState) => {
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,
       payload: {
-        seriesgroup: encounter.series
+        seriesgroup,
+        tilesetId
       }
     });
 
-    const infoUrl = encounterInfoEndpoint.replace('$SERIES', encounter.series);
+    const infoUrl = encounterInfoEndpoint.replace('$SERIES', seriesgroup);
 
     fetchEndpoint(infoUrl).then((info) => {
       const encounterInfo = info.rows[0];
@@ -55,8 +56,7 @@ export function setEncountersInfo(encounter, encounterInfoEndpoint) {
       dispatch({
         type: SET_ENCOUNTERS_INFO,
         payload: {
-          encounterInfo,
-          encounter
+          encounterInfo
         }
       });
 

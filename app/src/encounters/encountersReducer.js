@@ -9,6 +9,7 @@ import {
 
 const initialState = {
   seriesgroup: null,
+  tilesetId: null,
   encountersInfo: null,
   infoPanelStatus: INFO_STATUS.HIDDEN
 };
@@ -18,7 +19,8 @@ export default function (state = initialState, action) {
     case LOAD_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
-        seriesgroup: action.payload.seriesgroup
+        seriesgroup: action.payload.seriesgroup,
+        tilesetId: action.payload.tilesetId
       });
     }
 

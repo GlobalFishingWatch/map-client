@@ -39,7 +39,7 @@
           "type": "Encounters",
           "opacity": 1,
           "id": "encounters",
-          "tilesetId": "516-resample-v2"
+          "tilesetId": "encounters"
         },
         {
           "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/gfw-tasks-543-reefer-encounters-v1",

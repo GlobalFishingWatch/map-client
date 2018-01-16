@@ -1,5 +1,5 @@
 import uniq from 'lodash/uniq';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import {
@@ -49,7 +49,9 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       throw new Error('XMLHttpRequest is disabled');
     }
 
-    const searchLayer = state.layers.workspaceLayers.find(layer => layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === tilesetId);
+    const searchLayer = state.layers.workspaceLayers.find(layer =>
+      LAYER_TYPES_WITH_HEADER.indexOf(layer.type) > -1 && layer.tilesetId === tilesetId);
+
     request.open(
       'GET',
       `${searchLayer.url}/sub/seriesgroup=${seriesgroup}/info`,

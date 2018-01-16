@@ -6,7 +6,7 @@ import iconStyles from 'styles/icons.scss';
 import ArrowLinkIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-link.svg?name=ArrowLinkIcon';
 
 
-function EncountersVessel({ vessel, login, userPermissions }) {
+function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
   if (vessel.info === undefined) {
     return <div className={infoPanelStyles.encountersData}>loading...</div>;
   }
@@ -26,7 +26,7 @@ function EncountersVessel({ vessel, login, userPermissions }) {
       </div>
       <div className={infoPanelStyles.rowInfo} >
         <span className={infoPanelStyles.key} >Vessel</span>
-        <a onClick={() => this.props.openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
+        <a onClick={() => openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
           { vessel.info.vesselname || vessel.seriesgroup }
           <span className={infoPanelStyles.arrowSvg}>{<ArrowLinkIcon className={iconStyles.iconArrowLink} />}</span>
         </a>
@@ -38,7 +38,8 @@ function EncountersVessel({ vessel, login, userPermissions }) {
 EncountersVessel.propTypes = {
   vessel: PropTypes.object,
   userPermissions: PropTypes.array,
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  openVessel: PropTypes.func.isRequired
 };
 
 export default EncountersVessel;

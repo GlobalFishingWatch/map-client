@@ -118,7 +118,10 @@ export function saveWorkspace(errorAction) {
           hue: e.hue
         })),
         shownVessel,
-        encountersSeriesgroup: state.encounters.seriesgroup,
+        encounters: {
+          seriesgroup: state.encounters.seriesgroup,
+          tilesetId: state.encounters.tilesetId
+        },
         basemap: state.basemap.activeBasemap,
         timeline: {
           // We store the timestamp
@@ -196,8 +199,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
 
-    if (workspaceData.encountersSeriesgroup !== null && workspaceData.encountersSeriesgroup !== undefined) {
-      dispatch(setEncountersInfo(workspaceData.encountersSeriesgroup));
+    if (workspaceData.encounters !== null && workspaceData.encounters !== undefined &&
+        workspaceData.encounters.seriesgroup !== null && workspaceData.encounters.seriesgroup !== undefined) {
+      const encountersLayer = workspaceData.layers.find(layer => layer.tilesetId === workspaceData.encounters.tilesetId);
+      const infoUrl = encountersLayer.header.urls.info[0][0];
+      dispatch(setEncountersInfo(workspaceData.encounters.seriesgroup, workspaceData.encounters.tilesetId, infoUrl));
     }
   });
 
@@ -268,7 +274,7 @@ function processNewWorkspace(data) {
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
-    encountersSeriesgroup: workspace.encountersSeriesgroup,
+    encounters: workspace.encounters,
     tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
     tilesetId: workspace.tileset,
     areas: workspace.areas,
