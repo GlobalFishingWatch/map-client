@@ -120,7 +120,7 @@ function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, t
 function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, prevPlaybackData) {
   let data;
   if (isPBF === true) {
-    if (rawTileData === undefined || !rawTileData.length || rawTileData[0] === undefined) {
+    if (rawTileData === undefined || !rawTileData.length || rawTileData[0] === undefined || !Object.keys(rawTileData[0].layers).length) {
       return [];
     }
     data = rawTileData[0].layers.points;
