@@ -90,7 +90,7 @@ class VesselInfoPanel extends Component {
           { [`${infoPanelStyles._expanded}`]: this.state.isExpanded })}
       >
         <div className={infoPanelStyles.buttonsContainer} >
-          <MediaQuery maxWidth={789} >
+          <MediaQuery maxWidth={768} >
             <ExpandButton
               onExpand={() => this.onExpand()}
               isExpanded={this.state.isExpanded}
