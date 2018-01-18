@@ -81,42 +81,37 @@ class Footer extends Component {
                     <a className={FooterStyles.navLink} href={SITE_URL} >Home</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={FooterStyles.navLink} >Blog</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/transparency-platform/`} >Our Platform</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a
-                      className={FooterStyles.navLink}
-                      href={`${SITE_URL}/articles-publications`}
-                    >
-                      Articles and Publications
-                    </a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/research/`} >Research</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/faq`} >FAQ</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/use-the-data/`} >Use the Data</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/tutorials`} >Tutorials</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/initiatives/`} >Initiatives</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/definitions`} >Definitions</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/publications/`} >Publications & Tools</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/the-project`} >The project</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/transparency-makes-a-difference/`} >Making a Difference</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/partners`} >Partners</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/media-center/`} >Media Center</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/research-program`} >Research program</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/about-us/`} >Our Mission</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/contact-us`} >Contact us</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/contact-us/`} >Contact us</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/terms-of-use`} >Terms of use</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/terms-of-use/`} >Terms of use</a>
                   </li>
                   <li className={FooterStyles.navItem} >
-                    <a className={FooterStyles.navLink} href={`${SITE_URL}/privacy-policy`} >Privacy policy</a>
+                    <a className={FooterStyles.navLink} href={`${SITE_URL}/privacy-policy/`} >Privacy policy</a>
                   </li>
                   <li className={FooterStyles.navItem} >
                     <span className={FooterStyles.navLink} onClick={this.props.onOpenSupportModal} >Support</span>
