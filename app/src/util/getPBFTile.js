@@ -19,8 +19,8 @@ export default (tileUrl) => {
         reader.readAsArrayBuffer(blob);
       });
     });
-  }).catch((err) => {
-    console.warn(err);
+  }).catch(() => {
+    // ...
   });
   return vectorTilePromise;
 };

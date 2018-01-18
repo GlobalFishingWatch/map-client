@@ -487,7 +487,8 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
         dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, /* layer.header.urls.info[0][0] */
-          'http://cartodb.skytruth.org/user/erikescoffier/api/v2/sql?q=SELECT+*+FROM+encounters_20180111+WHERE+series+%3D+%27$SERIES%27&format=json'));
+          ['http://cartodb.skytruth.org/user/erikescoffier/api/v2/sql',
+            '?q=SELECT+*+FROM+encounters_20180111+WHERE+series+%3D+%27$SERIES%27&format=json'].join('')));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
