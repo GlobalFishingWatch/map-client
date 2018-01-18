@@ -7,8 +7,6 @@ export const LOADERS = {
   HEATMAP_TILES: 'HEATMAP_TILES'
 };
 
-export const DEFAULT_FILTER_HUE = 1;
-
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
 export const TIMELINE_OVERALL_END_DATE = moment().subtract(3, 'days').toDate();
@@ -121,17 +119,18 @@ export const DURATION_PICKER_OPTIONS = [
   moment.duration(3, 'months')
 ];
 
+export const FORMAT_DATE = 'MMM Do YYYY';
+export const FORMAT_NUM_DECIMALS = {
+  distanceKm: 3,
+  speedKnots: 3
+};
+
+
 // search
 export const SEARCH_RESULTS_LIMIT = 4;
 export const SEARCH_QUERY_MINIMUM_LIMIT = 3;
 export const SEARCH_MODAL_PAGE_SIZE = 14;
 
-// filters
-export const FLAG_FILTERS_LIMIT = 10;
-
-// responsive
-export const REVERSE_TOOLTIP_ITEMS_MOBILE = 5;
-export const REVERSE_TOOLTIP_FILTERS_MOBILE = 3;
 
 export const DEFAULT_EMBED_SIZE = 'Small';
 export const EMBED_SIZE_SETTINGS = [

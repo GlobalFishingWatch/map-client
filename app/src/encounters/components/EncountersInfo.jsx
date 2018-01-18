@@ -4,6 +4,7 @@ import moment from 'moment';
 import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import { VESSEL_TYPE_REEFER } from 'constants';
+import { FORMAT_DATE, FORMAT_NUM_DECIMALS } from 'config';
 
 import EncountersVessel from '../containers/EncountersVessel';
 
@@ -48,7 +49,7 @@ class EncountersInfo extends Component {
         <div className={infoPanelStyles.encountersData}>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Date</span>
-            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format('MMM Do YYYY')}</span>
+            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format(FORMAT_DATE)}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Duration</span>
@@ -56,11 +57,11 @@ class EncountersInfo extends Component {
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Median distance (km)</span>
-            <span className={infoPanelStyles.value} >{encountersInfo.median_distance_km.toFixed(3)}</span>
+            <span className={infoPanelStyles.value} >{encountersInfo.median_distance_km.toFixed(FORMAT_NUM_DECIMALS.distanceKm)}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Median speed (knots)</span>
-            <span className={infoPanelStyles.value} >{encountersInfo.median_speed_knots.toFixed(3)}</span>
+            <span className={infoPanelStyles.value} >{encountersInfo.median_speed_knots.toFixed(FORMAT_NUM_DECIMALS.speedKnots)}</span>
           </div>
         </div>
         <Tab
