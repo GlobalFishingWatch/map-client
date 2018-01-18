@@ -15,7 +15,8 @@ import { LAYER_TYPES } from 'constants';
 const useRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 
 // TODO this should be in a reducer or container
-// TODO remove vesselTracks in favor of tracks
+// TODO remove vesselTracks in favor of tracks. vesselTracks are the tracks attached to the vesselInfo store,
+// which will eventually migrate to their own tracks store (already implemented with encounters tracks)
 const getTracks = (vesselTracks, tracks) => vesselTracks
   .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
   .map(vessel => ({
