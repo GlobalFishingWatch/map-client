@@ -11,7 +11,6 @@ export const INIT_TRACK = 'INIT_TRACK';
 export const SET_TRACK = 'SET_TRACK';
 export const DELETE_TRACKS = 'DELETE_TRACK';
 export const SET_TRACK_VISIBILITY = 'SET_TRACK_VISIBILITY';
-// export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
 
 function _getTrackTimeExtent(data, series = null) {
   let start = Infinity;
@@ -30,7 +29,7 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ updateTimelineBounds, color }) {
+export function getTrack({ tilesetId, seriesgroup, series, updateTimelineBounds, color }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -77,8 +76,6 @@ export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ u
           payload: {
             seriesgroup,
             data: getTracksPlaybackData(vectorArray)
-            // series: uniq(groupedData.series),
-            // selectedSeries: series
           }
         });
 
@@ -86,20 +83,6 @@ export function getTrack({ tilesetId, seriesgroup, series, /* zoomToBounds, */ u
           const tracksExtent = _getTrackTimeExtent(groupedData, series);
           dispatch(fitTimelineToTrack(tracksExtent));
         }
-
-        // if (zoomToBounds) {
-        //   // should this be computed server side ?
-        //   // this is half implemented because it doesn't take into account filtering and time span
-        //   const trackBounds = new google.maps.LatLngBounds();
-        //   for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
-        //     trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
-        //   }
-        //
-        //   dispatch({
-        //     type: SET_TRACK_BOUNDS,
-        //     trackBounds
-        //   });
-        // }
       });
   };
 }

@@ -47,7 +47,6 @@ export default class HeatmapSubLayer {
 
     if (renderingStyleIndex !== null) {
       // one diameter + tiny offset between 2 frames
-      // textureFrame.x = (useHeatmapStyle) ? 0 : (VESSELS_BASE_RADIUS * 2) + 1;
       textureFrame.x = (VESSELS_BASE_RADIUS * 2 * renderingStyleIndex) + renderingStyleIndex;
     }
 

@@ -62,10 +62,6 @@ export default function (state = initialState, action) {
       });
     }
 
-    // case SET_TRACK_BOUNDS: {
-    //   return Object.assign({}, state, { trackBounds: action.trackBounds });
-    // }
-
     default:
       return state;
   }

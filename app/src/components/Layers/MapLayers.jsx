@@ -100,7 +100,7 @@ class MapLayers extends Component {
         this.glContainer.clearTracks();
         this.glContainer.toggleHeatmapDimming(false);
       }
-    } else /* if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) */ {
+    } else {
       this.updateTrackLayer({
         data: nextTracks,
         timelineInnerExtentIndexes: nextProps.timelineInnerExtentIndexes,
@@ -123,53 +123,6 @@ class MapLayers extends Component {
       this.updateHeatmapHighlighted(nextProps);
     }
   }
-
-  /**
-   * TODO remove this monster. This will be possible with an isolated container only interested
-   *    in relevant props.
-   * update tracks layer when:
-   * - user selected a new vessel (seriesgroup or selectedSeries changed)
-   * - zoom level changed (needs fetching of a new tileset)
-   * - playing state changed
-   * - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set (redrawing is too
-   * slow when all series are shown)
-   * - selected inner extent changed
-   *
-   * @param nextProps
-   * @param innerExtentChanged
-   * @returns {boolean}
-   */
-  /*
-  shouldUpdateTrackLayer(nextProps, innerExtentChanged) {
-    if (!this.props.vesselTracks) {
-      return true;
-    }
-    if (this.props.vesselTracks.length !== nextProps.vesselTracks.length) {
-      return true;
-    }
-    if (nextProps.vesselTracks.some((vesselTrack, index) =>
-      vesselTrack.hue !== this.props.vesselTracks[index].hue ||
-      vesselTrack.visible !== this.props.vesselTracks[index].visible ||
-      vesselTrack.shownInInfoPanel !== this.props.vesselTracks[index].shownInInfoPanel ||
-      vesselTrack.track !== this.props.vesselTracks[index].track
-    ) === true) {
-      return true;
-    }
-    if (this.props.zoom !== nextProps.zoom) {
-      return true;
-    }
-    if (this.props.timelinePaused !== nextProps.timelinePaused) {
-      return true;
-    }
-    if (extentChanged(this.props.timelineOverExtentIndexes, nextProps.timelineOverExtentIndexes)) {
-      return true;
-    }
-    if (innerExtentChanged) {
-      return true;
-    }
-    return false;
-  }
-  */
 
   build() {
     this.map.addListener('idle', this.onMapIdleBound);

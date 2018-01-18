@@ -1,6 +1,5 @@
 export default (url, token) => {
   const headers = {
-    // 'Content-Type': 'application/json',
     Accept: 'application/json'
   };
 
@@ -16,7 +15,6 @@ export default (url, token) => {
       .then((res) => {
         if (res.status >= 400) {
           console.warn(`loading of url failed: ${url}`);
-          // reject();
           return null;
         }
         return res.json();
