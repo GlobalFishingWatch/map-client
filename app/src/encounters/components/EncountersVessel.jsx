@@ -9,6 +9,8 @@ import ArrowLinkIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-li
 function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
   if (vessel.info === undefined) {
     return <div className={infoPanelStyles.encountersData}>loading...</div>;
+  } else if (vessel.info === null) {
+    return <div className={infoPanelStyles.encountersData}>Vessel info could not be loaded.</div>;
   }
   if (userPermissions !== null && userPermissions.indexOf('seeVesselBasicInfo') === -1) {
     return (<div className={infoPanelStyles.encountersData}>
