@@ -486,10 +486,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(selectedSeries, layer.tilesetId,
-          // TODO Put back when header is fixed : layer.header.urls.info[0][0]
-          ['http://cartodb.skytruth.org/user/erikescoffier/api/v2/sql',
-            '?q=SELECT+*+FROM+encounters_20180111+WHERE+series+%3D+%27$SERIES%27&format=json'].join('')));
+        dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.urls.info[0][0]));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
