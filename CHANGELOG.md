@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.4.0 RC1
+- Support for PBF tilesets
+- Support for layers without temporal extents
+- Support for layers with only tracks and no displayable activity (Reefer layer)
+- Encounters layer
+- Fixed broken responsive endpoint in vessel/encounters panels
+
 ## 2.3.2
 - Fix issue where report/subscription submission would not disable report mode
 
