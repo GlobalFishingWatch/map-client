@@ -486,7 +486,11 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.urls.info[0][0]));
+        if (layer.header.urls.info === undefined) {
+          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
+        } else {
+          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.urls.info[0][0]));
+        }
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
