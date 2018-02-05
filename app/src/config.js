@@ -7,8 +7,6 @@ export const LOADERS = {
   HEATMAP_TILES: 'HEATMAP_TILES'
 };
 
-export const DEFAULT_FILTER_HUE = 1;
-
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
 export const TIMELINE_OVERALL_END_DATE = moment().subtract(3, 'days').toDate();
@@ -41,18 +39,15 @@ export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET;
 
 // vessels rendering
 // from this zoom level and above, render using circle style instead of heatmap
-export const VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD = 6;
+export const VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD = 6;
 // the base radius, it can only be scaled down by the radius factor calculated on the dataset
 export const VESSELS_BASE_RADIUS = 8;
-// the minimum multiplier for vessels radius. Multiply by VESSELS_BASE_RADIUS to get the final radius in px
-export const VESSELS_MINIMUM_RADIUS_FACTOR = 0.25;
 // in heatmap style, defines how 'blurry' a point will look. Higher = less blur
 export const VESSELS_HEATMAP_BLUR_FACTOR = 0.15;
 
 export const VESSELS_HUES_INCREMENTS_NUM = 31; // 360 / VESSELS_HUES_INCREMENTS_NUM - 1  should give a round number
 export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
-export const VESSELS_MINIMUM_OPACITY = 0.5;
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
 // tracks
@@ -101,6 +96,9 @@ export const COLOR_HUES = {
   pink: 312
 };
 
+export const ENCOUNTERS_VESSEL_COLOR = '0xFF0000';
+export const ENCOUNTERS_REEFER_COLOR = '0xffbcc6';
+
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'
 // https://momentjs.com/docs/#/customization/relative-time/
@@ -121,17 +119,18 @@ export const DURATION_PICKER_OPTIONS = [
   moment.duration(3, 'months')
 ];
 
+export const FORMAT_DATE = 'MMM Do YYYY';
+export const FORMAT_NUM_DECIMALS = {
+  distanceKm: 3,
+  speedKnots: 3
+};
+
+
 // search
 export const SEARCH_RESULTS_LIMIT = 4;
 export const SEARCH_QUERY_MINIMUM_LIMIT = 3;
 export const SEARCH_MODAL_PAGE_SIZE = 14;
 
-// filters
-export const FLAG_FILTERS_LIMIT = 10;
-
-// responsive
-export const REVERSE_TOOLTIP_ITEMS_MOBILE = 5;
-export const REVERSE_TOOLTIP_FILTERS_MOBILE = 3;
 
 export const DEFAULT_EMBED_SIZE = 'Small';
 export const EMBED_SIZE_SETTINGS = [

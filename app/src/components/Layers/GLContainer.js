@@ -12,11 +12,12 @@ import {
   HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'config';
+import { LAYER_TYPES, BRUSH_RENDERING_STYLE } from 'constants';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
 export default class GLContainer extends BaseOverlay {
-  constructor(viewportWidth, viewportHeight, addedCallback) {
+  constructor(viewportWidth, viewportHeight, useHeatmapStyle, addedCallback) {
     super();
     this.layers = [];
     this.timeIndexDelta = 0;
@@ -32,10 +33,10 @@ export default class GLContainer extends BaseOverlay {
 
     this._onTickBound = this._onTick.bind(this);
 
-    this._build();
+    this._build(useHeatmapStyle);
   }
 
-  _build() {
+  _build(useHeatmapStyle) {
     this.container = document.createElement('div');
     this.container.style.position = 'absolute';
 
@@ -60,7 +61,9 @@ export default class GLContainer extends BaseOverlay {
     this.heatmapHighlight = new HeatmapLayer(
       { id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE },
       this.baseTexture,
-      this._getNumSprites()
+      this._getNumSprites(),
+      useHeatmapStyle,
+      { defaultOpacity: 1, defaultSize: 1 }
     );
     this.stage.addChild(this.heatmapHighlight.stage);
 
@@ -72,16 +75,19 @@ export default class GLContainer extends BaseOverlay {
     // this.container.appendChild(baseTextureCanvas);
   }
 
-  // builds a texture spritesheet containing both the heatmap style (radial gradient)
-  // and the circle style that is used at higher zoom levels, as well as a number of hues for each
-  // in a 2D grid.
+  // builds a texture spritesheet containing
+  // - the heatmap style (radial gradient)
+  // - the circle style that is used at higher zoom levels
+  // - the 'bullseye' style used for encounters
+  // as well as a number of hues for each in a 2D grid.
   // Then, only the texture frame (mesh UVs) is modified depending on the zoom level,
   // in order not to have to recreate sprites
   _getVesselTexture(radius, blurFactor) {
     const tplCanvas = document.createElement('canvas');
     const tplCtx = tplCanvas.getContext('2d');
     const diameter = radius * 2;
-    tplCanvas.width = (diameter * 2) + 1; // tiny offset between 2 frames
+    const NUM_STYLES = 3;
+    tplCanvas.width = (diameter * NUM_STYLES) + (NUM_STYLES - 1); // + (NUM_STYLES - 1): tiny offset between 2 frames
     tplCanvas.height = (diameter * VESSELS_HUES_INCREMENTS_NUM) + VESSELS_HUES_INCREMENTS_NUM;
 
     for (let hueIncrement = 0; hueIncrement < VESSELS_HUES_INCREMENTS_NUM; hueIncrement++) {
@@ -107,6 +113,18 @@ export default class GLContainer extends BaseOverlay {
       tplCtx.arc(x, yCenter, radius, 0, 2 * Math.PI, false);
       tplCtx.fillStyle = rgbString;
       tplCtx.fill();
+
+      // bullseye style
+      x += diameter + 1;
+      tplCtx.beginPath();
+      tplCtx.arc(x, yCenter, radius * 0.4, 0, 2 * Math.PI, false);
+      tplCtx.fillStyle = rgbString;
+      tplCtx.fill();
+      tplCtx.beginPath();
+      tplCtx.arc(x, yCenter, radius * 0.95, 0, 2 * Math.PI, false);
+      tplCtx.lineWidth = 1;
+      tplCtx.strokeStyle = rgbString;
+      tplCtx.stroke();
     }
 
     return tplCanvas;
@@ -161,9 +179,9 @@ export default class GLContainer extends BaseOverlay {
 
 
   // Layer management
-  addLayer(layerSettings) {
+  addLayer(layerSettings, useHeatmapStyle) {
     const maxSprites = this._getNumSprites();
-    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites);
+    const layer = new HeatmapLayer(layerSettings, this.baseTexture, maxSprites, useHeatmapStyle);
     this.heatmapStage.addChild(layer.stage);
     this.layers.push(layer);
     return layer;
@@ -245,14 +263,19 @@ export default class GLContainer extends BaseOverlay {
     const foundVesselsFilters = foundVessels.map(vessel => ({
       hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
       filterValues: {
-        series: [vessel.series],
-        seriesgroup: [vessel.seriesgroup]
+        series: [vessel.series]
       }
     }));
 
     // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
     // thus we only need to apply a series/seriesgroup filter
     this.heatmapHighlight.setFilters(foundVesselsFilters);
+
+    // toggle encounters style/normal style
+    this.heatmapHighlight.setBrushRenderingStyle((layerData.subtype === LAYER_TYPES.Encounters)
+      ? BRUSH_RENDERING_STYLE.BULLSEYE
+      : BRUSH_RENDERING_STYLE.NORMAL);
+
     this.heatmapHighlight.render(layerData.tiles, startIndex, endIndex, this.currentOffsets);
     this.heatmapHighlight.stage.visible = true;
   }
@@ -275,11 +298,11 @@ export default class GLContainer extends BaseOverlay {
     this.tracksLayer.clear();
   }
 
-  setStyle(useHeatmapStyle) {
+  setStyle(useRadialGradientStyle) {
     for (let i = 0; i < this.layers.length; i++) {
-      this.layers[i].setRenderingStyle(useHeatmapStyle);
+      this.layers[i].setBrushZoomRenderingStyle(useRadialGradientStyle);
     }
-    this.heatmapHighlight.setRenderingStyle(useHeatmapStyle);
+    this.heatmapHighlight.setBrushZoomRenderingStyle(useRadialGradientStyle);
   }
 
   /**

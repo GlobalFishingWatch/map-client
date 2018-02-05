@@ -2,30 +2,11 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import convert from 'globalfishingwatch-convert';
 
-import {
-  PLAYBACK_PRECISION,
-  VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD,
-  VESSELS_MINIMUM_RADIUS_FACTOR,
-  VESSELS_MINIMUM_OPACITY,
-  VESSEL_CLICK_TOLERANCE_PX,
-  TIMELINE_OVERALL_START_DATE_OFFSET
-} from 'config';
+import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
 
-/**
- * From a timestamp in ms returns a time with the precision set in Constants.
- * @param timestamp
- */
-export const getTimeAtPrecision = timestamp =>
-  Math.floor(timestamp / PLAYBACK_PRECISION);
-
-/**
- * From a timestamp in ms returns a time with the precision set in Constants, offseted at the
- * beginning of available time (outerStart)
- * @param timestamp
- */
-export const getOffsetedTimeAtPrecision = timestamp =>
-  Math.max(0, getTimeAtPrecision(timestamp) - TIMELINE_OVERALL_START_DATE_OFFSET);
+import getPBFTile from './getPBFTile';
 
 /**
  * Generates the URLs to load vessel track data for a tile
@@ -66,7 +47,7 @@ const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
 /**
  * See getTemporalTileURLs.
  */
-export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, params) => {
+export const getTilePromises = (tilesetUrl, token, temporalExtents, params) => {
   const promises = [];
   const urls = getTemporalTileURLs(
     tilesetUrl,
@@ -74,7 +55,11 @@ export const getTilePelagosPromises = (tilesetUrl, token, temporalExtents, param
     params
   );
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
-    promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    if (params.isPBF === true) {
+      promises.push(getPBFTile(urls[urlIndex]));
+    } else {
+      promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
+    }
   }
 
   return promises;
@@ -123,90 +108,96 @@ export const groupData = (cleanVectorArrays, columns) => {
 };
 
 /**
- * Add projected lat/long values transformed as tile-relative x/y coordinates
- * @param vectorArray typed arrays, including latitude and longitude
- * @param map a reference to the original Google Map
- */
-export const addWorldCoordinates = (vectorArray, map) => {
-  const data = vectorArray;
-  const proj = map.getProjection();
-  data.worldX = new Float32Array(data.latitude.length);
-  data.worldY = new Float32Array(data.longitude.length);
-  for (let index = 0, length = data.latitude.length; index < length; index++) {
-    const worldPoint = proj.fromLatLngToPoint(new google.maps.LatLng(data.latitude[index], data.longitude[index]));
-    data.worldX[index] = worldPoint.x;
-    data.worldY[index] = worldPoint.y;
-  }
-  return data;
-};
-
-const _getZoomFactorRadiusRenderingMode = zoom => ((zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD) ? 0.3 : 0.15);
-const _getZoomFactorRadius = zoom => (zoom - 1) ** 2.5;
-const _getRadius = (sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius) => {
-  let radius = zoomFactorRadiusRenderingMode * Math.max(0.8, 2 + Math.log(sigma * zoomFactorRadius));
-  radius = Math.max(VESSELS_MINIMUM_RADIUS_FACTOR, radius);
-  return radius;
-};
-
-
-/**
- * Converts Vector Array data to Playback format and stores it locally
+ * Converts Vector Array data to Playback format and stores it locally.
+ * The data structure is an array indexed by a time unit, ie a set of points every day
+ * This preprocessing step allows playback to play smoothly as the necessary conversions and data structure set up
+ * is done once (after tile has been loaded)
  *
- * @param zoom the current zoom, used in radius calculations
- * @param vectorArray the source data before indexing by day
- * @param columns the columns present on the dataset, determined by tileset headers
+ * @param data the source data before indexing by day, an object containing
+ *  - a vector (Float32Array) for each header's column in the case of Pelagos tiles
+ *  - an array of points int the case of PBF tiles
+ * @param colsByName the columns present on the dataset, determined by tileset headers
+ * @param tileCoordinates x, y, z
+ * @param isPBF bool whether data is a PBF vector tile (true) or a Pelagos tile (false)
  * @param prevPlaybackData an optional previously loaded tilePlaybackData array (when adding time range)
  */
-export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData) => {
+export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, prevPlaybackData) => {
   const tilePlaybackData = (prevPlaybackData === undefined) ? [] : prevPlaybackData;
 
-  const zoomFactorRadius = _getZoomFactorRadius(zoom);
-  const zoomFactorRadiusRenderingMode = _getZoomFactorRadiusRenderingMode(zoom);
+  const zoom = tileCoordinates.zoom;
+  const zoomFactorRadius = convert.getZoomFactorRadius(zoom);
+  const zoomFactorRadiusRenderingMode = convert.getZoomFactorRadiusRenderingMode(zoom);
+  const zoomFactorOpacity = convert.getZoomFactorOpacity(zoom);
 
-  const zoomFactorOpacity = ((zoom - 1) ** 3.5) / 1000;
+  // store all available columns as object keys
+  const columns = {};
+  const columnsArr = Object.keys(colsByName);
+  columnsArr.forEach((c) => { columns[c] = true; });
 
-  // columns specified by header columns, remove a set of mandatory columns, remove unneeded columns
-  let extraColumns = [].concat(columns);
-  pull(extraColumns, 'x', 'y', 'weight', 'sigma', 'radius', 'opacity');  // those are mandatory thus manually added
-  pull(extraColumns, 'latitude', 'longitude', 'datetime'); // we only need projected coordinates, ie x/y
-  extraColumns = uniq(extraColumns);
+  // columns specified by layer header columns
+  let storedColumns = [].concat(columnsArr);
+  if (columns.sigma === true) storedColumns.push('radius');
+  if (columns.weight === true) storedColumns.push('opacity');
+  if (columns.longitude === true) {
+    storedColumns.push('worldX');
+    storedColumns.push('worldY');
+  }
 
-  for (let index = 0, length = vectorArray.latitude.length; index < length; index++) {
-    const datetime = vectorArray.datetime[index];
+  // omit values that will be transformed before being stored to playback data (ie lat -> worldY)
+  // only if hidden: true flag is set on header
+  ['latitude', 'longitude', 'datetime'].forEach((col) => {
+    if (colsByName[col] === undefined || colsByName[col].hidden === true) {
+      pull(storedColumns, col);
+    }
+  });
+  // always pull sigma and weight
+  pull(storedColumns, 'sigma', 'weight');
+  storedColumns = uniq(storedColumns);
 
-    const timeIndex = getOffsetedTimeAtPrecision(datetime);
-    const worldX = vectorArray.worldX[index];
-    const worldY = vectorArray.worldY[index];
-    const weight = vectorArray.weight[index];
-    const sigma = vectorArray.sigma[index];
-    const radius = _getRadius(sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
-    let opacity = 3 + Math.log(weight * zoomFactorOpacity);
-    // TODO quick hack to avoid negative values, check why that happens
-    opacity = Math.max(0, opacity);
-    opacity = 3 + Math.log(opacity);
-    opacity = 0.1 + (0.2 * opacity);
-    opacity = Math.min(1, Math.max(VESSELS_MINIMUM_OPACITY, opacity));
+  const numPoints = (isPBF === true) ? data.length : data.latitude.length;
+
+  for (let index = 0, length = numPoints; index < length; index++) {
+    let point;
+    if (isPBF === true) {
+      const feature = data.feature(index);
+      point = feature.properties;
+      // WARNING: toGeoJSON is expensive. Avoid using raw coordinates in PBF tiles, pregenerate world coords
+      if (!columns.worldX) {
+        const geom = feature.toGeoJSON(tileCoordinates.x, tileCoordinates.y, zoom).geometry.coordinates;
+        point.longitude = geom[0];
+        point.latitude = geom[1];
+      }
+    } else {
+      point = {};
+      columnsArr.forEach((c) => { point[c] = data[c][index]; });
+    }
+
+    const timeIndex = (columns.timeIndex)
+      ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
+
+    if (!columns.worldX) {
+      const { worldX, worldY } = convert.latLonToWorldCoordinates(point.latitude, point.longitude);
+      point.worldX = worldX;
+      point.worldY = worldY;
+    }
+    if (columns.sigma) {
+      point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
+    }
+    if (columns.weight) {
+      point.opacity = convert.weightToOpacity(point.weight, zoomFactorOpacity);
+    }
 
     if (!tilePlaybackData[timeIndex]) {
-      const frame = {
-        worldX: [worldX],
-        worldY: [worldY],
-        radius: [radius],
-        opacity: [opacity]
-      };
-      extraColumns.forEach((column) => {
-        frame[column] = [vectorArray[column][index]];
+      const frame = {};
+      storedColumns.forEach((column) => {
+        frame[column] = [point[column]];
       });
       tilePlaybackData[timeIndex] = frame;
       continue;
     }
     const frame = tilePlaybackData[timeIndex];
-    frame.worldX.push(worldX);
-    frame.worldY.push(worldY);
-    frame.radius.push(radius);
-    frame.opacity.push(opacity);
-    extraColumns.forEach((column) => {
-      frame[column].push(vectorArray[column][index]);
+    storedColumns.forEach((column) => {
+      frame[column].push(point[column]);
     });
   }
   return tilePlaybackData;
@@ -215,8 +206,13 @@ export const getTilePlaybackData = (zoom, vectorArray, columns, prevPlaybackData
 
 export const addTracksPointsRenderingData = (data) => {
   data.hasFishing = [];
+  data.worldX = [];
+  data.worldY = [];
 
   for (let index = 0, length = data.weight.length; index < length; index++) {
+    const { worldX, worldY } = convert.latLonToWorldCoordinates(data.latitude[index], data.longitude[index]);
+    data.worldX[index] = worldX;
+    data.worldY[index] = worldY;
     data.hasFishing[index] = data.weight[index] > 0;
   }
   return data;
@@ -233,7 +229,7 @@ export const getTracksPlaybackData = (vectorArray) => {
 
   for (let index = 0, length = vectorArray.series.length; index < length; index++) {
     const datetime = vectorArray.datetime[index];
-    const timeIndex = getOffsetedTimeAtPrecision(datetime);
+    const timeIndex = convert.getOffsetedTimeAtPrecision(datetime);
 
     if (!playbackData[timeIndex]) {
       const frame = {
@@ -290,11 +286,11 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
       if ((!currentFilters.length || vesselSatisfiesAllFilters(frame, i, currentFilters)) &&
           wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
           wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
-        const vessel = {
-          series: frame.series[i],
-          seriesgroup: frame.seriesgroup[i]
-        };
+        const vessel = {};
 
+        Object.keys(frame).forEach((key) => {
+          vessel[key] = frame[key][i];
+        });
         vessels.push(vessel);
       }
     }

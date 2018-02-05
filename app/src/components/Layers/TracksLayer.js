@@ -26,7 +26,8 @@ export default class TracksLayerGL {
         drawParams.timelineOverExtentIndexes[0] > 0 && drawParams.timelineOverExtentIndexes[1] > 0;
 
     tracks.forEach((track) => {
-      const color = hueToRgbHexString(Math.min(359, track.hue));
+      // TODO move to tracksActions, let's have TracksLayer be dumber and not care about hue
+      const convertedColor = hueToRgbHexString(Math.min(359, track.hue));
 
       n += this._drawTrack({
         data: track.data,
@@ -35,7 +36,7 @@ export default class TracksLayerGL {
         offsets,
         drawFishingCircles,
         fishingCirclesRadius,
-        color,
+        color: track.color || convertedColor,
         lineThickness: 1,
         lineOpacity: 1
       });

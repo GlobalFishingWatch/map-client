@@ -18,7 +18,7 @@ import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'reducers/vesselInfo';
-import encountersReducer from 'mapPanels/rightControlPanel/reducers/encountersReducer';
+import encountersReducer from 'encounters/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
@@ -27,6 +27,7 @@ import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
+import tracksReducer from 'tracks/tracksReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 
@@ -58,7 +59,8 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
-  encounters: encountersReducer
+  encounters: encountersReducer,
+  tracks: tracksReducer
 });
 
 /**

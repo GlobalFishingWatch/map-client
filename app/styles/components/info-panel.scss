@@ -63,6 +63,7 @@
           text-transform: uppercase;
           text-decoration: underline;
           font-weight: bold;
+          cursor: pointer;
 
           .arrowSvg {
             margin-left: 5px;
@@ -72,12 +73,9 @@
       }
 
       .header {
-        padding-top: 5px;
-        padding-bottom: 5px;
+        padding: 10px 25px;
         font-size: $font-size-xs-small;
         display: flex;
-        justify-content: space-around;
-        align-items: center;
         border-bottom: 1px solid $color-fade-blue;
 
         .title {

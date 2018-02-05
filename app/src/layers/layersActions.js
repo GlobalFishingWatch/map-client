@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-import { LAYER_TYPES, HEADERLESS_LAYERS } from 'constants';
+import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'actions/heatmap';
@@ -88,6 +88,15 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
+      // while encounters layers have a different type than heatmap in workspaces,
+      // they are treated the same way by the front-end, except on map interaction (see heatmap actions)
+      if (layer.type === LAYER_TYPES.Encounters) {
+        layer.type = LAYER_TYPES.Heatmap;
+        layer.subtype = LAYER_TYPES.Encounters;
+      } else if (layer.type === LAYER_TYPES.Heatmap) {
+        layer.subtype = LAYER_TYPES.Heatmap;
+      }
+
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url });
         console.warn(`Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${layer.url}`);
@@ -120,22 +129,26 @@ export function initLayers(workspaceLayers, libraryLayers) {
         l.opacity = 1;
       }
     });
-
     const headersPromises = [];
     workspaceLayers
-      .filter(l => l.type === LAYER_TYPES.Heatmap && l.added === true)
+      .filter(l => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.added === true)
       .forEach((heatmapLayer) => {
         if (HEADERLESS_LAYERS.indexOf(heatmapLayer.tilesetId) > -1) {
           // headerless layers are considered temporalExtents-less too
           heatmapLayer.header = {
             temporalExtentsLess: true,
-            temporalExtents: [[0, (new Date(2100, 0, 0)).getTime()]],
+            temporalExtents: TEMPORAL_EXTENTLESS,
             colsByName: []
           };
         } else {
           const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
           headerPromise.then((header) => {
             if (header !== null) {
+              if (header.temporalExtents === undefined || header.temporalExtents === null) {
+                header.temporalExtents = TEMPORAL_EXTENTLESS;
+                header.temporalExtentsLess = true;
+              }
+
               heatmapLayer.header = header;
               dispatch(setGlobalFiltersFromHeader(header));
             }

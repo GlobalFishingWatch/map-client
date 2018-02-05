@@ -1,12 +1,11 @@
 import uniq from 'lodash/uniq';
-import { LAYER_TYPES } from 'constants';
+import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import {
-  getTilePelagosPromises,
+  getTilePromises,
   getCleanVectorArrays,
   groupData,
-  addWorldCoordinates,
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'util/heatmapTileData';
@@ -50,7 +49,9 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       throw new Error('XMLHttpRequest is disabled');
     }
 
-    const searchLayer = state.layers.workspaceLayers.find(layer => layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === tilesetId);
+    const searchLayer = state.layers.workspaceLayers.find(layer =>
+      LAYER_TYPES_WITH_HEADER.indexOf(layer.type) > -1 && layer.tilesetId === tilesetId);
+
     request.open(
       'GET',
       `${searchLayer.url}/sub/seriesgroup=${seriesgroup}/info`,
@@ -111,10 +112,9 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
-    const map = state.map.googleMaps;
 
     const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
     if (!currentLayer) {
@@ -123,7 +123,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
     }
     const header = currentLayer.header;
     const url = header.urls.search[0] || currentLayer.url;
-    const promises = getTilePelagosPromises(url, state.user.token, header.temporalExtents, { seriesgroup });
+    const promises = getTilePromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -141,9 +141,7 @@ function _getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateT
           'sigma'
         ]);
 
-        let vectorArray = addWorldCoordinates(groupedData, map);
-
-        vectorArray = addTracksPointsRenderingData(groupedData);
+        const vectorArray = addTracksPointsRenderingData(groupedData);
 
         dispatch({
           type: SET_VESSEL_TRACK,
@@ -230,7 +228,7 @@ export function setPinnedVessels(pinnedVessels) {
           payload: Object.assign({}, pinnedVessel, data)
         });
         if (pinnedVessel.visible === true) {
-          dispatch(_getVesselTrack({
+          dispatch(getVesselTrack({
             tilesetId: pinnedVessel.tilesetId,
             seriesgroup: pinnedVessel.seriesgroup,
             series: null,
@@ -272,7 +270,7 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
     } else {
       dispatch(hideVesselsInfoPanel());
     }
-    dispatch(_getVesselTrack({
+    dispatch(getVesselTrack({
       tilesetId,
       seriesgroup,
       series,
@@ -346,7 +344,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
         }
       });
       if (visible === true && currentVessel.track === undefined) {
-        dispatch(_getVesselTrack({
+        dispatch(getVesselTrack({
           tilesetId: currentVessel.tilesetId,
           seriesgroup,
           series: null,
