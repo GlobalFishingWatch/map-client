@@ -44,24 +44,18 @@ class MenuMobile extends Component {
       <div className={cssClass} >
         <ul>
           <li><a href={SITE_URL} >Home</a></li>
-          <li>News</li>
+          <li><a href={`${SITE_URL}/about-us/`} >About Us</a></li>
+          <li><a href={`${SITE_URL}/transparency-platform/`} >Our Platform</a></li>
+          <li><a href={`${SITE_URL}/initiatives/`} >Our Initiatives</a></li>
+          <li><a href={`${SITE_URL}/research/`} >Research</a></li>
+          <li>Get Help</li>
           <ul className={MenuMobileStyles.submenuMobile} >
-            <li><a href={BLOG_URL} target="_blank" rel="noopener noreferrer" >Blog</a></li>
-            <li><a href={`${SITE_URL}/articles-publications`} >Articles and Publications</a></li>
+            <li><a href={`${SITE_URL}/tutorials/`} >Tutorials</a></li>
+            <li><a href={`${SITE_URL}/map-use/`} >Map Help</a></li>
+            <li><a href={`${SITE_URL}/data-help/`} >Data Help</a></li>            
+            <li><a href={`${SITE_URL}/definitions/`} >Definitions</a></li>
           </ul>
-          <li>How to</li>
-          <ul className={MenuMobileStyles.submenuMobile} >
-            <li><a href={`${SITE_URL}/faq`} >FAQ</a></li>
-            <li><a href={`${SITE_URL}/tutorials`} >Tutorials</a></li>
-            <li><a href={`${SITE_URL}/definitions`} >Definitions</a></li>
-          </ul>
-          <li>About</li>
-          <ul className={MenuMobileStyles.submenuMobile} >
-            <li><a href={`${SITE_URL}/the-project`} >The Project</a></li>
-            <li><a href={`${SITE_URL}/partners`} >Partners</a></li>
-            <li><a href={`${SITE_URL}/research-program`} >Research Program</a></li>
-            <li><a href={`${SITE_URL}/contact-us`} >Contact Us</a></li>
-          </ul>
+          <li><a href={`${SITE_URL}/sitemap/`} >Site Map</a></li>
         </ul>
         {userLinks}
       </div>
