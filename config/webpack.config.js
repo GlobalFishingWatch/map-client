@@ -42,6 +42,7 @@ const webpackConfig = {
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
       GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
+      'process.env.NODE_ENV': JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
       MAP_URL: JSON.stringify(envVariables.MAP_URL),
       V2_API_ENDPOINT: JSON.stringify(envVariables.V2_API_ENDPOINT),
