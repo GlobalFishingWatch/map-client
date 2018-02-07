@@ -54,7 +54,7 @@
     "vector-tile": "^1.3.0",
     "velocity-react": "^1.3.3",
     "whatwg-fetch": "^2.0.3",
-    "globalfishingwatch-convert": "git@github.com:GlobalFishingWatch/map-convert.git"
+    "globalfishingwatch-convert": "git+https://github.com/GlobalFishingWatch/map-convert.git"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
