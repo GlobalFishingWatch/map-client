@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.0 RC2
+- Fixed issue that preventend building in production mode
+
 ## 2.4.0 RC1
 - Support for PBF tilesets
 - Support for layers without temporal extents
