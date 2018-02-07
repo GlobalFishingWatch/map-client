@@ -9,7 +9,6 @@
     "lint-js": "./node_modules/.bin/eslint -c .eslintrc --ext .jsx,.js app",
     "lint-sass": "sass-lint -v -q",
     "lint:js": "npm run lint-js",
-    "postinstall": "npm run build",
     "test": "npm run lint-js && npm run lint-sass"
   },
   "repository": {
