@@ -116,7 +116,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!globalfishingwatch-convert).*/,
         use: [
           {
             loader: 'babel-loader',

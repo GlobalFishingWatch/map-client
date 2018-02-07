@@ -1,6 +1,6 @@
 {
   "name": "global-fishing-watch",
-  "version": "2.1.0",
+  "version": "2.4.0",
   "description": "This repository will host the Global Fishing Watch client application developed by Vizzuality",
   "main": "server.js",
   "scripts": {
@@ -54,7 +54,7 @@
     "vector-tile": "^1.3.0",
     "velocity-react": "^1.3.3",
     "whatwg-fetch": "^2.0.3",
-    "globalfishingwatch-convert": "git+https://github.com/GlobalFishingWatch/map-convert.git"
+    "globalfishingwatch-convert": "git@github.com:GlobalFishingWatch/map-convert.git"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
