@@ -103,6 +103,7 @@ const webpackConfig = {
       tracks: 'src/tracks',
       user: 'src/user',
       welcomeModal: 'src/welcomeModal',
+      workspace: 'src/workspace',
       components: 'src/components',
       config: 'src/config.js',
       constants: 'src/constants.js',

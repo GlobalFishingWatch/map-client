@@ -18,7 +18,7 @@ import SubscriptionModal from 'report/containers/SubscriptionModal';
 
 class ModalContainer extends Component {
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded && (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
+    const canShareWorkspaces = !this.props.isEmbedded && this.props.canShareWorkspaces === true;
     return (
       <div >
         <Modal
@@ -130,7 +130,8 @@ ModalContainer.propTypes = {
   supportFormModalOpen: PropTypes.bool,
   token: PropTypes.string,
   userPermissions: PropTypes.array,
-  welcomeModalOpen: PropTypes.bool
+  welcomeModalOpen: PropTypes.bool,
+  canShareWorkspaces: PropTypes.bool
 };
 
 export default ModalContainer;

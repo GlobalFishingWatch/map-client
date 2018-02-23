@@ -30,6 +30,8 @@ import shareReducer from 'share/shareReducer';
 import tracksReducer from 'tracks/tracksReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
+import { init } from './app/appActions';
+import appReducer from './app/appReducer';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -60,7 +62,8 @@ const reducer = combineReducers({
   user: userReducer,
   vesselInfo: vesselInfoReducer,
   encounters: encountersReducer,
-  tracks: tracksReducer
+  tracks: tracksReducer,
+  app: appReducer
 });
 
 /**
@@ -75,9 +78,12 @@ const store = createStore(
 
 render(
   <Provider store={store} >
-    <AppContainer >
+    <AppContainer>
       <AuthMapContainer />
-    </AppContainer >
-  </Provider >,
+    </AppContainer>
+  </Provider>,
   document.getElementById('app')
 );
+
+
+store.dispatch(init());
