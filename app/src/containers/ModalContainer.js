@@ -24,7 +24,8 @@ const mapStateToProps = state => ({
   supportFormModalOpen: state.supportForm.open,
   token: state.user.token,
   userPermissions: state.user.userPermissions,
-  welcomeModalOpen: state.welcomeModal.open
+  welcomeModalOpen: state.welcomeModal.open,
+  isEmbedded: state.app.isEmbedded
 });
 
 const mapDispatchToProps = dispatch => ({

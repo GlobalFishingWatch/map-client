@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import MenuMobile from 'siteNav/components/MenuMobile';
 import { login, logout } from 'user/userActions';
-import { getWorkspace } from 'actions/workspace';
+import { getWorkspace } from 'workspace/workspaceActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({

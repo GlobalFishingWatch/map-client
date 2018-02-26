@@ -4,7 +4,8 @@ import { login } from 'user/userActions';
 
 const mapStateToProps = state => ({
   token: state.user.token,
-  userPermissions: state.user.userPermissions
+  userPermissions: state.user.userPermissions,
+  isEmbedded: state.app.isEmbedded
 });
 
 const mapDispatchToProps = dispatch => ({

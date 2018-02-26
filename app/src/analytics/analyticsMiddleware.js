@@ -27,7 +27,7 @@ import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'config';
 
 import { FLAGS } from 'app/src/constants';
 import { TOGGLE_VESSEL_PIN, SET_PINNED_VESSEL_HUE } from 'actions/vesselInfo';
-import { SET_WORKSPACE_ID } from 'actions/workspace';
+import { SET_WORKSPACE_ID } from 'workspace/workspaceActions';
 
 const GA_ACTION_WHITELIST = [
   {

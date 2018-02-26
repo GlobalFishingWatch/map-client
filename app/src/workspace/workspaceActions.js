@@ -25,6 +25,7 @@ export const SET_TILESET_ID = 'SET_TILESET_ID';
 export const SET_TILESET_URL = 'SET_TILESET_URL';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
+export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {
@@ -44,6 +45,20 @@ export function setWorkspaceId(workspaceId) {
   return {
     type: SET_WORKSPACE_ID,
     payload: workspaceId
+  };
+}
+
+/**
+ * Sets workspace override: an object set in a GET param to override parameters in the normal workspace,
+ * used to create workspaces 'on the fly'
+ *
+ * @param {object} workspaceOverride An object containing overrides allowed by the spec,
+ * see https://github.com/GlobalFishingWatch/map-client#params
+ */
+export function setWorkspaceOverride(workspaceOverride) {
+  return {
+    type: SET_WORKSPACE_OVERRIDE,
+    payload: workspaceOverride
   };
 }
 
@@ -376,11 +391,56 @@ function processLegacyWorkspace(data, dispatch) {
 }
 
 /**
+ * Takes a base workspace object and applies overrides to it
+ *
+ * @returns {object} workspace object with overrides applied
+ */
+function applyWorkspaceOverrides(workspace, overrides) {
+  const overridenWorkspace = Object.assign({}, workspace);
+
+  if (overrides.vessels !== undefined && overrides.vessels.length) {
+    overrides.vessels.forEach((vessel, i) => {
+      const [seriesgroup, tilesetId, series] = vessel;
+      const newVessel = {
+        seriesgroup,
+        tilesetId,
+        visible: true
+        // hue ?
+      };
+      if (series !== undefined) {
+        newVessel.series = series;
+      }
+      overridenWorkspace.pinnedVessels.push(newVessel);
+
+      // replace visible vessel by the 1st one
+      if (i === 0) {
+        overridenWorkspace.shownVessel = newVessel;
+      }
+    });
+  }
+
+  if (overrides.view !== undefined) {
+    const [zoom, longitude, latitude] = overrides.view;
+    overridenWorkspace.zoom = zoom;
+    overridenWorkspace.center = [latitude, longitude];
+  }
+
+  if (overrides.innerExtent !== undefined) {
+    overridenWorkspace.timelineInnerDates = overrides.innerExtent.map(d => new Date(d));
+  }
+
+  if (overrides.outerExtent !== undefined) {
+    overridenWorkspace.timelineOuterDates = overrides.outerExtent.map(d => new Date(d));
+  }
+
+  return overridenWorkspace;
+}
+
+/**
  * Retrieve the workspace according to its ID and sets the zoom and
  * the center of the map, the timeline dates and the available layers
  *
  * @export getWorkspace
- * @param {null} workspaceId - workspace's ID to load
  * @returns {object}
  */
 export function getWorkspace() {
@@ -412,6 +472,9 @@ export function getWorkspace() {
           workspaceData = processNewWorkspace(data, dispatch);
         } else {
           workspaceData = processLegacyWorkspace(data, dispatch);
+        }
+        if (state.map.workspaceOverride !== undefined) {
+          workspaceData = applyWorkspaceOverrides(workspaceData, state.map.workspaceOverride);
         }
         return dispatchActions(workspaceData, dispatch, getState);
       })

@@ -52,7 +52,7 @@ class MenuMobile extends Component {
           <ul className={MenuMobileStyles.submenuMobile} >
             <li><a href={`${SITE_URL}/tutorials/`} >Tutorials</a></li>
             <li><a href={`${SITE_URL}/map-use/`} >Map Help</a></li>
-            <li><a href={`${SITE_URL}/data-help/`} >Data Help</a></li>            
+            <li><a href={`${SITE_URL}/data-help/`} >Data Help</a></li>
             <li><a href={`${SITE_URL}/definitions/`} >Definitions</a></li>
           </ul>
           <li><a href={`${SITE_URL}/sitemap/`} >Site Map</a></li>

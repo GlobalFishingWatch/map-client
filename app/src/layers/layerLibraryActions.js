@@ -1,5 +1,5 @@
 import { DEFAULT_TRACK_HUE } from 'config';
-import { getWorkspace } from 'actions/workspace';
+import { getWorkspace } from 'workspace/workspaceActions';
 import { hexToHue } from 'util/colors';
 import calculateLayerId from 'util/calculateLayerId';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'layers/layersActions';
