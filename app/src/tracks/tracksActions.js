@@ -39,7 +39,7 @@ export function getTrack({ tilesetId, seriesgroup, series, updateTimelineBounds,
       return;
     }
     const header = currentLayer.header;
-    const url = header.urls.search[0] || currentLayer.url;
+    const url = header.endpoints.tracks;
     const promises = getTilePromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     dispatch({

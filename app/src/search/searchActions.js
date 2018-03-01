@@ -3,6 +3,7 @@ import { LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
 import getVesselName from 'util/getVesselName';
+import buildEndpoint from 'util/buildEndpoint';
 
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
@@ -29,13 +30,6 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     };
   }
 
-  const searchParams = {
-    query: searchTerm,
-    limit: SEARCH_MODAL_PAGE_SIZE,
-    offset: page * SEARCH_MODAL_PAGE_SIZE
-  };
-  const queryArgs = Object.keys(searchParams).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(searchParams[k])}`).join('&');
-
   let searchResultList = [];
   let searchResultCount = 0;
 
@@ -45,7 +39,11 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
 
   const searchLayerPromises = layers
     .map(layer =>
-      fetch(`${layer.url}/search/?${queryArgs}`, options)
+      fetch(buildEndpoint(layer.header.endpoints.search, {
+        query: encodeURIComponent(searchTerm),
+        limit: SEARCH_MODAL_PAGE_SIZE,
+        offset: page * SEARCH_MODAL_PAGE_SIZE
+      }), options)
         .then(response => response.json())
         .then((result) => {
           if (queryID !== searchQueryID) {

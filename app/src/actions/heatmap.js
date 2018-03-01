@@ -87,10 +87,9 @@ export function initHeatmapLayers() {
  * @param  {bool} isPBF                  true = read tile as MVT + PBF tile, rather than using Pelagos client
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { urls, temporalExtents, temporalExtentsLess, isPBF }) {
-  // TODO not sure why urls are array of arrays, clarify with Skytruth
-  const layerUrl = urls.default[0][0];
-  const pelagosPromises = getTilePromises(layerUrl, token, temporalExtents, {
+function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { endpoints, temporalExtents, temporalExtentsLess, isPBF }) {
+  const url = endpoints.tiles;
+  const pelagosPromises = getTilePromises(url, token, temporalExtents, {
     tileCoordinates,
     temporalExtentsIndices,
     temporalExtentsLess,
@@ -181,6 +180,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
           : newTemporalExtentsToLoad[layerId];
 
         const temporalExtentsIndicesToLoad = difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
+
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
           token,
