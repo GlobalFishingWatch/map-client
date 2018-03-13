@@ -30,6 +30,17 @@ export function loadTimebarChartData(startDate, endDate) {
         // they should be able to load in parallel but this will need a review
         // of the Timebar component
         dispatch(getLayerLibrary());
+      })
+      .catch(() => {
+        console.warn('Error loading Timebar data');
+        dispatch({
+          type: SET_TIMEBAR_CHART_DATA,
+          payload: [
+            { date: 1325376000000, value: 1 },
+            { date: 1520640000000, value: 1 }
+          ]
+        });
+        dispatch(getLayerLibrary());
       });
   };
 }
