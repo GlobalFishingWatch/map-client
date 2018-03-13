@@ -2,6 +2,7 @@ import PelagosClient from 'lib/pelagosClient';
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
+import buildEndpoint from 'util/buildEndpoint';
 import convert from 'globalfishingwatch-convert';
 
 import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
@@ -18,24 +19,25 @@ import getPBFTile from './getPBFTile';
  *                                  - temporalExtentsIndices: restrict to these temporalExtents indices
  * @returns {Array}                 an array of URLs for this tile
  */
-const getTemporalTileURLs = (tilesetUrl, temporalExtents, params) => {
+const getTemporalTileURLs = (urlTemplate, temporalExtents, params) => {
   const urls = [];
+
   (temporalExtents || [null]).forEach((extent, index) => {
-    let url = `${tilesetUrl}/`;
-    if (params.seriesgroup) {
-      url += `sub/seriesgroup=${params.seriesgroup}/`;
-    }
+    const urlParams = {
+      id: params.seriesgroup
+    };
     if (extent !== null && params.temporalExtentsLess !== true) {
-      const start = new Date(extent[0]).toISOString();
-      const end = new Date(extent[1]).toISOString();
-      url += `${start},${end};`;
+      urlParams.startTimeISO = new Date(extent[0]).toISOString();
+      urlParams.endTimeISO = new Date(extent[1]).toISOString();
     }
     if (params.tileCoordinates) {
-      url += `${params.tileCoordinates.zoom},${params.tileCoordinates.x},${params.tileCoordinates.y}`;
-    } else {
-      // meh.
-      url += '0,0,0';
+      urlParams.x = params.tileCoordinates.x;
+      urlParams.y = params.tileCoordinates.y;
+      urlParams.z = params.tileCoordinates.zoom;
     }
+
+    const url = buildEndpoint(urlTemplate, urlParams);
+
     if (!params.temporalExtentsIndices || params.temporalExtentsIndices.indexOf(index) > -1) {
       urls.push(url);
     }

@@ -2,6 +2,7 @@ import fetchEndpoint from 'util/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
+import buildEndpoint from 'util/buildEndpoint';
 
 export const LOAD_ENCOUNTERS_INFO = 'LOAD_ENCOUNTERS_INFO';
 export const SET_ENCOUNTERS_INFO = 'SET_ENCOUNTERS_INFO';
@@ -65,8 +66,7 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
 
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        const url = workspaceLayer.url;
-        fetchEndpoint(`${url}/sub/seriesgroup=${vessel.seriesgroup}/info`, token).then((vesselInfo) => {
+        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: seriesgroup }), token).then((vesselInfo) => {
           dispatch({
             type: SET_ENCOUNTERS_VESSEL_INFO,
             payload: {

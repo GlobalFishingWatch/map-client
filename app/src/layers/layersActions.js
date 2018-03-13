@@ -42,6 +42,13 @@ function loadLayerHeader(tilesetUrl, token) {
         return res.json();
       })
       .then((data) => {
+        // this a mock, remove me
+        data.endpoints = {
+          tiles: 'https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2/{{startTimeISO}},{{endTimeISO}};{{z}},{{x}},{{y}}',
+          tracks: 'https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2/sub/seriesgroup={{id}}/{{startTimeISO}},{{endTimeISO}};0,0,0',
+          info: 'https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2/sub/seriesgroup={{id}}/info',
+          search: 'https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2/search/?query={{query}}&limit={{limit}}&offset={{offset}}',
+        };
         resolve(data);
       }).catch((err) => {
         console.warn(err);

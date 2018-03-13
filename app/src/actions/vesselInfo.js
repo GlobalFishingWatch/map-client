@@ -11,6 +11,7 @@ import {
 } from 'util/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 import getVesselName from 'util/getVesselName';
+import buildEndpoint from 'util/buildEndpoint';
 
 export const ADD_VESSEL = 'ADD_VESSEL';
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS';
@@ -49,12 +50,12 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       throw new Error('XMLHttpRequest is disabled');
     }
 
-    const searchLayer = state.layers.workspaceLayers.find(layer =>
-      LAYER_TYPES_WITH_HEADER.indexOf(layer.type) > -1 && layer.tilesetId === tilesetId);
+    const layer = state.layers.workspaceLayers.find(l =>
+      LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.tilesetId === tilesetId);
 
     request.open(
       'GET',
-      `${searchLayer.url}/sub/seriesgroup=${seriesgroup}/info`,
+      buildEndpoint(layer.header.endpoints.info, { id: seriesgroup }),
       true
     );
     if (token) {
@@ -78,7 +79,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         type: SET_VESSEL_DETAILS,
         payload: {
           vesselData: data,
-          layer: searchLayer
+          layer
         }
       });
       dispatch(showVesselDetails(tilesetId, seriesgroup));
@@ -89,7 +90,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
 
-      dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, searchLayer.header.vesselFields), tilesetId));
+      dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, layer.header.vesselFields), tilesetId));
     };
     request.send(null);
   };
@@ -122,7 +123,7 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
       return;
     }
     const header = currentLayer.header;
-    const url = header.urls.search[0] || currentLayer.url;
+    const url = header.endpoints.tracks;
     const promises = getTilePromises(url, state.user.token, header.temporalExtents, { seriesgroup });
 
     Promise.all(promises.map(p => p.catch(e => e)))
@@ -196,17 +197,15 @@ export function setPinnedVessels(pinnedVessels) {
         throw new Error('XMLHttpRequest is disabled');
       }
 
-      let baseURL = state.map.tilesetUrl;
       const layer = state.layers.workspaceLayers.find(l => l.tilesetId === pinnedVessel.tilesetId);
-      if (layer !== undefined) {
-        baseURL = layer.url;
-      } else if (pinnedVessel.tilesetUrl !== undefined) {
-        baseURL = pinnedVessel.tilesetUrl;
+      if (layer === undefined) {
+        console.warn('Trying to load a pinned vessel byt the layer seems to be absent on the workspace', pinnedVessel);
+        return;
       }
 
       request.open(
         'GET',
-        `${baseURL}/sub/seriesgroup=${pinnedVessel.seriesgroup}/info`,
+        buildEndpoint(layer.header.endpoints.info, { id: pinnedVessel.seriesgroup }),
         true
       );
       if (state.user.token) {
