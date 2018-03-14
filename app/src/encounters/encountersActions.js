@@ -40,7 +40,9 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       }
     });
 
-    const infoUrl = encounterInfoEndpoint.replace('$SERIES', seriesgroup);
+    const infoUrl = buildEndpoint(encounterInfoEndpoint, {
+      id: seriesgroup
+    });
 
     fetchEndpoint(infoUrl).then((info) => {
       const encounterInfo = info.rows[0];

@@ -144,6 +144,9 @@ export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, pr
     storedColumns.push('worldX');
     storedColumns.push('worldY');
   }
+  if (columns.id === true) {
+    storedColumns.push('series');
+  }
 
   // omit values that will be transformed before being stored to playback data (ie lat -> worldY)
   // only if hidden: true flag is set on header
@@ -187,6 +190,9 @@ export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, pr
     }
     if (columns.weight) {
       point.opacity = convert.weightToOpacity(point.weight, zoomFactorOpacity);
+    }
+    if (columns.id) {
+      point.series = point.id;
     }
 
     if (!tilePlaybackData[timeIndex]) {
