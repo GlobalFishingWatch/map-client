@@ -24,7 +24,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
     <div className={infoPanelStyles.encountersData} >
       <div className={infoPanelStyles.rowInfo} >
         <span className={infoPanelStyles.key} >MMSI</span>
-        <span className={infoPanelStyles.value} >{vessel.info.mmsi || 'unknown'}</span>
+        <span className={infoPanelStyles.value} >{vessel.info.real_mmsi || vessel.info.mmsi || 'unknown'}</span>
       </div>
       <div className={infoPanelStyles.rowInfo} >
         <span className={infoPanelStyles.key} >Vessel</span>
