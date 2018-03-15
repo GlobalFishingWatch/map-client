@@ -40,17 +40,18 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       }
     });
 
-    const infoUrl = encounterInfoEndpoint.replace('$SERIES', seriesgroup);
+    const infoUrl = buildEndpoint(encounterInfoEndpoint, {
+      id: seriesgroup
+    });
 
-    fetchEndpoint(infoUrl).then((info) => {
-      const encounterInfo = info.rows[0];
+    fetchEndpoint(infoUrl).then((encounterInfo) => {
       encounterInfo.vessels = [{
         tilesetId: encounterInfo.vessel_1_tileset,
-        seriesgroup: encounterInfo.vessel_1_seriesgroup,
+        seriesgroup: encounterInfo.vessel_1_id,
         vesselTypeName: encounterInfo.vessel_1_type
       }, {
         tilesetId: encounterInfo.vessel_2_tileset,
-        seriesgroup: encounterInfo.vessel_2_seriesgroup,
+        seriesgroup: encounterInfo.vessel_2_id,
         vesselTypeName: encounterInfo.vessel_2_type
       }];
 
@@ -66,7 +67,7 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
 
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: seriesgroup }), token).then((vesselInfo) => {
+        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token).then((vesselInfo) => {
           dispatch({
             type: SET_ENCOUNTERS_VESSEL_INFO,
             payload: {
