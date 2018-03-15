@@ -30,7 +30,7 @@ class EncountersInfo extends Component {
           ? infoPanelStyles.reeferHeader
           : infoPanelStyles.vesselHeader}
       >
-        {vessel.vesselTypeName}
+        {(vessel.vesselTypeName === VESSEL_TYPE_REEFER) ? 'transporter' : 'fishing vessel' }
       </div>)
     );
 
