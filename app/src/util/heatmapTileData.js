@@ -38,7 +38,7 @@ const getTemporalTileURLs = (urlTemplate, temporalExtents, params) => {
 
     const url = buildEndpoint(urlTemplate, urlParams);
 
-    if (!params.temporalExtentsIndices || params.temporalExtentsIndices.indexOf(index) > -1) {
+    if (params.temporalExtentsLess === true || !params.temporalExtentsIndices || params.temporalExtentsIndices.indexOf(index) > -1) {
       urls.push(url);
     }
   });
