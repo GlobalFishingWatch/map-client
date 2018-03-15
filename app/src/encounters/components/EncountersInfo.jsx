@@ -34,6 +34,9 @@ class EncountersInfo extends Component {
       </div>)
     );
 
+    const date = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_DATE);
+    const duration = (encountersInfo.duration === undefined) ? '-' : moment.duration(encountersInfo.duration).humanize();
+
     return (
       <div className={infoPanelStyles.info}>
         <div className={infoPanelStyles.header} >
@@ -49,11 +52,11 @@ class EncountersInfo extends Component {
         <div className={infoPanelStyles.encountersData}>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Date</span>
-            <span className={infoPanelStyles.value} >{moment(encountersInfo.datetime).format(FORMAT_DATE)}</span>
+            <span className={infoPanelStyles.value} >{date}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Duration</span>
-            <span className={infoPanelStyles.value} >{moment.duration(encountersInfo.duration).humanize()}</span>
+            <span className={infoPanelStyles.value} >{duration}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Median distance (km)</span>
