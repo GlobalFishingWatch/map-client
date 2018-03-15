@@ -44,28 +44,28 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       id: seriesgroup
     });
 
-    fetchEndpoint(infoUrl).then((info) => {
-      info.vessels = [{
-        tilesetId: info.vessel_1_tileset,
-        seriesgroup: info.vessel_1_id,
-        vesselTypeName: info.vessel_1_type
+    fetchEndpoint(infoUrl).then((encounterInfo) => {
+      encounterInfo.vessels = [{
+        tilesetId: encounterInfo.vessel_1_tileset,
+        seriesgroup: encounterInfo.vessel_1_id,
+        vesselTypeName: encounterInfo.vessel_1_type
       }, {
-        tilesetId: info.vessel_2_tileset,
-        seriesgroup: info.vessel_2_id,
-        vesselTypeName: info.vessel_2_type
+        tilesetId: encounterInfo.vessel_2_tileset,
+        seriesgroup: encounterInfo.vessel_2_id,
+        vesselTypeName: encounterInfo.vessel_2_type
       }];
 
       dispatch({
         type: SET_ENCOUNTERS_INFO,
         payload: {
-          encounterInfo: info
+          encounterInfo
         }
       });
 
       const workspaceLayers = getState().layers.workspaceLayers;
       const token = getState().user.token;
 
-      info.vessels.forEach((vessel) => {
+      encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
         fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token).then((vesselInfo) => {
           dispatch({
@@ -79,7 +79,7 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       });
 
       // get tracks for both vessels
-      info.vessels.forEach((vessel) => {
+      encounterInfo.vessels.forEach((vessel) => {
         dispatch(getTrack({
           tilesetId: vessel.tilesetId,
           seriesgroup: vessel.seriesgroup,
