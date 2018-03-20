@@ -109,7 +109,8 @@ const webpackConfig = {
       constants: 'src/constants.js',
       containers: 'src/containers',
       reducers: 'src/reducers',
-      util: 'src/util'
+      util: 'src/util',
+      activityLayers: 'src/activityLayers'
     },
     extensions: ['.js', '.jsx']
   },

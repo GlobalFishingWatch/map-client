@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
-import heatmapReducer from 'reducers/heatmap';
+import heatmapReducer from 'activityLayers/heatmapReducer';
 import reportReducer from 'report/reportReducer';
 import mapReducer from 'reducers/map';
 import layerLibraryReducer from 'layers/layersLibraryReducer';

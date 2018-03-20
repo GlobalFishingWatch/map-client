@@ -8,7 +8,7 @@ import {
   REMOVE_REFERENCE_TILE,
   UPDATE_HEATMAP_TILES,
   HIGHLIGHT_VESSELS
-} from 'actions/heatmap';
+} from 'activityLayers/heatmapActions';
 
 const initialState = {
   // a dict of heatmap layers (key is layer id)

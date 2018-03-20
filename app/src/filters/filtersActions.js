@@ -1,6 +1,6 @@
 import { GA_PLAY_STATUS_TOGGLED, trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
 import { TIMELINE_MIN_INNER_EXTENT } from 'config';
-import { loadTilesExtraTimeRange } from 'actions/heatmap';
+import { loadTilesExtraTimeRange } from 'activityLayers/heatmapActions';
 
 export const SET_SPEED = 'SET_SPEED';
 export const CHANGE_SPEED = 'CHANGE_SPEED';

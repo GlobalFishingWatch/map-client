@@ -1,9 +1,9 @@
 /* global PIXI */
 import 'pixi.js';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'util/colors';
-import BaseOverlay from 'components/Layers/BaseOverlay';
-import HeatmapLayer from 'components/Layers/HeatmapLayer';
-import TracksLayer from 'components/Layers/TracksLayer';
+import BaseOverlay from './BaseOverlay';
+import HeatmapLayer from './HeatmapLayer';
+import TracksLayer from './TracksLayer';
 import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,

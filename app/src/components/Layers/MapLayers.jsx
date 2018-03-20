@@ -5,7 +5,7 @@ import compact from 'lodash/compact';
 import isEqual from 'lodash/isEqual';
 import extentChanged from 'util/extentChanged';
 import TiledLayer from 'components/Layers/TiledLayer';
-import GLContainer from 'components/Layers/GLContainer';
+import GLContainer from 'activityLayers/components/ActivityLayers';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
