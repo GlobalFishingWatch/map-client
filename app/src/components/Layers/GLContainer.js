@@ -13,6 +13,7 @@ import {
   VESSELS_HEATMAP_DIMMING_ALPHA
 } from 'config';
 import { LAYER_TYPES, BRUSH_RENDERING_STYLE } from 'constants';
+import convert from 'globalfishingwatch-convert';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
@@ -196,10 +197,10 @@ export default class GLContainer extends BaseOverlay {
 
   _getOffsets() {
     const topLeft = this.layerProjection.fromContainerPixelToLatLng(new google.maps.Point(0, 0));
-    const topLeftWorld = this.mapProjection.fromLatLngToPoint(topLeft);
+    const topLeftWorld = convert.latLonToWorldCoordinates(topLeft.lat(), topLeft.lng());
     return {
-      top: topLeftWorld.y,
-      left: topLeftWorld.x,
+      top: topLeftWorld.worldY,
+      left: topLeftWorld.worldX,
       scale: 2 ** this.map.getZoom()
     };
   }
@@ -208,6 +209,7 @@ export default class GLContainer extends BaseOverlay {
     if (!this.container) return;
 
     const offset = super.getRepositionOffset(this.viewportWidth, this.viewportHeight);
+    console.log(offset)
     this.container.style.left = `${offset.x}px`;
     this.container.style.top = `${offset.y}px`;
   }
