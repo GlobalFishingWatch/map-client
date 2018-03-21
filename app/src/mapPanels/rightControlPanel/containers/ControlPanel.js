@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import ControlPanel from 'mapPanels/rightControlPanel/components/ControlPanel';
 import { setSearchResultVisibility } from 'search/searchActions';
-import { togglePinnedVesselEditMode } from 'actions/vesselInfo';
+import { togglePinnedVesselEditMode } from 'vesselInfo/vesselInfoActions';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 import { setRecentlyCreated } from 'areasOfInterest/areasOfInterestActions';
 import { login } from 'user/userActions';

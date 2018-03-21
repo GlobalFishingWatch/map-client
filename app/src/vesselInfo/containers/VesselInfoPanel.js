@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import VesselInfoPanel from 'components/Map/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin } from 'actions/vesselInfo';
+import VesselInfoPanel from 'vesselInfo/components/VesselInfoPanel';
+import { clearVesselInfo, toggleActiveVesselPin } from 'vesselInfo/vesselInfoActions';
 import { login } from 'user/userActions';
 
 const mapStateToProps = (state) => {

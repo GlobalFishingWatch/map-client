@@ -36,6 +36,7 @@ export default function (state = initialState, action) {
       const newVesselIndex = state.encountersInfo.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = Object.assign({}, newEncountersInfo.vessels[newVesselIndex]);
       newVessel.info = action.payload.vesselInfo;
+      newVessel.fields = action.payload.vesselFields;
       newEncountersInfo.vessels[newVesselIndex] = newVessel;
       return Object.assign({}, state, {
         encountersInfo: newEncountersInfo

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import RecentVesselsModal from 'recentVessels/components/RecentVesselsModal';
-import { addVessel, clearVesselInfo } from 'actions/vesselInfo';
+import { addVessel, clearVesselInfo } from 'vesselInfo/vesselInfoActions';
 import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActions';
 import { toggleLayerVisibility } from 'layers/layersActions';
 
