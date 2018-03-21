@@ -91,6 +91,7 @@ const webpackConfig = {
       layers: 'src/layers',
       leftControlPanel: 'src/leftControlPanel',
       rightControlPanel: 'src/rightControlPanel',
+      map: 'src/map',
       mapPanels: 'src/mapPanels',
       pinnedVessels: 'src/pinnedVessels',
       recentVessels: 'src/recentVessels',

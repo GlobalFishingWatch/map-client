@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MapContainer from 'containers/MapContainer';
+import MapDashboard from 'map/containers/MapDashboard';
 import { getURLParameterByName } from 'lib/getURLParameterByName';
 import Header from 'siteNav/containers/Header';
 import ModalContainer from 'containers/ModalContainer';
@@ -29,8 +30,8 @@ class AuthMap extends Component {
       <div className="fullHeightContainer" >
         <Header canShareWorkspaces={canShareWorkspaces} />
         <ModalContainer canShareWorkspaces={canShareWorkspaces} />
-        <MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />
-
+        {/*<MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />*/}
+        <MapDashboard />
       </div>);
   }
 }

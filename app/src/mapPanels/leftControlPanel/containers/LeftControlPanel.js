@@ -6,6 +6,7 @@ import { saveWorkspace } from 'workspace/workspaceActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
+  isEmbedded: state.app.isEmbedded,
   maxZoom: state.map.maxZoom,
   mouseLatLong: state.map.mouseLatLong,
   userPermissions: state.user.userPermissions,

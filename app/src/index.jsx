@@ -7,6 +7,8 @@ import Promise from 'promise-polyfill';
 import 'styles/global.scss';
 import heatmapReducer from 'activityLayers/heatmapReducer';
 import reportReducer from 'report/reportReducer';
+import mapViewportReducer from 'map/mapViewportReducer';
+import mapStyleReducer from 'map/mapStyleReducer';
 import mapReducer from 'reducers/map';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
@@ -52,6 +54,8 @@ const reducer = combineReducers({
   layers: layersReducer,
   literals: literalsReducer,
   map: mapReducer,
+  mapViewport: mapViewportReducer,
+  mapStyle: mapStyleReducer,
   welcomeModal: welcomeModalReducer,
   recentVessels: recentVesselsReducer,
   rightControlPanel: rightControlPanelReducer,

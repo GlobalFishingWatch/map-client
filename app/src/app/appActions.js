@@ -1,5 +1,7 @@
 import { setUrlWorkspaceId, setWorkspaceOverride } from 'workspace/workspaceActions';
 import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
+import { loadTimebarChartData } from 'timebar/timebarActions';
+import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 
 export const SET_IS_EMBEDDED = 'SET_IS_EMBEDDED';
 
@@ -36,5 +38,7 @@ export function init() {
       type: SET_IS_EMBEDDED,
       payload: isEmbedded
     });
+
+    dispatch(loadTimebarChartData(TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE));
   };
 }
