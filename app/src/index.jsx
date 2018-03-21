@@ -17,7 +17,7 @@ import filtersReducer from 'filters/filtersReducer';
 import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
-import vesselInfoReducer from 'reducers/vesselInfo';
+import vesselInfoReducer from 'vesselInfo/vesselInfoReducer';
 import encountersReducer from 'encounters/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';

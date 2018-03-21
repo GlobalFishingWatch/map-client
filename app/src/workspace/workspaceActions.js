@@ -13,7 +13,7 @@ import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
-import { setPinnedVessels, addVessel } from 'actions/vesselInfo';
+import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import calculateLayerId from 'util/calculateLayerId';

@@ -54,7 +54,7 @@ class VesselInfoPanel extends Component {
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
       const renderedFieldList = this.generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo);
-
+      console.log(layerFields)
       vesselInfoContents = (
         <div className={infoPanelStyles.metadata} >
           {renderedFieldList}
