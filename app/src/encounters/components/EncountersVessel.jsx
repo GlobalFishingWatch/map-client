@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import iconStyles from 'styles/icons.scss';
 import ArrowLinkIcon from '-!babel-loader!svg-react-loader!assets/icons/arrow-link.svg?name=ArrowLinkIcon';
+import VesselInfoDetails from 'vesselInfo/components/VesselInfoDetails';
 
 
 function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
@@ -20,19 +21,22 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
       >Click here to login and see more details</a>
     </div>);
   }
+
+  // remove vesselname from vessel fields, as we force a custom display for it (the div inside <VesselInfoDetails />)
+  const vesselFields = [].concat(vessel.fields);
+  vesselFields.splice(vesselFields.findIndex(el => el.id === 'vesselname'), 1);
+
   return (
     <div className={infoPanelStyles.encountersData} >
-      <div className={infoPanelStyles.rowInfo} >
-        <span className={infoPanelStyles.key} >MMSI</span>
-        <span className={infoPanelStyles.value} >{vessel.info.mmsi || 'unknown'}</span>
-      </div>
-      <div className={infoPanelStyles.rowInfo} >
-        <span className={infoPanelStyles.key} >Vessel</span>
-        <a onClick={() => openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
-          { vessel.info.vesselname || vessel.seriesgroup }
-          <span className={infoPanelStyles.arrowSvg}>{<ArrowLinkIcon className={iconStyles.iconArrowLink} />}</span>
-        </a>
-      </div>
+      <VesselInfoDetails currentlyShownVessel={vessel.info} layerFieldsHeaders={vesselFields} userPermissions={userPermissions}>
+        <div className={infoPanelStyles.rowInfo} >
+          <span className={infoPanelStyles.key} >Vessel</span>
+          <a onClick={() => openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >
+            { vessel.info.vesselname || vessel.seriesgroup }
+            <span className={infoPanelStyles.arrowSvg}>{<ArrowLinkIcon className={iconStyles.iconArrowLink} />}</span>
+          </a>
+        </div>
+      </VesselInfoDetails>
     </div>
   );
 }

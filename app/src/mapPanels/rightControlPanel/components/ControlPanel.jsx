@@ -10,7 +10,7 @@ import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
 import SearchPanel from 'search/containers/SearchPanel';
-import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
+import VesselInfoPanel from 'vesselInfo/containers/VesselInfoPanel';
 import EncountersPanel from 'encounters/containers/EncountersPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';

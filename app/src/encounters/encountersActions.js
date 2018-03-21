@@ -67,15 +67,18 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
 
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token).then((vesselInfo) => {
-          dispatch({
-            type: SET_ENCOUNTERS_VESSEL_INFO,
-            payload: {
-              seriesgroup: vessel.seriesgroup,
-              vesselInfo
-            }
+        const vesselFields = workspaceLayer.header.vesselFields;
+        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
+          .then((vesselInfo) => {
+            dispatch({
+              type: SET_ENCOUNTERS_VESSEL_INFO,
+              payload: {
+                seriesgroup: vessel.seriesgroup,
+                vesselInfo,
+                vesselFields
+              }
+            });
           });
-        });
       });
 
       // get tracks for both vessels

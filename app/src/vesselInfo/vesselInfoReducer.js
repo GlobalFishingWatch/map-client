@@ -16,7 +16,7 @@ import {
   SET_PINNED_VESSEL_TRACK_VISIBILITY,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE
-} from 'actions/vesselInfo';
+} from 'vesselInfo/vesselInfoActions';
 
 const initialState = {
   vessels: [],
