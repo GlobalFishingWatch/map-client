@@ -1,7 +1,7 @@
 import { DEFAULT_TRACK_HUE } from 'config';
 import { getWorkspace } from 'workspace/workspaceActions';
-import { hexToHue } from 'util/colors';
-import calculateLayerId from 'util/calculateLayerId';
+import { hexToHue } from 'utils/colors';
+import calculateLayerId from 'utils/calculateLayerId';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'layers/layersActions';
 
 export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY';

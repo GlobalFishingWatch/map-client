@@ -16,10 +16,10 @@ import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpee
 import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
-import calculateLayerId from 'util/calculateLayerId';
-import { hexToHue, hueToClosestColor } from 'util/colors';
+import calculateLayerId from 'utils/calculateLayerId';
+import { hexToHue, hueToClosestColor } from 'utils/colors';
 import uniq from 'lodash/uniq';
-import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'util/handleLegacyURLs.js';
+import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'utils/handleLegacyURLs.js';
 
 export const SET_TILESET_ID = 'SET_TILESET_ID';
 export const SET_TILESET_URL = 'SET_TILESET_URL';

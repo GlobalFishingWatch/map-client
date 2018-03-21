@@ -1,7 +1,7 @@
 /* global PIXI */
 import 'pixi.js';
 import uniq from 'lodash/uniq';
-import { vesselSatisfiesFilters } from 'util/heatmapTileData';
+import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
 import { COLOR_HUES } from 'config';
 import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import HeatmapSubLayer from './HeatmapSubLayer';

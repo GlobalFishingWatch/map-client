@@ -1,6 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
-import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'util/colors';
+import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import BaseOverlay from './BaseOverlay';
 import HeatmapLayer from './HeatmapLayer';
 import TracksLayer from './TracksLayer';

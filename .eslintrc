@@ -24,7 +24,8 @@
     "SITE_URL": true,
     "TIMEBAR_DATA_URL": true,
     "V2_API_ENDPOINT": true,
-    "WELCOME_MODAL_COOKIE_KEY": true
+    "WELCOME_MODAL_COOKIE_KEY": true,
+    "MAPBOX_TOKEN": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
@@ -33,6 +34,7 @@
     },
     "sourceType": "module"
   },
+  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],

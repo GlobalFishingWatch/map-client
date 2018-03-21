@@ -4,7 +4,7 @@ import {
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
   HALF_WORLD
 } from 'config';
-import { hueToRgbHexString } from 'util/colors';
+import { hueToRgbHexString } from 'utils/colors';
 
 export default class TracksLayerGL {
   constructor() {

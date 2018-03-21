@@ -7,7 +7,7 @@ import {
   groupData,
   getTilePlaybackData,
   selectVesselsAt
-} from 'util/heatmapTileData';
+} from 'utils/heatmapTileData';
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';

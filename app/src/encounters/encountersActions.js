@@ -1,8 +1,8 @@
-import fetchEndpoint from 'util/fetchEndpoint';
+import fetchEndpoint from 'utils/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
-import buildEndpoint from 'util/buildEndpoint';
+import buildEndpoint from 'utils/buildEndpoint';
 
 export const LOAD_ENCOUNTERS_INFO = 'LOAD_ENCOUNTERS_INFO';
 export const SET_ENCOUNTERS_INFO = 'SET_ENCOUNTERS_INFO';

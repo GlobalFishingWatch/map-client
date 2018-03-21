@@ -5,7 +5,7 @@ import {
   groupData,
   addTracksPointsRenderingData,
   getTracksPlaybackData
-} from 'util/heatmapTileData';
+} from 'utils/heatmapTileData';
 
 export const INIT_TRACK = 'INIT_TRACK';
 export const SET_TRACK = 'SET_TRACK';

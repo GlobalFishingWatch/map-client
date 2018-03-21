@@ -41,6 +41,7 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
       GOOGLE_API_KEY: JSON.stringify(envVariables.GOOGLE_API_KEY),
+      MAPBOX_TOKEN: JSON.stringify(envVariables.MAPBOX_TOKEN),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       'process.env.NODE_ENV': JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
@@ -78,6 +79,8 @@ const webpackConfig = {
       'node_modules'
     ],
     alias: {
+      // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
+      'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
       app: path.join(rootPath, 'app'),
       assets: 'assets',
       lib: 'lib',
@@ -111,7 +114,7 @@ const webpackConfig = {
       constants: 'src/constants.js',
       containers: 'src/containers',
       reducers: 'src/reducers',
-      util: 'src/util',
+      utils: 'src/util',
       activityLayers: 'src/activityLayers'
     },
     extensions: ['.js', '.jsx']
@@ -121,14 +124,10 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!globalfishingwatch-convert).*/,
+        exclude: /node_modules\/(?!map-convert).*/,
         use: [
           {
-            loader: 'babel-loader',
-            options: {
-              plugins: ['lodash'],
-              presets: [['env', { modules: false, targets: { node: 4 } }]]
-            }
+            loader: 'babel-loader'
           }
         ]
       },

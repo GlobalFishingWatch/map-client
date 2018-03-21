@@ -92,7 +92,13 @@ Server subpath over which the application will be served. May be empty if the ap
 
 #### GOOGLE_API_KEY
 
-API key for Google Maps
+API key for Google Maps (deprecated)
+
+
+#### MAPBOX_TOKEN
+
+Mapbox Token for Mapbox GL JS styles and sources. Do not use Mapbox default public token.
+
 
 #### NODE_ENV
 

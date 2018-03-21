@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-import getVesselName from 'util/getVesselName';
+import getVesselName from 'utils/getVesselName';
 import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'config';
 import { INFO_STATUS } from 'constants';
 import {

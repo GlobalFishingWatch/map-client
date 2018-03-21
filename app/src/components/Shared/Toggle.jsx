@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
-import { hueToClosestColor } from 'util/colors';
+import { hueToClosestColor } from 'utils/colors';
 
 class Toggle extends Component {
   getColor() {

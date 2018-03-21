@@ -2,8 +2,8 @@ import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
 import { LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
-import getVesselName from 'util/getVesselName';
-import buildEndpoint from 'util/buildEndpoint';
+import getVesselName from 'utils/getVesselName';
+import buildEndpoint from 'utils/buildEndpoint';
 
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';

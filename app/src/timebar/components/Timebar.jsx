@@ -22,7 +22,7 @@ import classnames from 'classnames';
 import { TIMELINE_MAX_TIME, TIMELINE_MIN_TIME, MIN_FRAME_LENGTH_MS } from 'config';
 import TimebarStyles from 'styles/components/map/timebar.scss';
 import TimelineStyles from 'styles/components/map/timeline.scss';
-import extentChanged from 'util/extentChanged';
+import extentChanged from 'utils/extentChanged';
 import DatePicker from 'timebar/components/DatePicker';
 import TogglePauseButton from 'timebar/components/TogglePauseButton';
 import SpeedButton from 'timebar/components/SpeedButton';

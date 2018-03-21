@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES } from 'config';
-import { getKeyByValue } from 'util/colors';
+import { getKeyByValue } from 'utils/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';

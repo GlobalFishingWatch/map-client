@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import MapContainer from 'containers/MapContainer';
 import MapDashboard from 'map/containers/MapDashboard';
 import { getURLParameterByName } from 'lib/getURLParameterByName';
 import Header from 'siteNav/containers/Header';

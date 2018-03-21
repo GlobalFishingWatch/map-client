@@ -7,8 +7,7 @@ const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
   zoom: state.mapViewport.zoom,
   latitude: state.mapViewport.latitude,
-  longitude: state.mapViewport.longitude,
-  activeSubmenu: state.rightControlPanel.activeSubmenu,
+  longitude: state.mapViewport.longitude
   // activeBasemap: state.basemap.activeBasemap,
   // areas: state.areas.existingAreasOfInterest,
   // basemaps: state.basemap.basemaps,

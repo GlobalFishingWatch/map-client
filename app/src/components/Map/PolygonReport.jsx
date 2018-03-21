@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import CustomInfoWindowStyles from 'styles/components/map/custom-infowindow.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
-import CustomInfoWindow from 'util/CustomInfoWindow';
+import CustomInfoWindow from 'utils/CustomInfoWindow';
 
 export default class PolygonReport extends Component {
   constructor() {

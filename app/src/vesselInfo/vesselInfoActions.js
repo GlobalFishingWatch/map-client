@@ -8,10 +8,10 @@ import {
   groupData,
   addTracksPointsRenderingData,
   getTracksPlaybackData
-} from 'util/heatmapTileData';
+} from 'utils/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
-import getVesselName from 'util/getVesselName';
-import buildEndpoint from 'util/buildEndpoint';
+import getVesselName from 'utils/getVesselName';
+import buildEndpoint from 'utils/buildEndpoint';
 
 export const ADD_VESSEL = 'ADD_VESSEL';
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS';

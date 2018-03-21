@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import compact from 'lodash/compact';
 import isEqual from 'lodash/isEqual';
-import extentChanged from 'util/extentChanged';
+import extentChanged from 'utils/extentChanged';
 import TiledLayer from 'components/Layers/TiledLayer';
 import GLContainer from 'activityLayers/components/ActivityLayers';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';

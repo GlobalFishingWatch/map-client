@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import classnames from 'classnames';
 import CustomInfowindowStyles from 'styles/components/map/custom-infowindow.scss';
-import CustomInfoWindow from 'util/CustomInfoWindow';
+import CustomInfoWindow from 'utils/CustomInfoWindow';
 
 export default class ClusterInfoWindow extends Component {
   componentWillReceiveProps(nextProps) {

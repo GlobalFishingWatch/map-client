@@ -8,13 +8,13 @@ import MobileLeftExpand from 'mapPanels/leftControlPanel/components/MobileLeftEx
 import ReportPanel from 'report/containers/ReportPanel';
 import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
-import Attributions from 'siteNav/components/Attributions';
+import Map from 'map/containers/Map';
 import mapPanelsStyles from 'styles/components/map-panels.scss';
 import mapStyles from 'styles/components/map.scss';
 
 class MapDashboard extends Component {
   render() {
-    const { isEmbedded, activeSubmenu, openSupportFormModal, onExternalLink } = this.props;
+    const { isEmbedded, openSupportFormModal, onExternalLink } = this.props;
     return (<div className="fullHeightContainer" >
       {!isEmbedded &&
       <div
@@ -38,16 +38,12 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <div
-          id="map"
-          className={mapStyles.map}
-          style={{ height: '100%' }}
-        />
+        <Map />
+
 
         {/*{isDrawing && <DrawingManager />}*/}
         {/*<Areas />*/}
         <LeftControlPanel />
-        {!activeSubmenu && <Attributions isEmbedded={isEmbedded} />}
       </div>
       <MobileLeftExpand isEmbedded={this.props.isEmbedded}>
         <MiniGlobe

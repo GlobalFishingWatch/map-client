@@ -15,7 +15,7 @@ import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=P
 import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
 import { COLOR_HUES } from 'config';
-import { getKeyByValue } from 'util/colors';
+import { getKeyByValue } from 'utils/colors';
 
 class PinnedVessel extends Component {
   constructor() {

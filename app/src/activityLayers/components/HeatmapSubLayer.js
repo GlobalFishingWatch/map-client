@@ -4,7 +4,7 @@ import {
   VESSELS_BASE_RADIUS,
   VESSELS_HUES_INCREMENTS_NUM
 } from 'config';
-import { hueToHueIncrement } from 'util/colors';
+import { hueToHueIncrement } from 'utils/colors';
 
 export default class HeatmapSubLayer {
   constructor(baseTexture, maxSprites, renderingStyleIndex, hue) {
