@@ -14,6 +14,7 @@ class VesselInfoDetails extends Component {
 
     return (
       <div className={infoPanelStyles.details}>
+        {this.props.children}
         {renderedFieldList}
       </div>);
   }
@@ -89,7 +90,8 @@ class VesselInfoDetails extends Component {
 VesselInfoDetails.propTypes = {
   layerFieldsHeaders: PropTypes.array,
   currentlyShownVessel: PropTypes.object,
-  userPermissions: PropTypes.array
+  userPermissions: PropTypes.array,
+  children: PropTypes.node
 };
 
 export default VesselInfoDetails;
