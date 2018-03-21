@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { getCountry } from 'iso-3166-1-alpha-2';
 import MediaQuery from 'react-responsive';
 import ExpandButton from 'components/Shared/ExpandButton';
+import VesselInfoDetails from './VesselInfoDetails';
 
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
@@ -49,15 +50,11 @@ class VesselInfoPanel extends Component {
     } else if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1) {
       return null;
     } else if (status === INFO_STATUS.LOADED && vesselInfo) {
-      const layerFields = this.props.layerFieldsHeaders;
-
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
-      const renderedFieldList = this.generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo);
-      console.log(layerFields)
       vesselInfoContents = (
         <div className={infoPanelStyles.metadata} >
-          {renderedFieldList}
+          <VesselInfoDetails {...this.props} />
           {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
             <PinIcon
               className={classnames(iconStyles.icon, iconStyles.pinIcon,
@@ -106,73 +103,6 @@ class VesselInfoPanel extends Component {
         </div>
         {vesselInfoContents}
       </div>);
-  }
-
-  generateVesselDetails(layerFields, canSeeVesselDetails, vesselInfo) {
-    const renderedFieldList = [];
-
-    layerFields.filter(field => field.display !== false && (canSeeVesselDetails || field.anonymous)).forEach((field) => {
-      let linkList;
-      if (vesselInfo[field.id] === undefined) {
-        return;
-      }
-      switch (field.kind) {
-        case 'prefixedCSVMultiLink':
-          if (!vesselInfo[field.id]) {
-            break;
-          }
-          renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo} >
-            <span className={infoPanelStyles.key} >{field.display}</span>
-            <ul className={infoPanelStyles.linkList} >
-              <li className={infoPanelStyles.linkListItem} >
-                <a
-                  className={infoPanelStyles.externalLink}
-                  href={`${field.prefix}${vesselInfo[field.id]}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {vesselInfo[field.id]}
-                </a>
-              </li>
-            </ul>
-          </div>);
-          break;
-        case 'objectArrayMultiLink':
-          linkList = [];
-          vesselInfo[field.id].forEach((registry) => {
-            linkList.push(<li key={registry.rfmo} className={infoPanelStyles.linkListItem} >
-              <a
-                className={infoPanelStyles.externalLink}
-                href={`${registry.url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {registry.rfmo}
-              </a>
-            </li>);
-          });
-          renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo} >
-            <span className={infoPanelStyles.key} >{field.display}</span>
-            <ul className={infoPanelStyles.linkList} >
-              {linkList}
-            </ul>
-          </div>);
-          break;
-        case 'flag':
-          renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo} >
-            <span className={infoPanelStyles.key} >{field.display}</span>
-            <span className={infoPanelStyles.value} >{getCountry(vesselInfo[field.id]) || '---'}</span>
-          </div>);
-          break;
-        default:
-          renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo} >
-            <span className={infoPanelStyles.key} >{field.display}</span>
-            <span className={infoPanelStyles.value} >{vesselInfo[field.id] || '---'}</span>
-          </div>);
-      }
-    });
-
-    return renderedFieldList;
   }
 }
 

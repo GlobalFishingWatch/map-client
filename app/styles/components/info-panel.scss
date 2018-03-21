@@ -23,10 +23,13 @@
     }
   }
 
-  > .metadata {
+  .details, .metadata {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  > .metadata {
     max-height: $vessel-info-height;
     overflow: hidden;
     padding: 20px 20px 15px;
