@@ -3,6 +3,7 @@ import MapGL from 'react-map-gl';
 import mapStyles from 'styles/components/map.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
+import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
 
 class Map extends React.Component {
   onViewportChange = (viewport) => {
@@ -24,7 +25,9 @@ class Map extends React.Component {
           {...viewport}
           onViewportChange={this.onViewportChange}
           mapboxApiAccessToken={MAPBOX_TOKEN}
-        />
+        >
+          <ActivityLayers />
+        </MapGL>
       </div>
     );
   }
