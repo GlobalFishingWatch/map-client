@@ -34,7 +34,13 @@ class EncountersInfo extends Component {
       </div>)
     );
 
-    const date = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_DATE);
+    let date;
+    if (encountersInfo.datetime === undefined) {
+      date = '-';
+    } else {
+      const datetime = (encountersInfo.datetime < (new Date()).getTime() / 1000) ? encountersInfo.datetime * 1000 : encountersInfo.datetime;
+      date = moment(datetime).format(FORMAT_DATE);
+    }
     const duration = (encountersInfo.duration === undefined) ? '-' : moment.duration(encountersInfo.duration).humanize();
 
     return (
