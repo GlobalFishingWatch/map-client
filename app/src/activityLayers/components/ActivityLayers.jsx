@@ -1,14 +1,11 @@
-import { Component, createElement } from 'react';
+import React from 'react';
+import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
 import { worldToPixels, lngLatToWorld } from 'viewport-mercator-project';
 
-function round(x, n) {
-  const tenN = Math.pow(10, n);
-  return Math.round(x * tenN) / tenN;
-}
-
-class ActivityLayers extends Component {
+class ActivityLayers extends React.Component {
   componentDidMount() {
+    this._build();
     this._redraw();
   }
 
@@ -16,17 +13,34 @@ class ActivityLayers extends Component {
     this._redraw();
   }
 
+  _build() {
+
+
+    // TODO VP W/H
+    this.pixi = new PIXI.Application({ width: 1000, height: 800, transparent: true, antialias: true });
+
+    // this.pixi.ticker.add(this._onTickBound);
+
+    this.renderer = this.pixi.renderer;
+    this.canvas = this.pixi.view;
+    this.canvas.style.position = 'absolute';
+
+    this.container.appendChild(this.canvas);
+
+    this.stage = this.pixi.stage;
+
+    const graphics = new PIXI.Graphics();
+    graphics.lineStyle(4, 0xffd900, 1);
+    graphics.beginFill(0xFFFF0B, 0.5);
+    graphics.drawCircle(470, 90, 60);
+    graphics.endFill();
+    this.graphics = graphics;
+
+    this.stage.addChild(graphics);
+  }
+
   _redraw() {
     const { viewport } = this.context;
-
-    const pixelRatio = window.devicePixelRatio || 1;
-    const canvas = this.refs.overlay;
-    const ctx = canvas.getContext('2d');
-
-    ctx.save();
-    ctx.scale(pixelRatio, pixelRatio);
-    ctx.clearRect(0, 0, viewport.width, viewport.height);
-    // ctx.globalCompositeOperation = compositeOperation;
 
     const PARIS = [2.373046875, 48.80686346108517];
     // console.log(PARIS)
@@ -38,49 +52,47 @@ class ActivityLayers extends Component {
     const scale = viewport.scale;
     const parisPx = worldToPixels([parisWorld[0] * scale, parisWorld[1] * scale], viewport.pixelProjectionMatrix);
 
-    // const pixel = viewport.project(PARIS);
-    const pixel = parisPx;
-    const pixelRounded = [round(pixel[0], 1), round(pixel[1], 1)];
-    if (pixelRounded[0] + 10 >= 0 &&
-      pixelRounded[0] - 10 < viewport.width &&
-      pixelRounded[1] + 10 >= 0 &&
-      pixelRounded[1] - 10 < viewport.height
-    ) {
-      ctx.fillStyle = '#00a8fe';
-      ctx.beginPath();
-      ctx.arc(pixelRounded[0], pixelRounded[1], 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    this.graphics.lineStyle(4, 0xffd900, 1);
+    this.graphics.beginFill(0xFFFF0B, 0.5);
+    this.graphics.drawCircle(parisPx[0], parisPx[1], 10);
+    this.graphics.endFill();
 
-
-    ctx.restore();
   }
-  /* eslint-enable max-statements */
 
   render() {
     const { viewport: { width, height } } = this.context;
-    const pixelRatio = window.devicePixelRatio || 1;
-    return (
-      createElement('canvas', {
-        ref: 'overlay',
-        width: width * pixelRatio,
-        height: height * pixelRatio,
-        style: {
-          width: `${width}px`,
-          height: `${height}px`,
-          position: 'absolute',
-          pointerEvents: 'none',
-          opacity: 0.8,
-          left: 0,
-          top: 0
-        }
-      })
-    );
+
+    // return null;
+
+    return (<div
+      ref={(ref) => { this.container = ref; }}
+      style={{ position: 'absolute' }}
+    />);
+
+
+    // const pixelRatio = window.devicePixelRatio || 1;
+    //
+    //
+    // return (
+    //   createElement('canvas', {
+    //     ref: 'overlay',
+    //     width: width * pixelRatio,
+    //     height: height * pixelRatio,
+    //     style: {
+    //       width: `${width}px`,
+    //       height: `${height}px`,
+    //       position: 'absolute',
+    //       pointerEvents: 'none',
+    //       opacity: 0.8,
+    //       left: 0,
+    //       top: 0
+    //     }
+    //   })
+    // );
   }
 }
 
 ActivityLayers.propTypes = {
-
 };
 
 ActivityLayers.contextTypes = {

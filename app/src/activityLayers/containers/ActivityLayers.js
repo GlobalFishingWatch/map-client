@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import ActivityLayers from 'map/components/ActivityLayers.jsx';
+import ActivityLayers from 'activityLayers/components/ActivityLayers.jsx';
 
 const mapStateToProps = state => ({
+  viewport: state.mapViewport
 });
 
 const mapDispatchToProps = dispatch => ({
