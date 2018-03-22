@@ -124,7 +124,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!map-convert).*/,
+        exclude: /node_modules\/(?!globalfishingwatch-convert).*/,
         use: [
           {
             loader: 'babel-loader'
@@ -239,7 +239,9 @@ const webpackConfig = {
 
 // Environment configuration
 if (envVariables.NODE_ENV === 'production') {
-  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+  // https://github.com/mapbox/mapbox-gl-js/issues/4359
+  webpackConfig.module.noParse = /(mapbox-gl)\.js$/;
+  webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
   webpackConfig.devtool = 'source-map';
   webpackConfig.resolve.alias.react = path.join(rootPath, 'node_modules/react/dist/react.min.js');
   webpackConfig.resolve.alias['react-dom'] = path.join(rootPath, 'node_modules/react-dom/dist/react-dom.min.js');
