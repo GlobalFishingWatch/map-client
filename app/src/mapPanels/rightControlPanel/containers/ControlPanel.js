@@ -19,7 +19,9 @@ const mapStateToProps = state => ({
   userPermissions: state.user.userPermissions,
   vessels: state.vesselInfo.vessels,
   numPinnedVessels: state.vesselInfo.vessels.filter(vessel => vessel.pinned === true).length,
-  numFilters: state.filterGroups.filterGroups.filter(filter => filter.visible === true).length
+  numFilters: state.filterGroups.filterGroups.filter(filter => filter.visible === true).length,
+  encountersInfo: state.encounters.encountersInfo,
+  currentlyShownVessel: state.vesselInfo.currentlyShownVessel
 });
 
 const mapDispatchToProps = dispatch => ({
