@@ -12,10 +12,24 @@ export const LAYER_TYPES = {
   CartoDBAnimation: 'CartoDBAnimation',
   CartoDBBasemap: 'CartoDBBasemap',
   Heatmap: 'ClusterAnimation',
+  HeatmapTracksOnly: 'HeatmapTracksOnly',
   Custom: 'Custom',
-  VesselTrackAnimation: 'VesselTrackAnimation'
+  VesselTrackAnimation: 'VesselTrackAnimation',
+  Encounters: 'Encounters'
 };
-export const ENCOUNTERS_LAYER_ID = 'mpant'; // Just for testing. It should be replaced with the correct id
+
+export const LAYER_TYPES_WITH_HEADER = [
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.HeatmapTracksOnly
+];
+
+export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
+  LAYER_TYPES.CartoDBAnimation,
+  LAYER_TYPES.CartoDBBasemap,
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.Custom,
+  LAYER_TYPES.Encounters
+];
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
@@ -30,6 +44,21 @@ export const INFO_STATUS = {
   LOADING: 2,
   LOADED: 3
 };
+
+export const BRUSH_RENDERING_STYLE = {
+  NORMAL: 0,
+  BULLSEYE: 2
+};
+
+export const BRUSH_ZOOM_RENDERING_STYLE = {
+  RADIAL_GRADIENT: 0,
+  CIRCLE: 1
+};
+
+export const VESSEL_TYPE_VESSEL = 'vessel';
+export const VESSEL_TYPE_REEFER = 'reefers';
+
+export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];
 
 export const FLAGS = {
   0: 'AD',

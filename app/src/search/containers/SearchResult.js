@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SearchResult from 'search/components/SearchResult';
-import { addVessel, clearVesselInfo } from 'actions/vesselInfo';
+import { addVessel, clearVesselInfo } from 'vesselInfo/vesselInfoActions';
 import { toggleLayerVisibility } from 'layers/layersActions';
 
 const mapStateToProps = state => ({

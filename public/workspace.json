@@ -18,15 +18,15 @@
           "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
         },
         {
-          "title": "Fishing Effort",
-          "description": "Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/429-resample-v2-tms",
+          "title": "AIS Fishing effort",
+          "description": "AIS Fishing effort",
+          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2",
           "visible": true,
           "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
-          "tilesetId": "429-resample-v2-tms",
-          "id": "fishing"
+          "id": "fishing2",
+          "tilesetId": "516-resample-v2"
         },
         {
           "title": "MPA - No Take",

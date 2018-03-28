@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import EncountersPanel from 'mapPanels/rightControlPanel/components/EncountersPanel';
-import { clearEncountersInfo } from 'mapPanels/rightControlPanel/actions/encounters';
-import { addVessel } from 'actions/vesselInfo';
+import EncountersPanel from 'encounters/components/EncountersPanel';
+import { clearEncountersInfo } from 'encounters/encountersActions';
+import { addVessel } from 'vesselInfo/vesselInfoActions';
 
 const mapStateToProps = state => ({
   encountersInfo: state.encounters.encountersInfo,

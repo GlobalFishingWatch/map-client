@@ -10,14 +10,20 @@ export function loadTimebarChartData(startDate, endDate) {
     const chartData = [];
     for (let i = 0; i <= (end - start); i += 1) {
       const req = fetch(`${TIMEBAR_DATA_URL}/${start + i}-${start + 1 + i}.json`)
+        .then((res) => {
+          if (!res.ok) {
+            throw Error(res.statusText);
+          }
+          return res;
+        })
         .then(res => res.json());
       chartData.push(req);
     }
-    Promise.all(chartData)
+    Promise.all(chartData.map(p => p.catch(e => e)))
       .then((jsonList) => {
         let payload = [];
         jsonList.forEach((list) => {
-          payload = [...payload, ...list];
+          if (list.length) payload = [...payload, ...list];
         });
         return payload;
       })

@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 import Header from 'siteNav/components/Header';
 import { login, logout } from 'user/userActions';
 import { setShareModalError, openShareModal } from 'share/shareActions';
-import { saveWorkspace, getWorkspace } from 'actions/workspace';
+import { saveWorkspace, getWorkspace } from 'workspace/workspaceActions';
 
 const mapStateToProps = state => ({
   loggedUser: state.user.loggedUser,
-  urlWorkspaceId: state.map.urlWorkspaceId
+  urlWorkspaceId: state.map.urlWorkspaceId,
+  isEmbedded: state.app.isEmbedded
 });
 
 const mapDispatchToProps = dispatch => ({

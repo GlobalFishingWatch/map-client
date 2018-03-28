@@ -7,7 +7,7 @@ import {
 import { hueToHueIncrement } from 'util/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, useHeatmapStyle, hue) {
+  constructor(baseTexture, maxSprites, renderingStyleIndex, hue) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -22,13 +22,13 @@ export default class HeatmapSubLayer {
 
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
-    this._setTextureFrame(useHeatmapStyle, hue);
+    this._setTextureFrame(renderingStyleIndex, hue);
 
     this._resizeSpritesPool(10000);
   }
 
-  setRenderingStyle(useHeatmapStyle) {
-    this._setTextureFrame(useHeatmapStyle);
+  setRenderingStyleIndex(renderingStyleIndex) {
+    this._setTextureFrame(renderingStyleIndex);
   }
 
   destroy() {
@@ -42,12 +42,12 @@ export default class HeatmapSubLayer {
    * @heatmapStyle bool whether to use heatmap style or solid circle style
    * @hue number hue value between 0 and 360
    */
-  _setTextureFrame(useHeatmapStyle = null, hue = null) {
+  _setTextureFrame(renderingStyleIndex = null, hue = null) {
     const textureFrame = this.mainVesselTexture.frame.clone();
 
-    if (useHeatmapStyle !== null) {
+    if (renderingStyleIndex !== null) {
       // one diameter + tiny offset between 2 frames
-      textureFrame.x = (useHeatmapStyle) ? 0 : (VESSELS_BASE_RADIUS * 2) + 1;
+      textureFrame.x = (VESSELS_BASE_RADIUS * 2 * renderingStyleIndex) + renderingStyleIndex;
     }
 
     if (hue !== null) {

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { setZoom } from 'actions/map';
 import LeftControlPanel from 'mapPanels/leftControlPanel/components/LeftControlPanel';
 import { openShareModal, setShareModalError } from 'share/shareActions';
-import { saveWorkspace } from 'actions/workspace';
+import { saveWorkspace } from 'workspace/workspaceActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({

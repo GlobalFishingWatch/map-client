@@ -1,16 +1,20 @@
 import { MAX_AUTO_ZOOM_LONGITUDE_SPAN } from 'config';
 
 export default class CustomLayerWrapper {
-  constructor(map, url) {
+  constructor(map, url, justUploaded) {
     this.map = map;
     this.kmlLayer = new google.maps.KmlLayer({
       url,
       map,
+      // preserveViewport: true = do not use KML boundaries
+      // always set to true because when we want to do that we'll use some custom logic for it (handleZoomLevel)
       preserveViewport: true
     });
     this.handleZoomLevel = this.handleZoomLevel.bind(this);
 
-    this.zoomListener = google.maps.event.addListenerOnce(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
+    if (justUploaded === true) {
+      this.zoomListener = google.maps.event.addListenerOnce(this.kmlLayer, 'defaultviewport_changed', this.handleZoomLevel);
+    }
   }
 
   show() {

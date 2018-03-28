@@ -17,8 +17,8 @@ import filtersReducer from 'filters/filtersReducer';
 import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
-import vesselInfoReducer from 'reducers/vesselInfo';
-import encountersReducer from 'mapPanels/rightControlPanel/reducers/encountersReducer';
+import vesselInfoReducer from 'vesselInfo/vesselInfoReducer';
+import encountersReducer from 'encounters/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
@@ -27,8 +27,11 @@ import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
+import tracksReducer from 'tracks/tracksReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
+import { init } from './app/appActions';
+import appReducer from './app/appReducer';
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -58,7 +61,9 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
-  encounters: encountersReducer
+  encounters: encountersReducer,
+  tracks: tracksReducer,
+  app: appReducer
 });
 
 /**
@@ -73,9 +78,12 @@ const store = createStore(
 
 render(
   <Provider store={store} >
-    <AppContainer >
+    <AppContainer>
       <AuthMapContainer />
-    </AppContainer >
-  </Provider >,
+    </AppContainer>
+  </Provider>,
   document.getElementById('app')
 );
+
+
+store.dispatch(init());

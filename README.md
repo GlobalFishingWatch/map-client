@@ -1,6 +1,6 @@
 # Global Fishing Watch
 
-This repository will host the Global Fishing Watch client application developed by [vizzuality](http://www.vizzuality.com/)
+This repository hosts the Global Fishing Watch client application.
 
 # Requirements
 
@@ -232,3 +232,60 @@ To do so:
 #### GA_INNER_TIMELINE_EXTENT_CHANGED
 
 Returns the length of the new inner extent in days.
+
+
+# GET parameters available on the client
+
+#### params
+
+A base64-encoded JSON object that represent values to override the currently displayed workspace. See "Workspace override" section below.
+
+#### paramsPlainText
+
+A plain text JSON object that that represent values to override the currently displayed workspace. See "Workspace override" section below.
+
+#### embedded
+
+A boolean value telling whether the client is in embedded mode (no share, no layers, no menu)
+
+# Workspace Override
+
+As of v1:
+```
+{
+  vessels: [[seriesgroup/uvi0, tilesetId0, series0], ..., [seriesgroup/uviN, tilesetIdN,seriesN]],  // merges with workspace pinned vessels, first vessel of the array is shownVessel, series is an optional argument for each vessel
+  view: [zoom, longitude, latitude], // overrides workspace-set view
+  innerExtent: [start, end], // overrides workspace
+  outerExtent: [start, end] // overrides workspace
+  version: int // the version will tell the client the structure of the params
+}
+```
+
+#### vessels
+
+`[[seriesgroup/uvi0, tilesetId0, series0], ..., [seriesgroup/uviN, tilesetIdN,seriesN]]`
+
+Adds specified vessels to the current workspace pinned vessels (`pinnedVessels`).
+The first vessel provided replaces the current workspace `shownVessel`, if existing.
+
+#### view
+
+`[zoom, longitude, latitude]`
+
+Overrides workspace's `map.center` and `map.zoom`.
+
+#### innerExtent
+
+`[start, end]`
+
+Overrides workspace's `timeline.innerExtent`.
+
+#### outerExtent
+
+`[start, end]`
+
+Overrides workspace's `timeline.outerExtent`.
+
+#### version
+
+Should be `"1"`

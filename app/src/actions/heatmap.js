@@ -2,16 +2,16 @@ import difference from 'lodash/difference';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import {
-  getTilePelagosPromises,
+  getTilePromises,
   getCleanVectorArrays,
   groupData,
-  addWorldCoordinates,
   getTilePlaybackData,
   selectVesselsAt
 } from 'util/heatmapTileData';
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'actions/vesselInfo';
+import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
+import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
 
@@ -60,6 +60,7 @@ export function initHeatmapLayers() {
           url: workspaceLayer.url,
           tiles: [],
           tilesetId: workspaceLayer.tilesetId,
+          subtype: workspaceLayer.subtype,
           // initially attach which of the temporal extents indices are visible with initial outerExtent
           visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
         };
@@ -77,19 +78,22 @@ export function initHeatmapLayers() {
 /**
  * loadLayerTile - loads an heatmap tile.
  *
- * @param  {object} tileCoordinates        tile coordinates from reference tile
- * @param  {string} layerUrl             the base layer url
+ * @param  {object} tileCoordinates      tile coordinates from reference tile
  * @param  {string} token                the user's token
- * @param  {array} temporalExtents       all of the layer's header temporal extents
  * @param  {array} temporalExtentsIndices which of the temporal extents from  temporalExtents should be loaded
+ * @param  {string} urls                 tile endpoints provided by header
+ * @param  {array} temporalExtents       all of the layer's header temporal extents
+ * @param  {bool} temporalExtentsLess    true = don't try to load different tiles based on current time extent
+ * @param  {bool} isPBF                  true = read tile as MVT + PBF tile, rather than using Pelagos client
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, temporalExtentsLess, temporalExtentsIndices) {
-  // const tileCoordinates = referenceTile.tileCoordinates;
-  const pelagosPromises = getTilePelagosPromises(layerUrl, token, temporalExtents, {
+function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { endpoints, temporalExtents, temporalExtentsLess, isPBF }) {
+  const url = endpoints.tiles;
+  const pelagosPromises = getTilePromises(url, token, temporalExtents, {
     tileCoordinates,
     temporalExtentsIndices,
-    temporalExtentsLess
+    temporalExtentsLess,
+    isPBF
   });
   const allLayerPromises = Promise.all(pelagosPromises);
 
@@ -105,29 +109,35 @@ function loadLayerTile(tileCoordinates, layerUrl, token, temporalExtents, tempor
 /**
  * parseLayerTile - parses an heatmap tile to a playback-ready format.
  *
+ * @param  {Object} rawTileData          the raw tile data, loaded either from the pelagos client or as a MVT/PBF vector tile
+ * @param  {array} colsByName            names of the columns present in the raw tiles that need to be included in the final playback data
  * @param  {object} tileCoordinates      tile coordinates from reference tile
- * @param  {array} columns               names of the columns present in the raw tiles that need to be included in the final playback data
  * @param  {object} map                  a reference to the Google Map object. This is required to access projection data.
- * @param  {Object} rawTileData
  * @param  {array} prevPlaybackData      (optional) in case some time extent was already loaded for this tile, append to this data
  * @return {Object}                      playback-ready merged data
  */
-function parseLayerTile(tileCoordinates, columns, map, rawTileData, prevPlaybackData) {
-  // console.time('test')
-  const cleanVectorArrays = getCleanVectorArrays(rawTileData);
-  const groupedData = groupData(cleanVectorArrays, columns);
-  if (Object.keys(groupedData).length === 0) {
-    return [];
+function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, prevPlaybackData) {
+  let data;
+  if (isPBF === true) {
+    if (rawTileData === undefined || !rawTileData.length || rawTileData[0] === undefined || !Object.keys(rawTileData[0].layers).length) {
+      return [];
+    }
+    data = rawTileData[0].layers.points;
+  } else {
+    const cleanVectorArrays = getCleanVectorArrays(rawTileData);
+    data = groupData(cleanVectorArrays, Object.keys(colsByName));
+    if (Object.keys(data).length === 0) {
+      return [];
+    }
   }
-  const vectorArray = (columns.indexOf('latitude') > -1) ? addWorldCoordinates(groupedData, map) : groupedData;
-  const data = getTilePlaybackData(
-    tileCoordinates.zoom,
-    vectorArray,
-    columns,
+  const playbackData = getTilePlaybackData(
+    data,
+    colsByName,
+    tileCoordinates,
+    isPBF,
     prevPlaybackData
   );
-  return data;
-  // console.timeEnd('test');
+  return playbackData;
 }
 
 /**
@@ -173,12 +183,9 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
 
         const tilePromise = loadLayerTile(
           referenceTile.tileCoordinates,
-          // TODO use URL from header
-          layers[layerId].url,
           token,
-          layerHeader.temporalExtents,
-          layerHeader.temporalExtentsLess,
-          temporalExtentsIndicesToLoad
+          temporalExtentsIndicesToLoad,
+          layerHeader
         );
 
         allPromises.push(tilePromise);
@@ -186,10 +193,11 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         tilePromise.then((rawTileData) => {
           tile.temporalExtentsIndicesLoaded = uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
-            referenceTile.tileCoordinates,
-            Object.keys(layerHeader.colsByName),
-            map,
             rawTileData,
+            layerHeader.colsByName,
+            layerHeader.isPBF,
+            referenceTile.tileCoordinates,
+            map,
             tile.data
           );
           dispatch({
@@ -364,8 +372,7 @@ const _queryHeatmap = (state, tileQuery) => {
       const currentFilters = _getCurrentFiltersForLayer(state, layerId);
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
-          layerId,
-          tilesetId: layer.tilesetId,
+          layer: workspaceLayer,
           vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
             tileQuery.worldY, startIndex, endIndex, currentFilters)
         });
@@ -373,59 +380,63 @@ const _queryHeatmap = (state, tileQuery) => {
     }
   });
 
-  const layersVesselsResult = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
+  const layersVesselsResults = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
 
   // it's a cluster because of aggregation on the server side
   let isCluster;
   // its a cluster because or multiple vessels under mouse
   let isMouseCluster;
   let isEmpty;
-  let layerId;
-  let tilesetId;
+  let layerVesselsResult;
   let foundVessels;
 
-  if (layersVesselsResult.length === 0) {
+  const hasEncounters = layersVesselsResults.filter(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters).length > 0;
+
+  if (layersVesselsResults.length === 0) {
     isEmpty = true;
-  } else if (layersVesselsResult.length > 1) {
-    // if there are points over multiple layers, consider this a cluster
+  } else if (layersVesselsResults.length > 1 && !hasEncounters) {
+    // if there are points over multiple layers, consider this a cluster (ie don't select, zoom instead, or don't highlight)
+    // there's an exception if vessel selection contains an encounter, in which case it will take priority
     isCluster = true;
   } else {
+    // if we have a hit with an encounters layer, use it in priority
+    // if not the layersVesselsResults should contain a single result
+    layerVesselsResult = (hasEncounters) ?
+      layersVesselsResults.find(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters) :
+      layersVesselsResults[0];
+
     // we can get multiple points with similar series and seriesgroup, in which case
     // we should treat that as a successful vessel query, not a cluster
-    layerId = layersVesselsResult[0].layerId;
-    tilesetId = layersVesselsResult[0].tilesetId;
-    const vessels = layersVesselsResult[0].vessels;
+    const vessels = layerVesselsResult.vessels;
 
     if (vessels.length === 0) {
       isEmpty = true;
     } else {
-      // look up for any non-negative seriesgroup (not clusters on the server side)
-      const nonClusteredVessels = vessels.filter(v => v.seriesgroup > 0);
-
-      if (nonClusteredVessels.length) {
-        foundVessels = uniqBy(nonClusteredVessels, v => v.series).map(v => ({
-          series: v.series,
-          seriesgroup: v.seriesgroup
-        }));
-        isMouseCluster = foundVessels.length > 1;
-      } else {
+      // look up for any negatives seriesgroup (clusters on the server side)
+      const clusteredVessels = vessels.filter(v => v.seriesgroup < 0);
+      if (clusteredVessels.length) {
         isCluster = true;
+      } else {
+        foundVessels = uniqBy(vessels, v => v.series);
+        isMouseCluster = foundVessels.length > 1;
       }
     }
   }
 
-  return { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId };
+  const layer = (layerVesselsResult === undefined) ? {} : layerVesselsResult.layer;
+
+  return { isEmpty, isCluster, isMouseCluster, foundVessels, layer };
 };
 
 export function highlightVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
-    const { layerId, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch({
       type: HIGHLIGHT_VESSELS,
       payload: {
-        layerId,
+        layerId: layer.id,
         isEmpty,
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
@@ -454,9 +465,10 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       return;
     }
 
-    const { isEmpty, isCluster, isMouseCluster, tilesetId, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
     dispatch(clearVesselInfo());
+    dispatch(clearEncountersInfo());
 
     if (isEmpty === true) {
       // nothing to see here
@@ -473,7 +485,16 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeries = foundVessels[0].series;
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
-      dispatch(addVessel(tilesetId, selectedSeriesgroup, selectedSeries));
+      if (layer.subtype === LAYER_TYPES.Encounters) {
+        if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
+          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
+        } else {
+          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
+        }
+      } else {
+        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
+      }
+
     }
   };
 }

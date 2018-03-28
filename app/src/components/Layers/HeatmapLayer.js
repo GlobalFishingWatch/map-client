@@ -3,14 +3,28 @@ import 'pixi.js';
 import uniq from 'lodash/uniq';
 import { vesselSatisfiesFilters } from 'util/heatmapTileData';
 import { COLOR_HUES } from 'config';
+import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
 export default class HeatmapLayer {
-  constructor(layerSettings, baseTexture, maxSprites) {
+  /**
+   * Creates a HeatmapLayer, which represents a layer on the layer palette, of type Heatmap (ie AIS, VMS, encounters...)
+   * @param layerSettings           the layerSettings sent by the workspace
+   * @param baseTexture             a texture atlas/spritesheet created by the GLContainer. A HeatmapLayer will just
+   * change the texture offset.
+   * @param maxSprites              maximum sprites allowed, determined by screen size
+   * @param useRadialGradientStyle  use radial gradient style (blurry brushes), or on the opposite a clean circle style
+   * @param customRenderingStyle    override the rendering style set up in layerSettings (layer header)
+   */
+  constructor(layerSettings, baseTexture, maxSprites, useRadialGradientStyle, customRenderingStyle = {}) {
     this.id = layerSettings.id;
     this.subLayers = {};
     this.baseTexture = baseTexture;
     this.maxSprites = maxSprites;
+    this.renderingStyle = (layerSettings.header && layerSettings.header.rendering) ? layerSettings.header.rendering : customRenderingStyle;
+
+    this.setBrushRenderingStyle(this.renderingStyle.style);
+    this.setBrushZoomRenderingStyle(useRadialGradientStyle);
 
     this.stage = new PIXI.Container();
 
@@ -38,10 +52,32 @@ export default class HeatmapLayer {
     this.defaultHue = hue;
   }
 
-  setRenderingStyle(useHeatmapStyle) {
-    this.useHeatmapStyle = useHeatmapStyle;
+  setBrushRenderingStyle(style = BRUSH_RENDERING_STYLE.NORMAL) {
+    if (typeof style === 'string') {
+      this.brushRenderingStyle = BRUSH_RENDERING_STYLE[style.toUpperCase()];
+    } else {
+      this.brushRenderingStyle = style;
+    }
+    this._setBrushRenderingStyleIndex();
+  }
+
+  setBrushZoomRenderingStyle(useRadialGradientStyle) {
+    this.brushZoomRenderingStyle = (useRadialGradientStyle === true)
+      ? BRUSH_ZOOM_RENDERING_STYLE.RADIAL_GRADIENT
+      : BRUSH_ZOOM_RENDERING_STYLE.CIRCLE;
+    this._setBrushRenderingStyleIndex();
+  }
+
+  _setBrushRenderingStyleIndex() {
+    // only NORMAL brush styles support different zoom styles
+    const cappedZoomRenderingStyle = (this.brushRenderingStyle === BRUSH_RENDERING_STYLE.NORMAL) ? this.brushZoomRenderingStyle : 0;
+    const newStyleIndex = this.brushRenderingStyle + cappedZoomRenderingStyle;
+    if (newStyleIndex === this.renderingStyleIndex) {
+      return;
+    }
+    this.renderingStyleIndex = newStyleIndex;
     Object.values(this.subLayers).forEach((subLayer) => {
-      subLayer.setRenderingStyle(useHeatmapStyle);
+      subLayer.setRenderingStyleIndex(this.renderingStyleIndex);
     });
   }
 
@@ -54,7 +90,8 @@ export default class HeatmapLayer {
 
     const allHuesToRender = (this.filters !== undefined && this.filters.length)
       ? this.filters
-        // pass is set to true by filterGroupActions when none of the filters fields in the filter group is supported by the layer headers
+        // pass is set to true by filterGroupActions when none of the filters fields
+        // in the filter group is supported by the layer headers
         .filter(f => f.pass !== true)
         .map(f => f.hue.toString())
       : [this.defaultHue.toString()];
@@ -73,7 +110,7 @@ export default class HeatmapLayer {
       }
       if (currentlyUsedHues.indexOf(hue) === -1) {
         // not on old hues: create sublayer
-        this.subLayers[hue] = this._createSublayer(this.baseTexture, this.maxSprites, this.useHeatmapStyle, hue);
+        this.subLayers[hue] = this._createSublayer(this.baseTexture, this.maxSprites, this.renderingStyleIndex, hue);
       }
       this.subLayers[hue].spritesProps = [];
     }
@@ -134,8 +171,8 @@ export default class HeatmapLayer {
         const spriteProps = {
           x: (worldX - originX) * offsets.scale,
           y: ((frame.worldY[index] - offsets.top) * offsets.scale),
-          alpha: frame.opacity[index],
-          scale: frame.radius[index]
+          alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
+          scale: (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
         };
         if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
           this.subLayers[hue].spritesProps.push(spriteProps);
@@ -144,8 +181,8 @@ export default class HeatmapLayer {
     }
   }
 
-  _createSublayer(baseTexture, maxSprites, useHeatmapStyle, hue) {
-    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, useHeatmapStyle, hue);
+  _createSublayer(baseTexture, maxSprites, renderingStyleIndex, hue) {
+    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, renderingStyleIndex, hue);
     this.stage.addChild(subLayer.stage);
     return subLayer;
   }

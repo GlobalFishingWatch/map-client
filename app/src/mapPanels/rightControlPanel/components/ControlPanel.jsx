@@ -10,8 +10,8 @@ import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
 import LayerManagement from 'layers/containers/LayerManagement';
 import SearchPanel from 'search/containers/SearchPanel';
-import VesselInfoPanel from 'containers/Map/VesselInfoPanel';
-import EncountersPanel from 'mapPanels/rightControlPanel/containers/EncountersPanel';
+import VesselInfoPanel from 'vesselInfo/containers/VesselInfoPanel';
+import EncountersPanel from 'encounters/containers/EncountersPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import iconStyles from 'styles/icons.scss';
 import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
@@ -30,10 +30,33 @@ class ControlPanel extends Component {
     this.onCloseLayersSubMenu = this.onCloseLayersSubMenu.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.props.isReportStarted === true) {
-      this.controlPanelRef.scrollTop = this.controlPanelRef.clientHeight;
+  componentDidUpdate(prevProps) {
+    if (
+      (this.props.isReportStarted === true && prevProps.isReportStarted !== this.props.isReportStarted) ||
+      (this.props.encountersInfo !== null && prevProps.encountersInfo !== this.props.encountersInfo) ||
+      (this.props.currentlyShownVessel !== null && prevProps.currentlyShownVessel !== this.props.currentlyShownVessel)
+    ) {
+      this._animateScroll();
     }
+  }
+
+  _animateScroll() {
+    const targetY = this.controlPanelRef.clientHeight;
+    let nextY = this.controlPanelRef.scrollTop;
+    const step = () => {
+      const currentY = nextY;
+      const deltaY = targetY - currentY;
+      const incrementY = deltaY * 0.1;
+      nextY += incrementY;
+      this.controlPanelRef.scrollTop = nextY;
+
+      if (nextY < targetY - 5) {
+        window.requestAnimationFrame(step);
+      } else {
+        this.controlPanelRef.scrollTop = targetY;
+      }
+    };
+    window.requestAnimationFrame(step);
   }
 
   onCloseVesselsSubMenu() {
@@ -260,7 +283,9 @@ ControlPanel.propTypes = {
   vessels: PropTypes.array,
   numPinnedVessels: PropTypes.number.isRequired,
   numFilters: PropTypes.number.isRequired,
-  isDrawing: PropTypes.bool
+  isDrawing: PropTypes.bool,
+  encountersInfo: PropTypes.object,
+  currentlyShownVessel: PropTypes.object
 };
 
 export default ControlPanel;

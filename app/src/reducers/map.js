@@ -13,7 +13,13 @@ import {
 } from 'actions/map';
 import { MAX_ZOOM_LEVEL } from 'config';
 import { SET_MAX_ZOOM } from 'layers/layersActions';
-import { SET_TILESET_ID, SET_TILESET_URL, SET_URL_WORKSPACE_ID, SET_WORKSPACE_ID } from 'actions/workspace';
+import {
+  SET_TILESET_ID,
+  SET_TILESET_URL,
+  SET_URL_WORKSPACE_ID,
+  SET_WORKSPACE_ID,
+  SET_WORKSPACE_OVERRIDE
+} from 'workspace/workspaceActions';
 
 const initialState = {
   isDrawing: false,
@@ -82,6 +88,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { workspaceId: action.payload });
     case DELETE_WORKSPACE_ID:
       return Object.assign({}, state, { workspaceId: null });
+    case SET_WORKSPACE_OVERRIDE:
+      return Object.assign({}, state, { workspaceOverride: action.payload });
+
 
     case SET_LAYER_INFO_MODAL: {
       const newState = Object.assign({}, state);

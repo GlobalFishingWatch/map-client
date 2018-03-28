@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import MapContainer from 'components/MapContainer';
 import { initGoogleMaps, setZoom, setCenter, setMouseLatLong } from 'actions/map';
-import { setUrlWorkspaceId } from 'actions/workspace';
 import { toggleLayerVisibility } from 'layers/layersActions';
 import { hidePolygonModal } from 'report/reportActions';
 import { loadTimebarChartData } from 'timebar/timebarActions';
@@ -23,15 +22,15 @@ const mapStateToProps = state => ({
   token: state.user.token,
   trackBounds: state.vesselInfo.trackBounds,
   userPermissions: state.user.userPermissions,
-  zoom: state.map.zoom
+  zoom: state.map.zoom,
+  isEmbedded: state.app.isEmbedded
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
   initMap: (googleMaps) => {
     dispatch(initGoogleMaps(googleMaps));
   },
   loadInitialState: () => {
-    dispatch(setUrlWorkspaceId(ownProps.workspaceId));
     dispatch(loadTimebarChartData(TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE));
   },
   toggleLayerVisibility: (layer) => {

@@ -9,18 +9,30 @@ import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
-import { VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD } from 'config';
+import { VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD } from 'config';
 import { LAYER_TYPES } from 'constants';
 
-const useHeatmapStyle = zoom => zoom < VESSELS_HEATMAP_STYLE_ZOOM_THRESHOLD;
+const useRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 
-const getTracks = vessels => vessels
+// TODO this should be in a reducer or container
+// TODO remove vesselTracks in favor of tracks. vesselTracks are the tracks attached to the vesselInfo store,
+// which will eventually migrate to their own tracks store (already implemented with encounters tracks)
+const getTracks = (vesselTracks, tracks) => vesselTracks
   .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
   .map(vessel => ({
     data: vessel.track.data,
     selectedSeries: vessel.track.selectedSeries,
     hue: vessel.hue
-  }));
+  }))
+  .concat(
+    tracks
+      .filter(track => track.show)
+      .map(track => ({
+        data: track.data,
+        selectedSeries: track.series,
+        color: track.color
+      }))
+  );
 
 class MapLayers extends Component {
   constructor(props) {
@@ -59,7 +71,7 @@ class MapLayers extends Component {
     if (this.props.zoom !== nextProps.zoom && this.glContainer) {
       // zooming started: hide gl container, show again when map is idle
       this.glContainer.hide();
-      this.glContainer.setStyle(useHeatmapStyle(nextProps.zoom));
+      this.glContainer.setStyle(useRadialGradientStyle(nextProps.zoom));
     }
 
     if (!isEqual(nextProps.reportedPolygonsIds, this.props.reportedPolygonsIds)) {
@@ -79,14 +91,17 @@ class MapLayers extends Component {
 
     const innerExtentChanged = extentChanged(this.props.timelineInnerExtentIndexes, nextProps.timelineInnerExtentIndexes);
 
-    const nextTracks = getTracks(nextProps.vesselTracks);
+    const nextTracks = getTracks(nextProps.vesselTracks, nextProps.tracks);
 
     if (!nextTracks || nextTracks.length === 0) {
-      if (this.props.vesselTracks && this.props.vesselTracks.length) {
+
+      const currentVesselTracksNum = (this.props.vesselTracks) ? this.props.vesselTracks.length : 0;
+      const currentTracksNum = (this.props.tracks) ? this.props.tracks.length : 0;
+      if (currentVesselTracksNum + currentTracksNum > 0) {
         this.glContainer.clearTracks();
         this.glContainer.toggleHeatmapDimming(false);
       }
-    } else if (this.shouldUpdateTrackLayer(nextProps, innerExtentChanged)) {
+    } else {
       this.updateTrackLayer({
         data: nextTracks,
         timelineInnerExtentIndexes: nextProps.timelineInnerExtentIndexes,
@@ -110,51 +125,6 @@ class MapLayers extends Component {
     }
   }
 
-  /**
-   * TODO remove this monster. This will be possible with an isolated container only interested
-   *    in relevant props.
-   * update tracks layer when:
-   * - user selected a new vessel (seriesgroup or selectedSeries changed)
-   * - zoom level changed (needs fetching of a new tileset)
-   * - playing state changed
-   * - user hovers on timeline to highlight a portion of the track, only if selectedSeries is set (redrawing is too
-   * slow when all series are shown)
-   * - selected inner extent changed
-   *
-   * @param nextProps
-   * @param innerExtentChanged
-   * @returns {boolean}
-   */
-  shouldUpdateTrackLayer(nextProps, innerExtentChanged) {
-    if (!this.props.vesselTracks) {
-      return true;
-    }
-    if (this.props.vesselTracks.length !== nextProps.vesselTracks.length) {
-      return true;
-    }
-    if (nextProps.vesselTracks.some((vesselTrack, index) =>
-      vesselTrack.hue !== this.props.vesselTracks[index].hue ||
-      vesselTrack.visible !== this.props.vesselTracks[index].visible ||
-      vesselTrack.shownInInfoPanel !== this.props.vesselTracks[index].shownInInfoPanel ||
-      vesselTrack.track !== this.props.vesselTracks[index].track
-    ) === true) {
-      return true;
-    }
-    if (this.props.zoom !== nextProps.zoom) {
-      return true;
-    }
-    if (this.props.timelinePaused !== nextProps.timelinePaused) {
-      return true;
-    }
-    if (extentChanged(this.props.timelineOverExtentIndexes, nextProps.timelineOverExtentIndexes)) {
-      return true;
-    }
-    if (innerExtentChanged) {
-      return true;
-    }
-    return false;
-  }
-
   build() {
     this.map.addListener('idle', this.onMapIdleBound);
     this.map.addListener('click', this.onMapClickBound);
@@ -166,9 +136,13 @@ class MapLayers extends Component {
   initHeatmap() {
     this.tiledLayer = new TiledLayer(this.props.createTile, this.props.releaseTile, this.map);
     this.map.overlayMapTypes.insertAt(0, this.tiledLayer);
-    this.glContainer = new GLContainer(this.props.viewportWidth, this.props.viewportHeight, (overlayProjection) => {
-      this.tiledLayer.setProjection(overlayProjection);
-    });
+    this.glContainer = new GLContainer(
+      this.props.viewportWidth,
+      this.props.viewportHeight,
+      useRadialGradientStyle(this.props.zoom),
+      (overlayProjection) => {
+        this.tiledLayer.setProjection(overlayProjection);
+      });
     this.glContainer.setMap(this.map);
   }
 
@@ -249,7 +223,7 @@ class MapLayers extends Component {
   }
 
   addHeatmapLayer(newLayer) {
-    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer);
+    this.addedLayers[newLayer.id] = this.glContainer.addLayer(newLayer, useRadialGradientStyle(this.props.zoom));
   }
 
   removeHeatmapLayer(layer) {
@@ -257,7 +231,7 @@ class MapLayers extends Component {
   }
 
   setHeatmapFilters(props) {
-    this.glContainer.setFilters(props.layerFilters, useHeatmapStyle(this.props.zoom));
+    this.glContainer.setFilters(props.layerFilters);
   }
 
   updateHeatmap(props) {
@@ -273,7 +247,7 @@ class MapLayers extends Component {
   }
 
   addCustomLayer(layer) {
-    this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url);
+    this.addedLayers[layer.id] = new CustomLayerWrapper(this.map, layer.url, layer.justUploaded);
   }
 
   removeCustomLayer(layer) {
@@ -436,11 +410,11 @@ class MapLayers extends Component {
   }
 
   updateTrackLayerWithCurrentProps() {
-    if (!this.props.vesselTracks) {
+    if (!this.props.vesselTracks && !this.props.tracks) {
       return;
     }
 
-    const tracks = getTracks(this.props.vesselTracks);
+    const tracks = getTracks(this.props.vesselTracks, this.props.tracks);
 
     this.updateTrackLayer({
       data: tracks,
@@ -513,6 +487,7 @@ MapLayers.propTypes = {
   timelineOverExtentIndexes: PropTypes.array,
   timelinePaused: PropTypes.bool,
   vesselTracks: PropTypes.array,
+  tracks: PropTypes.array,
   viewportWidth: PropTypes.number,
   viewportHeight: PropTypes.number,
   reportLayerId: PropTypes.string,
