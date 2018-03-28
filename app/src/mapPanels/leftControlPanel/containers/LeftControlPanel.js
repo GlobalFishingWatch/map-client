@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { setZoom } from 'actions/map';
+import { incrementZoom, decrementZoom } from 'map/mapViewportActions';
 import LeftControlPanel from 'mapPanels/leftControlPanel/components/LeftControlPanel';
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { saveWorkspace } from 'workspace/workspaceActions';
@@ -7,10 +7,10 @@ import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
-  maxZoom: state.map.maxZoom,
-  mouseLatLong: state.map.mouseLatLong,
-  userPermissions: state.user.userPermissions,
-  zoom: state.map.zoom
+  canZoomIn: state.mapViewport.canZoomIn,
+  canZoomOut: state.mapViewport.canZoomOut,
+  mouseLatLong: state.mapViewport.mouseLatLong,
+  userPermissions: state.user.userPermissions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,7 +21,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(openShareModal(true));
     dispatch(saveWorkspace(setShareModalError));
   },
-  setZoom: zoom => dispatch(setZoom(zoom))
+  incrementZoom: () => dispatch(incrementZoom()),
+  decrementZoom: () => dispatch(decrementZoom())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeftControlPanel);

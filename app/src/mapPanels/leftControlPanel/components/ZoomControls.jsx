@@ -8,19 +8,19 @@ import ShareIcon from '-!babel-loader!svg-react-loader!assets/icons/share.svg?na
 import ZoomInIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-out.svg?name=ZoomOutIcon';
 
-function ZoomControls({ canShareWorkspaces, openShareModal, zoom, maxZoom, changeZoomLevel }) {
+function ZoomControls({ canShareWorkspaces, openShareModal, canZoomIn, canZoomOut, changeZoomLevel }) {
   return (
     <div className={MapStyles.zoomControls}>
       <span
-        className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom >= maxZoom })}
-        id="zoom_up"
+        className={classnames(MapStyles.control, { [MapStyles._disabled]: canZoomIn === false })}
+        id="zoom_in"
         onClick={changeZoomLevel}
       >
         <ZoomInIcon className={classnames(iconStyles.icon, iconStyles.iconZoomIn)} />
       </span>
       <span
-        className={classnames(MapStyles.control, { [MapStyles._disabled]: zoom <= MIN_ZOOM_LEVEL })}
-        id="zoom_down"
+        className={classnames(MapStyles.control, { [MapStyles._disabled]: canZoomOut === false })}
+        id="zoom_out"
         onClick={changeZoomLevel}
       >
         <ZoomOutIcon className={classnames(iconStyles.icon, iconStyles.iconZoomOut)} />
@@ -36,9 +36,9 @@ function ZoomControls({ canShareWorkspaces, openShareModal, zoom, maxZoom, chang
 ZoomControls.propTypes = {
   canShareWorkspaces: PropTypes.bool.isRequired,
   openShareModal: PropTypes.func.isRequired,
-  maxZoom: PropTypes.number.isRequired,
-  zoom: PropTypes.number.isRequired,
-  changeZoomLevel: PropTypes.func.isRequired
+  changeZoomLevel: PropTypes.func.isRequired,
+  canZoomIn: PropTypes.bool.isRequired,
+  canZoomOut: PropTypes.bool.isRequired
 };
 
 export default ZoomControls;

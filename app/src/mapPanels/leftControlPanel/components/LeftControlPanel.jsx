@@ -14,10 +14,11 @@ class LeftControlPanel extends Component {
   }
 
   changeZoomLevel(event) {
-    const newZoomLevel = (event.currentTarget.id === 'zoom_up')
-      ? this.props.zoom + 1
-      : this.props.zoom - 1;
-    this.props.setZoom(newZoomLevel);
+    if (event.currentTarget.id === 'zoom_in') {
+      this.props.incrementZoom();
+    } else {
+      this.props.decrementZoom();
+    }
   }
 
   render() {
@@ -31,13 +32,13 @@ class LeftControlPanel extends Component {
           <Loader tiny />
         </div >
         <div className={mapStyles.latlon} >
-          {this.props.mouseLatLong.lat}, {this.props.mouseLatLong.long}
+          {this.props.mouseLatLong.lat.toFixed(4)}, {this.props.mouseLatLong.long.toFixed(4)}
         </div >
         <ZoomControls
           canShareWorkspaces={canShareWorkspaces}
           openShareModal={this.props.openShareModal}
-          zoom={this.props.zoom}
-          maxZoom={this.props.maxZoom}
+          canZoomIn={this.props.canZoomIn}
+          canZoomOut={this.props.canZoomOut}
           changeZoomLevel={this.changeZoomLevel}
         />
       </div>
@@ -48,12 +49,13 @@ class LeftControlPanel extends Component {
 
 LeftControlPanel.propTypes = {
   isEmbedded: PropTypes.bool.isRequired,
-  maxZoom: PropTypes.number.isRequired,
+  canZoomIn: PropTypes.bool.isRequired,
+  canZoomOut: PropTypes.bool.isRequired,
   mouseLatLong: PropTypes.object,
   openShareModal: PropTypes.func.isRequired,
-  setZoom: PropTypes.func.isRequired,
+  incrementZoom: PropTypes.func.isRequired,
+  decrementZoom: PropTypes.func.isRequired,
   userPermissions: PropTypes.array,
-  zoom: PropTypes.number.isRequired
 };
 
 export default LeftControlPanel;

@@ -7,8 +7,8 @@ import {
   COLORS
 } from 'config';
 import { LAYER_TYPES, FLAGS } from 'constants';
-import { SET_ZOOM, SET_CENTER } from 'actions/map';
 import { SET_BASEMAP } from 'basemap/basemapActions';
+import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
@@ -121,8 +121,8 @@ export function saveWorkspace(errorAction) {
       workspace: {
         tileset: state.map.tilesetId,
         map: {
-          center: state.map.center,
-          zoom: state.map.zoom,
+          center: [state.mapViewport.viewport.latitude, state.mapViewport.viewport.longitude],
+          zoom: state.mapViewport.viewport.zoom,
           layers
         },
         pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
@@ -167,15 +167,11 @@ export function saveWorkspace(errorAction) {
 function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
 
-  // We update the zoom level
-  dispatch({
-    type: SET_ZOOM, payload: { zoom: workspaceData.zoom }
-  });
-
-  // We update the center of the map
-  dispatch({
-    type: SET_CENTER, payload: workspaceData.center
-  });
+  dispatch(updateViewport({
+    zoom: workspaceData.zoom,
+    latitude: workspaceData.center[0],
+    longitude: workspaceData.center[1],
+  }));
 
   // We update the dates of the timeline
   dispatch({

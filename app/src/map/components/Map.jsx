@@ -5,6 +5,33 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
 
+// import {experimental} from 'react-map-gl';
+//
+// class MapControls extends experimental.MapControls {
+//   constructor() {
+//     super();
+//     this.events = ['mousemove'];
+//   }
+//
+//   // Override the default handler in MapControls
+//   handleEvent(event) {
+//     if (event.type === 'mousemove') {
+//       console.log('hi', event);
+//     }
+//     return super.handleEvent(event);
+//   }
+//   // _onPan(event) {
+//   //   console.log('pan')
+//   //   return this.isFunctionKeyPressed(event) || event.rightButton ?
+//   //     //  Default implementation in MapControls
+//   //     //  this._onPanRotate(event) : this._onPanMove(event);
+//   //     this._onPanMove(event) : this._onPanRotate(event);
+//   // }
+// }
+
+// const controls = new MapControls();
+
+
 class Map extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this._resize);
@@ -30,8 +57,12 @@ class Map extends React.Component {
     this.props.setViewport(viewport);
   }
 
+  onHover = (event) => {
+    this.props.setMouseLatLong(event.lngLat[1], event.lngLat[0]);
+  }
+
   render() {
-    const { viewport } = this.props;
+    const { viewport, maxZoom, minZoom } = this.props;
     return (
       <div
         id="map"
@@ -40,8 +71,12 @@ class Map extends React.Component {
         ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL
+          // mapControls={controls}
+          onHover={this.onHover}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"
           {...viewport}
+          maxZoom={maxZoom}
+          minZoom={minZoom}
           onViewportChange={this.onViewportChange}
           mapboxApiAccessToken={MAPBOX_TOKEN}
         >
@@ -54,7 +89,10 @@ class Map extends React.Component {
 
 Map.propTypes = {
   viewport: PropTypes.object,
-  setViewport: PropTypes.func
+  maxZoom: PropTypes.number,
+  minZoom: PropTypes.number,
+  setViewport: PropTypes.func,
+  setMouseLatLong: PropTypes.func
 };
 
 export default Map;

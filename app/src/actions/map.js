@@ -3,37 +3,23 @@ import { trackCenterTile } from 'analytics/analyticsActions';
 import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
 export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL_VISIBILITY';
-export const INIT_GOOGLE_MAPS = 'INIT_GOOGLE_MAPS';
-export const SET_ZOOM = 'SET_ZOOM';
 export const SET_CENTER = 'SET_CENTER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
 export const SET_DRAWING = 'SET_DRAWING';
-export const SET_MOUSE_LAT_LONG = 'SET_MOUSE_LAT_LONG';
 export const SET_CENTER_TILE = 'SET_CENTER_TILE';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 
-
-// store the original google maps in the app state.
-// this is needed in the heatmap actions/reducers, to avoid constantly passing
-// this object around
-export function initGoogleMaps(googleMaps) {
-  return {
-    type: INIT_GOOGLE_MAPS,
-    payload: googleMaps
-  };
-}
-
 export function setZoom(zoom, latLng = null) {
   return (dispatch, getState) => {
-    dispatch({
-      type: SET_ZOOM,
-      payload: {
-        zoom,
-        zoomCenter: latLng
-      }
-    });
+  //   dispatch({
+  //     type: SET_ZOOM,
+  //     payload: {
+  //       zoom,
+  //       zoomCenter: latLng
+  //     }
+  //   });
     if (getState().vesselInfo && getState().vesselInfo.details &&
       (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
       dispatch(clearVesselInfo());
@@ -148,12 +134,5 @@ export function setLayerManagementModalVisibility(visibility) {
   return {
     type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
     payload: visibility
-  };
-}
-
-export function setMouseLatLong(lat, long) {
-  return {
-    type: SET_MOUSE_LAT_LONG,
-    payload: { lat, long }
   };
 }
