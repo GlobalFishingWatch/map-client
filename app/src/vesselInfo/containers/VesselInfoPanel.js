@@ -11,9 +11,9 @@ const mapStateToProps = (state) => {
   if (
     currentlyShownLayer !== undefined &&
     currentlyShownLayer.header !== undefined &&
-    currentlyShownLayer.header.vesselFields !== undefined
+    currentlyShownLayer.header.info.fields !== undefined
   ) {
-    layerFieldsHeaders = currentlyShownLayer.header.vesselFields;
+    layerFieldsHeaders = currentlyShownLayer.header.info.fields;
   }
   return {
     currentlyShownVessel: state.vesselInfo.currentlyShownVessel,
