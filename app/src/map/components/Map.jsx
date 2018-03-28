@@ -6,21 +6,40 @@ import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
 
 class Map extends React.Component {
+  componentDidMount() {
+    window.addEventListener('resize', this._resize);
+    this._resize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._resize);
+  }
+
+  _resize = () => {
+    const mapContainerStyle = window.getComputedStyle(this._mapContainerRef);
+    const width = parseInt(mapContainerStyle.width, 10);
+    const height = parseInt(mapContainerStyle.height, 10);
+    this.props.setViewport({
+      ...this.props.viewport,
+      width,
+      height
+    });
+  }
+
   onViewportChange = (viewport) => {
     this.props.setViewport(viewport);
   }
 
   render() {
     const { viewport } = this.props;
-    console.log(viewport)
     return (
       <div
         id="map"
         className={mapStyles.map}
         style={{ height: '100%' }}
+        ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL
-          ref={(ref) => { this._ref = ref; }}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"
           {...viewport}
           onViewportChange={this.onViewportChange}
