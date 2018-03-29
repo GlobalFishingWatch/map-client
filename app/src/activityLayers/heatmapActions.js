@@ -231,7 +231,9 @@ export function getTile(referenceTile) {
       workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
       .map(layer => layer.id);
 
-    dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
+    if (visibleHeatmapLayers.length) {
+      dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
+    }
   };
 }
 

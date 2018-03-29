@@ -4,6 +4,7 @@ import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
 import buildEndpoint from 'utils/buildEndpoint';
 import convert from 'globalfishingwatch-convert';
+import { lngLatToWorld } from 'viewport-mercator-project';
 
 import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
 
@@ -181,7 +182,7 @@ export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, pr
       ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
 
     if (!columns.worldX) {
-      const { worldX, worldY } = convert.latLonToWorldCoordinates(point.latitude, point.longitude);
+      const [worldX, worldY] = lngLatToWorld([point.longitude, point.latitude], 1);
       point.worldX = worldX;
       point.worldY = worldY;
     }

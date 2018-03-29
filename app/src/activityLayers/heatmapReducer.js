@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   // a dict of heatmap layers (key is layer id)
-  // each containing url, tiles, visibleTemporalExtentsIndices
+  // each containing data, url, tiles, visibleTemporalExtentsIndices
   heatmapLayers: {},
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded

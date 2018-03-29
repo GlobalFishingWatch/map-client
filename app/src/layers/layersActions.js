@@ -49,6 +49,8 @@ function loadLayerHeader(tilesetUrl, token) {
   });
 }
 
+
+// TODO This shouldn't be here
 function setGlobalFiltersFromHeader(data) {
   return (dispatch) => {
     if (data.maxZoom !== undefined) {
