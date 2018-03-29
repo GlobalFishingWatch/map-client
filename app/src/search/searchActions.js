@@ -52,7 +52,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
 
           result.entries.forEach((entry) => {
             entry.tilesetId = layer.tilesetId;
-            entry.title = getVesselName(entry, layer.header.vesselFields);
+            entry.title = getVesselName(entry, layer.header.info.fields);
           });
           searchResultList = searchResultList.concat(result.entries);
           searchResultCount += result.total;

@@ -113,7 +113,10 @@ export function saveWorkspace(errorAction) {
       if (newLayer.subtype === LAYER_TYPES.Encounters) {
         newLayer.type = LAYER_TYPES.Encounters;
       }
+      // TODO Should we use a whitelist of fields instead ?
       delete newLayer.header;
+      delete newLayer.justUploaded;
+      delete newLayer.subtype;
       return newLayer;
     });
 

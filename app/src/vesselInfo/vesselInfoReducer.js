@@ -52,7 +52,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === vesselData.seriesgroup);
       const currentVessel = state.vessels[vesselIndex];
 
-      const defaultTitle = getVesselName(vesselData, action.payload.layer.header.vesselFields);
+      const defaultTitle = getVesselName(vesselData, action.payload.layer.header.info.fields);
 
       const newVessel = Object.assign({
         defaultTitle,

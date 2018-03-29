@@ -17,7 +17,7 @@
 
   &._expanded {
 
-    > .metadata {
+    > .metadata, .metadata._encounters {
       max-height: none;
       overflow: visible;
     }
@@ -38,6 +38,10 @@
       padding: 0;
     }
 
+    &._encounters {
+      max-height: $vessel-info-height-encounters;
+    }
+
     @media #{$mq-tablet} {
       max-height: none;
     }
@@ -49,8 +53,6 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        max-height: 100px;
-        overflow: hidden;
         padding-top: 10px;
         padding-right: 20px;
         padding-bottom: 8px;

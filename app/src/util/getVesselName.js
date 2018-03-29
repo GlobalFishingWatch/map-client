@@ -1,5 +1,5 @@
-export default (vesselData, vesselFields) => {
-  const vesselFieldPriorities = vesselFields
+export default (vesselData, fields) => {
+  const vesselFieldPriorities = fields
     .filter(v => v.titlePriority !== undefined)
     .sort(
       (a, b) => a.titlePriority > b.titlePriority
