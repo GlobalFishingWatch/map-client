@@ -42,6 +42,13 @@ class Map extends React.Component {
     window.removeEventListener('resize', this._resize);
   }
 
+  getBounds() {
+    return (this._mapGlRef === null) ? null : [
+      this._mapGlRef.getChildContext().viewport.unproject([0, 0]),
+      this._mapGlRef.getChildContext().viewport.unproject([this.props.viewport.width, this.props.viewport.height])
+    ];
+  }
+
   _resize = () => {
     const mapContainerStyle = window.getComputedStyle(this._mapContainerRef);
     const width = parseInt(mapContainerStyle.width, 10);
@@ -50,11 +57,11 @@ class Map extends React.Component {
       ...this.props.viewport,
       width,
       height
-    });
+    }, this.getBounds());
   }
 
   onViewportChange = (viewport) => {
-    this.props.setViewport(viewport);
+    this.props.setViewport(viewport, this.getBounds());
   }
 
   onHover = (event) => {
@@ -71,6 +78,7 @@ class Map extends React.Component {
         ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL
+          ref={(ref) => { this._mapGlRef = ref; }}
           // mapControls={controls}
           onHover={this.onHover}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"

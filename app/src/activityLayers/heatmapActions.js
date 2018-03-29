@@ -147,7 +147,7 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, pr
  * @param  {object} newTemporalExtentsToLoad (optional) a dict (layerId is the key) of temporal extents indices that should be
  * appended to existing data
  */
-function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
+function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
   return (dispatch, getState) => {
     const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
     dispatch(addLoader(loaderId));
@@ -169,7 +169,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
         if (!tile) {
           tile = {
             uid: referenceTile.uid,
-            canvas: referenceTile.canvas,
+            // canvas: referenceTile.canvas,
             temporalExtentsIndicesLoaded: []
           };
           layers[layerId].tiles.push(tile);
@@ -220,21 +220,13 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad) {
  *
  * @param  {number} uid             the reference tile uid
  * @param  {object} tileCoordinates the reference tiles coordinates
- * @param  {object} canvas          the tiles DOM canvas
  */
-export function getTile(uid, tileCoordinates, canvas) {
+export function getTile(referenceTile) {
   return (dispatch, getState) => {
-    const referenceTile = {
-      uid,
-      tileCoordinates,
-      canvas
-    };
-
-    dispatch({
-      type: ADD_REFERENCE_TILE,
-      payload: referenceTile
-    });
-
+    // dispatch({
+    //   type: ADD_REFERENCE_TILE,
+    //   payload: referenceTile
+    // });
     const visibleHeatmapLayers = getState().layers.workspaceLayers.filter(workspaceLayer =>
       workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
       .map(layer => layer.id);

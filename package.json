@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/GlobalFishingWatch/map-client#readme",
   "dependencies": {
+    "@mapbox/tile-cover": "^3.0.2",
     "body-parser": "^1.17.2",
     "classnames": "^2.2.5",
     "d3": "^4.10.0",

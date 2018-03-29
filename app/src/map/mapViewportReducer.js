@@ -17,6 +17,7 @@ const DEFAULT_TRANSITION = {
 };
 
 const initialState = {
+  bounds: null,
   viewport: {
     latitude: 0,
     longitude: 0,
@@ -38,16 +39,15 @@ export default function (state = initialState, action) {
     case SET_VIEWPORT: {
       return {
         ...state,
-        viewport: action.payload,
-        canZoomIn: action.payload.zoom < state.maxZoom,
-        canZoomOut: action.payload.zoom > state.minZoom
+        viewport: action.payload.viewport,
+        bounds: action.payload.bounds,
+        canZoomIn: action.payload.viewport.zoom < state.maxZoom,
+        canZoomOut: action.payload.viewport.zoom > state.minZoom
       };
     }
 
     case UPDATE_VIEWPORT: {
       const viewport = { ...state.viewport, ...action.payload };
-      console.log(viewport)
-
       return {
         ...state,
         viewport
@@ -67,7 +67,12 @@ export default function (state = initialState, action) {
     }
 
     case SET_MAX_ZOOM: {
-      return { ...state, maxZoom: action.payload };
+      return {
+        ...state,
+        maxZoom: action.payload,
+        canZoomIn: state.viewport.zoom < state.maxZoom,
+        canZoomOut: state.viewport.zoom > state.minZoom
+      };
     }
 
     case SET_MOUSE_LAT_LONG: {
