@@ -148,7 +148,6 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, pr
  * appended to existing data
  */
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
-  console.log(referenceTiles)
   return (dispatch, getState) => {
     const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
     dispatch(addLoader(loaderId));
@@ -222,10 +221,10 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
  */
 export function getTile(referenceTile) {
   return (dispatch, getState) => {
-    // dispatch({
-    //   type: ADD_REFERENCE_TILE,
-    //   payload: referenceTile
-    // });
+    dispatch({
+      type: ADD_REFERENCE_TILE,
+      payload: referenceTile
+    });
     const visibleHeatmapLayers = getState().layers.workspaceLayers.filter(workspaceLayer =>
       workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
       .map(layer => layer.id);
@@ -238,26 +237,30 @@ export function getTile(referenceTile) {
 
 
 /**
- * releaseTile - This action is emitted when an existing tile is removed from panning or zooming the map
- * @param  {type} uid the reference tile uid
+ * releaseTiles - This action is emitted when an existing tile is removed from panning or zooming the map
+ * @param  {array} uids tile ref uids to release
  */
-export function releaseTile(uid) {
+export function releaseTiles(uids) {
   return (dispatch, getState) => {
-    dispatch({
-      type: REMOVE_REFERENCE_TILE,
-      payload: uid
+    const layers = getState().heatmap.heatmapLayers;
+    uids.forEach(uid => {
+      dispatch({
+        type: REMOVE_REFERENCE_TILE,
+        payload: uid
+      });
+
+      // TODO Do that in the reducer!
+      Object.keys(layers).forEach((layerId) => {
+        const layer = layers[layerId];
+        const tiles = layer.tiles;
+        const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);
+        if (releasedTileIndex === -1) {
+          return;
+        }
+        tiles.splice(releasedTileIndex, 1);
+      });
     });
 
-    const layers = getState().heatmap.heatmapLayers;
-    Object.keys(layers).forEach((layerId) => {
-      const layer = layers[layerId];
-      const tiles = layer.tiles;
-      const releasedTileIndex = tiles.findIndex(tile => tile.uid === uid);
-      if (releasedTileIndex === -1) {
-        return;
-      }
-      tiles.splice(releasedTileIndex, 1);
-    });
     dispatch({
       type: UPDATE_HEATMAP_TILES, payload: layers
     });

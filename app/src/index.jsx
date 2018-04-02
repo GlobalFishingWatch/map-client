@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
 import 'styles/global.scss';
 import heatmapReducer from 'activityLayers/heatmapReducer';
+import heatmapTilesReducer from 'activityLayers/heatmapTilesReducer';
 import reportReducer from 'report/reportReducer';
 import mapViewportReducer from 'map/mapViewportReducer';
 import mapStyleReducer from 'map/mapStyleReducer';
@@ -50,6 +51,7 @@ const reducer = combineReducers({
   filters: filtersReducer,
   filterGroups: filterGroupsReducer,
   heatmap: heatmapReducer,
+  heatmapTiles: heatmapTilesReducer,
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
