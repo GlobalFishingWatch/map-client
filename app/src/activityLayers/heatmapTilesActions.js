@@ -12,7 +12,6 @@ export const updateHeatmapTilesFromViewport = () => {
     const zoom = viewport.zoom;
     const [wn, es] = bounds;
     const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
-    console.log(w,s,e,n)
     const geom = {
       type: 'Polygon',
       coordinates: [
@@ -20,10 +19,12 @@ export const updateHeatmapTilesFromViewport = () => {
       ]
     };
     //
-    var limits = {
+    const limits = {
       min_zoom: Math.ceil(zoom),
       max_zoom: Math.ceil(zoom)
     };
+
+    console.log(limits)
 
     const updatedTilesCoords = tilecover.tiles(geom, limits);
     const updatedTilesIndexes = tilecover.indexes(geom, limits);
@@ -39,7 +40,7 @@ export const updateHeatmapTilesFromViewport = () => {
     });
 
 
-    console.log(updatedTilesCoords, updatedTilesIndexes, updatedTiles)
+    // console.log(updatedTilesCoords, updatedTilesIndexes, updatedTiles)
     // .filter(tile => getState().app.tilesIndexes.indexOf(tile.index) === -1);
 
     updatedTiles.forEach((referenceTile) => {

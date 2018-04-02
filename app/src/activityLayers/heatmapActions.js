@@ -48,7 +48,7 @@ function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
 /**
  * initHeatmapLayers - Creates the base reducer state, extracting heatmap layers from all layers
  */
-export function initHeatmapLayers() {
+  export function initHeatmapLayers() {
   return (dispatch, getState) => {
     const currentOuterExtent = getState().filters.timelineOuterExtent;
     const workspaceLayers = getState().layers.workspaceLayers;
@@ -148,6 +148,7 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, map, pr
  * appended to existing data
  */
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
+  console.log(referenceTiles)
   return (dispatch, getState) => {
     const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
     dispatch(addLoader(loaderId));
@@ -169,7 +170,6 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
         if (!tile) {
           tile = {
             uid: referenceTile.uid,
-            // canvas: referenceTile.canvas,
             temporalExtentsIndicesLoaded: []
           };
           layers[layerId].tiles.push(tile);
@@ -218,8 +218,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
  * getTile - This action is emitted when a new tile is queried from panning or zooming the map
  * This will load a tile for all currently visible heatmap layers
  *
- * @param  {number} uid             the reference tile uid
- * @param  {object} tileCoordinates the reference tiles coordinates
+ * @param  {object} referenceTile a reference tile containing xyz coords and uid
  */
 export function getTile(referenceTile) {
   return (dispatch, getState) => {

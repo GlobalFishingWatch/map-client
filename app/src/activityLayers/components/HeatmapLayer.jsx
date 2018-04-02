@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import * as PIXI from 'pixi.js';
+import { worldToPixels } from 'viewport-mercator-project';
 import { COLOR_HUES } from 'config';
 import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
@@ -98,7 +99,7 @@ class HeatmapLayer extends React.Component {
 
   _redraw() {
     //  offsets
-    const { layer, data, startIndex, endIndex, filters, baseTexture, maxSprites } = this.props;
+    const { data, filters, baseTexture, maxSprites } = this.props;
     const tiles = data.tiles;
     const defaultHue = this.defaultHue;
 
@@ -134,10 +135,7 @@ class HeatmapLayer extends React.Component {
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
-        startIndex,
-        endIndex,
         // offsets,
-        filters,
         numFilters: filters.length,
         defaultHue
       });
@@ -148,10 +146,12 @@ class HeatmapLayer extends React.Component {
     });
   }
 
-  _setSubLayersSpritePropsForTile({ data, startIndex, endIndex, /* offsets, */ filters, numFilters, defaultHue }) {
+  _setSubLayersSpritePropsForTile({ data, /* offsets, */ numFilters, defaultHue }) {
     if (!data /* || offsets === undefined */) {
       return;
     }
+
+    const { startIndex, endIndex, viewport, filters } = this.props;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
       const frame = data[timeIndex];
@@ -182,7 +182,10 @@ class HeatmapLayer extends React.Component {
         //   originX -= 256;
         // }
 
+        const px = worldToPixels([frame.worldX[index] * viewport.scale, frame.worldY[index] * viewport.scale], viewport.pixelProjectionMatrix);
         const spriteProps = {
+          x: px[0],
+          y: px[1],
           // x: (worldX - originX) * offsets.scale,
           // y: ((frame.worldY[index] - offsets.top) * offsets.scale),
           alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
