@@ -120,6 +120,7 @@ export const DURATION_PICKER_OPTIONS = [
 ];
 
 export const FORMAT_DATE = 'MMM Do YYYY';
+export const FORMAT_TIME = 'h:mm A';
 export const FORMAT_NUM_DECIMALS = {
   distanceKm: 3,
   speedKnots: 3
