@@ -278,12 +278,10 @@ const vesselSatisfiesAllFilters = (frame, index, filters) => {
   return satisfiesAllFilters;
 };
 
-export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startIndex, endIndex, currentFilters) => {
+export const selectVesselsAt = (tileData, tileQuery, startIndex, endIndex, currentFilters) => {
   const vessels = [];
 
-  // convert px tolerance/radius to world units
-  const scale = 2 ** currentZoom;
-  const vesselClickToleranceWorld = VESSEL_CLICK_TOLERANCE_PX / scale;
+  const { worldX, worldY, toleranceRadiusInWorldUnits } = tileQuery;
 
   for (let f = startIndex; f < endIndex; f++) {
     const frame = tileData[f];
@@ -293,8 +291,8 @@ export const selectVesselsAt = (tileData, currentZoom, worldX, worldY, startInde
       const wy = frame.worldY[i];
 
       if ((!currentFilters.length || vesselSatisfiesAllFilters(frame, i, currentFilters)) &&
-          wx >= worldX - vesselClickToleranceWorld && wx <= worldX + vesselClickToleranceWorld &&
-          wy >= worldY - vesselClickToleranceWorld && wy <= worldY + vesselClickToleranceWorld) {
+          wx >= worldX - toleranceRadiusInWorldUnits && wx <= worldX + toleranceRadiusInWorldUnits &&
+          wy >= worldY - toleranceRadiusInWorldUnits && wy <= worldY + toleranceRadiusInWorldUnits) {
         const vessel = {};
 
         Object.keys(frame).forEach((key) => {

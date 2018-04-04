@@ -182,8 +182,6 @@ class HeatmapLayer extends React.Component {
         const spriteProps = {
           x: px[0],
           y: px[1],
-          // x: (worldX - originX) * offsets.scale,
-          // y: ((frame.worldY[index] - offsets.top) * offsets.scale),
           alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
           scale: (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
         };

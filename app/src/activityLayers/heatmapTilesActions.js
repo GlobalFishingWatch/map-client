@@ -1,10 +1,17 @@
 import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
-import {PerspectiveMercatorViewport} from "viewport-mercator-project";
-import { getTile, releaseTiles } from './heatmapActions';
+import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
+import { getTile, releaseTiles, getVesselFromHeatmap } from './heatmapActions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
+
+// restrict tilecover to a single zoom level
+// could be customized to load less or more detailed tiles
+const getTilecoverLimits = zoom => ({
+  min_zoom: Math.ceil(zoom),
+  max_zoom: Math.ceil(zoom)
+});
 
 const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
   const currentVisibleTiles = getState().heatmapTiles.currentVisibleTiles;
@@ -52,6 +59,20 @@ const _debouncedFlushState = (dispatch) => {
 const debouncedFlushState = debounce(_debouncedFlushState, 500);
 
 export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => {
+  // if in transition, skip loading/releasing
+  // else
+  //   collect all tiles in viewport
+  //   save them to reducer: currentVisibleTiles
+  // if not zooming: flush immediately
+  //   if forceLoadingAlVisiblelTiles
+  //     get tiles from currentVisibleTiles
+  //   else
+  //     get tiles from currentVisibleTiles
+  //     make delta with currentLoadedTiles
+  //     get tiles from delta+
+  //     release tiles from delta-
+  //   save to reducer: currentVisibleTiles -> currentLoadedTiles
+  // if zooming: debounced flush to avoid "tile spam"
   return (dispatch, getState) => {
     const mapViewport = getState().mapViewport;
 
@@ -62,13 +83,14 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
     }
 
     const viewport = mapViewport.viewport;
+
+    // instanciate a viewport instance to get lat/lon from screen top left/ bottom right bounds
     const boundsViewport = new PerspectiveMercatorViewport(viewport);
     const bounds = [
       boundsViewport.unproject([0, 0]),
       boundsViewport.unproject([viewport.width, viewport.height])
     ];
 
-    const zoom = viewport.zoom;
     const [wn, es] = bounds;
     const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
     const geom = {
@@ -78,26 +100,9 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
       ]
     };
 
-    const limits = {
-      min_zoom: Math.ceil(zoom),
-      max_zoom: Math.ceil(zoom)
-    };
+    const limits = getTilecoverLimits(viewport.zoom);
 
-    // if in transition, skip loading/releasing
-    // else
-    //   collect all tiles in viewport
-    //   save them to reducer: currentVisibleTiles
-    // if not zooming: flush immediately
-    //   if forceLoadingAlVisiblelTiles
-    //     get tiles from currentVisibleTiles
-    //   else
-    //     get tiles from currentVisibleTiles
-    //     make delta with currentLoadedTiles
-    //     get tiles from delta+
-    //     release tiles from delta-
-    //   save to reducer: currentVisibleTiles -> currentLoadedTiles
-    // if zooming: debounced flush to avoid "tile spam"
-
+    // using tilecover, get xyz tile coords as well as quadkey indexes (named uid through the app)
     const viewportTilesCoords = tilecover.tiles(geom, limits);
     const viewportTilesIndexes = tilecover.indexes(geom, limits);
     const visibleTiles = [];
@@ -129,3 +134,23 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   };
 };
 
+export const queryHeatmapVessels = (coords, isClick = false) => {
+  return (dispatch, getState) => {
+    // use tilecover to get what tile quadkey/uid "belongs" to the point
+    const geom = {
+      type: 'Point',
+      coordinates: [coords.longitude, coords.latitude]
+    };
+    const limits = getTilecoverLimits(getState().mapViewport.viewport.zoom);
+    const viewportTilesIndexes = tilecover.indexes(geom, limits);
+    const query = {
+      ...coords,
+      uid: viewportTilesIndexes[0]
+    };
+
+    console.log(query);
+    if (isClick === true) {
+      dispatch(getVesselFromHeatmap(query));
+    }
+  };
+};

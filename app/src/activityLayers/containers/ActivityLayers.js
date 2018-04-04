@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import ActivityLayers from 'activityLayers/components/ActivityLayers.jsx';
+import { queryHeatmapVessels } from 'activityLayers/heatmapTilesActions';
 
 const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers,
@@ -10,6 +11,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  queryHeatmapVessels: (coords, isClick) => {
+    dispatch(queryHeatmapVessels(coords, isClick));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityLayers);

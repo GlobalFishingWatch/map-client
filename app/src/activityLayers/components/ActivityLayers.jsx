@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
-import { worldToPixels, lngLatToWorld } from 'viewport-mercator-project';
+import { lngLatToWorld , pixelsToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import { LAYER_TYPES } from 'constants';
 import {
@@ -11,7 +11,8 @@ import {
   TIMELINE_MAX_STEPS,
   HEATMAP_TRACK_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA,
-  VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD
+  VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
+  VESSEL_CLICK_TOLERANCE_PX
 } from 'config';
 import HeatmapLayer from './HeatmapLayer.jsx';
 
@@ -126,6 +127,24 @@ class ActivityLayers extends React.Component {
     this.maxSprites = getNumSprites(viewportWidth, viewportHeight);
   }
 
+  onClick = (event) => {
+    const { viewport } = this.context;
+    const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
+    const [worldX, worldY] = lngLatToWorld([longitude, latitude], 1);
+
+    // calculate the tolerance from pixels to projected world units (project 2 points and substract x coords)
+    const toleranceRadiusInWorldUnits =
+      (pixelsToWorld([VESSEL_CLICK_TOLERANCE_PX, 0], viewport.pixelUnprojectionMatrix))[0] -
+      (pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix))[0];
+    this.props.queryHeatmapVessels({
+      longitude,
+      latitude,
+      worldX,
+      worldY,
+      toleranceRadiusInWorldUnits
+    }, true);
+  }
+
   render() {
     const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
     const { zoom, layerFilters, heatmapLayers, timelineInnerExtentIndexes } = this.props;
@@ -137,6 +156,7 @@ class ActivityLayers extends React.Component {
     return (<div
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
+      onClick={this.onClick}
     >
       {layers.map(layer => (
         <HeatmapLayer

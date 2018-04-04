@@ -372,8 +372,7 @@ const _queryHeatmap = (state, tileQuery) => {
       if (queriedTile !== undefined && queriedTile.data !== undefined) {
         layersVessels.push({
           layer: workspaceLayer,
-          vessels: selectVesselsAt(queriedTile.data, state.map.zoom, tileQuery.worldX,
-            tileQuery.worldY, startIndex, endIndex, currentFilters)
+          vessels: selectVesselsAt(queriedTile.data, tileQuery, startIndex, endIndex, currentFilters)
         });
       }
     }
@@ -456,7 +455,7 @@ export function clearHighlightedVessels() {
   };
 }
 
-export function getVesselFromHeatmap(tileQuery, latLng) {
+export function getVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -469,18 +468,20 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
 
+    console.log(isCluster, isMouseCluster, foundVessels)
+
     if (isEmpty === true) {
       // nothing to see here
     } else if (isCluster === true || isMouseCluster === true) {
-      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'cluster'));
+      dispatch(trackMapClicked(tileQuery.latitude, tileQuery.longitude, 'cluster'));
       dispatch(hideVesselsInfoPanel());
-      dispatch(zoomIntoVesselCenter(latLng));
+      dispatch(zoomIntoVesselCenter(tileQuery.latitude, tileQuery.longitude));
       dispatch({
         type: HIGHLIGHT_VESSELS,
         payload: { isEmpty: true }
       });
     } else {
-      dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
+      dispatch(trackMapClicked(tileQuery.latitude, tileQuery.longitude, 'vessel'));
       const selectedSeries = foundVessels[0].series;
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 

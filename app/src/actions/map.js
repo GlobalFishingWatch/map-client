@@ -124,9 +124,9 @@ export function openTimebarInfoModal() {
   };
 }
 
-export function zoomIntoVesselCenter(latLng) {
+export function zoomIntoVesselCenter(latitude, longitude) {
   return (dispatch, getState) => {
-    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT, [latLng.lat(), latLng.lng()]));
+    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT, [latitude, longitude]));
   };
 }
 
