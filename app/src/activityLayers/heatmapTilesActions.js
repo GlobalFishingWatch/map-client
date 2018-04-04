@@ -1,5 +1,6 @@
 import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
+import {PerspectiveMercatorViewport} from "viewport-mercator-project";
 import { getTile, releaseTiles } from './heatmapActions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
@@ -53,19 +54,19 @@ const debouncedFlushState = debounce(_debouncedFlushState, 500);
 export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => {
   return (dispatch, getState) => {
     const mapViewport = getState().mapViewport;
-    const bounds = mapViewport.bounds;
-
-    if (bounds === null) {
-      return;
-    }
-
-    const viewport = getState().mapViewport.viewport;
 
     // do not allow any tile update during transitions (currently only zoom)
     // wait for the end of the transition to look at viewport and load matching tiles
     if (mapViewport.currentTransition !== null) {
       return;
     }
+
+    const viewport = mapViewport.viewport;
+    const boundsViewport = new PerspectiveMercatorViewport(viewport);
+    const bounds = [
+      boundsViewport.unproject([0, 0]),
+      boundsViewport.unproject([viewport.width, viewport.height])
+    ];
 
     const zoom = viewport.zoom;
     const [wn, es] = bounds;

@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setViewport: (viewport, bounds) => {
-    dispatch(setViewport(viewport, bounds));
+  setViewport: (viewport) => {
+    dispatch(setViewport(viewport));
   },
   setMouseLatLong: (lat, long) => {
     dispatch(setMouseLatLong(lat, long));

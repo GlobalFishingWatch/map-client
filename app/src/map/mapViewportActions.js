@@ -7,13 +7,10 @@ export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_MOUSE_LAT_LONG = 'SET_MOUSE_LAT_LONG';
 export const TRANSITION_END = 'TRANSITION_END';
 
-export const setViewport = (viewport, bounds) => (dispatch) => {
+export const setViewport = (viewport) => (dispatch) => {
   dispatch({
     type: SET_VIEWPORT,
-    payload: {
-      viewport,
-      bounds
-    }
+    payload: viewport
   });
   dispatch(updateHeatmapTilesFromViewport());
 };
