@@ -20,7 +20,7 @@ const releaseViewportTiles = debounce((dispatch, getState) => {
 }, 1000);
 const releaseViewportTilesDebounced = () => releaseViewportTiles;
 
-export const updateHeatmapTilesFromViewport = () => {
+export const updateHeatmapTilesFromViewport = (forceUpdate = false) => {
   return (dispatch, getState) => {
     const bounds = getState().mapViewport.bounds;
 
@@ -28,6 +28,7 @@ export const updateHeatmapTilesFromViewport = () => {
       return;
     }
     const viewport = getState().mapViewport.viewport;
+    console.log(viewport)
     const zoom = viewport.zoom;
     const [wn, es] = bounds;
     const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
@@ -37,7 +38,7 @@ export const updateHeatmapTilesFromViewport = () => {
         [[w, n], [e, n], [e, s], [w, s], [w, n]]
       ]
     };
-    //
+
     const limits = {
       min_zoom: Math.ceil(zoom),
       max_zoom: Math.ceil(zoom)
@@ -50,7 +51,7 @@ export const updateHeatmapTilesFromViewport = () => {
     viewportTilesCoords.forEach((coords, i) => {
       const uid = viewportTilesIndexes[i];
       const isNewTile = getState().heatmapTiles.tilesUidsInViewport.indexOf(uid) === -1;
-      if (isNewTile) {
+      if (forceUpdate === true || isNewTile) {
         updatedTiles.push({
           tileCoordinates: {
             x: coords[0],
@@ -80,9 +81,10 @@ export const updateHeatmapTilesFromViewport = () => {
       payload: updatedTiles.map(tile => tile.uid)
     });
 
-    dispatch(markTilesForRelease(releasedTilesUids));
+    if (forceUpdate === false) {
+      dispatch(markTilesForRelease(releasedTilesUids));
+      dispatch(releaseViewportTilesDebounced());
+    }
 
-    // TODO debounce this
-    dispatch(releaseViewportTilesDebounced());
   };
 };

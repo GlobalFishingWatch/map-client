@@ -78,7 +78,9 @@ class Map extends React.Component {
         ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL
-          ref={(ref) => { this._mapGlRef = ref; }}
+          ref={(ref) => {
+            if (ref) this._mapGlRef = ref;
+          }}
           // mapControls={controls}
           onHover={this.onHover}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"

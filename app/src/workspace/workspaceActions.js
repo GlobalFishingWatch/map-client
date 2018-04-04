@@ -173,7 +173,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(updateViewport({
     zoom: workspaceData.zoom,
     latitude: workspaceData.center[0],
-    longitude: workspaceData.center[1],
+    longitude: workspaceData.center[1]
   }));
 
   // We update the dates of the timeline

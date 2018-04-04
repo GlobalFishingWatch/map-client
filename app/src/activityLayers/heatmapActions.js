@@ -14,6 +14,7 @@ import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/ves
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
+import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
 export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
@@ -48,7 +49,7 @@ function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
 /**
  * initHeatmapLayers - Creates the base reducer state, extracting heatmap layers from all layers
  */
-  export function initHeatmapLayers() {
+export function initHeatmapLayers() {
   return (dispatch, getState) => {
     const currentOuterExtent = getState().filters.timelineOuterExtent;
     const workspaceLayers = getState().layers.workspaceLayers;
@@ -71,6 +72,8 @@ function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
       type: INIT_HEATMAP_LAYERS,
       payload: heatmapLayers
     });
+
+    dispatch(updateHeatmapTilesFromViewport(true));
   };
 }
 
