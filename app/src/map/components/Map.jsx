@@ -69,7 +69,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { viewport, maxZoom, minZoom } = this.props;
+    const { viewport, maxZoom, minZoom, transitionEnd } = this.props;
     return (
       <div
         id="map"
@@ -81,14 +81,15 @@ class Map extends React.Component {
           ref={(ref) => {
             if (ref) this._mapGlRef = ref;
           }}
+          onTransitionEnd={transitionEnd}
           // mapControls={controls}
+          mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"
           {...viewport}
           maxZoom={maxZoom}
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
         >
           <ActivityLayers />
         </MapGL>

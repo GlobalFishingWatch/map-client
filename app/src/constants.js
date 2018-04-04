@@ -60,6 +60,10 @@ export const VESSEL_TYPE_REEFER = 'reefers';
 
 export const TEMPORAL_EXTENTLESS = [[0, (new Date(2100, 0, 0)).getTime()]];
 
+export const TRANSITION_TYPE = {
+  ZOOM: 'ZOOM'
+}
+
 export const FLAGS = {
   0: 'AD',
   1: 'AE',

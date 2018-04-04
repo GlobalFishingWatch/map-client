@@ -143,7 +143,7 @@ class ActivityLayers extends React.Component {
           key={layer.id}
           layer={layer}
           data={heatmapLayers[layer.id]}
-          filters={layerFilters[layer.id]}
+          filters={layerFilters[layer.id] || []}
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}

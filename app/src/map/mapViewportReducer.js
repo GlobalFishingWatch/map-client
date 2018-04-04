@@ -3,15 +3,17 @@ import {
   UPDATE_VIEWPORT,
   SET_ZOOM_INCREMENT,
   SET_MAX_ZOOM,
-  SET_MOUSE_LAT_LONG
+  SET_MOUSE_LAT_LONG,
+  TRANSITION_END
 } from 'map/mapViewportActions';
 
 import { FlyToInterpolator } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'config';
+import { TRANSITION_TYPE } from 'constants';
 
 const DEFAULT_TRANSITION = {
-  transitionDuration: 1000,
+  transitionDuration: 500,
   transitionInterpolator: new FlyToInterpolator(),
   transitionEasing: easeCubic
 };
@@ -29,6 +31,8 @@ const initialState = {
   },
   maxZoom: MAX_ZOOM_LEVEL,
   minZoom: MIN_ZOOM_LEVEL,
+  prevZoom: 3,
+  currentTransition: null,
   canZoomIn: false,
   canZoomOut: false,
   mouseLatLong: { lat: 0, long: 0 }
@@ -42,7 +46,8 @@ export default function (state = initialState, action) {
         viewport: action.payload.viewport,
         bounds: action.payload.bounds,
         canZoomIn: action.payload.viewport.zoom < state.maxZoom,
-        canZoomOut: action.payload.viewport.zoom > state.minZoom
+        canZoomOut: action.payload.viewport.zoom > state.minZoom,
+        prevZoom: state.viewport.zoom
       };
     }
 
@@ -62,7 +67,9 @@ export default function (state = initialState, action) {
         ...state,
         viewport,
         canZoomIn: zoom < state.maxZoom,
-        canZoomOut: zoom > state.minZoom
+        canZoomOut: zoom > state.minZoom,
+        prevZoom: state.viewport.zoom,
+        currentTransition: TRANSITION_TYPE.ZOOM
       };
     }
 
@@ -82,6 +89,10 @@ export default function (state = initialState, action) {
       };
 
       return { ...state, mouseLatLong };
+    }
+
+    case TRANSITION_END: {
+      return { ...state, currentTransition: null };
     }
 
     default:

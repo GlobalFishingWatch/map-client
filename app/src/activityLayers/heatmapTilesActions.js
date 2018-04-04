@@ -2,33 +2,71 @@ import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { getTile, releaseTiles } from './heatmapActions';
 
-export const ADD_TILES_TO_VIEWPORT = 'ADD_TILES_TO_VIEWPORT';
-export const MARK_TILES_FOR_RELEASE = 'MARK_TILES_FOR_RELEASE';
-export const RELEASE_VIEWPORT_TILES = 'RELEASE_VIEWPORT_TILES';
+export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
+export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
 
-export const markTilesForRelease = releasedTilesUids => ({
-  type: MARK_TILES_FOR_RELEASE,
-  payload: releasedTilesUids
-});
+const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
+  const currentVisibleTiles = getState().heatmapTiles.currentVisibleTiles;
+  let tilesToGet = [];
+  const tilesToReleaseUids = [];
 
-const releaseViewportTiles = debounce((dispatch, getState) => {
-  console.log('release', getState().heatmapTiles.tilesUidsMarkedForRelease);
-  dispatch(releaseTiles(getState().heatmapTiles.tilesUidsMarkedForRelease));
-  dispatch({
-    type: RELEASE_VIEWPORT_TILES
+  if (forceLoadingAllVisibleTiles === true) {
+    tilesToGet = currentVisibleTiles;
+  } else {
+    const currentLoadedTiles = getState().heatmapTiles.currentLoadedTiles;
+
+    currentVisibleTiles.forEach((visibleTile) => {
+      if (currentLoadedTiles.find(t => t.uid === visibleTile.uid) === undefined) {
+        tilesToGet.push(visibleTile);
+      }
+    });
+
+    currentLoadedTiles.forEach((loadedTile) => {
+      if (currentVisibleTiles.find(t => t.uid === loadedTile.uid) === undefined) {
+        tilesToReleaseUids.push(loadedTile.uid);
+      }
+    });
+  }
+
+  // console.log('force loading:', forceLoadingAllVisibleTiles)
+  // console.log('visible', currentVisibleTiles.map(t => t.uid))
+  // console.log('load', tilesToGet.map(t => t.uid))
+  // console.log('release', tilesToReleaseUids)
+  // console.log('----')
+
+  tilesToGet.forEach((tile) => {
+    dispatch(getTile(tile));
   });
-}, 1000);
-const releaseViewportTilesDebounced = () => releaseViewportTiles;
+  dispatch({
+    type: SET_CURRENTLY_LOADED_TILES,
+    payload: currentVisibleTiles
+  });
 
-export const updateHeatmapTilesFromViewport = (forceUpdate = false) => {
+  dispatch(releaseTiles(tilesToReleaseUids));
+};
+
+const _debouncedFlushState = (dispatch) => {
+  dispatch(flushTileState());
+};
+const debouncedFlushState = debounce(_debouncedFlushState, 500);
+
+export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => {
   return (dispatch, getState) => {
-    const bounds = getState().mapViewport.bounds;
+    const mapViewport = getState().mapViewport;
+    const bounds = mapViewport.bounds;
 
     if (bounds === null) {
       return;
     }
+
     const viewport = getState().mapViewport.viewport;
-    console.log(viewport)
+
+    // do not allow any tile update during transitions (currently only zoom)
+    // wait for the end of the transition to look at viewport and load matching tiles
+    if (mapViewport.currentTransition !== null) {
+      return;
+    }
+
     const zoom = viewport.zoom;
     const [wn, es] = bounds;
     const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
@@ -44,47 +82,49 @@ export const updateHeatmapTilesFromViewport = (forceUpdate = false) => {
       max_zoom: Math.ceil(zoom)
     };
 
+    // if in transition, skip loading/releasing
+    // else
+    //   collect all tiles in viewport
+    //   save them to reducer: currentVisibleTiles
+    // if not zooming: flush immediately
+    //   if forceLoadingAlVisiblelTiles
+    //     get tiles from currentVisibleTiles
+    //   else
+    //     get tiles from currentVisibleTiles
+    //     make delta with currentLoadedTiles
+    //     get tiles from delta+
+    //     release tiles from delta-
+    //   save to reducer: currentVisibleTiles -> currentLoadedTiles
+    // if zooming: debounced flush to avoid "tile spam"
+
     const viewportTilesCoords = tilecover.tiles(geom, limits);
     const viewportTilesIndexes = tilecover.indexes(geom, limits);
-    const updatedTiles = [];
+    const visibleTiles = [];
 
     viewportTilesCoords.forEach((coords, i) => {
       const uid = viewportTilesIndexes[i];
-      const isNewTile = getState().heatmapTiles.tilesUidsInViewport.indexOf(uid) === -1;
-      if (forceUpdate === true || isNewTile) {
-        updatedTiles.push({
-          tileCoordinates: {
-            x: coords[0],
-            y: coords[1],
-            zoom: coords[2]
-          },
-          uid
-        });
-      }
-    });
-
-    const releasedTilesUids = [];
-    getState().heatmapTiles.tilesUidsInViewport.forEach((tileUidInViewport) => {
-      if (viewportTilesIndexes.indexOf(tileUidInViewport) === -1) {
-        releasedTilesUids.push(tileUidInViewport);
-      }
-    });
-
-    console.log('loading', updatedTiles.map(tile => tile.uid));
-
-    updatedTiles.forEach((referenceTile) => {
-      dispatch(getTile(referenceTile));
+      visibleTiles.push({
+        tileCoordinates: {
+          x: coords[0],
+          y: coords[1],
+          zoom: coords[2]
+        },
+        uid
+      });
     });
 
     dispatch({
-      type: ADD_TILES_TO_VIEWPORT,
-      payload: updatedTiles.map(tile => tile.uid)
+      type: SET_CURRENTLY_VISIBLE_TILES,
+      payload: visibleTiles
     });
 
-    if (forceUpdate === false) {
-      dispatch(markTilesForRelease(releasedTilesUids));
-      dispatch(releaseViewportTilesDebounced());
-    }
+    const isMouseWheelZooming = mapViewport.prevZoom !== viewport.zoom;
 
+    if (isMouseWheelZooming === false) {
+      dispatch(flushTileState(forceLoadingAllVisibleTiles));
+    } else {
+      debouncedFlushState(dispatch);
+    }
   };
 };
+

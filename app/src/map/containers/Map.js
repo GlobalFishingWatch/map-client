@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Map from 'map/components/Map.jsx';
-import { setViewport, setMouseLatLong } from 'map/mapViewportActions.js';
+import { setViewport, setMouseLatLong, transitionEnd } from 'map/mapViewportActions.js';
 
 const mapStateToProps = state => ({
   viewport: state.mapViewport.viewport,
@@ -15,6 +15,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setMouseLatLong: (lat, long) => {
     dispatch(setMouseLatLong(lat, long));
+  },
+  transitionEnd: () => {
+    dispatch(transitionEnd());
   }
 });
 

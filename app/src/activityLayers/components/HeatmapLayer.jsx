@@ -135,7 +135,6 @@ class HeatmapLayer extends React.Component {
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
-        // offsets,
         numFilters: filters.length,
         defaultHue
       });
@@ -146,8 +145,8 @@ class HeatmapLayer extends React.Component {
     });
   }
 
-  _setSubLayersSpritePropsForTile({ data, /* offsets, */ numFilters, defaultHue }) {
-    if (!data /* || offsets === undefined */) {
+  _setSubLayersSpritePropsForTile({ data, numFilters, defaultHue }) {
+    if (!data) {
       return;
     }
 
@@ -176,13 +175,10 @@ class HeatmapLayer extends React.Component {
           continue;
         }
 
-        // const worldX = frame.worldX[index];
-        // let originX = offsets.left;
-        // if (originX > worldX) {
-        //   originX -= 256;
-        // }
-
-        const px = worldToPixels([frame.worldX[index] * viewport.scale, frame.worldY[index] * viewport.scale], viewport.pixelProjectionMatrix);
+        const px = worldToPixels(
+          [frame.worldX[index] * viewport.scale, frame.worldY[index] * viewport.scale],
+          viewport.pixelProjectionMatrix
+        );
         const spriteProps = {
           x: px[0],
           y: px[1],

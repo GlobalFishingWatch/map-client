@@ -5,6 +5,7 @@ export const UPDATE_VIEWPORT = 'UPDATE_VIEWPORT';
 export const SET_ZOOM_INCREMENT = 'SET_ZOOM_INCREMENT';
 export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_MOUSE_LAT_LONG = 'SET_MOUSE_LAT_LONG';
+export const TRANSITION_END = 'TRANSITION_END';
 
 export const setViewport = (viewport, bounds) => (dispatch) => {
   dispatch({
@@ -53,3 +54,9 @@ export const setMouseLatLong = (lat, long) => ({
   payload: { lat, long }
 });
 
+export const transitionEnd = () => (dispatch) => {
+  dispatch({
+    type: TRANSITION_END
+  });
+  dispatch(updateHeatmapTilesFromViewport());
+};
