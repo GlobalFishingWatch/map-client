@@ -219,6 +219,7 @@ HeatmapLayer.propTypes = {
   layer: PropTypes.object,
   data: PropTypes.object,
   rootStage: PropTypes.object,
+  viewport: PropTypes.object,
   startIndex: PropTypes.number,
   endIndex: PropTypes.number,
   filters: PropTypes.array,

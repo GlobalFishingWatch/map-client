@@ -93,7 +93,8 @@ Map.propTypes = {
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
   setViewport: PropTypes.func,
-  setMouseLatLong: PropTypes.func
+  setMouseLatLong: PropTypes.func,
+  transitionEnd: PropTypes.func
 };
 
 export default Map;

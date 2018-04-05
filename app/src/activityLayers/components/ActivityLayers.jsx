@@ -15,6 +15,7 @@ import {
   VESSEL_CLICK_TOLERANCE_PX
 } from 'config';
 import HeatmapLayer from './HeatmapLayer.jsx';
+import TracksLayer from './TracksLayer.jsx';
 
 const MAX_SPRITES_FACTOR = 0.002;
 
@@ -81,7 +82,27 @@ const getVesselTexture = (radius, blurFactor) => {
   }
 
   return tplCanvas;
-}
+};
+
+// TODO this should be in a reducer or container
+// TODO remove vesselTracks in favor of tracks. vesselTracks are the tracks attached to the vesselInfo store,
+// which will eventually migrate to their own tracks store (already implemented with encounters tracks)
+const getTracks = (vesselTracks, tracks) => vesselTracks
+  .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
+  .map(vessel => ({
+    data: vessel.track.data,
+    selectedSeries: vessel.track.selectedSeries,
+    hue: vessel.hue
+  }))
+  .concat(
+    tracks
+      .filter(track => track.show)
+      .map(track => ({
+        data: track.data,
+        selectedSeries: track.series,
+        color: track.color
+      }))
+  );
 
 class ActivityLayers extends React.Component {
   componentDidMount() {
@@ -92,10 +113,6 @@ class ActivityLayers extends React.Component {
     if (nextContext.viewport.width !== this.context.viewport.width || nextContext.viewport.height !== this.context.viewport.height) {
       this._updateViewportSize(nextContext.viewport.width, nextContext.viewport.height);
     }
-
-    // console.log(nextProps.heatmapLayers);
-    // console.log(nextProps.layers);
-
   }
 
   _build() {
@@ -120,6 +137,9 @@ class ActivityLayers extends React.Component {
 
     const baseTextureCanvas = getVesselTexture(VESSELS_BASE_RADIUS, VESSELS_HEATMAP_BLUR_FACTOR);
     this.baseTexture = PIXI.Texture.fromCanvas(baseTextureCanvas);
+
+    this.heatmapStage = new PIXI.Container();
+    this.stage.addChild(this.heatmapStage);
   }
 
   _updateViewportSize(viewportWidth, viewportHeight) {
@@ -147,11 +167,23 @@ class ActivityLayers extends React.Component {
 
   render() {
     const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
-    const { zoom, layerFilters, heatmapLayers, timelineInnerExtentIndexes } = this.props;
+    const { zoom, layerFilters, heatmapLayers, timelineInnerExtentIndexes, timelineOverExtentIndexes, vesselTracks, tracks } = this.props;
     const { viewport } = this.context;
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
+
+    const nextTracks = getTracks(vesselTracks, tracks);
+
+    // TODO check tracks length to toggle heatmap dimming
+    // if (!nextTracks || nextTracks.length === 0) {
+    //
+    //   const currentVesselTracksNum = (this.props.vesselTracks) ? this.props.vesselTracks.length : 0;
+    //   const currentTracksNum = (this.props.tracks) ? this.props.tracks.length : 0;
+    //   if (currentVesselTracksNum + currentTracksNum > 0) {
+    //     this.glContainer.clearTracks();
+    //     this.glContainer.toggleHeatmapDimming(false);
+    //   }
 
     return (<div
       ref={(ref) => { this.container = ref; }}
@@ -169,11 +201,22 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           maxSprites={this.maxSprites}
           baseTexture={this.baseTexture}
-          rootStage={this.stage}
+          rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{}}
         />)
       )}
+      {this.stage !== undefined &&
+        <TracksLayer
+          tracks={nextTracks}
+          viewport={viewport}
+          zoom={zoom}
+          startIndex={startIndex}
+          endIndex={endIndex}
+          timelineOverExtentIndexes={timelineOverExtentIndexes}
+          rootStage={this.stage}
+        />
+      }
     </div>);
   }
 }
@@ -183,7 +226,11 @@ ActivityLayers.propTypes = {
   layers: PropTypes.array,
   heatmapLayers: PropTypes.object,
   timelineInnerExtentIndexes: PropTypes.array,
-  layerFilters: PropTypes.object
+  timelineOverExtentIndexes: PropTypes.array,
+  layerFilters: PropTypes.object,
+  vesselTracks: PropTypes.array,
+  tracks: PropTypes.array,
+  queryHeatmapVessels: PropTypes.func
 };
 
 ActivityLayers.contextTypes = {

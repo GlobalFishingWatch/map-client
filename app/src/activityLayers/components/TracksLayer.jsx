@@ -1,29 +1,50 @@
 /* global PIXI */
 import 'pixi.js';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { worldToPixels } from 'viewport-mercator-project';
 import {
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
-  HALF_WORLD
+  // HALF_WORLD
 } from 'config';
 import { hueToRgbHexString } from 'utils/colors';
 
-export default class TracksLayerGL {
-  constructor() {
+class TracksLayer extends React.Component {
+  componentDidMount() {
+    this._build();
+  }
+
+  componentDidUpdate() {
+    this._redraw();
+  }
+
+  _build() {
+    const { rootStage } = this.props;
     this.stage = new PIXI.Graphics();
     this.stage.nativeLines = true;
+    rootStage.addChild(this.stage);
   }
 
   clear() {
     this.stage.clear();
   }
 
-  update(tracks, drawParams, offsets) {
+  _redraw() {
+    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes } = this.props;
+
+    const overInInner = (timelineOverExtentIndexes === undefined) ? undefined : [
+      Math.max(startIndex, timelineOverExtentIndexes[0]),
+      Math.min(endIndex, timelineOverExtentIndexes[1])
+    ];
+    const overExtent = (overInInner && overInInner[1] - overInInner[0] > 0) ? overInInner : undefined;
+
     this.clear();
     let n = 0; // eslint-disable-line no-unused-vars
 
-    const drawFishingCircles = drawParams.zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD;
-    const fishingCirclesRadius = 1 + ((drawParams.zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) * 0.5);
-    const drawOverTrack = drawParams.timelineOverExtentIndexes !== undefined &&
-        drawParams.timelineOverExtentIndexes[0] > 0 && drawParams.timelineOverExtentIndexes[1] > 0;
+    const drawFishingCircles = zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD;
+    const fishingCirclesRadius = 1 + ((zoom - TRACKS_DOTS_STYLE_ZOOM_THRESHOLD) * 0.5);
+    const drawOverTrack = overExtent !== undefined &&
+        overExtent[0] > 0 && overExtent[1] > 0;
 
     tracks.forEach((track) => {
       // TODO move to tracksActions, let's have TracksLayer be dumber and not care about hue
@@ -31,9 +52,7 @@ export default class TracksLayerGL {
 
       n += this._drawTrack({
         data: track.data,
-        extent: drawParams.timelineInnerExtentIndexes,
         series: track.selectedSeries,
-        offsets,
         drawFishingCircles,
         fishingCirclesRadius,
         color: track.color || convertedColor,
@@ -45,9 +64,7 @@ export default class TracksLayerGL {
       if (drawOverTrack === true) {
         n += this._drawTrack({
           data: track.data,
-          extent: drawParams.timelineOverExtentIndexes,
           series: track.selectedSeries,
-          offsets,
           drawFishingCircles,
           fishingCirclesRadius,
           color: '0xFFFFFF',
@@ -73,10 +90,8 @@ export default class TracksLayerGL {
    * @param lineThickness
    * @param lineOpacity
    */
-  _drawTrack({ data, extent, series, offsets, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
-    const startIndex = extent[0];
-    const endIndex = extent[1];
-    const viewportWorldX = offsets.left;
+  _drawTrack({ data, series, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
+    const { viewport, startIndex, endIndex } = this.props;
 
     let n = 0;
     let prevSeries;
@@ -101,15 +116,10 @@ export default class TracksLayerGL {
 
         n++;
 
-        let pointWorldX = frame.worldX[i];
-
-        // Add a whole world to x coordinate, when point is after antimeridian and part of the world shown is the after the prime meridian.
-        // This way we move the new point to the "second world" on the right avoiding issues when rendring tracks that cross antimeridian.
-        if (viewportWorldX > HALF_WORLD && pointWorldX < HALF_WORLD) {
-          pointWorldX += 256;
-        }
-        const x = ((pointWorldX - viewportWorldX) * offsets.scale);
-        const y = ((frame.worldY[i] - offsets.top) * offsets.scale);
+        const [x, y] = worldToPixels(
+          [frame.worldX[i] * viewport.scale, frame.worldY[i] * viewport.scale],
+          viewport.pixelProjectionMatrix
+        );
 
         if (prevSeries !== currentSeries) {
           this.stage.moveTo(x, y);
@@ -136,4 +146,20 @@ export default class TracksLayerGL {
 
     return n;
   }
+
+  render() {
+    return null;
+  }
 }
+
+TracksLayer.propTypes = {
+  zoom: PropTypes.number,
+  rootStage: PropTypes.object,
+  viewport: PropTypes.object,
+  startIndex: PropTypes.number,
+  endIndex: PropTypes.number,
+  timelineOverExtentIndexes: PropTypes.array,
+  tracks: PropTypes.array
+};
+
+export default TracksLayer;

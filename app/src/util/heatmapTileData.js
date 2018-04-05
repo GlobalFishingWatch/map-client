@@ -219,7 +219,7 @@ export const addTracksPointsRenderingData = (data) => {
   data.worldY = [];
 
   for (let index = 0, length = data.weight.length; index < length; index++) {
-    const { worldX, worldY } = convert.latLonToWorldCoordinates(data.latitude[index], data.longitude[index]);
+    const [worldX, worldY] = lngLatToWorld([data.longitude[index], data.latitude[index]], 1);
     data.worldX[index] = worldX;
     data.worldY[index] = worldY;
     data.hasFishing[index] = data.weight[index] > 0;
