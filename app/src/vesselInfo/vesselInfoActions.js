@@ -150,8 +150,7 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
             seriesgroup,
             data: getTracksPlaybackData(vectorArray),
             series: uniq(groupedData.series),
-            selectedSeries: series,
-            tilesetUrl: state.map.tilesetUrl
+            selectedSeries: series
           }
         });
 

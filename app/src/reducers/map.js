@@ -1,19 +1,15 @@
 import {
   DELETE_WORKSPACE_ID,
   INIT_GOOGLE_MAPS,
-  SET_CENTER,
   SET_CENTER_TILE,
   SET_DRAWING,
   SET_LAYER_INFO_MODAL,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_LOADERS,
   SET_LOADING,
-  SET_ZOOM
 } from 'actions/map';
 
 import {
-  SET_TILESET_ID,
-  SET_TILESET_URL,
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID,
   SET_WORKSPACE_OVERRIDE
@@ -23,8 +19,6 @@ const initialState = {
   isDrawing: false,
   loading: false,
   loaders: {},
-  tilesetUrl: null,
-  tilesetId: null,
   centerTile: { x: 0, y: 0 },
   layerModal: {
     open: false,
@@ -51,10 +45,6 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case INIT_GOOGLE_MAPS:
       return Object.assign({}, state, { googleMaps: action.payload });
-    case SET_TILESET_ID:
-      return Object.assign({}, state, { tilesetId: action.payload });
-    case SET_TILESET_URL:
-      return Object.assign({}, state, { tilesetUrl: action.payload });
     case SET_CENTER_TILE:
       return Object.assign({}, state, { centerTile: action.payload });
     case SET_LOADING:

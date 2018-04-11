@@ -187,18 +187,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
-  // TODO check if needed
-  dispatch({
-    type: SET_TILESET_URL,
-    payload: workspaceData.tilesetUrl
-  });
-
-  // TODO check if needed
-  dispatch({
-    type: SET_TILESET_ID,
-    payload: workspaceData.tilesetId
-  });
-
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
     // we need heatmap layers headers to be loaded before loading track
     if (workspaceData.shownVessel) {
@@ -287,8 +275,6 @@ function processNewWorkspace(data) {
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     encounters: workspace.encounters,
-    tilesetUrl: `${V2_API_ENDPOINT}/tilesets/${workspace.tileset}`,
-    tilesetId: workspace.tileset,
     areas: workspace.areas,
     filterGroups
   };
@@ -333,7 +319,6 @@ function processLegacyWorkspace(data, dispatch) {
 
   const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
   const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
-  // vesselLayer.id = '849-tileset-tms';
   const tilesetUrl = vesselLayer.url;
 
   const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
@@ -378,7 +363,6 @@ function processLegacyWorkspace(data, dispatch) {
     timelineSpeed: workspace.timelineSpeed,
     layers,
     pinnedVessels,
-    tilesetUrl,
     shownVessel,
     filters,
     tilesetId: getTilesetFromLayerURL(tilesetUrl)

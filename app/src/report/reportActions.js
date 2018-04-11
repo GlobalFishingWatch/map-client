@@ -165,8 +165,10 @@ export function sendSubscription() {
 
     let url;
     if (state.report.subscriptionFrequency === 'single') {
+      // FIXME state.map.tilesetUrl is deprecated
       url = `${state.map.tilesetUrl}/reports`;
     } else {
+      // FIXME state.map.tilesetUrl is deprecated
       payload.recurrency = state.report.subscriptionFrequency;
       url = `${state.map.tilesetUrl}/reports/subscriptions`;
     }
