@@ -4,6 +4,7 @@ import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'activityLayers/heatmapActions';
 import { setMaxZoom } from 'map/mapViewportActions';
+import { updateMapStyle } from 'map/mapStyleActions';
 import calculateLayerId from 'utils/calculateLayerId';
 
 export const SET_LAYERS = 'SET_LAYERS';
@@ -163,6 +164,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
           type: SET_LAYERS,
           payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
         });
+        dispatch(updateMapStyle());
         dispatch(initHeatmapLayers());
         dispatch(refreshFlagFiltersLayers());
       }).catch((err) => {
@@ -197,6 +199,8 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
       // TODO clean tile first, if zoom has changed
       dispatch(loadAllTilesForLayer(layer.id));
     }
+
+    dispatch(updateMapStyle());
   };
 }
 
@@ -233,16 +237,20 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
         dispatch(refreshFlagFiltersLayers());
       }
     }
+    dispatch(updateMapStyle());
   };
 }
 
 export function setLayerOpacity(opacity, layerId) {
-  return {
-    type: SET_LAYER_OPACITY,
-    payload: {
-      layerId,
-      opacity
-    }
+  return (dispatch) => {
+    dispatch({
+      type: SET_LAYER_OPACITY,
+      payload: {
+        layerId,
+        opacity
+      }
+    });
+    dispatch(updateMapStyle());
   };
 }
 
@@ -257,6 +265,7 @@ export function setLayerHue(hue, layerId) {
     });
     // TODO we might want to override all filters hue settings here (see with Dani)
     dispatch(refreshFlagFiltersLayers());
+    dispatch(updateMapStyle());
   };
 }
 

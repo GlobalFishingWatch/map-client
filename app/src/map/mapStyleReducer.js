@@ -2,7 +2,8 @@ import BASEMAP from 'map/gl-styles/basemap.json';
 import POLYGONS from 'map/gl-styles/polygons.json';
 import { fromJS } from 'immutable';
 import {
-  SET_BASEMAP
+  SET_BASEMAP,
+  UPDATE_MAP_STYLE
 } from 'map/mapStyleActions';
 
 const SATELLITE_ID = 'mapbox-satellite';
@@ -52,6 +53,9 @@ export default function (state = initialState, action) {
       const visibility = (satellite === true) ? 'visible' : 'none';
       const mapStyle = state.mapStyle.setIn(['layers', satelliteLayerIndex, 'layout', 'visibility'], visibility);
       return { ...state, mapStyle, activeBasemap: action.payload };
+    }
+    case UPDATE_MAP_STYLE : {
+      return { ...state, mapStyle: action.payload };
     }
     default:
       return state;
