@@ -5,36 +5,26 @@ import classnames from 'classnames';
 import { hueToClosestColor } from 'utils/colors';
 
 class Toggle extends Component {
-  getColor() {
-    if (this.props.hue !== undefined) {
-      return hueToClosestColor(this.props.hue);
-    }
-    if (this.props.colorName !== undefined) {
-      return this.props.colorName;
-    }
-    return this.props.color;
-  }
-
   render() {
+    const { on, color } = this.props;
+    const style = (on) ? { backgroundColor: color } : {};
     return (<div
+      style={style}
       className={classnames(
         ToggleStyles.toggle,
-        { [ToggleStyles._active]: this.props.on },
-        { [ToggleStyles[this.getColor()]]: this.props.on }
+        { [ToggleStyles._active]: on }
       )}
     >
       <input
         type="checkbox"
         onChange={() => this.props.onToggled()}
-        checked={this.props.on}
+        checked={on}
         readOnly
       />
       <div className={ToggleStyles.toggleBall}>
         <span
-          className={classnames(
-            ToggleStyles.toggleInnerBall,
-            { [ToggleStyles[this.getColor()]]: this.props.on }
-          )}
+          style={style}
+          className={ToggleStyles.toggleInnerBall}
         />
       </div>
     </div>);
@@ -43,9 +33,7 @@ class Toggle extends Component {
 
 Toggle.propTypes = {
   on: PropTypes.bool,
-  hue: PropTypes.number,
   color: PropTypes.string,
-  colorName: PropTypes.string,
   onToggled: PropTypes.func
 };
 

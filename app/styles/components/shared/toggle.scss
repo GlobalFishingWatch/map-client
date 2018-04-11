@@ -24,9 +24,6 @@
     }
   }
 
-  // Color classes
-  @include colorClasses();
-
   input {
     cursor: pointer;
     height: 100%;
@@ -59,8 +56,6 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: 4px;
-
-      @include colorClasses();
     }
   }
 

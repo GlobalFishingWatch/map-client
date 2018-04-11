@@ -6,23 +6,18 @@ import { COLORS } from 'config';
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 
 class ColorPicker extends Component {
-  onColorChange(e) {
-    this.props.onColorChange(e.target.value);
-  }
-
-  renderInput(color, key) {
-    const id = `${key}${color}`;
+  renderInput(color) {
     return (
-      <div className={classnames(colorPickerStyles.colorInput)} key={key}>
+      <div className={classnames(colorPickerStyles.colorInput)} key={color}>
         <input
           type="radio"
-          name={id}
-          id={id}
+          name={color}
+          id={color}
           value={color}
-          onChange={e => this.onColorChange(e)}
+          onChange={() => this.props.onColorChange(color)}
           checked={this.props.color === color}
         />
-        <label htmlFor={id} className={classnames(colorPickerStyles[color])} />
+        <label htmlFor={color} style={{ backgroundColor: color }} />
       </div>
     );
   }
@@ -31,7 +26,7 @@ class ColorPicker extends Component {
       <div className={classnames(colorPickerStyles.colorPicker)}>
         <div className={colorPickerStyles.title}>Color</div>
         <div className={colorPickerStyles.colorInputs}>
-          { Object.keys(COLORS).map((color, i) => this.renderInput(color, `${i}${this.props.id}`))}
+          { Object.keys(COLORS).map(key => this.renderInput(COLORS[key]))}
         </div>
       </div>
     );

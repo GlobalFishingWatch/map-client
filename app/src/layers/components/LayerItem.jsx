@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { LAYER_TYPES } from 'constants';
-import { COLOR_HUES } from 'config';
-import { getKeyByValue } from 'utils/colors';
+import { COLOR_HUES, COLORS } from 'config';
+import { getKeyByValue, hueToRgbHexString, hexToHue } from 'utils/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';
@@ -47,7 +47,10 @@ class LayerItem extends Component {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerHue(COLOR_HUES[color], this.props.layer.id);
+    const key = getKeyByValue(COLORS, color);
+    const hue = (key) ? COLOR_HUES[key] : hexToHue(color);
+
+    this.props.setLayerHue(hue, this.props.layer.id);
   }
 
   onChangeLayerLabel(value) {
@@ -80,7 +83,8 @@ class LayerItem extends Component {
     // Expandable info panel was removed in 9c74e11
     const { id, hue, reportId, visible } = this.props.layer;
 
-    const color = getKeyByValue(COLOR_HUES, hue);
+    const colorKey = getKeyByValue(COLOR_HUES, hue);
+    const color = (colorKey !== null) ? COLORS[colorKey] : hueToRgbHexString(hue, true);
     const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
@@ -152,7 +156,7 @@ class LayerItem extends Component {
           <div className={LayerItemStyles.layerItemHeader}>
             <Toggle
               on={visible}
-              colorName={color}
+              color={color}
               onToggled={() => this.onChangeVisibility()}
             />
             <input

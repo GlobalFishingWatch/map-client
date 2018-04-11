@@ -13,7 +13,6 @@
     }
 
     label {
-      @include colorClasses();
       display: inline-block;
       width: 10px;
       height: 10px;

@@ -90,7 +90,7 @@ export const hueToRgbString = (hue) => {
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 };
 
-export const rgbToHexString = (rgb) => {
+export const rgbToHexString = (rgb, css) => {
   const str = ['r', 'g', 'b'].map((channelName) => {
     const channelValue = rgb[channelName];
     let channelStr = channelValue.toString(16);
@@ -99,12 +99,13 @@ export const rgbToHexString = (rgb) => {
     }
     return channelStr;
   }).join('');
-  return `0x${str}`;
+  const prefix = (css === true) ? '#' : '0x';
+  return `${prefix}${str}`;
 };
 
-export const hueToRgbHexString = (hue) => {
+export const hueToRgbHexString = (hue, css) => {
   const rgb = hueToRgbDefaults(hue);
-  return rgbToHexString(rgb);
+  return rgbToHexString(rgb, css);
 };
 
 const closestNumber = (numberArray, goal) =>
