@@ -468,7 +468,7 @@ export function getVesselFromHeatmap(tileQuery) {
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
 
-    console.log(isCluster, isMouseCluster, foundVessels)
+    // console.log(isCluster, isMouseCluster, foundVessels)
 
     if (isEmpty === true) {
       // nothing to see here

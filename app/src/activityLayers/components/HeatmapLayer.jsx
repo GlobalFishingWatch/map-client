@@ -30,9 +30,6 @@ class HeatmapLayer extends React.Component {
     if (newLayer.opacity !== prevLayer.opacity) {
       this.setOpacity(newLayer.opacity);
     }
-    // if (newLayer.hue !== prevLayer.hue) {
-    //   this.setDefaultHue(newLayer.hue);
-    // }
     if (nextProps.useRadialGradientStyle !== this.props.useRadialGradientStyle) {
       this.setBrushZoomRenderingStyle(nextProps.useRadialGradientStyle);
     }
@@ -49,8 +46,7 @@ class HeatmapLayer extends React.Component {
     this.stage = new PIXI.Container();
 
     this.toggleVisibility(layer.visible);
-    const defaultHue = layer.hue !== undefined ? layer.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
-    this.setDefaultHue(defaultHue);
+    // const defaultHue = layer.hue !== undefined ? layer.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
     this.setOpacity(layer.opacity);
 
     rootStage.addChild(this.stage);
@@ -62,10 +58,6 @@ class HeatmapLayer extends React.Component {
 
   setOpacity(opacity) {
     this.stage.alpha = opacity;
-  }
-
-  setDefaultHue(hue) {
-    this.defaultHue = hue;
   }
 
   setBrushRenderingStyle(style = BRUSH_RENDERING_STYLE.NORMAL) {
@@ -99,9 +91,9 @@ class HeatmapLayer extends React.Component {
 
   _redraw() {
     //  offsets
-    const { data, filters, baseTexture, maxSprites } = this.props;
+    const { data, filters, baseTexture, maxSprites, layer } = this.props;
     const tiles = data.tiles;
-    const defaultHue = this.defaultHue;
+    const defaultHue = layer.hue;
 
     const allHuesToRender = (filters !== undefined && filters.length)
       ? filters
@@ -140,8 +132,8 @@ class HeatmapLayer extends React.Component {
       });
     });
 
-    allHuesToRender.forEach((hue) => {
-      this.subLayers[hue].render();
+    allHuesToRender.forEach((hueToRender) => {
+      this.subLayers[hueToRender].render();
     });
   }
 
