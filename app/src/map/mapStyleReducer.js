@@ -1,12 +1,31 @@
 import BASEMAP from 'map/gl-styles/basemap.json';
+import POLYGONS from 'map/gl-styles/polygons.json';
 import { fromJS } from 'immutable';
 import {
   SET_BASEMAP
 } from 'map/mapStyleActions';
 
+const SATELLITE_ID = 'mapbox-satellite';
+const COMPOSITE_SOURCE_ID = 'composite';
+const COMPOSITE_POLYGONS_SOURCE_ID = 'composite-polygons';
+
+// merges basemap style JSON and polygon layers JSON into a single style JSON
+// checks for duplicate sources named 'composite'
+const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
+  Object.keys(polygons.sources).forEach((sourceKey) => {
+    basemap.sources[(sourceKey === COMPOSITE_SOURCE_ID) ? COMPOSITE_POLYGONS_SOURCE_ID : sourceKey] = polygons.sources[sourceKey];
+  });
+  polygons.layers.forEach((layer) => {
+    if (layer.source === COMPOSITE_SOURCE_ID) {
+      layer.source = COMPOSITE_POLYGONS_SOURCE_ID;
+    }
+    basemap.layers.push(layer);
+  });
+  return fromJS(basemap);
+};
 
 const initialState = {
-  mapStyle: fromJS(BASEMAP),
+  mapStyle: mergeBasemapAndPolygonStyles(BASEMAP, POLYGONS),
   activeBasemap: 'North Star',
   basemaps: [
     {
@@ -24,7 +43,6 @@ const initialState = {
   ]
 };
 
-const SATELLITE_ID = 'mapbox-satellite';
 
 export default function (state = initialState, action) {
   switch (action.type) {

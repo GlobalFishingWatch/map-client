@@ -183,7 +183,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
 
-  dispatch(setBasemap(workspaceData.basemap))
+  dispatch(setBasemap(workspaceData.basemap));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 

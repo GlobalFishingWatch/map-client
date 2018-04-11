@@ -1,0 +1,75 @@
+{
+  "version": 8,
+  "name": "Polygon Layers",
+  "metadata": {
+    "mapbox:autocomposite": true,
+    "mapbox:type": "default",
+    "mapbox:origin": "dark-v9",
+    "mapbox:groups": {}
+  },
+  "center": [
+    -4.848181386080569,
+    51.57109907221323
+  ],
+  "zoom": 6.607400067855741,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "composite": {
+      "url": "mapbox://enriquetuya.a65cp7am",
+      "type": "vector"
+    }
+  },
+  "sprite": "mapbox://sprites/enriquetuya/cjfuur39n3jiz2roh4hq5606k",
+  "glyphs": "mapbox://fonts/enriquetuya/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "mpa",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "MPAgeojson",
+      "filter": [
+        "!in",
+        "MARINE",
+        "",
+        "0"
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(212, 90%, 60%, 0.4)",
+        "fill-outline-color": "hsla(212, 90%, 60%, 1)"
+      }
+    },
+    {
+      "id": "mpa labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "MPAgeojson",
+      "filter": [
+        "!in",
+        "MARINE",
+        "",
+        "0"
+      ],
+      "layout": {
+        "text-field": "{NAME}",
+        "text-size": 10,
+        "text-font": [
+          "Overpass Mono Light",
+          "Arial Unicode MS Regular"
+        ]
+      },
+      "paint": {
+        "text-color": "hsl(194, 92%, 69%)"
+      }
+    }
+  ],
+  "created": "2018-04-11T08:48:10.577Z",
+  "id": "cjfuur39n3jiz2roh4hq5606k",
+  "modified": "2018-04-11T10:42:08.482Z",
+  "owner": "enriquetuya",
+  "visibility": "private",
+  "draft": false
+}
