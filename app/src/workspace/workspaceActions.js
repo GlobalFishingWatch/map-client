@@ -140,7 +140,7 @@ export function saveWorkspace(errorAction) {
           seriesgroup: state.encounters.seriesgroup,
           tilesetId: state.encounters.tilesetId
         },
-        basemap: state.basemap.activeBasemap,
+        basemap: state.mapStyle.activeBasemap,
         timeline: {
           // We store the timestamp
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),

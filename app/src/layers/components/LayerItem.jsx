@@ -80,7 +80,8 @@ class LayerItem extends Component {
     // Expandable info panel was removed in 9c74e11
     const { id, hue, reportId, visible } = this.props.layer;
 
-    const color = getKeyByValue(COLOR_HUES, hue);
+    // const color = getKeyByValue(COLOR_HUES, hue);
+    const color =
     const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
