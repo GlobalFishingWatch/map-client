@@ -7,7 +7,7 @@ import {
   COLORS
 } from 'config';
 import { LAYER_TYPES, FLAGS } from 'constants';
-import { SET_BASEMAP } from 'basemap/basemapActions';
+import { setBasemap } from 'map/mapStyleActions';
 import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
 import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
@@ -183,9 +183,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
 
-  dispatch({
-    type: SET_BASEMAP, payload: workspaceData.basemap
-  });
+  dispatch(setBasemap(workspaceData.basemap))
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
@@ -317,9 +315,7 @@ function processLegacyWorkspace(data, dispatch) {
     type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: [startInnerDate, endInnerDate]
   });
 
-  dispatch({
-    type: SET_BASEMAP, payload: workspace.basemap
-  });
+  dispatch(setBasemap(workspace.basemap));
 
   const layersData = workspace.map.animations.filter(l => l.args.source.args.url).map(l => ({
     title: l.args.title,

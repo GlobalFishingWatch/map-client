@@ -6,7 +6,7 @@ const mapStateToProps = state => ({
   viewport: state.mapViewport.viewport,
   maxZoom: state.mapViewport.maxZoom,
   minZoom: state.mapViewport.minZoom,
-  mapStyle: state.mapStyle
+  mapStyle: state.mapStyle.mapStyle
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -26,7 +26,6 @@ import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
 import literalsReducer from 'siteNav/literalsReducer';
-import basemapReducer from 'basemap/basemapReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
@@ -45,7 +44,6 @@ window.Promise = window.Promise || Promise;
  */
 const reducer = combineReducers({
   areas: areasOfInterestReducer,
-  basemap: basemapReducer,
   supportForm: supportFormReducer,
   customLayer: customLayerReducer,
   filters: filtersReducer,
