@@ -147,6 +147,16 @@ class ActivityLayers extends React.Component {
     this.maxSprites = getNumSprites(viewportWidth, viewportHeight);
   }
 
+  toggleHeatmapDimming(dim) {
+    if (this.heatmapStage === undefined) {
+      return;
+    }
+    if (dim === true) {
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
+  }
+
   onClick = (event) => {
     const { viewport } = this.context;
     const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
@@ -174,20 +184,12 @@ class ActivityLayers extends React.Component {
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
 
     const nextTracks = getTracks(vesselTracks, tracks);
-
-    // TODO check tracks length to toggle heatmap dimming
-    // if (!nextTracks || nextTracks.length === 0) {
-    //
-    //   const currentVesselTracksNum = (this.props.vesselTracks) ? this.props.vesselTracks.length : 0;
-    //   const currentTracksNum = (this.props.tracks) ? this.props.tracks.length : 0;
-    //   if (currentVesselTracksNum + currentTracksNum > 0) {
-    //     this.glContainer.clearTracks();
-    //     this.glContainer.toggleHeatmapDimming(false);
-    //   }
+    this.toggleHeatmapDimming(nextTracks.length > 0);
 
     return (<div
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
+      // TODO replace by mousemove, trigger a store change. Then let Map.jsx handle mouse events (stopdrag etc)
       onClick={this.onClick}
     >
       {layers.map(layer => (

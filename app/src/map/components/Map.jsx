@@ -5,31 +5,32 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
 
-// import {experimental} from 'react-map-gl';
-//
-// class MapControls extends experimental.MapControls {
-//   constructor() {
-//     super();
-//     this.events = ['mousemove'];
-//   }
-//
-//   // Override the default handler in MapControls
-//   handleEvent(event) {
-//     if (event.type === 'mousemove') {
-//       console.log('hi', event);
-//     }
-//     return super.handleEvent(event);
-//   }
-//   // _onPan(event) {
-//   //   console.log('pan')
-//   //   return this.isFunctionKeyPressed(event) || event.rightButton ?
-//   //     //  Default implementation in MapControls
-//   //     //  this._onPanRotate(event) : this._onPanMove(event);
-//   //     this._onPanMove(event) : this._onPanRotate(event);
-//   // }
-// }
+import {experimental} from 'react-map-gl';
 
-// const controls = new MapControls();
+class MapControls extends experimental.MapControls {
+  constructor() {
+    super();
+    this.events = ['panstart', 'panend'];
+  }
+
+  // Override the default handler in MapControls
+  handleEvent(event) {
+    console.log(event.type);
+    // if (event.type === 'mousemove') {
+    //   console.log('hi', event);
+    // }
+    return super.handleEvent(event);
+  }
+  // _onPan(event) {
+  //   console.log('pan')
+  //   return this.isFunctionKeyPressed(event) || event.rightButton ?
+  //     //  Default implementation in MapControls
+  //     //  this._onPanRotate(event) : this._onPanMove(event);
+  //     this._onPanMove(event) : this._onPanRotate(event);
+  // }
+}
+
+const controls = new MapControls();
 
 
 class Map extends React.Component {
@@ -72,7 +73,7 @@ class Map extends React.Component {
       >
         <MapGL
           onTransitionEnd={transitionEnd}
-          // mapControls={controls}
+          mapControls={controls}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
           mapStyle="mapbox://styles/enriquetuya/cj6dnii820sxe2rlpl7y238fb"
