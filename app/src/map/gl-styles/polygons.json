@@ -8,15 +8,15 @@
     "mapbox:groups": {}
   },
   "center": [
-    -4.848181386080569,
-    51.57109907221323
+    -179.61448685219295,
+    16.658102689985895
   ],
-  "zoom": 6.607400067855741,
+  "zoom": 2.226521502427615,
   "bearing": 0,
   "pitch": 0,
   "sources": {
     "composite": {
-      "url": "mapbox://enriquetuya.a65cp7am",
+      "url": "mapbox://enriquetuya.a65cp7am,enriquetuya.2j44gon5,enriquetuya.1oj9qtxb",
       "type": "vector"
     }
   },
@@ -27,7 +27,6 @@
       "id": "mpa",
       "type": "fill",
       "source": "composite",
-      "interactive": true,
       "source-layer": "MPAgeojson",
       "filter": [
         "!in",
@@ -35,12 +34,11 @@
         "",
         "0"
       ],
-      "layout": {
-        "visibility": "visible"
-      },
+      "layout": {},
       "paint": {
         "fill-color": "hsla(212, 90%, 60%, 0.4)",
-        "fill-outline-color": "hsla(212, 90%, 60%, 1)"
+        "fill-outline-color": "hsla(212, 90%, 60%, 1)",
+        "fill-opacity": 0.39
       }
     },
     {
@@ -65,11 +63,35 @@
       "paint": {
         "text-color": "hsl(194, 92%, 69%)"
       }
+    },
+    {
+      "id": "hsp",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "hsphsp",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(263, 91%, 58%, 0.4)"
+      }
+    },
+    {
+      "id": "eez",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "eez",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(299, 88%, 57%, 0.4)"
+      }
     }
   ],
   "created": "2018-04-11T08:48:10.577Z",
   "id": "cjfuur39n3jiz2roh4hq5606k",
-  "modified": "2018-04-11T10:42:08.482Z",
+  "modified": "2018-04-12T11:50:47.853Z",
   "owner": "enriquetuya",
   "visibility": "private",
   "draft": false

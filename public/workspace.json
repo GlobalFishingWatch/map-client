@@ -8,15 +8,6 @@
       "zoom": 3,
       "layers": [
         {
-          "title": "Ocean Contrast",
-          "description": "Adds a high contrast coarse bathymetry layer to the ocean areas.",
-          "url": "https://simbiotica.carto.com/api/v2/viz/82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7/viz.json",
-          "visible": false,
-          "hue": 60,
-          "type": "CartoDBAnimation",
-          "id": "82f5ccde-6002-11e6-9f8e-0e05a8b3e3d7"
-        },
-        {
           "title": "Fishing effort",
           "description": "Global Fishing Watch uses data about a vessel's identity, type, location, speed, direction and more that is broadcast by commercial vessels and collected via satellites and terrestrial receivers. We currently incorporate data from the public Automatic Identification System (AIS) and government Vessel Monitoring System (VMS) data from <a href='http://globalfishingwatch.org/2017/11/vms-transparency.html' target='_blank'>countries sharing their data</a> with us. AIS was developed for safety and collision-avoidance. VMS data was developed as a tracking system for governments to monitor their fleets and foreign fishing vessels within their waters. Global Fishing Watch applies a fishing detection algorithm to these data to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map.<br/> Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.<br/> However, AIS data as broadcast may vary in completeness, accuracy and quality, and collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data,  Global Fishing Watch's fishing detection algorithm is a best effort to mathematically identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity”, such as “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is continually taking steps to make sure fishing activity designations are as accurate as possible.",
           "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v1",

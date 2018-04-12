@@ -5,7 +5,9 @@ export const SET_BASEMAP = 'SET_BASEMAP';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
 
 const WORKSPACE_IDS_MAPBOX_STYLE_MATCHES = {
-  mparu: ['mpa', 'mpa labels']
+  mparu: ['mpa', 'mpa labels'],
+  eez: ['eez'],
+  highseas: ['hsp']
 };
 
 export const setBasemap = (basemap) => {
