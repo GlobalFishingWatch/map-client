@@ -183,3 +183,19 @@ export const MINI_GLOBE_SETTINGS = {
   defaultSize: 20,
   minZoom: 3
 };
+
+export const POLYGON_LAYERS = {
+  mparu: {
+    glLayers: [{ id: 'mpa', interactive: true }, { id: 'mpa labels' }],
+    popupFields: ['DESIG', 'ISO3']
+  },
+  eez: {
+    glLayers: [{ id: 'eez', interactive: true }],
+    popupFields: ['geoname', 'sovereign1']
+  },
+  highseas: {
+    glLayers: [{ id: 'hsp', interactive: true }],
+    popupFields: ['regionid']
+  }
+};
+

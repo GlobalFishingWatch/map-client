@@ -13,13 +13,6 @@ export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 
 export function setZoom(zoom, latLng = null) {
   return (dispatch, getState) => {
-  //   dispatch({
-  //     type: SET_ZOOM,
-  //     payload: {
-  //       zoom,
-  //       zoomCenter: latLng
-  //     }
-  //   });
     if (getState().vesselInfo && getState().vesselInfo.details &&
       (getState().vesselInfo.details.isEmpty === true || getState().vesselInfo.details.isCluster === true)) {
       dispatch(clearVesselInfo());

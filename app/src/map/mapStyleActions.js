@@ -1,14 +1,8 @@
-import { fromJS } from 'immutable';
 import { LAYER_TYPES } from 'constants';
+import { POLYGON_LAYERS } from 'config';
 
 export const SET_BASEMAP = 'SET_BASEMAP';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
-
-const WORKSPACE_IDS_MAPBOX_STYLE_MATCHES = {
-  mparu: ['mpa', 'mpa labels'],
-  eez: ['eez'],
-  highseas: ['hsp']
-};
 
 export const setBasemap = (basemap) => {
   return {
@@ -18,12 +12,12 @@ export const setBasemap = (basemap) => {
 };
 
 const updateLayer = (style, layer) => {
-  const matchedStyleLayers = WORKSPACE_IDS_MAPBOX_STYLE_MATCHES[layer.id];
+  const matchedStyleLayers = POLYGON_LAYERS[layer.id].glLayers;
   const styleLayers = style.toJS().layers;
   let newStyle = style;
-  matchedStyleLayers.forEach((layerId) => {
-    const styleLayerIndex = styleLayers.findIndex(l => l.id === layerId);
-    const styleLayer = styleLayers.find(l => l.id === layerId);
+  matchedStyleLayers.forEach((glLayer) => {
+    const styleLayerIndex = styleLayers.findIndex(l => l.id === glLayer.id);
+    const styleLayer = styleLayers.find(l => l.id === glLayer.id);
 
     // visibility
     const visibility = (layer.visible === true && layer.added === true) ? 'visible' : 'none';
@@ -58,7 +52,7 @@ export const updateMapStyle = () => {
     const layers = getState().layers.workspaceLayers.filter(layer => layer.type === LAYER_TYPES.CartoDBAnimation);
     let style = getState().mapStyle.mapStyle;
     layers.forEach((layer) => {
-      if (WORKSPACE_IDS_MAPBOX_STYLE_MATCHES[layer.id] === undefined) {
+      if (POLYGON_LAYERS[layer.id] === undefined) {
         // console.warn('Layer not found in Mapbox JSON style', layer);
       } else {
         style = updateLayer(style, layer);

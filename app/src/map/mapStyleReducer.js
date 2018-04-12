@@ -1,5 +1,6 @@
 import BASEMAP from 'map/gl-styles/basemap.json';
 import POLYGONS from 'map/gl-styles/polygons.json';
+import { POLYGON_LAYERS } from 'config';
 import { fromJS } from 'immutable';
 import {
   SET_BASEMAP,
@@ -21,7 +22,10 @@ const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
       layer.source = COMPOSITE_POLYGONS_SOURCE_ID;
     }
 
-    // TODO inject interactive: true property.
+    // check if layer is interactive, set manually on style
+    const allGlLayers = Object.keys(POLYGON_LAYERS).reduce((acc, val) => acc.concat(POLYGON_LAYERS[val].glLayers), [])
+    const glLayerDef = allGlLayers.find(glLayer => glLayer.id);
+    layer.interactive = glLayerDef.interactive;
 
     basemap.layers.push(layer);
   });

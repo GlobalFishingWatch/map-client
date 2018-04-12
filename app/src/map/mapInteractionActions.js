@@ -4,12 +4,33 @@ import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { LAYER_TYPES } from 'constants';
+import { POLYGON_LAYERS } from 'config';
+
+export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
+export const SET_CLICK_POPUP = 'SET_CLICK_POPUP';
 
 export const mapHover = (latitude, longitude, features) => {
   return (dispatch, getState) => {
     const currentActivityLayersVessels = getState().heatmap.highlightedVessels.foundVessels;
     if (currentActivityLayersVessels === undefined && features.length) {
       console.log('highlight poly', features[0]);
+      const feature = features[0];
+      const originalLayerId = Object.keys(POLYGON_LAYERS).find(key =>
+        POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === feature.layer.id)
+      );
+      const layer = getState().layers.workspaceLayers.find(l => l.id === originalLayerId);
+      const fields = POLYGON_LAYERS[originalLayerId].popupFields;
+      const polygonName = feature.properties[fields[0]];
+
+      dispatch({
+        type: SET_HOVER_POPUP,
+        payload: {
+          layerTitle: layer.title,
+          polygonName,
+          latitude,
+          longitude
+        }
+      });
     }
   };
 };

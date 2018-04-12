@@ -1,3 +1,5 @@
+// FIXME make me work again
+
 import { connect } from 'react-redux';
 import ClusterInfoWindow from 'components/Map/ClusterInfoWindow';
 

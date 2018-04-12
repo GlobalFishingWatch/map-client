@@ -19,7 +19,6 @@ const initialState = {
   isDrawing: false,
   loading: false,
   loaders: {},
-  centerTile: { x: 0, y: 0 },
   layerModal: {
     open: false,
     info: {}
@@ -43,10 +42,6 @@ const initialState = {
  */
 export default function (state = initialState, action) {
   switch (action.type) {
-    case INIT_GOOGLE_MAPS:
-      return Object.assign({}, state, { googleMaps: action.payload });
-    case SET_CENTER_TILE:
-      return Object.assign({}, state, { centerTile: action.payload });
     case SET_LOADING:
       return Object.assign({}, state, { loading: action.payload });
     case SET_DRAWING:

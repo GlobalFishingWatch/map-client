@@ -1,5 +1,5 @@
 import React from 'react';
-import MapGL from 'react-map-gl';
+import MapGL, { Popup } from 'react-map-gl';
 import mapStyles from 'styles/components/map.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
@@ -69,7 +69,8 @@ class Map extends React.Component {
   }
 
   render() {
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle } = this.props;
+    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, hoverPopup } = this.props;
+    console.log(hoverPopup)
     return (
       <div
         id="map"
@@ -89,6 +90,20 @@ class Map extends React.Component {
           onViewportChange={this.onViewportChange}
         >
           <ActivityLayers />
+          {hoverPopup !== null &&
+            <Popup
+              latitude={hoverPopup.latitude}
+              longitude={hoverPopup.latitude}
+              closeButton={false}
+              anchor= "bottom"
+              offsetTop= {-40}
+              tipSize= {4}
+            >
+              <div>
+                {hoverPopup.layerTitle} {hoverPopup.polygonName}
+              </div>
+            </Popup>
+          }
         </MapGL>
       </div>
     );
