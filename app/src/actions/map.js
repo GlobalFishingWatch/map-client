@@ -1,6 +1,6 @@
 import { clearVesselInfo } from 'vesselInfo/vesselInfoActions';
 import { trackCenterTile } from 'analytics/analyticsActions';
-import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM, CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
+import { ANALYTICS_TILE_COORDS_SCALE, ANALYTICS_TRACK_DRAG_FROM_ZOOM } from 'config';
 
 export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL_VISIBILITY';
 export const SET_CENTER = 'SET_CENTER';
@@ -121,12 +121,6 @@ export function openTimebarInfoModal() {
         }
       }
     ));
-  };
-}
-
-export function zoomIntoVesselCenter(latitude, longitude) {
-  return (dispatch, getState) => {
-    dispatch(setZoom(getState().map.zoom + CLUSTER_CLICK_ZOOM_INCREMENT, [latitude, longitude]));
   };
 }
 

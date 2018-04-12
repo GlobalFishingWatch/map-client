@@ -1,4 +1,5 @@
 import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
+import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
 export const SET_VIEWPORT = 'SET_VIEWPORT';
 export const UPDATE_VIEWPORT = 'UPDATE_VIEWPORT';
@@ -23,10 +24,14 @@ export const updateViewport = viewportUpdate => (dispatch) => {
   dispatch(updateHeatmapTilesFromViewport());
 };
 
-const updateZoom = increment => (dispatch) => {
+const updateZoom = (increment, latitude, longitude) => (dispatch) => {
   dispatch({
     type: SET_ZOOM_INCREMENT,
-    payload: increment
+    payload: {
+      increment,
+      latitude,
+      longitude
+    }
   });
   dispatch(updateHeatmapTilesFromViewport());
 };
@@ -57,3 +62,8 @@ export const transitionEnd = () => (dispatch) => {
   });
   dispatch(updateHeatmapTilesFromViewport());
 };
+
+export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
+  dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
+};
+

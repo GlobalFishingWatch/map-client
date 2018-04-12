@@ -59,8 +59,14 @@ export default function (state = initialState, action) {
 
     case SET_ZOOM_INCREMENT: {
       const currentZoom = state.viewport.zoom;
-      const zoom = Math.min(state.maxZoom, currentZoom + action.payload);
-      const viewport = { ...state.viewport, ...DEFAULT_TRANSITION, zoom };
+      const zoom = Math.min(state.maxZoom, currentZoom + action.payload.increment);
+      const viewport = {
+        ...state.viewport,
+        ...DEFAULT_TRANSITION,
+        zoom,
+        latitude: (action.payload.latitude === undefined) ? state.viewport.latitude : action.payload.latitude,
+        longitude: (action.payload.longitude === undefined) ? state.viewport.longitude : action.payload.longitude
+      };
       return {
         ...state,
         viewport,

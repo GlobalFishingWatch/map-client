@@ -10,10 +10,7 @@ import {
 } from 'utils/heatmapTileData';
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
-import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
-import { trackMapClicked } from 'analytics/analyticsActions';
-import { addLoader, removeLoader, zoomIntoVesselCenter } from 'actions/map';
+import { addLoader, removeLoader } from 'actions/map';
 import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
@@ -426,7 +423,7 @@ const _queryHeatmap = (state, tileQuery) => {
   return { isEmpty, isCluster, isMouseCluster, foundVessels, layer };
 };
 
-export function highlightVesselFromHeatmap(tileQuery, latLng) {
+export function highlightVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
     const state = getState();
     const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
@@ -440,7 +437,8 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
           clickableCluster: isCluster === true || isMouseCluster === true,
           highlightableCluster: isCluster !== true,
           foundVessels,
-          latLng
+          // tileQuery
+          // latLng
         }
       });
     }
@@ -453,50 +451,6 @@ export function clearHighlightedVessels() {
     payload: {
       isEmpty: true,
       clickableCluster: false
-    }
-  };
-}
-
-export function getVesselFromHeatmap(tileQuery) {
-  return (dispatch, getState) => {
-    const state = getState();
-
-    if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') === -1) {
-      return;
-    }
-
-    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
-
-    dispatch(clearVesselInfo());
-    dispatch(clearEncountersInfo());
-
-    // console.log(isCluster, isMouseCluster, foundVessels)
-
-    if (isEmpty === true) {
-      // nothing to see here
-    } else if (isCluster === true || isMouseCluster === true) {
-      dispatch(trackMapClicked(tileQuery.latitude, tileQuery.longitude, 'cluster'));
-      dispatch(hideVesselsInfoPanel());
-      dispatch(zoomIntoVesselCenter(tileQuery.latitude, tileQuery.longitude));
-      dispatch({
-        type: HIGHLIGHT_VESSELS,
-        payload: { isEmpty: true }
-      });
-    } else {
-      dispatch(trackMapClicked(tileQuery.latitude, tileQuery.longitude, 'vessel'));
-      const selectedSeries = foundVessels[0].series;
-      const selectedSeriesgroup = foundVessels[0].seriesgroup;
-
-      if (layer.subtype === LAYER_TYPES.Encounters) {
-        if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
-          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
-        } else {
-          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
-        }
-      } else {
-        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
-      }
-
     }
   };
 }
