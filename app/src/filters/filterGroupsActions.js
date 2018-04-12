@@ -1,6 +1,7 @@
 import { LAYER_TYPES } from 'constants';
 import { COLOR_HUES, COLORS } from 'config';
 import { trackCreateFilterGroups } from 'analytics/analyticsActions';
+import { getKeyByValue, hexToHue } from 'utils/colors';
 
 export const CREATE_NEW_FILTER_GROUP = 'CREATE_NEW_FILTER_GROUP';
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
@@ -21,9 +22,12 @@ export function createNewFilterGroup() {
       checkedLayers[lid] = false;
     });
 
+    const colorKey = Object.keys(COLORS)[getState().filterGroups.defaultColorIndex];
+    const color = COLORS[colorKey];
+
     const newFilterGroup = {
       checkedLayers,
-      color: Object.keys(COLORS)[getState().filterGroups.defaultColorIndex],
+      color,
       filterValues: {},
       visible: true,
       label: ''
@@ -77,8 +81,10 @@ const getLayerData = (heatmapLayer, filters) => {
           filterValues[fieldName] = filterGroup.filterValues[filterValueKey];
         }
       });
+      const key = getKeyByValue(COLORS, filterGroup.color);
+      const hue = (key) ? COLOR_HUES[key] : hexToHue(filterGroup.color);
       const layerGroupedFilter = {
-        hue: COLOR_HUES[filterGroup.color],
+        hue,
         filterValues,
         // 'pass' is set to true when none of the filters fields in the filter group is supported by the layer headers
         // This avoids having to filter every point of a completely filtered out layer.
