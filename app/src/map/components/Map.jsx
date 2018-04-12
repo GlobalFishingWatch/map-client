@@ -5,32 +5,34 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
 
-import {experimental} from 'react-map-gl';
-
-class MapControls extends experimental.MapControls {
-  constructor() {
-    super();
-    this.events = ['panstart', 'panend'];
-  }
-
-  // Override the default handler in MapControls
-  handleEvent(event) {
-    console.log(event.type);
-    // if (event.type === 'mousemove') {
-    //   console.log('hi', event);
-    // }
-    return super.handleEvent(event);
-  }
-  // _onPan(event) {
-  //   console.log('pan')
-  //   return this.isFunctionKeyPressed(event) || event.rightButton ?
-  //     //  Default implementation in MapControls
-  //     //  this._onPanRotate(event) : this._onPanMove(event);
-  //     this._onPanMove(event) : this._onPanRotate(event);
-  // }
-}
-
-const controls = new MapControls();
+// import {experimental} from 'react-map-gl';
+//
+// class MapControls extends experimental.MapControls {
+//   constructor() {
+//     super();
+//     this.events = ['panstart', 'panend', 'click'];
+//   }
+//
+//   // Override the default handler in MapControls
+//   handleEvent(event) {
+//     console.log(event.type);
+//     console.log(event);
+//     console.log(event.features);
+//     // if (event.type === 'mousemove') {
+//     //   console.log('hi', event);
+//     // }
+//     return super.handleEvent(event);
+//   }
+//   // _onPan(event) {
+//   //   console.log('pan')
+//   //   return this.isFunctionKeyPressed(event) || event.rightButton ?
+//   //     //  Default implementation in MapControls
+//   //     //  this._onPanRotate(event) : this._onPanMove(event);
+//   //     this._onPanMove(event) : this._onPanRotate(event);
+//   // }
+// }
+//
+// const controls = new MapControls();
 
 
 class Map extends React.Component {
@@ -59,7 +61,11 @@ class Map extends React.Component {
   }
 
   onHover = (event) => {
-    this.props.setMouseLatLong(event.lngLat[1], event.lngLat[0]);
+    this.props.mapHover(event.lngLat[1], event.lngLat[0], event.features);
+  }
+
+  onClick = (event) => {
+    this.props.mapClick(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   render() {
@@ -73,9 +79,9 @@ class Map extends React.Component {
       >
         <MapGL
           onTransitionEnd={transitionEnd}
-          mapControls={controls}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
+          onClick={this.onClick}
           mapStyle={mapStyle}
           {...viewport}
           maxZoom={maxZoom}
@@ -91,10 +97,12 @@ class Map extends React.Component {
 
 Map.propTypes = {
   viewport: PropTypes.object,
+  mapStyle: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
   setViewport: PropTypes.func,
-  setMouseLatLong: PropTypes.func,
+  mapHover: PropTypes.func,
+  mapClick: PropTypes.func,
   transitionEnd: PropTypes.func
 };
 

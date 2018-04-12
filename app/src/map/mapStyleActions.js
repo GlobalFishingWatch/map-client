@@ -54,7 +54,6 @@ const updateLayer = (style, layer) => {
 export const updateMapStyle = () => {
   return (dispatch, getState) => {
     const layers = getState().layers.workspaceLayers.filter(layer => layer.type === LAYER_TYPES.CartoDBAnimation);
-    console.log(layers);
     let style = getState().mapStyle.mapStyle;
     layers.forEach((layer) => {
       if (WORKSPACE_IDS_MAPBOX_STYLE_MATCHES[layer.id] === undefined) {
@@ -63,7 +62,6 @@ export const updateMapStyle = () => {
         style = updateLayer(style, layer);
       }
     });
-    console.log(style.toJS())
     dispatch({
       type: UPDATE_MAP_STYLE,
       payload: style

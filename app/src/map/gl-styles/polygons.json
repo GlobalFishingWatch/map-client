@@ -27,6 +27,7 @@
       "id": "mpa",
       "type": "fill",
       "source": "composite",
+      "interactive": true,
       "source-layer": "MPAgeojson",
       "filter": [
         "!in",

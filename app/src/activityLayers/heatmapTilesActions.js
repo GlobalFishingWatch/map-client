@@ -148,7 +148,7 @@ export const queryHeatmapVessels = (coords, isClick = false) => {
       uid: viewportTilesIndexes[0]
     };
 
-    console.log(query);
+    // console.log(query);
     if (isClick === true) {
       dispatch(getVesselFromHeatmap(query));
     }
