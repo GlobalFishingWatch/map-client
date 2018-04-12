@@ -28,19 +28,18 @@ const updateLayer = (style, layer) => {
     newStyle = newStyle.setIn(['layers', styleLayerIndex, 'layout', 'visibility'], visibility);
 
     // color/opacity
-    // const paintColor = `hsla(${layer.hue}, 90%, 60%, ${layer.opacity})`;
-    const paintColor = `hsla(${layer.hue}, 90%, 60%, 0.4)`;
-    const paintColor2 = `hsla(${layer.hue}, 90%, 60%, 1)`;
+    const paintColor = `hsla(${layer.hue}, 90%, 60%, ${layer.opacity - 0.5})`;
+    const paintColorOutline = `hsla(${layer.hue}, 90%, 60%, ${layer.opacity})`;
     switch (styleLayer.type) {
       case 'fill': {
         newStyle = newStyle
           .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], paintColor)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], paintColor2);
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], paintColorOutline);
         break;
       }
       case 'symbol': {
         newStyle = newStyle
-          .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], paintColor2);
+          .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], paintColorOutline);
         break;
       }
       default: {

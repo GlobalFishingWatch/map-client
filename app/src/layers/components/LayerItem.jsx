@@ -34,12 +34,12 @@ class LayerItem extends Component {
     this.props.toggleLayerVisibility(this.props.layer.id);
   }
 
-  onChangeOpacity(transparency) {
+  onOpacityChange = (opacity) => {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
 
-    this.props.setLayerOpacity(transparency, this.props.layer.id);
+    this.props.setLayerOpacity(opacity, this.props.layer.id);
   }
 
   onColorChange(color) {
@@ -80,8 +80,7 @@ class LayerItem extends Component {
   }
 
   render() {
-    // Expandable info panel was removed in 9c74e11
-    const { id, hue, reportId, visible } = this.props.layer;
+    const { id, hue, reportId, visible, opacity } = this.props.layer;
 
     const colorKey = getKeyByValue(COLOR_HUES, hue);
     const color = (colorKey !== null) ? COLORS[colorKey] : hueToRgbHexString(hue, true);
@@ -178,8 +177,9 @@ class LayerItem extends Component {
           <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
             <ColorPicker
               color={color}
+              opacity={opacity}
               onColorChange={this.onColorChange}
-              id={id}
+              onOpacityChange={this.onOpacityChange}
             />
           </ExpandItem >
         }
