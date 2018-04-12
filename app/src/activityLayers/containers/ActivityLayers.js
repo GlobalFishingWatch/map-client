@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   heatmapLayers: state.heatmap.heatmapLayers,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   timelineOverExtentIndexes: state.filters.timelineOverExtentIndexes,
+  highlightedVessels: state.heatmap.highlightedVessels,
   zoom: state.mapViewport.viewport.zoom,
   layerFilters: state.filterGroups.layerFilters,
   vesselTracks: state.vesselInfo.vessels,
@@ -14,8 +15,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  queryHeatmapVessels: (coords, isClick) => {
-    dispatch(queryHeatmapVessels(coords, isClick));
+  queryHeatmapVessels: (coords) => {
+    dispatch(queryHeatmapVessels(coords));
   }
 });
 

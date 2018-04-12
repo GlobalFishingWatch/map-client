@@ -140,6 +140,8 @@ class ActivityLayers extends React.Component {
 
     this.heatmapStage = new PIXI.Container();
     this.stage.addChild(this.heatmapStage);
+
+    this.pixi.ticker.add(this._onTick);
   }
 
   _updateViewportSize(viewportWidth, viewportHeight) {
@@ -154,10 +156,11 @@ class ActivityLayers extends React.Component {
     if (dim === true) {
       this.heatmapFadingIn = false;
     }
+    console.log(dim)
     this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
-  onClick = (event) => {
+  onMouseMove = (event) => {
     const { viewport } = this.context;
     const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
     const [worldX, worldY] = lngLatToWorld([longitude, latitude], 1);
@@ -172,25 +175,78 @@ class ActivityLayers extends React.Component {
       worldX,
       worldY,
       toleranceRadiusInWorldUnits
-    }, true);
+    });
+  }
+
+  _onTick = () => {
+    if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
+      this._heatmapFadeinStep();
+    }
+  }
+
+  _startHeatmapFadein() {
+    this.heatmapFadingIn = true;
+    this.heatmapFadeinStartTimestamp = undefined;
+  }
+
+  _heatmapFadeinStep() {
+    if (this.heatmapFadeinStartTimestamp === undefined) {
+      this.heatmapFadeinStartTimestamp = Date.now();
+    }
+    const timeElapsed = (Date.now() - this.heatmapFadeinStartTimestamp) / 1000;
+    let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
+    if (alpha >= 1) {
+      alpha = 1;
+      this.heatmapFadingIn = false;
+    }
+    this.heatmapStage.alpha = alpha;
   }
 
   render() {
     const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
-    const { zoom, layerFilters, heatmapLayers, timelineInnerExtentIndexes, timelineOverExtentIndexes, vesselTracks, tracks } = this.props;
+    const {
+      zoom,
+      layerFilters,
+      heatmapLayers,
+      timelineInnerExtentIndexes,
+      timelineOverExtentIndexes,
+      highlightedVessels,
+      vesselTracks,
+      tracks
+    } = this.props;
     const { viewport } = this.context;
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
 
     const nextTracks = getTracks(vesselTracks, tracks);
-    this.toggleHeatmapDimming(nextTracks.length > 0);
+    if (highlightedVessels.isEmpty !== true) {
+      this.toggleHeatmapDimming(true);
+    }
+    if (highlightedVessels.isEmpty === true && nextTracks.length === 0) {
+      this._startHeatmapFadein();
+    }
+
+    const highlightData = (
+      highlightedVessels !== undefined
+      && highlightedVessels.layerId !== undefined
+      && highlightedVessels.foundVessels !== undefined
+      && highlightedVessels.isEmpty !== true
+    )
+      ? heatmapLayers[highlightedVessels.layerId]
+      : null;
+    const highlightFilters = (highlightedVessels.foundVessels !== undefined) ?
+      highlightedVessels.foundVessels.map(vessel => ({
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        filterValues: {
+          series: [vessel.series]
+        }
+      })) : [];
 
     return (<div
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
-      // TODO replace by mousemove, trigger a store change. Then let Map.jsx handle mouse events (stopdrag etc)
-      onClick={this.onClick}
+      onMouseMove={this.onMouseMove}
     >
       {layers.map(layer => (
         <HeatmapLayer
@@ -208,6 +264,22 @@ class ActivityLayers extends React.Component {
           customRenderingStyle={{}}
         />)
       )}
+      {this.stage !== undefined &&
+        <HeatmapLayer
+          key="highlighted"
+          layer={{ id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE }}
+          data={highlightData}
+          filters={highlightFilters}
+          viewport={viewport}
+          startIndex={startIndex}
+          endIndex={endIndex}
+          maxSprites={this.maxSprites}
+          baseTexture={this.baseTexture}
+          rootStage={this.heatmapStage}
+          useRadialGradientStyle={useRadialGradientStyle}
+          customRenderingStyle={{ defaultOpacity: 1, defaultSize: 1 }}
+        />
+      }
       {this.stage !== undefined &&
         <TracksLayer
           tracks={nextTracks}
@@ -230,6 +302,7 @@ ActivityLayers.propTypes = {
   timelineInnerExtentIndexes: PropTypes.array,
   timelineOverExtentIndexes: PropTypes.array,
   layerFilters: PropTypes.object,
+  highlightedVessels: PropTypes.object,
   vesselTracks: PropTypes.array,
   tracks: PropTypes.array,
   queryHeatmapVessels: PropTypes.func

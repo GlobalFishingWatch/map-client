@@ -21,7 +21,7 @@ const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
       layer.source = COMPOSITE_POLYGONS_SOURCE_ID;
     }
 
-    // TODO inject interactive: true property. 
+    // TODO inject interactive: true property.
 
     basemap.layers.push(layer);
   });

@@ -1,7 +1,7 @@
 import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
-import { getTile, releaseTiles, getVesselFromHeatmap } from './heatmapActions';
+import { getTile, releaseTiles, highlightVesselFromHeatmap } from './heatmapActions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
@@ -149,8 +149,6 @@ export const queryHeatmapVessels = (coords, isClick = false) => {
     };
 
     // console.log(query);
-    if (isClick === true) {
-      dispatch(getVesselFromHeatmap(query));
-    }
+    dispatch(highlightVesselFromHeatmap(query))
   };
 };

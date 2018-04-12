@@ -90,8 +90,15 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    //  offsets
     const { data, filters, baseTexture, maxSprites, layer } = this.props;
+
+    if (data === null) {
+      this.toggleVisibility(false);
+      return;
+    }
+
+    this.toggleVisibility(true);
+
     const tiles = data.tiles;
     const defaultHue = layer.hue;
 

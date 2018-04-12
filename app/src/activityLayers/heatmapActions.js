@@ -431,17 +431,19 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
     const state = getState();
     const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
-    dispatch({
-      type: HIGHLIGHT_VESSELS,
-      payload: {
-        layerId: layer.id,
-        isEmpty,
-        clickableCluster: isCluster === true || isMouseCluster === true,
-        highlightableCluster: isCluster !== true,
-        foundVessels,
-        latLng
-      }
-    });
+    if (layer.id !== undefined || state.heatmap.highlightedVessels.layerId !== layer.id) {
+      dispatch({
+        type: HIGHLIGHT_VESSELS,
+        payload: {
+          layerId: layer.id,
+          isEmpty,
+          clickableCluster: isCluster === true || isMouseCluster === true,
+          highlightableCluster: isCluster !== true,
+          foundVessels,
+          latLng
+        }
+      });
+    }
   };
 }
 
