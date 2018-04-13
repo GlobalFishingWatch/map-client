@@ -93,14 +93,14 @@ class Map extends React.Component {
           {hoverPopup !== null &&
             <Popup
               latitude={hoverPopup.latitude}
-              longitude={hoverPopup.latitude}
+              longitude={hoverPopup.longitude}
               closeButton={false}
               anchor= "bottom"
               offsetTop= {-40}
               tipSize= {4}
             >
               <div>
-                {hoverPopup.layerTitle} {hoverPopup.polygonName}
+                {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
               </div>
             </Popup>
           }
@@ -113,6 +113,7 @@ class Map extends React.Component {
 Map.propTypes = {
   viewport: PropTypes.object,
   mapStyle: PropTypes.object,
+  hoverPopup: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
   setViewport: PropTypes.func,
