@@ -482,8 +482,8 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       });
     } else {
       dispatch(trackMapClicked(latLng.lat(), latLng.lng(), 'vessel'));
+      const id = (layer.header.info.id === undefined) ? foundVessels[0].seriesgroup : foundVessels[0][layer.header.info.id];
       const selectedSeries = foundVessels[0].series;
-      const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
         if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
@@ -492,7 +492,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
           dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
         }
       } else {
-        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
+        dispatch(addVessel(layer.tilesetId, id, selectedSeries));
       }
 
     }
