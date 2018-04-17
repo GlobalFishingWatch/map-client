@@ -1,8 +1,12 @@
 import Pbf from 'pbf';
 import { VectorTile } from 'vector-tile';
 
-export default (tileUrl) => {
-  const vectorTilePromise = fetch(tileUrl).then((response) => {
+export default (tileUrl, token) => {
+  const vectorTilePromise = fetch(tileUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then((response) => {
     if (!response.ok) {
       throw new Error(`could not load tile ${tileUrl}`);
     }
