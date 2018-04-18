@@ -33,6 +33,7 @@ export function getLayerLibrary() {
             added: false,
             library: true
           };
+          // FIXME review/flatten directory API. Include field.
           if (l.args.meta && l.args.meta.reports && l.args.meta.reports.regions) {
             layer.reportId = Object.keys(l.args.meta.reports.regions)[0];
           }

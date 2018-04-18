@@ -3,30 +3,29 @@ import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { FLAGS } from 'app/src/constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
-export const HIDE_POLYGON_MODAL = 'HIDE_POLYGON_MODAL';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
+export const CLEAR_REPORT_POLYGON = 'CLEAR_REPORT_POLYGON';
 export const DISCARD_REPORT = 'DISCARD_REPORT';
 export const SET_SUBSCRIPTION_STATUS_SENT = 'SET_SUBSCRIPTION_STATUS_SENT';
 export const SET_SUBSCRIPTION_STATUS_ERROR = 'SET_SUBSCRIPTION_STATUS_ERROR';
-export const SHOW_POLYGON = 'SHOW_POLYGON';
+export const SET_REPORT_POLYGON = 'SET_REPORT_POLYGON';
 export const START_REPORT = 'START_REPORT';
 export const TOGGLE_REPORT_MODAL_VISIBILITY = 'TOGGLE_REPORT_MODAL_VISIBILITY';
 export const TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY = 'TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY';
 export const UPDATE_SUBSCRIPTION_FREQUENCY = 'UPDATE_SUBSCRIPTION_FREQUENCY';
 
-export function showPolygon(polygonData, latLng) {
+export function setReportPolygon(polygonData) {
   return {
-    type: SHOW_POLYGON,
+    type: SET_REPORT_POLYGON,
     payload: {
-      polygonData,
-      latLng
+      polygonData
     }
   };
 }
 
-export function hidePolygonModal() {
+export function clearReportPolygon() {
   return {
-    type: HIDE_POLYGON_MODAL
+    type: CLEAR_REPORT_POLYGON
   };
 }
 
@@ -66,8 +65,9 @@ export function toggleReportPanelVisibility(forceMode = null) {
   };
 }
 
-export function toggleReportPolygon(polygonId) {
+export function toggleCurrentReportPolygon() {
   return (dispatch, getState) => {
+    const polygonId = getState().report.currentPolygon.reportingId;
     const polygonIndex = getState()
       .report
       .polygons
@@ -85,7 +85,7 @@ function startReport(layerId) {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(toggleReportPanelVisibility());
     dispatch(setLayerOpacity(1, layerId));
-    dispatch(hidePolygonModal());
+    dispatch(clearReportPolygon());
     dispatch(clearHighlightedVessels());
 
     const workspaceLayer = getState()
@@ -191,9 +191,6 @@ export function sendSubscription() {
       })
       .then(res => res.json())
       .then((data) => {
-        dispatch({
-          type: HIDE_POLYGON_MODAL
-        });
         dispatch({
           type: SET_SUBSCRIPTION_STATUS_SENT,
           payload: data.message

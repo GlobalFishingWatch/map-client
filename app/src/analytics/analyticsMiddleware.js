@@ -1,7 +1,7 @@
 /* eslint-disable max-len  */
 
 import { ADD_CUSTOM_LAYER, TOGGLE_LAYER_VISIBILITY, TOGGLE_LAYER_WORKSPACE_PRESENCE } from 'layers/layersActions';
-import { ADD_REPORT_POLYGON, DELETE_REPORT_POLYGON, SET_SUBSCRIPTION_STATUS_SENT, SHOW_POLYGON } from 'report/reportActions';
+import { ADD_REPORT_POLYGON, DELETE_REPORT_POLYGON, SET_SUBSCRIPTION_STATUS_SENT, SET_REPORT_POLYGON } from 'report/reportActions';
 import { SET_FLAG_FILTERS, CHANGE_SPEED } from 'filters/filtersActions';
 import { SET_SEARCH_TERM } from 'search/searchActions';
 import { SET_RECENT_VESSELS_VISIBILITY } from 'recentVessels/recentVesselsActions';
@@ -177,7 +177,7 @@ const GA_ACTION_WHITELIST = [
     getPayload: ({ payload }) => payload
   },
   {
-    type: SHOW_POLYGON,
+    type: SET_REPORT_POLYGON,
     category: 'Report Interaction',
     action: 'Click on polygon',
     getPayload: (action, state) => `${state.report.layerId}:${action.payload.polygonData.name}`

@@ -4,6 +4,7 @@ import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersAct
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
+import { setReportPolygon, clearReportPolygon } from 'report/reportActions';
 import { LAYER_TYPES } from 'constants';
 import { POLYGON_LAYERS, POLYGON_LAYERS_AREA } from 'config';
 
@@ -21,6 +22,15 @@ const getPopupFieldsKeys = (glFeature) => {
 };
 
 const getAreaKm2 = glFeature => (10 ** -6) * area(glFeature.geometry);
+
+export const clearPopup = () => {
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_POPUP
+    });
+    dispatch(clearReportPolygon());
+  };
+};
 
 export const mapHover = (latitude, longitude, features) => {
   return (dispatch, getState) => {
@@ -74,9 +84,7 @@ export const mapClick = (latitude, longitude, features) => {
 
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
-    dispatch({
-      type: CLEAR_POPUP
-    });
+    dispatch(clearPopup());
 
     const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
     const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
@@ -85,8 +93,14 @@ export const mapClick = (latitude, longitude, features) => {
     if (isEmpty === true) {
       if (features.length) {
         const feature = features[0];
+
         const { fieldKeys, polygonLayerId } = getPopupFieldsKeys(feature);
         const polygonLayer = getState().layers.workspaceLayers.find(l => l.id === polygonLayerId);
+
+        const layerIsInReport = state.report.layerId === polygonLayerId;
+        if (layerIsInReport === true) {
+          setReportPolygon(feature.properties);
+        }
 
         const fields = fieldKeys.map((fieldKey) => {
           const value = (fieldKey === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[fieldKey];
@@ -96,12 +110,14 @@ export const mapClick = (latitude, longitude, features) => {
           };
         });
 
+        const isInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
+
         dispatch({
           type: SET_POPUP,
           payload: {
             layerTitle: polygonLayer.title,
             fields,
-            isInReport: undefined, // true | false,
+            isInReport,
             latitude,
             longitude
           }

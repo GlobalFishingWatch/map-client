@@ -1,6 +1,6 @@
 import {
-  SHOW_POLYGON,
-  HIDE_POLYGON_MODAL,
+  SET_REPORT_POLYGON,
+  CLEAR_REPORT_POLYGON,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
@@ -29,23 +29,21 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SHOW_POLYGON: {
+    case SET_REPORT_POLYGON: {
       const polygonData = action.payload.polygonData;
-      const id = polygonData.cartodb_id;
 
+      // FIXME review/flatten directory API. Include field.
       const reportingId = [polygonData.reporting_id, polygonData.report_id, polygonData.reportingId, polygonData.cartodb_id]
         .find(e => e !== undefined);
 
       const name = [polygonData.reporting_name, polygonData.name, polygonData.cartodb_id]
         .find(e => e !== undefined);
 
-      const isInReport = !!state.polygons.find(polygon => polygon.id === id);
+      const isInReport = !!state.polygons.find(polygon => polygon.reportingId === reportingId);
       return Object.assign({}, state, {
         currentPolygon: {
-          id,
           reportingId,
           name,
-          latLng: action.payload.latLng,
           isInReport
         }
       });
@@ -76,7 +74,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         polygons,
         currentPolygon,
-        polygonsIds: polygons.map(polygon => polygon.id).sort()
+        polygonsIds: polygons.map(polygon => polygon.reportingId).sort()
       });
     }
 
@@ -87,7 +85,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         polygons,
         currentPolygon,
-        polygonsIds: polygons.map(polygon => polygon.id).sort()
+        polygonsIds: polygons.map(polygon => polygon.reportingId).sort()
       });
     }
 
@@ -102,7 +100,7 @@ export default function (state = initialState, action) {
         currentPolygon: {}
       });
 
-    case HIDE_POLYGON_MODAL:
+    case CLEAR_REPORT_POLYGON:
       return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });

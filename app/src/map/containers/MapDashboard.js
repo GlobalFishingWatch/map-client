@@ -24,13 +24,6 @@ const mapDispatchToProps = dispatch => ({
   onExternalLink: (link) => {
     dispatch(trackExternalLinkClicked(link));
   }
-  // toggleLayerVisibility: (layer) => {
-  //   dispatch(toggleLayerVisibility(layer));
-  // },
-  //
-  // hidePolygonModal: () => {
-  //   dispatch(hidePolygonModal());
-  // },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapDashboard);
