@@ -149,6 +149,6 @@ export const queryHeatmapVessels = (coords, isClick = false) => {
     };
 
     // console.log(query);
-    dispatch(highlightVesselFromHeatmap(query))
+    dispatch(highlightVesselFromHeatmap(query));
   };
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
-import { lngLatToWorld , pixelsToWorld } from 'viewport-mercator-project';
+import { lngLatToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import { LAYER_TYPES } from 'constants';
 import {
@@ -156,7 +156,6 @@ class ActivityLayers extends React.Component {
     if (dim === true) {
       this.heatmapFadingIn = false;
     }
-    console.log(dim)
     this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
@@ -165,10 +164,8 @@ class ActivityLayers extends React.Component {
     const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
     const [worldX, worldY] = lngLatToWorld([longitude, latitude], 1);
 
-    // calculate the tolerance from pixels to projected world units (project 2 points and substract x coords)
-    const toleranceRadiusInWorldUnits =
-      (pixelsToWorld([VESSEL_CLICK_TOLERANCE_PX, 0], viewport.pixelUnprojectionMatrix))[0] -
-      (pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix))[0];
+    const toleranceRadiusInWorldUnits = VESSEL_CLICK_TOLERANCE_PX / viewport.scale;
+
     this.props.queryHeatmapVessels({
       longitude,
       latitude,
