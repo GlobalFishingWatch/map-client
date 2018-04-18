@@ -1,6 +1,7 @@
 import React from 'react';
 import MapGL, { Popup } from 'react-map-gl';
 import mapStyles from 'styles/components/map.scss';
+import PopupStyles from 'styles/components/map/popup.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
@@ -91,7 +92,7 @@ class Map extends React.Component {
         >
           <ActivityLayers />
           {popup !== null &&
-            <PolygonLayerPopup />
+            <PolygonLayerPopup forceRender={Math.random()} />
           }
           {hoverPopup !== null &&
             <Popup
@@ -102,7 +103,7 @@ class Map extends React.Component {
               offsetTop={-40}
               tipSize={4}
             >
-              <div>
+              <div className={PopupStyles.customInfowindow}>
                 {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
               </div>
             </Popup>

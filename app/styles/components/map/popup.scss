@@ -2,7 +2,7 @@
 
 .customInfowindow {
   background: $color-13;
-  bottom: 10px;
+  bottom: 0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .5);
   left: -130px;
   opacity: .95;
@@ -76,7 +76,10 @@
   }
 }
 
-// TODO this is a hack. Ask Skytruth to disable Carto InfoWindows on their viz.json
-:global .cartodb-infowindow {
-  display: none !important;
+:global .mapboxgl-popup-content {
+  background: none !important;
+}
+
+:global .mapboxgl-popup-tip {
+  border-top-color: $color-13 !important;
 }
