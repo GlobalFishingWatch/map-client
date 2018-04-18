@@ -4,7 +4,7 @@ import moment from 'moment';
 import Tab from 'sharedUI/components/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import { VESSEL_TYPE_REEFER } from 'constants';
-import { FORMAT_DATE, FORMAT_NUM_DECIMALS } from 'config';
+import { FORMAT_DATE, FORMAT_TIME, FORMAT_NUM_DECIMALS } from 'config';
 
 import EncountersVessel from '../containers/EncountersVessel';
 
@@ -35,8 +35,8 @@ class EncountersInfo extends Component {
     );
 
     const date = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_DATE);
+    const time = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_TIME);
     const duration = (encountersInfo.duration === undefined) ? '-' : moment.duration(encountersInfo.duration).humanize();
-
     return (
       <div className={infoPanelStyles.info}>
         <div className={infoPanelStyles.header} >
@@ -52,7 +52,7 @@ class EncountersInfo extends Component {
         <div className={infoPanelStyles.encountersData}>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Date</span>
-            <span className={infoPanelStyles.value} >{date}</span>
+            <span className={infoPanelStyles.value} >{date}<br />{time}</span>
           </div>
           <div className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >Duration</span>

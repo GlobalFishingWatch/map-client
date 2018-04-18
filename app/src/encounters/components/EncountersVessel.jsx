@@ -23,12 +23,12 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
   }
 
   // remove vesselname from vessel fields, as we force a custom display for it (the div inside <VesselInfoDetails />)
-  const vesselFields = [].concat(vessel.fields);
-  vesselFields.splice(vesselFields.findIndex(el => el.id === 'vesselname'), 1);
+  const fields = [].concat(vessel.fields);
+  fields.splice(fields.findIndex(el => el.id === 'vesselname'), 1);
 
   return (
     <div className={infoPanelStyles.encountersData} >
-      <VesselInfoDetails currentlyShownVessel={vessel.info} layerFieldsHeaders={vesselFields} userPermissions={userPermissions}>
+      <VesselInfoDetails currentlyShownVessel={vessel.info} layerFieldsHeaders={fields} userPermissions={userPermissions}>
         <div className={infoPanelStyles.rowInfo} >
           <span className={infoPanelStyles.key} >Vessel</span>
           <a onClick={() => openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >

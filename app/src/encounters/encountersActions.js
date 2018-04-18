@@ -68,7 +68,7 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
 
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        const vesselFields = workspaceLayer.header.vesselFields;
+        const fields = workspaceLayer.header.info.fields;
         fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
           .then((vesselInfo) => {
             dispatch({
@@ -76,7 +76,7 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
               payload: {
                 seriesgroup: vessel.seriesgroup,
                 vesselInfo,
-                vesselFields
+                fields
               }
             });
           });

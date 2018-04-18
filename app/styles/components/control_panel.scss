@@ -17,7 +17,7 @@
     overflow: auto;
     background: transparent;
     flex: 0 1 auto;
-  
+
     // cancels pointer-events: none of c-map-panels
     pointer-events: auto;
     position: relative;
@@ -29,7 +29,7 @@
     background: $color-32;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     overflow: auto;
-    max-height: 71vh;
+    max-height: 55vh;
 
     @media #{$mq-tablet} {
       overflow: visible;

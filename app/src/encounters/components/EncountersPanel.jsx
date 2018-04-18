@@ -28,13 +28,13 @@ class EncountersPanel extends Component {
     const { encountersInfo, infoPanelStatus } = this.props;
     if (infoPanelStatus === INFO_STATUS.LOADING) {
       return (
-        <div className={infoPanelStyles.metadata} >
+        <div className={classnames(infoPanelStyles.metadata, infoPanelStyles._encounters)} >
           <div>Loading encounters information...</div>
         </div>
       );
     } else if (infoPanelStatus === INFO_STATUS.LOADED && encountersInfo) {
       return (
-        <div className={classnames(infoPanelStyles.metadata, infoPanelStyles._noPadding)} >
+        <div className={classnames(infoPanelStyles.metadata, infoPanelStyles._encounters, infoPanelStyles._noPadding)} >
           <EncountersInfo encountersInfo={encountersInfo} />
         </div>
       );

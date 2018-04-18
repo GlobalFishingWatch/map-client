@@ -90,7 +90,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
 
-      dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, layer.header.vesselFields), tilesetId));
+      dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, layer.header.info.fields), tilesetId));
     };
     request.send(null);
   };
@@ -238,7 +238,7 @@ export function setPinnedVessels(pinnedVessels) {
 
         dispatch(addVesselToRecentVesselList(
           pinnedVessel.seriesgroup,
-          getVesselName(pinnedVessel, layer.header.vesselFields),
+          getVesselName(pinnedVessel, layer.header.info.fields),
           pinnedVessel.tilesetId
         ));
       };
