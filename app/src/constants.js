@@ -23,6 +23,11 @@ export const LAYER_TYPES_WITH_HEADER = [
   LAYER_TYPES.HeatmapTracksOnly
 ];
 
+export const LAYER_TYPES_SEARCHABLE = [
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.HeatmapTracksOnly
+];
+
 export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
   LAYER_TYPES.CartoDBAnimation,
   LAYER_TYPES.CartoDBBasemap,

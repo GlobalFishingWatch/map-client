@@ -59,7 +59,7 @@ export const getTilePromises = (tilesetUrl, token, temporalExtents, params) => {
   );
   for (let urlIndex = 0, length = urls.length; urlIndex < length; urlIndex++) {
     if (params.isPBF === true) {
-      promises.push(getPBFTile(urls[urlIndex]));
+      promises.push(getPBFTile(urls[urlIndex], token));
     } else {
       promises.push(new PelagosClient().obtainTile(urls[urlIndex], token));
     }
