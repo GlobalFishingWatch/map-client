@@ -19,7 +19,10 @@ class SearchResult extends Component {
 
   render() {
     const title = this.props.vesselInfo.title;
-    const MMSI = (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title) ? '' : this.props.vesselInfo.mmsi;
+    const MMSI = (
+      this.props.vesselInfo.mmsi === undefined ||
+      (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title)
+    ) ? '' : this.props.vesselInfo.mmsi;
     const highlightName = this.highlightWord(this.props.searchTerm, title);
     const highlightMMSI = this.highlightWord(this.props.searchTerm, MMSI);
 
