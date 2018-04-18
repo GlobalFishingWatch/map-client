@@ -10,7 +10,6 @@ import { LAYER_TYPES, FLAGS } from 'constants';
 import { setBasemap } from 'map/mapStyleActions';
 import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
-import { saveAreaOfInterest } from 'areasOfInterest/areasOfInterestActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
@@ -21,8 +20,6 @@ import { hexToHue, hueToClosestColor } from 'utils/colors';
 import uniq from 'lodash/uniq';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'utils/handleLegacyURLs.js';
 
-export const SET_TILESET_ID = 'SET_TILESET_ID';
-export const SET_TILESET_URL = 'SET_TILESET_URL';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
@@ -148,7 +145,6 @@ export function saveWorkspace(errorAction) {
         },
         filters: state.filters.flags,
         timelineSpeed: state.filters.timelineSpeed,
-        areas: state.areas.existingAreasOfInterest,
         filterGroups: state.filterGroups.filterGroups
       }
     };
@@ -208,12 +204,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
   });
 
   dispatch(loadRecentVesselsList());
-
-  if (workspaceData.areas) {
-    workspaceData.areas.forEach((area) => {
-      dispatch(saveAreaOfInterest(area));
-    });
-  }
 
   if (workspaceData.filterGroups) {
     workspaceData.filterGroups.forEach((filterGroup) => {
@@ -275,7 +265,6 @@ function processNewWorkspace(data) {
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
     encounters: workspace.encounters,
-    areas: workspace.areas,
     filterGroups
   };
 }

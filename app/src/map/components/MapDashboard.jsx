@@ -40,9 +40,6 @@ class MapDashboard extends Component {
       >
         <Map />
 
-
-        {/*{isDrawing && <DrawingManager />}*/}
-        {/*<Areas />*/}
         <LeftControlPanel />
       </div>
       <MobileLeftExpand isEmbedded={this.props.isEmbedded}>

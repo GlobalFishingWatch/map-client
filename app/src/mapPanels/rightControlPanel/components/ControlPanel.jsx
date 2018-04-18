@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { CONTROL_PANEL_MENUS } from 'constants';
 import MediaQuery from 'react-responsive';
-import AreasPanel from 'areasOfInterest/containers/AreasPanel';
 import MenuLink from 'mapPanels/rightControlPanel/components/MenuLink';
 import SubMenu from 'mapPanels/rightControlPanel/containers/SubMenu';
 import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
@@ -25,7 +24,6 @@ import ControlPanelHeader from '../containers/ControlPanelHeader';
 class ControlPanel extends Component {
   constructor() {
     super();
-    this.onCloseAreasOfInterestSubMenu = this.onCloseAreasOfInterestSubMenu.bind(this);
     this.onCloseVesselsSubMenu = this.onCloseVesselsSubMenu.bind(this);
     this.onCloseLayersSubMenu = this.onCloseLayersSubMenu.bind(this);
   }
@@ -70,13 +68,6 @@ class ControlPanel extends Component {
   onCloseLayersSubMenu() {
     if (this.props.layerPanelEditMode === true) {
       this.props.disableLayerPanelEditMode();
-    }
-  }
-
-  onCloseAreasOfInterestSubMenu() {
-    if (this.props.activeSubmenu === CONTROL_PANEL_MENUS.AREAS) {
-      this.props.setRecentlyCreated(false);
-      this.props.setDrawingMode(false);
     }
   }
 
@@ -160,28 +151,6 @@ class ControlPanel extends Component {
     );
   }
 
-  renderAreaOfInterestSubMenu() {
-    let areaFooter = null;
-    if (this.props.isDrawing) {
-      areaFooter = (<div>
-        <div>
-          Click over the map and create your own area of interest
-        </div >
-      </div>);
-    }
-
-    return (
-      <SubMenu
-        title="Area of interest"
-        icon={this.renderIcon('aoi')}
-        onBack={this.onCloseAreasOfInterestSubMenu}
-        footer={areaFooter}
-      >
-        <AreasPanel />
-      </SubMenu >
-    );
-  }
-
   renderReportsSubMenu() {
     return (
       <SubMenu title="Reports" icon={this.renderIcon('reports')}>
@@ -216,11 +185,6 @@ class ControlPanel extends Component {
             badge={this.props.numFilters}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.FILTERS)}
           />
-          {ENABLE_AREA_OF_INTEREST && <MenuLink
-            title="Area of interest"
-            icon={this.renderIcon('aoi')}
-            onClick={() => this.props.setSubmenu('AREAS')}
-          />}
         </div >
       </div >
     );
@@ -234,8 +198,6 @@ class ControlPanel extends Component {
         return this.renderLayersSubMenu();
       case CONTROL_PANEL_MENUS.FILTERS:
         return this.renderFiltersSubMenu();
-      case CONTROL_PANEL_MENUS.AREAS:
-        return this.renderAreaOfInterestSubMenu();
       case CONTROL_PANEL_MENUS.REPORTS:
         return this.renderReportsSubMenu();
       default:
@@ -276,14 +238,11 @@ ControlPanel.propTypes = {
   layers: PropTypes.array,
   login: PropTypes.func,
   pinnedVesselEditMode: PropTypes.bool,
-  setDrawingMode: PropTypes.func,
-  setRecentlyCreated: PropTypes.func.isRequired,
   setSubmenu: PropTypes.func.isRequired,
   userPermissions: PropTypes.array,
   vessels: PropTypes.array,
   numPinnedVessels: PropTypes.number.isRequired,
   numFilters: PropTypes.number.isRequired,
-  isDrawing: PropTypes.bool,
   encountersInfo: PropTypes.object,
   currentlyShownVessel: PropTypes.object
 };

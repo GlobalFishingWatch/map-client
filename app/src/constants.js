@@ -1,7 +1,6 @@
 import getFlagFilterGroupValues from 'utils/getFlagFilterGroupValues';
 
 export const CONTROL_PANEL_MENUS = {
-  AREAS: 'AREAS',
   FILTERS: 'FILTERS',
   LAYERS: 'LAYERS',
   VESSELS: 'VESSELS',

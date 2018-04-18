@@ -160,9 +160,6 @@ URL pattern used on the share feature. It must be of type http://your-site.com/?
 
 Display message contained in literals.json's `banner` in a dismissable banner on top of the map. Boolean value.
 
-#### ENABLE_AREA_OF_INTEREST
-
-Enable usage of the new "Area of Interest" feature (experimental)
 
 #### USE_SUBSCRIPTIONS
 

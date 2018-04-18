@@ -2,7 +2,6 @@ import {
   DELETE_WORKSPACE_ID,
   INIT_GOOGLE_MAPS,
   SET_CENTER_TILE,
-  SET_DRAWING,
   SET_LAYER_INFO_MODAL,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_LOADERS,
@@ -16,7 +15,6 @@ import {
 } from 'workspace/workspaceActions';
 
 const initialState = {
-  isDrawing: false,
   loading: false,
   loaders: {},
   layerModal: {
@@ -44,8 +42,6 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_LOADING:
       return Object.assign({}, state, { loading: action.payload });
-    case SET_DRAWING:
-      return Object.assign({}, state, { isDrawing: action.payload });
     case SET_LOADERS:
       return Object.assign({}, state, { loaders: action.payload });
     case SET_URL_WORKSPACE_ID:

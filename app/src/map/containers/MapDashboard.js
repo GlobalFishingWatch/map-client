@@ -8,8 +8,6 @@ const mapStateToProps = state => ({
   zoom: state.mapViewport.viewport.zoom,
   latitude: state.mapViewport.viewport.latitude,
   longitude: state.mapViewport.viewport.longitude
-  // areas: state.areas.existingAreasOfInterest,
-  // isDrawing: state.map.isDrawing,
   // showMapCursorPointer: state.heatmap.highlightedVessels.isEmpty !== true && state.heatmap.highlightedVessels.clickableCluster !== true,
   // showMapCursorZoom: state.heatmap.highlightedVessels.clickableCluster === true,
   // token: state.user.token,

@@ -6,7 +6,6 @@ export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL
 export const SET_CENTER = 'SET_CENTER';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
-export const SET_DRAWING = 'SET_DRAWING';
 export const SET_CENTER_TILE = 'SET_CENTER_TILE';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
@@ -95,12 +94,6 @@ export function setLayerInfoModal(modalParams) {
   };
 }
 
-export function setDrawingMode(value) {
-  return {
-    type: SET_DRAWING,
-    payload: value
-  };
-}
 
 export function openTimebarInfoModal() {
   return (dispatch, getState) => {

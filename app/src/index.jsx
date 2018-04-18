@@ -15,7 +15,6 @@ import mapReducer from 'reducers/map';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
 import analyticsMiddleware from 'analytics/analyticsMiddleware';
-import areasOfInterestReducer from 'areasOfInterest/areasOfInterestReducer';
 import userReducer from 'user/userReducer';
 import filtersReducer from 'filters/filtersReducer';
 import filterGroupsReducer from 'filters/filterGroupsReducer';
@@ -44,7 +43,6 @@ window.Promise = window.Promise || Promise;
  * @type {Object}
  */
 const reducer = combineReducers({
-  areas: areasOfInterestReducer,
   supportForm: supportFormReducer,
   customLayer: customLayerReducer,
   filters: filtersReducer,

@@ -70,7 +70,7 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
-// Colors of the layers, areas, ...
+// Colors of the layers, ...
 export const COLORS = {
   orange: '#F95E5E',
   peach: '#fca26f',

@@ -59,7 +59,6 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      ENABLE_AREA_OF_INTEREST: envVariables.ENABLE_AREA_OF_INTEREST === 'true',
       USE_SUBSCRIPTIONS: envVariables.USE_SUBSCRIPTIONS === 'true'
     }),
     new LodashModuleReplacementPlugin(),
@@ -87,7 +86,6 @@ const webpackConfig = {
       styles: 'styles',
       actions: 'src/actions',
       analytics: 'src/analytics',
-      areasOfInterest: 'src/areasOfInterest',
       basemap: 'src/basemap',
       filters: 'src/filters',
       encounters: 'src/encounters',
