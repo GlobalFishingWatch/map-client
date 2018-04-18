@@ -1,11 +1,12 @@
 import {
   SET_HOVER_POPUP,
-  SET_CLICK_POPUP
+  SET_POPUP,
+  CLEAR_POPUP
 } from 'map/mapInteractionActions';
 
 const initialState = {
   hoverPopup: null,
-  clickPopup: null
+  popup: null
 };
 
 export default function (state = initialState, action) {
@@ -13,8 +14,11 @@ export default function (state = initialState, action) {
     case SET_HOVER_POPUP : {
       return { ...state, hoverPopup: action.payload };
     }
-    case SET_CLICK_POPUP : {
-      return { ...state };
+    case SET_POPUP : {
+      return { ...state, popup: action.payload };
+    }
+    case CLEAR_POPUP : {
+      return { ...state, popup: null };
     }
     default:
       return state;

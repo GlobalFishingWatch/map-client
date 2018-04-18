@@ -7,7 +7,17 @@ import { LAYER_TYPES } from 'constants';
 import { POLYGON_LAYERS } from 'config';
 
 export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
-export const SET_CLICK_POPUP = 'SET_CLICK_POPUP';
+export const SET_POPUP = 'SET_POPUP';
+export const CLEAR_POPUP = 'CLEAR_POPUP';
+
+// gets fields for workspace layer from gl feature
+const getPopupFieldsKeys = (glFeature) => {
+  const polygonLayerId = Object.keys(POLYGON_LAYERS).find(key =>
+    POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === glFeature.layer.id)
+  );
+  const fieldKeys = POLYGON_LAYERS[polygonLayerId].popupFields;
+  return { fieldKeys, polygonLayerId };
+};
 
 export const mapHover = (latitude, longitude, features) => {
   return (dispatch, getState) => {
@@ -19,20 +29,20 @@ export const mapHover = (latitude, longitude, features) => {
     if (isEmpty === true) {
       if (features.length) {
         const feature = features[0];
-        const originalLayerId = Object.keys(POLYGON_LAYERS).find(key =>
-          POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === feature.layer.id)
-        );
-        const layer = getState().layers.workspaceLayers.find(l => l.id === originalLayerId);
-        const fields = POLYGON_LAYERS[originalLayerId].popupFields;
-        const featureTitle = feature.properties[fields[0]];
+        const { fieldKeys, polygonLayerId } = getPopupFieldsKeys(feature);
+        const mainFieldKey = fieldKeys[0];
+        const featureTitle = feature.properties[mainFieldKey];
+        const polygonLayer = getState().layers.workspaceLayers.find(l => l.id === polygonLayerId);
         hoverPopup = {
-          layerTitle: layer.title,
+          layerTitle: polygonLayer.title,
           featureTitle
         };
       }
     } else {
       const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
       const num = (foundVessels === undefined) ? 'several' : foundVessels.length;
+      // TODO if 1 vessel, show vessel name directly
+
       hoverPopup = {
         layerTitle: layer.title,
         featureTitle: `${num} vessels`
@@ -61,6 +71,9 @@ export const mapClick = (latitude, longitude, features) => {
 
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
+    dispatch({
+      type: CLEAR_POPUP
+    });
 
     const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
     const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
@@ -69,6 +82,27 @@ export const mapClick = (latitude, longitude, features) => {
     if (isEmpty === true) {
       if (features.length) {
         console.log('select feature', features[0]);
+        const feature = features[0];
+        const { fieldKeys, polygonLayerId } = getPopupFieldsKeys(feature);
+        const polygonLayer = getState().layers.workspaceLayers.find(l => l.id === polygonLayerId);
+
+        const fields = fieldKeys.map((fieldKey) => {
+          return {
+            title: fieldKey,
+            content: feature.properties[fieldKey]
+          };
+        });
+
+        dispatch({
+          type: SET_POPUP,
+          payload: {
+            layerTitle: polygonLayer.title,
+            fields,
+            isInReport: undefined, // true | false,
+            latitude,
+            longitude
+          }
+        });
       }
     } else if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') > -1) {
       if (clickableCluster === true) {

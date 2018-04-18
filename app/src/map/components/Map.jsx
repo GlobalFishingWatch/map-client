@@ -3,7 +3,8 @@ import MapGL, { Popup } from 'react-map-gl';
 import mapStyles from 'styles/components/map.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
-import ActivityLayers from 'activityLayers/containers/ActivityLayers.js';
+import ActivityLayers from 'activityLayers/containers/ActivityLayers';
+import PolygonLayerPopup from 'map/containers/PolygonLayerPopup';
 
 // import {experimental} from 'react-map-gl';
 //
@@ -69,8 +70,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, hoverPopup } = this.props;
-    console.log(hoverPopup)
+    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, popup, hoverPopup } = this.props;
     return (
       <div
         id="map"
@@ -90,14 +90,17 @@ class Map extends React.Component {
           onViewportChange={this.onViewportChange}
         >
           <ActivityLayers />
+          {popup !== null &&
+            <PolygonLayerPopup />
+          }
           {hoverPopup !== null &&
             <Popup
               latitude={hoverPopup.latitude}
               longitude={hoverPopup.longitude}
               closeButton={false}
-              anchor= "bottom"
-              offsetTop= {-40}
-              tipSize= {4}
+              anchor="bottom"
+              offsetTop={-40}
+              tipSize={4}
             >
               <div>
                 {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
@@ -113,6 +116,7 @@ class Map extends React.Component {
 Map.propTypes = {
   viewport: PropTypes.object,
   mapStyle: PropTypes.object,
+  popup: PropTypes.object,
   hoverPopup: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
