@@ -40,11 +40,13 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       }
     });
 
+
     const infoUrl = buildEndpoint(encounterInfoEndpoint, {
       id: seriesgroup
     });
+    const token = getState().user.token;
 
-    fetchEndpoint(infoUrl).then((encounterInfo) => {
+    fetchEndpoint(infoUrl, token).then((encounterInfo) => {
       encounterInfo.vessels = [{
         tilesetId: encounterInfo.vessel_1_tileset,
         seriesgroup: encounterInfo.vessel_1_id,
@@ -63,7 +65,6 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
       });
 
       const workspaceLayers = getState().layers.workspaceLayers;
-      const token = getState().user.token;
 
       encounterInfo.vessels.forEach((vessel) => {
         const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
