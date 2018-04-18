@@ -184,18 +184,19 @@ export const MINI_GLOBE_SETTINGS = {
   minZoom: 3
 };
 
+export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
 export const POLYGON_LAYERS = {
   mparu: {
     glLayers: [{ id: 'mpa', interactive: true }, { id: 'mpa labels' }],
-    popupFields: ['DESIG', 'ISO3']
+    popupFields: ['DESIG', 'ISO3', POLYGON_LAYERS_AREA]
   },
   eez: {
     glLayers: [{ id: 'eez', interactive: true }],
-    popupFields: ['geoname', 'sovereign1']
+    popupFields: ['geoname', 'sovereign1', POLYGON_LAYERS_AREA]
   },
   highseas: {
     glLayers: [{ id: 'hsp', interactive: true }],
-    popupFields: ['regionid']
+    popupFields: ['regionid', POLYGON_LAYERS_AREA]
   }
 };
 

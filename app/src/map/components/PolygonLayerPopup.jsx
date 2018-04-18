@@ -19,7 +19,7 @@ class PolygonLayerPopup extends React.Component {
           {popup.fields.map(field => (
             <div key={field.title}>
               <b>{field.title}</b>
-              <span>{field.content}</span>
+              <span>{field.value}</span>
             </div>
           ))}
         </div>

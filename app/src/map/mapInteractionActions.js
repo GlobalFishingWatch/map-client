@@ -1,10 +1,11 @@
+import area from '@turf/area';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { LAYER_TYPES } from 'constants';
-import { POLYGON_LAYERS } from 'config';
+import { POLYGON_LAYERS, POLYGON_LAYERS_AREA } from 'config';
 
 export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
 export const SET_POPUP = 'SET_POPUP';
@@ -18,6 +19,8 @@ const getPopupFieldsKeys = (glFeature) => {
   const fieldKeys = POLYGON_LAYERS[polygonLayerId].popupFields;
   return { fieldKeys, polygonLayerId };
 };
+
+const getAreaKm2 = glFeature => (10 ** -6) * area(glFeature.geometry);
 
 export const mapHover = (latitude, longitude, features) => {
   return (dispatch, getState) => {
@@ -81,15 +84,15 @@ export const mapClick = (latitude, longitude, features) => {
 
     if (isEmpty === true) {
       if (features.length) {
-        console.log('select feature', features[0]);
         const feature = features[0];
         const { fieldKeys, polygonLayerId } = getPopupFieldsKeys(feature);
         const polygonLayer = getState().layers.workspaceLayers.find(l => l.id === polygonLayerId);
 
         const fields = fieldKeys.map((fieldKey) => {
+          const value = (fieldKey === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[fieldKey];
           return {
             title: fieldKey,
-            content: feature.properties[fieldKey]
+            value
           };
         });
 
