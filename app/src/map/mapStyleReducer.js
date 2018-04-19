@@ -1,5 +1,5 @@
 import BASEMAP from 'map/gl-styles/basemap.json';
-import POLYGONS from 'map/gl-styles/polygons.json';
+import POLYGONS from 'map/gl-styles/staticLayers.json';
 import { POLYGON_LAYERS } from 'config';
 import { fromJS } from 'immutable';
 import {

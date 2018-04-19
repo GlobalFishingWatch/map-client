@@ -5,7 +5,7 @@ import PopupStyles from 'styles/components/map/popup.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
-import PolygonLayerPopup from 'map/containers/PolygonLayerPopup';
+import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 
 // import {experimental} from 'react-map-gl';
 //
@@ -92,7 +92,7 @@ class Map extends React.Component {
         >
           <ActivityLayers />
           {popup !== null &&
-            <PolygonLayerPopup forceRender={Math.random()} />
+            <StaticLayerPopup forceRender={Math.random()} />
           }
           {hoverPopup !== null &&
             <Popup

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import PolygonLayerPopup from 'map/components/PolygonLayerPopup.jsx';
+import StaticLayerPopup from 'map/components/StaticLayerPopup.jsx';
 import { toggleCurrentReportPolygon } from 'report/reportActions';
 import { clearPopup } from 'map/mapInteractionActions';
 
@@ -16,4 +16,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PolygonLayerPopup);
+export default connect(mapStateToProps, mapDispatchToProps)(StaticLayerPopup);

@@ -72,12 +72,12 @@ class LayerPanel extends Component {
           </ul >
         </ExpandItem >
         <AccordionHeader
-          menuName={'Map Layers'}
+          menuName={'Static Layers'}
           openMenu={this.openMenu}
           expandState={this.state.expand}
         />
         <ExpandItem
-          active={this.state.expand === 'MAP_LAYERS'}
+          active={this.state.expand === 'STATIC_LAYERS'}
           isVesselInfoPanelOpen={this.props.isVesselInfoPanelOpen}
           accordion
         >

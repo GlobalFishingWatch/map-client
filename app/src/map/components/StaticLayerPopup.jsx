@@ -6,7 +6,7 @@ import PopupStyles from 'styles/components/map/popup.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 
-class PolygonLayerPopup extends React.Component {
+class StaticLayerPopup extends React.Component {
   render() {
     const { popup, toggleCurrentReportPolygon } = this.props;
     const toggleButtonText = (popup.isInReport === true) ? 'remove from report' : 'add to report';
@@ -53,9 +53,9 @@ class PolygonLayerPopup extends React.Component {
   }
 }
 
-PolygonLayerPopup.propTypes = {
+StaticLayerPopup.propTypes = {
   popup: PropTypes.object,
   toggleCurrentReportPolygon: PropTypes.func
 };
 
-export default PolygonLayerPopup;
+export default StaticLayerPopup;

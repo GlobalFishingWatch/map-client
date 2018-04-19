@@ -8,9 +8,8 @@ export const CONTROL_PANEL_MENUS = {
 };
 
 export const LAYER_TYPES = {
-  // FIXME keep constant content but refactor "CartoDBAnimation" to "StaticLayer"
-  CartoDBAnimation: 'CartoDBAnimation',
-  // FIXME deprecate this in workspace layers
+  Static: 'CartoDBAnimation',
+  // FIXME deprecate this in workspace layers ?
   CartoDBBasemap: 'CartoDBBasemap',
   Heatmap: 'ClusterAnimation',
   HeatmapTracksOnly: 'HeatmapTracksOnly',
@@ -30,8 +29,8 @@ export const LAYER_TYPES_SEARCHABLE = [
 ];
 
 export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
-  LAYER_TYPES.CartoDBAnimation,
-  // FIXME deprecate this in workspace layers
+  LAYER_TYPES.Static,
+  // FIXME deprecate this in workspace layers ?
   LAYER_TYPES.CartoDBBasemap,
   LAYER_TYPES.Heatmap,
   LAYER_TYPES.Custom,
@@ -40,7 +39,7 @@ export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
 
 export const LAYER_TYPES_MAPBOX_GL = [
   LAYER_TYPES.Custom,
-  LAYER_TYPES.CartoDBAnimation
+  LAYER_TYPES.Static
 ];
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];

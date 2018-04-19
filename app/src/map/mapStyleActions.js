@@ -12,7 +12,7 @@ export const setBasemap = (basemap) => {
   };
 };
 
-const updatePolygonLayer = (style, layer) => {
+const updateGLLayers = (style, layer) => {
   const matchedStyleLayers = (layer.type === LAYER_TYPES.Custom)
     ? [layer]
     : POLYGON_LAYERS[layer.id].glLayers;
@@ -96,10 +96,10 @@ export const updateMapStyle = () => {
           style = initCustomLayer(style, layer, layerData);
         }
       }
-      if (layer.type === LAYER_TYPES.CartoDBAnimation && POLYGON_LAYERS[layer.id] === undefined) {
+      if (layer.type === LAYER_TYPES.Static && POLYGON_LAYERS[layer.id] === undefined) {
         console.warn('Layer not found in Mapbox GL JSON style', layer);
       } else {
-        style = updatePolygonLayer(style, layer);
+        style = updateGLLayers(style, layer);
       }
     });
     dispatch({
