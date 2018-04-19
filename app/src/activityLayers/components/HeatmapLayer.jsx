@@ -22,14 +22,6 @@ class HeatmapLayer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const prevLayer = this.props.layer;
-    const newLayer = nextProps.layer;
-    if (newLayer.visible !== prevLayer.visible) {
-      this.toggleVisibility(newLayer.visible);
-    }
-    if (newLayer.opacity !== prevLayer.opacity) {
-      this.setOpacity(newLayer.opacity);
-    }
     if (nextProps.useRadialGradientStyle !== this.props.useRadialGradientStyle) {
       this.setBrushZoomRenderingStyle(nextProps.useRadialGradientStyle);
     }
@@ -45,19 +37,9 @@ class HeatmapLayer extends React.Component {
 
     this.stage = new PIXI.Container();
 
-    this.toggleVisibility(layer.visible);
     // const defaultHue = layer.hue !== undefined ? layer.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
-    this.setOpacity(layer.opacity);
 
     rootStage.addChild(this.stage);
-  }
-
-  toggleVisibility(visible) {
-    this.stage.visible = visible;
-  }
-
-  setOpacity(opacity) {
-    this.stage.alpha = opacity;
   }
 
   setBrushRenderingStyle(style = BRUSH_RENDERING_STYLE.NORMAL) {
@@ -92,12 +74,13 @@ class HeatmapLayer extends React.Component {
   _redraw() {
     const { data, filters, baseTexture, maxSprites, layer } = this.props;
 
-    if (data === null) {
-      this.toggleVisibility(false);
+    if (data === null || data === undefined || layer.visible === false) {
+      this.stage.visible = false;
       return;
     }
 
-    this.toggleVisibility(true);
+    this.stage.visible = true;
+    this.stage.alpha = layer.opacity;
 
     const tiles = data.tiles;
     const defaultHue = layer.hue;

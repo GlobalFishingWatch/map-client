@@ -38,6 +38,65 @@ class MapFooter extends Component {
     }
   }
 
+  renderAttribution() {
+    return (
+      <span>
+        <a
+          className={MapFooterStyles.link}
+          href="https://www.mapbox.com/about/maps/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          © Mapbox
+        </a>
+        {' '}
+        <a
+          className={MapFooterStyles.link}
+          href="http://www.openstreetmap.org/about/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          © OpenStreetMap
+        </a>
+        {' - '}
+        <a
+          className={MapFooterStyles.link}
+          href={`https://www.mapbox.com/feedback/?owner=enriquetuya&amp;id=cjfuv36ys4b652tntrt2dsmet&amp;access_token=${MAPBOX_TOKEN}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Improve this map
+        </a>
+        <br />
+        <a
+          className={MapFooterStyles.link}
+          href="https://www.digitalglobe.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          © DigitalGlobe
+        </a>
+        {' - '}
+        <a
+          className={MapFooterStyles.link}
+          href="http://marineregions.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          marineregions.org
+        </a>, MPAs:{' '}
+        <a
+          className={MapFooterStyles.link}
+          href="http://mpatlas.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          mpatlas.org
+        </a>
+      </span>);
+  }
+
   render() {
     const toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
 
@@ -74,36 +133,18 @@ class MapFooter extends Component {
               <span className={MapFooterStyles.betaPill}>Beta</span>
             </span>
             }
+
+            <span className="mapboxgl-ctrl-attrib mapboxgl-compact">
+              {this.renderAttribution()}
+            </span>
+
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles._attributions)}
               onClick={this.onExternalLink}
             >
-              <a
-                className={MapFooterStyles.link}
-                href="https://carto.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                CARTO
-              </a>
-              {' '} Map data ©2016 Google, INEGI Imagery ©2016 NASA, <br />TerraMetrics, EEZs:{' '}
-              <a
-                className={MapFooterStyles.link}
-                href="http://marineregions.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                marineregions.org
-              </a>, MPAs:{' '}
-              <a
-                className={MapFooterStyles.link}
-                href="http://mpatlas.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                mpatlas.org
-              </a>
+              {this.renderAttribution()}
             </span>
+
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles._support)}
               onClick={this.props.onOpenSupportFormModal}

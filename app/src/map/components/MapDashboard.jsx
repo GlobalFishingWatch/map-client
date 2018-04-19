@@ -38,8 +38,7 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <Map />
-
+        <Map setAttribution={this.setAttribution}/>
         <LeftControlPanel />
       </div>
       <MobileLeftExpand isEmbedded={this.props.isEmbedded}>

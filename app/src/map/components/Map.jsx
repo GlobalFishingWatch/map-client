@@ -41,6 +41,12 @@ class Map extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
+
+    // sadly mapbox gl's options.logoPosition is not exposed by react-map-gl, so we have to move around some DOM
+    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').innerHTML =
+      this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML;
+    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML = '';
+    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl').style.display = 'block';
   }
 
   componentWillUnmount() {
@@ -124,7 +130,8 @@ Map.propTypes = {
   setViewport: PropTypes.func,
   mapHover: PropTypes.func,
   mapClick: PropTypes.func,
-  transitionEnd: PropTypes.func
+  transitionEnd: PropTypes.func,
+  setAttribution: PropTypes.func
 };
 
 export default Map;
