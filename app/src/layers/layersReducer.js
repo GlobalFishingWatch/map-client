@@ -99,8 +99,7 @@ export default function (state = initialState, action) {
         type: LAYER_TYPES.Custom,
         visible: true,
         opacity: 1,
-        added: true,
-        justUploaded: true
+        added: true
       };
 
       return Object.assign({}, state, {

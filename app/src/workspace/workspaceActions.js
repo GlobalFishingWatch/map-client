@@ -112,7 +112,6 @@ export function saveWorkspace(errorAction) {
       }
       // TODO Should we use a whitelist of fields instead ?
       delete newLayer.header;
-      delete newLayer.justUploaded;
       delete newLayer.subtype;
       return newLayer;
     });

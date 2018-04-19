@@ -2,10 +2,16 @@ import find from 'lodash/find';
 import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
-import { initHeatmapLayers, addHeatmapLayerFromLibrary, removeHeatmapLayerFromLibrary, loadAllTilesForLayer } from 'activityLayers/heatmapActions';
 import { setMaxZoom } from 'map/mapViewportActions';
 import { updateMapStyle } from 'map/mapStyleActions';
+import {
+  initHeatmapLayers,
+  addHeatmapLayerFromLibrary,
+  removeHeatmapLayerFromLibrary,
+  loadAllTilesForLayer
+} from 'activityLayers/heatmapActions';
 import calculateLayerId from 'utils/calculateLayerId';
+import {loadCustomLayer} from "./customLayerActions"
 
 export const SET_LAYERS = 'SET_LAYERS';
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
@@ -129,6 +135,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
         l.opacity = 1;
       }
     });
+
+    // get header promises
     const headersPromises = [];
     workspaceLayers
       .filter(l => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.added === true)
@@ -155,6 +163,13 @@ export function initLayers(workspaceLayers, libraryLayers) {
           });
           headersPromises.push(headerPromise);
         }
+      });
+
+    // load custom layers data
+    workspaceLayers
+      .filter(l => l.type === LAYER_TYPES.Custom)
+      .forEach((customLayer) => {
+        dispatch(loadCustomLayer(customLayer.id, customLayer.url, customLayer.customLayerSubtype));
       });
 
     const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));
