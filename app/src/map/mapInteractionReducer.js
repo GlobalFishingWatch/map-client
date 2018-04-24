@@ -1,12 +1,14 @@
 import {
   SET_HOVER_POPUP,
   SET_POPUP,
-  CLEAR_POPUP
+  CLEAR_POPUP,
+  SET_MAP_CURSOR
 } from 'map/mapInteractionActions';
 
 const initialState = {
   hoverPopup: null,
-  popup: null
+  popup: null,
+  cursor: 'progress'
 };
 
 export default function (state = initialState, action) {
@@ -19,6 +21,9 @@ export default function (state = initialState, action) {
     }
     case CLEAR_POPUP : {
       return { ...state, popup: null };
+    }
+    case SET_MAP_CURSOR : {
+      return { ...state, cursor: action.payload };
     }
     default:
       return state;

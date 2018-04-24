@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
   minZoom: state.mapViewport.minZoom,
   mapStyle: state.mapStyle.mapStyle,
   popup: state.mapInteraction.popup,
-  hoverPopup: state.mapInteraction.hoverPopup
+  hoverPopup: state.mapInteraction.hoverPopup,
+  cursor: state.mapInteraction.cursor
 });
 
 const mapDispatchToProps = dispatch => ({

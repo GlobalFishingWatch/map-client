@@ -11,6 +11,7 @@ import { POLYGON_LAYERS, POLYGON_LAYERS_AREA } from 'config';
 export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
 export const SET_POPUP = 'SET_POPUP';
 export const CLEAR_POPUP = 'CLEAR_POPUP';
+export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 
 // gets fields for workspace layer from gl feature
 const getPopupFieldsKeys = (glFeature) => {
@@ -38,6 +39,7 @@ export const mapHover = (latitude, longitude, features) => {
     const { layerId, isEmpty, foundVessels } = currentActivityLayersInteractionData;
 
     let hoverPopup = null;
+    let cursor = null;
 
     if (isEmpty === true) {
       if (features.length) {
@@ -50,10 +52,12 @@ export const mapHover = (latitude, longitude, features) => {
           layerTitle: staticLayer.title,
           featureTitle
         };
+        cursor = 'pointer';
       }
     } else {
       const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
       const num = (foundVessels === undefined) ? 'several' : foundVessels.length;
+      cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
       // FIXME if 1 vessel, show vessel name directly
 
       hoverPopup = {
@@ -73,6 +77,11 @@ export const mapHover = (latitude, longitude, features) => {
     dispatch({
       type: SET_HOVER_POPUP,
       payload: hoverPopup
+    });
+
+    dispatch({
+      type: SET_MAP_CURSOR,
+      payload: cursor
     });
   };
 };

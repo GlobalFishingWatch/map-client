@@ -1,5 +1,6 @@
 import React from 'react';
 import MapGL, { Popup } from 'react-map-gl';
+import MapGLConfig from 'react-map-gl/src/config';
 import mapStyles from 'styles/components/map.scss';
 import PopupStyles from 'styles/components/map/popup.scss';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -76,7 +77,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, popup, hoverPopup } = this.props;
+    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, popup, hoverPopup, cursor } = this.props;
     return (
       <div
         id="map"
@@ -89,6 +90,12 @@ class Map extends React.Component {
           mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
           onClick={this.onClick}
+          getCursor={({ isDragging }) => {
+            if (cursor === null) {
+              return (isDragging) ? MapGLConfig.CURSOR.GRABBING : MapGLConfig.CURSOR.GRAB;
+            }
+            return cursor;
+          }}
           mapStyle={mapStyle}
           {...viewport}
           maxZoom={maxZoom}
