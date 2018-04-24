@@ -37,6 +37,9 @@ import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 //
 // const controls = new MapControls();
 
+const preventMapInteraction = event => event.target !== undefined &&
+  ( event.target.classList.contains('js-preventMapInteraction')
+  || event.target.classList.contains('mapboxgl-popup-close-button'));
 
 class Map extends React.Component {
   componentDidMount() {
@@ -69,10 +72,22 @@ class Map extends React.Component {
   }
 
   onHover = (event) => {
+    if (event.target !== undefined && event.target.classList.contains('js-preventMapInteraction')) {
+      return;
+    }
     this.props.mapHover(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   onClick = (event) => {
+    if (event.target !== undefined) {
+      if (event.target.classList.contains('js-close')) {
+        this.props.clearPopup();
+      }
+      if (event.target.classList.contains('js-preventMapInteraction')) {
+        return;
+      }
+    }
+
     this.props.mapClick(event.lngLat[1], event.lngLat[0], event.features);
   }
 
@@ -136,8 +151,9 @@ Map.propTypes = {
   setViewport: PropTypes.func,
   mapHover: PropTypes.func,
   mapClick: PropTypes.func,
+  clearPopup: PropTypes.func,
   transitionEnd: PropTypes.func,
-  setAttribution: PropTypes.func
+  cursor: PropTypes.string
 };
 
 export default Map;

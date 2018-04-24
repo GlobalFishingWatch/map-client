@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import StaticLayerPopup from 'map/components/StaticLayerPopup.jsx';
 import { toggleCurrentReportPolygon } from 'report/reportActions';
-import { clearPopup } from 'map/mapInteractionActions';
 
 const mapStateToProps = state => ({
   popup: state.mapInteraction.popup
@@ -10,9 +9,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleCurrentReportPolygon: () => {
     dispatch(toggleCurrentReportPolygon());
-  },
-  clearPopup: () => {
-    dispatch(clearPopup());
   }
 });
 

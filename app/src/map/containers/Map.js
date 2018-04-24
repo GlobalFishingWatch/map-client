@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Map from 'map/components/Map.jsx';
 import { setViewport, setMouseLatLong, transitionEnd } from 'map/mapViewportActions.js';
-import { mapHover, mapClick } from 'map/mapInteractionActions.js';
+import { mapHover, mapClick, clearPopup } from 'map/mapInteractionActions.js';
 
 const mapStateToProps = state => ({
   viewport: state.mapViewport.viewport,
@@ -26,6 +26,9 @@ const mapDispatchToProps = dispatch => ({
   },
   transitionEnd: () => {
     dispatch(transitionEnd());
+  },
+  clearPopup: () => {
+    dispatch(clearPopup());
   }
 });
 

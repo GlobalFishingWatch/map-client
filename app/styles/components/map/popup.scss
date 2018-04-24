@@ -7,18 +7,7 @@
   left: -130px;
   opacity: .95;
   padding: 16px;
-  position: absolute;
   width: 260px;
-
-  &._topleft {
-    bottom: auto;
-    left: 15px;
-    top: 10px;
-  }
-
-  &._small {
-    width: 190px;
-  }
 }
 
 .title,
@@ -41,7 +30,7 @@
 }
 
 .close {
-  right: -26px;
+  right: -22px;
   top: 0;
 
   & * {
@@ -78,8 +67,10 @@
 
 :global .mapboxgl-popup-content {
   background: none !important;
+  padding: 0 !important;
 }
 
 :global .mapboxgl-popup-tip {
   border-top-color: $color-13 !important;
 }
+

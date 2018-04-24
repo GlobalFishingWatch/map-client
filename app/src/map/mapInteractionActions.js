@@ -56,13 +56,17 @@ export const mapHover = (latitude, longitude, features) => {
       }
     } else {
       const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
-      const num = (foundVessels === undefined) ? 'several' : foundVessels.length;
       cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
-      // FIXME if 1 vessel, show vessel name directly
+      let featureTitle;
+      if (foundVessels === undefined || foundVessels.length > 1) {
+        featureTitle = `${(foundVessels === undefined) ? 'several' : foundVessels.length} points`;
+      } else {
+        featureTitle = '1 point';
+      }
 
       hoverPopup = {
         layerTitle: layer.title,
-        featureTitle: `${num} vessels`
+        featureTitle
       };
     }
 

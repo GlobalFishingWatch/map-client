@@ -17,10 +17,10 @@ export default function (state = initialState, action) {
       return { ...state, hoverPopup: action.payload };
     }
     case SET_POPUP : {
-      return { ...state, popup: action.payload };
+      return { ...state, popup: action.payload, hoverPopup: null };
     }
     case CLEAR_POPUP : {
-      return { ...state, popup: null };
+      return { ...state, popup: null, hoverPopup: null };
     }
     case SET_MAP_CURSOR : {
       return { ...state, cursor: action.payload };

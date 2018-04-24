@@ -22,7 +22,7 @@ class StaticLayerPopup extends React.Component {
       offsetTop={-10}
       tipSize={5}
     >
-      <div className={PopupStyles.customInfowindow}>
+      <div className={classnames('js-preventMapInteraction', PopupStyles.customInfowindow)}>
         <div className={PopupStyles.title} >
           {popup.layerTitle}
         </div >
@@ -35,8 +35,7 @@ class StaticLayerPopup extends React.Component {
           ))}
         </div >
         <button
-          onClick={() => toggleCurrentReportPolygon()}
-          className={classnames(PopupStyles.close, buttonCloseStyles.buttonClose)}
+          className={classnames('js-close', 'js-preventMapInteraction', PopupStyles.close, buttonCloseStyles.buttonClose)}
         >
           <CloseIcon className={buttonCloseStyles.cross} />
         </button >
