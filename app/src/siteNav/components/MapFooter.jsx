@@ -134,10 +134,6 @@ class MapFooter extends Component {
             </span>
             }
 
-            <span className="mapboxgl-ctrl-attrib mapboxgl-compact">
-              {this.renderAttribution()}
-            </span>
-
             <span
               className={classnames(MapFooterStyles.link, MapFooterStyles._attributions)}
               onClick={this.onExternalLink}

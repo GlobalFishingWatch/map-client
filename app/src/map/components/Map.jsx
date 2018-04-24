@@ -43,10 +43,9 @@ class Map extends React.Component {
     this._resize();
 
     // sadly mapbox gl's options.logoPosition is not exposed by react-map-gl, so we have to move around some DOM
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').innerHTML =
-      this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML;
+    const logo = this._mapContainerRef.querySelector('.mapboxgl-ctrl-logo');
+    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').appendChild(logo);
     this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML = '';
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl').style.display = 'block';
   }
 
   componentWillUnmount() {
