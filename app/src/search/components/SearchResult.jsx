@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-/* eslint-disable react/no-danger */
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import ResultListStyles from 'styles/search/result-list.scss';
 
 class SearchResult extends Component {
@@ -10,11 +10,21 @@ class SearchResult extends Component {
     this.props.closeSearch();
   }
 
-  highlightWord(strReplace, str) {
-    const regX = new RegExp(strReplace, 'i');
-    const highlight = `<span class="${ResultListStyles.highlight}">${strReplace.toUpperCase()}</span>`;
-
-    return str.replace(regX, highlight);
+  renderLine(searchTerm, lineText) {
+    const searchTermWords = searchTerm.toUpperCase().split(' ');
+    const lineTextWords = lineText.split(' ');
+    return (
+      <span className={ResultListStyles.mainResultLabel}>
+        {lineTextWords.map((lineWord, i) => (
+          <span
+            key={`res${i}`}
+            className={classnames({ [ResultListStyles.highlight]: searchTermWords.indexOf(lineWord) > -1 })}
+          >
+            {lineWord}{' '}
+          </span>
+        ))}
+      </span>
+    );
   }
 
   render() {
@@ -23,8 +33,6 @@ class SearchResult extends Component {
       this.props.vesselInfo.mmsi === undefined ||
       (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title)
     ) ? '' : this.props.vesselInfo.mmsi;
-    const highlightName = this.highlightWord(this.props.searchTerm, title);
-    const highlightMMSI = this.highlightWord(this.props.searchTerm, MMSI);
 
     return (
       <li
@@ -33,16 +41,9 @@ class SearchResult extends Component {
           this.onDrawVessel(event);
         }}
       >
-        <span
-          dangerouslySetInnerHTML={{ __html: highlightName }}
-          className={ResultListStyles.mainResultLabel}
-        />
-        {MMSI &&
-        <span
-          dangerouslySetInnerHTML={{ __html: highlightMMSI }}
-          className={ResultListStyles.subResultLabel}
-        />}
-      </li >
+        {this.renderLine(this.props.searchTerm, title)}
+        {MMSI && this.renderLine(this.props.searchTerm, MMSI)}
+      </li>
     );
   }
 }

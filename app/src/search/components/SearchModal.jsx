@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SearchResult from 'search/containers/SearchResult';
 import PaginatorStyles from 'styles/components/shared/paginator.scss';
 import ReactPaginate from 'react-paginate';
-import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
+import { SEARCH_QUERY_MINIMUM_LIMIT } from 'config';
 import ModalStyles from 'styles/components/shared/modal.scss';
 import ResultListStyles from 'styles/search/result-list.scss';
 import SearchModalStyles from 'styles/components/map/search-modal.scss';
@@ -60,7 +60,7 @@ class SearchModal extends Component {
 
     if (this.props.searching) {
       searchResults = this.renderSearchingMessage();
-    } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
+    } else if (this.props.pageCount && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = this.renderSearchResults();
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = this.renderShortSearchWordMessage();
@@ -110,7 +110,7 @@ class SearchModal extends Component {
             breakLabel={<span >...</span >}
             pageClassName={PaginatorStyles.pageItem}
             breakClassName={PaginatorStyles.pageItem}
-            pageCount={Math.ceil(this.props.count / SEARCH_MODAL_PAGE_SIZE)}
+            pageCount={this.props.pageCount}
             pageRangeDisplayed={3}
             onPageChange={e => this.onPageChange(e.selected)}
             forcePage={this.props.page}
@@ -153,7 +153,7 @@ SearchModal.propTypes = {
   entries: PropTypes.array, /*
    Number of total search results
    */
-  count: PropTypes.number, /*
+  pageCount: PropTypes.number, /*
    If search is in progress
    */
   searching: PropTypes.bool, /*
