@@ -87,7 +87,7 @@ class SearchPanel extends Component {
 
     if (this.props.searching) {
       searchResults = this.renderSearchingMessage();
-    } else if (this.props.count && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
+    } else if (this.props.pageCount && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
       searchResults = this.renderSearchResults();
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = this.renderShortSearchWordMessage();
@@ -122,16 +122,18 @@ class SearchPanel extends Component {
           >
             {searchResults}
           </ul >
-          {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT && !this.props.searching && this.props.count > SEARCH_RESULTS_LIMIT &&
-          <div className={searchPanelStyles.paginationContainer} >
-            <button
-              className={classnames(MapButtonStyles.button, MapButtonStyles._wide,
-                MapButtonStyles._filled, searchPanelStyles.paginationButton)}
-              onClick={() => this.onClickMoreResults()}
-            >
-              more results
-            </button >
-          </div >}
+          {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT
+            && !this.props.searching
+            && this.props.pageCount > SEARCH_RESULTS_LIMIT &&
+            <div className={searchPanelStyles.paginationContainer} >
+              <button
+                className={classnames(MapButtonStyles.button, MapButtonStyles._wide,
+                  MapButtonStyles._filled, searchPanelStyles.paginationButton)}
+                onClick={() => this.onClickMoreResults()}
+              >
+                more results
+              </button >
+            </div >}
         </div >
       </div >);
   }
@@ -148,7 +150,7 @@ SearchPanel.propTypes = {
   /*
    Number of total search results
    */
-  count: PropTypes.number,
+  pageCount: PropTypes.number,
   /*
    If search is in progress
    */
