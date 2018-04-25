@@ -4,7 +4,7 @@ import { setSearchTerm, setSearchModalVisibility, setSearchPage } from 'search/s
 
 const mapStateToProps = state => ({
   entries: state.search.entries,
-  count: state.search.count,
+  pageCount: state.search.pageCount,
   page: state.search.page,
   searching: state.search.searching,
   searchTerm: state.search.searchTerm

@@ -47,19 +47,21 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
         console.warn('search term differs, searching for', searchTerm, 'receiving', resultContainers[0].result.query);
       }
       let searchResultList = [];
-      let searchResultCount = 0;
+      let pageCount = 0;
       resultContainers.forEach((resultContainer) => {
         resultContainer.result.entries.forEach((entry) => {
           entry.tilesetId = resultContainer.layer.tilesetId;
           entry.title = getVesselName(entry, resultContainer.layer.header.info.fields);
         });
         searchResultList = searchResultList.concat(resultContainer.result.entries);
-        searchResultCount += resultContainer.result.total;
+        const thisSearchPageCount = Math.ceil(resultContainer.result.total / resultContainer.result.limit);
+        pageCount = Math.max(thisSearchPageCount, pageCount);
       });
       dispatch({
         type: SET_SEARCH_RESULTS,
         payload: {
-          entries: searchResultList, count: searchResultCount
+          entries: searchResultList,
+          pageCount
         }
       });
     });
