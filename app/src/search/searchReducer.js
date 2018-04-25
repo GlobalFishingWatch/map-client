@@ -21,7 +21,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_SEARCH_RESULTS:
       return Object.assign({}, state, {
-        count: action.payload.count,
+        pageCount: action.payload.pageCount,
         entries: action.payload.entries,
         searching: false
       });
