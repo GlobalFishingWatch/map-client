@@ -12,15 +12,11 @@ export const SET_SEARCHING = 'SET_SEARCHING';
 export const SET_SEARCH_MODAL_VISIBILITY = 'SET_SEARCH_MODAL_VISIBILITY';
 export const SET_SEARCH_RESULTS_VISIBILITY = 'SET_SEARCH_RESULTS_VISIBILITY';
 
-let searchQueryID = 0;
-
 const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   if (searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT) {
     return;
   }
 
-  // ID of the current request
-  const queryID = ++searchQueryID;
   const options = {
     method: 'GET'
   };
@@ -29,9 +25,6 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
       Authorization: `Bearer ${state.user.token}`
     };
   }
-
-  let searchResultList = [];
-  let searchResultCount = 0;
 
   const layers = state.layers.workspaceLayers
     .filter(layer => LAYER_TYPES_SEARCHABLE.indexOf(layer.type) > -1)
@@ -45,30 +38,32 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
         offset: page * SEARCH_MODAL_PAGE_SIZE
       }), options)
         .then(response => response.json())
-        .then((result) => {
-          if (queryID !== searchQueryID) {
-            return;
-          }
-
-          result.entries.forEach((entry) => {
-            entry.tilesetId = layer.tilesetId;
-            entry.title = getVesselName(entry, layer.header.info.fields);
-          });
-          searchResultList = searchResultList.concat(result.entries);
-          searchResultCount += result.total;
-        })
+        .then(result => new Promise(resolve => resolve({ result, layer })))
     );
 
   Promise.all(searchLayerPromises)
-    .then(() => {
+    .then((resultContainers) => {
+      if (resultContainers[0].result.query !== searchTerm) {
+        console.warn('search term differs, searching for', searchTerm, 'receiving', resultContainers[0].result.query);
+      }
+      let searchResultList = [];
+      let searchResultCount = 0;
+      resultContainers.forEach((resultContainer) => {
+        resultContainer.result.entries.forEach((entry) => {
+          entry.tilesetId = resultContainer.layer.tilesetId;
+          entry.title = getVesselName(entry, resultContainer.layer.header.info.fields);
+        });
+        searchResultList = searchResultList.concat(resultContainer.result.entries);
+        searchResultCount += resultContainer.result.total;
+      });
       dispatch({
         type: SET_SEARCH_RESULTS,
         payload: {
           entries: searchResultList, count: searchResultCount
         }
       });
-    }
-    );
+    });
+
 }, 200);
 
 export function setSearchPage(page) {
