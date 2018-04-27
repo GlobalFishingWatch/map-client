@@ -53,7 +53,7 @@ class ReportPanel extends Component {
       content = [];
       this.props.polygons.map((polygon, index) => (
         content.push((
-          <li className={ReportPanelStyles.polygonItem} key={polygon.id} >
+          <li className={ReportPanelStyles.polygonItem} key={polygon.reportingId} >
             <span className={ReportPanelStyles.polygonName} >{polygon.name}</span >
             <span className={ReportPanelStyles.polygonRemove} >
               <RemovePolygonIcon

@@ -32,18 +32,21 @@ export default function (state = initialState, action) {
     case SET_REPORT_POLYGON: {
       const polygonData = action.payload.polygonData;
 
-      // FIXME review/flatten directory API. Include field.
-      const reportingId = [polygonData.reporting_id, polygonData.report_id, polygonData.reportingId, polygonData.cartodb_id]
-        .find(e => e !== undefined);
+      if (polygonData.reporting_id === undefined || polygonData.reporting_name === undefined) {
+        console.warn('reporting_id/name missing', polygonData);
+        return state;
+      }
+      // const reportingId = [polygonData.reporting_id, polygonData.report_id, polygonData.reportingId, polygonData.cartodb_id]
+      //   .find(e => e !== undefined);
+      //
+      // const name = [polygonData.reporting_name, polygonData.name, polygonData.cartodb_id]
+      //   .find(e => e !== undefined);
 
-      const name = [polygonData.reporting_name, polygonData.name, polygonData.cartodb_id]
-        .find(e => e !== undefined);
-
-      const isInReport = !!state.polygons.find(polygon => polygon.reportingId === reportingId);
+      const isInReport = !!state.polygons.find(polygon => polygon.reportingId === polygonData.reporting_id);
       return Object.assign({}, state, {
         currentPolygon: {
-          reportingId,
-          name,
+          reportingId: polygonData.reporting_id,
+          name: polygonData.reporting_name,
           isInReport
         }
       });
