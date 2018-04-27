@@ -187,17 +187,37 @@ export const MINI_GLOBE_SETTINGS = {
 
 export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
 export const POLYGON_LAYERS = {
-  mparu: {
-    glLayers: [{ id: 'mpa', interactive: true }, { id: 'mpa labels' }],
-    popupFields: ['DESIG', 'ISO3', POLYGON_LAYERS_AREA]
+  rfmo: {
+    glLayers: [{ id: 'rfmo', interactive: true }, { id: 'rfmo-labels', labels: true }],
+    popupFields: ['rfb', POLYGON_LAYERS_AREA]
   },
   eez: {
-    glLayers: [{ id: 'eez', interactive: true }],
-    popupFields: ['geoname', 'sovereign1', POLYGON_LAYERS_AREA]
+    glLayers: [{ id: 'eez', interactive: true }, { id: 'eez-labels', labels: true }],
+    popupFields: ['name']
+  },
+  mpant: {
+    glLayers: [{ id: 'mpant', interactive: true }, { id: 'mpant-labels', labels: true }],
+    popupFields: ['name', POLYGON_LAYERS_AREA]
+  },
+  mparu: {
+    glLayers: [{ id: 'mparu', interactive: true }, { id: 'mparu-labels', labels: true }],
+    popupFields: ['name', POLYGON_LAYERS_AREA]
   },
   highseas: {
-    glLayers: [{ id: 'hsp', interactive: true }],
+    glLayers: [{ id: 'highseas', interactive: true }, { id: 'highseas-labels', labels: true }],
     popupFields: ['regionid', POLYGON_LAYERS_AREA]
+  },
+  6: {
+    glLayers: [{ id: '6', interactive: true }, { id: '6-labels', labels: true }],
+    popupFields: ['nama', POLYGON_LAYERS_AREA]
+  },
+  mpatlas: {
+    glLayers: [{ id: 'mpatlas', interactive: true }, { id: 'mpatlas-labels', labels: true }],
+    popupFields: ['name', POLYGON_LAYERS_AREA]
+  },
+  'falklands-conservation': {
+    glLayers: [{ id: 'falklands-conservation', interactive: true }, { id: 'falklands-conservation-labels', labels: true }],
+    popupFields: ['full_name', 'zone', 'area_sqkm']
   }
 };
 

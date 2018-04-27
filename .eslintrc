@@ -7,13 +7,11 @@
   },
   "globals": {
     "BLOG_URL": true,
-    "cartodb": true,
     "COMPLETE_MAP_RENDER": true,
     "DEFAULT_WORKSPACE": true,
     "DISABLE_WELCOME_MODAL": true,
     "USE_SUBSCRIPTIONS": true,
     "GA_TRACKING_CODE": true,
-    "google": true,
     "LOCAL_WORKSPACE": true,
     "MAP_URL": true,
     "PUBLIC_PATH": true,

@@ -3,94 +3,267 @@
   "name": "Polygon Layers",
   "metadata": {
     "mapbox:autocomposite": true,
-    "mapbox:type": "default",
-    "mapbox:origin": "dark-v9",
-    "mapbox:groups": {}
+    "mapbox:type": "template"
   },
   "center": [
-    -179.61448685219295,
-    16.658102689985895
+    -82.17995985791714,
+    -1.6733427220487869
   ],
-  "zoom": 2.226521502427615,
+  "zoom": 6.013153569273791,
   "bearing": 0,
   "pitch": 0,
   "sources": {
     "composite": {
-      "url": "mapbox://enriquetuya.a65cp7am,enriquetuya.2j44gon5,enriquetuya.1oj9qtxb",
+      "url": "mapbox://enriquetuya.53dgi9s2,enriquetuya.1fnqm5hp,enriquetuya.15fdcpij,enriquetuya.aq3gru9b,enriquetuya.36f6mubo,enriquetuya.039ipm1s,enriquetuya.52r7dwsp,enriquetuya.avxiwmin",
       "type": "vector"
     }
   },
-  "sprite": "mapbox://sprites/enriquetuya/cjfuur39n3jiz2roh4hq5606k",
+  "sprite": "mapbox://sprites/enriquetuya/cjgi0kavo00372so9mj4lm5kf",
   "glyphs": "mapbox://fonts/enriquetuya/{fontstack}/{range}.pbf",
   "layers": [
     {
-      "id": "mpa",
+      "id": "rfmo",
       "type": "fill",
+      "metadata": {},
       "source": "composite",
-      "source-layer": "MPAgeojson",
-      "filter": [
-        "!in",
-        "MARINE",
-        "",
-        "0"
-      ],
+      "source-layer": "rfmo",
       "layout": {},
       "paint": {
-        "fill-color": "hsla(212, 90%, 60%, 0.4)",
-        "fill-outline-color": "hsla(212, 90%, 60%, 1)"
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
       }
     },
     {
-      "id": "mpa labels",
+      "id": "rfmo-labels",
       "type": "symbol",
+      "metadata": {},
       "source": "composite",
-      "source-layer": "MPAgeojson",
-      "filter": [
-        "!in",
-        "MARINE",
-        "",
-        "0"
-      ],
+      "source-layer": "rfmo",
       "layout": {
-        "text-field": "{NAME}",
-        "text-size": 10,
+        "visibility": "none",
+        "text-field": "{rfb}",
         "text-font": [
-          "Overpass Mono Light",
+          "Roboto Mono Light",
           "Arial Unicode MS Regular"
-        ]
+        ],
+        "text-size": 10
       },
-      "paint": {
-        "text-color": "hsl(194, 92%, 69%)"
-      }
-    },
-    {
-      "id": "hsp",
-      "type": "fill",
-      "source": "composite",
-      "source-layer": "hsphsp",
-      "layout": {
-        "visibility": "visible"
-      },
-      "paint": {
-        "fill-color": "hsla(263, 91%, 58%, 0.4)"
-      }
+      "paint": {}
     },
     {
       "id": "eez",
       "type": "fill",
+      "metadata": {},
       "source": "composite",
       "source-layer": "eez",
       "layout": {
         "visibility": "visible"
       },
       "paint": {
-        "fill-color": "hsla(299, 88%, 57%, 0.4)"
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
       }
+    },
+    {
+      "id": "eez-labels",
+      "type": "symbol",
+      "metadata": {},
+      "source": "composite",
+      "source-layer": "eez",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-size": 10,
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ]
+      },
+      "paint": {}
+    },
+    {
+      "id": "mpant",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "mpant",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)",
+        "fill-opacity": 0.8
+      }
+    },
+    {
+      "id": "mpant-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "mpant",
+      "layout": {
+        "text-size": 10,
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "visibility": "none"
+      },
+      "paint": {
+        "text-color": "hsla(0, 0%, 0%, 1)"
+      }
+    },
+    {
+      "id": "mparu",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "mparu",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "mparu-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "mparu",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "highseas",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "highseas",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "highseas-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "highseas",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{region_id}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "6",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "6",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "6-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "6",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{nama}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "mpatlas",
+      "type": "fill",
+      "metadata": {},
+      "source": "composite",
+      "source-layer": "mpatlas",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "mpatlas-labels",
+      "type": "symbol",
+      "metadata": {},
+      "source": "composite",
+      "source-layer": "mpatlas",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "falklands-conservation",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "falklands_conservation",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "falklands-conservation-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "falklands_conservation",
+      "layout": {
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-field": "{full_name}",
+        "text-size": 10,
+        "visibility": "none"
+      },
+      "paint": {}
     }
   ],
-  "created": "2018-04-11T08:48:10.577Z",
-  "id": "cjfuur39n3jiz2roh4hq5606k",
-  "modified": "2018-04-12T11:50:47.853Z",
+  "created": "2018-04-27T13:49:33.614Z",
+  "id": "cjgi0kavo00372so9mj4lm5kf",
+  "modified": "2018-04-27T15:20:38.716Z",
   "owner": "enriquetuya",
   "visibility": "private",
   "draft": false

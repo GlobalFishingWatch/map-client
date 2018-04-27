@@ -72,7 +72,21 @@
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "rfmo"
-        }
+        },
+        {
+          "title":"WPP NRI",
+          "color":"#F84F40",
+          "visible":false,
+          "type":"CartoDBAnimation",
+          "url":"http://cartodb.skytruth.org/user/production/api/v2/viz/32d46386-1ed0-11e7-ad57-0242ac110006/viz.json",
+          "id":"6",
+          "label":"WPP NRI",
+          "description":"The WPP-NRI (Wilayah Pengelolaan Perikanan Negara Republik Indonesia) are fisheries management areas for fishing, conservation, research, and fisheries development which covers inland waters, archipelagic waters, territorial sea, within and outside the exclusive economic zone of Indonesia.",
+          "added":true,
+          "library":false,
+          "opacity":1
+        },
+        {"title":"Protected Planet WDPA MPAs","description":"This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.","url":"https://api-dot-skytruth-pelagos-production.appspot.com/v2/directory/protectedplanet/source","visible":true,"hue":145,"type":"CartoDBAnimation","opacity":1,"id":"protectedplanet"}
       ]
     },
     "pinnedVessels": [],
