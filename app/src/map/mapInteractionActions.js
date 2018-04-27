@@ -112,7 +112,7 @@ export const mapClick = (latitude, longitude, features) => {
 
         const layerIsInReport = state.report.layerId === staticLayerId;
         if (layerIsInReport === true) {
-          setReportPolygon(feature.properties);
+          dispatch(setReportPolygon(feature.properties));
         }
 
         const fields = fieldKeys.map((fieldKey) => {

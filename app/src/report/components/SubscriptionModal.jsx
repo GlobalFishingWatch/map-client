@@ -65,7 +65,7 @@ class SubscriptionModal extends Component {
     const layerList = [];
     this.props.polygons.map(polygon => (
       layerList.push((
-        <li key={polygon.id} >
+        <li key={polygon.reportingId} >
           <span>{polygon.name}</span >
         </li >
       ))
