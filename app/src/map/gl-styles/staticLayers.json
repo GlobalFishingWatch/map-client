@@ -6,15 +6,15 @@
     "mapbox:type": "template"
   },
   "center": [
-    -82.17995985791714,
-    -1.6733427220487869
+    -2.8435549518987955,
+    63.234220670314414
   ],
-  "zoom": 6.013153569273791,
+  "zoom": 1.5749660795017655,
   "bearing": 0,
   "pitch": 0,
   "sources": {
     "composite": {
-      "url": "mapbox://enriquetuya.53dgi9s2,enriquetuya.1fnqm5hp,enriquetuya.15fdcpij,enriquetuya.aq3gru9b,enriquetuya.36f6mubo,enriquetuya.039ipm1s,enriquetuya.52r7dwsp,enriquetuya.avxiwmin",
+      "url": "mapbox://enriquetuya.aq3gru9b,enriquetuya.52r7dwsp,enriquetuya.53dgi9s2,enriquetuya.1fnqm5hp,enriquetuya.15fdcpij,enriquetuya.36f6mubo,enriquetuya.avxiwmin,enriquetuya.039ipm1s,enriquetuya.9ksajwi8",
       "type": "vector"
     }
   },
@@ -24,7 +24,6 @@
     {
       "id": "rfmo",
       "type": "fill",
-      "metadata": {},
       "source": "composite",
       "source-layer": "rfmo",
       "layout": {},
@@ -36,7 +35,6 @@
     {
       "id": "rfmo-labels",
       "type": "symbol",
-      "metadata": {},
       "source": "composite",
       "source-layer": "rfmo",
       "layout": {
@@ -53,7 +51,6 @@
     {
       "id": "eez",
       "type": "fill",
-      "metadata": {},
       "source": "composite",
       "source-layer": "eez",
       "layout": {
@@ -67,7 +64,6 @@
     {
       "id": "eez-labels",
       "type": "symbol",
-      "metadata": {},
       "source": "composite",
       "source-layer": "eez",
       "layout": {
@@ -203,7 +199,6 @@
     {
       "id": "mpatlas",
       "type": "fill",
-      "metadata": {},
       "source": "composite",
       "source-layer": "mpatlas",
       "layout": {
@@ -217,7 +212,6 @@
     {
       "id": "mpatlas-labels",
       "type": "symbol",
-      "metadata": {},
       "source": "composite",
       "source-layer": "mpatlas",
       "layout": {
@@ -232,7 +226,7 @@
       "paint": {}
     },
     {
-      "id": "falklands-conservation",
+      "id": "falklands_conservation",
       "type": "fill",
       "source": "composite",
       "source-layer": "falklands_conservation",
@@ -245,7 +239,7 @@
       }
     },
     {
-      "id": "falklands-conservation-labels",
+      "id": "falklands_conservation-labels",
       "type": "symbol",
       "source": "composite",
       "source-layer": "falklands_conservation",
@@ -259,11 +253,40 @@
         "visibility": "none"
       },
       "paint": {}
+    },
+    {
+      "id": "protectedplanet",
+      "type": "fill",
+      "source": "composite",
+      "source-layer": "protectedplanet",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "hsla(0, 0%, 0%, 0.5)",
+        "fill-outline-color": "hsla(0, 0%, 0%, 0.9)"
+      }
+    },
+    {
+      "id": "protectedplanet-labels",
+      "type": "symbol",
+      "source": "composite",
+      "source-layer": "protectedplanet",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-size": 10,
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ]
+      },
+      "paint": {}
     }
   ],
   "created": "2018-04-27T13:49:33.614Z",
   "id": "cjgi0kavo00372so9mj4lm5kf",
-  "modified": "2018-04-27T15:20:38.716Z",
+  "modified": "2018-04-29T08:21:29.679Z",
   "owner": "enriquetuya",
   "visibility": "private",
   "draft": false

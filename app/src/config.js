@@ -215,9 +215,14 @@ export const POLYGON_LAYERS = {
     glLayers: [{ id: 'mpatlas', interactive: true }, { id: 'mpatlas-labels', labels: true }],
     popupFields: ['name', POLYGON_LAYERS_AREA]
   },
-  'falklands-conservation': {
-    glLayers: [{ id: 'falklands-conservation', interactive: true }, { id: 'falklands-conservation-labels', labels: true }],
+  falklands_conservation: {
+    glLayers: [{ id: 'falklands_conservation', interactive: true }, { id: 'falklands_conservation-labels', labels: true }],
     popupFields: ['full_name', 'zone', 'area_sqkm']
+  },
+  protectedplanet: {
+    glLayers: [{ id: 'protectedplanet', interactive: true }, { id: 'protectedplanet-labels', labels: true }],
+    popupFields: ['name', 'iucn_cat', 'desig_eng', 'rep_area', 'no_take', 'status', 'status_yr',
+      'gov_type', 'mang_auth', 'verif', 'parent_iso', 'iso3']
   }
 };
 
