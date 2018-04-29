@@ -163,16 +163,22 @@ export function sendSubscription() {
       });
     });
 
-    let url;
-    if (state.report.subscriptionFrequency === 'single') {
-      // FIXME state.map.tilesetUrl is deprecated
-      url = `${state.map.tilesetUrl}/reports`;
-    } else {
-      // FIXME state.map.tilesetUrl is deprecated
-      payload.recurrency = state.report.subscriptionFrequency;
-      url = `${state.map.tilesetUrl}/reports/subscriptions`;
+    const fishingActivityLayer = state.layers.workspaceLayers.find(l => l.id === 'fishing');
+    if (fishingActivityLayer === undefined) {
+      dispatch({
+        type: SET_SUBSCRIPTION_STATUS_ERROR,
+        payload: 'Fishing activity layer not available on this workspace'
+      });
+      return;
     }
 
+    let url = `${fishingActivityLayer.url}/reports`;
+
+    if (state.report.subscriptionFrequency !== 'single') {
+      url = `${url}/subscriptions`;
+      payload.recurrency = state.report.subscriptionFrequency;
+    }
+    
     const body = JSON.stringify(payload);
     const options = {
       method: 'POST',

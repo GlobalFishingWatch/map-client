@@ -306,8 +306,6 @@ function processLegacyWorkspace(data, dispatch) {
   });
 
   const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
-  const vesselLayer = layers.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
-  const tilesetUrl = vesselLayer.url;
 
   const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
   const filters = uniq(rawVesselLayer.args.selections.Flags.data.category)
@@ -352,8 +350,7 @@ function processLegacyWorkspace(data, dispatch) {
     layers,
     pinnedVessels,
     shownVessel,
-    filters,
-    tilesetId: getTilesetFromLayerURL(tilesetUrl)
+    filters
   };
 }
 
