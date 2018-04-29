@@ -4,10 +4,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { worldToPixels } from 'viewport-mercator-project';
 import {
-  TRACKS_DOTS_STYLE_ZOOM_THRESHOLD,
-  // HALF_WORLD
+  TRACKS_DOTS_STYLE_ZOOM_THRESHOLD
 } from 'config';
-import { hueToRgbHexString } from 'utils/colors';
 
 class TracksLayer extends React.Component {
   componentDidMount() {
@@ -47,15 +45,12 @@ class TracksLayer extends React.Component {
         overExtent[0] > 0 && overExtent[1] > 0;
 
     tracks.forEach((track) => {
-      // TODO move to tracksActions, let's have TracksLayer be dumber and not care about hue
-      const convertedColor = hueToRgbHexString(Math.min(359, track.hue));
-
       n += this._drawTrack({
         data: track.data,
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: track.color || convertedColor,
+        color: track.color,
         lineThickness: 1,
         lineOpacity: 1
       });

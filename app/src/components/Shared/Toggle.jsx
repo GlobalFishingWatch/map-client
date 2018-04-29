@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 import classnames from 'classnames';
-import { hueToClosestColor } from 'utils/colors';
+import { hueOrColorToHexColor } from 'utils/colors';
 
 class Toggle extends Component {
   render() {
-    const { on, color } = this.props;
-    const style = (on) ? { backgroundColor: color } : {};
+    const { on, color, hue } = this.props;
+    const hexColor = hueOrColorToHexColor(color, hue);
+    const style = (on) ? { backgroundColor: hexColor } : {};
     return (<div
       style={style}
       className={classnames(
@@ -34,6 +35,7 @@ class Toggle extends Component {
 Toggle.propTypes = {
   on: PropTypes.bool,
   color: PropTypes.string,
+  hue: PropTypes.number,
   onToggled: PropTypes.func
 };
 

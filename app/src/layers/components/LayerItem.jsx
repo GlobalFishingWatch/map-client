@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { LAYER_TYPES } from 'constants';
-import { COLOR_HUES, COLORS } from 'config';
-import { getKeyByValue, hueToRgbHexString, hexToHue } from 'utils/colors';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';
@@ -23,7 +20,6 @@ class LayerItem extends Component {
   constructor() {
     super();
     this.state = { expand: null };
-    this.onColorChange = this.onColorChange.bind(this);
   }
 
   onChangeVisibility() {
@@ -42,15 +38,11 @@ class LayerItem extends Component {
     this.props.setLayerOpacity(opacity, this.props.layer.id);
   }
 
-  onColorChange(color) {
+  onTintChange = (color, hue) => {
     if (!this.props.layer.visible) {
       this.props.toggleLayerVisibility(this.props.layer.id);
     }
-
-    const key = getKeyByValue(COLORS, color);
-    const hue = (key) ? COLOR_HUES[key] : hexToHue(color);
-
-    this.props.setLayerHue(hue, this.props.layer.id);
+    this.props.setLayerTint(color, hue, this.props.layer.id);
   }
 
   onChangeLayerLabel(value) {
@@ -80,10 +72,7 @@ class LayerItem extends Component {
   }
 
   render() {
-    const { id, hue, reportId, visible, opacity } = this.props.layer;
-
-    const colorKey = getKeyByValue(COLOR_HUES, hue);
-    const color = (colorKey !== null) ? COLORS[colorKey] : hueToRgbHexString(hue, true);
+    const { id, hue, color, reportId, visible, opacity } = this.props.layer;
     const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
@@ -156,6 +145,7 @@ class LayerItem extends Component {
             <Toggle
               on={visible}
               color={color}
+              hue={hue}
               onToggled={() => this.onChangeVisibility()}
             />
             <input
@@ -177,8 +167,9 @@ class LayerItem extends Component {
           <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
             <ColorPicker
               color={color}
+              hue={hue}
               opacity={opacity}
-              onColorChange={this.onColorChange}
+              onTintChange={this.onTintChange}
               onOpacityChange={this.onOpacityChange}
             />
           </ExpandItem >
@@ -203,7 +194,7 @@ LayerItem.propTypes = {
   toggleLayerWorkspacePresence: PropTypes.func,
   toggleReport: PropTypes.func,
   setLayerOpacity: PropTypes.func,
-  setLayerHue: PropTypes.func,
+  setLayerTint: PropTypes.func,
   openLayerInfoModal: PropTypes.func,
   onLayerBlendingToggled: PropTypes.func,
   /*

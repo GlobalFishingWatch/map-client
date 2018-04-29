@@ -53,7 +53,8 @@ export default function (state = initialState, action) {
       const viewport = { ...state.viewport, ...action.payload };
       return {
         ...state,
-        viewport
+        viewport,
+        prevZoom: viewport.zoom
       };
     }
 

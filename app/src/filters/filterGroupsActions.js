@@ -1,7 +1,6 @@
 import { LAYER_TYPES } from 'constants';
-import { COLOR_HUES, COLORS } from 'config';
+import { PALETTE_COLORS } from 'config';
 import { trackCreateFilterGroups } from 'analytics/analyticsActions';
-import { getKeyByValue, hexToHue } from 'utils/colors';
 
 export const CREATE_NEW_FILTER_GROUP = 'CREATE_NEW_FILTER_GROUP';
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP';
@@ -11,7 +10,7 @@ export const SET_EDIT_FILTER_GROUP_INDEX = 'SET_EDIT_FILTER_GROUP_INDEX';
 export const DELETE_FILTER_GROUP = 'DELETE_FILTER_GROUP';
 export const SET_FILTER_GROUPS = 'SET_FILTER_GROUPS';
 export const SET_CURRENT_FILTER_GROUP_ACTIVE_LAYER = 'SET_CURRENT_FILTER_GROUP_ACTIVE_LAYER';
-export const SET_CURRENT_FILTER_GROUP_COLOR = 'SET_CURRENT_FILTER_GROUP_COLOR';
+export const SET_CURRENT_FILTER_GROUP_HUE = 'SET_CURRENT_FILTER_GROUP_HUE';
 export const SET_CURRENT_FILTER_GROUP_LABEL = 'SET_CURRENT_FILTER_GROUP_LABEL';
 export const SET_CURRENT_FILTER_VALUE = 'SET_CURRENT_FILTER_VALUE';
 
@@ -22,8 +21,7 @@ export function createNewFilterGroup() {
       checkedLayers[lid] = false;
     });
 
-    const colorKey = Object.keys(COLORS)[getState().filterGroups.defaultColorIndex];
-    const color = COLORS[colorKey];
+    const color = PALETTE_COLORS[getState().filterGroups.defaultColorIndex].color;
 
     const newFilterGroup = {
       checkedLayers,
@@ -81,10 +79,8 @@ const getLayerData = (heatmapLayer, filters) => {
           filterValues[fieldName] = filterGroup.filterValues[filterValueKey];
         }
       });
-      const key = getKeyByValue(COLORS, filterGroup.color);
-      const hue = (key) ? COLOR_HUES[key] : hexToHue(filterGroup.color);
       const layerGroupedFilter = {
-        hue,
+        hue: filterGroup.hue,
         filterValues,
         // 'pass' is set to true when none of the filters fields in the filter group is supported by the layer headers
         // This avoids having to filter every point of a completely filtered out layer.
@@ -183,10 +179,10 @@ export function setCurrentFilterGroupActiveLayer(layerId) {
   };
 }
 
-export function setCurrentFilterGroupColor(color) {
+export function setCurrentFilterGroupHue(hue) {
   return {
-    type: SET_CURRENT_FILTER_GROUP_COLOR,
-    payload: { color }
+    type: SET_CURRENT_FILTER_GROUP_HUE,
+    payload: { hue }
   };
 }
 

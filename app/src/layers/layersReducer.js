@@ -3,7 +3,7 @@ import findIndex from 'lodash/findIndex';
 import {
   ADD_CUSTOM_LAYER,
   SET_LAYER_HEADER,
-  SET_LAYER_HUE,
+  SET_LAYER_TINT,
   SET_LAYER_OPACITY,
   SET_LAYERS,
   SET_WORKSPACE_LAYER_LABEL,
@@ -81,9 +81,13 @@ export default function (state = initialState, action) {
       });
       return Object.assign({}, state, { workspaceLayers });
     }
-    case SET_LAYER_HUE: {
+    case SET_LAYER_TINT: {
       const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
-        changedLayer.hue = action.payload.hue;
+        if (changedLayer.type === LAYER_TYPES.Heatmap) {
+          changedLayer.hue = action.payload.hue;
+        } else {
+          changedLayer.color = action.payload.color;
+        }
       });
       return Object.assign({}, state, { workspaceLayers });
     }

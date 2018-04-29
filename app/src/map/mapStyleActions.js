@@ -1,6 +1,7 @@
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { POLYGON_LAYERS } from 'config';
-import {fromJS} from "immutable"
+import { fromJS } from 'immutable';
+import { hexToRgba } from 'utils/colors';
 
 export const SET_BASEMAP = 'SET_BASEMAP';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
@@ -32,19 +33,20 @@ const updateGLLayers = (style, layer) => {
     newStyle = newStyle.setIn(['layers', styleLayerIndex, 'interactive'], interactive);
 
     // color/opacity
-    const paintColor = `hsla(${layer.hue}, 90%, 60%, ${layer.opacity - 0.5})`;
-    const paintColorOutline = `hsla(${layer.hue}, 90%, 60%, ${layer.opacity})`;
+    const paintColor = hexToRgba(layer.color, 0.5);
     switch (styleLayer.type) {
       case 'fill': {
         newStyle = newStyle
           // fill-opacity ?
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-opacity'], layer.opacity)
           .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], paintColor)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], paintColorOutline);
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], layer.color);
         break;
       }
       case 'symbol': {
         newStyle = newStyle
-          .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], paintColorOutline);
+          .setIn(['layers', styleLayerIndex, 'paint', 'text-opacity'], layer.opacity)
+          .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], layer.color);
         break;
       }
       default: {
@@ -52,7 +54,6 @@ const updateGLLayers = (style, layer) => {
       }
     }
   });
-
   return newStyle;
 };
 

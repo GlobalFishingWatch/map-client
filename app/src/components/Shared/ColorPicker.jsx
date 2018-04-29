@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { COLORS } from 'config';
+import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
 import InputRange from 'react-input-range';
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 
 class ColorPicker extends Component {
-  renderInput(color) {
+  renderInput(color, hue, checkedColor) {
     return (
       <div className={classnames(colorPickerStyles.colorInput)} key={color}>
         <input
@@ -15,8 +15,8 @@ class ColorPicker extends Component {
           name={color}
           id={color}
           value={color}
-          onChange={() => this.props.onColorChange(color)}
-          checked={this.props.color === color}
+          onChange={() => this.props.onTintChange(color, hue)}
+          checked={checkedColor.toLowerCase() === color.toLowerCase()}
         />
         <label htmlFor={color} style={{ backgroundColor: color }} />
       </div>
@@ -24,11 +24,12 @@ class ColorPicker extends Component {
   }
   render() {
     const { opacity, onOpacityChange } = this.props;
+    const checkedColor = this.props.color || PALETTE_COLORS.find(color => color.hue === this.props.hue).color;
     return (
       <div className={colorPickerStyles.colorPicker}>
         <div className={colorPickerStyles.title}>Color</div>
         <div className={colorPickerStyles.colorInputs}>
-          { Object.keys(COLORS).map(key => this.renderInput(COLORS[key]))}
+          { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor))}
         </div>
         {onOpacityChange && <div className={colorPickerStyles.section}>
           Opacity
@@ -56,9 +57,10 @@ class ColorPicker extends Component {
 }
 
 ColorPicker.propTypes = {
-  onColorChange: PropTypes.func.isRequired,
+  onTintChange: PropTypes.func,
   onOpacityChange: PropTypes.func,
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  hue: PropTypes.number,
   opacity: PropTypes.number
 };
 

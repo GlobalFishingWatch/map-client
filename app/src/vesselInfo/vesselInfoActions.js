@@ -21,7 +21,7 @@ export const CLEAR_VESSEL_INFO = 'CLEAR_VESSEL_INFO';
 export const HIDE_VESSELS_INFO_PANEL = 'HIDE_VESSELS_INFO_PANEL';
 export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
 export const TOGGLE_VESSEL_PIN = 'TOGGLE_VESSEL_PIN';
-export const SET_PINNED_VESSEL_HUE = 'SET_PINNED_VESSEL_HUE';
+export const SET_PINNED_VESSEL_COLOR = 'SET_PINNED_VESSEL_COLOR';
 export const SET_PINNED_VESSEL_TITLE = 'SET_PINNED_VESSEL_TITLE';
 export const LOAD_PINNED_VESSEL = 'LOAD_PINNED_VESSEL';
 export const TOGGLE_PINNED_VESSEL_EDIT_MODE = 'TOGGLE_PINNED_VESSEL_EDIT_MODE';
@@ -361,12 +361,12 @@ export function showPinnedVesselDetails(tilesetId, seriesgroup) {
   };
 }
 
-export function setPinnedVesselHue(seriesgroup, hue) {
+export function setPinnedVesselColor(seriesgroup, color) {
   return {
-    type: SET_PINNED_VESSEL_HUE,
+    type: SET_PINNED_VESSEL_COLOR,
     payload: {
       seriesgroup,
-      hue
+      color
     }
   };
 }

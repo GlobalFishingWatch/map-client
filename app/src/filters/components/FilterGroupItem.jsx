@@ -61,7 +61,7 @@ class FilterGroupItem extends Component {
 
         <Toggle
           on={this.props.filterGroup.visible}
-          color={this.props.filterGroup.color}
+          hue={this.props.filterGroup.hue}
           onToggled={() => this.onChangeFilterGroupVisibility()}
         />
         <input

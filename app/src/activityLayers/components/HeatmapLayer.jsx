@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import * as PIXI from 'pixi.js';
 import { worldToPixels } from 'viewport-mercator-project';
-import { COLOR_HUES } from 'config';
 import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
@@ -36,8 +35,6 @@ class HeatmapLayer extends React.Component {
     this.setBrushZoomRenderingStyle(useRadialGradientStyle);
 
     this.stage = new PIXI.Container();
-
-    // const defaultHue = layer.hue !== undefined ? layer.hue : COLOR_HUES[Object.keys(COLOR_HUES)[0]];
 
     rootStage.addChild(this.stage);
   }

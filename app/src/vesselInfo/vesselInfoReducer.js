@@ -12,7 +12,7 @@ import {
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
   SET_TRACK_BOUNDS,
-  SET_PINNED_VESSEL_HUE,
+  SET_PINNED_VESSEL_COLOR,
   SET_PINNED_VESSEL_TRACK_VISIBILITY,
   SET_PINNED_VESSEL_TITLE,
   TOGGLE_PINNED_VESSEL_EDIT_MODE
@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        hue: HEATMAP_TRACK_HIGHLIGHT_HUE
+        color: HEATMAP_TRACK_HIGHLIGHT_HUE
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
@@ -187,10 +187,10 @@ export default function (state = initialState, action) {
         currentlyShownVessel
       });
     }
-    case SET_PINNED_VESSEL_HUE: {
+    case SET_PINNED_VESSEL_COLOR: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = Object.assign({}, state.vessels[vesselIndex]);
-      newVessel.hue = action.payload.hue;
+      newVessel.color = action.payload.color;
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]

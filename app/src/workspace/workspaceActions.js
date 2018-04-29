@@ -4,7 +4,8 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
-  COLORS
+  COLORS,
+  COLOR_HUES
 } from 'config';
 import { LAYER_TYPES, FLAGS } from 'constants';
 import { setBasemap } from 'map/mapStyleActions';
@@ -16,7 +17,7 @@ import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import calculateLayerId from 'utils/calculateLayerId';
-import { hexToHue, hueToClosestColor } from 'utils/colors';
+import { hexToHue, getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
 import uniq from 'lodash/uniq';
 import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'utils/handleLegacyURLs.js';
 
@@ -82,6 +83,7 @@ export function updateURL() {
  * @returns {object}
  */
 export function saveWorkspace(errorAction) {
+  // FIXME double check filtergoups hue save
   return (dispatch, getState) => {
     const state = getState();
     const headers = {
@@ -121,7 +123,8 @@ export function saveWorkspace(errorAction) {
         tileset: state.map.tilesetId,
         map: {
           center: [state.mapViewport.viewport.latitude, state.mapViewport.viewport.longitude],
-          zoom: state.mapViewport.viewport.zoom,
+          //  Compatibility: A Mapbox GL JS zoom z means z-1
+          zoom: state.mapViewport.viewport.zoom + 1,
           layers
         },
         pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
@@ -129,7 +132,7 @@ export function saveWorkspace(errorAction) {
           tilesetId: e.tilesetId,
           title: e.title,
           visible: e.visible,
-          hue: e.hue
+          color: e.color
         })),
         shownVessel,
         encounters: {
@@ -166,7 +169,8 @@ function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
 
   dispatch(updateViewport({
-    zoom: workspaceData.zoom,
+    // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
+    zoom: workspaceData.zoom - 1,
     latitude: workspaceData.center[0],
     longitude: workspaceData.center[1]
   }));
@@ -178,7 +182,12 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
 
-  dispatch(setBasemap(workspaceData.basemap));
+  // Mapbox branch compatibility: 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
+  let workspaceBasemap = workspaceData.basemap;
+  if (state.mapStyle.basemaps.find(basemap => basemap.title === workspaceBasemap) === undefined) {
+    workspaceBasemap = 'North Star';
+  }
+  dispatch(setBasemap(workspaceBasemap));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
@@ -191,6 +200,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
         dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
       }
     }
+    // Mapbox branch compatibility: track layers should have color, not hue
+    workspaceData.pinnedVessels.forEach((pinnedVessel) => {
+      if (pinnedVessel.color === undefined) {
+        pinnedVessel.color = hueToRgbHexString(pinnedVessel.hue, true);
+      }
+      delete pinnedVessel.hue;
+    });
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
 
@@ -206,6 +222,12 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   if (workspaceData.filterGroups) {
     workspaceData.filterGroups.forEach((filterGroup) => {
+      // Mapbox branch compatibility: filter groups are not saved as color literals anymore (ie 'pink'). Convert to hue.
+      if (filterGroup.color !== undefined) {
+        const colorLiteralFromHex = getKeyByValue(COLORS, filterGroup.color);
+        filterGroup.hue = COLOR_HUES[colorLiteralFromHex || filterGroup.color];
+        delete filterGroup.color;
+      }
       dispatch(saveFilterGroup(filterGroup));
     });
   }

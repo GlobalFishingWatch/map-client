@@ -11,13 +11,14 @@ import {
   loadAllTilesForLayer
 } from 'activityLayers/heatmapActions';
 import calculateLayerId from 'utils/calculateLayerId';
-import {loadCustomLayer} from "./customLayerActions"
+import { hueToRgbHexString } from 'utils/colors';
+import { loadCustomLayer } from './customLayerActions';
 
 export const SET_LAYERS = 'SET_LAYERS';
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER';
 export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 export const TOGGLE_LAYER_WORKSPACE_PRESENCE = 'TOGGLE_LAYER_WORKSPACE_PRESENCE';
-export const SET_LAYER_HUE = 'SET_LAYER_HUE';
+export const SET_LAYER_TINT = 'SET_LAYER_TINT';
 export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
 export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
@@ -126,13 +127,25 @@ export function initLayers(workspaceLayers, libraryLayers) {
       }
     });
 
-    // parses opacity attribute
     workspaceLayers.forEach((layer) => {
-      const l = layer;
+      // parses opacity attribute
       if (!!layer.opacity) {
-        l.opacity = parseFloat(layer.opacity);
+        layer.opacity = parseFloat(layer.opacity);
       } else {
-        l.opacity = 1;
+        layer.opacity = 1;
+      }
+      // Mapbox branch compatibility: heatmap layers should have: hue, static layers: color
+      if (layer.type === LAYER_TYPES.Static) {
+        if (layer.color === undefined) {
+          layer.color = hueToRgbHexString(layer.hue, true);
+        }
+        delete layer.hue;
+      }
+      if (layer.type === LAYER_TYPES.Heatmap) {
+        if (layer.hue === undefined) {
+          layer.hue = 0;
+        }
+        delete layer.color;
       }
     });
 
@@ -269,12 +282,13 @@ export function setLayerOpacity(opacity, layerId) {
   };
 }
 
-export function setLayerHue(hue, layerId) {
+export function setLayerTint(color, hue, layerId) {
   return (dispatch) => {
     dispatch({
-      type: SET_LAYER_HUE,
+      type: SET_LAYER_TINT,
       payload: {
         layerId,
+        color,
         hue
       }
     });

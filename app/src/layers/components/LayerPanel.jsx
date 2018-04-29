@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
-import { LAYER_TYPES, LAYER_TYPES_DISPLAYED_IN_PANELS } from 'constants';
+import { LAYER_TYPES, LAYER_TYPES_DISPLAYED_IN_PANELS, LAYER_TYPES_COLORPICKER } from 'constants';
 import classnames from 'classnames';
 import ExpandItem from 'components/Shared/ExpandItem';
 import AccordionHeader from 'components/Shared/AccordionHeader';
@@ -33,8 +33,8 @@ class LayerPanel extends Component {
   }
 
   render() {
-    const mapLayers = [];
-    const fishingLayers = [];
+    const staticLayers = [];
+    const activityLayers = [];
 
     this.props.layers.forEach((layer, index) => {
       if (LAYER_TYPES_DISPLAYED_IN_PANELS.indexOf(layer.type) === -1 || layer.added === false) {
@@ -46,9 +46,9 @@ class LayerPanel extends Component {
         layer={layer}
         onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
         showBlending={this.state.currentBlendingOptionsShown === index}
-        enableColorPicker={true}
+        enableColorPicker={LAYER_TYPES_COLORPICKER.indexOf(layer.type) > -1}
       />);
-      ((layer.type === LAYER_TYPES.Heatmap) ? fishingLayers : mapLayers).push(layerItem);
+      ((layer.type === LAYER_TYPES.Heatmap) ? activityLayers : staticLayers).push(layerItem);
     });
 
     return (
@@ -68,7 +68,7 @@ class LayerPanel extends Component {
         />
         <ExpandItem active={this.state.expand === 'ACTIVITY_LAYERS'} accordion >
           <ul className={LayerListStyles.list} >
-            {fishingLayers}
+            {activityLayers}
           </ul >
         </ExpandItem >
         <AccordionHeader
@@ -82,7 +82,7 @@ class LayerPanel extends Component {
           accordion
         >
           <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
-            {mapLayers}
+            {staticLayers}
           </ul >
         </ExpandItem >
       </div >
@@ -95,8 +95,6 @@ LayerPanel.propTypes = {
   currentlyReportedLayerId: PropTypes.string,
   toggleLayerVisibility: PropTypes.func,
   setLayerInfoModal: PropTypes.func,
-  setLayerOpacity: PropTypes.func,
-  setLayerHue: PropTypes.func,
   userPermissions: PropTypes.array,
   isVesselInfoPanelOpen: PropTypes.bool.isRequired
 };

@@ -70,6 +70,8 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 // ie how large the clicked region should be for including vessels
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
+// Legacy: this is only here for compatibility with pre-mapbox branch workspaces
+// FIXME review, delete?
 // Colors of the layers, ...
 export const COLORS = {
   orange: '#F95E5E',
@@ -84,6 +86,7 @@ export const COLORS = {
 };
 
 // Hue for each color
+// FIXME review, delete?
 export const COLOR_HUES = {
   orange: 0,
   peach: 22,
@@ -95,6 +98,18 @@ export const COLOR_HUES = {
   purple: 284,
   pink: 312
 };
+
+export const PALETTE_COLORS = [
+  { color: '#F95E5E', hue: 0 },
+  { color: '#fca26f', hue: 22 },
+  { color: '#FBFF8B', hue: 60 },
+  { color: '#abff35', hue: 85 },
+  { color: '#00ff6a', hue: 145 },
+  { color: '#67FBFE', hue: 182 },
+  { color: '#7D84FA', hue: 236 },
+  { color: '#bb00ff', hue: 284 },
+  { color: '#ff81e5', hue: 312 }
+];
 
 export const ENCOUNTERS_VESSEL_COLOR = '0xFF0000';
 export const ENCOUNTERS_REEFER_COLOR = '0xffbcc6';

@@ -150,8 +150,8 @@ class FilterGroupForm extends Component {
               <div className={ModalStyles._bottomPadding}>
                 <ColorPicker
                   id={'filter-color'}
-                  color={this.props.currentlyEditedFilterGroup && this.props.currentlyEditedFilterGroup.color}
-                  onColorChange={this.props.onColorChanged}
+                  hue={this.props.currentlyEditedFilterGroup && this.props.currentlyEditedFilterGroup.hue}
+                  onTintChange={this.props.onHueChange}
                 />
               </div>
               <div className={ModalStyles.sectionTitle}>
@@ -183,7 +183,7 @@ FilterGroupForm.propTypes = {
   filters: PropTypes.array,
   label: PropTypes.string,
   onLayerChecked: PropTypes.func,
-  onColorChanged: PropTypes.func,
+  onHueChange: PropTypes.func,
   onFilterValueChanged: PropTypes.func,
   onLabelChanged: PropTypes.func,
   onSaveClicked: PropTypes.func,

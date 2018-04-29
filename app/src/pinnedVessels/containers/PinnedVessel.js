@@ -4,7 +4,7 @@ import PinnedVessel from 'pinnedVessels/components/PinnedVessel';
 import {
   showPinnedVesselDetails,
   toggleVesselPin,
-  setPinnedVesselHue,
+  setPinnedVesselColor,
   setPinnedVesselTitle,
   togglePinnedVesselVisibility,
   toggleActiveVesselPin
@@ -24,8 +24,8 @@ const mapDispatchToProps = dispatch => ({
   onRemoveClicked: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));
   },
-  setPinnedVesselHue(seriesgroup, hue) {
-    dispatch(setPinnedVesselHue(seriesgroup, hue));
+  setPinnedVesselColor(seriesgroup, color) {
+    dispatch(setPinnedVesselColor(seriesgroup, color));
   },
   setPinnedVesselTitle(seriesgroup, title) {
     dispatch(setPinnedVesselTitle(seriesgroup, title));

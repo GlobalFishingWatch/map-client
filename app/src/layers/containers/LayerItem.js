@@ -5,7 +5,7 @@ import { setLayerInfoModal } from 'actions/map';
 import {
   toggleLayerVisibility,
   setLayerOpacity,
-  setLayerHue,
+  setLayerTint,
   toggleLayerWorkspacePresence,
   setLayerLabel,
   confirmLayerRemoval
@@ -37,8 +37,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setLayerOpacity(opacity, layerId));
     trackLayerOpacityChange(dispatch, opacity, layerId);
   },
-  setLayerHue: (hue, layerId) => {
-    dispatch(setLayerHue(hue, layerId));
+  setLayerTint: (color, hue, layerId) => {
+    dispatch(setLayerTint(color, hue, layerId));
     trackLayerHueChange(dispatch, hue, layerId);
   },
   toggleReport: (layerId) => {

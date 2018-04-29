@@ -1,6 +1,5 @@
-import { DEFAULT_TRACK_HUE } from 'config';
+import { PALETTE_COLORS } from 'config';
 import { getWorkspace } from 'workspace/workspaceActions';
-import { hexToHue } from 'utils/colors';
 import calculateLayerId from 'utils/calculateLayerId';
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'layers/layersActions';
 
@@ -26,7 +25,7 @@ export function getLayerLibrary() {
             title: l.args.title,
             label: l.args.title,
             description: l.args.description,
-            hue: (l.args.color ? hexToHue(l.args.color) : DEFAULT_TRACK_HUE),
+            color: (l.args.color) ? l.args.color : PALETTE_COLORS[0].color,
             visible: false,
             type: l.type,
             url: l.args.source.args.url,

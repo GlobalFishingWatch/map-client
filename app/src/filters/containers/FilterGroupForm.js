@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import FilterGroupForm from 'filters/components/FilterGroupForm';
 import {
   setCurrentFilterGroupActiveLayer,
-  setCurrentFilterGroupColor,
+  setCurrentFilterGroupHue,
   setCurrentFilterValue,
   setCurrentFilterGroupLabel
 } from 'filters/filterGroupsActions';
@@ -12,8 +12,8 @@ const mapDispatchToProps = dispatch => ({
   onLayerChecked: (layerId) => {
     dispatch(setCurrentFilterGroupActiveLayer(layerId));
   },
-  onColorChanged: (color) => {
-    dispatch(setCurrentFilterGroupColor(color));
+  onHueChange: (color, hue) => {
+    dispatch(setCurrentFilterGroupHue(hue));
   },
   onLabelChanged: (label) => {
     dispatch(setCurrentFilterGroupLabel(label));

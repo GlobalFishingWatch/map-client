@@ -14,8 +14,6 @@ import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?na
 import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
-import { COLOR_HUES } from 'config';
-import { getKeyByValue } from 'utils/colors';
 
 class PinnedVessel extends Component {
   constructor() {
@@ -36,11 +34,11 @@ class PinnedVessel extends Component {
     }
   }
 
-  onChangeHue(color) {
+  onChangeColor(color) {
     if (!this.props.vessel.visible) {
       this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
     }
-    this.props.setPinnedVesselHue(this.props.vessel.seriesgroup, COLOR_HUES[color]);
+    this.props.setPinnedVesselColor(this.props.vessel.seriesgroup, color);
   }
 
   onChangeVisibility() {
@@ -107,7 +105,6 @@ class PinnedVessel extends Component {
       );
     }
 
-    const color = getKeyByValue(COLOR_HUES, this.props.vessel.hue);
     const tooltip = (this.props.vessel.title.length > 15) ? this.props.vessel.title : null;
 
     return (
@@ -139,8 +136,8 @@ class PinnedVessel extends Component {
         </div>
         <ExpandItem active={this.state.expand === 'COLOR'} arrowPosition={0}>
           <ColorPicker
-            color={color}
-            onColorChange={this.onChangeHue}
+            color={this.props.vessel.color}
+            onTintChange={this.onChangeColor}
             id={this.props.vessel.title}
           />
         </ExpandItem >
@@ -157,7 +154,7 @@ PinnedVessel.propTypes = {
   onRemoveClicked: PropTypes.func,
   setPinnedVesselTitle: PropTypes.func,
   onVesselClicked: PropTypes.func,
-  setPinnedVesselHue: PropTypes.func,
+  setPinnedVesselColor: PropTypes.func,
   onTogglePin: PropTypes.func.isRequired,
   showBlending: PropTypes.bool,
   vessel: PropTypes.object,

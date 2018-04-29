@@ -8,6 +8,7 @@ const RGB_MAX = 255;
 const HUE_MAX = 360;
 const SV_MAX = 100;
 
+// FIXME mark explicitely as legacy. Check all usages.
 export const getKeyByValue = (obj, value) => {
   let result = null;
   Object.entries(obj).forEach((entry) => {
@@ -121,11 +122,6 @@ export const hueToClosestColor = (hue) => {
 };
 
 
-export const hueToRgbaString = (hue, alpha) => {
-  const rgb = hueToRgbDefaults(hue);
-  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
-};
-
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -135,10 +131,24 @@ function hexToRgb(hex) {
   } : null;
 }
 
+const rgbToRgbaString = (rgb, opacity) => {
+  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+};
+
+export const hueToRgbaString = (hue, opacity) => {
+  const rgb = hueToRgbDefaults(hue);
+  return rgbToRgbaString(rgb, opacity);
+};
+
 export const hexToHue = (hex) => {
   const rgb = hexToRgb(hex);
   const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
   return hsv[0] * 360;
+};
+
+export const hexToRgba = (hex, opacity) => {
+  const rgb = hexToRgb(hex);
+  return rgbToRgbaString(rgb, opacity);
 };
 
 export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INCREMENT;
@@ -146,3 +156,10 @@ export const hueIncrementToHue = hueIncrement => hueIncrement * VESSELS_HUES_INC
 export const hueToHueIncrement = hue => Math.round((hue / 360) * (VESSELS_HUES_INCREMENTS_NUM - 1));
 
 export const wrapHue = hue => hue % 360;
+
+export const hueOrColorToHexColor = (color, hue) => {
+  if (hue !== undefined) {
+    return hueToRgbHexString(hue, true);
+  }
+  return color;
+};

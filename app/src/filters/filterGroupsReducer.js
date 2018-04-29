@@ -5,11 +5,11 @@ import {
   DELETE_FILTER_GROUP,
   SET_FILTER_GROUPS,
   SET_CURRENT_FILTER_GROUP_ACTIVE_LAYER,
-  SET_CURRENT_FILTER_GROUP_COLOR,
+  SET_CURRENT_FILTER_GROUP_HUE,
   SET_CURRENT_FILTER_GROUP_LABEL,
   SET_CURRENT_FILTER_VALUE
 } from 'filters/filterGroupsActions';
-import { COLORS } from 'config';
+import { PALETTE_COLORS } from 'config';
 
 const initialState = {
   // the filters - structure matches how filters are visually presented
@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         currentlyEditedFilterGroup: action.payload.newFilterGroup,
         editFilterGroupIndex: null,
-        defaultColorIndex: (state.defaultColorIndex === Object.keys(COLORS).length - 1) ? 0 : state.defaultColorIndex + 1
+        defaultColorIndex: (state.defaultColorIndex === PALETTE_COLORS.length - 1) ? 0 : state.defaultColorIndex + 1
       });
     }
     case SET_EDIT_FILTER_GROUP_INDEX: {
@@ -90,9 +90,9 @@ export default function (state = initialState, action) {
         currentlyEditedFilterGroup
       });
     }
-    case SET_CURRENT_FILTER_GROUP_COLOR: {
+    case SET_CURRENT_FILTER_GROUP_HUE: {
       const currentlyEditedFilterGroup = Object.assign({}, state.currentlyEditedFilterGroup);
-      currentlyEditedFilterGroup.color = action.payload.color;
+      currentlyEditedFilterGroup.hue = action.payload.hue;
       return Object.assign({}, state, {
         currentlyEditedFilterGroup
       });
