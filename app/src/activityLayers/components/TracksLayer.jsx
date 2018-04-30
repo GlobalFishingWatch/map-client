@@ -51,6 +51,8 @@ class TracksLayer extends React.Component {
     tracks.forEach((track) => {
       n += this._drawTrack({
         data: track.data,
+        startIndex,
+        endIndex,
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
@@ -63,6 +65,8 @@ class TracksLayer extends React.Component {
       if (drawOverTrack === true) {
         n += this._drawTrack({
           data: track.data,
+          startIndex: timelineOverExtentIndexes[0],
+          endIndex: timelineOverExtentIndexes[1],
           series: track.selectedSeries,
           drawFishingCircles,
           fishingCirclesRadius,
@@ -89,8 +93,8 @@ class TracksLayer extends React.Component {
    * @param lineThickness
    * @param lineOpacity
    */
-  _drawTrack({ data, series, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
-    const { viewport, startIndex, endIndex } = this.props;
+  _drawTrack({ data, startIndex, endIndex, series, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
+    const { viewport } = this.props;
 
     let n = 0;
     let prevSeries;

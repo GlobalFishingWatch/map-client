@@ -137,6 +137,7 @@ class Timebar extends Component {
     const container = d3select('#timeline_svg_container');
     const computedStyles = window.getComputedStyle(container.node());
     leftOffset = container.node().offsetLeft;
+
     width = parseInt(computedStyles.width, 10) - 50;
     height = parseInt(computedStyles.height, 10);
 
@@ -553,7 +554,7 @@ class Timebar extends Component {
   }
 
   onMouseOver(offsetX) {
-    const timelineOverExtent = this.getExtent([offsetX - 10, offsetX + 10]);
+    const timelineOverExtent = this.getExtent([(offsetX - X_OVERFLOW_OFFSET) - 5, (offsetX - X_OVERFLOW_OFFSET) + 5]);
     this.props.updateTimelineOverDates(timelineOverExtent);
   }
 
