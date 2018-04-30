@@ -9,7 +9,7 @@ import {
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
   TIMELINE_MAX_STEPS,
-  HEATMAP_TRACK_HIGHLIGHT_HUE,
+  ACTIVITY_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA,
   VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
   VESSEL_CLICK_TOLERANCE_PX
@@ -21,13 +21,9 @@ const MAX_SPRITES_FACTOR = 0.002;
 
 const shouldUseRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 
-const getNumSpritesPerStep = (viewportWidth, viewportHeight) => {
-  return Math.round(viewportWidth * viewportHeight * MAX_SPRITES_FACTOR);
-};
+const getNumSpritesPerStep = (viewportWidth, viewportHeight) => Math.round(viewportWidth * viewportHeight * MAX_SPRITES_FACTOR);
 
-const getNumSprites = (viewportWidth, viewportHeight) => {
-  return getNumSpritesPerStep(viewportWidth, viewportHeight) * TIMELINE_MAX_STEPS;
-};
+const getNumSprites = (viewportWidth, viewportHeight) => getNumSpritesPerStep(viewportWidth, viewportHeight) * TIMELINE_MAX_STEPS;
 
 // builds a texture spritesheet containing
 // - the heatmap style (radial gradient)
@@ -92,7 +88,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
   .map(vessel => ({
     data: vessel.track.data,
     selectedSeries: vessel.track.selectedSeries,
-    hue: vessel.hue
+    color: vessel.color
   }))
   .concat(
     tracks
@@ -234,7 +230,7 @@ class ActivityLayers extends React.Component {
       : null;
     const highlightFilters = (highlightedVessels.foundVessels !== undefined) ?
       highlightedVessels.foundVessels.map(vessel => ({
-        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        hue: ACTIVITY_HIGHLIGHT_HUE,
         filterValues: {
           series: [vessel.series]
         }
@@ -264,7 +260,7 @@ class ActivityLayers extends React.Component {
       {this.stage !== undefined &&
         <HeatmapLayer
           key="highlighted"
-          layer={{ id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: HEATMAP_TRACK_HIGHLIGHT_HUE }}
+          layer={{ id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: ACTIVITY_HIGHLIGHT_HUE }}
           data={highlightData}
           filters={highlightFilters}
           viewport={viewport}

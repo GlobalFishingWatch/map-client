@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import getVesselName from 'utils/getVesselName';
-import { HEATMAP_TRACK_HIGHLIGHT_HUE } from 'config';
+import { TRACK_DEFAULT_COLOR } from 'config';
 import { INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        color: HEATMAP_TRACK_HIGHLIGHT_HUE
+        color: TRACK_DEFAULT_COLOR
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
@@ -83,7 +83,7 @@ export default function (state = initialState, action) {
         .findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup && vessel.tilesetId === action.payload.tilesetId);
       if (vesselIndex > -1) {
         const newVessel = Object.assign(state.vessels[vesselIndex], {
-          hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE,
+          color: action.payload.color,
           pinned: true,
           visible: action.payload.visible
         });
@@ -105,7 +105,7 @@ export default function (state = initialState, action) {
         shownInInfoPanel: false,
         pinned: true,
         title: action.payload.title || action.payload.vesselname,
-        hue: action.payload.hue || HEATMAP_TRACK_HIGHLIGHT_HUE
+        color: action.payload.color
       }, action.payload);
 
       return Object.assign({}, state, {

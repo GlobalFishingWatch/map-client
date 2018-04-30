@@ -5,7 +5,8 @@ import {
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
   COLORS,
-  COLOR_HUES
+  COLOR_HUES,
+  TRACK_DEFAULT_COLOR
 } from 'config';
 import { LAYER_TYPES, FLAGS } from 'constants';
 import { setBasemap } from 'map/mapStyleActions';
@@ -203,7 +204,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     // Mapbox branch compatibility: track layers should have color, not hue
     workspaceData.pinnedVessels.forEach((pinnedVessel) => {
       if (pinnedVessel.color === undefined) {
-        pinnedVessel.color = hueToRgbHexString(pinnedVessel.hue, true);
+        pinnedVessel.color = (pinnedVessel.hue !== undefined) ? hueToRgbHexString(pinnedVessel.hue, true) : TRACK_DEFAULT_COLOR;
       }
       delete pinnedVessel.hue;
     });

@@ -195,7 +195,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
         dispatch(updateMapStyle());
         dispatch(initHeatmapLayers());
         dispatch(refreshFlagFiltersLayers());
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.warn(err);
       });
 

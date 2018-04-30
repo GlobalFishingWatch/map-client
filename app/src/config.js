@@ -50,10 +50,6 @@ export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
-// tracks
-export const HEATMAP_TRACK_HIGHLIGHT_HUE = 312;
-export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 2;
-
 // half a world, in projected world units
 export const HALF_WORLD = 256 / 2;
 
@@ -71,8 +67,6 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
 
 // Legacy: this is only here for compatibility with pre-mapbox branch workspaces
-// FIXME review, delete?
-// Colors of the layers, ...
 export const COLORS = {
   orange: '#F95E5E',
   peach: '#fca26f',
@@ -85,8 +79,7 @@ export const COLORS = {
   pink: '#ff81e5'
 };
 
-// Hue for each color
-// FIXME review, delete?
+// Legacy: this is only here for compatibility with pre-mapbox branch workspaces
 export const COLOR_HUES = {
   orange: 0,
   peach: 22,
@@ -111,8 +104,14 @@ export const PALETTE_COLORS = [
   { color: '#ff81e5', hue: 312 }
 ];
 
+export const ACTIVITY_HIGHLIGHT_HUE = PALETTE_COLORS[8].hue;
+
 export const ENCOUNTERS_VESSEL_COLOR = '0xFF0000';
 export const ENCOUNTERS_REEFER_COLOR = '0xffbcc6';
+
+// tracks
+export const TRACK_DEFAULT_COLOR = PALETTE_COLORS[8].color;
+export const TRACKS_DOTS_STYLE_ZOOM_THRESHOLD = 2;
 
 // time range options in the duration picker menu
 // replace moment humanized duration: use '1 month' instead of 'one month'

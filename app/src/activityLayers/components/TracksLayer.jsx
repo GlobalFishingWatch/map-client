@@ -30,13 +30,17 @@ class TracksLayer extends React.Component {
   _redraw() {
     const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes } = this.props;
 
+    this.clear();
+    if (!tracks.length) {
+      return;
+    }
+
     const overInInner = (timelineOverExtentIndexes === undefined) ? undefined : [
       Math.max(startIndex, timelineOverExtentIndexes[0]),
       Math.min(endIndex, timelineOverExtentIndexes[1])
     ];
     const overExtent = (overInInner && overInInner[1] - overInInner[0] > 0) ? overInInner : undefined;
 
-    this.clear();
     let n = 0; // eslint-disable-line no-unused-vars
 
     const drawFishingCircles = zoom > TRACKS_DOTS_STYLE_ZOOM_THRESHOLD;
@@ -50,7 +54,7 @@ class TracksLayer extends React.Component {
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: track.color,
+        color: `0x${track.color.substr(1)}`,
         lineThickness: 1,
         lineOpacity: 1
       });

@@ -19,12 +19,9 @@ class PinnedVessel extends Component {
   constructor() {
     super();
     this.state = { expand: null };
-    this.onChangeName = this.onChangeName.bind(this);
-    this.onChangeHue = this.onChangeHue.bind(this);
-    this.onChangeVisibility = this.onChangeVisibility.bind(this);
   }
 
-  onChangeName(value) {
+  onChangeName = (value) => {
     this.props.setPinnedVesselTitle(this.props.vessel.seriesgroup, value);
   }
 
@@ -34,14 +31,14 @@ class PinnedVessel extends Component {
     }
   }
 
-  onChangeColor(color) {
+  onChangeColor = (color) => {
     if (!this.props.vessel.visible) {
       this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
     }
     this.props.setPinnedVesselColor(this.props.vessel.seriesgroup, color);
   }
 
-  onChangeVisibility() {
+  onChangeVisibility = () => {
     this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
   }
 
@@ -116,7 +113,7 @@ class PinnedVessel extends Component {
           <ReactTooltip />
           <Toggle
             on={this.props.vessel.visible}
-            hue={this.props.vessel.hue}
+            color={this.props.vessel.color}
             onToggled={() => this.onChangeVisibility()}
           />
           <input

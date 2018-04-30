@@ -88,6 +88,9 @@ export function initHeatmapLayers() {
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
 function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { endpoints, temporalExtents, temporalExtentsLess, isPBF }) {
+  if (endpoints === undefined) {
+    throw new Error('endpoints object is not available on this tilesets header');
+  }
   const url = endpoints.tiles;
   const pelagosPromises = getTilePromises(url, token, temporalExtents, {
     tileCoordinates,
