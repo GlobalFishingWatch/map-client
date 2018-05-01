@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Checkbox from 'components/Shared/Checkbox';
 import classnames from 'classnames';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
@@ -23,8 +24,15 @@ class ColorPicker extends Component {
     );
   }
   render() {
-    const { opacity, onOpacityChange } = this.props;
-    const checkedColor = this.props.color || PALETTE_COLORS.find(color => color.hue === this.props.hue).color;
+    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id } = this.props;
+    let checkedColor = this.props.color;
+    if (checkedColor == undefined) {
+      if (this.props.hue === undefined) {
+        checkedColor = PALETTE_COLORS[0].color;
+      } else {
+        checkedColor = PALETTE_COLORS.find(color => color.hue === this.props.hue).color;
+      }
+    }
     return (
       <div className={colorPickerStyles.colorPicker}>
         <div className={colorPickerStyles.title}>Color</div>
@@ -51,6 +59,15 @@ class ColorPicker extends Component {
             }}
           />
         </div>}
+        {onShowLabelsToggle && <div className={colorPickerStyles.section}>
+          <Checkbox
+            classNames="-spaced"
+            label="Show labels"
+            id={id}
+            callback={this.props.onShowLabelsToggle}
+            checked={showLabels}
+          />
+        </div>}
       </div>
     );
   }
@@ -59,9 +76,12 @@ class ColorPicker extends Component {
 ColorPicker.propTypes = {
   onTintChange: PropTypes.func,
   onOpacityChange: PropTypes.func,
+  onShowLabelsToggle: PropTypes.func,
   color: PropTypes.string,
   hue: PropTypes.number,
-  opacity: PropTypes.number
+  opacity: PropTypes.number,
+  showLabels: PropTypes.bool,
+  id: PropTypes.string
 };
 
 export default ColorPicker;

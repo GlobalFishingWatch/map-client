@@ -1,65 +1,58 @@
 @import '../../settings';
 
-:global .c-checkbox {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
+.checkbox {
   &.-spaced {
     margin-bottom: 8px;
   }
 
-  input[type=checkbox] {
-    visibility: hidden;
-  }
-
-  .label {
-    margin-left: 5px;
-    color: rgba($color-34, 0.3);
-    &.checkedLabel {
-      color: $color-white;
-    }
-  }
-
-  .checkbox {
-    display: inline-block;
-    position: relative;
-    line-height: initial;
-    vertical-align: -webkit-baseline-middle;
-    padding-right: 10px;
-  }
-
-  .checkbox label {
-    cursor: pointer;
+  [type="checkbox"]:not(:checked),
+  [type="checkbox"]:checked {
     position: absolute;
+    left: -9999px;
+  }
+
+  [type="checkbox"]:not(:checked) + label,
+  [type="checkbox"]:checked + label {
+    position: relative;
+    padding-left: 1.95em;
+    cursor: pointer;
+  }
+
+  [type="checkbox"]:not(:checked) + label:before,
+  [type="checkbox"]:checked + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 14px;
     height: 14px;
-    left: 0;
-    background: transparent;
     border:1px solid rgba($color-34, 0.3);
+    background: $color-button-primary;
   }
-
-  .checkbox label:after {
-    opacity: 0.1;
+  /* checked mark aspect */
+  [type="checkbox"]:not(:checked) + label:after,
+  [type="checkbox"]:checked + label:after {
     content: '';
     position: absolute;
     width: 9px;
     height: 5px;
-    background: transparent;
-    top: 2px;
-    left: 2px;
+    top: 3px;
+    left: 3px;
+    font-size: 1.4em;
+    line-height: 0.8;
     border: 2px solid #fff;
     border-top: none;
     border-right: none;
-
     transform: rotate(-45deg);
+    transition: all .2s;
   }
-
-  .checkbox input[type=checkbox]:checked + label {
-    background: $color-button-primary;
+  /* checked mark aspect changes */
+  [type="checkbox"]:not(:checked) + label:after {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0);
   }
-
-  .checkbox input[type=checkbox]:checked + label:after {
+  [type="checkbox"]:checked + label:after {
     opacity: 1;
+    transform: rotate(-45deg) scale(1);
   }
 }

@@ -15,6 +15,7 @@ import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
 import ColorPicker from 'components/Shared/ColorPicker';
+import { LAYER_TYPES } from 'constants';
 
 class LayerItem extends Component {
   constructor() {
@@ -45,6 +46,13 @@ class LayerItem extends Component {
     this.props.setLayerTint(color, hue, this.props.layer.id);
   }
 
+  onShowLabelsToggle = () => {
+    if (!this.props.layer.visible) {
+      this.props.toggleLayerVisibility(this.props.layer.id);
+    }
+    this.props.toggleLayerShowLabels(this.props.layer.id);
+  }
+
   onChangeLayerLabel(value) {
     this.props.setLayerLabel(this.props.layer.id, value);
   }
@@ -72,7 +80,7 @@ class LayerItem extends Component {
   }
 
   render() {
-    const { id, hue, color, reportId, visible, opacity } = this.props.layer;
+    const { id, hue, color, reportId, visible, opacity, showLabels, type } = this.props.layer;
     const { layerPanelEditMode } = this.props;
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id;
     const canReport = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1);
@@ -169,8 +177,11 @@ class LayerItem extends Component {
               color={color}
               hue={hue}
               opacity={opacity}
+              showLabels={showLabels}
               onTintChange={this.onTintChange}
               onOpacityChange={this.onOpacityChange}
+              onShowLabelsToggle={(type === LAYER_TYPES.Static) ? this.onShowLabelsToggle : null}
+              id={id}
             />
           </ExpandItem >
         }
@@ -195,6 +206,7 @@ LayerItem.propTypes = {
   toggleReport: PropTypes.func,
   setLayerOpacity: PropTypes.func,
   setLayerTint: PropTypes.func,
+  toggleLayerShowLabels: PropTypes.func,
   openLayerInfoModal: PropTypes.func,
   onLayerBlendingToggled: PropTypes.func,
   /*

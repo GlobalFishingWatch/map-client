@@ -1,5 +1,5 @@
 import find from 'lodash/find';
-import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS } from 'constants';
+import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { setMaxZoom } from 'map/mapViewportActions';
@@ -20,6 +20,7 @@ export const TOGGLE_LAYER_VISIBILITY = 'TOGGLE_LAYER_VISIBILITY';
 export const TOGGLE_LAYER_WORKSPACE_PRESENCE = 'TOGGLE_LAYER_WORKSPACE_PRESENCE';
 export const SET_LAYER_TINT = 'SET_LAYER_TINT';
 export const SET_LAYER_OPACITY = 'SET_LAYER_OPACITY';
+export const TOGGLE_LAYER_SHOW_LABELS = 'TOGGLE_LAYER_SHOW_LABELS';
 export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL';
@@ -229,7 +230,9 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
       dispatch(loadAllTilesForLayer(layer.id));
     }
 
-    dispatch(updateMapStyle());
+    if (LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1) {
+      dispatch(updateMapStyle());
+    }
   };
 }
 
@@ -266,12 +269,14 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
         dispatch(refreshFlagFiltersLayers());
       }
     }
-    dispatch(updateMapStyle());
+    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
+      dispatch(updateMapStyle());
+    }
   };
 }
 
 export function setLayerOpacity(opacity, layerId) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: SET_LAYER_OPACITY,
       payload: {
@@ -279,12 +284,15 @@ export function setLayerOpacity(opacity, layerId) {
         opacity
       }
     });
-    dispatch(updateMapStyle());
+    const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
+      dispatch(updateMapStyle());
+    }
   };
 }
 
 export function setLayerTint(color, hue, layerId) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({
       type: SET_LAYER_TINT,
       payload: {
@@ -293,8 +301,25 @@ export function setLayerTint(color, hue, layerId) {
         hue
       }
     });
-    // TODO we might want to override all filters hue settings here (see with Dani)
-    dispatch(refreshFlagFiltersLayers());
+
+    const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
+      dispatch(updateMapStyle());
+    }
+    if (newLayer.type === LAYER_TYPES.Heatmap) {
+      dispatch(refreshFlagFiltersLayers());
+    }
+  };
+}
+
+export function toggleLayerShowLabels(layerId) {
+  return (dispatch) => {
+    dispatch({
+      type: TOGGLE_LAYER_SHOW_LABELS,
+      payload: {
+        layerId
+      }
+    });
     dispatch(updateMapStyle());
   };
 }

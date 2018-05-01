@@ -10,7 +10,8 @@ import {
   SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE,
   TOGGLE_LAYER_PANEL_EDIT_MODE,
   TOGGLE_LAYER_VISIBILITY,
-  TOGGLE_LAYER_WORKSPACE_PRESENCE
+  TOGGLE_LAYER_WORKSPACE_PRESENCE,
+  TOGGLE_LAYER_SHOW_LABELS
 } from 'layers/layersActions';
 import { LAYER_TYPES } from 'constants';
 
@@ -88,6 +89,12 @@ export default function (state = initialState, action) {
         } else {
           changedLayer.color = action.payload.color;
         }
+      });
+      return Object.assign({}, state, { workspaceLayers });
+    }
+    case TOGGLE_LAYER_SHOW_LABELS: {
+      const workspaceLayers = getUpdatedLayers(state, action, (changedLayer) => {
+        changedLayer.showLabels = (changedLayer.showLabels === undefined || changedLayer.showLabels === false);
       });
       return Object.assign({}, state, { workspaceLayers });
     }

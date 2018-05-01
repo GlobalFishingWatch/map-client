@@ -44,6 +44,13 @@ const updateGLLayers = (style, layer) => {
         break;
       }
       case 'symbol': {
+        if (glLayer.isLabelsLayer === true) {
+          const labelsVisibility = (visibility === 'visible' && layer.showLabels === true) ? 'visible' : 'none';
+          newStyle = newStyle.setIn(['layers', styleLayerIndex, 'layout', 'visibility'], labelsVisibility);
+          if (layer.showLabels !== true) {
+            break;
+          }
+        }
         newStyle = newStyle
           .setIn(['layers', styleLayerIndex, 'paint', 'text-opacity'], layer.opacity)
           .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], layer.color);

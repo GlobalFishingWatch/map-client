@@ -6,6 +6,7 @@ import {
   toggleLayerVisibility,
   setLayerOpacity,
   setLayerTint,
+  toggleLayerShowLabels,
   toggleLayerWorkspacePresence,
   setLayerLabel,
   confirmLayerRemoval
@@ -40,6 +41,9 @@ const mapDispatchToProps = dispatch => ({
   setLayerTint: (color, hue, layerId) => {
     dispatch(setLayerTint(color, hue, layerId));
     trackLayerHueChange(dispatch, hue, layerId);
+  },
+  toggleLayerShowLabels: (layerId) => {
+    dispatch(toggleLayerShowLabels(layerId));
   },
   toggleReport: (layerId) => {
     dispatch(toggleReport(layerId));
