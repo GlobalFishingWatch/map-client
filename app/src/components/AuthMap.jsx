@@ -28,7 +28,6 @@ class AuthMap extends Component {
       <div className="fullHeightContainer" >
         <Header canShareWorkspaces={canShareWorkspaces} />
         <ModalContainer canShareWorkspaces={canShareWorkspaces} />
-        {/*<MapContainer workspaceId={this.state.workspaceId} isEmbedded={this.state.isEmbedded} />*/}
         <MapDashboard />
       </div>);
   }

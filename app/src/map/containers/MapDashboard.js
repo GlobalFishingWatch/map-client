@@ -8,11 +8,6 @@ const mapStateToProps = state => ({
   zoom: state.mapViewport.viewport.zoom,
   latitude: state.mapViewport.viewport.latitude,
   longitude: state.mapViewport.viewport.longitude
-  // showMapCursorPointer: state.heatmap.highlightedVessels.isEmpty !== true && state.heatmap.highlightedVessels.clickableCluster !== true,
-  // showMapCursorZoom: state.heatmap.highlightedVessels.clickableCluster === true,
-  // token: state.user.token,
-  // trackBounds: state.vesselInfo.trackBounds,
-  // userPermissions: state.user.userPermissions,
 });
 
 const mapDispatchToProps = dispatch => ({

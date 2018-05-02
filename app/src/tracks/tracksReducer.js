@@ -3,11 +3,9 @@ import {
   SET_TRACK,
   DELETE_TRACKS,
   SET_TRACK_VISIBILITY
-  // SET_TRACK_BOUNDS
 } from './tracksActions';
 
 const initialState = {
-  // trackBounds: null,
   tracks: []
 };
 
