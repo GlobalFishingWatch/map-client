@@ -5,7 +5,6 @@ export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
 export const SET_CENTER_TILE = 'SET_CENTER_TILE';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
-export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 
 export function addLoader(loaderId) {
   return (dispatch, getState) => {
@@ -38,17 +37,6 @@ export function removeLoader(loaderId) {
   };
 }
 
-/**
- * Delete the workspace id from the store
- *
- * @export deleteWorkspace
- * @returns {object}
- */
-export function deleteWorkspace() {
-  return {
-    type: DELETE_WORKSPACE_ID
-  };
-}
 
 export function setLayerInfoModal(modalParams) {
   return {

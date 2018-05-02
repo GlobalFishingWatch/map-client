@@ -6,7 +6,7 @@ import { saveWorkspace, getWorkspace } from 'workspace/workspaceActions';
 
 const mapStateToProps = state => ({
   loggedUser: state.user.loggedUser,
-  urlWorkspaceId: state.map.urlWorkspaceId,
+  urlWorkspaceId: state.workspace.urlWorkspaceId,
   isEmbedded: state.app.isEmbedded
 });
 

@@ -18,6 +18,7 @@ import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/color
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
+export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {
@@ -55,6 +56,18 @@ export function setWorkspaceOverride(workspaceOverride) {
 }
 
 /**
+ * Delete the workspace id from the store
+ *
+ * @export deleteWorkspace
+ * @returns {object}
+ */
+export function deleteWorkspace() {
+  return {
+    type: DELETE_WORKSPACE_ID
+  };
+}
+
+/**
  * Update the URL according to the parameters present in the store
  *
  * @export updateURL
@@ -62,7 +75,7 @@ export function setWorkspaceOverride(workspaceOverride) {
  */
 export function updateURL() {
   return (dispatch, getState) => {
-    const newURL = `${window.location.origin}${window.location.pathname.replace(/\/$/g, '')}/?workspace=${getState().map.workspaceId}`;
+    const newURL = `${window.location.origin}${window.location.pathname.replace(/\/$/g, '')}/?workspace=${getState().workspace.workspaceId}`;
     window.history.pushState({ path: newURL }, '', newURL);
   };
 }
@@ -340,7 +353,7 @@ function applyWorkspaceOverrides(workspace, overrides) {
 export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
-    const workspaceId = state.map.urlWorkspaceId;
+    const workspaceId = state.workspace.urlWorkspaceId;
 
     const ID = workspaceId || DEFAULT_WORKSPACE;
     let url;
@@ -370,8 +383,8 @@ export function getWorkspace() {
           dispatch(getWorkspace());
           return;
         }
-        if (state.map.workspaceOverride !== undefined) {
-          workspaceData = applyWorkspaceOverrides(workspaceData, state.map.workspaceOverride);
+        if (state.workspace.workspaceOverride !== undefined) {
+          workspaceData = applyWorkspaceOverrides(workspaceData, state.workspace.workspaceOverride);
         }
         return dispatchActions(workspaceData, dispatch, getState);
       })

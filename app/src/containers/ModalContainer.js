@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import ModalContainer from 'components/ModalContainer';
-import { deleteWorkspace, setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
+import { deleteWorkspace } from 'workspace/workspaceActions';
 import { setWelcomeModalVisibility } from 'welcomeModal/welcomeModalActions';
 import { confirmLayerRemoval } from 'layers/layersActions';
 import { setSearchModalVisibility } from 'search/searchActions';

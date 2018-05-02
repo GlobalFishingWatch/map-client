@@ -30,6 +30,7 @@ import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
 import tracksReducer from 'tracks/tracksReducer';
+import workspaceReducer from 'workspace/workspaceReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
@@ -67,7 +68,8 @@ const reducer = combineReducers({
   vesselInfo: vesselInfoReducer,
   encounters: encountersReducer,
   tracks: tracksReducer,
-  app: appReducer
+  app: appReducer,
+  workspace: workspaceReducer
 });
 
 /**

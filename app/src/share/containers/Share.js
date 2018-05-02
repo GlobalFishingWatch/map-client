@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Share from 'share/components/Share';
 
 const mapStateToProps = state => ({
-  workspaceId: state.map.workspaceId,
+  workspaceId: state.workspace.workspaceId,
   error: state.share.shareModal.error
 });
 
