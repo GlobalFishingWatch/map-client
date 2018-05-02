@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "analyze-bundle": "webpack --config ./config/webpack.config.js --json | webpack-bundle-size-analyzer",
-    "build": "webpack --config ./config/webpack.config.js --progress --profile --colors --display verbose",
+    "build": "webpack --config ./config/webpack.config.js --progress --profile --colors",
+    "build-force-prod": "NODE_ENV=production webpack --config ./config/webpack.config.js --progress --profile --colors",
     "lint-js": "./node_modules/.bin/eslint -c .eslintrc --ext .jsx,.js app",
     "lint-sass": "sass-lint -v -q",
     "lint:js": "npm run lint-js",
