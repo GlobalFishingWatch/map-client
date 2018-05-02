@@ -11,7 +11,6 @@ import {
   CLEAR_VESSEL_INFO,
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
-  SET_TRACK_BOUNDS,
   SET_PINNED_VESSEL_COLOR,
   SET_PINNED_VESSEL_TRACK_VISIBILITY,
   SET_PINNED_VESSEL_TITLE,
@@ -161,9 +160,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         detailsStatus: null
       });
-    case SET_TRACK_BOUNDS: {
-      return Object.assign({}, state, { trackBounds: action.trackBounds });
-    }
     case TOGGLE_VESSEL_PIN: {
       const vesselIndex = action.payload.vesselIndex;
       const newVessel = Object.assign({}, state.vessels[vesselIndex]);

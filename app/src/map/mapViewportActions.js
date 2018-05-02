@@ -1,3 +1,5 @@
+import { fitBounds } from 'viewport-mercator-project';
+import bbox from '@turf/bbox';
 import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
 import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
@@ -24,13 +26,14 @@ export const updateViewport = viewportUpdate => (dispatch) => {
   dispatch(updateHeatmapTilesFromViewport());
 };
 
-const updateZoom = (increment, latitude, longitude) => (dispatch) => {
+const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) => {
   dispatch({
     type: SET_ZOOM_INCREMENT,
     payload: {
       increment,
       latitude,
-      longitude
+      longitude,
+      zoom
     }
   });
   dispatch(updateHeatmapTilesFromViewport());
@@ -67,3 +70,13 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
   dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
+export const fitGeoJSONBounds = (geoJSON) => (dispatch, getState) => {
+  const [minX, minY, maxX, maxY] = bbox(geoJSON);
+  const vp = fitBounds({
+    bounds: [[minX, minY], [maxX, maxY]],
+    width: getState().mapViewport.viewport.width,
+    height: getState().mapViewport.viewport.height,
+    padding: 50
+  });
+  dispatch(updateZoom(null, vp.latitude, vp.longitude, vp.zoom));
+};

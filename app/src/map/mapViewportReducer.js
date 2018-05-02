@@ -60,7 +60,7 @@ export default function (state = initialState, action) {
 
     case SET_ZOOM_INCREMENT: {
       const currentZoom = state.viewport.zoom;
-      const zoom = Math.min(state.maxZoom, currentZoom + action.payload.increment);
+      const zoom = Math.min(state.maxZoom, action.payload.zoom || currentZoom + action.payload.increment);
       const viewport = {
         ...state.viewport,
         ...DEFAULT_TRANSITION,

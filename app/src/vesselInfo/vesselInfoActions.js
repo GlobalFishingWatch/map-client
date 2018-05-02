@@ -1,4 +1,5 @@
 import uniq from 'lodash/uniq';
+import { lineString } from '@turf/helpers';
 import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
@@ -10,6 +11,7 @@ import {
   getTracksPlaybackData
 } from 'utils/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
+import { fitGeoJSONBounds } from 'map/mapViewportActions';
 import getVesselName from 'utils/getVesselName';
 import buildEndpoint from 'utils/buildEndpoint';
 
@@ -19,7 +21,6 @@ export const SHOW_VESSEL_DETAILS = 'SHOW_VESSEL_DETAILS';
 export const SET_VESSEL_TRACK = 'SET_VESSEL_TRACK';
 export const CLEAR_VESSEL_INFO = 'CLEAR_VESSEL_INFO';
 export const HIDE_VESSELS_INFO_PANEL = 'HIDE_VESSELS_INFO_PANEL';
-export const SET_TRACK_BOUNDS = 'SET_TRACK_BOUNDS';
 export const TOGGLE_VESSEL_PIN = 'TOGGLE_VESSEL_PIN';
 export const SET_PINNED_VESSEL_COLOR = 'SET_PINNED_VESSEL_COLOR';
 export const SET_PINNED_VESSEL_TITLE = 'SET_PINNED_VESSEL_TITLE';
@@ -160,17 +161,13 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
         }
 
         if (zoomToBounds) {
-          // should this be computed server side ?
-          // this is half implemented because it doesn't take into account filtering and time span
-          const trackBounds = new google.maps.LatLngBounds();
-          for (let i = 0, length = groupedData.latitude.length; i < length; i++) {
-            trackBounds.extend(new google.maps.LatLng({ lat: groupedData.latitude[i], lng: groupedData.longitude[i] }));
+          const ll = [];
+          const len = groupedData.longitude.length;
+          for (let i = 0; i < len; i++) {
+            ll.push([groupedData.longitude[i], groupedData.latitude[i]])
           }
-
-          dispatch({
-            type: SET_TRACK_BOUNDS,
-            trackBounds
-          });
+          const line = lineString(ll);
+          dispatch(fitGeoJSONBounds(line));
         }
       });
   };
