@@ -53,10 +53,6 @@ export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 // half a world, in projected world units
 export const HALF_WORLD = 256 / 2;
 
-// which scale (based on zoom level, here after <<) should be used for analytics tracked tile coordinates
-export const ANALYTICS_TRACK_DRAG_FROM_ZOOM = 5;
-export const ANALYTICS_TILE_COORDS_SCALE = 1 << 5;
-
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;

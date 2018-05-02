@@ -132,13 +132,6 @@ export function trackDiscardReport() {
   };
 }
 
-export function trackCenterTile(x, y) {
-  return {
-    type: GA_MAP_CENTER_TILE,
-    payload: { x, y }
-  };
-}
-
 export function trackRecentVesselAdded() {
   return {
     type: GA_RECENT_VESSEL_ADDED
