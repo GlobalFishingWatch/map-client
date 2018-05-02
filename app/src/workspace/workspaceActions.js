@@ -127,7 +127,6 @@ export function saveWorkspace(errorAction) {
 
     const workspaceData = {
       workspace: {
-        // tileset: state.map.tilesetId,
         map: {
           center: [state.mapViewport.viewport.latitude, state.mapViewport.viewport.longitude],
           //  Compatibility: A Mapbox GL JS zoom z means z-1

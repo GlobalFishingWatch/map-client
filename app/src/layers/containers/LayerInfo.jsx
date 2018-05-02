@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import LayerInfo from 'layers/components/LayerInfo';
 
 const mapStateToProps = state => ({
-  info: state.map.layerModal.info
+  info: state.app.layerModal.info
 });
 
 const mapDispatchToProps = {};

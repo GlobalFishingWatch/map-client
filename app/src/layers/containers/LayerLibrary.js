@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LayerLibrary from 'layers/components/LayerLibrary';
 import { addLayer, removeLayer } from 'layers/layerLibraryActions';
-import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerInfoModal, setLayerManagementModalVisibility } from 'app/appActions';
 
 const mapStateToProps = state => ({
   layers: state.layers.workspaceLayers

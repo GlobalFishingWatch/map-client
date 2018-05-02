@@ -1,6 +1,6 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
-import { FLAGS } from 'app/src/constants';
+import { FLAGS } from 'constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
 export const DELETE_REPORT_POLYGON = 'DELETE_REPORT_POLYGON';
@@ -178,7 +178,7 @@ export function sendSubscription() {
       url = `${url}/subscriptions`;
       payload.recurrency = state.report.subscriptionFrequency;
     }
-    
+
     const body = JSON.stringify(payload);
     const options = {
       method: 'POST',

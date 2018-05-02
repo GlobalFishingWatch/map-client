@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LayerItem from 'layers/components/LayerItem';
 import { toggleReport } from 'report/reportActions';
-import { setLayerInfoModal } from 'actions/map';
+import { setLayerInfoModal } from 'app/appActions';
 import {
   toggleLayerVisibility,
   setLayerOpacity,

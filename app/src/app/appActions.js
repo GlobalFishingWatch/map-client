@@ -4,6 +4,72 @@ import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 
 export const SET_IS_EMBEDDED = 'SET_IS_EMBEDDED';
+export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL_VISIBILITY';
+export const SET_LOADING = 'SET_LOADING';
+export const SET_LOADERS = 'SET_LOADERS';
+export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
+
+export function addLoader(loaderId) {
+  return (dispatch, getState) => {
+    const loaders = Object.assign({}, getState().app.loaders, { [loaderId]: true });
+    dispatch({
+      type: SET_LOADERS,
+      payload: loaders
+    });
+    dispatch({
+      type: SET_LOADING,
+      payload: true
+    });
+  };
+}
+
+export function removeLoader(loaderId) {
+  return (dispatch, getState) => {
+    const loaders = Object.assign({}, getState().app.loaders);
+    delete loaders[loaderId];
+    dispatch({
+      type: SET_LOADERS,
+      payload: loaders
+    });
+    if (!Object.keys(loaders).length) {
+      dispatch({
+        type: SET_LOADING,
+        payload: false
+      });
+    }
+  };
+}
+
+
+export function setLayerInfoModal(modalParams) {
+  return {
+    type: SET_LAYER_INFO_MODAL,
+    payload: modalParams
+  };
+}
+
+
+export function openTimebarInfoModal() {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(setLayerInfoModal(
+      {
+        open: true,
+        info: {
+          title: 'Worldwide Fishing Hours',
+          description: state.literals.fishing_hours_description
+        }
+      }
+    ));
+  };
+}
+
+export function setLayerManagementModalVisibility(visibility) {
+  return {
+    type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
+    payload: visibility
+  };
+}
 
 export function init() {
   return (dispatch) => {

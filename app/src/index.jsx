@@ -11,7 +11,6 @@ import reportReducer from 'report/reportReducer';
 import mapViewportReducer from 'map/mapViewportReducer';
 import mapStyleReducer from 'map/mapStyleReducer';
 import mapInteractionReducer from 'map/mapInteractionReducer';
-import mapReducer from 'reducers/map';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
 import analyticsMiddleware from 'analytics/analyticsMiddleware';
@@ -53,7 +52,6 @@ const reducer = combineReducers({
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
-  map: mapReducer,
   mapViewport: mapViewportReducer,
   mapStyle: mapStyleReducer,
   mapInteraction: mapInteractionReducer,

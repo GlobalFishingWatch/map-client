@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ModalContainer from 'components/ModalContainer';
-import { setLayerInfoModal, setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerInfoModal, setLayerManagementModalVisibility } from 'app/appActions';
 import { deleteWorkspace } from 'workspace/workspaceActions';
 import { setWelcomeModalVisibility } from 'welcomeModal/welcomeModalActions';
 import { confirmLayerRemoval } from 'layers/layersActions';
@@ -15,8 +15,8 @@ import isEmpty from 'lodash/isEmpty';
 const mapStateToProps = state => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
-  layerManagementModal: state.map.layerManagementModal.open,
-  layerModal: state.map.layerModal,
+  layerManagementModal: state.app.layerManagementModal.open,
+  layerModal: state.app.layerModal,
   recentVesselModalOpen: state.recentVessels.recentVesselModal.open,
   reportHasPolygon: !isEmpty(state.report.currentPolygon),
   searchModalOpen: state.search.searchModalOpen,

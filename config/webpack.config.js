@@ -80,11 +80,10 @@ const webpackConfig = {
     alias: {
       // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
       'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
-      app: path.join(rootPath, 'app'),
       assets: 'assets',
       lib: 'lib',
       styles: 'styles',
-      actions: 'src/actions',
+      app: 'src/app',
       analytics: 'src/analytics',
       basemap: 'src/basemap',
       filters: 'src/filters',
@@ -111,7 +110,6 @@ const webpackConfig = {
       config: 'src/config.js',
       constants: 'src/constants.js',
       containers: 'src/containers',
-      reducers: 'src/reducers',
       utils: 'src/util',
       activityLayers: 'src/activityLayers'
     },

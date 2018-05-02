@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import CustomLayer from 'layers/components/CustomLayer';
-import { setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerManagementModalVisibility } from 'app/appActions';
 import { uploadCustomLayer } from 'layers/customLayerActions';
 import { login } from 'user/userActions';
 

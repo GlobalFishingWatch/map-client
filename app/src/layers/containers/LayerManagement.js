@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LayerManagement from 'layers/components/LayerManagement';
-import { setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerManagementModalVisibility } from 'app/appActions';
 import { toggleLayerPanelEditMode } from 'layers/layersActions';
 
 const mapStateToProps = state => ({

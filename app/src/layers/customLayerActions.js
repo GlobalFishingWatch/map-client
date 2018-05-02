@@ -1,4 +1,4 @@
-import { setLayerManagementModalVisibility } from 'actions/map';
+import { setLayerManagementModalVisibility } from 'app/appActions';
 import { addCustomLayer } from 'layers/layersActions';
 import { updateMapStyle } from 'map/mapStyleActions';
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';

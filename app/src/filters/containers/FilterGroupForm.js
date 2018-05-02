@@ -6,7 +6,7 @@ import {
   setCurrentFilterValue,
   setCurrentFilterGroupLabel
 } from 'filters/filterGroupsActions';
-import { setLayerInfoModal } from 'actions/map';
+import { setLayerInfoModal } from 'app/appActions';
 
 const mapDispatchToProps = dispatch => ({
   onLayerChecked: (layerId) => {
