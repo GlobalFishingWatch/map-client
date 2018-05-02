@@ -30,6 +30,7 @@ class StaticLayerPopup extends React.Component {
           {popup.fields.map(field => (
             <div key={field.title}>
               <b>{field.title}</b>
+              {' '}
               <span>{field.value}</span>
             </div>
           ))}

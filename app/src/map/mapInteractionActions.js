@@ -14,15 +14,21 @@ export const CLEAR_POPUP = 'CLEAR_POPUP';
 export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 
 // gets fields for workspace layer from gl feature
-const getPopupFieldsKeys = (glFeature) => {
+const getFeaturePopupFields = (glFeature) => {
   const staticLayerId = Object.keys(POLYGON_LAYERS).find(key =>
     POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === glFeature.layer.id)
   );
-  const fieldKeys = POLYGON_LAYERS[staticLayerId].popupFields;
-  return { fieldKeys, staticLayerId };
+  const popupFields = POLYGON_LAYERS[staticLayerId].popupFields;
+  return { popupFields, staticLayerId };
 };
 
 const getAreaKm2 = glFeature => (10 ** -6) * area(glFeature.geometry);
+
+const humanizePopupFieldId = (id) => {
+  return id
+    .replace('_', ' ')
+    .replace(/\b\w/g, l => l.toUpperCase());
+};
 
 export const clearPopup = () => {
   return (dispatch) => {
@@ -44,9 +50,9 @@ export const mapHover = (latitude, longitude, features) => {
     if (isEmpty === true) {
       if (features.length) {
         const feature = features[0];
-        const { fieldKeys, staticLayerId } = getPopupFieldsKeys(feature);
-        const mainFieldKey = fieldKeys[0];
-        const featureTitle = feature.properties[mainFieldKey];
+        const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
+        const mainPopupFieldId = popupFields[0].id || popupFields[0];
+        const featureTitle = feature.properties[mainPopupFieldId];
         const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
         hoverPopup = {
           layerTitle: staticLayer.title,
@@ -107,7 +113,7 @@ export const mapClick = (latitude, longitude, features) => {
       if (features.length) {
         const feature = features[0];
 
-        const { fieldKeys, staticLayerId } = getPopupFieldsKeys(feature);
+        const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
         const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
 
         const layerIsInReport = state.report.layerId === staticLayerId;
@@ -115,10 +121,12 @@ export const mapClick = (latitude, longitude, features) => {
           dispatch(setReportPolygon(feature.properties));
         }
 
-        const fields = fieldKeys.map((fieldKey) => {
-          const value = (fieldKey === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[fieldKey];
+        const fields = popupFields.map((popupField) => {
+          const id = popupField.id || popupField;
+          const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[id];
+          const title = popupField.label || humanizePopupFieldId(id);
           return {
-            title: fieldKey,
+            title,
             value
           };
         });
