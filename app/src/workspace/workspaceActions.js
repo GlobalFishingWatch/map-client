@@ -1,14 +1,10 @@
 import 'whatwg-fetch';
 import {
-  TIMELINE_DEFAULT_OUTER_START_DATE,
-  TIMELINE_DEFAULT_OUTER_END_DATE,
-  TIMELINE_DEFAULT_INNER_START_DATE,
-  TIMELINE_DEFAULT_INNER_END_DATE,
   COLORS,
   COLOR_HUES,
   TRACK_DEFAULT_COLOR
 } from 'config';
-import { LAYER_TYPES, FLAGS } from 'constants';
+import { LAYER_TYPES } from 'constants';
 import { setBasemap } from 'map/mapStyleActions';
 import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
@@ -17,10 +13,7 @@ import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpee
 import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
-import calculateLayerId from 'utils/calculateLayerId';
-import { hexToHue, getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
-import uniq from 'lodash/uniq';
-import { getSeriesGroupsFromVesselURL, getTilesetFromVesselURL, getTilesetFromLayerURL } from 'utils/handleLegacyURLs.js';
+import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
 
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
@@ -121,7 +114,7 @@ export function saveWorkspace(errorAction) {
 
     const workspaceData = {
       workspace: {
-        tileset: state.map.tilesetId,
+        // tileset: state.map.tilesetId,
         map: {
           center: [state.mapViewport.viewport.latitude, state.mapViewport.viewport.longitude],
           //  Compatibility: A Mapbox GL JS zoom z means z-1
@@ -291,92 +284,6 @@ function processNewWorkspace(data) {
   };
 }
 
-function processLegacyWorkspace(data, dispatch) {
-  const workspace = data;
-
-  let startOuterDate = TIMELINE_DEFAULT_OUTER_START_DATE;
-  let endOuterDate = TIMELINE_DEFAULT_OUTER_END_DATE;
-  let startInnerDate = TIMELINE_DEFAULT_INNER_START_DATE;
-  let endInnerDate = TIMELINE_DEFAULT_INNER_END_DATE;
-
-  const serializedStartDate = workspace.state.time.__jsonclass__;
-
-  if (serializedStartDate !== undefined && serializedStartDate[0] === 'Date' && workspace.state.timeExtent) {
-    endOuterDate = new Date(serializedStartDate[1]);
-    startOuterDate = new Date(endOuterDate.getTime() - workspace.state.timeExtent);
-    startInnerDate = startOuterDate;
-    endInnerDate = new Date(startInnerDate.getTime() + Math.min(workspace.state.timeExtent / 2, 15778476000));
-  }
-
-  dispatch({
-    type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: [startInnerDate, endInnerDate]
-  });
-
-  dispatch(setBasemap(workspace.basemap));
-
-  const layersData = workspace.map.animations.filter(l => l.args.source.args.url).map(l => ({
-    title: l.args.title,
-    color: l.args.color,
-    visible: l.args.visible,
-    type: l.type,
-    url: l.args.source.args.url
-  }));
-  layersData.forEach((layer) => {
-    layer.id = calculateLayerId(layer);
-    if (layer.type === LAYER_TYPES.Heatmap) {
-      layer.tilesetId = layer.id;
-    }
-  });
-
-  const layers = layersData.filter(l => l.type !== LAYER_TYPES.VesselTrackAnimation);
-
-  const rawVesselLayer = workspace.map.animations.filter(l => l.type === LAYER_TYPES.Heatmap)[0];
-  const filters = uniq(rawVesselLayer.args.selections.Flags.data.category)
-    .filter(flag => (Array.prototype.hasOwnProperty.call(FLAGS, flag)))
-    .map(flag => ({
-      flag
-    }));
-
-  const pinnedVessels = layersData.filter(l => l.type === 'VesselTrackAnimation').map(l => ({
-    title: l.title,
-    hue: hexToHue(l.color),
-    seriesgroup: getSeriesGroupsFromVesselURL(l.url),
-    tilesetId: getTilesetFromVesselURL(l.url)
-  }));
-
-  let shownVessel = null;
-  if (
-    rawVesselLayer.args.selections &&
-    rawVesselLayer.args.selections.selected &&
-    rawVesselLayer.args.selections.selected.data &&
-    rawVesselLayer.args.selections.selected.data.series &&
-    rawVesselLayer.args.selections.selected.data.series[0] &&
-    rawVesselLayer.args.selections.selected.data.seriesgroup &&
-    rawVesselLayer.args.selections.selected.data.seriesgroup[0] &&
-    rawVesselLayer.args.selections.selected.data.source &&
-    rawVesselLayer.args.selections.selected.data.source[0]
-  ) {
-    shownVessel = {
-      series: rawVesselLayer.args.selections.selected.data.series[0],
-      seriesgroup: rawVesselLayer.args.selections.selected.data.seriesgroup[0],
-      tilesetId: getTilesetFromLayerURL(rawVesselLayer.args.selections.selected.data.source[0])
-    };
-  }
-
-  return {
-    zoom: workspace.state.zoom,
-    center: [workspace.state.lat, workspace.state.lon],
-    timelineInnerDates: [startInnerDate, endInnerDate],
-    timelineOuterDates: [startOuterDate, endOuterDate],
-    basemap: workspace.basemap,
-    timelineSpeed: workspace.timelineSpeed,
-    layers,
-    pinnedVessels,
-    shownVessel,
-    filters
-  };
-}
-
 /**
  * Takes a base workspace object and applies overrides to it
  *
@@ -458,7 +365,10 @@ export function getWorkspace() {
         if (data.workspace !== undefined) {
           workspaceData = processNewWorkspace(data, dispatch);
         } else {
-          workspaceData = processLegacyWorkspace(data, dispatch);
+          console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
+          dispatch(setUrlWorkspaceId(null));
+          dispatch(getWorkspace());
+          return;
         }
         if (state.map.workspaceOverride !== undefined) {
           workspaceData = applyWorkspaceOverrides(workspaceData, state.map.workspaceOverride);

@@ -140,12 +140,6 @@ export const hueToRgbaString = (hue, opacity) => {
   return rgbToRgbaString(rgb, opacity);
 };
 
-export const hexToHue = (hex) => {
-  const rgb = hexToRgb(hex);
-  const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
-  return hsv[0] * 360;
-};
-
 export const hexToRgba = (hex, opacity) => {
   const rgb = hexToRgb(hex);
   return rgbToRgbaString(rgb, opacity);
