@@ -30,141 +30,134 @@ const humanizePopupFieldId = (id) => {
     .replace(/\b\w/g, l => l.toUpperCase());
 };
 
-export const clearPopup = () => {
-  return (dispatch) => {
-    dispatch({
-      type: CLEAR_POPUP
-    });
-    dispatch(clearReportPolygon());
-  };
+export const clearPopup = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_POPUP
+  });
+  dispatch(clearReportPolygon());
 };
 
-export const mapHover = (latitude, longitude, features) => {
-  return (dispatch, getState) => {
-    const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
-    const { layerId, isEmpty, foundVessels } = currentActivityLayersInteractionData;
+export const mapHover = (latitude, longitude, features) => (dispatch, getState) => {
+  const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
+  const { layerId, isEmpty, foundVessels } = currentActivityLayersInteractionData;
 
-    let hoverPopup = null;
-    let cursor = null;
+  let hoverPopup = null;
+  let cursor = null;
 
-    if (isEmpty === true) {
-      if (features.length) {
-        const feature = features[0];
-        const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
-        const mainPopupFieldId = popupFields[0].id || popupFields[0];
-        const featureTitle = feature.properties[mainPopupFieldId];
-        const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
-        hoverPopup = {
-          layerTitle: staticLayer.title,
-          featureTitle
-        };
-        cursor = 'pointer';
-      }
-    } else {
-      const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
-      cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
-      let featureTitle;
-      if (foundVessels === undefined || foundVessels.length > 1) {
-        featureTitle = `${(foundVessels === undefined) ? 'several' : foundVessels.length} points`;
-      } else {
-        featureTitle = '1 point';
-      }
-
+  if (isEmpty === true) {
+    if (features.length) {
+      const feature = features[0];
+      const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
+      const mainPopupFieldId = popupFields[0].id || popupFields[0];
+      const featureTitle = feature.properties[mainPopupFieldId];
+      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
       hoverPopup = {
-        layerTitle: layer.title,
+        layerTitle: staticLayer.title,
         featureTitle
       };
+      cursor = 'pointer';
+    }
+  } else {
+    const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
+    cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
+    let featureTitle;
+    if (foundVessels === undefined || foundVessels.length > 1) {
+      featureTitle = `${(foundVessels === undefined) ? 'several' : foundVessels.length} points`;
+    } else {
+      featureTitle = '1 point';
     }
 
-    if (hoverPopup !== null) {
-      hoverPopup = {
-        ...hoverPopup,
-        latitude,
-        longitude
-      };
-    }
+    hoverPopup = {
+      layerTitle: layer.title,
+      featureTitle
+    };
+  }
 
-    dispatch({
-      type: SET_HOVER_POPUP,
-      payload: hoverPopup
-    });
+  if (hoverPopup !== null) {
+    hoverPopup = {
+      ...hoverPopup,
+      latitude,
+      longitude
+    };
+  }
 
-    dispatch({
-      type: SET_MAP_CURSOR,
-      payload: cursor
-    });
-  };
+  dispatch({
+    type: SET_HOVER_POPUP,
+    payload: hoverPopup
+  });
+
+  dispatch({
+    type: SET_MAP_CURSOR,
+    payload: cursor
+  });
 };
 
-export const mapClick = (latitude, longitude, features) => {
-  return (dispatch, getState) => {
+export const mapClick = (latitude, longitude, features) => (dispatch, getState) => {
+  const state = getState();
 
-    const state = getState();
+  dispatch(clearVesselInfo());
+  dispatch(clearEncountersInfo());
+  dispatch(clearPopup());
 
-    dispatch(clearVesselInfo());
-    dispatch(clearEncountersInfo());
-    dispatch(clearPopup());
+  const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
+  const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
+  const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
 
-    const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
-    const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
-    const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
+  if (isEmpty === true) {
+    if (features.length) {
+      const feature = features[0];
 
-    if (isEmpty === true) {
-      if (features.length) {
-        const feature = features[0];
+      const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
+      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
 
-        const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
-        const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
-
-        const layerIsInReport = state.report.layerId === staticLayerId;
-        if (layerIsInReport === true) {
-          dispatch(setReportPolygon(feature.properties));
-        }
-
-        const fields = popupFields.map((popupField) => {
-          const id = popupField.id || popupField;
-          const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[id];
-          const title = popupField.label || humanizePopupFieldId(id);
-          return {
-            title,
-            value
-          };
-        });
-
-        const isInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
-
-        dispatch({
-          type: SET_POPUP,
-          payload: {
-            layerTitle: staticLayer.title,
-            fields,
-            isInReport,
-            latitude,
-            longitude
-          }
-        });
+      const layerIsInReport = state.report.layerId === staticLayerId;
+      if (layerIsInReport === true) {
+        dispatch(setReportPolygon(feature.properties));
       }
-    } else if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') > -1) {
-      if (clickableCluster === true) {
-        dispatch(trackMapClicked(latitude, longitude, 'cluster'));
-        dispatch(hideVesselsInfoPanel());
-        dispatch(zoomIntoVesselCenter(latitude, longitude));
-        dispatch(clearHighlightedVessels());
-      } else {
-        dispatch(trackMapClicked(latitude, longitude, 'vessel'));
-        const selectedSeries = foundVessels[0].series;
-        const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
-        if (layer.subtype === LAYER_TYPES.Encounters) {
-          if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
-            console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
-          } else {
-            dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
-          }
-        } else {
-          dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
+      const fields = popupFields.map((popupField) => {
+        const id = popupField.id || popupField;
+        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[id];
+        const title = popupField.label || humanizePopupFieldId(id);
+        return {
+          title,
+          value
+        };
+      });
+
+      const isInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
+
+      dispatch({
+        type: SET_POPUP,
+        payload: {
+          layerTitle: staticLayer.title,
+          fields,
+          isInReport,
+          latitude,
+          longitude
         }
+      });
+    }
+  } else if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') > -1) {
+    if (clickableCluster === true) {
+      dispatch(trackMapClicked(latitude, longitude, 'cluster'));
+      dispatch(hideVesselsInfoPanel());
+      dispatch(zoomIntoVesselCenter(latitude, longitude));
+      dispatch(clearHighlightedVessels());
+    } else {
+      dispatch(trackMapClicked(latitude, longitude, 'vessel'));
+      const selectedSeries = foundVessels[0].series;
+      const selectedSeriesgroup = foundVessels[0].seriesgroup;
+
+      if (layer.subtype === LAYER_TYPES.Encounters) {
+        if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
+          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
+        } else {
+          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
+        }
+      } else {
+        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
     }
-  };
+  }
 };

@@ -1,45 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MapGL, { Popup } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
 import mapStyles from 'styles/components/map.scss';
 import PopupStyles from 'styles/components/map/popup.scss';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import PropTypes from 'prop-types';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
-
-// import {experimental} from 'react-map-gl';
-//
-// class MapControls extends experimental.MapControls {
-//   constructor() {
-//     super();
-//     this.events = ['panstart', 'panend', 'click'];
-//   }
-//
-//   // Override the default handler in MapControls
-//   handleEvent(event) {
-//     console.log(event.type);
-//     console.log(event);
-//     console.log(event.features);
-//     // if (event.type === 'mousemove') {
-//     //   console.log('hi', event);
-//     // }
-//     return super.handleEvent(event);
-//   }
-//   // _onPan(event) {
-//   //   console.log('pan')
-//   //   return this.isFunctionKeyPressed(event) || event.rightButton ?
-//   //     //  Default implementation in MapControls
-//   //     //  this._onPanRotate(event) : this._onPanMove(event);
-//   //     this._onPanMove(event) : this._onPanRotate(event);
-//   // }
-// }
-//
-// const controls = new MapControls();
-
-const preventMapInteraction = event => event.target !== undefined &&
-  ( event.target.classList.contains('js-preventMapInteraction')
-  || event.target.classList.contains('mapboxgl-popup-close-button'));
 
 class Map extends React.Component {
   componentDidMount() {

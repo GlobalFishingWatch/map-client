@@ -6,12 +6,10 @@ import { hexToRgba } from 'utils/colors';
 export const SET_BASEMAP = 'SET_BASEMAP';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
 
-export const setBasemap = (basemap) => {
-  return {
-    type: SET_BASEMAP,
-    payload: basemap
-  };
-};
+export const setBasemap = basemap => ({
+  type: SET_BASEMAP,
+  payload: basemap
+});
 
 const updateGLLayers = (style, layer) => {
   const matchedStyleLayers = (layer.type === LAYER_TYPES.Custom)

@@ -58,7 +58,7 @@ const _debouncedFlushState = (dispatch) => {
 };
 const debouncedFlushState = debounce(_debouncedFlushState, 500);
 
-export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => {
+export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
   // if in transition, skip loading/releasing
   // else
   //   collect all tiles in viewport
@@ -73,68 +73,67 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   //     release tiles from delta-
   //   save to reducer: currentVisibleTiles -> currentLoadedTiles
   // if zooming: debounced flush to avoid "tile spam"
-  return (dispatch, getState) => {
-    const mapViewport = getState().mapViewport;
+  const mapViewport = getState().mapViewport;
 
-    // do not allow any tile update during transitions (currently only zoom)
-    // wait for the end of the transition to look at viewport and load matching tiles
-    if (mapViewport.currentTransition !== null) {
-      return;
-    }
+  // do not allow any tile update during transitions (currently only zoom)
+  // wait for the end of the transition to look at viewport and load matching tiles
+  if (mapViewport.currentTransition !== null) {
+    return;
+  }
 
-    const viewport = mapViewport.viewport;
+  const viewport = mapViewport.viewport;
 
-    // instanciate a viewport instance to get lat/lon from screen top left/ bottom right bounds
-    const boundsViewport = new PerspectiveMercatorViewport(viewport);
-    const bounds = [
-      boundsViewport.unproject([0, 0]),
-      boundsViewport.unproject([viewport.width, viewport.height])
-    ];
+  // instanciate a viewport instance to get lat/lon from screen top left/ bottom right bounds
+  const boundsViewport = new PerspectiveMercatorViewport(viewport);
+  const bounds = [
+    boundsViewport.unproject([0, 0]),
+    boundsViewport.unproject([viewport.width, viewport.height])
+  ];
 
-    const [wn, es] = bounds;
-    const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
-    const geom = {
-      type: 'Polygon',
-      coordinates: [
-        [[w, n], [e, n], [e, s], [w, s], [w, n]]
-      ]
-    };
-
-    const limits = getTilecoverLimits(viewport.zoom);
-
-    // using tilecover, get xyz tile coords as well as quadkey indexes (named uid through the app)
-    const viewportTilesCoords = tilecover.tiles(geom, limits);
-    const viewportTilesIndexes = tilecover.indexes(geom, limits);
-    const visibleTiles = [];
-
-    viewportTilesCoords.forEach((coords, i) => {
-      const uid = viewportTilesIndexes[i];
-      visibleTiles.push({
-        tileCoordinates: {
-          x: coords[0],
-          y: coords[1],
-          zoom: coords[2]
-        },
-        uid
-      });
-    });
-
-    dispatch({
-      type: SET_CURRENTLY_VISIBLE_TILES,
-      payload: visibleTiles
-    });
-
-    const isMouseWheelZooming = mapViewport.prevZoom !== viewport.zoom;
-
-    if (isMouseWheelZooming === false) {
-      dispatch(flushTileState(forceLoadingAllVisibleTiles));
-    } else {
-      debouncedFlushState(dispatch);
-    }
+  const [wn, es] = bounds;
+  const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
+  const geom = {
+    type: 'Polygon',
+    coordinates: [
+      [[w, n], [e, n], [e, s], [w, s], [w, n]]
+    ]
   };
+
+  const limits = getTilecoverLimits(viewport.zoom);
+
+  // using tilecover, get xyz tile coords as well as quadkey indexes (named uid through the app)
+  const viewportTilesCoords = tilecover.tiles(geom, limits);
+  const viewportTilesIndexes = tilecover.indexes(geom, limits);
+  const visibleTiles = [];
+
+  viewportTilesCoords.forEach((coords, i) => {
+    const uid = viewportTilesIndexes[i];
+    visibleTiles.push({
+      tileCoordinates: {
+        x: coords[0],
+        y: coords[1],
+        zoom: coords[2]
+      },
+      uid
+    });
+  });
+
+  dispatch({
+    type: SET_CURRENTLY_VISIBLE_TILES,
+    payload: visibleTiles
+  });
+
+  const isMouseWheelZooming = mapViewport.prevZoom !== viewport.zoom;
+
+  if (isMouseWheelZooming === false) {
+    dispatch(flushTileState(forceLoadingAllVisibleTiles));
+  } else {
+    debouncedFlushState(dispatch);
+  }
 };
 
-export const queryHeatmapVessels = (coords, isClick = false) => {
+
+export const queryHeatmapVessels = (coords) => {
   return (dispatch, getState) => {
     // use tilecover to get what tile quadkey/uid "belongs" to the point
     const geom = {

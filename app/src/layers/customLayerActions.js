@@ -14,7 +14,7 @@ export const loadCustomLayer = (id, url, subtype) => {
     const token = state.user.token;
 
     // use kml as default as it was the 'historic' format. If not specified in workspace, assume kml
-    const layerSubtype = (subtype === undefined) ? CUSTOM_LAYERS_SUBTYPES.kml : subtype;
+    // const layerSubtype = (subtype === undefined) ? CUSTOM_LAYERS_SUBTYPES.kml : subtype;
 
     fetch(url, {
       headers: {
@@ -41,42 +41,41 @@ export const loadCustomLayer = (id, url, subtype) => {
 };
 
 
-export const uploadCustomLayer = (url, name, description) => {
-  return (dispatch, getState) => {
-    const state = getState();
-    const token = state.user.token;
+export const uploadCustomLayer = (url, name, description) => (dispatch, getState) => {
+  const state = getState();
+  const token = state.user.token;
 
-    dispatch({
-      type: CUSTOM_LAYER_UPLOAD_START,
-      payload: 'pending'
-    });
+  dispatch({
+    type: CUSTOM_LAYER_UPLOAD_START,
+    payload: 'pending'
+  });
 
-    fetch(`${V2_API_ENDPOINT}/directory`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({ title: name, url, description })
+  fetch(`${V2_API_ENDPOINT}/directory`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({ title: name, url, description })
+  })
+    .then((res) => {
+      if (res.status >= 400) throw new Error(res.statusText);
+      return res.json();
     })
-      .then((res) => {
-        if (res.status >= 400) throw new Error(res.statusText);
-        return res.json();
-      })
-      .then((data) => {
-        const layerId = data.args.id;
-        const newUrl = data.args.source.args.url;
+    .then((data) => {
+      const layerId = data.args.id;
+      const newUrl = data.args.source.args.url;
 
-        dispatch({
-          type: CUSTOM_LAYER_UPLOAD_SUCCESS,
-          payload: 'idle'
-        });
-        dispatch(setLayerManagementModalVisibility(false));
-        dispatch(addCustomLayer(layerId, newUrl, name, description));
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_SUCCESS,
+        payload: 'idle'
+      });
+      dispatch(setLayerManagementModalVisibility(false));
+      dispatch(addCustomLayer(layerId, newUrl, name, description));
 
-        // TODO set subtype with some form element
-        dispatch(loadCustomLayer(layerId, newUrl, CUSTOM_LAYERS_SUBTYPES.geojson));
-      })
-      .catch(err => dispatch({ type: CUSTOM_LAYER_UPLOAD_ERROR, payload: { error: err, status: 'idle' } }));
-  };
+      // TODO set subtype with some form element
+      dispatch(loadCustomLayer(layerId, newUrl, CUSTOM_LAYERS_SUBTYPES.geojson));
+    })
+    .catch(err => dispatch({ type: CUSTOM_LAYER_UPLOAD_ERROR, payload: { error: err, status: 'idle' } }));
 };
+

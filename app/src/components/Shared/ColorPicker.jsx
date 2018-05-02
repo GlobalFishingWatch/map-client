@@ -26,7 +26,7 @@ class ColorPicker extends Component {
   render() {
     const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id } = this.props;
     let checkedColor = this.props.color;
-    if (checkedColor == undefined) {
+    if (checkedColor === undefined) {
       if (this.props.hue === undefined) {
         checkedColor = PALETTE_COLORS[0].color;
       } else {

@@ -231,7 +231,11 @@ export const POLYGON_LAYERS = {
   },
   protectedplanet: {
     glLayers: [{ id: 'protectedplanet', interactive: true }, { id: 'protectedplanet-labels', isLabelsLayer: true }],
-    popupFields: ['name', { id: 'iucn_cat', label: 'IUCN Category' }, {id: 'desig_eng', label: 'Designation (English)' }, 'rep_area', 'no_take', 'status', 'status_yr',
+    popupFields: [
+      'name',
+      { id: 'iucn_cat', label: 'IUCN Category' },
+      { id: 'desig_eng', label: 'Designation (English)' },
+      'rep_area', 'no_take', 'status', 'status_yr',
       'gov_type', 'mang_auth', 'verif', 'parent_iso', 'iso3']
   }
 };

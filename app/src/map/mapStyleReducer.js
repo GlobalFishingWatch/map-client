@@ -23,7 +23,7 @@ const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
     }
 
     // check if layer is interactive, set manually on style
-    const allGlLayers = Object.keys(POLYGON_LAYERS).reduce((acc, val) => acc.concat(POLYGON_LAYERS[val].glLayers), [])
+    const allGlLayers = Object.keys(POLYGON_LAYERS).reduce((acc, val) => acc.concat(POLYGON_LAYERS[val].glLayers), []);
     const glLayerDef = allGlLayers.find(glLayer => glLayer.id);
     layer.interactive = glLayerDef.interactive;
 

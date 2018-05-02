@@ -1,4 +1,3 @@
-import uniq from 'lodash/uniq';
 import {
   SET_CURRENTLY_VISIBLE_TILES,
   SET_CURRENTLY_LOADED_TILES
