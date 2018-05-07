@@ -86,9 +86,9 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
     cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
     let featureTitle;
     if (foundVessels === undefined || foundVessels.length > 1) {
-      featureTitle = `${(foundVessels === undefined) ? 'several' : foundVessels.length} points`;
+      featureTitle = `${(foundVessels === undefined) ? 'multiple' : foundVessels.length} vessels at this location`;
     } else {
-      featureTitle = '1 point';
+      featureTitle = '1 vessel at this location';
     }
 
     hoverPopup = {

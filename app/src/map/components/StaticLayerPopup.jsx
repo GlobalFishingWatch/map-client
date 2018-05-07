@@ -22,7 +22,7 @@ class StaticLayerPopup extends React.Component {
       offsetTop={-10}
       tipSize={5}
     >
-      <div className={classnames('js-preventMapInteraction', PopupStyles.customInfowindow)}>
+      <div className={classnames('js-preventMapInteraction', PopupStyles.popup)}>
         <div className={PopupStyles.title} >
           {popup.layerTitle}
         </div >

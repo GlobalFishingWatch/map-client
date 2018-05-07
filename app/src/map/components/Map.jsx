@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import MapGL, { Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
@@ -94,10 +95,10 @@ class Map extends React.Component {
               longitude={hoverPopup.longitude}
               closeButton={false}
               anchor="bottom"
-              offsetTop={-40}
+              offsetTop={-10}
               tipSize={4}
             >
-              <div className={PopupStyles.customInfowindow}>
+              <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
                 {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
               </div>
             </Popup>
