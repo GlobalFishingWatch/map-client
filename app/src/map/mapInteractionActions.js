@@ -13,21 +13,42 @@ export const SET_POPUP = 'SET_POPUP';
 export const CLEAR_POPUP = 'CLEAR_POPUP';
 export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 
-// gets fields for workspace layer from gl feature
-const getFeaturePopupFields = (glFeature) => {
-  const staticLayerId = Object.keys(POLYGON_LAYERS).find(key =>
-    POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === glFeature.layer.id)
-  );
+const getFeaturePopupFields = (staticLayerId) => {
   const popupFields = POLYGON_LAYERS[staticLayerId].popupFields;
-  return { popupFields, staticLayerId };
+  return popupFields;
 };
 
 const getAreaKm2 = glFeature => (10 ** -6) * area(glFeature.geometry);
 
-const humanizePopupFieldId = (id) => {
-  return id
-    .replace('_', ' ')
-    .replace(/\b\w/g, l => l.toUpperCase());
+const humanizePopupFieldId = id => id
+  .replace('_', ' ')
+  .replace(/\b\w/g, l => l.toUpperCase());
+
+const getStaticLayerIdFromGlFeature = glFeature => Object.keys(POLYGON_LAYERS).find(key =>
+  POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === glFeature.layer.id)
+);
+
+const findFeature = (glFeatures, reportLayerId) => {
+  if (!glFeatures.length) {
+    return undefined;
+  }
+  if (reportLayerId === null) {
+    return {
+      feature: glFeatures[0],
+      staticLayerId: getStaticLayerIdFromGlFeature(glFeatures[0])
+    };
+  }
+  const reportLayerFeature = glFeatures.find((glFeature) => {
+    const staticLayerId = getStaticLayerIdFromGlFeature(glFeature);
+    return (staticLayerId === reportLayerId);
+  });
+  if (reportLayerFeature !== undefined) {
+    return {
+      feature: reportLayerFeature,
+      staticLayerId: reportLayerId
+    };
+  }
+  return undefined;
 };
 
 export const clearPopup = () => (dispatch) => {
@@ -44,20 +65,23 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
   let hoverPopup = null;
   let cursor = null;
 
-  if (isEmpty === true) {
-    if (features.length) {
-      const feature = features[0];
-      const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
+  const report = getState().report;
+
+  if (report.layerId !== null || isEmpty === true) {
+    const feature = findFeature(features, report.layerId);
+    if (feature !== undefined) {
+      const popupFields = getFeaturePopupFields(feature.staticLayerId);
       const mainPopupFieldId = popupFields[0].id || popupFields[0];
-      const featureTitle = feature.properties[mainPopupFieldId];
-      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
+      const featureTitle = feature.feature.properties[mainPopupFieldId];
+      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
       hoverPopup = {
         layerTitle: staticLayer.title,
         featureTitle
       };
       cursor = 'pointer';
     }
-  } else {
+  } else if (isEmpty !== true) {
+    // if activity layers are found, and a report is not triggered on a static layer
     const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
     cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
     let featureTitle;
@@ -103,21 +127,22 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
   const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
 
-  if (isEmpty === true) {
-    if (features.length) {
-      const feature = features[0];
+  const report = getState().report;
 
-      const { popupFields, staticLayerId } = getFeaturePopupFields(feature);
-      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === staticLayerId);
+  if (report.layerId !== null || isEmpty === true) {
+    const feature = findFeature(features, report.layerId);
+    if (feature !== undefined) {
+      const popupFields = getFeaturePopupFields(feature.staticLayerId);
+      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
 
-      const layerIsInReport = state.report.layerId === staticLayerId;
+      const layerIsInReport = state.report.layerId === feature.staticLayerId;
       if (layerIsInReport === true) {
-        dispatch(setReportPolygon(feature.properties));
+        dispatch(setReportPolygon(feature.feature.properties));
       }
 
       const fields = popupFields.map((popupField) => {
         const id = popupField.id || popupField;
-        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.properties[id];
+        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.feature.properties[id];
         const title = popupField.label || humanizePopupFieldId(id);
         return {
           title,
@@ -138,7 +163,11 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
         }
       });
     }
-  } else if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('selectVessel') > -1) {
+  } else if (
+    isEmpty !== true &&
+    state.user.userPermissions !== null &&
+    state.user.userPermissions.indexOf('selectVessel') > -1
+  ) {
     if (clickableCluster === true) {
       dispatch(trackMapClicked(latitude, longitude, 'cluster'));
       dispatch(hideVesselsInfoPanel());
