@@ -44,7 +44,8 @@ export const LAYER_TYPES_MAPBOX_GL = [
 
 export const LAYER_TYPES_COLORPICKER = [
   LAYER_TYPES.Heatmap,
-  LAYER_TYPES.Static
+  LAYER_TYPES.Static,
+  LAYER_TYPES.Custom
 ];
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
