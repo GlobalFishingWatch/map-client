@@ -2,16 +2,25 @@
   "workspace": {
     "map": {
       "center": [
-        40,
-        0
+        14.973635415036567,
+        -52.558593749998884
       ],
-      "zoom": 3,
+      "zoom": 4,
       "layers": [
         {
+          "title": "Protected Planet WDPA MPAs",
+          "visible": true,
+          "description": "This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.",
+          "type": "CartoDBAnimation",
+          "opacity": 1,
+          "id": "protectedplanet",
+          "color": "#80ffb5"
+        },
+        {
           "title": "AIS Fishing effort",
+          "visible": true,
           "description": "AIS Fishing effort",
           "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v1",
-          "visible": true,
           "hue": 182,
           "type": "ClusterAnimation",
           "opacity": 1,
@@ -20,77 +29,72 @@
         },
         {
           "title": "MPA - No Take",
-          "description": "Marine protected areas - No Take. Click <a href='/definitions/mpa-no-take' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/3d8e8416-866c-11e6-8c6b-0242ac110006/viz.json",
-          "visible": false,
-          "hue": 0,
+          "visible": true,
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": "mpant"
+          "id": "mpant",
+          "color": "#ff8080"
         },
         {
           "title": "MPA - Restricted Use",
-          "description": "Marine protected areas - Restricted Use. Click <a href='/definitions/map-restricted-use' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/f65c6e80-8983-11e6-bd2f-0242ac110006/viz.json",
           "visible": true,
-          "hue": 36,
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": "mparu"
+          "id": "mparu",
+          "color": "#ffcc80"
         },
         {
           "title": "EEZ",
-          "description": "Exclusive Economic Zone. Click <a href='/definitions/eez' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/a8fc4d18-e72f-11e6-82a9-0242ac110006/viz.json",
           "visible": true,
-          "hue": 236,
           "type": "CartoDBAnimation",
           "opacity": 0.6,
-          "id": "eez"
+          "id": "eez",
+          "color": "#8088ff"
         },
         {
           "title": "High Seas Pocket",
-          "description": "High Seas Pocket. Click <a href='/definitions/high-seas-pockets' target='_blank'>here</a> to know more",
-          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v1/directory/highseas/source",
           "visible": true,
-          "hue": 305,
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": "highseas"
+          "id": "highseas",
+          "color": "#ff80f4"
         },
         {
           "title": "RFMO",
-          "description": "Regional Fishery Management Organization. Click <a href='/definitions/rfmo' target='_blank'>here</a> to know more",
-          "url": "https://cartodb.skytruth.org/user/production/api/v2/viz/fbafc1dc-e731-11e6-9ac1-0242ac110006/viz.json",
           "visible": false,
-          "hue": 60,
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": "rfmo"
+          "id": "rfmo",
+          "color": "#ffff80"
         },
         {
-          "title":"WPP NRI",
-          "color":"#F84F40",
-          "visible":false,
-          "type":"CartoDBAnimation",
-          "url":"http://cartodb.skytruth.org/user/production/api/v2/viz/32d46386-1ed0-11e7-ad57-0242ac110006/viz.json",
-          "id":"6",
-          "label":"WPP NRI",
-          "description":"The WPP-NRI (Wilayah Pengelolaan Perikanan Negara Republik Indonesia) are fisheries management areas for fishing, conservation, research, and fisheries development which covers inland waters, archipelagic waters, territorial sea, within and outside the exclusive economic zone of Indonesia.",
-          "added":true,
-          "library":false,
-          "opacity":1
-        },
-        {"title":"Protected Planet WDPA MPAs","description":"This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.","url":"https://api-dot-skytruth-pelagos-production.appspot.com/v2/directory/protectedplanet/source","visible":true,"hue":145,"type":"CartoDBAnimation","opacity":1,"id":"protectedplanet"}
+          "title": "WPP NRI",
+          "color": "#F84F40",
+          "visible": false,
+          "type": "CartoDBAnimation",
+          "id": "6",
+          "opacity": 1
+        }
       ]
     },
-    "pinnedVessels": [{
-      "hue": 0,
-      "seriesgroup": 6590993,
+    "pinnedVessels": [
+      {
+        "seriesgroup": 6590993,
+        "tilesetId": "gfw-tasks-657-uvi-v1",
+        "title": "RUEY I SHYANG NO.101",
+        "visible": true,
+        "color": "#ff8080"
+      }
+    ],
+    "shownVessel": {
+      "seriesgroup": 1677763,
       "tilesetId": "gfw-tasks-657-uvi-v1",
-      "title": "RUEY I SHYANG NO.101",
-      "visible": true
-    }],
+      "series": 46738
+    },
+    "encounters": {
+      "seriesgroup": null,
+      "tilesetId": null
+    },
     "basemap": "North Star",
     "timeline": {
       "innerExtent": [
@@ -101,14 +105,16 @@
         1451689200000,
         1480550400000
       ]
-    }
+    },
+    "timelineSpeed": 1,
+    "filterGroups": []
   },
   "metadata": {
-    "id": "pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
+    "id": "udw-v2-3f1b66d7-1e26-4abb-b0b5-66b40e757c31",
     "urls": {
-      "save": "https://skytruth-pleuston.appspot.com/v2/workspaces",
-      "load": "https://skytruth-pleuston.appspot.com/v2/workspaces/pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c",
-      "visualization": "https://beta2.globalfishingwatch.org/map?workspace=pelagos-api-94ff3f66-6496-4578-82cb-24ba5877ba3c"
+      "save": "https://api-dot-skytruth-pleuston.appspot.com/v2/workspaces",
+      "load": "https://api-dot-skytruth-pleuston.appspot.com/v2/workspaces/udw-v2-3f1b66d7-1e26-4abb-b0b5-66b40e757c31",
+      "visualization": "http://wp-dev.globalfishingwatch.org/legacy-map/workspace/udw-v2-3f1b66d7-1e26-4abb-b0b5-66b40e757c31"
     }
   }
 }
