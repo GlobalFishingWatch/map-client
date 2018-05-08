@@ -14,6 +14,7 @@ import {
   TOGGLE_LAYER_SHOW_LABELS
 } from 'layers/layersActions';
 import { LAYER_TYPES } from 'constants';
+import { PALETTE_COLORS } from 'config';
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
   const layers = cloneDeep(state.workspaceLayers);
@@ -110,7 +111,8 @@ export default function (state = initialState, action) {
         type: LAYER_TYPES.Custom,
         visible: true,
         opacity: 1,
-        added: true
+        added: true,
+        color: PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color
       };
 
       return Object.assign({}, state, {
