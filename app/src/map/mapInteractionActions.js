@@ -33,10 +33,19 @@ const findFeature = (glFeatures, reportLayerId) => {
     return undefined;
   }
   if (reportLayerId === null) {
-    return {
-      feature: glFeatures[0],
-      staticLayerId: getStaticLayerIdFromGlFeature(glFeatures[0])
-    };
+    // gl id might be not found if layer is custom, loop until found
+    // FIXME implement popus for custom layers
+    for (let i = 0; i < glFeatures.length; i++) {
+      const glFeature = glFeatures[i];
+      const staticLayerId = getStaticLayerIdFromGlFeature(glFeature);
+      if (staticLayerId !== undefined) {
+        return {
+          feature: glFeature,
+          staticLayerId
+        };
+      }
+    }
+    return undefined;
   }
   const reportLayerFeature = glFeatures.find((glFeature) => {
     const staticLayerId = getStaticLayerIdFromGlFeature(glFeature);
