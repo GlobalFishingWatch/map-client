@@ -31,14 +31,14 @@ const updateGLLayers = (style, layer) => {
     newStyle = newStyle.setIn(['layers', styleLayerIndex, 'interactive'], interactive);
 
     // color/opacity
-    const paintColor = hexToRgba(layer.color, 0.5);
+    const fillColor = hexToRgba(layer.color, 0.5);
     switch (styleLayer.type) {
       case 'fill': {
+        const hasFill = styleLayer.paint['fill-color'] !== undefined;
         newStyle = newStyle
-          // fill-opacity ?
           .setIn(['layers', styleLayerIndex, 'paint', 'fill-opacity'], layer.opacity)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], paintColor)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], layer.color);
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], layer.color)
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], (hasFill) ? fillColor : 'rgba(0,0,0,0)')
         break;
       }
       case 'symbol': {

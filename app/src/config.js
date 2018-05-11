@@ -50,9 +50,6 @@ export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
-// half a world, in projected world units
-export const HALF_WORLD = 256 / 2;
-
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;
