@@ -67,7 +67,7 @@ class CustomLayer extends Component {
               <input
                 className={MapFormStyles.textInput}
                 name="url"
-                placeholder="Insert a link to a .kml layer file"
+                placeholder="Insert a link to a .geojson layer file"
                 type="text"
                 onChange={e => this.onChange(e.currentTarget)}
                 required
