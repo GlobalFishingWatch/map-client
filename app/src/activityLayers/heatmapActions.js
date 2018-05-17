@@ -10,7 +10,7 @@ import {
 } from 'utils/heatmapTileData';
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
+import { updateHeatmapTilesFromViewport, markTileAsLoaded } from 'activityLayers/heatmapTilesActions';
 import { addLoader, removeLoader } from 'app/appActions';
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
@@ -21,6 +21,7 @@ export const REMOVE_HEATMAP_LAYER = 'REMOVE_HEATMAP_LAYER';
 export const REMOVE_REFERENCE_TILE = 'REMOVE_REFERENCE_TILE';
 export const UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES = 'UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES';
 export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
+export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -208,6 +209,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
 
     Promise.all(allPromises).then(() => {
       dispatch(removeLoader(loaderId));
+      dispatch(markTileAsLoaded(referenceTiles.map(tile => tile.uid)));
     });
   };
 }
@@ -266,6 +268,10 @@ export function releaseTiles(uids) {
     });
   };
 }
+
+export const updateLoadedTiles = () => ({
+  type: UPDATE_LOADED_TILES
+});
 
 
 export function loadAllTilesForLayer(layerId) {

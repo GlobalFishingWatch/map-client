@@ -10,7 +10,7 @@ export const SET_MAX_ZOOM = 'SET_MAX_ZOOM';
 export const SET_MOUSE_LAT_LONG = 'SET_MOUSE_LAT_LONG';
 export const TRANSITION_END = 'TRANSITION_END';
 
-export const setViewport = (viewport) => (dispatch) => {
+export const setViewport = viewport => (dispatch) => {
   dispatch({
     type: SET_VIEWPORT,
     payload: viewport
@@ -70,7 +70,7 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
   dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
-export const fitGeoJSONBounds = (geoJSON) => (dispatch, getState) => {
+export const fitGeoJSONBounds = geoJSON => (dispatch, getState) => {
   const [minX, minY, maxX, maxY] = bbox(geoJSON);
   const vp = fitBounds({
     bounds: [[minX, minY], [maxX, maxY]],

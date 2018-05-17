@@ -7,7 +7,8 @@ import {
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   UPDATE_HEATMAP_TILES,
-  HIGHLIGHT_VESSELS
+  HIGHLIGHT_VESSELS,
+  UPDATE_LOADED_TILES
 } from 'activityLayers/heatmapActions';
 
 const initialState = {
@@ -75,6 +76,11 @@ export default function (state = initialState, action) {
         heatmapLayers[layerId] = newHeatmapLayers[layerId];
       });
       return Object.assign({}, state, { heatmapLayers });
+    }
+
+    case UPDATE_LOADED_TILES: {
+      const newHeatmapLayers = { ...state.heatmapLayers };
+      return { ...state, heatmapLayers: newHeatmapLayers };
     }
 
     case HIGHLIGHT_VESSELS: {

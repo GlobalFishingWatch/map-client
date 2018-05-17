@@ -1,10 +1,13 @@
 import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
-import { getTile, releaseTiles, highlightVesselFromHeatmap } from './heatmapActions';
+import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmapActions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
+export const SET_CURRENTLY_SWAPPED_TILE_UIDS = 'SET_CURRENTLY_SWAPPED_TILE_UIDS';
+export const MARK_TILES_UIDS_AS_LOADED = 'MARK_TILES_UIDS_AS_LOADED';
+export const RELEASE_MARKED_TILES_UIDS = 'RELEASE_MARKED_TILES_UIDS';
 
 // restrict tilecover to a single zoom level
 // could be customized to load less or more detailed tiles
@@ -13,19 +16,40 @@ const getTilecoverLimits = zoom => ({
   max_zoom: Math.ceil(zoom)
 });
 
+export const markTileAsLoaded = tileUids => (dispatch, getState) => {
+  dispatch({
+    type: MARK_TILES_UIDS_AS_LOADED,
+    payload: tileUids
+  });
+  const currentToLoadTileUids = getState().heatmapTiles.currentToLoadTileUids;
+  // console.log(tileUids, 'have finished loading. Left to load: ', currentToLoadTileUids);
+
+  // Tiles are released only when all to load tiles have finished loading
+  // this is to ensure smooth visual transitions between zoom levels
+  if (!currentToLoadTileUids.length) {
+    const currentTilesToReleaseUids = getState().heatmapTiles.currentToReleaseTileUids;
+    // console.log('no more tiles to load, releasing ', currentTilesToReleaseUids);
+    dispatch(releaseTiles(currentTilesToReleaseUids));
+    dispatch({
+      type: RELEASE_MARKED_TILES_UIDS,
+      payload: tileUids
+    });
+  }
+};
+
 const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
   const currentVisibleTiles = getState().heatmapTiles.currentVisibleTiles;
-  let tilesToGet = [];
+  let tilesToLoad = [];
   const tilesToReleaseUids = [];
 
   if (forceLoadingAllVisibleTiles === true) {
-    tilesToGet = currentVisibleTiles;
+    tilesToLoad = currentVisibleTiles;
   } else {
     const currentLoadedTiles = getState().heatmapTiles.currentLoadedTiles;
 
     currentVisibleTiles.forEach((visibleTile) => {
       if (currentLoadedTiles.find(t => t.uid === visibleTile.uid) === undefined) {
-        tilesToGet.push(visibleTile);
+        tilesToLoad.push(visibleTile);
       }
     });
 
@@ -36,13 +60,14 @@ const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getSt
     });
   }
 
+  const tilesToLoadUids = tilesToLoad.map(t => t.uid);
   // console.log('force loading:', forceLoadingAllVisibleTiles)
   // console.log('visible', currentVisibleTiles.map(t => t.uid))
-  // console.log('load', tilesToGet.map(t => t.uid))
+  // console.log('load', tilesToLoadUids)
   // console.log('release', tilesToReleaseUids)
   // console.log('----')
 
-  tilesToGet.forEach((tile) => {
+  tilesToLoad.forEach((tile) => {
     dispatch(getTile(tile));
   });
   dispatch({
@@ -50,7 +75,15 @@ const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getSt
     payload: currentVisibleTiles
   });
 
-  dispatch(releaseTiles(tilesToReleaseUids));
+  dispatch({
+    type: SET_CURRENTLY_SWAPPED_TILE_UIDS,
+    payload: {
+      tilesToLoadUids,
+      tilesToReleaseUids
+    }
+  });
+
+  dispatch(updateLoadedTiles());
 };
 
 const _debouncedFlushState = (dispatch) => {
