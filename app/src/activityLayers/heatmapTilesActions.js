@@ -12,8 +12,8 @@ export const RELEASE_MARKED_TILES_UIDS = 'RELEASE_MARKED_TILES_UIDS';
 // restrict tilecover to a single zoom level
 // could be customized to load less or more detailed tiles
 const getTilecoverLimits = zoom => ({
-  min_zoom: Math.ceil(zoom),
-  max_zoom: Math.ceil(zoom)
+  min_zoom: Math.ceil(zoom + 0.5),
+  max_zoom: Math.ceil(zoom + 0.5)
 });
 
 export const markTileAsLoaded = tileUids => (dispatch, getState) => {
