@@ -1,5 +1,5 @@
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
-import { POLYGON_LAYERS } from 'config';
+import { POLYGON_LAYERS, NO_FILL_FILL } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from 'utils/colors';
 
@@ -34,11 +34,12 @@ const updateGLLayers = (style, layer) => {
     const fillColor = hexToRgba(layer.color, 0.5);
     switch (styleLayer.type) {
       case 'fill': {
-        const hasFill = styleLayer.paint['fill-color'] !== undefined;
+        const previousFill = styleLayer.paint['fill-color'];
+        const hasFill = previousFill !== undefined && previousFill !== NO_FILL_FILL;
         newStyle = newStyle
           .setIn(['layers', styleLayerIndex, 'paint', 'fill-opacity'], layer.opacity)
           .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], layer.color)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], (hasFill) ? fillColor : 'rgba(0,0,0,0)')
+          .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], (hasFill) ? fillColor : NO_FILL_FILL);
         break;
       }
       case 'symbol': {
