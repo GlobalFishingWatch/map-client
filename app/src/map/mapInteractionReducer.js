@@ -2,6 +2,7 @@ import {
   SET_HOVER_POPUP,
   SET_POPUP,
   CLEAR_POPUP,
+  UPDATE_POPUP_REPORT_STATUS,
   SET_MAP_CURSOR
 } from 'map/mapInteractionActions';
 
@@ -21,6 +22,10 @@ export default function (state = initialState, action) {
     }
     case CLEAR_POPUP : {
       return { ...state, popup: null, hoverPopup: null };
+    }
+    case UPDATE_POPUP_REPORT_STATUS : {
+      const newPopup = { ...state.popup, isInReport: action.payload };
+      return { ...state, popup: newPopup };
     }
     case SET_MAP_CURSOR : {
       return { ...state, cursor: action.payload };

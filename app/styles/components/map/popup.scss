@@ -17,6 +17,10 @@
   }
 }
 
+.title {
+  margin-bottom: 10px; 
+}
+
 .title,
 .description {
   pointer-events: none;
@@ -39,7 +43,8 @@
 
 .toggle {
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 14px;
+  color: $color-4;
 
   &::before {
     background: $color-4;
@@ -48,6 +53,7 @@
     display: inline-block;
     margin-right: 8px;
     width: 20px;
+    height: 16px;
   }
 
   &._remove {

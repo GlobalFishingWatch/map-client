@@ -4,7 +4,7 @@ import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersAct
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
-import { setReportPolygon, clearReportPolygon } from 'report/reportActions';
+import { setReportPolygon } from 'report/reportActions';
 import { LAYER_TYPES } from 'constants';
 import { POLYGON_LAYERS, POLYGON_LAYERS_AREA } from 'config';
 
@@ -12,15 +12,21 @@ export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
 export const SET_POPUP = 'SET_POPUP';
 export const CLEAR_POPUP = 'CLEAR_POPUP';
 export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
+export const UPDATE_POPUP_REPORT_STATUS = 'UPDATE_POPUP_REPORT_STATUS';
 
 const getFeaturePopupFields = (staticLayerId) => {
   const popupFields = POLYGON_LAYERS[staticLayerId].popupFields;
   return popupFields;
 };
 
-const getAreaKm2 = glFeature => (10 ** -6) * area(glFeature.geometry);
+const getAreaKm2 = (glFeature) => {
+  const areakm2 = (10 ** -6) * area(glFeature.geometry);
+  const formatted = areakm2.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  return formatted;
+};
 
 const humanizePopupFieldId = id => id
+  .replace(POLYGON_LAYERS_AREA, 'Est. area km²')
   .replace('_', ' ')
   .replace(/\b\w/g, l => l.toUpperCase());
 
@@ -64,7 +70,6 @@ export const clearPopup = () => (dispatch) => {
   dispatch({
     type: CLEAR_POPUP
   });
-  dispatch(clearReportPolygon());
 };
 
 export const mapHover = (latitude, longitude, features) => (dispatch, getState) => {
@@ -151,7 +156,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
 
       const fields = popupFields.map((popupField) => {
         const id = popupField.id || popupField;
-        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature) : feature.feature.properties[id];
+        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature.feature) : feature.feature.properties[id];
         const title = popupField.label || humanizePopupFieldId(id);
         return {
           title,
@@ -164,6 +169,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       dispatch({
         type: SET_POPUP,
         payload: {
+          layerId: feature.staticLayerId,
           layerTitle: staticLayer.title,
           fields,
           isInReport,
@@ -198,4 +204,18 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       }
     }
   }
+};
+
+export const updatePopupReportStatus = () => (dispatch, getState) => {
+  const state = getState();
+  const popup = state.mapInteraction.popup;
+  if (popup === null) return;
+
+  const layerIsInReport = state.report.layerId === popup.layerId;
+  const polygonIsInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
+
+  dispatch({
+    type: UPDATE_POPUP_REPORT_STATUS,
+    payload: polygonIsInReport
+  });
 };

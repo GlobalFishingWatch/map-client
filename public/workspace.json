@@ -17,6 +17,17 @@
           "color": "#80ffb5"
         },
         {
+          "title": "Encounters",
+          "description": "Encounters",
+          "url": "https://api-dot-skytruth-pelagos-production.appspot.com/v2/tilesets/encounters-layer-pbf-v5",
+          "type": "Encounters",
+          "visible": true,
+          "hue": 0,
+          "opacity": 1,
+          "id": "encounters",
+          "tilesetId": "encounters-layer-pbf-v5"
+      },
+        {
           "title": "AIS Fishing effort",
           "visible": true,
           "description": "AIS Fishing effort",

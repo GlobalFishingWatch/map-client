@@ -1,5 +1,6 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
+import { updatePopupReportStatus } from 'map/mapInteractionActions';
 import { FLAGS } from 'constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
@@ -23,13 +24,13 @@ export function setReportPolygon(polygonData) {
   };
 }
 
-export function clearReportPolygon() {
+function clearReportPolygon() {
   return {
     type: CLEAR_REPORT_POLYGON
   };
 }
 
-export function addCurrentPolygon() {
+function addCurrentPolygon() {
   return {
     type: ADD_REPORT_POLYGON
   };
@@ -67,16 +68,17 @@ export function toggleReportPanelVisibility(forceMode = null) {
 
 export function toggleCurrentReportPolygon() {
   return (dispatch, getState) => {
-    const polygonId = getState().report.currentPolygon.reportingId;
-    const polygonIndex = getState()
-      .report
+    const report = getState().report;
+    const reportingId = report.currentPolygon.reportingId;
+    const polygonIndex = report
       .polygons
-      .findIndex(polygon => polygon.id === polygonId);
+      .findIndex(polygon => polygon.reportingId === reportingId);
     if (polygonIndex === -1) {
       dispatch(addCurrentPolygon());
     } else {
       dispatch(deletePolygon(polygonIndex));
     }
+    dispatch(updatePopupReportStatus());
   };
 }
 
@@ -92,6 +94,7 @@ function startReport(layerId) {
       .layers
       .workspaceLayers
       .find(layer => layer.id === layerId);
+
     dispatch({
       type: START_REPORT,
       payload: {
@@ -100,6 +103,7 @@ function startReport(layerId) {
         reportId: workspaceLayer.reportId
       }
     });
+    dispatch(updatePopupReportStatus());
   };
 }
 
@@ -109,6 +113,7 @@ export function discardReport() {
     dispatch({
       type: DISCARD_REPORT
     });
+    dispatch(updatePopupReportStatus());
   };
 }
 

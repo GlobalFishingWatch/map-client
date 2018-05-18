@@ -36,20 +36,15 @@ export default function (state = initialState, action) {
         console.warn('reporting_id/name missing', polygonData);
         return state;
       }
-      // const reportingId = [polygonData.reporting_id, polygonData.report_id, polygonData.reportingId, polygonData.cartodb_id]
-      //   .find(e => e !== undefined);
-      //
-      // const name = [polygonData.reporting_name, polygonData.name, polygonData.cartodb_id]
-      //   .find(e => e !== undefined);
 
       const isInReport = !!state.polygons.find(polygon => polygon.reportingId === polygonData.reporting_id);
-      return Object.assign({}, state, {
-        currentPolygon: {
-          reportingId: polygonData.reporting_id,
-          name: polygonData.reporting_name,
-          isInReport
-        }
-      });
+      const currentPolygon = {
+        reportingId: polygonData.reporting_id,
+        name: polygonData.reporting_name,
+        isInReport
+      };
+      const newState = { ...state, currentPolygon };
+      return newState;
     }
 
     case UPDATE_SUBSCRIPTION_FREQUENCY: {
@@ -103,8 +98,8 @@ export default function (state = initialState, action) {
         currentPolygon: {}
       });
 
-    case CLEAR_REPORT_POLYGON:
-      return Object.assign({}, state, { currentPolygon: {} });
+    // case CLEAR_REPORT_POLYGON:
+    //   return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
     case SET_SUBSCRIPTION_STATUS_SENT:
