@@ -98,8 +98,8 @@ export default function (state = initialState, action) {
         currentPolygon: {}
       });
 
-    // case CLEAR_REPORT_POLYGON:
-    //   return Object.assign({}, state, { currentPolygon: {} });
+    case CLEAR_REPORT_POLYGON:
+      return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
       return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
     case SET_SUBSCRIPTION_STATUS_SENT:
