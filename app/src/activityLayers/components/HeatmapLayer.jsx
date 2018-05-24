@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import * as PIXI from 'pixi.js';
-import { worldToPixels } from 'viewport-mercator-project';
+import { worldToPixels, pixelsToWorld } from 'viewport-mercator-project';
 import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
@@ -69,7 +69,7 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    const { data, filters, baseTexture, maxSprites, layer } = this.props;
+    const { data, filters, baseTexture, maxSprites, layer, viewport } = this.props;
 
     if (data === null || data === undefined || layer.visible === false) {
       this.stage.visible = false;
@@ -94,6 +94,12 @@ class HeatmapLayer extends React.Component {
     // get all hues, old and new
     const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
 
+    // compute left and right offsets to deal with antimeridian issue
+    const topLeftWorld = pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix);
+    const topRightWorld = pixelsToWorld([viewport.width, 0], viewport.pixelUnprojectionMatrix);
+    const leftOffset = topLeftWorld[0] / viewport.scale;
+    const rightOffset = topRightWorld[0] / viewport.scale;
+
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
       if (allHuesToRender.indexOf(hue) === -1) {
@@ -115,7 +121,9 @@ class HeatmapLayer extends React.Component {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
         numFilters: filters.length,
-        defaultHue
+        defaultHue,
+        leftOffset,
+        rightOffset
       });
     });
 
@@ -124,7 +132,7 @@ class HeatmapLayer extends React.Component {
     });
   }
 
-  _setSubLayersSpritePropsForTile({ data, numFilters, defaultHue }) {
+  _setSubLayersSpritePropsForTile({ data, numFilters, defaultHue, leftOffset, rightOffset }) {
     if (!data) {
       return;
     }
@@ -154,10 +162,24 @@ class HeatmapLayer extends React.Component {
           continue;
         }
 
+        // wrap worldX when point crosses the antimeridian
+        // world points go from 0 to 512. There is no way to determine if worldX is on the "wrong" side 
+        // of the antimeridian just by looking at its value (where with lat/lon we can simply look at -/+)
+        // Therefore we compare it to the viewport's left or right boundary, depending on what is currently
+        // "the right side" of the antimeridian
+        let worldX = frame.worldX[index];
+        if (leftOffset > 0 && worldX < leftOffset) {
+          // worldX is "behind" leftOffset, which means it is "on the right" of the antimeridian
+          worldX += 512;
+        } else if (leftOffset < 0 && worldX > rightOffset) {
+          worldX -= 512;
+        }
+
         const px = worldToPixels(
-          [frame.worldX[index] * viewport.scale, frame.worldY[index] * viewport.scale],
+          [worldX * viewport.scale, frame.worldY[index] * viewport.scale],
           viewport.pixelProjectionMatrix
         );
+
         const spriteProps = {
           x: px[0],
           y: px[1],

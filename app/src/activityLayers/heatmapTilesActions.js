@@ -125,14 +125,26 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
 
   const [wn, es] = bounds;
   const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
-  const geom = {
-    type: 'Polygon',
-    coordinates: [
-      [[w, n], [e, n], [e, s], [w, s], [w, n]]
-    ]
-  };
+  const boundsPolygonsCoordinates = [];
 
   const limits = getTilecoverLimits(viewport.zoom);
+
+  if (e > 180 || w < -180) {
+    // deal with the antimeridian situation by splitting the bounds polygon into two polygons
+    const w1 = (e > 180) ? w : w + 360;
+    const e1 = 180 - 0.001;
+    const w2 = -180;
+    const e2 = (e > 180) ? e - 360 : e;
+    boundsPolygonsCoordinates.push([[[w1, n], [e1, n], [e1, s], [w1, s], [w1, n]]]);
+    boundsPolygonsCoordinates.push([[[w2, n], [e2, n], [e2, s], [w2, s], [w2, n]]]);
+  } else {
+    boundsPolygonsCoordinates.push([[[w, n], [e, n], [e, s], [w, s], [w, n]]]);
+  }
+
+  const geom = {
+    type: 'MultiPolygon',
+    coordinates: boundsPolygonsCoordinates
+  };
 
   // using tilecover, get xyz tile coords as well as quadkey indexes (named uid through the app)
   const viewportTilesCoords = tilecover.tiles(geom, limits);
