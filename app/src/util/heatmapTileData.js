@@ -168,11 +168,10 @@ export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, pr
       const feature = data.feature(index);
       point = feature.properties;
       // WARNING: toGeoJSON is expensive. Avoid using raw coordinates in PBF tiles, pregenerate world coords
-      if (!columns.worldX) {
-        const geom = feature.toGeoJSON(tileCoordinates.x, tileCoordinates.y, zoom).geometry.coordinates;
-        point.longitude = geom[0];
-        point.latitude = geom[1];
-      }
+      // FIXME: this should not be done when headers declare worldX/Y -  if (!columns.worldX) {
+      const geom = feature.toGeoJSON(tileCoordinates.x, tileCoordinates.y, zoom).geometry.coordinates;
+      point.longitude = geom[0];
+      point.latitude = geom[1];
     } else {
       point = {};
       columnsArr.forEach((c) => { point[c] = data[c][index]; });
@@ -181,11 +180,11 @@ export const getTilePlaybackData = (data, colsByName, tileCoordinates, isPBF, pr
     const timeIndex = (columns.timeIndex)
       ? point.timeIndex : convert.getOffsetedTimeAtPrecision(point.datetime);
 
-    if (!columns.worldX) {
-      const [worldX, worldY] = lngLatToWorld([point.longitude, point.latitude], 1);
-      point.worldX = worldX;
-      point.worldY = worldY;
-    }
+    // FIXME: this should not be done when headers declare worldX/Y -  if (!columns.worldX) {
+    const [worldX, worldY] = lngLatToWorld([point.longitude, point.latitude], 1);
+    point.worldX = worldX;
+    point.worldY = worldY;
+
     if (columns.sigma) {
       point.radius = convert.sigmaToRadius(point.sigma, zoomFactorRadiusRenderingMode, zoomFactorRadius);
     }
