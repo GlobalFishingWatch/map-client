@@ -35,11 +35,11 @@ class FilterGroupPanel extends Component {
     });
 
     return (
-      <div className={flagFilterStyles.flagFilters} >
+      <div className={flagFilterStyles.flagFilters}>
         {filterSelectors &&
-        <ul>
+        <ul className={flagFilterStyles.filtersList}>
           {filterSelectors}
-        </ul >}
+        </ul>}
         <button
           className={classnames(buttonStyles.button, buttonStyles._wide, buttonStyles._filled, buttonStyles._big)}
           onClick={() => this.addFilterGroup()}

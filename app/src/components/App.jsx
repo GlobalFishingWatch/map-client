@@ -59,16 +59,19 @@ class App extends Component {
   render() {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
     const showBanner =
-      (isWebGLSupported === false || (SHOW_BANNER === true && this.props.banner !== undefined))
+      (
+        isWebGLSupported === false ||
+        this.props.legacyWorkspaceLoaded ||
+        (SHOW_BANNER === true && this.props.banner !== undefined)
+      )
       && this.state.bannerDismissed === false
       && window.innerWidth > 768
       && getURLParameterByName('embedded') !== 'true';
-    const bannerContent = (SHOW_BANNER === true) ? (<span
-      dangerouslySetInnerHTML={{ __html: this.props.banner }}
-    />) : (<span>
-      ⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable).
-      The map will be shown with degraded performance.
-    </span>);
+
+    let bannerContent;
+    if (SHOW_BANNER === true) bannerContent = this.props.banner;
+    else if (isWebGLSupported === false) bannerContent = this.props.bannerWebGL;
+    else if (this.props.legacyWorkspaceLoaded === true) bannerContent = this.props.bannerLegacyWorkspace;
 
     document.body.classList.toggle('-has-banner', showBanner);
 
@@ -76,7 +79,7 @@ class App extends Component {
       <div>
         {showBanner === true &&
           <div className={BannerStyles.banner}>
-            {bannerContent}
+            <span dangerouslySetInnerHTML={{ __html: bannerContent }} />
             <button className={BannerStyles.closeButton} onClick={() => this.dismissBanner()}>
               <span className={BannerStyles.icon}>✕</span>
             </button>
@@ -99,7 +102,10 @@ App.propTypes = {
   setWelcomeModalContent: PropTypes.func,
   loadLiterals: PropTypes.func,
   welcomeModalUrl: PropTypes.string,
-  banner: PropTypes.string
+  banner: PropTypes.string,
+  bannerWebGL: PropTypes.string,
+  bannerLegacyWorkspace: PropTypes.string,
+  legacyWorkspaceLoaded: PropTypes.bool
 };
 
 

@@ -19,6 +19,7 @@ export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
+export const SET_LEGACY_WORKSPACE_LOADED = 'SET_LEGACY_WORKSPACE_LOADED';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {
@@ -378,6 +379,7 @@ export function getWorkspace() {
           workspaceData = processNewWorkspace(data, dispatch);
         } else {
           console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
+          dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
           dispatch(setUrlWorkspaceId(null));
           dispatch(getWorkspace());
           return;
