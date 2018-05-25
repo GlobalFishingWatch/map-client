@@ -27,7 +27,7 @@ export const TIMELINE_SPEED_CHANGE = 2; // 2 for double and half speed
 export const TIMELINE_MAX_SPEED = 16;
 export const TIMELINE_MIN_SPEED = 0.03125;
 
-export const MIN_ZOOM_LEVEL = 2;
+export const MIN_ZOOM_LEVEL = 1;
 export const MAX_ZOOM_LEVEL = 12;
 export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
 export const CLUSTER_CLICK_ZOOM_INCREMENT = 1;
