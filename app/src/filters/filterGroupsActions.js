@@ -21,11 +21,11 @@ export function createNewFilterGroup() {
       checkedLayers[lid] = false;
     });
 
-    const color = PALETTE_COLORS[getState().filterGroups.defaultColorIndex].color;
+    const hue = PALETTE_COLORS[getState().filterGroups.defaultColorIndex].hue;
 
     const newFilterGroup = {
       checkedLayers,
-      color,
+      hue,
       filterValues: {},
       visible: true,
       label: ''
