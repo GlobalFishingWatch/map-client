@@ -8,5 +8,5 @@ export default (vesselData, fields) => {
 
   const vesselLabel = vesselFieldValues.find(t => t !== undefined && t !== '');
 
-  return vesselLabel === undefined ? '' : vesselLabel.toString();
+  return vesselLabel === undefined ? (vesselData.title || '') : vesselLabel.toString();
 };
