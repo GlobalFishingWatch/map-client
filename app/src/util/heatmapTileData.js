@@ -6,8 +6,6 @@ import buildEndpoint from 'utils/buildEndpoint';
 import convert from 'globalfishingwatch-convert';
 import { lngLatToWorld } from 'viewport-mercator-project';
 
-import { VESSEL_CLICK_TOLERANCE_PX } from 'config';
-
 import getPBFTile from './getPBFTile';
 
 /**

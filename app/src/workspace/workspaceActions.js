@@ -76,7 +76,8 @@ export function deleteWorkspace() {
  */
 export function updateURL() {
   return (dispatch, getState) => {
-    const newURL = `${window.location.origin}${window.location.pathname.replace(/\/$/g, '')}/?workspace=${getState().workspace.workspaceId}`;
+    const newURL =
+      `${window.location.origin}${window.location.pathname.replace(/\/$/g, '')}/?workspace=${getState().workspace.workspaceId}`;
     window.history.pushState({ path: newURL }, '', newURL);
   };
 }
@@ -387,7 +388,7 @@ export function getWorkspace() {
         if (state.workspace.workspaceOverride !== undefined) {
           workspaceData = applyWorkspaceOverrides(workspaceData, state.workspace.workspaceOverride);
         }
-        return dispatchActions(workspaceData, dispatch, getState);
+        dispatchActions(workspaceData, dispatch, getState);
       })
       .catch((error) => {
         console.error('Error loading workspace: ', error.message);

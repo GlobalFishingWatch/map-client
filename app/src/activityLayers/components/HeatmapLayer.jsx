@@ -163,7 +163,7 @@ class HeatmapLayer extends React.Component {
         }
 
         // wrap worldX when point crosses the antimeridian
-        // world points go from 0 to 512. There is no way to determine if worldX is on the "wrong" side 
+        // world points go from 0 to 512. There is no way to determine if worldX is on the "wrong" side
         // of the antimeridian just by looking at its value (where with lat/lon we can simply look at -/+)
         // Therefore we compare it to the viewport's left or right boundary, depending on what is currently
         // "the right side" of the antimeridian

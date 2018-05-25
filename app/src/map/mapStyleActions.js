@@ -92,27 +92,24 @@ export const initCustomLayer = (style, layer, layerData) => {
   return newStyle;
 };
 
-export const updateMapStyle = () => {
-  return (dispatch, getState) => {
-    const layers = getState().layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
-    let style = getState().mapStyle.mapStyle;
-    layers.forEach((layer) => {
-      if (layer.type === LAYER_TYPES.Custom) {
-        const layerData = getState().customLayer.layersData[layer.id];
-        if (layerData !== undefined) {
-          style = initCustomLayer(style, layer, layerData);
-        }
+export const updateMapStyle = () => (dispatch, getState) => {
+  const layers = getState().layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
+  let style = getState().mapStyle.mapStyle;
+  layers.forEach((layer) => {
+    if (layer.type === LAYER_TYPES.Custom) {
+      const layerData = getState().customLayer.layersData[layer.id];
+      if (layerData !== undefined) {
+        style = initCustomLayer(style, layer, layerData);
       }
-      if (layer.type === LAYER_TYPES.Static && POLYGON_LAYERS[layer.id] === undefined) {
-        console.warn('Layer not found in Mapbox GL JSON style', layer);
-      } else {
-        style = updateGLLayers(style, layer);
-      }
-    });
-    dispatch({
-      type: UPDATE_MAP_STYLE,
-      payload: style
-    });
-  };
+    }
+    if (layer.type === LAYER_TYPES.Static && POLYGON_LAYERS[layer.id] === undefined) {
+      console.warn('Layer not found in Mapbox GL JSON style', layer);
+    } else {
+      style = updateGLLayers(style, layer);
+    }
+  });
+  dispatch({
+    type: UPDATE_MAP_STYLE,
+    payload: style
+  });
 };
-

@@ -55,7 +55,7 @@ LeftControlPanel.propTypes = {
   openShareModal: PropTypes.func.isRequired,
   incrementZoom: PropTypes.func.isRequired,
   decrementZoom: PropTypes.func.isRequired,
-  userPermissions: PropTypes.array,
+  userPermissions: PropTypes.array
 };
 
 export default LeftControlPanel;

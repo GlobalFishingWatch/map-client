@@ -131,9 +131,7 @@ function hexToRgb(hex) {
   } : null;
 }
 
-const rgbToRgbaString = (rgb, opacity) => {
-  return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
-};
+const rgbToRgbaString = (rgb, opacity) => `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
 
 export const hueToRgbaString = (hue, opacity) => {
   const rgb = hueToRgbDefaults(hue);

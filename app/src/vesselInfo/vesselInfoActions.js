@@ -164,7 +164,7 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
           const ll = [];
           const len = groupedData.longitude.length;
           for (let i = 0; i < len; i++) {
-            ll.push([groupedData.longitude[i], groupedData.latitude[i]])
+            ll.push([groupedData.longitude[i], groupedData.latitude[i]]);
           }
           const line = lineString(ll);
           dispatch(fitGeoJSONBounds(line));

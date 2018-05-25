@@ -65,7 +65,6 @@ class Map extends React.Component {
       <div
         id="map"
         className={mapStyles.map}
-        style={{ height: '100%' }}
         ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL

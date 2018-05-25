@@ -178,21 +178,19 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
 };
 
 
-export const queryHeatmapVessels = (coords) => {
-  return (dispatch, getState) => {
-    // use tilecover to get what tile quadkey/uid "belongs" to the point
-    const geom = {
-      type: 'Point',
-      coordinates: [coords.longitude, coords.latitude]
-    };
-    const limits = getTilecoverLimits(getState().mapViewport.viewport.zoom);
-    const viewportTilesIndexes = tilecover.indexes(geom, limits);
-    const query = {
-      ...coords,
-      uid: viewportTilesIndexes[0]
-    };
-
-    // console.log(query);
-    dispatch(highlightVesselFromHeatmap(query));
+export const queryHeatmapVessels = coords => (dispatch, getState) => {
+  // use tilecover to get what tile quadkey/uid "belongs" to the point
+  const geom = {
+    type: 'Point',
+    coordinates: [coords.longitude, coords.latitude]
   };
+  const limits = getTilecoverLimits(getState().mapViewport.viewport.zoom);
+  const viewportTilesIndexes = tilecover.indexes(geom, limits);
+  const query = {
+    ...coords,
+    uid: viewportTilesIndexes[0]
+  };
+
+  // console.log(query);
+  dispatch(highlightVesselFromHeatmap(query));
 };
