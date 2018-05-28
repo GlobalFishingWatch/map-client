@@ -19,6 +19,7 @@ export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
+export const SET_WORKSPACE_LOADED = 'SET_WORKSPACE_LOADED';
 export const SET_LEGACY_WORKSPACE_LOADED = 'SET_LEGACY_WORKSPACE_LOADED';
 
 export function setUrlWorkspaceId(workspaceId) {
@@ -176,6 +177,8 @@ export function saveWorkspace(errorAction) {
 function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
 
+  dispatch({ type: SET_WORKSPACE_LOADED });
+
   dispatch(updateViewport({
     // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
     zoom: workspaceData.zoom - 1,
@@ -185,7 +188,8 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   // We update the dates of the timeline
   dispatch({
-    type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, payload: workspaceData.timelineInnerDates
+    type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
+    payload: workspaceData.timelineInnerDates
   });
 
   dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
