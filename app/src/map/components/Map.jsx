@@ -13,7 +13,9 @@ class Map extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
-
+    // there is a problem with the container width computation (only with "fat scrollbar" browser/os configs),
+    // seems like the panels with scrollbars are taken into account or smth
+    window.setTimeout(() => this._resize(), 1000);
     // sadly mapbox gl's options.logoPosition is not exposed by react-map-gl, so we have to move around some DOM
     const logo = this._mapContainerRef.querySelector('.mapboxgl-ctrl-logo');
     this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').appendChild(logo);
@@ -27,7 +29,7 @@ class Map extends React.Component {
   _resize = () => {
     const mapContainerStyle = window.getComputedStyle(this._mapContainerRef);
     const width = parseInt(mapContainerStyle.width, 10);
-    const height = parseInt(mapContainerStyle.height, 10);
+    const height = parseInt(mapContainerStyle.height, 10) + 1;
     this.props.setViewport({
       ...this.props.viewport,
       width,
