@@ -9,43 +9,32 @@
       "zoom": 3,
       "layers": [
         {
-          "title": "AIS Fishing effort",
-          "description": "AIS Fishing effort",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/516-resample-v2",
-          "visible": true,
-          "hue": 182,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "fishing2",
-          "tilesetId": "516-resample-v2"
-        },
-        {
-         "title": "VMS Fishing effort",
-         "description": "VMS Fishing effort",
-         "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/525-indo-public-parametrize-v4",
-         "visible": true,
-         "hue": 60,
-         "type": "ClusterAnimation",
-         "opacity": 1,
-         "id": "fishing",
-         "tilesetId": "525-indo-public-parametrize-v6"
-        },
-        {
           "title": "Encounters",
           "description": "Encounters",
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/vizz-generated-encounters-pbf-v2",
+          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/encounters-layer-pbf-v5",
           "visible": true,
           "hue": 0,
           "type": "Encounters",
           "opacity": 1,
           "id": "encounters",
-          "tilesetId": "vizz-generated-encounters-pbf-v2"
+          "tilesetId": "vizz-generated-encounters-pbf-v5"
         },
         {
-          "url": "https://api-dot-world-fishing-827.appspot.com/v2/tilesets/gfw-tasks-543-reefer-encounters-v1",
+          "title": "AIS Fishing effort",
+          "visible": true,
+          "description": "AIS Fishing effort",
+          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v1",
+          "hue": 182,
+          "type": "ClusterAnimation",
+          "opacity": 1,
+          "id": "fishing",
+          "tilesetId": "gfw-tasks-657-uvi-v1"
+        },
+        {
           "type": "HeatmapTracksOnly",
-          "id": "gfw-tasks-543-reefer-encounters-v1",
-          "tilesetId": "gfw-tasks-543-reefer-encounters-v1"
+          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-658-reefer-uvi-v3",
+          "id": "reefers",
+          "tilesetId": "gfw-tasks-658-reefer-uvi-v3"
         }
       ]
     },
