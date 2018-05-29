@@ -247,32 +247,49 @@ export default class GLContainer extends BaseOverlay {
     }
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels }) {
-    if (isEmpty === true) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels, clickedVessel }) {
+    if (isEmpty === true && clickedVessel === null) {
       this.heatmapHighlight.stage.visible = false;
       this._startHeatmapFadein();
       return;
     }
     this.toggleHeatmapDimming(true);
-    if (highlightableCluster !== true) {
-      return;
+
+    let layerData;
+    let layerSubtype;
+
+    if (isEmpty === true && clickedVessel !== null) {
+      this.heatmapHighlight.setFilters([{
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        filterValues: {
+          series: [clickedVessel.selectedSeries]
+        }
+      }]);
+      layerData = data[clickedVessel.layerId];
+      layerSubtype = clickedVessel.layerSubtype;
+    } else {
+      if (highlightableCluster !== true) {
+        return;
+      }
+      const foundVesselsFilters = foundVessels.map(vessel => ({
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        filterValues: {
+          series: [vessel.series]
+        }
+      }));
+      // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
+      // thus we only need to apply a series/seriesgroup filter
+      this.heatmapHighlight.setFilters(foundVesselsFilters);
+
+      layerData = data[layerId];
+      layerSubtype = layerData.subtype;
     }
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
-    const layerData = data[layerId];
-    const foundVesselsFilters = foundVessels.map(vessel => ({
-      hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
-      filterValues: {
-        series: [vessel.series]
-      }
-    }));
-
-    // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
-    // thus we only need to apply a series/seriesgroup filter
-    this.heatmapHighlight.setFilters(foundVesselsFilters);
 
     // toggle encounters style/normal style
-    this.heatmapHighlight.setBrushRenderingStyle((layerData.subtype === LAYER_TYPES.Encounters)
+    this.heatmapHighlight.setBrushRenderingStyle((layerSubtype === LAYER_TYPES.Encounters)
       ? BRUSH_RENDERING_STYLE.BULLSEYE
       : BRUSH_RENDERING_STYLE.NORMAL);
 
