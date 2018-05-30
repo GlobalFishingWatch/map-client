@@ -26,7 +26,6 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this._heatmapFadeinStepBound = this._heatmapFadeinStep.bind(this);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -148,9 +147,6 @@ export default class GLContainer extends BaseOverlay {
 
   _onTick() {
     if (this.renderingEnabled && this.layerProjection) {
-      if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
-        this._heatmapFadeinStep();
-      }
       this._render();
     }
   }
@@ -250,10 +246,8 @@ export default class GLContainer extends BaseOverlay {
   updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels, clickedVessel }) {
     if (isEmpty === true && clickedVessel === null) {
       this.heatmapHighlight.stage.visible = false;
-      this._startHeatmapFadein();
       return;
     }
-    this.toggleHeatmapDimming(true);
 
     let layerData;
     let layerSubtype;
@@ -331,27 +325,6 @@ export default class GLContainer extends BaseOverlay {
       const filters = layerFilters[heatmapLayer.id];
       heatmapLayer.setFilters(filters);
     });
-  }
-
-  _startHeatmapFadein() {
-    if (this.hasTracks === true) {
-      return;
-    }
-    this.heatmapFadingIn = true;
-    this.heatmapFadeinStartTimestamp = undefined;
-  }
-
-  _heatmapFadeinStep() {
-    if (this.heatmapFadeinStartTimestamp === undefined) {
-      this.heatmapFadeinStartTimestamp = Date.now();
-    }
-    const timeElapsed = (Date.now() - this.heatmapFadeinStartTimestamp) / 1000;
-    let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
-    if (alpha >= 1) {
-      alpha = 1;
-      this.heatmapFadingIn = false;
-    }
-    this.heatmapStage.alpha = alpha;
   }
 
   toggleHeatmapDimming(dim) {
