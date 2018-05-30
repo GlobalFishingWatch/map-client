@@ -204,11 +204,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
-          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
-        } else {
-          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
-        }
+        dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }

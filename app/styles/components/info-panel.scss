@@ -87,24 +87,6 @@
           display: flex;
           align-items: center;
 
-
-          .ovalContainer {
-            width: 18px;
-            height: 18px;
-            border: solid 1px $color-salmon;
-            border-radius: 50%;
-            display: inline-block;
-
-            .oval {
-              width: 10px;
-              height: 10px;
-              margin: 3px;
-              background-color: $color-salmon;
-              border-radius: 50%;
-              display: inline-block;
-            }
-          }
-
           .encountersTitle {
             font-weight: bold;
             padding-left: 7px;
@@ -247,6 +229,56 @@
       &:not(:first-child) {
         margin: 0 0 0 10px;
       }
+    }
+  }
+  .ovalContainer {
+    width: 18px;
+    height: 18px;
+    border: solid 1px $color-salmon;
+    border-radius: 50%;
+    display: inline-block;
+
+    .oval {
+      width: 10px;
+      height: 10px;
+      margin: 3px;
+      background-color: $color-salmon;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  }
+
+  .backButton {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+
+    .ovalContainer {
+      margin-left: 10px;
+    }
+  }
+
+  .backIcon {
+    @include arrow(8px, 2px, $color-4, 'left');
+    vertical-align: text-bottom;
+    pointer-events: none;
+    margin-top: 6px;
+    transform: rotate(45deg) translate(0, -50%);
+  }
+
+  .backText {
+    color: $color-4;
+    font-family: $font-family-1;
+    font-size: $font-size-xxs-small;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    margin-left: 10px;
+
+    @media #{$mq-tablet} {
+      font-size: $font-size-xxs-small;
     }
   }
 }

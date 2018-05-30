@@ -31,11 +31,16 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint) {
+export function setEncountersInfo(seriesgroup, tilesetId) {
   return (dispatch, getState) => {
     const layer = getState().layers.workspaceLayers.find(l => l.tilesetId === tilesetId);
 
     dispatch(highlightClickedVessel(seriesgroup, layer.id));
+    if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
+      console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
+      return;
+    }
+    const encounterInfoEndpoint = layer.header.endpoints.info;
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,

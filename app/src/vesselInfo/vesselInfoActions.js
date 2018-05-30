@@ -249,7 +249,7 @@ export function hideVesselsInfoPanel() {
   };
 }
 
-export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false) {
+export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false, parentEncounter = null) {
   return (dispatch, getState) => {
     const state = getState();
     dispatch({
@@ -257,7 +257,8 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
       payload: {
         seriesgroup,
         series,
-        tilesetId
+        tilesetId,
+        parentEncounter
       }
     });
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
@@ -272,6 +273,17 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
       zoomToBounds,
       updateTimelineBounds: fromSearch === true
     }));
+  };
+}
+
+export function addVesselFromEncounter(tilesetId, seriesgroup) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const encounter = {
+      seriesgroup: state.encounters.seriesgroup,
+      tilesetId: state.encounters.tilesetId
+    };
+    dispatch(addVessel(tilesetId, seriesgroup, null, false, false, encounter));
   };
 }
 

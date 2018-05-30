@@ -77,7 +77,6 @@ class EncountersPanel extends Component {
 EncountersPanel.propTypes = {
   encountersInfo: PropTypes.object,
   infoPanelStatus: PropTypes.number,
-  openVessel: PropTypes.func.isRequired,
   hide: PropTypes.func.isRequired
 };
 

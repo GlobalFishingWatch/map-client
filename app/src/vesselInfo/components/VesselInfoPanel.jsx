@@ -78,6 +78,19 @@ class VesselInfoPanel extends Component {
             onClick={this.props.login}
           >Click here to login and see more details</a>
           }
+          {vesselInfo.parentEncounter !== null && <button
+            className={classnames(infoPanelStyles.backButton)}
+            onClick={() => { this.props.showParentEncounter(vesselInfo.parentEncounter); }}
+          >
+            <span className={infoPanelStyles.backIcon} />
+            <span className={infoPanelStyles.backText}>
+              back to transshipment event
+            </span>
+            <span className={infoPanelStyles.ovalContainer} >
+              <span className={infoPanelStyles.oval} />
+            </span>
+          </button>
+          }
         </div>
       );
     }
@@ -114,7 +127,8 @@ VesselInfoPanel.propTypes = {
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
-  login: PropTypes.func
+  login: PropTypes.func,
+  showParentEncounter: PropTypes.func
 };
 
 export default VesselInfoPanel;

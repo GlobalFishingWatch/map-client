@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'vesselInfo/components/VesselInfoPanel';
 import { clearVesselInfo, toggleActiveVesselPin } from 'vesselInfo/vesselInfoActions';
+import { setEncountersInfo } from 'encounters/encountersActions';
 import { login } from 'user/userActions';
 
 const mapStateToProps = (state) => {
@@ -32,6 +33,10 @@ const mapDispatchToProps = dispatch => ({
   },
   onTogglePin: (seriesgroup) => {
     dispatch(toggleActiveVesselPin(seriesgroup));
+  },
+  showParentEncounter: (encounter) => {
+    dispatch(clearVesselInfo());
+    dispatch(setEncountersInfo(encounter.seriesgroup, encounter.tilesetId));
   }
 });
 

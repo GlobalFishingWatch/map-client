@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import EncountersVessel from 'encounters/components/EncountersVessel';
 import { login } from 'user/userActions';
-import { addVessel, clearVesselInfo } from 'vesselInfo/vesselInfoActions';
+import { addVesselFromEncounter, clearVesselInfo } from 'vesselInfo/vesselInfoActions';
 import { clearEncountersInfo } from 'encounters/encountersActions';
 
 const mapStateToProps = state => ({
@@ -14,8 +14,8 @@ const mapDispatchToProps = dispatch => ({
   },
   openVessel: (vessel) => {
     dispatch(clearVesselInfo());
+    dispatch(addVesselFromEncounter(vessel.tilesetId, vessel.seriesgroup));
     dispatch(clearEncountersInfo());
-    dispatch(addVessel(vessel.tilesetId, parseInt(vessel.seriesgroup, 10)));
   }
 });
 

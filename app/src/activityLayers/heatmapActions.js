@@ -463,7 +463,6 @@ export function clearHighlightedVessels() {
   };
 }
 
-
 export const highlightClickedVessel = (seriesgroup, layerId) => ({
   type: HIGHLIGHT_CLICKED_VESSEL,
   payload: {
