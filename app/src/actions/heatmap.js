@@ -439,6 +439,7 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
       type: HIGHLIGHT_VESSELS,
       payload: {
         layerId: layer.id,
+        layerSubtype: layer.subtype,
         isEmpty,
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
@@ -509,7 +510,6 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
           layerId: layer.id
         }
       });
-
     }
   };
 }
