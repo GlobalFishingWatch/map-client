@@ -219,9 +219,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
     if (workspaceData.encounters !== null && workspaceData.encounters !== undefined &&
         workspaceData.encounters.seriesgroup !== null && workspaceData.encounters.seriesgroup !== undefined) {
-      const encountersLayer = workspaceData.layers.find(layer => layer.tilesetId === workspaceData.encounters.tilesetId);
-      const infoUrl = encountersLayer.header.endpoints.info;
-      dispatch(setEncountersInfo(workspaceData.encounters.seriesgroup, workspaceData.encounters.tilesetId, infoUrl));
+      dispatch(setEncountersInfo(workspaceData.encounters.seriesgroup, workspaceData.encounters.tilesetId));
     }
   });
 
