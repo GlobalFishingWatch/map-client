@@ -42,17 +42,19 @@ export default class EncounterInfoWindow extends Component {
       time = moment(date).format(FORMAT_DATE);
     }
 
-    this.element = (this.props.layerSubtype !== LAYER_TYPES.Encounters) ? <div /> : (<div
-      className={classnames(
-        CustomInfowindowStyles.customInfowindow,
-        CustomInfowindowStyles._small,
-        CustomInfowindowStyles._topleft
-      )}
-    >
-      <div className={CustomInfowindowStyles.description}>
-        Encounter: {time}
-      </div>
-    </div>);
+    this.element = (this.props.layerSubtype !== LAYER_TYPES.Encounters || this.props.foundVessels.length > 1) 
+      ? <div />
+      : (<div
+        className={classnames(
+          CustomInfowindowStyles.customInfowindow,
+          CustomInfowindowStyles._small,
+          CustomInfowindowStyles._topleft
+        )}
+      >
+        <div className={CustomInfowindowStyles.description}>
+          Encounter: {time}
+        </div>
+      </div>);
 
     return null;
   }
