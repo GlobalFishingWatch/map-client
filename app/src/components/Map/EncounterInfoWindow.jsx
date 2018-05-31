@@ -34,11 +34,11 @@ export default class EncounterInfoWindow extends Component {
   }
 
   render() {
-    const foundVessel = (this.props.foundVessels && this.props.foundVessels.length) ? this.props.foundVessels[0] : {};
+    const encounter = (this.props.foundVessels && this.props.foundVessels.length) ? this.props.foundVessels[0] : {};
 
     let time;
-    if (foundVessel.timeIndex) {
-      const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex));
+    if (encounter.timeIndex) {
+      const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex));
       time = moment(date).format(FORMAT_DATE);
     }
 
@@ -52,7 +52,9 @@ export default class EncounterInfoWindow extends Component {
         )}
       >
         <div className={CustomInfowindowStyles.description}>
-          Encounter: {time}
+          Encounter: {time}<br />
+          {encounter.vessel_1_type} <b>{encounter.vessel_1_information}</b><br />
+          {encounter.vessel_2_type} <b>{encounter.vessel_2_information}</b>
         </div>
       </div>);
 
