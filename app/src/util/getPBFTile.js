@@ -3,8 +3,10 @@ import { VectorTile } from 'vector-tile';
 
 export default (tileUrl, token) => {
   const vectorTilePromise = fetch(tileUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`
+    if (token) {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }
   }).then((response) => {
     if (!response.ok) {
