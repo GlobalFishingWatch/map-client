@@ -1,7 +1,7 @@
 import fetchEndpoint from 'util/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
-import { clearHighlightClickedVessel } from 'actions/heatmap';
-import { VESSEL_TYPE_REEFER } from 'constants';
+import { highlightClickedVessel, clearHighlightClickedVessel } from 'actions/heatmap';
+import { VESSEL_TYPE_REEFER, LAYER_TYPES } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
 import buildEndpoint from 'util/buildEndpoint';
 
@@ -39,6 +39,8 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
       return;
     }
     const encounterInfoEndpoint = layer.header.endpoints.info;
+
+    dispatch(highlightClickedVessel(seriesgroup, null, LAYER_TYPES.Encounters, layer.id));
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,

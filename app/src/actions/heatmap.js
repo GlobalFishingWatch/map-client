@@ -466,6 +466,18 @@ export function clearHighlightClickedVessel() {
   };
 }
 
+export function highlightClickedVessel(selectedSeries, selectedSeriesgroup, layerSubtype, layerId) {
+  return {
+    type: HIGHLIGHT_CLICKED_VESSEL,
+    payload: {
+      selectedSeries,
+      selectedSeriesgroup,
+      layerSubtype,
+      layerId
+    }
+  };
+}
+
 export function getVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
@@ -500,16 +512,6 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
-
-      dispatch({
-        type: HIGHLIGHT_CLICKED_VESSEL,
-        payload: {
-          selectedSeries,
-          selectedSeriesgroup,
-          layerSubtype: layer.subtype,
-          layerId: layer.id
-        }
-      });
     }
   };
 }
