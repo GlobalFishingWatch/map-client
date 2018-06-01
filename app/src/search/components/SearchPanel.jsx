@@ -62,8 +62,13 @@ class SearchPanel extends Component {
     );
   }
 
-  renderNoResultMessage() {
-    return (<li className={ResultListStyles.statusMessage} >No result</li >);
+  renderNoResultMessage(hasHiddenSearchableLayers) {
+    return (<li className={ResultListStyles.statusMessage}>
+      No results.
+      {hasHiddenSearchableLayers === true &&
+        <span>{' '}Some layers are toggled off, you need to toggle them on to allow searching on them.</span>
+      }
+    </li >);
   }
 
   renderSearchResults() {
@@ -92,7 +97,7 @@ class SearchPanel extends Component {
     } else if (this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT && this.props.searchTerm.length > 0) {
       searchResults = this.renderShortSearchWordMessage();
     } else {
-      searchResults = this.renderNoResultMessage();
+      searchResults = this.renderNoResultMessage(this.props.hasHiddenSearchableLayers);
     }
 
     return (
@@ -164,9 +169,10 @@ SearchPanel.propTypes = {
    */
   searchResultsOpen: PropTypes.bool,
   /*
-   Search term to search for
-   */
-  searchTerm: PropTypes.string
+  Search term to search for
+  */
+  searchTerm: PropTypes.string,
+  hasHiddenSearchableLayers: PropTypes.bool
 };
 
 export default SearchPanel;

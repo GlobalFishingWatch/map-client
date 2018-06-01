@@ -1,5 +1,5 @@
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'config';
-import { LAYER_TYPES_SEARCHABLE } from 'constants';
+import { LAYER_TYPES_SEARCHABLE, LAYER_TYPES } from 'constants';
 import 'whatwg-fetch';
 import debounce from 'lodash/debounce';
 import getVesselName from 'utils/getVesselName';
@@ -11,6 +11,7 @@ export const SET_SEARCH_PAGE = 'SET_SEARCH_PAGE';
 export const SET_SEARCHING = 'SET_SEARCHING';
 export const SET_SEARCH_MODAL_VISIBILITY = 'SET_SEARCH_MODAL_VISIBILITY';
 export const SET_SEARCH_RESULTS_VISIBILITY = 'SET_SEARCH_RESULTS_VISIBILITY';
+export const SET_HAS_HIDDEN_SEARCHABLE_LAYERS = 'SET_HAS_HIDDEN_SEARCHABLE_LAYERS';
 
 const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   if (searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT) {
@@ -26,8 +27,8 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     };
   }
 
-  const layers = state.layers.workspaceLayers
-    .filter(layer => LAYER_TYPES_SEARCHABLE.indexOf(layer.type) > -1)
+  const searchableLayers = state.layers.workspaceLayers
+    .filter(layer => LAYER_TYPES_SEARCHABLE.indexOf(layer.subtype || layer.type) > -1)
     .filter(layer =>
       layer.header.searchable !== false &&
       layer.header.endpoints.search !== null &&
@@ -35,7 +36,37 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     )
     .filter(layer => layer.added === true);
 
-  const searchLayerPromises = layers
+  const searchableAndVisibleLayers = searchableLayers
+    .filter((layer) => {
+      if (layer.visible === true) {
+        return true;
+      }
+      // FIXME use encounters layer visibility to determine HeatmapTracksOnly layer visibility
+      const encountersLayer = state.layers.workspaceLayers.find(l => l.subtype === LAYER_TYPES.Encounters);
+      if (layer.type === LAYER_TYPES.HeatmapTracksOnly && encountersLayer && encountersLayer.visible === true) {
+        return true;
+      }
+      return false;
+    });
+
+  const hasHiddenSearchableLayers = searchableLayers.length !== searchableAndVisibleLayers.length;
+  dispatch({
+    type: SET_HAS_HIDDEN_SEARCHABLE_LAYERS,
+    payload: hasHiddenSearchableLayers
+  });
+
+  if (!searchableAndVisibleLayers.length) {
+    dispatch({
+      type: SET_SEARCH_RESULTS,
+      payload: {
+        entries: [],
+        pageCount: 0
+      }
+    });
+    return;
+  }
+
+  const searchLayerPromises = searchableAndVisibleLayers
     .map(layer =>
       fetch(buildEndpoint(layer.header.endpoints.search, {
         query: encodeURIComponent(searchTerm),
