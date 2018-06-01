@@ -28,6 +28,11 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
 
   const layers = state.layers.workspaceLayers
     .filter(layer => LAYER_TYPES_SEARCHABLE.indexOf(layer.type) > -1)
+    .filter(layer =>
+      layer.header.searchable !== false &&
+      layer.header.endpoints.search !== null &&
+      layer.header.endpoints.search !== undefined
+    )
     .filter(layer => layer.added === true);
 
   const searchLayerPromises = layers
