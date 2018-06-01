@@ -7,7 +7,9 @@ import {
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
   UPDATE_HEATMAP_TILES,
-  HIGHLIGHT_VESSELS
+  HIGHLIGHT_VESSELS,
+  HIGHLIGHT_CLICKED_VESSEL,
+  CLEAR_HIGHLIGHT_CLICKED_VESSEL
 } from 'actions/heatmap';
 
 const initialState = {
@@ -17,7 +19,8 @@ const initialState = {
   // store a list of tiles currently visible in the map
   // those are necessary when adding a new layer to know which tiles need to be loaded
   referenceTiles: [],
-  highlightedVessels: { isEmpty: true }
+  highlightedVessels: { isEmpty: true, clickedVessel: null },
+  highlightedClickedVessel: null
 };
 
 export default function (state = initialState, action) {
@@ -78,7 +81,24 @@ export default function (state = initialState, action) {
     }
 
     case HIGHLIGHT_VESSELS: {
-      return Object.assign({}, state, { highlightedVessels: action.payload });
+      const highlightedVessels = Object.assign({}, action.payload, { clickedVessel: state.highlightedClickedVessel });
+      return Object.assign({}, state, { highlightedVessels });
+    }
+
+    case HIGHLIGHT_CLICKED_VESSEL: {
+      const highlightedVessels = Object.assign({}, state.highlightedVessels, { clickedVessel: action.payload });
+      return Object.assign({}, state, {
+        highlightedClickedVessel: action.payload,
+        highlightedVessels
+      });
+    }
+
+    case CLEAR_HIGHLIGHT_CLICKED_VESSEL: {
+      const highlightedVessels = Object.assign({}, state.highlightedVessels, { clickedVessel: null });
+      return Object.assign({}, state, {
+        highlightedClickedVessel: null,
+        highlightedVessels
+      });
     }
 
     default:

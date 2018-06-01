@@ -182,7 +182,7 @@ export default class HeatmapLayer {
   }
 
   _createSublayer(baseTexture, maxSprites, renderingStyleIndex, hue) {
-    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, renderingStyleIndex, hue);
+    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, renderingStyleIndex, hue, this.brushRenderingStyle === BRUSH_RENDERING_STYLE.BULLSEYE);
     this.stage.addChild(subLayer.stage);
     return subLayer;
   }

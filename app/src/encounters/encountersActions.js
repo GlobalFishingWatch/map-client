@@ -1,6 +1,7 @@
 import fetchEndpoint from 'util/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
-import { VESSEL_TYPE_REEFER } from 'constants';
+import { highlightClickedVessel, clearHighlightClickedVessel } from 'actions/heatmap';
+import { VESSEL_TYPE_REEFER, LAYER_TYPES } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
 import buildEndpoint from 'util/buildEndpoint';
 
@@ -22,6 +23,7 @@ export function clearEncountersInfo() {
     dispatch({
       type: CLEAR_ENCOUNTERS_INFO
     });
+    dispatch(clearHighlightClickedVessel());
     if (currentEncountersInfo !== null) {
       const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
       dispatch(deleteTracks(seriesgroupArray));
@@ -29,8 +31,16 @@ export function clearEncountersInfo() {
   };
 }
 
-export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint) {
+export function setEncountersInfo(seriesgroup, tilesetId) {
   return (dispatch, getState) => {
+    const layer = getState().layers.workspaceLayers.find(l => l.tilesetId === tilesetId);
+    if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
+      console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
+      return;
+    }
+    const encounterInfoEndpoint = layer.header.endpoints.info;
+
+    dispatch(highlightClickedVessel(seriesgroup, null, LAYER_TYPES.Encounters, layer.id));
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,

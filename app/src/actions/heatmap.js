@@ -23,6 +23,8 @@ export const REMOVE_HEATMAP_LAYER = 'REMOVE_HEATMAP_LAYER';
 export const REMOVE_REFERENCE_TILE = 'REMOVE_REFERENCE_TILE';
 export const UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES = 'UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES';
 export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
+export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
+export const CLEAR_HIGHLIGHT_CLICKED_VESSEL = 'CLEAR_HIGHLIGHT_CLICKED_VESSEL';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -437,6 +439,7 @@ export function highlightVesselFromHeatmap(tileQuery, latLng) {
       type: HIGHLIGHT_VESSELS,
       payload: {
         layerId: layer.id,
+        layerSubtype: layer.subtype,
         isEmpty,
         clickableCluster: isCluster === true || isMouseCluster === true,
         highlightableCluster: isCluster !== true,
@@ -457,6 +460,24 @@ export function clearHighlightedVessels() {
   };
 }
 
+export function clearHighlightClickedVessel() {
+  return {
+    type: CLEAR_HIGHLIGHT_CLICKED_VESSEL
+  };
+}
+
+export function highlightClickedVessel(selectedSeries, selectedSeriesgroup, layerSubtype, layerId) {
+  return {
+    type: HIGHLIGHT_CLICKED_VESSEL,
+    payload: {
+      selectedSeries,
+      selectedSeriesgroup,
+      layerSubtype,
+      layerId
+    }
+  };
+}
+
 export function getVesselFromHeatmap(tileQuery, latLng) {
   return (dispatch, getState) => {
     const state = getState();
@@ -469,6 +490,7 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
 
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
+    dispatch(clearHighlightClickedVessel());
 
     if (isEmpty === true) {
       // nothing to see here
@@ -486,15 +508,10 @@ export function getVesselFromHeatmap(tileQuery, latLng) {
       const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
-        if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
-          console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
-        } else {
-          dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
-        }
+        dispatch(setEncountersInfo(selectedSeries, layer.tilesetId));
       } else {
         dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
       }
-
     }
   };
 }

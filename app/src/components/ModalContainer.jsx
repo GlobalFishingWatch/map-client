@@ -33,6 +33,7 @@ class ModalContainer extends Component {
         <Modal
           opened={this.props.layerModal.open}
           visible={!this.props.isEmbedded}
+          isScrollable
           closeable
           close={this.props.closeLayerInfoModal}
           zIndex={1003}

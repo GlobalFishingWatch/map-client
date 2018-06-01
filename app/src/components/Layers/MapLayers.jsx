@@ -9,6 +9,7 @@ import GLContainer from 'components/Layers/GLContainer';
 import CustomLayerWrapper from 'components/Layers/CustomLayerWrapper';
 import PolygonReport from 'containers/Map/PolygonReport';
 import ClusterInfoWindow from 'containers/Map/ClusterInfoWindow';
+import EncounterInfoWindow from 'containers/Map/EncounterInfoWindow';
 import { VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD } from 'config';
 import { LAYER_TYPES } from 'constants';
 
@@ -467,6 +468,9 @@ class MapLayers extends Component {
         map={this.map}
       />
       <ClusterInfoWindow
+        map={this.map}
+      />
+      <EncounterInfoWindow
         map={this.map}
       />
     </div >);

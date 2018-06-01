@@ -39,7 +39,8 @@ export default function (state = initialState, action) {
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        hue: HEATMAP_TRACK_HIGHLIGHT_HUE
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        parentEncounter: action.payload.parentEncounter
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,

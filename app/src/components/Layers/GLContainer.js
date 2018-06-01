@@ -26,7 +26,6 @@ export default class GLContainer extends BaseOverlay {
     this.viewportHeight = viewportHeight;
 
     this.addedCallback = addedCallback;
-    this._heatmapFadeinStepBound = this._heatmapFadeinStep.bind(this);
 
     this.currentInnerStartIndex = 0;
     this.currentInnerEndIndex = 0;
@@ -148,9 +147,6 @@ export default class GLContainer extends BaseOverlay {
 
   _onTick() {
     if (this.renderingEnabled && this.layerProjection) {
-      if (this.heatmapFadingIn === true && this.heatmapStage.alpha < 1) {
-        this._heatmapFadeinStep();
-      }
       this._render();
     }
   }
@@ -247,32 +243,47 @@ export default class GLContainer extends BaseOverlay {
     }
   }
 
-  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels }) {
-    if (isEmpty === true) {
+  updateHeatmapHighlighted(data, timelineInnerExtentIndexes, { layerId, highlightableCluster, isEmpty, foundVessels, clickedVessel }) {
+    if (isEmpty === true && clickedVessel === null) {
       this.heatmapHighlight.stage.visible = false;
-      this._startHeatmapFadein();
       return;
     }
-    this.toggleHeatmapDimming(true);
-    if (highlightableCluster !== true) {
-      return;
+
+    let layerData;
+    let layerSubtype;
+
+    if (isEmpty === true && clickedVessel !== null) {
+      this.heatmapHighlight.setFilters([{
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        filterValues: {
+          series: [clickedVessel.selectedSeries]
+        }
+      }]);
+      layerData = data[clickedVessel.layerId];
+      layerSubtype = clickedVessel.layerSubtype;
+    } else {
+      if (highlightableCluster !== true) {
+        return;
+      }
+      const foundVesselsFilters = foundVessels.map(vessel => ({
+        hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
+        filterValues: {
+          series: [vessel.series]
+        }
+      }));
+      // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
+      // thus we only need to apply a series/seriesgroup filter
+      this.heatmapHighlight.setFilters(foundVesselsFilters);
+
+      layerData = data[layerId];
+      layerSubtype = layerData.subtype;
     }
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
-    const layerData = data[layerId];
-    const foundVesselsFilters = foundVessels.map(vessel => ({
-      hue: HEATMAP_TRACK_HIGHLIGHT_HUE,
-      filterValues: {
-        series: [vessel.series]
-      }
-    }));
-
-    // no need to reapply filters from filter groups, as the found vessels have already been prefiltered (see selectVesselsAt)
-    // thus we only need to apply a series/seriesgroup filter
-    this.heatmapHighlight.setFilters(foundVesselsFilters);
 
     // toggle encounters style/normal style
-    this.heatmapHighlight.setBrushRenderingStyle((layerData.subtype === LAYER_TYPES.Encounters)
+    this.heatmapHighlight.setBrushRenderingStyle((layerSubtype === LAYER_TYPES.Encounters)
       ? BRUSH_RENDERING_STYLE.BULLSEYE
       : BRUSH_RENDERING_STYLE.NORMAL);
 
@@ -314,27 +325,6 @@ export default class GLContainer extends BaseOverlay {
       const filters = layerFilters[heatmapLayer.id];
       heatmapLayer.setFilters(filters);
     });
-  }
-
-  _startHeatmapFadein() {
-    if (this.hasTracks === true) {
-      return;
-    }
-    this.heatmapFadingIn = true;
-    this.heatmapFadeinStartTimestamp = undefined;
-  }
-
-  _heatmapFadeinStep() {
-    if (this.heatmapFadeinStartTimestamp === undefined) {
-      this.heatmapFadeinStartTimestamp = Date.now();
-    }
-    const timeElapsed = (Date.now() - this.heatmapFadeinStartTimestamp) / 1000;
-    let alpha = this.heatmapStage.alpha + ((1 - this.heatmapStage.alpha) * timeElapsed);
-    if (alpha >= 1) {
-      alpha = 1;
-      this.heatmapFadingIn = false;
-    }
-    this.heatmapStage.alpha = alpha;
   }
 
   toggleHeatmapDimming(dim) {
