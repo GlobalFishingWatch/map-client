@@ -38,7 +38,7 @@ export default class ClusterInfoWindow extends Component {
       )}
     >
       <div className={CustomInfowindowStyles.description}>
-        There are multiple vessels at this location
+        There are multiple objects at this location
       </div>
     </div>);
 
