@@ -9,16 +9,22 @@ const mapStateToProps = (state) => {
     .find(layer => state.vesselInfo.currentlyShownVessel && layer.tilesetId === state.vesselInfo.currentlyShownVessel.tilesetId);
 
   let layerFieldsHeaders;
+  let layerIsPinable = true;
   if (
     currentlyShownLayer !== undefined &&
-    currentlyShownLayer.header !== undefined &&
-    currentlyShownLayer.header.info.fields !== undefined
-  ) {
-    layerFieldsHeaders = currentlyShownLayer.header.info.fields;
+    currentlyShownLayer.header !== undefined) {
+    if (currentlyShownLayer.header.info.fields !== undefined) {
+      layerFieldsHeaders = currentlyShownLayer.header.info.fields;
+    }
+    if (currentlyShownLayer.header.pinable === false) {
+      layerIsPinable = false;
+    }
   }
+
   return {
     currentlyShownVessel: state.vesselInfo.currentlyShownVessel,
     layerFieldsHeaders,
+    layerIsPinable,
     infoPanelStatus: state.vesselInfo.infoPanelStatus,
     userPermissions: state.user.userPermissions
   };
