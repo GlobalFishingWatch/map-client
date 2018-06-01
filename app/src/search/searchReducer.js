@@ -4,7 +4,8 @@ import {
   SET_SEARCHING,
   SET_SEARCH_PAGE,
   SET_SEARCH_MODAL_VISIBILITY,
-  SET_SEARCH_RESULTS_VISIBILITY
+  SET_SEARCH_RESULTS_VISIBILITY,
+  SET_HAS_HIDDEN_SEARCHABLE_LAYERS
 } from 'search/searchActions';
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
   searching: false,
   searchModalOpen: false,
   searchResultsOpen: false,
-  page: 0
+  page: 0,
+  hasSearchableLayers: false
 };
 
 export default function (state = initialState, action) {
@@ -35,6 +37,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { searchModalOpen: action.payload });
     case SET_SEARCH_RESULTS_VISIBILITY:
       return Object.assign({}, state, { searchResultsOpen: action.payload });
+    case SET_HAS_HIDDEN_SEARCHABLE_LAYERS:
+      return Object.assign({}, state, { hasHiddenSearchableLayers: action.payload });
     default:
       return state;
   }
