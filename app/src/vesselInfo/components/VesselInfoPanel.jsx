@@ -56,7 +56,12 @@ class VesselInfoPanel extends Component {
       vesselInfoContents = (
         <div className={infoPanelStyles.metadata} >
           <VesselInfoDetails {...this.props} />
-          {((this.props.userPermissions !== null && this.props.userPermissions.indexOf('pin-vessel') !== -1) || vesselInfo.pinned) &&
+          {((
+            this.props.userPermissions !== null &&
+            this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
+            this.props.layerIsPinable
+          ) || vesselInfo.pinned)
+          &&
             <PinIcon
               className={classnames(iconStyles.icon, iconStyles.pinIcon,
                 infoPanelStyles.pinIcon, { [`${infoPanelStyles._pinned}`]: vesselInfo.pinned })}
@@ -121,8 +126,9 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  layerFieldsHeaders: PropTypes.array,
   currentlyShownVessel: PropTypes.object,
+  layerFieldsHeaders: PropTypes.array,
+  layerIsPinable: PropTypes.bool,
   infoPanelStatus: PropTypes.number,
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
