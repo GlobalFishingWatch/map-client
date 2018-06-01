@@ -36,27 +36,38 @@ export default class EncounterInfoWindow extends Component {
   render() {
     const encounter = (this.props.foundVessels && this.props.foundVessels.length) ? this.props.foundVessels[0] : {};
 
-    let time;
-    if (encounter.timeIndex) {
-      const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex));
-      time = moment(date).format(FORMAT_DATE);
+    if (
+      !this.props.foundVessels ||
+      !this.props.foundVessels.length ||
+      this.props.foundVessels.length > 1 ||
+      this.props.layerSubtype !== LAYER_TYPES.Encounters
+    ) {
+      this.element = <div />;
+      return null;
     }
 
-    this.element = (this.props.layerSubtype !== LAYER_TYPES.Encounters || this.props.foundVessels.length > 1) 
-      ? <div />
-      : (<div
-        className={classnames(
-          CustomInfowindowStyles.customInfowindow,
-          CustomInfowindowStyles._small,
-          CustomInfowindowStyles._topleft
-        )}
-      >
-        <div className={CustomInfowindowStyles.description}>
-          Encounter: {time}<br />
-          {encounter.vessel_1_type} <b>{encounter.vessel_1_information}</b><br />
+    const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex));
+    const time = moment(date).format(FORMAT_DATE);
+    const duration = (encounter.duration === undefined) ? '-' : moment.duration(encounter.duration).humanize();
+
+    this.element = (<div
+      className={classnames(
+        CustomInfowindowStyles.customInfowindow,
+        CustomInfowindowStyles._small,
+        CustomInfowindowStyles._topleft
+      )}
+    >
+      <div className={CustomInfowindowStyles.description}>
+        <div>Encounter: {time}</div>
+        {/* <div>duration: <b>{duration}</b></div> */}
+        {encounter.vessel_1_information && encounter.vessel_1_information !== '' && <div>
+          {encounter.vessel_1_type} <b>{encounter.vessel_1_information}</b>
+        </div>}
+        {encounter.vessel_2_information && encounter.vessel_2_information !== '' && <div>
           {encounter.vessel_2_type} <b>{encounter.vessel_2_information}</b>
-        </div>
-      </div>);
+        </div>}
+      </div>
+    </div>);
 
     return null;
   }
