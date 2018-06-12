@@ -77,9 +77,11 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
       const workspaceLayers = getState().layers.workspaceLayers;
 
       encounterInfo.vessels.forEach((vessel) => {
-        const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        const fields = workspaceLayer.header.info.fields;
-        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
+        const vesselWorkspaceLayer = workspaceLayers.find(workspaceLayer =>
+          workspaceLayer.tilesetId === vessel.tilesetId || workspaceLayer.id === vessel.tilesetId);
+        const fields = vesselWorkspaceLayer.header.info.fields;
+
+        fetchEndpoint(buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
           .then((vesselInfo) => {
             dispatch({
               type: SET_ENCOUNTERS_VESSEL_INFO,
@@ -90,12 +92,9 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
               }
             });
           });
-      });
 
-      // get tracks for both vessels
-      encounterInfo.vessels.forEach((vessel) => {
         dispatch(getTrack({
-          tilesetId: vessel.tilesetId,
+          tilesetId: vesselWorkspaceLayer.tilesetId,
           seriesgroup: vessel.seriesgroup,
           series: null,
           zoomToBounds: false,
@@ -104,6 +103,5 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         }));
       });
     });
-
   };
 }
