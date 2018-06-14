@@ -95,6 +95,10 @@ On server error, the `/public/500.html` page should be displayed.
 
 Enable usage of the "Subscription" feature.
 
+#### FEATURE_FLAG_EXTENDED_POLYGON_LAYERS
+
+Enables polygon static layers click popups, polygon static layers color picker, polygon static layer labels + toggle layer labels
+
 ## General configuration
 
 #### PORT

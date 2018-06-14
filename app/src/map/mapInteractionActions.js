@@ -73,30 +73,34 @@ export const clearPopup = () => (dispatch) => {
 };
 
 export const mapHover = (latitude, longitude, features) => (dispatch, getState) => {
-  const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
+  const state = getState();
+  const currentActivityLayersInteractionData = state.heatmap.highlightedVessels;
   const { layerId, isEmpty, foundVessels } = currentActivityLayersInteractionData;
 
   let hoverPopup = null;
   let cursor = null;
 
-  const report = getState().report;
+  const report = state.report;
 
   if (report.layerId !== null || isEmpty === true) {
     const feature = findFeature(features, report.layerId);
     if (feature !== undefined) {
-      const popupFields = getFeaturePopupFields(feature.staticLayerId);
-      const mainPopupFieldId = popupFields[0].id || popupFields[0];
-      const featureTitle = feature.feature.properties[mainPopupFieldId];
-      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
-      hoverPopup = {
-        layerTitle: staticLayer.title,
-        featureTitle
-      };
-      cursor = 'pointer';
+      const layerIsInReport = report.layerId === feature.staticLayerId;
+      if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === true || layerIsInReport === true) {
+        const popupFields = getFeaturePopupFields(feature.staticLayerId);
+        const mainPopupFieldId = popupFields[0].id || popupFields[0];
+        const featureTitle = feature.feature.properties[mainPopupFieldId];
+        const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
+        hoverPopup = {
+          layerTitle: staticLayer.title,
+          featureTitle
+        };
+        cursor = 'pointer';
+      }
     }
   } else if (isEmpty !== true) {
     // if activity layers are found, and a report is not triggered on a static layer
-    const layer = getState().layers.workspaceLayers.find(l => l.id === layerId);
+    const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
     cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
     let featureTitle;
     if (foundVessels === undefined || foundVessels.length > 1) {
@@ -150,6 +154,10 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
 
       const layerIsInReport = state.report.layerId === feature.staticLayerId;
+      if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false) {
+        return;
+      }
+
       if (layerIsInReport === true) {
         dispatch(setReportPolygon(feature.feature.properties));
       }
@@ -165,6 +173,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       });
 
       const isInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
+
 
       dispatch({
         type: SET_POPUP,

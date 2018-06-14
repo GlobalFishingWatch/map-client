@@ -39,6 +39,8 @@ const webpackConfig = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
+      FEATURE_FLAG_SUBSCRIPTIONS: envVariables.FEATURE_FLAG_SUBSCRIPTIONS === 'true',
+      FEATURE_FLAG_EXTENDED_POLYGON_LAYERS: envVariables.FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === 'true',
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
       MAPBOX_TOKEN: JSON.stringify(envVariables.MAPBOX_TOKEN),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
@@ -58,7 +60,6 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      FEATURE_FLAG_SUBSCRIPTIONS: envVariables.FEATURE_FLAG_SUBSCRIPTIONS === 'true',
       SATELLITE_BASEMAP_URL: JSON.stringify(envVariables.SATELLITE_BASEMAP_URL)
     }),
     new LodashModuleReplacementPlugin(),

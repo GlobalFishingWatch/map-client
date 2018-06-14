@@ -42,11 +42,14 @@ export const LAYER_TYPES_MAPBOX_GL = [
   LAYER_TYPES.Static
 ];
 
-export const LAYER_TYPES_COLORPICKER = [
-  LAYER_TYPES.Heatmap,
-  LAYER_TYPES.Static,
-  LAYER_TYPES.Custom
-];
+let layerTypesColorPicker = [LAYER_TYPES.Heatmap];
+if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS) {
+  layerTypesColorPicker = [
+    LAYER_TYPES.Static,
+    LAYER_TYPES.Custom
+  ].concat(layerTypesColorPicker);
+}
+export const LAYER_TYPES_COLORPICKER = layerTypesColorPicker;
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
