@@ -59,7 +59,8 @@ const webpackConfig = {
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      USE_SUBSCRIPTIONS: envVariables.USE_SUBSCRIPTIONS === 'true'
+      USE_SUBSCRIPTIONS: envVariables.USE_SUBSCRIPTIONS === 'true',
+      SATELLITE_BASEMAP_URL: JSON.stringify(envVariables.SATELLITE_BASEMAP_URL)
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

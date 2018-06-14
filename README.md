@@ -171,6 +171,11 @@ Display message contained in literals.json's `banner` in a dismissable banner on
 
 Enable usage of the new "Subscription" feature
 
+#### SATELLITE_BASEMAP_URL
+
+URL template for satellite basemap tiles. Should be of the form http://url/{z}{y}{x}.
+
+
 # Permission keys description
 
 On load, the application will call the /me API endpoint to load user permissions. These are the supported values:

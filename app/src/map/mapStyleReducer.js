@@ -7,13 +7,17 @@ import {
   UPDATE_MAP_STYLE
 } from 'map/mapStyleActions';
 
-const SATELLITE_ID = 'mapbox-satellite';
+const SATELLITE_LAYER_ID = 'satellite';
+const SATELLITE_SOURCE_ID = 'satellite-source';
 const COMPOSITE_SOURCE_ID = 'composite';
 const COMPOSITE_POLYGONS_SOURCE_ID = 'composite-polygons';
 
 // merges basemap style JSON and polygon layers JSON into a single style JSON
 // checks for duplicate sources named 'composite'
 const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
+  // replace satellite layer with value stored in env variables
+  basemap.sources[SATELLITE_SOURCE_ID].tiles[0] = SATELLITE_BASEMAP_URL;
+
   Object.keys(polygons.sources).forEach((sourceKey) => {
     basemap.sources[(sourceKey === COMPOSITE_SOURCE_ID) ? COMPOSITE_POLYGONS_SOURCE_ID : sourceKey] = polygons.sources[sourceKey];
   });
@@ -22,7 +26,7 @@ const mergeBasemapAndPolygonStyles = (basemap, polygons) => {
       layer.source = COMPOSITE_POLYGONS_SOURCE_ID;
     }
 
-    // check if layer is interactive, set manually on style
+    // check if layer is defined as interactive in the configuration, then set interactive flag manually on style
     const allGlLayers = Object.keys(POLYGON_LAYERS).reduce((acc, val) => acc.concat(POLYGON_LAYERS[val].glLayers), []);
     const glLayerDef = allGlLayers.find(glLayer => glLayer.id);
     layer.interactive = glLayerDef.interactive;
@@ -56,7 +60,7 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case SET_BASEMAP : {
       const satellite = state.basemaps.find(basemap => basemap.title === action.payload).satellite;
-      const satelliteLayerIndex = state.mapStyle.toJS().layers.findIndex(layer => layer.id === SATELLITE_ID);
+      const satelliteLayerIndex = state.mapStyle.toJS().layers.findIndex(layer => layer.id === SATELLITE_LAYER_ID);
       const visibility = (satellite === true) ? 'visible' : 'none';
       const mapStyle = state.mapStyle.setIn(['layers', satelliteLayerIndex, 'layout', 'visibility'], visibility);
       return { ...state, mapStyle, activeBasemap: action.payload };

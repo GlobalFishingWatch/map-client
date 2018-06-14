@@ -95,7 +95,7 @@
       "seriesgroup": null,
       "tilesetId": null
     },
-    "basemap": "North Star",
+    "basemap": "hybrid",
     "timeline": {
       "innerExtent": [
         1464739200000,
