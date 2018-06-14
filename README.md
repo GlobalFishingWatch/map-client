@@ -86,7 +86,16 @@ RewriteRule (.*) index.html
 
 On server error, the `/public/500.html` page should be displayed.
 
-# Environment variables description
+# Environment variables 
+
+## Feature flags
+
+
+#### FEATURE_FLAG_SUBSCRIPTIONS
+
+Enable usage of the "Subscription" feature.
+
+## General configuration
 
 #### PORT
 
@@ -95,11 +104,6 @@ Port in which the node server will listen for incoming connections
 ### PUBLIC_PATH
 
 Server subpath over which the application will be served. May be empty if the application should load through relative urls, or a static path for loading through an absolute url. If not empty, it must start and end with a `/` character (such as `/map/`).
-
-#### GOOGLE_API_KEY
-
-API key for Google Maps (deprecated)
-
 
 #### MAPBOX_TOKEN
 
@@ -165,11 +169,6 @@ URL pattern used on the share feature. It must be of type http://your-site.com/?
 #### SHOW_BANNER
 
 Display message contained in literals.json's `banner` in a dismissable banner on top of the map. Boolean value.
-
-
-#### USE_SUBSCRIPTIONS
-
-Enable usage of the new "Subscription" feature
 
 #### SATELLITE_BASEMAP_URL
 

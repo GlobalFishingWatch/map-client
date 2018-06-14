@@ -87,7 +87,7 @@ class SubscriptionModal extends Component {
             {layerList}
           </ul >
         </div>
-        {USE_SUBSCRIPTIONS &&
+        {FEATURE_FLAG_SUBSCRIPTIONS &&
           <div
             className={classnames(
               SelectorStyles.selector,
