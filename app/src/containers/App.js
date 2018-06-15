@@ -6,7 +6,9 @@ import { loadLiterals } from 'siteNav/literalsActions';
 
 const mapStateToProps = state => ({
   welcomeModalUrl: state.welcomeModal.url,
-  banner: state.literals.banner
+  banner: state.literals.banner,
+  bannerWebGL: state.literals.webgl_warning,
+  hasDeprecatedActivityLayersMessage: state.heatmap.hasDeprecatedActivityLayersMessage
 });
 
 const mapDispatchToProps = dispatch => ({
