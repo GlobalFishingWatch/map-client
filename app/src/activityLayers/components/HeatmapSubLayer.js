@@ -7,7 +7,7 @@ import {
 import { hueToHueIncrement } from 'utils/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, renderingStyleIndex, hue) {
+  constructor(baseTexture, maxSprites, renderingStyleIndex, hue, useNormalBlendMode = false) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
     this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
@@ -16,7 +16,9 @@ export default class HeatmapSubLayer {
       position: true,
       uvs: true
     });
-    this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
+    if (useNormalBlendMode === false) {
+      this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
+    }
 
     this.spritesPool = [];
 
