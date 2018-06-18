@@ -3,9 +3,9 @@ import { VectorTile } from 'vector-tile';
 
 export default (tileUrl, token) => {
   const vectorTilePromise = fetch(tileUrl, {
-    headers: {
+    headers: (token) ? {
       Authorization: `Bearer ${token}`
-    }
+    } : null
   }).then((response) => {
     if (!response.ok) {
       throw new Error(`could not load tile ${tileUrl}`);
