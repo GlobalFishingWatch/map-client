@@ -33,15 +33,16 @@ export function clearEncountersInfo() {
 
 export function setEncountersInfo(seriesgroup, tilesetId) {
   return (dispatch, getState) => {
-    const layer = getState().layers.workspaceLayers.find(l => l.tilesetId === tilesetId);
+    const workspaceLayers = getState().layers.workspaceLayers;
+    const encounterLayer = workspaceLayers.find(l => l.tilesetId === tilesetId);
 
-    dispatch(highlightClickedVessel(seriesgroup, layer.id));
+    dispatch(highlightClickedVessel(seriesgroup, encounterLayer.id));
 
-    if (layer.header.endpoints === undefined || layer.header.endpoints.info === undefined) {
+    if (encounterLayer.header.endpoints === undefined || encounterLayer.header.endpoints.info === undefined) {
       console.warn('Info field is missing on header\'s urls, can\'t display encounters details');
       return;
     }
-    const encounterInfoEndpoint = layer.header.endpoints.info;
+    const encounterInfoEndpoint = encounterLayer.header.endpoints.info;
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,
@@ -75,8 +76,10 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
       });
 
       encounterInfo.vessels.forEach((vessel) => {
-        const fields = layer.header.info.fields;
-        fetchEndpoint(buildEndpoint(layer.header.endpoints.info, { id: vessel.seriesgroup }), token)
+        const vesselWorkspaceLayer = workspaceLayers.find(workspaceLayer =>
+          workspaceLayer.tilesetId === vessel.tilesetId || workspaceLayer.id === vessel.tilesetId);
+        const fields = vesselWorkspaceLayer.header.info.fields;
+        fetchEndpoint(buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
           .then((vesselInfo) => {
             dispatch({
               type: SET_ENCOUNTERS_VESSEL_INFO,
@@ -87,10 +90,7 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
               }
             });
           });
-      });
 
-      // get tracks for both vessels
-      encounterInfo.vessels.forEach((vessel) => {
         dispatch(getTrack({
           tilesetId: vessel.tilesetId,
           seriesgroup: vessel.seriesgroup,
@@ -101,6 +101,5 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         }));
       });
     });
-
   };
 }
