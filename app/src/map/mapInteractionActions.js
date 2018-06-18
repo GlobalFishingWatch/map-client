@@ -1,7 +1,7 @@
 import area from '@turf/area';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
-import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
+import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { setReportPolygon } from 'report/reportActions';
@@ -140,6 +140,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   dispatch(clearVesselInfo());
   dispatch(clearEncountersInfo());
   dispatch(clearPopup());
+  dispatch(clearHighlightedClickedVessel());
 
   const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
   const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;

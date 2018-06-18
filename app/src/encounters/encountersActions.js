@@ -1,5 +1,6 @@
 import fetchEndpoint from 'utils/fetchEndpoint';
 import { getTrack, deleteTracks } from 'tracks/tracksActions';
+import { highlightClickedVessel, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
 import buildEndpoint from 'utils/buildEndpoint';
@@ -22,6 +23,7 @@ export function clearEncountersInfo() {
     dispatch({
       type: CLEAR_ENCOUNTERS_INFO
     });
+    dispatch(clearHighlightedClickedVessel());
     if (currentEncountersInfo !== null) {
       const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
       dispatch(deleteTracks(seriesgroupArray));
@@ -31,6 +33,9 @@ export function clearEncountersInfo() {
 
 export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint) {
   return (dispatch, getState) => {
+    const layer = getState().layers.workspaceLayers.find(l => l.tilesetId === tilesetId);
+
+    dispatch(highlightClickedVessel(seriesgroup, layer.id));
 
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,
@@ -39,7 +44,6 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
         tilesetId
       }
     });
-
 
     const infoUrl = buildEndpoint(encounterInfoEndpoint, {
       id: seriesgroup
@@ -64,12 +68,9 @@ export function setEncountersInfo(seriesgroup, tilesetId, encounterInfoEndpoint)
         }
       });
 
-      const workspaceLayers = getState().layers.workspaceLayers;
-
       encounterInfo.vessels.forEach((vessel) => {
-        const workspaceLayer = workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        const fields = workspaceLayer.header.info.fields;
-        fetchEndpoint(buildEndpoint(workspaceLayer.header.endpoints.info, { id: vessel.seriesgroup }), token)
+        const fields = layer.header.info.fields;
+        fetchEndpoint(buildEndpoint(layer.header.endpoints.info, { id: vessel.seriesgroup }), token)
           .then((vesselInfo) => {
             dispatch({
               type: SET_ENCOUNTERS_VESSEL_INFO,

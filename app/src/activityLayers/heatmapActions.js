@@ -22,6 +22,8 @@ export const REMOVE_REFERENCE_TILE = 'REMOVE_REFERENCE_TILE';
 export const UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES = 'UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES';
 export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
 export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
+export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
+export const CLEAR_HIGHLIGHT_CLICKED_VESSEL = 'CLEAR_HIGHLIGHT_CLICKED_VESSEL';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -460,3 +462,16 @@ export function clearHighlightedVessels() {
     }
   };
 }
+
+
+export const highlightClickedVessel = (seriesgroup, layerId) => ({
+  type: HIGHLIGHT_CLICKED_VESSEL,
+  payload: {
+    seriesgroup,
+    layerId
+  }
+});
+
+export const clearHighlightedClickedVessel = () => ({
+  type: CLEAR_HIGHLIGHT_CLICKED_VESSEL
+});

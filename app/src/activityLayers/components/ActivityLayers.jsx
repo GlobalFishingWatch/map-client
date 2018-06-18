@@ -195,6 +195,41 @@ class ActivityLayers extends React.Component {
     this.heatmapStage.alpha = alpha;
   }
 
+  // FIXME move to container?
+  _getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers) {
+    const hue = ACTIVITY_HIGHLIGHT_HUE;
+    if (
+      highlightedVessels !== undefined
+      && highlightedVessels.layerId !== undefined
+      && highlightedVessels.foundVessels !== undefined
+      && highlightedVessels.isEmpty !== true
+    ) {
+      return {
+        highlightData: heatmapLayers[highlightedVessels.layerId],
+        highlightFilters: highlightedVessels.foundVessels.map(vessel => ({
+          hue,
+          filterValues: {
+            series: [vessel.series]
+          }
+        }))
+      };
+    } else if (highlightedClickedVessel !== null) {
+      return {
+        highlightData: heatmapLayers[highlightedClickedVessel.layerId],
+        highlightFilters: [{
+          hue,
+          filterValues: {
+            series: [highlightedClickedVessel.seriesgroup]
+          }
+        }]
+      };
+    }
+    return {
+      highlightData: null,
+      highlightFilters: []
+    };
+  }
+
   render() {
     const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
     const {
@@ -204,6 +239,7 @@ class ActivityLayers extends React.Component {
       timelineInnerExtentIndexes,
       timelineOverExtentIndexes,
       highlightedVessels,
+      highlightedClickedVessel,
       vesselTracks,
       tracks
     } = this.props;
@@ -220,21 +256,7 @@ class ActivityLayers extends React.Component {
       this._startHeatmapFadein();
     }
 
-    const highlightData = (
-      highlightedVessels !== undefined
-      && highlightedVessels.layerId !== undefined
-      && highlightedVessels.foundVessels !== undefined
-      && highlightedVessels.isEmpty !== true
-    )
-      ? heatmapLayers[highlightedVessels.layerId]
-      : null;
-    const highlightFilters = (highlightedVessels.foundVessels !== undefined) ?
-      highlightedVessels.foundVessels.map(vessel => ({
-        hue: ACTIVITY_HIGHLIGHT_HUE,
-        filterValues: {
-          series: [vessel.series]
-        }
-      })) : [];
+    const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
     return (<div
       ref={(ref) => { this.container = ref; }}
@@ -296,6 +318,7 @@ ActivityLayers.propTypes = {
   timelineOverExtentIndexes: PropTypes.array,
   layerFilters: PropTypes.object,
   highlightedVessels: PropTypes.object,
+  highlightedClickedVessel: PropTypes.object,
   vesselTracks: PropTypes.array,
   tracks: PropTypes.array,
   queryHeatmapVessels: PropTypes.func
