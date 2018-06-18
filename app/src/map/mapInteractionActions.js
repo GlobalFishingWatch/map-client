@@ -114,7 +114,7 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
       }
     } else {
       const numVessels = (foundVessels === undefined) ? 'multiple' : foundVessels.length;
-      const vesselPlural = (foundVessels === undefined || foundVessels.length > 1) ? 'vessels' : 'vessel';
+      const vesselPlural = (foundVessels === undefined || foundVessels.length > 1) ? 'objects' : 'object';
       featureTitle = `${numVessels} ${vesselPlural} at this location`;
     }
 
