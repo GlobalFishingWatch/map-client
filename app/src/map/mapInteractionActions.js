@@ -1,4 +1,6 @@
 import area from '@turf/area';
+import moment from 'moment';
+import convert from 'globalfishingwatch-convert';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
@@ -6,7 +8,7 @@ import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { setReportPolygon } from 'report/reportActions';
 import { LAYER_TYPES } from 'constants';
-import { POLYGON_LAYERS, POLYGON_LAYERS_AREA } from 'config';
+import { POLYGON_LAYERS, POLYGON_LAYERS_AREA, FORMAT_DATE } from 'config';
 
 export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
 export const SET_POPUP = 'SET_POPUP';
@@ -103,11 +105,19 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
     const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
     cursor = (foundVessels === undefined || foundVessels.length > 1) ? 'zoom-in' : 'pointer';
     let featureTitle;
-    if (foundVessels === undefined || foundVessels.length > 1) {
-      featureTitle = `${(foundVessels === undefined) ? 'multiple' : foundVessels.length} vessels at this location`;
+
+    if (layer.subtype === LAYER_TYPES.Encounters) {
+      const foundVessel = foundVessels[0];
+      if (foundVessel.timeIndex) {
+        const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex));
+        featureTitle = moment(date).format(FORMAT_DATE);
+      }
     } else {
-      featureTitle = '1 vessel at this location';
+      const numVessels = (foundVessels === undefined) ? 'multiple' : foundVessels.length;
+      const vesselPlural = (foundVessels === undefined || foundVessels.length > 1) ? 'vessels' : 'vessel';
+      featureTitle = `${numVessels} ${vesselPlural} at this location`;
     }
+
 
     hoverPopup = {
       layerTitle: layer.title,
