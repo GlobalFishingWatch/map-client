@@ -211,12 +211,13 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
     } else {
       dispatch(trackMapClicked(latitude, longitude, 'vessel'));
       const selectedSeries = foundVessels[0].series;
-      const selectedSeriesgroup = foundVessels[0].seriesgroup;
 
       if (layer.subtype === LAYER_TYPES.Encounters) {
         dispatch(setEncountersInfo(selectedSeries, layer.tilesetId, layer.header.endpoints.info));
       } else {
-        dispatch(addVessel(layer.tilesetId, selectedSeriesgroup, selectedSeries));
+        const idFieldKey = (layer.header.info.id === undefined) ? 'seriesgroup' : layer.header.info.id;
+        const id = foundVessels[0][idFieldKey];
+        dispatch(addVessel(layer.tilesetId, id, selectedSeries));
       }
     }
   }
