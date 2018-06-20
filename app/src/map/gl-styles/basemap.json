@@ -91,6 +91,16 @@
           }
       },
       {
+        "id": "satellite",
+        "type": "raster",
+        "metadata": {},
+        "source": "satellite-source",
+        "layout": {
+          "visibility": "none"
+        },
+        "paint": {}
+      },
+      {
           "id": "hillshade_highlight_bright",
           "type": "fill",
           "metadata": {
@@ -551,16 +561,6 @@
                   ]
               }
           }
-      },
-      {
-        "id": "satellite",
-        "type": "raster",
-        "metadata": {},
-        "source": "satellite-source",
-        "layout": {
-          "visibility": "none"
-        },
-        "paint": {}
       },
       {
           "id": "coral-reefs",
