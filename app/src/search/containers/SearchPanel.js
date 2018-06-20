@@ -9,7 +9,6 @@ const mapStateToProps = state => ({
   searchTerm: state.search.searchTerm,
   searchModalOpen: state.search.searchModalOpen,
   searchResultsOpen: state.search.searchResultsOpen,
-  searchLayerId: state.map.tilesetId,
   hasHiddenSearchableLayers: state.search.hasHiddenSearchableLayers
 });
 
