@@ -4,5 +4,7 @@
   "report_warning": "Only the following layers will be reported: $REPORTABLE_LAYERS",
   "filter_groups_warning": "You selected a '$FILTER' filter, which can't be applied to the layer '$LAYER'. As a result, all the vessels of this layer will be hidden.",
   "legacy_workspace_warning": "The format of the workspace that you tried to load is not supported anymore. The map will fall back to the default workspace.",
-  "webgl_warning": "⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable). The map won't be able to load."
+  "webgl_warning": "⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable). The map won't be able to load.",
+  "deprecated_layers_warning": "The activity layer $LAYERS used on this workspace is deprecated and may not get updated data, click <a href='http://globalfishingwatch.org/map'>here</a> to get the latest one.",
+  "deprecated_layers_warning_plural": "The activity layers $LAYERS used on this workspace are deprecated and they may not get updated data, click <a href='http://globalfishingwatch.org/map'>here</a> to get the latest ones."
 }

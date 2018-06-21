@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/app.scss';
 import BannerStyles from 'styles/components/banner.scss';
-import { getURLParameterByName } from 'lib/getURLParameterByName';
 import ReactGA from 'react-ga';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
@@ -61,16 +60,17 @@ class App extends Component {
       (
         isWebGLSupported === false ||
         this.props.legacyWorkspaceLoaded ||
+        this.props.hasDeprecatedActivityLayersMessage !== null ||
         (SHOW_BANNER === true && this.props.banner !== undefined)
       )
       && this.state.bannerDismissed === false
-      && window.innerWidth > 768
-      && getURLParameterByName('embedded') !== 'true';
+      && window.innerWidth > 768;
 
     let bannerContent;
     if (SHOW_BANNER === true) bannerContent = this.props.banner;
     else if (isWebGLSupported === false) bannerContent = this.props.bannerWebGL;
     else if (this.props.legacyWorkspaceLoaded === true) bannerContent = this.props.bannerLegacyWorkspace;
+    else if (this.props.hasDeprecatedActivityLayersMessage !== null) bannerContent = this.props.hasDeprecatedActivityLayersMessage;
 
     document.body.classList.toggle('-has-banner', showBanner);
 
@@ -104,7 +104,8 @@ App.propTypes = {
   banner: PropTypes.string,
   bannerWebGL: PropTypes.string,
   bannerLegacyWorkspace: PropTypes.string,
-  legacyWorkspaceLoaded: PropTypes.bool
+  legacyWorkspaceLoaded: PropTypes.bool,
+  hasDeprecatedActivityLayersMessage: PropTypes.string
 };
 
 

@@ -24,6 +24,7 @@ export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
 export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
 export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
 export const CLEAR_HIGHLIGHT_CLICKED_VESSEL = 'CLEAR_HIGHLIGHT_CLICKED_VESSEL';
+export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -51,9 +52,11 @@ function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
  */
 export function initHeatmapLayers() {
   return (dispatch, getState) => {
-    const currentOuterExtent = getState().filters.timelineOuterExtent;
-    const workspaceLayers = getState().layers.workspaceLayers;
+    const state = getState();
+    const currentOuterExtent = state.filters.timelineOuterExtent;
+    const workspaceLayers = state.layers.workspaceLayers;
     const heatmapLayers = {};
+    const deprecatedLayers = [];
 
     workspaceLayers.forEach((workspaceLayer) => {
       if (workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true) {
@@ -65,8 +68,24 @@ export function initHeatmapLayers() {
           // initially attach which of the temporal extents indices are visible with initial outerExtent
           visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
         };
+
+        if (workspaceLayer.header.deprecated) {
+          deprecatedLayers.push(workspaceLayer.title);
+        }
       }
     });
+
+    if (deprecatedLayers.length) {
+      dispatch({
+        type: NOTIFY_DEPRECATED_LAYERS,
+        payload: {
+          deprecatedLayers,
+          template: (deprecatedLayers.length > 1) ?
+            state.literals.deprecated_layers_warning_plural :
+            state.literals.deprecated_layers_warning
+        }
+      });
+    }
 
     dispatch({
       type: INIT_HEATMAP_LAYERS,
