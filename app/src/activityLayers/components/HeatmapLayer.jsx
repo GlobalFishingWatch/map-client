@@ -94,12 +94,6 @@ class HeatmapLayer extends React.Component {
     // get all hues, old and new
     const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
 
-    // compute left and right offsets to deal with antimeridian issue
-    const topLeftWorld = pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix);
-    const topRightWorld = pixelsToWorld([viewport.width, 0], viewport.pixelUnprojectionMatrix);
-    const leftOffset = topLeftWorld[0] / viewport.scale;
-    const rightOffset = topRightWorld[0] / viewport.scale;
-
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
       if (allHuesToRender.indexOf(hue) === -1) {
@@ -121,9 +115,7 @@ class HeatmapLayer extends React.Component {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
         numFilters: filters.length,
-        defaultHue,
-        leftOffset,
-        rightOffset
+        defaultHue
       });
     });
 
@@ -132,12 +124,12 @@ class HeatmapLayer extends React.Component {
     });
   }
 
-  _setSubLayersSpritePropsForTile({ data, numFilters, defaultHue, leftOffset, rightOffset }) {
+  _setSubLayersSpritePropsForTile({ data, numFilters, defaultHue }) {
     if (!data) {
       return;
     }
 
-    const { startIndex, endIndex, viewport, filters } = this.props;
+    const { startIndex, endIndex, viewport, filters, viewportLeft, viewportRight } = this.props;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
       const frame = data[timeIndex];
@@ -162,16 +154,16 @@ class HeatmapLayer extends React.Component {
           continue;
         }
 
-        // wrap worldX when point crosses the antimeridian
+        // wrap worldX when point crosses the antimeridian/dateline
         // world points go from 0 to 512. There is no way to determine if worldX is on the "wrong" side
         // of the antimeridian just by looking at its value (where with lat/lon we can simply look at -/+)
         // Therefore we compare it to the viewport's left or right boundary, depending on what is currently
         // "the right side" of the antimeridian
         let worldX = frame.worldX[index];
-        if (leftOffset > 0 && worldX < leftOffset) {
-          // worldX is "behind" leftOffset, which means it is "on the right" of the antimeridian
+        if (viewportLeft > 0 && worldX < viewportLeft) {
+          // worldX is "behind" viewportLeft, which means it is "on the right" of the antimeridian
           worldX += 512;
-        } else if (leftOffset < 0 && worldX > rightOffset) {
+        } else if (viewportLeft < 0 && worldX > viewportRight) {
           worldX -= 512;
         }
 
@@ -228,7 +220,9 @@ HeatmapLayer.propTypes = {
   baseTexture: PropTypes.object,
   maxSprites: PropTypes.number,
   useRadialGradientStyle: PropTypes.bool,
-  customRenderingStyle: PropTypes.object
+  customRenderingStyle: PropTypes.object,
+  viewportLeft: PropTypes.number,
+  viewportRight: PropTypes.number
 };
 
 export default HeatmapLayer;

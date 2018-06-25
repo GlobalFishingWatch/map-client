@@ -94,7 +94,7 @@ class TracksLayer extends React.Component {
    * @param lineOpacity
    */
   _drawTrack({ data, startIndex, endIndex, series, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
-    const { viewport } = this.props;
+    const { viewport, viewportLeft, viewportRight } = this.props;
 
     let n = 0;
     let prevSeries;
@@ -119,8 +119,16 @@ class TracksLayer extends React.Component {
 
         n++;
 
+        let offsetedWorldX = frame.worldX[i];
+        if (viewportLeft > 0 && offsetedWorldX < viewportLeft) {
+          // offsetedWorldX is "behind" viewportLeft, which means it is "on the right" of the antimeridian
+          offsetedWorldX += 512;
+        } else if (viewportLeft < 0 && offsetedWorldX > viewportRight) {
+          offsetedWorldX -= 512;
+        }
+
         const [x, y] = worldToPixels(
-          [frame.worldX[i] * viewport.scale, frame.worldY[i] * viewport.scale],
+          [offsetedWorldX * viewport.scale, frame.worldY[i] * viewport.scale],
           viewport.pixelProjectionMatrix
         );
 

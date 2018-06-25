@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
-import { lngLatToWorld } from 'viewport-mercator-project';
+import { lngLatToWorld, pixelsToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import { LAYER_TYPES } from 'constants';
 import {
@@ -258,6 +258,12 @@ class ActivityLayers extends React.Component {
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
+    // compute left and right offsets to deal with antimeridian issue
+    const viewportTopLeftWorld = pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix);
+    const viewportTopRightWorld = pixelsToWorld([viewport.width, 0], viewport.pixelUnprojectionMatrix);
+    const viewportLeft = viewportTopLeftWorld[0] / viewport.scale;
+    const viewportRight = viewportTopRightWorld[0] / viewport.scale;
+
     return (<div
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
@@ -277,6 +283,8 @@ class ActivityLayers extends React.Component {
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{}}
+          viewportLeft={viewportLeft}
+          viewportRight={viewportRight}
         />)
       )}
       {this.stage !== undefined &&
@@ -293,6 +301,8 @@ class ActivityLayers extends React.Component {
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{ defaultOpacity: 1, defaultSize: 1 }}
+          viewportLeft={viewportLeft}
+          viewportRight={viewportRight}
         />
       }
       {this.stage !== undefined &&
@@ -304,6 +314,8 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           timelineOverExtentIndexes={timelineOverExtentIndexes}
           rootStage={this.stage}
+          viewportLeft={viewportLeft}
+          viewportRight={viewportRight}
         />
       }
     </div>);
