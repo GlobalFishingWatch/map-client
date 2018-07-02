@@ -186,6 +186,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
         dispatch(loadCustomLayer(customLayer.id, customLayer.url, customLayer.customLayerSubtype));
       });
 
+    // load activity layers headers
     const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));
     headersPromise
       .then(() => {

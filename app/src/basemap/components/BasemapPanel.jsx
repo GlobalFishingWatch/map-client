@@ -1,33 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import camelCase from 'lodash/camelCase';
 import classnames from 'classnames';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import BasemapStyles from 'styles/rightControlPanel/basemap-panel.scss';
 
 class BasemapPanel extends Component {
-
-  onSelectBasemap(event, basemap) {
-    this.props.setBasemap(basemap.title);
-  }
-
   render() {
     const items = [];
 
-    this.props.basemaps.forEach((basemap) => {
-      const imageName = camelCase(basemap.title);
-      const urlThumbnail = `${PUBLIC_PATH}basemaps/${imageName}.png`;
+    const basemaps = this.props.basemapLayers.filter(l => l.isOption !== true);
+    // const basemapOptions = this.props.basemapLayers.filter(l => l.isOption === true);
+
+    basemaps.forEach((basemap) => {
+      const urlThumbnail = `${PUBLIC_PATH}basemaps/${basemap.id}.png`;
       const itemLayer = (
         <li
           className={classnames(LayerListStyles.listItem, LayerListStyles._noMobileRightPadding, LayerListStyles.halfRow,
-            this.props.activeBasemap === basemap.title ? LayerListStyles._selected : null)}
-          key={basemap.title}
+            (basemap.visible === true) ? LayerListStyles._selected : null)}
+          key={basemap.id}
         >
           <div
             className={LayerListStyles.itemInfo}
-            onClick={event => this.onSelectBasemap(event, basemap)}
+            onClick={() => this.props.setBasemap(basemap.id)}
           >
-            <img alt={basemap.title} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
+            <img alt={basemap.label} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
             <span className={LayerListStyles.itemTitle} >{basemap.label}</span >
           </div >
         </li >);
@@ -46,8 +42,7 @@ class BasemapPanel extends Component {
 }
 
 BasemapPanel.propTypes = {
-  basemaps: PropTypes.array,
-  activeBasemap: PropTypes.string,
+  basemapLayers: PropTypes.array,
   setBasemap: PropTypes.func
 };
 

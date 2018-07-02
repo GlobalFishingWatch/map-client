@@ -59,8 +59,7 @@ const webpackConfig = {
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
-      SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      SATELLITE_BASEMAP_URL: JSON.stringify(envVariables.SATELLITE_BASEMAP_URL)
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

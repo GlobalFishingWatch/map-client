@@ -1,0 +1,249 @@
+{
+  "version": 8,
+  "metadata": {
+    "gfw:popups": {
+      "europe2": [
+        { "id": "admin" },
+        { "id": "adm0_a3", "label": "ISO Code" }      
+      ],
+      "rfmo": [
+        { "id": "rfb" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "eez": [
+        { "id": "name" }
+      ],
+      "mpant": [
+        { "id": "name" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "mparu": [
+        { "id": "name" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "highseas": [
+        { "id": "regionid" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "6": [
+        { "id": "nama" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "mpatlas": [
+        { "id": "name" },
+        { "id": "POLYGON_LAYERS_AREA" }
+      ],
+      "falklands_conservation": [
+        { "id": "full_name" },
+        { "id": "zone" },
+        { "id": "area_sqkm" }
+      ],
+      "protectedplanet": [
+        { "id": "name" },
+        { "id": "iucn_cat", "label": "IUCN Category" },
+        { "id": "desig_eng", "label": "Designation" },
+        { "id": "rep_area" },
+        { "id": "no_take" },
+        { "id": "status" },
+        { "id": "status_yr" },
+        { "id": "gov_type" },
+        { "id": "mang_auth" },
+        { "id": "verif" },
+        { "id": "iso3" }
+      ]
+    },
+    "gfw:basemap-layers": [
+      { "id": "satellite", "label": "Satellite" },
+      { "id": "north-star", "label": "North Star" },
+      { "id": "graticules", "isOption": true }
+    ]
+  },
+  "glyphs": "mapbox://fonts/enriquetuya/{fontstack}/{range}.pbf",
+  "sources": {
+    "composite": {
+      "url": "mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7,mapbox.9tm8dx88,mapbox.4suez6c9,mapbox.akwnx50w,mapbox.8x70v9py,mapbox.b1l3wqbs,mapbox.cc9j0p61,mapbox.d4advw8k",
+      "type": "vector"
+    },
+    "satellite": {
+      "tiles": ["https://api.mapbox.com/styles/v1/enriquetuya/cjin1nmzy06b52spe0z7agofh/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ"],
+      "type": "raster",
+      "tileSize": 256
+    },
+    "north-star": {
+      "tiles": ["https://api.mapbox.com/styles/v1/enriquetuya/cjj6svs8j1r212sqah8g9qd9d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ"],
+      "type": "raster",
+      "tileSize": 256
+    },
+    "europe2": {
+      "metadata": {
+        "gfw:carto-sql": "select * from ne_adm0_europe"
+      },
+      "type": "vector"
+    },
+    "graticules": {
+      "metadata": {
+        "gfw:carto-sql": "select * ne_10m_graticules_10"
+      },
+      "type": "vector"
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": {},
+      "paint": {
+        "background-color": "#001436"
+      }
+    },
+    {
+      "id": "satellite",
+      "type": "raster",
+      "source": "satellite",
+      "layout": {},
+      "paint": {}
+    },
+    {
+      "id": "north-star",
+      "type": "raster",
+      "source": "north-star",
+      "layout": {},
+      "paint": {}
+    },
+    {
+      "id": "europe2",
+      "type": "fill",
+      "source": "europe2",
+      "source-layer": "europe2",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "europe2-labels",
+      "type": "symbol",
+      "source": "europe2",
+      "source-layer": "europe2",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{admin}",
+        "text-font": [
+          "Roboto Mono Light",
+          "Arial Unicode MS Regular"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "graticules-lines",
+      "type": "line",
+      "source": "graticules",
+      "source-layer": "graticules",
+      "filter": [
+          "==",
+          "$type",
+          "LineString"
+      ],
+      "layout": {
+          "visibility": "none"
+      },
+      "paint": {
+          "line-color": "#174084",
+          "line-opacity": {
+              "base": 1,
+              "stops": [
+                  [
+                      0,
+                      0.7
+                  ],
+                  [
+                      8,
+                      0.7
+                  ],
+                  [
+                      9,
+                      0.2
+                  ]
+              ]
+          },
+          "line-width": 0.5
+      }
+  },
+  {
+      "id": "graticules-labels",
+      "type": "symbol",
+      "source": "graticules",
+      "source-layer": "graticules",
+      "filter": [
+          "==",
+          "$type",
+          "LineString"
+      ],
+      "layout": {
+          "visibility": "none",
+          "text-field": "{degrees}º",
+          "text-font": [
+              "Roboto Medium Italic",
+              "Arial Unicode MS Regular"
+          ],
+          "symbol-placement": "line",
+          "symbol-spacing": {
+              "base": 1,
+              "stops": [
+                  [
+                      3,
+                      500
+                  ],
+                  [
+                      8,
+                      1000
+                  ]
+              ]
+          },
+          "text-size": {
+              "base": 1,
+              "stops": [
+                  [
+                      3,
+                      7
+                  ],
+                  [
+                      7,
+                      12
+                  ]
+              ]
+          },
+          "text-letter-spacing": 0.2
+      },
+      "paint": {
+          "text-color": "hsl(0, 0%, 100%)",
+          "text-halo-width": 0.5,
+          "text-translate": [
+              -1,
+              1
+          ],
+          "text-halo-color": "hsla(0, 0%, 68%, 0.49)",
+          "text-opacity": {
+              "base": 1,
+              "stops": [
+                  [
+                      0,
+                      1
+                  ],
+                  [
+                      8,
+                      1
+                  ],
+                  [
+                      9,
+                      0
+                  ]
+              ]
+          }
+      }
+  }
+  ]
+}

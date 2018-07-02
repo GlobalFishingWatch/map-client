@@ -1,15 +1,14 @@
 import { connect } from 'react-redux';
 import BasemapPanel from 'basemap/components/BasemapPanel';
-import { setBasemap } from 'map/mapStyleActions';
+import { updateBasemap } from 'basemap/basemapActions';
 
 const mapStateToProps = state => ({
-  activeBasemap: state.mapStyle.activeBasemap,
-  basemaps: state.mapStyle.basemaps
+  basemapLayers: state.basemap.basemapLayers
 });
 
 const mapDispatchToProps = dispatch => ({
-  setBasemap: (basemap) => {
-    dispatch(setBasemap(basemap));
+  setBasemap: (basemapId) => {
+    dispatch(updateBasemap(basemapId, true));
   }
 });
 

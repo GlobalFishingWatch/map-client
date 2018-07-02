@@ -1,6 +1,6 @@
 import { setLayerManagementModalVisibility } from 'app/appActions';
 import { addCustomLayer } from 'layers/layersActions';
-import { updateMapStyle } from 'map/mapStyleActions';
+// import { addCustomGLLayer } from 'map/mapStyleActions';
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
 
 export const CUSTOM_LAYER_UPLOAD_START = 'CUSTOM_LAYER_UPLOAD_START';
@@ -34,7 +34,8 @@ export const loadCustomLayer = (id, url /* , subtype */) => (dispatch, getState)
           data
         }
       });
-      dispatch(updateMapStyle());
+      // TODO call a specific action to add gl layer
+      // dispatch(addCustomGLLayer(id));
     });
 };
 

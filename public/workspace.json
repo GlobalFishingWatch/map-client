@@ -8,13 +8,12 @@
       "zoom": 4,
       "layers": [
         {
-          "title": "Protected Planet WDPA MPAs",
+          "title": "europe2",
           "visible": true,
-          "description": "This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.",
           "type": "CartoDBAnimation",
           "opacity": 1,
-          "id": "protectedplanet",
-          "color": "#80ffb5"
+          "id": "europe2",
+          "color": "#ff0000"
         },
         {
           "title": "AIS Fishing effort",
@@ -26,54 +25,6 @@
           "opacity": 1,
           "id": "fishing",
           "tilesetId": "gfw-tasks-657-uvi-v1"
-        },
-        {
-          "title": "MPA - No Take",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "mpant",
-          "color": "#ff8080"
-        },
-        {
-          "title": "MPA - Restricted Use",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "mparu",
-          "color": "#ffcc80"
-        },
-        {
-          "title": "EEZ",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 0.6,
-          "id": "eez",
-          "color": "#8088ff"
-        },
-        {
-          "title": "High Seas Pocket",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "highseas",
-          "color": "#ff80f4"
-        },
-        {
-          "title": "RFMO",
-          "visible": false,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "rfmo",
-          "color": "#ffff80"
-        },
-        {
-          "title": "WPP NRI",
-          "color": "#F84F40",
-          "visible": false,
-          "type": "CartoDBAnimation",
-          "id": "6",
-          "opacity": 1
         }
       ]
     },
@@ -96,6 +47,7 @@
       "tilesetId": null
     },
     "basemap": "hybrid",
+    "basemapOptions": ["graticules"],
     "timeline": {
       "innerExtent": [
         1464739200000,

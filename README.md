@@ -174,10 +174,6 @@ URL pattern used on the share feature. It must be of type http://your-site.com/?
 
 Display message contained in literals.json's `banner` in a dismissable banner on top of the map. Boolean value.
 
-#### SATELLITE_BASEMAP_URL
-
-URL template for satellite basemap tiles. Should be of the form http://url/{z}{y}{x}.
-
 
 # Permission keys description
 

@@ -23,8 +23,7 @@
     "TIMEBAR_DATA_URL": true,
     "V2_API_ENDPOINT": true,
     "WELCOME_MODAL_COOKIE_KEY": true,
-    "MAPBOX_TOKEN": true,
-    "SATELLITE_BASEMAP_URL": true
+    "MAPBOX_TOKEN": true
   },
   "parserOptions": {
     "ecmaVersion": 7,
