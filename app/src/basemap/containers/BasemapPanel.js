@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 import BasemapPanel from 'basemap/components/BasemapPanel';
-import { updateBasemap } from 'basemap/basemapActions';
+import { showBasemap, toggleBasemapOption } from 'basemap/basemapActions';
 
 const mapStateToProps = state => ({
   basemapLayers: state.basemap.basemapLayers
 });
 
 const mapDispatchToProps = dispatch => ({
-  setBasemap: (basemapId) => {
-    dispatch(updateBasemap(basemapId, true));
+  showBasemap: (basemapId) => {
+    dispatch(showBasemap(basemapId));
+  },
+  toggleBasemapOption: (basemapOptionId) => {
+    dispatch(toggleBasemapOption(basemapOptionId));
   }
 });
 

@@ -82,7 +82,7 @@
     },
     "graticules": {
       "metadata": {
-        "gfw:carto-sql": "select * ne_10m_graticules_10"
+        "gfw:carto-sql": "select * from ne_10m_graticules_10"
       },
       "type": "vector"
     }
@@ -107,7 +107,9 @@
       "id": "north-star",
       "type": "raster",
       "source": "north-star",
-      "layout": {},
+      "layout": {
+        "visibility": "none"
+      },
       "paint": {}
     },
     {

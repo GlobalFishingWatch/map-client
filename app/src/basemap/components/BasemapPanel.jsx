@@ -1,40 +1,67 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import LayerListStyles from 'styles/components/map/item-list.scss';
+import Toggle from 'components/Shared/Toggle';
+import LayerItemStyles from 'styles/components/map/layer-item.scss';
+import ListItemStyles from 'styles/components/map/item-list.scss';
 import BasemapStyles from 'styles/rightControlPanel/basemap-panel.scss';
 
 class BasemapPanel extends Component {
   render() {
-    const items = [];
+    const basemapButtons = [];
+    const basemapOptionsButtons = [];
 
     const basemaps = this.props.basemapLayers.filter(l => l.isOption !== true);
-    // const basemapOptions = this.props.basemapLayers.filter(l => l.isOption === true);
+    const basemapOptions = this.props.basemapLayers.filter(l => l.isOption === true);
 
     basemaps.forEach((basemap) => {
       const urlThumbnail = `${PUBLIC_PATH}basemaps/${basemap.id}.png`;
-      const itemLayer = (
+      const basemapButton = (
         <li
-          className={classnames(LayerListStyles.listItem, LayerListStyles._noMobileRightPadding, LayerListStyles.halfRow,
-            (basemap.visible === true) ? LayerListStyles._selected : null)}
+          className={classnames(ListItemStyles.listItem, ListItemStyles._noMobileRightPadding, ListItemStyles.halfRow,
+            (basemap.visible === true) ? ListItemStyles._selected : null)}
           key={basemap.id}
         >
           <div
-            className={LayerListStyles.itemInfo}
-            onClick={() => this.props.setBasemap(basemap.id)}
+            className={ListItemStyles.itemInfo}
+            onClick={() => this.props.showBasemap(basemap.id)}
           >
-            <img alt={basemap.label} src={urlThumbnail} className={LayerListStyles.layerThumbnail} />
-            <span className={LayerListStyles.itemTitle} >{basemap.label}</span >
+            <img alt={basemap.label} src={urlThumbnail} className={ListItemStyles.layerThumbnail} />
+            <span className={ListItemStyles.itemTitle} >{basemap.label}</span >
           </div >
         </li >);
 
-      items.push(itemLayer);
+      basemapButtons.push(basemapButton);
+    });
+
+    basemapOptions.forEach((basemapOption) => {
+      const basemapOptionButton = (
+        <div className={ListItemStyles.listItemContainer} key={basemapOption.id}>
+          <li
+            className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}
+          >
+            <div className={LayerItemStyles.layerItemHeader}>
+              <Toggle
+                on={basemapOption.visible}
+                onToggled={() => this.props.toggleBasemapOption(basemapOption.id)}
+              />
+              <div className={LayerItemStyles.itemName}>
+                {basemapOption.label || basemapOption.id}
+              </div>
+            </div>
+          </li>
+        </div>
+      );
+      basemapOptionsButtons.push(basemapOptionButton);
     });
 
     return (
       <div className={BasemapStyles.basemapsPanel} >
-        <ul className={LayerListStyles.list} >
-          {items}
+        <ul className={ListItemStyles.list} >
+          {basemapButtons}
+        </ul >
+        <ul className={classnames(ListItemStyles.list, ListItemStyles._separated)} >
+          {basemapOptionsButtons}
         </ul >
       </div >
     );
@@ -43,7 +70,8 @@ class BasemapPanel extends Component {
 
 BasemapPanel.propTypes = {
   basemapLayers: PropTypes.array,
-  setBasemap: PropTypes.func
+  showBasemap: PropTypes.func,
+  toggleBasemapOption: PropTypes.func
 };
 
 export default BasemapPanel;

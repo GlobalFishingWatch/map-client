@@ -25,12 +25,24 @@ export const initBasemap = (basemap, basemapOptions) => (dispatch, getState) => 
   dispatch(updateMapStyle());
 };
 
-export const updateBasemap = (id, visible) => (dispatch) => {
+export const showBasemap = id => (dispatch) => {
   dispatch({
     type: UPDATE_BASEMAP_LAYER,
     payload: {
       id,
-      visible
+      visible: true
+    }
+  });
+  dispatch(updateMapStyle());
+};
+
+export const toggleBasemapOption = id => (dispatch, getState) => {
+  const basemapOption = getState().basemap.basemapLayers.find(b => b.id === id);
+  dispatch({
+    type: UPDATE_BASEMAP_LAYER,
+    payload: {
+      id,
+      visible: !(basemapOption.visible === true)
     }
   });
   dispatch(updateMapStyle());

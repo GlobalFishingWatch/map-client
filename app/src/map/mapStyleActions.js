@@ -148,7 +148,9 @@ export const updateMapStyle = () => (dispatch, getState) => {
     const refLayer = layers.find(l => l.id === layerId);
 
     if (refLayer === undefined) {
-      console.warn('gl layer does not exists in workspace', glLayer);
+      if (glLayer.type !== 'background') {
+        console.warn('gl layer does not exists in workspace', glLayer);
+      }
       continue;
     }
 

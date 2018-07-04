@@ -14,34 +14,10 @@
           "opacity": 1,
           "id": "europe2",
           "color": "#ff0000"
-        },
-        {
-          "title": "AIS Fishing effort",
-          "visible": true,
-          "description": "AIS Fishing effort",
-          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v1",
-          "hue": 182,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "fishing",
-          "tilesetId": "gfw-tasks-657-uvi-v1"
         }
       ]
     },
-    "pinnedVessels": [
-      {
-        "seriesgroup": 6590993,
-        "tilesetId": "gfw-tasks-657-uvi-v1",
-        "title": "RUEY I SHYANG NO.101",
-        "visible": true,
-        "color": "#ff8080"
-      }
-    ],
-    "shownVessel": {
-      "seriesgroup": 1677763,
-      "tilesetId": "gfw-tasks-657-uvi-v1",
-      "series": 46738
-    },
+    "pinnedVessels": [],
     "encounters": {
       "seriesgroup": null,
       "tilesetId": null
