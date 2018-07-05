@@ -23,7 +23,7 @@
       "tilesetId": null
     },
     "basemap": "hybrid",
-    "basemapOptions": ["graticules"],
+    "basemapOptions": ["labels", "graticules"],
     "timeline": {
       "innerExtent": [
         1464739200000,

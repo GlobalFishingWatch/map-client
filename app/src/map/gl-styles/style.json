@@ -55,6 +55,7 @@
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
       { "id": "north-star", "label": "North Star" },
+      { "id": "labels", "isOption": true, "default": true },
       { "id": "graticules", "isOption": true }
     ]
   },
@@ -65,24 +66,29 @@
       "type": "vector"
     },
     "satellite": {
-      "tiles": ["https://api.mapbox.com/styles/v1/enriquetuya/cjin1nmzy06b52spe0z7agofh/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ"],
+      "tiles": ["http://localhost:8080/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256
     },
     "north-star": {
-      "tiles": ["https://api.mapbox.com/styles/v1/enriquetuya/cjj6svs8j1r212sqah8g9qd9d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZW5yaXF1ZXR1eWEiLCJhIjoiY2loNmFwYjJuMDlzZnR4bHh3NnRyNmQxcCJ9.vf_v5i6RWNz5Q7rglf35pQ"],
+      "tiles": ["http://localhost:8080/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256
     },
-    "europe2": {
-      "metadata": {
-        "gfw:carto-sql": "select * from ne_adm0_europe"
-      },
-      "type": "vector"
+    "labels": {
+      "tiles": ["http://localhost:8080/v1/tileset/nslabels/tile?x={x}&y={y}&z={z}"],
+      "type": "raster",
+      "tileSize": 256
     },
     "graticules": {
       "metadata": {
         "gfw:carto-sql": "select * from ne_10m_graticules_10"
+      },
+      "type": "vector"
+    },
+    "europe2": {
+      "metadata": {
+        "gfw:carto-sql": "select * from ne_adm0_europe"
       },
       "type": "vector"
     }
@@ -246,6 +252,15 @@
               ]
           }
       }
-  }
+    },
+    {
+      "id": "labels",
+      "type": "raster",
+      "source": "labels",
+      "layout": {
+        "visibility": "none"
+      },
+      "paint": {}
+    }
   ]
 }

@@ -1,6 +1,6 @@
 import GL_STYLE from 'map/gl-styles/style.json';
 import {
-  UPDATE_BASEMAP_LAYERS,
+  INIT_BASEMAP,
   UPDATE_BASEMAP_LAYER
 } from 'basemap/basemapActions';
 
@@ -10,12 +10,28 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case UPDATE_BASEMAP_LAYERS : {
+    case INIT_BASEMAP : {
+      const { workspaceBasemap, workspaceBasemapOptions } = action.payload;
       const basemapLayers = [...state.basemapLayers];
-      Object.keys(action.payload).forEach((updateKey) => {
-        const layer = basemapLayers.find(l => l.id === updateKey);
-        layer.visible = action.payload[updateKey];
+
+      // Mapbox branch compatibility:
+      // 'satellite' was name 'hybrid'
+      // 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
+      let finalBasemapId = (workspaceBasemap === 'hybrid') ? 'satellite' : workspaceBasemap;
+      if (basemapLayers.find(b => b.id === finalBasemapId) === undefined) {
+        finalBasemapId = 'north-star';
+      }
+
+      basemapLayers.forEach((basemapLayer) => {
+        const hasWorkspaceBasemapOption = workspaceBasemapOptions.indexOf(basemapLayer.id) > -1;
+        if (
+          basemapLayer.id === finalBasemapId ||
+          hasWorkspaceBasemapOption
+        ) {
+          basemapLayer.visible = true;
+        }
       });
+
       return { ...state, basemapLayers };
     }
     case UPDATE_BASEMAP_LAYER : {

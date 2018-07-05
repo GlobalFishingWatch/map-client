@@ -1,26 +1,12 @@
 import { updateMapStyle } from 'map/mapStyleActions';
 
-export const UPDATE_BASEMAP_LAYERS = 'UPDATE_BASEMAP_LAYERS';
+export const INIT_BASEMAP = 'INIT_BASEMAP';
 export const UPDATE_BASEMAP_LAYER = 'UPDATE_BASEMAP_LAYER';
 
-export const initBasemap = (basemap, basemapOptions) => (dispatch, getState) => {
-  // Mapbox branch compatibility:
-  // 'satellite' was name 'hybrid'
-  // 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
-  let finalBasemapId = (basemap === 'hybrid') ? 'satellite' : basemap;
-  if (getState().basemap.basemapLayers.find(b => b.id === finalBasemapId) === undefined) {
-    finalBasemapId = 'north-star';
-  }
-
-  const updates = {};
-  updates[finalBasemapId] = true;
-  basemapOptions.forEach((basemapOption) => {
-    updates[basemapOption] = true;
-  });
-
+export const initBasemap = (workspaceBasemap, workspaceBasemapOptions) => (dispatch, getState) => {
   dispatch({
-    type: UPDATE_BASEMAP_LAYERS,
-    payload: updates
+    type: INIT_BASEMAP,
+    payload: { workspaceBasemap, workspaceBasemapOptions }
   });
   dispatch(updateMapStyle());
 };
