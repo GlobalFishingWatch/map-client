@@ -42,7 +42,6 @@ const webpackConfig = {
       FEATURE_FLAG_SUBSCRIPTIONS: envVariables.FEATURE_FLAG_SUBSCRIPTIONS === 'true',
       FEATURE_FLAG_EXTENDED_POLYGON_LAYERS: envVariables.FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === 'true',
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
-      MAPBOX_TOKEN: JSON.stringify(envVariables.MAPBOX_TOKEN),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       'process.env.NODE_ENV': JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),

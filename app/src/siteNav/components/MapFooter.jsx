@@ -39,62 +39,7 @@ class MapFooter extends Component {
   }
 
   renderAttribution() {
-    return (
-      <span>
-        <a
-          className={MapFooterStyles.link}
-          href="https://www.mapbox.com/about/maps/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          © Mapbox
-        </a>
-        {' '}
-        <a
-          className={MapFooterStyles.link}
-          href="http://www.openstreetmap.org/about/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          © OpenStreetMap
-        </a>
-        {' - '}
-        <a
-          className={MapFooterStyles.link}
-          href={`https://www.mapbox.com/feedback/?owner=enriquetuya&amp;id=cjfuv36ys4b652tntrt2dsmet&amp;access_token=${MAPBOX_TOKEN}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Improve this map
-        </a>
-        <br />
-        <a
-          className={MapFooterStyles.link}
-          href="https://www.digitalglobe.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          © DigitalGlobe
-        </a>
-        {' - '}
-        <a
-          className={MapFooterStyles.link}
-          href="http://marineregions.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          marineregions.org
-        </a>, MPAs:{' '}
-        <a
-          className={MapFooterStyles.link}
-          href="http://mpatlas.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          mpatlas.org
-        </a>
-      </span>);
+    return <span dangerouslySetInnerHTML={{ __html: this.props.attributions.join(', ') }} />;
   }
 
   render() {
@@ -166,6 +111,7 @@ class MapFooter extends Component {
 MapFooter.propTypes = {
   onOpenSupportFormModal: PropTypes.func,
   isEmbedded: PropTypes.bool,
+  attributions: PropTypes.array,
   onExternalLink: PropTypes.func
 };
 

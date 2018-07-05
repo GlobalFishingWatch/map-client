@@ -61,14 +61,11 @@
   },
   "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
   "sources": {
-    "composite": {
-      "url": "mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7,mapbox.9tm8dx88,mapbox.4suez6c9,mapbox.akwnx50w,mapbox.8x70v9py,mapbox.b1l3wqbs,mapbox.cc9j0p61,mapbox.d4advw8k",
-      "type": "vector"
-    },
     "satellite": {
       "tiles": ["http://localhost:8080/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
-      "tileSize": 256
+      "tileSize": 256,
+      "attribution": "Map data ©2016 Google, INEGI Imagery ©2016 NASA"
     },
     "north-star": {
       "tiles": ["http://localhost:8080/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
@@ -90,7 +87,8 @@
       "metadata": {
         "gfw:carto-sql": "select * from ne_adm0_europe"
       },
-      "type": "vector"
+      "type": "vector",
+      "attribution": "<a href='http://mpatlas.org'>mpatlas.org</a>"
     }
   },
   "layers": [

@@ -16,10 +16,6 @@ class Map extends React.Component {
     // there is a problem with the container width computation (only with "fat scrollbar" browser/os configs),
     // seems like the panels with scrollbars are taken into account or smth
     window.setTimeout(() => this._resize(), 10000);
-    // sadly mapbox gl's options.logoPosition is not exposed by react-map-gl, so we have to move around some DOM
-    const logo = this._mapContainerRef.querySelector('.mapboxgl-ctrl-logo');
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').appendChild(logo);
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML = '';
   }
 
   componentWillUnmount() {
@@ -75,7 +71,6 @@ class Map extends React.Component {
       >
         <MapGL
           onTransitionEnd={transitionEnd}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
           onClick={this.onClick}
           getCursor={({ isDragging }) => {

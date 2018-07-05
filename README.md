@@ -109,11 +109,6 @@ Port in which the node server will listen for incoming connections
 
 Server subpath over which the application will be served. May be empty if the application should load through relative urls, or a static path for loading through an absolute url. If not empty, it must start and end with a `/` character (such as `/map/`).
 
-#### MAPBOX_TOKEN
-
-Mapbox Token for Mapbox GL JS styles and sources. Do not use Mapbox default public token.
-
-
 #### NODE_ENV
 
 Environment in which the node server will run (production/development)
