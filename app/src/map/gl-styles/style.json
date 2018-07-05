@@ -55,11 +55,11 @@
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
       { "id": "north-star", "label": "North Star" },
-      { "id": "labels", "isOption": true, "default": true },
+      { "id": "labels", "isOption": true },
       { "id": "graticules", "isOption": true }
     ]
   },
-  "glyphs": "mapbox://fonts/enriquetuya/{fontstack}/{range}.pbf",
+  "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
   "sources": {
     "composite": {
       "url": "mapbox://mapbox.mapbox-terrain-v2,mapbox.mapbox-streets-v7,mapbox.9tm8dx88,mapbox.4suez6c9,mapbox.akwnx50w,mapbox.8x70v9py,mapbox.b1l3wqbs,mapbox.cc9j0p61,mapbox.d4advw8k",
@@ -138,8 +138,7 @@
         "visibility": "none",
         "text-field": "{admin}",
         "text-font": [
-          "Roboto Mono Light",
-          "Arial Unicode MS Regular"
+          "Roboto Mono Light"
         ],
         "text-size": 10
       },
@@ -194,8 +193,7 @@
           "visibility": "none",
           "text-field": "{degrees}º",
           "text-font": [
-              "Roboto Medium Italic",
-              "Arial Unicode MS Regular"
+              "Roboto Medium Italic"
           ],
           "symbol-placement": "line",
           "symbol-spacing": {
