@@ -56,7 +56,8 @@
       { "id": "satellite", "label": "Satellite" },
       { "id": "north-star", "label": "North Star" },
       { "id": "labels", "isOption": true },
-      { "id": "graticules", "isOption": true }
+      { "id": "graticules", "isOption": true },
+      { "id": "bathymetry", "isOption": true }
     ]
   },
   "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
@@ -80,6 +81,12 @@
     "graticules": {
       "metadata": {
         "gfw:carto-sql": "select * from ne_10m_graticules_10"
+      },
+      "type": "vector"
+    },
+    "bathymetry": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT * FROM bathymetry order by depth"
       },
       "type": "vector"
     },
@@ -115,6 +122,58 @@
         "visibility": "none"
       },
       "paint": {}
+    },
+    {
+      "id": "bathymetry",
+      "type": "fill",
+      "source": "bathymetry",
+      "source-layer": "bathymetry",
+      "layout": {
+        "visibility": "none"
+      },
+      "paint": {
+          "fill-color": [
+              "interpolate",
+              [
+                  "linear"
+              ],
+              [
+                  "get",
+                  "depth"
+              ],
+              200,
+              "hsl(215, 100%, 18%)",
+              10000,
+              "hsl(215, 100%, 0%)"
+          ],
+          "fill-outline-color": "hsla(0, 0%, 100%, 0.15)"
+      }
+    },
+    {
+      "id": "bathymetry-labels",
+      "type": "symbol",
+      "source": "bathymetry",
+      "source-layer": "bathymetry",
+      "minzoom": 3,
+      "layout": {
+          "visibility": "none",
+          "text-field": [
+              "to-string",
+              [
+                  "get",
+                  "depth"
+              ]
+          ],
+          "symbol-placement": "line",
+          "text-allow-overlap": true,
+          "text-size": 7,
+          "text-font": [
+              "Roboto Medium Italic"
+          ]
+      },
+      "paint": {
+          "text-color": "hsl(0, 0%, 100%)"
+      }
     },
     {
       "id": "europe2",
