@@ -63,18 +63,18 @@
   "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
   "sources": {
     "satellite": {
-      "tiles": ["http://localhost:8080/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
+      "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256,
       "attribution": "Map data ©2016 Google, INEGI Imagery ©2016 NASA"
     },
     "north-star": {
-      "tiles": ["http://localhost:8080/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
+      "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256
     },
     "labels": {
-      "tiles": ["http://localhost:8080/v1/tileset/nslabels/tile?x={x}&y={y}&z={z}"],
+      "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/nslabels/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256
     },
