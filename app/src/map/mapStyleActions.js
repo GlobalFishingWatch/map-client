@@ -6,6 +6,11 @@ import { hexToRgba } from 'utils/colors';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
 export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
 
+const setMapStyle = style => ({
+  type: UPDATE_MAP_STYLE,
+  payload: style
+});
+
 const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
   const visibility = (refLayer.visible === true && refLayer.added === true) ? 'visible' : 'none';
   return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
@@ -62,34 +67,36 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   return newStyle;
 };
 
-export const initCustomLayer = (style, layer, layerData) => {
-  // TODO auto set to interactive
-  let newStyle = style;
+export const addCustomGLLayer = layerId => (dispatch, getState) => {
+  const state = getState();
+  let style = state.mapStyle.mapStyle;
   const currentStyle = style.toJS();
-  const sourceId = `${layer.id}-source`;
+  const refLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
+  const layerData = state.customLayer.layersData[refLayer.id];
 
-  if (currentStyle.sources[layer.id] === undefined) {
+  if (currentStyle.sources[refLayer.id] === undefined) {
     const source = fromJS({
       type: 'geojson',
       data: layerData
     });
-    newStyle = newStyle.setIn(['sources', sourceId], source);
+    style = style.setIn(['sources', refLayer.id], source);
   }
 
-  if (currentStyle.layers.find(glLayer => glLayer.id === layer.id) === undefined) {
+  if (currentStyle.layers.find(glLayer => glLayer.id === refLayer.id) === undefined) {
     const glLayer = fromJS({
-      id: layer.id,
+      id: refLayer.id,
       // FIXME detect feature type to allow displaying points/lines too?
       type: 'fill',
-      source: sourceId,
+      source: refLayer.id,
+      interactive: true,
       layout: {},
-      paint: {
-      }
+      paint: {}
     });
-    newStyle = newStyle.set('layers', newStyle.get('layers').concat([glLayer]));
+    style = style.set('layers', style.get('layers').concat([glLayer]));
   }
 
-  return newStyle;
+  dispatch(setMapStyle(style));
+  dispatch(updateMapStyle());
 };
 
 const getCartoLayerInstanciatePromise = ({ sourceId, sourceCartoSQL }) => {
@@ -148,10 +155,7 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
         });
       });
 
-      dispatch({
-        type: UPDATE_MAP_STYLE,
-        payload: style
-      });
+      dispatch(setMapStyle(style));
       dispatch(updateMapStyle());
     })
     .catch((err) => {
@@ -161,7 +165,7 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
 
 export const updateMapStyle = () => (dispatch, getState) => {
   const state = getState();
-  const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
+  const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
   const basemapLayers = state.basemap.basemapLayers;
   const layers = staticAndCustomLayers.concat(basemapLayers);
 
@@ -204,8 +208,5 @@ export const updateMapStyle = () => (dispatch, getState) => {
     dispatch(instanciateCartoLayers(cartoLayersToInstanciate));
   }
 
-  dispatch({
-    type: UPDATE_MAP_STYLE,
-    payload: style
-  });
+  dispatch(setMapStyle(style));
 };
