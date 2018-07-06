@@ -1,10 +1,15 @@
 import { LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { NO_FILL_FILL, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
-import uniq from 'lodash/uniq';
 import { hexToRgba } from 'utils/colors';
 
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
+export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
+
+const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
+  const visibility = (refLayer.visible === true && refLayer.added === true) ? 'visible' : 'none';
+  return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
+};
 
 const updateGLLayer = (style, glLayerId, refLayer) => {
   const currentStyle = style.toJS();
@@ -15,10 +20,9 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   const glLayer = currentStyleLayers.find(l => l.id === glLayerId);
 
   // visibility
-  // TODO make sure no gfw:carto-instanciated check is needed
-  const visibility = (refLayer.visible === true && refLayer.added === true) ? 'visible' : 'none';
-  newStyle = newStyle.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
+  newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
+  // basemap layers only allowed change is visibility, so bail here
   if (refLayer.basemap === true) {
     return newStyle;
   }
@@ -38,7 +42,8 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
     case 'symbol': {
       // TODO use metadata to set is label, or just use 'symbol' ?
       // if (glLayer.isLabelsLayer === true) {
-      const labelsVisibility = (visibility === 'visible' && refLayer.showLabels === true) ? 'visible' : 'none';
+      const parentLayerIsVisible = newStyle.getIn(['layers', glLayerIndex, 'layout', 'visibility']) === 'visible';
+      const labelsVisibility = (parentLayerIsVisible && refLayer.showLabels === true) ? 'visible' : 'none';
       newStyle = newStyle.setIn(['layers', glLayerIndex, 'layout', 'visibility'], labelsVisibility);
       if (refLayer.showLabels !== true) {
         break;
@@ -87,54 +92,80 @@ export const initCustomLayer = (style, layer, layerData) => {
   return newStyle;
 };
 
-export const instanciateCartoLayer = sourceId => (dispatch, getState) => {
-  let style = getState().mapStyle.mapStyle;
-  const currentStyle = style.toJS();
-  const glSource = currentStyle.sources[sourceId];
-  const sql = glSource.metadata['gfw:carto-sql'];
-
-  const mapConfig = { layers: [{ id: sourceId, options: { sql } }] };
+const getCartoLayerInstanciatePromise = ({ sourceId, sourceCartoSQL }) => {
+  const mapConfig = { layers: [{ id: sourceId, options: { sql: sourceCartoSQL } }] };
   const mapConfigURL = encodeURIComponent(JSON.stringify(mapConfig));
   const cartoAnonymousMapUrl = STATIC_LAYERS_CARTO_ENDPOINT.replace('$MAPCONFIG', mapConfigURL);
 
-  fetch(cartoAnonymousMapUrl)
-    .then(res => res.json())
-    .then((data) => {
-      const layergroupid = data.layergroupid;
-      const tilesURL = STATIC_LAYERS_CARTO_TILES_ENDPOINT.replace('$LAYERGROUPID', layergroupid);
-
-      // replace gl source with a new source that use tiles provided by Carto anonymous maps API
-      const newSourceId = `${sourceId}-instanciated`;
-      style = style.setIn(['sources', newSourceId], fromJS({
-        type: 'vector',
-        tiles: [tilesURL],
-        metadata: { 'gfw:carto-instanciated': true }
-      }));
-      style.removeIn(['sources', sourceId]);
-
-      // change source in all layers that are using it
-      currentStyle.layers.forEach((layer, styleLayerIndex) => {
-        if (layer.source === sourceId) {
-          style = style.setIn(['layers', styleLayerIndex, 'source'], newSourceId);
-          style = style.setIn(['layers', styleLayerIndex, 'metadata', 'gfw:id'], sourceId);
+  return new Promise((resolve) => {
+    fetch(cartoAnonymousMapUrl)
+      .then((res) => {
+        if (res.status >= 400) {
+          console.warn(`loading of layer failed ${sourceId}`);
+          Promise.reject();
+          return null;
         }
+        return res.json();
+      })
+      .then((data) => {
+        resolve({
+          layergroupid: data.layergroupid,
+          sourceId
+        });
+      }).catch((err) => {
+        console.warn(err);
       });
+  });
+};
+
+const instanciateCartoLayers = layers => (dispatch, getState) => {
+  dispatch({
+    type: MARK_CARTO_LAYERS_AS_INSTANCIATED,
+    payload: layers.map(layer => layer.sourceId)
+  });
+  const cartoLayersPromises = layers.map(layer => getCartoLayerInstanciatePromise(layer));
+  const cartoLayersPromisesPromise = Promise.all(cartoLayersPromises.map(p => p.catch(e => e)));
+  cartoLayersPromisesPromise
+    .then((instanciatedCartoLayers) => {
+      let style = getState().mapStyle.mapStyle;
+      const currentStyle = style.toJS();
+      instanciatedCartoLayers.forEach((cartoLayer) => {
+        const tilesURL = STATIC_LAYERS_CARTO_TILES_ENDPOINT.replace('$LAYERGROUPID', cartoLayer.layergroupid);
+
+        // replace gl source with a new source that use tiles provided by Carto anonymous maps API
+        const newSourceId = `${cartoLayer.sourceId}-instanciated`;
+        style = style.setIn(['sources', newSourceId], fromJS({
+          type: 'vector',
+          tiles: [tilesURL]
+        }));
+
+        // change source in all layers that are using it
+        currentStyle.layers.forEach((layer, glLayerIndex) => {
+          if (layer.source === cartoLayer.sourceId) {
+            style = style.setIn(['layers', glLayerIndex, 'source'], newSourceId);
+            style = style.setIn(['layers', glLayerIndex, 'metadata', 'gfw:id'], cartoLayer.sourceId);
+          }
+        });
+      });
+
       dispatch({
         type: UPDATE_MAP_STYLE,
         payload: style
       });
       dispatch(updateMapStyle());
-    }).catch((err) => {
+    })
+    .catch((err) => {
       console.warn(err);
     });
 };
 
 export const updateMapStyle = () => (dispatch, getState) => {
-  const staticAndCustomLayers = getState().layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
-  const basemapLayers = getState().basemap.basemapLayers;
+  const state = getState();
+  const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
+  const basemapLayers = state.basemap.basemapLayers;
   const layers = staticAndCustomLayers.concat(basemapLayers);
 
-  let style = getState().mapStyle.mapStyle;
+  let style = state.mapStyle.mapStyle;
   const currentStyle = style.toJS();
   const glLayers = currentStyle.layers;
 
@@ -142,8 +173,9 @@ export const updateMapStyle = () => (dispatch, getState) => {
 
   for (let i = 0; i < glLayers.length; i++) {
     const glLayer = glLayers[i];
-    const glSource = currentStyle.sources[glLayer.source];
-    const layerId = (glLayer.metadata !== undefined && glLayer.metadata['gfw:id']) || glLayer.source;
+    const sourceId = glLayer.source;
+    const glSource = currentStyle.sources[sourceId];
+    const layerId = (glLayer.metadata !== undefined && glLayer.metadata['gfw:id']) || sourceId;
 
     const refLayer = layers.find(l => l.id === layerId);
 
@@ -155,20 +187,22 @@ export const updateMapStyle = () => (dispatch, getState) => {
     }
 
     // check if layer is served from Carto, which means we need to instanciate it first
-    if (glSource.metadata && glSource.metadata['gfw:carto-sql']) {
+    const sourceCartoSQL = glSource.metadata !== undefined && glSource.metadata['gfw:carto-sql'];
+    if (sourceCartoSQL !== false) {
       // only if layer is visible and has not been instanciated yet
-      if (refLayer.visible === true && glSource.metadata['gfw:carto-instanciated'] !== true) {
-        cartoLayersToInstanciate.push(glLayer.source);
-        continue;
+      const cartoLayerInstanciated = state.mapStyle.cartoLayersInstanciated.indexOf(sourceId) > -1;
+      if (refLayer.visible === true && !cartoLayerInstanciated && !cartoLayersToInstanciate.find(l => l.sourceId === sourceId)) {
+        cartoLayersToInstanciate.push({ sourceId, sourceCartoSQL });
       }
+      continue;
     }
 
     style = updateGLLayer(style, glLayer.id, refLayer);
   }
 
-  uniq(cartoLayersToInstanciate).forEach((sourceId) => {
-    dispatch(instanciateCartoLayer(sourceId));
-  });
+  if (cartoLayersToInstanciate.length) {
+    dispatch(instanciateCartoLayers(cartoLayersToInstanciate));
+  }
 
   dispatch({
     type: UPDATE_MAP_STYLE,
