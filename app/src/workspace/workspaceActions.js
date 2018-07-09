@@ -130,9 +130,9 @@ export function saveWorkspace(errorAction) {
 
     const basemap = state.basemap.basemapLayers.find(basemapLayer =>
       basemapLayer.isOption !== true && basemapLayer.visible === true
-    );
+    ).id;
     const basemapOptions = state.basemap.basemapLayers.filter(basemapLayer =>
-      basemapLayer.isOption === true
+      basemapLayer.isOption === true && basemapLayer.visible === true
     ).map(basemapLayer => basemapLayer.id);
 
     const workspaceData = {
