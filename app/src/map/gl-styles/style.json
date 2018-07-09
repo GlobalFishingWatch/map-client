@@ -96,6 +96,12 @@
       },
       "type": "vector",
       "attribution": "<a href='http://mpatlas.org'>mpatlas.org</a>"
+    },
+    "mpant": {
+      "metadata": {
+        "gfw:carto-sql": "select *, cartodb_id as reporting_id, name as reporting_name from mpant"
+      },
+      "type": "vector"
     }
   },
   "layers": [
@@ -194,6 +200,32 @@
       "layout": {
         "visibility": "none",
         "text-field": "{admin}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "mpant",
+      "type": "fill",
+      "source": "mpant",
+      "source-layer": "mpant",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "mpant-labels",
+      "type": "symbol",
+      "source": "mpant",
+      "source-layer": "mpant",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
         "text-font": [
           "Roboto Mono Light"
         ],

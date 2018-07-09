@@ -15,7 +15,6 @@ import { REPORT_STATUS } from 'constants';
 import { SUBSCRIBE_DEFAULT_FREQUENCY } from '../config';
 
 const initialState = {
-  currentPolygon: {},
   polygons: [],
   polygonsIds: [],
   layerTitle: null,
@@ -29,24 +28,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_REPORT_POLYGON: {
-      const polygonData = action.payload.polygonData;
-
-      if (polygonData.reporting_id === undefined || polygonData.reporting_name === undefined) {
-        console.warn('reporting_id/name missing', polygonData);
-        return state;
-      }
-
-      const isInReport = !!state.polygons.find(polygon => polygon.reportingId === polygonData.reporting_id);
-      const currentPolygon = {
-        reportingId: polygonData.reporting_id,
-        name: polygonData.reporting_name,
-        isInReport
-      };
-      const newState = { ...state, currentPolygon };
-      return newState;
-    }
-
     case UPDATE_SUBSCRIPTION_FREQUENCY: {
       return Object.assign({}, state, {
         subscriptionFrequency: action.payload.frequency
@@ -67,11 +48,9 @@ export default function (state = initialState, action) {
 
     case ADD_REPORT_POLYGON: {
       const polygons = state.polygons.slice();
-      polygons.push(Object.assign({}, state.currentPolygon));
-      const currentPolygon = Object.assign({}, state.currentPolygon, { isInReport: true });
+      polygons.push(Object.assign({}, action.payload));
       return Object.assign({}, state, {
         polygons,
-        currentPolygon,
         polygonsIds: polygons.map(polygon => polygon.reportingId).sort()
       });
     }
@@ -79,10 +58,8 @@ export default function (state = initialState, action) {
     case DELETE_REPORT_POLYGON: {
       const polygons = state.polygons.slice();
       polygons.splice(action.payload.polygonIndex, 1);
-      const currentPolygon = Object.assign({}, state.currentPolygon, { isInReport: false });
       return Object.assign({}, state, {
         polygons,
-        currentPolygon,
         polygonsIds: polygons.map(polygon => polygon.reportingId).sort()
       });
     }
@@ -94,14 +71,11 @@ export default function (state = initialState, action) {
         reportId: action.payload.reportId,
         layerTitle: action.payload.layerTitle,
         status: REPORT_STATUS.idle,
-        polygonsIds: [],
-        currentPolygon: {}
+        polygonsIds: []
       });
 
-    case CLEAR_REPORT_POLYGON:
-      return Object.assign({}, state, { currentPolygon: {} });
     case DISCARD_REPORT:
-      return Object.assign({}, state, { polygons: [], polygonsIds: [], currentPolygon: {}, layerId: null });
+      return Object.assign({}, state, { polygons: [], polygonsIds: [], layerId: null });
     case SET_SUBSCRIPTION_STATUS_SENT:
       return Object.assign({}, state, { status: REPORT_STATUS.sent, statusText: action.payload });
     case SET_SUBSCRIPTION_STATUS_ERROR:

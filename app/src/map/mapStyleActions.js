@@ -1,5 +1,5 @@
 import { LAYER_TYPES_MAPBOX_GL } from 'constants';
-import { NO_FILL_FILL, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
+import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from 'utils/colors';
 
@@ -16,7 +16,7 @@ const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
   return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
 };
 
-const updateGLLayer = (style, glLayerId, refLayer) => {
+const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
   const currentStyle = style.toJS();
   const currentStyleLayers = currentStyle.layers;
   let newStyle = style;
@@ -27,21 +27,39 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   // visibility
   newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
-  // basemap layers only allowed change is visibility, so bail here
+  // basemap layers' only allowed change is visibility, so bail here
   if (refLayer.basemap === true) {
     return newStyle;
   }
 
   // color/opacity
-  const fillColor = hexToRgba(refLayer.color, 0.5);
   switch (glLayer.type) {
     case 'fill': {
-      const previousFill = glLayer.paint['fill-color'];
-      const hasFill = previousFill !== undefined && previousFill !== NO_FILL_FILL;
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayer.opacity)
-        .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color)
-        .setIn(['layers', glLayerIndex, 'paint', 'fill-color'], (hasFill) ? fillColor : NO_FILL_FILL);
+        .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color);
+
+      let fillColor;
+      if (reportPolygonsIds === null || !reportPolygonsIds.length) {
+        fillColor = GL_TRANSPARENT;
+      } else {
+        const reportedFillColor = hexToRgba(refLayer.color, 0.5);
+        fillColor = [
+          'match',
+          [
+            'get',
+            'reporting_id'
+          ]
+        ];
+
+        // [value, color, value, color, default color]
+        reportPolygonsIds.forEach((id) => {
+          fillColor.push(id);
+          fillColor.push(reportedFillColor);
+        });
+        fillColor.push(GL_TRANSPARENT);
+      }
+      newStyle = newStyle.setIn(['layers', glLayerIndex, 'paint', 'fill-color'], fillColor);
       break;
     }
     case 'symbol': {
@@ -174,6 +192,7 @@ export const updateMapStyle = () => (dispatch, getState) => {
   const glLayers = currentStyle.layers;
 
   const cartoLayersToInstanciate = [];
+  console.log(state.report)
 
   for (let i = 0; i < glLayers.length; i++) {
     const glLayer = glLayers[i];
@@ -201,7 +220,9 @@ export const updateMapStyle = () => (dispatch, getState) => {
       continue;
     }
 
-    style = updateGLLayer(style, glLayer.id, refLayer);
+    const layerIsInReport = refLayer.id === state.report.layerId;
+    const reportPolygonIds = (layerIsInReport) ? state.report.polygons.map(l => l.reportingId) : null;
+    style = updateGLLayer(style, glLayer.id, refLayer, reportPolygonIds);
   }
 
   if (cartoLayersToInstanciate.length) {

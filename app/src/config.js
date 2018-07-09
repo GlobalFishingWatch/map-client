@@ -102,7 +102,7 @@ export const ACTIVITY_HIGHLIGHT_HUE = PALETTE_COLORS[8].hue;
 export const ENCOUNTERS_VESSEL_COLOR = '#FF0000';
 export const ENCOUNTERS_REEFER_COLOR = '#ffbcc6';
 
-export const NO_FILL_FILL = 'rgba(0,0,0,0)';
+export const GL_TRANSPARENT = 'rgba(0,0,0,0)';
 
 // tracks
 export const TRACK_DEFAULT_COLOR = PALETTE_COLORS[8].color;
