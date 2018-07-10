@@ -75,7 +75,6 @@ class MapFooter extends Component {
               >
                 {toggleLabel}
               </span>
-              <span className={MapFooterStyles.betaPill}>Beta</span>
             </span>
             }
 
