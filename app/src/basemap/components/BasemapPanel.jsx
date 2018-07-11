@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import Toggle from 'components/Shared/Toggle';
-import LayerItemStyles from 'styles/components/map/layer-item.scss';
 import ListItemStyles from 'styles/components/map/item-list.scss';
 import BasemapStyles from 'styles/rightControlPanel/basemap-panel.scss';
+import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
+import Graticules from '-!babel-loader!svg-react-loader!assets/icons/graticules.svg';
+import Bathymetry from '-!babel-loader!svg-react-loader!assets/icons/bathymetry.svg';
 
 class BasemapPanel extends Component {
   render() {
@@ -35,21 +37,26 @@ class BasemapPanel extends Component {
     });
 
     basemapOptions.forEach((basemapOption) => {
+      let icon;
+      switch (basemapOption.id) {
+        case 'labels' : icon = <Labels />; break;
+        case 'graticules' : icon = <Graticules />; break;
+        case 'bathymetry' : icon = <Bathymetry />; break;
+        default : icon = null; break;
+      }
       const basemapOptionButton = (
-        <div className={ListItemStyles.listItemContainer} key={basemapOption.id}>
-          <li
-            className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}
+        <div
+          key={basemapOption.id}
+          onClick={() => this.props.toggleBasemapOption(basemapOption.id)}
+          className={BasemapStyles.option}
+        >
+          <ExpandItemButton
+            active={basemapOption.visible}
+            expandable={false}
+            label={basemapOption.label || basemapOption.id}
           >
-            <div className={LayerItemStyles.layerItemHeader}>
-              <Toggle
-                on={basemapOption.visible}
-                onToggled={() => this.props.toggleBasemapOption(basemapOption.id)}
-              />
-              <div className={LayerItemStyles.itemName}>
-                {basemapOption.label || basemapOption.id}
-              </div>
-            </div>
-          </li>
+            {icon}
+          </ExpandItemButton >
         </div>
       );
       basemapOptionsButtons.push(basemapOptionButton);
@@ -60,7 +67,7 @@ class BasemapPanel extends Component {
         <ul className={ListItemStyles.list} >
           {basemapButtons}
         </ul >
-        <ul className={classnames(ListItemStyles.list, ListItemStyles._separated)} >
+        <ul className={BasemapStyles.options} >
           {basemapOptionsButtons}
         </ul >
       </div >
