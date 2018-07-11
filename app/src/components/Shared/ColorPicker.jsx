@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Checkbox from 'components/Shared/Checkbox';
+import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
 import classnames from 'classnames';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
@@ -60,13 +61,17 @@ class ColorPicker extends Component {
           />
         </div>}
         {onShowLabelsToggle && <div className={colorPickerStyles.section}>
-          <Checkbox
-            classNames="-spaced"
-            label="Show labels"
-            id={id}
-            callback={this.props.onShowLabelsToggle}
-            checked={showLabels}
-          />
+          <div
+            onClick={this.props.onShowLabelsToggle}
+          >
+            <ExpandItemButton
+              active={showLabels}
+              expandable={false}
+              label="Show labels"
+            >
+              <Labels />
+            </ExpandItemButton >
+          </div>
         </div>}
       </div>
     );
