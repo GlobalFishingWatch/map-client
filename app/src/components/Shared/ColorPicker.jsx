@@ -2,25 +2,25 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
 import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
-import classnames from 'classnames';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
 import InputRange from 'react-input-range';
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 
 class ColorPicker extends Component {
-  renderInput(color, hue, checkedColor) {
+  renderInput(color, hue, checkedColor, id) {
+    const key = `${id}-${color}`;
     return (
-      <div className={classnames(colorPickerStyles.colorInput)} key={color}>
+      <div className={colorPickerStyles.colorInput} key={key}>
         <input
           type="radio"
-          name={color}
-          id={color}
+          name={key}
+          id={key}
           value={color}
           onChange={() => this.props.onTintChange(color, hue)}
           checked={checkedColor.toLowerCase() === color.toLowerCase()}
         />
-        <label htmlFor={color} style={{ backgroundColor: color }} />
+        <label htmlFor={key} style={{ backgroundColor: color }} />
       </div>
     );
   }
@@ -38,7 +38,7 @@ class ColorPicker extends Component {
       <div className={colorPickerStyles.colorPicker}>
         <div className={colorPickerStyles.title}>Color</div>
         <div className={colorPickerStyles.colorInputs}>
-          { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor))}
+          { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
         </div>
         {onOpacityChange && <div className={colorPickerStyles.section}>
           Opacity
