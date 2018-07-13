@@ -2,10 +2,9 @@
   "workspace": {
     "map": {
       "center": [
-        0,
-        0
+        13.833970368737164, -99.8458247347295
       ],
-      "zoom": 3,
+      "zoom": 4,
       "layers": [
         {
           "title": "europe2",
@@ -40,7 +39,20 @@
         }
       ]
     },
-    "pinnedVessels": [],
+    "pinnedVessels": [
+      {"seriesgroup":4315970,"tilesetId":"gfw-tasks-657-uvi-v2","title":"OAXACA","visible":true,"color":"#ffff00"},
+      {"seriesgroup":3835805,"tilesetId":"gfw-tasks-657-uvi-v2","title":"AZTECA 5","visible":false,"color":"#00ff6a"},
+      {"seriesgroup":1918314,"tilesetId":"gfw-tasks-657-uvi-v2","title":"GIJON","visible":true,"color":"#fca26f"},
+      {"seriesgroup":1678772,"tilesetId":"gfw-tasks-657-uvi-v2","title":"FU YUAN YU 018","visible":true,"color":"#ff81e5"}
+    ],
+    "fleets": [
+      {
+        "title": "Some boats on the Mexican coast",
+        "vessels": [4315970, 3835805],
+        "visible": true,
+        "color": "#00ff6a"
+      }
+    ],
     "encounters": {
       "seriesgroup": null,
       "tilesetId": null

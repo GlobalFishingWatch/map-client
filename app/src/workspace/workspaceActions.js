@@ -11,6 +11,7 @@ import { initLayers } from 'layers/layersActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
+import { setFleetsFromWorkspace } from 'fleets/fleetsActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
@@ -224,6 +225,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     });
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+    dispatch(setFleetsFromWorkspace(workspaceData.fleets));
 
     if (workspaceData.encounters !== null && workspaceData.encounters !== undefined &&
         workspaceData.encounters.seriesgroup !== null && workspaceData.encounters.seriesgroup !== undefined) {
@@ -299,6 +301,7 @@ function processNewWorkspace(data) {
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
+    fleets: workspace.fleets || [],
     encounters: workspace.encounters,
     filterGroups
   };

@@ -95,6 +95,7 @@ const webpackConfig = {
       pinnedVessels: 'src/pinnedVessels',
       recentVessels: 'src/recentVessels',
       vesselInfo: 'src/vesselInfo',
+      fleets: 'src/fleets',
       report: 'src/report',
       search: 'src/search',
       share: 'src/share',

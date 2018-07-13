@@ -192,7 +192,6 @@ export const updateMapStyle = () => (dispatch, getState) => {
   const glLayers = currentStyle.layers;
 
   const cartoLayersToInstanciate = [];
-  console.log(state.report)
 
   for (let i = 0; i < glLayers.length; i++) {
     const glLayer = glLayers[i];
@@ -204,7 +203,7 @@ export const updateMapStyle = () => (dispatch, getState) => {
 
     if (refLayer === undefined) {
       if (glLayer.type !== 'background') {
-        console.warn('gl layer does not exists in workspace', glLayer);
+        // console.warn('gl layer does not exists in workspace', glLayer);
       }
       continue;
     }
