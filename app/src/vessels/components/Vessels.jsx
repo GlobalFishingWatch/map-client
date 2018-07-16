@@ -31,7 +31,7 @@ class Vessels extends Component {
       {items.map((item) => {
         const isFleet = item.fleetVessels !== undefined;
         return (isFleet)
-          ? <Fleet fleet={item} key={item.vessels.join('')} />
+          ? <Fleet fleet={item} key={item.id} />
           : <Vessel vessel={item} key={item.seriesgroup} />;
       })}
     </div>);

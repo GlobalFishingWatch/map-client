@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Vessel from 'vessels/containers/Vessel';
+import Toggle from 'components/Shared/Toggle';
 
 class Fleet extends Component {
   renderFleetVessel(fleetVessel) {
@@ -19,6 +20,11 @@ class Fleet extends Component {
       />))}
     </div>);
     return (<div>
+      <Toggle
+        on={fleet.visible}
+        color={fleet.color}
+        onToggled={() => this.props.toggle(fleet.id)}
+      />
       {fleet.title}
       {fleetVessels}
     </div>);
@@ -26,7 +32,8 @@ class Fleet extends Component {
 }
 
 Fleet.propTypes = {
-  fleet: PropTypes.object
+  fleet: PropTypes.object,
+  toggle: PropTypes.func
 };
 
 export default Fleet;

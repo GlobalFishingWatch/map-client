@@ -1,21 +1,13 @@
 import { connect } from 'react-redux';
 import Fleet from 'vessels/components/Fleet';
-// import {
-//   toggleVesselPin,
-//   setPinnedVesselHue,
-//   togglePinnedVesselEditMode
-// } from 'vesselInfo/vesselInfoActions';
+import {
+  toggleFleetVisibility
+} from 'fleets/fleetsActions';
 
 const mapDispatchToProps = dispatch => ({
-//   onRemoveClicked: (seriesgroup) => {
-//     dispatch(toggleVesselPin(seriesgroup));
-//   },
-//   togglePinnedVesselEditMode: () => {
-//     dispatch(togglePinnedVesselEditMode());
-//   },
-//   setPinnedVesselHue: (seriesgroup, hue) => {
-//     dispatch(setPinnedVesselHue(seriesgroup, hue));
-//   }
+  toggle(id) {
+    dispatch(toggleFleetVisibility(id));
+  }
 });
 
-export default connect(null, mapDispatchToProps)(Fleet);
+export default connect(mapDispatchToProps, mapDispatchToProps)(Fleet);
