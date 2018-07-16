@@ -94,6 +94,7 @@ const webpackConfig = {
       mapPanels: 'src/mapPanels',
       pinnedVessels: 'src/pinnedVessels',
       recentVessels: 'src/recentVessels',
+      vessels: 'src/vessels',
       vesselInfo: 'src/vesselInfo',
       fleets: 'src/fleets',
       report: 'src/report',

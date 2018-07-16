@@ -19,6 +19,7 @@ import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
 import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
 import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
+import Vessels from 'vessels/containers/Vessels';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
 
 class ControlPanel extends Component {
@@ -115,10 +116,12 @@ class ControlPanel extends Component {
                 className="loginRequiredLink"
                 onClick={this.props.login}
               >Only registered users can use the search feature. Click here to log in.</a >
+              <Vessels />
               <PinnedVesselList />
             </div > :
             <div >
               <SearchPanel />
+              <Vessels />
               <PinnedVesselList />
             </div >
           }

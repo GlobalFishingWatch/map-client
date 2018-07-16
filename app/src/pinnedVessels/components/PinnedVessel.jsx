@@ -6,13 +6,13 @@ import pinnedTracksStyles from 'styles/components/map/pinned-tracks.scss';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import ExpandItem from 'components/Shared/ExpandItem';
 import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
 import ReactTooltip from 'react-tooltip';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
-import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
 
 class PinnedVessel extends Component {
@@ -49,7 +49,6 @@ class PinnedVessel extends Component {
 
   togglePin() {
     this.props.onTogglePin(this.props.vessel.seriesgroup);
-    this.setState({ pinned: !this.state.pinned });
   }
 
   render() {
@@ -74,11 +73,12 @@ class PinnedVessel extends Component {
             className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={() => this.togglePin()}
           >
-            <button className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: this.props.vessel.pinned })}>
-              <PinIcon
-                className={IconStyles.pinIcon}
-              />
-            </button>
+            <DeleteIcon
+              className={classnames(IconStyles.icon, pinnedTracksStyles.deleteIcon)}
+              onClick={() => {
+                this.props.onRemoveClicked(this.props.vessel.seriesgroup);
+              }}
+            />
           </li>
           <li
             className={pinnedTracksStyles.pinnedItemActionItem}
@@ -91,7 +91,6 @@ class PinnedVessel extends Component {
             </ExpandItemButton >
           </li>
           <li
-            className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={e => this.onVesselLabelClick(e)}
           >
             <button className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: this.props.isInfoOpened })}>
