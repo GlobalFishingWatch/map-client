@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import IconButton from 'src/components/Shared/IconButton';
 import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
@@ -64,13 +64,11 @@ class ColorPicker extends Component {
           <div
             onClick={this.props.onShowLabelsToggle}
           >
-            <ExpandItemButton
-              active={showLabels}
-              expandable={false}
+            <IconButton
+              icon="labels"
+              activated={showLabels}
               label="Show labels"
-            >
-              <Labels />
-            </ExpandItemButton >
+            />
           </div>
         </div>}
       </div>

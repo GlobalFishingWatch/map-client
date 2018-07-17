@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import ExpandItem from 'components/Shared/ExpandItem';
-import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import ExpandableIconButton from 'components/Shared/ExpandableIconButton';
+import IconButton from 'src/components/Shared/IconButton';
 import LayerItemStyles from 'styles/components/map/layer-item.scss';
 import ListItemStyles from 'styles/components/map/item-list.scss';
 import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
@@ -12,7 +13,6 @@ import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/remove.svg?name=DeleteIcon';
-import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
 import ColorPicker from 'components/Shared/ColorPicker';
 import { LAYER_TYPES } from 'constants';
@@ -119,13 +119,12 @@ class LayerItem extends Component {
           {this.props.enableColorPicker &&
           <li
             className={LayerItemStyles.itemOptionItem}
+            style={{ position: 'relative' }}
             onClick={() => this.changeExpand('EXTRA')}
           >
-            <ExpandItemButton active={this.state.expand === 'EXTRA'} >
-              <PaintIcon
-                className={IconStyles.paintIcon}
-              />
-            </ExpandItemButton >
+            <ExpandableIconButton activated={this.state.expand === 'EXTRA'} >
+              <IconButton icon="paint" activated={this.state.expand === 'EXTRA'} />
+            </ExpandableIconButton>
           </li>}
           <li
             className={LayerItemStyles.itemOptionItem}

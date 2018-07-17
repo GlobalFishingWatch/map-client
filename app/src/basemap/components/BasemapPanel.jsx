@@ -3,10 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import ListItemStyles from 'styles/components/map/item-list.scss';
 import BasemapStyles from 'styles/rightControlPanel/basemap-panel.scss';
-import ExpandItemButton from 'components/Shared/ExpandItemButton';
-import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
-import Graticules from '-!babel-loader!svg-react-loader!assets/icons/graticules.svg';
-import Bathymetry from '-!babel-loader!svg-react-loader!assets/icons/bathymetry.svg';
+import IconButton from 'src/components/Shared/IconButton';
 
 class BasemapPanel extends Component {
   render() {
@@ -37,26 +34,17 @@ class BasemapPanel extends Component {
     });
 
     basemapOptions.forEach((basemapOption) => {
-      let icon;
-      switch (basemapOption.id) {
-        case 'labels' : icon = <Labels />; break;
-        case 'graticules' : icon = <Graticules />; break;
-        case 'bathymetry' : icon = <Bathymetry />; break;
-        default : icon = null; break;
-      }
       const basemapOptionButton = (
         <div
           key={basemapOption.id}
           onClick={() => this.props.toggleBasemapOption(basemapOption.id)}
           className={BasemapStyles.option}
         >
-          <ExpandItemButton
-            active={basemapOption.visible}
-            expandable={false}
+          <IconButton
+            icon={basemapOption.id}
+            activated={basemapOption.visible}
             label={basemapOption.label || basemapOption.id}
-          >
-            {icon}
-          </ExpandItemButton >
+          />
         </div>
       );
       basemapOptionsButtons.push(basemapOptionButton);

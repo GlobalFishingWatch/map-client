@@ -5,14 +5,22 @@
   height: 28px;
   border-radius: 50%;
   cursor: pointer;
-  padding: 20%;
+  padding: 5px 4px 4px 5px;
+  display: inline-block;
+  margin-right: 2px;
 
   &:focus {
     outline: 0;
-    border: 1px solid $color-8;
   }
 
   &._activated {
     background-color: $color-31;
   }
+}
+
+.label {
+  color: $color-4;
+  font-size: $font-size-xxs-small;
+  margin-left: 4px;
+  text-transform: capitalize;
 }

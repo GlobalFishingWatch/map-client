@@ -6,6 +6,9 @@ import Remove from '-!babel-loader!svg-react-loader!assets/icons/remove.svg';
 import Info from '-!babel-loader!svg-react-loader!assets/icons/info.svg';
 import Pencil from '-!babel-loader!svg-react-loader!assets/icons/pencil.svg';
 import Paint from '-!babel-loader!svg-react-loader!assets/icons/paint.svg';
+import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
+import Graticules from '-!babel-loader!svg-react-loader!assets/icons/graticules.svg';
+import Bathymetry from '-!babel-loader!svg-react-loader!assets/icons/bathymetry.svg';
 
 class Icon extends Component {
   render() {
@@ -13,18 +16,13 @@ class Icon extends Component {
     const classNames = classnames(IconStyles.icon, { [IconStyles._activated]: activated });
     let iconElement;
     switch (icon) {
-      case 'remove':
-        iconElement = <Remove className={classNames} />;
-        break;
-      case 'info':
-        iconElement = <Info className={classNames} />;
-        break;
-      case 'pencil':
-        iconElement = <Pencil className={classNames} />;
-        break;
-      case 'paint':
-        iconElement = <Paint className={classNames} />;
-        break;
+      case 'remove': iconElement = <Remove className={classNames} />; break;
+      case 'info': iconElement = <Info className={classNames} />; break;
+      case 'pencil': iconElement = <Pencil className={classNames} />; break;
+      case 'paint': iconElement = <Paint className={classNames} />; break;
+      case 'labels': iconElement = <Labels className={classNames} />; break;
+      case 'graticules': iconElement = <Graticules className={classNames} />; break;
+      case 'bathymetry': iconElement = <Bathymetry className={classNames} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;

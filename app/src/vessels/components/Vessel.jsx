@@ -6,7 +6,6 @@ import ExpandableIconButton from 'components/Shared/ExpandableIconButton';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
 import VesselStyles from 'vessels/components/Vessel.scss';
-import IconStyles from 'styles/icons.scss';
 import IconButton from 'src/components/Shared/IconButton';
 import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
 import ReactTooltip from 'react-tooltip';
