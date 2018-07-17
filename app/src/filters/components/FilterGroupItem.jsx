@@ -6,7 +6,7 @@ import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
 import Toggle from 'components/Shared/Toggle';
 import IconStyles from 'styles/icons.scss';
 import PencilIcon from '-!babel-loader!svg-react-loader!assets/icons/pencil.svg?name=PencilIcon';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/remove.svg?name=DeleteIcon';
 import ReactTooltip from 'react-tooltip';
 
 

@@ -17,8 +17,6 @@ import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?
 import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg?name=ReportsIcon';
 import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg?name=LayersIcon';
 import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
-import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
-import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
 import Vessels from 'vessels/containers/Vessels';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
 
@@ -77,7 +75,6 @@ class ControlPanel extends Component {
       vessels: SearchIcon,
       layers: LayersIcon,
       filters: FiltersIcon,
-      aoi: AOIIcon,
       reports: ReportsIcon
     };
     const IconName = iconComponents[iconName];
@@ -117,12 +114,10 @@ class ControlPanel extends Component {
                 onClick={this.props.login}
               >Only registered users can use the search feature. Click here to log in.</a >
               <Vessels />
-              <PinnedVesselList />
             </div > :
             <div >
               <SearchPanel />
               <Vessels />
-              <PinnedVesselList />
             </div >
           }
         </SubMenu >

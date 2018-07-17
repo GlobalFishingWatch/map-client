@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import Toggle from 'components/Shared/Toggle';
-import ExpandItemButton from 'components/Shared/ExpandItemButton';
+import ExpandableIconButton from 'components/Shared/ExpandableIconButton';
 import ExpandItem from 'components/Shared/ExpandItem';
 import ColorPicker from 'components/Shared/ColorPicker';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
-import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
+import VesselStyles from 'vessels/components/Vessel.scss';
+import IconStyles from 'styles/icons.scss';
+import IconButton from 'src/components/Shared/IconButton';
+import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
+import ReactTooltip from 'react-tooltip';
 
 class Vessel extends Component {
   constructor() {
@@ -26,37 +30,48 @@ class Vessel extends Component {
   }
 
   render() {
-    const { vessel, editable, currentlyShownVessel } = this.props;
+    const { vessel, currentlyShownVessel, editable, tall } = this.props;
     const isEditable = editable !== false;
+    const isTall = tall !== false;
     const detailsCurrentlyShown =
       currentlyShownVessel !== null &&
       currentlyShownVessel !== undefined &&
       currentlyShownVessel.seriesgroup === vessel.seriesgroup;
 
+    const tooltip = (this.props.vessel.title.length > 15) ? vessel.title : null;
+
     return (<div>
-      {isEditable && <Toggle
-        on={vessel.visible}
-        color={vessel.color}
-        onToggled={() => this.props.toggle(vessel.seriesgroup)}
-      />}
-      <div onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}>
-        {vessel.title}
+      <div className={classnames(VesselStyles.vessel, { [VesselStyles._tall]: isTall })}>
+        <ReactTooltip />
+        <div className={VesselStyles.toggle}>
+          {isEditable && <Toggle
+            on={vessel.visible}
+            color={vessel.color}
+            onToggled={() => this.props.toggle(vessel.seriesgroup)}
+          />}
+        </div>
+        <div
+          className={VesselStyles.title}
+          onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}
+          data-tip={tooltip}
+          data-place="left"
+          data-class={TooltipStyles.tooltip}
+        >
+          {vessel.title}
+        </div>
+        {isEditable && <div onClick={() => this.props.delete(vessel.seriesgroup)}>
+          <IconButton icon="remove" />
+        </div>}
+        {isEditable && <div onClick={() => this.toggleExpand()} style={{ position: 'relative' }}>
+          <ExpandableIconButton activated={this.state.expanded === true} >
+            <IconButton icon="paint" activated={this.state.expanded === true} />
+          </ExpandableIconButton>
+        </div>}
+        <div onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}>
+          <IconButton icon="info" activated={detailsCurrentlyShown} />
+        </div>
       </div>
-      {isEditable && <div onClick={() => this.props.delete(vessel.seriesgroup)}>
-        delete
-      </div>}
-      {isEditable && <div onClick={() => this.toggleExpand()}>
-        <ExpandItemButton active={this.state.expand === true} >
-          <PaintIcon
-            // className={IconStyles.paintIcon}
-          />
-        </ExpandItemButton >
-      </div>}
-      <div onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}>
-        info:
-        {detailsCurrentlyShown}
-      </div>
-      <ExpandItem active={this.state.expanded === true} arrowPosition={0}>
+      <ExpandItem active={this.state.expanded === true}>
         <ColorPicker
           color={vessel.color}
           onTintChange={this.onTintChange}
@@ -71,6 +86,7 @@ Vessel.propTypes = {
   vessel: PropTypes.object,
   currentlyShownVessel: PropTypes.object,
   editable: PropTypes.bool,
+  tall: PropTypes.bool,
   toggle: PropTypes.func,
   showVesselDetails: PropTypes.func,
   delete: PropTypes.func,

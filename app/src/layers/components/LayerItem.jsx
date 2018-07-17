@@ -11,7 +11,7 @@ import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
-import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/delete.svg?name=DeleteIcon';
+import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/remove.svg?name=DeleteIcon';
 import PaintIcon from '-!babel-loader!svg-react-loader!assets/icons/paint.svg?name=PaintIcon';
 import Toggle from 'components/Shared/Toggle';
 import ColorPicker from 'components/Shared/ColorPicker';

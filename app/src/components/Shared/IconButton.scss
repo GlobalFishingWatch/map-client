@@ -1,0 +1,18 @@
+@import '../../../styles/settings';
+
+.iconButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 20%;
+
+  &:focus {
+    outline: 0;
+    border: 1px solid $color-8;
+  }
+
+  &._activated {
+    background-color: $color-31;
+  }
+}

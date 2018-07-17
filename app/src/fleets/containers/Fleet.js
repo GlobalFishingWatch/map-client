@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Fleet from 'vessels/components/Fleet';
+import Fleet from 'fleets/components/Fleet';
 import {
   toggleFleetVisibility
 } from 'fleets/fleetsActions';

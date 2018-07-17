@@ -47,7 +47,7 @@
     ],
     "fleets": [
       {
-        "title": "Some boats on the Mexican coast",
+        "title": "Some boats on the Mexican coast that is a very very very long description",
         "vessels": [4315970, 3835805],
         "visible": true,
         "color": "#00ff6a"
