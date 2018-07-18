@@ -192,7 +192,6 @@ export const updateMapStyle = () => (dispatch, getState) => {
   const glLayers = currentStyle.layers;
 
   const cartoLayersToInstanciate = [];
-  console.log(state.report)
 
   for (let i = 0; i < glLayers.length; i++) {
     const glLayer = glLayers[i];

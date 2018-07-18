@@ -294,7 +294,7 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
-    basemapOptions: workspace.basemapOptions,
+    basemapOptions: workspace.basemapOptions || [],
     layers: workspace.map.layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
