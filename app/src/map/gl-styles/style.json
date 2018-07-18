@@ -216,51 +216,6 @@
       }
     },
     {
-      "id": "bathymetry-labels",
-      "type": "symbol",
-      "source": "bathymetry",
-      "source-layer": "bathymetry",
-      "filter": [
-          "==",
-          "$type",
-          "Polygon"
-      ],
-      "layout": {
-          "visibility": "none",
-          "text-size": 8,
-          "symbol-avoid-edges": true,
-          "text-max-angle": 40,
-          "symbol-spacing": 250,
-          "text-font": [
-              "Roboto Medium Italic"
-          ],
-          "text-padding": 50,
-          "text-field": [
-              "match",
-              [
-                  "get",
-                  "depth"
-              ],
-              200,
-              "",
-              [
-                  "to-string",
-                  [
-                      "get",
-                      "depth"
-                  ]
-              ]
-          ],
-          "text-letter-spacing": 0.2,
-          "text-max-width": 20
-      },
-      "paint": {
-          "text-color": "#99d3e1",
-          "text-translate-anchor": "viewport",
-          "text-opacity": 0.4
-      }
-    },
-    {
       "id": "mpant",
       "type": "fill",
       "source": "mpant",
