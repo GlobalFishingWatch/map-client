@@ -172,24 +172,47 @@
       "source": "bathymetry",
       "source-layer": "bathymetry",
       "layout": {
-        "visibility": "none"
+          "visibility": "none"
       },
       "paint": {
           "fill-color": [
+              "step",
+              [
+                  "get",
+                  "depth"
+              ],
+              "#1e346c",
+              1000,
+              "#1a2f63",
+              2000,
+              "#142655",
+              3000,
+              "#101f4a",
+              4000,
+              "#0d1b43",
+              5000,
+              "#0a163b",
+              6000,
+              "#061132",
+              7000,
+              "#030d2a",
+              8000,
+              "#01081e"
+          ],
+          "fill-outline-color": "hsla(0, 0%, 100%, 0)",
+          "fill-opacity": [
               "interpolate",
               [
                   "linear"
               ],
               [
-                  "get",
-                  "depth"
+                  "zoom"
               ],
-              200,
-              "hsl(215, 100%, 18%)",
-              10000,
-              "hsl(215, 100%, 0%)"
-          ],
-          "fill-outline-color": "hsla(0, 0%, 100%, 0.15)"
+              3,
+              0,
+              4,
+              1
+          ]
       }
     },
     {
@@ -197,25 +220,44 @@
       "type": "symbol",
       "source": "bathymetry",
       "source-layer": "bathymetry",
-      "minzoom": 3,
+      "filter": [
+          "==",
+          "$type",
+          "Polygon"
+      ],
       "layout": {
           "visibility": "none",
+          "text-size": 8,
+          "symbol-avoid-edges": true,
+          "text-max-angle": 40,
+          "symbol-spacing": 250,
+          "text-font": [
+              "Roboto Medium Italic"
+          ],
+          "text-padding": 50,
           "text-field": [
-              "to-string",
+              "match",
               [
                   "get",
                   "depth"
+              ],
+              200,
+              "",
+              [
+                  "to-string",
+                  [
+                      "get",
+                      "depth"
+                  ]
               ]
           ],
-          "symbol-placement": "line",
-          "text-allow-overlap": true,
-          "text-size": 7,
-          "text-font": [
-              "Roboto Medium Italic"
-          ]
+          "text-letter-spacing": 0.2,
+          "text-max-width": 20
       },
       "paint": {
-          "text-color": "hsl(0, 0%, 100%)"
+          "text-color": "#99d3e1",
+          "text-translate-anchor": "viewport",
+          "text-opacity": 0.4
       }
     },
     {
