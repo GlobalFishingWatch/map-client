@@ -2,10 +2,6 @@
   "version": 8,
   "metadata": {
     "gfw:popups": {
-      "europe2": [
-        { "id": "admin" },
-        { "id": "adm0_a3", "label": "ISO Code" }      
-      ],
       "rfmo": [
         { "id": "rfb" },
         { "id": "POLYGON_LAYERS_AREA" }
@@ -80,7 +76,7 @@
     },
     "graticules": {
       "metadata": {
-        "gfw:carto-sql": "select * from ne_10m_graticules_10"
+        "gfw:carto-sql": "select * from graticules where scalerank=4"
       },
       "type": "vector"
     },
@@ -90,16 +86,57 @@
       },
       "type": "vector"
     },
-    "europe2": {
-      "metadata": {
-        "gfw:carto-sql": "select * from ne_adm0_europe"
-      },
-      "type": "vector",
-      "attribution": "<a href='http://mpatlas.org'>mpatlas.org</a>"
-    },
     "mpant": {
       "metadata": {
-        "gfw:carto-sql": "select *, cartodb_id as reporting_id, name as reporting_name from mpant"
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mpant:' || mpa_id as region_id, 'mpant:' || mpa_id as reporting_id FROM mpant"
+      },
+      "type": "vector"
+    },
+    "mparu": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mparu:' || mpa_id as region_id, 'mparu:' || mpa_id as reporting_id FROM mparu"
+      },
+      "type": "vector"
+    },
+    "eez": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT cartodb_id, the_geom, the_geom_webmercator, geoname as name, 'eez:' || mrgid as region_id, geoname as reporting_name, 'eez:' || mrgid as reporting_id FROM eez"
+      },
+      "type": "vector"
+    },
+    "highseas": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT *, lower(regionid) as region_id FROM highseas"
+      },
+      "type": "vector"
+    },
+    "protectedplanet": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT * from wdpa_apr_2018_marine_1_2"
+      },
+      "type": "vector"
+    },
+    "mpatlas": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_id, 'mpa:' || mpa_id as region_id FROM mpatlas"
+      },
+      "type": "vector"
+    },
+    "rfmo": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, 'rfmo:' || rfb as reporting_id, 'rfmo:' || rfb as region_id, rfb as reporting_name, rfb FROM rfmo"
+      },
+      "type": "vector"
+    },
+    "6": {
+      "metadata": {
+        "gfw:carto-sql": "select * from kkp_regions"
+      },
+      "type": "vector"
+    },
+    "falklands_conservation": {
+      "metadata": {
+        "gfw:carto-sql": "SELECT * FROM falklands_conservation"
       },
       "type": "vector"
     }
@@ -182,32 +219,6 @@
       }
     },
     {
-      "id": "europe2",
-      "type": "fill",
-      "source": "europe2",
-      "source-layer": "europe2",
-      "layout": { 
-       "visibility": "none"
-      },
-      "paint": {},
-      "interactive": true
-    },
-    {
-      "id": "europe2-labels",
-      "type": "symbol",
-      "source": "europe2",
-      "source-layer": "europe2",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{admin}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      },
-      "paint": {}
-    },
-    {
       "id": "mpant",
       "type": "fill",
       "source": "mpant",
@@ -226,6 +237,214 @@
       "layout": {
         "visibility": "none",
         "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "mparu",
+      "type": "fill",
+      "source": "mparu",
+      "source-layer": "mparu",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "mparu-labels",
+      "type": "symbol",
+      "source": "mparu",
+      "source-layer": "mparu",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "eez",
+      "type": "fill",
+      "source": "eez",
+      "source-layer": "eez",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "eez-labels",
+      "type": "symbol",
+      "source": "eez",
+      "source-layer": "eez",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "highseas",
+      "type": "fill",
+      "source": "highseas",
+      "source-layer": "highseas",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "highseas-labels",
+      "type": "symbol",
+      "source": "highseas",
+      "source-layer": "highseas",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{regionid}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "rfmo",
+      "type": "fill",
+      "source": "rfmo",
+      "source-layer": "rfmo",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "rfmo-labels",
+      "type": "symbol",
+      "source": "rfmo",
+      "source-layer": "rfmo",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{reporting_name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "6",
+      "type": "fill",
+      "source": "6",
+      "source-layer": "6",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "6-labels",
+      "type": "symbol",
+      "source": "6",
+      "source-layer": "6",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{nama}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "protectedplanet",
+      "type": "fill",
+      "source": "protectedplanet",
+      "source-layer": "protectedplanet",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "protectedplanet-labels",
+      "type": "symbol",
+      "source": "protectedplanet",
+      "source-layer": "protectedplanet",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "mpatlas",
+      "type": "fill",
+      "source": "mpatlas",
+      "source-layer": "mpatlas",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "mpatlas-labels",
+      "type": "symbol",
+      "source": "mpatlas",
+      "source-layer": "mpatlas",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{name}",
+        "text-font": [
+          "Roboto Mono Light"
+        ],
+        "text-size": 10
+      },
+      "paint": {}
+    },
+    {
+      "id": "falklands_conservation",
+      "type": "fill",
+      "source": "falklands_conservation",
+      "source-layer": "falklands_conservation",
+      "layout": { 
+       "visibility": "none"
+      },
+      "paint": {},
+      "interactive": true
+    },
+    {
+      "id": "falklands_conservation-labels",
+      "type": "symbol",
+      "source": "falklands_conservation",
+      "source-layer": "falklands_conservation",
+      "layout": {
+        "visibility": "none",
+        "text-field": "{full_name}",
         "text-font": [
           "Roboto Mono Light"
         ],
