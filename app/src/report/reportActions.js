@@ -1,6 +1,7 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
 import { updatePopupReportStatus } from 'map/mapInteractionActions';
+import { updateMapStyle } from 'map/mapStyleActions';
 import { FLAGS } from 'constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
@@ -15,33 +16,25 @@ export const TOGGLE_REPORT_MODAL_VISIBILITY = 'TOGGLE_REPORT_MODAL_VISIBILITY';
 export const TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY = 'TOGGLE_SUBSCRIPTION_MODAL_VISIBILITY';
 export const UPDATE_SUBSCRIPTION_FREQUENCY = 'UPDATE_SUBSCRIPTION_FREQUENCY';
 
-export function setReportPolygon(polygonData) {
+function addPolygon(reportingId, name) {
   return {
-    type: SET_REPORT_POLYGON,
+    type: ADD_REPORT_POLYGON,
     payload: {
-      polygonData
+      reportingId,
+      name
     }
-  };
-}
-
-function clearReportPolygon() {
-  return {
-    type: CLEAR_REPORT_POLYGON
-  };
-}
-
-function addCurrentPolygon() {
-  return {
-    type: ADD_REPORT_POLYGON
   };
 }
 
 export function deletePolygon(polygonIndex) {
-  return {
-    type: DELETE_REPORT_POLYGON,
-    payload: {
-      polygonIndex
-    }
+  return (dispatch) => {
+    dispatch({
+      type: DELETE_REPORT_POLYGON,
+      payload: {
+        polygonIndex
+      }
+    });
+    dispatch(updateMapStyle());
   };
 }
 
@@ -68,17 +61,25 @@ export function toggleReportPanelVisibility(forceMode = null) {
 
 export function toggleCurrentReportPolygon() {
   return (dispatch, getState) => {
-    const report = getState().report;
-    const reportingId = report.currentPolygon.reportingId;
+    const state = getState();
+    const report = state.report;
+    const currentPolygon = state.mapInteraction.popup.properties;
+    const reportingId = currentPolygon.reporting_id;
     const polygonIndex = report
       .polygons
       .findIndex(polygon => polygon.reportingId === reportingId);
+
     if (polygonIndex === -1) {
-      dispatch(addCurrentPolygon());
+      if (currentPolygon.reporting_id === undefined || currentPolygon.reporting_name === undefined) {
+        console.warn('reporting_id/name missing', currentPolygon);
+        return;
+      }
+      dispatch(addPolygon(currentPolygon.reporting_id, currentPolygon.reporting_name));
     } else {
       dispatch(deletePolygon(polygonIndex));
     }
     dispatch(updatePopupReportStatus());
+    dispatch(updateMapStyle());
   };
 }
 
@@ -87,7 +88,6 @@ function startReport(layerId) {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(toggleReportPanelVisibility());
     dispatch(setLayerOpacity(1, layerId));
-    dispatch(clearReportPolygon());
     dispatch(clearHighlightedVessels());
 
     const workspaceLayer = getState()
@@ -114,6 +114,7 @@ export function discardReport() {
       type: DISCARD_REPORT
     });
     dispatch(updatePopupReportStatus());
+    dispatch(updateMapStyle());
   };
 }
 

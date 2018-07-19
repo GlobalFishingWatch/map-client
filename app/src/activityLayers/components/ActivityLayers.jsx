@@ -158,12 +158,20 @@ class ActivityLayers extends React.Component {
   onMouseMove = (event) => {
     const { viewport } = this.context;
     const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
-    const [worldX, worldY] = lngLatToWorld([longitude, latitude], 1);
+
+    let wrappedLongitude = longitude;
+    if (wrappedLongitude > 180) {
+      wrappedLongitude -= 360;
+    } else if (wrappedLongitude < -180) {
+      wrappedLongitude += 360;
+    }
+
+    const [worldX, worldY] = lngLatToWorld([wrappedLongitude, latitude], 1);
 
     const toleranceRadiusInWorldUnits = VESSEL_CLICK_TOLERANCE_PX / viewport.scale;
 
     this.props.queryHeatmapVessels({
-      longitude,
+      longitude: wrappedLongitude,
       latitude,
       worldX,
       worldY,

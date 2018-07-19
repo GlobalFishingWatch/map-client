@@ -3,9 +3,25 @@
 .basemapsPanel {
   padding-bottom: 20px;
   font-size: $font-size-xs-small;
-  padding-right: $menu-right-padding;
-
-  @media #{mq-tablet} {
+  padding-right: 20px;
+  
+  @media #{$mq-tablet} {
     font-size: $font-size-small;
   }
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-left: $menu-mobile-left-padding;
+  
+  @media #{$mq-tablet} {
+    padding-left: $menu-left-padding;
+    font-size: $font-size-small;
+  }
+}
+
+.option {
+  margin-right: 8px;
 }

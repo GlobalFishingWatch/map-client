@@ -102,7 +102,7 @@ export const ACTIVITY_HIGHLIGHT_HUE = PALETTE_COLORS[8].hue;
 export const ENCOUNTERS_VESSEL_COLOR = '#FF0000';
 export const ENCOUNTERS_REEFER_COLOR = '#ffbcc6';
 
-export const NO_FILL_FILL = 'rgba(0,0,0,0)';
+export const GL_TRANSPARENT = 'rgba(0,0,0,0)';
 
 // tracks
 export const TRACK_DEFAULT_COLOR = PALETTE_COLORS[8].color;
@@ -194,48 +194,10 @@ export const MINI_GLOBE_SETTINGS = {
   minZoom: 3
 };
 
+export const STATIC_LAYERS_CARTO_ENDPOINT = 'https://carto.globalfishingwatch.org/user/admin/api/v1/map?config=$MAPCONFIG';
+export const STATIC_LAYERS_CARTO_TILES_ENDPOINT =
+  'https://carto.globalfishingwatch.org/user/admin/api/v1/map/$LAYERGROUPID/{z}/{x}/{y}.mvt';
+
 export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
-export const POLYGON_LAYERS = {
-  rfmo: {
-    glLayers: [{ id: 'rfmo', interactive: true }, { id: 'rfmo-labels', isLabelsLayer: true }],
-    popupFields: ['rfb', POLYGON_LAYERS_AREA]
-  },
-  eez: {
-    glLayers: [{ id: 'eez', interactive: true }, { id: 'eez-labels', isLabelsLayer: true }],
-    popupFields: ['name']
-  },
-  mpant: {
-    glLayers: [{ id: 'mpant', interactive: true }, { id: 'mpant-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  mparu: {
-    glLayers: [{ id: 'mparu', interactive: true }, { id: 'mparu-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  highseas: {
-    glLayers: [{ id: 'highseas', interactive: true }, { id: 'highseas-labels', isLabelsLayer: true }],
-    popupFields: ['regionid', POLYGON_LAYERS_AREA]
-  },
-  6: {
-    glLayers: [{ id: '6', interactive: true }, { id: '6-labels', isLabelsLayer: true }],
-    popupFields: ['nama', POLYGON_LAYERS_AREA]
-  },
-  mpatlas: {
-    glLayers: [{ id: 'mpatlas', interactive: true }, { id: 'mpatlas-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  falklands_conservation: {
-    glLayers: [{ id: 'falklands_conservation', interactive: true }, { id: 'falklands_conservation-labels', isLabelsLayer: true }],
-    popupFields: ['full_name', 'zone', 'area_sqkm']
-  },
-  protectedplanet: {
-    glLayers: [{ id: 'protectedplanet', interactive: true }, { id: 'protectedplanet-labels', isLabelsLayer: true }],
-    popupFields: [
-      'name',
-      { id: 'iucn_cat', label: 'IUCN Category' },
-      { id: 'desig_eng', label: 'Designation (English)' },
-      'rep_area', 'no_take', 'status', 'status_yr',
-      'gov_type', 'mang_auth', 'verif', 'parent_iso', 'iso3']
-  }
-};
+
 

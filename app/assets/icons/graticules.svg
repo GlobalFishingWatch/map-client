@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51 (57462) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-1069.000000, -196.000000)" fill="#000000" fill-rule="nonzero">
+            <g id="Group-4" transform="translate(989.000000, 191.000000)">
+                <g id="Group" transform="translate(80.000000, 5.000000)">
+                    <g id="Group-2" opacity="0.5">
+                        <rect id="Rectangle-2-Copy-2" x="1.5" y="0" width="1" height="12"></rect>
+                        <rect id="Rectangle-2-Copy-3" x="9.5" y="0" width="1" height="12"></rect>
+                        <polygon id="Rectangle-2-Copy-4" points="0 1.5 12 1.5 12 2.5 0 2.5"></polygon>
+                        <polygon id="Rectangle-2-Copy-5" points="0 9.5 12 9.5 12 10.5 0 10.5"></polygon>
+                    </g>
+                    <polygon id="Rectangle-2-Copy" points="0 5.5 12 5.5 12 6.5 0 6.5"></polygon>
+                    <rect id="Rectangle-2" x="5.5" y="0" width="1" height="12"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

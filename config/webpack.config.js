@@ -42,7 +42,6 @@ const webpackConfig = {
       FEATURE_FLAG_SUBSCRIPTIONS: envVariables.FEATURE_FLAG_SUBSCRIPTIONS === 'true',
       FEATURE_FLAG_EXTENDED_POLYGON_LAYERS: envVariables.FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === 'true',
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
-      MAPBOX_TOKEN: JSON.stringify(envVariables.MAPBOX_TOKEN),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       'process.env.NODE_ENV': JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
@@ -59,8 +58,7 @@ const webpackConfig = {
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
-      SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      SATELLITE_BASEMAP_URL: JSON.stringify(envVariables.SATELLITE_BASEMAP_URL)
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

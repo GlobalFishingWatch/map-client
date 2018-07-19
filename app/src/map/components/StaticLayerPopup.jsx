@@ -37,6 +37,7 @@ class StaticLayerPopup extends React.Component {
         </div >
         <button
           className={classnames('js-close', 'js-preventMapInteraction', PopupStyles.close, buttonCloseStyles.buttonClose)}
+          onClick={this.props.clearPopup}
         >
           <CloseIcon className={buttonCloseStyles.cross} />
         </button >
@@ -55,7 +56,8 @@ class StaticLayerPopup extends React.Component {
 
 StaticLayerPopup.propTypes = {
   popup: PropTypes.object,
-  toggleCurrentReportPolygon: PropTypes.func
+  toggleCurrentReportPolygon: PropTypes.func,
+  clearPopup: PropTypes.func
 };
 
 export default StaticLayerPopup;

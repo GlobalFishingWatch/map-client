@@ -20,8 +20,8 @@ const DEFAULT_TRANSITION = {
 
 const initialState = {
   viewport: {
-    latitude: 0,
-    longitude: 0,
+    latitude: -4.039617826768424,
+    longitude: -142.20703125,
     zoom: 3,
     bearing: 0,
     pitch: 0,

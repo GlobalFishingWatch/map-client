@@ -31,7 +31,7 @@ class PinnedVessel extends Component {
     }
   }
 
-  onChangeColor = (color) => {
+  onTintChange = (color) => {
     if (!this.props.vessel.visible) {
       this.props.togglePinnedVesselVisibility(this.props.vessel.seriesgroup);
     }
@@ -134,8 +134,8 @@ class PinnedVessel extends Component {
         <ExpandItem active={this.state.expand === 'COLOR'} arrowPosition={0}>
           <ColorPicker
             color={this.props.vessel.color}
-            onTintChange={this.onChangeColor}
-            id={this.props.vessel.title}
+            onTintChange={this.onTintChange}
+            id={this.props.vessel.seriesgroup.toString()}
           />
         </ExpandItem >
       </li>

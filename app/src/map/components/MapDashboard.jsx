@@ -58,6 +58,7 @@ class MapDashboard extends Component {
         onOpenSupportFormModal={openSupportFormModal}
         isEmbedded={isEmbedded}
         onExternalLink={onExternalLink}
+        attributions={this.props.attributions}
       />
       }
     </div >);
@@ -69,9 +70,9 @@ MapDashboard.propTypes = {
   zoom: PropTypes.number,
   latitude: PropTypes.number,
   longitude: PropTypes.number,
+  attributions: PropTypes.array,
   onExternalLink: PropTypes.func,
-  openSupportFormModal: PropTypes.func,
-  activeSubmenu: PropTypes.string
+  openSupportFormModal: PropTypes.func
 };
 
 export default MapDashboard;

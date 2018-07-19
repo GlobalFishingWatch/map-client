@@ -5,7 +5,7 @@ import {
   TRACK_DEFAULT_COLOR
 } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { setBasemap } from 'map/mapStyleActions';
+import { initBasemap } from 'basemap/basemapActions';
 import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
@@ -128,6 +128,13 @@ export function saveWorkspace(errorAction) {
       return newLayer;
     });
 
+    const basemap = state.basemap.basemapLayers.find(basemapLayer =>
+      basemapLayer.isOption !== true && basemapLayer.visible === true
+    ).id;
+    const basemapOptions = state.basemap.basemapLayers.filter(basemapLayer =>
+      basemapLayer.isOption === true && basemapLayer.visible === true
+    ).map(basemapLayer => basemapLayer.id);
+
     const workspaceData = {
       workspace: {
         map: {
@@ -148,7 +155,8 @@ export function saveWorkspace(errorAction) {
           seriesgroup: state.encounters.seriesgroup,
           tilesetId: state.encounters.tilesetId
         },
-        basemap: state.mapStyle.activeBasemap,
+        basemap,
+        basemapOptions,
         timeline: {
           // We store the timestamp
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),
@@ -194,12 +202,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
 
-  // Mapbox branch compatibility: 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
-  let workspaceBasemap = workspaceData.basemap;
-  if (state.mapStyle.basemaps.find(basemap => basemap.title === workspaceBasemap) === undefined) {
-    workspaceBasemap = 'North Star';
-  }
-  dispatch(setBasemap(workspaceBasemap));
+  dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
@@ -291,6 +294,7 @@ function processNewWorkspace(data) {
     timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
+    basemapOptions: workspace.basemapOptions || [],
     layers: workspace.map.layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,

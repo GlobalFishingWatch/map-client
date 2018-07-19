@@ -185,7 +185,7 @@ const GA_ACTION_WHITELIST = [
     type: ADD_REPORT_POLYGON,
     category: 'Report Interaction',
     action: 'Add polygon to report',
-    getPayload: (action, state) => `${state.report.layerId}:${state.report.currentPolygon.name}`
+    getPayload: (action, state) => `${state.report.layerId}:${state.mapInteraction.popup.properties.reporting_name}`
   },
   {
     type: DELETE_REPORT_POLYGON,
