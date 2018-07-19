@@ -112,7 +112,7 @@
     },
     "protectedplanet": {
       "metadata": {
-        "gfw:carto-sql": "SELECT * from wdpa_apr_2018_marine_1_2"
+        "gfw:carto-sql": "SELECT * from protectedplanet"
       },
       "type": "vector"
     },
