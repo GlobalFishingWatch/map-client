@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import ListStyles from 'styles/components/map/item-list.scss';
+import LayerItemStyles from 'styles/components/map/layer-item.scss';
 import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
 import Toggle from 'components/Shared/Toggle';
 import IconStyles from 'styles/icons.scss';
@@ -52,7 +53,7 @@ class FilterGroupItem extends Component {
     );
 
     const tooltip = (this.props.filterGroup.label.length > 30) ? this.props.filterGroup.label : null;
-
+ 
     return (
       <li
         className={classnames(ListStyles.listItem, ListStyles._noMobilePadding, ListStyles._fixed, ListStyles._alignLeft)}
@@ -68,7 +69,7 @@ class FilterGroupItem extends Component {
           data-tip={tooltip}
           data-place="left"
           data-class={TooltipStyles.tooltip}
-          className={classnames(ListStyles.itemName, { [ListStyles.itemRename]: this.props.isFilterGroupQuickEditMode })}
+          className={classnames(LayerItemStyles.itemName, { [LayerItemStyles.itemRename]: this.props.isFilterGroupQuickEditMode })}
           onChange={e => this.onChangeLayerLabel(e.currentTarget.value)}
           readOnly={!this.props.isFilterGroupQuickEditMode}
           value={this.props.filterGroup.label}
