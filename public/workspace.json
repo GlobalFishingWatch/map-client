@@ -48,14 +48,10 @@
     "basemap": "hybrid",
     "basemapOptions": ["labels", "graticules"],
     "timeline": {
-      "innerExtent": [
-        1464739200000,
-        1467331200000
-      ],
-      "outerExtent": [
-        1451689200000,
-        1480550400000
-      ]
+      "auto": {
+        "daysEndInnerOuterFromToday": 4,
+        "daysInnerExtent": 30
+      }
     },
     "timelineSpeed": 1,
     "filterGroups": []

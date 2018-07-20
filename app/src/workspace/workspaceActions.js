@@ -196,12 +196,34 @@ function dispatchActions(workspaceData, dispatch, getState) {
   }));
 
   // We update the dates of the timeline
+  const autoTimeline = workspaceData.timeline.auto !== undefined;
+  let timelineInnerDates;
+  let timelineOuterDates;
+  if (autoTimeline) {
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const daysEndInnerOuterFromToday = workspaceData.timeline.auto.daysEndInnerOuterFromToday || 4;
+    const daysInnerExtent = workspaceData.timeline.auto.daysInnerExtent || 30;
+    // today - n days
+    const end = new Date().getTime() - (daysEndInnerOuterFromToday * ONE_DAY);
+    // inner should be 30 days long
+    const innerStart = end - (daysInnerExtent * ONE_DAY);
+    // start outer at beginning of year
+    const innerStartYear = new Date(innerStart).getFullYear();
+    const outerStart = new Date(innerStartYear, 0, 1).getTime() + (ONE_DAY - 1);
+    timelineInnerDates = [new Date(innerStart), new Date(end)];
+    timelineOuterDates = [new Date(outerStart), new Date(end)];
+  } else {
+    timelineInnerDates = workspaceData.timeline.innerExtent.map(d => new Date(d));
+    timelineOuterDates = workspaceData.timeline.outerExtent.map(d => new Date(d));
+  }
+
+
   dispatch({
     type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-    payload: workspaceData.timelineInnerDates
+    payload: timelineInnerDates
   });
 
-  dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
+  dispatch(setOuterTimelineDates(timelineOuterDates));
 
   dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
@@ -291,8 +313,7 @@ function processNewWorkspace(data) {
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
-    timelineInnerDates: workspace.timeline.innerExtent.map(d => new Date(d)),
-    timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
+    timeline: workspace.timeline,
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
     basemapOptions: workspace.basemapOptions || [],
