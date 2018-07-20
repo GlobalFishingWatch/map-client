@@ -55,6 +55,12 @@ class PinnedVessel extends Component {
   render() {
     let actions;
     if (this.props.vessel.title === undefined) return false;
+    const { vessel, currentlyShownVessel } = this.props;
+
+    const detailsCurrentlyShown =
+      currentlyShownVessel !== null &&
+      currentlyShownVessel !== undefined &&
+      currentlyShownVessel.seriesgroup === vessel.seriesgroup;
 
     if (this.props.pinnedVesselEditMode === true) {
       actions = (
@@ -94,7 +100,9 @@ class PinnedVessel extends Component {
             className={pinnedTracksStyles.pinnedItemActionItem}
             onClick={e => this.onVesselLabelClick(e)}
           >
-            <button className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: this.props.isInfoOpened })}>
+            <button
+              className={classnames(ButtonStyles.pinVesselIcon, { [ButtonStyles.pinned]: detailsCurrentlyShown })}
+            >
               <InfoIcon className={IconStyles.infoIcon} />
             </button>
           </li>
@@ -155,6 +163,7 @@ PinnedVessel.propTypes = {
   onTogglePin: PropTypes.func.isRequired,
   showBlending: PropTypes.bool,
   vessel: PropTypes.object,
+  currentlyShownVessel: PropTypes.object,
   isInfoOpened: PropTypes.bool.isRequired
 };
 
