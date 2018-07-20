@@ -89,10 +89,12 @@ class ModalContainer extends Component {
         >
           <Share />
         </Modal >
+        {this.props.isFilterGroupModalOpen &&
         <FilterGroupModal
           opened={this.props.isFilterGroupModalOpen}
           close={this.props.closeFilterGroupModal}
         />
+        }
         <Modal
           opened={this.props.subscriptionModalOpen}
           visible

@@ -11,10 +11,12 @@ const mapStateToProps = (state) => {
   const filterValuesKeys = currentlyEditedFilterGroup && Object.keys(currentlyEditedFilterGroup.filterValues);
 
   // prepare layers list for component, add a filterActivated prop to set checkbox status
-  const layers = state.layers.workspaceLayers.filter(elem => elem.type === LAYER_TYPES.Heatmap).map((l) => {
-    l.filterActivated = currentlyEditedFilterGroup && currentlyEditedFilterGroup.checkedLayers[l.id] === true;
-    return l;
-  });
+  const layers = state.layers.workspaceLayers
+    .filter(elem => elem.type === LAYER_TYPES.Heatmap && elem.subtype !== LAYER_TYPES.Encounters)
+    .map((l) => {
+      l.filterActivated = currentlyEditedFilterGroup && currentlyEditedFilterGroup.checkedLayers[l.id] === true;
+      return l;
+    });
 
   // prepare filters: dedupe filters that have the same id, set default values
   const filteredLayers = layers.filter(l => l.filterActivated === true && l.header.filters !== undefined);
