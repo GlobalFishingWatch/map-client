@@ -14,6 +14,7 @@ import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
+import defaultWorkspace from './workspace';
 
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
@@ -350,6 +351,25 @@ function applyWorkspaceOverrides(workspace, overrides) {
   return overridenWorkspace;
 }
 
+function loadWorkspace(data) {
+  return (dispatch, getState) => {
+    let workspaceData;
+    if (data.workspace !== undefined) {
+      workspaceData = processNewWorkspace(data, dispatch);
+    } else {
+      console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
+      dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
+      dispatch(setUrlWorkspaceId(null));
+      dispatch(getWorkspace());
+      return;
+    }
+    if (getState().workspace.workspaceOverride !== undefined) {
+      workspaceData = applyWorkspaceOverrides(workspaceData, getState().workspace.workspaceOverride);
+    }
+    dispatchActions(workspaceData, dispatch, getState);
+  }
+}
+
 /**
  * Retrieve the workspace according to its ID and sets the zoom and
  * the center of the map, the timeline dates and the available layers
@@ -360,15 +380,19 @@ function applyWorkspaceOverrides(workspace, overrides) {
 export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
-    const workspaceId = state.workspace.urlWorkspaceId;
+    const urlWorkspaceId = state.workspace.urlWorkspaceId;
 
-    const ID = workspaceId || DEFAULT_WORKSPACE;
+    if (!urlWorkspaceId && !LOCAL_WORKSPACE) {
+      dispatch(loadWorkspace(defaultWorkspace));
+      return;
+    }
+
     let url;
 
-    if (!workspaceId && LOCAL_WORKSPACE) {
+    if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE;
     } else {
-      url = `${V2_API_ENDPOINT}/workspaces/${ID}`;
+      url = `${V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`;
     }
 
     const options = {};
@@ -381,20 +405,7 @@ export function getWorkspace() {
     fetch(url, options)
       .then(res => res.json())
       .then((data) => {
-        let workspaceData;
-        if (data.workspace !== undefined) {
-          workspaceData = processNewWorkspace(data, dispatch);
-        } else {
-          console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
-          dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
-          dispatch(setUrlWorkspaceId(null));
-          dispatch(getWorkspace());
-          return;
-        }
-        if (state.workspace.workspaceOverride !== undefined) {
-          workspaceData = applyWorkspaceOverrides(workspaceData, state.workspace.workspaceOverride);
-        }
-        dispatchActions(workspaceData, dispatch, getState);
+        dispatch(loadWorkspace(data));
       })
       .catch((error) => {
         console.error('Error loading workspace: ', error.message);

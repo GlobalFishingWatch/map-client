@@ -10,6 +10,8 @@
     "lint-js": "./node_modules/.bin/eslint -c .eslintrc --ext .jsx,.js app",
     "lint-sass": "sass-lint -v -q",
     "lint:js": "npm run lint-js",
+    "retrieve-workspace": "node ./bin/retrieve-workspace.js",
+    "preinstall": "npm run retrieve-workspace",
     "test": "npm run lint-js && npm run lint-sass"
   },
   "repository": {
