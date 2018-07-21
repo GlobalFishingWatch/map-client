@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IconButton from 'src/components/Shared/IconButton';
-import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
 import InputRange from 'react-input-range';
@@ -36,12 +35,12 @@ class ColorPicker extends Component {
     }
     return (
       <div className={colorPickerStyles.colorPicker}>
-        <div className={colorPickerStyles.title}>Color</div>
+        <div className={colorPickerStyles.title}>Color:</div>
         <div className={colorPickerStyles.colorInputs}>
           { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
         </div>
         {onOpacityChange && <div className={colorPickerStyles.section}>
-          Opacity
+          Opacity:
           <InputRange
             value={opacity}
             maxValue={1}

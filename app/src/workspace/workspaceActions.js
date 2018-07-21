@@ -152,6 +152,7 @@ export function saveWorkspace(errorAction) {
           visible: e.visible,
           color: e.color
         })),
+        fleets: state.fleets.fleets,
         shownVessel,
         encounters: {
           seriesgroup: state.encounters.seriesgroup,

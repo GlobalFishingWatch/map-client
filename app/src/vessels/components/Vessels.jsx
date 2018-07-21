@@ -55,7 +55,7 @@ class Vessels extends Component {
         </button>
         <button
           className={classnames(ButtonStyles.button, { [ButtonStyles._disabled]: disableCreateFleetButton })}
-          onClick={() => this.props.openFleetModal()}
+          onClick={() => this.props.createFleet()}
         >
           group vessels
         </button>
@@ -71,7 +71,7 @@ Vessels.propTypes = {
   currentlyShownVessel: PropTypes.object,
   loggedUser: PropTypes.object,
   openRecentVesselModal: PropTypes.func,
-  openFleetModal: PropTypes.func
+  createFleet: PropTypes.func
 };
 
 export default Vessels;

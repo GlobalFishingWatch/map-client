@@ -37,7 +37,7 @@ class Fleet extends Component {
         <div className={classnames(VesselStyles.title, VesselStyles._light)}>
           {fleet.title}
         </div>
-        <div>
+        <div onClick={() => this.props.startEditingFleet(fleet.id)}>
           <IconButton icon="pencil" />
         </div>
       </div>
@@ -48,7 +48,8 @@ class Fleet extends Component {
 
 Fleet.propTypes = {
   fleet: PropTypes.object,
-  toggle: PropTypes.func
+  toggle: PropTypes.func,
+  startEditingFleet: PropTypes.func
 };
 
 export default Fleet;

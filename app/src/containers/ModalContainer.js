@@ -9,11 +9,13 @@ import { setRecentVesselsModalVisibility } from 'recentVessels/recentVesselsActi
 import { openShareModal, setShareModalError } from 'share/shareActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 import { setFilterGroupModalVisibility, setEditFilterGroupIndex } from 'filters/filterGroupsActions';
+import { discardCurrentEdits } from 'fleets/fleetsActions';
 import { toggleSubscriptionModalVisibility, toggleReportPanelVisibility } from 'report/reportActions';
 import isEmpty from 'lodash/isEmpty';
 
 const mapStateToProps = state => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
+  isFleetsModalOpen: state.fleets.isFleetsModalOpen,
   layerIdPromptedForRemoval: state.layers.layerIdPromptedForRemoval,
   layerManagementModal: state.app.layerManagementModal.open,
   layerModal: state.app.layerModal,
@@ -68,6 +70,9 @@ const mapDispatchToProps = dispatch => ({
   closeFilterGroupModal: () => {
     dispatch(setFilterGroupModalVisibility(false));
     dispatch(setEditFilterGroupIndex(null));
+  },
+  closeFleetsModal: () => {
+    dispatch(discardCurrentEdits());
   }
 });
 
