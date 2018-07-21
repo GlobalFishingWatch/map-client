@@ -22,3 +22,4 @@ bin/*.csv
 
 # Test workspaces
 public/workspace_*.json
+app/src/workspace/workspace.js

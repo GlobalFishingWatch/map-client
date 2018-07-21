@@ -15,6 +15,7 @@ import { setFleetsFromWorkspace } from 'fleets/fleetsActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
+import defaultWorkspace from './workspace';
 
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
@@ -196,12 +197,34 @@ function dispatchActions(workspaceData, dispatch, getState) {
   }));
 
   // We update the dates of the timeline
+  const autoTimeline = workspaceData.timeline.auto !== undefined;
+  let timelineInnerDates;
+  let timelineOuterDates;
+  if (autoTimeline) {
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const daysEndInnerOuterFromToday = workspaceData.timeline.auto.daysEndInnerOuterFromToday || 4;
+    const daysInnerExtent = workspaceData.timeline.auto.daysInnerExtent || 30;
+    // today - n days
+    const end = new Date().getTime() - (daysEndInnerOuterFromToday * ONE_DAY);
+    // inner should be 30 days long
+    const innerStart = end - (daysInnerExtent * ONE_DAY);
+    // start outer at beginning of year
+    const innerStartYear = new Date(innerStart).getFullYear();
+    const outerStart = new Date(innerStartYear, 0, 1).getTime() + (ONE_DAY - 1);
+    timelineInnerDates = [new Date(innerStart), new Date(end)];
+    timelineOuterDates = [new Date(outerStart), new Date(end)];
+  } else {
+    timelineInnerDates = workspaceData.timeline.innerExtent.map(d => new Date(d));
+    timelineOuterDates = workspaceData.timeline.outerExtent.map(d => new Date(d));
+  }
+
+
   dispatch({
     type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-    payload: workspaceData.timelineInnerDates
+    payload: timelineInnerDates
   });
 
-  dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
+  dispatch(setOuterTimelineDates(timelineOuterDates));
 
   dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
@@ -292,8 +315,7 @@ function processNewWorkspace(data) {
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
-    timelineInnerDates: workspace.timeline.innerExtent.map(d => new Date(d)),
-    timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
+    timeline: workspace.timeline,
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
     basemapOptions: workspace.basemapOptions || [],
@@ -353,6 +375,25 @@ function applyWorkspaceOverrides(workspace, overrides) {
   return overridenWorkspace;
 }
 
+function loadWorkspace(data) {
+  return (dispatch, getState) => {
+    let workspaceData;
+    if (data.workspace !== undefined) {
+      workspaceData = processNewWorkspace(data, dispatch);
+    } else {
+      console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
+      dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
+      dispatch(setUrlWorkspaceId(null));
+      dispatch(getWorkspace());
+      return;
+    }
+    if (getState().workspace.workspaceOverride !== undefined) {
+      workspaceData = applyWorkspaceOverrides(workspaceData, getState().workspace.workspaceOverride);
+    }
+    dispatchActions(workspaceData, dispatch, getState);
+  }
+}
+
 /**
  * Retrieve the workspace according to its ID and sets the zoom and
  * the center of the map, the timeline dates and the available layers
@@ -363,15 +404,19 @@ function applyWorkspaceOverrides(workspace, overrides) {
 export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
-    const workspaceId = state.workspace.urlWorkspaceId;
+    const urlWorkspaceId = state.workspace.urlWorkspaceId;
 
-    const ID = workspaceId || DEFAULT_WORKSPACE;
+    if (!urlWorkspaceId && !LOCAL_WORKSPACE) {
+      dispatch(loadWorkspace(defaultWorkspace));
+      return;
+    }
+
     let url;
 
-    if (!workspaceId && LOCAL_WORKSPACE) {
+    if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE;
     } else {
-      url = `${V2_API_ENDPOINT}/workspaces/${ID}`;
+      url = `${V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`;
     }
 
     const options = {};
@@ -384,20 +429,7 @@ export function getWorkspace() {
     fetch(url, options)
       .then(res => res.json())
       .then((data) => {
-        let workspaceData;
-        if (data.workspace !== undefined) {
-          workspaceData = processNewWorkspace(data, dispatch);
-        } else {
-          console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
-          dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
-          dispatch(setUrlWorkspaceId(null));
-          dispatch(getWorkspace());
-          return;
-        }
-        if (state.workspace.workspaceOverride !== undefined) {
-          workspaceData = applyWorkspaceOverrides(workspaceData, state.workspace.workspaceOverride);
-        }
-        dispatchActions(workspaceData, dispatch, getState);
+        dispatch(loadWorkspace(data));
       })
       .catch((error) => {
         console.error('Error loading workspace: ', error.message);

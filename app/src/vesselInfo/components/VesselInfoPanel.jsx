@@ -89,7 +89,7 @@ class VesselInfoPanel extends Component {
           >
             <span className={infoPanelStyles.backIcon} />
             <span className={infoPanelStyles.backText}>
-              back to transshipment event
+              back to encounter event
             </span>
             <span className={infoPanelStyles.ovalContainer} >
               <span className={infoPanelStyles.oval} />

@@ -112,11 +112,11 @@ Environment in which the node server will run (production/development)
 
 #### DEFAULT_WORKSPACE
 
-Name/ID of the default workspace to be loaded from the API on the map.
+Name/ID of the default workspace to be loaded from the API on the map. Will override `LOCAL_WORKSPACE`.
 
 #### LOCAL_WORKSPACE
 
-If set, should point to the local workspace to be loaded. Will override `DEFAULT_WORKSPACE`.
+If set, should point to the local workspace to be loaded. 
 
 ## Feature flags
 
