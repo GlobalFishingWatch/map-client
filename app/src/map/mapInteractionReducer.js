@@ -7,8 +7,16 @@ import {
 } from 'map/mapInteractionActions';
 import GL_STYLE from 'map/gl-styles/style.json';
 
+const popupsFields = {};
+Object.keys(GL_STYLE.sources).forEach((id) => {
+  const metadata = GL_STYLE.sources[id].metadata;
+  if (metadata !== undefined && metadata['gfw:popups'] !== undefined) {
+    popupsFields[id] = metadata['gfw:popups'];
+  }
+});
+
 const initialState = {
-  popupsFields: GL_STYLE.metadata['gfw:popups'],
+  popupsFields,
   hoverPopup: null,
   popup: null,
   cursor: 'progress'

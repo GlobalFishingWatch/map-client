@@ -203,7 +203,7 @@ export const updateMapStyle = () => (dispatch, getState) => {
 
     if (refLayer === undefined) {
       if (glLayer.type !== 'background') {
-        console.warn('gl layer does not exists in workspace', glLayer);
+        // console.warn('gl layer does not exists in workspace', glLayer);
       }
       continue;
     }
