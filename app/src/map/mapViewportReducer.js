@@ -11,6 +11,7 @@ import { FlyToInterpolator } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
 import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'config';
 import { TRANSITION_TYPE } from 'constants';
+import defaultWorkspace from 'workspace/workspace';
 
 const DEFAULT_TRANSITION = {
   transitionDuration: 500,
@@ -20,9 +21,9 @@ const DEFAULT_TRANSITION = {
 
 const initialState = {
   viewport: {
-    latitude: -4.039617826768424,
-    longitude: -142.20703125,
-    zoom: 3,
+    latitude: defaultWorkspace.workspace.map.center[0],
+    longitude: defaultWorkspace.workspace.map.center[1],
+    zoom: defaultWorkspace.workspace.map.zoom - 1,
     bearing: 0,
     pitch: 0,
     width: 1000,
