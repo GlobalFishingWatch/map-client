@@ -83,7 +83,9 @@ class VesselInfoPanel extends Component {
             onClick={this.props.login}
           >Click here to login and see more details</a>
           }
-          {vesselInfo.parentEncounter !== null && <button
+          {vesselInfo.parentEncounter !== null
+          && vesselInfo.parentEncounter !== undefined
+          && <button
             className={classnames(infoPanelStyles.backButton)}
             onClick={() => { this.props.showParentEncounter(vesselInfo.parentEncounter); }}
           >
