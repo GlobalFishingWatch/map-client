@@ -52,6 +52,8 @@
           cursor: pointer;
         }
 
+        .backButton:focus {outline:0;}
+
         .backIcon {
           @include arrow(8px, 2px, $color-4, 'left');
           vertical-align: text-bottom;

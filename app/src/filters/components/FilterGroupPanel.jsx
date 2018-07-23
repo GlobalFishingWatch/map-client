@@ -6,6 +6,7 @@ import FilterGroupItem from 'filters/containers/FilterGroupItem';
 import classnames from 'classnames';
 import flagFilterStyles from 'styles/components/map/flag-filters.scss';
 import buttonStyles from 'styles/components/button.scss';
+import ListStyles from 'styles/components/map/item-list.scss';
 
 class FilterGroupPanel extends Component {
   constructor(props) {
@@ -23,29 +24,37 @@ class FilterGroupPanel extends Component {
   }
 
   render() {
-    const filterSelectors = [];
-    this.props.filterGroups.forEach((filterGroup, i) => {
-      filterSelectors.push(
+    let filterGroupContent;
+    if (this.props.filterGroups.length) {
+      const filterSelectors = this.props.filterGroups.map((filterGroup, i) => (
         <FilterGroupItem
           index={i}
           key={i}
           filterGroup={filterGroup}
-        />
+        />)
       );
-    });
+      filterGroupContent = (<ul className={flagFilterStyles.filtersList}>
+        {filterSelectors}
+      </ul>);
+    } else {
+      filterGroupContent = (<ul className={flagFilterStyles.noFiltersMessage}>
+        <li
+          className={classnames(ListStyles.listItem, ListStyles._noMobilePadding, ListStyles._fixed, ListStyles._alignLeft)}
+        >
+          No filters created yet.
+        </li>
+      </ul>);
+    }
 
     return (
       <div className={flagFilterStyles.flagFilters}>
-        {filterSelectors &&
-        <ul className={flagFilterStyles.filtersList}>
-          {filterSelectors}
-        </ul>}
+        {filterGroupContent}
         <button
-          className={classnames(buttonStyles.button, buttonStyles._wide, buttonStyles._filled, buttonStyles._big)}
+          className={classnames(buttonStyles.button, buttonStyles._wide)}
           onClick={() => this.addFilterGroup()}
         >
           Create Filter
-        </button >
+        </button>
       </div >
     );
   }
