@@ -15,7 +15,7 @@ import { setFleetsFromWorkspace } from 'fleets/fleetsActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
-import defaultWorkspace from './workspace';
+import defaultWorkspace from 'workspace/workspace';
 
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
@@ -392,7 +392,7 @@ function loadWorkspace(data) {
       workspaceData = applyWorkspaceOverrides(workspaceData, getState().workspace.workspaceOverride);
     }
     dispatchActions(workspaceData, dispatch, getState);
-  }
+  };
 }
 
 /**

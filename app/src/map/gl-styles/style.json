@@ -1,53 +1,7 @@
 {
   "version": 8,
+  "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
   "metadata": {
-    "gfw:popups": {
-      "rfmo": [
-        { "id": "rfb" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "eez": [
-        { "id": "name" }
-      ],
-      "mpant": [
-        { "id": "name" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "mparu": [
-        { "id": "name" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "highseas": [
-        { "id": "regionid" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "6": [
-        { "id": "nama" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "mpatlas": [
-        { "id": "name" },
-        { "id": "POLYGON_LAYERS_AREA" }
-      ],
-      "falklands_conservation": [
-        { "id": "full_name" },
-        { "id": "zone" },
-        { "id": "area_sqkm" }
-      ],
-      "protectedplanet": [
-        { "id": "name" },
-        { "id": "iucn_cat", "label": "IUCN Category" },
-        { "id": "desig_eng", "label": "Designation" },
-        { "id": "rep_area" },
-        { "id": "no_take" },
-        { "id": "status" },
-        { "id": "status_yr" },
-        { "id": "gov_type" },
-        { "id": "mang_auth" },
-        { "id": "verif" },
-        { "id": "iso3" }
-      ]
-    },
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
       { "id": "north-star", "label": "North Star" },
@@ -56,7 +10,6 @@
       { "id": "bathymetry", "isOption": true }
     ]
   },
-  "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
   "sources": {
     "satellite": {
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
@@ -88,55 +41,100 @@
     },
     "mpant": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mpant:' || mpa_id as region_id, 'mpant:' || mpa_id as reporting_id FROM mpant"
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mpant:' || mpa_id as region_id, 'mpant:' || mpa_id as reporting_id FROM mpant",
+        "gfw:popups": [
+          { "id": "name" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "mparu": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mparu:' || mpa_id as region_id, 'mparu:' || mpa_id as reporting_id FROM mparu"
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mparu:' || mpa_id as region_id, 'mparu:' || mpa_id as reporting_id FROM mparu",
+        "gfw:popups": [
+          { "id": "name" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "eez": {
       "metadata": {
-        "gfw:carto-sql": "SELECT cartodb_id, the_geom, the_geom_webmercator, geoname as name, 'eez:' || mrgid as region_id, geoname as reporting_name, 'eez:' || mrgid as reporting_id FROM eez"
+        "gfw:carto-sql": "SELECT cartodb_id, the_geom, the_geom_webmercator, geoname as name, 'eez:' || mrgid as region_id, geoname as reporting_name, 'eez:' || mrgid as reporting_id FROM eez",
+        "gfw:popups": [
+          { "id": "name" }
+        ]
       },
       "type": "vector"
     },
     "highseas": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, lower(regionid) as region_id FROM highseas"
+        "gfw:carto-sql": "SELECT *, lower(regionid) as region_id FROM highseas",
+        "gfw:popups": [
+          { "id": "regionid" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "protectedplanet": {
       "metadata": {
-        "gfw:carto-sql": "SELECT * from protectedplanet"
+        "gfw:carto-sql": "SELECT * from protectedplanet",
+        "gfw:popups": [
+          { "id": "name" },
+          { "id": "iucn_cat", "label": "IUCN Category" },
+          { "id": "desig_eng", "label": "Designation" },
+          { "id": "rep_area" },
+          { "id": "no_take" },
+          { "id": "status" },
+          { "id": "status_yr" },
+          { "id": "gov_type" },
+          { "id": "mang_auth" },
+          { "id": "verif" },
+          { "id": "iso3" }
+        ]
       },
       "type": "vector"
     },
     "mpatlas": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_id, 'mpa:' || mpa_id as region_id FROM mpatlas"
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_id, 'mpa:' || mpa_id as region_id FROM mpatlas",
+        "gfw:popups": [
+          { "id": "name" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "rfmo": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, 'rfmo:' || rfb as reporting_id, 'rfmo:' || rfb as region_id, rfb as reporting_name, rfb FROM rfmo"
+        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, 'rfmo:' || rfb as reporting_id, 'rfmo:' || rfb as region_id, rfb as reporting_name, rfb FROM rfmo",
+        "gfw:popups": [
+          { "id": "rfb" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "6": {
       "metadata": {
-        "gfw:carto-sql": "select * from kkp_regions"
+        "gfw:carto-sql": "select * from kkp_regions",
+        "gfw:popups": [
+          { "id": "nama" },
+          { "id": "POLYGON_LAYERS_AREA" }
+        ]
       },
       "type": "vector"
     },
     "falklands_conservation": {
       "metadata": {
-        "gfw:carto-sql": "SELECT * FROM falklands_conservation"
+        "gfw:carto-sql": "SELECT * FROM falklands_conservation",
+        "gfw:popups": [
+          { "id": "full_name" },
+          { "id": "zone" },
+          { "id": "area_sqkm" }
+        ]
       },
       "type": "vector"
     }
