@@ -86,7 +86,7 @@ class FleetsModal extends Component {
   renderForm() {
     const { fleet } = this.props;
     return (<div>
-      <h3 className={ModalStyles.title}>{fleet.isNewFilter ? 'Create vessel group' : 'Edit filter'}</h3>
+      <h3 className={ModalStyles.title}>{fleet.isNewFilter ? 'Create vessel group' : 'Edit vessel group'}</h3>
       <div className={ModalStyles.optionsContainer}>
         <div className={ModalStyles.section} >
           <div className={ModalStyles.sectionTitle} >
