@@ -5,7 +5,7 @@ export default (tileUrl, token) => {
   const vectorTilePromise = fetch(tileUrl, {
     headers: (token) ? {
       Authorization: `Bearer ${token}`
-    } : null
+    } : {}
   }).then((response) => {
     if (!response.ok) {
       throw new Error(`could not load tile ${tileUrl}`);
@@ -23,8 +23,8 @@ export default (tileUrl, token) => {
         reader.readAsArrayBuffer(blob);
       });
     });
-  }).catch(() => {
-    // ...
+  }).catch((e) => {
+    console.warn(e);
   });
   return vectorTilePromise;
 };
