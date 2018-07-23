@@ -9,6 +9,11 @@ import Paint from '-!babel-loader!svg-react-loader!assets/icons/paint.svg';
 import Labels from '-!babel-loader!svg-react-loader!assets/icons/labels.svg';
 import Graticules from '-!babel-loader!svg-react-loader!assets/icons/graticules.svg';
 import Bathymetry from '-!babel-loader!svg-react-loader!assets/icons/bathymetry.svg';
+import Vessels from '-!babel-loader!svg-react-loader!assets/icons/vessel.svg';
+import Reports from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg';
+import Layers from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg';
+import Filters from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg';
+
 
 class Icon extends Component {
   render() {
@@ -23,6 +28,10 @@ class Icon extends Component {
       case 'labels': iconElement = <Labels className={classNames} />; break;
       case 'graticules': iconElement = <Graticules className={classNames} />; break;
       case 'bathymetry': iconElement = <Bathymetry className={classNames} />; break;
+      case 'vessels': iconElement = <Vessels className={classNames} />; break;
+      case 'reports': iconElement = <Reports className={classNames} />; break;
+      case 'layers': iconElement = <Layers className={classNames} />; break;
+      case 'filters': iconElement = <Filters className={classNames} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;
