@@ -111,9 +111,7 @@ class LayerItem extends Component {
               className={LayerItemStyles.itemOptionItem}
               onClick={() => this.onClickReport()}
             >
-              <ReportIcon
-                className={classnames(IconStyles.reportIcon, { [`${LayerItemStyles._highlighted}`]: isCurrentlyReportedLayer })}
-              />
+              <IconButton icon="report" activated={isCurrentlyReportedLayer === true} />
             </li>
           }
           {this.props.enableColorPicker &&

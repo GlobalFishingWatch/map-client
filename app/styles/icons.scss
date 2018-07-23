@@ -21,21 +21,6 @@
   width: .89453125em;
 }
 
-.reportIcon {
-  margin-right: 10px;
-  width: .8125em;
-  height: 16px;
-  path {
-    &:first-child {
-      fill: $color-button-primary;
-    }
-
-    &:last-child {
-      fill: $color-1;
-    }
-  }
-}
-
 .deleteIcon {
   cursor: pointer;
   fill: $color-button-primary;

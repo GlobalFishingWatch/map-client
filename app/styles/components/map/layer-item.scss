@@ -55,18 +55,6 @@
   flex: 1;
   justify-content: flex-end;
   margin-bottom: 10px;
-
-  ._highlighted {
-    path {
-      &:first-child {
-        fill: $color-4;
-      }
-
-      &:last-child {
-        fill: $color-1;
-      }
-    }
-  }
 }
 
 .itemOptionItem {

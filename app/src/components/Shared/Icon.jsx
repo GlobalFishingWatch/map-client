@@ -13,7 +13,7 @@ import Vessels from '-!babel-loader!svg-react-loader!assets/icons/vessel.svg';
 import Reports from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg';
 import Layers from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg';
 import Filters from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg';
-
+import Report from '-!babel-loader!svg-react-loader!assets/icons/report.svg';
 
 class Icon extends Component {
   render() {
@@ -32,6 +32,7 @@ class Icon extends Component {
       case 'reports': iconElement = <Reports className={classNames} />; break;
       case 'layers': iconElement = <Layers className={classNames} />; break;
       case 'filters': iconElement = <Filters className={classNames} />; break;
+      case 'report': iconElement = <Report className={classnames(classNames, IconStyles.report)} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;

@@ -17,3 +17,18 @@
     }
   }
 }
+
+.report {
+  transform: translate(0px, -1px);
+  path {
+    &:last-child {
+      fill: $color-1 !important;
+    }
+  }
+
+  &._activated path {
+    &:last-child {
+      fill: $color-31 !important;
+    }
+  }
+}
