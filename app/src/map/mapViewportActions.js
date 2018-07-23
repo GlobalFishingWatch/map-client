@@ -1,5 +1,4 @@
 import { fitBounds } from 'viewport-mercator-project';
-import bbox from '@turf/bbox';
 import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
 import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
@@ -70,10 +69,25 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
   dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
-export const fitGeoJSONBounds = geoJSON => (dispatch, getState) => {
-  const [minX, minY, maxX, maxY] = bbox(geoJSON);
+export const fitBoundsToTrack = trackData => (dispatch, getState) => {
+  const minLat = Math.min.apply(null, trackData.latitude);
+  const maxLat = Math.max.apply(null, trackData.latitude);
+  let minLng = Math.min.apply(null, trackData.longitude);
+  let maxLng = Math.max.apply(null, trackData.longitude);
+
+  // track crosses the antimeridian
+  if (maxLng - minLng > 350) {
+    const offsetedLngs = trackData.longitude.map((l) => {
+      if (l < 0) {
+        return l + 360;
+      }
+      return l;
+    });
+    minLng = Math.min.apply(null, offsetedLngs);
+    maxLng = Math.max.apply(null, offsetedLngs);
+  }
   const vp = fitBounds({
-    bounds: [[minX, minY], [maxX, maxY]],
+    bounds: [[minLng, minLat], [maxLng, maxLat]],
     width: getState().mapViewport.viewport.width,
     height: getState().mapViewport.viewport.height,
     padding: 50

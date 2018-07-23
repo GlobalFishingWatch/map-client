@@ -1,5 +1,4 @@
 import uniq from 'lodash/uniq';
-import { lineString } from '@turf/helpers';
 import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
@@ -11,7 +10,7 @@ import {
   getTracksPlaybackData
 } from 'utils/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
-import { fitGeoJSONBounds } from 'map/mapViewportActions';
+import { fitBoundsToTrack } from 'map/mapViewportActions';
 import getVesselName from 'utils/getVesselName';
 import buildEndpoint from 'utils/buildEndpoint';
 
@@ -161,13 +160,7 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
         }
 
         if (zoomToBounds) {
-          const ll = [];
-          const len = groupedData.longitude.length;
-          for (let i = 0; i < len; i++) {
-            ll.push([groupedData.longitude[i], groupedData.latitude[i]]);
-          }
-          const line = lineString(ll);
-          dispatch(fitGeoJSONBounds(line));
+          dispatch(fitBoundsToTrack(groupedData));
         }
       });
   };
