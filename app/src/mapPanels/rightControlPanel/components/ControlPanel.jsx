@@ -84,29 +84,11 @@ class ControlPanel extends Component {
   }
 
   renderVesselsSubMenu() {
-    const { numPinnedVessels } = this.props;
-    const searchHeader = (
-      <div >
-        <MediaQuery maxWidth={767} >
-          {numPinnedVessels > 0 &&
-          <div className={ControlPanelStyles.pinnedItemCount} >
-            ({numPinnedVessels})
-          </div >}
-        </MediaQuery >
-        <MediaQuery minWidth={768} >
-          {numPinnedVessels > 0 &&
-          <div className={ControlPanelStyles.pinnedItemCount} >
-            {numPinnedVessels} pinned
-          </div >}
-        </MediaQuery >
-      </div >);
-
     return (
       <div>
         <SubMenu
           title="Vessels"
           icon={this.renderIcon('vessels')}
-          extraHeader={searchHeader}
           onBack={this.onCloseVesselsSubMenu}
         >
           {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
