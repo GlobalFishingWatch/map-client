@@ -41,10 +41,14 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
       if (layer.visible === true) {
         return true;
       }
-      // FIXME use encounters layer visibility to determine HeatmapTracksOnly layer visibility
-      const encountersLayer = state.layers.workspaceLayers.find(l => l.subtype === LAYER_TYPES.Encounters);
-      if (layer.type === LAYER_TYPES.HeatmapTracksOnly && encountersLayer && encountersLayer.visible === true) {
-        return true;
+      // for HeatmapTracksOnly layers (reefers): search only if "parent" encounter layer is visible
+      // this should be improved to:
+      // - manage the case where there is more than 1 encounter layer in workspace?
+      // - apply the same logic to a vessel layer that has an encounter "parent": if vessel layer
+      // is not visible but encounter layer is visible, search should be done on vessel layer
+      if (layer.type === LAYER_TYPES.HeatmapTracksOnly) {
+        const encountersLayer = state.layers.workspaceLayers.find(l => l.subtype === LAYER_TYPES.Encounters);
+        return encountersLayer && encountersLayer.visible === true;
       }
       return false;
     });
