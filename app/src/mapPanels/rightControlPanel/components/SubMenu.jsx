@@ -17,7 +17,7 @@ class SubMenu extends Component {
   }
 
   render() {
-    const { title, icon, extraHeader, children, footer } = this.props;
+    const { title, icon, children, footer } = this.props;
     return (
       <div className={SubmenuStyles.submenu} >
         <div className={SubmenuStyles.main} >
@@ -33,7 +33,6 @@ class SubMenu extends Component {
                 <span className={SubmenuStyles.separator}>|</span>
                 {title}
               </h2 >
-              {extraHeader}
             </div >
             <div className={SubmenuStyles.icon} >{icon}</div >
           </div >
@@ -52,7 +51,6 @@ class SubMenu extends Component {
 SubMenu.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.object,
-  extraHeader: PropTypes.node,
   footer: PropTypes.node,
   setSubmenu: PropTypes.func,
   children: PropTypes.node.isRequired,
