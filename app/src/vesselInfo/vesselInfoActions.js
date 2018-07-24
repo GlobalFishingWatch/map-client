@@ -166,6 +166,64 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
   };
 }
 
+export function setPinnedVesselColor(seriesgroup, color) {
+  return {
+    type: SET_PINNED_VESSEL_COLOR,
+    payload: {
+      seriesgroup,
+      color
+    }
+  };
+}
+
+export function setPinnedVesselTitle(seriesgroup, title) {
+  return {
+    type: SET_PINNED_VESSEL_TITLE,
+    payload: {
+      seriesgroup,
+      title
+    }
+  };
+}
+
+export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
+  return (dispatch, getState) => {
+    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
+    if (currentVessel) {
+      const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
+      dispatch({
+        type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
+        payload: {
+          seriesgroup,
+          visible
+        }
+      });
+      if (visible === true && currentVessel.track === undefined) {
+        dispatch(getVesselTrack({
+          tilesetId: currentVessel.tilesetId,
+          seriesgroup,
+          series: null,
+          zoomToBounds: true,
+          updateTimelineBounds: false
+        }));
+      }
+    }
+  };
+}
+
+export const applyFleetOverrides = () => (dispatch, getState) => {
+  const fleets = getState().fleets.fleets;
+  const currentVesselsSeriesgroups = getState().vesselInfo.vessels.map(v => v.seriesgroup);
+  fleets.forEach((fleet) => {
+    fleet.vessels.forEach((fleetVessel) => {
+      if (currentVesselsSeriesgroups.indexOf(fleetVessel) > -1) {
+        dispatch(togglePinnedVesselVisibility(fleetVessel, fleet.visible));
+        dispatch(setPinnedVesselColor(fleetVessel, fleet.color));
+      }
+    });
+  });
+};
+
 export function setPinnedVessels(pinnedVessels) {
   return (dispatch, getState) => {
     const state = getState();
@@ -215,6 +273,7 @@ export function setPinnedVessels(pinnedVessels) {
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
         });
+        dispatch(applyFleetOverrides());
         if (pinnedVessel.visible === true) {
           dispatch(getVesselTrack({
             tilesetId: pinnedVessel.tilesetId,
@@ -331,31 +390,6 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
-  return (dispatch, getState) => {
-    const currentVessel = getState().vesselInfo.vessels.find(vessel => vessel.seriesgroup === seriesgroup);
-    if (currentVessel) {
-      const visible = (forceStatus !== null) ? forceStatus : !currentVessel.visible;
-      dispatch({
-        type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
-        payload: {
-          seriesgroup,
-          visible
-        }
-      });
-      if (visible === true && currentVessel.track === undefined) {
-        dispatch(getVesselTrack({
-          tilesetId: currentVessel.tilesetId,
-          seriesgroup,
-          series: null,
-          zoomToBounds: true,
-          updateTimelineBounds: false
-        }));
-      }
-    }
-  };
-}
-
 export function showPinnedVesselDetails(tilesetId, seriesgroup) {
   return (dispatch) => {
     dispatch(showVesselDetails(tilesetId, seriesgroup));
@@ -363,22 +397,3 @@ export function showPinnedVesselDetails(tilesetId, seriesgroup) {
   };
 }
 
-export function setPinnedVesselColor(seriesgroup, color) {
-  return {
-    type: SET_PINNED_VESSEL_COLOR,
-    payload: {
-      seriesgroup,
-      color
-    }
-  };
-}
-
-export function setPinnedVesselTitle(seriesgroup, title) {
-  return {
-    type: SET_PINNED_VESSEL_TITLE,
-    payload: {
-      seriesgroup,
-      title
-    }
-  };
-}

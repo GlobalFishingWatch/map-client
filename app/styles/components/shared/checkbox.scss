@@ -5,6 +5,12 @@
     margin-bottom: 8px;
   }
 
+  [type="checkbox"]:disabled,
+  [type="checkbox"]:disabled + label{
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
   [type="checkbox"]:not(:checked),
   [type="checkbox"]:checked {
     position: absolute;

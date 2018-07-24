@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { CONTROL_PANEL_MENUS } from 'constants';
 import MediaQuery from 'react-responsive';
+import Icon from 'src/components/Shared/Icon';
 import MenuLink from 'mapPanels/rightControlPanel/components/MenuLink';
 import SubMenu from 'mapPanels/rightControlPanel/containers/SubMenu';
 import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
@@ -12,13 +13,7 @@ import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'vesselInfo/containers/VesselInfoPanel';
 import EncountersPanel from 'encounters/containers/EncountersPanel';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
-import iconStyles from 'styles/icons.scss';
-import SearchIcon from '-!babel-loader!svg-react-loader!assets/icons/search.svg?name=SearchIcon';
-import ReportsIcon from '-!babel-loader!svg-react-loader!assets/icons/report-menu.svg?name=ReportsIcon';
-import LayersIcon from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg?name=LayersIcon';
-import FiltersIcon from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg?name=FiltersIcon';
-import AOIIcon from '-!babel-loader!svg-react-loader!assets/icons/aoi-menu.svg?name=AOIIcon';
-import PinnedVesselList from 'pinnedVessels/containers/PinnedVesselList';
+import Vessels from 'vessels/containers/Vessels';
 import ControlPanelHeader from '../containers/ControlPanelHeader';
 
 class ControlPanel extends Component {
@@ -71,24 +66,12 @@ class ControlPanel extends Component {
     }
   }
 
-  renderIcon(iconName) {
-    const iconComponents = {
-      vessels: SearchIcon,
-      layers: LayersIcon,
-      filters: FiltersIcon,
-      aoi: AOIIcon,
-      reports: ReportsIcon
-    };
-    const IconName = iconComponents[iconName];
-    return <IconName className={classnames([iconStyles[`${iconName}Icon`]])} />;
-  }
-
   renderVesselsSubMenu() {
     return (
       <div>
         <SubMenu
           title="Vessels"
-          icon={this.renderIcon('vessels')}
+          icon={<Icon icon="vessels" activated />}
           onBack={this.onCloseVesselsSubMenu}
         >
           {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
@@ -97,11 +80,11 @@ class ControlPanel extends Component {
                 className="loginRequiredLink"
                 onClick={this.props.login}
               >Only registered users can use the search feature. Click here to log in.</a >
-              <PinnedVesselList />
+              <Vessels />
             </div > :
             <div >
               <SearchPanel />
-              <PinnedVesselList />
+              <Vessels />
             </div >
           }
         </SubMenu >
@@ -113,7 +96,7 @@ class ControlPanel extends Component {
     return (
       <SubMenu
         title="Filters"
-        icon={this.renderIcon('filters')}
+        icon={<Icon icon="filters" activated />}
       >
         <FilterGroupPanel />
       </SubMenu >
@@ -124,7 +107,7 @@ class ControlPanel extends Component {
     return (
       <SubMenu
         title="Layers"
-        icon={this.renderIcon('layers')}
+        icon={<Icon icon="layers" activated />}
         onBack={this.onCloseLayersSubMenu}
       >
         <LayerPanel />
@@ -135,7 +118,7 @@ class ControlPanel extends Component {
 
   renderReportsSubMenu() {
     return (
-      <SubMenu title="Reports" icon={this.renderIcon('reports')}>
+      <SubMenu title="Reports" icon={<Icon icon="reports" />}>
         <h1>Coming soon...</h1>
       </SubMenu >
     );
@@ -152,18 +135,18 @@ class ControlPanel extends Component {
           <ControlPanelHeader />
           <MenuLink
             title="Vessels"
-            icon={this.renderIcon('vessels')}
+            icon={<Icon icon="vessels" activated />}
             badge={this.props.numPinnedVessels}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.VESSELS)}
           />
           <MenuLink
             title="Layers"
-            icon={this.renderIcon('layers')}
+            icon={<Icon icon="layers" activated />}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.LAYERS)}
           />
           <MenuLink
             title="Filters"
-            icon={this.renderIcon('filters')}
+            icon={<Icon icon="filters" activated />}
             badge={this.props.numFilters}
             onClick={() => this.props.setSubmenu(CONTROL_PANEL_MENUS.FILTERS)}
           />

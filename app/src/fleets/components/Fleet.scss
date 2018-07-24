@@ -1,0 +1,17 @@
+@import '../../../styles/settings';
+@import '../../../styles/mixins';
+
+.fleet {
+  background-color: $color-8;
+  padding: 6px 0 14px;
+  margin: 10px 0;
+
+  &._collapsed {
+    padding: 6px 0;
+  }
+}
+
+.vessels {
+  padding-top: 6px;
+}
+

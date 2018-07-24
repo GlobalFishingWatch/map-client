@@ -21,6 +21,7 @@ import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'vesselInfo/vesselInfoReducer';
+import fleetsReducer from 'fleets/fleetsReducer';
 import encountersReducer from 'encounters/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
@@ -66,6 +67,7 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
+  fleets: fleetsReducer,
   encounters: encountersReducer,
   tracks: tracksReducer,
   app: appReducer,
