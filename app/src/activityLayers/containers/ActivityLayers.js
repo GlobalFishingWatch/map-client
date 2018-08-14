@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   timelineOverExtentIndexes: state.filters.timelineOverExtentIndexes,
   highlightedVessels: state.heatmap.highlightedVessels,
   highlightedClickedVessel: state.heatmap.highlightedClickedVessel,
+  viewport: state.mapViewport.viewport,
   zoom: state.mapViewport.viewport.zoom,
   layerFilters: state.filterGroups.layerFilters,
   vesselTracks: state.vesselInfo.vessels,
