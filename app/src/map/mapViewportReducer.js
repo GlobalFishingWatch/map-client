@@ -2,7 +2,6 @@ import {
   SET_VIEWPORT,
   UPDATE_VIEWPORT,
   SET_ZOOM_INCREMENT,
-  SET_MAX_ZOOM,
   SET_MOUSE_LAT_LONG,
   TRANSITION_END
 } from 'map/mapViewportActions';
@@ -76,15 +75,6 @@ export default function (state = initialState, action) {
         canZoomOut: zoom > state.minZoom,
         prevZoom: state.viewport.zoom,
         currentTransition: TRANSITION_TYPE.ZOOM
-      };
-    }
-
-    case SET_MAX_ZOOM: {
-      return {
-        ...state,
-        maxZoom: action.payload,
-        canZoomIn: state.viewport.zoom < state.maxZoom,
-        canZoomOut: state.viewport.zoom > state.minZoom
       };
     }
 

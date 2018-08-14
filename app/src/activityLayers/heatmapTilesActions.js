@@ -2,6 +2,7 @@ import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
 import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmapActions';
+import { ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING } from 'config';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
@@ -111,14 +112,13 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   //   save to reducer: currentVisibleTiles -> currentLoadedTiles
   // if zooming: debounced flush to avoid "tile spam"
   const mapViewport = getState().mapViewport;
+  const viewport = mapViewport.viewport;
 
   // do not allow any tile update during transitions (currently only zoom)
   // wait for the end of the transition to look at viewport and load matching tiles
   if (mapViewport.currentTransition !== null) {
     return;
   }
-
-  const viewport = mapViewport.viewport;
 
   // instanciate a viewport instance to get lat/lon from screen top left/ bottom right bounds
   const boundsViewport = new PerspectiveMercatorViewport(viewport);
@@ -132,6 +132,10 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   const boundsPolygonsCoordinates = [];
 
   const limits = getTilecoverLimits(viewport.zoom);
+
+  if (limits.max_zoom > ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING) {
+    return;
+  }
 
   if (e > 180 || w < -180) {
     // deal with the antimeridian situation by splitting the bounds polygon into two polygons

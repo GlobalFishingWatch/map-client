@@ -2,7 +2,6 @@ import find from 'lodash/find';
 import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
-import { setMaxZoom } from 'map/mapViewportActions';
 import { updateMapStyle } from 'map/mapStyleActions';
 import {
   initHeatmapLayers,
@@ -62,10 +61,6 @@ function loadLayerHeader(tilesetUrl, token) {
 // TODO This shouldn't be here
 function setGlobalFiltersFromHeader(data) {
   return (dispatch) => {
-    if (data.maxZoom !== undefined) {
-      dispatch(setMaxZoom(data.maxZoom));
-    }
-
     if (!!data.colsByName && !!data.colsByName.datetime && !!data.colsByName.datetime.max && !!data.colsByName.datetime.min) {
       dispatch({
         type: SET_OVERALL_TIMELINE_DATES,

@@ -28,7 +28,15 @@ export const TIMELINE_MAX_SPEED = 16;
 export const TIMELINE_MIN_SPEED = 0.03125;
 
 export const MIN_ZOOM_LEVEL = 1;
-export const MAX_ZOOM_LEVEL = 12;
+
+// user can zoom up to this z level, but it doesn't guarantee availability of tiles
+export const MAX_ZOOM_LEVEL = 14;
+
+// Limit tile loading for activity layers up to this z level.
+// Beyond, layer is still displayed but with coarse data from the lower zoom level
+export const ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING = 10;
+
+
 export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
 export const CLUSTER_CLICK_ZOOM_INCREMENT = 1;
 
