@@ -12,11 +12,17 @@ export const RELEASE_MARKED_TILES_UIDS = 'RELEASE_MARKED_TILES_UIDS';
 
 // restrict tilecover to a single zoom level
 // could be customized to load less or more detailed tiles
-const getTilecoverLimits = (viewportZoom, forcedZoom) => {
-  const zoom = (viewportZoom === null) ? forcedZoom : Math.ceil(viewportZoom + 0.5);
+const getTilecoverLimits = (viewportZoom) => {
+  let zoom = Math.ceil(viewportZoom + 0.5);
+  let tilesAvailable = true;
+  if (zoom > ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING) {
+    zoom = ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING;
+    tilesAvailable = false;
+  }
   return {
     min_zoom: zoom,
-    max_zoom: zoom
+    max_zoom: zoom,
+    tilesAvailable
   };
 };
 
@@ -134,12 +140,9 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   const [w, s, e, n] = [wn[0], es[1], es[0], wn[1]];
   const boundsPolygonsCoordinates = [];
 
-  let limits = getTilecoverLimits(viewport.zoom);
-  if (limits.max_zoom > ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING) {
-    if (forceLoadingAllVisibleTiles !== true) {
-      return;
-    }
-    limits = getTilecoverLimits(null, ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING);
+  const limits = getTilecoverLimits(viewport.zoom);
+  if (limits.tilesAvailable === false && forceLoadingAllVisibleTiles !== true) {
+    return;
   }
 
   if (e > 180 || w < -180) {
