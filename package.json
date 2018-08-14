@@ -96,7 +96,7 @@
     "image-webpack-loader": "^3.3.1",
     "lodash-webpack-plugin": "^0.11.4",
     "morgan": "^1.8.2",
-    "node-sass": "^4.9.1",
+    "node-sass": "^4.9.3",
     "postcss-loader": "^2.0.6",
     "pretty-error": "^2.1.1",
     "resolve-url-loader": "^2.1.0",
