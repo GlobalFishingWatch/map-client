@@ -1,14 +1,10 @@
-@import '../settings';
+@import '../../../styles/settings';
 
 .miniGlobe {
   display: flex;
-  position: absolute;
-  bottom: 110px;
-  left: 0px;
-  height: 70px;
-  z-index: 9;
   background-color: $color-base;
-  width: $legend-mobile-width;
+  margin-right: 10px;
+  // width: $legend-mobile-width;
 
   .zone {
     color: $color-white;
@@ -20,8 +16,6 @@
   .svgContainer {
     width: 40px;
     height: 40px;
-    margin-left: 19px;
-    margin-top: 15px;
     display: flex;
     justify-content: center;
 

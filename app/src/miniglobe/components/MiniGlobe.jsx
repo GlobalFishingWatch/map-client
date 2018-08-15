@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MiniGlobeStyles from 'styles/components/miniGlobe.scss';
 import { geoOrthographic, geoPath } from 'd3-geo'; // eslint-disable-line
 import { feature } from 'topojson-client';
 import classnames from 'classnames';
 import { MINI_GLOBE_SETTINGS } from 'config';
+import MiniGlobeStyles from './miniGlobe.scss';
 
 const jsonData = require('assets/topoJson/ne_110m_land.json');
 
@@ -27,7 +27,7 @@ class MiniGlobe extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (this.props.center !== nextProps.center) {
+    if (this.props.latitude !== nextProps.latitude || this.props.longitude !== nextProps.longitude) {
       this.recenter();
     }
 
@@ -50,20 +50,20 @@ class MiniGlobe extends Component {
   }
 
   setProjection() {
-    const center = this.props.center;
+    const { latitude, longitude } = this.props;
     const projection = geoOrthographic()
       .scale(MINI_GLOBE_SETTINGS.scale)
       .clipAngle(90)
       .translate([MINI_GLOBE_SETTINGS.svgWidth / 2, MINI_GLOBE_SETTINGS.svgWidth / 2]);
-    projection.rotate([-center.lng, -center.lat]);
+    projection.rotate([-longitude, -latitude]);
     this.setState({ projection });
   }
 
   recenter() {
     if (this.state.projection) {
-      const center = this.props.center;
+      const { latitude, longitude } = this.props;
       const updatedProjection = this.state.projection;
-      this.state.projection.rotate([-center.lng, -center.lat]);
+      this.state.projection.rotate([-longitude, -latitude]);
       this.setState({ projection: updatedProjection });
     }
   }
@@ -78,15 +78,9 @@ class MiniGlobe extends Component {
   render() {
     const { zoom } = this.props;
     const { markerHeight, markerWidth } = this.state;
-    const { isEmbedded } = this.props;
     const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
     return (
-      <div
-        id="miniGlobe"
-        className={classnames(
-          MiniGlobeStyles.miniGlobe,
-          { [MiniGlobeStyles._isEmbedded]: isEmbedded })}
-      >
+      <div id="miniGlobe" className={MiniGlobeStyles.miniGlobe}>
         <div className={MiniGlobeStyles.svgContainer} >
           { zoom > MINI_GLOBE_SETTINGS.minZoom &&
             <div className={MiniGlobeStyles.zoneMarker} style={{ width: markerWidth, height: markerHeight }} />
@@ -121,11 +115,11 @@ class MiniGlobe extends Component {
 }
 
 MiniGlobe.propTypes = {
-  center: PropTypes.object.isRequired,
+  latitude: PropTypes.number.isRequired,
+  longitude: PropTypes.number.isRequired,
+  zoom: PropTypes.number.isRequired,
   viewportWidth: PropTypes.number,
-  viewportHeight: PropTypes.number,
-  isEmbedded: PropTypes.bool.isRequired,
-  zoom: PropTypes.number.isRequired
+  viewportHeight: PropTypes.number
 };
 
 export default MiniGlobe;

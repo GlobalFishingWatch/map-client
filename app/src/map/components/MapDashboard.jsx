@@ -3,8 +3,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ControlPanel from 'mapPanels/rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
-import MiniGlobe from 'mapPanels/leftControlPanel/components/MiniGlobe';
-import MobileLeftExpand from 'mapPanels/leftControlPanel/components/MobileLeftExpand';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
@@ -41,15 +39,6 @@ class MapDashboard extends Component {
         <Map setAttribution={this.setAttribution} />
         <LeftControlPanel />
       </div>
-      <MobileLeftExpand isEmbedded={this.props.isEmbedded}>
-        <MiniGlobe
-          center={{ lat: this.props.latitude, lng: this.props.longitude }}
-          zoom={this.props.zoom}
-          viewportWidth={1000}
-          viewportHeight={600}
-          isEmbedded={this.props.isEmbedded}
-        />
-      </MobileLeftExpand>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
       </div >
