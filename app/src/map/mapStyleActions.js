@@ -117,6 +117,34 @@ export const addCustomGLLayer = layerId => (dispatch, getState) => {
   dispatch(updateMapStyle());
 };
 
+const addWorkspaceGLLayers = workspaceGLLayers => (dispatch, getState) => {
+  const state = getState();
+  let style = state.mapStyle.mapStyle;
+
+  workspaceGLLayers.forEach((workspaceGLLayer) => {
+    const id = workspaceGLLayer.id;
+    const gl = workspaceGLLayer.gl;
+    const finalSource = fromJS(gl.source);
+    style = style.setIn(['sources', id], finalSource);
+
+    const layers = [];
+    gl.layers.forEach((srcGlLayer) => {
+      const glLayer = {
+        ...srcGlLayer,
+        source: id,
+        'source-layer': id
+      };
+      layers.push(glLayer);
+    });
+
+    const finalLayers = fromJS(layers);
+    style = style.set('layers', style.get('layers').concat(finalLayers));
+  });
+
+  dispatch(setMapStyle(style));
+  dispatch(updateMapStyle());
+};
+
 const getCartoLayerInstanciatePromise = ({ sourceId, sourceCartoSQL }) => {
   const mapConfig = { layers: [{ id: sourceId, options: { sql: sourceCartoSQL } }] };
   const mapConfigURL = encodeURIComponent(JSON.stringify(mapConfig));
@@ -190,13 +218,21 @@ export const updateMapStyle = () => (dispatch, getState) => {
   let style = state.mapStyle.mapStyle;
   const currentStyle = style.toJS();
   const glLayers = currentStyle.layers;
+  const glSources = currentStyle.sources;
+
+  // collect layers declared in workspace but not in original gl style
+  const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && glSources[layer.id] === undefined);
+  if (workspaceGLLayers.length) {
+    dispatch(addWorkspaceGLLayers(workspaceGLLayers));
+    return;
+  }
 
   const cartoLayersToInstanciate = [];
 
   for (let i = 0; i < glLayers.length; i++) {
     const glLayer = glLayers[i];
     const sourceId = glLayer.source;
-    const glSource = currentStyle.sources[sourceId];
+    const glSource = glSources[sourceId];
     const layerId = (glLayer.metadata !== undefined && glLayer.metadata['gfw:id']) || sourceId;
 
     const refLayer = layers.find(l => l.id === layerId);
