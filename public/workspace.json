@@ -31,7 +31,7 @@
             "layers": [
               {
                 "id": "mar_pacifico_peruano",
-                "type": "fill",
+                "type": "line",
                 "layout": { 
                  "visibility": "none"
                 },

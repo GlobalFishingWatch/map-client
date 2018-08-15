@@ -62,6 +62,12 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
       newStyle = newStyle.setIn(['layers', glLayerIndex, 'paint', 'fill-color'], fillColor);
       break;
     }
+    case 'line': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'line-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'line-color'], refLayer.color);
+      break;
+    }
     case 'symbol': {
       // TODO use metadata to set is label, or just use 'symbol' ?
       // if (glLayer.isLabelsLayer === true) {
