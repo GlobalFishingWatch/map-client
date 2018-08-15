@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.0
+- Allow custom Mapbox GL JSON style in workspaces (https://github.com/GlobalFishingWatch/map-client/pull/943)
+
 ## 2.4.0 RC2
 - Fixed issue that preventend building in production mode
 
