@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { geoOrthographic, geoPath } from 'd3-geo'; // eslint-disable-line
 import { feature } from 'topojson-client';
-import classnames from 'classnames';
 import { MINI_GLOBE_SETTINGS } from 'config';
 import MiniGlobeStyles from './miniGlobe.scss';
 
