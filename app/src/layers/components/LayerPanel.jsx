@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import ExpandItem from 'components/Shared/ExpandItem';
 import AccordionHeader from 'components/Shared/AccordionHeader';
 import BasemapPanel from 'basemap/containers/BasemapPanel';
+import LayerManagement from 'layers/containers/LayerManagement';
 import LayerListStyles from 'styles/components/map/item-list.scss';
 import AccordionStyles from 'styles/components/shared/accordion.scss';
 
@@ -52,40 +53,45 @@ class LayerPanel extends Component {
     });
 
     return (
-      <div className={AccordionStyles.accordion}>
-        <AccordionHeader
-          menuName={'Basemaps'}
-          openMenu={this.openMenu}
-          expandState={this.state.expand}
-        />
-        <ExpandItem active={this.state.expand === 'BASEMAPS'} accordion >
-          <BasemapPanel />
-        </ExpandItem >
-        <AccordionHeader
-          menuName={'Activity Layers'}
-          openMenu={this.openMenu}
-          expandState={this.state.expand}
-        />
-        <ExpandItem active={this.state.expand === 'ACTIVITY_LAYERS'} accordion >
-          <ul className={LayerListStyles.list} >
-            {activityLayers}
-          </ul >
-        </ExpandItem >
-        <AccordionHeader
-          menuName={'Static Layers'}
-          openMenu={this.openMenu}
-          expandState={this.state.expand}
-        />
-        <ExpandItem
-          active={this.state.expand === 'STATIC_LAYERS'}
-          isVesselInfoPanelOpen={this.props.isVesselInfoPanelOpen}
-          accordion
-        >
-          <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
-            {staticLayers}
-          </ul >
-        </ExpandItem >
-      </div >
+      <div>
+        <div className={AccordionStyles.accordion}>
+          <AccordionHeader
+            menuName={'Basemaps'}
+            openMenu={this.openMenu}
+            expandState={this.state.expand}
+          />
+          <ExpandItem active={this.state.expand === 'BASEMAPS'} accordion >
+            <BasemapPanel />
+          </ExpandItem >
+          <AccordionHeader
+            menuName={'Activity Layers'}
+            openMenu={this.openMenu}
+            expandState={this.state.expand}
+          />
+          <ExpandItem active={this.state.expand === 'ACTIVITY_LAYERS'} accordion >
+            <ul className={LayerListStyles.list} >
+              {activityLayers}
+            </ul >
+          </ExpandItem >
+          <AccordionHeader
+            menuName={'Static Layers'}
+            openMenu={this.openMenu}
+            expandState={this.state.expand}
+          />
+          <ExpandItem
+            active={this.state.expand === 'STATIC_LAYERS'}
+            isVesselInfoPanelOpen={this.props.isVesselInfoPanelOpen}
+            accordion
+          >
+            <ul className={classnames(LayerListStyles.list, LayerListStyles.shadow)} >
+              {staticLayers}
+            </ul >
+          </ExpandItem >
+        </div>
+        {this.state.expand !== null &&
+          <LayerManagement />
+        }
+      </div>
     );
   }
 }

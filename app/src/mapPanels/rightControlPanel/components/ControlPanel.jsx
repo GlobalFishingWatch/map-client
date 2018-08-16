@@ -8,7 +8,6 @@ import MenuLink from 'mapPanels/rightControlPanel/components/MenuLink';
 import SubMenu from 'mapPanels/rightControlPanel/containers/SubMenu';
 import FilterGroupPanel from 'filters/containers/FilterGroupPanel';
 import LayerPanel from 'layers/containers/LayerPanel';
-import LayerManagement from 'layers/containers/LayerManagement';
 import SearchPanel from 'search/containers/SearchPanel';
 import VesselInfoPanel from 'vesselInfo/containers/VesselInfoPanel';
 import EncountersPanel from 'encounters/containers/EncountersPanel';
@@ -111,7 +110,6 @@ class ControlPanel extends Component {
         onBack={this.onCloseLayersSubMenu}
       >
         <LayerPanel />
-        <LayerManagement />
       </SubMenu >
     );
   }
