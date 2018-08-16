@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import IconStyles from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
+import MiniGlobe from 'miniglobe/containers/MiniGlobe';
 
 class ControlPanelHeader extends Component {
   calculateFishingHours() {
@@ -26,20 +27,21 @@ class ControlPanelHeader extends Component {
 
   render() {
     return (
-      <div className={ControlPanelStyles.resumeDisplay} >
-        <div className={ControlPanelStyles.categoriesDisplay} >
-          <div className={ControlPanelStyles.vesselDisplay} >
-            <span className={ControlPanelStyles.counterDescription} >
+      <div className={ControlPanelStyles.resumeDisplay}>
+        <div className={ControlPanelStyles.categoriesDisplay}>
+          <MiniGlobe />
+          <div className={ControlPanelStyles.vesselDisplay}>
+            <span className={ControlPanelStyles.counterDescription}>
               Vessels activity
               <InfoIcon
                 className={classnames(ControlPanelStyles.fishingHours, IconStyles.infoIcon, IconStyles.small)}
                 onClick={() => this.props.openTimebarInfoModal()}
               />
-            </span >
-            <span className={ControlPanelStyles.total} >{this.calculateFishingHours()}</span >
-          </div >
-        </div >
-      </div >
+            </span>
+            <span className={ControlPanelStyles.total} >{this.calculateFishingHours()}</span>
+          </div>
+        </div>
+      </div>
     );
   }
 }

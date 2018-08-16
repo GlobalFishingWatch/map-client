@@ -2,6 +2,8 @@
 
 ## 3.0.0
 - Deeper zoom levels up to 14, even when activity layer tiles are not visible (https://github.com/GlobalFishingWatch/map-client/pull/942)
+- Added button to fold right control panel
+- Miniglobe is now displayed in right control panel
 
 ## 2.4.0 RC2
 - Fixed issue that preventend building in production mode

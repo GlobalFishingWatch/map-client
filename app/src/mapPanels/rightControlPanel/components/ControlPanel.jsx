@@ -173,12 +173,15 @@ class ControlPanel extends Component {
       <MediaQuery minWidth={768} >
         {desktop => (
           <div
-            className={classnames([ControlPanelStyles.controlPanel, ControlPanelStyles[status]])}
+            className={classnames([
+              ControlPanelStyles.controlPanel,
+              ControlPanelStyles[status]
+            ])}
             ref={(controlPanel) => {
               this.controlPanelRef = controlPanel;
             }}
           >
-            <div className={classnames([ControlPanelStyles.bgWrapper])} >
+            <div className={ControlPanelStyles.bgWrapper} >
               {this.renderSubMenu(desktop)}
               <VesselInfoPanel />
               <EncountersPanel />
