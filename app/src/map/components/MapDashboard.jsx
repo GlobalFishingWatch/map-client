@@ -7,22 +7,35 @@ import ReportPanel from 'report/containers/ReportPanel';
 import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
 import Map from 'map/containers/Map';
-import mapPanelsStyles from 'styles/components/map-panels.scss';
+import MapPanelsStyles from 'styles/components/map-panels.scss';
 import mapStyles from 'styles/components/map.scss';
 
 class MapDashboard extends Component {
+  constructor() {
+    super();
+    this.state = {
+      expanded: true
+    };
+  }
+  onMapPanelsToggleExpand = () => {
+    this.setState({
+      expanded: !this.state.expanded
+    });
+  }
   render() {
     const { isEmbedded, openSupportFormModal, onExternalLink } = this.props;
     return (<div className="fullHeightContainer" >
       {!isEmbedded &&
       <div
         className={classnames(
-          mapPanelsStyles.mapPanels,
+          MapPanelsStyles.mapPanels,
           {
-            [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
+            [MapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER,
+            [MapPanelsStyles._expanded]: this.state.expanded
           }
         )}
       >
+        <div className={MapPanelsStyles.expandButton} onClick={this.onMapPanelsToggleExpand} />
         <ControlPanel isEmbedded={isEmbedded} />
         <ReportPanel />
       </div >
