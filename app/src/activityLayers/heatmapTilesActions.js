@@ -2,6 +2,7 @@ import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
 import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmapActions';
+import { ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING } from 'config';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';
@@ -11,10 +12,19 @@ export const RELEASE_MARKED_TILES_UIDS = 'RELEASE_MARKED_TILES_UIDS';
 
 // restrict tilecover to a single zoom level
 // could be customized to load less or more detailed tiles
-const getTilecoverLimits = zoom => ({
-  min_zoom: Math.ceil(zoom + 0.5),
-  max_zoom: Math.ceil(zoom + 0.5)
-});
+const getTilecoverLimits = (viewportZoom) => {
+  let zoom = Math.ceil(viewportZoom + 0.5);
+  let tilesAvailable = true;
+  if (zoom > ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING) {
+    zoom = ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING;
+    tilesAvailable = false;
+  }
+  return {
+    min_zoom: zoom,
+    max_zoom: zoom,
+    tilesAvailable
+  };
+};
 
 export const markTileAsLoaded = tileUids => (dispatch, getState) => {
   dispatch({
@@ -111,14 +121,13 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   //   save to reducer: currentVisibleTiles -> currentLoadedTiles
   // if zooming: debounced flush to avoid "tile spam"
   const mapViewport = getState().mapViewport;
+  const viewport = mapViewport.viewport;
 
   // do not allow any tile update during transitions (currently only zoom)
   // wait for the end of the transition to look at viewport and load matching tiles
   if (mapViewport.currentTransition !== null) {
     return;
   }
-
-  const viewport = mapViewport.viewport;
 
   // instanciate a viewport instance to get lat/lon from screen top left/ bottom right bounds
   const boundsViewport = new PerspectiveMercatorViewport(viewport);
@@ -132,6 +141,9 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   const boundsPolygonsCoordinates = [];
 
   const limits = getTilecoverLimits(viewport.zoom);
+  if (limits.tilesAvailable === false && forceLoadingAllVisibleTiles !== true) {
+    return;
+  }
 
   if (e > 180 || w < -180) {
     // deal with the antimeridian situation by splitting the bounds polygon into two polygons
