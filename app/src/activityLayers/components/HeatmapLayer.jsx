@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import * as PIXI from 'pixi.js';
-import { worldToPixels, pixelsToWorld } from 'viewport-mercator-project';
+import { worldToPixels } from 'viewport-mercator-project';
 import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
@@ -69,7 +69,7 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    const { data, filters, baseTexture, maxSprites, layer, viewport } = this.props;
+    const { data, filters, baseTexture, maxSprites, layer } = this.props;
 
     if (data === null || data === undefined || layer.visible === false) {
       this.stage.visible = false;
@@ -193,7 +193,7 @@ class HeatmapLayer extends React.Component {
   }
 
   _destroy() {
-    Object.values(this.subLayers).forEach(this._destroySubLayer);
+    Object.values(this.subLayers).forEach(this._destroySubLayer.bind(this));
     this.stage.destroy({ children: true });
     const { rootStage } = this.props;
     rootStage.removeChild(this.stage);
