@@ -36,7 +36,9 @@ class Vessels extends Component {
         if (item.isFleet === true) {
           return <Fleet fleet={item} key={item.id} />;
         }
-        return <Vessel vessel={item} key={item.seriesgroup} />;
+        const seriesStr = (item.series === null || item.series === undefined) ? '' : item.series.toString();
+        const vesselKey = `${item.seriesgroup}${seriesStr}`;
+        return <Vessel vessel={item} key={vesselKey} />;
       })}
     </div>);
     return { vesselItemsElements, disableCreateFleetButton };

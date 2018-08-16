@@ -203,7 +203,7 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
           tilesetId: currentVessel.tilesetId,
           seriesgroup,
           series: null,
-          zoomToBounds: true,
+          zoomToBounds: false,
           updateTimelineBounds: false
         }));
       }
@@ -211,14 +211,18 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   };
 }
 
+const applyFleetOverridesForVessel = (seriesgroup, fleet) => (dispatch) => {
+  dispatch(togglePinnedVesselVisibility(seriesgroup, fleet.visible));
+  dispatch(setPinnedVesselColor(seriesgroup, fleet.color));
+};
+
 export const applyFleetOverrides = () => (dispatch, getState) => {
   const fleets = getState().fleets.fleets;
   const currentVesselsSeriesgroups = getState().vesselInfo.vessels.map(v => v.seriesgroup);
   fleets.forEach((fleet) => {
     fleet.vessels.forEach((fleetVessel) => {
       if (currentVesselsSeriesgroups.indexOf(fleetVessel) > -1) {
-        dispatch(togglePinnedVesselVisibility(fleetVessel, fleet.visible));
-        dispatch(setPinnedVesselColor(fleetVessel, fleet.color));
+        dispatch(applyFleetOverridesForVessel(fleetVessel, fleet));
       }
     });
   });
@@ -246,7 +250,7 @@ export function setPinnedVessels(pinnedVessels) {
 
       const layer = state.layers.workspaceLayers.find(l => l.tilesetId === pinnedVessel.tilesetId);
       if (layer === undefined) {
-        console.warn('Trying to load a pinned vessel byt the layer seems to be absent on the workspace', pinnedVessel);
+        console.warn('Trying to load a pinned vessel but the layer seems to be absent on the workspace', pinnedVessel);
         return;
       }
 
@@ -273,15 +277,13 @@ export function setPinnedVessels(pinnedVessels) {
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
         });
-        dispatch(applyFleetOverrides());
-        if (pinnedVessel.visible === true) {
-          dispatch(getVesselTrack({
-            tilesetId: pinnedVessel.tilesetId,
-            seriesgroup: pinnedVessel.seriesgroup,
-            series: null,
-            zoomToBounds: false,
-            updateTimelineBounds: false
-          }));
+
+        const fleets = getState().fleets.fleets;
+        const parentFleet = fleets.find(f => f.vessels.indexOf(pinnedVessel.seriesgroup) > -1);
+        if (parentFleet) {
+          dispatch(applyFleetOverridesForVessel(pinnedVessel.seriesgroup, parentFleet));
+        } else {
+          dispatch(togglePinnedVesselVisibility(pinnedVessel.seriesgroup, pinnedVessel.visible === true));
         }
 
         dispatch(addVesselToRecentVesselList(
