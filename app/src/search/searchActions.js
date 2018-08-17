@@ -83,7 +83,6 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
       }
       const pageCount = Math.ceil(result.total / result.limit);
       const entries = result.entries.map((entry) => {
-        entry.tilesetId = entry.tilesetId || 'gfw-tasks-657-uvi-v2';
         const layer = searchableAndVisibleLayers.find(l => l.tilesetId === entry.tilesetId);
         const title = getVesselName(entry, layer.header.info.fields);
         return { ...entry, title };
