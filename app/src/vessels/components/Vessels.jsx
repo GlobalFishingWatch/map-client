@@ -59,7 +59,7 @@ class Vessels extends Component {
           className={classnames(ButtonStyles.button, { [ButtonStyles._disabled]: disableCreateFleetButton })}
           onClick={() => this.props.createFleet()}
         >
-          group vessels
+          create fleet
         </button>
       </div>
     </div>);

@@ -36,7 +36,7 @@ class FleetsModal extends Component {
               ButtonStyles._big, OuterModalStyles.mainButton)}
             onClick={onBreakApart}
           >
-            Break apart group
+            Break apart fleet
           </button>
         }
         <button
@@ -86,11 +86,11 @@ class FleetsModal extends Component {
   renderForm() {
     const { fleet } = this.props;
     return (<div>
-      <h3 className={ModalStyles.title}>{fleet.isNewFilter ? 'Create vessel group' : 'Edit vessel group'}</h3>
+      <h3 className={ModalStyles.title}>{fleet.isNew ? 'Create fleet' : 'Edit fleet'}</h3>
       <div className={ModalStyles.optionsContainer}>
         <div className={ModalStyles.section} >
           <div className={ModalStyles.sectionTitle} >
-            Select the vessels for this group:
+            Select the vessels for this fleet:
           </div>
           <div className={ItemList.wrapper}>
             <ul>
@@ -107,14 +107,14 @@ class FleetsModal extends Component {
             />
           </div>
           <div className={ModalStyles.sectionTitle}>
-            <label htmlFor="name">Group name:</label>
+            <label htmlFor="name">Fleet name:</label>
           </div>
           <input
             type="text"
             name="name"
             onChange={(event) => { this.props.onTitleChange(event.target.value); }}
             className={ModalStyles.nameInput}
-            placeholder="Group Name"
+            placeholder="Fleet Name"
             value={fleet.title}
           />
         </div>
