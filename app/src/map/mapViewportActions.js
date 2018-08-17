@@ -1,4 +1,4 @@
-import { fitBounds } from 'viewport-mercator-project';
+import { fitBounds, pixelsToWorld } from 'viewport-mercator-project';
 import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
 import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
@@ -7,6 +7,7 @@ export const UPDATE_VIEWPORT = 'UPDATE_VIEWPORT';
 export const SET_ZOOM_INCREMENT = 'SET_ZOOM_INCREMENT';
 export const SET_MOUSE_LAT_LONG = 'SET_MOUSE_LAT_LONG';
 export const TRANSITION_END = 'TRANSITION_END';
+export const SET_NATIVE_VIEWPORT = 'SET_NATIVE_VIEWPORT';
 
 export const setViewport = viewport => (dispatch) => {
   dispatch({
@@ -86,4 +87,43 @@ export const fitBoundsToTrack = trackData => (dispatch, getState) => {
     padding: 50
   });
   dispatch(updateZoom(null, vp.latitude, vp.longitude, vp.zoom));
+};
+
+export const exportNativeViewport = nativeViewport => (dispatch) => {
+  const topLeftPx = [0, 0];
+  const bottomRightPx = [nativeViewport.width, nativeViewport.height];
+
+  // compute left and right offsets to deal with antimeridian issue
+  const topLeftWorld = pixelsToWorld(topLeftPx, nativeViewport.pixelUnprojectionMatrix);
+  const bottomRightWorld = pixelsToWorld(bottomRightPx, nativeViewport.pixelUnprojectionMatrix);
+  const leftWorldScaled = topLeftWorld[0] / nativeViewport.scale;
+  const rightWorldScaled = bottomRightWorld[0] / nativeViewport.scale;
+
+  // lat/lon corners for miniglobe
+  const topLeft = nativeViewport.unproject(topLeftPx);
+  const bottomRight = nativeViewport.unproject(bottomRightPx);
+  const viewportBoundsGeoJSON = {
+    type: 'Feature',
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [topLeft[0], topLeft[1]],
+          [bottomRight[0], topLeft[1]],
+          [bottomRight[0], bottomRight[1]],
+          [topLeft[0], bottomRight[1]],
+          [topLeft[0], topLeft[1]]
+        ]
+      ]
+    }
+  };
+
+  dispatch({
+    type: SET_NATIVE_VIEWPORT,
+    payload: {
+      leftWorldScaled,
+      rightWorldScaled,
+      viewportBoundsGeoJSON
+    }
+  });
 };

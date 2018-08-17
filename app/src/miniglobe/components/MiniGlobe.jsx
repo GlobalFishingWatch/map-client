@@ -12,9 +12,7 @@ class MiniGlobe extends Component {
   constructor() {
     super();
     this.state = {
-      projection: null,
-      markerWidth: `${MINI_GLOBE_SETTINGS.defaultSize}px`,
-      markerHeight: `${MINI_GLOBE_SETTINGS.defaultSize}px`
+      projection: null
     };
 
     this.worldData = feature(jsonData, jsonData.objects.land).features;
@@ -22,29 +20,11 @@ class MiniGlobe extends Component {
 
   componentDidMount() {
     this.setProjection();
-    this.setMarkerSize(this.props.zoom, this.props.viewportWidth, this.props.viewportHeight);
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.latitude !== nextProps.latitude || this.props.longitude !== nextProps.longitude) {
       this.recenter();
-    }
-
-    if (this.props.zoom !== nextProps.zoom ||
-        this.props.viewportWidth !== nextProps.viewportWidth ||
-        this.props.viewportHeight !== nextProps.viewportHeight
-    ) {
-      this.changeZoom();
-    }
-  }
-
-  setMarkerSize(zoom, viewportWidth, viewportHeight) {
-    if (zoom && viewportWidth && viewportHeight) {
-      const zoomRelation = MINI_GLOBE_SETTINGS.zoomRatio ** zoom;
-      const markerWidth = `${(viewportWidth * MINI_GLOBE_SETTINGS.viewportRatio) / zoomRelation}px`;
-      const markerHeight = `${(viewportHeight * MINI_GLOBE_SETTINGS.viewportRatio) / zoomRelation}px`;
-
-      this.setState({ markerWidth, markerHeight });
     }
   }
 
@@ -67,23 +47,13 @@ class MiniGlobe extends Component {
     }
   }
 
-  changeZoom() {
-    const { zoom, viewportWidth, viewportHeight } = this.props;
-    if (zoom && viewportWidth && viewportHeight) {
-      this.setMarkerSize(zoom, viewportWidth, viewportHeight);
-    }
-  }
-
   render() {
-    const { zoom } = this.props;
-    const { markerHeight, markerWidth } = this.state;
+    const { zoom, viewportBoundsGeoJSON } = this.props;
     const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
+
     return (
-      <div id="miniGlobe" className={MiniGlobeStyles.miniGlobe}>
+      <div className={MiniGlobeStyles.miniGlobe}>
         <div className={MiniGlobeStyles.svgContainer} >
-          { zoom > MINI_GLOBE_SETTINGS.minZoom &&
-            <div className={MiniGlobeStyles.zoneMarker} style={{ width: markerWidth, height: markerHeight }} />
-          }
           <svg
             width={svgWidth}
             height={svgWidth}
@@ -96,9 +66,15 @@ class MiniGlobe extends Component {
                   <path
                     key={`path-${i}`}
                     d={geoPath().projection(this.state.projection)(d)}
-                    className="land"
                   />
                 ))
+              }
+              { zoom > MINI_GLOBE_SETTINGS.minZoom &&
+                <path
+                  key="viewport"
+                  d={geoPath().projection(this.state.projection)(viewportBoundsGeoJSON)}
+                  className={MiniGlobeStyles.viewport}
+                />
               }
             </g>
           </svg>
@@ -117,8 +93,7 @@ MiniGlobe.propTypes = {
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
   zoom: PropTypes.number.isRequired,
-  viewportWidth: PropTypes.number,
-  viewportHeight: PropTypes.number
+  viewportBoundsGeoJSON: PropTypes.object
 };
 
 export default MiniGlobe;
