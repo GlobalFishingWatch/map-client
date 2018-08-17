@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
-import { lngLatToWorld, pixelsToWorld } from 'viewport-mercator-project';
+import { lngLatToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import { LAYER_TYPES } from 'constants';
 import {
@@ -108,6 +108,9 @@ class ActivityLayers extends React.Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextContext.viewport.width !== this.context.viewport.width || nextContext.viewport.height !== this.context.viewport.height) {
       this._updateViewportSize(nextContext.viewport.width, nextContext.viewport.height);
+    }
+    if (nextContext.viewport !== this.context.viewport) {
+      this.props.exportNativeViewport(nextContext.viewport);
     }
   }
 
@@ -249,9 +252,12 @@ class ActivityLayers extends React.Component {
       highlightedVessels,
       highlightedClickedVessel,
       vesselTracks,
-      tracks
+      tracks,
+      leftWorldScaled,
+      rightWorldScaled
     } = this.props;
     const { viewport } = this.context;
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
@@ -265,12 +271,6 @@ class ActivityLayers extends React.Component {
     }
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
-
-    // compute left and right offsets to deal with antimeridian issue
-    const viewportTopLeftWorld = pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix);
-    const viewportTopRightWorld = pixelsToWorld([viewport.width, 0], viewport.pixelUnprojectionMatrix);
-    const viewportLeft = viewportTopLeftWorld[0] / viewport.scale;
-    const viewportRight = viewportTopRightWorld[0] / viewport.scale;
 
     return (<div
       ref={(ref) => { this.container = ref; }}
@@ -291,8 +291,8 @@ class ActivityLayers extends React.Component {
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{}}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
         />)
       )}
       {this.stage !== undefined &&
@@ -309,8 +309,8 @@ class ActivityLayers extends React.Component {
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{ defaultOpacity: 1, defaultSize: 1 }}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
         />
       }
       {this.stage !== undefined &&
@@ -322,8 +322,8 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           timelineOverExtentIndexes={timelineOverExtentIndexes}
           rootStage={this.stage}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
         />
       }
     </div>);
@@ -341,7 +341,10 @@ ActivityLayers.propTypes = {
   highlightedClickedVessel: PropTypes.object,
   vesselTracks: PropTypes.array,
   tracks: PropTypes.array,
-  queryHeatmapVessels: PropTypes.func
+  queryHeatmapVessels: PropTypes.func,
+  exportNativeViewport: PropTypes.func,
+  leftWorldScaled: PropTypes.number,
+  rightWorldScaled: PropTypes.number
 };
 
 ActivityLayers.contextTypes = {

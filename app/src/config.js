@@ -196,10 +196,8 @@ export const MINI_GLOBE_SETTINGS = {
   viewBoxHeight: 200,
   svgWidth: 40,
   scale: 100,
-  viewportRatio: 1.1,
-  zoomRatio: 2.4,
   defaultSize: 20,
-  minZoom: 3
+  minZoom: 2.5
 };
 
 export const STATIC_LAYERS_CARTO_ENDPOINT = 'https://carto.globalfishingwatch.org/user/admin/api/v1/map?config=$MAPCONFIG';

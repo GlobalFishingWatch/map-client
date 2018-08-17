@@ -3,7 +3,8 @@ import {
   UPDATE_VIEWPORT,
   SET_ZOOM_INCREMENT,
   SET_MOUSE_LAT_LONG,
-  TRANSITION_END
+  TRANSITION_END,
+  SET_NATIVE_VIEWPORT
 } from 'map/mapViewportActions';
 
 import { FlyToInterpolator } from 'react-map-gl';
@@ -89,6 +90,10 @@ export default function (state = initialState, action) {
 
     case TRANSITION_END: {
       return { ...state, currentTransition: null };
+    }
+
+    case SET_NATIVE_VIEWPORT: {
+      return { ...state, ...action.payload };
     }
 
     default:
