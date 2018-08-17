@@ -15,9 +15,12 @@ export const CLEAR_POPUP = 'CLEAR_POPUP';
 export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 export const UPDATE_POPUP_REPORT_STATUS = 'UPDATE_POPUP_REPORT_STATUS';
 
-const getFeaturePopupFields = (staticLayerId, popupsFields) => {
-  const popupFields = popupsFields[staticLayerId];
-  return popupFields;
+const getFeaturePopupFields = (staticLayerId, state) => {
+  const source = state.mapStyle.mapStyle.toJS().sources[staticLayerId];
+  if (source.metadata === undefined || source.metadata['gfw:popups'] === undefined) {
+    return null;
+  }
+  return source.metadata['gfw:popups'];
 };
 
 const getAreaKm2 = (glFeature) => {
@@ -87,15 +90,17 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
     if (feature !== undefined) {
       const layerIsInReport = report.layerId === feature.staticLayerId;
       if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === true || layerIsInReport === true) {
-        const popupFields = getFeaturePopupFields(feature.staticLayerId, state.mapInteraction.popupsFields);
-        const mainPopupFieldId = popupFields[0].id || popupFields[0];
-        const featureTitle = feature.feature.properties[mainPopupFieldId];
-        const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
-        hoverPopup = {
-          layerTitle: staticLayer.title,
-          featureTitle
-        };
-        cursor = 'pointer';
+        const popupFields = getFeaturePopupFields(feature.staticLayerId, state);
+        if (popupFields !== null) {
+          const mainPopupFieldId = popupFields[0].id || popupFields[0];
+          const featureTitle = feature.feature.properties[mainPopupFieldId];
+          const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
+          hoverPopup = {
+            layerTitle: staticLayer.title,
+            featureTitle
+          };
+          cursor = 'pointer';
+        }
       }
     }
   } else if (isEmpty !== true) {
@@ -159,11 +164,11 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   if (report.layerId !== null || isEmpty === true) {
     const feature = findFeature(features, report.layerId);
     if (feature !== undefined) {
-      const popupFields = getFeaturePopupFields(feature.staticLayerId, state.mapInteraction.popupsFields);
+      const popupFields = getFeaturePopupFields(feature.staticLayerId, state);
       const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
 
       const layerIsInReport = state.report.layerId === feature.staticLayerId;
-      if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false) {
+      if (popupFields === null || (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false)) {
         return;
       }
 

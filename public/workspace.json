@@ -2,18 +2,11 @@
   "workspace": {
     "map": {
       "center": [
-        13.833970368737164, -99.8458247347295
+        -15.154322659771124,
+        -76.11053466796875
       ],
-      "zoom": 4,
+      "zoom": 6,
       "layers": [
-        {
-          "title": "europe2",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "europe2",
-          "color": "#ff0000"
-        },
         {
           "title": "mpant",
           "visible": true,
@@ -23,42 +16,82 @@
           "color": "#ffff00"
         },
         {
-          "title": "Fishing effort",
-          "description": "Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial fishing vessels, and applies a fishing detection algorithm to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. AIS data as broadcast may vary in completeness, accuracy and quality. Also, data collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data. Global Fishing Watch’s fishing detection algorithm is a best effort mathematically to identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity,” such as “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is taking steps to make sure fishing activity designations are as accurate as possible. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.",
-          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v2",
+          "title":	"Zona Reservada Mar Pacífico Tropical Peruano",
+          "type": "CartoDBAnimation",
+          "id": "mar_pacifico_peruano",
+          "color": "#ff0000",
           "visible": true,
-          "hue": 182,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "fishing",
-          "tilesetId": "gfw-tasks-657-uvi-v2",
-          "label": "Fishing effort",
-          "added": true,
-          "library": true,
-          "filterActivated": null
+          "gl": {
+            "source": {
+              "type": "vector",
+              "metadata": {
+                "gfw:carto-sql": "SELECT * FROM peru_mar_pacifico_tropical"
+              }
+            },
+            "layers": [
+              {
+                "id": "mar_pacifico_peruano",
+                "type": "line",
+                "layout": { 
+                 "visibility": "none"
+                },
+                "interactive": true
+              }
+            ]
+          }
+        },
+        {
+          "title":	"South American countries",
+          "type": "CartoDBAnimation",
+          "id": "samerica_adm0",
+          "color": "#ff00ff",
+          "visible": true,
+          "gl": {
+            "source": {
+              "type": "vector",
+              "metadata": {
+                "gfw:carto-sql": "SELECT * FROM samerica_adm0",
+                "gfw:popups": [
+                  { "id": "name" },
+                  { "id": "adm0_a3" },
+                  { "id": "POLYGON_LAYERS_AREA" }
+                ]
+              }
+            },
+            "layers": [
+              {
+                "id": "samerica_adm0",
+                "type": "fill",
+                "layout": { 
+                 "visibility": "none"
+                },
+                "interactive": true
+              },
+              {
+                "id": "samerica_adm0-labels",
+                "type": "symbol",
+                "layout": {
+                  "visibility": "none",
+                  "text-field": "{name}",
+                  "text-font": [
+                    "Roboto Mono Light"
+                  ],
+                  "text-size": 10
+                }
+              }
+            ]
+          }
         }
       ]
     },
-    "pinnedVessels": [
-      {"seriesgroup":4315970,"tilesetId":"gfw-tasks-657-uvi-v2","title":"OAXACA","visible":true,"color":"#ffff00"},
-      {"seriesgroup":3835805,"tilesetId":"gfw-tasks-657-uvi-v2","title":"AZTECA 5","visible":false,"color":"#00ff6a"},
-      {"seriesgroup":1918314,"tilesetId":"gfw-tasks-657-uvi-v2","title":"GIJON","visible":true,"color":"#fca26f"},
-      {"seriesgroup":1678772,"tilesetId":"gfw-tasks-657-uvi-v2","title":"FU YUAN YU 018","visible":true,"color":"#ff81e5"}
-    ],
-    "fleets": [
-      {
-        "title": "Some boats on the Mexican coast that is a very very very long description",
-        "vessels": [4315970, 3835805],
-        "visible": true,
-        "color": "#00ff6a"
-      }
-    ],
+    "pinnedVessels": [],
+    "fleets": [],
     "encounters": {
       "seriesgroup": null,
       "tilesetId": null
     },
     "basemap": "hybrid",
-    "basemapOptions": ["labels", "graticules"],
+    "basemapOptions": [],
     "timeline": {
       "auto": {
         "daysEndInnerOuterFromToday": 4,

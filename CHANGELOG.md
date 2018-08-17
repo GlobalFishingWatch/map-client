@@ -1,6 +1,7 @@
 # Changelog
 
 ## 3.0.0
+- Allow custom Mapbox GL JSON style in workspaces (https://github.com/GlobalFishingWatch/map-client/pull/943)
 - Deeper zoom levels up to 14, even when activity layer tiles are not visible (https://github.com/GlobalFishingWatch/map-client/pull/942)
 - Added button to fold right control panel
 - Miniglobe is now displayed in right control panel

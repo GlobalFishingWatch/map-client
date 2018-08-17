@@ -152,8 +152,7 @@
       "id": "satellite",
       "type": "raster",
       "source": "satellite",
-      "layout": {},
-      "paint": {}
+      "layout": {}
     },
     {
       "id": "north-star",
@@ -161,8 +160,7 @@
       "source": "north-star",
       "layout": {
         "visibility": "none"
-      },
-      "paint": {}
+      }
     },
     {
       "id": "bathymetry",
@@ -221,7 +219,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -236,8 +233,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "mparu",
@@ -247,7 +243,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -262,8 +257,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "eez",
@@ -273,7 +267,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -288,8 +281,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "highseas",
@@ -299,7 +291,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -314,8 +305,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "rfmo",
@@ -325,7 +315,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -340,8 +329,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "6",
@@ -351,7 +339,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -366,8 +353,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "protectedplanet",
@@ -377,7 +363,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -392,8 +377,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "mpatlas",
@@ -403,7 +387,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -418,8 +401,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "falklands_conservation",
@@ -429,7 +411,6 @@
       "layout": { 
        "visibility": "none"
       },
-      "paint": {},
       "interactive": true
     },
     {
@@ -444,8 +425,7 @@
           "Roboto Mono Light"
         ],
         "text-size": 10
-      },
-      "paint": {}
+      }
     },
     {
       "id": "graticules-lines",
@@ -560,8 +540,7 @@
       "source": "labels",
       "layout": {
         "visibility": "none"
-      },
-      "paint": {}
+      }
     }
   ]
 }
