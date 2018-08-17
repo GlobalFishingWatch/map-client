@@ -29,11 +29,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
 
   const searchableLayers = state.layers.workspaceLayers
     .filter(layer => LAYER_TYPES_SEARCHABLE.indexOf(layer.subtype || layer.type) > -1)
-    .filter(layer =>
-      layer.header.searchable !== false &&
-      layer.header.endpoints.search !== null &&
-      layer.header.endpoints.search !== undefined
-    )
+    .filter(layer => layer.header.searchable !== false)
     .filter(layer => layer.added === true);
 
   const searchableAndVisibleLayers = searchableLayers
@@ -70,42 +66,36 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     return;
   }
 
-  const searchLayerPromises = searchableAndVisibleLayers
-    .map(layer =>
-      fetch(buildEndpoint(layer.header.endpoints.search, {
-        query: encodeURIComponent(searchTerm),
-        limit: SEARCH_MODAL_PAGE_SIZE,
-        offset: page * SEARCH_MODAL_PAGE_SIZE
-      }), options)
-        .then(response => response.json())
-        .then(result => new Promise(resolve => resolve({ result, layer })))
-    );
+  const tilesets = searchableAndVisibleLayers.map(l => l.tilesetId).join(',');
+  const baseURL = `${V2_API_ENDPOINT}/tilesets/{{tilesets}}/search/?query={{query}}&limit={{limit}}&offset={{offset}}`;
+  const url = buildEndpoint(baseURL, {
+    tilesets,
+    query: encodeURIComponent(searchTerm),
+    limit: SEARCH_MODAL_PAGE_SIZE,
+    offset: page * SEARCH_MODAL_PAGE_SIZE
+  });
 
-  Promise.all(searchLayerPromises)
-    .then((resultContainers) => {
-      if (resultContainers[0].result.query !== searchTerm) {
-        console.warn('search term differs, searching for', searchTerm, 'receiving', resultContainers[0].result.query);
+  fetch(url, options)
+    .then(response => response.json())
+    .then((result) => {
+      if (result.query !== searchTerm) {
+        console.warn('search term differs, searching for', searchTerm, 'receiving', result.query);
       }
-      let searchResultList = [];
-      let pageCount = 0;
-      resultContainers.forEach((resultContainer) => {
-        resultContainer.result.entries.forEach((entry) => {
-          entry.tilesetId = resultContainer.layer.tilesetId;
-          entry.title = getVesselName(entry, resultContainer.layer.header.info.fields);
-        });
-        searchResultList = searchResultList.concat(resultContainer.result.entries);
-        const thisSearchPageCount = Math.ceil(resultContainer.result.total / resultContainer.result.limit);
-        pageCount = Math.max(thisSearchPageCount, pageCount);
+      const pageCount = Math.ceil(result.total / result.limit);
+      const entries = result.entries.map((entry) => {
+        entry.tilesetId = entry.tilesetId || 'gfw-tasks-657-uvi-v2';
+        const layer = searchableAndVisibleLayers.find(l => l.tilesetId === entry.tilesetId);
+        const title = getVesselName(entry, layer.header.info.fields);
+        return { ...entry, title };
       });
       dispatch({
         type: SET_SEARCH_RESULTS,
         payload: {
-          entries: searchResultList,
+          entries,
           pageCount
         }
       });
     });
-
 }, 200);
 
 export function setSearchPage(page) {
