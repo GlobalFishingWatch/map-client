@@ -3,7 +3,7 @@ import { updateMapStyle } from 'map/mapStyleActions';
 export const INIT_BASEMAP = 'INIT_BASEMAP';
 export const UPDATE_BASEMAP_LAYER = 'UPDATE_BASEMAP_LAYER';
 
-export const initBasemap = (workspaceBasemap, workspaceBasemapOptions) => (dispatch, getState) => {
+export const initBasemap = (workspaceBasemap, workspaceBasemapOptions) => (dispatch) => {
   dispatch({
     type: INIT_BASEMAP,
     payload: { workspaceBasemap, workspaceBasemapOptions }

@@ -196,7 +196,6 @@ export const MINI_GLOBE_SETTINGS = {
   viewBoxHeight: 200,
   svgWidth: 40,
   scale: 100,
-  defaultSize: 20,
   minZoom: 2.5
 };
 
@@ -205,5 +204,3 @@ export const STATIC_LAYERS_CARTO_TILES_ENDPOINT =
   'https://carto.globalfishingwatch.org/user/admin/api/v1/map/$LAYERGROUPID/{z}/{x}/{y}.mvt';
 
 export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
-
-

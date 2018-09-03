@@ -10,7 +10,6 @@ import TooltipStyles from 'styles/components/shared/react-tooltip.scss';
 import ReactTooltip from 'react-tooltip';
 import IconStyles from 'styles/icons.scss';
 import ButtonStyles from 'styles/components/button.scss';
-import ReportIcon from '-!babel-loader!svg-react-loader!assets/icons/report.svg?name=ReportIcon';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
 import DeleteIcon from '-!babel-loader!svg-react-loader!assets/icons/remove.svg?name=DeleteIcon';
 import Toggle from 'components/Shared/Toggle';

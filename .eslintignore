@@ -2,3 +2,4 @@ dist/**/*
 app/lib
 app/src/util/assignPolyfill.js
 app/src/util/findPolyfill.js
+app/src/workspace/workspace.js

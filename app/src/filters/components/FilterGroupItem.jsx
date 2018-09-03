@@ -53,7 +53,7 @@ class FilterGroupItem extends Component {
     );
 
     const tooltip = (this.props.filterGroup.label.length > 30) ? this.props.filterGroup.label : null;
- 
+
     return (
       <li
         className={classnames(ListStyles.listItem, ListStyles._noMobilePadding, ListStyles._fixed, ListStyles._alignLeft)}
