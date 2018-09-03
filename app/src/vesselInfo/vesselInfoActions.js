@@ -113,7 +113,7 @@ function _getTrackTimeExtent(data, series = null) {
   return [start, end];
 }
 
-export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+export function getVesselTrack({ tilesetId, seriesgroup, series, updateTimelineBounds }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -154,14 +154,14 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
           }
         });
 
-        if (updateTimelineBounds === true) {
-          const tracksExtent = _getTrackTimeExtent(groupedData, series);
-          dispatch(fitTimelineToTrack(tracksExtent));
-        }
+        // if (updateTimelineBounds === true) {
+        //   const tracksExtent = _getTrackTimeExtent(groupedData, series);
+        //   dispatch(fitTimelineToTrack(tracksExtent));
+        // }
 
-        if (zoomToBounds) {
-          dispatch(fitBoundsToTrack(groupedData));
-        }
+        // if (zoomToBounds) {
+        //   dispatch(fitBoundsToTrack(groupedData));
+        // }
       });
   };
 }
@@ -303,7 +303,13 @@ export function hideVesselsInfoPanel() {
   };
 }
 
-export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false, parentEncounter = null) {
+export function addVessel({
+  tilesetId,
+  seriesgroup,
+  series = null,
+  fromSearch = false,
+  parentEncounter = null
+}) {
   return (dispatch, getState) => {
     const state = getState();
     dispatch({
@@ -323,9 +329,8 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
     dispatch(getVesselTrack({
       tilesetId,
       seriesgroup,
-      series,
-      zoomToBounds,
-      updateTimelineBounds: fromSearch === true
+      series
+      // updateTimelineBounds: fromSearch === true
     }));
   };
 }
@@ -333,11 +338,15 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
 export function addVesselFromEncounter(tilesetId, seriesgroup) {
   return (dispatch, getState) => {
     const state = getState();
-    const encounter = {
+    const parentEncounter = {
       seriesgroup: state.encounters.seriesgroup,
       tilesetId: state.encounters.tilesetId
     };
-    dispatch(addVessel(tilesetId, seriesgroup, null, false, false, encounter));
+    dispatch(addVessel({
+      tilesetId,
+      seriesgroup,
+      parentEncounter
+    }));
   };
 }
 

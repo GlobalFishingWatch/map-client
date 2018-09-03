@@ -220,7 +220,11 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       } else {
         const idFieldKey = (layer.header.info.id === undefined) ? 'seriesgroup' : layer.header.info.id;
         const id = foundVessels[0][idFieldKey];
-        dispatch(addVessel(layer.tilesetId, id, selectedSeries));
+        dispatch(addVessel({
+          tilesetId: layer.tilesetId,
+          seriesgroup: id,
+          series: selectedSeries
+        }));
       }
     }
   }

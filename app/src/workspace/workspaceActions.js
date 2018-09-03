@@ -237,7 +237,12 @@ function dispatchActions(workspaceData, dispatch, getState) {
       if (workspaceData.shownVessel.seriesgroup === undefined) {
         console.warn(`attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no seriesgroup`);
       } else {
-        dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+        const { tilesetId, seriesgroup, series } = workspaceData.shownVessel;
+        dispatch(addVessel({
+          tilesetId,
+          seriesgroup,
+          series
+        }));
       }
     }
     // Mapbox branch compatibility: track layers should have color, not hue
