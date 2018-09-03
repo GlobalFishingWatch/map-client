@@ -58,6 +58,13 @@ export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
 
+// Sets what should be the discrete zoom level to load tiles, from a non-discrete
+// viewport zoom values. For instance, a values of 0.5 will load z 3 with a viewport
+// z of 2 (ceiling of 2 + 0.5)
+// this has a direct impact on the number of points displayed on the map, thus on the
+// performance of the app.
+export const TILES_LOAD_ZOOM_OFFSET = 0.5;
+
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000;

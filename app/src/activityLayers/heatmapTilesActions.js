@@ -1,7 +1,7 @@
 import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
-import { ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING } from 'config';
+import { ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING, TILES_LOAD_ZOOM_OFFSET } from 'config';
 import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmapActions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
@@ -13,7 +13,7 @@ export const RELEASE_MARKED_TILES_UIDS = 'RELEASE_MARKED_TILES_UIDS';
 // restrict tilecover to a single zoom level
 // could be customized to load less or more detailed tiles
 const getTilecoverLimits = (viewportZoom) => {
-  let zoom = Math.ceil(viewportZoom + 0.5);
+  let zoom = Math.ceil(viewportZoom + TILES_LOAD_ZOOM_OFFSET);
   let tilesAvailable = true;
   if (zoom > ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING) {
     zoom = ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING;
