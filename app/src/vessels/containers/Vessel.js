@@ -2,12 +2,11 @@ import { connect } from 'react-redux';
 import Vessel from 'vessels/components/Vessel';
 import {
   togglePinnedVesselVisibility,
-  showPinnedVesselDetails,
+  togglePinnedVesselDetails,
   toggleVesselPin,
   setPinnedVesselColor,
   targetVessel
 } from 'vesselInfo/vesselInfoActions';
-import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 
 const mapStateToProps = state => ({
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel
@@ -17,9 +16,8 @@ const mapDispatchToProps = dispatch => ({
   toggle(seriesgroup) {
     dispatch(togglePinnedVesselVisibility(seriesgroup));
   },
-  showVesselDetails: (seriesgroup, label, tilesetId) => {
-    dispatch(addVesselToRecentVesselList(seriesgroup, label, tilesetId));
-    dispatch(showPinnedVesselDetails(tilesetId, seriesgroup));
+  togglePinnedVesselDetails: (seriesgroup, label, tilesetId) => {
+    dispatch(togglePinnedVesselDetails(seriesgroup, label, tilesetId));
   },
   delete: (seriesgroup) => {
     dispatch(toggleVesselPin(seriesgroup));

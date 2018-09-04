@@ -45,7 +45,7 @@
   display: flex;
   flex-wrap: wrap;
   padding-left: $menu-mobile-left-padding;
-  padding-right: 20px;
+  padding-right: $menu-mobile-right-padding;
   position: relative;
   width: 100%;
   @media #{$mq-tablet} {

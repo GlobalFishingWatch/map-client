@@ -431,10 +431,18 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function showPinnedVesselDetails(tilesetId, seriesgroup) {
-  return (dispatch) => {
-    dispatch(showVesselDetails(tilesetId, seriesgroup));
-    dispatch(togglePinnedVesselVisibility(seriesgroup, true));
+export function togglePinnedVesselDetails(seriesgroup, label, tilesetId) {
+  return (dispatch, getState) => {
+    const hide = getState().vesselInfo.currentlyShownVessel
+      && getState().vesselInfo.currentlyShownVessel.seriesgroup === seriesgroup;
+
+    if (hide === true) {
+      dispatch(clearVesselInfo());
+    } else {
+      dispatch(addVesselToRecentVesselList(seriesgroup, label, tilesetId));
+      dispatch(togglePinnedVesselVisibility(seriesgroup, true));
+      dispatch(showVesselDetails(tilesetId, seriesgroup));
+    }
   };
 }
 

@@ -51,7 +51,7 @@ class Vessel extends Component {
         </div>
         <div
           className={VesselStyles.title}
-          onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}
+          onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}
           data-tip={tooltip}
           data-place="left"
           data-class={TooltipStyles.tooltip}
@@ -71,7 +71,7 @@ class Vessel extends Component {
             <IconButton icon="paint" activated={this.state.expanded === true} />
           </ExpandableIconButton>
         </div>}
-        <div onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}>
+        <div onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}>
           <IconButton icon="info" activated={detailsCurrentlyShown} />
         </div>
       </div>
@@ -92,7 +92,7 @@ Vessel.propTypes = {
   editable: PropTypes.bool,
   tall: PropTypes.bool,
   toggle: PropTypes.func,
-  showVesselDetails: PropTypes.func,
+  togglePinnedVesselDetails: PropTypes.func,
   delete: PropTypes.func,
   setColor: PropTypes.func,
   targetVessel: PropTypes.func
