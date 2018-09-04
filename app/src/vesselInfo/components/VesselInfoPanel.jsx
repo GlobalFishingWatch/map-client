@@ -70,6 +70,7 @@ class VesselInfoPanel extends Component {
               }}
             />
           }
+          <button onClick={this.props.targetVessel}>target</button>
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={infoPanelStyles.externalLink}
             target="_blank"
@@ -136,7 +137,8 @@ VesselInfoPanel.propTypes = {
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
   login: PropTypes.func,
-  showParentEncounter: PropTypes.func
+  showParentEncounter: PropTypes.func,
+  targetVessel: PropTypes.func
 };
 
 export default VesselInfoPanel;

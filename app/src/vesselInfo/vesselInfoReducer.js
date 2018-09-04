@@ -68,10 +68,7 @@ export default function (state = initialState, action) {
     case SET_VESSEL_TRACK: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = Object.assign({}, state.vessels[vesselIndex]);
-      newVessel.track = {
-        data: action.payload.data,
-        selectedSeries: action.payload.selectedSeries
-      };
+      newVessel.track = { ...action.payload };
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]

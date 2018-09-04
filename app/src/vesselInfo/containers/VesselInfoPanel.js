@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'vesselInfo/components/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin } from 'vesselInfo/vesselInfoActions';
+import { clearVesselInfo, toggleActiveVesselPin, targetCurrentlyShownVessel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { login } from 'user/userActions';
 
@@ -43,7 +43,11 @@ const mapDispatchToProps = dispatch => ({
   showParentEncounter: (encounter) => {
     dispatch(clearVesselInfo());
     dispatch(setEncountersInfo(encounter.seriesgroup, encounter.tilesetId));
+  },
+  targetVessel: () => {
+    dispatch(targetCurrentlyShownVessel());
   }
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VesselInfoPanel);
