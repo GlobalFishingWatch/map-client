@@ -70,8 +70,15 @@ export default function (state = initialState, action) {
       const newVessel = Object.assign({}, state.vessels[vesselIndex]);
       newVessel.track = { ...action.payload };
 
+      let currentlyShownVessel = state.currentlyShownVessel;
+      if (newVessel.seriesgroup === currentlyShownVessel.seriesgroup && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
+        currentlyShownVessel = Object.assign({}, currentlyShownVessel);
+        currentlyShownVessel.hasTrack = true;
+      }
+
       return Object.assign({}, state, {
-        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]
+        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
+        currentlyShownVessel
       });
     }
 

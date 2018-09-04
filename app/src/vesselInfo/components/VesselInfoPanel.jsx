@@ -33,8 +33,7 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const vesselInfo = this.props.currentlyShownVessel;
-    const status = this.props.infoPanelStatus;
+    const { vesselInfo, status } = this.props;
 
     if (status !== INFO_STATUS.LOADING && vesselInfo === null) {
       return null;
@@ -70,7 +69,9 @@ class VesselInfoPanel extends Component {
               }}
             />
           }
+          {(vesselInfo.hasTrack === true) &&
           <button onClick={this.props.targetVessel}>target</button>
+          }
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={infoPanelStyles.externalLink}
             target="_blank"
@@ -129,10 +130,10 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  currentlyShownVessel: PropTypes.object,
+  vesselInfo: PropTypes.object,
   layerFieldsHeaders: PropTypes.array,
   layerIsPinable: PropTypes.bool,
-  infoPanelStatus: PropTypes.number,
+  status: PropTypes.number,
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
