@@ -1,5 +1,10 @@
 # Changelog
 
+- Added a button to fit the viewport and timebar to vessel tracks
+- Removed automatic fit to viewport and timebar when clicking on a vessel search result (can now be done by explicitely clicking the button)
+- Clicking the (i) vessel button again now hides vessel details
+- Harmonisation of icons
+
 ## 3.0.0
 - Allow custom Mapbox GL JSON style in workspaces (https://github.com/GlobalFishingWatch/map-client/pull/943)
 - Deeper zoom levels up to 14, even when activity layer tiles are not visible (https://github.com/GlobalFishingWatch/map-client/pull/942)
