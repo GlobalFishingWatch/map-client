@@ -12,7 +12,7 @@
     padding-left: $menu-mobile-left-padding;
 
     @media #{$mq-tablet} {
-      padding-right: 45px;
+      padding-right: $menu-right-padding;
       padding-left: $menu-left-padding;
     }
 

@@ -50,12 +50,11 @@
   width: 100%;
   @media #{$mq-tablet} {
     padding-left: $menu-left-padding;
-    padding-right: 36px;
+    padding-right: $menu-right-padding;
 
     &._alignLeft {
       padding-right: 4px;
     }
-
   }
 
   &._noPadding {

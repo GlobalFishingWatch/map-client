@@ -60,12 +60,11 @@ class Vessel extends Component {
         </div>
         {isEditable &&
         <div onClick={() => this.props.delete(vessel.seriesgroup)}>
-          <IconButton icon="remove" />
+          <IconButton icon="unpin" />
         </div>}
-        {vessel.track !== undefined &&
         <div onClick={() => this.props.targetVessel(vessel.seriesgroup)}>
-          <IconButton icon="info" />
-        </div>}
+          <IconButton icon="target" disabled={vessel.track === undefined} />
+        </div>
         {isEditable &&
         <div onClick={() => this.toggleExpand()} style={{ position: 'relative' }}>
           <ExpandableIconButton activated={this.state.expanded === true} >
