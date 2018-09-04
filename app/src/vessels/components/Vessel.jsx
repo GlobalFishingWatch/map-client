@@ -51,22 +51,27 @@ class Vessel extends Component {
         </div>
         <div
           className={VesselStyles.title}
-          onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}
+          onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}
           data-tip={tooltip}
           data-place="left"
           data-class={TooltipStyles.tooltip}
         >
           {vessel.title}
         </div>
-        {isEditable && <div onClick={() => this.props.delete(vessel.seriesgroup)}>
-          <IconButton icon="remove" />
+        {isEditable &&
+        <div onClick={() => this.props.delete(vessel.seriesgroup)}>
+          <IconButton icon="unpin" />
         </div>}
-        {isEditable && <div onClick={() => this.toggleExpand()} style={{ position: 'relative' }}>
+        <div onClick={() => this.props.targetVessel(vessel.seriesgroup)}>
+          <IconButton icon="target" disabled={vessel.track === undefined} />
+        </div>
+        {isEditable &&
+        <div onClick={() => this.toggleExpand()} style={{ position: 'relative' }}>
           <ExpandableIconButton activated={this.state.expanded === true} >
             <IconButton icon="paint" activated={this.state.expanded === true} />
           </ExpandableIconButton>
         </div>}
-        <div onClick={() => this.props.showVesselDetails(vessel.seriesgroup)}>
+        <div onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}>
           <IconButton icon="info" activated={detailsCurrentlyShown} />
         </div>
       </div>
@@ -87,9 +92,10 @@ Vessel.propTypes = {
   editable: PropTypes.bool,
   tall: PropTypes.bool,
   toggle: PropTypes.func,
-  showVesselDetails: PropTypes.func,
+  togglePinnedVesselDetails: PropTypes.func,
   delete: PropTypes.func,
-  setColor: PropTypes.func
+  setColor: PropTypes.func,
+  targetVessel: PropTypes.func
 };
 
 export default Vessel;

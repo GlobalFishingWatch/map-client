@@ -45,17 +45,16 @@
   display: flex;
   flex-wrap: wrap;
   padding-left: $menu-mobile-left-padding;
-  padding-right: 20px;
+  padding-right: $menu-mobile-right-padding;
   position: relative;
   width: 100%;
   @media #{$mq-tablet} {
     padding-left: $menu-left-padding;
-    padding-right: 36px;
+    padding-right: $menu-right-padding;
 
     &._alignLeft {
       padding-right: 4px;
     }
-
   }
 
   &._noPadding {

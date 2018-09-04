@@ -28,6 +28,59 @@ export const TOGGLE_PINNED_VESSEL_EDIT_MODE = 'TOGGLE_PINNED_VESSEL_EDIT_MODE';
 export const SET_PINNED_VESSEL_TRACK_VISIBILITY = 'SET_PINNED_VESSEL_TRACK_VISIBILITY';
 
 
+const getTrackBounds = (data, series = null, addOffset = false) => {
+  const time = {
+    start: Infinity,
+    end: 0
+  };
+  const geo = {
+    minLat: Infinity,
+    maxLat: -Infinity,
+    minLng: Infinity,
+    maxLng: -Infinity
+  };
+  for (let i = 0, length = data.datetime.length; i < length; i++) {
+    if (series !== null && series !== data.series[i]) {
+      continue;
+    }
+    const datetime = data.datetime[i];
+    if (datetime < time.start) {
+      time.start = datetime;
+    } else if (datetime > time.end) {
+      time.end = datetime;
+    }
+
+    const lat = data.latitude[i];
+    if (lat < geo.minLat) {
+      geo.minLat = lat;
+    } else if (lat > geo.maxLat) {
+      geo.maxLat = lat;
+    }
+
+    let lng = data.longitude[i];
+    if (addOffset === true) {
+      if (lng < 0) {
+        lng += 360;
+      }
+    }
+    if (lng < geo.minLng) {
+      geo.minLng = lng;
+    } else if (lng > geo.maxLng) {
+      geo.maxLng = lng;
+    }
+  }
+
+  // track crosses the antimeridian
+  if (geo.maxLng - geo.minLng > 350 && addOffset === false) {
+    return getTrackBounds(data, series, true);
+  }
+
+  return {
+    time: [time.start, time.end],
+    geo
+  };
+};
+
 function showVesselDetails(tilesetId, seriesgroup) {
   return {
     type: SHOW_VESSEL_DETAILS,
@@ -96,24 +149,8 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
   };
 }
 
-function _getTrackTimeExtent(data, series = null) {
-  let start = Infinity;
-  let end = 0;
-  for (let i = 0, length = data.datetime.length; i < length; i++) {
-    if (series !== null && series !== data.series[i]) {
-      continue;
-    }
-    const time = data.datetime[i];
-    if (time < start) {
-      start = time;
-    } else if (time > end) {
-      end = time;
-    }
-  }
-  return [start, end];
-}
 
-export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, updateTimelineBounds }) {
+export function getVesselTrack({ tilesetId, seriesgroup, series }) {
   return (dispatch, getState) => {
     const state = getState();
 
@@ -133,7 +170,7 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
         if (!cleanData.length) {
           return;
         }
-        const groupedData = groupData(cleanData, [
+        const rawTrackData = groupData(cleanData, [
           'latitude',
           'longitude',
           'datetime',
@@ -142,26 +179,20 @@ export function getVesselTrack({ tilesetId, seriesgroup, series, zoomToBounds, u
           'sigma'
         ]);
 
-        const vectorArray = addTracksPointsRenderingData(groupedData);
+        const vectorArray = addTracksPointsRenderingData(rawTrackData);
+        const bounds = getTrackBounds(rawTrackData, series);
 
         dispatch({
           type: SET_VESSEL_TRACK,
           payload: {
             seriesgroup,
             data: getTracksPlaybackData(vectorArray),
-            series: uniq(groupedData.series),
+            series: uniq(rawTrackData.series),
+            geoBounds: bounds.geo,
+            timelineBounds: bounds.time,
             selectedSeries: series
           }
         });
-
-        if (updateTimelineBounds === true) {
-          const tracksExtent = _getTrackTimeExtent(groupedData, series);
-          dispatch(fitTimelineToTrack(tracksExtent));
-        }
-
-        if (zoomToBounds) {
-          dispatch(fitBoundsToTrack(groupedData));
-        }
       });
   };
 }
@@ -303,7 +334,13 @@ export function hideVesselsInfoPanel() {
   };
 }
 
-export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = false, fromSearch = false, parentEncounter = null) {
+export function addVessel({
+  tilesetId,
+  seriesgroup,
+  series = null,
+  fromSearch = false,
+  parentEncounter = null
+}) {
   return (dispatch, getState) => {
     const state = getState();
     dispatch({
@@ -323,9 +360,7 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
     dispatch(getVesselTrack({
       tilesetId,
       seriesgroup,
-      series,
-      zoomToBounds,
-      updateTimelineBounds: fromSearch === true
+      series
     }));
   };
 }
@@ -333,11 +368,15 @@ export function addVessel(tilesetId, seriesgroup, series = null, zoomToBounds = 
 export function addVesselFromEncounter(tilesetId, seriesgroup) {
   return (dispatch, getState) => {
     const state = getState();
-    const encounter = {
+    const parentEncounter = {
       seriesgroup: state.encounters.seriesgroup,
       tilesetId: state.encounters.tilesetId
     };
-    dispatch(addVessel(tilesetId, seriesgroup, null, false, false, encounter));
+    dispatch(addVessel({
+      tilesetId,
+      seriesgroup,
+      parentEncounter
+    }));
   };
 }
 
@@ -392,10 +431,28 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   };
 }
 
-export function showPinnedVesselDetails(tilesetId, seriesgroup) {
-  return (dispatch) => {
-    dispatch(showVesselDetails(tilesetId, seriesgroup));
-    dispatch(togglePinnedVesselVisibility(seriesgroup, true));
+export function togglePinnedVesselDetails(seriesgroup, label, tilesetId) {
+  return (dispatch, getState) => {
+    const hide = getState().vesselInfo.currentlyShownVessel
+      && getState().vesselInfo.currentlyShownVessel.seriesgroup === seriesgroup;
+
+    if (hide === true) {
+      dispatch(clearVesselInfo());
+    } else {
+      dispatch(addVesselToRecentVesselList(seriesgroup, label, tilesetId));
+      dispatch(togglePinnedVesselVisibility(seriesgroup, true));
+      dispatch(showVesselDetails(tilesetId, seriesgroup));
+    }
   };
 }
 
+export const targetVessel = seriesgroup => (dispatch, getState) => {
+  const vessel = getState().vesselInfo.vessels.find(v => v.seriesgroup === seriesgroup);
+  dispatch(fitBoundsToTrack(vessel.track.geoBounds));
+  dispatch(fitTimelineToTrack(vessel.track.timelineBounds));
+};
+
+export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
+  const seriesgroup = getState().vesselInfo.currentlyShownVessel.seriesgroup;
+  dispatch(targetVessel(seriesgroup));
+};

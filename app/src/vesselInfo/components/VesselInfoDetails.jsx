@@ -9,10 +9,10 @@ import infoPanelStyles from 'styles/components/info-panel.scss';
 class VesselInfoDetails extends Component {
 
   render() {
-    const { currentlyShownVessel, layerFieldsHeaders, userPermissions } = this.props;
+    const { vesselInfo, layerFieldsHeaders, userPermissions } = this.props;
     const canSeeVesselDetails = (userPermissions !== null && userPermissions.indexOf('info') !== -1);
 
-    const renderedFieldList = this.generateVesselDetails(layerFieldsHeaders, canSeeVesselDetails, currentlyShownVessel);
+    const renderedFieldList = this.generateVesselDetails(layerFieldsHeaders, canSeeVesselDetails, vesselInfo);
 
     return (
       <div className={infoPanelStyles.details}>
@@ -104,7 +104,7 @@ class VesselInfoDetails extends Component {
 
 VesselInfoDetails.propTypes = {
   layerFieldsHeaders: PropTypes.array,
-  currentlyShownVessel: PropTypes.object,
+  vesselInfo: PropTypes.object,
   userPermissions: PropTypes.array,
   children: PropTypes.node
 };

@@ -8,8 +8,8 @@ import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import iconStyles from 'styles/icons.scss';
 
+import IconButton from 'src/components/Shared/IconButton';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
-import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=PinIcon';
 
 import { INFO_STATUS } from 'constants';
 
@@ -33,8 +33,7 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const vesselInfo = this.props.currentlyShownVessel;
-    const status = this.props.infoPanelStatus;
+    const { vesselInfo, status } = this.props;
 
     if (status !== INFO_STATUS.LOADING && vesselInfo === null) {
       return null;
@@ -56,20 +55,26 @@ class VesselInfoPanel extends Component {
       vesselInfoContents = (
         <div className={infoPanelStyles.metadata} >
           <VesselInfoDetails {...this.props} />
-          {((
-            this.props.userPermissions !== null &&
-            this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
-            this.props.layerIsPinable
-          ) || vesselInfo.pinned)
-          &&
-            <PinIcon
-              className={classnames(iconStyles.icon, iconStyles.pinIcon,
-                infoPanelStyles.pinIcon, { [`${infoPanelStyles._pinned}`]: vesselInfo.pinned })}
-              onClick={() => {
-                this.props.onTogglePin(vesselInfo.seriesgroup);
-              }}
-            />
-          }
+
+          <div className={infoPanelStyles.actionIcons}>
+            {((
+              this.props.userPermissions !== null &&
+              this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
+              this.props.layerIsPinable
+            ) || vesselInfo.pinned)
+            &&
+              <div
+                onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
+              >
+                <IconButton icon="pin" activated={vesselInfo.pinned} />
+              </div>
+            }
+
+            <div onClick={this.props.targetVessel}>
+              <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
+            </div>
+          </div>
+
           {canSeeVesselDetails && vesselInfo.mmsi && <a
             className={infoPanelStyles.externalLink}
             target="_blank"
@@ -128,15 +133,16 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  currentlyShownVessel: PropTypes.object,
+  vesselInfo: PropTypes.object,
   layerFieldsHeaders: PropTypes.array,
   layerIsPinable: PropTypes.bool,
-  infoPanelStatus: PropTypes.number,
+  status: PropTypes.number,
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
   login: PropTypes.func,
-  showParentEncounter: PropTypes.func
+  showParentEncounter: PropTypes.func,
+  targetVessel: PropTypes.func
 };
 
 export default VesselInfoPanel;

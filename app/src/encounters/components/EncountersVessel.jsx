@@ -28,7 +28,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
 
   return (
     <div className={infoPanelStyles.encountersData} >
-      <VesselInfoDetails currentlyShownVessel={vessel.info} layerFieldsHeaders={fields} userPermissions={userPermissions}>
+      <VesselInfoDetails vesselInfo={vessel.info} layerFieldsHeaders={fields} userPermissions={userPermissions}>
         <div className={infoPanelStyles.rowInfo} >
           <span className={infoPanelStyles.key} >Vessel</span>
           <a onClick={() => openVessel(vessel)} className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)} >

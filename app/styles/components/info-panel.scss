@@ -187,18 +187,14 @@
     }
   }
 
-  .pinIcon {
-    fill: $color-3;
+  .actionIcons {
     position: absolute;
     right: 86px;
+    display: flex;
+    flex-direction: column;
 
     @media #{$mq-tablet} {
-      right: 30px;
-      margin-top: 5px;
-    }
-
-    &._pinned {
-      fill: #fff;
+      right: 16px;
     }
   }
 

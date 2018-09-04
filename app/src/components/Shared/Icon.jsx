@@ -14,6 +14,9 @@ import Reports from '-!babel-loader!svg-react-loader!assets/icons/report-menu.sv
 import Layers from '-!babel-loader!svg-react-loader!assets/icons/layers-menu.svg';
 import Filters from '-!babel-loader!svg-react-loader!assets/icons/filters-menu.svg';
 import Report from '-!babel-loader!svg-react-loader!assets/icons/report.svg';
+import Target from '-!babel-loader!svg-react-loader!assets/icons/target.svg';
+import Pin from '-!babel-loader!svg-react-loader!assets/icons/pin.svg';
+import Unpin from '-!babel-loader!svg-react-loader!assets/icons/unpin.svg';
 
 class Icon extends Component {
   render() {
@@ -33,6 +36,9 @@ class Icon extends Component {
       case 'layers': iconElement = <Layers className={classNames} />; break;
       case 'filters': iconElement = <Filters className={classNames} />; break;
       case 'report': iconElement = <Report className={classnames(classNames, IconStyles.report)} />; break;
+      case 'target': iconElement = <Target className={classNames} />; break;
+      case 'pin': iconElement = <Pin className={classnames(classNames, IconStyles.pin)} />; break;
+      case 'unpin': iconElement = <Unpin className={classNames} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;

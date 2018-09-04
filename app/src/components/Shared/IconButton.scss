@@ -16,6 +16,11 @@
   &._activated {
     background-color: $color-31;
   }
+
+  &._disabled {
+    opacity: .5;
+    pointer-events: none;
+  }
 }
 
 .label {

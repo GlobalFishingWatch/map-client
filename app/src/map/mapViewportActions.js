@@ -63,25 +63,9 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
   dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
-export const fitBoundsToTrack = trackData => (dispatch, getState) => {
-  const minLat = Math.min.apply(null, trackData.latitude);
-  const maxLat = Math.max.apply(null, trackData.latitude);
-  let minLng = Math.min.apply(null, trackData.longitude);
-  let maxLng = Math.max.apply(null, trackData.longitude);
-
-  // track crosses the antimeridian
-  if (maxLng - minLng > 350) {
-    const offsetedLngs = trackData.longitude.map((l) => {
-      if (l < 0) {
-        return l + 360;
-      }
-      return l;
-    });
-    minLng = Math.min.apply(null, offsetedLngs);
-    maxLng = Math.max.apply(null, offsetedLngs);
-  }
+export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
   const vp = fitBounds({
-    bounds: [[minLng, minLat], [maxLng, maxLat]],
+    bounds: [[trackBounds.minLng, trackBounds.minLat], [trackBounds.maxLng, trackBounds.maxLat]],
     width: getState().mapViewport.viewport.width,
     height: getState().mapViewport.viewport.height,
     padding: 50
