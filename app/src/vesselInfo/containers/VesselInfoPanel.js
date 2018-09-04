@@ -47,7 +47,6 @@ const mapDispatchToProps = dispatch => ({
   targetVessel: () => {
     dispatch(targetCurrentlyShownVessel());
   }
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(VesselInfoPanel);

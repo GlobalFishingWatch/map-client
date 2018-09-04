@@ -61,6 +61,9 @@ class Vessel extends Component {
         {isEditable && <div onClick={() => this.props.delete(vessel.seriesgroup)}>
           <IconButton icon="remove" />
         </div>}
+        <div onClick={() => this.props.targetVessel(vessel.seriesgroup)}>
+          <IconButton icon="info" />
+        </div>
         {isEditable && <div onClick={() => this.toggleExpand()} style={{ position: 'relative' }}>
           <ExpandableIconButton activated={this.state.expanded === true} >
             <IconButton icon="paint" activated={this.state.expanded === true} />
@@ -89,7 +92,8 @@ Vessel.propTypes = {
   toggle: PropTypes.func,
   showVesselDetails: PropTypes.func,
   delete: PropTypes.func,
-  setColor: PropTypes.func
+  setColor: PropTypes.func,
+  targetVessel: PropTypes.func
 };
 
 export default Vessel;

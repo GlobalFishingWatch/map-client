@@ -438,9 +438,13 @@ export function showPinnedVesselDetails(tilesetId, seriesgroup) {
   };
 }
 
-export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
-  const seriesgroup = getState().vesselInfo.currentlyShownVessel.seriesgroup;
+export const targetVessel = seriesgroup => (dispatch, getState) => {
   const vessel = getState().vesselInfo.vessels.find(v => v.seriesgroup === seriesgroup);
   dispatch(fitBoundsToTrack(vessel.track.geoBounds));
   dispatch(fitTimelineToTrack(vessel.track.timelineBounds));
+};
+
+export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
+  const seriesgroup = getState().vesselInfo.currentlyShownVessel.seriesgroup;
+  dispatch(targetVessel(seriesgroup));
 };

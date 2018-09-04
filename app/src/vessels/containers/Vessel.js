@@ -4,7 +4,8 @@ import {
   togglePinnedVesselVisibility,
   showPinnedVesselDetails,
   toggleVesselPin,
-  setPinnedVesselColor
+  setPinnedVesselColor,
+  targetVessel
 } from 'vesselInfo/vesselInfoActions';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 
@@ -25,6 +26,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setColor(seriesgroup, color) {
     dispatch(setPinnedVesselColor(seriesgroup, color));
+  },
+  targetVessel: (seriesgroup) => {
+    dispatch(targetVessel(seriesgroup));
   }
 });
 
