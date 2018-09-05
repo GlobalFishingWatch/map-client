@@ -69,7 +69,7 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    const { data, filters, baseTexture, maxSprites, layer } = this.props;
+    const { data, filters, baseTexture, layer } = this.props;
 
     if (data === null || data === undefined || layer.visible === false) {
       this.stage.visible = false;
@@ -104,7 +104,7 @@ class HeatmapLayer extends React.Component {
       }
       if (currentlyUsedHues.indexOf(hue) === -1) {
         // not on old hues: create sublayer
-        this.subLayers[hue] = this._createSublayer(baseTexture, maxSprites, this.renderingStyleIndex, hue);
+        this.subLayers[hue] = this._createSublayer(baseTexture, this.renderingStyleIndex, hue);
       }
       this.subLayers[hue].spritesProps = [];
     }
@@ -172,21 +172,28 @@ class HeatmapLayer extends React.Component {
           viewport.pixelProjectionMatrix
         );
 
-        const spriteProps = {
-          x: px[0],
-          y: px[1],
-          alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
-          scale: (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
-        };
-        if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
-          this.subLayers[hue].spritesProps.push(spriteProps);
+        const x = px[0];
+        const y = px[1];
+
+        if (
+          x > -10 && x < viewport.width + 10 &&
+          y > -10 && y < viewport.height + 10) {
+          const spriteProps = {
+            x,
+            y,
+            alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
+            scale: (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
+          };
+          if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
+            this.subLayers[hue].spritesProps.push(spriteProps);
+          }
         }
       }
     }
   }
 
-  _createSublayer(baseTexture, maxSprites, renderingStyleIndex, hue) {
-    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, renderingStyleIndex, hue,
+  _createSublayer(baseTexture, renderingStyleIndex, hue) {
+    const subLayer = new HeatmapSubLayer(baseTexture, renderingStyleIndex, hue,
       this.brushRenderingStyle === BRUSH_RENDERING_STYLE.BULLSEYE);
     this.stage.addChild(subLayer.stage);
     return subLayer;
@@ -218,7 +225,6 @@ HeatmapLayer.propTypes = {
   endIndex: PropTypes.number,
   filters: PropTypes.array,
   baseTexture: PropTypes.object,
-  maxSprites: PropTypes.number,
   useRadialGradientStyle: PropTypes.bool,
   customRenderingStyle: PropTypes.object,
   viewportLeft: PropTypes.number,

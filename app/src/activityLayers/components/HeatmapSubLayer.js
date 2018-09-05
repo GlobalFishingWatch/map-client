@@ -7,10 +7,10 @@ import {
 import { hueToHueIncrement } from 'utils/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, renderingStyleIndex, hue, useNormalBlendMode = false) {
+  constructor(baseTexture, renderingStyleIndex, hue, useNormalBlendMode = false) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
-    this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
+    this.stage = new PIXI.particles.ParticleContainer(200000, {
       scale: true,
       alpha: true,
       position: true,
@@ -20,13 +20,11 @@ export default class HeatmapSubLayer {
       this.stage.blendMode = PIXI.BLEND_MODES.SCREEN;
     }
 
-    this.spritesPool = [];
-
     const initialTextureFrame = new PIXI.Rectangle(0, 0, VESSELS_BASE_RADIUS * 2, VESSELS_BASE_RADIUS * 2);
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
     this._setTextureFrame(renderingStyleIndex, hue);
 
-    this._resizeSpritesPool(10000);
+    // this._resizeSpritesPool(30000);
   }
 
   setRenderingStyleIndex(renderingStyleIndex) {
@@ -34,7 +32,6 @@ export default class HeatmapSubLayer {
   }
 
   destroy() {
-    this.spritesPool = null;
     this.stage.destroy({ children: true });
   }
 
@@ -70,41 +67,62 @@ export default class HeatmapSubLayer {
 
   render() {
     // spritesProps is set by HeatmapLayer
-    const numSpritesNeeded = this.spritesProps.length;
-    const numSpritesNeededWithMargin = numSpritesNeeded * 2;
+    const numProps = this.spritesProps.length;
+    const prevNumSprites = this.stage.children.length;
+    const numSpritesNeededWithMargin = numProps + 4000;
 
-    if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
+    if (numProps + 2000 > prevNumSprites || numProps < prevNumSprites/2) {
       this._resizeSpritesPool(numSpritesNeededWithMargin);
     }
+    
 
-    for (let i = 0; i < numSpritesNeeded; i++) {
-      const sprite = this.spritesPool[i];
+    const numSprites = this.stage.children.length;
+    //console.log('numProps:', numProps, '- numSprites:', numSprites);
+
+    let currentSpriteIndex = 0;
+
+    for (let i = 0; i < numProps; i++) {
+      const sprite = this.stage.children[currentSpriteIndex];
       const spriteProps = this.spritesProps[i];
-
-      sprite.position.x = spriteProps.x;
-      sprite.position.y = spriteProps.y;
-      sprite.alpha = spriteProps.alpha;
-      sprite.scale.set(spriteProps.scale);
+      if (
+        spriteProps.x > -10
+        && spriteProps.y > -10
+      ) {
+        sprite.position.x = spriteProps.x;
+        sprite.position.y = spriteProps.y;
+        sprite.alpha = spriteProps.alpha;
+        sprite.scale.set(spriteProps.scale);
+        currentSpriteIndex++;
+      }
     }
 
-    for (let i = numSpritesNeeded, poolSize = this.spritesPool.length; i < poolSize; i++) {
-      this.spritesPool[i].x = -100;
+    // console.log(currentSpriteIndex, ' used/', numSprites );
+
+    for (let i = currentSpriteIndex; i < numSprites; i++) {
+      const sprite = this.stage.children[i];
+      sprite.x = -100;
     }
   }
 
   _resizeSpritesPool(finalPoolSize) {
-    const currentPoolSize = this.spritesPool.length;
+    const currentPoolSize = this.stage.children.length;
+    console.log('before ', this.stage.children.length)
     const poolDelta = finalPoolSize - currentPoolSize;
+    if (poolDelta === 0) {
+      return;
+    }
     if (poolDelta > 0) {
+      // console.log('adding ', poolDelta, 'sprites');
       this._addSprites(poolDelta);
     } else {
-      const startRemovingAt = currentPoolSize - poolDelta;
-      for (let i = startRemovingAt; i < currentPoolSize; i++) {
-        // this is actually insanely costly - keep this in RAM and be done with it ?
-        // this.stage.removeChild(this.spritesPool[i]);
+      console.log('removing ', poolDelta, 'sprites');
+      console.log(finalPoolSize, currentPoolSize);
+      for (let i = finalPoolSize; i < currentPoolSize; i++) {
+        this.stage.removeChildAt(finalPoolSize - 1);
       }
-      // this.spritesPool.splice(- deltaSprites);
     }
+
+    console.log('now ', this.stage.children.length);
 
     // disable all sprites and let render take it from there
     this._clear();
@@ -119,15 +137,15 @@ export default class HeatmapSubLayer {
       vessel.x = -100;
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
       // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
-      this.spritesPool.push(vessel);
+      // this.spritesPool.push(vessel);
       this.stage.addChild(vessel);
     }
   }
 
   _clear(render = false) {
-    for (let i = 0, poolSize = this.spritesPool.length; i < poolSize; i++) {
+    for (let i = 0, poolSize = this.stage.children.length; i < poolSize; i++) {
       // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.spritesPool[i].x = -100;
+      this.stage.children[i].x = -100;
     }
     if (render) {
       this.renderer.render(this.stage);
