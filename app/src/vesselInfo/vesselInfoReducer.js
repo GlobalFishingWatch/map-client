@@ -71,7 +71,9 @@ export default function (state = initialState, action) {
       newVessel.track = { ...action.payload };
 
       let currentlyShownVessel = state.currentlyShownVessel;
-      if (newVessel.seriesgroup === currentlyShownVessel.seriesgroup && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
+      if (currentlyShownVessel
+          && newVessel.seriesgroup === currentlyShownVessel.seriesgroup
+          && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
         currentlyShownVessel = Object.assign({}, currentlyShownVessel);
         currentlyShownVessel.hasTrack = true;
       }
@@ -121,6 +123,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex]);
       currentlyShownVessel.shownInInfoPanel = true;
+      currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],

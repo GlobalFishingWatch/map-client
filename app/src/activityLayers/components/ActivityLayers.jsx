@@ -273,7 +273,6 @@ class ActivityLayers extends React.Component {
       console.log(this.renderer.gl.getError());
     }
 
-
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
     return (<div
