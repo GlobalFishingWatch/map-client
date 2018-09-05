@@ -75,7 +75,7 @@
   justify-content: space-between;
 
   @media #{$mq-tablet} {
-    max-width: 470px;
+    max-width: 550px;
     width: 100%;
   }
 
@@ -105,7 +105,7 @@
     }
 
     @media #{$mq-laptop} {
-      max-width: 375px;
+      max-width: 450px;
     }
 
     a {

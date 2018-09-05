@@ -15,7 +15,7 @@
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256,
-      "attribution": "Map data ©2016 Google, INEGI Imagery ©2016 NASA"
+      "attribution": "Map data ©2018 Google, ©2018 NASA, INEGI, TerraMetrics <a href='https://www.google.com/intl/en-GB_US/help/terms_maps.html'>Terms of Use</a>"
     },
     "north-star": {
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
