@@ -10,6 +10,12 @@ import ActivityLayers from 'activityLayers/containers/ActivityLayers';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 
 class Map extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mouseOver: true
+    };
+  }
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
@@ -68,11 +74,14 @@ class Map extends React.Component {
         id="map"
         className={MapStyles.map}
         ref={(ref) => { this._mapContainerRef = ref; }}
+        onMouseLeave={() => { this.setState({ mouseOver: false }); }}
+        onMouseEnter={() => { this.setState({ mouseOver: true }); }}
       >
         <MapGL
           onTransitionEnd={transitionEnd}
           onHover={this.onHover}
           onClick={this.onClick}
+
           getCursor={({ isDragging }) => {
             if (cursor === null) {
               return (isDragging) ? MapGLConfig.CURSOR.GRABBING : MapGLConfig.CURSOR.GRAB;
@@ -89,7 +98,7 @@ class Map extends React.Component {
           {popup !== null &&
             <StaticLayerPopup forceRender={Math.random()} />
           }
-          {hoverPopup !== null &&
+          {this.state.mouseOver === true && hoverPopup !== null &&
             <Popup
               latitude={hoverPopup.latitude}
               longitude={hoverPopup.longitude}
