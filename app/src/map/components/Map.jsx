@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import MapGL, { Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
-import mapStyles from 'styles/components/map.scss';
+import MapStyles from 'styles/components/map.scss';
 import PopupStyles from 'styles/components/map/popup.scss';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
@@ -66,7 +66,7 @@ class Map extends React.Component {
     return (
       <div
         id="map"
-        className={mapStyles.map}
+        className={MapStyles.map}
         ref={(ref) => { this._mapContainerRef = ref; }}
       >
         <MapGL
@@ -104,6 +104,7 @@ class Map extends React.Component {
             </Popup>
           }
         </MapGL>
+        <div className={MapStyles.googleLogo} />
       </div>
     );
   }

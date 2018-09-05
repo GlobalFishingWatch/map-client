@@ -171,3 +171,12 @@
   }
 }
 
+.googleLogo {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  width: 66px;
+  height: 26px;
+  cursor: pointer;
+  background-image: url('https://maps.gstatic.com/mapfiles/api-3/images/google4.png');
+}

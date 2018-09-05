@@ -269,6 +269,10 @@ class ActivityLayers extends React.Component {
     if (highlightedVessels.isEmpty === true && nextTracks.length === 0) {
       this._startHeatmapFadein();
     }
+    if (this.renderer) {
+      console.log(this.renderer.gl.getError());
+    }
+
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
