@@ -8,7 +8,6 @@ import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
-  TIMELINE_MAX_STEPS,
   ACTIVITY_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA,
   VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
@@ -17,13 +16,7 @@ import {
 import HeatmapLayer from './HeatmapLayer.jsx';
 import TracksLayer from './TracksLayer.jsx';
 
-const MAX_SPRITES_FACTOR = 0.002;
-
 const shouldUseRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
-
-const getNumSpritesPerStep = (viewportWidth, viewportHeight) => Math.round(viewportWidth * viewportHeight * MAX_SPRITES_FACTOR);
-
-const getNumSprites = (viewportWidth, viewportHeight) => getNumSpritesPerStep(viewportWidth, viewportHeight) * TIMELINE_MAX_STEPS;
 
 // builds a texture spritesheet containing
 // - the heatmap style (radial gradient)
@@ -145,7 +138,6 @@ class ActivityLayers extends React.Component {
 
   _updateViewportSize(viewportWidth, viewportHeight) {
     this.renderer.resize(viewportWidth, viewportHeight);
-    this.maxSprites = getNumSprites(viewportWidth, viewportHeight);
   }
 
   toggleHeatmapDimming(dim) {
@@ -269,6 +261,10 @@ class ActivityLayers extends React.Component {
     if (highlightedVessels.isEmpty === true && nextTracks.length === 0) {
       this._startHeatmapFadein();
     }
+    if (this.renderer) {
+      console.log(this.renderer.gl.getError());
+    }
+
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
@@ -286,7 +282,6 @@ class ActivityLayers extends React.Component {
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}
-          maxSprites={this.maxSprites}
           baseTexture={this.baseTexture}
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
@@ -304,7 +299,6 @@ class ActivityLayers extends React.Component {
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}
-          maxSprites={this.maxSprites}
           baseTexture={this.baseTexture}
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
