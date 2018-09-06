@@ -15,7 +15,7 @@
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
       "tileSize": 256,
-      "attribution": "Map data ©2018 Google, ©2018 NASA, INEGI, TerraMetrics <a href='https://www.google.com/intl/en-GB_US/help/terms_maps.html'>Terms of Use</a>"
+      "attribution": "Map data ©2018 Google, ©2018 NASA, INEGI, TerraMetrics · <a href='https://www.google.com/intl/en-GB_US/help/terms_maps.html'>Terms of Use</a><br>"
     },
     "north-star": {
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/ns/tile?x={x}&y={y}&z={z}"],
@@ -66,7 +66,8 @@
           { "id": "name" }
         ]
       },
-      "type": "vector"
+      "type": "vector",
+      "attribution": "EEZs: marineregions.org"
     },
     "highseas": {
       "metadata": {
@@ -95,7 +96,8 @@
           { "id": "iso3" }
         ]
       },
-      "type": "vector"
+      "type": "vector",
+      "attribution": "MPAs: www.protectedplanet.net"
     },
     "mpatlas": {
       "metadata": {

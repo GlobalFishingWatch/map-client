@@ -49,7 +49,7 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <Map setAttribution={this.setAttribution} />
+        <Map />
         <LeftControlPanel />
       </div>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >

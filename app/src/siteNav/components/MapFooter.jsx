@@ -39,7 +39,7 @@ class MapFooter extends Component {
   }
 
   renderAttribution() {
-    return <span dangerouslySetInnerHTML={{ __html: this.props.attributions.join(', ') }} />;
+    return <span dangerouslySetInnerHTML={{ __html: this.props.attributions.join(' · ') }} />;
   }
 
   render() {
