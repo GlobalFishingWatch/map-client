@@ -13,6 +13,38 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
+const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
+{
+  bypassOnDebug: true,
+  optipng: {
+    optimizationLevel: 7
+  },
+  gifsicle: {
+    interlaced: true
+  }
+} : 
+{
+  bypassOnDebug: true,
+  optipng: {
+    enabled: false
+  },
+  mozjpeg: {
+    enabled: false
+  },
+  optipng: {
+    enabled: false
+  },
+  pngquant: {
+    enabled: false
+  },
+  gifsicle: {
+    enabled: false
+  }
+}
+
+console.log(imageLoaderConfiguration)
+
+
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
@@ -135,15 +167,7 @@ const webpackConfig = {
           'file-loader',
           {
             loader: 'image-webpack-loader',
-            query: {
-              optipng: {
-                optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7)
-              },
-              bypassOnDebug: true,
-              gifsicle: {
-                interlaced: true
-              }
-            }
+            query: imageLoaderConfiguration
           }
         ]
       },
