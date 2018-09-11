@@ -5,17 +5,18 @@ const fs = require('fs');
 
 const envVariables = process.env;
 const WORKSPACE_PATH = 'app/src/workspace/workspace.js';
+const V2_API_ENDPOINT = envVariables.V2_API_ENDPOINT || 'https://api-dot-skytruth-pelagos-production.appspot.com/v2';
+const DEFAULT_WORKSPACE = envVariables.DEFAULT_WORKSPACE || 'vizz-default-workspace-v16';
 
 console.log('Retrieving worskpace with configuration:');
 console.log('V2_API_ENDPOINT', envVariables.V2_API_ENDPOINT);
-console.log('DEFAULT_WORKSPACE', envVariables.DEFAULT_WORKSPACE);
+console.log('DEFAULT_WORKSPACE', DEFAULT_WORKSPACE);
 
 if (!envVariables.DEFAULT_WORKSPACE || !envVariables.V2_API_ENDPOINT) {
-  console.log('Error reading workspace');
-  process.exit(1);
+  console.log('Configuration not found in env variables, will use defaults');
 }
 
-https.get(`${envVariables.V2_API_ENDPOINT}/workspaces/${envVariables.DEFAULT_WORKSPACE}`, (resp) => {
+https.get(`${V2_API_ENDPOINT}/workspaces/${DEFAULT_WORKSPACE}`, (resp) => {
   let data = '';
   resp.on('data', (chunk) => {
     data += chunk;
