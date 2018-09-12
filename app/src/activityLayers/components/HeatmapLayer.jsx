@@ -11,10 +11,10 @@ import HeatmapSubLayer from './HeatmapSubLayer';
 // and ignores values from the matrix that are consistently = 0
 const s = 1 / 1.5;
 const worldToPixelsSimple = (x, y, m) => {
-  const fx = s * (m[0] * x + m[4] * y + m[12]);
-  const fy = s * (m[5] * y + m[13]);
-  return [fx, fy]
-}
+  const fx = s * ((m[0] * x) + (m[4] * y) + m[12]);
+  const fy = s * ((m[5] * y) + m[13]);
+  return [fx, fy];
+};
 
 class HeatmapLayer extends React.Component {
   componentDidMount() {
@@ -78,8 +78,8 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    const { data, filters, baseTexture, maxSprites, layer } = this.props;
-    
+    const { data, filters, baseTexture, layer } = this.props;
+
     if (data === null || data === undefined || layer.visible === false) {
       this.stage.visible = false;
       return;
@@ -99,10 +99,10 @@ class HeatmapLayer extends React.Component {
         .map(f => f.hue.toString())
       : [defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
-    
+
     // get all hues, old and new
     const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
-    
+
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
       if (allHuesToRender.indexOf(hue) === -1) {
@@ -113,13 +113,12 @@ class HeatmapLayer extends React.Component {
       }
       if (currentlyUsedHues.indexOf(hue) === -1) {
         // not on old hues: create sublayer
-        this.subLayers[hue] = this._createSublayer(baseTexture, maxSprites, this.renderingStyleIndex, hue);
+        this.subLayers[hue] = this._createSublayer(baseTexture, this.renderingStyleIndex, hue);
       }
       this.subLayers[hue].clearSpriteProps();
     }
-    
+
     if (!allHuesToRender.length) return;
-    const t = performance.now()
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
@@ -127,8 +126,7 @@ class HeatmapLayer extends React.Component {
         defaultHue
       });
     });
-    console.log(performance.now() - t)
-    
+
     allHuesToRender.forEach((hueToRender) => {
       this.subLayers[hueToRender].render();
     });
@@ -139,7 +137,6 @@ class HeatmapLayer extends React.Component {
       return;
     }
 
-    
     const { startIndex, endIndex, viewport, filters, viewportLeft, viewportRight } = this.props;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
@@ -177,25 +174,30 @@ class HeatmapLayer extends React.Component {
         } else if (viewportLeft < 0 && worldX > viewportRight) {
           worldX -= 512;
         }
-        
+
         const scaledX = worldX * viewport.scale;
         const scaledY = frame.worldY[index] * viewport.scale;
         const mtx = viewport.pixelProjectionMatrix;
 
-        const px = (viewport.pitch === 0) ? worldToPixelsSimple(scaledX, scaledY, mtx) : worldToPixels([scaledX, scaledY], mtx);
+        const [x, y] = (viewport.pitch === 0) ? worldToPixelsSimple(scaledX, scaledY, mtx) : worldToPixels([scaledX, scaledY], mtx);
 
-        this.subLayers[hue].pushSpriteProps(
-          px[0],
-          px[1],
-          (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
-          (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
-        )
+        if (
+          x > -10 && x < viewport.width + 10 &&
+          y > -10 && y < viewport.height + 10
+        ) {
+          this.subLayers[hue].pushSpriteProps(
+            x,
+            y,
+            (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
+            (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
+          );
+        }
       }
     }
   }
 
-  _createSublayer(baseTexture, maxSprites, renderingStyleIndex, hue) {
-    const subLayer = new HeatmapSubLayer(baseTexture, maxSprites, renderingStyleIndex, hue,
+  _createSublayer(baseTexture, renderingStyleIndex, hue) {
+    const subLayer = new HeatmapSubLayer(baseTexture, renderingStyleIndex, hue,
       this.brushRenderingStyle === BRUSH_RENDERING_STYLE.BULLSEYE);
     this.stage.addChild(subLayer.stage);
     return subLayer;

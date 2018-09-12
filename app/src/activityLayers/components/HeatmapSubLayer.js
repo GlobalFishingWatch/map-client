@@ -8,10 +8,10 @@ import {
 import { hueToHueIncrement } from 'utils/colors';
 
 export default class HeatmapSubLayer {
-  constructor(baseTexture, maxSprites, renderingStyleIndex, hue, useNormalBlendMode = false) {
+  constructor(baseTexture, renderingStyleIndex, hue, useNormalBlendMode = false) {
     // this.stage = new PIXI.Container();
     // the ParticleContainer is a faster version of the PIXI sprite container
-    this.stage = new PIXI.particles.ParticleContainer(maxSprites, {
+    this.stage = new PIXI.particles.ParticleContainer(MAX_SPRITES_PER_LAYER, {
       scale: true,
       alpha: true,
       position: true,
@@ -27,9 +27,7 @@ export default class HeatmapSubLayer {
     this.mainVesselTexture = new PIXI.Texture(baseTexture, initialTextureFrame);
     this._setTextureFrame(renderingStyleIndex, hue);
 
-    this._resizeSpritesPool(10000);
     this.clearSpriteProps();
-    
   }
 
   clearSpriteProps() {
@@ -37,7 +35,7 @@ export default class HeatmapSubLayer {
       x: new Float32Array(MAX_SPRITES_PER_LAYER),
       y: new Float32Array(MAX_SPRITES_PER_LAYER),
       a: new Float32Array(MAX_SPRITES_PER_LAYER),
-      s: new Float32Array(MAX_SPRITES_PER_LAYER),
+      s: new Float32Array(MAX_SPRITES_PER_LAYER)
     }
     this.spritesPropsCount = 0;
   }
@@ -90,47 +88,47 @@ export default class HeatmapSubLayer {
 
 
   render() {
-    // spritesProps is set by HeatmapLayer
-    const numSpritesNeeded = this.spritesPropsCount;
-    const numSpritesNeededWithMargin = numSpritesNeeded * 2;
+    const numProps = this.spritesPropsCount;
+    const prevNumSprites = this.stage.children.length;
+    const numSpritesNeededWithMargin = numProps + 4000;
 
-    if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
+    if (numProps + 2000 > prevNumSprites || numProps < prevNumSprites / 2) {
       this._resizeSpritesPool(numSpritesNeededWithMargin);
     }
 
-    for (let i = 0; i < numSpritesNeeded; i++) {
-      const sprite = this.spritesPool[i];
-      //const spriteProps = this.spritesProps[i];
+    for (let i = 0; i < numProps; i++) {
+      const sprite = this.stage.children[i];
       const s = this.spritesProps.s[i];
       sprite.setTransform(this.spritesProps.x[i], this.spritesProps.y[i], s, s)
       sprite.alpha = this.spritesProps.a[i];
-
-      /*
-      sprite.position.x = spriteProps.x;
-      sprite.position.y = spriteProps.y;
-      sprite.alpha = spriteProps.alpha;
-      sprite.scale.set(spriteProps.scale);
-      */
     }
 
-    for (let i = numSpritesNeeded, poolSize = this.spritesPool.length; i < poolSize; i++) {
-      this.spritesPool[i].x = -100;
+    const numSprites = this.stage.children.length;
+    for (let i = numProps; i < numSprites; i++) {
+      const sprite = this.stage.children[i];
+      sprite.x = -100;
     }
   }
 
   _resizeSpritesPool(finalPoolSize) {
-    const currentPoolSize = this.spritesPool.length;
+    const currentPoolSize = this.stage.children.length;
     const poolDelta = finalPoolSize - currentPoolSize;
+    if (poolDelta === 0) {
+      return;
+    }
+    console.log('before ', this.stage.children.length);
     if (poolDelta > 0) {
+      console.log('adding ', poolDelta, 'sprites');
       this._addSprites(poolDelta);
     } else {
-      const startRemovingAt = currentPoolSize - poolDelta;
-      for (let i = startRemovingAt; i < currentPoolSize; i++) {
-        // this is actually insanely costly - keep this in RAM and be done with it ?
-        // this.stage.removeChild(this.spritesPool[i]);
+      console.log('removing ', poolDelta, 'sprites');
+      for (let i = finalPoolSize; i < currentPoolSize; i++) {
+        this.stage.removeChildAt(finalPoolSize - 1);
       }
-      // this.spritesPool.splice(- deltaSprites);
     }
+
+    console.log('now ', this.stage.children.length);
+    console.log('----')
 
     // disable all sprites and let render take it from there
     this._clear();
@@ -145,15 +143,14 @@ export default class HeatmapSubLayer {
       vessel.x = -100;
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
       // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
-      this.spritesPool.push(vessel);
       this.stage.addChild(vessel);
     }
   }
 
   _clear(render = false) {
-    for (let i = 0, poolSize = this.spritesPool.length; i < poolSize; i++) {
+    for (let i = 0, poolSize = this.stage.children.length; i < poolSize; i++) {
       // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.spritesPool[i].x = -100;
+      this.stage.children[i].x = -100;
     }
     if (render) {
       this.renderer.render(this.stage);
