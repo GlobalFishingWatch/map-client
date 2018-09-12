@@ -17,6 +17,7 @@ import Report from '-!babel-loader!svg-react-loader!assets/icons/report.svg';
 import Target from '-!babel-loader!svg-react-loader!assets/icons/target.svg';
 import Pin from '-!babel-loader!svg-react-loader!assets/icons/pin.svg';
 import Unpin from '-!babel-loader!svg-react-loader!assets/icons/unpin.svg';
+import Share from '-!babel-loader!svg-react-loader!assets/icons/share.svg';
 
 class Icon extends Component {
   render() {
@@ -39,6 +40,7 @@ class Icon extends Component {
       case 'target': iconElement = <Target className={classNames} />; break;
       case 'pin': iconElement = <Pin className={classnames(classNames, IconStyles.pin)} />; break;
       case 'unpin': iconElement = <Unpin className={classNames} />; break;
+      case 'share': iconElement = <Share className={classnames(classNames, IconStyles.share)} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;
