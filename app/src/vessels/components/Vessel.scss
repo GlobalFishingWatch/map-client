@@ -21,7 +21,7 @@
 
 .title {
   flex: 1;
-  overflow-y: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: $color-4;
