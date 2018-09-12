@@ -28,7 +28,7 @@ class TracksLayer extends React.Component {
   }
 
   _redraw() {
-    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes } = this.props;
+    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes, highlightedTrack } = this.props;
 
     this.clear();
     if (!tracks.length) {
@@ -56,8 +56,8 @@ class TracksLayer extends React.Component {
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: `0x${track.color.substr(1)}`,
-        lineThickness: 1,
+        color: (highlightedTrack === track.seriesgroup) ? '0xFFFFFF' : `0x${track.color.substr(1)}`,
+        lineThickness: (highlightedTrack === track.seriesgroup) ? 3 : 1,
         lineOpacity: 1
       });
 
@@ -110,6 +110,7 @@ class TracksLayer extends React.Component {
       y: []
     };
 
+    // line thickness is ignored in native mode anyways.
     this.stage.lineStyle(lineThickness, color, lineOpacity);
 
     let duplicateWorld = false;
@@ -225,6 +226,7 @@ TracksLayer.propTypes = {
   endIndex: PropTypes.number,
   timelineOverExtentIndexes: PropTypes.array,
   tracks: PropTypes.array,
+  highlightedTrack: PropTypes.number,
   viewportLeft: PropTypes.number
 };
 

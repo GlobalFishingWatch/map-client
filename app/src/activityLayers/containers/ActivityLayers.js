@@ -16,7 +16,8 @@ const mapStateToProps = state => ({
   rightWorldScaled: state.mapViewport.rightWorldScaled,
   layerFilters: state.filterGroups.layerFilters,
   vesselTracks: state.vesselInfo.vessels,
-  tracks: state.tracks.tracks
+  tracks: state.tracks.tracks,
+  highlightedTrack: state.tracks.highlightedTrack
 });
 
 const mapDispatchToProps = dispatch => ({
