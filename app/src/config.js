@@ -22,6 +22,7 @@ export const TIMELINE_MIN_INNER_EXTENT = 1.21e+9; // 2 weeks
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
 export const TIMELINE_MIN_TIME = TIMELINE_STEP; // 1 day
+export const MAX_SPRITES_PER_LAYER = 200000;
 
 export const TIMELINE_SPEED_CHANGE = 2; // 2 for double and half speed
 export const TIMELINE_MAX_SPEED = 16;
