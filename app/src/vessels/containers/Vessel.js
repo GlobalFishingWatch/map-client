@@ -7,6 +7,7 @@ import {
   setPinnedVesselColor,
   targetVessel
 } from 'vesselInfo/vesselInfoActions';
+import { highlightTrack } from 'tracks/tracksActions';
 
 const mapStateToProps = state => ({
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel
@@ -27,6 +28,9 @@ const mapDispatchToProps = dispatch => ({
   },
   targetVessel: (seriesgroup) => {
     dispatch(targetVessel(seriesgroup));
+  },
+  highlightTrack: (seriesgroup) => {
+    dispatch(highlightTrack(seriesgroup));
   }
 });
 

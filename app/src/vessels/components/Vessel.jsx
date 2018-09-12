@@ -29,7 +29,7 @@ class Vessel extends Component {
   }
 
   render() {
-    const { vessel, currentlyShownVessel, editable, tall } = this.props;
+    const { vessel, currentlyShownVessel, editable, tall, highlightTrack } = this.props;
     const isEditable = editable !== false;
     const isTall = tall !== false;
     const detailsCurrentlyShown =
@@ -40,7 +40,11 @@ class Vessel extends Component {
     const tooltip = (this.props.vessel.title.length > 15) ? vessel.title : null;
 
     return (<div>
-      <div className={classnames(VesselStyles.vessel, { [VesselStyles._tall]: isTall })}>
+      <div
+        onMouseEnter={() => highlightTrack(vessel.seriesgroup)}
+        onMouseLeave={() => highlightTrack(null)}
+        className={classnames(VesselStyles.vessel, { [VesselStyles._tall]: isTall })}
+      >
         <ReactTooltip />
         <div className={VesselStyles.toggle}>
           {isEditable && <Toggle
@@ -95,7 +99,8 @@ Vessel.propTypes = {
   togglePinnedVesselDetails: PropTypes.func,
   delete: PropTypes.func,
   setColor: PropTypes.func,
-  targetVessel: PropTypes.func
+  targetVessel: PropTypes.func,
+  highlightTrack: PropTypes.func
 };
 
 export default Vessel;

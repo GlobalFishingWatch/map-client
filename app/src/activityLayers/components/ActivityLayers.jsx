@@ -88,6 +88,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
   .map(vessel => ({
     data: vessel.track.data,
     selectedSeries: vessel.track.selectedSeries,
+    seriesgroup: vessel.track.seriesgroup,
     color: vessel.color
   }))
   .concat(
@@ -96,6 +97,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
       .map(track => ({
         data: track.data,
         selectedSeries: track.series,
+        seriesgroup: track.seriesgroup,
         color: track.color
       }))
   );
@@ -253,6 +255,7 @@ class ActivityLayers extends React.Component {
       highlightedClickedVessel,
       vesselTracks,
       tracks,
+      highlightedTrack,
       leftWorldScaled,
       rightWorldScaled
     } = this.props;
@@ -327,6 +330,7 @@ class ActivityLayers extends React.Component {
           rootStage={this.stage}
           viewportLeft={leftWorldScaled}
           viewportRight={rightWorldScaled}
+          highlightedTrack={highlightedTrack}
         />
       }
     </div>);
@@ -344,6 +348,7 @@ ActivityLayers.propTypes = {
   highlightedClickedVessel: PropTypes.object,
   vesselTracks: PropTypes.array,
   tracks: PropTypes.array,
+  highlightedTrack: PropTypes.number,
   queryHeatmapVessels: PropTypes.func,
   exportNativeViewport: PropTypes.func,
   leftWorldScaled: PropTypes.number,

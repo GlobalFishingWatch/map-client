@@ -11,6 +11,7 @@ export const INIT_TRACK = 'INIT_TRACK';
 export const SET_TRACK = 'SET_TRACK';
 export const DELETE_TRACKS = 'DELETE_TRACK';
 export const SET_TRACK_VISIBILITY = 'SET_TRACK_VISIBILITY';
+export const HIGHLIGHT_TRACK = 'HIGHLIGHT_TRACK';
 
 function _getTrackTimeExtent(data, series = null) {
   let start = Infinity;
@@ -131,3 +132,8 @@ export function hideTrack(seriesgroup) {
     }
   };
 }
+
+export const highlightTrack = seriesgroup => ({
+  type: HIGHLIGHT_TRACK,
+  payload: seriesgroup
+});
