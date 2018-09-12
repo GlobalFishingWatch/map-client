@@ -124,8 +124,6 @@ class ActivityLayers extends React.Component {
       antialias: true
     });
 
-    // this.pixi.ticker.add(this._onTickBound);
-
     this.renderer = this.pixi.renderer;
     this.canvas = this.pixi.view;
     this.canvas.style.position = 'absolute';
@@ -270,7 +268,8 @@ class ActivityLayers extends React.Component {
       this._startHeatmapFadein();
     }
     if (this.renderer) {
-      console.log(this.renderer.gl.getError());
+      const err = this.renderer.gl.getError();
+      if (err !== 0) console.log(err);
     }
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);

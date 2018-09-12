@@ -2,7 +2,8 @@
 import 'pixi.js';
 import {
   VESSELS_BASE_RADIUS,
-  VESSELS_HUES_INCREMENTS_NUM
+  VESSELS_HUES_INCREMENTS_NUM,
+  MAX_SPRITES_PER_LAYER
 } from 'config';
 import { hueToHueIncrement } from 'utils/colors';
 
@@ -27,6 +28,26 @@ export default class HeatmapSubLayer {
     this._setTextureFrame(renderingStyleIndex, hue);
 
     this._resizeSpritesPool(10000);
+    this.clearSpriteProps();
+    
+  }
+
+  clearSpriteProps() {
+    this.spritesProps = {
+      x: new Float32Array(MAX_SPRITES_PER_LAYER),
+      y: new Float32Array(MAX_SPRITES_PER_LAYER),
+      a: new Float32Array(MAX_SPRITES_PER_LAYER),
+      s: new Float32Array(MAX_SPRITES_PER_LAYER),
+    }
+    this.spritesPropsCount = 0;
+  }
+
+  pushSpriteProps(x, y, a, s) {
+    this.spritesProps.x[this.spritesPropsCount] = x;
+    this.spritesProps.y[this.spritesPropsCount] = y;
+    this.spritesProps.a[this.spritesPropsCount] = a;
+    this.spritesProps.s[this.spritesPropsCount] = s;
+    this.spritesPropsCount++;
   }
 
   setRenderingStyleIndex(renderingStyleIndex) {
@@ -70,7 +91,7 @@ export default class HeatmapSubLayer {
 
   render() {
     // spritesProps is set by HeatmapLayer
-    const numSpritesNeeded = this.spritesProps.length;
+    const numSpritesNeeded = this.spritesPropsCount;
     const numSpritesNeededWithMargin = numSpritesNeeded * 2;
 
     if (numSpritesNeeded * 1.3 > this.spritesPool.length) {
@@ -79,12 +100,17 @@ export default class HeatmapSubLayer {
 
     for (let i = 0; i < numSpritesNeeded; i++) {
       const sprite = this.spritesPool[i];
-      const spriteProps = this.spritesProps[i];
+      //const spriteProps = this.spritesProps[i];
+      const s = this.spritesProps.s[i];
+      sprite.setTransform(this.spritesProps.x[i], this.spritesProps.y[i], s, s)
+      sprite.alpha = this.spritesProps.a[i];
 
+      /*
       sprite.position.x = spriteProps.x;
       sprite.position.y = spriteProps.y;
       sprite.alpha = spriteProps.alpha;
       sprite.scale.set(spriteProps.scale);
+      */
     }
 
     for (let i = numSpritesNeeded, poolSize = this.spritesPool.length; i < poolSize; i++) {

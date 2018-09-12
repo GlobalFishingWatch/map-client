@@ -7,6 +7,15 @@ import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from 'constants';
 import { vesselSatisfiesFilters } from 'utils/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
 
+// This is a faster version of worldToPixels that omits pitch,
+// and ignores values from the matrix that are consistently = 0
+const s = 1 / 1.5;
+const worldToPixelsSimple = (x, y, m) => {
+  const fx = s * (m[0] * x + m[4] * y + m[12]);
+  const fy = s * (m[5] * y + m[13]);
+  return [fx, fy]
+}
+
 class HeatmapLayer extends React.Component {
   componentDidMount() {
     this._build();
@@ -70,12 +79,12 @@ class HeatmapLayer extends React.Component {
 
   _redraw() {
     const { data, filters, baseTexture, maxSprites, layer } = this.props;
-
+    
     if (data === null || data === undefined || layer.visible === false) {
       this.stage.visible = false;
       return;
     }
-
+    
     this.stage.visible = true;
     this.stage.alpha = layer.opacity;
 
@@ -90,10 +99,10 @@ class HeatmapLayer extends React.Component {
         .map(f => f.hue.toString())
       : [defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
-
+    
     // get all hues, old and new
     const allHues = uniq(allHuesToRender.concat(currentlyUsedHues));
-
+    
     for (let i = 0; i < allHues.length; i++) {
       const hue = allHues[i];
       if (allHuesToRender.indexOf(hue) === -1) {
@@ -106,11 +115,11 @@ class HeatmapLayer extends React.Component {
         // not on old hues: create sublayer
         this.subLayers[hue] = this._createSublayer(baseTexture, maxSprites, this.renderingStyleIndex, hue);
       }
-      this.subLayers[hue].spritesProps = [];
+      this.subLayers[hue].clearSpriteProps();
     }
-
+    
     if (!allHuesToRender.length) return;
-
+    const t = performance.now()
     tiles.forEach((tile) => {
       this._setSubLayersSpritePropsForTile({
         data: tile.data,
@@ -118,7 +127,8 @@ class HeatmapLayer extends React.Component {
         defaultHue
       });
     });
-
+    console.log(performance.now() - t)
+    
     allHuesToRender.forEach((hueToRender) => {
       this.subLayers[hueToRender].render();
     });
@@ -129,6 +139,7 @@ class HeatmapLayer extends React.Component {
       return;
     }
 
+    
     const { startIndex, endIndex, viewport, filters, viewportLeft, viewportRight } = this.props;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
@@ -166,21 +177,19 @@ class HeatmapLayer extends React.Component {
         } else if (viewportLeft < 0 && worldX > viewportRight) {
           worldX -= 512;
         }
+        
+        const scaledX = worldX * viewport.scale;
+        const scaledY = frame.worldY[index] * viewport.scale;
+        const mtx = viewport.pixelProjectionMatrix;
 
-        const px = worldToPixels(
-          [worldX * viewport.scale, frame.worldY[index] * viewport.scale],
-          viewport.pixelProjectionMatrix
-        );
+        const px = (viewport.pitch === 0) ? worldToPixelsSimple(scaledX, scaledY, mtx) : worldToPixels([scaledX, scaledY], mtx);
 
-        const spriteProps = {
-          x: px[0],
-          y: px[1],
-          alpha: (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
-          scale: (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
-        };
-        if (Object.prototype.hasOwnProperty.call(this.subLayers, hue)) {
-          this.subLayers[hue].spritesProps.push(spriteProps);
-        }
+        this.subLayers[hue].pushSpriteProps(
+          px[0],
+          px[1],
+          (frame.opacity) ? frame.opacity[index] : this.renderingStyle.defaultOpacity,
+          (frame.radius) ? frame.radius[index] : this.renderingStyle.defaultSize
+        )
       }
     }
   }
