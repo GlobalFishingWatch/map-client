@@ -36,7 +36,7 @@ export default class HeatmapSubLayer {
       y: new Float32Array(MAX_SPRITES_PER_LAYER),
       a: new Float32Array(MAX_SPRITES_PER_LAYER),
       s: new Float32Array(MAX_SPRITES_PER_LAYER)
-    }
+    };
     this.spritesPropsCount = 0;
   }
 
@@ -89,12 +89,7 @@ export default class HeatmapSubLayer {
 
   render() {
     const numProps = this.spritesPropsCount;
-    const prevNumSprites = this.stage.children.length;
-    const numSpritesNeededWithMargin = numProps + 4000;
-
-    if (numProps + 2000 > prevNumSprites || numProps < prevNumSprites / 2) {
-      this._resizeSpritesPool(numSpritesNeededWithMargin);
-    }
+    this.resizeSpritesPool();
 
     for (let i = 0; i < numProps; i++) {
       const sprite = this.stage.children[i];
@@ -110,28 +105,26 @@ export default class HeatmapSubLayer {
     }
   }
 
-  _resizeSpritesPool(finalPoolSize) {
-    const currentPoolSize = this.stage.children.length;
-    const poolDelta = finalPoolSize - currentPoolSize;
-    if (poolDelta === 0) {
-      return;
-    }
-    console.log('before ', this.stage.children.length);
-    if (poolDelta > 0) {
-      console.log('adding ', poolDelta, 'sprites');
-      this._addSprites(poolDelta);
-    } else {
-      console.log('removing ', poolDelta, 'sprites');
-      for (let i = finalPoolSize; i < currentPoolSize; i++) {
-        this.stage.removeChildAt(finalPoolSize - 1);
+  resizeSpritesPool() {
+    const numProps = this.spritesPropsCount;
+    const prevNumSprites = this.stage.children.length;
+    const delta = numProps - prevNumSprites;
+    // console.log(prevNumSprites, '->', numProps, ' delta:', delta);
+
+    if (delta < -4999) {
+      // sprite needs to be removed. Do that progressively (max 100) to avoid UI lock
+      const toRemove = Math.min(100, -delta);
+      // console.log('removing ', toRemove);
+      for (let i = 0; i < toRemove; i++) {
+        this.stage.removeChildAt(0);
       }
     }
 
-    console.log('now ', this.stage.children.length);
-    console.log('----')
-
-    // disable all sprites and let render take it from there
-    this._clear();
+    if (delta > 0) {
+      const toAdd = Math.max(5000, delta);
+      // console.log('adding ', toAdd);
+      this._addSprites(toAdd);
+    }
   }
 
   _addSprites(num) {
@@ -144,16 +137,6 @@ export default class HeatmapSubLayer {
       // vessel.blendMode = PIXI.BLEND_MODES.SCREEN;
       // vessel.filters=  [new PIXI.filters.BlurFilter(10,10)]
       this.stage.addChild(vessel);
-    }
-  }
-
-  _clear(render = false) {
-    for (let i = 0, poolSize = this.stage.children.length; i < poolSize; i++) {
-      // ParticlesContainer does not support .visible, so we just move the sprite out of the viewport
-      this.stage.children[i].x = -100;
-    }
-    if (render) {
-      this.renderer.render(this.stage);
     }
   }
 }
