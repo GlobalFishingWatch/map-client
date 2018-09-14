@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import getVesselName from 'utils/getVesselName';
-import { TRACK_DEFAULT_COLOR } from 'config';
+import { PALETTE_COLORS } from 'config';
 import { INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
@@ -21,7 +21,8 @@ const initialState = {
   vessels: [],
   infoPanelStatus: INFO_STATUS.HIDDEN,
   pinnedVesselEditMode: false,
-  currentlyShownVessel: null
+  currentlyShownVessel: null,
+  currentPaletteIndex: -1
 };
 
 export default function (state = initialState, action) {
@@ -31,6 +32,9 @@ export default function (state = initialState, action) {
         return state;
       }
 
+      const currentPaletteIndex = (state.currentPaletteIndex === PALETTE_COLORS.length - 1) ? 0 : state.currentPaletteIndex + 1;
+      const color = PALETTE_COLORS[currentPaletteIndex].color;
+
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
         series: action.payload.series,
@@ -38,12 +42,13 @@ export default function (state = initialState, action) {
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        color: TRACK_DEFAULT_COLOR,
-        parentEncounter: action.payload.parentEncounter
+        parentEncounter: action.payload.parentEncounter,
+        color
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
-        vessels: [...state.vessels, newVessel]
+        vessels: [...state.vessels, newVessel],
+        currentPaletteIndex
       });
     }
 

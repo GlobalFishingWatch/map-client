@@ -103,17 +103,27 @@ export const COLOR_HUES = {
 
 export const PALETTE_COLORS = [
   { color: '#F95E5E', hue: 0 },
-  { color: '#fca26f', hue: 22 },
+  { color: '#33B679' },
+  { color: '#F09300' },
   { color: '#FBFF8B', hue: 60 },
-  { color: '#abff35', hue: 85 },
   { color: '#00ff6a', hue: 145 },
+  { color: '#9E6AB0' },
+  { color: '#F4511F' },
+  { color: '#B39DDB' },
+  { color: '#0B8043' },
   { color: '#67FBFE', hue: 182 },
-  { color: '#7D84FA', hue: 236 },
+  { color: '#069688' },
+  { color: '#4184F4' },
+  { color: '#AD1457' },
+  { color: '#ff81e5', hue: 312 },
+  { color: '#C0CA33' },
   { color: '#bb00ff', hue: 284 },
-  { color: '#ff81e5', hue: 312 }
+  { color: '#abff35', hue: 85 },
+  { color: '#7D84FA', hue: 236 },
+  { color: '#fca26f', hue: 22 }
 ];
 
-export const ACTIVITY_HIGHLIGHT_HUE = PALETTE_COLORS[8].hue;
+export const ACTIVITY_HIGHLIGHT_HUE = 312;
 
 export const ENCOUNTERS_VESSEL_COLOR = '#FF0000';
 export const ENCOUNTERS_REEFER_COLOR = '#ffbcc6';

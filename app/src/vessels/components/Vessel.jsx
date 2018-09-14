@@ -84,6 +84,7 @@ class Vessel extends Component {
           color={vessel.color}
           onTintChange={this.onTintChange}
           id={vessel.seriesgroup.toString()}
+          extendedPalette
         />
       </ExpandItem >
     </div>);
