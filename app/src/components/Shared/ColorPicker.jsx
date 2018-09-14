@@ -24,7 +24,7 @@ class ColorPicker extends Component {
     );
   }
   render() {
-    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id } = this.props;
+    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id, extendedPalette } = this.props;
     let checkedColor = this.props.color;
     if (checkedColor === undefined) {
       if (this.props.hue === undefined) {
@@ -33,11 +33,22 @@ class ColorPicker extends Component {
         checkedColor = PALETTE_COLORS.find(color => color.hue === this.props.hue).color;
       }
     }
+
+    let colors = PALETTE_COLORS
+      .filter(tint => extendedPalette === true || tint.hue !== undefined);
+    if (extendedPalette !== true) {
+      colors = colors.sort((tintA, tintB) => {
+        if (extendedPalette === true) return 0;
+        return tintA.hue - tintB.hue;
+      });
+    }
+
+
     return (
       <div className={colorPickerStyles.colorPicker}>
         <div className={colorPickerStyles.title}>Color:</div>
         <div className={colorPickerStyles.colorInputs}>
-          { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
+          {colors.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
         </div>
         {onOpacityChange && <div className={colorPickerStyles.section}>
           Opacity:
@@ -83,7 +94,8 @@ ColorPicker.propTypes = {
   hue: PropTypes.number,
   opacity: PropTypes.number,
   showLabels: PropTypes.bool,
-  id: PropTypes.string
+  id: PropTypes.string,
+  extendedPalette: PropTypes.bool
 };
 
 export default ColorPicker;
