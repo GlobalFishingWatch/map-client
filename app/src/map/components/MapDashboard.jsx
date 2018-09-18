@@ -11,19 +11,8 @@ import MapPanelsStyles from 'styles/components/map-panels.scss';
 import mapStyles from 'styles/components/map.scss';
 
 class MapDashboard extends Component {
-  constructor() {
-    super();
-    this.state = {
-      expanded: true
-    };
-  }
-  onMapPanelsToggleExpand = () => {
-    this.setState({
-      expanded: !this.state.expanded
-    });
-  }
   render() {
-    const { isEmbedded, openSupportFormModal, onExternalLink } = this.props;
+    const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
     return (<div className="fullHeightContainer" >
       {!isEmbedded &&
       <div
@@ -31,11 +20,11 @@ class MapDashboard extends Component {
           MapPanelsStyles.mapPanels,
           {
             [MapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER,
-            [MapPanelsStyles._expanded]: this.state.expanded
+            [MapPanelsStyles._expanded]: mapPanelsExpanded
           }
         )}
       >
-        <div className={MapPanelsStyles.expandButton} onClick={this.onMapPanelsToggleExpand} />
+        <div className={MapPanelsStyles.expandButton} onClick={onToggleMapPanelsExpanded} />
         <ControlPanel isEmbedded={isEmbedded} />
         <ReportPanel />
       </div >
@@ -73,8 +62,10 @@ MapDashboard.propTypes = {
   latitude: PropTypes.number,
   longitude: PropTypes.number,
   attributions: PropTypes.array,
+  mapPanelsExpanded: PropTypes.bool,
   onExternalLink: PropTypes.func,
-  openSupportFormModal: PropTypes.func
+  openSupportFormModal: PropTypes.func,
+  onToggleMapPanelsExpanded: PropTypes.func
 };
 
 export default MapDashboard;

@@ -2,13 +2,15 @@ import { connect } from 'react-redux';
 import MapDashboard from 'map/components/MapDashboard';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
+import { toggleMapPanels } from 'app/appActions';
 
 const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
   zoom: state.mapViewport.viewport.zoom,
   latitude: state.mapViewport.viewport.latitude,
   longitude: state.mapViewport.viewport.longitude,
-  attributions: state.mapStyle.attributions
+  attributions: state.mapStyle.attributions,
+  mapPanelsExpanded: state.app.mapPanelsExpanded
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,6 +19,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onExternalLink: (link) => {
     dispatch(trackExternalLinkClicked(link));
+  },
+  onToggleMapPanelsExpanded: () => {
+    dispatch(toggleMapPanels());
   }
 });
 
