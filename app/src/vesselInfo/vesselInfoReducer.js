@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import getVesselName from 'utils/getVesselName';
-import { PALETTE_COLORS } from 'config';
+import { PALETTE_COLORS, DEFAULT_TRACK_PALETTE_INDEX } from 'config';
 import { INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
@@ -22,7 +22,7 @@ const initialState = {
   infoPanelStatus: INFO_STATUS.HIDDEN,
   pinnedVesselEditMode: false,
   currentlyShownVessel: null,
-  currentPaletteIndex: -1
+  currentPaletteIndex: DEFAULT_TRACK_PALETTE_INDEX
 };
 
 export default function (state = initialState, action) {
@@ -32,8 +32,7 @@ export default function (state = initialState, action) {
         return state;
       }
 
-      const currentPaletteIndex = (state.currentPaletteIndex === PALETTE_COLORS.length - 1) ? 0 : state.currentPaletteIndex + 1;
-      const color = PALETTE_COLORS[currentPaletteIndex].color;
+      const color = PALETTE_COLORS[state.currentPaletteIndex].color;
 
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
@@ -47,8 +46,7 @@ export default function (state = initialState, action) {
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
-        vessels: [...state.vessels, newVessel],
-        currentPaletteIndex
+        vessels: [...state.vessels, newVessel]
       });
     }
 
@@ -189,11 +187,18 @@ export default function (state = initialState, action) {
         currentlyShownVessel.pinned = action.payload.pinned;
       }
 
+      let currentPaletteIndex = state.currentPaletteIndex;
+      if (action.payload.pinned === true) {
+        currentPaletteIndex = (state.currentPaletteIndex === PALETTE_COLORS.length - 1) ? 0 : state.currentPaletteIndex + 1;
+      }
+
+
       const newVessels = [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)];
       return Object.assign({}, state, {
         vessels: newVessels,
         pinnedVesselEditMode: state.pinnedVesselEditMode && newVessels.filter(e => e.pinned === true).length > 0,
-        currentlyShownVessel
+        currentlyShownVessel,
+        currentPaletteIndex
       });
     }
     case SET_PINNED_VESSEL_COLOR: {

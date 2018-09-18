@@ -123,6 +123,7 @@ export const PALETTE_COLORS = [
   { color: '#fca26f', hue: 22 }
 ];
 
+export const DEFAULT_TRACK_PALETTE_INDEX = 13;
 export const ACTIVITY_HIGHLIGHT_HUE = 312;
 
 export const ENCOUNTERS_VESSEL_COLOR = '#FF0000';
