@@ -8,6 +8,7 @@ export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL
 export const SET_LOADING = 'SET_LOADING';
 export const SET_LOADERS = 'SET_LOADERS';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
+export const TOGGLE_MAP_PANELS = 'TOGGLE_MAP_PANELS';
 
 export function addLoader(loaderId) {
   return (dispatch, getState) => {
@@ -108,3 +109,8 @@ export function init() {
     dispatch(loadTimebarChartData(TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE));
   };
 }
+
+export const toggleMapPanels = (forceExpanded = null) => ({
+  type: TOGGLE_MAP_PANELS,
+  payload: forceExpanded
+});

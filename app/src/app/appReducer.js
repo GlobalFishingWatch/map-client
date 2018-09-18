@@ -3,7 +3,8 @@ import {
   SET_LAYER_INFO_MODAL,
   SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
   SET_LOADERS,
-  SET_LOADING
+  SET_LOADING,
+  TOGGLE_MAP_PANELS
 } from './appActions';
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
   },
   layerManagementModal: {
     open: false
-  }
+  },
+  mapPanelsExpanded: true
 };
 
 export default function (state = initialState, action) {
@@ -45,6 +47,10 @@ export default function (state = initialState, action) {
       };
 
       return newState;
+    }
+    case TOGGLE_MAP_PANELS: {
+      const mapPanelsExpanded = (action.payload === null) ? !state.mapPanelsExpanded : action.payload;
+      return { ...state, mapPanelsExpanded };
     }
     default:
       return state;

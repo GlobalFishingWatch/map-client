@@ -11,6 +11,7 @@ import {
 } from 'utils/heatmapTileData';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 import { fitBoundsToTrack } from 'map/mapViewportActions';
+import { toggleMapPanels } from 'app/appActions';
 import getVesselName from 'utils/getVesselName';
 import buildEndpoint from 'utils/buildEndpoint';
 
@@ -136,6 +137,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         }
       });
       dispatch(showVesselDetails(tilesetId, seriesgroup));
+      dispatch(toggleMapPanels(true));
 
       if (fromSearch) {
         dispatch(trackSearchResultClicked(tilesetId, seriesgroup));
