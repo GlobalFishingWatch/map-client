@@ -86,7 +86,7 @@ class VesselInfoPanel extends Component {
           {!canSeeVesselDetails && <a
             className={infoPanelStyles.externalLink}
             onClick={this.props.login}
-          >Click here to login and see more details</a>
+          >Click here to login and<br />see more details</a>
           }
           {vesselInfo.parentEncounter !== null
           && vesselInfo.parentEncounter !== undefined
