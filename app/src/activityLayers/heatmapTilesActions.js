@@ -200,11 +200,18 @@ export const queryHeatmapVessels = coords => (dispatch, getState) => {
     type: 'Point',
     coordinates: [coords.longitude, coords.latitude]
   };
-  const limits = getTilecoverLimits(getState().mapViewport.viewport.zoom);
-  const viewportTilesIndexes = tilecover.indexes(geom, limits);
+  const zoom = getState().mapViewport.viewport.zoom;
+
+  // get quadkey for tile at current zoom level, but also neighbouring zoom levels,
+  // in case current zoom level tiles has not been loaded yet
+  const uids = [zoom, zoom - 1, zoom + 1]
+    .map(z => getTilecoverLimits(z))
+    .map(limits => tilecover.indexes(geom, limits))
+    .map(indexes => indexes[0]);
+
   const query = {
     ...coords,
-    uid: viewportTilesIndexes[0]
+    uids
   };
 
   // console.log(query);
