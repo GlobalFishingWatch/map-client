@@ -150,9 +150,20 @@ class ActivityLayers extends React.Component {
     this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
+  onTouchStart = (event) => {
+    if (!event.touches.length) {
+      return;
+    }
+    this.queryHeatmapVessels(event.touches[0].clientX, event.touches[0].clientY);
+  }
+
   onMouseMove = (event) => {
+    this.queryHeatmapVessels(event.clientX, event.clientY);
+  }
+
+  queryHeatmapVessels(x, y) {
     const { viewport } = this.context;
-    const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
+    const [longitude, latitude] = viewport.unproject([x, y]);
 
     let wrappedLongitude = longitude;
     if (wrappedLongitude > 180) {
@@ -273,6 +284,7 @@ class ActivityLayers extends React.Component {
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
       onMouseMove={this.onMouseMove}
+      onTouchStart={this.onTouchStart}
     >
       {layers.map(layer => (
         <HeatmapLayer
