@@ -1,49 +1,39 @@
 import PropTypes from 'prop-types';
 import SubmenuStyles from 'styles/components/submenu.scss';
+import Icon from 'src/components/Shared/Icon';
 import React, { Component } from 'react';
 
 class SubMenu extends Component {
-
-  constructor() {
-    super();
-    this.onBackClick = this.onBackClick.bind(this);
-  }
-
-  onBackClick() {
+  onCloseClick = () => {
     this.props.setSubmenu(null);
-    if (typeof this.props.onBack === 'function') {
-      this.props.onBack();
+    if (typeof this.props.onClose === 'function') {
+      this.props.onClose();
     }
   }
 
   render() {
-    const { title, icon, children, footer } = this.props;
+    const { title, children, footer } = this.props;
     return (
-      <div className={SubmenuStyles.submenu} >
-        <div className={SubmenuStyles.main} >
-          <div className={SubmenuStyles.header} >
-            <div className={SubmenuStyles.titleContainer} onClick={this.onBackClick} >
-              <button className={SubmenuStyles.backButton} >
-                <span className={SubmenuStyles.backIcon} />
-                <span className={SubmenuStyles.backText}>
-                  Back
-                </span>
-              </button >
-              <h2 className={SubmenuStyles.title} >
-                <span className={SubmenuStyles.separator}>|</span>
+      <div className={SubmenuStyles.submenu}>
+        <div className={SubmenuStyles.main}>
+          <div className={SubmenuStyles.header}>
+            <div className={SubmenuStyles.titleContainer}>
+              <h2 className={SubmenuStyles.title}>
                 {title}
-              </h2 >
-            </div >
-            <div className={SubmenuStyles.icon} >{icon}</div >
-          </div >
-          <div className={SubmenuStyles.content} >
+              </h2>
+            </div>
+            <div className={SubmenuStyles.icon} onClick={this.onCloseClick}>
+              <Icon icon="close" activated />
+            </div>
+          </div>
+          <div className={SubmenuStyles.content}>
             {children}
-          </div >
-          {footer && <div className={SubmenuStyles.footer} >
+          </div>
+          {footer && <div className={SubmenuStyles.footer}>
             {footer}
-          </div >}
-        </div >
-      </div >
+          </div>}
+        </div>
+      </div>
     );
   }
 }
@@ -54,7 +44,7 @@ SubMenu.propTypes = {
   footer: PropTypes.node,
   setSubmenu: PropTypes.func,
   children: PropTypes.node.isRequired,
-  onBack: PropTypes.func
+  onClose: PropTypes.func
 };
 
 export default SubMenu;

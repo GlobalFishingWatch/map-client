@@ -70,8 +70,7 @@ class ControlPanel extends Component {
       <div>
         <SubMenu
           title="Vessels"
-          icon={<Icon icon="vessels" activated />}
-          onBack={this.onCloseVesselsSubMenu}
+          onClose={this.onCloseVesselsSubMenu}
         >
           {this.props.userPermissions !== null && this.props.userPermissions.indexOf('search') === -1 ?
             <div >
@@ -95,7 +94,6 @@ class ControlPanel extends Component {
     return (
       <SubMenu
         title="Filters"
-        icon={<Icon icon="filters" activated />}
       >
         <FilterGroupPanel />
       </SubMenu >
@@ -106,8 +104,7 @@ class ControlPanel extends Component {
     return (
       <SubMenu
         title="Layers"
-        icon={<Icon icon="layers" activated />}
-        onBack={this.onCloseLayersSubMenu}
+        onClose={this.onCloseLayersSubMenu}
       >
         <LayerPanel />
       </SubMenu >
@@ -116,7 +113,7 @@ class ControlPanel extends Component {
 
   renderReportsSubMenu() {
     return (
-      <SubMenu title="Reports" icon={<Icon icon="reports" />}>
+      <SubMenu title="Reports">
         <h1>Coming soon...</h1>
       </SubMenu >
     );
