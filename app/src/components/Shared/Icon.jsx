@@ -18,6 +18,7 @@ import Target from '-!babel-loader!svg-react-loader!assets/icons/target.svg';
 import Pin from '-!babel-loader!svg-react-loader!assets/icons/pin.svg';
 import Unpin from '-!babel-loader!svg-react-loader!assets/icons/unpin.svg';
 import Share from '-!babel-loader!svg-react-loader!assets/icons/share.svg';
+import Close from '-!babel-loader!svg-react-loader!assets/icons/close.svg';
 
 class Icon extends Component {
   render() {
@@ -41,6 +42,7 @@ class Icon extends Component {
       case 'pin': iconElement = <Pin className={classnames(classNames, IconStyles.pin)} />; break;
       case 'unpin': iconElement = <Unpin className={classNames} />; break;
       case 'share': iconElement = <Share className={classnames(classNames, IconStyles.share)} />; break;
+      case 'close': iconElement = <Close className={classnames(classNames, IconStyles.close)} />; break;
       default:
         console.warn('that icon does not exist', icon);
         iconElement = null;

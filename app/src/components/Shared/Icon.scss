@@ -42,3 +42,11 @@
   height: 20px;
 }
 
+.close {
+  fill: none;
+  stroke: $color-31;
+
+  &._activated {
+    stroke:  $color-4;
+  }
+}
