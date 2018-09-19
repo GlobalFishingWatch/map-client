@@ -13,13 +13,14 @@ import mapStyles from 'styles/components/map.scss';
 class MapDashboard extends Component {
   render() {
     const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
+    const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
     return (<div className="fullHeightContainer" >
-      {!isEmbedded &&
+      {(!isEmbedded && AS_MODULE === false) &&
       <div
         className={classnames(
           MapPanelsStyles.mapPanels,
           {
-            [MapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER,
+            [MapPanelsStyles._noFooter]: fullScreenMap,
             [MapPanelsStyles._expanded]: mapPanelsExpanded
           }
         )}
@@ -27,24 +28,28 @@ class MapDashboard extends Component {
         <div className={MapPanelsStyles.expandButton} onClick={onToggleMapPanelsExpanded} />
         <ControlPanel isEmbedded={isEmbedded} />
         <ReportPanel />
-      </div >
+      </div>
       }
       <div
         className={classnames(
           mapStyles.mapContainer,
-          { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER }
+          { [mapStyles._noFooter]: fullScreenMap }
         )}
         ref={(mapContainerRef) => {
           this.mapContainerRef = mapContainerRef;
         }}
       >
         <Map />
-        <LeftControlPanel />
+        {AS_MODULE === false &&
+          <LeftControlPanel />
+        }
       </div>
-      <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
-        <Timebar />
-      </div >
-      {COMPLETE_MAP_RENDER &&
+      {AS_MODULE === false &&
+        <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: fullScreenMap })} >
+          <Timebar />
+        </div>
+      }
+      {fullScreenMap === false &&
       <MapFooter
         onOpenSupportFormModal={openSupportFormModal}
         isEmbedded={isEmbedded}

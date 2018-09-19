@@ -41,6 +41,10 @@ Enable usage of the "Subscription" feature.
 
 ## Boolean flags
 
+#### AS_MODULE
+
+If true, no UI is displayed. Meant to make map-client usable as a dependency.
+
 #### COMPLETE_MAP_RENDER
 
 If true, the map will display the header, and footer on the map page. If false, the app will only render the map (full window size) and the sidebar.

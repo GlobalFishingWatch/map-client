@@ -90,7 +90,8 @@ const webpackConfig = {
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
-      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
+      AS_MODULE: envVariables.AS_MODULE === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

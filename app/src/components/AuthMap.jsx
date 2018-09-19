@@ -26,8 +26,8 @@ class AuthMap extends Component {
 
     return (
       <div className="fullHeightContainer" >
-        <Header canShareWorkspaces={canShareWorkspaces} />
-        <ModalContainer canShareWorkspaces={canShareWorkspaces} />
+        {AS_MODULE === false && <Header canShareWorkspaces={canShareWorkspaces} />}
+        {AS_MODULE === false && <ModalContainer canShareWorkspaces={canShareWorkspaces} />}
         <MapDashboard />
       </div>);
   }
