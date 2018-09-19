@@ -1,5 +1,5 @@
 {
-  "name": "global-fishing-watch",
+  "name": "@globalfishingwatch/map-client",
   "version": "3.0.0",
   "description": "This repository hosts the Global Fishing Watch client application.",
   "main": "server.js",
