@@ -1,5 +1,5 @@
 import Pbf from 'pbf';
-import { VectorTile } from 'vector-tile';
+import { VectorTile } from '@mapbox/vector-tile';
 
 export default (tileUrl, token) => {
   const vectorTilePromise = fetch(tileUrl, {
