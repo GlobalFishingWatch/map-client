@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import { Popup } from 'react-map-gl';
+import PopupStyles from 'styles/components/map/popup.scss';
+import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 import ControlPanel from 'mapPanels/rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
 import ReportPanel from 'report/containers/ReportPanel';
@@ -11,7 +14,25 @@ import MapPanelsStyles from 'styles/components/map-panels.scss';
 import mapStyles from 'styles/components/map.scss';
 
 class MapDashboard extends Component {
+  renderHoverPopup() {
+    const { hoverPopup } = this.props;
+    if (hoverPopup === null) return null;
+    return (<Popup
+      latitude={hoverPopup.latitude}
+      longitude={hoverPopup.longitude}
+      closeButton={false}
+      anchor="bottom"
+      offsetTop={-10}
+      tipSize={4}
+    >
+      <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
+        {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
+      </div>
+    </Popup>);
+  }
   render() {
+    const popupComponent = <StaticLayerPopup forceRender={Math.random()} />;
+    const hoverPopupComponent = this.renderHoverPopup();
     const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
     const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
     return (<div className="fullHeightContainer" >
@@ -39,7 +60,7 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <Map />
+        <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} />
         {AS_MODULE === false &&
           <LeftControlPanel />
         }
@@ -68,6 +89,7 @@ MapDashboard.propTypes = {
   longitude: PropTypes.number,
   attributions: PropTypes.array,
   mapPanelsExpanded: PropTypes.bool,
+  hoverPopup: PropTypes.object,
   onExternalLink: PropTypes.func,
   openSupportFormModal: PropTypes.func,
   onToggleMapPanelsExpanded: PropTypes.func

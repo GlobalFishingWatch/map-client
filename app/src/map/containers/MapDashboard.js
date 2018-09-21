@@ -10,7 +10,8 @@ const mapStateToProps = state => ({
   latitude: state.mapViewport.viewport.latitude,
   longitude: state.mapViewport.viewport.longitude,
   attributions: state.mapStyle.attributions,
-  mapPanelsExpanded: state.app.mapPanelsExpanded
+  mapPanelsExpanded: state.app.mapPanelsExpanded,
+  hoverPopup: state.mapInteraction.hoverPopup
 });
 
 const mapDispatchToProps = dispatch => ({

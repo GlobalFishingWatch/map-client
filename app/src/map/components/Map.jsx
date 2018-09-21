@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import MapGL, { Popup } from 'react-map-gl';
+import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
 import MapStyles from 'styles/components/map.scss';
-import PopupStyles from 'styles/components/map/popup.scss';
+
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
-import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 
 class Map extends React.Component {
   constructor(props) {
@@ -95,23 +93,8 @@ class Map extends React.Component {
           onViewportChange={this.onViewportChange}
         >
           <ActivityLayers />
-          {popup !== null &&
-            <StaticLayerPopup forceRender={Math.random()} />
-          }
-          {this.state.mouseOver === true && hoverPopup !== null &&
-            <Popup
-              latitude={hoverPopup.latitude}
-              longitude={hoverPopup.longitude}
-              closeButton={false}
-              anchor="bottom"
-              offsetTop={-10}
-              tipSize={4}
-            >
-              <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
-                {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
-              </div>
-            </Popup>
-          }
+          {popup !== null && this.props.popupComponent}
+          {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent}
         </MapGL>
         <div className={MapStyles.googleLogo} />
       </div>
@@ -131,7 +114,9 @@ Map.propTypes = {
   mapClick: PropTypes.func,
   clearPopup: PropTypes.func,
   transitionEnd: PropTypes.func,
-  cursor: PropTypes.string
+  cursor: PropTypes.string,
+  popupComponent: PropTypes.node,
+  hoverPopupComponent: PropTypes.node
 };
 
 export default Map;
