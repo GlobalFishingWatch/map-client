@@ -1,6 +1,6 @@
 import area from '@turf/area';
 import moment from 'moment';
-import convert from 'globalfishingwatch-convert';
+import convert from '@globalfishingwatch/map-convert';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
