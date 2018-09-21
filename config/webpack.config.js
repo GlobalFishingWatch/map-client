@@ -51,6 +51,8 @@ const alias = {
   ...getAliases('app/', './app/src')
 };
 
+console.log(alias)
+
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
@@ -181,7 +183,8 @@ const webpackConfig = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              minimize: (envVariables.NODE_ENV === 'production')
+              minimize: (envVariables.NODE_ENV === 'production'),
+              // modules: true
             }
           },
           {

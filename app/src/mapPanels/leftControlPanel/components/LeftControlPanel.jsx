@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Loader from 'mapPanels/leftControlPanel/containers/Loader';
 import ZoomControls from 'mapPanels/leftControlPanel/components/ZoomControls';
-import mapStyles from 'styles/components/map.scss';
+import LeftControlPanelStyles from 'mapPanels/leftControlPanel/components/leftControlPanel.scss';
 
 
 class LeftControlPanel extends Component {
@@ -28,10 +28,10 @@ class LeftControlPanel extends Component {
 
     return (
       <div>
-        <div className={classnames(mapStyles.mapLoader, { [mapStyles._isEmbedded]: isEmbedded })} >
+        <div className={classnames(LeftControlPanelStyles.mapLoader, { [LeftControlPanelStyles._isEmbedded]: isEmbedded })} >
           <Loader tiny />
         </div >
-        <div className={mapStyles.latlon} >
+        <div className={LeftControlPanelStyles.latlon} >
           {this.props.mouseLatLong.lat.toFixed(4)}, {this.props.mouseLatLong.long.toFixed(4)}
         </div >
         <ZoomControls

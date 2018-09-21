@@ -11,7 +11,7 @@ import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
 import Map from 'map/containers/Map';
 import MapPanelsStyles from 'styles/components/map-panels.scss';
-import mapStyles from 'styles/components/map.scss';
+import MapDashboardStyles from 'map/components/mapDashboard.scss';
 
 class MapDashboard extends Component {
   renderHoverPopup() {
@@ -53,8 +53,8 @@ class MapDashboard extends Component {
       }
       <div
         className={classnames(
-          mapStyles.mapContainer,
-          { [mapStyles._noFooter]: fullScreenMap }
+          MapDashboardStyles.mapContainer,
+          { [MapDashboardStyles._noFooter]: fullScreenMap }
         )}
         ref={(mapContainerRef) => {
           this.mapContainerRef = mapContainerRef;
@@ -66,7 +66,7 @@ class MapDashboard extends Component {
         }
       </div>
       {AS_MODULE === false &&
-        <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: fullScreenMap })} >
+        <div className={classnames(MapDashboardStyles.timebarContainer, { [MapDashboardStyles._noFooter]: fullScreenMap })} >
           <Timebar />
         </div>
       }

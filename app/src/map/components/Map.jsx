@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
-import MapStyles from 'styles/components/map.scss';
-
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
+import './map.css';
 
 class Map extends React.Component {
   constructor(props) {
@@ -70,7 +69,7 @@ class Map extends React.Component {
     return (
       <div
         id="map"
-        className={MapStyles.map}
+        className="map"
         ref={(ref) => { this._mapContainerRef = ref; }}
         onMouseLeave={() => { this.setState({ mouseOver: false }); }}
         onMouseEnter={() => { this.setState({ mouseOver: true }); }}
@@ -96,7 +95,7 @@ class Map extends React.Component {
           {popup !== null && this.props.popupComponent}
           {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent}
         </MapGL>
-        <div className={MapStyles.googleLogo} />
+        <div className="googleLogo" />
       </div>
     );
   }
