@@ -1,4 +1,5 @@
 require('dotenv').config({ silent: true });
+const getAliases = require('./getAliases');
 
 process.env.BROWSERSLIST_CONFIG = 'browserslist';
 
@@ -42,14 +43,20 @@ const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
   }
 }
 
-console.log(imageLoaderConfiguration)
-
+const alias = {
+  // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
+  'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
+  assets: 'assets',
+  lib: 'lib',
+  styles: 'styles',
+  ...getAliases('app/', './app/src')
+};
 
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
-    path.join(rootPath, 'app/src/util/assignPolyfill.js'),
-    path.join(rootPath, 'app/src/util/findPolyfill.js'),
+    path.join(rootPath, 'app/src/utils/assignPolyfill.js'),
+    path.join(rootPath, 'app/src/utils/findPolyfill.js'),
     path.join(rootPath, 'app/src/index.jsx')
   ],
 
@@ -109,45 +116,7 @@ const webpackConfig = {
       `${process.cwd()}/app`,
       'node_modules'
     ],
-    alias: {
-      // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
-      'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
-      assets: 'assets',
-      lib: 'lib',
-      styles: 'styles',
-      app: 'src/app',
-      analytics: 'src/analytics',
-      basemap: 'src/basemap',
-      filters: 'src/filters',
-      encounters: 'src/encounters',
-      layers: 'src/layers',
-      leftControlPanel: 'src/leftControlPanel',
-      rightControlPanel: 'src/rightControlPanel',
-      miniglobe: 'src/miniglobe',
-      map: 'src/map',
-      mapPanels: 'src/mapPanels',
-      pinnedVessels: 'src/pinnedVessels',
-      recentVessels: 'src/recentVessels',
-      vessels: 'src/vessels',
-      vesselInfo: 'src/vesselInfo',
-      fleets: 'src/fleets',
-      report: 'src/report',
-      search: 'src/search',
-      share: 'src/share',
-      sharedUI: 'src/sharedUI',
-      siteNav: 'src/siteNav',
-      timebar: 'src/timebar',
-      tracks: 'src/tracks',
-      user: 'src/user',
-      welcomeModal: 'src/welcomeModal',
-      workspace: 'src/workspace',
-      components: 'src/components',
-      config: 'src/config.js',
-      constants: 'src/constants.js',
-      containers: 'src/containers',
-      utils: 'src/util',
-      activityLayers: 'src/activityLayers'
-    },
+    alias,
     extensions: ['.js', '.jsx']
   },
 
