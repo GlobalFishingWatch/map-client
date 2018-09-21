@@ -47,7 +47,6 @@ const alias = {
   // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
   'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
   assets: 'assets',
-  lib: 'lib',
   styles: 'styles',
   ...getAliases('app/', './app/src')
 };

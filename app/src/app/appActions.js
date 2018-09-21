@@ -1,5 +1,5 @@
 import { setUrlWorkspaceId, setWorkspaceOverride } from 'workspace/workspaceActions';
-import { getURLParameterByName, getURLPieceByName } from 'lib/getURLParameterByName';
+import { getURLParameterByName, getURLPieceByName } from 'utils/getURLParameterByName';
 import { loadTimebarChartData } from 'timebar/timebarActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 

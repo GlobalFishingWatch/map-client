@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MapDashboard from 'map/containers/MapDashboard';
-import { getURLParameterByName } from 'lib/getURLParameterByName';
+import { getURLParameterByName } from 'utils/getURLParameterByName';
 import Header from 'siteNav/containers/Header';
 import ModalContainer from 'containers/ModalContainer';
 
