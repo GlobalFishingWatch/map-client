@@ -11,6 +11,7 @@ import reportReducer from 'report/reportReducer';
 import mapViewportReducer from 'map/mapViewportReducer';
 import mapStyleReducer from 'map/mapStyleReducer';
 import mapInteractionReducer from 'map/mapInteractionReducer';
+import basemapReducer from 'basemap/basemapReducer';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
 import analyticsMiddleware from 'analytics/analyticsMiddleware';
@@ -20,6 +21,7 @@ import filterGroupsReducer from 'filters/filterGroupsReducer';
 import supportFormReducer from 'siteNav/supportFormReducer';
 import searchReducer from 'search/searchReducer';
 import vesselInfoReducer from 'vesselInfo/vesselInfoReducer';
+import fleetsReducer from 'fleets/fleetsReducer';
 import encountersReducer from 'encounters/encountersReducer';
 import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
@@ -55,6 +57,7 @@ const reducer = combineReducers({
   mapViewport: mapViewportReducer,
   mapStyle: mapStyleReducer,
   mapInteraction: mapInteractionReducer,
+  basemap: basemapReducer,
   welcomeModal: welcomeModalReducer,
   recentVessels: recentVesselsReducer,
   rightControlPanel: rightControlPanelReducer,
@@ -64,6 +67,7 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
+  fleets: fleetsReducer,
   encounters: encountersReducer,
   tracks: tracksReducer,
   app: appReducer,

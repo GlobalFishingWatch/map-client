@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 import getVesselName from 'utils/getVesselName';
-import { TRACK_DEFAULT_COLOR } from 'config';
+import { PALETTE_COLORS, DEFAULT_TRACK_PALETTE_INDEX } from 'config';
 import { INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
@@ -21,7 +21,8 @@ const initialState = {
   vessels: [],
   infoPanelStatus: INFO_STATUS.HIDDEN,
   pinnedVesselEditMode: false,
-  currentlyShownVessel: null
+  currentlyShownVessel: null,
+  currentPaletteIndex: DEFAULT_TRACK_PALETTE_INDEX
 };
 
 export default function (state = initialState, action) {
@@ -31,6 +32,8 @@ export default function (state = initialState, action) {
         return state;
       }
 
+      const color = PALETTE_COLORS[state.currentPaletteIndex].color;
+
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
         series: action.payload.series,
@@ -38,8 +41,8 @@ export default function (state = initialState, action) {
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        color: TRACK_DEFAULT_COLOR,
-        parentEncounter: action.payload.parentEncounter
+        parentEncounter: action.payload.parentEncounter,
+        color
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
@@ -68,13 +71,19 @@ export default function (state = initialState, action) {
     case SET_VESSEL_TRACK: {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const newVessel = Object.assign({}, state.vessels[vesselIndex]);
-      newVessel.track = {
-        data: action.payload.data,
-        selectedSeries: action.payload.selectedSeries
-      };
+      newVessel.track = { ...action.payload };
+
+      let currentlyShownVessel = state.currentlyShownVessel;
+      if (currentlyShownVessel
+          && newVessel.seriesgroup === currentlyShownVessel.seriesgroup
+          && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
+        currentlyShownVessel = Object.assign({}, currentlyShownVessel);
+        currentlyShownVessel.hasTrack = true;
+      }
 
       return Object.assign({}, state, {
-        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)]
+        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
+        currentlyShownVessel
       });
     }
 
@@ -117,6 +126,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex]);
       currentlyShownVessel.shownInInfoPanel = true;
+      currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
@@ -177,11 +187,18 @@ export default function (state = initialState, action) {
         currentlyShownVessel.pinned = action.payload.pinned;
       }
 
+      let currentPaletteIndex = state.currentPaletteIndex;
+      if (action.payload.pinned === true) {
+        currentPaletteIndex = (state.currentPaletteIndex === PALETTE_COLORS.length - 1) ? 0 : state.currentPaletteIndex + 1;
+      }
+
+
       const newVessels = [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)];
       return Object.assign({}, state, {
         vessels: newVessels,
         pinnedVesselEditMode: state.pinnedVesselEditMode && newVessels.filter(e => e.pinned === true).length > 0,
-        currentlyShownVessel
+        currentlyShownVessel,
+        currentPaletteIndex
       });
     }
     case SET_PINNED_VESSEL_COLOR: {

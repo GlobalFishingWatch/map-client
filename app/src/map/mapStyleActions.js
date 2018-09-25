@@ -1,115 +1,274 @@
-import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
-import { POLYGON_LAYERS, NO_FILL_FILL } from 'config';
+import { LAYER_TYPES_MAPBOX_GL } from 'constants';
+import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from 'utils/colors';
 
-export const SET_BASEMAP = 'SET_BASEMAP';
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
+export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
 
-export const setBasemap = basemap => ({
-  type: SET_BASEMAP,
-  payload: basemap
+const setMapStyle = style => ({
+  type: UPDATE_MAP_STYLE,
+  payload: style
 });
 
-const updateGLLayers = (style, layer) => {
-  const matchedStyleLayers = (layer.type === LAYER_TYPES.Custom)
-    ? [layer]
-    : POLYGON_LAYERS[layer.id].glLayers;
+const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
+  const visibility = (refLayer.visible === true && refLayer.added === true) ? 'visible' : 'none';
+  return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
+};
 
-  const styleLayers = style.toJS().layers;
+const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
+  const currentStyle = style.toJS();
+  const currentStyleLayers = currentStyle.layers;
   let newStyle = style;
-  matchedStyleLayers.forEach((glLayer) => {
-    const styleLayerIndex = styleLayers.findIndex(l => l.id === glLayer.id);
-    const styleLayer = styleLayers.find(l => l.id === glLayer.id);
 
-    // visibility
-    const visibility = (layer.visible === true && layer.added === true) ? 'visible' : 'none';
-    newStyle = newStyle.setIn(['layers', styleLayerIndex, 'layout', 'visibility'], visibility);
+  const glLayerIndex = currentStyleLayers.findIndex(l => l.id === glLayerId);
+  const glLayer = currentStyleLayers.find(l => l.id === glLayerId);
 
-    // interactive
-    const interactive = (layer.type === LAYER_TYPES.Custom) ? true : glLayer.interactive;
-    newStyle = newStyle.setIn(['layers', styleLayerIndex, 'interactive'], interactive);
+  // visibility
+  newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
-    // color/opacity
-    const fillColor = hexToRgba(layer.color, 0.5);
-    switch (styleLayer.type) {
-      case 'fill': {
-        const previousFill = styleLayer.paint['fill-color'];
-        const hasFill = previousFill !== undefined && previousFill !== NO_FILL_FILL;
-        newStyle = newStyle
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-opacity'], layer.opacity)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-outline-color'], layer.color)
-          .setIn(['layers', styleLayerIndex, 'paint', 'fill-color'], (hasFill) ? fillColor : NO_FILL_FILL);
-        break;
+  // basemap layers' only allowed change is visibility, so bail here
+  if (refLayer.basemap === true) {
+    return newStyle;
+  }
+
+  // color/opacity
+  switch (glLayer.type) {
+    case 'fill': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color);
+
+      let fillColor;
+      if (reportPolygonsIds === null || !reportPolygonsIds.length) {
+        fillColor = GL_TRANSPARENT;
+      } else {
+        const reportedFillColor = hexToRgba(refLayer.color, 0.5);
+        fillColor = [
+          'match',
+          [
+            'get',
+            'reporting_id'
+          ]
+        ];
+
+        // [value, color, value, color, default color]
+        reportPolygonsIds.forEach((id) => {
+          fillColor.push(id);
+          fillColor.push(reportedFillColor);
+        });
+        fillColor.push(GL_TRANSPARENT);
       }
-      case 'symbol': {
-        if (glLayer.isLabelsLayer === true) {
-          const labelsVisibility = (visibility === 'visible' && layer.showLabels === true) ? 'visible' : 'none';
-          newStyle = newStyle.setIn(['layers', styleLayerIndex, 'layout', 'visibility'], labelsVisibility);
-          if (layer.showLabels !== true) {
-            break;
-          }
-        }
-        newStyle = newStyle
-          .setIn(['layers', styleLayerIndex, 'paint', 'text-opacity'], layer.opacity)
-          .setIn(['layers', styleLayerIndex, 'paint', 'text-color'], layer.color);
-        break;
-      }
-      default: {
-        break;
-      }
+      newStyle = newStyle.setIn(['layers', glLayerIndex, 'paint', 'fill-color'], fillColor);
+      break;
     }
-  });
+    case 'line': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'line-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'line-color'], refLayer.color);
+      break;
+    }
+    case 'symbol': {
+      // TODO use metadata to set is label, or just use 'symbol' ?
+      // if (glLayer.isLabelsLayer === true) {
+      const parentLayerIsVisible = newStyle.getIn(['layers', glLayerIndex, 'layout', 'visibility']) === 'visible';
+      const labelsVisibility = (parentLayerIsVisible && refLayer.showLabels === true) ? 'visible' : 'none';
+      newStyle = newStyle.setIn(['layers', glLayerIndex, 'layout', 'visibility'], labelsVisibility);
+      if (refLayer.showLabels !== true) {
+        break;
+      }
+      // }
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'text-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'text-color'], refLayer.color);
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
   return newStyle;
 };
 
-export const initCustomLayer = (style, layer, layerData) => {
-  let newStyle = style;
+export const addCustomGLLayer = layerId => (dispatch, getState) => {
+  const state = getState();
+  let style = state.mapStyle.mapStyle;
   const currentStyle = style.toJS();
-  const sourceId = `${layer.id}-source`;
+  const refLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
+  const layerData = state.customLayer.layersData[refLayer.id];
 
-  if (currentStyle.sources[layer.id] === undefined) {
+  if (currentStyle.sources[refLayer.id] === undefined) {
     const source = fromJS({
       type: 'geojson',
       data: layerData
     });
-    newStyle = newStyle.setIn(['sources', sourceId], source);
+    style = style.setIn(['sources', refLayer.id], source);
   }
 
-  if (currentStyle.layers.find(glLayer => glLayer.id === layer.id) === undefined) {
+  if (currentStyle.layers.find(glLayer => glLayer.id === refLayer.id) === undefined) {
     const glLayer = fromJS({
-      id: layer.id,
+      id: refLayer.id,
       // FIXME detect feature type to allow displaying points/lines too?
       type: 'fill',
-      source: sourceId,
+      source: refLayer.id,
+      interactive: true,
       layout: {},
-      paint: {
-      }
+      paint: {}
     });
-    newStyle = newStyle.set('layers', newStyle.get('layers').concat([glLayer]));
+    style = style.set('layers', style.get('layers').concat([glLayer]));
   }
 
-  return newStyle;
+  dispatch(setMapStyle(style));
+  dispatch(updateMapStyle());
+};
+
+const addWorkspaceGLLayers = workspaceGLLayers => (dispatch, getState) => {
+  const state = getState();
+  let style = state.mapStyle.mapStyle;
+
+  workspaceGLLayers.forEach((workspaceGLLayer) => {
+    const id = workspaceGLLayer.id;
+    const gl = workspaceGLLayer.gl;
+    const finalSource = fromJS(gl.source);
+    style = style.setIn(['sources', id], finalSource);
+
+    const layers = [];
+    gl.layers.forEach((srcGlLayer) => {
+      const glLayer = {
+        ...srcGlLayer,
+        source: id,
+        'source-layer': id
+      };
+      layers.push(glLayer);
+    });
+
+    const finalLayers = fromJS(layers);
+    style = style.set('layers', style.get('layers').concat(finalLayers));
+  });
+
+  dispatch(setMapStyle(style));
+  dispatch(updateMapStyle());
+};
+
+const getCartoLayerInstanciatePromise = ({ sourceId, sourceCartoSQL }) => {
+  const mapConfig = { layers: [{ id: sourceId, options: { sql: sourceCartoSQL } }] };
+  const mapConfigURL = encodeURIComponent(JSON.stringify(mapConfig));
+  const cartoAnonymousMapUrl = STATIC_LAYERS_CARTO_ENDPOINT.replace('$MAPCONFIG', mapConfigURL);
+
+  return new Promise((resolve) => {
+    fetch(cartoAnonymousMapUrl)
+      .then((res) => {
+        if (res.status >= 400) {
+          console.warn(`loading of layer failed ${sourceId}`);
+          Promise.reject();
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        resolve({
+          layergroupid: data.layergroupid,
+          sourceId
+        });
+      }).catch((err) => {
+        console.warn(err);
+      });
+  });
+};
+
+const instanciateCartoLayers = layers => (dispatch, getState) => {
+  dispatch({
+    type: MARK_CARTO_LAYERS_AS_INSTANCIATED,
+    payload: layers.map(layer => layer.sourceId)
+  });
+  const cartoLayersPromises = layers.map(layer => getCartoLayerInstanciatePromise(layer));
+  const cartoLayersPromisesPromise = Promise.all(cartoLayersPromises.map(p => p.catch(e => e)));
+  cartoLayersPromisesPromise
+    .then((instanciatedCartoLayers) => {
+      let style = getState().mapStyle.mapStyle;
+      const currentStyle = style.toJS();
+      instanciatedCartoLayers.forEach((cartoLayer) => {
+        const tilesURL = STATIC_LAYERS_CARTO_TILES_ENDPOINT.replace('$LAYERGROUPID', cartoLayer.layergroupid);
+
+        // replace gl source with a new source that use tiles provided by Carto anonymous maps API
+        const newSourceId = `${cartoLayer.sourceId}-instanciated`;
+        style = style.setIn(['sources', newSourceId], fromJS({
+          type: 'vector',
+          tiles: [tilesURL]
+        }));
+
+        // change source in all layers that are using it
+        currentStyle.layers.forEach((layer, glLayerIndex) => {
+          if (layer.source === cartoLayer.sourceId) {
+            style = style.setIn(['layers', glLayerIndex, 'source'], newSourceId);
+            style = style.setIn(['layers', glLayerIndex, 'metadata', 'gfw:id'], cartoLayer.sourceId);
+          }
+        });
+      });
+
+      dispatch(setMapStyle(style));
+      dispatch(updateMapStyle());
+    })
+    .catch((err) => {
+      console.warn(err);
+    });
 };
 
 export const updateMapStyle = () => (dispatch, getState) => {
-  const layers = getState().layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
-  let style = getState().mapStyle.mapStyle;
-  layers.forEach((layer) => {
-    if (layer.type === LAYER_TYPES.Custom) {
-      const layerData = getState().customLayer.layersData[layer.id];
-      if (layerData !== undefined) {
-        style = initCustomLayer(style, layer, layerData);
+  const state = getState();
+  const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
+  const basemapLayers = state.basemap.basemapLayers;
+  const layers = staticAndCustomLayers.concat(basemapLayers);
+
+  let style = state.mapStyle.mapStyle;
+  const currentStyle = style.toJS();
+  const glLayers = currentStyle.layers;
+  const glSources = currentStyle.sources;
+
+  // collect layers declared in workspace but not in original gl style
+  const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && glSources[layer.id] === undefined);
+  if (workspaceGLLayers.length) {
+    dispatch(addWorkspaceGLLayers(workspaceGLLayers));
+    return;
+  }
+
+  const cartoLayersToInstanciate = [];
+
+  for (let i = 0; i < glLayers.length; i++) {
+    const glLayer = glLayers[i];
+    const sourceId = glLayer.source;
+    const glSource = glSources[sourceId];
+    const layerId = (glLayer.metadata !== undefined && glLayer.metadata['gfw:id']) || sourceId;
+
+    const refLayer = layers.find(l => l.id === layerId);
+
+    if (refLayer === undefined) {
+      if (glLayer.type !== 'background') {
+        // console.warn('gl layer does not exists in workspace', glLayer);
       }
+      continue;
     }
-    if (layer.type === LAYER_TYPES.Static && POLYGON_LAYERS[layer.id] === undefined) {
-      console.warn('Layer not found in Mapbox GL JSON style', layer);
-    } else {
-      style = updateGLLayers(style, layer);
+
+    // check if layer is served from Carto, which means we need to instanciate it first
+    const sourceCartoSQL = glSource.metadata !== undefined && glSource.metadata['gfw:carto-sql'];
+    if (sourceCartoSQL !== false) {
+      // only if layer is visible and has not been instanciated yet
+      const cartoLayerInstanciated = state.mapStyle.cartoLayersInstanciated.indexOf(sourceId) > -1;
+      if (refLayer.visible === true && !cartoLayerInstanciated && !cartoLayersToInstanciate.find(l => l.sourceId === sourceId)) {
+        cartoLayersToInstanciate.push({ sourceId, sourceCartoSQL });
+      }
+      continue;
     }
-  });
-  dispatch({
-    type: UPDATE_MAP_STYLE,
-    payload: style
-  });
+
+    const layerIsInReport = refLayer.id === state.report.layerId;
+    const reportPolygonIds = (layerIsInReport) ? state.report.polygons.map(l => l.reportingId) : null;
+    style = updateGLLayer(style, glLayer.id, refLayer, reportPolygonIds);
+  }
+
+  if (cartoLayersToInstanciate.length) {
+    dispatch(instanciateCartoLayers(cartoLayersToInstanciate));
+  }
+
+  dispatch(setMapStyle(style));
 };

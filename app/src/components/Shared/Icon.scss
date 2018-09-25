@@ -1,0 +1,52 @@
+@import '../../../styles/settings';
+
+.icon {
+  width: 14px;
+  height: 14px;
+  fill: $color-31;
+
+  polygon, rect, path {
+    fill: $color-31 !important;
+  }
+
+  &._activated {
+    fill: $color-4;
+
+    polygon, rect, path {
+      fill: $color-4 !important;
+    }
+  }
+}
+
+.report {
+  transform: translate(0px, -1px);
+  path {
+    &:last-child {
+      fill: $color-1 !important;
+    }
+  }
+
+  &._activated path {
+    &:last-child {
+      fill: $color-31 !important;
+    }
+  }
+}
+
+.pin {
+  transform: translate(-1px, 0);
+}
+
+.share {
+  width: 18px;
+  height: 20px;
+}
+
+.close {
+  fill: none;
+  stroke: $color-31;
+
+  &._activated {
+    stroke:  $color-4;
+  }
+}

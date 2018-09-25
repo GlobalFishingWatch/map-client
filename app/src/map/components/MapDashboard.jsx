@@ -3,28 +3,28 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ControlPanel from 'mapPanels/rightControlPanel/containers/ControlPanel';
 import Timebar from 'timebar/containers/Timebar';
-import MiniGlobe from 'mapPanels/leftControlPanel/components/MiniGlobe';
-import MobileLeftExpand from 'mapPanels/leftControlPanel/components/MobileLeftExpand';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
 import Map from 'map/containers/Map';
-import mapPanelsStyles from 'styles/components/map-panels.scss';
+import MapPanelsStyles from 'styles/components/map-panels.scss';
 import mapStyles from 'styles/components/map.scss';
 
 class MapDashboard extends Component {
   render() {
-    const { isEmbedded, openSupportFormModal, onExternalLink } = this.props;
+    const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
     return (<div className="fullHeightContainer" >
       {!isEmbedded &&
       <div
         className={classnames(
-          mapPanelsStyles.mapPanels,
+          MapPanelsStyles.mapPanels,
           {
-            [mapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER
+            [MapPanelsStyles._noFooter]: !COMPLETE_MAP_RENDER,
+            [MapPanelsStyles._expanded]: mapPanelsExpanded
           }
         )}
       >
+        <div className={MapPanelsStyles.expandButton} onClick={onToggleMapPanelsExpanded} />
         <ControlPanel isEmbedded={isEmbedded} />
         <ReportPanel />
       </div >
@@ -38,18 +38,9 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <Map setAttribution={this.setAttribution} />
+        <Map />
         <LeftControlPanel />
       </div>
-      <MobileLeftExpand isEmbedded={this.props.isEmbedded}>
-        <MiniGlobe
-          center={{ lat: this.props.latitude, lng: this.props.longitude }}
-          zoom={this.props.zoom}
-          viewportWidth={1000}
-          viewportHeight={600}
-          isEmbedded={this.props.isEmbedded}
-        />
-      </MobileLeftExpand>
       <div className={classnames(mapStyles.timebarContainer, { [mapStyles._noFooter]: !COMPLETE_MAP_RENDER })} >
         <Timebar />
       </div >
@@ -58,6 +49,7 @@ class MapDashboard extends Component {
         onOpenSupportFormModal={openSupportFormModal}
         isEmbedded={isEmbedded}
         onExternalLink={onExternalLink}
+        attributions={this.props.attributions}
       />
       }
     </div >);
@@ -69,9 +61,11 @@ MapDashboard.propTypes = {
   zoom: PropTypes.number,
   latitude: PropTypes.number,
   longitude: PropTypes.number,
+  attributions: PropTypes.array,
+  mapPanelsExpanded: PropTypes.bool,
   onExternalLink: PropTypes.func,
   openSupportFormModal: PropTypes.func,
-  activeSubmenu: PropTypes.string
+  onToggleMapPanelsExpanded: PropTypes.func
 };
 
 export default MapDashboard;

@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
   banner: state.literals.banner,
   bannerLegacyWorkspace: state.literals.legacy_workspace_warning,
   bannerWebGL: state.literals.webgl_warning,
+  bannerEdge: state.literals.edge_warning,
   legacyWorkspaceLoaded: state.workspace.legacyWorkspaceLoaded,
   hasDeprecatedActivityLayersMessage: state.heatmap.hasDeprecatedActivityLayersMessage
 });

@@ -22,13 +22,22 @@ export const TIMELINE_MIN_INNER_EXTENT = 1.21e+9; // 2 weeks
 export const TIMELINE_MAX_STEPS = 190; // six months
 export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS; // six months
 export const TIMELINE_MIN_TIME = TIMELINE_STEP; // 1 day
+export const MAX_SPRITES_PER_LAYER = 200000;
 
 export const TIMELINE_SPEED_CHANGE = 2; // 2 for double and half speed
 export const TIMELINE_MAX_SPEED = 16;
 export const TIMELINE_MIN_SPEED = 0.03125;
 
 export const MIN_ZOOM_LEVEL = 1;
-export const MAX_ZOOM_LEVEL = 12;
+
+// user can zoom up to this z level, but it doesn't guarantee availability of tiles
+export const MAX_ZOOM_LEVEL = 14;
+
+// Limit tile loading for activity layers up to this z level.
+// Beyond, layer is still displayed but with coarse data from the lower zoom level
+export const ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING = 10;
+
+
 export const MAX_AUTO_ZOOM_LONGITUDE_SPAN = 200;
 export const CLUSTER_CLICK_ZOOM_INCREMENT = 1;
 
@@ -49,6 +58,13 @@ export const VESSELS_HUES_INCREMENTS_NUM = 31; // 360 / VESSELS_HUES_INCREMENTS_
 export const VESSELS_HUES_INCREMENT = 360 / (VESSELS_HUES_INCREMENTS_NUM - 1);
 
 export const VESSELS_HEATMAP_DIMMING_ALPHA = 0.5;
+
+// Sets what should be the discrete zoom level to load tiles, from a non-discrete
+// viewport zoom values. For instance, a values of 0.5 will load z 3 with a viewport
+// z of 2 (ceiling of 2 + 0.5)
+// this has a direct impact on the number of points displayed on the map, thus on the
+// performance of the app.
+export const TILES_LOAD_ZOOM_OFFSET = 0.5;
 
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
@@ -87,22 +103,33 @@ export const COLOR_HUES = {
 
 export const PALETTE_COLORS = [
   { color: '#F95E5E', hue: 0 },
-  { color: '#fca26f', hue: 22 },
+  { color: '#33B679' },
+  { color: '#F09300' },
   { color: '#FBFF8B', hue: 60 },
-  { color: '#abff35', hue: 85 },
   { color: '#00ff6a', hue: 145 },
+  { color: '#9E6AB0' },
+  { color: '#F4511F' },
+  { color: '#B39DDB' },
+  { color: '#0B8043' },
   { color: '#67FBFE', hue: 182 },
-  { color: '#7D84FA', hue: 236 },
+  { color: '#069688' },
+  { color: '#4184F4' },
+  { color: '#AD1457' },
+  { color: '#ff81e5', hue: 312 },
+  { color: '#C0CA33' },
   { color: '#bb00ff', hue: 284 },
-  { color: '#ff81e5', hue: 312 }
+  { color: '#abff35', hue: 85 },
+  { color: '#7D84FA', hue: 236 },
+  { color: '#fca26f', hue: 22 }
 ];
 
-export const ACTIVITY_HIGHLIGHT_HUE = PALETTE_COLORS[8].hue;
+export const DEFAULT_TRACK_PALETTE_INDEX = 13;
+export const ACTIVITY_HIGHLIGHT_HUE = 312;
 
 export const ENCOUNTERS_VESSEL_COLOR = '#FF0000';
 export const ENCOUNTERS_REEFER_COLOR = '#ffbcc6';
 
-export const NO_FILL_FILL = 'rgba(0,0,0,0)';
+export const GL_TRANSPARENT = 'rgba(0,0,0,0)';
 
 // tracks
 export const TRACK_DEFAULT_COLOR = PALETTE_COLORS[8].color;
@@ -188,54 +215,11 @@ export const MINI_GLOBE_SETTINGS = {
   viewBoxHeight: 200,
   svgWidth: 40,
   scale: 100,
-  viewportRatio: 1.1,
-  zoomRatio: 2.4,
-  defaultSize: 20,
-  minZoom: 3
+  minZoom: 2.5
 };
+
+export const STATIC_LAYERS_CARTO_ENDPOINT = 'https://carto.globalfishingwatch.org/user/admin/api/v1/map?config=$MAPCONFIG';
+export const STATIC_LAYERS_CARTO_TILES_ENDPOINT =
+  'https://carto.globalfishingwatch.org/user/admin/api/v1/map/$LAYERGROUPID/{z}/{x}/{y}.mvt';
 
 export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
-export const POLYGON_LAYERS = {
-  rfmo: {
-    glLayers: [{ id: 'rfmo', interactive: true }, { id: 'rfmo-labels', isLabelsLayer: true }],
-    popupFields: ['rfb', POLYGON_LAYERS_AREA]
-  },
-  eez: {
-    glLayers: [{ id: 'eez', interactive: true }, { id: 'eez-labels', isLabelsLayer: true }],
-    popupFields: ['name']
-  },
-  mpant: {
-    glLayers: [{ id: 'mpant', interactive: true }, { id: 'mpant-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  mparu: {
-    glLayers: [{ id: 'mparu', interactive: true }, { id: 'mparu-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  highseas: {
-    glLayers: [{ id: 'highseas', interactive: true }, { id: 'highseas-labels', isLabelsLayer: true }],
-    popupFields: ['regionid', POLYGON_LAYERS_AREA]
-  },
-  6: {
-    glLayers: [{ id: '6', interactive: true }, { id: '6-labels', isLabelsLayer: true }],
-    popupFields: ['nama', POLYGON_LAYERS_AREA]
-  },
-  mpatlas: {
-    glLayers: [{ id: 'mpatlas', interactive: true }, { id: 'mpatlas-labels', isLabelsLayer: true }],
-    popupFields: ['name', POLYGON_LAYERS_AREA]
-  },
-  falklands_conservation: {
-    glLayers: [{ id: 'falklands_conservation', interactive: true }, { id: 'falklands_conservation-labels', isLabelsLayer: true }],
-    popupFields: ['full_name', 'zone', 'area_sqkm']
-  },
-  protectedplanet: {
-    glLayers: [{ id: 'protectedplanet', interactive: true }, { id: 'protectedplanet-labels', isLabelsLayer: true }],
-    popupFields: [
-      'name',
-      { id: 'iucn_cat', label: 'IUCN Category' },
-      { id: 'desig_eng', label: 'Designation (English)' },
-      'rep_area', 'no_take', 'status', 'status_yr',
-      'gov_type', 'mang_auth', 'verif', 'parent_iso', 'iso3']
-  }
-};
-

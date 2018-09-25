@@ -28,7 +28,7 @@ class TracksLayer extends React.Component {
   }
 
   _redraw() {
-    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes } = this.props;
+    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes, highlightedTrack } = this.props;
 
     this.clear();
     if (!tracks.length) {
@@ -56,8 +56,8 @@ class TracksLayer extends React.Component {
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: `0x${track.color.substr(1)}`,
-        lineThickness: 1,
+        color: (highlightedTrack === track.seriesgroup) ? '0xFFFFFF' : `0x${track.color.substr(1)}`,
+        lineThickness: (highlightedTrack === track.seriesgroup) ? 3 : 1,
         lineOpacity: 1
       });
 
@@ -92,19 +92,28 @@ class TracksLayer extends React.Component {
    * @param color
    * @param lineThickness
    * @param lineOpacity
+   * @param worldOffset offset to use when a track crosses the dateline (ie 512 to add a second world to the right)
    */
-  _drawTrack({ data, startIndex, endIndex, series, drawFishingCircles, fishingCirclesRadius, color, lineThickness, lineOpacity }) {
-    const { viewport, viewportLeft, viewportRight } = this.props;
+  _drawTrack({
+    data, startIndex, endIndex, series, drawFishingCircles,
+    fishingCirclesRadius, color, lineThickness, lineOpacity, worldOffset = 0
+  }) {
+    const { viewport, viewportLeft } = this.props;
 
     let n = 0;
     let prevSeries;
+    let prevWorldX;
+    let prevWorldY;
 
     const circlePoints = {
       x: [],
       y: []
     };
 
+    // line thickness is ignored in native mode anyways.
     this.stage.lineStyle(lineThickness, color, lineOpacity);
+
+    let duplicateWorld = false;
 
     for (let timeIndex = startIndex; timeIndex < endIndex; timeIndex++) {
       const frame = data[timeIndex];
@@ -119,22 +128,51 @@ class TracksLayer extends React.Component {
 
         n++;
 
-        let offsetedWorldX = frame.worldX[i];
-        if (viewportLeft > 0 && offsetedWorldX < viewportLeft) {
-          // offsetedWorldX is "behind" viewportLeft, which means it is "on the right" of the antimeridian
-          offsetedWorldX += 512;
-        } else if (viewportLeft < 0 && offsetedWorldX > viewportRight) {
-          offsetedWorldX -= 512;
-        }
+        const worldX = frame.worldX[i] + worldOffset;
+        const worldY = frame.worldY[i];
 
         const [x, y] = worldToPixels(
-          [offsetedWorldX * viewport.scale, frame.worldY[i] * viewport.scale],
+          [worldX * viewport.scale, worldY * viewport.scale],
           viewport.pixelProjectionMatrix
         );
 
         if (prevSeries !== currentSeries) {
           this.stage.moveTo(x, y);
         }
+
+        // more than a ½ world of distance between two points = crossing the dateline
+        if (prevWorldX && Math.abs(worldX - prevWorldX) > 256) {
+          if (worldOffset === 0) {
+            duplicateWorld = true;
+          }
+
+          // get Y coordinate where track intersects with dateline
+          const atDatelineWorldY = prevWorldY + ((worldY - prevWorldY) / 2);
+
+          // whether tracks crosses dateline from west to east
+          const isWestToEast = (worldX - prevWorldX) < 0;
+
+          const worldXEnd = worldOffset + (512 - 0.000001);
+          const worldXStart = worldOffset;
+
+          // get X coordinate ending at dateline
+          const atDatelineEndWorldX = (isWestToEast) ? worldXEnd : worldXStart;
+
+          // get X coordinate starting at dateline
+          const atDatelineStartWorldX = (isWestToEast) ? worldXStart : worldXEnd;
+
+          const [x1, y1] = worldToPixels(
+            [atDatelineEndWorldX * viewport.scale, atDatelineWorldY * viewport.scale],
+            viewport.pixelProjectionMatrix
+          );
+          this.stage.lineTo(x1, y1);
+          const [x2, y2] = worldToPixels(
+            [atDatelineStartWorldX * viewport.scale, atDatelineWorldY * viewport.scale],
+            viewport.pixelProjectionMatrix
+          );
+          this.stage.moveTo(x2, y2);
+        }
+
         this.stage.lineTo(x, y);
 
         if (drawFishingCircles && frame.hasFishing[i] === true) {
@@ -142,6 +180,8 @@ class TracksLayer extends React.Component {
           circlePoints.y.push(y);
         }
 
+        prevWorldX = worldX;
+        prevWorldY = worldY;
         prevSeries = currentSeries;
       }
     }
@@ -155,6 +195,21 @@ class TracksLayer extends React.Component {
       this.stage.endFill();
     }
 
+    if (duplicateWorld === true) {
+      const nextWorldOffset = (viewportLeft > 0) ? 512 : -512;
+      this._drawTrack({
+        worldOffset: nextWorldOffset,
+        data,
+        startIndex,
+        endIndex,
+        series,
+        drawFishingCircles,
+        fishingCirclesRadius,
+        color,
+        lineThickness,
+        lineOpacity
+      });
+    }
     return n;
   }
 
@@ -170,7 +225,9 @@ TracksLayer.propTypes = {
   startIndex: PropTypes.number,
   endIndex: PropTypes.number,
   timelineOverExtentIndexes: PropTypes.array,
-  tracks: PropTypes.array
+  tracks: PropTypes.array,
+  highlightedTrack: PropTypes.number,
+  viewportLeft: PropTypes.number
 };
 
 export default TracksLayer;

@@ -17,7 +17,7 @@
 
   &._expanded {
 
-    > .metadata, .metadata._encounters {
+    .metadata, .metadata._encounters {
       max-height: none;
       overflow: visible;
     }
@@ -25,11 +25,14 @@
 
   .details, .metadata {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
   }
 
-  > .metadata {
+  .details {
+    flex-wrap: wrap;
+  }
+
+  .metadata {
     max-height: $vessel-info-height;
     overflow: hidden;
     padding: 20px 20px 15px;
@@ -187,18 +190,13 @@
     }
   }
 
-  .pinIcon {
-    fill: $color-3;
-    position: absolute;
+  .actionIcons {
     right: 86px;
+    display: flex;
+    flex-direction: column;
 
     @media #{$mq-tablet} {
-      right: 30px;
-      margin-top: 5px;
-    }
-
-    &._pinned {
-      fill: #fff;
+      right: 16px;
     }
   }
 
@@ -254,7 +252,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 16px;
+    padding-bottom: 14px;
 
     .ovalContainer {
       margin-left: 10px;

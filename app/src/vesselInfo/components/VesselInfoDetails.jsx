@@ -1,16 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { getCountry } from 'iso-3166-1-alpha-2';
+import moment from 'moment';
+import { FORMAT_DATE, FORMAT_TIME } from 'config';
 
 import infoPanelStyles from 'styles/components/info-panel.scss';
 
 class VesselInfoDetails extends Component {
 
   render() {
-    const { currentlyShownVessel, layerFieldsHeaders, userPermissions } = this.props;
+    const { vesselInfo, layerFieldsHeaders, userPermissions } = this.props;
     const canSeeVesselDetails = (userPermissions !== null && userPermissions.indexOf('info') !== -1);
 
-    const renderedFieldList = this.generateVesselDetails(layerFieldsHeaders, canSeeVesselDetails, currentlyShownVessel);
+    const renderedFieldList = this.generateVesselDetails(layerFieldsHeaders, canSeeVesselDetails, vesselInfo);
 
     return (
       <div className={infoPanelStyles.details}>
@@ -27,7 +29,10 @@ class VesselInfoDetails extends Component {
       if (vesselInfo[field.id] === undefined) {
         return;
       }
-      switch (field.kind) {
+
+      const kind = field.kind || field.id;
+
+      switch (kind) {
         case 'prefixedCSVMultiLink':
           if (!vesselInfo[field.id]) {
             break;
@@ -75,6 +80,16 @@ class VesselInfoDetails extends Component {
             <span className={infoPanelStyles.value} >{getCountry(vesselInfo[field.id]) || '---'}</span>
           </div>);
           break;
+        case 'datetime': {
+          const humanizedDate = vesselInfo[field.id] ?
+            moment(vesselInfo[field.id]).format(`${FORMAT_DATE} ${FORMAT_TIME}`) :
+            null;
+          renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo}>
+            <span className={infoPanelStyles.key}>{field.display}</span>
+            <span className={infoPanelStyles.value}>{humanizedDate || '---'}</span>
+          </div>);
+          break;
+        }
         default:
           renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo} >
             <span className={infoPanelStyles.key} >{field.display}</span>
@@ -89,7 +104,7 @@ class VesselInfoDetails extends Component {
 
 VesselInfoDetails.propTypes = {
   layerFieldsHeaders: PropTypes.array,
-  currentlyShownVessel: PropTypes.object,
+  vesselInfo: PropTypes.object,
   userPermissions: PropTypes.array,
   children: PropTypes.node
 };

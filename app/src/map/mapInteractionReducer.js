@@ -5,8 +5,18 @@ import {
   UPDATE_POPUP_REPORT_STATUS,
   SET_MAP_CURSOR
 } from 'map/mapInteractionActions';
+import GL_STYLE from 'map/gl-styles/style.json';
+
+const popupsFields = {};
+Object.keys(GL_STYLE.sources).forEach((id) => {
+  const metadata = GL_STYLE.sources[id].metadata;
+  if (metadata !== undefined && metadata['gfw:popups'] !== undefined) {
+    popupsFields[id] = metadata['gfw:popups'];
+  }
+});
 
 const initialState = {
+  popupsFields,
   hoverPopup: null,
   popup: null,
   cursor: 'progress'

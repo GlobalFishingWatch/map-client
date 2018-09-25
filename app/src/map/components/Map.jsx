@@ -4,22 +4,24 @@ import classnames from 'classnames';
 import MapGL, { Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
-import mapStyles from 'styles/components/map.scss';
+import MapStyles from 'styles/components/map.scss';
 import PopupStyles from 'styles/components/map/popup.scss';
 import ActivityLayers from 'activityLayers/containers/ActivityLayers';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 
 class Map extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mouseOver: true
+    };
+  }
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
     // there is a problem with the container width computation (only with "fat scrollbar" browser/os configs),
     // seems like the panels with scrollbars are taken into account or smth
     window.setTimeout(() => this._resize(), 10000);
-    // sadly mapbox gl's options.logoPosition is not exposed by react-map-gl, so we have to move around some DOM
-    const logo = this._mapContainerRef.querySelector('.mapboxgl-ctrl-logo');
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-right').appendChild(logo);
-    this._mapContainerRef.querySelector('.mapboxgl-ctrl-bottom-left').innerHTML = '';
   }
 
   componentWillUnmount() {
@@ -70,14 +72,16 @@ class Map extends React.Component {
     return (
       <div
         id="map"
-        className={mapStyles.map}
+        className={MapStyles.map}
         ref={(ref) => { this._mapContainerRef = ref; }}
+        onMouseLeave={() => { this.setState({ mouseOver: false }); }}
+        onMouseEnter={() => { this.setState({ mouseOver: true }); }}
       >
         <MapGL
           onTransitionEnd={transitionEnd}
-          mapboxApiAccessToken={MAPBOX_TOKEN}
           onHover={this.onHover}
           onClick={this.onClick}
+
           getCursor={({ isDragging }) => {
             if (cursor === null) {
               return (isDragging) ? MapGLConfig.CURSOR.GRABBING : MapGLConfig.CURSOR.GRAB;
@@ -94,7 +98,7 @@ class Map extends React.Component {
           {popup !== null &&
             <StaticLayerPopup forceRender={Math.random()} />
           }
-          {hoverPopup !== null &&
+          {this.state.mouseOver === true && hoverPopup !== null &&
             <Popup
               latitude={hoverPopup.latitude}
               longitude={hoverPopup.longitude}
@@ -109,6 +113,7 @@ class Map extends React.Component {
             </Popup>
           }
         </MapGL>
+        <div className={MapStyles.googleLogo} />
       </div>
     );
   }

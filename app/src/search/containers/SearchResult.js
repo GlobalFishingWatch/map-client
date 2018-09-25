@@ -11,7 +11,11 @@ const mapDispatchToProps = dispatch => ({
   drawVessel: (vesselDetails) => {
     dispatch(toggleLayerVisibility(vesselDetails.tilesetId, true));
     dispatch(clearVesselInfo());
-    dispatch(addVessel(vesselDetails.tilesetId, vesselDetails.seriesgroup, null, true, true));
+    dispatch(addVessel({
+      tilesetId: vesselDetails.tilesetId,
+      seriesgroup: vesselDetails.seriesgroup,
+      fromSearch: true
+    }));
   }
 });
 

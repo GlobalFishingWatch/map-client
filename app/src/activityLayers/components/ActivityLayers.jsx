@@ -1,14 +1,13 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
-import { lngLatToWorld, pixelsToWorld } from 'viewport-mercator-project';
+import { lngLatToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
 import { LAYER_TYPES } from 'constants';
 import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
   VESSELS_HUES_INCREMENTS_NUM,
-  TIMELINE_MAX_STEPS,
   ACTIVITY_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA,
   VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
@@ -17,13 +16,7 @@ import {
 import HeatmapLayer from './HeatmapLayer.jsx';
 import TracksLayer from './TracksLayer.jsx';
 
-const MAX_SPRITES_FACTOR = 0.002;
-
 const shouldUseRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
-
-const getNumSpritesPerStep = (viewportWidth, viewportHeight) => Math.round(viewportWidth * viewportHeight * MAX_SPRITES_FACTOR);
-
-const getNumSprites = (viewportWidth, viewportHeight) => getNumSpritesPerStep(viewportWidth, viewportHeight) * TIMELINE_MAX_STEPS;
 
 // builds a texture spritesheet containing
 // - the heatmap style (radial gradient)
@@ -88,6 +81,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
   .map(vessel => ({
     data: vessel.track.data,
     selectedSeries: vessel.track.selectedSeries,
+    seriesgroup: vessel.track.seriesgroup,
     color: vessel.color
   }))
   .concat(
@@ -96,6 +90,7 @@ const getTracks = (vesselTracks, tracks) => vesselTracks
       .map(track => ({
         data: track.data,
         selectedSeries: track.series,
+        seriesgroup: track.seriesgroup,
         color: track.color
       }))
   );
@@ -109,6 +104,9 @@ class ActivityLayers extends React.Component {
     if (nextContext.viewport.width !== this.context.viewport.width || nextContext.viewport.height !== this.context.viewport.height) {
       this._updateViewportSize(nextContext.viewport.width, nextContext.viewport.height);
     }
+    if (nextContext.viewport !== this.context.viewport) {
+      this.props.exportNativeViewport(nextContext.viewport);
+    }
   }
 
   _build() {
@@ -120,8 +118,6 @@ class ActivityLayers extends React.Component {
       transparent: true,
       antialias: true
     });
-
-    // this.pixi.ticker.add(this._onTickBound);
 
     this.renderer = this.pixi.renderer;
     this.canvas = this.pixi.view;
@@ -142,7 +138,6 @@ class ActivityLayers extends React.Component {
 
   _updateViewportSize(viewportWidth, viewportHeight) {
     this.renderer.resize(viewportWidth, viewportHeight);
-    this.maxSprites = getNumSprites(viewportWidth, viewportHeight);
   }
 
   toggleHeatmapDimming(dim) {
@@ -155,15 +150,34 @@ class ActivityLayers extends React.Component {
     this.heatmapStage.alpha = (dim === true) ? VESSELS_HEATMAP_DIMMING_ALPHA : 1;
   }
 
+  onTouchStart = (event) => {
+    if (!event.touches.length) {
+      return;
+    }
+    this.queryHeatmapVessels(event.touches[0].clientX, event.touches[0].clientY);
+  }
+
   onMouseMove = (event) => {
+    this.queryHeatmapVessels(event.clientX, event.clientY);
+  }
+
+  queryHeatmapVessels(x, y) {
     const { viewport } = this.context;
-    const [longitude, latitude] = viewport.unproject([event.clientX, event.clientY]);
-    const [worldX, worldY] = lngLatToWorld([longitude, latitude], 1);
+    const [longitude, latitude] = viewport.unproject([x, y]);
+
+    let wrappedLongitude = longitude;
+    if (wrappedLongitude > 180) {
+      wrappedLongitude -= 360;
+    } else if (wrappedLongitude < -180) {
+      wrappedLongitude += 360;
+    }
+
+    const [worldX, worldY] = lngLatToWorld([wrappedLongitude, latitude], 1);
 
     const toleranceRadiusInWorldUnits = VESSEL_CLICK_TOLERANCE_PX / viewport.scale;
 
     this.props.queryHeatmapVessels({
-      longitude,
+      longitude: wrappedLongitude,
       latitude,
       worldX,
       worldY,
@@ -241,9 +255,13 @@ class ActivityLayers extends React.Component {
       highlightedVessels,
       highlightedClickedVessel,
       vesselTracks,
-      tracks
+      tracks,
+      highlightedTrack,
+      leftWorldScaled,
+      rightWorldScaled
     } = this.props;
     const { viewport } = this.context;
+
     const startIndex = timelineInnerExtentIndexes[0];
     const endIndex = timelineInnerExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
@@ -255,19 +273,18 @@ class ActivityLayers extends React.Component {
     if (highlightedVessels.isEmpty === true && nextTracks.length === 0) {
       this._startHeatmapFadein();
     }
+    if (this.renderer) {
+      const err = this.renderer.gl.getError();
+      if (err !== 0) console.log(err);
+    }
 
     const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
-
-    // compute left and right offsets to deal with antimeridian issue
-    const viewportTopLeftWorld = pixelsToWorld([0, 0], viewport.pixelUnprojectionMatrix);
-    const viewportTopRightWorld = pixelsToWorld([viewport.width, 0], viewport.pixelUnprojectionMatrix);
-    const viewportLeft = viewportTopLeftWorld[0] / viewport.scale;
-    const viewportRight = viewportTopRightWorld[0] / viewport.scale;
 
     return (<div
       ref={(ref) => { this.container = ref; }}
       style={{ position: 'absolute' }}
       onMouseMove={this.onMouseMove}
+      onTouchStart={this.onTouchStart}
     >
       {layers.map(layer => (
         <HeatmapLayer
@@ -278,13 +295,12 @@ class ActivityLayers extends React.Component {
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}
-          maxSprites={this.maxSprites}
           baseTexture={this.baseTexture}
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{}}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
         />)
       )}
       {this.stage !== undefined &&
@@ -296,13 +312,12 @@ class ActivityLayers extends React.Component {
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}
-          maxSprites={this.maxSprites}
           baseTexture={this.baseTexture}
           rootStage={this.heatmapStage}
           useRadialGradientStyle={useRadialGradientStyle}
           customRenderingStyle={{ defaultOpacity: 1, defaultSize: 1 }}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
         />
       }
       {this.stage !== undefined &&
@@ -314,8 +329,9 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           timelineOverExtentIndexes={timelineOverExtentIndexes}
           rootStage={this.stage}
-          viewportLeft={viewportLeft}
-          viewportRight={viewportRight}
+          viewportLeft={leftWorldScaled}
+          viewportRight={rightWorldScaled}
+          highlightedTrack={highlightedTrack}
         />
       }
     </div>);
@@ -333,7 +349,11 @@ ActivityLayers.propTypes = {
   highlightedClickedVessel: PropTypes.object,
   vesselTracks: PropTypes.array,
   tracks: PropTypes.array,
-  queryHeatmapVessels: PropTypes.func
+  highlightedTrack: PropTypes.number,
+  queryHeatmapVessels: PropTypes.func,
+  exportNativeViewport: PropTypes.func,
+  leftWorldScaled: PropTypes.number,
+  rightWorldScaled: PropTypes.number
 };
 
 ActivityLayers.contextTypes = {

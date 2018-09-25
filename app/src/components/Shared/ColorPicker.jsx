@@ -1,30 +1,30 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Checkbox from 'components/Shared/Checkbox';
-import classnames from 'classnames';
+import IconButton from 'src/components/Shared/IconButton';
 import { PALETTE_COLORS } from 'config';
 import 'styles/components/map/layer-blending.scss';
 import InputRange from 'react-input-range';
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
 
 class ColorPicker extends Component {
-  renderInput(color, hue, checkedColor) {
+  renderInput(color, hue, checkedColor, id) {
+    const key = `${id}-${color}`;
     return (
-      <div className={classnames(colorPickerStyles.colorInput)} key={color}>
+      <div className={colorPickerStyles.colorInput} key={key}>
         <input
           type="radio"
-          name={color}
-          id={color}
+          name={key}
+          id={key}
           value={color}
           onChange={() => this.props.onTintChange(color, hue)}
           checked={checkedColor.toLowerCase() === color.toLowerCase()}
         />
-        <label htmlFor={color} style={{ backgroundColor: color }} />
+        <label htmlFor={key} style={{ backgroundColor: color }} />
       </div>
     );
   }
   render() {
-    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id } = this.props;
+    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id, extendedPalette } = this.props;
     let checkedColor = this.props.color;
     if (checkedColor === undefined) {
       if (this.props.hue === undefined) {
@@ -33,14 +33,25 @@ class ColorPicker extends Component {
         checkedColor = PALETTE_COLORS.find(color => color.hue === this.props.hue).color;
       }
     }
+
+    let colors = PALETTE_COLORS
+      .filter(tint => extendedPalette === true || tint.hue !== undefined);
+    if (extendedPalette !== true) {
+      colors = colors.sort((tintA, tintB) => {
+        if (extendedPalette === true) return 0;
+        return tintA.hue - tintB.hue;
+      });
+    }
+
+
     return (
       <div className={colorPickerStyles.colorPicker}>
-        <div className={colorPickerStyles.title}>Color</div>
+        <div className={colorPickerStyles.title}>Color:</div>
         <div className={colorPickerStyles.colorInputs}>
-          { PALETTE_COLORS.map(tint => this.renderInput(tint.color, tint.hue, checkedColor))}
+          {colors.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
         </div>
         {onOpacityChange && <div className={colorPickerStyles.section}>
-          Opacity
+          Opacity:
           <InputRange
             value={opacity}
             maxValue={1}
@@ -60,13 +71,15 @@ class ColorPicker extends Component {
           />
         </div>}
         {onShowLabelsToggle && <div className={colorPickerStyles.section}>
-          <Checkbox
-            classNames="-spaced"
-            label="Show labels"
-            id={id}
-            callback={this.props.onShowLabelsToggle}
-            checked={showLabels}
-          />
+          <div
+            onClick={this.props.onShowLabelsToggle}
+          >
+            <IconButton
+              icon="labels"
+              activated={showLabels}
+              label="Show labels"
+            />
+          </div>
         </div>}
       </div>
     );
@@ -81,7 +94,8 @@ ColorPicker.propTypes = {
   hue: PropTypes.number,
   opacity: PropTypes.number,
   showLabels: PropTypes.bool,
-  id: PropTypes.string
+  id: PropTypes.string,
+  extendedPalette: PropTypes.bool
 };
 
 export default ColorPicker;

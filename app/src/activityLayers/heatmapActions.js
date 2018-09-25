@@ -391,12 +391,15 @@ const _queryHeatmap = (state, tileQuery) => {
     const workspaceLayer = state.layers.workspaceLayers.find(l => l.id === layerId);
     if (workspaceLayer.added === true && workspaceLayer.visible === true) {
       const layer = layers[layerId];
-      const queriedTile = layer.tiles.find(tile => tile.uid === tileQuery.uid);
+      const allPossibleTilesByPreference = tileQuery.uids.map(uid => layer.tiles.find(tile => tile.uid === uid));
+      const availableTiles = allPossibleTilesByPreference.filter(tile => tile !== undefined && tile.data !== undefined);
+
       const currentFilters = _getCurrentFiltersForLayer(state, layerId);
-      if (queriedTile !== undefined && queriedTile.data !== undefined) {
+      if (availableTiles.length) {
+        const bestTile = availableTiles[0];
         layersVessels.push({
           layer: workspaceLayer,
-          vessels: selectVesselsAt(queriedTile.data, tileQuery, startIndex, endIndex, currentFilters)
+          vessels: selectVesselsAt(bestTile.data, tileQuery, startIndex, endIndex, currentFilters)
         });
       }
     }

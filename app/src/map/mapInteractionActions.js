@@ -1,14 +1,13 @@
 import area from '@turf/area';
 import moment from 'moment';
-import convert from 'globalfishingwatch-convert';
+import convert from '@globalfishingwatch/map-convert';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
-import { setReportPolygon } from 'report/reportActions';
 import { LAYER_TYPES } from 'constants';
-import { POLYGON_LAYERS, POLYGON_LAYERS_AREA, FORMAT_DATE } from 'config';
+import { POLYGON_LAYERS_AREA, FORMAT_DATE } from 'config';
 
 export const SET_HOVER_POPUP = 'SET_HOVER_POPUP';
 export const SET_POPUP = 'SET_POPUP';
@@ -16,9 +15,12 @@ export const CLEAR_POPUP = 'CLEAR_POPUP';
 export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 export const UPDATE_POPUP_REPORT_STATUS = 'UPDATE_POPUP_REPORT_STATUS';
 
-const getFeaturePopupFields = (staticLayerId) => {
-  const popupFields = POLYGON_LAYERS[staticLayerId].popupFields;
-  return popupFields;
+const getFeaturePopupFields = (staticLayerId, state) => {
+  const source = state.mapStyle.mapStyle.toJS().sources[staticLayerId];
+  if (source.metadata === undefined || source.metadata['gfw:popups'] === undefined) {
+    return null;
+  }
+  return source.metadata['gfw:popups'];
 };
 
 const getAreaKm2 = (glFeature) => {
@@ -32,9 +34,8 @@ const humanizePopupFieldId = id => id
   .replace('_', ' ')
   .replace(/\b\w/g, l => l.toUpperCase());
 
-const getStaticLayerIdFromGlFeature = glFeature => Object.keys(POLYGON_LAYERS).find(key =>
-  POLYGON_LAYERS[key].glLayers.find(glLayer => glLayer.id === glFeature.layer.id)
-);
+const getStaticLayerIdFromGlFeature = glFeature =>
+  (glFeature.layer.metadata !== undefined && glFeature.layer.metadata['gfw:id']) || glFeature.layer.source;
 
 const findFeature = (glFeatures, reportLayerId) => {
   if (!glFeatures.length) {
@@ -89,15 +90,17 @@ export const mapHover = (latitude, longitude, features) => (dispatch, getState) 
     if (feature !== undefined) {
       const layerIsInReport = report.layerId === feature.staticLayerId;
       if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === true || layerIsInReport === true) {
-        const popupFields = getFeaturePopupFields(feature.staticLayerId);
-        const mainPopupFieldId = popupFields[0].id || popupFields[0];
-        const featureTitle = feature.feature.properties[mainPopupFieldId];
-        const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
-        hoverPopup = {
-          layerTitle: staticLayer.title,
-          featureTitle
-        };
-        cursor = 'pointer';
+        const popupFields = getFeaturePopupFields(feature.staticLayerId, state);
+        if (popupFields !== null) {
+          const mainPopupFieldId = popupFields[0].id || popupFields[0];
+          const featureTitle = feature.feature.properties[mainPopupFieldId];
+          const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
+          hoverPopup = {
+            layerTitle: staticLayer.title,
+            featureTitle
+          };
+          cursor = 'pointer';
+        }
       }
     }
   } else if (isEmpty !== true) {
@@ -161,21 +164,19 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   if (report.layerId !== null || isEmpty === true) {
     const feature = findFeature(features, report.layerId);
     if (feature !== undefined) {
-      const popupFields = getFeaturePopupFields(feature.staticLayerId);
+      const popupFields = getFeaturePopupFields(feature.staticLayerId, state);
       const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
 
       const layerIsInReport = state.report.layerId === feature.staticLayerId;
-      if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false) {
+      if (popupFields === null || (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false)) {
         return;
       }
 
-      if (layerIsInReport === true) {
-        dispatch(setReportPolygon(feature.feature.properties));
-      }
+      const properties = feature.feature.properties;
 
       const fields = popupFields.map((popupField) => {
         const id = popupField.id || popupField;
-        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature.feature) : feature.feature.properties[id];
+        const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature.feature) : properties[id];
         const title = popupField.label || humanizePopupFieldId(id);
         return {
           title,
@@ -183,8 +184,9 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
         };
       });
 
-      const isInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
-
+      const isInReport = (layerIsInReport === true)
+        ? report.polygons.find(polygon => polygon.reportingId === properties.reporting_id)
+        : null;
 
       dispatch({
         type: SET_POPUP,
@@ -194,7 +196,8 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
           fields,
           isInReport,
           latitude,
-          longitude
+          longitude,
+          properties
         }
       });
     }
@@ -217,7 +220,11 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       } else {
         const idFieldKey = (layer.header.info.id === undefined) ? 'seriesgroup' : layer.header.info.id;
         const id = foundVessels[0][idFieldKey];
-        dispatch(addVessel(layer.tilesetId, id, selectedSeries));
+        dispatch(addVessel({
+          tilesetId: layer.tilesetId,
+          seriesgroup: id,
+          series: selectedSeries
+        }));
       }
     }
   }
@@ -226,10 +233,14 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
 export const updatePopupReportStatus = () => (dispatch, getState) => {
   const state = getState();
   const popup = state.mapInteraction.popup;
+  const report = state.report;
   if (popup === null) return;
 
-  const layerIsInReport = state.report.layerId === popup.layerId;
-  const polygonIsInReport = (layerIsInReport === true) ? state.report.currentPolygon.isInReport : null;
+  const layerIsInReport = report.layerId === popup.layerId;
+  const polygonIsInReport = (layerIsInReport === true)
+    ? report.polygons.find(polygon => polygon.reportingId === popup.properties.reporting_id) !== undefined
+    : null;
+
 
   dispatch({
     type: UPDATE_POPUP_REPORT_STATUS,

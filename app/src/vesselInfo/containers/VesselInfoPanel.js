@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import VesselInfoPanel from 'vesselInfo/components/VesselInfoPanel';
-import { clearVesselInfo, toggleActiveVesselPin } from 'vesselInfo/vesselInfoActions';
+import { clearVesselInfo, toggleActiveVesselPin, targetCurrentlyShownVessel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { login } from 'user/userActions';
 
 const mapStateToProps = (state) => {
+  const vesselInfo = state.vesselInfo.currentlyShownVessel;
   const currentlyShownLayer = state.layers.workspaceLayers
-    .find(layer => state.vesselInfo.currentlyShownVessel && layer.tilesetId === state.vesselInfo.currentlyShownVessel.tilesetId);
+    .find(layer => vesselInfo && layer.tilesetId === vesselInfo.tilesetId);
 
   let layerFieldsHeaders;
   let layerIsPinable = true;
@@ -22,10 +23,10 @@ const mapStateToProps = (state) => {
   }
 
   return {
-    currentlyShownVessel: state.vesselInfo.currentlyShownVessel,
+    vesselInfo,
     layerFieldsHeaders,
     layerIsPinable,
-    infoPanelStatus: state.vesselInfo.infoPanelStatus,
+    status: state.vesselInfo.infoPanelStatus,
     userPermissions: state.user.userPermissions
   };
 };
@@ -43,6 +44,9 @@ const mapDispatchToProps = dispatch => ({
   showParentEncounter: (encounter) => {
     dispatch(clearVesselInfo());
     dispatch(setEncountersInfo(encounter.seriesgroup, encounter.tilesetId));
+  },
+  targetVessel: () => {
+    dispatch(targetCurrentlyShownVessel());
   }
 });
 

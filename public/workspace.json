@@ -2,109 +2,101 @@
   "workspace": {
     "map": {
       "center": [
-        14.973635415036567,
-        -52.558593749998884
+        -15.154322659771124,
+        -76.11053466796875
       ],
-      "zoom": 4,
+      "zoom": 6,
       "layers": [
         {
-          "title": "Protected Planet WDPA MPAs",
-          "visible": true,
-          "description": "This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.",
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "protectedplanet",
-          "color": "#80ffb5"
-        },
-        {
-          "title": "AIS Fishing effort",
-          "visible": true,
-          "description": "AIS Fishing effort",
-          "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v1",
-          "hue": 182,
-          "type": "ClusterAnimation",
-          "opacity": 1,
-          "id": "fishing",
-          "tilesetId": "gfw-tasks-657-uvi-v1"
-        },
-        {
-          "title": "MPA - No Take",
+          "title": "mpant",
           "visible": true,
           "type": "CartoDBAnimation",
           "opacity": 1,
           "id": "mpant",
-          "color": "#ff8080"
+          "color": "#ffff00"
         },
         {
-          "title": "MPA - Restricted Use",
+          "title":	"Zona Reservada Mar Pacífico Tropical Peruano",
+          "type": "CartoDBAnimation",
+          "id": "mar_pacifico_peruano",
+          "color": "#ff0000",
           "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "mparu",
-          "color": "#ffcc80"
+          "gl": {
+            "source": {
+              "type": "vector",
+              "metadata": {
+                "gfw:carto-sql": "SELECT * FROM peru_mar_pacifico_tropical"
+              }
+            },
+            "layers": [
+              {
+                "id": "mar_pacifico_peruano",
+                "type": "line",
+                "layout": { 
+                 "visibility": "none"
+                },
+                "interactive": true
+              }
+            ]
+          }
         },
         {
-          "title": "EEZ",
+          "title":	"South American countries",
+          "type": "CartoDBAnimation",
+          "id": "samerica_adm0",
+          "color": "#ff00ff",
           "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 0.6,
-          "id": "eez",
-          "color": "#8088ff"
-        },
-        {
-          "title": "High Seas Pocket",
-          "visible": true,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "highseas",
-          "color": "#ff80f4"
-        },
-        {
-          "title": "RFMO",
-          "visible": false,
-          "type": "CartoDBAnimation",
-          "opacity": 1,
-          "id": "rfmo",
-          "color": "#ffff80"
-        },
-        {
-          "title": "WPP NRI",
-          "color": "#F84F40",
-          "visible": false,
-          "type": "CartoDBAnimation",
-          "id": "6",
-          "opacity": 1
+          "gl": {
+            "source": {
+              "type": "vector",
+              "metadata": {
+                "gfw:carto-sql": "SELECT * FROM samerica_adm0",
+                "gfw:popups": [
+                  { "id": "name" },
+                  { "id": "adm0_a3" },
+                  { "id": "POLYGON_LAYERS_AREA" }
+                ]
+              }
+            },
+            "layers": [
+              {
+                "id": "samerica_adm0",
+                "type": "fill",
+                "layout": { 
+                 "visibility": "none"
+                },
+                "interactive": true
+              },
+              {
+                "id": "samerica_adm0-labels",
+                "type": "symbol",
+                "layout": {
+                  "visibility": "none",
+                  "text-field": "{name}",
+                  "text-font": [
+                    "Roboto Mono Light"
+                  ],
+                  "text-size": 10
+                }
+              }
+            ]
+          }
         }
       ]
     },
-    "pinnedVessels": [
-      {
-        "seriesgroup": 6590993,
-        "tilesetId": "gfw-tasks-657-uvi-v1",
-        "title": "RUEY I SHYANG NO.101",
-        "visible": true,
-        "color": "#ff8080"
-      }
-    ],
-    "shownVessel": {
-      "seriesgroup": 1677763,
-      "tilesetId": "gfw-tasks-657-uvi-v1",
-      "series": 46738
-    },
+    "pinnedVessels": [],
+    "fleets": [],
     "encounters": {
       "seriesgroup": null,
       "tilesetId": null
     },
     "basemap": "hybrid",
+    "basemapOptions": [],
     "timeline": {
-      "innerExtent": [
-        1464739200000,
-        1467331200000
-      ],
-      "outerExtent": [
-        1451689200000,
-        1480550400000
-      ]
+      "auto": {
+        "daysEndInnerOuterFromToday": 4,
+        "daysInnerExtent": 30
+      }
     },
     "timelineSpeed": 1,
     "filterGroups": []

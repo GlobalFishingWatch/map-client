@@ -75,7 +75,7 @@
   justify-content: space-between;
 
   @media #{$mq-tablet} {
-    max-width: 470px;
+    max-width: 550px;
     width: 100%;
   }
 
@@ -105,10 +105,10 @@
     }
 
     @media #{$mq-laptop} {
-      max-width: 375px;
+      max-width: 450px;
     }
 
-    > a {
+    a {
       color: rgba($color-4, .5);
 
       &:hover {
@@ -127,18 +127,4 @@
 .overflowContainer {
   height: $map-footer-height;
   overflow: hidden;
-}
-
-.betaPill {
-  display: none;
-
-  @media #{$mq-mobile-large} {
-    background: $color-mid-blue;
-    border-radius: 99px;
-    color: $color-white;
-    display: inline-block;
-    font-size: $font-size-tiny;
-    margin-left: 10px;
-    padding: 2px 8px;
-  }
 }

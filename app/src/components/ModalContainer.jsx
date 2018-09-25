@@ -13,6 +13,7 @@ import WelcomeModal from 'welcomeModal/containers/WelcomeModal';
 import PromptLayerRemovalModal from 'containers/Map/PromptLayerRemovalModal';
 import NoLogin from 'containers/Map/NoLogin';
 import FilterGroupModal from 'filters/containers/FilterGroupModal';
+import FleetsModal from 'fleets/containers/FleetsModal';
 import SubscriptionModal from 'report/containers/SubscriptionModal';
 
 
@@ -89,10 +90,18 @@ class ModalContainer extends Component {
         >
           <Share />
         </Modal >
-        <FilterGroupModal
-          opened={this.props.isFilterGroupModalOpen}
-          close={this.props.closeFilterGroupModal}
-        />
+        {this.props.isFilterGroupModalOpen &&
+          <FilterGroupModal
+            opened={this.props.isFilterGroupModalOpen}
+            close={this.props.closeFilterGroupModal}
+          />
+        }
+        {this.props.isFleetsModalOpen &&
+          <FleetsModal
+            opened={this.props.isFleetsModalOpen}
+            close={this.props.closeFleetsModal}
+          />
+        }
         <Modal
           opened={this.props.subscriptionModalOpen}
           visible
@@ -108,6 +117,7 @@ class ModalContainer extends Component {
 
 ModalContainer.propTypes = {
   closeFilterGroupModal: PropTypes.func,
+  closeFleetsModal: PropTypes.func,
   closeLayerInfoModal: PropTypes.func,
   closeLayerManagementModal: PropTypes.func,
   closeLayerRemovalModal: PropTypes.func,
@@ -118,6 +128,7 @@ ModalContainer.propTypes = {
   closeSupportModal: PropTypes.func,
   closeWelcomeModal: PropTypes.func,
   isFilterGroupModalOpen: PropTypes.bool,
+  isFleetsModalOpen: PropTypes.bool,
   isEmbedded: PropTypes.bool,
   layerIdPromptedForRemoval: PropTypes.any,
   layerManagementModal: PropTypes.bool,

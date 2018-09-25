@@ -13,14 +13,15 @@
       justify-content: space-between;
       display: flex;
       padding-left: $menu-mobile-left-padding;
-      padding-right: $menu-right-padding;
+      padding-right: $menu-mobile-right-padding;
       padding-top: 15px;
       padding-bottom: 20px;
       border-bottom: 1px solid $color-fade-blue;
-
+      
       @media #{$mq-tablet} {
-        padding-left: 12px;
-        padding-top: 24px;
+        padding-left: $menu-left-padding;
+        padding-right: $menu-right-padding;
+        padding-bottom: 27px;
         flex-direction: row;
       }
 
@@ -31,40 +32,13 @@
         margin-top: -7px;
 
         .title {
-          color: $color-button-primary;
+          color: $color-4;
           font-family: $font-family-1;
           font-size: $font-size-small;
           font-weight: $font-weight-bold;
           text-align: left;
           text-transform: uppercase;
-          margin-left: 10px;
           margin-top: 4px;
-
-          @media #{$mq-tablet} {
-            font-size: $font-size-x-small;
-          }
-          .separator {
-            margin-right: 10px;
-          }
-        }
-
-        .backButton {
-          cursor: pointer;
-        }
-
-        .backIcon {
-          @include arrow(8px, 2px, $color-4, 'left');
-          vertical-align: text-bottom;
-          pointer-events: none;
-          margin-top: 12px;
-          transform: rotate(45deg) translate(0, -50%);
-        }
-        .backText {
-          color: $color-4;
-          font-family: $font-family-1;
-          font-size: $font-size-small;
-          font-weight: $font-weight-bold;
-          margin-left: 10px;
 
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
@@ -94,6 +68,7 @@
   .icon {
     fill: $color-4;
     min-height: 18px;
+    cursor: pointer;
 
     @media #{$mq-tablet} {
       min-height: none;

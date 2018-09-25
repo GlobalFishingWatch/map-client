@@ -34,6 +34,7 @@
   text-overflow: ellipsis;
 
   @media #{$mq-tablet} {
+    line-height: 20px;
     font-size: $font-size-xxs-small;
   }
 }
@@ -41,17 +42,6 @@
 .itemRename {
   border-bottom-color: rgba($color-3, .3);
   padding: 0 20px 0 0;
-}
-
-.selectPolygon {
-  display: inline-block;
-  flex-direction: column;
-  width: 45%;
-  margin-right: 10px;
-  font-size: $font-size-small;
-  .selectPolygonText {
-    margin-top: 10px;
-  }
 }
 
 .editionMenu {
@@ -65,18 +55,6 @@
   flex: 1;
   justify-content: flex-end;
   margin-bottom: 10px;
-
-  ._highlighted {
-    path {
-      &:first-child {
-        fill: $color-4;
-      }
-
-      &:last-child {
-        fill: $color-31;
-      }
-    }
-  }
 }
 
 .itemOptionItem {

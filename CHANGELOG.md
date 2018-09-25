@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.0
+- Allow custom Mapbox GL JSON style in workspaces - [#943](https://github.com/GlobalFishingWatch/map-client/pull/943)
+- Deeper zoom levels up to 14, even when activity layer tiles are not visible - [#942](https://github.com/GlobalFishingWatch/map-client/pull/942)
+- Added button to fold right control panel - [#945](https://github.com/GlobalFishingWatch/map-client/pull/945)
+  - Right panel automatically expands when clicking on a vessel on the map - [#966](https://github.com/GlobalFishingWatch/map-client/pull/966)
+- Miniglobe is now displayed in right control panel - [#945](https://github.com/GlobalFishingWatch/map-client/pull/945)
+  - Miniglobe now shows the viewed region accurately
+- Added a button to fit the viewport and timebar to vessel tracks
+- Removed automatic fit to viewport and timebar when clicking on a vessel search result (can now be done by explicitely clicking the button)
+- Clicking the (i) vessel button again now hides vessel details
+- Harmonisation of icons and various small UI fixes
+
 ## 2.4.0 RC2
 - Fixed issue that preventend building in production mode
 

@@ -8,6 +8,10 @@
   @media #{mq-tablet} {
     font-size: $font-size-small;
   }
+
+  &._separated {
+    margin-top: 18px;
+  }
 }
 
 .title {
@@ -39,20 +43,17 @@
 .listItem {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   padding-left: $menu-mobile-left-padding;
-  padding-right: 20px;
+  padding-right: $menu-mobile-right-padding;
   position: relative;
-  text-transform: uppercase;
   width: 100%;
   @media #{$mq-tablet} {
     padding-left: $menu-left-padding;
-    padding-right: 36px;
+    padding-right: $menu-right-padding;
 
     &._alignLeft {
       padding-right: 4px;
     }
-
   }
 
   &._noPadding {
@@ -96,9 +97,9 @@
 
     .layerThumbnail {
       border: 1px solid $color-19;
-      height: 20px;
+      height: 30px;
       margin: 0 10px 0 0;
-      width: 20px;
+      width: 30px;
     }
   }
 
@@ -154,48 +155,12 @@
   }
 }
 
-.itemName {
-  background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  border-radius: 0;
-  color: $color-4;
-  flex-grow: 2;
-  font-family: $font-family-1;
-  font-size: $font-size-normal;
-  height: 24px;
-  margin: 0;
-  max-width: 85%;
-  outline: none;
-  text-overflow: ellipsis;
-
-  @media #{$mq-tablet} {
-    font-size: $font-size-xxs-small;
-  }
-}
-
-.itemRename {
-  border-bottom-color: rgba($color-3, .3);
-  padding: 0 20px 0 0;
-}
-
 .renameIcon {
   position: absolute;
   right: 30px;
   stroke: rgba($color-3, .3);
   top: 50%;
   transform: translate(0, -50%);
-}
-
-.selectPolygon {
-  display: inline-block;
-  flex-direction: column;
-  width: 45%;
-  margin-right: 10px;
-  font-size: $font-size-small;
-  .selectPolygonText {
-    margin-top: 10px;
-  }
 }
 
 .editionMenu {

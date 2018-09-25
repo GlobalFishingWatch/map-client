@@ -5,15 +5,17 @@ import {
   TRACK_DEFAULT_COLOR
 } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { setBasemap } from 'map/mapStyleActions';
+import { initBasemap } from 'basemap/basemapActions';
 import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
 import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
+import { setFleetsFromWorkspace } from 'fleets/fleetsActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
+import defaultWorkspace from 'workspace/workspace';
 
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
@@ -128,6 +130,13 @@ export function saveWorkspace(errorAction) {
       return newLayer;
     });
 
+    const basemap = state.basemap.basemapLayers.find(basemapLayer =>
+      basemapLayer.isOption !== true && basemapLayer.visible === true
+    ).id;
+    const basemapOptions = state.basemap.basemapLayers.filter(basemapLayer =>
+      basemapLayer.isOption === true && basemapLayer.visible === true
+    ).map(basemapLayer => basemapLayer.id);
+
     const workspaceData = {
       workspace: {
         map: {
@@ -143,12 +152,14 @@ export function saveWorkspace(errorAction) {
           visible: e.visible,
           color: e.color
         })),
+        fleets: state.fleets.fleets,
         shownVessel,
         encounters: {
           seriesgroup: state.encounters.seriesgroup,
           tilesetId: state.encounters.tilesetId
         },
-        basemap: state.mapStyle.activeBasemap,
+        basemap,
+        basemapOptions,
         timeline: {
           // We store the timestamp
           innerExtent: state.filters.timelineInnerExtent.map(e => +e),
@@ -187,19 +198,36 @@ function dispatchActions(workspaceData, dispatch, getState) {
   }));
 
   // We update the dates of the timeline
+  const autoTimeline = workspaceData.timeline.auto !== undefined;
+  let timelineInnerDates;
+  let timelineOuterDates;
+  if (autoTimeline) {
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const daysEndInnerOuterFromToday = workspaceData.timeline.auto.daysEndInnerOuterFromToday || 4;
+    const daysInnerExtent = workspaceData.timeline.auto.daysInnerExtent || 30;
+    // today - n days
+    const end = new Date().getTime() - (daysEndInnerOuterFromToday * ONE_DAY);
+    // inner should be 30 days long
+    const innerStart = end - (daysInnerExtent * ONE_DAY);
+    // start outer at beginning of year
+    const innerStartYear = new Date(innerStart).getFullYear();
+    const outerStart = new Date(innerStartYear, 0, 1).getTime() + (ONE_DAY - 1);
+    timelineInnerDates = [new Date(innerStart), new Date(end)];
+    timelineOuterDates = [new Date(outerStart), new Date(end)];
+  } else {
+    timelineInnerDates = workspaceData.timeline.innerExtent.map(d => new Date(d));
+    timelineOuterDates = workspaceData.timeline.outerExtent.map(d => new Date(d));
+  }
+
+
   dispatch({
     type: SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-    payload: workspaceData.timelineInnerDates
+    payload: timelineInnerDates
   });
 
-  dispatch(setOuterTimelineDates(workspaceData.timelineOuterDates));
+  dispatch(setOuterTimelineDates(timelineOuterDates));
 
-  // Mapbox branch compatibility: 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
-  let workspaceBasemap = workspaceData.basemap;
-  if (state.mapStyle.basemaps.find(basemap => basemap.title === workspaceBasemap) === undefined) {
-    workspaceBasemap = 'North Star';
-  }
-  dispatch(setBasemap(workspaceBasemap));
+  dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
 
@@ -209,7 +237,12 @@ function dispatchActions(workspaceData, dispatch, getState) {
       if (workspaceData.shownVessel.seriesgroup === undefined) {
         console.warn(`attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no seriesgroup`);
       } else {
-        dispatch(addVessel(workspaceData.shownVessel.tilesetId, workspaceData.shownVessel.seriesgroup, workspaceData.shownVessel.series));
+        const { tilesetId, seriesgroup, series } = workspaceData.shownVessel;
+        dispatch(addVessel({
+          tilesetId,
+          seriesgroup,
+          series
+        }));
       }
     }
     // Mapbox branch compatibility: track layers should have color, not hue
@@ -221,6 +254,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     });
 
     dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+    dispatch(setFleetsFromWorkspace(workspaceData.fleets));
 
     if (workspaceData.encounters !== null && workspaceData.encounters !== undefined &&
         workspaceData.encounters.seriesgroup !== null && workspaceData.encounters.seriesgroup !== undefined) {
@@ -287,14 +321,15 @@ function processNewWorkspace(data) {
   return {
     zoom: workspace.map.zoom,
     center: workspace.map.center,
-    timelineInnerDates: workspace.timeline.innerExtent.map(d => new Date(d)),
-    timelineOuterDates: workspace.timeline.outerExtent.map(d => new Date(d)),
+    timeline: workspace.timeline,
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
+    basemapOptions: workspace.basemapOptions || [],
     layers: workspace.map.layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,
+    fleets: workspace.fleets || [],
     encounters: workspace.encounters,
     filterGroups
   };
@@ -346,6 +381,25 @@ function applyWorkspaceOverrides(workspace, overrides) {
   return overridenWorkspace;
 }
 
+function loadWorkspace(data) {
+  return (dispatch, getState) => {
+    let workspaceData;
+    if (data.workspace !== undefined) {
+      workspaceData = processNewWorkspace(data, dispatch);
+    } else {
+      console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
+      dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
+      dispatch(setUrlWorkspaceId(null));
+      dispatch(getWorkspace());
+      return;
+    }
+    if (getState().workspace.workspaceOverride !== undefined) {
+      workspaceData = applyWorkspaceOverrides(workspaceData, getState().workspace.workspaceOverride);
+    }
+    dispatchActions(workspaceData, dispatch, getState);
+  };
+}
+
 /**
  * Retrieve the workspace according to its ID and sets the zoom and
  * the center of the map, the timeline dates and the available layers
@@ -356,15 +410,19 @@ function applyWorkspaceOverrides(workspace, overrides) {
 export function getWorkspace() {
   return (dispatch, getState) => {
     const state = getState();
-    const workspaceId = state.workspace.urlWorkspaceId;
+    const urlWorkspaceId = state.workspace.urlWorkspaceId;
 
-    const ID = workspaceId || DEFAULT_WORKSPACE;
+    if (!urlWorkspaceId && !LOCAL_WORKSPACE) {
+      dispatch(loadWorkspace(defaultWorkspace));
+      return;
+    }
+
     let url;
 
-    if (!workspaceId && LOCAL_WORKSPACE) {
+    if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE;
     } else {
-      url = `${V2_API_ENDPOINT}/workspaces/${ID}`;
+      url = `${V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`;
     }
 
     const options = {};
@@ -377,20 +435,7 @@ export function getWorkspace() {
     fetch(url, options)
       .then(res => res.json())
       .then((data) => {
-        let workspaceData;
-        if (data.workspace !== undefined) {
-          workspaceData = processNewWorkspace(data, dispatch);
-        } else {
-          console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
-          dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
-          dispatch(setUrlWorkspaceId(null));
-          dispatch(getWorkspace());
-          return;
-        }
-        if (state.workspace.workspaceOverride !== undefined) {
-          workspaceData = applyWorkspaceOverrides(workspaceData, state.workspace.workspaceOverride);
-        }
-        dispatchActions(workspaceData, dispatch, getState);
+        dispatch(loadWorkspace(data));
       })
       .catch((error) => {
         console.error('Error loading workspace: ', error.message);

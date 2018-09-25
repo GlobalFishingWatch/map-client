@@ -13,6 +13,38 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
+const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
+{
+  bypassOnDebug: true,
+  optipng: {
+    optimizationLevel: 7
+  },
+  gifsicle: {
+    interlaced: true
+  }
+} : 
+{
+  bypassOnDebug: true,
+  optipng: {
+    enabled: false
+  },
+  mozjpeg: {
+    enabled: false
+  },
+  optipng: {
+    enabled: false
+  },
+  pngquant: {
+    enabled: false
+  },
+  gifsicle: {
+    enabled: false
+  }
+}
+
+console.log(imageLoaderConfiguration)
+
+
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
@@ -42,7 +74,6 @@ const webpackConfig = {
       FEATURE_FLAG_SUBSCRIPTIONS: envVariables.FEATURE_FLAG_SUBSCRIPTIONS === 'true',
       FEATURE_FLAG_EXTENDED_POLYGON_LAYERS: envVariables.FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === 'true',
       PUBLIC_PATH: JSON.stringify(envVariables.PUBLIC_PATH || ''),
-      MAPBOX_TOKEN: JSON.stringify(envVariables.MAPBOX_TOKEN),
       ENVIRONMENT: JSON.stringify(envVariables.NODE_ENV || 'development'),
       'process.env.NODE_ENV': JSON.stringify(envVariables.NODE_ENV || 'development'),
       VERSION: JSON.stringify(packageJSON.version),
@@ -59,8 +90,7 @@ const webpackConfig = {
       COMPLETE_MAP_RENDER: envVariables.COMPLETE_MAP_RENDER === 'true',
       TIMEBAR_DATA_URL: JSON.stringify(envVariables.TIMEBAR_DATA_URL),
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
-      SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
-      SATELLITE_BASEMAP_URL: JSON.stringify(envVariables.SATELLITE_BASEMAP_URL)
+      SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
     new LodashModuleReplacementPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -92,11 +122,14 @@ const webpackConfig = {
       layers: 'src/layers',
       leftControlPanel: 'src/leftControlPanel',
       rightControlPanel: 'src/rightControlPanel',
+      miniglobe: 'src/miniglobe',
       map: 'src/map',
       mapPanels: 'src/mapPanels',
       pinnedVessels: 'src/pinnedVessels',
       recentVessels: 'src/recentVessels',
+      vessels: 'src/vessels',
       vesselInfo: 'src/vesselInfo',
+      fleets: 'src/fleets',
       report: 'src/report',
       search: 'src/search',
       share: 'src/share',
@@ -121,7 +154,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!globalfishingwatch-convert|react-map-gl).*/,
+        exclude: /node_modules\/(?!@globalfishingwatch\/map-convert|react-map-gl).*/,
         use: [
           {
             loader: 'babel-loader'
@@ -134,15 +167,7 @@ const webpackConfig = {
           'file-loader',
           {
             loader: 'image-webpack-loader',
-            query: {
-              optipng: {
-                optimizationLevel: (envVariables.NODE_ENV === 'development' ? 0 : 7)
-              },
-              bypassOnDebug: true,
-              gifsicle: {
-                interlaced: true
-              }
-            }
+            query: imageLoaderConfiguration
           }
         ]
       },

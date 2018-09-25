@@ -25,41 +25,6 @@
   }
 }
 
-.attributionsContainer {
-  background-image: linear-gradient(to bottom, rgba(0, 17, 55, .9), rgba(8, 23, 54, 0));
-  height: 40px;
-  left: 50%;
-  position: absolute;
-  text-align: center;
-  top: calc(#{$header-height-mobile} + #{$mobile-height});
-  transform: translate(-50%, 0);
-  width: 100%;
-  z-index: 101;
-
-  @media #{$mq-tablet} {
-    display: none;
-  }
-
-  &._embed {
-    top: $header-height-mobile;
-  }
-}
-
-.attributionsContainer > .mobileMapAttributions {
-  color: rgba($color-4, .6);
-  display: inline-block;
-  font-size: $font-size-xxs-small;
-
-  margin: 3px 0 0;
-  max-width: 400px;
-  text-align: center;
-
-  > .link {
-    color: inherit;
-    font-size: inherit;
-  }
-}
-
 .mapLoader {
   left: 8px;
   position: absolute;
@@ -167,10 +132,7 @@
 }
 
 :global .mapboxgl-ctrl-logo {
-  position: absolute;
-  pointer-events: all;
-  right: 38px;
-  bottom: 15px;
+  display: none;
 }
 
 // override Mapbox GL JS style to always show compact style
@@ -204,13 +166,18 @@
 }
 
 @media #{$mq-tablet} {
-  :global .mapboxgl-ctrl-logo {
-    right: 20px;
-    bottom: 15px;
-  }
-
   :global .mapboxgl-ctrl-attrib, :global .mapboxgl-ctrl-attrib:after {
     display: none; // use attribution of the footer
   }
 }
 
+.googleLogo {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  width: 66px;
+  height: 26px;
+  cursor: pointer;
+  background-image: url('https://maps.gstatic.com/mapfiles/api-3/images/google4_hdpi.png');
+  background-size: cover;
+}

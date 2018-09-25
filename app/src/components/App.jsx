@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import AppStyles from 'styles/components/app.scss';
 import BannerStyles from 'styles/components/banner.scss';
 import ReactGA from 'react-ga';
+import platform from 'platform';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
@@ -56,9 +57,12 @@ class App extends Component {
 
   render() {
     const isWebGLSupported = PIXI.utils.isWebGLSupported();
+    const isEdge = platform.name.match(/edge/gi) !== null;
+
     const showBanner =
       (
         isWebGLSupported === false ||
+        isEdge === true ||
         this.props.legacyWorkspaceLoaded ||
         this.props.hasDeprecatedActivityLayersMessage !== null ||
         (SHOW_BANNER === true && this.props.banner !== undefined)
@@ -71,6 +75,7 @@ class App extends Component {
     else if (isWebGLSupported === false) bannerContent = this.props.bannerWebGL;
     else if (this.props.legacyWorkspaceLoaded === true) bannerContent = this.props.bannerLegacyWorkspace;
     else if (this.props.hasDeprecatedActivityLayersMessage !== null) bannerContent = this.props.hasDeprecatedActivityLayersMessage;
+    else if (isEdge === true) bannerContent = this.props.bannerEdge;
 
     document.body.classList.toggle('-has-banner', showBanner);
 
@@ -105,7 +110,8 @@ App.propTypes = {
   bannerWebGL: PropTypes.string,
   bannerLegacyWorkspace: PropTypes.string,
   legacyWorkspaceLoaded: PropTypes.bool,
-  hasDeprecatedActivityLayersMessage: PropTypes.string
+  hasDeprecatedActivityLayersMessage: PropTypes.string,
+  bannerEdge: PropTypes.string
 };
 
 
