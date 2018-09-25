@@ -53,55 +53,58 @@ class VesselInfoPanel extends Component {
       const canSeeVesselDetails = (this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1);
 
       vesselInfoContents = (
-        <div className={infoPanelStyles.metadata} >
-          <VesselInfoDetails {...this.props} />
+        <div>
+          <div className={infoPanelStyles.metadata} >
+            <VesselInfoDetails {...this.props} />
 
-          <div className={infoPanelStyles.actionIcons}>
-            {((
-              this.props.userPermissions !== null &&
-              this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
-              this.props.layerIsPinable
-            ) || vesselInfo.pinned)
-            &&
-              <div
-                onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
-              >
-                <IconButton icon="pin" activated={vesselInfo.pinned} />
-              </div>
+            {canSeeVesselDetails && vesselInfo.mmsi && <a
+              className={infoPanelStyles.externalLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
+            >Check it out on MarineTraffic.com
+            </a>
+            }
+            {!canSeeVesselDetails && <a
+              style={{ margin: 0 }}
+              className={infoPanelStyles.externalLink}
+              onClick={this.props.login}
+            >Click here to login and<br />see more details</a>
             }
 
-            <div onClick={this.props.targetVessel}>
-              <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
+            <div className={infoPanelStyles.actionIcons}>
+              {((
+                this.props.userPermissions !== null &&
+                this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
+                this.props.layerIsPinable
+              ) || vesselInfo.pinned)
+              &&
+                <div
+                  onClick={() => { this.props.onTogglePin(vesselInfo.seriesgroup); }}
+                >
+                  <IconButton icon="pin" activated={vesselInfo.pinned} />
+                </div>
+              }
+
+              <div onClick={this.props.targetVessel}>
+                <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
+              </div>
             </div>
           </div>
-
-          {canSeeVesselDetails && vesselInfo.mmsi && <a
-            className={infoPanelStyles.externalLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`http://www.marinetraffic.com/en/ais/details/ships/mmsi:${vesselInfo.mmsi}`}
-          >Check it out on MarineTraffic.com
-          </a>
-          }
-          {!canSeeVesselDetails && <a
-            className={infoPanelStyles.externalLink}
-            onClick={this.props.login}
-          >Click here to login and<br />see more details</a>
-          }
           {vesselInfo.parentEncounter !== null
-          && vesselInfo.parentEncounter !== undefined
-          && <button
-            className={classnames(infoPanelStyles.backButton)}
-            onClick={() => { this.props.showParentEncounter(vesselInfo.parentEncounter); }}
-          >
-            <span className={infoPanelStyles.backIcon} />
-            <span className={infoPanelStyles.backText}>
-              back to encounter event
-            </span>
-            <span className={infoPanelStyles.ovalContainer} >
-              <span className={infoPanelStyles.oval} />
-            </span>
-          </button>
+            && vesselInfo.parentEncounter !== undefined
+            && <button
+              className={classnames(infoPanelStyles.backButton)}
+              onClick={() => { this.props.showParentEncounter(vesselInfo.parentEncounter); }}
+            >
+              <span className={infoPanelStyles.backIcon} />
+              <span className={infoPanelStyles.backText}>
+                back to encounter event
+              </span>
+              <span className={infoPanelStyles.ovalContainer} >
+                <span className={infoPanelStyles.oval} />
+              </span>
+            </button>
           }
         </div>
       );
