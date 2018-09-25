@@ -11,8 +11,11 @@ const attributions = uniq(Object.keys(GL_STYLE.sources)
   .filter(source => source !== undefined)
 );
 
+const initialMapStyle = GL_STYLE;
+initialMapStyle.glyphs = initialMapStyle.glyphs.replace('{PUBLIC_PATH}', PUBLIC_PATH);
+
 const initialState = {
-  mapStyle: fromJS(GL_STYLE),
+  mapStyle: fromJS(initialMapStyle),
   cartoLayersInstanciated: [],
   attributions
 };
