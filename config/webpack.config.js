@@ -154,7 +154,7 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!globalfishingwatch-convert|react-map-gl).*/,
+        exclude: /node_modules\/(?!@globalfishingwatch\/map-convert|react-map-gl).*/,
         use: [
           {
             loader: 'babel-loader'
