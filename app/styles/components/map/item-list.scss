@@ -4,6 +4,7 @@
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 10px;
 
   @media #{mq-tablet} {
     font-size: $font-size-small;
@@ -47,6 +48,8 @@
   padding-right: $menu-mobile-right-padding;
   position: relative;
   width: 100%;
+  margin: 0 0 5px;
+
   @media #{$mq-tablet} {
     padding-left: $menu-left-padding;
     padding-right: $menu-right-padding;
@@ -63,10 +66,6 @@
   &._noMobilePadding {
     padding: 0;
 
-    @media #{$mq-tablet} {
-      padding-left: $menu-left-padding;
-      padding-right: 0;
-    }
   }
 
   &._noMobileRightPadding {
@@ -75,10 +74,6 @@
     @media #{$mq-tablet} {
       padding-right: 32px;
     }
-  }
-
-  &:not(:first-child) {
-    margin: 5px 0 0;
   }
 
   &._fixed {
@@ -189,6 +184,9 @@
 
   .itemOptionItem {
     margin-bottom: -10px;
+  }
+
+  .itemOptionItem:not(:last-child) {
     margin-right: 15px;
   }
 

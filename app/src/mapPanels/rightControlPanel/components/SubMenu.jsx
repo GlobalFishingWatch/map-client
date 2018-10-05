@@ -22,7 +22,7 @@ class SubMenu extends Component {
                 {title}
               </h2>
             </div>
-            <div className={SubmenuStyles.icon} onClick={this.onCloseClick}>
+            <div className={SubmenuStyles.icon} onClick={this.onCloseClick} title="Close panel">
               <Icon icon="close" activated />
             </div>
           </div>

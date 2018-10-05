@@ -3,14 +3,11 @@
 
 .searchPanel {
   z-index: 11;
-  padding-right: 25px;
-  padding-right: 25px;
-  padding-top: 15px;
-  padding-left: $menu-mobile-left-padding;
+  padding: 15px 25px;
 
   @media #{$mq-tablet} {
-  padding-right: $menu-right-padding;
-  padding-left: $menu-left-padding;
+    padding-right: $menu-right-padding;
+    padding-left: $menu-left-padding;
     position: relative;
   }
 
@@ -64,9 +61,9 @@
 
 .cleanQueryButton {
   position: absolute;
-  right: 65px;
+  right: 55px;
   stroke: rgba($color-3, .3);
-  top: 104px;
+  top: 84px;
 
   @media #{$mq-tablet} {
     top: 24px;
@@ -75,8 +72,8 @@
 
 .searchIcon {
   position: absolute;
-  right: 42px;
-  top: 102px;
+  right: 32px;
+  top: 82px;
 
   @media #{$mq-tablet} {
     top: 22px;
@@ -106,7 +103,7 @@
     @media #{$mq-tablet} {
       position: relative;
       top: -1px;
-      margin-left: -30px;
+      margin-left: -25px;
       width: 320px;
     }
   }
