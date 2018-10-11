@@ -156,7 +156,9 @@
     {
       "id": "background",
       "type": "background",
-      "layout": {},
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
         "background-color": "#001436"
       }
@@ -165,7 +167,9 @@
       "id": "satellite",
       "type": "raster",
       "source": "satellite",
-      "layout": {}
+      "layout": {
+        "visibility": "visible"
+      }
     },
     {
       "id": "north-star",
