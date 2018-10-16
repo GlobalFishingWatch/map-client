@@ -17,7 +17,7 @@
 
   &._expanded {
 
-    > .metadata, .metadata._encounters {
+    .metadata, .metadata._encounters {
       max-height: none;
       overflow: visible;
     }
@@ -25,11 +25,14 @@
 
   .details, .metadata {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
-  > .metadata {
+  .details {
+    flex-wrap: wrap;
+  }
+
+  .metadata {
     max-height: $vessel-info-height;
     overflow: hidden;
     padding: 20px 20px 15px;
@@ -188,7 +191,6 @@
   }
 
   .actionIcons {
-    position: absolute;
     right: 86px;
     display: flex;
     flex-direction: column;
@@ -250,7 +252,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 16px;
+    padding-bottom: 14px;
 
     .ovalContainer {
       margin-left: 10px;

@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "glyphs": "./gl-fonts/{fontstack}/{range}.pbf",
+  "glyphs": "{PUBLIC_PATH}gl-fonts/{fontstack}/{range}.pbf",
   "metadata": {
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
@@ -41,20 +41,40 @@
     },
     "mpant": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mpant:' || mpa_id as region_id, 'mpant:' || mpa_id as reporting_id FROM mpant",
+        "gfw:carto-sql": "select * FROM wdpa_no_take_mpas",
         "gfw:popups": [
           { "id": "name" },
-          { "id": "POLYGON_LAYERS_AREA" }
+          { "id": "wdpaid", "label": "WDPA ID"},
+          { "id": "iucn_cat", "label": "IUCN Category" },
+          { "id": "desig_eng", "label": "Designation" },
+          { "id": "rep_area" },
+          { "id": "no_take" },
+          { "id": "status" },
+          { "id": "status_yr" },
+          { "id": "gov_type" },
+          { "id": "mang_auth" },
+          { "id": "verif" },
+          { "id": "iso3" }
         ]
       },
       "type": "vector"
     },
     "mparu": {
       "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_name, 'mparu:' || mpa_id as region_id, 'mparu:' || mpa_id as reporting_id FROM mparu",
+        "gfw:carto-sql": "SELECT * FROM wdpa_restricted_use_mpas",
         "gfw:popups": [
           { "id": "name" },
-          { "id": "POLYGON_LAYERS_AREA" }
+          { "id": "wdpaid", "label": "WDPA ID"},
+          { "id": "iucn_cat", "label": "IUCN Category" },
+          { "id": "desig_eng", "label": "Designation" },
+          { "id": "rep_area" },
+          { "id": "no_take" },
+          { "id": "status" },
+          { "id": "status_yr" },
+          { "id": "gov_type" },
+          { "id": "mang_auth" },
+          { "id": "verif" },
+          { "id": "iso3" }
         ]
       },
       "type": "vector"
@@ -84,6 +104,7 @@
         "gfw:carto-sql": "SELECT * from protectedplanet",
         "gfw:popups": [
           { "id": "name" },
+          { "id": "wdpaid", "label": "WDPA ID"},
           { "id": "iucn_cat", "label": "IUCN Category" },
           { "id": "desig_eng", "label": "Designation" },
           { "id": "rep_area" },
@@ -98,16 +119,6 @@
       },
       "type": "vector",
       "attribution": "MPAs: www.protectedplanet.net"
-    },
-    "mpatlas": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT the_geom, the_geom_webmercator, cartodb_id, name, name as reporting_id, 'mpa:' || mpa_id as region_id FROM mpatlas",
-        "gfw:popups": [
-          { "id": "name" },
-          { "id": "POLYGON_LAYERS_AREA" }
-        ]
-      },
-      "type": "vector"
     },
     "rfmo": {
       "metadata": {
@@ -145,7 +156,9 @@
     {
       "id": "background",
       "type": "background",
-      "layout": {},
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
         "background-color": "#001436"
       }
@@ -154,7 +167,9 @@
       "id": "satellite",
       "type": "raster",
       "source": "satellite",
-      "layout": {}
+      "layout": {
+        "visibility": "visible"
+      }
     },
     {
       "id": "north-star",
@@ -372,30 +387,6 @@
       "type": "symbol",
       "source": "protectedplanet",
       "source-layer": "protectedplanet",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "mpatlas",
-      "type": "fill",
-      "source": "mpatlas",
-      "source-layer": "mpatlas",
-      "layout": { 
-       "visibility": "none"
-      },
-      "interactive": true
-    },
-    {
-      "id": "mpatlas-labels",
-      "type": "symbol",
-      "source": "mpatlas",
-      "source-layer": "mpatlas",
       "layout": {
         "visibility": "none",
         "text-field": "{name}",

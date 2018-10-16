@@ -6,22 +6,20 @@
     flex-direction: column;
     display: flex;
     height: 100%;
-    padding: 10px 0;
 
     .header {
       align-items: center;
       justify-content: space-between;
       display: flex;
+      height: $menu-mobile-height;
       padding-left: $menu-mobile-left-padding;
       padding-right: $menu-mobile-right-padding;
-      padding-top: 15px;
-      padding-bottom: 20px;
       border-bottom: 1px solid $color-fade-blue;
       
       @media #{$mq-tablet} {
         padding-left: $menu-left-padding;
         padding-right: $menu-right-padding;
-        padding-bottom: 27px;
+        height: $menu-height;
         flex-direction: row;
       }
 
@@ -29,7 +27,6 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-        margin-top: -7px;
 
         .title {
           color: $color-4;
@@ -38,7 +35,6 @@
           font-weight: $font-weight-bold;
           text-align: left;
           text-transform: uppercase;
-          margin-top: 4px;
 
           @media #{$mq-tablet} {
             font-size: $font-size-x-small;
@@ -49,11 +45,6 @@
 
     .content {
       -webkit-overflow-scrolling: touch;
-      padding: 15px 0;
-
-      @media #{$mq-tablet} {
-        margin: 10px 0 0;
-      }
     }
   }
 
@@ -68,10 +59,19 @@
   .icon {
     fill: $color-4;
     min-height: 18px;
-    cursor: pointer;
+    cursor: pointer;   
+    position: relative;    
+    z-index: 1;     
+    padding: 1em;     
+    margin: -1em; 
+    border-radius: 50%;
 
     @media #{$mq-tablet} {
       min-height: none;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, .1);
     }
   }
 }
