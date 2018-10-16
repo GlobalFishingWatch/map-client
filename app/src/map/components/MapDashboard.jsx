@@ -12,6 +12,7 @@ import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlP
 import Map from 'map/containers/Map';
 import MapPanelsStyles from 'styles/components/map-panels.scss';
 import MapDashboardStyles from 'map/components/mapDashboard.scss';
+import MapModule from 'src/_map';
 
 class MapDashboard extends Component {
   renderHoverPopup() {
@@ -33,7 +34,7 @@ class MapDashboard extends Component {
   render() {
     const popupComponent = <StaticLayerPopup forceRender={Math.random()} />;
     const hoverPopupComponent = this.renderHoverPopup();
-    const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
+    const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded, workspace } = this.props;
     const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
     return (<div className="fullHeightContainer" >
       {(!isEmbedded && AS_MODULE === false) &&
@@ -61,6 +62,10 @@ class MapDashboard extends Component {
         }}
       >
         <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} />
+        {/* {this.props.children} */}
+        <MapModule
+          workspace={workspace}
+        />
         {AS_MODULE === false &&
           <LeftControlPanel />
         }

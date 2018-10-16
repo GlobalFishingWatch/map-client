@@ -17,6 +17,7 @@ export default function (state = initialState, action) {
       // Mapbox branch compatibility:
       // 'satellite' was name 'hybrid'
       // 'Deep Blue' and 'High Contrast' basemaps have been removed, fallback to North Star
+      // TODO This should move to workspace realm
       let finalBasemapId = (workspaceBasemap === 'hybrid') ? 'satellite' : workspaceBasemap;
       if (basemapLayers.find(b => b.id === finalBasemapId) === undefined) {
         finalBasemapId = 'north-star';

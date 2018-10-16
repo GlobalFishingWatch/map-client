@@ -1,4 +1,5 @@
 import {
+  INIT_WORKSPACE,
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID,
   SET_WORKSPACE_OVERRIDE,
@@ -15,6 +16,8 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case INIT_WORKSPACE:
+      return { ...state, ...action.payload };
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:

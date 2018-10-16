@@ -17,6 +17,7 @@ import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
 import defaultWorkspace from 'workspace/workspace';
 
+export const INIT_WORKSPACE = 'INIT_WORKSPACE';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
@@ -187,6 +188,8 @@ export function saveWorkspace(errorAction) {
 
 function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
+
+  dispatch({ type: INIT_WORKSPACE, payload: workspaceData });
 
   dispatch({ type: SET_WORKSPACE_LOADED });
 

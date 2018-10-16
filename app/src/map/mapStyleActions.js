@@ -218,6 +218,8 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
 export const updateMapStyle = () => (dispatch, getState) => {
   const state = getState();
   const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
+
+  // read basemap info from workspace
   const basemapLayers = state.basemap.basemapLayers;
   const layers = staticAndCustomLayers.concat(basemapLayers);
 

@@ -37,6 +37,12 @@ import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
 import appReducer from './app/appReducer';
 
+// TODO Remove when Map broke free from main store 
+import MapDashboard from 'map/containers/MapDashboard';
+import Map from 'map/containers/Map';
+// TODO Move to Map Module
+
+
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
 /**
@@ -87,7 +93,9 @@ const store = createStore(
 render(
   <Provider store={store} >
     <AppContainer>
-      <AuthMapContainer />
+      <AuthMapContainer>
+        <MapDashboard />
+      </AuthMapContainer>
     </AppContainer>
   </Provider>,
   document.getElementById('app')
