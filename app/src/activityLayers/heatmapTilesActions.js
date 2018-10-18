@@ -26,25 +26,29 @@ const getTilecoverLimits = (viewportZoom) => {
   };
 };
 
-export const markTileAsLoaded = tileUids => (dispatch, getState) => {
-  dispatch({
-    type: MARK_TILES_UIDS_AS_LOADED,
-    payload: tileUids
-  });
+const flushToReleaseTiles = () => (dispatch, getState) => {
   const currentToLoadTileUids = getState().heatmapTiles.currentToLoadTileUids;
-  // console.log(tileUids, 'have finished loading. Left to load: ', currentToLoadTileUids);
+  // console.log('Tiles left to load: ', currentToLoadTileUids);
 
-  // Tiles are released only when all to load tiles have finished loading
+  // Tiles are released only when all to-load tiles have finished loading
   // this is to ensure smooth visual transitions between zoom levels
   if (!currentToLoadTileUids.length) {
     const currentTilesToReleaseUids = getState().heatmapTiles.currentToReleaseTileUids;
     // console.log('no more tiles to load, releasing ', currentTilesToReleaseUids);
     dispatch(releaseTiles(currentTilesToReleaseUids));
     dispatch({
-      type: RELEASE_MARKED_TILES_UIDS,
-      payload: tileUids
+      type: RELEASE_MARKED_TILES_UIDS
     });
   }
+};
+
+export const markTileAsLoaded = tileUids => (dispatch) => {
+  dispatch({
+    type: MARK_TILES_UIDS_AS_LOADED,
+    payload: tileUids
+  });
+  // console.log(tileUids, 'have finished loading');
+  dispatch(flushToReleaseTiles());
 };
 
 const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
@@ -94,6 +98,7 @@ const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getSt
   });
 
   dispatch(updateLoadedTiles());
+  dispatch(flushToReleaseTiles());
 };
 
 const _debouncedFlushState = (dispatch) => {
