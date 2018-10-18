@@ -1,25 +1,11 @@
 @import '../../settings';
 
 .flagFilters {
-  padding-left: $menu-mobile-left-padding;
-  padding-right: 16px;
+  padding: 20px 25px;
 
   @media #{$mq-tablet} {
     max-height: none;
     overflow-y: visible;
-    padding-right: 22px;
-    padding-left: 0;
-    
-    &.singleFilters {
-      padding-left: $menu-left-padding;
-    }
-  }
-
-  .item-list {
-    &.listItem {
-      padding-right: 0;
-      padding-left: 0;
-    }  
   }
 }
 
@@ -31,11 +17,7 @@
   align-items: center;
   display: flex;
   position: relative;
-  padding-right: 20px;
-
-  &:not(:first-child) {
-    margin: 10px 0 0;
-  }
+  margin: 0 0 10px;
 }
 
 .filterOption {

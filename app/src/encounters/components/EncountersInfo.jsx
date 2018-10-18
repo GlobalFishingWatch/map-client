@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import moment from 'moment';
-import Tab from 'sharedUI/components/Tab';
+import Tab from 'components/Shared/Tab';
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { FORMAT_DATE, FORMAT_TIME, FORMAT_NUM_DECIMALS } from 'config';

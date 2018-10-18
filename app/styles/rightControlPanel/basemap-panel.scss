@@ -4,6 +4,7 @@
   padding-bottom: 20px;
   font-size: $font-size-xs-small;
   padding-right: 20px;
+  padding-top: 10px;
   
   @media #{$mq-tablet} {
     font-size: $font-size-small;
@@ -24,4 +25,6 @@
 
 .option {
   margin-right: 4px;
+  display: flex;
+  align-items: center;
 }

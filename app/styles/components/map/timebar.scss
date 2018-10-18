@@ -31,16 +31,9 @@
 
 .timebarPlayback {
   text-align: center;
-  width: 13%;
   margin-top: 12px;
-  margin-left: 1px;
-  margin-right: 1px;
-
-  @media #{$mq-mobile-large} {
-    margin-left: 0;
-    width: 10%;
-    width: 50px;
-  }
+  margin-left: 3px;
+  margin-right: 3px;
 
   button {
     background: none;
@@ -49,6 +42,9 @@
     border: 1px solid $color-3;
     border-radius: 50%;
     font-size: $font-size-x-small;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     margin-top: 2px;
     height: 40px;

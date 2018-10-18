@@ -42,13 +42,7 @@
   }
 
   &._wide {
-    width: 94%;
-    @media #{$mq-tablet} {
-      margin-left: 40px;
-      width: 84%;
-      margin-left: $menu-left-padding;
-      margin-right: $menu-right-padding;
-    }
+    width: 100%;
   }
 
   &._half {
