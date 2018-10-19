@@ -6,7 +6,7 @@ import { VelocityTransitionGroup } from 'velocity-react';
 
 function ExpandItem({ active, children, accordion, isVesselInfoPanelOpen }) {
   return (
-    <div className={ExpandItemStyles._mobileScroll}>
+    <div>
       <div
         className={classnames(
           ExpandItemStyles.expandItem,

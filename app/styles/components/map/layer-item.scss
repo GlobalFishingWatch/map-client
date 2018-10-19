@@ -29,7 +29,6 @@
   font-size: $font-size-normal;
   height: 24px;
   margin-top: 1px;
-  max-width: 85%;
   outline: none;
   text-overflow: ellipsis;
 
@@ -41,7 +40,6 @@
 
 .itemRename {
   border-bottom-color: rgba($color-3, .3);
-  padding: 0 20px 0 0;
 }
 
 .editionMenu {
@@ -52,9 +50,8 @@
 .itemOptionList {
   align-items: center;
   display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  margin-bottom: 10px;
+  padding-left: 10px;
+  margin-left: auto;
 }
 
 .itemOptionItem {
@@ -65,7 +62,7 @@
 }
 
 .layerItemHeader {
-  margin-top: -9px;
   display: flex;
+  flex: 1;
   align-items: center;
 }
