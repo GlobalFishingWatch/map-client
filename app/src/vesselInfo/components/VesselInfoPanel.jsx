@@ -87,7 +87,7 @@ class VesselInfoPanel extends Component {
               }
 
               <div onClick={this.props.targetVessel}>
-                <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
+                <IconButton icon="target" /* disabled={vesselInfo.hasTrack !== true} */ />
               </div>
             </div>
           </div>

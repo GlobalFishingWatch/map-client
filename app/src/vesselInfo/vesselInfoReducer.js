@@ -5,7 +5,6 @@ import { INFO_STATUS } from 'constants';
 import {
   SET_VESSEL_DETAILS,
   ADD_VESSEL,
-  SET_VESSEL_TRACK,
   LOAD_PINNED_VESSEL,
   SHOW_VESSEL_DETAILS,
   CLEAR_VESSEL_INFO,
@@ -14,7 +13,8 @@ import {
   SET_PINNED_VESSEL_COLOR,
   SET_PINNED_VESSEL_TRACK_VISIBILITY,
   SET_PINNED_VESSEL_TITLE,
-  TOGGLE_PINNED_VESSEL_EDIT_MODE
+  TOGGLE_PINNED_VESSEL_EDIT_MODE,
+  HIGHLIGHT_TRACK
 } from 'vesselInfo/vesselInfoActions';
 
 const initialState = {
@@ -68,25 +68,6 @@ export default function (state = initialState, action) {
       });
     }
 
-    case SET_VESSEL_TRACK: {
-      const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
-      const newVessel = Object.assign({}, state.vessels[vesselIndex]);
-      newVessel.track = { ...action.payload };
-
-      let currentlyShownVessel = state.currentlyShownVessel;
-      if (currentlyShownVessel
-          && newVessel.seriesgroup === currentlyShownVessel.seriesgroup
-          && newVessel.tilesetId === currentlyShownVessel.tilesetId) {
-        currentlyShownVessel = Object.assign({}, currentlyShownVessel);
-        currentlyShownVessel.hasTrack = true;
-      }
-
-      return Object.assign({}, state, {
-        vessels: [...state.vessels.slice(0, vesselIndex), newVessel, ...state.vessels.slice(vesselIndex + 1)],
-        currentlyShownVessel
-      });
-    }
-
     case LOAD_PINNED_VESSEL: {
       const vesselIndex = state.vessels
         .findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup && vessel.tilesetId === action.payload.tilesetId);
@@ -126,7 +107,7 @@ export default function (state = initialState, action) {
       const vesselIndex = state.vessels.findIndex(vessel => vessel.seriesgroup === action.payload.seriesgroup);
       const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex]);
       currentlyShownVessel.shownInInfoPanel = true;
-      currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
+      // currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
 
       return Object.assign({}, state, {
         vessels: [...state.vessels.slice(0, vesselIndex), currentlyShownVessel, ...state.vessels.slice(vesselIndex + 1)],
@@ -245,6 +226,10 @@ export default function (state = initialState, action) {
       }
 
       return newState;
+    }
+
+    case HIGHLIGHT_TRACK: {
+      return { ...state, highlightedTrack: action.payload };
     }
 
     default:

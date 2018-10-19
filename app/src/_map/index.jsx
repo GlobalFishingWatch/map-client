@@ -19,7 +19,7 @@ const mapStore = createStore(
 
 export default (props) => {
   // Hook here workspace diffing? (ie dispatch action that redispatches depending on updated parts of workspace)
-  console.log(props)
+  // console.log(props)
   return (
     <Provider store={mapStore} >
       <Map {...props} />

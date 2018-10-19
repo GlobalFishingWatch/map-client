@@ -1,5 +1,5 @@
 import fetchEndpoint from 'utils/fetchEndpoint';
-import { getTrack, deleteTracks } from 'tracks/tracksActions';
+import { loadTrack, removeTracks } from 'src/_map/actions/mapTracksActions';
 import { highlightClickedVessel, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
@@ -25,8 +25,8 @@ export function clearEncountersInfo() {
     });
     dispatch(clearHighlightedClickedVessel());
     if (currentEncountersInfo !== null) {
-      const seriesgroupArray = currentEncountersInfo.vessels.map(v => v.seriesgroup);
-      dispatch(deleteTracks(seriesgroupArray));
+      const removedTracks = currentEncountersInfo.vessels.map(v => ({ seriesgroup: v.seriesgroup }));
+      dispatch(removeTracks(removedTracks));
     }
   };
 }
@@ -61,11 +61,13 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
       encounterInfo.vessels = [{
         tilesetId: encounterInfo.vessel_1_tileset,
         seriesgroup: encounterInfo.vessel_1_id,
-        vesselTypeName: encounterInfo.vessel_1_type
+        vesselTypeName: encounterInfo.vessel_1_type,
+        color: (encounterInfo.vessel_1_type === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
       }, {
         tilesetId: encounterInfo.vessel_2_tileset,
         seriesgroup: encounterInfo.vessel_2_id,
-        vesselTypeName: encounterInfo.vessel_2_type
+        vesselTypeName: encounterInfo.vessel_2_type,
+        color: (encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
       }];
 
       dispatch({
@@ -91,13 +93,17 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
             });
           });
 
-        dispatch(getTrack({
-          tilesetId: vessel.tilesetId,
+        const currentLayer = getState().layers.workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
+        const header = currentLayer.header;
+        const layerTemporalExtents = header.temporalExtents;
+        const url = header.endpoints.tracks;
+
+        dispatch(loadTrack({
           seriesgroup: vessel.seriesgroup,
           series: null,
-          zoomToBounds: false,
-          updateTimelineBounds: false,
-          color: (vessel.vesselTypeName === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
+          url,
+          layerTemporalExtents,
+          token
         }));
       });
     });

@@ -73,28 +73,6 @@ const getVesselTexture = (radius, blurFactor) => {
   return tplCanvas;
 };
 
-// TODO this should be in a reducer or container
-// TODO remove vesselTracks in favor of tracks. vesselTracks are the tracks attached to the vesselInfo store,
-// which will eventually migrate to their own tracks store (already implemented with encounters tracks)
-const getTracks = (vesselTracks, tracks) => vesselTracks
-  .filter(vessel => vessel.track && (vessel.visible || vessel.shownInInfoPanel))
-  .map(vessel => ({
-    data: vessel.track.data,
-    selectedSeries: vessel.track.selectedSeries,
-    seriesgroup: vessel.track.seriesgroup,
-    color: vessel.color
-  }))
-  .concat(
-    tracks
-      .filter(track => track.show)
-      .map(track => ({
-        data: track.data,
-        selectedSeries: track.series,
-        seriesgroup: track.seriesgroup,
-        color: track.color
-      }))
-  );
-
 class ActivityLayers extends React.Component {
   componentDidMount() {
     this._build();
@@ -254,8 +232,7 @@ class ActivityLayers extends React.Component {
       timelineOverExtentIndexes,
       highlightedVessels,
       highlightedClickedVessel,
-      vesselTracks,
-      tracks,
+      allTracks,
       highlightedTrack,
       leftWorldScaled,
       rightWorldScaled
@@ -266,11 +243,10 @@ class ActivityLayers extends React.Component {
     const endIndex = timelineInnerExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
 
-    const nextTracks = getTracks(vesselTracks, tracks);
     if (highlightedVessels.isEmpty !== true) {
       this.toggleHeatmapDimming(true);
     }
-    if (highlightedVessels.isEmpty === true && nextTracks.length === 0) {
+    if (highlightedVessels.isEmpty === true && allTracks.length === 0) {
       this._startHeatmapFadein();
     }
     if (this.renderer) {
@@ -322,7 +298,7 @@ class ActivityLayers extends React.Component {
       }
       {this.stage !== undefined &&
         <TracksLayer
-          tracks={nextTracks}
+          tracks={allTracks}
           viewport={viewport}
           zoom={zoom}
           startIndex={startIndex}
@@ -347,8 +323,7 @@ ActivityLayers.propTypes = {
   layerFilters: PropTypes.object,
   highlightedVessels: PropTypes.object,
   highlightedClickedVessel: PropTypes.object,
-  vesselTracks: PropTypes.array,
-  tracks: PropTypes.array,
+  allTracks: PropTypes.array,
   highlightedTrack: PropTypes.number,
   queryHeatmapVessels: PropTypes.func,
   exportNativeViewport: PropTypes.func,

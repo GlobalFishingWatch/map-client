@@ -5,9 +5,9 @@ import {
   togglePinnedVesselDetails,
   toggleVesselPin,
   setPinnedVesselColor,
-  targetVessel
+  highlightTrack
 } from 'vesselInfo/vesselInfoActions';
-import { highlightTrack } from 'tracks/tracksActions';
+import { targetVessel } from 'src/_map/actions/mapTracksActions';
 
 const mapStateToProps = state => ({
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel

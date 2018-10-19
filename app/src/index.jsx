@@ -30,12 +30,13 @@ import literalsReducer from 'siteNav/literalsReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
-import tracksReducer from 'tracks/tracksReducer';
 import workspaceReducer from 'workspace/workspaceReducer';
 import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
 import appReducer from './app/appReducer';
+
+import mapTracksReducer from './_map/reducers/mapTracksReducer';
 
 // TODO Remove when Map broke free from main store 
 import MapDashboard from 'map/containers/MapDashboard';
@@ -73,9 +74,9 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
+  mapTracks: mapTracksReducer,
   fleets: fleetsReducer,
   encounters: encountersReducer,
-  tracks: tracksReducer,
   app: appReducer,
   workspace: workspaceReducer
 });
