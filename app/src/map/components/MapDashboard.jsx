@@ -62,10 +62,10 @@ class MapDashboard extends Component {
         }}
       >
         <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} />
-        {/* {this.props.children} */}
-        <MapModule
+        {this.props.children}
+        {/* <MapModule
           workspace={workspace}
-        />
+        /> */}
         {AS_MODULE === false &&
           <LeftControlPanel />
         }

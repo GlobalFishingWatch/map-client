@@ -40,7 +40,8 @@ import mapTracksReducer from './_map/reducers/mapTracksReducer';
 
 // TODO Remove when Map broke free from main store 
 import MapDashboard from 'map/containers/MapDashboard';
-import Map from 'map/containers/Map';
+import MapModule from 'src/_map';
+// import Map from 'map/containers/Map';
 // TODO Move to Map Module
 
 
@@ -95,7 +96,9 @@ render(
   <Provider store={store} >
     <AppContainer>
       <AuthMapContainer>
-        <MapDashboard />
+        <MapDashboard>
+          <MapModule store={store} parentReducer={reducer} />
+        </MapDashboard>
       </AuthMapContainer>
     </AppContainer>
   </Provider>,

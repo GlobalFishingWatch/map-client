@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import Map from './map/containers/Map';
 
 // Probaby this should just be a wrapper
-class Map extends React.Component {
+class MapProxy extends React.Component {
   componentDidUpdate(prevProps) {
-    console.log(prevProps.basemap, this.props.basemap);
+    // console.log(prevProps.basemap, this.props.basemap);
     // call action ? Or send whole workspace to a reducer and dispatch from there
 
     // what does updateBasemap actually? IE how is map style updated?
@@ -25,11 +26,13 @@ class Map extends React.Component {
     // console.log(this.props.workspace, this.props.basemap)
     // const { hello } = this.props;
     return (
-      <div>Im a map module</div>
+      <span>lala</span>
+      // <div>Im a map module{hello}</div>
+      // <Map {...this.props} />
     );
   }
 }
 
-Map.propTypes = {};
+MapProxy.propTypes = {};
 
-export default Map;
+export default MapProxy;
