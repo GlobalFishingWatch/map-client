@@ -3,12 +3,12 @@ import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTEN
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { updateMapStyle } from 'map/mapStyleActions';
-import {
-  initHeatmapLayers,
-  addHeatmapLayerFromLibrary,
-  removeHeatmapLayerFromLibrary,
-  loadAllTilesForLayer
-} from 'activityLayers/heatmapActions';
+// import {
+//   initHeatmapLayers,
+//   addHeatmapLayerFromLibrary,
+//   removeHeatmapLayerFromLibrary,
+//   loadAllTilesForLayer
+// } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import calculateLayerId from 'utils/calculateLayerId';
 import { hueToRgbHexString } from 'utils/colors';
 import { loadCustomLayer } from './customLayerActions';
@@ -190,7 +190,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
           payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
         });
         dispatch(updateMapStyle());
-        dispatch(initHeatmapLayers());
+        // dispatch(initHeatmapLayers());  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
       })
       .catch((err) => {
@@ -223,7 +223,7 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
 
     if (layer.type === LAYER_TYPES.Heatmap && visibility === true) {
       // TODO clean tile first, if zoom has changed
-      dispatch(loadAllTilesForLayer(layer.id));
+      // dispatch(loadAllTilesForLayer(layer.id));  TODO MAP MODULE
     }
 
     if (LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1) {
@@ -251,17 +251,17 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
           loadLayerHeader(url, getState().user.token).then((header) => {
             if (header) {
               dispatch(setLayerHeader(layerId, header));
-              dispatch(addHeatmapLayerFromLibrary(layerId, url));
+              // dispatch(addHeatmapLayerFromLibrary(layerId, url));  TODO MAP MODULE
               dispatch(setGlobalFiltersFromHeader(header));
               dispatch(refreshFlagFiltersLayers());
             }
           });
         } else {
-          dispatch(addHeatmapLayerFromLibrary(layerId, url));
+          // dispatch(addHeatmapLayerFromLibrary(layerId, url));  TODO MAP MODULE
           dispatch(refreshFlagFiltersLayers());
         }
       } else {
-        dispatch(removeHeatmapLayerFromLibrary(layerId));
+        // dispatch(removeHeatmapLayerFromLibrary(layerId));  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
       }
     }

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import ActivityLayers from 'activityLayers/components/ActivityLayers.jsx';
-import { queryHeatmapVessels } from 'activityLayers/heatmapTilesActions';
 import { exportNativeViewport } from 'map/mapViewportActions';
+import ActivityLayers from './ActivityLayers.jsx';
+import { queryHeatmapVessels } from '../heatmap/heatmapTiles.actions';
 
 const getTracks = (state, ownProps) => ownProps.tracks;
 const getMapTracks = state => state.map.tracks;

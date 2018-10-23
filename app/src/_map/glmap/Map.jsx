@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
-import ActivityLayers from 'activityLayers/containers/ActivityLayers';
+import ActivityLayers from '../activity/ActivityLayers.container.js';
 import './map.css';
 
 class Map extends React.Component {

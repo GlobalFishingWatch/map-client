@@ -2,7 +2,7 @@ import tilecover from '@mapbox/tile-cover/index';
 import debounce from 'lodash/debounce';
 import { PerspectiveMercatorViewport } from 'viewport-mercator-project';
 import { ACTIVITY_LAYERS_MAX_ZOOM_LEVEL_TILE_LOADING, TILES_LOAD_ZOOM_OFFSET } from 'config';
-import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmapActions';
+import { getTile, releaseTiles, highlightVesselFromHeatmap, updateLoadedTiles } from './heatmap.actions';
 
 export const SET_CURRENTLY_VISIBLE_TILES = 'SET_CURRENTLY_VISIBLE_TILES';
 export const SET_CURRENTLY_LOADED_TILES = 'SET_CURRENTLY_LOADED_TILES';

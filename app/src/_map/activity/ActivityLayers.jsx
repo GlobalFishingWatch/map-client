@@ -13,8 +13,8 @@ import {
   VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
   VESSEL_CLICK_TOLERANCE_PX
 } from 'config';
-import HeatmapLayer from './HeatmapLayer.jsx';
-import TracksLayer from './TracksLayer.jsx';
+import HeatmapLayer from '../heatmap/HeatmapLayer';
+import TracksLayer from '../tracks/TracksLayer';
 
 const shouldUseRadialGradientStyle = zoom => zoom < VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD;
 

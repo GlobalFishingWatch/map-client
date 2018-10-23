@@ -3,10 +3,12 @@ import { createSelector } from 'reselect';
 import MapDashboard from 'map/components/MapDashboard';
 import { trackExternalLinkClicked } from 'analytics/analyticsActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
+import { LAYER_TYPES } from 'constants';
 import { toggleMapPanels } from 'app/appActions';
 
 const getVessels = state => state.vesselInfo.vessels;
 const getEncounter = state => state.encounters.encountersInfo;
+const getLayers = state => state.layers.workspaceLayers;
 
 const getAllVesselsForTracks = createSelector(
   [getVessels, getEncounter],
@@ -35,6 +37,15 @@ const getAllVesselsForTracks = createSelector(
   }
 );
 
+const getHeatmapLayers = createSelector(
+  [getLayers],
+  layers => layers
+    .filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
+    .map(layer => ({
+      id: layer.id
+    }))
+);
+
 const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
   zoom: state.mapViewport.viewport.zoom,
@@ -44,8 +55,10 @@ const mapStateToProps = state => ({
   mapPanelsExpanded: state.app.mapPanelsExpanded,
   hoverPopup: state.mapInteraction.hoverPopup,
   workspace: state.workspace,
+  // Map module:
+  token: state.user.token,
   allVesselsForTracks: getAllVesselsForTracks(state),
-  token: state.user.token
+  heatmapLayers: getHeatmapLayers(state)
 });
 
 const mapDispatchToProps = dispatch => ({

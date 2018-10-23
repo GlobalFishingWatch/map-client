@@ -1,5 +1,5 @@
 import { fitBounds, pixelsToWorld } from 'viewport-mercator-project';
-import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions';
+// import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions'; TODO MAP MODULE
 import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
 
 export const SET_VIEWPORT = 'SET_VIEWPORT';
@@ -14,7 +14,7 @@ export const setViewport = viewport => (dispatch) => {
     type: SET_VIEWPORT,
     payload: viewport
   });
-  dispatch(updateHeatmapTilesFromViewport());
+  // dispatch(updateHeatmapTilesFromViewport());  TODO MAP MODULE
 };
 
 export const updateViewport = viewportUpdate => (dispatch) => {
@@ -22,7 +22,7 @@ export const updateViewport = viewportUpdate => (dispatch) => {
     type: UPDATE_VIEWPORT,
     payload: viewportUpdate
   });
-  dispatch(updateHeatmapTilesFromViewport());
+  // dispatch(updateHeatmapTilesFromViewport()); TODO MAP MODULE
 };
 
 const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) => {
@@ -35,7 +35,7 @@ const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) =
       zoom
     }
   });
-  dispatch(updateHeatmapTilesFromViewport());
+  // dispatch(updateHeatmapTilesFromViewport());  TODO MAP MODULE
 };
 
 
@@ -56,7 +56,7 @@ export const transitionEnd = () => (dispatch) => {
   dispatch({
     type: TRANSITION_END
   });
-  dispatch(updateHeatmapTilesFromViewport());
+  // dispatch(updateHeatmapTilesFromViewport()); TODO MAP MODULE
 };
 
 export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {

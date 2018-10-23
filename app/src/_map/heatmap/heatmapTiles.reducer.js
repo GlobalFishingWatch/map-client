@@ -5,7 +5,7 @@ import {
   SET_CURRENTLY_SWAPPED_TILE_UIDS,
   MARK_TILES_UIDS_AS_LOADED,
   RELEASE_MARKED_TILES_UIDS
-} from 'activityLayers/heatmapTilesActions';
+} from './heatmapTiles.actions';
 
 const initialState = {
   currentVisibleTiles: [],

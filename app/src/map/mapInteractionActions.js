@@ -3,7 +3,7 @@ import moment from 'moment';
 import convert from '@globalfishingwatch/map-convert';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
-import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
+// import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';  TODO MAP MODULE
 import { zoomIntoVesselCenter } from 'map/mapViewportActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { LAYER_TYPES } from 'constants';
@@ -153,7 +153,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   dispatch(clearVesselInfo());
   dispatch(clearEncountersInfo());
   dispatch(clearPopup());
-  dispatch(clearHighlightedClickedVessel());
+  // dispatch(clearHighlightedClickedVessel());  TODO MAP MODULE
 
   const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
   const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
@@ -210,7 +210,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       dispatch(trackMapClicked(latitude, longitude, 'cluster'));
       dispatch(hideVesselsInfoPanel());
       dispatch(zoomIntoVesselCenter(latitude, longitude));
-      dispatch(clearHighlightedVessels());
+      // dispatch(clearHighlightedVessels());  TODO MAP MODULE
     } else {
       dispatch(trackMapClicked(latitude, longitude, 'vessel'));
       const selectedSeries = foundVessels[0].series;

@@ -1,5 +1,5 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
-import { clearHighlightedVessels } from 'activityLayers/heatmapActions';
+// import { clearHighlightedVessels } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import { updatePopupReportStatus } from 'map/mapInteractionActions';
 import { updateMapStyle } from 'map/mapStyleActions';
 import { FLAGS } from 'constants';
@@ -88,7 +88,7 @@ function startReport(layerId) {
     dispatch(toggleLayerVisibility(layerId, true));
     dispatch(toggleReportPanelVisibility());
     dispatch(setLayerOpacity(1, layerId));
-    dispatch(clearHighlightedVessels());
+    // dispatch(clearHighlightedVessels()); TODO MAP MODULE
 
     const workspaceLayer = getState()
       .layers

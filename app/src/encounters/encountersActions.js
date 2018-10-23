@@ -1,6 +1,5 @@
 import fetchEndpoint from 'utils/fetchEndpoint';
-// import { loadTrack, removeTracks } from 'src/_map/actions/mapTracksActions';
-import { highlightClickedVessel, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
+// import { highlightClickedVessel, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
 import buildEndpoint from 'utils/buildEndpoint';
@@ -22,7 +21,7 @@ export function clearEncountersInfo() {
     dispatch({
       type: CLEAR_ENCOUNTERS_INFO
     });
-    dispatch(clearHighlightedClickedVessel());
+    // dispatch(clearHighlightedClickedVessel()); TODO MAP MODULE
   };
 }
 
@@ -31,7 +30,7 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
     const workspaceLayers = getState().layers.workspaceLayers;
     const encounterLayer = workspaceLayers.find(l => l.tilesetId === tilesetId);
 
-    dispatch(highlightClickedVessel(seriesgroup, encounterLayer.id));
+    // dispatch(highlightClickedVessel(seriesgroup, encounterLayer.id)); TODO MAP MODULE
 
     if (encounterLayer.header.endpoints === undefined || encounterLayer.header.endpoints.info === undefined) {
       console.warn('Info field is missing on header\'s urls, can\'t display encounters details');

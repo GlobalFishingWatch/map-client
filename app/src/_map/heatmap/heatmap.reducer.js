@@ -12,7 +12,7 @@ import {
   HIGHLIGHT_CLICKED_VESSEL,
   CLEAR_HIGHLIGHT_CLICKED_VESSEL,
   NOTIFY_DEPRECATED_LAYERS
-} from 'activityLayers/heatmapActions';
+} from './heatmap.actions';
 
 const initialState = {
   // a dict of heatmap layers (key is layer id)

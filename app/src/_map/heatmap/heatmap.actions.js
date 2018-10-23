@@ -10,8 +10,8 @@ import {
 } from 'utils/heatmapTileData';
 import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { updateHeatmapTilesFromViewport, markTileAsLoaded } from 'activityLayers/heatmapTilesActions';
-import { addLoader, removeLoader } from 'app/appActions';
+import { updateHeatmapTilesFromViewport, markTileAsLoaded } from './heatmapTiles.actions';
+// import { addLoader, removeLoader } from 'app/appActions'; TODO MAP MODULE
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
 export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
@@ -174,7 +174,7 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, prevPla
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
   return (dispatch, getState) => {
     const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
-    dispatch(addLoader(loaderId));
+    // dispatch(addLoader(loaderId));  TODO MAP MODULE
     const layers = getState().heatmap.heatmapLayers;
     const token = getState().user.token;
     const allPromises = [];
@@ -229,7 +229,7 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
     });
 
     Promise.all(allPromises).then(() => {
-      dispatch(removeLoader(loaderId));
+      // dispatch(removeLoader(loaderId));  TODO MAP MODULE
       dispatch(markTileAsLoaded(referenceTiles.map(tile => tile.uid)));
     });
   };
