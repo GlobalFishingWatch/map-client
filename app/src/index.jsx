@@ -36,23 +36,18 @@ import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
 import appReducer from './app/appReducer';
 
-import mapTracksReducer from './_map/reducers/mapTracksReducer';
+import mapTracksReducer from './_map/tracks/tracks.reducer';
 
 // TODO Remove when Map broke free from main store 
 import MapDashboard from 'map/containers/MapDashboard';
-import MapModule from 'src/_map';
-// import Map from 'map/containers/Map';
 // TODO Move to Map Module
+import testReducer from './_map/mapTestReducer';
 
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
-/**
- * Reducers
- * @info(http://redux.js.org/docs/basics/Reducers.html)
- * @type {Object}
- */
-const reducer = combineReducers({
+
+const reducers = {
   supportForm: supportFormReducer,
   customLayer: customLayerReducer,
   filters: filtersReducer,
@@ -75,20 +70,28 @@ const reducer = combineReducers({
   timebar: timebarReducer,
   user: userReducer,
   vesselInfo: vesselInfoReducer,
-  mapTracks: mapTracksReducer,
+  // mapTracks: mapTracksReducer,
   fleets: fleetsReducer,
   encounters: encountersReducer,
   app: appReducer,
   workspace: workspaceReducer
+};
+
+// const reducer = combineReducers(reducers);
+
+
+const mapReducer = combineReducers({
+  test: testReducer,
+  tracks: mapTracksReducer
 });
 
-/**
- * Global state
- * @info(http://redux.js.org/docs/basics/Store.html)
- * @type {Object}
- */
+
 const store = createStore(
-  reducer,
+  // reducer,
+  combineReducers({
+    map: mapReducer,
+    ...reducers
+  }),
   applyMiddleware(analyticsMiddleware, thunk)
 );
 
@@ -97,7 +100,7 @@ render(
     <AppContainer>
       <AuthMapContainer>
         <MapDashboard>
-          <MapModule store={store} parentReducer={reducer} />
+          {/* <MapModule store={store} /> */}
         </MapDashboard>
       </AuthMapContainer>
     </AppContainer>
@@ -105,5 +108,6 @@ render(
   document.getElementById('app')
 );
 
-
 store.dispatch(init());
+
+export default store;

@@ -56,8 +56,8 @@ class TracksLayer extends React.Component {
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: (highlightedTrack === track.seriesgroup) ? '0xFFFFFF' : `0x${track.color.substr(1)}`,
-        lineThickness: (highlightedTrack === track.seriesgroup) ? 3 : 1,
+        color: (highlightedTrack === track.id) ? '0xFFFFFF' : `0x${track.color.substr(1)}`,
+        lineThickness: (highlightedTrack === track.id) ? 3 : 1,
         lineOpacity: 1
       });
 

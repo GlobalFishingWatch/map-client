@@ -1,5 +1,5 @@
 import fetchEndpoint from 'utils/fetchEndpoint';
-import { loadTrack, removeTracks } from 'src/_map/actions/mapTracksActions';
+// import { loadTrack, removeTracks } from 'src/_map/actions/mapTracksActions';
 import { highlightClickedVessel, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';
 import { VESSEL_TYPE_REEFER } from 'constants';
 import { ENCOUNTERS_VESSEL_COLOR, ENCOUNTERS_REEFER_COLOR } from 'config';
@@ -18,16 +18,11 @@ export function hideEncountersInfoPanel() {
 }
 
 export function clearEncountersInfo() {
-  return (dispatch, getState) => {
-    const currentEncountersInfo = getState().encounters.encountersInfo;
+  return (dispatch) => {
     dispatch({
       type: CLEAR_ENCOUNTERS_INFO
     });
     dispatch(clearHighlightedClickedVessel());
-    if (currentEncountersInfo !== null) {
-      const removedTracks = currentEncountersInfo.vessels.map(v => ({ seriesgroup: v.seriesgroup }));
-      dispatch(removeTracks(removedTracks));
-    }
   };
 }
 
@@ -70,6 +65,14 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         color: (encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
       }];
 
+      encounterInfo.vessels.forEach((vessel) => {
+        const vesselWorkspaceLayer = workspaceLayers.find(workspaceLayer =>
+          workspaceLayer.tilesetId === vessel.tilesetId || workspaceLayer.id === vessel.tilesetId);
+        const header = vesselWorkspaceLayer.header;
+        vessel.layerTemporalExtents = header.temporalExtents;
+        vessel.layerUrl = header.endpoints.tracks;
+      });
+
       dispatch({
         type: SET_ENCOUNTERS_INFO,
         payload: {
@@ -92,19 +95,6 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
               }
             });
           });
-
-        const currentLayer = getState().layers.workspaceLayers.find(layer => layer.tilesetId === vessel.tilesetId);
-        const header = currentLayer.header;
-        const layerTemporalExtents = header.temporalExtents;
-        const url = header.endpoints.tracks;
-
-        dispatch(loadTrack({
-          seriesgroup: vessel.seriesgroup,
-          series: null,
-          url,
-          layerTemporalExtents,
-          token
-        }));
       });
     });
   };

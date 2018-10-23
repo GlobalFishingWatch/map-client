@@ -2,9 +2,10 @@ import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions';
 import { toggleMapPanels } from 'app/appActions';
-import { loadTrack, targetVessel } from 'src/_map/actions/mapTracksActions';
 import getVesselName from 'utils/getVesselName';
 import buildEndpoint from 'utils/buildEndpoint';
+import { fitTimelineToTrack } from 'filters/filtersActions';
+import { targetMapVessel } from 'src/_map';
 
 export const ADD_VESSEL = 'ADD_VESSEL';
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS';
@@ -18,59 +19,6 @@ export const LOAD_PINNED_VESSEL = 'LOAD_PINNED_VESSEL';
 export const TOGGLE_PINNED_VESSEL_EDIT_MODE = 'TOGGLE_PINNED_VESSEL_EDIT_MODE';
 export const SET_PINNED_VESSEL_TRACK_VISIBILITY = 'SET_PINNED_VESSEL_TRACK_VISIBILITY';
 export const HIGHLIGHT_TRACK = 'HIGHLIGHT_TRACK';
-
-const getTrackBounds = (data, series = null, addOffset = false) => {
-  const time = {
-    start: Infinity,
-    end: 0
-  };
-  const geo = {
-    minLat: Infinity,
-    maxLat: -Infinity,
-    minLng: Infinity,
-    maxLng: -Infinity
-  };
-  for (let i = 0, length = data.datetime.length; i < length; i++) {
-    if (series !== null && series !== data.series[i]) {
-      continue;
-    }
-    const datetime = data.datetime[i];
-    if (datetime < time.start) {
-      time.start = datetime;
-    } else if (datetime > time.end) {
-      time.end = datetime;
-    }
-
-    const lat = data.latitude[i];
-    if (lat < geo.minLat) {
-      geo.minLat = lat;
-    } else if (lat > geo.maxLat) {
-      geo.maxLat = lat;
-    }
-
-    let lng = data.longitude[i];
-    if (addOffset === true) {
-      if (lng < 0) {
-        lng += 360;
-      }
-    }
-    if (lng < geo.minLng) {
-      geo.minLng = lng;
-    } else if (lng > geo.maxLng) {
-      geo.maxLng = lng;
-    }
-  }
-
-  // track crosses the antimeridian
-  if (geo.maxLng - geo.minLng > 350 && addOffset === false) {
-    return getTrackBounds(data, series, true);
-  }
-
-  return {
-    time: [time.start, time.end],
-    geo
-  };
-};
 
 function showVesselDetails(tilesetId, seriesgroup) {
   return {
@@ -173,21 +121,6 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
           visible
         }
       });
-      if (visible === true && currentVessel.track === undefined) {
-        const currentLayer = getState().layers.workspaceLayers.find(layer => layer.tilesetId === currentVessel.tilesetId);
-        const header = currentLayer.header;
-        const layerTemporalExtents = header.temporalExtents;
-        const url = header.endpoints.tracks;
-        const token = getState().user.token;
-
-        dispatch(loadTrack({
-          seriesgroup,
-          series: null,
-          url,
-          layerTemporalExtents,
-          token
-        }));
-      }
     }
   };
 }
@@ -293,13 +226,19 @@ export function addVessel({
 }) {
   return (dispatch, getState) => {
     const state = getState();
+    const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
+    const header = currentLayer.header;
+    const layerTemporalExtents = header.temporalExtents;
+    const layerUrl = header.endpoints.tracks;
     dispatch({
       type: ADD_VESSEL,
       payload: {
         seriesgroup,
         series,
         tilesetId,
-        parentEncounter
+        parentEncounter,
+        layerUrl,
+        layerTemporalExtents
       }
     });
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
@@ -307,20 +246,6 @@ export function addVessel({
     } else {
       dispatch(hideVesselsInfoPanel());
     }
-
-    const currentLayer = getState().layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
-    const header = currentLayer.header;
-    const layerTemporalExtents = header.temporalExtents;
-    const url = header.endpoints.tracks;
-    const token = getState().user.token;
-
-    dispatch(loadTrack({
-      seriesgroup,
-      series,
-      url,
-      layerTemporalExtents,
-      token
-    }));
   };
 }
 
@@ -409,7 +334,8 @@ export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
   const currentVessel = getState().vesselInfo.currentlyShownVessel;
   const seriesgroup = currentVessel.seriesgroup;
   const series = currentVessel.series;
-  dispatch(targetVessel(seriesgroup, series));
+  const timelineBounds = targetMapVessel(seriesgroup, series);
+  dispatch(fitTimelineToTrack(timelineBounds));
 };
 
 export const highlightTrack = seriesgroup => ({

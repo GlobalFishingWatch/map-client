@@ -1,7 +1,7 @@
 // import {} from '../actions/mapTestActions';
 
 const initialState = {
-  hello: null
+  hello: 'world'
 };
 
 export default function (state = initialState, action) {

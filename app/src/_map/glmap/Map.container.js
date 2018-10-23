@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import Map from '../components/Map.jsx';
-import { setViewport, setMouseLatLong, transitionEnd } from '../mapViewportActions.js';
-import { mapHover, mapClick, clearPopup } from '../mapInteractionActions.js';
+import { setViewport, setMouseLatLong, transitionEnd } from 'map/mapViewportActions.js';
+import { mapHover, mapClick, clearPopup } from 'map/mapInteractionActions.js';
+import Map from './Map.jsx';
 
 const mapStateToProps = state => ({
   viewport: state.mapViewport.viewport,

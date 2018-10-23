@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MapGL from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
-import ActivityLayers from '../../activityLayers/containers/ActivityLayers';
+import ActivityLayers from 'activityLayers/containers/ActivityLayers';
 import './map.css';
 
 class Map extends React.Component {
@@ -91,7 +91,7 @@ class Map extends React.Component {
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
         >
-          <ActivityLayers />
+          <ActivityLayers {...this.props} />
           {popup !== null && this.props.popupComponent}
           {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent}
         </MapGL>

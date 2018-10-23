@@ -1,7 +1,7 @@
 import {
   ADD_TRACK,
   REMOVE_TRACKS
-} from '../actions/mapTracksActions';
+} from './tracks.actions';
 
 const initialState = [];
 
@@ -16,8 +16,8 @@ export default function (state = initialState, action) {
       const removedTracks = action.payload.tracks;
       return state.filter(track =>
         removedTracks.find(removedTrack =>
-          track.seriesgroup === removedTrack.seriesgroup &&
-          (removedTrack.seriesgroup === undefined || removedTrack.series === track.series)
+          track.id === removedTrack.id &&
+          (removedTrack.id === undefined || removedTrack.segmentId === track.segmentId)
         )
       );
     }

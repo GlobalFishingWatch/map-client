@@ -6,7 +6,8 @@ import thunk from 'redux-thunk';
 // import Promise from 'promise-polyfill';
 
 import testReducer from './reducers/mapTestReducer';
-import MapProxy from './MapProxyContainer';
+import MapProxy from './MapProxy.container';
+import { fitBoundsToTrack } from 'map/mapViewportActions';
 
 
 // export default (props) => {
@@ -19,29 +20,46 @@ import MapProxy from './MapProxyContainer';
 //   );
 // };
 
-class MapModule extends React.Component {
-  componentWillMount() {
-    console.log(this.props);
-    console.log(this.props.parentReducer);
+let store;
 
-    // JUST PREPARE THE REDUCERS IN PARENT INDEX; FOR NOW
-    const reducer = combineReducers({
-      test: testReducer,
-      ...this.props.parentReducer
-    });
+
+class MapModule extends React.Component {
+  // componentWillMount() {
+  //   console.log(this.props);
+  //   console.log(this.props.parentReducer);
+
+  //   // JUST PREPARE THE REDUCERS IN PARENT INDEX; FOR NOW
+  //   const reducer = combineReducers({
+  //     test: testReducer,
+  //     ...this.props.parentReducer
+  //   });
     
-    this.mapStore = createStore(
-      reducer,
-      applyMiddleware(thunk)
-    );
-  }
+  //   this.mapStore = createStore(
+  //     reducer,
+  //     applyMiddleware(thunk)
+  //   );
+  // }
   render() {
-    return (
-      <Provider parentStore={} store={this.store} >
-        <MapProxy {...this.props} />
-      </Provider>
-    );
+    if (this.props.store) {
+      store = this.props.store;
+      return (
+        <Provider store={this.props.store}>
+          <MapProxy {...this.props} />
+        </Provider>
+      );
+    }
+    return null;
   }
 }
 
 export default MapModule;
+
+export const targetMapVessel = (id, segmentId) => {
+  const track = store.getState().map.tracks.find(t =>
+    t.id === id && (segmentId === undefined || t.segmentId === segmentId)
+  );
+
+  store.dispatch(fitBoundsToTrack(track.geoBounds));
+
+  return track.timelineBounds;
+};

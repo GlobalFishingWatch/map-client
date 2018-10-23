@@ -9,10 +9,11 @@ import Timebar from 'timebar/containers/Timebar';
 import ReportPanel from 'report/containers/ReportPanel';
 import MapFooter from 'siteNav/components/MapFooter';
 import LeftControlPanel from 'mapPanels/leftControlPanel/containers/LeftControlPanel';
-import Map from 'map/containers/Map';
+// import Map from 'map/containers/Map';
 import MapPanelsStyles from 'styles/components/map-panels.scss';
 import MapDashboardStyles from 'map/components/mapDashboard.scss';
 import MapModule from 'src/_map';
+import store from '../..';
 
 class MapDashboard extends Component {
   renderHoverPopup() {
@@ -61,11 +62,15 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} />
-        {this.props.children}
-        {/* <MapModule
-          workspace={workspace}
-        /> */}
+        {/* <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} /> */}
+        {/* {this.props.children} */}
+        <MapModule
+          store={store}
+          token={this.props.token}
+          tracks={this.props.allVesselsForTracks}
+          popupComponent={popupComponent}
+          hoverPopupComponent={hoverPopupComponent}
+        />
         {AS_MODULE === false &&
           <LeftControlPanel />
         }

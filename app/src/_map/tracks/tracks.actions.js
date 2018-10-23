@@ -6,8 +6,7 @@ import {
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'utils/heatmapTileData';
-import { fitBoundsToTrack } from 'map/mapViewportActions';
-import { fitTimelineToTrack } from 'filters/filtersActions';
+
 
 export const ADD_TRACK = 'ADD_TRACK';
 export const REMOVE_TRACKS = 'REMOVE_TRACKS';
@@ -65,14 +64,14 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
   };
 };
 
-export function loadTrack({ seriesgroup, series, url, layerTemporalExtents, token }) {
+export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents, token }) {
   return (dispatch, getState) => {
 
-    if (getState().mapTracks.find(t => t.seriesgroup === seriesgroup && t.series === series)) {
+    if (getState().map.tracks.find(t => t.id === id && t.segmentId === segmentId)) {
       return;
     }
 
-    const promises = getTilePromises(url, token, layerTemporalExtents, { seriesgroup });
+    const promises = getTilePromises(layerUrl, token, layerTemporalExtents, { seriesgroup: id });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -91,17 +90,17 @@ export function loadTrack({ seriesgroup, series, url, layerTemporalExtents, toke
         ]);
 
         const vectorArray = addTracksPointsRenderingData(rawTrackData);
-        const bounds = getTrackBounds(rawTrackData, series);
+        const bounds = getTrackBounds(rawTrackData, segmentId);
 
         dispatch({
           type: ADD_TRACK,
           payload: {
-            seriesgroup,
+            id,
             data: getTracksPlaybackData(vectorArray),
-            allSeries: uniq(rawTrackData.series),
+            allSegmentIds: uniq(rawTrackData.series),
             geoBounds: bounds.geo,
             timelineBounds: bounds.time,
-            series
+            segmentId
           }
         });
       });
@@ -114,11 +113,3 @@ export const removeTracks = tracks => ({
     tracks
   }
 });
-
-export const targetVessel = (seriesgroup, series) => (dispatch, getState) => {
-  const track = getState().mapTracks.find(t =>
-    t.seriesgroup === seriesgroup && (series === undefined || t.series === series)
-  );
-  dispatch(fitBoundsToTrack(track.geoBounds));
-  dispatch(fitTimelineToTrack(track.timelineBounds));
-};

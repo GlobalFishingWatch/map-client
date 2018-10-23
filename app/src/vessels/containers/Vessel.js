@@ -7,7 +7,8 @@ import {
   setPinnedVesselColor,
   highlightTrack
 } from 'vesselInfo/vesselInfoActions';
-import { targetVessel } from 'src/_map/actions/mapTracksActions';
+import { fitTimelineToTrack } from 'filters/filtersActions';
+import { targetMapVessel } from 'src/_map';
 
 const mapStateToProps = state => ({
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel
@@ -27,7 +28,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setPinnedVesselColor(seriesgroup, color));
   },
   targetVessel: (seriesgroup) => {
-    dispatch(targetVessel(seriesgroup));
+    const timelineBounds = targetMapVessel(seriesgroup);
+    dispatch(fitTimelineToTrack(timelineBounds));
   },
   highlightTrack: (seriesgroup) => {
     dispatch(highlightTrack(seriesgroup));

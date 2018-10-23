@@ -1,10 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import Map from './map/containers/Map';
+import Map from './glmap/Map.container';
 
-// Probaby this should just be a wrapper
+const containsTrack = (track, tracks) => tracks.find(prevTrack =>
+  prevTrack.id === track.id &&
+  prevTrack.segmentId === track.segmentId
+) !== undefined;
+
 class MapProxy extends React.Component {
   componentDidUpdate(prevProps) {
+    console.log(this.props.tracks)
+
+    if (this.props.tracks !== prevProps.tracks) {
+      // this.props.updateTracks(this.props.tracks);
+      if (this.props.tracks.length !== prevProps.tracks.length) {
+        console.log(this.props.tracks.length, prevProps.tracks.length)
+        const newTracks = this.props.tracks;
+        const prevTracks = prevProps.tracks;
+        newTracks.forEach((newTrack) => {
+          if (!containsTrack(newTrack, prevTracks)) {
+            this.props.loadTrack({
+              token: this.props.token,
+              ...newTrack
+            });
+          }
+        });
+        prevTracks.forEach((prevTrack) => {
+          if (!containsTrack(prevTrack, newTracks)) {
+            this.props.removeTrack({ ...prevTrack });
+          }
+        });
+      }
+    }
+
     // console.log(prevProps.basemap, this.props.basemap);
     // call action ? Or send whole workspace to a reducer and dispatch from there
 
@@ -22,17 +50,23 @@ class MapProxy extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props);
     // console.log(this.props.workspace, this.props.basemap)
     // const { hello } = this.props;
     return (
-      <span>lala</span>
-      // <div>Im a map module{hello}</div>
-      // <Map {...this.props} />
+      <Map {...this.props} />
     );
   }
 }
 
-MapProxy.propTypes = {};
+MapProxy.propTypes = {
+  token: PropTypes.string.isRequired,
+  tracks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    segmentId: PropTypes.string,
+    layerUrl: PropTypes.string,
+    layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+  }))
+};
 
 export default MapProxy;

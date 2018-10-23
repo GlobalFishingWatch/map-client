@@ -4,31 +4,20 @@ import ActivityLayers from 'activityLayers/components/ActivityLayers.jsx';
 import { queryHeatmapVessels } from 'activityLayers/heatmapTilesActions';
 import { exportNativeViewport } from 'map/mapViewportActions';
 
-const getTracks = state => state.mapTracks;
-const getVessels = state => state.vesselInfo.vessels;
-// TODO: eventually tracks will be connected like this:
-// const getTracks = (state, ownProps) => ownProps.workspace.vessels;
-const getEncounter = state => state.encounters.encountersInfo;
+const getTracks = (state, ownProps) => ownProps.tracks;
+const getMapTracks = state => state.map.tracks;
 
 const getAllTracks = createSelector(
-  [getTracks, getVessels, getEncounter],
-  (tracks, vessels, encounter) => {
-    const allTracks = tracks.map((track) => {
-      let matchingVessel;
-      if (encounter !== null && encounter !== undefined) {
-        matchingVessel = encounter.vessels.find(vessel => vessel.seriesgroup === track.seriesgroup);
-      } else {
-        matchingVessel = vessels.find(vessel =>
-          vessel.seriesgroup === track.seriesgroup &&
-          (vessel.series === track.series || vessel.series === undefined)
-        );
-      }
-      if (matchingVessel === undefined || (matchingVessel.visible === false && matchingVessel.shownInInfoPanel === false)) {
-        return null;
-      }
-      return { ...track, color: matchingVessel.color };
+  [getTracks, getMapTracks],
+  (tracks, mapTracks) => {
+    const allTracks = mapTracks.map((mapTrack) => {
+      const originalTrack = tracks.find(track =>
+        track.id === mapTrack.id && track.segmentId === mapTrack.segmentId
+      );
+      return (originalTrack === undefined) ? null : { color: originalTrack.color, ...mapTrack };
     });
-    return allTracks.filter(t => t !== null);
+
+    return allTracks.filter(track => track !== null);
   }
 );
 

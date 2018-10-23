@@ -42,7 +42,9 @@ export default function (state = initialState, action) {
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
         parentEncounter: action.payload.parentEncounter,
-        color
+        color,
+        layerUrl: action.payload.layerUrl,
+        layerTemporalExtents: action.payload.layerTemporalExtents
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
