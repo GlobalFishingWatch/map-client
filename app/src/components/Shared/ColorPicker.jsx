@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import IconButton from 'src/components/Shared/IconButton';
-import { PALETTE_COLORS } from 'config';
+import { PALETTE_COLORS, PALETTE_COLORS_LAYERS } from 'config';
 import 'styles/components/map/layer-blending.scss';
 import InputRange from 'react-input-range';
 import colorPickerStyles from 'styles/components/shared/color-picker.scss';
@@ -34,8 +34,7 @@ class ColorPicker extends Component {
       }
     }
 
-    let colors = PALETTE_COLORS
-      .filter(tint => extendedPalette === true || tint.hue !== undefined);
+    let colors = (extendedPalette === true) ? PALETTE_COLORS : PALETTE_COLORS_LAYERS;
     if (extendedPalette !== true) {
       colors = colors.sort((tintA, tintB) => {
         if (extendedPalette === true) return 0;
