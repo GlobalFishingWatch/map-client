@@ -1,5 +1,5 @@
 import { LAYER_TYPES } from 'constants';
-import { PALETTE_COLORS } from 'config';
+import { PALETTE_COLORS_LAYERS } from 'config';
 import { trackCreateFilterGroups } from 'analytics/analyticsActions';
 
 export const CREATE_NEW_FILTER_GROUP = 'CREATE_NEW_FILTER_GROUP';
@@ -21,7 +21,7 @@ export function createNewFilterGroup() {
       checkedLayers[lid] = false;
     });
 
-    const hue = PALETTE_COLORS[getState().filterGroups.defaultColorIndex].hue;
+    const hue = PALETTE_COLORS_LAYERS[getState().filterGroups.defaultColorIndex].hue;
 
     const newFilterGroup = {
       checkedLayers,

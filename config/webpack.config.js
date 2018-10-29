@@ -69,7 +69,7 @@ const webpackConfig = {
 
   plugins: [
     new ExtractTextPlugin({
-      filename: 'styles.css', allChunks: true
+      filename: '[name]-[hash].css', allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',

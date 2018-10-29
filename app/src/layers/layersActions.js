@@ -174,13 +174,6 @@ export function initLayers(workspaceLayers, libraryLayers) {
         }
       });
 
-    // load custom layers data
-    workspaceLayers
-      .filter(l => l.type === LAYER_TYPES.Custom)
-      .forEach((customLayer) => {
-        dispatch(loadCustomLayer(customLayer.id, customLayer.url, customLayer.customLayerSubtype));
-      });
-
     // load activity layers headers
     const headersPromise = Promise.all(headersPromises.map(p => p.catch(e => e)));
     headersPromise
@@ -192,6 +185,13 @@ export function initLayers(workspaceLayers, libraryLayers) {
         dispatch(updateMapStyle());
         // dispatch(initHeatmapLayers());  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
+
+        // load custom layers data
+        workspaceLayers
+          .filter(l => l.type === LAYER_TYPES.Custom)
+          .forEach((customLayer) => {
+            dispatch(loadCustomLayer(customLayer.id, customLayer.url, customLayer.customLayerSubtype));
+          });
       })
       .catch((err) => {
         console.warn(err);

@@ -9,7 +9,7 @@ import {
   SET_CURRENT_FILTER_GROUP_LABEL,
   SET_CURRENT_FILTER_VALUE
 } from 'filters/filterGroupsActions';
-import { PALETTE_COLORS } from 'config';
+import { PALETTE_COLORS_LAYERS } from 'config';
 
 const initialState = {
   // the filters - structure matches how filters are visually presented
@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, {
         currentlyEditedFilterGroup: action.payload.newFilterGroup,
         editFilterGroupIndex: null,
-        defaultColorIndex: (state.defaultColorIndex === PALETTE_COLORS.length - 1) ? 0 : state.defaultColorIndex + 1
+        defaultColorIndex: (state.defaultColorIndex === PALETTE_COLORS_LAYERS.length - 1) ? 0 : state.defaultColorIndex + 1
       });
     }
     case SET_EDIT_FILTER_GROUP_INDEX: {
