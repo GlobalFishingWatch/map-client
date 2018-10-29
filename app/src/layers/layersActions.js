@@ -4,7 +4,6 @@ import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 import { updateMapStyle } from 'map/mapStyleActions';
 // import {
-//   initHeatmapLayers,
 //   addHeatmapLayerFromLibrary,
 //   removeHeatmapLayerFromLibrary,
 //   loadAllTilesForLayer
@@ -24,6 +23,7 @@ export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL';
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE';
+export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
 
 
 function loadLayerHeader(tilesetUrl, token) {
@@ -183,8 +183,22 @@ export function initLayers(workspaceLayers, libraryLayers) {
           payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
         });
         dispatch(updateMapStyle());
-        // dispatch(initHeatmapLayers());  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
+
+        const deprecatedLayers = workspaceLayers
+          .filter(l => l.header !== undefined && l.header.deprecated === true)
+          .map(l => l.title);
+        if (deprecatedLayers.length) {
+          dispatch({
+            type: NOTIFY_DEPRECATED_LAYERS,
+            payload: {
+              deprecatedLayers,
+              template: (deprecatedLayers.length > 1) ?
+                state.literals.deprecated_layers_warning_plural :
+                state.literals.deprecated_layers_warning
+            }
+          });
+        }
 
         // load custom layers data
         workspaceLayers

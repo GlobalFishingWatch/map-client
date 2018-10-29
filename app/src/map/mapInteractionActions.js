@@ -3,8 +3,8 @@ import moment from 'moment';
 import convert from '@globalfishingwatch/map-convert';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
-// import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'activityLayers/heatmapActions';  TODO MAP MODULE
-import { zoomIntoVesselCenter } from 'map/mapViewportActions';
+import { clearHighlightedVessels, clearHighlightedClickedVessel } from 'src/_map/heatmap/heatmap.actions';
+import { zoomIntoVesselCenter } from 'src/_map/glmap/viewport.actions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { LAYER_TYPES } from 'constants';
 import { POLYGON_LAYERS_AREA, FORMAT_DATE } from 'config';
@@ -77,7 +77,7 @@ export const clearPopup = () => (dispatch) => {
 
 export const mapHover = (latitude, longitude, features) => (dispatch, getState) => {
   const state = getState();
-  const currentActivityLayersInteractionData = state.heatmap.highlightedVessels;
+  const currentActivityLayersInteractionData = state.map.heatmap.highlightedVessels;
   const { layerId, isEmpty, foundVessels } = currentActivityLayersInteractionData;
 
   let hoverPopup = null;
@@ -153,19 +153,19 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
   dispatch(clearVesselInfo());
   dispatch(clearEncountersInfo());
   dispatch(clearPopup());
-  // dispatch(clearHighlightedClickedVessel());  TODO MAP MODULE
+  dispatch(clearHighlightedClickedVessel());
 
-  const currentActivityLayersInteractionData = getState().heatmap.highlightedVessels;
+  const currentActivityLayersInteractionData = getState().map.heatmap.highlightedVessels;
   const { layerId, isEmpty, clickableCluster, foundVessels } = currentActivityLayersInteractionData;
   const layer = state.layers.workspaceLayers.find(l => l.id === layerId);
 
-  const report = getState().report;
+  const report = state.report;
 
   if (report.layerId !== null || isEmpty === true) {
     const feature = findFeature(features, report.layerId);
     if (feature !== undefined) {
       const popupFields = getFeaturePopupFields(feature.staticLayerId, state);
-      const staticLayer = getState().layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
+      const staticLayer = state.layers.workspaceLayers.find(l => l.id === feature.staticLayerId);
 
       const layerIsInReport = state.report.layerId === feature.staticLayerId;
       if (popupFields === null || (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false)) {
@@ -210,7 +210,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
       dispatch(trackMapClicked(latitude, longitude, 'cluster'));
       dispatch(hideVesselsInfoPanel());
       dispatch(zoomIntoVesselCenter(latitude, longitude));
-      // dispatch(clearHighlightedVessels());  TODO MAP MODULE
+      dispatch(clearHighlightedVessels());
     } else {
       dispatch(trackMapClicked(latitude, longitude, 'vessel'));
       const selectedSeries = foundVessels[0].series;

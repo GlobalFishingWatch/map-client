@@ -10,8 +10,7 @@ import {
   HIGHLIGHT_VESSELS,
   UPDATE_LOADED_TILES,
   HIGHLIGHT_CLICKED_VESSEL,
-  CLEAR_HIGHLIGHT_CLICKED_VESSEL,
-  NOTIFY_DEPRECATED_LAYERS
+  CLEAR_HIGHLIGHT_CLICKED_VESSEL
 } from './heatmap.actions';
 
 const initialState = {
@@ -22,8 +21,7 @@ const initialState = {
   // those are necessary when adding a new layer to know which tiles need to be loaded
   referenceTiles: [],
   highlightedVessels: { isEmpty: true },
-  highlightedClickedVessel: null,
-  hasDeprecatedActivityLayersMessage: null
+  highlightedClickedVessel: null
 };
 
 export default function (state = initialState, action) {
@@ -42,9 +40,9 @@ export default function (state = initialState, action) {
 
     case ADD_HEATMAP_LAYER: {
       const heatmapLayers = Object.assign({}, state.heatmapLayers, {
-        [action.payload.layerId]: {
-          url: action.payload.url,
-          tiles: []
+        [action.payload.id]: {
+          tiles: [],
+          ...action.payload
         }
       });
       return Object.assign({}, state, { heatmapLayers });
@@ -98,15 +96,6 @@ export default function (state = initialState, action) {
 
     case CLEAR_HIGHLIGHT_CLICKED_VESSEL: {
       return { ...state, highlightedClickedVessel: null };
-    }
-
-    case NOTIFY_DEPRECATED_LAYERS: {
-      const deprecatedLayers = action.payload.deprecatedLayers.map(l => `"${l}"`).join(', ');
-      const hasDeprecatedActivityLayersMessage =
-        action.payload.template.replace('$LAYERS', deprecatedLayers);
-      return Object.assign({}, state, {
-        hasDeprecatedActivityLayersMessage
-      });
     }
 
     default:

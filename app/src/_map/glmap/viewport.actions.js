@@ -1,6 +1,7 @@
 import { fitBounds, pixelsToWorld } from 'viewport-mercator-project';
-// import { updateHeatmapTilesFromViewport } from 'activityLayers/heatmapTilesActions'; TODO MAP MODULE
-import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config';
+import { updateHeatmapTilesFromViewport } from '../heatmap/heatmapTiles.actions';
+import { onViewportChange } from '../module/module.actions';
+import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config'; // TODO MAP MODULE
 
 export const SET_VIEWPORT = 'SET_VIEWPORT';
 export const UPDATE_VIEWPORT = 'UPDATE_VIEWPORT';
@@ -14,7 +15,8 @@ export const setViewport = viewport => (dispatch) => {
     type: SET_VIEWPORT,
     payload: viewport
   });
-  // dispatch(updateHeatmapTilesFromViewport());  TODO MAP MODULE
+  dispatch(updateHeatmapTilesFromViewport());
+  dispatch(onViewportChange());
 };
 
 export const updateViewport = viewportUpdate => (dispatch) => {
@@ -22,7 +24,8 @@ export const updateViewport = viewportUpdate => (dispatch) => {
     type: UPDATE_VIEWPORT,
     payload: viewportUpdate
   });
-  // dispatch(updateHeatmapTilesFromViewport()); TODO MAP MODULE
+  dispatch(updateHeatmapTilesFromViewport());
+  dispatch(onViewportChange());
 };
 
 const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) => {
@@ -35,7 +38,8 @@ const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) =
       zoom
     }
   });
-  // dispatch(updateHeatmapTilesFromViewport());  TODO MAP MODULE
+  dispatch(updateHeatmapTilesFromViewport());
+  dispatch(onViewportChange());
 };
 
 
@@ -47,16 +51,20 @@ export const decrementZoom = () => (dispatch) => {
   dispatch(updateZoom(-1));
 };
 
-export const setMouseLatLong = (lat, long) => ({
-  type: SET_MOUSE_LAT_LONG,
-  payload: { lat, long }
-});
+export const setMouseLatLong = (lat, long) => (dispatch) => {
+  dispatch({
+    type: SET_MOUSE_LAT_LONG,
+    payload: [lat, long]
+  });
+  dispatch(onViewportChange());
+};
 
 export const transitionEnd = () => (dispatch) => {
   dispatch({
     type: TRANSITION_END
   });
-  // dispatch(updateHeatmapTilesFromViewport()); TODO MAP MODULE
+  dispatch(updateHeatmapTilesFromViewport());
+  dispatch(onViewportChange());
 };
 
 export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
@@ -64,10 +72,11 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
 };
 
 export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
+  const state = getState();
   const vp = fitBounds({
     bounds: [[trackBounds.minLng, trackBounds.minLat], [trackBounds.maxLng, trackBounds.maxLat]],
-    width: getState().mapViewport.viewport.width,
-    height: getState().mapViewport.viewport.height,
+    width: state.map.viewport.viewport.width,
+    height: state.map.viewport.viewport.height,
     padding: 50
   });
   dispatch(updateZoom(null, vp.latitude, vp.longitude, vp.zoom));
@@ -110,4 +119,5 @@ export const exportNativeViewport = nativeViewport => (dispatch) => {
       viewportBoundsGeoJSON
     }
   });
+  dispatch(onViewportChange());
 };

@@ -8,10 +8,9 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from 'utils/heatmapTileData';
-import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
-import { updateHeatmapTilesFromViewport, markTileAsLoaded } from './heatmapTiles.actions';
-// import { addLoader, removeLoader } from 'app/appActions'; TODO MAP MODULE
+import { markTileAsLoaded } from './heatmapTiles.actions';
+import { startLoader, completeLoader } from '../module/module.actions';
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
 export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
@@ -46,57 +45,6 @@ function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
   return indices;
 }
 
-
-/**
- * initHeatmapLayers - Creates the base reducer state, extracting heatmap layers from all layers
- */
-export function initHeatmapLayers() {
-  return (dispatch, getState) => {
-    const state = getState();
-    const currentOuterExtent = state.filters.timelineOuterExtent;
-    const workspaceLayers = state.layers.workspaceLayers;
-    const heatmapLayers = {};
-    const deprecatedLayers = [];
-
-    workspaceLayers.forEach((workspaceLayer) => {
-      if (workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true) {
-        heatmapLayers[workspaceLayer.id] = {
-          url: workspaceLayer.url,
-          tiles: [],
-          tilesetId: workspaceLayer.tilesetId,
-          subtype: workspaceLayer.subtype,
-          // initially attach which of the temporal extents indices are visible with initial outerExtent
-          visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents)
-        };
-
-        if (workspaceLayer.header.deprecated) {
-          deprecatedLayers.push(workspaceLayer.title);
-        }
-      }
-    });
-
-    if (deprecatedLayers.length) {
-      dispatch({
-        type: NOTIFY_DEPRECATED_LAYERS,
-        payload: {
-          deprecatedLayers,
-          template: (deprecatedLayers.length > 1) ?
-            state.literals.deprecated_layers_warning_plural :
-            state.literals.deprecated_layers_warning
-        }
-      });
-    }
-
-    dispatch({
-      type: INIT_HEATMAP_LAYERS,
-      payload: heatmapLayers
-    });
-
-    dispatch(updateHeatmapTilesFromViewport(true));
-  };
-}
-
-
 /**
  * loadLayerTile - loads an heatmap tile.
  *
@@ -109,11 +57,10 @@ export function initHeatmapLayers() {
  * @param  {bool} isPBF                  true = read tile as MVT + PBF tile, rather than using Pelagos client
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
-function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { endpoints, temporalExtents, temporalExtentsLess, isPBF }) {
-  if (endpoints === undefined) {
-    throw new Error('endpoints object is not available on this tilesets header');
+function loadLayerTile(tileCoordinates, token, temporalExtentsIndices, { url, temporalExtents, temporalExtentsLess, isPBF }) {
+  if (url === undefined) {
+    throw new Error('URL/endpoints object is not available on this tilesets header');
   }
-  const url = endpoints.tiles;
   const pelagosPromises = getTilePromises(url, token, temporalExtents, {
     tileCoordinates,
     temporalExtentsIndices,
@@ -173,32 +120,29 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, prevPla
  */
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
   return (dispatch, getState) => {
-    const loaderId = LOADERS.HEATMAP_TILES + new Date().getTime();
-    // dispatch(addLoader(loaderId));  TODO MAP MODULE
-    const layers = getState().heatmap.heatmapLayers;
-    const token = getState().user.token;
+    const state = getState();
+    const loaderID = startLoader(dispatch, state);
+    const token = state.map.module.token;
+    const heatmapLayers = state.map.heatmap.heatmapLayers;
     const allPromises = [];
 
     layerIds.forEach((layerId) => {
-      const workspaceLayers = getState().layers.workspaceLayers;
-      const workspaceLayer = workspaceLayers.find(layer => layer.id === layerId);
-      const layerHeader = workspaceLayer.header;
-      if (!layerHeader) {
-        console.warn('no header has been set on this heatmap layer');
-      }
+      const heatmapLayer = heatmapLayers[layerId];
+      const { url, temporalExtents, temporalExtentsLess, isPBF, colsByName } = { ...heatmapLayer };
+
       referenceTiles.forEach((referenceTile) => {
         // check if tile does not already exist first
-        let tile = layers[layerId].tiles.find(t => t.uid === referenceTile.uid);
+        let tile = heatmapLayers[layerId].tiles.find(t => t.uid === referenceTile.uid);
         if (!tile) {
           tile = {
             uid: referenceTile.uid,
             temporalExtentsIndicesLoaded: []
           };
-          layers[layerId].tiles.push(tile);
+          heatmapLayers[layerId].tiles.push(tile);
         }
 
         const queriedTemporalExtentsIndices = (newTemporalExtentsToLoad === undefined)
-          ? layers[layerId].visibleTemporalExtentsIndices
+          ? heatmapLayers[layerId].visibleTemporalExtentsIndices
           : newTemporalExtentsToLoad[layerId];
 
         const temporalExtentsIndicesToLoad = difference(queriedTemporalExtentsIndices, tile.temporalExtentsIndicesLoaded);
@@ -207,7 +151,12 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
           referenceTile.tileCoordinates,
           token,
           temporalExtentsIndicesToLoad,
-          layerHeader
+          {
+            url,
+            temporalExtents,
+            temporalExtentsLess,
+            isPBF
+          }
         );
 
         allPromises.push(tilePromise);
@@ -216,20 +165,21 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
           tile.temporalExtentsIndicesLoaded = uniq(tile.temporalExtentsIndicesLoaded.concat(temporalExtentsIndicesToLoad));
           tile.data = parseLayerTile(
             rawTileData,
-            layerHeader.colsByName,
-            layerHeader.isPBF,
+            colsByName,
+            isPBF,
             referenceTile.tileCoordinates,
             tile.data
           );
           dispatch({
-            type: UPDATE_HEATMAP_TILES, payload: layers
+            type: UPDATE_HEATMAP_TILES,
+            payload: heatmapLayers
           });
         });
       });
     });
 
     Promise.all(allPromises).then(() => {
-      // dispatch(removeLoader(loaderId));  TODO MAP MODULE
+      dispatch(completeLoader(loaderID));
       dispatch(markTileAsLoaded(referenceTiles.map(tile => tile.uid)));
     });
   };
@@ -265,7 +215,7 @@ export function getTile(referenceTile) {
  */
 export function releaseTiles(uids) {
   return (dispatch, getState) => {
-    const layers = getState().heatmap.heatmapLayers;
+    const layers = getState().map.heatmap.heatmapLayers;
     uids.forEach((uid) => {
       dispatch({
         type: REMOVE_REFERENCE_TILE,
@@ -298,35 +248,34 @@ export const updateLoadedTiles = () => ({
 export function loadAllTilesForLayer(layerId) {
   return (dispatch, getState) => {
     //                current layer, all reference tiles
-    dispatch(getTiles([layerId], getState().heatmap.referenceTiles));
+    dispatch(getTiles([layerId], getState().map.heatmap.referenceTiles));
   };
 }
 
 
-export function addHeatmapLayerFromLibrary(layerId, url) {
-  return (dispatch) => {
-    dispatch({
-      type: ADD_HEATMAP_LAYER,
-      payload: {
-        layerId,
-        url
-      }
-    });
+export const addHeatmapLayer = layer => (dispatch, getState) => {
+  // TODO MAP MODULE
+  const currentOuterExtent = getState().filters.timelineOuterExtent;
+  dispatch({
+    type: ADD_HEATMAP_LAYER,
+    payload: {
+      ...layer,
+      // initially attach which of the temporal extents indices are visible with initial outerExtent
+      visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, layer.temporalExtents)
+    }
+  });
 
-    dispatch(loadAllTilesForLayer(layerId));
-  };
-}
+  dispatch(loadAllTilesForLayer(layer.id));
+};
 
-export function removeHeatmapLayerFromLibrary(id) {
-  return (dispatch) => {
-    dispatch({
-      type: REMOVE_HEATMAP_LAYER,
-      payload: {
-        id
-      }
-    });
-  };
-}
+export const removeHeatmapLayer = id => (dispatch) => {
+  dispatch({
+    type: REMOVE_HEATMAP_LAYER,
+    payload: {
+      id
+    }
+  });
+};
 
 /**
  * loadTilesExtraTimeRange - when outer time extent changes, checks if more tiles needs to be loaded
@@ -334,11 +283,12 @@ export function removeHeatmapLayerFromLibrary(id) {
  */
 export function loadTilesExtraTimeRange() {
   return (dispatch, getState) => {
-    const currentOuterExtent = getState().filters.timelineOuterExtent;
-    const heatmapLayers = getState().heatmap.heatmapLayers;
+    const state = getState();
+    const currentOuterExtent = state.filters.timelineOuterExtent;
+    const heatmapLayers = state.map.heatmap.heatmapLayers;
     const layersToUpdate = {};
     Object.keys(heatmapLayers).forEach((layerId) => {
-      const workspaceLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
+      const workspaceLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
       const heatmapLayer = heatmapLayers[layerId];
       const oldVisibleTemporalExtents = heatmapLayer.visibleTemporalExtentsIndices;
       const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents);
@@ -358,7 +308,7 @@ export function loadTilesExtraTimeRange() {
 
     // getTiles with indices diff
     if (Object.keys(layersToUpdate).length) {
-      dispatch(getTiles(Object.keys(layersToUpdate), getState().heatmap.referenceTiles, layersToUpdate));
+      dispatch(getTiles(Object.keys(layersToUpdate), state.map.heatmap.referenceTiles, layersToUpdate));
     }
   };
 }
@@ -381,28 +331,28 @@ const _getCurrentFiltersForLayer = (state, layerId) => {
  * @return {object} { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId }
  */
 const _queryHeatmap = (state, tileQuery) => {
-  const layers = state.heatmap.heatmapLayers;
+  const layers = state.map.heatmap.heatmapLayers;
   const timelineExtent = state.filters.timelineInnerExtentIndexes;
   const startIndex = timelineExtent[0];
   const endIndex = timelineExtent[1];
   const layersVessels = [];
 
   Object.keys(layers).forEach((layerId) => {
-    const workspaceLayer = state.layers.workspaceLayers.find(l => l.id === layerId);
-    if (workspaceLayer.added === true && workspaceLayer.visible === true) {
-      const layer = layers[layerId];
-      const allPossibleTilesByPreference = tileQuery.uids.map(uid => layer.tiles.find(tile => tile.uid === uid));
-      const availableTiles = allPossibleTilesByPreference.filter(tile => tile !== undefined && tile.data !== undefined);
+    // const workspaceLayer = state.layers.workspaceLayers.find(l => l.id === layerId);
+    // if (workspaceLayer.added === true && workspaceLayer.visible === true) {
+    const layer = layers[layerId];
+    const allPossibleTilesByPreference = tileQuery.uids.map(uid => layer.tiles.find(tile => tile.uid === uid));
+    const availableTiles = allPossibleTilesByPreference.filter(tile => tile !== undefined && tile.data !== undefined);
 
-      const currentFilters = _getCurrentFiltersForLayer(state, layerId);
-      if (availableTiles.length) {
-        const bestTile = availableTiles[0];
-        layersVessels.push({
-          layer: workspaceLayer,
-          vessels: selectVesselsAt(bestTile.data, tileQuery, startIndex, endIndex, currentFilters)
-        });
-      }
+    const currentFilters = _getCurrentFiltersForLayer(state, layerId);
+    if (availableTiles.length) {
+      const bestTile = availableTiles[0];
+      layersVessels.push({
+        layer,
+        vessels: selectVesselsAt(bestTile.data, tileQuery, startIndex, endIndex, currentFilters)
+      });
     }
+
   });
 
   const layersVesselsResults = layersVessels.filter(layerVessels => layerVessels.vessels.length > 0);
@@ -458,7 +408,7 @@ export function highlightVesselFromHeatmap(tileQuery) {
     const state = getState();
     const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
 
-    if (layer.id !== undefined || state.heatmap.highlightedVessels.layerId !== layer.id) {
+    if (layer.id !== undefined || state.map.heatmap.highlightedVessels.layerId !== layer.id) {
       dispatch({
         type: HIGHLIGHT_VESSELS,
         payload: {
@@ -467,8 +417,6 @@ export function highlightVesselFromHeatmap(tileQuery) {
           clickableCluster: isCluster === true || isMouseCluster === true,
           highlightableCluster: isCluster !== true,
           foundVessels
-          // tileQuery
-          // latLng
         }
       });
     }

@@ -5,42 +5,18 @@ import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 
 export const SET_IS_EMBEDDED = 'SET_IS_EMBEDDED';
 export const SET_LAYER_MANAGEMENT_MODAL_VISIBILITY = 'SET_LAYER_MANAGEMENT_MODAL_VISIBILITY';
-export const SET_LOADING = 'SET_LOADING';
-export const SET_LOADERS = 'SET_LOADERS';
+export const SET_LOADING_START = 'SET_LOADING_START';
+export const SET_LOADING_COMPLETE = 'SET_LOADING_COMPLETE';
 export const SET_LAYER_INFO_MODAL = 'SET_LAYER_INFO_MODAL';
 export const TOGGLE_MAP_PANELS = 'TOGGLE_MAP_PANELS';
 
-export function addLoader(loaderId) {
-  return (dispatch, getState) => {
-    const loaders = Object.assign({}, getState().app.loaders, { [loaderId]: true });
-    dispatch({
-      type: SET_LOADERS,
-      payload: loaders
-    });
-    dispatch({
-      type: SET_LOADING,
-      payload: true
-    });
-  };
-}
+export const startLoading = () => ({
+  type: SET_LOADING_START
+});
 
-export function removeLoader(loaderId) {
-  return (dispatch, getState) => {
-    const loaders = Object.assign({}, getState().app.loaders);
-    delete loaders[loaderId];
-    dispatch({
-      type: SET_LOADERS,
-      payload: loaders
-    });
-    if (!Object.keys(loaders).length) {
-      dispatch({
-        type: SET_LOADING,
-        payload: false
-      });
-    }
-  };
-}
-
+export const completeLoading = () => ({
+  type: SET_LOADING_COMPLETE
+});
 
 export function setLayerInfoModal(modalParams) {
   return {

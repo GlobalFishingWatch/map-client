@@ -91,7 +91,7 @@ class Map extends React.Component {
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
         >
-          <ActivityLayers {...this.props} />
+          <ActivityLayers providedTracks={this.props.providedTracks} />
           {popup !== null && this.props.popupComponent}
           {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent}
         </MapGL>

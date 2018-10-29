@@ -7,66 +7,93 @@ const containsTrack = (track, tracks) => tracks.find(prevTrack =>
   prevTrack.segmentId === track.segmentId
 ) !== undefined;
 
+const containsLayer = (layer, layers) => layers.find(prevLayer =>
+  prevLayer.id === layer.id
+) !== undefined;
+
 class MapProxy extends React.Component {
+  componentDidMount() {
+    this.props.initModule({
+      token: this.props.token,
+      onViewportChange: this.props.onViewportChange,
+      onLoadStart: this.props.onLoadStart,
+      onLoadComplete: this.props.onLoadComplete
+    });
+
+    if (this.props.viewport !== null) {
+      this.props.updateViewport(this.props.viewport);
+    }
+  }
+
   componentDidUpdate(prevProps) {
-    console.log(this.props.tracks)
+    if (this.props.viewport !== prevProps.viewport) {
+      this.props.updateViewport(this.props.viewport);
+    }
 
     if (this.props.tracks !== prevProps.tracks) {
-      // this.props.updateTracks(this.props.tracks);
       if (this.props.tracks.length !== prevProps.tracks.length) {
-        console.log(this.props.tracks.length, prevProps.tracks.length)
         const newTracks = this.props.tracks;
         const prevTracks = prevProps.tracks;
         newTracks.forEach((newTrack) => {
           if (!containsTrack(newTrack, prevTracks)) {
-            this.props.loadTrack({
-              token: this.props.token,
-              ...newTrack
-            });
+            this.props.loadTrack(newTrack);
           }
         });
         prevTracks.forEach((prevTrack) => {
           if (!containsTrack(prevTrack, newTracks)) {
-            this.props.removeTrack({ ...prevTrack });
+            this.props.removeTrack(prevTrack);
           }
         });
       }
     }
 
-    // console.log(prevProps.basemap, this.props.basemap);
-    // call action ? Or send whole workspace to a reducer and dispatch from there
-
-    // what does updateBasemap actually? IE how is map style updated?
-    // Refacto Map Style Actions to use declarative actions, ie
-    // - basemap changed -> updateBasemap collects existing GL basemap related layers (base and options), toggle their visibility
-    // - layer color changed -> updateLayerColor collects GL layer, changes color
-    // - layer's _added set to false -> toggle GL layer visibility (side effect: check CARTO layer status and instantiate if needed)
-    // - layer length changed -> custom layer added or removed
-    // this.props.updateBasemap(this.props.basemap);
-
-    // other option is to just send back updated worspace (ugh)
-    // then, diffing is made in an action
-    // and ie mapStyle actions directly consume workspace copy
+    if (this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
+      const newHeatmapLayers = this.props.heatmapLayers;
+      const prevHeatmapLayers = prevProps.heatmapLayers;
+      newHeatmapLayers.forEach((newHeatmapLayer) => {
+        if (!containsLayer(newHeatmapLayer, prevHeatmapLayers)) {
+          this.props.addHeatmapLayer(newHeatmapLayer);
+        }
+      });
+      prevHeatmapLayers.forEach((prevHeatmapLayer) => {
+        if (!containsLayer(prevHeatmapLayer, newHeatmapLayers)) {
+          this.props.removeHeatmapLayer(prevHeatmapLayer.id);
+        }
+      });
+    }
   }
 
   render() {
-    // console.log(this.props);
-    // console.log(this.props.workspace, this.props.basemap)
-    // const { hello } = this.props;
     return (
-      <Map {...this.props} />
+      <Map providedTracks={this.props.tracks} />
     );
   }
 }
 
 MapProxy.propTypes = {
   token: PropTypes.string.isRequired,
+  viewport: PropTypes.shape({
+    zoom: PropTypes.number,
+    center: PropTypes.arrayOf(PropTypes.number)
+  }),
   tracks: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     segmentId: PropTypes.string,
     layerUrl: PropTypes.string,
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
-  }))
+  })),
+  heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    url: PropTypes.string,
+    subtype: PropTypes.string,
+    isPBF: PropTypes.bool,
+    colsByName: PropTypes.object,
+    temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    temporalExtentsLess: PropTypes.bool
+  })),
+  onViewportChange: PropTypes.func,
+  onLoadStart: PropTypes.func,
+  onLoadComplete: PropTypes.func
 };
 
 export default MapProxy;

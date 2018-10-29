@@ -5,9 +5,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 // import Promise from 'promise-polyfill';
 
-import testReducer from './reducers/mapTestReducer';
 import MapProxy from './MapProxy.container';
-import { fitBoundsToTrack } from 'map/mapViewportActions';
+import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 
 
 // export default (props) => {
@@ -33,7 +32,6 @@ class MapModule extends React.Component {
   //     test: testReducer,
   //     ...this.props.parentReducer
   //   });
-    
   //   this.mapStore = createStore(
   //     reducer,
   //     applyMiddleware(thunk)
@@ -62,4 +60,12 @@ export const targetMapVessel = (id, segmentId) => {
   store.dispatch(fitBoundsToTrack(track.geoBounds));
 
   return track.timelineBounds;
+};
+
+export const incrementZoom = () => {
+  store.dispatch(mapIncrementZoom());
+};
+
+export const decrementZoom = () => {
+  store.dispatch(mapDecrementZoom());
 };

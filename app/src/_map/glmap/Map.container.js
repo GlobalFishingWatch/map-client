@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { setViewport, setMouseLatLong, transitionEnd } from 'map/mapViewportActions.js';
 import { mapHover, mapClick, clearPopup } from 'map/mapInteractionActions.js';
+import { setViewport, setMouseLatLong, transitionEnd } from './viewport.actions.js';
 import Map from './Map.jsx';
 
 const mapStateToProps = state => ({
-  viewport: state.mapViewport.viewport,
-  maxZoom: state.mapViewport.maxZoom,
-  minZoom: state.mapViewport.minZoom,
+  viewport: state.map.viewport.viewport,
+  maxZoom: state.map.viewport.maxZoom,
+  minZoom: state.map.viewport.minZoom,
   mapStyle: state.mapStyle.mapStyle,
   popup: state.mapInteraction.popup,
   hoverPopup: state.mapInteraction.hoverPopup,

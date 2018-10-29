@@ -1,3 +1,7 @@
+import { FlyToInterpolator } from 'react-map-gl';
+import { easeCubic } from 'd3-ease';
+import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'config';
+import { TRANSITION_TYPE } from 'constants';
 import {
   SET_VIEWPORT,
   UPDATE_VIEWPORT,
@@ -5,13 +9,7 @@ import {
   SET_MOUSE_LAT_LONG,
   TRANSITION_END,
   SET_NATIVE_VIEWPORT
-} from 'map/mapViewportActions';
-
-import { FlyToInterpolator } from 'react-map-gl';
-import { easeCubic } from 'd3-ease';
-import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from 'config';
-import { TRANSITION_TYPE } from 'constants';
-import defaultWorkspace from 'workspace/workspace';
+} from './viewport.actions';
 
 const DEFAULT_TRANSITION = {
   transitionDuration: 500,
@@ -21,9 +19,9 @@ const DEFAULT_TRANSITION = {
 
 const initialState = {
   viewport: {
-    latitude: defaultWorkspace.workspace.map.center[0],
-    longitude: defaultWorkspace.workspace.map.center[1],
-    zoom: defaultWorkspace.workspace.map.zoom - 1,
+    latitude: 0,
+    longitude: 0,
+    zoom: 3,
     bearing: 0,
     pitch: 0,
     width: 1000,
@@ -32,10 +30,7 @@ const initialState = {
   maxZoom: MAX_ZOOM_LEVEL,
   minZoom: MIN_ZOOM_LEVEL,
   prevZoom: 3,
-  currentTransition: null,
-  canZoomIn: false,
-  canZoomOut: false,
-  mouseLatLong: { lat: 0, long: 0 }
+  currentTransition: null
 };
 
 export default function (state = initialState, action) {
@@ -80,12 +75,7 @@ export default function (state = initialState, action) {
     }
 
     case SET_MOUSE_LAT_LONG: {
-      const mouseLatLong = {
-        lat: action.payload.lat,
-        long: action.payload.long
-      };
-
-      return { ...state, mouseLatLong };
+      return { ...state, mouseLatLong: action.payload };
     }
 
     case TRANSITION_END: {

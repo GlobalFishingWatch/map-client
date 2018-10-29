@@ -10,8 +10,8 @@ const mapStateToProps = state => ({
   bannerLegacyWorkspace: state.literals.legacy_workspace_warning,
   bannerWebGL: state.literals.webgl_warning,
   bannerEdge: state.literals.edge_warning,
-  legacyWorkspaceLoaded: state.workspace.legacyWorkspaceLoaded
-  // hasDeprecatedActivityLayersMessage: state.heatmap.hasDeprecatedActivityLayersMessage  TODO MAP MODULE
+  legacyWorkspaceLoaded: state.workspace.legacyWorkspaceLoaded,
+  hasDeprecatedActivityLayersMessage: state.layers.hasDeprecatedActivityLayersMessage
 });
 
 const mapDispatchToProps = dispatch => ({

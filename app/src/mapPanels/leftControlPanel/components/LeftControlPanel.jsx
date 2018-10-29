@@ -32,7 +32,7 @@ class LeftControlPanel extends Component {
           <Loader tiny />
         </div >
         <div className={LeftControlPanelStyles.latlon} >
-          {this.props.mouseLatLong.lat.toFixed(4)}, {this.props.mouseLatLong.long.toFixed(4)}
+          {this.props.mouseLatLong[0].toFixed(4)}, {this.props.mouseLatLong[1].toFixed(4)}
         </div >
         <ZoomControls
           canShareWorkspaces={canShareWorkspaces}
@@ -51,11 +51,17 @@ LeftControlPanel.propTypes = {
   isEmbedded: PropTypes.bool.isRequired,
   canZoomIn: PropTypes.bool.isRequired,
   canZoomOut: PropTypes.bool.isRequired,
-  mouseLatLong: PropTypes.object,
+  mouseLatLong: PropTypes.arrayOf(PropTypes.number),
   openShareModal: PropTypes.func.isRequired,
   incrementZoom: PropTypes.func.isRequired,
   decrementZoom: PropTypes.func.isRequired,
   userPermissions: PropTypes.array
+};
+
+LeftControlPanel.defaultProps = {
+  canZoomIn: false,
+  canZoomOut: false,
+  mouseLatLong: [0, 0]
 };
 
 export default LeftControlPanel;

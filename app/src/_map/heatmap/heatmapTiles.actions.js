@@ -27,13 +27,14 @@ const getTilecoverLimits = (viewportZoom) => {
 };
 
 const flushToReleaseTiles = () => (dispatch, getState) => {
-  const currentToLoadTileUids = getState().heatmapTiles.currentToLoadTileUids;
+  const state = getState();
+  const currentToLoadTileUids = state.map.heatmapTiles.currentToLoadTileUids;
   // console.log('Tiles left to load: ', currentToLoadTileUids);
 
   // Tiles are released only when all to-load tiles have finished loading
   // this is to ensure smooth visual transitions between zoom levels
   if (!currentToLoadTileUids.length) {
-    const currentTilesToReleaseUids = getState().heatmapTiles.currentToReleaseTileUids;
+    const currentTilesToReleaseUids = state.map.heatmapTiles.currentToReleaseTileUids;
     // console.log('no more tiles to load, releasing ', currentTilesToReleaseUids);
     dispatch(releaseTiles(currentTilesToReleaseUids));
     dispatch({
@@ -52,14 +53,15 @@ export const markTileAsLoaded = tileUids => (dispatch) => {
 };
 
 const flushTileState = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
-  const currentVisibleTiles = getState().heatmapTiles.currentVisibleTiles;
+  const state = getState();
+  const currentVisibleTiles = state.map.heatmapTiles.currentVisibleTiles;
   let tilesToLoad = [];
   const tilesToReleaseUids = [];
 
   if (forceLoadingAllVisibleTiles === true) {
     tilesToLoad = currentVisibleTiles;
   } else {
-    const currentLoadedTiles = getState().heatmapTiles.currentLoadedTiles;
+    const currentLoadedTiles = state.map.heatmapTiles.currentLoadedTiles;
 
     currentVisibleTiles.forEach((visibleTile) => {
       if (currentLoadedTiles.find(t => t.uid === visibleTile.uid) === undefined) {
@@ -107,10 +109,12 @@ const _debouncedFlushState = (dispatch) => {
 const debouncedFlushState = debounce(_debouncedFlushState, 500);
 
 export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
-  if (getState().workspace.workspaceLoaded !== true) {
-    // avoid unnecessarily loading tiles when viewport has not been loaded yet from worspace
-    return;
-  }
+  // TODO MAP MODULE
+  // if (getState().workspace.workspaceLoaded !== true) {
+  //   // avoid unnecessarily loading tiles when viewport has not been loaded yet from worspace
+  //   return;
+  // }
+
   // if in transition, skip loading/releasing
   // else
   //   collect all tiles in viewport
@@ -125,7 +129,7 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   //     release tiles from delta-
   //   save to reducer: currentVisibleTiles -> currentLoadedTiles
   // if zooming: debounced flush to avoid "tile spam"
-  const mapViewport = getState().mapViewport;
+  const mapViewport = getState().map.viewport;
   const viewport = mapViewport.viewport;
 
   // do not allow any tile update during transitions (currently only zoom)
@@ -205,7 +209,7 @@ export const queryHeatmapVessels = coords => (dispatch, getState) => {
     type: 'Point',
     coordinates: [coords.longitude, coords.latitude]
   };
-  const zoom = getState().mapViewport.viewport.zoom;
+  const zoom = getState().map.viewport.viewport.zoom;
 
   // get quadkey for tile at current zoom level, but also neighbouring zoom levels,
   // in case current zoom level tiles has not been loaded yet

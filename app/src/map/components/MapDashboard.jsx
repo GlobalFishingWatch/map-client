@@ -37,6 +37,7 @@ class MapDashboard extends Component {
     const hoverPopupComponent = this.renderHoverPopup();
     const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded, workspace } = this.props;
     const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
+
     return (<div className="fullHeightContainer" >
       {(!isEmbedded && AS_MODULE === false) &&
       <div
@@ -67,9 +68,14 @@ class MapDashboard extends Component {
         <MapModule
           store={store}
           token={this.props.token}
-          tracks={this.props.allVesselsForTracks}
+          viewport={this.props.mapViewport}
+          tracks={this.props.mapTracks}
+          heatmapLayers={this.props.mapHeatmapLayers}
           popupComponent={popupComponent}
           hoverPopupComponent={hoverPopupComponent}
+          onViewportChange={this.props.onMapViewportChange}
+          onLoadStart={this.props.onMapLoadStart}
+          onLoadComplete={this.props.onMapLoadComplete}
         />
         {AS_MODULE === false &&
           <LeftControlPanel />
@@ -94,15 +100,23 @@ class MapDashboard extends Component {
 
 MapDashboard.propTypes = {
   isEmbedded: PropTypes.bool,
-  zoom: PropTypes.number,
-  latitude: PropTypes.number,
-  longitude: PropTypes.number,
+  // zoom: PropTypes.number,
+  // latitude: PropTypes.number,
+  // longitude: PropTypes.number,
   attributions: PropTypes.array,
   mapPanelsExpanded: PropTypes.bool,
   hoverPopup: PropTypes.object,
   onExternalLink: PropTypes.func,
   openSupportFormModal: PropTypes.func,
-  onToggleMapPanelsExpanded: PropTypes.func
+  onToggleMapPanelsExpanded: PropTypes.func,
+  // Map module
+  token: PropTypes.string,
+  mapViewport: PropTypes.object,
+  mapTracks: PropTypes.array,
+  mapHeatmapLayers: PropTypes.array,
+  onMapViewportChange: PropTypes.func,
+  onMapLoadStart: PropTypes.func,
+  onMapLoadComplete: PropTypes.func
 };
 
 export default MapDashboard;

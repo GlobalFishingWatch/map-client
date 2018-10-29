@@ -6,6 +6,7 @@ import {
   addTracksPointsRenderingData,
   getTracksPlaybackData
 } from 'utils/heatmapTileData';
+import { startLoader, completeLoader } from '../module/module.actions';
 
 
 export const ADD_TRACK = 'ADD_TRACK';
@@ -64,10 +65,14 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
   };
 };
 
-export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents, token }) {
+export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents }) {
   return (dispatch, getState) => {
 
-    if (getState().map.tracks.find(t => t.id === id && t.segmentId === segmentId)) {
+    const state = getState();
+    const loaderID = startLoader(dispatch, state);
+    const token = state.map.module.token;
+
+    if (state.map.tracks.find(t => t.id === id && t.segmentId === segmentId)) {
       return;
     }
 
@@ -103,6 +108,7 @@ export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents, token
             segmentId
           }
         });
+        dispatch(completeLoader(loaderID));
       });
   };
 }

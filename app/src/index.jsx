@@ -7,7 +7,6 @@ import Promise from 'promise-polyfill';
 import 'styles/global.scss';
 
 import reportReducer from 'report/reportReducer';
-import mapViewportReducer from 'map/mapViewportReducer';
 import mapStyleReducer from 'map/mapStyleReducer';
 import mapInteractionReducer from 'map/mapInteractionReducer';
 import basemapReducer from 'basemap/basemapReducer';
@@ -39,10 +38,11 @@ import appReducer from './app/appReducer';
 // TODO Remove when Map broke free from main store 
 import MapDashboard from 'map/containers/MapDashboard';
 // TODO Move to Map Module
-import testReducer from './_map/mapTestReducer';
+import mapModuleReducer from './_map/module/module.reducer';
 import mapTracksReducer from './_map/tracks/tracks.reducer';
-import heatmapReducer from './_map/heatmap/heatmap.reducer';
-import heatmapTilesReducer from './_map/heatmap/heatmapTiles.reducer';
+import mapHeatmapReducer from './_map/heatmap/heatmap.reducer';
+import mapHeatmapTilesReducer from './_map/heatmap/heatmapTiles.reducer';
+import mapViewportReducer from './_map/glmap/viewport.reducer';
 
 
 // Polyfill for older browsers (IE11 for example)
@@ -56,7 +56,6 @@ const reducers = {
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
-  mapViewport: mapViewportReducer,
   mapStyle: mapStyleReducer,
   mapInteraction: mapInteractionReducer,
   basemap: basemapReducer,
@@ -79,10 +78,11 @@ const reducers = {
 
 
 const mapReducer = combineReducers({
-  test: testReducer,
+  module: mapModuleReducer,
   tracks: mapTracksReducer,
-  heatmap: heatmapReducer,
-  heatmapTiles: heatmapTilesReducer
+  heatmap: mapHeatmapReducer,
+  heatmapTiles: mapHeatmapTilesReducer,
+  viewport: mapViewportReducer
 });
 
 

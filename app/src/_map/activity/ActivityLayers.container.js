@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { exportNativeViewport } from 'map/mapViewportActions';
+import { exportNativeViewport } from '../glmap/viewport.actions';
 import ActivityLayers from './ActivityLayers.jsx';
 import { queryHeatmapVessels } from '../heatmap/heatmapTiles.actions';
 
-const getTracks = (state, ownProps) => ownProps.tracks;
+const getProvidedTracks = (state, ownProps) => ownProps.providedTracks;
 const getMapTracks = state => state.map.tracks;
 
 const getAllTracks = createSelector(
-  [getTracks, getMapTracks],
-  (tracks, mapTracks) => {
+  [getProvidedTracks, getMapTracks],
+  (providedTracks, mapTracks) => {
     const allTracks = mapTracks.map((mapTrack) => {
-      const originalTrack = tracks.find(track =>
+      const originalTrack = providedTracks.find(track =>
         track.id === mapTrack.id && track.segmentId === mapTrack.segmentId
       );
       return (originalTrack === undefined) ? null : { color: originalTrack.color, ...mapTrack };
@@ -23,15 +23,15 @@ const getAllTracks = createSelector(
 
 const mapStateToProps = (state, ownProps) => ({
   layers: state.layers.workspaceLayers,
-  heatmapLayers: state.heatmap.heatmapLayers,
+  heatmapLayers: state.map.heatmap.heatmapLayers,
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   timelineOverExtentIndexes: state.filters.timelineOverExtentIndexes,
-  highlightedVessels: state.heatmap.highlightedVessels,
-  highlightedClickedVessel: state.heatmap.highlightedClickedVessel,
-  viewport: state.mapViewport.viewport,
-  zoom: state.mapViewport.viewport.zoom,
-  leftWorldScaled: state.mapViewport.leftWorldScaled,
-  rightWorldScaled: state.mapViewport.rightWorldScaled,
+  highlightedVessels: state.map.heatmap.highlightedVessels,
+  highlightedClickedVessel: state.map.heatmap.highlightedClickedVessel,
+  viewport: state.map.viewport.viewport,
+  zoom: state.map.viewport.viewport.zoom,
+  leftWorldScaled: state.map.viewport.leftWorldScaled,
+  rightWorldScaled: state.map.viewport.rightWorldScaled,
   layerFilters: state.filterGroups.layerFilters,
   allTracks: getAllTracks(state, ownProps),
   highlightedTrack: state.vesselInfo.highlightedTrack

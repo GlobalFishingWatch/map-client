@@ -23,13 +23,14 @@ class MiniGlobe extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (this.props.latitude !== nextProps.latitude || this.props.longitude !== nextProps.longitude) {
+    if (this.props.center[0] !== nextProps.center[0] || this.props.center[1] !== nextProps.center[1]) {
       this.recenter();
     }
   }
 
   setProjection() {
-    const { latitude, longitude } = this.props;
+    const { center } = this.props;
+    const [latitude, longitude] = center;
     const projection = geoOrthographic()
       .scale(MINI_GLOBE_SETTINGS.scale)
       .clipAngle(90)
@@ -40,7 +41,8 @@ class MiniGlobe extends Component {
 
   recenter() {
     if (this.state.projection) {
-      const { latitude, longitude } = this.props;
+      const { center } = this.props;
+      const [latitude, longitude] = center;
       const updatedProjection = this.state.projection;
       this.state.projection.rotate([-longitude, -latitude]);
       this.setState({ projection: updatedProjection });
@@ -49,6 +51,9 @@ class MiniGlobe extends Component {
 
   render() {
     const { zoom, viewportBoundsGeoJSON } = this.props;
+    if (viewportBoundsGeoJSON === undefined) {
+      return null;
+    }
     const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
 
     return (
@@ -90,10 +95,14 @@ class MiniGlobe extends Component {
 }
 
 MiniGlobe.propTypes = {
-  latitude: PropTypes.number.isRequired,
-  longitude: PropTypes.number.isRequired,
+  center: PropTypes.arrayOf(PropTypes.number).isRequired,
   zoom: PropTypes.number.isRequired,
   viewportBoundsGeoJSON: PropTypes.object
+};
+
+MiniGlobe.defaultProps = {
+  center: [0, 0],
+  zoom: 3
 };
 
 export default MiniGlobe;

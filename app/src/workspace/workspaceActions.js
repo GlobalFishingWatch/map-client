@@ -6,7 +6,6 @@ import {
 } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { initBasemap } from 'basemap/basemapActions';
-import { updateViewport } from 'map/mapViewportActions';
 import { initLayers } from 'layers/layersActions';
 import { saveFilterGroup } from 'filters/filterGroupsActions';
 import { setOuterTimelineDates, SET_INNER_TIMELINE_DATES_FROM_WORKSPACE, setSpeed } from 'filters/filtersActions';
@@ -17,7 +16,7 @@ import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
 import defaultWorkspace from 'workspace/workspace';
 
-export const INIT_WORKSPACE = 'INIT_WORKSPACE';
+export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
@@ -86,6 +85,11 @@ export function updateURL() {
   };
 }
 
+export const updateWorkspace = props => ({
+  type: UPDATE_WORKSPACE,
+  payload: props
+});
+
 /**
  * Save the state of the map, the filters and the timeline and send it
  * to the API. Get back the id of the workspace and save it in the store.
@@ -141,9 +145,9 @@ export function saveWorkspace(errorAction) {
     const workspaceData = {
       workspace: {
         map: {
-          center: [state.mapViewport.viewport.latitude, state.mapViewport.viewport.longitude],
+          center: [state.workspace.viewport.latitude, state.workspace.viewport.longitude],
           //  Compatibility: A Mapbox GL JS zoom z means z-1
-          zoom: state.mapViewport.viewport.zoom + 1,
+          zoom: state.workspace.viewport.zoom + 1,
           layers
         },
         pinnedVessels: state.vesselInfo.vessels.filter(e => e.pinned === true).map(e => ({
@@ -189,16 +193,13 @@ export function saveWorkspace(errorAction) {
 function dispatchActions(workspaceData, dispatch, getState) {
   const state = getState();
 
-  dispatch({ type: INIT_WORKSPACE, payload: workspaceData });
+  const workspace = { ...workspaceData };
+  // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
+  workspace.zoom = workspaceData.zoom - 1;
+  console.log(workspace)
+  dispatch({ type: UPDATE_WORKSPACE, payload: workspace });
 
   dispatch({ type: SET_WORKSPACE_LOADED });
-
-  dispatch(updateViewport({
-    // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
-    zoom: workspaceData.zoom - 1,
-    latitude: workspaceData.center[0],
-    longitude: workspaceData.center[1]
-  }));
 
   // We update the dates of the timeline
   const autoTimeline = workspaceData.timeline.auto !== undefined;
@@ -230,6 +231,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(timelineOuterDates));
 
+  // TODO MAP MODULE just store that in workspace, send to map module
   dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));

@@ -2,10 +2,9 @@ import { connect } from 'react-redux';
 import MiniGlobe from 'miniglobe/components/MiniGlobe';
 
 const mapStateToProps = state => ({
-  latitude: state.mapViewport.viewport.latitude,
-  longitude: state.mapViewport.viewport.longitude,
-  zoom: state.mapViewport.viewport.zoom,
-  viewportBoundsGeoJSON: state.mapViewport.viewportBoundsGeoJSON
+  center: state.workspace.viewport.center,
+  zoom: state.workspace.viewport.zoom,
+  viewportBoundsGeoJSON: state.workspace.viewport.viewportBoundsGeoJSON
 });
 
 export default connect(mapStateToProps)(MiniGlobe);

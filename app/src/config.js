@@ -3,9 +3,6 @@ import moment from 'moment';
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000; // 1 day
 export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP; // 1 day
-export const LOADERS = {
-  HEATMAP_TILES: 'HEATMAP_TILES'
-};
 
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1));
