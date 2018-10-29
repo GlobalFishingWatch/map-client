@@ -84,7 +84,7 @@ class HeatmapLayer extends React.Component {
       this.stage.visible = false;
       return;
     }
-    
+
     this.stage.visible = true;
     this.stage.alpha = layer.opacity;
 
@@ -96,7 +96,7 @@ class HeatmapLayer extends React.Component {
       // pass is set to true by filterGroupActions when none of the filters fields
       // in the filter group is supported by the layer headers
         .filter(f => f.pass !== true)
-        .map(f => f.hue.toString())
+        .map(f => ((f.hue === undefined) ? '0' : f.hue.toString()))
       : [defaultHue.toString()];
     const currentlyUsedHues = Object.keys(this.subLayers);
 
@@ -229,7 +229,6 @@ HeatmapLayer.propTypes = {
   endIndex: PropTypes.number,
   filters: PropTypes.array,
   baseTexture: PropTypes.object,
-  maxSprites: PropTypes.number,
   useRadialGradientStyle: PropTypes.bool,
   customRenderingStyle: PropTypes.object,
   viewportLeft: PropTypes.number,
