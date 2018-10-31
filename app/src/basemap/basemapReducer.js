@@ -1,11 +1,11 @@
-import GL_STYLE from 'map/gl-styles/style.json';
+import { AVAILABLE_BASEMAPS } from 'src/_map';
 import {
   INIT_BASEMAP,
   UPDATE_BASEMAP_LAYER
 } from 'basemap/basemapActions';
 
 const initialState = {
-  basemapLayers: GL_STYLE.metadata['gfw:basemap-layers'].map(l => ({ ...l, basemap: true, added: true }))
+  basemapLayers: AVAILABLE_BASEMAPS.map(l => ({ ...l, basemap: true, added: true }))
 };
 
 export default function (state = initialState, action) {

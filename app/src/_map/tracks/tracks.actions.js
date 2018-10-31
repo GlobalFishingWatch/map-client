@@ -65,6 +65,7 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
   };
 };
 
+// TODO MAP MODULE remove segmentId
 export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents }) {
   return (dispatch, getState) => {
 

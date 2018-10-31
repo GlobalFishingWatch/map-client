@@ -45,6 +45,7 @@ class MapProxy extends React.Component {
           }
         });
       }
+
     }
 
     if (this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
@@ -61,15 +62,24 @@ class MapProxy extends React.Component {
         }
       });
     }
+
+    if (this.props.basemapLayers !== prevProps.basemapLayers ||
+        this.props.staticLayers !== prevProps.staticLayers) {
+      this.props.commitStyleUpdates(this.props.staticLayers, this.props.basemapLayers);
+    }
   }
 
   render() {
     return (
-      <Map providedTracks={this.props.tracks} />
+      <Map
+        providedTracks={this.props.tracks}
+        // providedHeatmapLayers={this.props.heatmapLayers}
+      />
     );
   }
 }
 
+// TODO MAP MODULE move to index? Keep 'internal' (not provided) proptypes here and merge?
 MapProxy.propTypes = {
   token: PropTypes.string.isRequired,
   viewport: PropTypes.shape({
@@ -81,7 +91,10 @@ MapProxy.propTypes = {
     segmentId: PropTypes.string,
     layerUrl: PropTypes.string,
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+    // color: ...
   })),
+  highlightedTrack: PropTypes.string,
+  // TODO Colors are passed through filters...
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     url: PropTypes.string,
@@ -90,10 +103,28 @@ MapProxy.propTypes = {
     colsByName: PropTypes.object,
     temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     temporalExtentsLess: PropTypes.bool
+    // color: ...
   })),
+  basemapLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    visible: PropTypes.bool
+  })),
+  staticLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    visible: PropTypes.bool,
+    // this replaces report system
+    selectedPolygons: PropTypes.arrayOf(PropTypes.string),
+    opacity: PropTypes.number,
+    color: PropTypes.string,
+    showLabels: PropTypes.bool
+  })),
+  // customLayers
+  // filters
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
-  onLoadComplete: PropTypes.func
+  onLoadComplete: PropTypes.func,
+  // interaction callbacks...
+  onAttributionsChange: PropTypes.func
 };
 
 export default MapProxy;

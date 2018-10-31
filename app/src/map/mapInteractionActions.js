@@ -16,7 +16,7 @@ export const SET_MAP_CURSOR = 'SET_MAP_CURSOR';
 export const UPDATE_POPUP_REPORT_STATUS = 'UPDATE_POPUP_REPORT_STATUS';
 
 const getFeaturePopupFields = (staticLayerId, state) => {
-  const source = state.mapStyle.mapStyle.toJS().sources[staticLayerId];
+  const source = state.map.style.mapStyle.toJS().sources[staticLayerId];
   if (source.metadata === undefined || source.metadata['gfw:popups'] === undefined) {
     return null;
   }

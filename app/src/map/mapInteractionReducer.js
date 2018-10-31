@@ -5,7 +5,7 @@ import {
   UPDATE_POPUP_REPORT_STATUS,
   SET_MAP_CURSOR
 } from 'map/mapInteractionActions';
-import GL_STYLE from 'map/gl-styles/style.json';
+import GL_STYLE from '_map/glmap/gl-styles/style.json';
 
 const popupsFields = {};
 Object.keys(GL_STYLE.sources).forEach((id) => {

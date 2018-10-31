@@ -2,7 +2,7 @@ import find from 'lodash/find';
 import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
-import { updateMapStyle } from 'map/mapStyleActions';
+// import { updateMapStyle } from 'map/mapStyleActions'; TODO MAP MODULE
 // import {
 //   addHeatmapLayerFromLibrary,
 //   removeHeatmapLayerFromLibrary,
@@ -182,7 +182,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
           type: SET_LAYERS,
           payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
         });
-        dispatch(updateMapStyle());
+        // dispatch(updateMapStyle());  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
 
         const deprecatedLayers = workspaceLayers
@@ -241,7 +241,7 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
     }
 
     if (LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1) {
-      dispatch(updateMapStyle());
+      // dispatch(updateMapStyle()); TODO MAP MODULE
     }
   };
 }
@@ -280,7 +280,7 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
       }
     }
     if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      dispatch(updateMapStyle());
+      // dispatch(updateMapStyle());  TODO MAP MODULE
     }
   };
 }
@@ -296,7 +296,7 @@ export function setLayerOpacity(opacity, layerId) {
     });
     const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      dispatch(updateMapStyle());
+      // dispatch(updateMapStyle());  TODO MAP MODULE
     }
   };
 }
@@ -314,7 +314,7 @@ export function setLayerTint(color, hue, layerId) {
 
     const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
     if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      dispatch(updateMapStyle());
+      // dispatch(updateMapStyle());  TODO MAP MODULE
     }
     if (newLayer.type === LAYER_TYPES.Heatmap) {
       dispatch(refreshFlagFiltersLayers());
@@ -330,7 +330,7 @@ export function toggleLayerShowLabels(layerId) {
         layerId
       }
     });
-    dispatch(updateMapStyle());
+    // dispatch(updateMapStyle());  TODO MAP MODULE
   };
 }
 

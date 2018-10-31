@@ -1,4 +1,4 @@
-import { updateMapStyle } from 'map/mapStyleActions';
+//  import { updateMapStyle } from 'map/mapStyleActions';
 
 export const INIT_BASEMAP = 'INIT_BASEMAP';
 export const UPDATE_BASEMAP_LAYER = 'UPDATE_BASEMAP_LAYER';
@@ -8,7 +8,7 @@ export const initBasemap = (workspaceBasemap, workspaceBasemapOptions) => (dispa
     type: INIT_BASEMAP,
     payload: { workspaceBasemap, workspaceBasemapOptions }
   });
-  dispatch(updateMapStyle());
+  // dispatch(updateMapStyle());
 };
 
 export const showBasemap = id => (dispatch) => {
@@ -19,7 +19,7 @@ export const showBasemap = id => (dispatch) => {
       visible: true
     }
   });
-  dispatch(updateMapStyle());
+  // dispatch(updateMapStyle());
 };
 
 export const toggleBasemapOption = id => (dispatch, getState) => {
@@ -31,5 +31,5 @@ export const toggleBasemapOption = id => (dispatch, getState) => {
       visible: !(basemapOption.visible === true)
     }
   });
-  dispatch(updateMapStyle());
+  // dispatch(updateMapStyle());
 };

@@ -223,6 +223,7 @@ class ActivityLayers extends React.Component {
   }
 
   render() {
+    // TODO MAP MODULE
     const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
     const {
       zoom,

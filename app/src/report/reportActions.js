@@ -1,7 +1,7 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 // import { clearHighlightedVessels } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import { updatePopupReportStatus } from 'map/mapInteractionActions';
-import { updateMapStyle } from 'map/mapStyleActions';
+// import { updateMapStyle } from 'map/mapStyleActions';  TODO MAP MODULE
 import { FLAGS } from 'constants';
 
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON';
@@ -34,7 +34,7 @@ export function deletePolygon(polygonIndex) {
         polygonIndex
       }
     });
-    dispatch(updateMapStyle());
+    // dispatch(updateMapStyle()); TODO MAP MODULE
   };
 }
 
@@ -79,7 +79,7 @@ export function toggleCurrentReportPolygon() {
       dispatch(deletePolygon(polygonIndex));
     }
     dispatch(updatePopupReportStatus());
-    dispatch(updateMapStyle());
+    // dispatch(updateMapStyle());  TODO MAP MODULE
   };
 }
 
@@ -114,7 +114,7 @@ export function discardReport() {
       type: DISCARD_REPORT
     });
     dispatch(updatePopupReportStatus());
-    dispatch(updateMapStyle());
+    // dispatch(updateMapStyle());  TODO MAP MODULE
   };
 }
 

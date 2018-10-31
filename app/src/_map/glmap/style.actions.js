@@ -3,20 +3,20 @@ import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES
 import { fromJS } from 'immutable';
 import { hexToRgba } from 'utils/colors';
 
-export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
+export const SET_MAP_STYLE = 'SET_MAP_STYLE';
 export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
 
 const setMapStyle = style => ({
-  type: UPDATE_MAP_STYLE,
+  type: SET_MAP_STYLE,
   payload: style
 });
 
 const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
-  const visibility = (refLayer.visible === true && refLayer.added === true) ? 'visible' : 'none';
+  const visibility = (refLayer.visible === true) ? 'visible' : 'none';
   return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
 };
 
-const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
+const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => {
   const currentStyle = style.toJS();
   const currentStyleLayers = currentStyle.layers;
   let newStyle = style;
@@ -28,9 +28,10 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
   newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
   // basemap layers' only allowed change is visibility, so bail here
-  if (refLayer.basemap === true) {
+  if (glLayer.type === 'raster') {
     return newStyle;
   }
+  console.log(glLayer)
 
   // color/opacity
   switch (glLayer.type) {
@@ -91,9 +92,10 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
   return newStyle;
 };
 
+// TODO MAP MODULE instead of using static + custom + basemap from store, send as arguments to this?
 export const addCustomGLLayer = layerId => (dispatch, getState) => {
   const state = getState();
-  let style = state.mapStyle.mapStyle;
+  let style = state.map.style.mapStyle;
   const currentStyle = style.toJS();
   const refLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
   const layerData = state.customLayer.layersData[refLayer.id];
@@ -120,12 +122,14 @@ export const addCustomGLLayer = layerId => (dispatch, getState) => {
   }
 
   dispatch(setMapStyle(style));
-  dispatch(updateMapStyle());
+
+  // TODO MAP MODULE
+  // dispatch(updateMapStyle());
 };
 
 const addWorkspaceGLLayers = workspaceGLLayers => (dispatch, getState) => {
   const state = getState();
-  let style = state.mapStyle.mapStyle;
+  let style = state.map.style.mapStyle;
 
   workspaceGLLayers.forEach((workspaceGLLayer) => {
     const id = workspaceGLLayer.id;
@@ -148,7 +152,9 @@ const addWorkspaceGLLayers = workspaceGLLayers => (dispatch, getState) => {
   });
 
   dispatch(setMapStyle(style));
-  dispatch(updateMapStyle());
+
+  // TODO MAP MODULE
+  // dispatch(updateMapStyle());
 };
 
 const getCartoLayerInstanciatePromise = ({ sourceId, sourceCartoSQL }) => {
@@ -186,7 +192,7 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
   const cartoLayersPromisesPromise = Promise.all(cartoLayersPromises.map(p => p.catch(e => e)));
   cartoLayersPromisesPromise
     .then((instanciatedCartoLayers) => {
-      let style = getState().mapStyle.mapStyle;
+      let style = getState().map.style.mapStyle;
       const currentStyle = style.toJS();
       instanciatedCartoLayers.forEach((cartoLayer) => {
         const tilesURL = STATIC_LAYERS_CARTO_TILES_ENDPOINT.replace('$LAYERGROUPID', cartoLayer.layergroupid);
@@ -198,42 +204,45 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
           tiles: [tilesURL]
         }));
 
-        // change source in all layers that are using it
-        currentStyle.layers.forEach((layer, glLayerIndex) => {
-          if (layer.source === cartoLayer.sourceId) {
+        // change source in all layers that are using it (genrally polygon + labels)
+        currentStyle.layers.forEach((glLayer, glLayerIndex) => {
+          if (glLayer.source === cartoLayer.sourceId) {
             style = style.setIn(['layers', glLayerIndex, 'source'], newSourceId);
             style = style.setIn(['layers', glLayerIndex, 'metadata', 'gfw:id'], cartoLayer.sourceId);
+            const refLayer = layers.find(l => l.refLayer.id === cartoLayer.sourceId).refLayer;
+            style = updateGLLayer(style, glLayer.id, refLayer, /* reportPolygonIds */);
           }
         });
       });
 
       dispatch(setMapStyle(style));
-      dispatch(updateMapStyle());
     })
     .catch((err) => {
       console.warn(err);
     });
 };
 
-export const updateMapStyle = () => (dispatch, getState) => {
-  const state = getState();
-  const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
+// TODO MAP MODULE instead of using static + custom + basemap from store, send as arguments to this?
+export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, getState) => {
+  // TODO MAP MODULE
+  // const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
+  // const basemapLayers = state.basemap.basemapLayers;
+  // const layers = staticAndCustomLayers.concat(basemapLayers);
+  const state = getState().map.style;
+  const layers = [...staticLayers, ...basemapLayers];
 
-  // read basemap info from workspace
-  const basemapLayers = state.basemap.basemapLayers;
-  const layers = staticAndCustomLayers.concat(basemapLayers);
-
-  let style = state.mapStyle.mapStyle;
+  let style = state.mapStyle;
   const currentStyle = style.toJS();
   const glLayers = currentStyle.layers;
   const glSources = currentStyle.sources;
 
+  // TODO MAP MODULE: do it at the same time than carto layers?
   // collect layers declared in workspace but not in original gl style
-  const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && glSources[layer.id] === undefined);
-  if (workspaceGLLayers.length) {
-    dispatch(addWorkspaceGLLayers(workspaceGLLayers));
-    return;
-  }
+  // const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && glSources[layer.id] === undefined);
+  // if (workspaceGLLayers.length) {
+  //   dispatch(addWorkspaceGLLayers(workspaceGLLayers));
+  //   return;
+  // }
 
   const cartoLayersToInstanciate = [];
 
@@ -253,19 +262,21 @@ export const updateMapStyle = () => (dispatch, getState) => {
     }
 
     // check if layer is served from Carto, which means we need to instanciate it first
+    // TODO BUG: check if layer is not instanciatING too
     const sourceCartoSQL = glSource.metadata !== undefined && glSource.metadata['gfw:carto-sql'];
     if (sourceCartoSQL !== false) {
       // only if layer is visible and has not been instanciated yet
-      const cartoLayerInstanciated = state.mapStyle.cartoLayersInstanciated.indexOf(sourceId) > -1;
+      const cartoLayerInstanciated = state.cartoLayersInstanciated.indexOf(sourceId) > -1;
       if (refLayer.visible === true && !cartoLayerInstanciated && !cartoLayersToInstanciate.find(l => l.sourceId === sourceId)) {
-        cartoLayersToInstanciate.push({ sourceId, sourceCartoSQL });
+        cartoLayersToInstanciate.push({ sourceId, sourceCartoSQL, refLayer });
       }
       continue;
     }
 
-    const layerIsInReport = refLayer.id === state.report.layerId;
-    const reportPolygonIds = (layerIsInReport) ? state.report.polygons.map(l => l.reportingId) : null;
-    style = updateGLLayer(style, glLayer.id, refLayer, reportPolygonIds);
+    // TODO MAP MODULE use input static layers polygons
+    // const layerIsInReport = refLayer.id === state.report.layerId;
+    // const reportPolygonIds = (layerIsInReport) ? state.report.polygons.map(l => l.reportingId) : null;
+    style = updateGLLayer(style, glLayer.id, refLayer, /* reportPolygonIds */);
   }
 
   if (cartoLayersToInstanciate.length) {

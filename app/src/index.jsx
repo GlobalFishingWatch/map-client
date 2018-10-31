@@ -7,7 +7,6 @@ import Promise from 'promise-polyfill';
 import 'styles/global.scss';
 
 import reportReducer from 'report/reportReducer';
-import mapStyleReducer from 'map/mapStyleReducer';
 import mapInteractionReducer from 'map/mapInteractionReducer';
 import basemapReducer from 'basemap/basemapReducer';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
@@ -43,6 +42,7 @@ import mapTracksReducer from './_map/tracks/tracks.reducer';
 import mapHeatmapReducer from './_map/heatmap/heatmap.reducer';
 import mapHeatmapTilesReducer from './_map/heatmap/heatmapTiles.reducer';
 import mapViewportReducer from './_map/glmap/viewport.reducer';
+import mapStyleReducer from './_map/glmap/style.reducer';
 
 
 // Polyfill for older browsers (IE11 for example)
@@ -56,7 +56,6 @@ const reducers = {
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
-  mapStyle: mapStyleReducer,
   mapInteraction: mapInteractionReducer,
   basemap: basemapReducer,
   welcomeModal: welcomeModalReducer,
@@ -82,6 +81,7 @@ const mapReducer = combineReducers({
   tracks: mapTracksReducer,
   heatmap: mapHeatmapReducer,
   heatmapTiles: mapHeatmapTilesReducer,
+  style: mapStyleReducer,
   viewport: mapViewportReducer
 });
 

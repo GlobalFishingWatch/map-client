@@ -7,6 +7,7 @@ import { queryHeatmapVessels } from '../heatmap/heatmapTiles.actions';
 const getProvidedTracks = (state, ownProps) => ownProps.providedTracks;
 const getMapTracks = state => state.map.tracks;
 
+// Merges providedTracks (track metadata) and moduleTracks (actual track data, internal to the module)
 const getAllTracks = createSelector(
   [getProvidedTracks, getMapTracks],
   (providedTracks, mapTracks) => {
@@ -34,6 +35,7 @@ const mapStateToProps = (state, ownProps) => ({
   rightWorldScaled: state.map.viewport.rightWorldScaled,
   layerFilters: state.filterGroups.layerFilters,
   allTracks: getAllTracks(state, ownProps),
+  // TODO MAP MODULE
   highlightedTrack: state.vesselInfo.highlightedTrack
 });
 

@@ -66,11 +66,15 @@ class MapDashboard extends Component {
         {/* <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} /> */}
         {/* {this.props.children} */}
         <MapModule
+          // TODO MAP MODULE REMOVE THIS
           store={store}
+          // TODO MODULE just pass {...props} + isolate to MapWrapper
           token={this.props.token}
           viewport={this.props.mapViewport}
           tracks={this.props.mapTracks}
           heatmapLayers={this.props.mapHeatmapLayers}
+          staticLayers={this.props.mapStaticLayers}
+          basemapLayers={this.props.mapBasemapLayers}
           popupComponent={popupComponent}
           hoverPopupComponent={hoverPopupComponent}
           onViewportChange={this.props.onMapViewportChange}
@@ -100,9 +104,6 @@ class MapDashboard extends Component {
 
 MapDashboard.propTypes = {
   isEmbedded: PropTypes.bool,
-  // zoom: PropTypes.number,
-  // latitude: PropTypes.number,
-  // longitude: PropTypes.number,
   attributions: PropTypes.array,
   mapPanelsExpanded: PropTypes.bool,
   hoverPopup: PropTypes.object,
@@ -114,6 +115,8 @@ MapDashboard.propTypes = {
   mapViewport: PropTypes.object,
   mapTracks: PropTypes.array,
   mapHeatmapLayers: PropTypes.array,
+  mapStaticLayers: PropTypes.array,
+  mapBasemapLayers: PropTypes.array,
   onMapViewportChange: PropTypes.func,
   onMapLoadStart: PropTypes.func,
   onMapLoadComplete: PropTypes.func

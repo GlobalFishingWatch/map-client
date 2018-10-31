@@ -1,10 +1,10 @@
-import GL_STYLE from 'map/gl-styles/style.json';
 import { fromJS } from 'immutable';
 import uniq from 'lodash/uniq';
+import GL_STYLE from './gl-styles/style.json';
 import {
-  UPDATE_MAP_STYLE,
+  SET_MAP_STYLE,
   MARK_CARTO_LAYERS_AS_INSTANCIATED
-} from 'map/mapStyleActions';
+} from './style.actions';
 
 const attributions = uniq(Object.keys(GL_STYLE.sources)
   .map(sourceKey => GL_STYLE.sources[sourceKey].attribution)
@@ -22,7 +22,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case UPDATE_MAP_STYLE : {
+    case SET_MAP_STYLE : {
       return { ...state, mapStyle: action.payload };
     }
     case MARK_CARTO_LAYERS_AS_INSTANCIATED : {
