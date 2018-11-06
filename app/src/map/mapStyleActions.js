@@ -2,6 +2,7 @@ import { LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from 'utils/colors';
+import getMainGeomType from 'utils/getMainGeomType';
 
 export const UPDATE_MAP_STYLE = 'UPDATE_MAP_STYLE';
 export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
@@ -68,19 +69,24 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
         .setIn(['layers', glLayerIndex, 'paint', 'line-color'], refLayer.color);
       break;
     }
+    // Symbol layers are only used for labels layers (they exist on the GL style but not in workspace)
     case 'symbol': {
-      // TODO use metadata to set is label, or just use 'symbol' ?
-      // if (glLayer.isLabelsLayer === true) {
       const parentLayerIsVisible = newStyle.getIn(['layers', glLayerIndex, 'layout', 'visibility']) === 'visible';
       const labelsVisibility = (parentLayerIsVisible && refLayer.showLabels === true) ? 'visible' : 'none';
       newStyle = newStyle.setIn(['layers', glLayerIndex, 'layout', 'visibility'], labelsVisibility);
       if (refLayer.showLabels !== true) {
         break;
       }
-      // }
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'text-opacity'], refLayer.opacity)
         .setIn(['layers', glLayerIndex, 'paint', 'text-color'], refLayer.color);
+      break;
+    }
+    // This is only used for custom layers with point geom types
+    case 'circle': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
       break;
     }
     default: {
@@ -107,11 +113,11 @@ export const addCustomGLLayer = layerId => (dispatch, getState) => {
   }
 
   if (currentStyle.layers.find(glLayer => glLayer.id === refLayer.id) === undefined) {
+    const glType = getMainGeomType(layerData);
     const glLayer = fromJS({
       id: refLayer.id,
-      // FIXME detect feature type to allow displaying points/lines too?
-      type: 'fill',
       source: refLayer.id,
+      type: glType,
       interactive: true,
       layout: {},
       paint: {}
