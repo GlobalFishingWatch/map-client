@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.0.6
+- Added support for line and point custom layers
+
+## 3.0.5
+- Bigger tolerance radius when clicking on activity layers
+
+## 3.0.4
+- Fixed issue when adding more than one filter group
+
+## 3.0.3
+- Fixed styles loading issue
+
+## 3.0.2
+- Fixed custom layer loading from workspace
+
+## 3.0.1
+- Fixed displaying activity layers when resizing viewport
+
 ## 3.0.0
 - Allow custom Mapbox GL JSON style in workspaces - [#943](https://github.com/GlobalFishingWatch/map-client/pull/943)
 - Deeper zoom levels up to 14, even when activity layer tiles are not visible - [#942](https://github.com/GlobalFishingWatch/map-client/pull/942)
