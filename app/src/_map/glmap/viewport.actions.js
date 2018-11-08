@@ -93,22 +93,13 @@ export const exportNativeViewport = nativeViewport => (dispatch) => {
   const rightWorldScaled = bottomRightWorld[0] / nativeViewport.scale;
 
   // lat/lon corners for miniglobe
-  const topLeft = nativeViewport.unproject(topLeftPx);
-  const bottomRight = nativeViewport.unproject(bottomRightPx);
-  const viewportBoundsGeoJSON = {
-    type: 'Feature',
-    geometry: {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [topLeft[0], topLeft[1]],
-          [bottomRight[0], topLeft[1]],
-          [bottomRight[0], bottomRight[1]],
-          [topLeft[0], bottomRight[1]],
-          [topLeft[0], topLeft[1]]
-        ]
-      ]
-    }
+  const northWest = nativeViewport.unproject(topLeftPx);
+  const southEast = nativeViewport.unproject(bottomRightPx);
+  const bounds = {
+    north: northWest[1],
+    south: southEast[1],
+    west: northWest[0],
+    east: southEast[0]
   };
 
   dispatch({
@@ -116,7 +107,7 @@ export const exportNativeViewport = nativeViewport => (dispatch) => {
     payload: {
       leftWorldScaled,
       rightWorldScaled,
-      viewportBoundsGeoJSON
+      bounds
     }
   });
   dispatch(onViewportChange());

@@ -50,10 +50,29 @@ class MiniGlobe extends Component {
   }
 
   render() {
-    const { zoom, viewportBoundsGeoJSON } = this.props;
-    if (viewportBoundsGeoJSON === undefined) {
+    const { zoom, bounds } = this.props;
+    if (bounds === undefined) {
       return null;
     }
+
+    const { north, south, west, east } = bounds;
+    const viewportBoundsGeoJSON = {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [west, north],
+            [east, north],
+            [east, south],
+            [west, south],
+            [west, north]
+          ]
+        ]
+      }
+    };
+
+
     const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
 
     return (
@@ -84,11 +103,6 @@ class MiniGlobe extends Component {
             </g>
           </svg>
         </div>
-        {/* <div className={MiniGlobeStyles.zone}>
-          <span>
-            Zone
-          </span>
-        </div> */}
       </div>
     );
   }
@@ -97,7 +111,12 @@ class MiniGlobe extends Component {
 MiniGlobe.propTypes = {
   center: PropTypes.arrayOf(PropTypes.number).isRequired,
   zoom: PropTypes.number.isRequired,
-  viewportBoundsGeoJSON: PropTypes.object
+  bounds: PropTypes.shape({
+    north: PropTypes.number,
+    south: PropTypes.number,
+    west: PropTypes.number,
+    east: PropTypes.number
+  })
 };
 
 MiniGlobe.defaultProps = {
