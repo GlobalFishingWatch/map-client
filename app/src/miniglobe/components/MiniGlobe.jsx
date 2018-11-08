@@ -2,8 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { geoOrthographic, geoPath } from 'd3-geo'; // eslint-disable-line
 import { feature } from 'topojson-client';
-import { MINI_GLOBE_SETTINGS } from 'config';
-import MiniGlobeStyles from './miniGlobe.scss';
+import './miniGlobe.css';
+
+const DEFAULT_SETTINGS = {
+  viewBoxX: -75,
+  viewBoxY: -75,
+  viewBoxWidth: 200,
+  viewBoxHeight: 200,
+  svgWidth: 40,
+  scale: 100,
+  minZoom: 2.5,
+  center: [0, 0],
+  zoom: 3
+};
 
 const jsonData = require('assets/topoJson/ne_110m_land.json');
 
@@ -32,9 +43,9 @@ class MiniGlobe extends Component {
     const { center } = this.props;
     const [latitude, longitude] = center;
     const projection = geoOrthographic()
-      .scale(MINI_GLOBE_SETTINGS.scale)
+      .scale(DEFAULT_SETTINGS.scale)
       .clipAngle(90)
-      .translate([MINI_GLOBE_SETTINGS.svgWidth / 2, MINI_GLOBE_SETTINGS.svgWidth / 2]);
+      .translate([DEFAULT_SETTINGS.svgWidth / 2, DEFAULT_SETTINGS.svgWidth / 2]);
     projection.rotate([-longitude, -latitude]);
     this.setState({ projection });
   }
@@ -73,18 +84,18 @@ class MiniGlobe extends Component {
     };
 
 
-    const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = MINI_GLOBE_SETTINGS;
+    const { svgWidth, viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight } = DEFAULT_SETTINGS;
 
     return (
-      <div className={MiniGlobeStyles.miniGlobe}>
-        <div className={MiniGlobeStyles.svgContainer} >
+      <div className="miniGlobe">
+        <div className="miniGlobeSvgContainer" >
           <svg
             width={svgWidth}
             height={svgWidth}
             viewBox={`${viewBoxX} ${viewBoxY} ${viewBoxWidth} ${viewBoxHeight}`}
-            className={MiniGlobeStyles.globeSvg}
+            className="miniGlobeGlobeSvg"
           >
-            <g className="geometries">
+            <g>
               {
                 this.worldData.map((d, i) => (
                   <path
@@ -93,11 +104,11 @@ class MiniGlobe extends Component {
                   />
                 ))
               }
-              { zoom > MINI_GLOBE_SETTINGS.minZoom &&
+              { zoom > DEFAULT_SETTINGS.minZoom &&
                 <path
                   key="viewport"
                   d={geoPath().projection(this.state.projection)(viewportBoundsGeoJSON)}
-                  className={MiniGlobeStyles.viewport}
+                  className="miniGlobeViewport"
                 />
               }
             </g>
@@ -120,8 +131,8 @@ MiniGlobe.propTypes = {
 };
 
 MiniGlobe.defaultProps = {
-  center: [0, 0],
-  zoom: 3
+  center: DEFAULT_SETTINGS.center,
+  zoom: DEFAULT_SETTINGS.zoom
 };
 
 export default MiniGlobe;

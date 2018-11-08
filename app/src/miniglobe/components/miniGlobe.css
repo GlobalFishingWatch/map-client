@@ -1,0 +1,32 @@
+:root {
+  --color-miniglobe-bg: #011137;
+  --color-miniglobe-fg: #99d3e1;
+  --color-miniglobe-viewport: #ff0000;
+}
+
+.miniGlobe {
+  display: flex;
+  background-color: var(--color-miniglobe-bg);
+  margin-right: 10px;
+}
+
+.miniGlobeSvgContainer {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.miniGlobeGlobeSvg {
+  position: absolute;
+  fill: var(--color-miniglobe-bg);
+  stroke: var(--color-miniglobe-bg);
+  background-color: var(--color-miniglobe-fg);
+  border-radius: 50%;
+}
+
+.miniGlobeViewport {
+  stroke-width: 6px;
+  fill: none;
+  stroke: var(--color-miniglobe-viewport);
+}

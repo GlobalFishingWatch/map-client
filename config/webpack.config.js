@@ -184,6 +184,8 @@ const webpackConfig = {
             options: {
               importLoaders: 1,
               minimize: (envVariables.NODE_ENV === 'production'),
+              // TODO we will need to enable that to use the new timebar
+              // but right now this is causing an error with the map CSS
               // modules: true
             }
           },
