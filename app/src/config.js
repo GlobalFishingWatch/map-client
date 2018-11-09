@@ -70,7 +70,7 @@ export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(TIMELINE_OVERALL_ST
 
 // radius of vessels lookup in pixels,
 // ie how large the clicked region should be for including vessels
-export const VESSEL_CLICK_TOLERANCE_PX = 3.5;
+export const VESSEL_CLICK_TOLERANCE_PX = 10;
 
 // Legacy: this is only here for compatibility with pre-mapbox branch workspaces
 export const COLORS = {
