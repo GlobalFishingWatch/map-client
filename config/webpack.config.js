@@ -116,7 +116,9 @@ const webpackConfig = {
       'node_modules'
     ],
     alias,
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    // This is needed to use npm/yarn link, see https://github.com/babel/babel-loader/issues/149
+    symlinks: false
   },
 
   module: {
@@ -183,7 +185,7 @@ const webpackConfig = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              minimize: (envVariables.NODE_ENV === 'production'),
+              minimize: (envVariables.NODE_ENV === 'production')
               // TODO we will need to enable that to use the new timebar
               // but right now this is causing an error with the map CSS
               // modules: true
