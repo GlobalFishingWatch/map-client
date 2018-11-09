@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import MiniGlobe from '@globalfishingwatch/map-miniglobe-component/MiniGlobe';
+import MiniGlobe from '@globalfishingwatch/map-miniglobe-component';
 
 const mapStateToProps = state => ({
   center: state.workspace.viewport.center,

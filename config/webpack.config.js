@@ -51,8 +51,6 @@ const alias = {
   ...getAliases('app/', './app/src')
 };
 
-console.log(alias)
-
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
@@ -125,7 +123,9 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!@globalfishingwatch\/map-convert|react-map-gl).*/,
+        // Babel should not compile node_modules, except for react-map-gl
+        // and gfw modules such a map-timebar-component, map-miniglobe-component, map-convert, etc
+        exclude: /node_modules\/(?!@globalfishingwatch\/map-|react-map-gl).*/,
         use: [
           {
             loader: 'babel-loader'
