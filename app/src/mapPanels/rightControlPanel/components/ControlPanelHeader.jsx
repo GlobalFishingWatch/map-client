@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import ControlPanelStyles from 'styles/components/control_panel.scss';
 import IconStyles from 'styles/icons.scss';
 import InfoIcon from '-!babel-loader!svg-react-loader!assets/icons/info.svg?name=InfoIcon';
-import MiniGlobe from 'miniglobe/containers/MiniGlobe';
+import MiniGlobe from 'map/containers/MiniGlobe';
 
 class ControlPanelHeader extends Component {
   calculateFishingHours() {
