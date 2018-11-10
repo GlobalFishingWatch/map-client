@@ -13,10 +13,7 @@ export default function (state = initialState, action) {
     case INIT_MODULE: {
       return {
         ...state,
-        token: action.payload.token,
-        onViewportChange: action.payload.onViewportChange,
-        onLoadStart: action.payload.onLoadStart,
-        onLoadComplete: action.payload.onLoadComplete
+        ...action.payload
       };
     }
 

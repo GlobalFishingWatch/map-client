@@ -2,6 +2,9 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { updateWorkspace } from 'workspace/workspaceActions';
 import { startLoading, completeLoading } from 'app/appActions';
+import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
+import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
+import { trackMapClicked } from 'analytics/analyticsActions';
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import MapWrapper from 'map/components/MapWrapper';
 
@@ -61,13 +64,9 @@ const getHeatmapLayers = createSelector(
     .map((layer) => {
       const layerParams = {
         id: layer.id,
-        url: layer.header.endpoints.tiles,
         subtype: layer.subtype,
-        isPBF: layer.header.isPBF !== undefined,
-        colsByName: layer.header.colsByName,
-        temporalExtents: layer.header.temporalExtents,
-        temporalExtentsLess: layer.header.temporalExtentsLess !== undefined,
-        // TODO MAP MODULE color...
+        tilesetId: layer.tilesetId,
+        header: layer.header
       };
       return layerParams;
     })
@@ -113,11 +112,13 @@ const mapStateToProps = state => ({
   staticLayers: getStaticLayers(state),
   basemapLayers: getBasemapLayers(state),
   // TODO MAP MODULE
-  hoverPopup: state.mapInteraction.hoverPopup
+  // hoverPopup: state.mapInteraction.hoverPopup
 });
 
 const mapDispatchToProps = dispatch => ({
   onViewportChange: (viewport) => {
+    // TODO MAP MODULE maybe not reuse workspace actions/reducer, but instead
+    // creat a MapWrapper reducer that could also be used to deal with popups and map interaction
     dispatch(updateWorkspace({
       viewport
     }));
@@ -127,7 +128,33 @@ const mapDispatchToProps = dispatch => ({
   },
   onLoadComplete: () => {
     dispatch(completeLoading());
-  }
+  },
+  onMapClick: (event) => {
+    dispatch(clearVesselInfo());
+    dispatch(clearEncountersInfo());
+    if (event.type === 'activity') {
+      const target = event.target;
+      if (target.isCluster === true) {
+        console.log(event.latitude, event.longitude)
+        dispatch(trackMapClicked(event.latitude, event.longitude, 'cluster'));
+        // dispatch(hideVesselsInfoPanel());
+      } else if (event.layer.subtype === LAYER_TYPES.Encounters) {
+        dispatch(setEncountersInfo(event.target.series, event.layer.tilesetId, event.layer.header.endpoints.info));
+      } else {
+        const header = event.layer.header;
+        const idFieldKey = (header.info.id === undefined) ? 'seriesgroup' : header.info.id;
+        const targetID = event.target[idFieldKey];
+        dispatch(addVessel({
+          tilesetId: event.layer.tilesetId,
+          seriesgroup: targetID,
+          series: event.target.series
+        }));
+      }
+    }
+  },
+  // onHover: (event) => {
+    
+  // }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapWrapper);

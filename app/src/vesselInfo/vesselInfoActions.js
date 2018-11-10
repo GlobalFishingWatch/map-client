@@ -226,7 +226,10 @@ export function addVessel({
 }) {
   return (dispatch, getState) => {
     const state = getState();
-    const currentLayer = state.layers.workspaceLayers.find(layer => layer.tilesetId === tilesetId);
+    const currentLayer = state.layers.workspaceLayers
+      .filter(layer => LAYER_TYPES_WITH_HEADER.indexOf(layer.type) > -1)
+      .find(layer => layer.tilesetId === tilesetId);
+
     const header = currentLayer.header;
     const layerTemporalExtents = header.temporalExtents;
     const layerUrl = header.endpoints.tracks;

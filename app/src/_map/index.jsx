@@ -1,48 +1,66 @@
 import React from 'react';
-// import { render } from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-// import thunk from 'redux-thunk';
-// import Promise from 'promise-polyfill';
+import thunk from 'redux-thunk';
 
 import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
+import { initModule } from './module/module.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
-// export default (props) => {
-//   // Hook here workspace diffing? (ie dispatch action that redispatches depending on updated parts of workspace)
-//   // console.log(props)
-//   return (
-//     <Provider store={mapStore} >
-//       <Map {...props} />
-//     </Provider>
-//   );
-// };
+
+// import ModuleReducer from './module/module.reducer';
+// import TracksReducer from './tracks/tracks.reducer';
+// import HeatmapReducer from './heatmap/heatmap.reducer';
+// import HeatmapTilesReducer from './heatmap/heatmapTiles.reducer';
+// import ViewportReducer from './glmap/viewport.reducer';
+// import StyleReducer from './glmap/style.reducer';
+// import InteractionReducer from './glmap/interaction.reducer';
+
+// const mapReducer = combineReducers({
+//   module: ModuleReducer,
+//   tracks: TracksReducer,
+//   heatmap: HeatmapReducer,
+//   heatmapTiles: HeatmapTilesReducer,
+//   style: StyleReducer,
+//   viewport: ViewportReducer
+// });
+
+// const ownStore = createStore(
+//   combineReducers({
+//     map: mapReducer
+//   }),
+//   applyMiddleware(thunk)
+// );
 
 let store;
 
-
 class MapModule extends React.Component {
-  // componentWillMount() {
-  //   console.log(this.props);
-  //   console.log(this.props.parentReducer);
+  componentDidMount() {
 
-  //   // JUST PREPARE THE REDUCERS IN PARENT INDEX; FOR NOW
-  //   const reducer = combineReducers({
-  //     test: testReducer,
-  //     ...this.props.parentReducer
-  //   });
-  //   this.mapStore = createStore(
-  //     reducer,
-  //     applyMiddleware(thunk)
-  //   );
-  // }
+  }
+  componentDidUpdate() {
+    // TODO MAP MODULE This should be in componentDidMount, but currently props.store is not ready yet
+    if (store && store.getState().map.module.token === undefined) {
+      store.dispatch(initModule({
+        token: this.props.token,
+        // TODO MAP MODULE lat/lon updates should be triggered by onHover
+        onViewportChange: this.props.onViewportChange,
+        onHover: this.props.onHover,
+        onClick: this.props.onClick,
+        onLoadStart: this.props.onLoadStart,
+        onLoadComplete: this.props.onLoadComplete
+      }));
+    }
+  }
   render() {
-    // TODO map module REMOVE
     if (this.props.store) {
       store = this.props.store;
+      // TODO MAP MODULE Switch to own store
+      // store = ownStore;
+
       return (
-        <Provider store={this.props.store}>
+        <Provider store={store}>
           <MapProxy {...this.props} />
         </Provider>
       );

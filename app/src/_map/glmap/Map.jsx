@@ -45,27 +45,28 @@ class Map extends React.Component {
   }
 
   onHover = (event) => {
-    if (event.target !== undefined && event.target.classList.contains('js-preventMapInteraction')) {
-      return;
-    }
+    // TODO MAP MODULE
+    // if (event.target !== undefined && event.target.classList.contains('js-preventMapInteraction')) {
+    //   return;
+    // }
     this.props.mapHover(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   onClick = (event) => {
-    if (event.target !== undefined) {
-      if (event.target.classList.contains('js-close')) {
-        this.props.clearPopup();
-      }
-      if (event.target.classList.contains('js-preventMapInteraction')) {
-        return;
-      }
-    }
-
+    // TODO MAP MODULE
+    // if (event.target !== undefined) {
+    //   if (event.target.classList.contains('js-close')) {
+    //     this.props.clearPopup();
+    //   }
+    //   if (event.target.classList.contains('js-preventMapInteraction')) {
+    //     return;
+    //   }
+    // }
     this.props.mapClick(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   render() {
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, popup, hoverPopup, cursor } = this.props;
+    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, /* popup, hoverPopup, */ cursor } = this.props;
     return (
       <div
         id="map"
@@ -92,8 +93,8 @@ class Map extends React.Component {
           onViewportChange={this.onViewportChange}
         >
           <ActivityLayers providedTracks={this.props.providedTracks} />
-          {popup !== null && this.props.popupComponent}
-          {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent}
+          {/* {popup !== null && this.props.popupComponent}
+          {this.state.mouseOver === true && hoverPopup !== null && this.props.hoverPopupComponent} */}
         </MapGL>
         <div className="googleLogo" />
       </div>
@@ -104,8 +105,8 @@ class Map extends React.Component {
 Map.propTypes = {
   viewport: PropTypes.object,
   mapStyle: PropTypes.object,
-  popup: PropTypes.object,
-  hoverPopup: PropTypes.object,
+  // popup: PropTypes.object,
+  // hoverPopup: PropTypes.object,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
   setViewport: PropTypes.func,
@@ -113,9 +114,10 @@ Map.propTypes = {
   mapClick: PropTypes.func,
   clearPopup: PropTypes.func,
   transitionEnd: PropTypes.func,
-  cursor: PropTypes.string,
-  popupComponent: PropTypes.node,
-  hoverPopupComponent: PropTypes.node
+  cursor: PropTypes.string
+  // TODO MAP MODULE use children
+  // popupComponent: PropTypes.node,
+  // hoverPopupComponent: PropTypes.node
 };
 
 export default Map;

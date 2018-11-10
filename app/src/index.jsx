@@ -7,7 +7,6 @@ import Promise from 'promise-polyfill';
 import 'styles/global.scss';
 
 import reportReducer from 'report/reportReducer';
-import mapInteractionReducer from 'map/mapInteractionReducer';
 import basemapReducer from 'basemap/basemapReducer';
 import layerLibraryReducer from 'layers/layersLibraryReducer';
 import layersReducer from 'layers/layersReducer';
@@ -33,16 +32,15 @@ import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
 import appReducer from './app/appReducer';
 
-
-// TODO Remove when Map broke free from main store 
 import MapDashboard from 'map/containers/MapDashboard';
-// TODO Move to Map Module
+// TODO MAP MODULE Move to Map Module
 import mapModuleReducer from './_map/module/module.reducer';
 import mapTracksReducer from './_map/tracks/tracks.reducer';
 import mapHeatmapReducer from './_map/heatmap/heatmap.reducer';
 import mapHeatmapTilesReducer from './_map/heatmap/heatmapTiles.reducer';
 import mapViewportReducer from './_map/glmap/viewport.reducer';
 import mapStyleReducer from './_map/glmap/style.reducer';
+import mapInteractionReducer from './_map/glmap/interaction.reducer';
 
 
 // Polyfill for older browsers (IE11 for example)
@@ -56,7 +54,6 @@ const reducers = {
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
-  mapInteraction: mapInteractionReducer,
   basemap: basemapReducer,
   welcomeModal: welcomeModalReducer,
   recentVessels: recentVesselsReducer,
@@ -73,21 +70,18 @@ const reducers = {
   workspace: workspaceReducer
 };
 
-// const reducer = combineReducers(reducers);
-
-
 const mapReducer = combineReducers({
   module: mapModuleReducer,
   tracks: mapTracksReducer,
   heatmap: mapHeatmapReducer,
   heatmapTiles: mapHeatmapTilesReducer,
   style: mapStyleReducer,
-  viewport: mapViewportReducer
+  viewport: mapViewportReducer,
+  interaction: mapInteractionReducer
 });
 
 
 const store = createStore(
-  // reducer,
   combineReducers({
     map: mapReducer,
     ...reducers
@@ -99,9 +93,7 @@ render(
   <Provider store={store} >
     <AppContainer>
       <AuthMapContainer>
-        <MapDashboard>
-          {/* <MapModule store={store} /> */}
-        </MapDashboard>
+        <MapDashboard />
       </AuthMapContainer>
     </AppContainer>
   </Provider>,

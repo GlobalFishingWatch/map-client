@@ -128,7 +128,8 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
 
     layerIds.forEach((layerId) => {
       const heatmapLayer = heatmapLayers[layerId];
-      const { url, temporalExtents, temporalExtentsLess, isPBF, colsByName } = { ...heatmapLayer };
+      const { temporalExtents, temporalExtentsLess, isPBF, colsByName } = { ...heatmapLayer.header };
+      const url = heatmapLayer.header.endpoints.tiles;
 
       referenceTiles.forEach((referenceTile) => {
         // check if tile does not already exist first
@@ -256,12 +257,13 @@ export function loadAllTilesForLayer(layerId) {
 export const addHeatmapLayer = layer => (dispatch, getState) => {
   // TODO MAP MODULE
   const currentOuterExtent = getState().filters.timelineOuterExtent;
+  const temporalExtents = layer.header.temporalExtents;
   dispatch({
     type: ADD_HEATMAP_LAYER,
     payload: {
       ...layer,
       // initially attach which of the temporal extents indices are visible with initial outerExtent
-      visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, layer.temporalExtents)
+      visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents)
     }
   });
 
@@ -412,7 +414,12 @@ export function highlightVesselFromHeatmap(tileQuery) {
       dispatch({
         type: HIGHLIGHT_VESSELS,
         payload: {
-          layerId: layer.id,
+          layer: {
+            id: layer.id,
+            tilesetId: layer.tilesetId,
+            subtype: layer.subtype,
+            header: layer.header
+          },
           isEmpty,
           clickableCluster: isCluster === true || isMouseCluster === true,
           highlightableCluster: isCluster !== true,

@@ -13,13 +13,6 @@ const containsLayer = (layer, layers) => layers.find(prevLayer =>
 
 class MapProxy extends React.Component {
   componentDidMount() {
-    this.props.initModule({
-      token: this.props.token,
-      onViewportChange: this.props.onViewportChange,
-      onLoadStart: this.props.onLoadStart,
-      onLoadComplete: this.props.onLoadComplete
-    });
-
     if (this.props.viewport !== null) {
       this.props.updateViewport(this.props.viewport);
     }
@@ -93,16 +86,20 @@ MapProxy.propTypes = {
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
     // color: ...
   })),
+  // TODO Move inside track object ^^^
   highlightedTrack: PropTypes.string,
   // TODO Colors are passed through filters...
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    url: PropTypes.string,
+    tilesetId: PropTypes.string,
     subtype: PropTypes.string,
-    isPBF: PropTypes.bool,
-    colsByName: PropTypes.object,
-    temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    temporalExtentsLess: PropTypes.bool
+    header: PropTypes.shape({
+      endpoints: PropTypes.object,
+      isPBF: PropTypes.bool,
+      colsByName: PropTypes.object,
+      temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+      temporalExtentsLess: PropTypes.bool
+    })
     // color: ...
   })),
   basemapLayers: PropTypes.arrayOf(PropTypes.shape({
@@ -118,12 +115,14 @@ MapProxy.propTypes = {
     color: PropTypes.string,
     showLabels: PropTypes.bool
   })),
+  // interactiveLayerIds TODO MAP MODULE
   // customLayers
   // filters
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,
-  // interaction callbacks...
+  onClick: PropTypes.func,
+  onHover: PropTypes.func,
   onAttributionsChange: PropTypes.func
 };
 

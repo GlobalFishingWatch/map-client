@@ -192,12 +192,12 @@ class ActivityLayers extends React.Component {
     const hue = ACTIVITY_HIGHLIGHT_HUE;
     if (
       highlightedVessels !== undefined
-      && highlightedVessels.layerId !== undefined
+      && highlightedVessels.layer !== undefined
       && highlightedVessels.foundVessels !== undefined
       && highlightedVessels.isEmpty !== true
     ) {
       return {
-        highlightData: heatmapLayers[highlightedVessels.layerId],
+        highlightData: heatmapLayers[highlightedVessels.layer.id],
         highlightFilters: highlightedVessels.foundVessels.map(vessel => ({
           hue,
           filterValues: {
@@ -207,7 +207,7 @@ class ActivityLayers extends React.Component {
       };
     } else if (highlightedClickedVessel !== null) {
       return {
-        highlightData: heatmapLayers[highlightedClickedVessel.layerId],
+        highlightData: heatmapLayers[highlightedClickedVessel.layer.id],
         highlightFilters: [{
           hue,
           filterValues: {

@@ -1,6 +1,6 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'layers/layersActions';
 // import { clearHighlightedVessels } from 'activityLayers/heatmapActions'; TODO MAP MODULE
-import { updatePopupReportStatus } from 'map/mapInteractionActions';
+// import { updatePopupReportStatus } from 'map/mapInteractionActions'; TODO MAP MODULE
 // import { updateMapStyle } from 'map/mapStyleActions';  TODO MAP MODULE
 import { FLAGS } from 'constants';
 
