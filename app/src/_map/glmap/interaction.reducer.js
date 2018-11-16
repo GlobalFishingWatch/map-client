@@ -1,3 +1,4 @@
+// TODO MAP MODULE remove whole reducer
 import {
   SET_HOVER_POPUP,
   SET_POPUP,

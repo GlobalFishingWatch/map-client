@@ -67,6 +67,8 @@ class MapProxy extends React.Component {
       <Map
         providedTracks={this.props.tracks}
         // providedHeatmapLayers={this.props.heatmapLayers}
+        hoverPopup={this.props.hoverPopup}
+        clickPopup={this.props.clickPopup}
       />
     );
   }
@@ -118,6 +120,17 @@ MapProxy.propTypes = {
   // interactiveLayerIds TODO MAP MODULE
   // customLayers
   // filters
+  hoverPopup: PropTypes.shape({
+    content: PropTypes.node,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+  }),
+  clickPopup: PropTypes.shape({
+    content: PropTypes.node,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+  }),
+  // TODO MAP Module those are not needed here as they are used directly in index.
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,

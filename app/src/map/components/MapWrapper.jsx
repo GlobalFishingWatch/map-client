@@ -1,59 +1,55 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { Popup } from 'react-map-gl';
-import PopupStyles from 'styles/components/map/popup.scss';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
+import HoverPopup from 'map/components/HoverPopup';
 import MapModule from 'src/_map';
 import store from '../..';
 
 class MapWrapper extends Component {
+  state = {
+    hoverPopup: null,
+    clickPopup: null
+  }
   onClick = (event) => {
     // TODO CLEAR POPUP
     this.props.onMapClick(event);
-    // TODO trigger encounters or vessel click
+    let clickPopup = null;
     if (event.type === 'static') {
-      console.log('show popup', event);
-    } else if (event.type === 'activity') {
-      console.log('activity', event);
+      clickPopup = {
+        content: <StaticLayerPopup event={event}  />,
+        latitude: event.latitude,
+        longitude: event.longitude
+      };
     }
+    this.setState({
+      clickPopup,
+      hoverPopup: (clickPopup !== undefined) ? null : this.state.hoverPopup
+    });
   }
   onHover = (event) => {
-    // console.log(event);
-    // TODO MAP MODULE
-    // setState({
-    //   hoverPopupContent  
-    // })
+    // console.log(event)
+    let hoverPopup = null;
+    if (event.type !== null) {
+      hoverPopup = {
+        content: <HoverPopup event={event} />,
+        latitude: event.latitude,
+        longitude: event.longitude
+      };
+    }
+    this.setState({
+      hoverPopup
+    });
   }
-  renderHoverPopup() {
-    const { hoverPopup } = this.props;
-    if (hoverPopup === null) return null;
-    return (<Popup
-      latitude={hoverPopup.latitude}
-      longitude={hoverPopup.longitude}
-      closeButton={false}
-      anchor="bottom"
-      offsetTop={-10}
-      tipSize={4}
-    >
-      <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
-        {hoverPopup.layerTitle}: {hoverPopup.featureTitle}
-      </div>
-    </Popup>);
-  }
-  render() {
-    // const popupComponent = <StaticLayerPopup forceRender={Math.random()} />;
-    // const hoverPopupComponent = this.renderHoverPopup();
 
-    // <Map popupComponent={popupComponent} hoverPopupComponent={hoverPopupComponent} />
-    // {this.props.children}
+  render() {
     return (
       <MapModule
         // TODO MAP MODULE REMOVE STORE
         store={store}
         onHover={this.onHover}
         onClick={this.onClick}
-        // hoverPopupContent={}
+        hoverPopup={this.state.hoverPopup}
+        clickPopup={this.state.clickPopup}
         {...this.props}
       />);
   }

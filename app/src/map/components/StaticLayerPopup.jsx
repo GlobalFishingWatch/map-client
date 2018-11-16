@@ -1,10 +1,16 @@
 import React from 'react';
-import { Popup } from 'react-map-gl';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { POLYGON_LAYERS_AREA } from 'config';
 import PopupStyles from 'styles/components/map/popup.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
+
+const humanizePopupFieldId = id => id
+  .replace(POLYGON_LAYERS_AREA, 'Est. area km²')
+  .replace('_', ' ')
+  .replace(/\b\w/g, l => l.toUpperCase());
+
 
 class StaticLayerPopup extends React.Component {
   render() {
@@ -14,14 +20,7 @@ class StaticLayerPopup extends React.Component {
     if (popup.isInReport === true) {
       toggleButtonClassName += ` ${PopupStyles._remove}`;
     }
-    return (<Popup
-      latitude={popup.latitude}
-      longitude={popup.longitude}
-      closeButton={false}
-      anchor="bottom"
-      offsetTop={-10}
-      tipSize={5}
-    >
+    return (
       <div className={classnames('js-preventMapInteraction', PopupStyles.popup)}>
         <div className={PopupStyles.title} >
           {popup.layerTitle}
@@ -29,18 +28,18 @@ class StaticLayerPopup extends React.Component {
         <div className={PopupStyles.description} >
           {popup.fields.map(field => (
             <div key={field.title}>
-              <b>{field.title}</b>
+              <b>{humanizePopupFieldId(field.title)}</b>
               {' '}
               <span>{field.value}</span>
             </div>
           ))}
         </div >
-        <button
+        {/* <button
           className={classnames('js-close', 'js-preventMapInteraction', PopupStyles.close, buttonCloseStyles.buttonClose)}
           onClick={this.props.clearPopup}
         >
           <CloseIcon className={buttonCloseStyles.cross} />
-        </button >
+        </button > */}
         {popup.isInReport !== null &&
           <button
             onClick={() => toggleCurrentReportPolygon()}
@@ -49,8 +48,7 @@ class StaticLayerPopup extends React.Component {
             {toggleButtonText}
           </button>
         }
-      </div>
-    </Popup>);
+      </div>);
   }
 }
 

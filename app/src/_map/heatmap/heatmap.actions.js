@@ -405,6 +405,16 @@ const _queryHeatmap = (state, tileQuery) => {
   return { isEmpty, isCluster, isMouseCluster, foundVessels, layer };
 };
 
+export function clearHighlightedVessels() {
+  return {
+    type: HIGHLIGHT_VESSELS,
+    payload: {
+      isEmpty: true,
+      clickableCluster: false
+    }
+  };
+}
+
 export function highlightVesselFromHeatmap(tileQuery) {
   return (dispatch, getState) => {
     const state = getState();
@@ -426,16 +436,8 @@ export function highlightVesselFromHeatmap(tileQuery) {
           foundVessels
         }
       });
-    }
-  };
-}
-
-export function clearHighlightedVessels() {
-  return {
-    type: HIGHLIGHT_VESSELS,
-    payload: {
-      isEmpty: true,
-      clickableCluster: false
+    } else {
+      dispatch(clearHighlightedVessels());
     }
   };
 }

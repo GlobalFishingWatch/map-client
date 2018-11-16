@@ -110,9 +110,7 @@ const mapStateToProps = state => ({
   tracks: getAllVesselsForTracks(state),
   heatmapLayers: getHeatmapLayers(state),
   staticLayers: getStaticLayers(state),
-  basemapLayers: getBasemapLayers(state),
-  // TODO MAP MODULE
-  // hoverPopup: state.mapInteraction.hoverPopup
+  basemapLayers: getBasemapLayers(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -135,7 +133,6 @@ const mapDispatchToProps = dispatch => ({
     if (event.type === 'activity') {
       const target = event.target;
       if (target.isCluster === true) {
-        console.log(event.latitude, event.longitude)
         dispatch(trackMapClicked(event.latitude, event.longitude, 'cluster'));
         // dispatch(hideVesselsInfoPanel());
       } else if (event.layer.subtype === LAYER_TYPES.Encounters) {
@@ -151,10 +148,7 @@ const mapDispatchToProps = dispatch => ({
         }));
       }
     }
-  },
-  // onHover: (event) => {
-    
-  // }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapWrapper);
