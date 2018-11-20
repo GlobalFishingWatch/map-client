@@ -8,7 +8,6 @@ import './map.css';
 
 const PopupWrapper = (props) => {
   const { latitude, longitude, children, closeButton } = props;
-  console.log(closeButton)
   return (<Popup
     latitude={latitude}
     longitude={longitude}
@@ -107,7 +106,7 @@ class Map extends React.Component {
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
         >
-          <ActivityLayers providedTracks={this.props.providedTracks} />
+          <ActivityLayers tracks={this.props.tracks} />
           {clickPopup !== null &&
             <PopupWrapper latitude={clickPopup.latitude} longitude={clickPopup.longitude} closeButton>
               {clickPopup.content}

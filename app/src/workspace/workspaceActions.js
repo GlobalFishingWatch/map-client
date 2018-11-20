@@ -85,6 +85,7 @@ export function updateURL() {
   };
 }
 
+// Stores viewport updates emitted by map for future workspace saving
 export const updateWorkspace = props => ({
   type: UPDATE_WORKSPACE,
   payload: props
@@ -145,7 +146,7 @@ export function saveWorkspace(errorAction) {
     const workspaceData = {
       workspace: {
         map: {
-          center: [state.workspace.viewport.latitude, state.workspace.viewport.longitude],
+          center: state.workspace.viewport.center,
           //  Compatibility: A Mapbox GL JS zoom z means z-1
           zoom: state.workspace.viewport.zoom + 1,
           layers

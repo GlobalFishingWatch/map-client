@@ -255,7 +255,8 @@ export function loadAllTilesForLayer(layerId) {
 
 
 export const addHeatmapLayer = layer => (dispatch, getState) => {
-  // TODO MAP MODULE
+  // TODO MAP MODULE state.filters.timelineOuterExtent -> activityLayersLoadingTemporalExtents
+  // as param of this function (sent by MapProxy)
   const currentOuterExtent = getState().filters.timelineOuterExtent;
   const temporalExtents = layer.header.temporalExtents;
   dispatch({
@@ -286,6 +287,8 @@ export const removeHeatmapLayer = id => (dispatch) => {
 export function loadTilesExtraTimeRange() {
   return (dispatch, getState) => {
     const state = getState();
+    // TODO MAP MODULE state.filters.timelineOuterExtent -> activityLayersLoadingTemporalExtents
+    // as param of this function (sent by MapProxy)
     const currentOuterExtent = state.filters.timelineOuterExtent;
     const heatmapLayers = state.map.heatmap.heatmapLayers;
     const layersToUpdate = {};

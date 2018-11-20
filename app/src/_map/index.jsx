@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
+import { loadTrack, removeTracks } from './tracks/tracks.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -35,11 +36,17 @@ import GL_STYLE from './glmap/gl-styles/style.json';
 
 let store;
 
+const containsTrack = (track, tracks) => tracks.find(prevTrack =>
+  prevTrack.id === track.id &&
+  prevTrack.segmentId === track.segmentId
+) !== undefined;
+
+
 class MapModule extends React.Component {
   componentDidMount() {
 
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     // TODO MAP MODULE This should be in componentDidMount, but currently props.store is not ready yet
     if (store && store.getState().map.module.token === undefined) {
       store.dispatch(initModule({
@@ -51,6 +58,26 @@ class MapModule extends React.Component {
         onLoadStart: this.props.onLoadStart,
         onLoadComplete: this.props.onLoadComplete
       }));
+    }
+
+    if (this.props.tracks !== prevProps.tracks) {
+      if (this.props.tracks.length !== prevProps.tracks.length) {
+        const newTracks = this.props.tracks;
+        const prevTracks = prevProps.tracks;
+        newTracks.forEach((newTrack) => {
+          if (!containsTrack(newTrack, prevTracks)) {
+            store.dispatch(loadTrack(newTrack));
+            // this.props.loadTrack(newTrack);
+          }
+        });
+        prevTracks.forEach((prevTrack) => {
+          if (!containsTrack(prevTrack, newTracks)) {
+            // this.props.removeTrack(prevTrack);
+            store.dispatch(removeTracks([prevTrack]));
+          }
+        });
+      }
+
     }
   }
   render() {

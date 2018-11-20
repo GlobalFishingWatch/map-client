@@ -88,13 +88,13 @@ String. Mandatory. Identifies tileset uniquely
 
 String. Allowed values are: `encounters`.
 
-### `heatmapLayer.color`
+### `heatmapLayer.hue`
 
-TODO
+A Number between 0 and 360. Colors for heatmap layers can only be expressed as hues (degrees in the color wheel, saturation and luminance being hardcoded) for internal technical reasons.
 
 ### `heatmapLayer.opacity`
 
-Number. TODO
+A Number between 0 and 1.
 
 ### `heatmapLayer.header`
 

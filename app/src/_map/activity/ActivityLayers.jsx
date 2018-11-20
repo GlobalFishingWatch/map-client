@@ -233,11 +233,12 @@ class ActivityLayers extends React.Component {
       timelineOverExtentIndexes,
       highlightedVessels,
       highlightedClickedVessel,
-      allTracks,
+      tracks,
       highlightedTrack,
       leftWorldScaled,
       rightWorldScaled
     } = this.props;
+    console.log(tracks)
     const { viewport } = this.context;
 
     const startIndex = timelineInnerExtentIndexes[0];
@@ -247,7 +248,7 @@ class ActivityLayers extends React.Component {
     if (highlightedVessels.isEmpty !== true) {
       this.toggleHeatmapDimming(true);
     }
-    if (highlightedVessels.isEmpty === true && allTracks.length === 0) {
+    if (highlightedVessels.isEmpty === true && tracks.length === 0) {
       this._startHeatmapFadein();
     }
     if (this.renderer) {
@@ -299,7 +300,7 @@ class ActivityLayers extends React.Component {
       }
       {this.stage !== undefined &&
         <TracksLayer
-          tracks={allTracks}
+          tracks={tracks}
           viewport={viewport}
           zoom={zoom}
           startIndex={startIndex}
@@ -324,7 +325,7 @@ ActivityLayers.propTypes = {
   layerFilters: PropTypes.object,
   highlightedVessels: PropTypes.object,
   highlightedClickedVessel: PropTypes.object,
-  allTracks: PropTypes.array,
+  tracks: PropTypes.array,
   highlightedTrack: PropTypes.number,
   queryHeatmapVessels: PropTypes.func,
   exportNativeViewport: PropTypes.func,
