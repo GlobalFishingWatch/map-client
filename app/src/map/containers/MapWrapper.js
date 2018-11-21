@@ -62,14 +62,14 @@ const getHeatmapLayers = createSelector(
   layers => layers
     .filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
     .map((layer) => {
-      // console.log(layer)
       const layerParams = {
         id: layer.id,
         subtype: layer.subtype,
         tilesetId: layer.tilesetId,
         header: layer.header,
         hue: layer.hue,
-        opacity: layer.opacity
+        opacity: layer.opacity,
+        visible: layer.visible
       };
       return layerParams;
     })

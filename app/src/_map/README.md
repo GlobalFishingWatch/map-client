@@ -96,6 +96,10 @@ A Number between 0 and 360. Colors for heatmap layers can only be expressed as h
 
 A Number between 0 and 1.
 
+### `heatmapLayer.visible`
+
+Boolean.
+
 ### `heatmapLayer.header`
 
 Object. Mandatory. Must be passed as is - mandatory fields are: 

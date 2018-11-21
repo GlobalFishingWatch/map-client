@@ -7,8 +7,8 @@ import {
   groupData,
   getTilePlaybackData,
   selectVesselsAt
-} from 'utils/heatmapTileData';
-import { LAYER_TYPES } from 'constants';
+} from '../../utils/heatmapTileData';
+import { LAYER_TYPES } from '../../constants';
 import { markTileAsLoaded } from './heatmapTiles.actions';
 import { startLoader, completeLoader } from '../module/module.actions';
 
@@ -199,12 +199,14 @@ export function getTile(referenceTile) {
       type: ADD_REFERENCE_TILE,
       payload: referenceTile
     });
-    const visibleHeatmapLayers = getState().layers.workspaceLayers.filter(workspaceLayer =>
-      workspaceLayer.type === LAYER_TYPES.Heatmap && workspaceLayer.added === true && workspaceLayer.visible === true)
-      .map(layer => layer.id);
+    const visibleHeatmapLayers = getState().map.heatmap.heatmapLayers;
+    const visibleHeatmapLayersIds = Object.keys(visibleHeatmapLayers)
+      .filter(id => visibleHeatmapLayers[id].visible === true);
 
-    if (visibleHeatmapLayers.length) {
-      dispatch(getTiles(visibleHeatmapLayers, [referenceTile]));
+    console.log(visibleHeatmapLayersIds)
+
+    if (visibleHeatmapLayersIds.length) {
+      dispatch(getTiles(visibleHeatmapLayersIds, [referenceTile]));
     }
   };
 }
