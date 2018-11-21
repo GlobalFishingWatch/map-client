@@ -44,13 +44,48 @@ class CustomLayer extends Component {
     }
 
     return (
-      <div className={CustomLayerStyles.customLayer} >
+      <div className={CustomLayerStyles.customLayer}>
         <form
           className={classnames(MapFormStyles.form, CustomLayerStyles.uploadForm)}
           onSubmit={e => this.onSubmit(e)}
         >
-          <div className={CustomLayerStyles.column} >
-            <div className={CustomLayerStyles.row} >
+          <div className={CustomLayerStyles.column}>
+            <div className={CustomLayerStyles.row}>
+              <label className={MapFormStyles.fieldName} htmlFor="name">Type</label>
+              <div className={MapFormStyles.radioGroup}>
+                <input type="radio" name="type" id="geojson" />
+                <label htmlFor="geojson">
+                  GeoJSON
+                  <div className={MapFormStyles.help}>
+                    A simple vector format that can be produced by various GIS packages such as ArcGIS or QGIS.
+                    You first need to upload the file, using a service such as Dropbox or Github.
+                  </div>
+                </label>
+              </div>
+              <div className={MapFormStyles.radioGroup}>
+                <input type="radio" name="type" id="raster" />
+                <label htmlFor="raster">
+                  Raster
+                  <div className={MapFormStyles.help}>
+                    Use this option for data that can be consumed as tiles (images), such as
+                    satellite imagery.
+                  </div>
+                </label>
+              </div>
+              <div className={MapFormStyles.radioGroup}>
+                <input type="radio" name="type" id="wms" disabled />
+                <label htmlFor="wms">
+                  <span style={{ opacity: 0.6 }} >WMS Server</span>
+                  <div className={MapFormStyles.help}>
+                    Not available yet. Please use the &quot;raster&quot; option with a pre-configured
+                    WMS GetMap endpoint URL.
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className={CustomLayerStyles.column}>
+            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles.fieldName} htmlFor="name" >name</label>
               <input
                 className={MapFormStyles.textInput}
@@ -61,8 +96,7 @@ class CustomLayer extends Component {
                 required
               />
             </div>
-
-            <div className={CustomLayerStyles.row} >
+            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles.fieldName} htmlFor="url" >url</label>
               <input
                 className={MapFormStyles.textInput}
@@ -73,10 +107,8 @@ class CustomLayer extends Component {
                 required
               />
             </div>
-          </div>
-          <div className={CustomLayerStyles.column} >
-            <div className={CustomLayerStyles.row} >
-              <label className={MapFormStyles.fieldName} htmlFor="description" >description</label>
+            <div className={CustomLayerStyles.row}>
+              <label className={MapFormStyles.fieldName} htmlFor="description" >description (optional)</label>
               <textarea
                 className={MapFormStyles.textarea}
                 name="description"
@@ -87,11 +119,11 @@ class CustomLayer extends Component {
             </div>
           </div>
 
-          <div className={CustomLayerStyles.row} >
+          <div className={CustomLayerStyles.row}>
             {this.props.error &&
             <span className={CustomLayerStyles.submitError} > Whoops! Something went wrong. </span>
             }
-            <div className={CustomLayerStyles.submitContainer} >
+            <div className={CustomLayerStyles.submitContainer}>
               <input
                 className={classnames(ButtonStyles.button, ButtonStyles._filled,
                   ButtonStyles._big, CustomLayerStyles.submitButton)}
