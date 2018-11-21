@@ -106,7 +106,10 @@ class Map extends React.Component {
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
         >
-          <ActivityLayers tracks={this.props.tracks} />
+          <ActivityLayers
+            tracks={this.props.tracks}
+            heatmapLayers={this.props.heatmapLayers}
+          />
           {clickPopup !== null &&
             <PopupWrapper latitude={clickPopup.latitude} longitude={clickPopup.longitude} closeButton>
               {clickPopup.content}

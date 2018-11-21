@@ -4,8 +4,6 @@ import ActivityLayers from './ActivityLayers.jsx';
 import { queryHeatmapVessels } from '../heatmap/heatmapTiles.actions';
 
 const mapStateToProps = state => ({
-  layers: state.layers.workspaceLayers,
-  heatmapLayers: state.map.heatmap.heatmapLayers,
   // TODO MAP MODULE
   timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
   // TODO MAP MODULE
@@ -17,9 +15,10 @@ const mapStateToProps = state => ({
   leftWorldScaled: state.map.viewport.leftWorldScaled,
   rightWorldScaled: state.map.viewport.rightWorldScaled,
   // TODO MAP MODULE - use dummy value for now
-  layerFilters: state.filterGroups.layerFilters,
+  // layerFilters: state.filterGroups.layerFilters,
+  layerFilters: {},
   // TODO MAP MODULE
-  highlightedTrack: state.vesselInfo.highlightedTrack
+  // highlightedTrack: state.vesselInfo.highlightedTrack
 });
 
 const mapDispatchToProps = dispatch => ({

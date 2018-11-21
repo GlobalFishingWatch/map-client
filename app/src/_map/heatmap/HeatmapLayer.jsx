@@ -78,9 +78,9 @@ class HeatmapLayer extends React.Component {
   }
 
   _redraw() {
-    const { data, filters, baseTexture, layer } = this.props;
+    const { filters, baseTexture, layer } = this.props;
 
-    if (data === null || data === undefined || layer.visible === false) {
+    if (layer === null || layer === undefined || layer.tiles === undefined || layer.visible === false) {
       this.stage.visible = false;
       return;
     }
@@ -88,7 +88,7 @@ class HeatmapLayer extends React.Component {
     this.stage.visible = true;
     this.stage.alpha = layer.opacity;
 
-    const tiles = data.tiles;
+    const tiles = layer.tiles;
     const defaultHue = layer.hue;
 
     const allHuesToRender = (filters !== undefined && filters.length)
@@ -222,7 +222,6 @@ class HeatmapLayer extends React.Component {
 
 HeatmapLayer.propTypes = {
   layer: PropTypes.object,
-  data: PropTypes.object,
   rootStage: PropTypes.object,
   viewport: PropTypes.object,
   startIndex: PropTypes.number,

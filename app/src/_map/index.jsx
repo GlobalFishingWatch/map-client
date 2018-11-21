@@ -7,6 +7,8 @@ import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
+// TODO MAP MODULE REMOVE HEATMAP LAYER
+import { addHeatmapLayer, removeHeatmapLayer } from './heatmap/heatmap.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -41,6 +43,10 @@ const containsTrack = (track, tracks) => tracks.find(prevTrack =>
   prevTrack.segmentId === track.segmentId
 ) !== undefined;
 
+const containsLayer = (layer, layers) => layers.find(prevLayer =>
+  prevLayer.id === layer.id
+) !== undefined;
+
 
 class MapModule extends React.Component {
   componentDidMount() {
@@ -67,17 +73,30 @@ class MapModule extends React.Component {
         newTracks.forEach((newTrack) => {
           if (!containsTrack(newTrack, prevTracks)) {
             store.dispatch(loadTrack(newTrack));
-            // this.props.loadTrack(newTrack);
           }
         });
         prevTracks.forEach((prevTrack) => {
           if (!containsTrack(prevTrack, newTracks)) {
-            // this.props.removeTrack(prevTrack);
             store.dispatch(removeTracks([prevTrack]));
           }
         });
       }
+    }
 
+    if (this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
+      const newHeatmapLayers = this.props.heatmapLayers;
+      const prevHeatmapLayers = prevProps.heatmapLayers;
+      newHeatmapLayers.forEach((newHeatmapLayer) => {
+        if (!containsLayer(newHeatmapLayer, prevHeatmapLayers)) {
+          // TODO MAP MODULE PASS activityLayersLoadingTemporalExtents
+          store.dispatch(addHeatmapLayer(newHeatmapLayer));
+        }
+      });
+      prevHeatmapLayers.forEach((prevHeatmapLayer) => {
+        if (!containsLayer(prevHeatmapLayer, newHeatmapLayers)) {
+          store.dispatch(removeHeatmapLayer(prevHeatmapLayer.id));
+        }
+      });
     }
   }
   render() {

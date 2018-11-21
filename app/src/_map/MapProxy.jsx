@@ -1,10 +1,8 @@
+// TODO MAP MODULE Move remaining diff logic to index.jsx
+// TODO MAP MODULE Merge with Map
 import React from 'react';
 import PropTypes from 'prop-types';
 import Map from './glmap/Map.container';
-
-const containsLayer = (layer, layers) => layers.find(prevLayer =>
-  prevLayer.id === layer.id
-) !== undefined;
 
 class MapProxy extends React.Component {
   componentDidMount() {
@@ -16,22 +14,6 @@ class MapProxy extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.viewport !== prevProps.viewport) {
       this.props.updateViewport(this.props.viewport);
-    }
-
-    if (this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
-      const newHeatmapLayers = this.props.heatmapLayers;
-      const prevHeatmapLayers = prevProps.heatmapLayers;
-      newHeatmapLayers.forEach((newHeatmapLayer) => {
-        if (!containsLayer(newHeatmapLayer, prevHeatmapLayers)) {
-          // TODO MAP MODULE PASS activityLayersLoadingTemporalExtents
-          this.props.addHeatmapLayer(newHeatmapLayer);
-        }
-      });
-      prevHeatmapLayers.forEach((prevHeatmapLayer) => {
-        if (!containsLayer(prevHeatmapLayer, newHeatmapLayers)) {
-          this.props.removeHeatmapLayer(prevHeatmapLayer.id);
-        }
-      });
     }
 
     if (this.props.basemapLayers !== prevProps.basemapLayers ||
@@ -48,7 +30,7 @@ class MapProxy extends React.Component {
     return (
       <Map
         tracks={this.props.tracks}
-        // providedHeatmapLayers={this.props.heatmapLayers}
+        heatmapLayers={this.props.heatmapLayers}
         hoverPopup={this.props.hoverPopup}
         clickPopup={this.props.clickPopup}
       />

@@ -3,7 +3,6 @@ import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
 import { lngLatToWorld } from 'viewport-mercator-project';
 import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from 'utils/colors';
-import { LAYER_TYPES } from 'constants';
 import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
@@ -190,41 +189,47 @@ class ActivityLayers extends React.Component {
   // FIXME move to container?
   _getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers) {
     const hue = ACTIVITY_HIGHLIGHT_HUE;
+    let highlightLayerData = {
+      id: '__HIGHLIGHT__',
+      visible: true,
+      opacity: 1,
+      hue: ACTIVITY_HIGHLIGHT_HUE
+    };
+    let highlightFilters = [];
+
     if (
       highlightedVessels !== undefined
       && highlightedVessels.layer !== undefined
       && highlightedVessels.foundVessels !== undefined
       && highlightedVessels.isEmpty !== true
     ) {
-      return {
-        highlightData: heatmapLayers[highlightedVessels.layer.id],
-        highlightFilters: highlightedVessels.foundVessels.map(vessel => ({
-          hue,
-          filterValues: {
-            series: [vessel.series]
-          }
-        }))
-      };
+      const sourceLayer = heatmapLayers.find(l => l.id === highlightedVessels.layer.id);
+      highlightLayerData = { highlightLayerData, ...sourceLayer };
+      highlightFilters = highlightedVessels.foundVessels.map(vessel => ({
+        hue,
+        filterValues: {
+          series: [vessel.series]
+        }
+      }));
+
     } else if (highlightedClickedVessel !== null) {
-      return {
-        highlightData: heatmapLayers[highlightedClickedVessel.layer.id],
-        highlightFilters: [{
-          hue,
-          filterValues: {
-            series: [highlightedClickedVessel.seriesgroup]
-          }
-        }]
-      };
+      const sourceLayer = heatmapLayers.find(l => l.id === highlightedClickedVessel.layer.id);
+      highlightLayerData = { highlightLayerData, ...sourceLayer };
+      highlightFilters = [{
+        hue,
+        filterValues: {
+          series: [highlightedClickedVessel.seriesgroup]
+        }
+      }];
     }
     return {
-      highlightData: null,
-      highlightFilters: []
+      highlightLayerData,
+      highlightFilters
     };
   }
 
   render() {
     // TODO MAP MODULE
-    const layers = this.props.layers.filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true);
     const {
       zoom,
       layerFilters,
@@ -238,7 +243,6 @@ class ActivityLayers extends React.Component {
       leftWorldScaled,
       rightWorldScaled
     } = this.props;
-    console.log(tracks)
     const { viewport } = this.context;
 
     const startIndex = timelineInnerExtentIndexes[0];
@@ -256,7 +260,7 @@ class ActivityLayers extends React.Component {
       if (err !== 0) console.log(err);
     }
 
-    const { highlightData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
+    const { highlightLayerData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);
 
     return (<div
       ref={(ref) => { this.container = ref; }}
@@ -264,11 +268,10 @@ class ActivityLayers extends React.Component {
       onMouseMove={this.onMouseMove}
       onTouchStart={this.onTouchStart}
     >
-      {layers.map(layer => (
+      {heatmapLayers.map(layer => (
         <HeatmapLayer
           key={layer.id}
           layer={layer}
-          data={heatmapLayers[layer.id]}
           filters={layerFilters[layer.id] || []}
           viewport={viewport}
           startIndex={startIndex}
@@ -284,8 +287,7 @@ class ActivityLayers extends React.Component {
       {this.stage !== undefined &&
         <HeatmapLayer
           key="highlighted"
-          layer={{ id: '__HIGHLIGHT__', visible: true, opacity: 1, hue: ACTIVITY_HIGHLIGHT_HUE }}
-          data={highlightData}
+          layer={highlightLayerData}
           filters={highlightFilters}
           viewport={viewport}
           startIndex={startIndex}
@@ -318,8 +320,7 @@ class ActivityLayers extends React.Component {
 
 ActivityLayers.propTypes = {
   zoom: PropTypes.number,
-  layers: PropTypes.array,
-  heatmapLayers: PropTypes.object,
+  heatmapLayers: PropTypes.array,
   timelineInnerExtentIndexes: PropTypes.array,
   timelineOverExtentIndexes: PropTypes.array,
   layerFilters: PropTypes.object,

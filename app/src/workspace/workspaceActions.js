@@ -197,7 +197,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
   const workspace = { ...workspaceData };
   // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
   workspace.zoom = workspaceData.zoom - 1;
-  console.log(workspace)
   dispatch({ type: UPDATE_WORKSPACE, payload: workspace });
 
   dispatch({ type: SET_WORKSPACE_LOADED });
