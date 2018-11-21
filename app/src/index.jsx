@@ -33,15 +33,6 @@ import { init } from './app/appActions';
 import appReducer from './app/appReducer';
 
 import MapDashboard from 'map/containers/MapDashboard';
-// TODO MAP MODULE Move to Map Module
-import mapModuleReducer from './_map/module/module.reducer';
-import mapTracksReducer from './_map/tracks/tracks.reducer';
-import mapHeatmapReducer from './_map/heatmap/heatmap.reducer';
-import mapHeatmapTilesReducer from './_map/heatmap/heatmapTiles.reducer';
-import mapViewportReducer from './_map/glmap/viewport.reducer';
-import mapStyleReducer from './_map/glmap/style.reducer';
-import mapInteractionReducer from './_map/glmap/interaction.reducer';
-
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -70,22 +61,8 @@ const reducers = {
   workspace: workspaceReducer
 };
 
-const mapReducer = combineReducers({
-  module: mapModuleReducer,
-  tracks: mapTracksReducer,
-  heatmap: mapHeatmapReducer,
-  heatmapTiles: mapHeatmapTilesReducer,
-  style: mapStyleReducer,
-  viewport: mapViewportReducer,
-  interaction: mapInteractionReducer
-});
-
-
 const store = createStore(
-  combineReducers({
-    map: mapReducer,
-    ...reducers
-  }),
+  combineReducers(reducers),
   applyMiddleware(analyticsMiddleware, thunk)
 );
 

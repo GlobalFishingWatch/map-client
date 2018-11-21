@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import StaticLayerPopup from 'map/containers/StaticLayerPopup';
 import HoverPopup from 'map/components/HoverPopup';
 import MapModule from 'src/_map';
-import store from '../..';
 
 class MapWrapper extends Component {
   state = {
@@ -16,7 +15,7 @@ class MapWrapper extends Component {
     let clickPopup = null;
     if (event.type === 'static') {
       clickPopup = {
-        content: <StaticLayerPopup event={event}  />,
+        content: <StaticLayerPopup event={event} />,
         latitude: event.latitude,
         longitude: event.longitude
       };
@@ -30,8 +29,9 @@ class MapWrapper extends Component {
     // console.log(event)
     let hoverPopup = null;
     if (event.type !== null) {
+      const workspaceLayer = this.props.workspaceLayers.find(l => l.id === event.layer.id);
       hoverPopup = {
-        content: <HoverPopup event={event} />,
+        content: <HoverPopup event={event} layerTitle={workspaceLayer.title} />,
         latitude: event.latitude,
         longitude: event.longitude
       };
@@ -45,7 +45,7 @@ class MapWrapper extends Component {
     return (
       <MapModule
         // TODO MAP MODULE REMOVE STORE
-        store={store}
+        // store={store}
         onHover={this.onHover}
         onClick={this.onClick}
         hoverPopup={this.state.hoverPopup}

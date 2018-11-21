@@ -320,7 +320,9 @@ export function loadTilesExtraTimeRange(loadTemporalExtent) {
  */
 const _getCurrentFiltersForLayer = (state, layerId) => {
   if (layerId === undefined) return undefined;
-  return state.filterGroups.layerFilters[layerId];
+  // TODO MAP MODULE
+  return undefined;
+  // return state.filterGroups.layerFilters[layerId];
 };
 
 /**
@@ -336,13 +338,13 @@ const _queryHeatmap = (state, tileQuery, temporalExtentIndexes) => {
   const layersVessels = [];
 
   Object.keys(layers).forEach((layerId) => {
-    // const workspaceLayer = state.layers.workspaceLayers.find(l => l.id === layerId);
-    // if (workspaceLayer.added === true && workspaceLayer.visible === true) {
     const layer = layers[layerId];
     const allPossibleTilesByPreference = tileQuery.uids.map(uid => layer.tiles.find(tile => tile.uid === uid));
     const availableTiles = allPossibleTilesByPreference.filter(tile => tile !== undefined && tile.data !== undefined);
 
-    const currentFilters = _getCurrentFiltersForLayer(state, layerId);
+    // TODO MAP MODULE
+    // const currentFilters = _getCurrentFiltersForLayer(state, layerId);
+    const currentFilters = [];
     if (availableTiles.length) {
       const bestTile = availableTiles[0];
       layersVessels.push({

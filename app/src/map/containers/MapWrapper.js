@@ -108,6 +108,7 @@ const getBasemapLayers = createSelector(
 
 const mapStateToProps = state => ({
   // attributions: state.mapStyle.attributions, TODO MAP MODULE
+  // Forwarded to Map Module
   token: state.user.token,
   viewport: getViewport(state),
   tracks: getAllVesselsForTracks(state),
@@ -116,7 +117,9 @@ const mapStateToProps = state => ({
   basemapLayers: getBasemapLayers(state),
   temporalExtent: state.filters.timelineInnerExtent,
   loadTemporalExtent: state.filters.timelineOuterExtent,
-  highlightTemporalExtent: state.filters.timelineOverExtent
+  highlightTemporalExtent: state.filters.timelineOverExtent,
+  // Internal
+  workspaceLayers: state.layers.workspaceLayers
 });
 
 const mapDispatchToProps = dispatch => ({

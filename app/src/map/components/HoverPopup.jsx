@@ -11,47 +11,41 @@ import moment from 'moment';
 const getWorkspaceLayers = state => state.layers.workspaceLayers;
 const getEvent = (state, ownProps) => ownProps.event;
 
-const getPopupData = createSelector(
-  [getWorkspaceLayers, getEvent],
-  (workspaceLayers, event) => {
-    const workspaceLayer = workspaceLayers.find(l => l.id === event.layer.id);
-    if (event.type === 'static') {
-      return {
-        layerTitle: workspaceLayer.title,
-        featureTitle: event.target.featureTitle
-      };
-    } else if (event.type === 'activity') {
-      let featureTitle;
-      const objects = event.target.objects;
+const getPopupData = (event, layerTitle) => {
+  if (event.type === 'static') {
+    return {
+      layerTitle,
+      featureTitle: event.target.featureTitle
+    };
+  } else if (event.type === 'activity') {
+    let featureTitle;
+    const objects = event.target.objects;
 
-      if (event.layer.subtype === LAYER_TYPES.Encounters) {
-        const foundVessel = objects[0];
-        if (foundVessel.timeIndex) {
-          const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex));
-          featureTitle = moment(date).format(FORMAT_DATE);
-        }
-      } else {
-        const numVessels = (objects === undefined) ? 'multiple' : objects.length;
-        const vesselPlural = (objects === undefined || objects.length > 1) ? 'objects' : 'object';
-        featureTitle = `${numVessels} ${vesselPlural} at this location`;
+    if (event.layer.subtype === LAYER_TYPES.Encounters) {
+      const foundVessel = objects[0];
+      if (foundVessel.timeIndex) {
+        const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex));
+        featureTitle = moment(date).format(FORMAT_DATE);
       }
-      return {
-        layerTitle: workspaceLayer.title,
-        featureTitle
-      };
+    } else {
+      const numVessels = (objects === undefined) ? 'multiple' : objects.length;
+      const vesselPlural = (objects === undefined || objects.length > 1) ? 'objects' : 'object';
+      featureTitle = `${numVessels} ${vesselPlural} at this location`;
     }
-    return null;
+    return {
+      layerTitle,
+      featureTitle
+    };
   }
-);
-
-const mapStateToProps = (state, ownProps) => ({
-  popup: getPopupData(state, ownProps)
-});
+  return null;
+};
 
 const HoverPopup = (props) => {
+  const { event, layerTitle } = props;
+  const popup = getPopupData(event, layerTitle);
   return (<div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
-    {props.popup.layerTitle}: {props.popup.featureTitle}
+    {popup.layerTitle}: {popup.featureTitle}
   </div>);
 };
 
-export default connect(mapStateToProps)(HoverPopup);
+export default HoverPopup;

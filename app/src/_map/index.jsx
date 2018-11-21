@@ -12,31 +12,31 @@ import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
-// import ModuleReducer from './module/module.reducer';
-// import TracksReducer from './tracks/tracks.reducer';
-// import HeatmapReducer from './heatmap/heatmap.reducer';
-// import HeatmapTilesReducer from './heatmap/heatmapTiles.reducer';
-// import ViewportReducer from './glmap/viewport.reducer';
-// import StyleReducer from './glmap/style.reducer';
-// import InteractionReducer from './glmap/interaction.reducer';
+import ModuleReducer from './module/module.reducer';
+import TracksReducer from './tracks/tracks.reducer';
+import HeatmapReducer from './heatmap/heatmap.reducer';
+import HeatmapTilesReducer from './heatmap/heatmapTiles.reducer';
+import ViewportReducer from './glmap/viewport.reducer';
+import StyleReducer from './glmap/style.reducer';
+import InteractionReducer from './glmap/interaction.reducer';
 
-// const mapReducer = combineReducers({
-//   module: ModuleReducer,
-//   tracks: TracksReducer,
-//   heatmap: HeatmapReducer,
-//   heatmapTiles: HeatmapTilesReducer,
-//   style: StyleReducer,
-//   viewport: ViewportReducer
-// });
+const mapReducer = combineReducers({
+  module: ModuleReducer,
+  tracks: TracksReducer,
+  heatmap: HeatmapReducer,
+  heatmapTiles: HeatmapTilesReducer,
+  style: StyleReducer,
+  viewport: ViewportReducer,
+  interaction: InteractionReducer
+});
 
-// const ownStore = createStore(
-//   combineReducers({
-//     map: mapReducer
-//   }),
-//   applyMiddleware(thunk)
-// );
+const store = createStore(
+  combineReducers({
+    map: mapReducer
+  }),
+  applyMiddleware(thunk)
+);
 
-let store;
 
 const containsTrack = (track, tracks) => tracks.find(prevTrack =>
   prevTrack.id === track.id &&
@@ -110,18 +110,11 @@ class MapModule extends React.Component {
     }
   }
   render() {
-    if (this.props.store) {
-      store = this.props.store;
-      // TODO MAP MODULE Switch to own store
-      // store = ownStore;
-
-      return (
-        <Provider store={store}>
-          <MapProxy {...this.props} />
-        </Provider>
-      );
-    }
-    return null;
+    return (
+      <Provider store={store}>
+        <MapProxy {...this.props} />
+      </Provider>
+    );
   }
 }
 
