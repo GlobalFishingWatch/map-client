@@ -106,18 +106,17 @@ Object. Mandatory. Must be passed as is - mandatory fields are:
   - `temporalExtents` PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   - `temporalExtentsLess` PropTypes.bool
 
-## `temporalExtents`
+## `temporalExtent`
 
-[NOT IMPLEMENTED] Tuple of timestamps (`[start, end]`). Mandatory. Acts as a display temporal filter for Activity Layers (Heatmap and Tracks), used for time animation.
+Tuple of Dates (`[start, end]`). Mandatory. Acts as a display temporal filter for Activity Layers (Heatmap and Tracks), used for time animation.
 
-## `loadTemporalExtents`
+## `loadTemporalExtent`
 
-[NOT IMPLEMENTED]
-Tuple of timestamps (`[start, end]`). Mandatory. Specifies tilesets that needs to be loaded for Activity layers that are split by time range (layer with `temporalExtents`).
+Tuple of Dates (`[start, end]`). Mandatory. Specifies tilesets that needs to be loaded for Activity layers that are split by time range (layer with `temporalExtents`).
 
-## `highlightTemporalExtents`
+## `highlightTemporalExtent`
 
-[NOT IMPLEMENTED] Tuple of timestamps (`[start, end]`). Track portions between `start` and `end` will be rendered in white.
+Tuple of Dates (`[start, end]`). Track portions between `start` and `end` will be rendered in white.
 
 ## `staticLayers`
 

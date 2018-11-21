@@ -113,7 +113,10 @@ const mapStateToProps = state => ({
   tracks: getAllVesselsForTracks(state),
   heatmapLayers: getHeatmapLayers(state),
   staticLayers: getStaticLayers(state),
-  basemapLayers: getBasemapLayers(state)
+  basemapLayers: getBasemapLayers(state),
+  temporalExtent: state.filters.timelineInnerExtent,
+  loadTemporalExtent: state.filters.timelineOuterExtent,
+  highlightTemporalExtent: state.filters.timelineOverExtent
 });
 
 const mapDispatchToProps = dispatch => ({

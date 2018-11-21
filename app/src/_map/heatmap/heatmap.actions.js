@@ -27,15 +27,15 @@ export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
- * @param  {array} currentOuterExtent Current timebar outer extent
- * @param  {array} temporalExtents    Temporal extents present on the layer's header (an array of extent arrays)
+ * @param  {array} loadTemporalExtent Current timebar outer extent
+ * @param  {array} layerTemporalExtents Temporal extent present on the layer's header (an array of extent arrays)
  * @return {array}                    Indices of the layer's temporal extents that should be visible
  */
-function getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents) {
-  const currentExtentStart = currentOuterExtent[0].getTime();
-  const currentExtentEnd = currentOuterExtent[1].getTime();
+function getTemporalExtentsVisibleIndices(loadTemporalExtent, layerTemporalExtents) {
+  const currentExtentStart = loadTemporalExtent[0].getTime();
+  const currentExtentEnd = loadTemporalExtent[1].getTime();
   const indices = [];
-  temporalExtents.forEach((temporalExtent, index) => {
+  layerTemporalExtents.forEach((temporalExtent, index) => {
     const temporalExtentStart = temporalExtent[0];
     const temporalExtentEnd = temporalExtent[1];
     if (temporalExtentEnd >= currentExtentStart && temporalExtentStart <= currentExtentEnd) {
@@ -254,17 +254,14 @@ export function loadAllTilesForLayer(layerId) {
 }
 
 
-export const addHeatmapLayer = layer => (dispatch, getState) => {
-  // TODO MAP MODULE state.filters.timelineOuterExtent -> activityLayersLoadingTemporalExtents
-  // as param of this function (sent by MapProxy)
-  const currentOuterExtent = getState().filters.timelineOuterExtent;
-  const temporalExtents = layer.header.temporalExtents;
+export const addHeatmapLayer = (layer, loadTemporalExtent) => (dispatch) => {
+  const layerTemporalExtents = layer.header.temporalExtents;
   dispatch({
     type: ADD_HEATMAP_LAYER,
     payload: {
       ...layer,
       // initially attach which of the temporal extents indices are visible with initial outerExtent
-      visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(currentOuterExtent, temporalExtents)
+      visibleTemporalExtentsIndices: getTemporalExtentsVisibleIndices(loadTemporalExtent, layerTemporalExtents)
     }
   });
 
@@ -284,19 +281,16 @@ export const removeHeatmapLayer = id => (dispatch) => {
  * loadTilesExtraTimeRange - when outer time extent changes, checks if more tiles needs to be loaded
  * by comparing the outer time range with the temporalExtent already loaded on each layer
  */
-export function loadTilesExtraTimeRange() {
+export function loadTilesExtraTimeRange(loadTemporalExtent) {
   return (dispatch, getState) => {
     const state = getState();
-    // TODO MAP MODULE state.filters.timelineOuterExtent -> activityLayersLoadingTemporalExtents
-    // as param of this function (sent by MapProxy)
-    const currentOuterExtent = state.filters.timelineOuterExtent;
     const heatmapLayers = state.map.heatmap.heatmapLayers;
     const layersToUpdate = {};
     Object.keys(heatmapLayers).forEach((layerId) => {
       const workspaceLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
       const heatmapLayer = heatmapLayers[layerId];
       const oldVisibleTemporalExtents = heatmapLayer.visibleTemporalExtentsIndices;
-      const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(currentOuterExtent, workspaceLayer.header.temporalExtents);
+      const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(loadTemporalExtent, workspaceLayer.header.temporalExtents);
       const diff = difference(newVisibleTemporalExtents, oldVisibleTemporalExtents);
       if (diff.length) {
         // add new loaded indices to heatmap layer if applicable
@@ -335,11 +329,10 @@ const _getCurrentFiltersForLayer = (state, layerId) => {
  * @param {string} tileQuery - the id of a heatmap layer
  * @return {object} { isEmpty, isCluster, isMouseCluster, foundVessels, layerId, tilesetId }
  */
-const _queryHeatmap = (state, tileQuery) => {
+const _queryHeatmap = (state, tileQuery, temporalExtentIndexes) => {
   const layers = state.map.heatmap.heatmapLayers;
-  const timelineExtent = state.filters.timelineInnerExtentIndexes;
-  const startIndex = timelineExtent[0];
-  const endIndex = timelineExtent[1];
+  const startIndex = temporalExtentIndexes[0];
+  const endIndex = temporalExtentIndexes[1];
   const layersVessels = [];
 
   Object.keys(layers).forEach((layerId) => {
@@ -418,10 +411,11 @@ export function clearHighlightedVessels() {
   };
 }
 
-export function highlightVesselFromHeatmap(tileQuery) {
+export function highlightVesselFromHeatmap(tileQuery, temporalExtentIndexes) {
   return (dispatch, getState) => {
     const state = getState();
-    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } = _queryHeatmap(state, tileQuery);
+    const { layer, isEmpty, isCluster, isMouseCluster, foundVessels } =
+      _queryHeatmap(state, tileQuery, temporalExtentIndexes);
 
     if (layer.id !== undefined || state.map.heatmap.highlightedVessels.layerId !== layer.id) {
       dispatch({

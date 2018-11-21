@@ -4,10 +4,6 @@ import ActivityLayers from './ActivityLayers.jsx';
 import { queryHeatmapVessels } from '../heatmap/heatmapTiles.actions';
 
 const mapStateToProps = state => ({
-  // TODO MAP MODULE
-  timelineInnerExtentIndexes: state.filters.timelineInnerExtentIndexes,
-  // TODO MAP MODULE
-  timelineOverExtentIndexes: state.filters.timelineOverExtentIndexes,
   highlightedVessels: state.map.heatmap.highlightedVessels,
   highlightedClickedVessel: state.map.heatmap.highlightedClickedVessel,
   viewport: state.map.viewport.viewport,
@@ -21,9 +17,9 @@ const mapStateToProps = state => ({
   // highlightedTrack: state.vesselInfo.highlightedTrack
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   queryHeatmapVessels: (coords) => {
-    dispatch(queryHeatmapVessels(coords));
+    dispatch(queryHeatmapVessels(coords, ownProps.temporalExtentIndexes));
   },
   exportNativeViewport: (viewport) => {
     dispatch(exportNativeViewport(viewport));

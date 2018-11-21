@@ -8,7 +8,7 @@ import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as m
 import { initModule } from './module/module.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
-import { addHeatmapLayer, removeHeatmapLayer } from './heatmap/heatmap.actions';
+import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -88,8 +88,7 @@ class MapModule extends React.Component {
       const prevHeatmapLayers = prevProps.heatmapLayers;
       newHeatmapLayers.forEach((newHeatmapLayer) => {
         if (!containsLayer(newHeatmapLayer, prevHeatmapLayers)) {
-          // TODO MAP MODULE PASS activityLayersLoadingTemporalExtents
-          store.dispatch(addHeatmapLayer(newHeatmapLayer));
+          store.dispatch(addHeatmapLayer(newHeatmapLayer, this.props.loadTemporalExtent));
         }
       });
       prevHeatmapLayers.forEach((prevHeatmapLayer) => {
@@ -97,6 +96,17 @@ class MapModule extends React.Component {
           store.dispatch(removeHeatmapLayer(prevHeatmapLayer.id));
         }
       });
+    }
+
+    if (this.props.loadTemporalExtent !== undefined && this.props.loadTemporalExtent.length) {
+      if (
+        prevProps.loadTemporalExtent === undefined || !prevProps.loadTemporalExtent.length ||
+        this.props.loadTemporalExtent[0].getTime() !== prevProps.loadTemporalExtent[0].getTime() ||
+        this.props.loadTemporalExtent[1].getTime() !== prevProps.loadTemporalExtent[1].getTime()
+      ) {
+        store.dispatch(loadTilesExtraTimeRange(this.props.loadTemporalExtent));
+      }
+
     }
   }
   render() {

@@ -11,7 +11,6 @@ import {
   CHANGE_SPEED
 } from 'filters/filtersActions';
 import {
-  MIN_FRAME_LENGTH_MS,
   TIMELINE_DEFAULT_INNER_START_DATE,
   TIMELINE_DEFAULT_INNER_END_DATE,
   TIMELINE_DEFAULT_OUTER_START_DATE,
@@ -22,16 +21,12 @@ import {
   TIMELINE_MIN_SPEED,
   TIMELINE_MAX_SPEED
 } from 'config';
-import convert from '@globalfishingwatch/map-convert';
 
 const initialState = {
   timelineOverallExtent: [TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE],
   timelineOuterExtent: [TIMELINE_DEFAULT_OUTER_START_DATE, TIMELINE_DEFAULT_OUTER_END_DATE],
   timelineInnerExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
-  timelineInnerExtentIndexes: [
-    convert.getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_START_DATE.getTime()),
-    convert.getOffsetedTimeAtPrecision(TIMELINE_DEFAULT_INNER_END_DATE.getTime())
-  ],
+  timelineOverExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
   timelinePaused: true,
   timelineSpeed: 1
 };
@@ -41,15 +36,7 @@ export default function (state = initialState, action) {
     case SET_INNER_TIMELINE_DATES_FROM_WORKSPACE:
     case SET_INNER_TIMELINE_DATES: {
       const timelineInnerExtent = action.payload;
-      const startTimestamp = timelineInnerExtent[0].getTime();
-      const endTimestamp = Math.max(timelineInnerExtent[1].getTime(), timelineInnerExtent[0].getTime() + MIN_FRAME_LENGTH_MS);
-      const startIndex = convert.getOffsetedTimeAtPrecision(startTimestamp);
-      const endIndex = convert.getOffsetedTimeAtPrecision(endTimestamp);
-      const timelineInnerExtentIndexes = [startIndex, endIndex];
-
-      return Object.assign({}, state, {
-        timelineInnerExtent, timelineInnerExtentIndexes
-      });
+      return Object.assign({}, state, { timelineInnerExtent });
     }
     case SET_OUTER_TIMELINE_DATES:
       return Object.assign({}, state, {
@@ -85,13 +72,8 @@ export default function (state = initialState, action) {
       });
     case SET_TIMELINE_HOVER_DATES: {
       const timelineOverExtent = action.payload;
-      const startTimestamp = timelineOverExtent[0].getTime();
-      const endTimestamp = timelineOverExtent[1].getTime();
-      const startIndex = convert.getOffsetedTimeAtPrecision(startTimestamp);
-      const endIndex = convert.getOffsetedTimeAtPrecision(endTimestamp);
-      const timelineOverExtentIndexes = [startIndex, endIndex];
       return Object.assign({}, state, {
-        timelineOverExtentIndexes
+        timelineOverExtent
       });
     }
     case REWIND_TIMELINE: {

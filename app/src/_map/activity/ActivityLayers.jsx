@@ -234,8 +234,8 @@ class ActivityLayers extends React.Component {
       zoom,
       layerFilters,
       heatmapLayers,
-      timelineInnerExtentIndexes,
-      timelineOverExtentIndexes,
+      temporalExtentIndexes,
+      highlightTemporalExtentIndexes,
       highlightedVessels,
       highlightedClickedVessel,
       tracks,
@@ -245,8 +245,8 @@ class ActivityLayers extends React.Component {
     } = this.props;
     const { viewport } = this.context;
 
-    const startIndex = timelineInnerExtentIndexes[0];
-    const endIndex = timelineInnerExtentIndexes[1];
+    const startIndex = temporalExtentIndexes[0];
+    const endIndex = temporalExtentIndexes[1];
     const useRadialGradientStyle = shouldUseRadialGradientStyle(zoom);
 
     if (highlightedVessels.isEmpty !== true) {
@@ -307,7 +307,7 @@ class ActivityLayers extends React.Component {
           zoom={zoom}
           startIndex={startIndex}
           endIndex={endIndex}
-          timelineOverExtentIndexes={timelineOverExtentIndexes}
+          highlightTemporalExtentIndexes={highlightTemporalExtentIndexes}
           rootStage={this.stage}
           viewportLeft={leftWorldScaled}
           viewportRight={rightWorldScaled}
@@ -321,8 +321,8 @@ class ActivityLayers extends React.Component {
 ActivityLayers.propTypes = {
   zoom: PropTypes.number,
   heatmapLayers: PropTypes.array,
-  timelineInnerExtentIndexes: PropTypes.array,
-  timelineOverExtentIndexes: PropTypes.array,
+  temporalExtentIndexes: PropTypes.array,
+  highlightTemporalExtentIndexes: PropTypes.array,
   layerFilters: PropTypes.object,
   highlightedVessels: PropTypes.object,
   highlightedClickedVessel: PropTypes.object,

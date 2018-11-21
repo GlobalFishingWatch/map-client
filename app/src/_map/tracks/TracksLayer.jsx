@@ -28,16 +28,16 @@ class TracksLayer extends React.Component {
   }
 
   _redraw() {
-    const { tracks, zoom, startIndex, endIndex, timelineOverExtentIndexes, highlightedTrack } = this.props;
+    const { tracks, zoom, startIndex, endIndex, highlightTemporalExtentIndexes, highlightedTrack } = this.props;
 
     this.clear();
     if (!tracks.length) {
       return;
     }
 
-    const overInInner = (timelineOverExtentIndexes === undefined) ? undefined : [
-      Math.max(startIndex, timelineOverExtentIndexes[0]),
-      Math.min(endIndex, timelineOverExtentIndexes[1])
+    const overInInner = (highlightTemporalExtentIndexes === undefined) ? undefined : [
+      Math.max(startIndex, highlightTemporalExtentIndexes[0]),
+      Math.min(endIndex, highlightTemporalExtentIndexes[1])
     ];
     const overExtent = (overInInner && overInInner[1] - overInInner[0] > 0) ? overInInner : undefined;
 
@@ -65,8 +65,8 @@ class TracksLayer extends React.Component {
       if (drawOverTrack === true) {
         n += this._drawTrack({
           data: track.data,
-          startIndex: timelineOverExtentIndexes[0],
-          endIndex: timelineOverExtentIndexes[1],
+          startIndex: highlightTemporalExtentIndexes[0],
+          endIndex: highlightTemporalExtentIndexes[1],
           series: track.selectedSeries,
           drawFishingCircles,
           fishingCirclesRadius,
@@ -224,7 +224,7 @@ TracksLayer.propTypes = {
   viewport: PropTypes.object,
   startIndex: PropTypes.number,
   endIndex: PropTypes.number,
-  timelineOverExtentIndexes: PropTypes.array,
+  highlightTemporalExtentIndexes: PropTypes.array,
   tracks: PropTypes.array,
   highlightedTrack: PropTypes.number,
   viewportLeft: PropTypes.number

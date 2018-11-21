@@ -20,10 +20,6 @@ class MapProxy extends React.Component {
         this.props.staticLayers !== prevProps.staticLayers) {
       this.props.commitStyleUpdates(this.props.staticLayers, this.props.basemapLayers);
     }
-
-    // TODO MAP MODULE
-    // watch for activityLayersLoadingTemporalExtents changes
-    // dispatch heatmap.loadTilesExtraTimeRange
   }
 
   render() {
@@ -31,6 +27,9 @@ class MapProxy extends React.Component {
       <Map
         tracks={this.props.tracks}
         heatmapLayers={this.props.heatmapLayers}
+        temporalExtentIndexes={this.props.temporalExtentIndexes}
+        highlightTemporalExtentIndexes={this.props.highlightTemporalExtentIndexes}
+        loadTemporalExtent={this.props.loadTemporalExtent}
         hoverPopup={this.props.hoverPopup}
         clickPopup={this.props.clickPopup}
       />
@@ -68,8 +67,9 @@ MapProxy.propTypes = {
     })
     // color: ...
   })),
-  activityLayersTemporalExtents: PropTypes.arrayOf(PropTypes.number),
-  activityLayersLoadingTemporalExtents: PropTypes.arrayOf(PropTypes.number),
+  temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  loadTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   basemapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     visible: PropTypes.bool

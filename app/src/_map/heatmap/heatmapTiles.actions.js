@@ -203,7 +203,7 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
 };
 
 
-export const queryHeatmapVessels = coords => (dispatch, getState) => {
+export const queryHeatmapVessels = (coords, temporalExtentIndexes) => (dispatch, getState) => {
   // use tilecover to get what tile quadkey/uid "belongs" to the point
   const geom = {
     type: 'Point',
@@ -224,5 +224,5 @@ export const queryHeatmapVessels = coords => (dispatch, getState) => {
   };
 
   // console.log(query);
-  dispatch(highlightVesselFromHeatmap(query));
+  dispatch(highlightVesselFromHeatmap(query, temporalExtentIndexes));
 };

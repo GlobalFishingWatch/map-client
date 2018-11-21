@@ -1,6 +1,5 @@
 import { GA_PLAY_STATUS_TOGGLED, trackInnerTimelineChange, trackOuterTimelineChange } from 'analytics/analyticsActions';
 import { TIMELINE_MIN_INNER_EXTENT } from 'config';
-// import { loadTilesExtraTimeRange } from 'activityLayers/heatmapActions'; loadTilesExtraTimeRange
 
 export const SET_SPEED = 'SET_SPEED';
 export const CHANGE_SPEED = 'CHANGE_SPEED';
@@ -66,8 +65,6 @@ export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
       type: SET_OUTER_TIMELINE_DATES,
       payload: outerTimelineDates
     });
-
-    // dispatch(loadTilesExtraTimeRange()); loadTilesExtraTimeRange
   };
 }
 
