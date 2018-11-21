@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-// TODO MAP MODULE
-import { mapHover, mapClick /*, clearPopup*/ } from './interaction.actions.js';
+import { mapHover, mapClick } from './interaction.actions.js';
 import { setViewport, setMouseLatLong, transitionEnd } from './viewport.actions.js';
 import Map from './Map.jsx';
 
@@ -25,10 +24,7 @@ const mapDispatchToProps = dispatch => ({
   },
   transitionEnd: () => {
     dispatch(transitionEnd());
-  },
-  // clearPopup: () => {
-  //   dispatch(clearPopup());
-  // }
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

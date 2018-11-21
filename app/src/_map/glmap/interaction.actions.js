@@ -1,5 +1,5 @@
 import area from '@turf/area';
-import { POLYGON_LAYERS_AREA } from 'config';
+import { POLYGON_LAYERS_AREA } from '../../config';
 import { clearHighlightedVessels, clearHighlightedClickedVessel } from '../heatmap/heatmap.actions';
 import { zoomIntoVesselCenter } from './viewport.actions';
 

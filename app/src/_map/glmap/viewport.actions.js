@@ -1,7 +1,7 @@
 import { fitBounds, pixelsToWorld } from 'viewport-mercator-project';
 import { updateHeatmapTilesFromViewport } from '../heatmap/heatmapTiles.actions';
 import { onViewportChange } from '../module/module.actions';
-import { CLUSTER_CLICK_ZOOM_INCREMENT } from 'config'; // TODO MAP MODULE
+import { CLUSTER_CLICK_ZOOM_INCREMENT } from '../../config'; // TODO MAP MODULE
 
 export const SET_VIEWPORT = 'SET_VIEWPORT';
 export const UPDATE_VIEWPORT = 'UPDATE_VIEWPORT';

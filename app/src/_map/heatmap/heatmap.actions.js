@@ -7,7 +7,7 @@ import {
   groupData,
   getTilePlaybackData,
   selectVesselsAt
-} from '../../utils/heatmapTileData';
+} from '../utils/heatmapTileData';
 import { LAYER_TYPES } from '../../constants';
 import { markTileAsLoaded } from './heatmapTiles.actions';
 import { startLoader, completeLoader } from '../module/module.actions';
@@ -202,8 +202,6 @@ export function getTile(referenceTile) {
     const visibleHeatmapLayers = getState().map.heatmap.heatmapLayers;
     const visibleHeatmapLayersIds = Object.keys(visibleHeatmapLayers)
       .filter(id => visibleHeatmapLayers[id].visible === true);
-
-    console.log(visibleHeatmapLayersIds)
 
     if (visibleHeatmapLayersIds.length) {
       dispatch(getTiles(visibleHeatmapLayersIds, [referenceTile]));

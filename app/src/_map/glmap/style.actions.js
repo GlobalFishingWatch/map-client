@@ -1,6 +1,6 @@
 import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
-import { hexToRgba } from 'utils/colors';
+import { hexToRgba } from '../../utils/colors';
 import getMainGeomType from '../utils/getMainGeomType';
 
 export const SET_MAP_STYLE = 'SET_MAP_STYLE';

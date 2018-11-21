@@ -5,7 +5,7 @@ import {
   groupData,
   addTracksPointsRenderingData,
   getTracksPlaybackData
-} from 'utils/heatmapTileData';
+} from '../utils/heatmapTileData';
 import { startLoader, completeLoader } from '../module/module.actions';
 
 
