@@ -103,6 +103,7 @@ export default function (state = initialState, action) {
       const heatmapLayerPosition = findIndex(state.workspaceLayers, layer => layer.type === LAYER_TYPES.Heatmap);
 
       const newLayer = {
+        subtype: action.payload.subtype,
         id: action.payload.id,
         url: action.payload.url,
         title: action.payload.name,

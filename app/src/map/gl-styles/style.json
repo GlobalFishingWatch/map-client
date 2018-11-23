@@ -539,14 +539,6 @@
       "layout": {
         "visibility": "none"
       }
-    },
-    {
-      "id": "pp",
-      "type": "raster",
-      "source": "pp",
-      "layout": {
-        "visibility": "visible"
-      }
     }
   ]
 }

@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import CustomLayerStyles from 'styles/components/map/custom-layer.scss';
 import MapFormStyles from 'styles/components/map/form.scss';
 import ButtonStyles from 'styles/components/button.scss';
+import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
 
 class CustomLayer extends Component {
 
@@ -12,7 +13,8 @@ class CustomLayer extends Component {
 
     this.state = {
       name: 'Layer name',
-      description: ''
+      description: '',
+      subtype: 'geojson'
     };
   }
 
@@ -53,8 +55,15 @@ class CustomLayer extends Component {
             <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles.fieldName} htmlFor="name">Type</label>
               <div className={MapFormStyles.radioGroup}>
-                <input type="radio" name="type" id="geojson" />
-                <label htmlFor="geojson">
+                <input
+                  type="radio"
+                  name="subtype"
+                  id={CUSTOM_LAYERS_SUBTYPES.geojson}
+                  value={CUSTOM_LAYERS_SUBTYPES.geojson}
+                  checked={this.state.subtype === CUSTOM_LAYERS_SUBTYPES.geojson}
+                  onChange={e => this.onChange(e.currentTarget)}
+                />
+                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.geojson}>
                   GeoJSON
                   <div className={MapFormStyles.help}>
                     A simple vector format that can be produced by various GIS packages such as ArcGIS or QGIS.
@@ -63,8 +72,15 @@ class CustomLayer extends Component {
                 </label>
               </div>
               <div className={MapFormStyles.radioGroup}>
-                <input type="radio" name="type" id="raster" />
-                <label htmlFor="raster">
+                <input
+                  type="radio"
+                  name="subtype"
+                  id={CUSTOM_LAYERS_SUBTYPES.raster}
+                  value={CUSTOM_LAYERS_SUBTYPES.raster}
+                  checked={this.state.subtype === CUSTOM_LAYERS_SUBTYPES.raster}
+                  onChange={e => this.onChange(e.currentTarget)}
+                />
+                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.raster}>
                   Raster
                   <div className={MapFormStyles.help}>
                     Use this option for data that can be consumed as tiles (images), such as
@@ -73,7 +89,7 @@ class CustomLayer extends Component {
                 </label>
               </div>
               <div className={MapFormStyles.radioGroup}>
-                <input type="radio" name="type" id="wms" disabled />
+                <input type="radio" name="subtype" id="wms" disabled />
                 <label htmlFor="wms">
                   <span style={{ opacity: 0.6 }} >WMS Server</span>
                   <div className={MapFormStyles.help}>
@@ -101,7 +117,7 @@ class CustomLayer extends Component {
               <input
                 className={MapFormStyles.textInput}
                 name="url"
-                placeholder="Insert a link to a .geojson layer file"
+                placeholder="Insert a link to a GeoJSON file or a raster XYZ URL"
                 type="text"
                 onChange={e => this.onChange(e.currentTarget)}
                 required

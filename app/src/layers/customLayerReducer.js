@@ -1,8 +1,7 @@
 import {
   CUSTOM_LAYER_UPLOAD_START,
   CUSTOM_LAYER_UPLOAD_SUCCESS,
-  CUSTOM_LAYER_UPLOAD_ERROR,
-  SET_CUSTOM_LAYER_DATA
+  CUSTOM_LAYER_UPLOAD_ERROR
 } from 'layers/customLayerActions';
 
 const initialState = {
@@ -19,11 +18,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { status: action.payload });
     case CUSTOM_LAYER_UPLOAD_ERROR:
       return Object.assign({}, state, { error: action.payload, status: action.status });
-    case SET_CUSTOM_LAYER_DATA: {
-      const layersData = { ...state.layersData };
-      layersData[action.payload.id] = action.payload.data;
-      return { ...state, layersData };
-    }
     default:
       return state;
   }
