@@ -89,6 +89,11 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds) => {
         .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
       break;
     }
+    case 'raster': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'raster-opacity'], refLayer.opacity);
+      break;
+    }
     default: {
       break;
     }
