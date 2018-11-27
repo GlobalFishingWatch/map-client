@@ -137,7 +137,10 @@ class CustomLayer extends Component {
 
           <div className={CustomLayerStyles.row}>
             {this.props.error &&
-            <span className={CustomLayerStyles.submitError} > Whoops! Something went wrong. </span>
+            <span className={CustomLayerStyles.submitError}>
+              Whoops! Something went wrong.<br />
+              Please check if the custom layer type is properly selected or if the data you provided is correct.
+            </span>
             }
             <div className={CustomLayerStyles.submitContainer}>
               <input

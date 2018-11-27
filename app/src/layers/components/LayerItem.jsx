@@ -113,7 +113,7 @@ class LayerItem extends Component {
               <IconButton icon="report" activated={isCurrentlyReportedLayer === true} />
             </li>
           }
-          {this.props.enableColorPicker &&
+          {this.props.enableLayerDisplaySettings &&
           <li
             className={LayerItemStyles.itemOptionItem}
             style={{ position: 'relative' }}
@@ -167,16 +167,16 @@ class LayerItem extends Component {
           </div>
           {actions}
         </li>
-        {this.props.enableColorPicker &&
+        {this.props.enableLayerDisplaySettings &&
           <ExpandItem active={!layerPanelEditMode && this.state.expand === 'EXTRA'} arrowPosition={0}>
             <ColorPicker
               color={color}
               hue={hue}
               opacity={opacity}
               showLabels={showLabels}
-              onTintChange={this.onTintChange}
+              onShowLabelsToggle={(this.props.enableLabels === true) ? this.onShowLabelsToggle : null}
+              onTintChange={(this.props.enableColorInputs === true) ? this.onTintChange : null}
               onOpacityChange={this.onOpacityChange}
-              onShowLabelsToggle={(type === LAYER_TYPES.Static) ? this.onShowLabelsToggle : null}
               id={id}
             />
           </ExpandItem >
@@ -214,7 +214,9 @@ LayerItem.propTypes = {
    If layer labels are editable or not
    */
   layerPanelEditMode: PropTypes.bool,
-  enableColorPicker: PropTypes.bool
+  enableLayerDisplaySettings: PropTypes.bool,
+  enableLabels: PropTypes.bool,
+  enableColorInputs: PropTypes.bool
 };
 
 export default LayerItem;

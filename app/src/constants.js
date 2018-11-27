@@ -42,21 +42,27 @@ export const LAYER_TYPES_MAPBOX_GL = [
   LAYER_TYPES.Static
 ];
 
-let layerTypesColorPicker = [LAYER_TYPES.Heatmap];
-if (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS) {
-  layerTypesColorPicker = [
-    LAYER_TYPES.Static,
-    LAYER_TYPES.Custom
-  ].concat(layerTypesColorPicker);
-}
-export const LAYER_TYPES_COLORPICKER = layerTypesColorPicker;
-
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
 export const CUSTOM_LAYERS_SUBTYPES = {
   geojson: 'geojson',
   raster: 'raster'
 };
+
+export const LAYER_HAS_DISPLAY_SETTINGS = [
+  LAYER_TYPES.Heatmap,
+  LAYER_TYPES.Static,
+  LAYER_TYPES.Custom
+];
+
+export const LAYER_HAS_LABELS = [
+  LAYER_TYPES.Static
+];
+
+export const LAYER_HAS_COLOR_INPUTS = (type, subtype) =>
+  [LAYER_TYPES.Heatmap, LAYER_TYPES.Static].indexOf(type) > -1 ||
+  (type === LAYER_TYPES.Custom && subtype !== CUSTOM_LAYERS_SUBTYPES.raster);
+
 
 export const REPORT_STATUS = {
   idle: 'idle',
