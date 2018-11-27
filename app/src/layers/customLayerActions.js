@@ -17,7 +17,7 @@ export const loadCustomLayer = (subtype, url, token) => {
       }
     })
       .then((res) => {
-        if (res.status >= 400) throw new Error(res.statusText);
+        if (!res.ok) throw new Error(res.statusText);
         return res.json();
       });
   } else if (subtype === CUSTOM_LAYERS_SUBTYPES.raster) {
@@ -36,7 +36,7 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
   });
 
   let uploadPromise;
-  if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) { 
+  if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
     uploadPromise = fetch(`${V2_API_ENDPOINT}/directory`, {
       method: 'POST',
       headers: {
@@ -46,7 +46,7 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
       body: JSON.stringify({ title: name, url, description })
     })
       .then((res) => {
-        if (res.status >= 400) throw new Error(res.statusText);
+        if (!res.ok) throw new Error(res.statusText);
         return res.json();
       });
   } else if (subtype === CUSTOM_LAYERS_SUBTYPES.raster) {
@@ -66,16 +66,26 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
   uploadPromise.then((data) => {
     const layerId = data.args.id;
     const newUrl = data.args.source.args.url;
-    loadCustomLayer(subtype, newUrl, token).then((uploadedData) => {
-      dispatch({
-        type: CUSTOM_LAYER_UPLOAD_SUCCESS,
-        payload: 'idle'
+    loadCustomLayer(subtype, newUrl, token)
+      .then((uploadedData) => {
+        dispatch({
+          type: CUSTOM_LAYER_UPLOAD_SUCCESS,
+          payload: 'idle'
+        });
+        dispatch(setLayerManagementModalVisibility(false));
+        dispatch(addCustomLayer(subtype, layerId, newUrl, name, description));
+        dispatch(addCustomGLLayer(subtype, layerId, newUrl, uploadedData));
+      })
+      .catch((err) => {
+        dispatch({
+          type: CUSTOM_LAYER_UPLOAD_ERROR,
+          payload: { error: err.message, status: 'idle' }
+        });
       });
-      dispatch(setLayerManagementModalVisibility(false));
-      dispatch(addCustomLayer(subtype, layerId, newUrl, name, description));
-      dispatch(addCustomGLLayer(subtype, layerId, newUrl, uploadedData));
-    });
   })
-    .catch(err => dispatch({ type: CUSTOM_LAYER_UPLOAD_ERROR, payload: { error: err.message, status: 'idle' } }));
+    .catch(err => dispatch({
+      type: CUSTOM_LAYER_UPLOAD_ERROR,
+      payload: { error: err.message, status: 'idle' }
+    }));
 };
 
