@@ -128,8 +128,11 @@ export const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getS
       layout: {},
       paint: {}
     });
-    // TODO if raster, put at index of last rasater layer except labels
-    style = style.set('layers', style.get('layers').concat([glLayer]));
+    const layerIndex = (subtype === CUSTOM_LAYERS_SUBTYPES.raster)
+      // if raster, put at index of last raster layer except labels
+      ? currentStyle.layers.length - 1 - currentStyle.layers.filter(l => l.id !== 'labels').reverse().findIndex(l => l.type === 'raster')
+      : currentStyle.layers.length - 1;
+    style = style.set('layers', style.get('layers').splice(layerIndex, 0, glLayer));
   }
 
   dispatch(setMapStyle(style));

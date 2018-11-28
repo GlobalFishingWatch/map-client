@@ -124,6 +124,7 @@ export const PALETTE_COLORS = [
 ];
 
 export const PALETTE_COLORS_LAYERS = PALETTE_COLORS.filter(tint => tint.hue !== undefined);
+export const NO_COLOR_TOGGLE_DEFAULT = PALETTE_COLORS[11];
 
 export const DEFAULT_TRACK_PALETTE_INDEX = 13;
 export const ACTIVITY_HIGHLIGHT_HUE = 312;
