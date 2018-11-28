@@ -136,7 +136,7 @@ class CustomLayer extends Component {
           </div>
 
           <div className={CustomLayerStyles.row}>
-            {this.props.error &&
+            {this.props.error !== null &&
             <span className={CustomLayerStyles.submitError}>
               Whoops! Something went wrong.<br />
               Please check if the custom layer type is properly selected or if the data you provided is correct.

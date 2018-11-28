@@ -6,6 +6,7 @@ import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
 export const CUSTOM_LAYER_UPLOAD_START = 'CUSTOM_LAYER_UPLOAD_START';
 export const CUSTOM_LAYER_UPLOAD_SUCCESS = 'CUSTOM_LAYER_UPLOAD_SUCCESS';
 export const CUSTOM_LAYER_UPLOAD_ERROR = 'CUSTOM_LAYER_UPLOAD_ERROR';
+export const CUSTOM_LAYER_RESET = 'CUSTOM_LAYER_RESET';
 
 export const loadCustomLayer = (subtype, url, token) => {
   let loadPromise;
@@ -79,13 +80,16 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
       .catch((err) => {
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_ERROR,
-          payload: { error: err.message, status: 'idle' }
+          payload: { error: err.message }
         });
       });
   })
     .catch(err => dispatch({
       type: CUSTOM_LAYER_UPLOAD_ERROR,
-      payload: { error: err.message, status: 'idle' }
+      payload: { error: err.message }
     }));
 };
 
+export const resetCustomLayerForm = () => ({
+  type: CUSTOM_LAYER_RESET
+});
