@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LayerItem from 'layers/containers/LayerItem';
-import { LAYER_TYPES, LAYER_TYPES_DISPLAYED_IN_PANELS, LAYER_TYPES_COLORPICKER } from 'constants';
+import {
+  LAYER_TYPES,
+  LAYER_TYPES_DISPLAYED_IN_PANELS,
+  LAYER_HAS_DISPLAY_SETTINGS,
+  LAYER_HAS_LABELS,
+  LAYER_HAS_COLOR_INPUTS
+} from 'constants';
 import classnames from 'classnames';
 import ExpandItem from 'components/Shared/ExpandItem';
 import AccordionHeader from 'components/Shared/AccordionHeader';
@@ -47,7 +53,9 @@ class LayerPanel extends Component {
         layer={layer}
         onLayerBlendingToggled={layerIndex => this.onLayerBlendingToggled(layerIndex)}
         showBlending={this.state.currentBlendingOptionsShown === index}
-        enableColorPicker={LAYER_TYPES_COLORPICKER.indexOf(layer.type) > -1}
+        enableLayerDisplaySettings={LAYER_HAS_DISPLAY_SETTINGS.indexOf(layer.type) > -1}
+        enableLabels={LAYER_HAS_LABELS.indexOf(layer.type) > -1}
+        enableColorInputs={LAYER_HAS_COLOR_INPUTS(layer.type, layer.subtype)}
       />);
       ((layer.type === LAYER_TYPES.Heatmap) ? activityLayers : staticLayers).push(layerItem);
     });
@@ -98,10 +106,6 @@ class LayerPanel extends Component {
 
 LayerPanel.propTypes = {
   layers: PropTypes.array,
-  currentlyReportedLayerId: PropTypes.string,
-  toggleLayerVisibility: PropTypes.func,
-  setLayerInfoModal: PropTypes.func,
-  userPermissions: PropTypes.array,
   isVesselInfoPanelOpen: PropTypes.bool.isRequired
 };
 
