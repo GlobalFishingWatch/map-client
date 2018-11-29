@@ -89,12 +89,18 @@ class CustomLayer extends Component {
                 </label>
               </div>
               <div className={MapFormStyles.radioGroup}>
-                <input type="radio" name="subtype" id="wms" disabled />
+                <input
+                  type="radio"
+                  name="subtype"
+                  id="wms"
+                  value="wms"
+                  checked={this.state.subtype === 'wms'}
+                  onChange={e => this.onChange(e.currentTarget)}
+                />
                 <label htmlFor="wms">
-                  <span style={{ opacity: 0.6 }} >WMS Server</span>
+                  WMS
                   <div className={MapFormStyles.help}>
-                    Not available yet. Please use the &quot;raster&quot; option with a pre-configured
-                    WMS GetMap endpoint URL.
+                    Web Map Service (WMS) following the OGC standard and capable of serving raster tiles from a GIS database.
                   </div>
                 </label>
               </div>
@@ -117,10 +123,15 @@ class CustomLayer extends Component {
               <input
                 className={MapFormStyles.textInput}
                 name="url"
-                placeholder="Insert a link to a GeoJSON file or a raster XYZ URL"
                 type="text"
                 onChange={e => this.onChange(e.currentTarget)}
                 required
+                placeholder={{
+                  geojson: 'Link to a GeoJSON file',
+                  raster: 'Raster tiles URL template with XYZ parameters',
+                  wms: 'WMS server root'
+                }[this.state.subtype]
+                }
               />
             </div>
             <div className={CustomLayerStyles.row}>

@@ -42,8 +42,6 @@ const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
   }
 }
 
-console.log(imageLoaderConfiguration)
-
 
 const webpackConfig = {
   entry: [

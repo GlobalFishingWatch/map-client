@@ -10,17 +10,7 @@
       { "id": "bathymetry", "isOption": true }
     ]
   },
-  "sources": {
-    "pp": {
-      "tiles": ["http://gis.unep-wcmc.org:6080/arcgis/services/wdpa/public/MapServer/WMSServer?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=0,1&styles=default,default"],
-      "type": "raster",
-      "tileSize": 256
-    },
-    "nasa": {
-      "tiles": ["http://map1.vis.earthdata.nasa.gov/wmts-webmerc/VIIRS_CityLights_2012/default//GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg"],
-      "type": "raster",
-      "tileSize": 256
-    },    
+  "sources": {   
     "satellite": {
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",
