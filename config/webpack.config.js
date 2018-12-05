@@ -179,6 +179,8 @@ const webpackConfig = {
       },
       {
         test: /\.css$/,
+        // exclude non-modules CSS
+        exclude: /node_modules\/mapbox-gl\/dist\/mapbox-gl.css/,
         use: [
           'style-loader',
           {
@@ -198,6 +200,11 @@ const webpackConfig = {
             }
           }
         ]
+      },
+      // CSS basic rule for non-module CSS
+      {
+        test: /node_modules\/mapbox-gl\/dist\/mapbox-gl.css/,
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /manifest.json$/,
