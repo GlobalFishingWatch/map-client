@@ -3,7 +3,8 @@ import uniq from 'lodash/uniq';
 import GL_STYLE from './gl-styles/style.json';
 import {
   SET_MAP_STYLE,
-  MARK_CARTO_LAYERS_AS_INSTANCIATED
+  MARK_CARTO_LAYERS_AS_INSTANCIATED,
+  INIT_MAP_STYLE
 } from './style.actions';
 
 const attributions = uniq(Object.keys(GL_STYLE.sources)
@@ -11,17 +12,18 @@ const attributions = uniq(Object.keys(GL_STYLE.sources)
   .filter(source => source !== undefined)
 );
 
-const initialMapStyle = GL_STYLE;
-initialMapStyle.glyphs = initialMapStyle.glyphs.replace('{PUBLIC_PATH}', PUBLIC_PATH);
-
 const initialState = {
-  mapStyle: fromJS(initialMapStyle),
+  mapStyle: fromJS(GL_STYLE),
   cartoLayersInstanciated: [],
   attributions
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case INIT_MAP_STYLE : {
+      const newMapStyle = state.mapStyle.setIn(['glyphs'], action.payload.glyphsPath);
+      return { ...state, mapStyle: newMapStyle };
+    }
     case SET_MAP_STYLE : {
       return { ...state, mapStyle: action.payload };
     }

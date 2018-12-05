@@ -32,6 +32,10 @@ This module does not deal with:
 String. Mandatory.
 Used to load heatmap layer tiles and tracks.
 
+## `glyphPath`
+
+String. URL schema to load Mapbox GL glyphs, for example 'gl-fonts/{fontstack}/{range}.pbf'. Must be a local path or if an absolute path server must support CORS.
+
 ## `viewport`
 
 Object. Allows setting map position.

@@ -48,6 +48,7 @@ class MapWrapper extends Component {
         onClick={this.onClick}
         hoverPopup={this.state.hoverPopup}
         clickPopup={this.state.clickPopup}
+        glyphsPath={`${PUBLIC_PATH}gl-fonts/{fontstack}/{range}.pbf`}
         {...this.props}
       />);
   }

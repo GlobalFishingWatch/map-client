@@ -4,8 +4,16 @@ import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from
 import { GL_TRANSPARENT } from '../constants';
 import getMainGeomType from '../utils/getMainGeomType';
 
+export const INIT_MAP_STYLE = 'INIT_MAP_STYLE';
 export const SET_MAP_STYLE = 'SET_MAP_STYLE';
 export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
+
+export const initStyle = ({ glyphsPath }) => ({
+  type: INIT_MAP_STYLE,
+  payload: {
+    glyphsPath
+  }
+});
 
 const setMapStyle = style => ({
   type: SET_MAP_STYLE,

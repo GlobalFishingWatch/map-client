@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
+import { initStyle } from './glmap/style.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
 import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
@@ -50,10 +51,7 @@ const containsLayer = (layer, layers) => layers.find(prevLayer =>
 
 class MapModule extends React.Component {
   componentDidMount() {
-
-  }
-  componentDidUpdate(prevProps) {
-    // TODO MAP MODULE This should be in componentDidMount, but currently props.store is not ready yet
+    // TODO MAP MODULE INITIAL VIEWPORT ?
     if (store && store.getState().map.module.token === undefined) {
       store.dispatch(initModule({
         token: this.props.token,
@@ -65,7 +63,14 @@ class MapModule extends React.Component {
         onLoadComplete: this.props.onLoadComplete
       }));
     }
+    if (this.props.glyphsPath !== undefined) {
+      store.dispatch(initStyle({
+        glyphsPath: this.props.glyphsPath
+      }));
+    }
 
+  }
+  componentDidUpdate(prevProps) {
     if (this.props.tracks !== prevProps.tracks) {
       if (this.props.tracks.length !== prevProps.tracks.length) {
         const newTracks = this.props.tracks;

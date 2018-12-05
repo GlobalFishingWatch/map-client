@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "glyphs": "{PUBLIC_PATH}gl-fonts/{fontstack}/{range}.pbf",
+  "glyphs": "//globalfishingwatch.org/map/gl-fonts/{fontstack}/{range}.pbf",
   "metadata": {
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
