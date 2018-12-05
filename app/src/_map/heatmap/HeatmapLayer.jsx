@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import uniq from 'lodash/uniq';
 import * as PIXI from 'pixi.js';
 import { worldToPixels } from 'viewport-mercator-project';
-import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from '../../constants';
+import { BRUSH_RENDERING_STYLE, BRUSH_ZOOM_RENDERING_STYLE } from '../constants';
 import { vesselSatisfiesFilters } from '../utils/heatmapTileData';
 import HeatmapSubLayer from './HeatmapSubLayer';
 

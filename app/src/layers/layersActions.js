@@ -1,4 +1,5 @@
 import find from 'lodash/find';
+import { hueToRgbHexString } from '@globalfishingwatch/map-colors';
 import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
@@ -9,7 +10,6 @@ import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 //   loadAllTilesForLayer
 // } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import calculateLayerId from 'utils/calculateLayerId';
-import { hueToRgbHexString } from 'utils/colors';
 import { loadCustomLayer } from './customLayerActions';
 
 export const SET_LAYERS = 'SET_LAYERS';

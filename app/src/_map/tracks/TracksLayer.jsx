@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { worldToPixels } from 'viewport-mercator-project';
 import {
   TRACKS_DOTS_STYLE_ZOOM_THRESHOLD
-} from '../../config';
+} from '../config';
 
 class TracksLayer extends React.Component {
   componentDidMount() {

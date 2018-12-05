@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import {
   COLORS,
-  COLOR_HUES,
   TRACK_DEFAULT_COLOR
 } from 'config';
 import { LAYER_TYPES } from 'constants';
@@ -13,7 +12,7 @@ import { setPinnedVessels, addVessel } from 'vesselInfo/vesselInfoActions';
 import { setFleetsFromWorkspace } from 'fleets/fleetsActions';
 import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
-import { getKeyByValue, hueToClosestColor, hueToRgbHexString } from 'utils/colors';
+import { getKeyByValue, hueToClosestColor, hueToRgbHexString, COLOR_HUES } from '@globalfishingwatch/map-colors';
 import defaultWorkspace from 'workspace/workspace';
 
 export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';

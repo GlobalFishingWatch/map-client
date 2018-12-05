@@ -1,11 +1,10 @@
 /* global PIXI */
 import 'pixi.js';
+import { hueToHueIncrement, VESSELS_HUES_INCREMENTS_NUM } from '@globalfishingwatch/map-colors';
 import {
   VESSELS_BASE_RADIUS,
-  VESSELS_HUES_INCREMENTS_NUM,
   MAX_SPRITES_PER_LAYER
-} from '../../config';
-import { hueToHueIncrement } from '../../utils/colors';
+} from '../config';
 
 export default class HeatmapSubLayer {
   constructor(baseTexture, renderingStyleIndex, hue, useNormalBlendMode = false) {

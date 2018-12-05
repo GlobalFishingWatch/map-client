@@ -44,8 +44,6 @@ class MapWrapper extends Component {
   render() {
     return (
       <MapModule
-        // TODO MAP MODULE REMOVE STORE
-        // store={store}
         onHover={this.onHover}
         onClick={this.onClick}
         hoverPopup={this.state.hoverPopup}

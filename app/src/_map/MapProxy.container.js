@@ -6,7 +6,7 @@ import { updateViewport } from './glmap/viewport.actions';
 import { commitStyleUpdates } from './glmap/style.actions';
 import {
   MIN_FRAME_LENGTH_MS
-} from '../../src/config';
+} from './config';
 
 const getProvidedTracks = (state, ownProps) => ownProps.tracks;
 const getModuleTracks = state => state.map.tracks;

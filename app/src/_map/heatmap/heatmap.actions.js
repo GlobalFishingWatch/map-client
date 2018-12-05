@@ -8,7 +8,7 @@ import {
   getTilePlaybackData,
   selectVesselsAt
 } from '../utils/heatmapTileData';
-import { LAYER_TYPES } from '../../constants';
+import { ENCOUNTERS } from '../constants';
 import { markTileAsLoaded } from './heatmapTiles.actions';
 import { startLoader, completeLoader } from '../module/module.actions';
 
@@ -365,7 +365,7 @@ const _queryHeatmap = (state, tileQuery, temporalExtentIndexes) => {
   let layerVesselsResult;
   let foundVessels;
 
-  const hasEncounters = layersVesselsResults.filter(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters).length > 0;
+  const hasEncounters = layersVesselsResults.filter(layerVessel => layerVessel.layer.subtype === ENCOUNTERS).length > 0;
 
   if (layersVesselsResults.length === 0) {
     isEmpty = true;
@@ -377,7 +377,7 @@ const _queryHeatmap = (state, tileQuery, temporalExtentIndexes) => {
     // if we have a hit with an encounters layer, use it in priority
     // if not the layersVesselsResults should contain a single result
     layerVesselsResult = (hasEncounters) ?
-      layersVesselsResults.find(layerVessel => layerVessel.layer.subtype === LAYER_TYPES.Encounters) :
+      layersVesselsResults.find(layerVessel => layerVessel.layer.subtype === ENCOUNTERS) :
       layersVesselsResults[0];
 
     // we can get multiple points with similar series and seriesgroup, in which case

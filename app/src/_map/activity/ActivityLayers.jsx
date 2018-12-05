@@ -2,16 +2,20 @@ import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
 import { lngLatToWorld } from 'viewport-mercator-project';
-import { hsvToRgb, hueToRgbString, hueIncrementToHue, wrapHue } from '../../utils/colors';
+import { hsvToRgb,
+  hueToRgbString,
+  hueIncrementToHue,
+  wrapHue,
+  VESSELS_HUES_INCREMENTS_NUM
+} from '@globalfishingwatch/map-colors';
 import {
   VESSELS_BASE_RADIUS,
   VESSELS_HEATMAP_BLUR_FACTOR,
-  VESSELS_HUES_INCREMENTS_NUM,
   ACTIVITY_HIGHLIGHT_HUE,
   VESSELS_HEATMAP_DIMMING_ALPHA,
   VESSELS_RADIAL_GRADIENT_STYLE_ZOOM_THRESHOLD,
   VESSEL_CLICK_TOLERANCE_PX
-} from '../../config';
+} from '../config';
 import HeatmapLayer from '../heatmap/HeatmapLayer';
 import TracksLayer from '../tracks/TracksLayer';
 

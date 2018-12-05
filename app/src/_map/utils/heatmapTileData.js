@@ -1,10 +1,10 @@
 import pull from 'lodash/pull';
 import uniq from 'lodash/uniq';
 import sumBy from 'lodash/sumBy';
-import convert from '@globalfishingwatch/map-convert';
-import buildEndpoint from 'utils/buildEndpoint';
-import PelagosClient from 'lib/pelagosClient';
 import { lngLatToWorld } from 'viewport-mercator-project';
+import convert from '@globalfishingwatch/map-convert';
+import buildEndpoint from './buildEndpoint';
+import PelagosClient from '../lib/pelagosClient';
 
 import getPBFTile from './getPBFTile';
 

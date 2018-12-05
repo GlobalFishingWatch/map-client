@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { POLYGON_LAYERS_AREA } from 'config';
+import { POLYGON_LAYERS_AREA } from 'constants';
 import PopupStyles from 'styles/components/map/popup.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
@@ -15,7 +15,7 @@ const humanizePopupFieldId = id => id
 class StaticLayerPopup extends React.Component {
   render() {
     const { popup, toggleCurrentReportPolygon } = this.props;
-    const toggleButtonText = (popup.isInReport === true) ? 'remove from report' : 'add to report';
+    const toggleButtonText = (popup.isInReport === true) ? 'remove from repo  rt' : 'add to report';
     let toggleButtonClassName = classnames(PopupStyles.toggle);
     if (popup.isInReport === true) {
       toggleButtonClassName += ` ${PopupStyles._remove}`;

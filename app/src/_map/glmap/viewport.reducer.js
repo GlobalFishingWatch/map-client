@@ -1,7 +1,7 @@
 import { FlyToInterpolator } from 'react-map-gl';
 import { easeCubic } from 'd3-ease';
-import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../../config';
-import { TRANSITION_TYPE } from '../../constants';
+import { MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL } from '../config';
+import { TRANSITION_TYPE } from '../constants';
 import {
   SET_VIEWPORT,
   UPDATE_VIEWPORT,

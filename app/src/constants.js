@@ -70,16 +70,6 @@ export const INFO_STATUS = {
   LOADED: 3
 };
 
-export const BRUSH_RENDERING_STYLE = {
-  NORMAL: 0,
-  BULLSEYE: 2
-};
-
-export const BRUSH_ZOOM_RENDERING_STYLE = {
-  RADIAL_GRADIENT: 0,
-  CIRCLE: 1
-};
-
 export const VESSEL_TYPE_VESSEL = 'vessel';
 export const VESSEL_TYPE_REEFER = 'reefers';
 
@@ -576,3 +566,5 @@ export const FLAGS_SHORTCODES = {
 };
 
 export const FLAG_FILTER_GROUP_VALUES = getFlagFilterGroupValues();
+
+export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
