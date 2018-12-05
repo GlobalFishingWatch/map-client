@@ -4,7 +4,7 @@ import MapGL, { Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGLConfig from 'react-map-gl/src/config';
 import ActivityLayers from '../activity/ActivityLayers.container.js';
-import './map.css';
+import styles from './map.css';
 
 const PopupWrapper = (props) => {
   const { latitude, longitude, children, closeButton } = props;
@@ -84,7 +84,7 @@ class Map extends React.Component {
     return (
       <div
         id="map"
-        className="map"
+        className={styles.map}
         ref={(ref) => { this._mapContainerRef = ref; }}
         onMouseLeave={() => { this.setState({ mouseOver: false }); }}
         onMouseEnter={() => { this.setState({ mouseOver: true }); }}
@@ -124,7 +124,7 @@ class Map extends React.Component {
             </PopupWrapper>
           }
         </MapGL>
-        <div className="googleLogo" />
+        <div className={styles.googleLogo} />
       </div>
     );
   }

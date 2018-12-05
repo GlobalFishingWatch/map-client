@@ -51,8 +51,6 @@ const alias = {
   ...getAliases('app/', './app/src')
 };
 
-console.log(alias)
-
 const webpackConfig = {
   entry: [
     'whatwg-fetch',
@@ -118,14 +116,18 @@ const webpackConfig = {
       'node_modules'
     ],
     alias,
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    // This is needed to use npm/yarn link, see https://github.com/babel/babel-loader/issues/149
+    symlinks: false
   },
 
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules\/(?!@globalfishingwatch\/map-convert|react-map-gl).*/,
+        // Babel should not compile node_modules, except for react-map-gl
+        // and gfw modules such a map-timebar-component, map-miniglobe-component, map-convert, etc
+        exclude: /node_modules\/(?!@globalfishingwatch\/map-|react-map-gl).*/,
         use: [
           {
             loader: 'babel-loader'
@@ -177,6 +179,8 @@ const webpackConfig = {
       },
       {
         test: /\.css$/,
+        // exclude non-modules CSS
+        exclude: /node_modules\/mapbox-gl\/dist\/mapbox-gl.css/,
         use: [
           'style-loader',
           {
@@ -184,7 +188,7 @@ const webpackConfig = {
             options: {
               importLoaders: 1,
               minimize: (envVariables.NODE_ENV === 'production'),
-              // modules: true
+              modules: true
             }
           },
           {
@@ -196,6 +200,11 @@ const webpackConfig = {
             }
           }
         ]
+      },
+      // CSS basic rule for non-module CSS
+      {
+        test: /node_modules\/mapbox-gl\/dist\/mapbox-gl.css/,
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /manifest.json$/,

@@ -49,7 +49,7 @@ export const onViewportChange = () => (dispatch, getState) => {
   callback({
     zoom: viewport.viewport.zoom,
     center: [viewport.viewport.latitude, viewport.viewport.longitude],
-    viewportBoundsGeoJSON: viewport.viewportBoundsGeoJSON,
+    bounds: viewport.bounds,
     canZoomIn: viewport.canZoomIn,
     canZoomOut: viewport.canZoomOut,
     mouseLatLong: viewport.mouseLatLong

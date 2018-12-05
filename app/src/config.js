@@ -207,16 +207,6 @@ export const SUBSCRIBE_SETTINGS = [
   }
 ];
 
-export const MINI_GLOBE_SETTINGS = {
-  viewBoxX: -75,
-  viewBoxY: -75,
-  viewBoxWidth: 200,
-  viewBoxHeight: 200,
-  svgWidth: 40,
-  scale: 100,
-  minZoom: 2.5
-};
-
 export const STATIC_LAYERS_CARTO_ENDPOINT = 'https://carto.globalfishingwatch.org/user/admin/api/v1/map?config=$MAPCONFIG';
 export const STATIC_LAYERS_CARTO_TILES_ENDPOINT =
   'https://carto.globalfishingwatch.org/user/admin/api/v1/map/$LAYERGROUPID/{z}/{x}/{y}.mvt';
