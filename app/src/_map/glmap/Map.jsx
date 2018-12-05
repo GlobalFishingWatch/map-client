@@ -113,12 +113,12 @@ class Map extends React.Component {
             highlightTemporalExtentIndexes={this.props.highlightTemporalExtentIndexes}
             loadTemporalExtent={this.props.loadTemporalExtent}
           />
-          {clickPopup !== null &&
+          {clickPopup !== undefined && clickPopup !== null &&
             <PopupWrapper latitude={clickPopup.latitude} longitude={clickPopup.longitude} closeButton>
               {clickPopup.content}
             </PopupWrapper>
           }
-          {this.state.mouseOver === true && hoverPopup !== null &&
+          {this.state.mouseOver === true && hoverPopup !== undefined && hoverPopup !== null &&
             <PopupWrapper latitude={hoverPopup.latitude} longitude={hoverPopup.longitude}>
               {hoverPopup.content}
             </PopupWrapper>

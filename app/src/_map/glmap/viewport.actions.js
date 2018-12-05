@@ -56,7 +56,8 @@ export const setMouseLatLong = (lat, long) => (dispatch) => {
     type: SET_MOUSE_LAT_LONG,
     payload: [lat, long]
   });
-  dispatch(onViewportChange());
+  // TODO MAP MODULE
+  // dispatch(onViewportChange());
 };
 
 export const transitionEnd = () => (dispatch) => {

@@ -71,7 +71,7 @@ class MapModule extends React.Component {
 
   }
   componentDidUpdate(prevProps) {
-    if (this.props.tracks !== prevProps.tracks) {
+    if (this.props.tracks !== undefined && this.props.tracks !== prevProps.tracks) {
       if (this.props.tracks.length !== prevProps.tracks.length) {
         const newTracks = this.props.tracks;
         const prevTracks = prevProps.tracks;
@@ -88,7 +88,7 @@ class MapModule extends React.Component {
       }
     }
 
-    if (this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
+    if (this.props.heatmapLayers !== undefined && this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
       const newHeatmapLayers = this.props.heatmapLayers;
       const prevHeatmapLayers = prevProps.heatmapLayers;
       newHeatmapLayers.forEach((newHeatmapLayer) => {

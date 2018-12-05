@@ -6,15 +6,15 @@ import Map from './glmap/Map.container';
 
 class MapProxy extends React.Component {
   componentDidMount() {
-    if (this.props.viewport !== null) {
-      this.props.updateViewport(this.props.viewport);
-    }
+    // if (this.props.viewport !== undefined) {
+    //   this.props.updateViewport(this.props.viewport);
+    // }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.viewport !== prevProps.viewport) {
-      this.props.updateViewport(this.props.viewport);
-    }
+    // if (this.props.viewport !== undefined && this.props.viewport !== prevProps.viewport) {
+    //   this.props.updateViewport(this.props.viewport);
+    // }
 
     if (this.props.basemapLayers !== prevProps.basemapLayers ||
         this.props.staticLayers !== prevProps.staticLayers) {

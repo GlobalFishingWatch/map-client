@@ -59,6 +59,9 @@ const getTemporalExtentIndexes = createSelector(
 const getHighlightTemporalExtentIndexes = createSelector(
   [getHighlightTemporalExtent],
   (highlightTemporalExtent) => {
+    if (highlightTemporalExtent === undefined) {
+      return null;
+    }
     const startTimestamp = highlightTemporalExtent[0].getTime();
     const endTimestamp = highlightTemporalExtent[1].getTime();
     const startIndex = convert.getOffsetedTimeAtPrecision(startTimestamp);
@@ -76,11 +79,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   updateViewport: (viewport) => {
-    dispatch(updateViewport({
-      latitude: viewport.center[0],
-      longitude: viewport.center[1],
-      ...viewport
-    }));
+    // dispatch(updateViewport({
+    //   latitude: viewport.center[0],
+    //   longitude: viewport.center[1],
+    //   ...viewport
+    // }));
   },
   commitStyleUpdates: (staticLayers, basemapLayers) => {
     dispatch(commitStyleUpdates(staticLayers, basemapLayers));

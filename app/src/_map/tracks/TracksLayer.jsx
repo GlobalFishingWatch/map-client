@@ -35,7 +35,7 @@ class TracksLayer extends React.Component {
       return;
     }
 
-    const overInInner = (highlightTemporalExtentIndexes === undefined) ? undefined : [
+    const overInInner = (highlightTemporalExtentIndexes === null) ? undefined : [
       Math.max(startIndex, highlightTemporalExtentIndexes[0]),
       Math.min(endIndex, highlightTemporalExtentIndexes[1])
     ];
