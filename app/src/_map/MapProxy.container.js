@@ -79,11 +79,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   updateViewport: (viewport) => {
-    // dispatch(updateViewport({
-    //   latitude: viewport.center[0],
-    //   longitude: viewport.center[1],
-    //   ...viewport
-    // }));
+    dispatch(updateViewport({
+      latitude: viewport.center[0],
+      longitude: viewport.center[1],
+      ...viewport
+    }));
   },
   commitStyleUpdates: (staticLayers, basemapLayers) => {
     dispatch(commitStyleUpdates(staticLayers, basemapLayers));

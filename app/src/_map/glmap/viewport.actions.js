@@ -111,5 +111,4 @@ export const exportNativeViewport = nativeViewport => (dispatch) => {
       bounds
     }
   });
-  dispatch(onViewportChange());
 };

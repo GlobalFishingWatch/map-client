@@ -30,6 +30,10 @@ class Map extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this._resize);
     this._resize();
+
+    // useful with FOUC
+    window.setTimeout(() => this._resize(), 1);
+
     // there is a problem with the container width computation (only with "fat scrollbar" browser/os configs),
     // seems like the panels with scrollbars are taken into account or smth
     window.setTimeout(() => this._resize(), 10000);
@@ -47,11 +51,14 @@ class Map extends React.Component {
     const mapContainerStyle = window.getComputedStyle(this._mapContainerRef);
     const width = parseInt(mapContainerStyle.width, 10);
     const height = parseInt(mapContainerStyle.height, 10) + 1;
-    this.props.setViewport({
-      ...this.props.viewport,
-      width,
-      height
-    });
+
+    if (width !== this.props.viewport.width || height !== this.props.viewport.height) {
+      this.props.setViewport({
+        ...this.props.viewport,
+        width,
+        height
+      });
+    }
   }
 
   onViewportChange = (viewport) => {
@@ -80,6 +87,7 @@ class Map extends React.Component {
   }
 
   render() {
+
     const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, clickPopup, hoverPopup, cursor } = this.props;
     return (
       <div
