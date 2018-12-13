@@ -24,7 +24,7 @@ class ColorPicker extends Component {
     );
   }
   render() {
-    const { opacity, showLabels, onOpacityChange, onShowLabelsToggle, id, extendedPalette } = this.props;
+    const { opacity, showLabels, onOpacityChange, onTintChange, onShowLabelsToggle, id, extendedPalette } = this.props;
     let checkedColor = this.props.color;
     if (checkedColor === undefined) {
       if (this.props.hue === undefined) {
@@ -45,10 +45,12 @@ class ColorPicker extends Component {
 
     return (
       <div className={colorPickerStyles.colorPicker}>
-        <div className={colorPickerStyles.title}>Color:</div>
-        <div className={colorPickerStyles.colorInputs}>
-          {colors.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
-        </div>
+        {onTintChange && <div>
+          <div className={colorPickerStyles.title}>Color:</div>
+          <div className={colorPickerStyles.colorInputs}>
+            {colors.map(tint => this.renderInput(tint.color, tint.hue, checkedColor, id))}
+          </div>
+        </div>}
         {onOpacityChange && <div className={colorPickerStyles.section}>
           Opacity:
           <InputRange

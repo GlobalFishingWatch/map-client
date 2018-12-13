@@ -1,6 +1,14 @@
 import find from 'lodash/find';
+
 import { hueToRgbHexString } from '@globalfishingwatch/map-colors';
-import { LAYER_TYPES, LAYER_TYPES_WITH_HEADER, HEADERLESS_LAYERS, TEMPORAL_EXTENTLESS, LAYER_TYPES_MAPBOX_GL } from 'constants';
+import {
+  LAYER_TYPES,
+  LAYER_TYPES_WITH_HEADER,
+  HEADERLESS_LAYERS,
+  TEMPORAL_EXTENTLESS,
+  LAYER_TYPES_MAPBOX_GL,
+  CUSTOM_LAYERS_SUBTYPES
+} from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
 // import { updateMapStyle } from 'map/mapStyleActions'; TODO MAP MODULE
@@ -158,7 +166,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
             colsByName: []
           };
         } else {
-          const headerPromise = loadLayerHeader(heatmapLayer.url, getState().user.token);
+          const headerPromise = loadLayerHeader(heatmapLayer.url, state.user.token);
           headerPromise.then((header) => {
             if (header !== null) {
               if (header.temporalExtents === undefined || header.temporalExtents === null) {
@@ -204,7 +212,10 @@ export function initLayers(workspaceLayers, libraryLayers) {
         workspaceLayers
           .filter(l => l.type === LAYER_TYPES.Custom)
           .forEach((customLayer) => {
-            dispatch(loadCustomLayer(customLayer.id, customLayer.url, customLayer.customLayerSubtype));
+            const subtype = customLayer.subtype || CUSTOM_LAYERS_SUBTYPES.geojson;
+            loadCustomLayer(subtype, customLayer.url, state.user.token).then((data) => {
+              dispatch(addCustomGLLayer(subtype, customLayer.id, customLayer.url, data));
+            });
           });
       })
       .catch((err) => {
@@ -334,10 +345,11 @@ export function toggleLayerShowLabels(layerId) {
   };
 }
 
-export function addCustomLayer(id, url, name, description) {
+export function addCustomLayer(subtype, id, url, name, description) {
   return {
     type: ADD_CUSTOM_LAYER,
     payload: {
+      subtype,
       id,
       url,
       name,

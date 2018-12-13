@@ -5,7 +5,7 @@ import LayerLibrary from 'layers/containers/LayerLibrary';
 import CustomLayer from 'layers/containers/CustomLayer';
 import LayerManagementModalStyles from 'styles/components/map/layer-management-modal.scss';
 
-class LayerLibraryModal extends Component {
+class LayerManagementModal extends Component {
 
   constructor(props) {
     super(props);
@@ -55,7 +55,7 @@ class LayerLibraryModal extends Component {
   }
 }
 
-LayerLibraryModal.propTypes = {
+LayerManagementModal.propTypes = {
   // array of layers available in the library
   layers: PropTypes.array,
   // triggers when user adds a layer
@@ -68,4 +68,4 @@ LayerLibraryModal.propTypes = {
   status: PropTypes.string
 };
 
-export default LayerLibraryModal;
+export default LayerManagementModal;

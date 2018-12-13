@@ -1,3 +1,5 @@
+import { LAYER_TYPES_MAPBOX_GL, CUSTOM_LAYERS_SUBTYPES } from 'constants';
+import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from '@globalfishingwatch/map-colors';
 import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from '../config';
@@ -97,6 +99,11 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
         .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
       break;
     }
+    case 'raster': {
+      newStyle = newStyle
+        .setIn(['layers', glLayerIndex, 'paint', 'raster-opacity'], refLayer.opacity);
+      break;
+    }
     default: {
       break;
     }
@@ -105,33 +112,37 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
   return newStyle;
 };
 
-// TODO MAP MODULE instead of using static + custom + basemap from store, send as arguments to this?
-export const addCustomGLLayer = layerId => (dispatch, getState) => {
+export const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getState) => {
   const state = getState();
   let style = state.map.style.mapStyle;
   const currentStyle = style.toJS();
-  const refLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
-  const layerData = state.customLayer.layersData[refLayer.id];
 
-  if (currentStyle.sources[refLayer.id] === undefined) {
-    const source = fromJS({
-      type: 'geojson',
-      data: layerData
-    });
-    style = style.setIn(['sources', refLayer.id], source);
+  if (currentStyle.sources[layerId] === undefined) {
+    const source = { type: subtype };
+    if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
+      source.data = data;
+    } else if (subtype === CUSTOM_LAYERS_SUBTYPES.raster) {
+      source.tiles = [url];
+      source.tileSize = 256;
+    }
+    style = style.setIn(['sources', layerId], fromJS(source));
   }
 
-  if (currentStyle.layers.find(glLayer => glLayer.id === refLayer.id) === undefined) {
-    const glType = getMainGeomType(layerData);
+  if (currentStyle.layers.find(glLayer => glLayer.id === layerId) === undefined) {
+    const glType = (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) ? getMainGeomType(data) : subtype;
     const glLayer = fromJS({
-      id: refLayer.id,
-      source: refLayer.id,
+      id: layerId,
+      source: layerId,
       type: glType,
-      interactive: true,
+      interactive: subtype === CUSTOM_LAYERS_SUBTYPES.geojson,
       layout: {},
       paint: {}
     });
-    style = style.set('layers', style.get('layers').concat([glLayer]));
+    const layerIndex = (subtype === CUSTOM_LAYERS_SUBTYPES.raster)
+      // if raster, put at index of last raster layer except labels
+      ? currentStyle.layers.length - 1 - currentStyle.layers.filter(l => l.id !== 'labels').reverse().findIndex(l => l.type === 'raster')
+      : currentStyle.layers.length - 1;
+    style = style.set('layers', style.get('layers').splice(layerIndex, 0, glLayer));
   }
 
   dispatch(setMapStyle(style));

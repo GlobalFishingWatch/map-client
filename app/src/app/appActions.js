@@ -1,6 +1,7 @@
 import { setUrlWorkspaceId, setWorkspaceOverride } from 'workspace/workspaceActions';
 import { getURLParameterByName, getURLPieceByName } from 'utils/getURLParameterByName';
 import { loadTimebarChartData } from 'timebar/timebarActions';
+import { resetCustomLayerForm } from 'layers/customLayerActions';
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'config';
 
 export const SET_IS_EMBEDDED = 'SET_IS_EMBEDDED';
@@ -41,12 +42,15 @@ export function openTimebarInfoModal() {
   };
 }
 
-export function setLayerManagementModalVisibility(visibility) {
-  return {
+export const setLayerManagementModalVisibility = visibility => (dispatch) => {
+  if (visibility === true) {
+    dispatch(resetCustomLayerForm());
+  }
+  dispatch({
     type: SET_LAYER_MANAGEMENT_MODAL_VISIBILITY,
     payload: visibility
-  };
-}
+  });
+};
 
 export function init() {
   return (dispatch) => {
