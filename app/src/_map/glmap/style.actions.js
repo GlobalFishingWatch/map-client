@@ -1,9 +1,7 @@
-import { LAYER_TYPES_MAPBOX_GL, CUSTOM_LAYERS_SUBTYPES } from 'constants';
-import { GL_TRANSPARENT, STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from 'config';
 import { fromJS } from 'immutable';
 import { hexToRgba } from '@globalfishingwatch/map-colors';
 import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from '../config';
-import { GL_TRANSPARENT } from '../constants';
+import { GL_TRANSPARENT, CUSTOM_LAYERS_SUBTYPES } from '../constants';
 import getMainGeomType from '../utils/getMainGeomType';
 
 export const INIT_MAP_STYLE = 'INIT_MAP_STYLE';

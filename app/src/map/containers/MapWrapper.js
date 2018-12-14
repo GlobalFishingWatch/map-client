@@ -26,7 +26,7 @@ const getViewport = createSelector(
     // TODO MAP MODULE
     // import defaultWorkspace from 'workspace/workspace';
     // defaultWorkspace.workspace.map.center
-    return null;
+    return undefined;
   }
 );
 
