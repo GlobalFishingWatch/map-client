@@ -24,7 +24,7 @@ const getFeaturePopupFields = (staticLayerId, state, feature) => {
     return source.metadata['gfw:popups'];
   }
   // when layer is of type geojson (custom layer), use all feature properties available
-  return (feature.properties.length === 0)
+  return (Object.keys(feature.properties).length === 0)
     ? null
     : Object.keys(feature.properties).map(key => ({ id: key }));
 };

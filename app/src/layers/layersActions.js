@@ -191,8 +191,12 @@ export function initLayers(workspaceLayers, libraryLayers) {
           .filter(l => l.type === LAYER_TYPES.Custom)
           .forEach((customLayer) => {
             const subtype = customLayer.subtype || CUSTOM_LAYERS_SUBTYPES.geojson;
-            loadCustomLayer(subtype, customLayer.url, state.user.token).then((data) => {
-              dispatch(addCustomGLLayer(subtype, customLayer.id, customLayer.url, data));
+            const promise = (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) ?
+              loadCustomLayer({ token: state.user.token, url: customLayer.url }) :
+              Promise.resolve({});
+
+            promise.then((layer) => {
+              dispatch(addCustomGLLayer(subtype, customLayer.id, customLayer.url, layer.data));
             });
           });
       })
