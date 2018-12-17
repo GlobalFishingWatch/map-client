@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+### Changed
+- Fixed timestamp displays to be in UTC rather than local times (in VIIRS info, hover tooltips, and encounters panel) ([#999](https://github.com/GlobalFishingWatch/map-client/issues/999))
+
 ## 3.0.6
 - Added support for line and point custom layers
 

@@ -7,6 +7,7 @@ import PinIcon from '-!babel-loader!svg-react-loader!assets/icons/pin.svg?name=P
 import classnames from 'classnames';
 import RecentVesselStyles from 'styles/recentVessels/recent-vessels.scss';
 import moment from 'moment';
+import { FORMAT_DATE, FORMAT_TIME } from 'config';
 
 class RecentVesselItem extends Component {
 
@@ -30,7 +31,7 @@ class RecentVesselItem extends Component {
 
     let timestamp = 'no date';
     if (this.props.vesselInfo.timestamp !== undefined) {
-      timestamp = moment(this.props.vesselInfo.timestamp).format('DD/MM/YYYY HH:MM');
+      timestamp = moment(this.props.vesselInfo.timestamp).format(`${FORMAT_DATE} ${FORMAT_TIME}`);
     }
     const highlightName = this.highlightWord(this.props.searchTerm, title);
 

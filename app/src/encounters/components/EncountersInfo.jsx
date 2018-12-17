@@ -34,8 +34,9 @@ class EncountersInfo extends Component {
       </div>)
     );
 
-    const date = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_DATE);
-    const time = (encountersInfo.datetime === undefined) ? '-' : moment(encountersInfo.datetime).format(FORMAT_TIME);
+    const m = moment(encountersInfo.datetime).utc();
+    const date = (encountersInfo.datetime === undefined) ? '-' : m.format(FORMAT_DATE);
+    const time = (encountersInfo.datetime === undefined) ? '-' : m.format(`${FORMAT_TIME} UTC`);
     const duration = (encountersInfo.duration === undefined) ? '-' : moment.duration(encountersInfo.duration).humanize();
     return (
       <div className={infoPanelStyles.info}>
