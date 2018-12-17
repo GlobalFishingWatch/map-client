@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+
+
+## 3.0.7
 ### Changed
 - Fixed timestamp displays to be in UTC rather than local times (in VIIRS info, hover tooltips, and encounters panel) ([#999](https://github.com/GlobalFishingWatch/map-client/issues/999))
 
