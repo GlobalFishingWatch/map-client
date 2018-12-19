@@ -246,10 +246,6 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
 
 // TODO MAP MODULE instead of using static + custom + basemap from store, send as arguments to this?
 export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, getState) => {
-  // TODO MAP MODULE
-  // const staticAndCustomLayers = state.layers.workspaceLayers.filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1);
-  // const basemapLayers = state.basemap.basemapLayers;
-  // const layers = staticAndCustomLayers.concat(basemapLayers);
   const state = getState().map.style;
   const layers = [...staticLayers, ...basemapLayers];
 
@@ -307,3 +303,26 @@ export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, ge
 
   dispatch(setMapStyle(style));
 };
+
+export const applyTemporalExtent = temporalExtent => (dispatch, getState) => {
+  const state = getState().map.style;
+  let style = state.mapStyle;
+  const currentStyle = style.toJS();
+  const glLayers = currentStyle.layers;
+
+  const start = Math.round(temporalExtent[0].getTime() / 1000);
+  const end = Math.round(temporalExtent[1].getTime() / 1000);
+
+  for (let i = 0; i < glLayers.length; i++) {
+    const glLayer = glLayers[i];
+    if (glLayer.metadata === undefined || glLayer.metadata['gfw:temporal'] !== true) {
+      continue;
+    }
+    const currentFilter = style.getIn(['layers', i, 'filter']).toJS();
+    currentFilter[1][2] = start;
+    currentFilter[2][2] = end;
+    style = style.setIn(['layers', i, 'filter'], fromJS(currentFilter));
+  }
+  dispatch(setMapStyle(style));
+};
+

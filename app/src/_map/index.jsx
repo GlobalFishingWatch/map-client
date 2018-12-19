@@ -2,11 +2,12 @@ import React from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import debounce from 'lodash/debounce';
 
 import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
-import { initStyle } from './glmap/style.actions';
+import { initStyle, applyTemporalExtent } from './glmap/style.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
 import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
@@ -48,6 +49,7 @@ const containsLayer = (layer, layers) => layers.find(prevLayer =>
   prevLayer.id === layer.id
 ) !== undefined;
 
+const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
 
 class MapModule extends React.Component {
   componentDidMount() {
@@ -111,7 +113,16 @@ class MapModule extends React.Component {
       ) {
         store.dispatch(loadTilesExtraTimeRange(this.props.loadTemporalExtent));
       }
+    }
 
+    if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
+      if (
+        prevProps.temporalExtent === undefined || !prevProps.temporalExtent.length ||
+        this.props.temporalExtent[0].getTime() !== prevProps.temporalExtent[0].getTime() ||
+        this.props.temporalExtent[1].getTime() !== prevProps.temporalExtent[1].getTime()
+      ) {
+        debouncedApplyTemporalExtent(this.props.temporalExtent);
+      }
     }
   }
   render() {
