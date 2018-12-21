@@ -46,7 +46,8 @@ export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks'];
 
 export const CUSTOM_LAYERS_SUBTYPES = {
   geojson: 'geojson',
-  raster: 'raster'
+  raster: 'raster',
+  wms: 'wms'
 };
 
 export const LAYER_HAS_DISPLAY_SETTINGS = [

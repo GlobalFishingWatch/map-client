@@ -65,11 +65,11 @@ class CustomLayer extends Component {
                 />
                 <label htmlFor={CUSTOM_LAYERS_SUBTYPES.geojson}>
                   GeoJSON
-                  <div className={MapFormStyles.help}>
-                    A simple vector format that can be produced by various GIS packages such as ArcGIS or QGIS.
-                    You first need to upload the file, using a service such as Dropbox or Github.
-                  </div>
                 </label>
+              </div>
+              <div className={MapFormStyles.help}>
+                A simple vector format that can be produced by various GIS such as ArcGIS or QGIS.
+                You first need to upload the file, using a service such as Dropbox or Github.
               </div>
               <div className={MapFormStyles.radioGroup}>
                 <input
@@ -82,11 +82,11 @@ class CustomLayer extends Component {
                 />
                 <label htmlFor={CUSTOM_LAYERS_SUBTYPES.raster}>
                   Raster
-                  <div className={MapFormStyles.help}>
-                    Use this option for data that can be consumed as tiles (images), such as
-                    satellite imagery.
-                  </div>
                 </label>
+              </div>
+              <div className={MapFormStyles.help}>
+                Use this option for data that can be consumed as tiles (images), such as
+                satellite imagery.
               </div>
               <div className={MapFormStyles.radioGroup}>
                 <input
@@ -99,10 +99,10 @@ class CustomLayer extends Component {
                 />
                 <label htmlFor="wms">
                   WMS
-                  <div className={MapFormStyles.help}>
-                    Web Map Service (WMS) following the OGC standard and capable of serving raster tiles from a GIS database.
-                  </div>
                 </label>
+              </div>
+              <div className={MapFormStyles.help}>
+                Web Map Service (WMS) following the OGC standard and capable of serving raster tiles from a GIS database.
               </div>
             </div>
           </div>
