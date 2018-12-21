@@ -159,9 +159,9 @@
       "type": "vector",
       "tiles": ["https://events-dot-world-fishing-827.appspot.com/datasets/indonesia/events/encounter/tiles/{z},{x},{y}"]
     },
-    "events_avoidance": {
+    "events_gap": {
       "type": "vector",
-      "tiles": ["https://events-dot-world-fishing-827.appspot.com/datasets/indonesia/events/avoidance/tiles/{z},{x},{y}"]
+      "tiles": ["https://events-dot-world-fishing-827.appspot.com/datasets/indonesia/events/gap/tiles/{z},{x},{y}"]
     },
     "events_port": {
       "type": "vector",
@@ -444,7 +444,9 @@
       "metadata": {
         "gfw:temporal": true
       },
-      "layout": {},
+      "layout": {
+        "visibility": "none"
+      },
       "paint": {
         "circle-radius": 3,
         "circle-color": "#FE81EB",
@@ -460,7 +462,9 @@
       "metadata": {
         "gfw:temporal": true
       },
-      "layout": {},
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
         "circle-radius": 3,
         "circle-color": "#E5647D",
@@ -469,14 +473,16 @@
       "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
     },
     {
-      "id": "events_avoidance",
+      "id": "events_gap",
       "type": "circle",
-      "source": "events_avoidance",
+      "source": "events_gap",
       "source-layer": "default",
       "metadata": {
         "gfw:temporal": true
       },
-      "layout": {},
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
         "circle-radius": 3,
         "circle-color": "#FFE7A0",
@@ -492,7 +498,9 @@
       "metadata": {
         "gfw:temporal": true
       },
-      "layout": {},
+      "layout": {
+        "visibility": "visible"
+      },
       "paint": {
         "circle-radius": 3,
         "circle-color": "#44A1B9",
