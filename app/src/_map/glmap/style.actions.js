@@ -41,11 +41,13 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
     return newStyle;
   }
 
+  const refLayerOpacity = (refLayer.opacity === undefined) ? 1 : refLayer.opacity;
+
   // color/opacity
   switch (glLayer.type) {
     case 'fill': {
       newStyle = newStyle
-        .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color);
 
       let fillColor;
@@ -73,7 +75,7 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
     }
     case 'line': {
       newStyle = newStyle
-        .setIn(['layers', glLayerIndex, 'paint', 'line-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'line-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'line-color'], refLayer.color);
       break;
     }
@@ -86,20 +88,20 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
         break;
       }
       newStyle = newStyle
-        .setIn(['layers', glLayerIndex, 'paint', 'text-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'text-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'text-color'], refLayer.color);
       break;
     }
     // This is only used for custom layers with point geom types
     case 'circle': {
       newStyle = newStyle
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayer.opacity)
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
       break;
     }
     case 'raster': {
       newStyle = newStyle
-        .setIn(['layers', glLayerIndex, 'paint', 'raster-opacity'], refLayer.opacity);
+        .setIn(['layers', glLayerIndex, 'paint', 'raster-opacity'], refLayerOpacity);
       break;
     }
     default: {
@@ -244,7 +246,6 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
     });
 };
 
-// TODO MAP MODULE instead of using static + custom + basemap from store, send as arguments to this?
 export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, getState) => {
   const state = getState().map.style;
   const layers = [...staticLayers, ...basemapLayers];
