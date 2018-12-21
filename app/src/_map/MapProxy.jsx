@@ -22,11 +22,6 @@ class MapProxy extends React.Component {
         this.props.updateViewport(this.props.viewport);
       }
     }
-
-    if (this.props.basemapLayers !== prevProps.basemapLayers ||
-        this.props.staticLayers !== prevProps.staticLayers) {
-      this.props.commitStyleUpdates(this.props.staticLayers, this.props.basemapLayers);
-    }
   }
 
   render() {

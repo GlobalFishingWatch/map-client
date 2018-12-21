@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import MapProxy from './MapProxy.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
-import { initStyle, applyTemporalExtent } from './glmap/style.actions';
+import { initStyle, commitStyleUpdates, applyTemporalExtent } from './glmap/style.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
 import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
@@ -70,6 +70,11 @@ class MapModule extends React.Component {
         glyphsPath: this.props.glyphsPath
       }));
     }
+    // if (this.props.basemapLayers !== undefined ||
+    //     this.props.staticLayers !== undefined) {
+    //       console.log(this.props)
+    //   store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
+    // }
 
   }
   componentDidUpdate(prevProps) {
@@ -103,6 +108,11 @@ class MapModule extends React.Component {
           store.dispatch(removeHeatmapLayer(prevHeatmapLayer.id));
         }
       });
+    }
+
+    if (this.props.basemapLayers !== prevProps.basemapLayers ||
+        this.props.staticLayers !== prevProps.staticLayers) {
+      store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
 
     if (this.props.loadTemporalExtent !== undefined && this.props.loadTemporalExtent.length) {
