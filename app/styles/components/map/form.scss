@@ -44,3 +44,19 @@
     min-height: none;
   }
 }
+
+.radioGroup {
+  display: flex;
+  margin-top: 18px;
+  margin-left: 2px;
+}
+
+.radioGroup label {
+  margin-left: 8px;
+}
+
+.help {
+  margin-top: 4px;
+  opacity: .6;
+  font-size: $font-size-small;
+}

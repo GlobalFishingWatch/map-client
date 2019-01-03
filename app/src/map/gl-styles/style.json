@@ -10,7 +10,7 @@
       { "id": "bathymetry", "isOption": true }
     ]
   },
-  "sources": {
+  "sources": {   
     "satellite": {
       "tiles": ["https://gtiles-dot-world-fishing-827.appspot.com/v1/tileset/sat/tile?x={x}&y={y}&z={z}"],
       "type": "raster",

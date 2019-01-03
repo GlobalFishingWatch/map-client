@@ -13,8 +13,8 @@ import {
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
   TOGGLE_LAYER_SHOW_LABELS
 } from 'layers/layersActions';
-import { LAYER_TYPES } from 'constants';
-import { PALETTE_COLORS } from 'config';
+import { LAYER_TYPES, CUSTOM_LAYERS_SUBTYPES } from 'constants';
+import { PALETTE_COLORS, NO_COLOR_TOGGLE_DEFAULT } from 'config';
 
 const getUpdatedLayers = (state, action, changedLayerCallback) => {
   const layers = cloneDeep(state.workspaceLayers);
@@ -101,8 +101,12 @@ export default function (state = initialState, action) {
     }
     case ADD_CUSTOM_LAYER: {
       const heatmapLayerPosition = findIndex(state.workspaceLayers, layer => layer.type === LAYER_TYPES.Heatmap);
-
+      const subtype = action.payload.subtype;
+      const color = (subtype === CUSTOM_LAYERS_SUBTYPES.raster)
+        ? NO_COLOR_TOGGLE_DEFAULT.color
+        : PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color;
       const newLayer = {
+        subtype,
         id: action.payload.id,
         url: action.payload.url,
         title: action.payload.name,
@@ -112,7 +116,7 @@ export default function (state = initialState, action) {
         visible: true,
         opacity: 1,
         added: true,
-        color: PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color
+        color
       };
 
       return Object.assign({}, state, {

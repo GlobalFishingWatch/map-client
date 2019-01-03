@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setLayerManagementModalVisibility(false));
   },
   onCustomLayer: (payload) => {
-    dispatch(uploadCustomLayer(payload.url, payload.name, payload.description));
+    dispatch(uploadCustomLayer(payload.subtype, payload.url, payload.name, payload.description));
   },
   login: () => {
     dispatch(login());

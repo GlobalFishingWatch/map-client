@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## 3.1.0
 
+### Added
+- Users can now upload custom layers in raster tiles format ([#997](https://github.com/GlobalFishingWatch/map-client/issues/997))
+- Users can now upload custom layers in WMS format ([#912](https://github.com/GlobalFishingWatch/map-client/issues/912))
+- Popups will now appear with custom GeoJSON layers, showing all properties available in each polygon ([#996](https://github.com/GlobalFishingWatch/map-client/issues/996))
 
 ## 3.0.7
 ### Changed
