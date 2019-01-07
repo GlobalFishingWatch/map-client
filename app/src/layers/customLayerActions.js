@@ -49,17 +49,20 @@ const loadWMSCapabilities = ({ id, url }) => {
         ? 'image/png'
         : 'image/jpeg';
 
+      const layers = capabilities.Capability.Layer.Layer.map(l => l.Name).join(',');
+      const styles = capabilities.Capability.Layer.Layer.map(l => l.Style[0].Name).join(',');
+
       const tilesURL = new URI(url).search(() => ({
         version: '1.1.0',
         request: 'GetMap',
-        layers: capabilities.Capability.Layer.Layer.map((l, i) => i).join(','),
-        styles: capabilities.Capability.Layer.Layer.map(l => l.Style[0].Name).join(','),
         srs: 'EPSG:3857',
         bbox: '{bbox-epsg-3857}',
         width: 256,
         height: 256,
-        format,
-        transparent: true
+        transparent: true,
+        layers,
+        styles,
+        format
       }));
       return {
         id,
