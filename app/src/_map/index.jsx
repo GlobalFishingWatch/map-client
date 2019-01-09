@@ -70,6 +70,11 @@ class MapModule extends React.Component {
         glyphsPath: this.props.glyphsPath
       }));
     }
+
+    if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
+      debouncedApplyTemporalExtent(this.props.temporalExtent);
+    }
+
     // if (this.props.basemapLayers !== undefined ||
     //     this.props.staticLayers !== undefined) {
     //       console.log(this.props)
