@@ -92,7 +92,7 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
         .setIn(['layers', glLayerIndex, 'paint', 'text-color'], refLayer.color);
       break;
     }
-    // This is only used for custom layers with point geom types
+    // Event layers and custom layers with point geom types
     case 'circle': {
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayerOpacity)
