@@ -167,3 +167,8 @@ A plain text JSON object that that represent values to override the currently di
 A boolean value telling whether the client is in embedded mode (no share, no layers, no menu)
 
 
+# Console configuration
+
+#### window.extendedMaxTimeRange
+
+Set to true to allow for a longer max time range.
