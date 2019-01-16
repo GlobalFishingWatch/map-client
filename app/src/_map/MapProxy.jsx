@@ -1,29 +1,9 @@
-// TODO MAP MODULE Move remaining diff logic to index.jsx
-// TODO MAP MODULE Merge with Map
+// TODO MAP MODULE Merge with Map[Container]
 import React from 'react';
 import PropTypes from 'prop-types';
 import Map from './glmap/Map.container';
 
 class MapProxy extends React.Component {
-  componentDidMount() {
-    if (this.props.viewport !== undefined) {
-      this.props.updateViewport(this.props.viewport);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.viewport !== undefined && this.props.viewport !== prevProps.viewport) {
-      if (
-        prevProps.viewport === undefined ||
-        prevProps.viewport.center[0] !== this.props.viewport.center[0] ||
-        prevProps.viewport.center[1] !== this.props.viewport.center[1] ||
-        prevProps.viewport.zoom !== this.props.viewport.zoom
-      ) {
-        this.props.updateViewport(this.props.viewport);
-      }
-    }
-  }
-
   render() {
     return (
       <Map

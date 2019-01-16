@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import convert from '@globalfishingwatch/map-convert';
 import MapProxy from './MapProxy';
-import { updateViewport } from './glmap/viewport.actions';
-import { commitStyleUpdates } from './glmap/style.actions';
 import {
   MIN_FRAME_LENGTH_MS
 } from './config';
@@ -78,16 +76,6 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateViewport: (viewport) => {
-    dispatch(updateViewport({
-      latitude: viewport.center[0],
-      longitude: viewport.center[1],
-      ...viewport
-    }));
-  },
-  commitStyleUpdates: (staticLayers, basemapLayers) => {
-    dispatch(commitStyleUpdates(staticLayers, basemapLayers));
-  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapProxy);

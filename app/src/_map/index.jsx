@@ -11,6 +11,7 @@ import { initStyle, commitStyleUpdates, applyTemporalExtent } from './glmap/styl
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
 import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
+import { updateViewport } from './glmap/viewport.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -51,6 +52,14 @@ const containsLayer = (layer, layers) => layers.find(prevLayer =>
 
 const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
 
+const updateViewportFromIncomingProps = (incomingViewport) => {
+  store.dispatch(updateViewport({
+    latitude: incomingViewport.center[0],
+    longitude: incomingViewport.center[1],
+    zoom: incomingViewport.zoom
+  }));
+};
+
 class MapModule extends React.Component {
   componentDidMount() {
     // TODO MAP MODULE INITIAL VIEWPORT ?
@@ -81,8 +90,13 @@ class MapModule extends React.Component {
     //   store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     // }
 
+    if (this.props.viewport !== undefined) {
+      updateViewportFromIncomingProps(this.props.viewport);
+    }
+
   }
   componentDidUpdate(prevProps) {
+    // tracks
     if (this.props.tracks !== undefined && this.props.tracks !== prevProps.tracks) {
       if (this.props.tracks.length !== prevProps.tracks.length) {
         const newTracks = this.props.tracks;
@@ -100,6 +114,7 @@ class MapModule extends React.Component {
       }
     }
 
+    // heatmap layers
     if (this.props.heatmapLayers !== undefined && this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
       const newHeatmapLayers = this.props.heatmapLayers;
       const prevHeatmapLayers = prevProps.heatmapLayers;
@@ -115,11 +130,13 @@ class MapModule extends React.Component {
       });
     }
 
+    // basemap / static layers
     if (this.props.basemapLayers !== prevProps.basemapLayers ||
         this.props.staticLayers !== prevProps.staticLayers) {
       store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
 
+    // loadTemporalExtent
     if (this.props.loadTemporalExtent !== undefined && this.props.loadTemporalExtent.length) {
       if (
         prevProps.loadTemporalExtent === undefined || !prevProps.loadTemporalExtent.length ||
@@ -130,6 +147,7 @@ class MapModule extends React.Component {
       }
     }
 
+    // temporalExtent
     if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
       if (
         prevProps.temporalExtent === undefined || !prevProps.temporalExtent.length ||
@@ -137,6 +155,23 @@ class MapModule extends React.Component {
         this.props.temporalExtent[1].getTime() !== prevProps.temporalExtent[1].getTime()
       ) {
         debouncedApplyTemporalExtent(this.props.temporalExtent);
+      }
+    }
+
+    // viewport - since viewport will be updated internally to the module,
+    // we have to compare incoming props to existing viewport in store, ie:
+    // update viewport from incoming props ONLY if zoom or center is different
+    // from the internally stored one
+    // TODO FFS incoming lat lon should be an object, not an array
+    const currentViewport = store.getState().map.viewport.viewport;
+    if (this.props.viewport !== undefined) {
+      if (
+        currentViewport.latitude !== this.props.viewport.center[0] ||
+        currentViewport.longitude !== this.props.viewport.center[1] ||
+        currentViewport.zoom !== this.props.viewport.zoom
+      ) {
+        console.log(currentViewport.zoom, '->', this.props.viewport.zoom)
+        updateViewportFromIncomingProps(this.props.viewport);
       }
     }
   }
