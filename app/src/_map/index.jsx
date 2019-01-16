@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
 
-import MapProxy from './MapProxy.container';
+import Map from './glmap/Map.container';
 import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
 import { initStyle, commitStyleUpdates, applyTemporalExtent } from './glmap/style.actions';
@@ -170,7 +171,6 @@ class MapModule extends React.Component {
         currentViewport.longitude !== this.props.viewport.center[1] ||
         currentViewport.zoom !== this.props.viewport.zoom
       ) {
-        console.log(currentViewport.zoom, '->', this.props.viewport.zoom)
         updateViewportFromIncomingProps(this.props.viewport);
       }
     }
@@ -178,11 +178,81 @@ class MapModule extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <MapProxy {...this.props} />
+        <Map {...this.props} />
       </Provider>
     );
   }
 }
+
+MapModule.propTypes = {
+  token: PropTypes.string.isRequired,
+  viewport: PropTypes.shape({
+    zoom: PropTypes.number,
+    center: PropTypes.arrayOf(PropTypes.number)
+  }),
+  tracks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    segmentId: PropTypes.string,
+    layerUrl: PropTypes.string.isRequired,
+    layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+    color: PropTypes.string
+  })),
+  // TODO Move inside track object ^^^
+  highlightedTrack: PropTypes.string,
+  // TODO Colors are passed through filters...
+  heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    tilesetId: PropTypes.string,
+    subtype: PropTypes.string,
+    header: PropTypes.shape({
+      endpoints: PropTypes.object,
+      isPBF: PropTypes.bool,
+      colsByName: PropTypes.object,
+      temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+      temporalExtentsLess: PropTypes.bool
+    })
+    // color: ...
+  })),
+  temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  loadTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
+  basemapLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    visible: PropTypes.bool
+  })),
+  staticLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    // TODO MAP MODULE Is that needed and if so why
+    visible: PropTypes.bool,
+    // this replaces report system
+    selectedPolygons: PropTypes.arrayOf(PropTypes.string),
+    opacity: PropTypes.number,
+    color: PropTypes.string,
+    showLabels: PropTypes.bool
+  })),
+  // interactiveLayerIds TODO MAP MODULE
+  // customLayers
+  // filters
+  hoverPopup: PropTypes.shape({
+    content: PropTypes.node,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+  }),
+  clickPopup: PropTypes.shape({
+    content: PropTypes.node,
+    latitude: PropTypes.number.isRequired,
+    longitude: PropTypes.number.isRequired
+  }),
+  // TODO MAP Module those are not needed here as they are used directly in index.
+  onViewportChange: PropTypes.func,
+  onLoadStart: PropTypes.func,
+  onLoadComplete: PropTypes.func,
+  onClick: PropTypes.func,
+  onHover: PropTypes.func,
+  onAttributionsChange: PropTypes.func
+};
+
+
 
 export default MapModule;
 
