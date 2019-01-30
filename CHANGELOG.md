@@ -1,5 +1,7 @@
 # Changelog
 
+## 3.1.2
+
 ### Fixed
 - Fixed an issue where a vessel track and info would be loaded twice when having it both pinned and displayed in a given workspace ([#1006](https://github.com/GlobalFishingWatch/map-client/issues/1006))
 
