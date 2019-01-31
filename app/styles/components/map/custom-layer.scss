@@ -73,4 +73,9 @@
   &:not(:first-child) {
     margin: 15px 0 0;
   }
+
+  &Separator {
+    margin-top: 40px;
+    width: 100%;
+  }
 }

@@ -1,37 +1,67 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { debounce } from 'lodash';
 import CustomLayerStyles from 'styles/components/map/custom-layer.scss';
 import MapFormStyles from 'styles/components/map/form.scss';
 import ButtonStyles from 'styles/components/button.scss';
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
 
 class CustomLayer extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
+      pristine: true,
       name: 'Layer name',
       description: '',
-      subtype: 'geojson'
+      subtype: 'geojson',
+      url: '',
+      subLayersActives: []
     };
   }
 
   onChange(target) {
-    const newState = Object.assign({}, this.state);
-    newState[target.name] = target.value;
-
-    this.setState(newState);
+    const key = target.name;
+    this.setState(state => ({
+      // Resets url when type changes
+      url: key === 'subtype' ? '' : state.url,
+      [key]: target.value
+    }));
+    if (key === 'subtype') {
+      this.props.resetCustomLayer();
+    }
+    if (key === 'url') {
+      this.uploadCustomLayer();
+    }
   }
+
+  uploadCustomLayer = debounce(() => {
+    this.props.onUploadCustomLayer(this.state);
+  }, 500)
 
   onSubmit(event) {
     event.preventDefault();
+    this.props.onConfirmCustomLayer(this.state);
+  }
 
-    this.props.onCustomLayer(this.state);
+  toggleSubActiveLayers(subLayerId) {
+    const { pristine, subLayersActives } = this.state;
+    const { subLayers } = this.props;
+    // By default all has to be enabled so when pristine we mark them as actives.
+    const subLayersActive = pristine ? subLayers.map(l => l.id) : subLayersActives;
+    const isActive = subLayersActive.includes(subLayerId);
+    const newLayersActives = isActive
+      ? subLayersActive.filter(l => l !== subLayerId)
+      : [...subLayersActive, subLayerId];
+
+    this.setState({ pristine: false, subLayersActives: newLayersActives });
   }
 
   render() {
+    const { pristine, subtype, subLayersActives } = this.state;
+    const { subLayers, error } = this.props;
+
     if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('custom-layer') === -1) {
       return (
         <div className={CustomLayerStyles.customLayer} >
@@ -119,22 +149,6 @@ class CustomLayer extends Component {
               />
             </div>
             <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles.fieldName} htmlFor="url" >url</label>
-              <input
-                className={MapFormStyles.textInput}
-                name="url"
-                type="text"
-                onChange={e => this.onChange(e.currentTarget)}
-                required
-                placeholder={{
-                  geojson: 'Link to a GeoJSON file',
-                  raster: 'Raster tiles URL template with XYZ parameters',
-                  wms: 'WMS server root'
-                }[this.state.subtype]
-                }
-              />
-            </div>
-            <div className={CustomLayerStyles.row}>
               <label className={MapFormStyles.fieldName} htmlFor="description" >description (optional)</label>
               <textarea
                 className={MapFormStyles.textarea}
@@ -144,14 +158,60 @@ class CustomLayer extends Component {
                 value={this.state.description}
               />
             </div>
+            <div className={CustomLayerStyles.row}>
+              <label className={MapFormStyles.fieldName} htmlFor="url" >url</label>
+              <input
+                className={MapFormStyles.textInput}
+                name="url"
+                type="text"
+                onChange={e => this.onChange(e.currentTarget)}
+                value={this.state.url}
+                required
+                placeholder={{
+                  geojson: 'Link to a GeoJSON file',
+                  raster: 'Raster tiles URL template with XYZ parameters',
+                  wms: 'WMS server root'
+                }[this.state.subtype]
+                }
+              />
+            </div>
           </div>
 
+          {subtype === 'wms' && subLayers && subLayers.length > 0 &&
+            <div className={CustomLayerStyles.rowSeparator}>
+              <div className={CustomLayerStyles.row}>
+                <span className={MapFormStyles.fieldName}>Available sub layers</span>
+                {subLayers.map(layer => ([
+                  <div key="check" className={MapFormStyles.radioGroup}>
+                    <input
+                      type="checkbox"
+                      name={`sub-layer-${layer.id}`}
+                      id={`sub-layer-${layer.id}`}
+                      checked={pristine || subLayersActives.includes(layer.id)}
+                      onChange={() => this.toggleSubActiveLayers(layer.id)}
+                    />
+                    <label htmlFor={`sub-layer-${layer.id}`}>
+                      {layer.label}
+                    </label>
+                  </div>,
+                  layer.description &&
+                    <span key="description" className={MapFormStyles.help}>
+                      {layer.description}
+                    </span>
+                ]))}
+              </div>
+            </div>
+          }
+
           <div className={CustomLayerStyles.row}>
-            {this.props.error !== null &&
-            <span className={CustomLayerStyles.submitError}>
-              Whoops! Something went wrong.<br />
-              Please check if the custom layer type is properly selected or if the data you provided is correct.
-            </span>
+            {error !== null &&
+              <span className={CustomLayerStyles.submitError}>
+                Whoops! Something went wrong.<br />
+                {error === 'generic'
+                  ? 'Please check if the custom layer type is properly selected or if the data you provided is correct.'
+                  : error
+                }
+              </span>
             }
             <div className={CustomLayerStyles.submitContainer}>
               <input
@@ -169,8 +229,17 @@ class CustomLayer extends Component {
 }
 
 CustomLayer.propTypes = {
+  // resets custom layer preview
+  resetCustomLayer: PropTypes.func.isRequired,
+  // function to upload and preview the layer
+  onUploadCustomLayer: PropTypes.func.isRequired,
   // function triggered once the form is submitted
-  onCustomLayer: PropTypes.func,
+  onConfirmCustomLayer: PropTypes.func.isRequired,
+  subLayers: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    label: PropTypes.string,
+    description: PropTypes.string
+  }).isRequired),
   error: PropTypes.string,
   login: PropTypes.func,
   userPermissions: PropTypes.array

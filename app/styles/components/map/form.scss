@@ -41,7 +41,7 @@
 
   @media #{$mq-tablet} {
     height: auto;
-    min-height: none;
+    min-height: 85px;
   }
 }
 
@@ -59,4 +59,10 @@
   margin-top: 4px;
   opacity: .6;
   font-size: $font-size-small;
+  max-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
