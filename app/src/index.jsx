@@ -87,6 +87,7 @@ const composeEnhancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      stateSanitizer: state => ({ ...state, tracks: 'NOT_SERIALIZED', heatmap: 'NOT_SERIALIZED', heatmapTiles: 'NOT_SERIALIZED' })
     }) : compose;
 
 const enhancer = composeEnhancers(
