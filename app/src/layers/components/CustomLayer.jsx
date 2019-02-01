@@ -32,7 +32,12 @@ class CustomLayer extends Component {
       this.props.resetCustomLayer();
     }
     if (key === 'url') {
-      this.uploadCustomLayer();
+      if (target.value) {
+        this.uploadCustomLayer();
+      } else {
+        this.uploadCustomLayer.cancel();
+        this.props.resetCustomLayer();
+      }
     }
   }
 
@@ -206,9 +211,8 @@ class CustomLayer extends Component {
           <div className={CustomLayerStyles.row}>
             {error !== null &&
               <span className={CustomLayerStyles.submitError}>
-                Whoops! Something went wrong.<br />
                 {error === 'generic'
-                  ? 'Please check if the custom layer type is properly selected or if the data you provided is correct.'
+                  ? <span>Whoops! Something went wrong.<br />Please check if the custom layer type is properly selected or if the data you provided is correct.</span>
                   : error
                 }
               </span>
