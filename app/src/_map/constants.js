@@ -17,3 +17,8 @@ export const BRUSH_ZOOM_RENDERING_STYLE = {
 };
 
 export const POLYGON_LAYERS_AREA = 'POLYGON_LAYERS_AREA';
+
+export const CUSTOM_LAYERS_SUBTYPES = {
+  geojson: 'geojson',
+  raster: 'raster'
+};
