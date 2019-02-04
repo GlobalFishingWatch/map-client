@@ -57,7 +57,7 @@ const loadWMSCapabilities = ({ id, url }) => {
 };
 
 const getWMSURLFilterdByLayers = ({ url, capabilities }, layersActives) => {
-  const format = (capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1)
+  const format = capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1
     ? 'image/png'
     : 'image/jpeg';
 
@@ -125,14 +125,31 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
     promises.reduce((p, f) => p.then(f), Promise.resolve({
       token, subtype, name, url, description, id: new Date().getTime().toString()
     })).then((layer) => {
+      const getSubLayers = ({ capabilities }) => {
+        const layers = capabilities && capabilities.Capability && capabilities.Capability.Layer && capabilities.Capability.Layer.Layer;
+        if (!layers) return [];
+
+        return layers.map(l => ({
+          id: l.Name,
+          label: l.Title,
+          description: l.Abstract
+        }));
+      };
+
       dispatch({
         type: CUSTOM_LAYER_UPLOAD_SUCCESS,
-        payload: layer
+        payload: {
+          ...layer,
+          subLayers: getSubLayers(layer)
+        }
       });
-    }).catch(err => dispatch({
-      type: CUSTOM_LAYER_UPLOAD_ERROR,
-      payload: { error: err.message }
-    }));
+    })
+      .catch(err =>
+        dispatch({
+          type: CUSTOM_LAYER_UPLOAD_ERROR,
+          payload: { error: err.message }
+        })
+      );
   } else {
     dispatch({
       type: CUSTOM_LAYER_UPLOAD_ERROR,
@@ -141,17 +158,33 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
   }
 };
 
+const includeSubLayersDescription = (layer) => {
+  const activeLayers = layer.subLayers.filter(l => layer.subLayersActives.includes(l.id));
+  return `${layer.description} </br> ${activeLayers.reduce((acc, l) =>
+    `${acc} <strong>${l.label}:</strong> ${l.description || 'No description provided'} </br></br>`, '')
+  }`;
+};
+
 export const confirmCustomLayer = layer => (dispatch, getState) => {
   const { previewLayer } = getState().customLayer;
   const newLayer = { ...layer, ...previewLayer };
   if (layer.subtype === 'wms') {
+    if (!layer.subLayersActives || !layer.subLayersActives.length > 0) {
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_ERROR,
+        payload: { error: 'Please select at least one sublayer' }
+      });
+      return null;
+    }
     newLayer.url = getWMSURLFilterdByLayers(newLayer, layer.subLayersActives);
+    newLayer.description = includeSubLayersDescription(newLayer);
     newLayer.subtype = CUSTOM_LAYERS_SUBTYPES.raster;
   }
   dispatch(setLayerManagementModalVisibility(false));
   dispatch(addCustomLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.name, newLayer.description));
   dispatch(addCustomGLLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.data));
   dispatch({ type: CUSTOM_LAYER_RESET });
+  return null;
 };
 
 export const resetCustomLayerForm = () => ({
