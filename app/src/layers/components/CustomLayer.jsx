@@ -12,7 +12,6 @@ class CustomLayer extends Component {
     super(props);
 
     this.state = {
-      pristine: true,
       name: 'Layer name',
       description: '',
       subtype: 'geojson',
@@ -43,7 +42,7 @@ class CustomLayer extends Component {
 
   uploadCustomLayer = debounce(() => {
     this.props.onUploadCustomLayer(this.state);
-  }, 500)
+  }, 500);
 
   onSubmit(event) {
     event.preventDefault();
@@ -51,30 +50,24 @@ class CustomLayer extends Component {
   }
 
   toggleSubActiveLayers(subLayerId) {
-    const { pristine, subLayersActives } = this.state;
-    const { subLayers } = this.props;
-    // By default all has to be enabled so when pristine we mark them as actives.
-    const subLayersActive = pristine ? subLayers.map(l => l.id) : subLayersActives;
-    const isActive = subLayersActive.includes(subLayerId);
-    const newLayersActives = isActive
-      ? subLayersActive.filter(l => l !== subLayerId)
-      : [...subLayersActive, subLayerId];
+    const { subLayersActives } = this.state;
+    const isActive = subLayersActives.includes(subLayerId);
+    const newLayersActives = isActive ? subLayersActives.filter(l => l !== subLayerId) : [...subLayersActives, subLayerId];
 
-    this.setState({ pristine: false, subLayersActives: newLayersActives });
+    this.setState({ subLayersActives: newLayersActives });
   }
 
   render() {
-    const { pristine, subtype, subLayersActives } = this.state;
+    const { subtype, subLayersActives } = this.state;
     const { subLayers, error } = this.props;
 
     if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('custom-layer') === -1) {
       return (
-        <div className={CustomLayerStyles.customLayer} >
-          <div className={CustomLayerStyles.noAccess} >
-            <a
-              className="loginRequiredLink"
-              onClick={this.props.login}
-            >Only registered users can upload custom layers. Click here to log in.</a>
+        <div className={CustomLayerStyles.customLayer}>
+          <div className={CustomLayerStyles.noAccess}>
+            <a className="loginRequiredLink" onClick={this.props.login}>
+              Only registered users can upload custom layers. Click here to log in.
+            </a>
           </div>
         </div>
       );
@@ -82,13 +75,12 @@ class CustomLayer extends Component {
 
     return (
       <div className={CustomLayerStyles.customLayer}>
-        <form
-          className={classnames(MapFormStyles.form, CustomLayerStyles.uploadForm)}
-          onSubmit={e => this.onSubmit(e)}
-        >
+        <form className={classnames(MapFormStyles.form, CustomLayerStyles.uploadForm)} onSubmit={e => this.onSubmit(e)}>
           <div className={CustomLayerStyles.column}>
             <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles.fieldName} htmlFor="name">Type</label>
+              <label className={MapFormStyles.fieldName} htmlFor="name">
+                Type
+              </label>
               <div className={MapFormStyles.radioGroup}>
                 <input
                   type="radio"
@@ -98,13 +90,11 @@ class CustomLayer extends Component {
                   checked={this.state.subtype === CUSTOM_LAYERS_SUBTYPES.geojson}
                   onChange={e => this.onChange(e.currentTarget)}
                 />
-                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.geojson}>
-                  GeoJSON
-                </label>
+                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.geojson}>GeoJSON</label>
               </div>
               <div className={MapFormStyles.help}>
-                A simple vector format that can be produced by various GIS such as ArcGIS or QGIS.
-                You first need to upload the file, using a service such as Dropbox or Github.
+                A simple vector format that can be produced by various GIS such as ArcGIS or QGIS. You first need to upload the file, using
+                a service such as Dropbox or Github.
               </div>
               <div className={MapFormStyles.radioGroup}>
                 <input
@@ -115,13 +105,10 @@ class CustomLayer extends Component {
                   checked={this.state.subtype === CUSTOM_LAYERS_SUBTYPES.raster}
                   onChange={e => this.onChange(e.currentTarget)}
                 />
-                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.raster}>
-                  Raster
-                </label>
+                <label htmlFor={CUSTOM_LAYERS_SUBTYPES.raster}>Raster</label>
               </div>
               <div className={MapFormStyles.help}>
-                Use this option for data that can be consumed as tiles (images), such as
-                satellite imagery.
+                Use this option for data that can be consumed as tiles (images), such as satellite imagery.
               </div>
               <div className={MapFormStyles.radioGroup}>
                 <input
@@ -132,9 +119,7 @@ class CustomLayer extends Component {
                   checked={this.state.subtype === 'wms'}
                   onChange={e => this.onChange(e.currentTarget)}
                 />
-                <label htmlFor="wms">
-                  WMS
-                </label>
+                <label htmlFor="wms">WMS</label>
               </div>
               <div className={MapFormStyles.help}>
                 Web Map Service (WMS) following the OGC standard and capable of serving raster tiles from a GIS database.
@@ -143,7 +128,9 @@ class CustomLayer extends Component {
           </div>
           <div className={CustomLayerStyles.column}>
             <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles.fieldName} htmlFor="name" >name</label>
+              <label className={MapFormStyles.fieldName} htmlFor="name">
+                name
+              </label>
               <input
                 className={MapFormStyles.textInput}
                 type="text"
@@ -154,7 +141,9 @@ class CustomLayer extends Component {
               />
             </div>
             <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles.fieldName} htmlFor="description" >description (optional)</label>
+              <label className={MapFormStyles.fieldName} htmlFor="description">
+                description (optional)
+              </label>
               <textarea
                 className={MapFormStyles.textarea}
                 name="description"
@@ -164,7 +153,9 @@ class CustomLayer extends Component {
               />
             </div>
             <div className={CustomLayerStyles.row}>
-              <label className={MapFormStyles.fieldName} htmlFor="url" >url</label>
+              <label className={MapFormStyles.fieldName} htmlFor="url">
+                url
+              </label>
               <input
                 className={MapFormStyles.textInput}
                 name="url"
@@ -172,55 +163,59 @@ class CustomLayer extends Component {
                 onChange={e => this.onChange(e.currentTarget)}
                 value={this.state.url}
                 required
-                placeholder={{
-                  geojson: 'Link to a GeoJSON file',
-                  raster: 'Raster tiles URL template with XYZ parameters',
-                  wms: 'WMS server root'
-                }[this.state.subtype]
+                placeholder={
+                  {
+                    geojson: 'Link to a GeoJSON file',
+                    raster: 'Raster tiles URL template with XYZ parameters',
+                    wms: 'WMS server root'
+                  }[this.state.subtype]
                 }
               />
             </div>
           </div>
 
-          {subtype === 'wms' && subLayers && subLayers.length > 0 &&
+          {subtype === 'wms' && subLayers && subLayers.length > 0 && (
             <div className={CustomLayerStyles.rowSeparator}>
               <div className={CustomLayerStyles.row}>
                 <span className={MapFormStyles.fieldName}>Available sub layers</span>
-                {subLayers.map(layer => ([
+                {subLayers.map(layer => [
                   <div key="check" className={MapFormStyles.radioGroup}>
                     <input
                       type="checkbox"
                       name={`sub-layer-${layer.id}`}
                       id={`sub-layer-${layer.id}`}
-                      checked={pristine || subLayersActives.includes(layer.id)}
+                      checked={subLayersActives.includes(layer.id)}
                       onChange={() => this.toggleSubActiveLayers(layer.id)}
                     />
-                    <label htmlFor={`sub-layer-${layer.id}`}>
-                      {layer.label}
-                    </label>
+                    <label htmlFor={`sub-layer-${layer.id}`}>{layer.label}</label>
                   </div>,
-                  layer.description &&
+                  layer.description && (
                     <span key="description" className={MapFormStyles.help}>
                       {layer.description}
                     </span>
-                ]))}
+                  )
+                ])}
               </div>
             </div>
-          }
+          )}
 
           <div className={CustomLayerStyles.row}>
-            {error !== null &&
+            {error !== null && (
               <span className={CustomLayerStyles.submitError}>
-                {error === 'generic'
-                  ? <span>Whoops! Something went wrong.<br />Please check if the custom layer type is properly selected or if the data you provided is correct.</span>
-                  : error
-                }
+                {error === 'generic' ? (
+                  <span>
+                    Whoops! Something went wrong.
+                    <br />
+                    Please check if the custom layer type is properly selected or if the data you provided is correct.
+                  </span>
+                ) : (
+                  error
+                )}
               </span>
-            }
+            )}
             <div className={CustomLayerStyles.submitContainer}>
               <input
-                className={classnames(ButtonStyles.button, ButtonStyles._filled,
-                  ButtonStyles._big, CustomLayerStyles.submitButton)}
+                className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._big, CustomLayerStyles.submitButton)}
                 type="submit"
                 value="done"
               />
@@ -239,11 +234,13 @@ CustomLayer.propTypes = {
   onUploadCustomLayer: PropTypes.func.isRequired,
   // function triggered once the form is submitted
   onConfirmCustomLayer: PropTypes.func.isRequired,
-  subLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    label: PropTypes.string,
-    description: PropTypes.string
-  }).isRequired),
+  subLayers: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      label: PropTypes.string,
+      description: PropTypes.string
+    }).isRequired
+  ),
   error: PropTypes.string,
   login: PropTypes.func,
   userPermissions: PropTypes.array
