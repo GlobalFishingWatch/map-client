@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.0
+
+### Added
+- Add the ability to handle WMS with multiple layers. Relates to [#912](https://github.com/GlobalFishingWatch/map-client/issues/912)
+
 ## 3.1.2
 
 ### Fixed
