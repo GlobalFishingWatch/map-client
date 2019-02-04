@@ -1,24 +1,17 @@
 import { connect } from 'react-redux';
 import CustomLayer from 'layers/components/CustomLayer';
 import { setLayerManagementModalVisibility } from 'app/appActions';
-import { resetCustomLayerForm, uploadCustomLayer, confirmCustomLayer } from 'layers/customLayerActions';
+import {
+  resetCustomLayerForm,
+  uploadCustomLayer,
+  confirmCustomLayer
+} from 'layers/customLayerActions';
 import { login } from 'user/userActions';
-
-const getSubLayers = ({ capabilities }) => {
-  const layers = capabilities && capabilities.Capability && capabilities.Capability.Layer && capabilities.Capability.Layer.Layer;
-  if (!layers) return [];
-
-  return layers.map(l => ({
-    id: l.Name,
-    label: l.Title,
-    description: l.Abstract
-  }));
-};
 
 const mapStateToProps = state => ({
   error: state.customLayer.error,
   loading: state.customLayer.status === 'pending',
-  subLayers: state.customLayer.previewLayer && getSubLayers(state.customLayer.previewLayer),
+  subLayers: state.customLayer.previewLayer && state.customLayer.previewLayer.subLayers,
   userPermissions: state.user.userPermissions
 });
 
