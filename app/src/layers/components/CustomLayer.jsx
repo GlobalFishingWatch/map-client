@@ -190,7 +190,7 @@ class CustomLayer extends Component {
                     <label htmlFor={`sub-layer-${layer.id}`}>{layer.label}</label>
                   </div>,
                   layer.description && (
-                    <span key="description" className={MapFormStyles.help}>
+                    <span key="description" title={layer.description} className={MapFormStyles.help}>
                       {layer.description}
                     </span>
                   )
