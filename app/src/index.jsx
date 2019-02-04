@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, compose, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import Promise from 'promise-polyfill';
@@ -36,6 +36,8 @@ import AppContainer from 'containers/App';
 import AuthMapContainer from 'containers/AuthMap';
 import { init } from './app/appActions';
 import appReducer from './app/appReducer';
+
+const { NODE_ENV } = process.env;
 
 // Polyfill for older browsers (IE11 for example)
 window.Promise = window.Promise || Promise;
@@ -79,10 +81,19 @@ const reducer = combineReducers({
  * @info(http://redux.js.org/docs/basics/Store.html)
  * @type {Object}
  */
-const store = createStore(
-  reducer,
+const composeEnhancers =
+  NODE_ENV === 'development' &&
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      stateSanitizer: state => ({ ...state, tracks: 'NOT_SERIALIZED', heatmap: 'NOT_SERIALIZED', heatmapTiles: 'NOT_SERIALIZED' })
+    }) : compose;
+
+const enhancer = composeEnhancers(
   applyMiddleware(analyticsMiddleware, thunk)
 );
+const store = createStore(reducer, enhancer);
 
 render(
   <Provider store={store} >
