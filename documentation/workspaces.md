@@ -152,11 +152,11 @@ Some parameters of the loaded workspace can be overriden with URL parameters. Ei
 Example (as of v1):
 ```
 {
-  vessels: [[seriesgroup/uvi0, tilesetId0, series0], ..., [seriesgroup/uviN, tilesetIdN,seriesN]],  // merges with workspace pinned vessels, first vessel of the array is shownVessel, series is an optional argument for each vessel
-  view: [zoom, longitude, latitude], // overrides workspace-set view
-  innerExtent: [start, end], // overrides workspace
-  outerExtent: [start, end] // overrides workspace
-  version: int // the version will tell the client the structure of the params
+  "vessels": [[seriesgroup/uvi0, tilesetId0, series0], ..., [seriesgroup/uviN, tilesetIdN,seriesN]],  // merges with workspace pinned vessels, first vessel of the array is shownVessel, series is an optional argument for each vessel
+  "view": [zoom, longitude, latitude], // overrides workspace-set view
+  "innerExtent": [start, end], // overrides workspace
+  "outerExtent": [start, end] // overrides workspace
+  "version": int // the version will tell the client the structure of the params
 }
 ```
 

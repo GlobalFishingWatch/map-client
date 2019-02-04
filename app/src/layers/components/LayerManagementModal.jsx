@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import LayerLibrary from 'layers/containers/LayerLibrary';
 import CustomLayer from 'layers/containers/CustomLayer';
+import Loader from 'mapPanels/leftControlPanel/components/Loader';
 import LayerManagementModalStyles from 'styles/components/map/layer-management-modal.scss';
 
 class LayerManagementModal extends Component {
@@ -22,11 +23,12 @@ class LayerManagementModal extends Component {
   }
 
   render() {
+    const isLoading = this.props.status === 'pending';
     return (
       <div
         className={classnames(
           LayerManagementModalStyles.layerManagementModal,
-          { [`${LayerManagementModalStyles._disabled}`]: this.props.status === 'pending' }
+          { [`${LayerManagementModalStyles._disabled}`]: isLoading }
         )}
       >
         <h3 className={LayerManagementModalStyles.title}>Add layer</h3>
@@ -50,20 +52,15 @@ class LayerManagementModal extends Component {
         </div>
         {this.state.display === 'library' && <LayerLibrary />}
         {this.state.display === 'customLayer' && <CustomLayer />}
+        {isLoading &&
+          <div className={LayerManagementModalStyles.layerManagementModalLoading}><Loader visible /></div>
+        }
       </div>
     );
   }
 }
 
 LayerManagementModal.propTypes = {
-  // array of layers available in the library
-  layers: PropTypes.array,
-  // triggers when user adds a layer
-  addLayer: PropTypes.func,
-  // triggers when user removes a layer
-  removeLayer: PropTypes.func,
-  // sets modal with info about the current layer
-  setLayerInfoModal: PropTypes.func,
   // modal loading status
   status: PropTypes.string
 };

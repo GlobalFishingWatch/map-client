@@ -2,6 +2,7 @@ import { setLayerManagementModalVisibility } from 'app/appActions';
 import { addCustomLayer } from 'layers/layersActions';
 import { addCustomGLLayer } from 'map/mapStyleActions';
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
+import isURL from 'validator/lib/isURL';
 import WMSCapabilities from 'wms-capabilities';
 import URI from 'urijs';
 
@@ -45,33 +46,40 @@ const loadWMSCapabilities = ({ id, url }) => {
         throw new Error('Error with WMS endpoint');
       }
 
-      const format = (capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1)
-        ? 'image/png'
-        : 'image/jpeg';
-
-      const layers = capabilities.Capability.Layer.Layer.map(l => l.Name).join(',');
-      const styles = capabilities.Capability.Layer.Layer.map(l => l.Style[0].Name).join(',');
-
-      const tilesURL = new URI(url).search(() => ({
-        version: '1.1.0',
-        request: 'GetMap',
-        srs: 'EPSG:3857',
-        bbox: '{bbox-epsg-3857}',
-        width: 256,
-        height: 256,
-        transparent: true,
-        layers,
-        styles,
-        format
-      }));
       return {
         id,
-        url: decodeURIComponent(tilesURL.toString()),
+        url,
+        capabilities,
         subtype: CUSTOM_LAYERS_SUBTYPES.raster
       };
     });
-
   return promise;
+};
+
+const getWMSURLFilterdByLayers = ({ url, capabilities }, layersActives) => {
+  const format = capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1
+    ? 'image/png'
+    : 'image/jpeg';
+
+  const layersFiltered = capabilities.Capability.Layer.Layer
+    .filter(l => layersActives.includes(l.Name));
+
+  const layersIds = layersFiltered.map(l => l.Name).join(',');
+  const styles = layersFiltered.map(l => l.Style[0].Name).join(',');
+
+  const tilesURL = new URI(url).search(() => ({
+    version: '1.1.0',
+    request: 'GetMap',
+    srs: 'EPSG:3857',
+    bbox: '{bbox-epsg-3857}',
+    width: 256,
+    height: 256,
+    transparent: true,
+    layers: layersIds,
+    styles,
+    format
+  }));
+  return decodeURIComponent(tilesURL.toString());
 };
 
 const saveToDirectory = ({ token, subtype, name, description, url }) => {
@@ -100,37 +108,83 @@ const saveToDirectory = ({ token, subtype, name, description, url }) => {
 export const uploadCustomLayer = (subtype, url, name, description) => (dispatch, getState) => {
   const state = getState();
   const token = state.user.token;
+  if (isURL(url.trim())) {
+    dispatch({ type: CUSTOM_LAYER_UPLOAD_START });
 
-  dispatch({
-    type: CUSTOM_LAYER_UPLOAD_START,
-    payload: 'pending'
-  });
+    const promises = [];
+    if (subtype !== CUSTOM_LAYERS_SUBTYPES.raster) {
+      promises.push(saveToDirectory);
+    }
+    if (subtype === CUSTOM_LAYERS_SUBTYPES.wms) {
+      promises.push(loadWMSCapabilities);
+    }
+    if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
+      promises.push(loadCustomLayer);
+    }
 
-  const promises = [];
-  if (subtype !== CUSTOM_LAYERS_SUBTYPES.raster) {
-    promises.push(saveToDirectory);
-  }
-  if (subtype === CUSTOM_LAYERS_SUBTYPES.wms) {
-    promises.push(loadWMSCapabilities);
-  }
-  if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
-    promises.push(loadCustomLayer);
-  }
+    promises.reduce((p, f) => p.then(f), Promise.resolve({
+      token, subtype, name, url, description, id: new Date().getTime().toString()
+    })).then((layer) => {
+      const getSubLayers = ({ capabilities }) => {
+        const layers = capabilities && capabilities.Capability && capabilities.Capability.Layer && capabilities.Capability.Layer.Layer;
+        if (!layers) return [];
 
-  promises.reduce((p, f) => p.then(f), Promise.resolve({
-    token, subtype, name, url, description, id: new Date().getTime().toString()
-  })).then((layer) => {
+        return layers.map(l => ({
+          id: l.Name,
+          label: l.Title,
+          description: l.Abstract
+        }));
+      };
+
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_SUCCESS,
+        payload: {
+          ...layer,
+          subLayers: getSubLayers(layer)
+        }
+      });
+    })
+      .catch(err =>
+        dispatch({
+          type: CUSTOM_LAYER_UPLOAD_ERROR,
+          payload: { error: err.message }
+        })
+      );
+  } else {
     dispatch({
-      type: CUSTOM_LAYER_UPLOAD_SUCCESS,
-      payload: 'idle'
+      type: CUSTOM_LAYER_UPLOAD_ERROR,
+      payload: { error: 'Please insert a valid url' }
     });
-    dispatch(setLayerManagementModalVisibility(false));
-    dispatch(addCustomLayer(layer.subtype, layer.id, layer.url, name, description));
-    dispatch(addCustomGLLayer(layer.subtype, layer.id, layer.url, layer.data));
-  }).catch(err => dispatch({
-    type: CUSTOM_LAYER_UPLOAD_ERROR,
-    payload: { error: err.message }
-  }));
+  }
+};
+
+const includeSubLayersDescription = (layer) => {
+  const activeLayers = layer.subLayers.filter(l => layer.subLayersActives.includes(l.id));
+  return `${layer.description} </br> ${activeLayers.reduce((acc, l) =>
+    `${acc} <strong>${l.label}:</strong> ${l.description || 'No description provided'} </br></br>`, '')
+  }`;
+};
+
+export const confirmCustomLayer = layer => (dispatch, getState) => {
+  const { previewLayer } = getState().customLayer;
+  const newLayer = { ...layer, ...previewLayer };
+  if (layer.subtype === 'wms') {
+    if (!layer.subLayersActives || !layer.subLayersActives.length > 0) {
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_ERROR,
+        payload: { error: 'Please select at least one sublayer' }
+      });
+      return null;
+    }
+    newLayer.url = getWMSURLFilterdByLayers(newLayer, layer.subLayersActives);
+    newLayer.description = includeSubLayersDescription(newLayer);
+    newLayer.subtype = CUSTOM_LAYERS_SUBTYPES.raster;
+  }
+  dispatch(setLayerManagementModalVisibility(false));
+  dispatch(addCustomLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.name, newLayer.description));
+  dispatch(addCustomGLLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.data));
+  dispatch({ type: CUSTOM_LAYER_RESET });
+  return null;
 };
 
 export const resetCustomLayerForm = () => ({
