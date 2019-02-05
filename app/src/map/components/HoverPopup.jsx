@@ -25,7 +25,7 @@ const getPopupData = (event, layerTitle) => {
       const foundVessel = objects[0];
       if (foundVessel.timeIndex) {
         const date = new Date(convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex));
-        featureTitle = moment(date).format(FORMAT_DATE);
+        featureTitle = moment(date).utc().format(FORMAT_DATE);
       }
     } else {
       const numVessels = (objects === undefined) ? 'multiple' : objects.length;

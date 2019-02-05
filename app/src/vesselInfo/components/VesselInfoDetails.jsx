@@ -82,7 +82,7 @@ class VesselInfoDetails extends Component {
           break;
         case 'datetime': {
           const humanizedDate = vesselInfo[field.id] ?
-            moment(vesselInfo[field.id]).format(`${FORMAT_DATE} ${FORMAT_TIME}`) :
+            moment(vesselInfo[field.id]).utc().format(`${FORMAT_DATE} ${FORMAT_TIME} UTC`) :
             null;
           renderedFieldList.push(<div key={field.id} className={infoPanelStyles.rowInfo}>
             <span className={infoPanelStyles.key}>{field.display}</span>

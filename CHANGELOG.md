@@ -1,10 +1,25 @@
 # Changelog
 
-## Unreleased
+## 3.2.0
+
+### Added
+- Add the ability to handle WMS with multiple layers. Relates to [#912](https://github.com/GlobalFishingWatch/map-client/issues/912)
+
+## 3.1.2
+
+### Fixed
+- Fixed an issue where a vessel track and info would be loaded twice when having it both pinned and displayed in a given workspace ([#1006](https://github.com/GlobalFishingWatch/map-client/issues/1006))
+
+## 3.1.0
+
 ### Added
 - Users can now upload custom layers in raster tiles format ([#997](https://github.com/GlobalFishingWatch/map-client/issues/997))
 - Users can now upload custom layers in WMS format ([#912](https://github.com/GlobalFishingWatch/map-client/issues/912))
 - Popups will now appear with custom GeoJSON layers, showing all properties available in each polygon ([#996](https://github.com/GlobalFishingWatch/map-client/issues/996))
+
+## 3.0.7
+### Changed
+- Fixed timestamp displays to be in UTC rather than local times (in VIIRS info, hover tooltips, and encounters panel) ([#999](https://github.com/GlobalFishingWatch/map-client/issues/999))
 
 ## 3.0.6
 - Added support for line and point custom layers

@@ -142,7 +142,7 @@ export const applyFleetOverrides = () => (dispatch, getState) => {
   });
 };
 
-export function setPinnedVessels(pinnedVessels) {
+export function setPinnedVessels(pinnedVessels, shownVessel) {
   return (dispatch, getState) => {
     const state = getState();
     const options = {
@@ -205,6 +205,17 @@ export function setPinnedVessels(pinnedVessels) {
           getVesselName(pinnedVessel, layer.header.info.fields),
           pinnedVessel.tilesetId
         ));
+
+        if (shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
+          dispatch({
+            type: SET_VESSEL_DETAILS,
+            payload: {
+              vesselData: data,
+              layer
+            }
+          });
+          dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.seriesgroup));
+        }
       };
       request.send(null);
     });

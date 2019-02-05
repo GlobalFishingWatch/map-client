@@ -348,16 +348,18 @@ class Timebar extends Component {
     let newExtentPx = d3event.selection;
     const newExtent = this.getExtent(d3event.selection);
 
+    const maxTimeRange = (window.extendedMaxTimeRange === true) ? TIMELINE_MAX_TIME * 4 : TIMELINE_MAX_TIME;
+
     // time range is too long
-    if (newExtent[1].getTime() - newExtent[0].getTime() > TIMELINE_MAX_TIME) {
+    if (newExtent[1].getTime() - newExtent[0].getTime() > maxTimeRange) {
       const oldExtent = this.props.timelineInnerExtent;
 
       if (oldExtent[0].getTime() === newExtent[0].getTime()) {
         // right brush was moved
-        newExtent[1] = new Date(oldExtent[0].getTime() + TIMELINE_MAX_TIME);
+        newExtent[1] = new Date(oldExtent[0].getTime() + maxTimeRange);
       } else {
         // left brush was moved
-        newExtent[0] = new Date(oldExtent[1].getTime() - TIMELINE_MAX_TIME);
+        newExtent[0] = new Date(oldExtent[1].getTime() - maxTimeRange);
       }
       newExtentPx = this.getPxExtent(newExtent);
       this.redrawInnerBrush(newExtent);

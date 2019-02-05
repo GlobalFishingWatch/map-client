@@ -2,6 +2,7 @@ import { setLayerManagementModalVisibility } from 'app/appActions';
 import { addCustomLayer } from 'layers/layersActions';
 // import { addCustomGLLayer } from 'map/mapStyleActions'; TODO  TODO MAP MODULE
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
+import isURL from 'validator/lib/isURL';
 import WMSCapabilities from 'wms-capabilities';
 import URI from 'urijs';
 
@@ -10,26 +11,26 @@ export const CUSTOM_LAYER_UPLOAD_SUCCESS = 'CUSTOM_LAYER_UPLOAD_SUCCESS';
 export const CUSTOM_LAYER_UPLOAD_ERROR = 'CUSTOM_LAYER_UPLOAD_ERROR';
 export const CUSTOM_LAYER_RESET = 'CUSTOM_LAYER_RESET';
 
-export const loadCustomLayer = (subtype, url, token) => {
-  let loadPromise;
-
-  if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
-    loadPromise = fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+export const loadCustomLayer = ({ token, subtype, id, url }) => {
+  const loadPromise = fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(res.statusText);
-        return res.json();
-      });
-  } else if (subtype === CUSTOM_LAYERS_SUBTYPES.raster) {
-    loadPromise = Promise.resolve();
-  }
+    .then(json => ({
+      data: json,
+      subtype,
+      id,
+      url
+    }));
   return loadPromise;
 };
 
-const loadWMSCapabilities = (url) => {
+const loadWMSCapabilities = ({ id, url }) => {
   const urlSearch = new URI(url).search((data) => {
     data.request = 'GetCapabilities';
     data.service = 'WMS';
@@ -45,94 +46,148 @@ const loadWMSCapabilities = (url) => {
         throw new Error('Error with WMS endpoint');
       }
 
-      const format = (capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1)
-        ? 'image/png'
-        : 'image/jpeg';
-
-      const tilesURL = new URI(capabilities.Service.OnlineResource).search(() => ({
-        version: '1.1.0',
-        request: 'GetMap',
-        layers: capabilities.Capability.Layer.Layer.map((l, i) => i).join(','),
-        styles: capabilities.Capability.Layer.Layer.map(l => l.Style[0].Name).join(','),
-        srs: 'EPSG:3857',
-        bbox: '{bbox-epsg-3857}',
-        width: 256,
-        height: 256,
-        format,
-        transparent: true
-      }));
       return {
-        layerId: new Date().getTime().toString(),
-        finalUrl: decodeURIComponent(tilesURL.toString()),
-        finalSubtype: CUSTOM_LAYERS_SUBTYPES.raster
+        id,
+        url,
+        capabilities,
+        subtype: CUSTOM_LAYERS_SUBTYPES.raster
       };
     });
-
   return promise;
+};
+
+const getWMSURLFilterdByLayers = ({ url, capabilities }, layersActives) => {
+  const format = capabilities.Capability.Request.GetMap.Format.indexOf('image/png') > -1
+    ? 'image/png'
+    : 'image/jpeg';
+
+  const layersFiltered = capabilities.Capability.Layer.Layer
+    .filter(l => layersActives.includes(l.Name));
+
+  const layersIds = layersFiltered.map(l => l.Name).join(',');
+  const styles = layersFiltered.map(l => l.Style[0].Name).join(',');
+
+  const tilesURL = new URI(url).search(() => ({
+    version: '1.1.0',
+    request: 'GetMap',
+    srs: 'EPSG:3857',
+    bbox: '{bbox-epsg-3857}',
+    width: 256,
+    height: 256,
+    transparent: true,
+    layers: layersIds,
+    styles,
+    format
+  }));
+  return decodeURIComponent(tilesURL.toString());
+};
+
+const saveToDirectory = ({ token, subtype, name, description, url }) => {
+  const savePromise = fetch(`${V2_API_ENDPOINT}/directory`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify({ title: name, url, description })
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
+    })
+    .then(json => ({
+      token,
+      subtype,
+      id: json.args.id,
+      url: json.args.source.args.url
+    }));
+
+  return savePromise;
 };
 
 export const uploadCustomLayer = (subtype, url, name, description) => (dispatch, getState) => {
   const state = getState();
   const token = state.user.token;
+  if (isURL(url.trim())) {
+    dispatch({ type: CUSTOM_LAYER_UPLOAD_START });
 
-  dispatch({
-    type: CUSTOM_LAYER_UPLOAD_START,
-    payload: 'pending'
-  });
+    const promises = [];
+    if (subtype !== CUSTOM_LAYERS_SUBTYPES.raster) {
+      promises.push(saveToDirectory);
+    }
+    if (subtype === CUSTOM_LAYERS_SUBTYPES.wms) {
+      promises.push(loadWMSCapabilities);
+    }
+    if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
+      promises.push(loadCustomLayer);
+    }
 
-  let uploadPromise;
-  if (subtype === CUSTOM_LAYERS_SUBTYPES.geojson) {
-    uploadPromise = fetch(`${V2_API_ENDPOINT}/directory`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({ title: name, url, description })
+    promises.reduce((p, f) => p.then(f), Promise.resolve({
+      token, subtype, name, url, description, id: new Date().getTime().toString()
+    })).then((layer) => {
+      const getSubLayers = ({ capabilities }) => {
+        const layers = capabilities && capabilities.Capability && capabilities.Capability.Layer && capabilities.Capability.Layer.Layer;
+        if (!layers) return [];
+
+        return layers.map(l => ({
+          id: l.Name,
+          label: l.Title,
+          description: l.Abstract
+        }));
+      };
+
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_SUCCESS,
+        payload: {
+          ...layer,
+          subLayers: getSubLayers(layer)
+        }
+      });
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(res.statusText);
-        return res.json();
-      })
-      .then(json => ({
-        layerId: json.args.id,
-        finalUrl: json.args.source.args.url,
-        finalSubtype: subtype
-      }));
-  } else if (subtype === CUSTOM_LAYERS_SUBTYPES.raster) {
-    // Can't use the /directory API for now as it will mess up with the original URL template
-    uploadPromise = Promise.resolve({
-      layerId: new Date().getTime().toString(),
-      finalUrl: url,
-      finalSubtype: subtype
-    });
-  } else if (subtype === 'wms') {
-    uploadPromise = loadWMSCapabilities(url);
-  }
-
-  uploadPromise.then(({ layerId, finalUrl, finalSubtype }) => {
-    loadCustomLayer(finalSubtype, finalUrl, token)
-      .then((uploadedData) => {
-        dispatch({
-          type: CUSTOM_LAYER_UPLOAD_SUCCESS,
-          payload: 'idle'
-        });
-        dispatch(setLayerManagementModalVisibility(false));
-        dispatch(addCustomLayer(finalSubtype, layerId, finalUrl, name, description));
-        // TODO MAP MODULE
-        // dispatch(addCustomGLLayer(finalSubtype, layerId, finalUrl, uploadedData));
-      })
-      .catch((err) => {
+      .catch(err =>
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_ERROR,
           payload: { error: err.message }
-        });
-      });
-  })
-    .catch(err => dispatch({
+        })
+      );
+  } else {
+    dispatch({
       type: CUSTOM_LAYER_UPLOAD_ERROR,
-      payload: { error: err.message }
-    }));
+      payload: { error: 'Please insert a valid url' }
+    });
+  }
+};
+
+const includeSubLayersDescription = (layer) => {
+  const activeLayers = layer.subLayers.filter(l => layer.subLayersActives.includes(l.id));
+  return `${layer.description} </br> ${activeLayers.reduce((acc, l) =>
+    `${acc} <strong>${l.label}:</strong> ${l.description || 'No description provided'} </br></br>`, '')
+  }`;
+};
+
+export const confirmCustomLayer = layer => (dispatch, getState) => {
+  const { previewLayer } = getState().customLayer;
+  const newLayer = { ...layer, ...previewLayer };
+  if (layer.subtype === 'wms') {
+    if (!layer.subLayersActives || !layer.subLayersActives.length > 0) {
+      dispatch({
+        type: CUSTOM_LAYER_UPLOAD_ERROR,
+        payload: { error: 'Please select at least one sublayer' }
+      });
+      return null;
+    }
+    newLayer.url = getWMSURLFilterdByLayers(newLayer, layer.subLayersActives);
+    newLayer.description = includeSubLayersDescription(newLayer);
+    newLayer.subtype = CUSTOM_LAYERS_SUBTYPES.raster;
+  }
+  dispatch(setLayerManagementModalVisibility(false));
+  dispatch(addCustomLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.name, newLayer.description));
+
+  // TODO MAP MODULE
+  // dispatch(addCustomGLLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.data));
+
+  dispatch({ type: CUSTOM_LAYER_RESET });
+  return null;
 };
 
 export const resetCustomLayerForm = () => ({

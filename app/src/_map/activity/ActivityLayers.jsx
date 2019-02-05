@@ -313,8 +313,6 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           highlightTemporalExtentIndexes={highlightTemporalExtentIndexes}
           rootStage={this.stage}
-          viewportLeft={leftWorldScaled}
-          viewportRight={rightWorldScaled}
           highlightedTrack={highlightedTrack}
         />
       }
