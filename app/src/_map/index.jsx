@@ -6,13 +6,18 @@ import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
 
 import Map from './glmap/Map.container';
-import { fitBoundsToTrack, incrementZoom as mapIncrementZoom, decrementZoom as mapDecrementZoom } from './glmap/viewport.actions';
+import {
+  updateViewport,
+  fitBoundsToTrack,
+  incrementZoom as mapIncrementZoom,
+  decrementZoom as mapDecrementZoom
+} from './glmap/viewport.actions';
 import { initModule } from './module/module.actions';
-import { initStyle, commitStyleUpdates, applyTemporalExtent } from './glmap/style.actions';
+import { initStyle,
+  commitStyleUpdates, applyTemporalExtent } from './glmap/style.actions';
 import { loadTrack, removeTracks } from './tracks/tracks.actions';
 // TODO MAP MODULE REMOVE HEATMAP LAYER
-import { addHeatmapLayer, removeHeatmapLayer, loadTilesExtraTimeRange } from './heatmap/heatmap.actions';
-import { updateViewport } from './glmap/viewport.actions';
+import { addHeatmapLayer, removeHeatmapLayer, updateLayerLoadTemporalExtents } from './heatmap/heatmap.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -144,7 +149,7 @@ class MapModule extends React.Component {
         this.props.loadTemporalExtent[0].getTime() !== prevProps.loadTemporalExtent[0].getTime() ||
         this.props.loadTemporalExtent[1].getTime() !== prevProps.loadTemporalExtent[1].getTime()
       ) {
-        store.dispatch(loadTilesExtraTimeRange(this.props.loadTemporalExtent));
+        store.dispatch(updateLayerLoadTemporalExtents(this.props.loadTemporalExtent));
       }
     }
 

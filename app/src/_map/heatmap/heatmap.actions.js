@@ -115,8 +115,8 @@ function parseLayerTile(rawTileData, colsByName, isPBF, tileCoordinates, prevPla
  * getTiles - loads a bunch of heatmap tiles
  * @param  {array} layerIds                 list of layer Ids that need to be loaded for this/these tiles
  * @param  {array} referenceTiles           list of reference tiles (tile data regardless of layer) that need to be loaded
- * @param  {object} newTemporalExtentsToLoad (optional) a dict (layerId is the key) of temporal extents indices that should be
- * appended to existing data
+ * @param  {object} newTemporalExtentsToLoad (optional) a dict (layerId is the key) of temporal extents
+ * indices that should be appended to existing data
  */
 function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined) {
   return (dispatch, getState) => {
@@ -278,36 +278,40 @@ export const removeHeatmapLayer = id => (dispatch) => {
 };
 
 /**
- * loadTilesExtraTimeRange - when outer time extent changes, checks if more tiles needs to be loaded
- * by comparing the outer time range with the temporalExtent already loaded on each layer
+ * updateLayerLoadTemporalExtents - when outer time extent changes, checks if more tiles needs to be loaded
+ * by comparing the outer time range with the temporalExtent already loaded on each layer.
+ * @param  {array} loadTemporalExtent Current app-wide extent of tiles that need to load, expressed
+ * as an array of two dates
  */
-export function loadTilesExtraTimeRange(loadTemporalExtent) {
+export function updateLayerLoadTemporalExtents(loadTemporalExtent) {
   return (dispatch, getState) => {
     const state = getState();
     const heatmapLayers = state.map.heatmap.heatmapLayers;
-    const layersToUpdate = {};
+    const indicesToAddByLayer = {};
     Object.keys(heatmapLayers).forEach((layerId) => {
-      const workspaceLayer = state.layers.workspaceLayers.find(layer => layer.id === layerId);
       const heatmapLayer = heatmapLayers[layerId];
-      const oldVisibleTemporalExtents = heatmapLayer.visibleTemporalExtentsIndices;
-      const newVisibleTemporalExtents = getTemporalExtentsVisibleIndices(loadTemporalExtent, workspaceLayer.header.temporalExtents);
-      const diff = difference(newVisibleTemporalExtents, oldVisibleTemporalExtents);
-      if (diff.length) {
+      const temporalExtents = heatmapLayer.header.temporalExtents;
+      const oldVisibleTemporalExtentsIndices = heatmapLayer.visibleTemporalExtentsIndices;
+      const newVisibleTemporalExtentsIndices = getTemporalExtentsVisibleIndices(loadTemporalExtent, temporalExtents);
+      const indicesAdded = difference(newVisibleTemporalExtentsIndices, oldVisibleTemporalExtentsIndices);
+
+      if (indicesAdded.length) {
         // add new loaded indices to heatmap layer if applicable
-        layersToUpdate[layerId] = diff;
+        indicesToAddByLayer[layerId] = indicesAdded;
         dispatch({
           type: UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES,
           payload: {
             layerId,
-            diff
+            indicesAdded
           }
         });
       }
     });
 
     // getTiles with indices diff
-    if (Object.keys(layersToUpdate).length) {
-      dispatch(getTiles(Object.keys(layersToUpdate), state.map.heatmap.referenceTiles, layersToUpdate));
+    const layerIdsWithIndicesToAdd = indicesToAddByLayer;
+    if (layerIdsWithIndicesToAdd.length) {
+      dispatch(getTiles(layerIdsWithIndicesToAdd, state.map.heatmap.referenceTiles, indicesToAddByLayer));
     }
   };
 }

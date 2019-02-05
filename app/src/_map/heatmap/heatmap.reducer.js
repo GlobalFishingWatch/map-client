@@ -33,7 +33,7 @@ export default function (state = initialState, action) {
     case UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES: {
       const heatmapLayers = state.heatmapLayers;
       let indices = heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices;
-      indices = uniq(indices.concat(action.payload.diff));
+      indices = uniq(indices.concat(action.payload.indicesAdded));
       heatmapLayers[action.payload.layerId].visibleTemporalExtentsIndices = indices;
       return Object.assign({}, state, heatmapLayers);
     }
