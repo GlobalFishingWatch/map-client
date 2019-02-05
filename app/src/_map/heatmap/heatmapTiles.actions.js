@@ -109,12 +109,6 @@ const _debouncedFlushState = (dispatch) => {
 const debouncedFlushState = debounce(_debouncedFlushState, 500);
 
 export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = false) => (dispatch, getState) => {
-  // TODO MAP MODULE
-  // if (getState().workspace.workspaceLoaded !== true) {
-  //   // avoid unnecessarily loading tiles when viewport has not been loaded yet from worspace
-  //   return;
-  // }
-
   // if in transition, skip loading/releasing
   // else
   //   collect all tiles in viewport

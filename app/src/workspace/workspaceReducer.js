@@ -4,13 +4,12 @@ import {
   SET_WORKSPACE_ID,
   SET_WORKSPACE_OVERRIDE,
   DELETE_WORKSPACE_ID,
-  SET_WORKSPACE_LOADED,
   SET_LEGACY_WORKSPACE_LOADED
 } from 'workspace/workspaceActions';
 
 const initialState = {
   workspaceId: null,
-  workspaceLoaded: false,
+  isLoaded: false,
   legacyWorkspaceLoaded: false,
   viewport: {}
 };
@@ -18,7 +17,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case UPDATE_WORKSPACE:
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload, isLoaded: true };
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:
@@ -27,8 +26,6 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { workspaceId: null });
     case SET_WORKSPACE_OVERRIDE:
       return Object.assign({}, state, { workspaceOverride: action.payload });
-    case SET_WORKSPACE_LOADED:
-      return Object.assign({}, state, { workspaceLoaded: true });
     case SET_LEGACY_WORKSPACE_LOADED:
       return Object.assign({}, state, { legacyWorkspaceLoaded: true });
     default:

@@ -8,7 +8,8 @@ const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
   // attributions: state.mapStyle.attributions, TODO MAP MODULE
   attributions: [],
-  mapPanelsExpanded: state.app.mapPanelsExpanded
+  mapPanelsExpanded: state.app.mapPanelsExpanded,
+  isWorkspaceLoaded: state.workspace.isLoaded
 });
 
 const mapDispatchToProps = dispatch => ({

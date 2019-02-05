@@ -68,7 +68,20 @@ const updateViewportFromIncomingProps = (incomingViewport) => {
 
 class MapModule extends React.Component {
   componentDidMount() {
-    // TODO MAP MODULE INITIAL VIEWPORT ?
+    // First trigger synchronous actions that should happen before any map render
+    // At the end of this, set a flag to allow map rendering
+
+    if (this.props.viewport !== undefined) {
+      updateViewportFromIncomingProps(this.props.viewport);
+    }
+
+    if (this.props.glyphsPath !== undefined) {
+      store.dispatch(initStyle({
+        glyphsPath: this.props.glyphsPath
+        // TODO apply URL updates here
+      }));
+    }
+
     if (store && store.getState().map.module.token === undefined) {
       store.dispatch(initModule({
         token: this.props.token,
@@ -80,27 +93,21 @@ class MapModule extends React.Component {
         onLoadComplete: this.props.onLoadComplete
       }));
     }
-    if (this.props.glyphsPath !== undefined) {
-      store.dispatch(initStyle({
-        glyphsPath: this.props.glyphsPath
-      }));
-    }
-
-    if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
-      debouncedApplyTemporalExtent(this.props.temporalExtent);
-    }
 
     // if (this.props.basemapLayers !== undefined ||
     //     this.props.staticLayers !== undefined) {
     //       console.log(this.props)
     //   store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     // }
+    this.initialized = true;
 
-    if (this.props.viewport !== undefined) {
-      updateViewportFromIncomingProps(this.props.viewport);
+    // Now trigger async actions
+
+    if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
+      debouncedApplyTemporalExtent(this.props.temporalExtent);
     }
-
   }
+
   componentDidUpdate(prevProps) {
     // tracks
     if (this.props.tracks !== undefined && this.props.tracks !== prevProps.tracks) {
@@ -181,7 +188,8 @@ class MapModule extends React.Component {
     }
   }
   render() {
-    return (
+    // won't render anything before actions in componentDidMount have been triggered
+    return (this.initialized !== true) ? null : (
       <Provider store={store}>
         <Map {...this.props} />
       </Provider>

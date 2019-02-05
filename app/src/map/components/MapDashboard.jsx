@@ -12,7 +12,14 @@ import MapWrapper from 'map/containers/MapWrapper';
 
 class MapDashboard extends Component {
   render() {
-    const { isEmbedded, openSupportFormModal, onExternalLink, onToggleMapPanelsExpanded, mapPanelsExpanded } = this.props;
+    const {
+      isEmbedded,
+      openSupportFormModal,
+      onExternalLink,
+      onToggleMapPanelsExpanded,
+      mapPanelsExpanded,
+      isWorkspaceLoaded
+    } = this.props;
     const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
 
     return (<div className="fullHeightContainer" >
@@ -40,7 +47,9 @@ class MapDashboard extends Component {
           this.mapContainerRef = mapContainerRef;
         }}
       >
-        <MapWrapper />
+        {isWorkspaceLoaded === true &&
+          <MapWrapper />
+        }
         {AS_MODULE === false &&
           <LeftControlPanel />
         }
@@ -68,7 +77,8 @@ MapDashboard.propTypes = {
   mapPanelsExpanded: PropTypes.bool,
   onExternalLink: PropTypes.func,
   openSupportFormModal: PropTypes.func,
-  onToggleMapPanelsExpanded: PropTypes.func
+  onToggleMapPanelsExpanded: PropTypes.func,
+  isWorkspaceLoaded: PropTypes.bool
 };
 
 export default MapDashboard;
