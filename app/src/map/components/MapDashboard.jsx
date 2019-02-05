@@ -20,10 +20,10 @@ class MapDashboard extends Component {
       mapPanelsExpanded,
       isWorkspaceLoaded
     } = this.props;
-    const fullScreenMap = COMPLETE_MAP_RENDER === false || AS_MODULE === true;
+    const fullScreenMap = COMPLETE_MAP_RENDER === false;
 
     return (<div className="fullHeightContainer" >
-      {(!isEmbedded && AS_MODULE === false) &&
+      {(!isEmbedded) &&
       <div
         className={classnames(
           MapPanelsStyles.mapPanels,
@@ -50,15 +50,11 @@ class MapDashboard extends Component {
         {isWorkspaceLoaded === true &&
           <MapWrapper />
         }
-        {AS_MODULE === false &&
-          <LeftControlPanel />
-        }
+        <LeftControlPanel />
       </div>
-      {AS_MODULE === false &&
-        <div className={classnames(MapDashboardStyles.timebarContainer, { [MapDashboardStyles._noFooter]: fullScreenMap })} >
-          <Timebar />
-        </div>
-      }
+      <div className={classnames(MapDashboardStyles.timebarContainer, { [MapDashboardStyles._noFooter]: fullScreenMap })} >
+        <Timebar />
+      </div>
       {fullScreenMap === false &&
       <MapFooter
         onOpenSupportFormModal={openSupportFormModal}

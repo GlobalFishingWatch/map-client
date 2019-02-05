@@ -69,9 +69,7 @@ const store = createStore(
 render(
   <Provider store={store} >
     <AppContainer>
-      <AuthMapContainer>
-        <MapDashboard />
-      </AuthMapContainer>
+      <AuthMapContainer />
     </AppContainer>
   </Provider>,
   document.getElementById('app')
