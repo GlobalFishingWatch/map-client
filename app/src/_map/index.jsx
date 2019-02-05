@@ -128,7 +128,9 @@ class MapModule extends React.Component {
     }
 
     // heatmap layers
-    if (this.props.heatmapLayers !== undefined && this.props.heatmapLayers.length !== prevProps.heatmapLayers.length) {
+    // TODO In case visibility is toggled on for a layer, also need to call heatmap.actions->loadAllTilesForLayer
+    // TODO Tiles should NIT be loaded initially if layer is not visible
+    if (this.props.heatmapLayers !== undefined && this.props.heatmapLayers !== prevProps.heatmapLayers) {
       const newHeatmapLayers = this.props.heatmapLayers;
       const prevHeatmapLayers = prevProps.heatmapLayers;
       newHeatmapLayers.forEach((newHeatmapLayer) => {
@@ -217,6 +219,7 @@ MapModule.propTypes = {
     id: PropTypes.string,
     tilesetId: PropTypes.string,
     subtype: PropTypes.string,
+
     header: PropTypes.shape({
       endpoints: PropTypes.object,
       isPBF: PropTypes.bool,

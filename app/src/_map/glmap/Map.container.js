@@ -34,11 +34,16 @@ const getHeatmapLayers = createSelector(
   [getProvidedHeatmapLayers, getModuleHeatmapLayers],
   (providedHeatmapLayers, moduleHeatmapLayers) => {
     const heatmapLayers = Object.keys(moduleHeatmapLayers).map((moduleHeatmapLayerId) => {
-      const providedheatmapLayer = providedHeatmapLayers.find(providedHeatmapLayer =>
-        providedHeatmapLayer.id === moduleHeatmapLayerId
+      const providedHeatmapLayer = providedHeatmapLayers.find(l =>
+        l.id === moduleHeatmapLayerId
       );
       const moduleHeatmapLayer = moduleHeatmapLayers[moduleHeatmapLayerId];
-      return (providedheatmapLayer === undefined) ? null : { ...providedheatmapLayer, ...moduleHeatmapLayer };
+      return (providedHeatmapLayer === undefined) ? null : {
+        ...moduleHeatmapLayer,
+        visible: providedHeatmapLayer.visible,
+        hue: providedHeatmapLayer.hue,
+        opacity: providedHeatmapLayer.opacity
+      };
     });
 
     return heatmapLayers.filter(heatmapLayer => heatmapLayer !== null);
