@@ -13,8 +13,8 @@ const getVessels = state => state.vesselInfo.vessels;
 const getEncounter = state => state.encounters.encountersInfo;
 const getLayers = state => state.layers.workspaceLayers;
 const getBasemap = state => state.basemap;
-const getWorkspaceZoom = state => state.workspace.zoom;
-const getWorkspaceCenter = state => state.workspace.center;
+const getWorkspaceZoom = state => state.workspace.viewport.zoom;
+const getWorkspaceCenter = state => state.workspace.viewport.center;
 
 
 const getViewport = createSelector(
@@ -125,7 +125,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onViewportChange: (viewport) => {
     // TODO MAP MODULE maybe not reuse workspace actions/reducer, but instead
-    // creat a MapWrapper reducer that could also be used to deal with popups and map interaction
+    // create a MapWrapper reducer that could also be used to deal with popups and map interaction
     dispatch(updateWorkspace({
       viewport
     }));
