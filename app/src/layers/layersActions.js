@@ -11,12 +11,6 @@ import {
 } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
-// import { updateMapStyle } from 'map/mapStyleActions'; TODO MAP MODULE
-// import {
-//   addHeatmapLayerFromLibrary,
-//   removeHeatmapLayerFromLibrary,
-//   loadAllTilesForLayer
-// } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import calculateLayerId from 'utils/calculateLayerId';
 import { loadCustomLayer } from './customLayerActions';
 
@@ -249,15 +243,6 @@ export function toggleLayerVisibility(layerId, forceStatus = null) {
         visibility
       }
     });
-
-    if (layer.type === LAYER_TYPES.Heatmap && visibility === true) {
-      // TODO clean tile first, if zoom has changed
-      // dispatch(loadAllTilesForLayer(layer.id));  TODO MAP MODULE
-    }
-
-    if (LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1) {
-      // dispatch(updateMapStyle()); TODO MAP MODULE
-    }
   };
 }
 

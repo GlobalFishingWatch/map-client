@@ -82,7 +82,8 @@ const getLayerData = (heatmapLayer, filters) => {
       const layerGroupedFilter = {
         hue: filterGroup.hue,
         filterValues,
-        // 'pass' is set to true when none of the filters fields in the filter group is supported by the layer headers
+        // 'pass' is set to true when none of the filters fields in the filter group is supported by
+        // the layer headers.
         // This avoids having to filter every point of a completely filtered out layer.
         // See HeatmapLayer.render and heatmapTileData.vesselSatisfiesAllFilters
         pass: Object.keys(filterValues).length === 0

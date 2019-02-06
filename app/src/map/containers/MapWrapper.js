@@ -12,6 +12,7 @@ import MapWrapper from 'map/components/MapWrapper';
 const getVessels = state => state.vesselInfo.vessels;
 const getEncounter = state => state.encounters.encountersInfo;
 const getLayers = state => state.layers.workspaceLayers;
+const getLayerFilters = state => state.filterGroups.layerFilters;
 const getBasemap = state => state.basemap;
 const getWorkspaceZoom = state => state.workspace.viewport.zoom;
 const getWorkspaceCenter = state => state.workspace.viewport.center;
@@ -58,10 +59,11 @@ const getAllVesselsForTracks = createSelector(
 );
 
 const getHeatmapLayers = createSelector(
-  [getLayers],
-  layers => layers
+  [getLayers, getLayerFilters],
+  (layers, layerFilters) => layers
     .filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
     .map((layer) => {
+      const filters = layerFilters[layer.id] || [];
       const layerParams = {
         id: layer.id,
         subtype: layer.subtype,
@@ -69,7 +71,8 @@ const getHeatmapLayers = createSelector(
         header: layer.header,
         hue: layer.hue,
         opacity: layer.opacity,
-        visible: layer.visible
+        visible: layer.visible,
+        filters
       };
       return layerParams;
     })

@@ -260,7 +260,7 @@ export const vesselSatisfiesFilters = (frame, index, filterValues) => {
   const satisfiesFilters = Object.keys(filterValues).every((field) => {
     if (frame[field] === undefined) {
       // this field is not available on this layer. This can happen in an edge case described
-      // here: https://github.com/Vizzuality/GlobalFishingWatch/issues/661#issuecomment-334496469
+      // here: https://github.com/GlobalFishingWatch/map-client/issues/661#issuecomment-334496469
       return false;
     }
     return filterValues[field].indexOf(frame[field][index]) > -1;

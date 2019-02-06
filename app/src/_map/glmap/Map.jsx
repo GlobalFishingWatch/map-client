@@ -116,7 +116,6 @@ class Map extends React.Component {
         >
           <ActivityLayers
             tracks={this.props.tracks}
-            heatmapLayers={this.props.heatmapLayers}
             temporalExtentIndexes={this.props.temporalExtentIndexes}
             highlightTemporalExtentIndexes={this.props.highlightTemporalExtentIndexes}
             loadTemporalExtent={this.props.loadTemporalExtent}

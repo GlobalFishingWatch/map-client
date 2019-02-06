@@ -10,8 +10,6 @@ import Map from './Map.jsx';
 
 const getProvidedTracks = (state, ownProps) => ownProps.tracks;
 const getModuleTracks = state => state.map.tracks;
-const getProvidedHeatmapLayers = (state, ownProps) => ownProps.heatmapLayers;
-const getModuleHeatmapLayers = state => state.map.heatmap.heatmapLayers;
 const getTemporalExtent = (state, ownProps) => ownProps.temporalExtent;
 const getHighlightTemporalExtent = (state, ownProps) => ownProps.highlightTemporalExtent;
 
@@ -27,26 +25,6 @@ const getTracks = createSelector(
     });
 
     return tracks.filter(track => track !== null);
-  }
-);
-
-const getHeatmapLayers = createSelector(
-  [getProvidedHeatmapLayers, getModuleHeatmapLayers],
-  (providedHeatmapLayers, moduleHeatmapLayers) => {
-    const heatmapLayers = Object.keys(moduleHeatmapLayers).map((moduleHeatmapLayerId) => {
-      const providedHeatmapLayer = providedHeatmapLayers.find(l =>
-        l.id === moduleHeatmapLayerId
-      );
-      const moduleHeatmapLayer = moduleHeatmapLayers[moduleHeatmapLayerId];
-      return (providedHeatmapLayer === undefined) ? null : {
-        ...moduleHeatmapLayer,
-        visible: providedHeatmapLayer.visible,
-        hue: providedHeatmapLayer.hue,
-        opacity: providedHeatmapLayer.opacity
-      };
-    });
-
-    return heatmapLayers.filter(heatmapLayer => heatmapLayer !== null);
   }
 );
 
@@ -82,7 +60,6 @@ const mapStateToProps = (state, ownProps) => ({
   mapStyle: state.map.style.mapStyle,
   cursor: state.map.interaction.cursor,
   tracks: getTracks(state, ownProps),
-  heatmapLayers: getHeatmapLayers(state, ownProps),
   temporalExtentIndexes: getTemporalExtentIndexes(state, ownProps),
   highlightTemporalExtentIndexes: getHighlightTemporalExtentIndexes(state, ownProps)
 });

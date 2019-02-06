@@ -90,7 +90,6 @@ class HeatmapLayer extends React.Component {
 
     const tiles = layer.tiles;
     const defaultHue = layer.hue;
-
     const allHuesToRender = (filters !== undefined && filters.length)
       ? filters
       // pass is set to true by filterGroupActions when none of the filters fields

@@ -233,10 +233,8 @@ class ActivityLayers extends React.Component {
   }
 
   render() {
-    // TODO MAP MODULE
     const {
       zoom,
-      layerFilters,
       heatmapLayers,
       temporalExtentIndexes,
       highlightTemporalExtentIndexes,
@@ -248,6 +246,8 @@ class ActivityLayers extends React.Component {
       rightWorldScaled
     } = this.props;
     const { viewport } = this.context;
+
+    console.log(heatmapLayers)
 
     const startIndex = temporalExtentIndexes[0];
     const endIndex = temporalExtentIndexes[1];
@@ -276,7 +276,7 @@ class ActivityLayers extends React.Component {
         <HeatmapLayer
           key={layer.id}
           layer={layer}
-          filters={layerFilters[layer.id] || []}
+          filters={layer.filters || []}
           viewport={viewport}
           startIndex={startIndex}
           endIndex={endIndex}

@@ -6,18 +6,26 @@ import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
 
 import Map from './glmap/Map.container';
+import { initModule } from './module/module.actions';
 import {
   updateViewport,
   fitBoundsToTrack,
   incrementZoom as mapIncrementZoom,
   decrementZoom as mapDecrementZoom
 } from './glmap/viewport.actions';
-import { initModule } from './module/module.actions';
-import { initStyle,
-  commitStyleUpdates, applyTemporalExtent } from './glmap/style.actions';
-import { loadTrack, removeTracks } from './tracks/tracks.actions';
-// TODO MAP MODULE REMOVE HEATMAP LAYER
-import { addHeatmapLayer, removeHeatmapLayer, updateLayerLoadTemporalExtents } from './heatmap/heatmap.actions';
+import {
+  initStyle,
+  commitStyleUpdates,
+  applyTemporalExtent
+} from './glmap/style.actions';
+import {
+  loadTrack,
+  removeTracks
+} from './tracks/tracks.actions';
+import {
+  updateHeatmapLayers,
+  updateLayerLoadTemporalExtents
+} from './heatmap/heatmap.actions';
 import GL_STYLE from './glmap/gl-styles/style.json';
 
 
@@ -50,10 +58,6 @@ const store = createStore(
 const containsTrack = (track, tracks) => tracks.find(prevTrack =>
   prevTrack.id === track.id &&
   prevTrack.segmentId === track.segmentId
-) !== undefined;
-
-const containsLayer = (layer, layers) => layers.find(prevLayer =>
-  prevLayer.id === layer.id
 ) !== undefined;
 
 const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
@@ -128,21 +132,8 @@ class MapModule extends React.Component {
     }
 
     // heatmap layers
-    // TODO In case visibility is toggled on for a layer, also need to call heatmap.actions->loadAllTilesForLayer
-    // TODO Tiles should NIT be loaded initially if layer is not visible
-    if (this.props.heatmapLayers !== undefined && this.props.heatmapLayers !== prevProps.heatmapLayers) {
-      const newHeatmapLayers = this.props.heatmapLayers;
-      const prevHeatmapLayers = prevProps.heatmapLayers;
-      newHeatmapLayers.forEach((newHeatmapLayer) => {
-        if (!containsLayer(newHeatmapLayer, prevHeatmapLayers)) {
-          store.dispatch(addHeatmapLayer(newHeatmapLayer, this.props.loadTemporalExtent));
-        }
-      });
-      prevHeatmapLayers.forEach((prevHeatmapLayer) => {
-        if (!containsLayer(prevHeatmapLayer, newHeatmapLayers)) {
-          store.dispatch(removeHeatmapLayer(prevHeatmapLayer.id));
-        }
-      });
+    if (this.props.heatmapLayers !== prevProps.heatmapLayers) {
+      store.dispatch(updateHeatmapLayers(this.props.heatmapLayers, this.props.loadTemporalExtent));
     }
 
     // basemap / static layers
@@ -214,12 +205,20 @@ MapModule.propTypes = {
   })),
   // TODO Move inside track object ^^^
   highlightedTrack: PropTypes.string,
-  // TODO Colors are passed through filters...
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     tilesetId: PropTypes.string,
     subtype: PropTypes.string,
-
+    visible: PropTypes.bool,
+    hue: PropTypes.number,
+    opacity: PropTypes.number,
+    filters: PropTypes.shape({
+      // hue overrides layer hue if set
+      hue: PropTypes.number,
+      // filterValues is a dictionary in which each key is a filterable field,
+      // and values is an array of all possible values (OR filter)
+      filterValues: PropTypes.object
+    }),
     header: PropTypes.shape({
       endpoints: PropTypes.object,
       isPBF: PropTypes.bool,
@@ -227,7 +226,6 @@ MapModule.propTypes = {
       temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
       temporalExtentsLess: PropTypes.bool
     })
-    // color: ...
   })),
   temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -267,7 +265,6 @@ MapModule.propTypes = {
   onHover: PropTypes.func,
   onAttributionsChange: PropTypes.func
 };
-
 
 
 export default MapModule;
