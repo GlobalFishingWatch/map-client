@@ -31,17 +31,29 @@ const getViewport = createSelector(
   }
 );
 
+const getTrackFromLayers = (layers, tilesetId) => {
+  const trackLayer = layers
+    .find(layer => layer.tilesetId === tilesetId);
+
+  const header = trackLayer.header;
+
+  return {
+    layerTemporalExtents: header.temporalExtents,
+    url: header.endpoints.tracks
+  };
+};
+
 const getAllVesselsForTracks = createSelector(
-  [getVessels, getEncounter],
-  (vessels, encounter) => {
+  [getVessels, getEncounter, getLayers],
+  (vessels, encounter, layers) => {
     let tracks = [];
 
     vessels.forEach((vessel) => {
       if (vessel.visible === true || vessel.shownInInfoPanel === true) {
         tracks.push({
           id: vessel.seriesgroup.toString(),
-          segmentId: (vessel.series) ? vessel.series.toString() : null,
-          ...vessel
+          color: vessel.color,
+          ...getTrackFromLayers(layers, vessel.tilesetId)
         });
       }
     });
@@ -49,7 +61,8 @@ const getAllVesselsForTracks = createSelector(
     if (encounter !== null && encounter !== undefined) {
       const encountersTracks = encounter.vessels.map(encounterVessel => ({
         id: encounterVessel.seriesgroup.toString(),
-        ...encounterVessel
+        color: encounterVessel.color,
+        ...getTrackFromLayers(layers, encounterVessel.tilesetId)
       }));
       tracks = [...tracks, ...encountersTracks];
     }
@@ -155,8 +168,7 @@ const mapDispatchToProps = dispatch => ({
         const targetID = event.target[idFieldKey];
         dispatch(addVessel({
           tilesetId: event.layer.tilesetId,
-          seriesgroup: targetID,
-          series: event.target.series
+          seriesgroup: targetID
         }));
       }
     }

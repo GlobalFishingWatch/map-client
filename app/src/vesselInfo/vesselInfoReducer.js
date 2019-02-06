@@ -36,15 +36,12 @@ export default function (state = initialState, action) {
 
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
-        series: action.payload.series,
         visible: action.payload.visible || false,
         pinned: false,
         tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
         parentEncounter: action.payload.parentEncounter,
-        color,
-        layerUrl: action.payload.layerUrl,
-        layerTemporalExtents: action.payload.layerTemporalExtents
+        color
       };
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,

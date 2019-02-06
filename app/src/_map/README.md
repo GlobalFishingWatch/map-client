@@ -60,9 +60,9 @@ String. Mandatory. Identifies track uniquely, should be UVI or seriesgroup (depr
 
 [NOT IMPLEMENTED] [DEPRECATED] String. Formerly `series`
 
-### `track.layerUrl`
+### `track.url`
 
-String. Mandatory. Base URL template to load tracks. TODO TEMPLATE?
+String. Mandatory. Base URL template to load tracks.
 
 ### `track.layerTemporalExtents`
 

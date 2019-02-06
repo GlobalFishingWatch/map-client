@@ -12,8 +12,18 @@ const getHeatmapLayersAsArray = createSelector(
     const a = Object.keys(heatmapLayers).map(id => ({
       ...heatmapLayers[id]
     }));
-    console.log(a)
+    // console.log(a)
     return a;
+  }
+);
+
+const getTracks = state => state.map.tracks;
+
+const getTracksWithData = createSelector(
+  [getTracks],
+  (tracks) => {
+    const tracksWithData = tracks.filter(t => t.data !== undefined);
+    return tracksWithData;
   }
 );
 
@@ -23,6 +33,7 @@ const mapStateToProps = state => ({
   viewport: state.map.viewport.viewport,
   zoom: state.map.viewport.viewport.zoom,
   heatmapLayers: getHeatmapLayersAsArray(state),
+  tracks: getTracksWithData(state),
   leftWorldScaled: state.map.viewport.leftWorldScaled,
   rightWorldScaled: state.map.viewport.rightWorldScaled
   // highlightedTrack: state.vesselInfo.highlightedTrack

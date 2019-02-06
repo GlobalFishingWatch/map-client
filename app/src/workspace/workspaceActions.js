@@ -236,14 +236,13 @@ function dispatchActions(workspaceData, dispatch, getState) {
       if (workspaceData.shownVessel.seriesgroup === undefined) {
         console.warn(`attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no seriesgroup`);
       } else {
-        const { tilesetId, seriesgroup, series } = workspaceData.shownVessel;
+        const { tilesetId, seriesgroup } = workspaceData.shownVessel;
 
         // only add vessel if it won't be loaded by loading pinned vessels mechanism later
         if (!workspaceData.pinnedVessels.map(v => v.seriesgroup).includes(seriesgroup)) {
           dispatch(addVessel({
             tilesetId,
-            seriesgroup,
-            series
+            seriesgroup
           }));
         }
       }

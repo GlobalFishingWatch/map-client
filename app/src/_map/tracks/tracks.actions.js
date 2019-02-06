@@ -1,4 +1,3 @@
-import uniq from 'lodash/uniq';
 import {
   getTilePromises,
   getCleanVectorArrays,
@@ -10,9 +9,11 @@ import { startLoader, completeLoader } from '../module/module.actions';
 
 
 export const ADD_TRACK = 'ADD_TRACK';
-export const REMOVE_TRACKS = 'REMOVE_TRACKS';
+export const ADD_TRACK_DATA = 'ADD_TRACK_DATA';
+export const REMOVE_TRACK = 'REMOVE_TRACK';
+export const UPDATE_TRACK_STYLE = 'UPDATE_TRACK_STYLE';
 
-const getTrackBounds = (data, series = null, addOffset = false) => {
+const getTrackBounds = (data, addOffset = false) => {
   const time = {
     start: Infinity,
     end: 0
@@ -24,9 +25,6 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
     maxLng: -Infinity
   };
   for (let i = 0, length = data.datetime.length; i < length; i++) {
-    if (series !== null && series !== data.series[i]) {
-      continue;
-    }
     const datetime = data.datetime[i];
     if (datetime < time.start) {
       time.start = datetime;
@@ -56,7 +54,7 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
 
   // track crosses the antimeridian
   if (geo.maxLng - geo.minLng > 350 && addOffset === false) {
-    return getTrackBounds(data, series, true);
+    return getTrackBounds(data, true);
   }
 
   return {
@@ -65,19 +63,26 @@ const getTrackBounds = (data, series = null, addOffset = false) => {
   };
 };
 
-// TODO MAP MODULE remove segmentId
-export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents }) {
+function loadTrack({ id, url, layerTemporalExtents, color }) {
   return (dispatch, getState) => {
 
     const state = getState();
     const loaderID = startLoader(dispatch, state);
     const token = state.map.module.token;
 
-    if (state.map.tracks.find(t => t.id === id && t.segmentId === segmentId)) {
+    if (state.map.tracks.find(t => t.id === id)) {
       return;
     }
 
-    const promises = getTilePromises(layerUrl, token, layerTemporalExtents, { seriesgroup: id });
+    dispatch({
+      type: ADD_TRACK,
+      payload: {
+        id,
+        color
+      }
+    });
+
+    const promises = getTilePromises(url, token, layerTemporalExtents, { seriesgroup: id });
 
     Promise.all(promises.map(p => p.catch(e => e)))
       .then((rawTileData) => {
@@ -96,17 +101,15 @@ export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents }) {
         ]);
 
         const vectorArray = addTracksPointsRenderingData(rawTrackData);
-        const bounds = getTrackBounds(rawTrackData, segmentId);
+        const bounds = getTrackBounds(rawTrackData);
 
         dispatch({
-          type: ADD_TRACK,
+          type: ADD_TRACK_DATA,
           payload: {
             id,
             data: getTracksPlaybackData(vectorArray),
-            allSegmentIds: uniq(rawTrackData.series),
             geoBounds: bounds.geo,
-            timelineBounds: bounds.time,
-            segmentId
+            timelineBounds: bounds.time
           }
         });
         dispatch(completeLoader(loaderID));
@@ -114,9 +117,38 @@ export function loadTrack({ id, segmentId, layerUrl, layerTemporalExtents }) {
   };
 }
 
-export const removeTracks = tracks => ({
-  type: REMOVE_TRACKS,
+const removeTrack = trackId => ({
+  type: REMOVE_TRACK,
   payload: {
-    tracks
+    trackId
   }
 });
+
+export const updateTracks = newTracks => (dispatch, getState) => {
+  const prevTracks = getState().map.tracks;
+  // add and update layers
+  newTracks.forEach((newTrack) => {
+    const trackId = newTrack.id;
+    const prevTrack = prevTracks.find(t => t.id === trackId);
+    if (prevTrack === undefined) {
+      dispatch(loadTrack(newTrack));
+    } else if (
+      prevTrack.color !== newTrack.color
+    ) {
+      dispatch({
+        type: UPDATE_TRACK_STYLE,
+        payload: {
+          id: newTrack.id,
+          color: newTrack.color
+        }
+      });
+    }
+  });
+
+  // clean up unused tracks
+  prevTracks.forEach((prevTrack) => {
+    if (!newTracks.find(t => t.id === prevTrack.id)) {
+      dispatch(removeTrack(prevTrack.id));
+    }
+  });
+};

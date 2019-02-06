@@ -64,14 +64,6 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         color: (encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER) ? ENCOUNTERS_REEFER_COLOR : ENCOUNTERS_VESSEL_COLOR
       }];
 
-      encounterInfo.vessels.forEach((vessel) => {
-        const vesselWorkspaceLayer = workspaceLayers.find(workspaceLayer =>
-          workspaceLayer.tilesetId === vessel.tilesetId || workspaceLayer.id === vessel.tilesetId);
-        const header = vesselWorkspaceLayer.header;
-        vessel.layerTemporalExtents = header.temporalExtents;
-        vessel.layerUrl = header.endpoints.tracks;
-      });
-
       dispatch({
         type: SET_ENCOUNTERS_INFO,
         payload: {

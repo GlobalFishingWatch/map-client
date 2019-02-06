@@ -231,28 +231,17 @@ export function hideVesselsInfoPanel() {
 export function addVessel({
   tilesetId,
   seriesgroup,
-  series = null,
   fromSearch = false,
   parentEncounter = null
 }) {
   return (dispatch, getState) => {
     const state = getState();
-    const currentLayer = state.layers.workspaceLayers
-      .filter(layer => LAYER_TYPES_WITH_HEADER.indexOf(layer.type) > -1)
-      .find(layer => layer.tilesetId === tilesetId);
-
-    const header = currentLayer.header;
-    const layerTemporalExtents = header.temporalExtents;
-    const layerUrl = header.endpoints.tracks;
     dispatch({
       type: ADD_VESSEL,
       payload: {
         seriesgroup,
-        series,
         tilesetId,
-        parentEncounter,
-        layerUrl,
-        layerTemporalExtents
+        parentEncounter
       }
     });
     if (state.user.userPermissions !== null && state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1) {
@@ -347,8 +336,7 @@ export function togglePinnedVesselDetails(seriesgroup, label, tilesetId) {
 export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
   const currentVessel = getState().vesselInfo.currentlyShownVessel;
   const seriesgroup = currentVessel.seriesgroup;
-  const series = currentVessel.series;
-  const timelineBounds = targetMapVessel(seriesgroup, series);
+  const timelineBounds = targetMapVessel(seriesgroup);
   dispatch(fitTimelineToTrack(timelineBounds));
 };
 

@@ -8,25 +8,8 @@ import {
 } from '../config';
 import Map from './Map.jsx';
 
-const getProvidedTracks = (state, ownProps) => ownProps.tracks;
-const getModuleTracks = state => state.map.tracks;
 const getTemporalExtent = (state, ownProps) => ownProps.temporalExtent;
 const getHighlightTemporalExtent = (state, ownProps) => ownProps.highlightTemporalExtent;
-
-// Merges providedTracks (track metadata) and moduleTracks (actual track data, internal to the module)
-const getTracks = createSelector(
-  [getProvidedTracks, getModuleTracks],
-  (providedTracks, moduleTracks) => {
-    const tracks = moduleTracks.map((moduleTrack) => {
-      const providedTrack = providedTracks.find(track =>
-        track.id === moduleTrack.id && track.segmentId === moduleTrack.segmentId
-      );
-      return (providedTrack === undefined) ? null : { ...providedTrack, ...moduleTrack };
-    });
-
-    return tracks.filter(track => track !== null);
-  }
-);
 
 const getTemporalExtentIndexes = createSelector(
   [getTemporalExtent],
@@ -59,7 +42,6 @@ const mapStateToProps = (state, ownProps) => ({
   minZoom: state.map.viewport.minZoom,
   mapStyle: state.map.style.mapStyle,
   cursor: state.map.interaction.cursor,
-  tracks: getTracks(state, ownProps),
   temporalExtentIndexes: getTemporalExtentIndexes(state, ownProps),
   highlightTemporalExtentIndexes: getHighlightTemporalExtentIndexes(state, ownProps)
 });

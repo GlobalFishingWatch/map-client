@@ -115,7 +115,6 @@ class Map extends React.Component {
           onViewportChange={this.onViewportChange}
         >
           <ActivityLayers
-            tracks={this.props.tracks}
             temporalExtentIndexes={this.props.temporalExtentIndexes}
             highlightTemporalExtentIndexes={this.props.highlightTemporalExtentIndexes}
             loadTemporalExtent={this.props.loadTemporalExtent}

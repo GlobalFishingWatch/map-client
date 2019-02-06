@@ -19,8 +19,7 @@ import {
   applyTemporalExtent
 } from './glmap/style.actions';
 import {
-  loadTrack,
-  removeTracks
+  updateTracks
 } from './tracks/tracks.actions';
 import {
   updateHeatmapLayers,
@@ -54,11 +53,6 @@ const store = createStore(
   applyMiddleware(thunk)
 );
 
-
-const containsTrack = (track, tracks) => tracks.find(prevTrack =>
-  prevTrack.id === track.id &&
-  prevTrack.segmentId === track.segmentId
-) !== undefined;
 
 const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
 
@@ -114,21 +108,8 @@ class MapModule extends React.Component {
 
   componentDidUpdate(prevProps) {
     // tracks
-    if (this.props.tracks !== undefined && this.props.tracks !== prevProps.tracks) {
-      if (this.props.tracks.length !== prevProps.tracks.length) {
-        const newTracks = this.props.tracks;
-        const prevTracks = prevProps.tracks;
-        newTracks.forEach((newTrack) => {
-          if (!containsTrack(newTrack, prevTracks)) {
-            store.dispatch(loadTrack(newTrack));
-          }
-        });
-        prevTracks.forEach((prevTrack) => {
-          if (!containsTrack(prevTrack, newTracks)) {
-            store.dispatch(removeTracks([prevTrack]));
-          }
-        });
-      }
+    if (this.props.tracks !== prevProps.tracks) {
+      store.dispatch(updateTracks(this.props.tracks));
     }
 
     // heatmap layers
@@ -198,8 +179,7 @@ MapModule.propTypes = {
   }),
   tracks: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    segmentId: PropTypes.string,
-    layerUrl: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     color: PropTypes.string
   })),
@@ -269,9 +249,9 @@ MapModule.propTypes = {
 
 export default MapModule;
 
-export const targetMapVessel = (id, segmentId) => {
+export const targetMapVessel = (id) => {
   const track = store.getState().map.tracks.find(t =>
-    t.id === id && (segmentId === undefined || t.segmentId === segmentId)
+    t.id === id.toString()
   );
 
   store.dispatch(fitBoundsToTrack(track.geoBounds));
