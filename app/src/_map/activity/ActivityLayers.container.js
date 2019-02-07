@@ -36,7 +36,6 @@ const mapStateToProps = state => ({
   tracks: getTracksWithData(state),
   leftWorldScaled: state.map.viewport.leftWorldScaled,
   rightWorldScaled: state.map.viewport.rightWorldScaled
-  // highlightedTrack: state.vesselInfo.highlightedTrack
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

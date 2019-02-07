@@ -28,7 +28,7 @@ class TracksLayer extends React.Component {
   }
 
   _redraw() {
-    const { tracks, zoom, startIndex, endIndex, highlightTemporalExtentIndexes, highlightedTrack } = this.props;
+    const { tracks, zoom, startIndex, endIndex, highlightTemporalExtentIndexes } = this.props;
 
     this.clear();
     if (!tracks.length) {
@@ -56,8 +56,8 @@ class TracksLayer extends React.Component {
         series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
-        color: (highlightedTrack === track.id) ? '0xFFFFFF' : `0x${track.color.substr(1)}`,
-        lineThickness: (highlightedTrack === track.id) ? 3 : 1,
+        color: `0x${track.color.substr(1)}`,
+        lineThickness: 1,
         lineOpacity: 1
       });
 
@@ -228,8 +228,7 @@ TracksLayer.propTypes = {
   startIndex: PropTypes.number,
   endIndex: PropTypes.number,
   highlightTemporalExtentIndexes: PropTypes.array,
-  tracks: PropTypes.array,
-  highlightedTrack: PropTypes.number
+  tracks: PropTypes.array
 };
 
 export default TracksLayer;

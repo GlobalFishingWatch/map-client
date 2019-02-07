@@ -241,7 +241,6 @@ class ActivityLayers extends React.Component {
       highlightedVessels,
       highlightedClickedVessel,
       tracks,
-      highlightedTrack,
       leftWorldScaled,
       rightWorldScaled
     } = this.props;
@@ -313,7 +312,6 @@ class ActivityLayers extends React.Component {
           endIndex={endIndex}
           highlightTemporalExtentIndexes={highlightTemporalExtentIndexes}
           rootStage={this.stage}
-          highlightedTrack={highlightedTrack}
         />
       }
     </div>);
@@ -325,11 +323,9 @@ ActivityLayers.propTypes = {
   heatmapLayers: PropTypes.array,
   temporalExtentIndexes: PropTypes.array,
   highlightTemporalExtentIndexes: PropTypes.array,
-  layerFilters: PropTypes.object,
   highlightedVessels: PropTypes.object,
   highlightedClickedVessel: PropTypes.object,
   tracks: PropTypes.array,
-  highlightedTrack: PropTypes.number,
   queryHeatmapVessels: PropTypes.func,
   exportNativeViewport: PropTypes.func,
   leftWorldScaled: PropTypes.number,

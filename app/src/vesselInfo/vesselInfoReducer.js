@@ -22,7 +22,8 @@ const initialState = {
   infoPanelStatus: INFO_STATUS.HIDDEN,
   pinnedVesselEditMode: false,
   currentlyShownVessel: null,
-  currentPaletteIndex: DEFAULT_TRACK_PALETTE_INDEX
+  currentPaletteIndex: DEFAULT_TRACK_PALETTE_INDEX,
+  highlightedTrack: null
 };
 
 export default function (state = initialState, action) {

@@ -10,6 +10,7 @@ import MapWrapper from 'map/components/MapWrapper';
 
 
 const getVessels = state => state.vesselInfo.vessels;
+const getHighlightedTrack = state => state.vesselInfo.highlightedTrack;
 const getEncounter = state => state.encounters.encountersInfo;
 const getLayers = state => state.layers.workspaceLayers;
 const getLayerFilters = state => state.filterGroups.layerFilters;
@@ -44,15 +45,17 @@ const getTrackFromLayers = (layers, tilesetId) => {
 };
 
 const getAllVesselsForTracks = createSelector(
-  [getVessels, getEncounter, getLayers],
-  (vessels, encounter, layers) => {
+  [getVessels, getEncounter, getLayers, getHighlightedTrack],
+  (vessels, encounter, layers, highlightedTrack) => {
     let tracks = [];
 
     vessels.forEach((vessel) => {
       if (vessel.visible === true || vessel.shownInInfoPanel === true) {
+        const seriesgroup = vessel.seriesgroup;
+        const color = (highlightedTrack !== null && highlightedTrack === seriesgroup) ? '#ffffff' : vessel.color;
         tracks.push({
-          id: vessel.seriesgroup.toString(),
-          color: vessel.color,
+          id: seriesgroup.toString(),
+          color,
           ...getTrackFromLayers(layers, vessel.tilesetId)
         });
       }

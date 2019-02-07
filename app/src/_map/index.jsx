@@ -183,8 +183,6 @@ MapModule.propTypes = {
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     color: PropTypes.string
   })),
-  // TODO Move inside track object ^^^
-  highlightedTrack: PropTypes.string,
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     tilesetId: PropTypes.string,
