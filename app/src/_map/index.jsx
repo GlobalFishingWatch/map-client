@@ -172,7 +172,7 @@ class MapModule extends React.Component {
 }
 
 MapModule.propTypes = {
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
   viewport: PropTypes.shape({
     zoom: PropTypes.number,
     center: PropTypes.arrayOf(PropTypes.number)

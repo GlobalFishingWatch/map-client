@@ -437,6 +437,78 @@
       }
     },
     {
+      "id": "events_fishing",
+      "type": "circle",
+      "source": "events_fishing",
+      "source-layer": "default",
+      "metadata": {
+        "gfw:temporal": true
+      },
+      "layout": {
+        "visibility": "none"
+      },
+      "paint": {
+        "circle-radius": 3,
+        "circle-color": "#FE81EB",
+        "circle-stroke-width": 0.5
+      },
+      "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
+    },
+    {
+      "id": "events_encounter",
+      "type": "circle",
+      "source": "events_encounter",
+      "source-layer": "default",
+      "metadata": {
+        "gfw:temporal": true
+      },
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-radius": 3,
+        "circle-color": "#E5647D",
+        "circle-stroke-width": 0.5
+      },
+      "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
+    },
+    {
+      "id": "events_gap",
+      "type": "circle",
+      "source": "events_gap",
+      "source-layer": "default",
+      "metadata": {
+        "gfw:temporal": true
+      },
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-radius": 3,
+        "circle-color": "#FFE7A0",
+        "circle-stroke-width": 0.5
+      },
+      "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
+    },
+    {
+      "id": "events_port",
+      "type": "circle",
+      "source": "events_port",
+      "source-layer": "default",
+      "metadata": {
+        "gfw:temporal": true
+      },
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-radius": 3,
+        "circle-color": "#44A1B9",
+        "circle-stroke-width": 0.5
+      },
+      "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
+    },
+    {
       "id": "graticules-lines",
       "type": "line",
       "source": "graticules",
