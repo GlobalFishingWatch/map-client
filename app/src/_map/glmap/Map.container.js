@@ -11,6 +11,8 @@ import Map from './Map.jsx';
 const getTemporalExtent = (state, ownProps) => ownProps.temporalExtent;
 const getHighlightTemporalExtent = (state, ownProps) => ownProps.highlightTemporalExtent;
 
+// TODO MAP MODULE move those selectors to separated actions/reducer
+// thus avoiding passing temporal extents through Map to ActivityLayers
 const getTemporalExtentIndexes = createSelector(
   [getTemporalExtent],
   (temporalExtent) => {

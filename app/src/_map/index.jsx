@@ -65,6 +65,10 @@ const updateViewportFromIncomingProps = (incomingViewport) => {
 };
 
 class MapModule extends React.Component {
+  state = {
+    initialized: false
+  }
+
   componentDidMount() {
     // First trigger synchronous actions that should happen before any map render
     // At the end of this, set a flag to allow map rendering
@@ -73,6 +77,7 @@ class MapModule extends React.Component {
       updateViewportFromIncomingProps(this.props.viewport);
     }
 
+    // TODO
     if (this.props.glyphsPath !== undefined) {
       store.dispatch(initStyle({
         glyphsPath: this.props.glyphsPath
@@ -92,11 +97,11 @@ class MapModule extends React.Component {
       }));
     }
 
-    // if (this.props.basemapLayers !== undefined ||
-    //     this.props.staticLayers !== undefined) {
-    //       console.log(this.props)
-    //   store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
-    // }
+    if (this.props.basemapLayers !== undefined ||
+        this.props.staticLayers !== undefined) {
+          console.log(this.props)
+      store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
+    }
     this.initialized = true;
 
     // Now trigger async actions
@@ -104,6 +109,11 @@ class MapModule extends React.Component {
     if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
       debouncedApplyTemporalExtent(this.props.temporalExtent);
     }
+
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({
+      initialized: true
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -163,7 +173,7 @@ class MapModule extends React.Component {
   }
   render() {
     // won't render anything before actions in componentDidMount have been triggered
-    return (this.initialized !== true) ? null : (
+    return (this.state.initialized !== true) ? null : (
       <Provider store={store}>
         <Map {...this.props} />
       </Provider>
