@@ -7,7 +7,7 @@ import {
   REMOVE_HEATMAP_LAYER,
   ADD_REFERENCE_TILE,
   REMOVE_REFERENCE_TILE,
-  UPDATE_HEATMAP_TILES,
+  UPDATE_HEATMAP_TILE,
   RELEASE_HEATMAP_TILES,
   HIGHLIGHT_VESSELS,
   UPDATE_LOADED_TILES,
@@ -54,7 +54,6 @@ export default function (state = initialState, action) {
       const newLayer = action.payload;
       const layer = { ...state.heatmapLayers[newLayer.id], ...newLayer };
       const heatmapLayers = { ...state.heatmapLayers, [newLayer.id]: layer };
-      console.log('heatmap layers in store now', Object.keys(heatmapLayers).map(l => [l, heatmapLayers[l].visible]))
       return { ...state, heatmapLayers };
     }
 
@@ -71,27 +70,27 @@ export default function (state = initialState, action) {
       ] });
     }
 
-    case REMOVE_REFERENCE_TILE: {
-      const index = state.referenceTiles.findIndex(tile => tile.uid === action.payload);
-      return Object.assign({}, state, { referenceTiles: [
-        ...state.referenceTiles.slice(0, index),
-        ...state.referenceTiles.slice(index + 1)]
-      });
-    }
 
-    // TODO handle adding layers
-
-    case UPDATE_HEATMAP_TILES: {
+    case UPDATE_HEATMAP_TILE: {
       const layerId = action.payload.layerId;
-      const newTiles = action.payload.tiles;
-      const layer = { ...state.heatmapLayers[layerId], tiles: newTiles };
+      const newTile = action.payload.tile;
+      const layer = { ...state.heatmapLayers[layerId] };
+      let layerTiles = [...layer.tiles];
+      const tileIndex = layerTiles.findIndex(t => t.uid === newTile.uid);
+      if (tileIndex === -1) {
+        layerTiles.push(newTile);
+      } else {
+        layerTiles = [layerTiles.slice(0, tileIndex), newTile, layerTiles.slice(tileIndex + 1)];
+      }
+      layer.tiles = layerTiles;
       const heatmapLayers = { ...state.heatmapLayers, [layerId]: layer };
-      console.log('storing new tiles for', layerId, newTiles, layer)
       return { ...state, heatmapLayers };
     }
 
     case RELEASE_HEATMAP_TILES: {
       const uids = action.payload;
+
+      // remove tiles
       const layerIds = Object.keys(state.heatmapLayers);
       const heatmapLayers = { ...state.heatmapLayers };
       layerIds.forEach((layerId) => {
@@ -99,12 +98,25 @@ export default function (state = initialState, action) {
         uids.forEach((tileUid) => {
           const releasedTileIndex = prevLayer.tiles.findIndex(tile => tile.uid === tileUid);
           if (releasedTileIndex > -1) {
-            console.log('releasing', layerId, tileUid);
+            // console.log('releasing', layerId, tileUid);
             prevLayer.tiles.splice(releasedTileIndex, 1);
           }
         });
       });
-      return { ...state, heatmapLayers };
+
+      // remove reference tiles
+      let referenceTiles = [...state.referenceTiles];
+      uids.forEach((tileUid) => {
+        const releasedRefTileIndex = referenceTiles.findIndex(tile => tile.uid === tileUid);
+        if (releasedRefTileIndex > -1) {
+          referenceTiles = [
+            ...referenceTiles.slice(0, releasedRefTileIndex),
+            ...referenceTiles.slice(releasedRefTileIndex + 1)
+          ];
+        }
+      });
+
+      return { ...state, heatmapLayers, referenceTiles };
     }
 
     case UPDATE_LOADED_TILES: {

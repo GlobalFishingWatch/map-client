@@ -18,9 +18,8 @@ export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
 export const HIGHLIGHT_VESSELS = 'HIGHLIGHT_VESSELS';
 export const INIT_HEATMAP_LAYERS = 'INIT_HEATMAP_LAYERS';
 export const REMOVE_HEATMAP_LAYER = 'REMOVE_HEATMAP_LAYER';
-export const REMOVE_REFERENCE_TILE = 'REMOVE_REFERENCE_TILE';
 export const UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES = 'UPDATE_HEATMAP_LAYER_TEMPORAL_EXTENTS_LOADED_INDICES';
-export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
+export const UPDATE_HEATMAP_TILE = 'UPDATE_HEATMAP_TILE';
 export const RELEASE_HEATMAP_TILES = 'RELEASE_HEATMAP_TILES';
 export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
 export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
@@ -61,7 +60,7 @@ function getTemporalExtentsVisibleIndices(loadTemporalExtent, layerTemporalExten
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
 function loadLayerTile(layerId, tileCoordinates, token, temporalExtentsIndices, { url, temporalExtents, temporalExtentsLess, isPBF }) {
-  console.log('loadLayerTile', layerId)
+  // console.log('loadLayerTile', layerId, tileCoordinates, temporalExtentsIndices)
   if (url === undefined) {
     throw new Error('URL/endpoints object is not available on this tilesets header');
   }
@@ -146,11 +145,14 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
         // check if tile does not already exist first
         let tile = tilesByLayer[layerId].find(t => t.uid === referenceTile.uid);
         if (!tile) {
+          // console.log('create tile ', referenceTile.uid)
           tile = {
             uid: referenceTile.uid,
             temporalExtentsIndicesLoaded: []
           };
           tilesByLayer[layerId].push(tile);
+        } else {
+          // console.log('found tile', referenceTile.uid)
         }
 
         const queriedTemporalExtentsIndices = (newTemporalExtentsToLoad === undefined)
@@ -183,11 +185,12 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
             referenceTile.tileCoordinates,
             tile.data
           );
+
           dispatch({
-            type: UPDATE_HEATMAP_TILES,
+            type: UPDATE_HEATMAP_TILE,
             payload: {
               layerId: loadedLayerId,
-              tiles: tilesByLayer[layerId]
+              tile
             }
           });
         });
@@ -238,11 +241,12 @@ export const updateLoadedTiles = () => ({
   type: UPDATE_LOADED_TILES
 });
 
-
-export function loadAllTilesForLayer(layerId) {
+// triggered when a layer is added or set to visible
+function loadAllTilesForLayer(layerId) {
   return (dispatch, getState) => {
     //                current layer, all reference tiles
-    dispatch(getTiles([layerId], getState().map.heatmap.referenceTiles));
+    const referenceTiles = getState().map.heatmap.referenceTiles;
+    dispatch(getTiles([layerId], referenceTiles));
   };
 }
 
@@ -304,7 +308,7 @@ export function updateLayerLoadTemporalExtents(loadTemporalExtent) {
     });
 
     // getTiles with indices diff
-    const layerIdsWithIndicesToAdd = indicesToAddByLayer;
+    const layerIdsWithIndicesToAdd = Object.keys(indicesToAddByLayer);
     if (layerIdsWithIndicesToAdd.length) {
       dispatch(getTiles(layerIdsWithIndicesToAdd, state.map.heatmap.referenceTiles, indicesToAddByLayer));
     }
@@ -445,7 +449,7 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
     const layerId = newLayer.id;
     const prevLayer = prevLayersDict[layerId];
     if (prevLayer === undefined) {
-      console.log('adding', layerId)
+      // console.log('adding', layerId)
       dispatch(addHeatmapLayer(newLayer, currentLoadTemporalExtent));
     } else {
       if (prevLayer.visible !== newLayer.visible && newLayer.visible === true) {
@@ -457,7 +461,7 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
         prevLayer.opacity !== newLayer.opacity ||
         prevLayer.filters !== newLayer.filters
       ) {
-        console.log('updating', layerId, ' with visibilty', newLayer.visible)
+        // console.log('updating', layerId, ' with visibilty', newLayer.visible)
         dispatch({
           type: UPDATE_HEATMAP_LAYER_STYLE,
           payload: {

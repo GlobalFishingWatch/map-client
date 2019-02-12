@@ -463,7 +463,7 @@
         "gfw:temporal": true
       },
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "circle-radius": 3,
@@ -481,7 +481,7 @@
         "gfw:temporal": true
       },
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "circle-radius": 3,
@@ -499,7 +499,7 @@
         "gfw:temporal": true
       },
       "layout": {
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "circle-radius": 3,

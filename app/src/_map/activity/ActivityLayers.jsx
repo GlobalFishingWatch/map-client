@@ -246,7 +246,6 @@ class ActivityLayers extends React.Component {
     } = this.props;
     const { viewport } = this.context;
 
-    console.log(heatmapLayers)
 
     const startIndex = temporalExtentIndexes[0];
     const endIndex = temporalExtentIndexes[1];

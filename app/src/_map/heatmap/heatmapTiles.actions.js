@@ -114,7 +114,7 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
   //   collect all tiles in viewport
   //   save them to reducer: currentVisibleTiles
   // if not zooming: flush immediately
-  //   if forceLoadingAlVisiblelTiles
+  //   if forceLoadingAllVisiblelTiles
   //     get tiles from currentVisibleTiles
   //   else
   //     get tiles from currentVisibleTiles
@@ -172,14 +172,17 @@ export const updateHeatmapTilesFromViewport = (forceLoadingAllVisibleTiles = fal
 
   viewportTilesCoords.forEach((coords, i) => {
     const uid = viewportTilesIndexes[i];
-    visibleTiles.push({
-      tileCoordinates: {
-        x: coords[0],
-        y: coords[1],
-        zoom: coords[2]
-      },
-      uid
-    });
+    const zoom = coords[2];
+    if (zoom >= 2) {
+      visibleTiles.push({
+        tileCoordinates: {
+          x: coords[0],
+          y: coords[1],
+          zoom: coords[2]
+        },
+        uid
+      });
+    }
   });
 
   dispatch({

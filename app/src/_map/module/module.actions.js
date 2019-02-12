@@ -9,8 +9,6 @@ export const initModule = props => (dispatch) => {
     type: INIT_MODULE,
     payload: props
   });
-  // TODO MAP MODULE this has to be triggered once to save tile coords - do it at init map viewport?
-  dispatch(updateHeatmapTilesFromViewport(true));
 };
 
 export const startLoader = (dispatch, state) => {
