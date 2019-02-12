@@ -97,12 +97,10 @@ class MapModule extends React.Component {
       }));
     }
 
-    if (this.props.basemapLayers !== undefined ||
-        this.props.staticLayers !== undefined) {
-          console.log(this.props)
+    if ((this.props.basemapLayers !== undefined && this.props.basemapLayers.length) ||
+        (this.props.staticLayers !== undefined && this.props.staticLayers.length)) {
       store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
-    this.initialized = true;
 
     // Now trigger async actions
 
@@ -128,8 +126,8 @@ class MapModule extends React.Component {
     }
 
     // basemap / static layers
-    if (this.props.basemapLayers !== prevProps.basemapLayers ||
-        this.props.staticLayers !== prevProps.staticLayers) {
+    if ((this.props.basemapLayers !== undefined && this.props.basemapLayers.length) ||
+        (this.props.staticLayers !== undefined && this.props.staticLayers.length)) {
       store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
 

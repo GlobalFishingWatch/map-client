@@ -193,7 +193,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
   const workspace = { ...workspaceData };
   // Mapbox branch compatibility: A Mapbox GL JS zoom z means z-1 on GMaps
   workspace.viewport.zoom = workspaceData.viewport.zoom - 1;
-  dispatch(updateWorkspace(workspace));
 
   // We update the dates of the timeline
   const autoTimeline = workspaceData.timeline.auto !== undefined;
@@ -225,10 +224,11 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(setOuterTimelineDates(timelineOuterDates));
 
-  // TODO MAP MODULE just store that in workspace, send to map module
   dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions));
 
   dispatch(setSpeed(workspaceData.timelineSpeed));
+
+  dispatch(updateWorkspace(workspace));
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
     // we need heatmap layers headers to be loaded before loading track
