@@ -189,32 +189,6 @@
         ]
       },
       "type": "vector"
-    },
-    "protectedseas_level2": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT *, 'less restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level2_lessrestrictive",
-        "gfw:popups": [
-          { "id": "site_name" },
-          { "id": "level" },
-          { "id": "country" },
-          { "id": "season" },
-          { "id": "details", "isLink": true }
-        ]
-      },
-      "type": "vector"
-    },
-    "protectedseas_level1": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT *, 'least restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level1_leastrestrictive",
-        "gfw:popups": [
-          { "id": "site_name" },
-          { "id": "level" },
-          { "id": "country" },
-          { "id": "season" },
-          { "id": "details", "isLink": true }
-        ]
-      },
-      "type": "vector"
     }
   },
   "layers": [
@@ -479,57 +453,6 @@
       "layout": {
         "visibility": "none",
         "text-field": "{full_name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "protectedseas_level1",
-      "type": "fill",
-      "source": "protectedseas_level1",
-      "source-layer": "protectedseas_level1",
-      "layout": { 
-       "visibility": "none"
-      },
-      "interactive": true
-    },
-    {
-      "id": "protectedseas_level1-labels",
-      "type": "symbol",
-      "source": "protectedseas_level1",
-      "source-layer": "protectedseas_level1",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{site_name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "protectedseas_level2",
-      "type": "fill",
-      "source": "protectedseas_level2",
-      "source-layer": "protectedseas_level2",
-      "layout": { 
-       "visibility": "none"
-      },
-      "paint": {
-        "fill-opacity": 1
-      },
-      "interactive": true
-    },
-    {
-      "id": "protectedseas_level2-labels",
-      "type": "symbol",
-      "source": "protectedseas_level2",
-      "source-layer": "protectedseas_level2",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{site_name}",
         "text-font": [
           "Roboto Mono Light"
         ],
