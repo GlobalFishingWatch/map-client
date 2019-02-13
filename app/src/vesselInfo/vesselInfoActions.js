@@ -1,6 +1,7 @@
 import uniq from 'lodash/uniq';
 import { LAYER_TYPES_WITH_HEADER } from 'constants';
 import { fitTimelineToTrack } from 'filters/filtersActions';
+import { resetNotification, setNotification } from 'src/notifications/notificationsActions';
 import { trackSearchResultClicked, trackVesselPointClicked } from 'analytics/analyticsActions';
 import {
   getTilePromises,
@@ -13,6 +14,7 @@ import { addVesselToRecentVesselList } from 'recentVessels/recentVesselsActions'
 import { fitBoundsToTrack } from 'map/mapViewportActions';
 import { toggleMapPanels } from 'app/appActions';
 import getVesselName from 'utils/getVesselName';
+import fetchEndpoint from 'utils/fetchEndpoint';
 import buildEndpoint from 'utils/buildEndpoint';
 
 export const ADD_VESSEL = 'ADD_VESSEL';
@@ -96,39 +98,13 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
   return (dispatch, getState) => {
     const state = getState();
     const token = state.user.token;
-    let request;
-
-    if (typeof XMLHttpRequest !== 'undefined') {
-      request = new XMLHttpRequest();
-    } else {
-      throw new Error('XMLHttpRequest is disabled');
-    }
-
     const layer = state.layers.workspaceLayers.find(l =>
       LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.tilesetId === tilesetId);
 
-    request.open(
-      'GET',
-      buildEndpoint(layer.header.endpoints.info, { id: seriesgroup }),
-      true
-    );
-    if (token) {
-      request.setRequestHeader('Authorization', `Bearer ${token}`);
-    }
-    request.setRequestHeader('Accept', 'application/json');
-    request.onreadystatechange = () => {
-      if (request.readyState !== 4) {
-        return;
-      }
-      if (request.status >= 500 || request.status === 404) {
-        console.error('Error loading vessel info:', request.responseText);
-        return;
-      }
-      const data = JSON.parse(request.responseText);
+    const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, { id: seriesgroup });
+    fetchEndpoint(vesselInfoUrl, token).then((data) => {
       delete data.series;
-
       data.tilesetId = tilesetId;
-
       dispatch({
         type: SET_VESSEL_DETAILS,
         payload: {
@@ -144,10 +120,21 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       } else {
         dispatch(trackVesselPointClicked(tilesetId, seriesgroup));
       }
-
       dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, layer.header.info.fields), tilesetId));
-    };
-    request.send(null);
+
+      // mocking API comments to show warning
+      // TODO:
+      //  1. Check field name from API
+      //  2. Remove the next line of code
+      data.comment = 'This vessel has a warning';
+      if (data.comment) {
+        dispatch(setNotification({
+          content: data.comment,
+          type: 'warning',
+          visible: true
+        }));
+      }
+    });
   };
 }
 
@@ -395,8 +382,11 @@ export function addVesselFromEncounter(tilesetId, seriesgroup) {
 }
 
 export function clearVesselInfo() {
-  return {
-    type: CLEAR_VESSEL_INFO
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_VESSEL_INFO
+    });
+    dispatch(resetNotification());
   };
 }
 

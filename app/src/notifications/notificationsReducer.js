@@ -1,4 +1,4 @@
-import { SHOW_BANNER } from './notificationsActions';
+import { SET_NOTIFICATION } from './notificationsActions';
 
 const initialState = {
   visible: false,
@@ -8,7 +8,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SHOW_BANNER:
+    case SET_NOTIFICATION:
       return { ...state, ...action.payload };
     default:
       return state;
