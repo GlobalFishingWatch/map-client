@@ -153,60 +153,65 @@
     },
     "protectedseas_level5": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, 'most restrictive' AS level FROM protectedseas_level5_mostrestrictive",
+        "gfw:carto-sql": "SELECT *, 'most restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level5_mostrestrictive",
         "gfw:popups": [
           { "id": "site_name" },
           { "id": "level" },
           { "id": "country" },
-          { "id": "season" }
+          { "id": "season" },
+          { "id": "details", "isLink": true }
         ]
       },
       "type": "vector"
     },
     "protectedseas_level4": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, 'heavily restrictive' AS level FROM protectedseas_level4_heavilyrestrictive",
+        "gfw:carto-sql": "SELECT *, 'heavily restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level4_heavilyrestrictive",
         "gfw:popups": [
           { "id": "site_name" },
           { "id": "level" },
           { "id": "country" },
-          { "id": "season" }
+          { "id": "season" },
+          { "id": "details", "isLink": true }
         ]
       },
       "type": "vector"
     },
     "protectedseas_level3": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, 'moderately restrictive' AS level FROM protectedseas_level3_moderatelyrestrictive",
+        "gfw:carto-sql": "SELECT *, 'moderately restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level3_moderatelyrestrictive",
         "gfw:popups": [
           { "id": "site_name" },
           { "id": "level" },
           { "id": "country" },
-          { "id": "season" }
+          { "id": "season" },
+          { "id": "details", "isLink": true }
         ]
       },
       "type": "vector"
     },
     "protectedseas_level2": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, 'less restrictive' AS level FROM protectedseas_level2_lessrestrictive",
+        "gfw:carto-sql": "SELECT *, 'less restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level2_lessrestrictive",
         "gfw:popups": [
           { "id": "site_name" },
           { "id": "level" },
           { "id": "country" },
-          { "id": "season" }
+          { "id": "season" },
+          { "id": "details", "isLink": true }
         ]
       },
       "type": "vector"
     },
     "protectedseas_level1": {
       "metadata": {
-        "gfw:carto-sql": "SELECT *, 'least restrictive' AS level FROM protectedseas_level1_leastrestrictive",
+        "gfw:carto-sql": "SELECT *, 'least restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level1_leastrestrictive",
         "gfw:popups": [
           { "id": "site_name" },
           { "id": "level" },
           { "id": "country" },
-          { "id": "season" }
+          { "id": "season" },
+          { "id": "details", "isLink": true }
         ]
       },
       "type": "vector"
