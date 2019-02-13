@@ -89,6 +89,11 @@ class VesselInfoPanel extends Component {
               <div onClick={this.props.targetVessel}>
                 <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
               </div>
+              {vesselInfo.comment &&
+                <div onClick={() => this.props.showWarning(vesselInfo.comment)}>
+                  <IconButton icon="alert" />
+                </div>
+              }
             </div>
           </div>
           {vesselInfo.parentEncounter !== null
@@ -144,6 +149,7 @@ VesselInfoPanel.propTypes = {
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
   login: PropTypes.func,
+  showWarning: PropTypes.func.isRequired,
   showParentEncounter: PropTypes.func,
   targetVessel: PropTypes.func
 };

@@ -105,6 +105,13 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
     fetchEndpoint(vesselInfoUrl, token).then((data) => {
       delete data.series;
       data.tilesetId = tilesetId;
+
+      // mocking API comments to show warning
+      // TODO:
+      //  1. Check field name from API
+      //  2. Remove the next line of code
+      data.comment = 'This vessel has a warning';
+
       dispatch({
         type: SET_VESSEL_DETAILS,
         payload: {
@@ -122,11 +129,6 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       }
       dispatch(addVesselToRecentVesselList(data.seriesgroup, getVesselName(data, layer.header.info.fields), tilesetId));
 
-      // mocking API comments to show warning
-      // TODO:
-      //  1. Check field name from API
-      //  2. Remove the next line of code
-      data.comment = 'This vessel has a warning';
       if (data.comment) {
         dispatch(setNotification({
           content: data.comment,
@@ -252,48 +254,23 @@ export const applyFleetOverrides = () => (dispatch, getState) => {
 export function setPinnedVessels(pinnedVessels, shownVessel) {
   return (dispatch, getState) => {
     const state = getState();
-    const options = {
-      Accept: '*/*'
-    };
-
-    options.headers = {
-      Authorization: `Bearer ${state.user.token}`
-    };
+    const { token } = state.user;
 
     pinnedVessels.forEach((pinnedVessel) => {
-      let request;
-
-      if (typeof XMLHttpRequest !== 'undefined') {
-        request = new XMLHttpRequest();
-      } else {
-        throw new Error('XMLHttpRequest is disabled');
-      }
-
       const layer = state.layers.workspaceLayers.find(l => l.tilesetId === pinnedVessel.tilesetId);
       if (layer === undefined) {
         console.warn('Trying to load a pinned vessel but the layer seems to be absent on the workspace', pinnedVessel);
         return;
       }
 
-      request.open(
-        'GET',
-        buildEndpoint(layer.header.endpoints.info, { id: pinnedVessel.seriesgroup }),
-        true
-      );
-      if (state.user.token) {
-        request.setRequestHeader('Authorization', `Bearer ${state.user.token}`);
-      }
-      request.setRequestHeader('Accept', 'application/json');
-      request.onreadystatechange = () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 404) {
-          console.warn('Error:', request.responseText);
-          return;
-        }
-        const data = JSON.parse(request.responseText);
+      const pinnedVesselUrl = buildEndpoint(layer.header.endpoints.info, { id: pinnedVessel.seriesgroup });
+      fetchEndpoint(pinnedVesselUrl, token).then((data) => {
         delete data.series;
+        // mocking API comments to show warning
+        // TODO:
+        //  1. Check field name from API
+        //  2. Remove the next line of code
+        data.comment = 'This vessel has a warning PINNED';
         dispatch({
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
@@ -323,8 +300,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
           });
           dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.seriesgroup));
         }
-      };
-      request.send(null);
+      });
     });
   };
 }

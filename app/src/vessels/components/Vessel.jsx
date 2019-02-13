@@ -31,6 +31,7 @@ class Vessel extends Component {
   render() {
     const { vessel, currentlyShownVessel, editable, tall, highlightTrack } = this.props;
     const isEditable = editable !== false;
+    const hasWarning = vessel.comment !== undefined;
     const isTall = tall !== false;
     const detailsCurrentlyShown =
       currentlyShownVessel !== null &&
@@ -62,6 +63,11 @@ class Vessel extends Component {
         >
           {vessel.title}
         </div>
+        {hasWarning &&
+          <div onClick={() => this.props.showWarning(vessel.comment)}>
+            <IconButton icon="alert" />
+          </div>
+        }
         {isEditable &&
         <div onClick={() => this.props.delete(vessel.seriesgroup)}>
           <IconButton icon="unpin" />
@@ -98,6 +104,7 @@ Vessel.propTypes = {
   tall: PropTypes.bool,
   toggle: PropTypes.func,
   togglePinnedVesselDetails: PropTypes.func,
+  showWarning: PropTypes.func.isRequired,
   delete: PropTypes.func,
   setColor: PropTypes.func,
   targetVessel: PropTypes.func,

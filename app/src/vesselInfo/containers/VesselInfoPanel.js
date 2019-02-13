@@ -3,6 +3,7 @@ import VesselInfoPanel from 'vesselInfo/components/VesselInfoPanel';
 import { clearVesselInfo, toggleActiveVesselPin, targetCurrentlyShownVessel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { login } from 'user/userActions';
+import { setNotification } from 'src/notifications/notificationsActions';
 
 const mapStateToProps = (state) => {
   const vesselInfo = state.vesselInfo.currentlyShownVessel;
@@ -47,6 +48,13 @@ const mapDispatchToProps = dispatch => ({
   },
   targetVessel: () => {
     dispatch(targetCurrentlyShownVessel());
+  },
+  showWarning: (content) => {
+    dispatch(setNotification({
+      visible: true,
+      type: 'warning',
+      content
+    }));
   }
 });
 
