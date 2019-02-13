@@ -1,5 +1,3 @@
-import { updateHeatmapTilesFromViewport } from '../heatmap/heatmapTiles.actions';
-
 export const INIT_MODULE = 'INIT_MODULE';
 export const START_LOADER = 'START_LOADER';
 export const COMPLETE_LOADER = 'COMPLETE_LOADER';

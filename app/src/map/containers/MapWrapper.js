@@ -5,6 +5,7 @@ import { startLoading, completeLoading } from 'app/appActions';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
+import { toggleCurrentReportPolygon } from 'report/reportActions';
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import MapWrapper from 'map/components/MapWrapper';
 
@@ -138,7 +139,8 @@ const mapStateToProps = state => ({
   loadTemporalExtent: state.filters.timelineOuterExtent,
   highlightTemporalExtent: state.filters.timelineOverExtent,
   // Internal
-  workspaceLayers: state.layers.workspaceLayers
+  workspaceLayers: state.layers.workspaceLayers,
+  report: state.report
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -175,6 +177,9 @@ const mapDispatchToProps = dispatch => ({
         }));
       }
     }
+  },
+  toggleCurrentReportPolygon: () => {
+    dispatch(toggleCurrentReportPolygon());
   }
 });
 

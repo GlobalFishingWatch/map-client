@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import StaticLayerPopup from 'map/containers/StaticLayerPopup';
+import StaticLayerPopup from 'map/components/StaticLayerPopup';
 import HoverPopup from 'map/components/HoverPopup';
 import MapModule from 'src/_map';
 
@@ -10,12 +10,18 @@ class MapWrapper extends Component {
     clickPopup: null
   }
   onClick = (event) => {
+    const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
     // TODO CLEAR POPUP
     this.props.onMapClick(event);
     let clickPopup = null;
     if (event.type === 'static') {
       clickPopup = {
-        content: <StaticLayerPopup event={event} />,
+        content: <StaticLayerPopup
+          event={event}
+          report={report}
+          workspaceLayers={workspaceLayers}
+          toggleCurrentReportPolygon={toggleCurrentReportPolygon}
+        />,
         latitude: event.latitude,
         longitude: event.longitude
       };
