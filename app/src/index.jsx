@@ -27,6 +27,7 @@ import customLayerReducer from 'layers/customLayerReducer';
 import welcomeModalReducer from 'welcomeModal/welcomeModalReducer';
 import timebarReducer from 'timebar/timebarReducer';
 import literalsReducer from 'siteNav/literalsReducer';
+import notificationsReducer from 'src/notifications/notificationsReducer';
 import recentVesselsReducer from 'recentVessels/recentVesselsReducer';
 import rightControlPanelReducer from 'mapPanels/rightControlPanel/rightControlPanelReducer';
 import shareReducer from 'share/shareReducer';
@@ -56,6 +57,7 @@ const reducer = combineReducers({
   layerLibrary: layerLibraryReducer,
   layers: layersReducer,
   literals: literalsReducer,
+  notifications: notificationsReducer,
   mapViewport: mapViewportReducer,
   mapStyle: mapStyleReducer,
   mapInteraction: mapInteractionReducer,
