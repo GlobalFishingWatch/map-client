@@ -6,15 +6,64 @@ import platform from 'platform';
 import Notifications from '../components/Notifications';
 import { setNotification } from '../notificationsActions';
 
+const getInitialNotificationConfig = (literals, localChecks) => {
+  if (!Object.values(literals).length) return null;
+  return [
+    {
+      id: 'banner',
+      content: literals.banner,
+      checker: () => SHOW_BANNER === true,
+      type: 'notification'
+    },
+    {
+      id: 'webgl',
+      content: literals.webgl_warning,
+      checker: () => !PIXI.utils.isWebGLSupported(),
+      type: 'error'
+    },
+    {
+      id: 'edge',
+      content: literals.edge_warning,
+      checker: () => platform.name.match(/edge/gi) !== null,
+      type: 'warning'
+    },
+    {
+      id: 'legacyWorkspace',
+      content: literals.legacy_workspace_warning,
+      checker: () => localChecks.legacyWorkspaceLoaded === true,
+      type: 'warning'
+    },
+    {
+      id: 'deprecatedActivityLayers',
+      content: literals.deprecated_layers_warning,
+      checker: () => localChecks.hasDeprecatedActivityLayersMessage !== null,
+      type: 'warning'
+    }
+  ];
+};
+
+const checkInitialNotification = (config) => {
+  for (let i = 0; i < config.length; i++) {
+    const element = config[i];
+    if (element.checker()) {
+      return element;
+    }
+  }
+  return null;
+};
+
 const mapStateToProps = (state) => {
-  const showBanner = state.notifications.visible && window.innerWidth > 768;
-  return {
-    showBanner,
-    literals: state.literals,
-    type: state.notifications.type,
-    content: state.notifications.content,
+  const visible = state.notifications.visible && window.innerWidth > 768;
+  const localChecks = {
     legacyWorkspaceLoaded: state.workspace.legacyWorkspaceLoaded,
     hasDeprecatedActivityLayersMessage: state.heatmap.hasDeprecatedActivityLayersMessage
+  };
+  const notificationsConfig = getInitialNotificationConfig(state.literals, localChecks);
+  return {
+    visible,
+    type: state.notifications.type,
+    content: state.notifications.content,
+    initialNotification: notificationsConfig && checkInitialNotification(notificationsConfig)
   };
 };
 
@@ -24,42 +73,19 @@ const mapDispatchToProps = dispatch => ({
 
 class NotificationsContainer extends React.Component {
   componentDidMount = () => {
-    // Check empty object
-    if (Object.values(this.props.literals).length) {
-      this.checkFirstBanner();
+    if (this.props.initialNotification) {
+      this.showNotification(this.props.initialNotification);
     }
   };
 
   componentDidUpdate = (prevProps) => {
-    if (!Object.values(prevProps.literals).length && Object.values(this.props.literals).length > 0) {
-      this.checkFirstBanner();
+    if (!prevProps.initialNotification && this.props.initialNotification) {
+      this.showNotification(this.props.initialNotification);
     }
   };
 
-  checkFirstBanner = () => {
-    const { legacyWorkspaceLoaded, hasDeprecatedActivityLayersMessage } = this.props;
-    const { banner, bannerLegacyWorkspace, bannerWebGL, bannerEdge } = this.props.literals;
-
-    const isWebGLSupported = PIXI.utils.isWebGLSupported();
-    const isEdge = platform.name.match(/edge/gi) !== null;
-    const visible =
-      isWebGLSupported === false ||
-      isEdge === true ||
-      this.props.legacyWorkspaceLoaded ||
-      this.props.hasDeprecatedActivityLayersMessage !== null ||
-      (SHOW_BANNER === true && banner !== undefined);
-
-    let bannerContent;
-    if (SHOW_BANNER === true) bannerContent = banner;
-    else if (isWebGLSupported === false) bannerContent = bannerWebGL;
-    else if (legacyWorkspaceLoaded === true) bannerContent = bannerLegacyWorkspace;
-    else if (hasDeprecatedActivityLayersMessage !== null) bannerContent = hasDeprecatedActivityLayersMessage;
-    else if (isEdge === true) bannerContent = bannerEdge;
-
-    if (visible) {
-      // TODO: get type depending on error
-      this.props.setNotification({ content: bannerContent, visible });
-    }
+  showNotification = ({ content, type }) => {
+    this.props.setNotification({ content, type, visible: true });
   };
 
   onCloseClick = () => {
@@ -67,18 +93,16 @@ class NotificationsContainer extends React.Component {
   };
 
   render() {
-    if (!this.props.showBanner) return null;
+    if (!this.props.visible) return null;
     return <Notifications type={this.props.type} content={this.props.content} onCloseClick={this.onCloseClick} />;
   }
 }
 
 NotificationsContainer.propTypes = {
-  showBanner: PropTypes.bool.isRequired,
+  visible: PropTypes.bool.isRequired,
   type: PropTypes.string,
   content: PropTypes.string,
-  legacyWorkspaceLoaded: PropTypes.bool.isRequired,
-  hasDeprecatedActivityLayersMessage: PropTypes.bool.isRequired,
-  literals: PropTypes.object.isRequired,
+  initialNotification: PropTypes.object.isRequired,
   setNotification: PropTypes.func.isRequired
 };
 
