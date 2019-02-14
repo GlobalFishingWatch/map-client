@@ -9,9 +9,11 @@ class MapWrapper extends Component {
     hoverPopup: null,
     clickPopup: null
   }
+
   onClick = (event) => {
     const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
     // TODO CLEAR POPUP
+    console.log(event);
     this.props.onMapClick(event);
     let clickPopup = null;
     if (event.type === 'static') {
@@ -31,6 +33,7 @@ class MapWrapper extends Component {
       hoverPopup: (clickPopup !== undefined) ? null : this.state.hoverPopup
     });
   }
+
   onHover = (event) => {
     // console.log(event)
     let hoverPopup = null;
@@ -48,29 +51,62 @@ class MapWrapper extends Component {
   }
 
   render() {
+    const {
+      onViewportChange,
+      onLoadStart,
+      onLoadComplete,
+      token,
+      viewport,
+      tracks,
+      heatmapLayers,
+      staticLayers,
+      basemapLayers,
+      temporalExtent,
+      loadTemporalExtent,
+      highlightTemporalExtent
+    } = this.props;
     return (
       <MapModule
         onHover={this.onHover}
         onClick={this.onClick}
+        onViewportChange={onViewportChange}
+        onLoadStart={onLoadStart}
+        onLoadComplete={onLoadComplete}
         hoverPopup={this.state.hoverPopup}
         clickPopup={this.state.clickPopup}
+        token={token}
         glyphsPath={`${PUBLIC_PATH}gl-fonts/{fontstack}/{range}.pbf`}
-        {...this.props}
+        viewport={viewport}
+        tracks={tracks}
+        heatmapLayers={heatmapLayers}
+        staticLayers={staticLayers}
+        basemapLayers={basemapLayers}
+        temporalExtent={temporalExtent}
+        loadTemporalExtent={loadTemporalExtent}
+        highlightTemporalExtent={highlightTemporalExtent}
       />);
   }
 }
 
 MapWrapper.propTypes = {
+  // sent to MapModule
+  onViewportChange: PropTypes.func,
+  onLoadStart: PropTypes.func,
+  onLoadComplete: PropTypes.func,
   token: PropTypes.string,
   viewport: PropTypes.object,
   tracks: PropTypes.array,
   heatmapLayers: PropTypes.array,
   staticLayers: PropTypes.array,
   basemapLayers: PropTypes.array,
-  onViewportChange: PropTypes.func,
-  onLoadStart: PropTypes.func,
-  onLoadComplete: PropTypes.func,
-  hoverPopup: PropTypes.object
+  temporalExtent: PropTypes.array,
+  loadTemporalExtent: PropTypes.array,
+  highlightTemporalExtent: PropTypes.array,
+  // internal
+  onMapClick: PropTypes.func,
+  report: PropTypes.object,
+  workspaceLayers: PropTypes.array,
+  toggleCurrentReportPolygon: PropTypes.func
 };
 
 export default MapWrapper;
