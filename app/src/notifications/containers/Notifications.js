@@ -53,14 +53,13 @@ const checkInitialNotification = (config) => {
 };
 
 const mapStateToProps = (state) => {
-  const visible = state.notifications.visible && window.innerWidth > 768;
   const localChecks = {
     legacyWorkspaceLoaded: state.workspace.legacyWorkspaceLoaded,
     hasDeprecatedActivityLayersMessage: state.heatmap.hasDeprecatedActivityLayersMessage
   };
   const notificationsConfig = getInitialNotificationConfig(state.literals, localChecks);
   return {
-    visible,
+    visible: state.notifications.visible,
     type: state.notifications.type,
     content: state.notifications.content,
     initialNotification: notificationsConfig && checkInitialNotification(notificationsConfig)
