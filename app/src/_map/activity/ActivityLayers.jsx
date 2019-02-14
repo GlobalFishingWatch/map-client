@@ -1,6 +1,7 @@
 import React from 'react';
 import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
+import { BaseControl } from 'react-map-gl';
 import { lngLatToWorld } from 'viewport-mercator-project';
 import { hsvToRgb,
   hueToRgbString,
@@ -76,26 +77,26 @@ const getVesselTexture = (radius, blurFactor) => {
   return tplCanvas;
 };
 
-class ActivityLayers extends React.Component {
+class ActivityLayers extends BaseControl {
   componentDidMount() {
     this._build();
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.viewport.width !== this.context.viewport.width || nextContext.viewport.height !== this.context.viewport.height) {
-      this._updateViewportSize(nextContext.viewport.width, nextContext.viewport.height);
-    }
-    if (nextContext.viewport !== this.context.viewport) {
-      this.props.exportNativeViewport(nextContext.viewport);
+  componentWillReceiveProps(nextProps) {
+    this.props.exportNativeViewport(this._context.viewport);
+
+    if (nextProps.viewport.width !== this.props.viewport.width || nextProps.viewport.height !== this.props.viewport.height) {
+      console.log(nextProps.viewport.height)
+      this._updateViewportSize(nextProps.viewport.width, nextProps.viewport.height);
     }
   }
 
   _build() {
-    const { viewport } = this.context;
+    const { width, height } = this.props.viewport;
 
     this.pixi = new PIXI.Application({
-      width: viewport.width,
-      height: viewport.height,
+      width,
+      height,
       transparent: true,
       antialias: true
     });
@@ -143,7 +144,7 @@ class ActivityLayers extends React.Component {
   }
 
   queryHeatmapVessels(x, y) {
-    const { viewport } = this.context;
+    const { viewport } = this._context;
     const [longitude, latitude] = viewport.unproject([x, y]);
 
     let wrappedLongitude = longitude;
@@ -231,8 +232,7 @@ class ActivityLayers extends React.Component {
       highlightFilters
     };
   }
-
-  render() {
+  _render() {
     const {
       zoom,
       heatmapLayers,
@@ -244,7 +244,7 @@ class ActivityLayers extends React.Component {
       leftWorldScaled,
       rightWorldScaled
     } = this.props;
-    const { viewport } = this.context;
+    const { viewport } = this._context;
 
 
     const startIndex = temporalExtentIndexes[0];

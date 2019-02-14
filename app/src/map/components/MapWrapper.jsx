@@ -13,7 +13,7 @@ class MapWrapper extends Component {
   onClick = (event) => {
     const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
     // TODO CLEAR POPUP
-    console.log(event);
+
     this.props.onMapClick(event);
     let clickPopup = null;
     if (event.type === 'static') {

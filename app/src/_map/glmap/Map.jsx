@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MapGL, { Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapGLConfig from 'react-map-gl/src/config';
 import ActivityLayers from '../activity/ActivityLayers.container.js';
 import styles from './map.css';
 
@@ -104,7 +103,7 @@ class Map extends React.Component {
 
           getCursor={({ isDragging }) => {
             if (cursor === null) {
-              return (isDragging) ? MapGLConfig.CURSOR.GRABBING : MapGLConfig.CURSOR.GRAB;
+              return (isDragging) ? 'grabbing' : 'grab';
             }
             return cursor;
           }}
