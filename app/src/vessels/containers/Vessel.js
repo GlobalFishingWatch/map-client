@@ -11,6 +11,7 @@ import { highlightTrack } from 'tracks/tracksActions';
 import { setNotification } from 'src/notifications/notificationsActions';
 
 const mapStateToProps = state => ({
+  warningLiteral: state.literals.vessel_warning,
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel
 });
 

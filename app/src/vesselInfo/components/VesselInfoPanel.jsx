@@ -6,7 +6,6 @@ import ExpandButton from 'components/Shared/ExpandButton';
 
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
-import iconStyles from 'styles/icons.scss';
 
 import IconButton from 'src/components/Shared/IconButton';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
@@ -33,7 +32,7 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const { vesselInfo, status } = this.props;
+    const { vesselInfo, status, warningLiteral } = this.props;
 
     if (status !== INFO_STATUS.LOADING && vesselInfo === null) {
       return null;
@@ -91,7 +90,7 @@ class VesselInfoPanel extends Component {
               </div>
               {vesselInfo.comment &&
                 <div onClick={() => this.props.showWarning(vesselInfo.comment)}>
-                  <IconButton icon="alert" />
+                  <IconButton icon="alert" title={warningLiteral} />
                 </div>
               }
             </div>
@@ -141,6 +140,7 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
+  warningLiteral: PropTypes.string,
   vesselInfo: PropTypes.object,
   layerFieldsHeaders: PropTypes.array,
   layerIsPinable: PropTypes.bool,

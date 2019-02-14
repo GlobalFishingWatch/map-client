@@ -8,5 +8,5 @@
   "deprecated_layers_warning": "The activity layer $LAYERS used on this workspace is deprecated and may not get updated data, click <a href='http://globalfishingwatch.org/map'>here</a> to get the latest one.",
   "deprecated_layers_warning_plural": "The activity layers $LAYERS used on this workspace are deprecated and they may not get updated data, click <a href='http://globalfishingwatch.org/map'>here</a> to get the latest ones.",
   "edge_warning": "Map performance might be degraded using Edge. We recommand using another browser such as Firefox or Chrome.",
-  "vessel_warning": "This vessel has comments, please review them"
+  "vessel_warning": "Our analysts have reviewed this vessel and added some comments about it's behavior, click to see more"
 }

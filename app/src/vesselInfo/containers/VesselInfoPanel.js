@@ -28,7 +28,8 @@ const mapStateToProps = (state) => {
     layerFieldsHeaders,
     layerIsPinable,
     status: state.vesselInfo.infoPanelStatus,
-    userPermissions: state.user.userPermissions
+    userPermissions: state.user.userPermissions,
+    warningLiteral: state.literals.vessel_warning
   };
 };
 
