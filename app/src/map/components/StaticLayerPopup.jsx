@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { POLYGON_LAYERS_AREA } from 'constants';
 import PopupStyles from 'styles/components/map/popup.scss';
-import buttonCloseStyles from 'styles/components/button-close.scss';
-import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
 
 const humanizePopupFieldId = id => id
   .replace(POLYGON_LAYERS_AREA, 'Est. area km²')
@@ -12,7 +10,6 @@ const humanizePopupFieldId = id => id
   .replace(/\b\w/g, l => l.toUpperCase());
 
 const getPopupData = (workspaceLayers, report, event) => {
-  console.log(event)
   const layerId = event.layer.id;
   const staticLayer = workspaceLayers.find(l => l.id === layerId);
 
@@ -42,7 +39,7 @@ class StaticLayerPopup extends React.Component {
       toggleButtonClassName += ` ${PopupStyles._remove}`;
     }
     return (
-      <div className={classnames('js-preventMapInteraction', PopupStyles.popup)}>
+      <div className={PopupStyles.popup}>
         <div className={PopupStyles.title} >
           {popup.layerTitle}
         </div >
@@ -55,12 +52,6 @@ class StaticLayerPopup extends React.Component {
             </div>
           ))}
         </div >
-        {/* <button
-          className={classnames('js-close', 'js-preventMapInteraction', PopupStyles.close, buttonCloseStyles.buttonClose)}
-          onClick={this.props.clearPopup}
-        >
-          <CloseIcon className={buttonCloseStyles.cross} />
-        </button > */}
         {popup.isInReport !== null &&
           <button
             onClick={() => toggleCurrentReportPolygon()}
@@ -77,8 +68,7 @@ StaticLayerPopup.propTypes = {
   event: PropTypes.object,
   workspaceLayers: PropTypes.array,
   report: PropTypes.object,
-  toggleCurrentReportPolygon: PropTypes.func,
-  clearPopup: PropTypes.func
+  toggleCurrentReportPolygon: PropTypes.func
 };
 
 export default StaticLayerPopup;

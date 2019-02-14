@@ -56,3 +56,9 @@ export const onViewportChange = () => (dispatch, getState) => {
   });
 };
 
+export const closePopup = () => (dispatch, getState) => {
+  const state = getState();
+  if (state.map.module.onClosePopup !== undefined) {
+    state.map.module.onClosePopup();
+  }
+};

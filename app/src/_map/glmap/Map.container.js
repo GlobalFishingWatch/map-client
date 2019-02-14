@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import convert from '@globalfishingwatch/map-convert';
+import { closePopup } from '../module/module.actions.js';
 import { mapHover, mapClick } from './interaction.actions.js';
 import { setViewport, setMouseLatLong, transitionEnd } from './viewport.actions.js';
 import {
@@ -61,6 +62,9 @@ const mapDispatchToProps = dispatch => ({
   },
   transitionEnd: () => {
     dispatch(transitionEnd());
+  },
+  onClosePopup: () => {
+    dispatch(closePopup());
   }
 });
 

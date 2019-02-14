@@ -13,6 +13,60 @@
   display: none;
 }
 
+
+/* Popup */
+
+:global .mapboxgl-popup-content {
+  background: none !important;
+  padding: 0 !important;
+}
+
+:global .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+:global .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+:global .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+  border-top-color: #2b4f93 !important;
+}
+
+:global .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+:global .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
+:global .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+  border-bottom-color: #2b4f93 !important;
+}
+
+:global .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #2b4f93 !important;
+}
+
+:global .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: #2b4f93 !important;
+}
+
+:global .mapboxgl-popup-close-button {
+  z-index: 1;
+  right: -18px;
+  top: 2px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  height: 20px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  color: #294480;
+  padding-bottom: 2px;
+  line-height: 0;
+  font-size: 16px;
+}
+
+:global .mapboxgl-popup-close-button:hover {
+  background-color: #fff;
+}
+
+:global .mapboxgl-popup-close-button:focus {
+  outline: none;
+}
+
 /* override Mapbox GL JS style to always show compact style */
 :global .mapboxgl-ctrl-attrib {
   padding-top: 2px !important;

@@ -93,7 +93,8 @@ class MapModule extends React.Component {
         onHover: this.props.onHover,
         onClick: this.props.onClick,
         onLoadStart: this.props.onLoadStart,
-        onLoadComplete: this.props.onLoadComplete
+        onLoadComplete: this.props.onLoadComplete,
+        onClosePopup: this.props.onClosePopup
       }));
     }
 
@@ -249,7 +250,8 @@ MapModule.propTypes = {
   onLoadComplete: PropTypes.func,
   onClick: PropTypes.func,
   onHover: PropTypes.func,
-  onAttributionsChange: PropTypes.func
+  onAttributionsChange: PropTypes.func,
+  onClosePopup: PropTypes.func
 };
 
 

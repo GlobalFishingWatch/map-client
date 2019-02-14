@@ -6,11 +6,12 @@ import ActivityLayers from '../activity/ActivityLayers.container.js';
 import styles from './map.css';
 
 const PopupWrapper = (props) => {
-  const { latitude, longitude, children, closeButton } = props;
+  const { latitude, longitude, children, closeButton, onClose } = props;
   return (<Popup
     latitude={latitude}
     longitude={longitude}
-    closeButton={closeButton || false}
+    closeButton={closeButton}
+    onClose={onClose}
     anchor="bottom"
     offsetTop={-10}
     tipSize={4}
@@ -65,29 +66,15 @@ class Map extends React.Component {
   }
 
   onHover = (event) => {
-    // TODO MAP MODULE
-    // if (event.target !== undefined && event.target.classList.contains('js-preventMapInteraction')) {
-    //   return;
-    // }
     this.props.mapHover(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   onClick = (event) => {
-    // TODO MAP MODULE
-    // if (event.target !== undefined) {
-    //   if (event.target.classList.contains('js-close')) {
-    //     this.props.clearPopup();
-    //   }
-    //   if (event.target.classList.contains('js-preventMapInteraction')) {
-    //     return;
-    //   }
-    // }
     this.props.mapClick(event.lngLat[1], event.lngLat[0], event.features);
   }
 
   render() {
-
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, clickPopup, hoverPopup, cursor } = this.props;
+    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, onClosePopup, clickPopup, hoverPopup, cursor } = this.props;
     return (
       <div
         id="map"
@@ -100,7 +87,6 @@ class Map extends React.Component {
           onTransitionEnd={transitionEnd}
           onHover={this.onHover}
           onClick={this.onClick}
-
           getCursor={({ isDragging }) => {
             if (cursor === null) {
               return (isDragging) ? 'grabbing' : 'grab';
@@ -119,12 +105,21 @@ class Map extends React.Component {
             loadTemporalExtent={this.props.loadTemporalExtent}
           />
           {clickPopup !== undefined && clickPopup !== null &&
-            <PopupWrapper latitude={clickPopup.latitude} longitude={clickPopup.longitude} closeButton>
+            <PopupWrapper
+              latitude={clickPopup.latitude}
+              longitude={clickPopup.longitude}
+              closeButton
+              onClose={onClosePopup}
+            >
               {clickPopup.content}
             </PopupWrapper>
           }
           {this.state.mouseOver === true && hoverPopup !== undefined && hoverPopup !== null &&
-            <PopupWrapper latitude={hoverPopup.latitude} longitude={hoverPopup.longitude}>
+            <PopupWrapper
+              latitude={hoverPopup.latitude}
+              longitude={hoverPopup.longitude}
+              closeButton={false}
+            >
               {hoverPopup.content}
             </PopupWrapper>
           }
@@ -146,6 +141,7 @@ Map.propTypes = {
   mapHover: PropTypes.func,
   mapClick: PropTypes.func,
   clearPopup: PropTypes.func,
+  onClosePopup: PropTypes.func,
   transitionEnd: PropTypes.func,
   cursor: PropTypes.string
 };

@@ -12,7 +12,6 @@ class MapWrapper extends Component {
 
   onClick = (event) => {
     const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
-    // TODO CLEAR POPUP
 
     this.props.onMapClick(event);
     let clickPopup = null;
@@ -50,6 +49,12 @@ class MapWrapper extends Component {
     });
   }
 
+  onClosePopup = () => {
+    this.setState({
+      clickPopup: null
+    });
+  }
+
   render() {
     const {
       onViewportChange,
@@ -72,6 +77,7 @@ class MapWrapper extends Component {
         onViewportChange={onViewportChange}
         onLoadStart={onLoadStart}
         onLoadComplete={onLoadComplete}
+        onClosePopup={this.onClosePopup}
         hoverPopup={this.state.hoverPopup}
         clickPopup={this.state.clickPopup}
         token={token}
