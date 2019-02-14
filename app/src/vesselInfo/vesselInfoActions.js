@@ -106,12 +106,6 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       delete data.series;
       data.tilesetId = tilesetId;
 
-      // mocking API comments to show warning
-      // TODO:
-      //  1. Check field name from API
-      //  2. Remove the next line of code
-      data.comment = 'This vessel has a warning';
-
       dispatch({
         type: SET_VESSEL_DETAILS,
         payload: {
@@ -266,11 +260,6 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
       const pinnedVesselUrl = buildEndpoint(layer.header.endpoints.info, { id: pinnedVessel.seriesgroup });
       fetchEndpoint(pinnedVesselUrl, token).then((data) => {
         delete data.series;
-        // mocking API comments to show warning
-        // TODO:
-        //  1. Check field name from API
-        //  2. Remove the next line of code
-        data.comment = 'This vessel has a warning PINNED';
         dispatch({
           type: LOAD_PINNED_VESSEL,
           payload: Object.assign({}, pinnedVessel, data)
