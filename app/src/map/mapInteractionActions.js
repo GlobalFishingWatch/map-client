@@ -193,7 +193,8 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
         const title = popupField.label || humanizePopupFieldId(id);
         return {
           title,
-          value
+          value,
+          isLink: popupField.isLink
         };
       });
 
