@@ -1,7 +1,11 @@
 # Changelog
 
-## 3.1.0
+## next release
 
+### Added
+- Added support for links in static layers popups 
+
+## 3.1.0
 ### Added
 - Users can now upload custom layers in raster tiles format ([#997](https://github.com/GlobalFishingWatch/map-client/issues/997))
 - Users can now upload custom layers in WMS format ([#912](https://github.com/GlobalFishingWatch/map-client/issues/912))
