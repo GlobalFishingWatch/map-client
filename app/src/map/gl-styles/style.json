@@ -150,45 +150,6 @@
         ]
       },
       "type": "vector"
-    },
-    "protectedseas_level5": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT *, 'most restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level5_mostrestrictive",
-        "gfw:popups": [
-          { "id": "site_name" },
-          { "id": "level" },
-          { "id": "country" },
-          { "id": "season" },
-          { "id": "details", "isLink": true }
-        ]
-      },
-      "type": "vector"
-    },
-    "protectedseas_level4": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT *, 'heavily restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level4_heavilyrestrictive",
-        "gfw:popups": [
-          { "id": "site_name" },
-          { "id": "level" },
-          { "id": "country" },
-          { "id": "season" },
-          { "id": "details", "isLink": true }
-        ]
-      },
-      "type": "vector"
-    },
-    "protectedseas_level3": {
-      "metadata": {
-        "gfw:carto-sql": "SELECT *, 'moderately restrictive' AS level, concat('https://mpa.protectedseas.net/index.php?z=6&pin&q=',site_id) AS details FROM protectedseas_level3_moderatelyrestrictive",
-        "gfw:popups": [
-          { "id": "site_name" },
-          { "id": "level" },
-          { "id": "country" },
-          { "id": "season" },
-          { "id": "details", "isLink": true }
-        ]
-      },
-      "type": "vector"
     }
   },
   "layers": [
@@ -453,78 +414,6 @@
       "layout": {
         "visibility": "none",
         "text-field": "{full_name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "protectedseas_level3",
-      "type": "fill",
-      "source": "protectedseas_level3",
-      "source-layer": "protectedseas_level3",
-      "layout": { 
-       "visibility": "none"
-      },
-      "interactive": true
-    },
-    {
-      "id": "protectedseas_level3-labels",
-      "type": "symbol",
-      "source": "protectedseas_level3",
-      "source-layer": "protectedseas_level3",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{site_name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "protectedseas_level4",
-      "type": "fill",
-      "source": "protectedseas_level4",
-      "source-layer": "protectedseas_level4",
-      "layout": { 
-       "visibility": "none"
-      },
-      "interactive": true
-    },
-    {
-      "id": "protectedseas_level4-labels",
-      "type": "symbol",
-      "source": "protectedseas_level4",
-      "source-layer": "protectedseas_level4",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{site_name}",
-        "text-font": [
-          "Roboto Mono Light"
-        ],
-        "text-size": 10
-      }
-    },
-    {
-      "id": "protectedseas_level5",
-      "type": "fill",
-      "source": "protectedseas_level5",
-      "source-layer": "protectedseas_level5",
-      "layout": { 
-       "visibility": "none"
-      },
-      "interactive": true
-    },
-    {
-      "id": "protectedseas_level5-labels",
-      "type": "symbol",
-      "source": "protectedseas_level5",
-      "source-layer": "protectedseas_level5",
-      "layout": {
-        "visibility": "none",
-        "text-field": "{site_name}",
         "text-font": [
           "Roboto Mono Light"
         ],
