@@ -28,6 +28,7 @@ class App extends Component {
     this.props.getLoggedUser();
 
     if (!DISABLE_WELCOME_MODAL) this.props.setWelcomeModalUrl();
+    this.props.checkInitialNotification();
   }
 
   componentDidUpdate(nextProps) {
@@ -60,6 +61,7 @@ App.propTypes = {
   setToken: PropTypes.func,
   getLoggedUser: PropTypes.func,
   setWelcomeModalUrl: PropTypes.func,
+  checkInitialNotification: PropTypes.func,
   setWelcomeModalContent: PropTypes.func,
   welcomeModalUrl: PropTypes.string
 };

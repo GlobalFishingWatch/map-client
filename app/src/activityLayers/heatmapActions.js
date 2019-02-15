@@ -12,6 +12,7 @@ import { LOADERS } from 'config';
 import { LAYER_TYPES } from 'constants';
 import { updateHeatmapTilesFromViewport, markTileAsLoaded } from 'activityLayers/heatmapTilesActions';
 import { addLoader, removeLoader } from 'app/appActions';
+import { setNotification } from 'src/notifications/notificationsActions';
 
 export const ADD_HEATMAP_LAYER = 'ADD_HEATMAP_LAYER';
 export const ADD_REFERENCE_TILE = 'ADD_REFERENCE_TILE';
@@ -24,7 +25,6 @@ export const UPDATE_HEATMAP_TILES = 'UPDATE_HEATMAP_TILES';
 export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
 export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
 export const CLEAR_HIGHLIGHT_CLICKED_VESSEL = 'CLEAR_HIGHLIGHT_CLICKED_VESSEL';
-export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header
@@ -76,15 +76,15 @@ export function initHeatmapLayers() {
     });
 
     if (deprecatedLayers.length) {
-      dispatch({
-        type: NOTIFY_DEPRECATED_LAYERS,
-        payload: {
-          deprecatedLayers,
-          template: (deprecatedLayers.length > 1) ?
-            state.literals.deprecated_layers_warning_plural :
-            state.literals.deprecated_layers_warning
-        }
-      });
+      const deprecatedLayersList = deprecatedLayers.map(l => `"${l}"`).join(', ');
+      const literal = deprecatedLayers.length > 1 ?
+        state.literals.deprecated_layers_warning_plural :
+        state.literals.deprecated_layers_warning;
+      dispatch(setNotification({
+        visible: true,
+        type: 'warning',
+        content: literal.replace('$LAYERS', deprecatedLayersList)
+      }));
     }
 
     dispatch({
