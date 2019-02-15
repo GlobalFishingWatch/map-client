@@ -98,7 +98,7 @@ class TracksLayer extends React.Component {
     data, startIndex, endIndex, series, drawFishingCircles,
     fishingCirclesRadius, color, lineThickness, lineOpacity, worldOffset = 0
   }) {
-    const { viewport, viewportLeft } = this.props;
+    const { viewport } = this.props;
 
     let n = 0;
     let prevSeries;
@@ -142,7 +142,9 @@ class TracksLayer extends React.Component {
 
         // more than a ½ world of distance between two points = crossing the dateline
         if (prevWorldX && Math.abs(worldX - prevWorldX) > 256) {
+          // worldOffset === 0 -> this is the first time drawTrack is called
           if (worldOffset === 0) {
+            // set a flag to call drawTrack again at the end of the loop
             duplicateWorld = true;
           }
 
@@ -196,18 +198,19 @@ class TracksLayer extends React.Component {
     }
 
     if (duplicateWorld === true) {
-      const nextWorldOffset = (viewportLeft > 0) ? 512 : -512;
-      this._drawTrack({
-        worldOffset: nextWorldOffset,
-        data,
-        startIndex,
-        endIndex,
-        series,
-        drawFishingCircles,
-        fishingCirclesRadius,
-        color,
-        lineThickness,
-        lineOpacity
+      [-512, 512].forEach((offset) => {
+        this._drawTrack({
+          worldOffset: offset,
+          data,
+          startIndex,
+          endIndex,
+          series,
+          drawFishingCircles,
+          fishingCirclesRadius,
+          color,
+          lineThickness,
+          lineOpacity
+        });
       });
     }
     return n;
@@ -226,8 +229,7 @@ TracksLayer.propTypes = {
   endIndex: PropTypes.number,
   timelineOverExtentIndexes: PropTypes.array,
   tracks: PropTypes.array,
-  highlightedTrack: PropTypes.number,
-  viewportLeft: PropTypes.number
+  highlightedTrack: PropTypes.number
 };
 
 export default TracksLayer;

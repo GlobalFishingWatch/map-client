@@ -237,11 +237,15 @@ function dispatchActions(workspaceData, dispatch, getState) {
         console.warn(`attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no seriesgroup`);
       } else {
         const { tilesetId, seriesgroup, series } = workspaceData.shownVessel;
-        dispatch(addVessel({
-          tilesetId,
-          seriesgroup,
-          series
-        }));
+
+        // only add vessel if it won't be loaded by loading pinned vessels mechanism later
+        if (!workspaceData.pinnedVessels.map(v => v.seriesgroup).includes(seriesgroup)) {
+          dispatch(addVessel({
+            tilesetId,
+            seriesgroup,
+            series
+          }));
+        }
       }
     }
     // Mapbox branch compatibility: track layers should have color, not hue
@@ -252,7 +256,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
       delete pinnedVessel.hue;
     });
 
-    dispatch(setPinnedVessels(workspaceData.pinnedVessels));
+    dispatch(setPinnedVessels(workspaceData.pinnedVessels, workspaceData.shownVessel));
     dispatch(setFleetsFromWorkspace(workspaceData.fleets));
 
     if (workspaceData.encounters !== null && workspaceData.encounters !== undefined &&
