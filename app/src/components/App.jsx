@@ -16,7 +16,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.props.loadLiterals();
     // TODO move this logic out of a presentational component
     ACCESS_TOKEN_REGEX.lastIndex = 0;
     if (ACCESS_TOKEN_REGEX.test(window.location.hash)) {
@@ -62,7 +61,6 @@ App.propTypes = {
   getLoggedUser: PropTypes.func,
   setWelcomeModalUrl: PropTypes.func,
   setWelcomeModalContent: PropTypes.func,
-  loadLiterals: PropTypes.func,
   welcomeModalUrl: PropTypes.string
 };
 

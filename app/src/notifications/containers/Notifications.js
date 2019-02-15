@@ -7,7 +7,6 @@ import Notifications from '../components/Notifications';
 import { setNotification } from '../notificationsActions';
 
 const getInitialNotificationConfig = (literals, localChecks) => {
-  if (!Object.values(literals).length) return null;
   return [
     {
       id: 'banner',
@@ -73,18 +72,9 @@ const mapDispatchToProps = dispatch => ({
 class NotificationsContainer extends React.Component {
   componentDidMount = () => {
     if (this.props.initialNotification) {
-      this.showNotification(this.props.initialNotification);
+      const { content, type } = this.props.initialNotification;
+      this.props.setNotification({ content, type, visible: true });
     }
-  };
-
-  componentDidUpdate = (prevProps) => {
-    if (!prevProps.initialNotification && this.props.initialNotification) {
-      this.showNotification(this.props.initialNotification);
-    }
-  };
-
-  showNotification = ({ content, type }) => {
-    this.props.setNotification({ content, type, visible: true });
   };
 
   onCloseClick = () => {
