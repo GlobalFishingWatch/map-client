@@ -31,7 +31,11 @@ class StaticLayerPopup extends React.Component {
             <div key={field.title}>
               <b>{field.title}</b>
               {' '}
-              <span>{field.value}</span>
+              {(field.isLink === true) ? (
+                <a href={field.value}>Click here for more details</a>
+              ) : (
+                <span>{field.value}</span>
+              )}
             </div>
           ))}
         </div >
