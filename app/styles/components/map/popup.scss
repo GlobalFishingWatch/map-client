@@ -21,8 +21,7 @@
   margin-bottom: 10px; 
 }
 
-.title,
-.description {
+.title {
   pointer-events: none;
 }
 
@@ -30,6 +29,11 @@
 .toggle {
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.description a {
+  color: $color-4;
+  text-decoration: underline;
 }
 
 .close {
