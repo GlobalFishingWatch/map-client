@@ -5,7 +5,7 @@ import { startLoading, completeLoading } from 'app/appActions';
 import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
-import { toggleCurrentReportPolygon } from 'report/reportActions';
+import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'report/reportActions';
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'constants';
 import MapWrapper from 'map/components/MapWrapper';
 
@@ -105,12 +105,14 @@ const getStaticLayers = createSelector(
   (layers, report) => layers
     .filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
     .map((layer) => {
+      const selectedPolygons = (report.layerId === layer.id) ? {
+        field: 'reporting_id',
+        values: report.polygonsIds
+      } : null;
       const layerParams = {
         id: layer.id,
         visible: layer.visible,
-        // TODO MAP Module
-        // this replaces report system
-        selectedPolygons: [],
+        selectedPolygons,
         opacity: layer.opacity,
         color: layer.color,
         showLabels: layer.showLabels,
@@ -166,6 +168,7 @@ const mapDispatchToProps = dispatch => ({
   onMapClick: (event) => {
     dispatch(clearVesselInfo());
     dispatch(clearEncountersInfo());
+    dispatch(setCurrentSelectedPolygon(null));
     if (event.type === 'activity') {
       const target = event.target;
       if (target.isCluster === true) {
@@ -182,6 +185,9 @@ const mapDispatchToProps = dispatch => ({
           seriesgroup: targetID
         }));
       }
+    } else if (event.type === 'static') {
+      console.log(event.target)
+      dispatch(setCurrentSelectedPolygon(event.target.properties));
     }
   },
   toggleCurrentReportPolygon: () => {

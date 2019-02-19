@@ -6,52 +6,55 @@ import MapModule from 'src/_map';
 
 class MapWrapper extends Component {
   state = {
-    hoverPopup: null,
-    clickPopup: null
+    hoverPopupData: null,
+    clickPopupData: null
+  }
+
+  renderClickPopup = () => {
+    const { clickPopupData } = this.state;
+    if (clickPopupData === null) {
+      return null;
+    }
+
+    const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
+    return (<StaticLayerPopup
+      event={clickPopupData}
+      report={report}
+      workspaceLayers={workspaceLayers}
+      toggleCurrentReportPolygon={toggleCurrentReportPolygon}
+    />);
   }
 
   onClick = (event) => {
-    const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props;
-
     this.props.onMapClick(event);
-    let clickPopup = null;
-    if (event.type === 'static') {
-      clickPopup = {
-        content: <StaticLayerPopup
-          event={event}
-          report={report}
-          workspaceLayers={workspaceLayers}
-          toggleCurrentReportPolygon={toggleCurrentReportPolygon}
-        />,
-        latitude: event.latitude,
-        longitude: event.longitude
-      };
-    }
+    const clickPopupData = (event.type === 'static') ? event : null;
+
     this.setState({
-      clickPopup,
-      hoverPopup: (clickPopup !== undefined) ? null : this.state.hoverPopup
+      clickPopupData,
+      hoverPopupData: (clickPopupData !== null) ? null : this.state.hoverPopupData
     });
   }
 
-  onHover = (event) => {
-    // console.log(event)
-    let hoverPopup = null;
-    if (event.type !== null) {
-      const workspaceLayer = this.props.workspaceLayers.find(l => l.id === event.layer.id);
-      hoverPopup = {
-        content: <HoverPopup event={event} layerTitle={workspaceLayer.title} />,
-        latitude: event.latitude,
-        longitude: event.longitude
-      };
+  renderHoverPopup = () => {
+    const { hoverPopupData } = this.state;
+    if (hoverPopupData === null || hoverPopupData.type === null) {
+      return null;
     }
+    const { workspaceLayers } = this.props;
+    const workspaceLayer = workspaceLayers.find(l => l.id === hoverPopupData.layer.id);
+    return <HoverPopup event={hoverPopupData} layerTitle={workspaceLayer.title} />;
+  }
+
+  onHover = (event) => {
+    const hoverPopupData = (event.type !== null) ? event : null;
     this.setState({
-      hoverPopup
+      hoverPopupData
     });
   }
 
   onClosePopup = () => {
     this.setState({
-      clickPopup: null
+      clickPopupData: null
     });
   }
 
@@ -70,6 +73,13 @@ class MapWrapper extends Component {
       loadTemporalExtent,
       highlightTemporalExtent
     } = this.props;
+
+    const { hoverPopupData, clickPopupData } = this.state;
+
+    const hoverPopup = (hoverPopupData === null) ? null : { ...hoverPopupData, content: this.renderHoverPopup() };
+    const clickPopup = (clickPopupData === null) ? null : { ...clickPopupData, content: this.renderClickPopup() };
+
+
     return (
       <MapModule
         onHover={this.onHover}
@@ -78,8 +88,8 @@ class MapWrapper extends Component {
         onLoadStart={onLoadStart}
         onLoadComplete={onLoadComplete}
         onClosePopup={this.onClosePopup}
-        hoverPopup={this.state.hoverPopup}
-        clickPopup={this.state.clickPopup}
+        hoverPopup={hoverPopup}
+        clickPopup={clickPopup}
         token={token}
         glyphsPath={`${PUBLIC_PATH}gl-fonts/{fontstack}/{range}.pbf`}
         viewport={viewport}

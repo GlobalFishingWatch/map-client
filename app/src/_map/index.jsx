@@ -227,15 +227,16 @@ MapModule.propTypes = {
     id: PropTypes.string,
     // TODO MAP MODULE Is that needed and if so why
     visible: PropTypes.bool,
-    // this replaces report system
-    selectedPolygons: PropTypes.arrayOf(PropTypes.string),
+    selectedPolygons: PropTypes.shape({
+      field: PropTypes.string,
+      values: PropTypes.arrayOf(PropTypes.string)
+    }),
     opacity: PropTypes.number,
     color: PropTypes.string,
     showLabels: PropTypes.bool,
     interactive: PropTypes.bool
   })),
   // customLayers
-  // filters
   hoverPopup: PropTypes.shape({
     content: PropTypes.node,
     latitude: PropTypes.number.isRequired,
@@ -246,7 +247,6 @@ MapModule.propTypes = {
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired
   }),
-  // TODO MAP Module those are not needed here as they are used directly in index.
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,

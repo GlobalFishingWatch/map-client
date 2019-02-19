@@ -22,14 +22,13 @@
 }
 
 .title,
-.description {
-  pointer-events: none;
-}
-
-.title,
 .toggle {
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.toggle:focus {
+  outline: none;
 }
 
 .toggle {

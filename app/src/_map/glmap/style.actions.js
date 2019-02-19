@@ -27,7 +27,7 @@ const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
   return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
 };
 
-const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => {
+const updateGLLayer = (style, glLayerId, refLayer) => {
   const currentStyle = style.toJS();
   const currentStyleLayers = currentStyle.layers;
   let newStyle = style;
@@ -52,23 +52,21 @@ const updateGLLayer = (style, glLayerId, refLayer, reportPolygonsIds = null) => 
         .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color);
 
-      let fillColor;
-      if (reportPolygonsIds === null || !reportPolygonsIds.length) {
-        fillColor = GL_TRANSPARENT;
-      } else {
-        const reportedFillColor = hexToRgba(refLayer.color, 0.5);
+      let fillColor = GL_TRANSPARENT;
+      if (refLayer.selectedPolygons !== null && refLayer.selectedPolygons.values.length) {
+        const selectedFillColor = hexToRgba(refLayer.color, 0.5);
         fillColor = [
           'match',
           [
             'get',
-            'reporting_id'
+            refLayer.selectedPolygons.field
           ]
         ];
 
         // [value, color, value, color, default color]
-        reportPolygonsIds.forEach((id) => {
+        refLayer.selectedPolygons.values.forEach((id) => {
           fillColor.push(id);
-          fillColor.push(reportedFillColor);
+          fillColor.push(selectedFillColor);
         });
         fillColor.push(GL_TRANSPARENT);
       }
@@ -235,7 +233,7 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
             style = style.setIn(['layers', glLayerIndex, 'source'], newSourceId);
             style = style.setIn(['layers', glLayerIndex, 'metadata', 'gfw:id'], cartoLayer.sourceId);
             const refLayer = layers.find(l => l.refLayer.id === cartoLayer.sourceId).refLayer;
-            style = updateGLLayer(style, glLayer.id, refLayer, /* reportPolygonIds */);
+            style = updateGLLayer(style, glLayer.id, refLayer);
           }
         });
       });
@@ -304,10 +302,7 @@ export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, ge
       continue;
     }
 
-    // TODO MAP MODULE use input static layers polygons
-    // const layerIsInReport = refLayer.id === state.report.layerId;
-    // const reportPolygonIds = (layerIsInReport) ? state.report.polygons.map(l => l.reportingId) : null;
-    style = updateGLLayer(style, glLayer.id, refLayer, /* reportPolygonIds */);
+    style = updateGLLayer(style, glLayer.id, refLayer);
   }
 
   if (cartoLayersToInstanciate.length) {

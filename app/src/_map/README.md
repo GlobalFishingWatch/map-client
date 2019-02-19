@@ -116,7 +116,13 @@ Object. Mandatory. Must be passed as is - mandatory fields are:
 
 ### `heatmapLayer.interactive`
 
-Boolean. Whether interaction is active on the layer or not
+Boolean. Whether interaction is active on the layer or not. [PARTIALLY IMPLEMENTED] Will not set interactivity per layer individually, just disable all if all are set to false. 
+
+## `heatmapLayer.filters`
+
+An array of filters. Heatmap filters are defined as: 
+- `hue`: Will override layer hue if set.
+- `filterValues`: a dictionary in which each key is a filterable field, and values is an array of all possible values (using OR). ie: `filterValues: { category: [5, 6] }`.
 
 ## `temporalExtent`
 
@@ -156,8 +162,9 @@ Boolean. Display the associated labels layer, if available.
 
 ### `staticLayer.selectedPolygons`
 
-TODO MAP MODULE
-[NOT IMPLEMENTED] Array of Strings representing polygon ids. 
+A filter to apply specific rules per polygon. Polygon filter is defined as: 
+- `field`: String. A filterabl field.
+- `values`: an array of all possible values (using OR).
 
 ### `staticLayer.interactive`
 
@@ -178,9 +185,7 @@ TODO
 
 [NOT IMPLEMENTED] TODO
 
-## `filters`
 
-[NOT IMPLEMENTED] TODO
 
 ## `hoverPopup`
 

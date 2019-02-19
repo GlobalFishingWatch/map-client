@@ -14,18 +14,16 @@ const getPopupData = (workspaceLayers, report, event) => {
   const staticLayer = workspaceLayers.find(l => l.id === layerId);
 
   const layerIsInReport = report.layerId === layerId;
-  // if (metaFields === null || (FEATURE_FLAG_EXTENDED_POLYGON_LAYERS === false && layerIsInReport === false)) {
-  //   return;
-  // }
 
-  const isInReport = (layerIsInReport === true)
-    ? report.polygons.find(polygon => polygon.reportingId === event.target.properties.reporting_id)
-    : null;
+  const polygonIsInReport =
+    layerIsInReport === true &&
+    report.polygons.find(polygon => polygon.reportingId === event.target.properties.reporting_id) !== undefined;
 
   return {
     layerTitle: staticLayer.title,
     fields: event.target.fields,
-    isInReport
+    layerIsInReport,
+    polygonIsInReport
   };
 };
 
@@ -33,9 +31,9 @@ class StaticLayerPopup extends React.Component {
   render() {
     const { workspaceLayers, report, event, toggleCurrentReportPolygon } = this.props;
     const popup = getPopupData(workspaceLayers, report, event);
-    const toggleButtonText = (popup.isInReport === true) ? 'remove from repo  rt' : 'add to report';
+    const toggleButtonText = (popup.polygonIsInReport === true) ? 'remove from report' : 'add to report';
     let toggleButtonClassName = classnames(PopupStyles.toggle);
-    if (popup.isInReport === true) {
+    if (popup.polygonIsInReport === true) {
       toggleButtonClassName += ` ${PopupStyles._remove}`;
     }
     return (
@@ -52,9 +50,11 @@ class StaticLayerPopup extends React.Component {
             </div>
           ))}
         </div >
-        {popup.isInReport !== null &&
+        {popup.layerIsInReport === true &&
           <button
-            onClick={() => toggleCurrentReportPolygon()}
+            onClick={() => {
+              toggleCurrentReportPolygon();
+            }}
             className={toggleButtonClassName}
           >
             {toggleButtonText}

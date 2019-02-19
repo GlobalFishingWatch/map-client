@@ -1,4 +1,5 @@
 import {
+  SET_CURRENT_SELECTED_POLYGON,
   ADD_REPORT_POLYGON,
   DELETE_REPORT_POLYGON,
   START_REPORT,
@@ -13,6 +14,7 @@ import { REPORT_STATUS } from 'constants';
 import { SUBSCRIBE_DEFAULT_FREQUENCY } from '../config';
 
 const initialState = {
+  currentSelectedPolygon: null,
   polygons: [],
   polygonsIds: [],
   layerTitle: null,
@@ -26,6 +28,9 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_CURRENT_SELECTED_POLYGON: {
+      return { ...state, currentSelectedPolygon: action.payload };
+    }
     case UPDATE_SUBSCRIPTION_FREQUENCY: {
       return Object.assign({}, state, {
         subscriptionFrequency: action.payload.frequency

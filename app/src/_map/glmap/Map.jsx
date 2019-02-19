@@ -15,6 +15,7 @@ const PopupWrapper = (props) => {
     anchor="bottom"
     offsetTop={-10}
     tipSize={4}
+    closeOnClick={false}
   >
     {children}
   </Popup>);
@@ -153,7 +154,6 @@ Map.propTypes = {
   setViewport: PropTypes.func,
   mapHover: PropTypes.func,
   mapClick: PropTypes.func,
-  clearPopup: PropTypes.func,
   onClosePopup: PropTypes.func,
   transitionEnd: PropTypes.func,
   cursor: PropTypes.string,
