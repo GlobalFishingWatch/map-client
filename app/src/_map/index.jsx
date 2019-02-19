@@ -199,13 +199,14 @@ MapModule.propTypes = {
     visible: PropTypes.bool,
     hue: PropTypes.number,
     opacity: PropTypes.number,
-    filters: PropTypes.shape({
+    filters: PropTypes.arrayOf(PropTypes.shape({
       // hue overrides layer hue if set
       hue: PropTypes.number,
       // filterValues is a dictionary in which each key is a filterable field,
       // and values is an array of all possible values (OR filter)
+      // ie: filterValues: { category: [5, 6] }
       filterValues: PropTypes.object
-    }),
+    })),
     header: PropTypes.shape({
       endpoints: PropTypes.object,
       isPBF: PropTypes.bool,
