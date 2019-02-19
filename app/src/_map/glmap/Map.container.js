@@ -11,6 +11,7 @@ import Map from './Map.jsx';
 
 const getTemporalExtent = (state, ownProps) => ownProps.temporalExtent;
 const getHighlightTemporalExtent = (state, ownProps) => ownProps.highlightTemporalExtent;
+const getStaticLayers = state => state.map.style.staticLayers;
 
 // TODO MAP MODULE move those selectors to separated actions/reducer
 // thus avoiding passing temporal extents through Map to ActivityLayers
@@ -39,6 +40,13 @@ const getHighlightTemporalExtentIndexes = createSelector(
   }
 );
 
+const getInteractiveLayerIds = createSelector(
+  [getStaticLayers],
+  // Note: here we assume that layer IDs provided with module match the GL layers that should
+  // be interactive or not, ie typically the fill layer if a label layer is present
+  staticLayers => staticLayers.filter(l => l.interactive === true && l.visible === true).map(l => l.id)
+);
+
 const mapStateToProps = (state, ownProps) => ({
   viewport: state.map.viewport.viewport,
   maxZoom: state.map.viewport.maxZoom,
@@ -46,7 +54,8 @@ const mapStateToProps = (state, ownProps) => ({
   mapStyle: state.map.style.mapStyle,
   cursor: state.map.interaction.cursor,
   temporalExtentIndexes: getTemporalExtentIndexes(state, ownProps),
-  highlightTemporalExtentIndexes: getHighlightTemporalExtentIndexes(state, ownProps)
+  highlightTemporalExtentIndexes: getHighlightTemporalExtentIndexes(state, ownProps),
+  interactiveLayerIds: getInteractiveLayerIds(state)
 });
 
 const mapDispatchToProps = dispatch => ({

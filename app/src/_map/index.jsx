@@ -213,7 +213,8 @@ MapModule.propTypes = {
       colsByName: PropTypes.object,
       temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
       temporalExtentsLess: PropTypes.bool
-    })
+    }),
+    interactive: PropTypes.bool
   })),
   temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -230,9 +231,9 @@ MapModule.propTypes = {
     selectedPolygons: PropTypes.arrayOf(PropTypes.string),
     opacity: PropTypes.number,
     color: PropTypes.string,
-    showLabels: PropTypes.bool
+    showLabels: PropTypes.bool,
+    interactive: PropTypes.bool
   })),
-  // interactiveLayerIds TODO MAP MODULE
   // customLayers
   // filters
   hoverPopup: PropTypes.shape({

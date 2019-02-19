@@ -74,7 +74,19 @@ class Map extends React.Component {
   }
 
   render() {
-    const { viewport, maxZoom, minZoom, transitionEnd, mapStyle, onClosePopup, clickPopup, hoverPopup, cursor } = this.props;
+    const {
+      viewport,
+      maxZoom,
+      minZoom,
+      transitionEnd,
+      mapStyle,
+      onClosePopup,
+      clickPopup,
+      hoverPopup,
+      cursor,
+      interactiveLayerIds
+    } = this.props;
+
     return (
       <div
         id="map"
@@ -98,6 +110,7 @@ class Map extends React.Component {
           maxZoom={maxZoom}
           minZoom={minZoom}
           onViewportChange={this.onViewportChange}
+          interactiveLayerIds={interactiveLayerIds}
         >
           <ActivityLayers
             temporalExtentIndexes={this.props.temporalExtentIndexes}
@@ -143,7 +156,8 @@ Map.propTypes = {
   clearPopup: PropTypes.func,
   onClosePopup: PropTypes.func,
   transitionEnd: PropTypes.func,
-  cursor: PropTypes.string
+  cursor: PropTypes.string,
+  interactiveLayerIds: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default Map;

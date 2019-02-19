@@ -114,6 +114,10 @@ Object. Mandatory. Must be passed as is - mandatory fields are:
   - `temporalExtents` PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   - `temporalExtentsLess` PropTypes.bool
 
+### `heatmapLayer.interactive`
+
+Boolean. Whether interaction is active on the layer or not
+
 ## `temporalExtent`
 
 Tuple of Dates (`[start, end]`). Mandatory. Acts as a display temporal filter for Activity Layers (Heatmap and Tracks), used for time animation.
@@ -152,7 +156,12 @@ Boolean. Display the associated labels layer, if available.
 
 ### `staticLayer.selectedPolygons`
 
+TODO MAP MODULE
 [NOT IMPLEMENTED] Array of Strings representing polygon ids. 
+
+### `staticLayer.interactive`
+
+Boolean. Whether interaction is active on the layer or not.
 
 
 ## `basemapLayers`
@@ -163,11 +172,6 @@ TODO
     id: PropTypes.string,
     visible: PropTypes.bool
   })),
-
-
-## `interactiveLayerIds`
-
-[NOT IMPLEMENTED] Layer of Strings. Allows setting interaction only on selected layer ids (Static or Heatmap). Useful for reporting (disable all layers except one). If not set, all layers are interactive and 'compete' for interaction. 
 
 
 ## `customLayers`

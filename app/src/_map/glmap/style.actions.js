@@ -7,6 +7,8 @@ import getMainGeomType from '../utils/getMainGeomType';
 export const INIT_MAP_STYLE = 'INIT_MAP_STYLE';
 export const SET_MAP_STYLE = 'SET_MAP_STYLE';
 export const MARK_CARTO_LAYERS_AS_INSTANCIATED = 'MARK_CARTO_LAYERS_AS_INSTANCIATED';
+export const SET_STATIC_LAYERS = 'SET_STATIC_LAYERS';
+export const SET_BASEMAP_LAYERS = 'SET_BASEMAP_LAYERS';
 
 export const initStyle = ({ glyphsPath }) => ({
   type: INIT_MAP_STYLE,
@@ -134,7 +136,6 @@ export const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getS
       id: layerId,
       source: layerId,
       type: glType,
-      interactive: subtype === CUSTOM_LAYERS_SUBTYPES.geojson,
       layout: {},
       paint: {}
     });
@@ -247,6 +248,17 @@ const instanciateCartoLayers = layers => (dispatch, getState) => {
 };
 
 export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, getState) => {
+  // Store a copy of static and basemap layers. This is not used directly by
+  // the Map component which only needs a prepared style object
+  dispatch({
+    type: SET_STATIC_LAYERS,
+    payload: staticLayers
+  });
+  dispatch({
+    type: SET_BASEMAP_LAYERS,
+    payload: basemapLayers
+  });
+
   const state = getState().map.style;
   const layers = [...staticLayers, ...basemapLayers];
 

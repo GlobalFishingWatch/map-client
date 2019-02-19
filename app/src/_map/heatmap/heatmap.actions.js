@@ -459,7 +459,8 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
         prevLayer.visible !== newLayer.visible ||
         prevLayer.hue !== newLayer.hue ||
         prevLayer.opacity !== newLayer.opacity ||
-        prevLayer.filters !== newLayer.filters
+        prevLayer.filters !== newLayer.filters ||
+        prevLayer.interactive !== newLayer.interactive
       ) {
         // console.log('updating', layerId, ' with visibilty', newLayer.visible)
         dispatch({
@@ -469,7 +470,8 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
             visible: newLayer.visible,
             hue: newLayer.hue,
             opacity: newLayer.opacity,
-            filters: newLayer.filters
+            filters: newLayer.filters,
+            interactive: newLayer.interactive
           }
         });
       }

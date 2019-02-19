@@ -144,6 +144,11 @@ class ActivityLayers extends BaseControl {
   }
 
   queryHeatmapVessels(x, y) {
+    // bail if all heatmap layers are set to non-interactive
+    if (this.props.heatmapLayers.every(l => l.interactive !== true)) {
+      return;
+    }
+
     const { viewport } = this._context;
     const [longitude, latitude] = viewport.unproject([x, y]);
 

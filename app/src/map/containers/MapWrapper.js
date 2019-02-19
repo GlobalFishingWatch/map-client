@@ -18,6 +18,7 @@ const getLayerFilters = state => state.filterGroups.layerFilters;
 const getBasemap = state => state.basemap;
 const getWorkspaceZoom = state => state.workspace.viewport.zoom;
 const getWorkspaceCenter = state => state.workspace.viewport.center;
+const getReport = state => state.report;
 
 
 const getViewport = createSelector(
@@ -26,9 +27,6 @@ const getViewport = createSelector(
     if (zoom !== undefined && center !== undefined) {
       return { zoom, center };
     }
-    // TODO MAP MODULE
-    // import defaultWorkspace from 'workspace/workspace';
-    // defaultWorkspace.workspace.map.center
     return undefined;
   }
 );
@@ -76,28 +74,35 @@ const getAllVesselsForTracks = createSelector(
 );
 
 const getHeatmapLayers = createSelector(
-  [getLayers, getLayerFilters],
-  (layers, layerFilters) => layers
-    .filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
-    .map((layer) => {
-      const filters = layerFilters[layer.id] || [];
-      const layerParams = {
-        id: layer.id,
-        subtype: layer.subtype,
-        tilesetId: layer.tilesetId,
-        header: layer.header,
-        hue: layer.hue,
-        opacity: layer.opacity,
-        visible: layer.visible,
-        filters
-      };
-      return layerParams;
-    })
+  [getLayers, getLayerFilters, getReport],
+  (layers, layerFilters, report) => {
+    // for now interactive is set for all heatmap layers
+    // (ie disable all layers if report is triggered)
+    const interactive = (report.layerId === null);
+    return layers
+      .filter(layer => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
+      .map((layer) => {
+        const filters = layerFilters[layer.id] || [];
+        const layerParams = {
+          id: layer.id,
+          subtype: layer.subtype,
+          tilesetId: layer.tilesetId,
+          header: layer.header,
+          hue: layer.hue,
+          opacity: layer.opacity,
+          visible: layer.visible,
+          filters,
+          // toggle interaction off whenever a report is active
+          interactive
+        };
+        return layerParams;
+      });
+  }
 );
 
 const getStaticLayers = createSelector(
-  [getLayers],
-  layers => layers
+  [getLayers, getReport],
+  (layers, report) => layers
     .filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
     .map((layer) => {
       const layerParams = {
@@ -108,7 +113,8 @@ const getStaticLayers = createSelector(
         selectedPolygons: [],
         opacity: layer.opacity,
         color: layer.color,
-        showLabels: layer.showLabels
+        showLabels: layer.showLabels,
+        interactive: (report.layerId === null) ? true : report.layerId === layer.id
       };
       return layerParams;
     })
