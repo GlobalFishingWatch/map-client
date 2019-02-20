@@ -170,6 +170,26 @@ A filter to apply specific rules per polygon. Polygon filter is defined as:
 
 Boolean. Whether interaction is active on the layer or not.
 
+### `staticLayer.isCustom`
+
+Boolean. Specifying if the layer is custom, which means it uses resources externally, not from the internal style data. 
+
+### `staticLayer.subtype`
+
+String. Mandatory if layer is custom. Can be 'geojson' or 'raster'.
+
+### `staticLayer.url`
+
+String. Mandatory if custom layer is of subtype 'raster'. Specifies the base URL for raster tiles.
+
+### `staticLayer.data`
+
+Object. Mandatory if custom layer is of subtype 'geojson'. Specifies GeoJSON data.
+
+### `staticLayer.gl`
+
+Object. If specified, overrides all style info with raw Mapbox GL JSON styles, following the spec defined here: https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/workspaces.md#gl
+
 
 ## `basemapLayers`
 

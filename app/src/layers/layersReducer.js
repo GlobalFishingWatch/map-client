@@ -109,6 +109,8 @@ export default function (state = initialState, action) {
         : PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color;
       const newLayer = {
         subtype,
+        isCustom: true,
+        data: action.payload.data,
         id: action.payload.id,
         url: action.payload.url,
         title: action.payload.name,

@@ -193,7 +193,7 @@ MapModule.propTypes = {
     color: PropTypes.string
   })),
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     tilesetId: PropTypes.string,
     subtype: PropTypes.string,
     visible: PropTypes.bool,
@@ -213,7 +213,7 @@ MapModule.propTypes = {
       colsByName: PropTypes.object,
       temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
       temporalExtentsLess: PropTypes.bool
-    }),
+    }).isRequired,
     interactive: PropTypes.bool
   })),
   temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
@@ -224,7 +224,7 @@ MapModule.propTypes = {
     visible: PropTypes.bool
   })),
   staticLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     // TODO MAP MODULE Is that needed and if so why
     visible: PropTypes.bool,
     selectedPolygons: PropTypes.shape({
@@ -234,7 +234,12 @@ MapModule.propTypes = {
     opacity: PropTypes.number,
     color: PropTypes.string,
     showLabels: PropTypes.bool,
-    interactive: PropTypes.bool
+    interactive: PropTypes.bool,
+    isCustom: PropTypes.bool,
+    subtype: PropTypes.oneOf([undefined, 'geojson', 'raster']),
+    url: PropTypes.string,
+    data: PropTypes.object,
+    gl: PropTypes.object
   })),
   // customLayers
   hoverPopup: PropTypes.shape({

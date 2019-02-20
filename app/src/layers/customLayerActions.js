@@ -1,6 +1,5 @@
 import { setLayerManagementModalVisibility } from 'app/appActions';
 import { addCustomLayer } from 'layers/layersActions';
-// import { addCustomGLLayer } from 'map/mapStyleActions'; TODO  TODO MAP MODULE
 import { CUSTOM_LAYERS_SUBTYPES } from 'constants';
 import isURL from 'validator/lib/isURL';
 import WMSCapabilities from 'wms-capabilities';
@@ -181,10 +180,7 @@ export const confirmCustomLayer = layer => (dispatch, getState) => {
     newLayer.subtype = CUSTOM_LAYERS_SUBTYPES.raster;
   }
   dispatch(setLayerManagementModalVisibility(false));
-  dispatch(addCustomLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.name, newLayer.description));
-
-  // TODO MAP MODULE
-  // dispatch(addCustomGLLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.data));
+  dispatch(addCustomLayer(newLayer.subtype, newLayer.id, newLayer.url, newLayer.name, newLayer.description, newLayer.data));
 
   dispatch({ type: CUSTOM_LAYER_RESET });
   return null;

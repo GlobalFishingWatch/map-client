@@ -84,6 +84,20 @@ function setLayerHeader(layerId, header) {
   };
 }
 
+export function addCustomLayer(subtype, id, url, name, description, data) {
+  return {
+    type: ADD_CUSTOM_LAYER,
+    payload: {
+      subtype,
+      id,
+      url,
+      name,
+      description,
+      data
+    }
+  };
+}
+
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState();
@@ -150,9 +164,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
     // get header promises
     const headersPromises = [];
     workspaceLayers
-      .filter(l => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.added === true)
+      .filter(l => LAYER_TYPES_WITH_HEADER.includes(l.type) && l.added === true)
       .forEach((heatmapLayer) => {
-        if (HEADERLESS_LAYERS.indexOf(heatmapLayer.tilesetId) > -1) {
+        if (HEADERLESS_LAYERS.includes(heatmapLayer.tilesetId)) {
           // headerless layers are considered temporalExtents-less too
           heatmapLayer.header = {
             temporalExtentsLess: true,
@@ -182,9 +196,12 @@ export function initLayers(workspaceLayers, libraryLayers) {
       .then(() => {
         dispatch({
           type: SET_LAYERS,
-          payload: workspaceLayers.filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
+          payload: workspaceLayers
+            // exclude layers that are Heatmaps and don't have a header
+            .filter(layer => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
+            // exclude custom layers as they need to load their data first
+            .filter(layer => layer.type !== LAYER_TYPES.Custom)
         });
-        // dispatch(updateMapStyle());  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers());
 
         const deprecatedLayers = workspaceLayers
@@ -212,7 +229,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
               Promise.resolve({});
 
             promise.then((layer) => {
-              dispatch(addCustomGLLayer(subtype, customLayer.id, customLayer.url, layer.data));
+              dispatch(addCustomLayer(subtype, customLayer.id, customLayer.url, customLayer.title, customLayer.description, layer.data));
             });
           });
       })
@@ -279,14 +296,11 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
         dispatch(refreshFlagFiltersLayers());
       }
     }
-    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      // dispatch(updateMapStyle());  TODO MAP MODULE
-    }
   };
 }
 
 export function setLayerOpacity(opacity, layerId) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: SET_LAYER_OPACITY,
       payload: {
@@ -294,10 +308,6 @@ export function setLayerOpacity(opacity, layerId) {
         opacity
       }
     });
-    const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
-    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      // dispatch(updateMapStyle());  TODO MAP MODULE
-    }
   };
 }
 
@@ -313,9 +323,6 @@ export function setLayerTint(color, hue, layerId) {
     });
 
     const newLayer = getState().layers.workspaceLayers.find(layer => layer.id === layerId);
-    if (LAYER_TYPES_MAPBOX_GL.indexOf(newLayer.type) > -1) {
-      // dispatch(updateMapStyle());  TODO MAP MODULE
-    }
     if (newLayer.type === LAYER_TYPES.Heatmap) {
       dispatch(refreshFlagFiltersLayers());
     }
@@ -330,22 +337,9 @@ export function toggleLayerShowLabels(layerId) {
         layerId
       }
     });
-    // dispatch(updateMapStyle());  TODO MAP MODULE
   };
 }
 
-export function addCustomLayer(subtype, id, url, name, description) {
-  return {
-    type: ADD_CUSTOM_LAYER,
-    payload: {
-      subtype,
-      id,
-      url,
-      name,
-      description
-    }
-  };
-}
 
 export function toggleLayerPanelEditMode(forceMode = null) {
   return {

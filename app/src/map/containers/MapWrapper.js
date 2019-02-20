@@ -116,7 +116,14 @@ const getStaticLayers = createSelector(
         opacity: layer.opacity,
         color: layer.color,
         showLabels: layer.showLabels,
-        interactive: (report.layerId === null) ? true : report.layerId === layer.id
+        interactive: (report.layerId === null) ? true : report.layerId === layer.id,
+        // -- needed for custom layers
+        isCustom: layer.isCustom,
+        subtype: layer.subtype,
+        url: layer.url,
+        data: layer.data,
+        // -- needed for workspace GL layers
+        gl: layer.gl
       };
       return layerParams;
     })

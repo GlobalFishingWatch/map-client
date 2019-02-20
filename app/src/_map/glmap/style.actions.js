@@ -38,11 +38,6 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   // visibility
   newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
-  // basemap layers' only allowed change is visibility, so bail here
-  if (glLayer.type === 'raster') {
-    return newStyle;
-  }
-
   const refLayerOpacity = (refLayer.opacity === undefined) ? 1 : refLayer.opacity;
 
   // color/opacity
@@ -112,7 +107,7 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   return newStyle;
 };
 
-export const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getState) => {
+const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getState) => {
   const state = getState();
   let style = state.map.style.mapStyle;
   const currentStyle = style.toJS();
@@ -145,9 +140,6 @@ export const addCustomGLLayer = (subtype, layerId, url, data) => (dispatch, getS
   }
 
   dispatch(setMapStyle(style));
-
-  // TODO MAP MODULE
-  // dispatch(updateMapStyle());
 };
 
 const addWorkspaceGLLayers = workspaceGLLayers => (dispatch, getState) => {
@@ -257,21 +249,29 @@ export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, ge
     payload: basemapLayers
   });
 
-  const state = getState().map.style;
   const layers = [...staticLayers, ...basemapLayers];
 
+  const currentGLSources = getState().map.style.mapStyle.toJS().sources;
+
+  // collect layers declared in workspace but not in original gl style
+  const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && currentGLSources[layer.id] === undefined);
+  if (workspaceGLLayers.length) {
+    dispatch(addWorkspaceGLLayers(workspaceGLLayers));
+  }
+
+  // instanciate custom layers if needed
+  const customLayers = layers.filter(layer => layer.isCustom === true && currentGLSources[layer.id] === undefined);
+  if (customLayers.length) {
+    customLayers.forEach((layer) => {
+      dispatch(addCustomGLLayer(layer.subtype, layer.id, layer.url, layer.data));
+    });
+  }
+
+  const state = getState().map.style;
   let style = state.mapStyle;
   const currentStyle = style.toJS();
   const glLayers = currentStyle.layers;
   const glSources = currentStyle.sources;
-
-  // TODO MAP MODULE: do it at the same time than carto layers?
-  // collect layers declared in workspace but not in original gl style
-  // const workspaceGLLayers = layers.filter(layer => layer.gl !== undefined && glSources[layer.id] === undefined);
-  // if (workspaceGLLayers.length) {
-  //   dispatch(addWorkspaceGLLayers(workspaceGLLayers));
-  //   return;
-  // }
 
   const cartoLayersToInstanciate = [];
 
