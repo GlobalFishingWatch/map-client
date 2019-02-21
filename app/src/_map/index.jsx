@@ -91,7 +91,6 @@ class MapModule extends React.Component {
     if (store && store.getState().map.module.token === undefined) {
       store.dispatch(initModule({
         token: this.props.token,
-        // TODO MAP MODULE lat/lon updates should be triggered by onHover
         onViewportChange: this.props.onViewportChange,
         onHover: this.props.onHover,
         onClick: this.props.onClick,

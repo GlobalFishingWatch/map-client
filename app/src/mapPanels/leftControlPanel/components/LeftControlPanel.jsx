@@ -16,7 +16,7 @@ class LeftControlPanel extends Component {
   }
 
   render() {
-    const { isEmbedded } = this.props;
+    const { isEmbedded, mouseLatLon } = this.props;
     const canShareWorkspaces = !isEmbedded &&
       (this.props.userPermissions !== null && this.props.userPermissions.indexOf('shareWorkspace') !== -1);
 
@@ -25,9 +25,11 @@ class LeftControlPanel extends Component {
         <div className={classnames(LeftControlPanelStyles.mapLoader, { [LeftControlPanelStyles._isEmbedded]: isEmbedded })} >
           <Loader tiny />
         </div >
-        <div className={LeftControlPanelStyles.latlon} >
-          {this.props.mouseLatLong[0].toFixed(4)}, {this.props.mouseLatLong[1].toFixed(4)}
-        </div >
+        {mouseLatLon !== null &&
+          <div className={LeftControlPanelStyles.latlon} >
+            {mouseLatLon.latitude.toFixed(4)}, {mouseLatLon.longitude.toFixed(4)}
+          </div>
+        }
         <ZoomControls
           canShareWorkspaces={canShareWorkspaces}
           openShareModal={this.props.openShareModal}
@@ -40,12 +42,14 @@ class LeftControlPanel extends Component {
   }
 }
 
-
 LeftControlPanel.propTypes = {
   isEmbedded: PropTypes.bool.isRequired,
   canZoomIn: PropTypes.bool.isRequired,
   canZoomOut: PropTypes.bool.isRequired,
-  mouseLatLong: PropTypes.arrayOf(PropTypes.number),
+  mouseLatLon: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number
+  }),
   openShareModal: PropTypes.func.isRequired,
   incrementZoom: PropTypes.func.isRequired,
   decrementZoom: PropTypes.func.isRequired,

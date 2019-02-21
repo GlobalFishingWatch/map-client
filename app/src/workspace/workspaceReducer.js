@@ -1,6 +1,7 @@
 import {
   UPDATE_WORKSPACE,
   TRANSITION_ZOOM,
+  UPDATE_MOUSE_LAT_LON,
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID,
   SET_WORKSPACE_OVERRIDE,
@@ -12,7 +13,8 @@ const initialState = {
   workspaceId: null,
   isLoaded: false,
   legacyWorkspaceLoaded: false,
-  viewport: {}
+  viewport: {},
+  mouseLatLon: null
 };
 
 export default function (state = initialState, action) {
@@ -24,6 +26,8 @@ export default function (state = initialState, action) {
       const viewport = { ...state.viewport, zoom: state.viewport.zoom + offset };
       return { ...state, viewport };
     }
+    case UPDATE_MOUSE_LAT_LON:
+      return { ...state, mouseLatLon: action.payload };
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:

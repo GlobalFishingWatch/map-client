@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateWorkspace } from 'workspace/workspaceActions';
+import { updateWorkspace, updateMouseLatLon } from 'workspace/workspaceActions';
 import { startLoading, completeLoading } from 'app/appActions';
-import { clearVesselInfo, addVessel, hideVesselsInfoPanel } from 'vesselInfo/vesselInfoActions';
+import { clearVesselInfo, addVessel } from 'vesselInfo/vesselInfoActions';
 import { setEncountersInfo, clearEncountersInfo } from 'encounters/encountersActions';
 import { trackMapClicked } from 'analytics/analyticsActions';
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'report/reportActions';
@@ -160,8 +160,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onViewportChange: (viewport) => {
-    // TODO MAP MODULE maybe not reuse workspace actions/reducer, but instead
-    // create a MapWrapper reducer that could also be used to deal with popups and map interaction
     dispatch(updateWorkspace({
       viewport
     }));
@@ -171,6 +169,9 @@ const mapDispatchToProps = dispatch => ({
   },
   onLoadComplete: () => {
     dispatch(completeLoading());
+  },
+  onMapHover: (event) => {
+    dispatch(updateMouseLatLon({ latitude: event.latitude, longitude: event.longitude }));
   },
   onMapClick: (event) => {
     dispatch(clearVesselInfo());
@@ -193,7 +194,6 @@ const mapDispatchToProps = dispatch => ({
         }));
       }
     } else if (event.type === 'static') {
-      console.log(event.target)
       dispatch(setCurrentSelectedPolygon(event.target.properties));
     }
   },

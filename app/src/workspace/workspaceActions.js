@@ -17,6 +17,7 @@ import defaultWorkspace from 'workspace/workspace';
 
 export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';
 export const TRANSITION_ZOOM = 'TRANSITION_ZOOM';
+export const UPDATE_MOUSE_LAT_LON = 'UPDATE_MOUSE_LAT_LON';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
@@ -98,6 +99,11 @@ export const incrementZoom = () => ({
 export const decrementZoom = () => ({
   type: TRANSITION_ZOOM,
   payload: -1
+});
+
+export const updateMouseLatLon = mouseLatLon => ({
+  type: UPDATE_MOUSE_LAT_LON,
+  payload: mouseLatLon
 });
 
 /**

@@ -46,15 +46,6 @@ export const transitionToZoom = zoom => (dispatch) => {
   dispatch(transitionTo(null, null, null, zoom));
 };
 
-export const setMouseLatLong = (lat, long) => (dispatch) => {
-  dispatch({
-    type: SET_MOUSE_LAT_LONG,
-    payload: [lat, long]
-  });
-  // TODO MAP MODULE
-  // dispatch(onViewportChange());
-};
-
 export const transitionEnd = () => (dispatch) => {
   dispatch({
     type: TRANSITION_END

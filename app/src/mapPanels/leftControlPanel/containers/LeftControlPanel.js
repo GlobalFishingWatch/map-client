@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
   canZoomIn: state.workspace.viewport.canZoomIn,
   canZoomOut: state.workspace.viewport.canZoomOut,
-  mouseLatLong: state.workspace.viewport.mouseLatLong,
+  mouseLatLon: state.workspace.mouseLatLon,
   userPermissions: state.user.userPermissions
 });
 
@@ -20,7 +20,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(openShareModal(true));
     dispatch(saveWorkspace(setShareModalError));
   },
-  // TODO MAP MODULE just reset workspace props
   incrementZoom: () => {
     dispatch(incrementZoom());
   },

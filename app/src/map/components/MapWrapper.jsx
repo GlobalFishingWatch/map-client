@@ -47,6 +47,7 @@ class MapWrapper extends Component {
 
   onHover = (event) => {
     const hoverPopupData = (event.type !== null) ? event : null;
+    this.props.onMapHover(event);
     this.setState({
       hoverPopupData
     });
@@ -122,6 +123,7 @@ MapWrapper.propTypes = {
   loadTemporalExtent: PropTypes.array,
   highlightTemporalExtent: PropTypes.array,
   // internal
+  onMapHover: PropTypes.func,
   onMapClick: PropTypes.func,
   report: PropTypes.object,
   workspaceLayers: PropTypes.array,

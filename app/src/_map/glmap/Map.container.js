@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import convert from '@globalfishingwatch/map-convert';
 import { closePopup } from '../module/module.actions.js';
 import { mapHover, mapClick } from './interaction.actions.js';
-import { setViewport, setMouseLatLong, transitionEnd } from './viewport.actions.js';
+import { setViewport, transitionEnd } from './viewport.actions.js';
 import {
   MIN_FRAME_LENGTH_MS
 } from '../config';
@@ -63,7 +63,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setViewport(viewport));
   },
   mapHover: (lat, long, features) => {
-    dispatch(setMouseLatLong(lat, long));
     dispatch(mapHover(lat, long, features));
   },
   mapClick: (lat, long, features) => {
