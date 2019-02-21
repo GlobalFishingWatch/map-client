@@ -38,6 +38,10 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   // visibility
   newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
+  if (refLayer.isBasemap === true) {
+    return newStyle;
+  }
+
   const refLayerOpacity = (refLayer.opacity === undefined) ? 1 : refLayer.opacity;
 
   // color/opacity
@@ -249,7 +253,7 @@ export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, ge
     payload: basemapLayers
   });
 
-  const layers = [...staticLayers, ...basemapLayers];
+  const layers = [...staticLayers, ...basemapLayers.map(bl => ({ ...bl, isBasemap: true }))];
 
   const currentGLSources = getState().map.style.mapStyle.toJS().sources;
 
