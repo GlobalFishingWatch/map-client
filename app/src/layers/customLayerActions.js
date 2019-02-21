@@ -146,7 +146,7 @@ export const uploadCustomLayer = (subtype, url, name, description) => (dispatch,
       .catch(err =>
         dispatch({
           type: CUSTOM_LAYER_UPLOAD_ERROR,
-          payload: { error: err.message }
+          payload: { error: (err.message === '') ? 'Error uploading layer' : err.message }
         })
       );
   } else {

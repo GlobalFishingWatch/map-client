@@ -228,7 +228,7 @@ class CustomLayer extends Component {
                 className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._big, CustomLayerStyles.submitButton)}
                 type="submit"
                 value="done"
-                disabled={allowSubmitting === false}
+                disabled={allowSubmitting === false || error !== null}
               />
             </div>
           </div>
