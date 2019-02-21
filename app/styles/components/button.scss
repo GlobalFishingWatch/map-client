@@ -25,6 +25,11 @@
     color: $color-4;
   }
 
+  &._filled:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
   &._transparent {
     background-color: transparent;
   }

@@ -16,7 +16,8 @@ class CustomLayer extends Component {
       description: '',
       subtype: 'geojson',
       url: '',
-      subLayersActives: []
+      subLayersActives: [],
+      allowSubmitting: true
     };
   }
 
@@ -32,8 +33,14 @@ class CustomLayer extends Component {
     }
     if (key === 'url') {
       if (target.value) {
+        this.setState({
+          allowSubmitting: false
+        });
         this.uploadCustomLayer();
       } else {
+        this.setState({
+          allowSubmitting: true
+        });
         this.uploadCustomLayer.cancel();
         this.props.resetCustomLayer();
       }
@@ -42,6 +49,9 @@ class CustomLayer extends Component {
 
   uploadCustomLayer = debounce(() => {
     this.props.onUploadCustomLayer(this.state);
+    this.setState({
+      allowSubmitting: true
+    });
   }, 500);
 
   onSubmit(event) {
@@ -58,7 +68,7 @@ class CustomLayer extends Component {
   }
 
   render() {
-    const { subtype, subLayersActives } = this.state;
+    const { subtype, subLayersActives, allowSubmitting } = this.state;
     const { subLayers, error } = this.props;
 
     if (this.props.userPermissions !== null && this.props.userPermissions.indexOf('custom-layer') === -1) {
@@ -218,6 +228,7 @@ class CustomLayer extends Component {
                 className={classnames(ButtonStyles.button, ButtonStyles._filled, ButtonStyles._big, CustomLayerStyles.submitButton)}
                 type="submit"
                 value="done"
+                disabled={allowSubmitting === false}
               />
             </div>
           </div>
