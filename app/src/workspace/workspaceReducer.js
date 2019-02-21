@@ -1,5 +1,6 @@
 import {
   UPDATE_WORKSPACE,
+  TRANSITION_ZOOM,
   SET_URL_WORKSPACE_ID,
   SET_WORKSPACE_ID,
   SET_WORKSPACE_OVERRIDE,
@@ -18,6 +19,11 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case UPDATE_WORKSPACE:
       return { ...state, ...action.payload, isLoaded: true };
+    case TRANSITION_ZOOM: {
+      const offset = action.payload;
+      const viewport = { ...state.viewport, zoom: state.viewport.zoom + offset };
+      return { ...state, viewport };
+    }
     case SET_URL_WORKSPACE_ID:
       return Object.assign({}, state, { urlWorkspaceId: action.payload });
     case SET_WORKSPACE_ID:

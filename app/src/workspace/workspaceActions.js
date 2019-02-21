@@ -16,6 +16,7 @@ import { getKeyByValue, hueToClosestColor, hueToRgbHexString, COLOR_HUES } from 
 import defaultWorkspace from 'workspace/workspace';
 
 export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';
+export const TRANSITION_ZOOM = 'TRANSITION_ZOOM';
 export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
@@ -87,6 +88,16 @@ export function updateURL() {
 export const updateWorkspace = props => ({
   type: UPDATE_WORKSPACE,
   payload: props
+});
+
+export const incrementZoom = () => ({
+  type: TRANSITION_ZOOM,
+  payload: +1
+});
+
+export const decrementZoom = () => ({
+  type: TRANSITION_ZOOM,
+  payload: -1
 });
 
 /**

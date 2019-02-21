@@ -10,8 +10,7 @@ import { initModule } from './module/module.actions';
 import {
   updateViewport,
   fitBoundsToTrack,
-  incrementZoom as mapIncrementZoom,
-  decrementZoom as mapDecrementZoom
+  transitionToZoom
 } from './glmap/viewport.actions';
 import {
   initStyle,
@@ -160,13 +159,19 @@ class MapModule extends React.Component {
     // from the internally stored one
     // TODO FFS incoming lat lon should be an object, not an array
     const currentViewport = store.getState().map.viewport.viewport;
-    if (this.props.viewport !== undefined) {
+    //                                        stop propagating updates from outside when zooming in
+    if (this.props.viewport !== undefined && store.getState().map.viewport.currentTransition === null) {
       if (
         currentViewport.latitude !== this.props.viewport.center[0] ||
         currentViewport.longitude !== this.props.viewport.center[1] ||
         currentViewport.zoom !== this.props.viewport.zoom
       ) {
-        updateViewportFromIncomingProps(this.props.viewport);
+        // if zoom delta is precisely === 1, zoom with a transition
+        if (Math.abs(currentViewport.zoom - this.props.viewport.zoom) === 1) {
+          store.dispatch(transitionToZoom(this.props.viewport.zoom));
+        } else {
+          updateViewportFromIncomingProps(this.props.viewport);
+        }
       }
     }
   }
@@ -272,15 +277,6 @@ export const targetMapVessel = (id) => {
   store.dispatch(fitBoundsToTrack(track.geoBounds));
 
   return track.timelineBounds;
-};
-
-// TODO MAP MODULE use prop diffing instead ?
-export const incrementZoom = () => {
-  store.dispatch(mapIncrementZoom());
-};
-
-export const decrementZoom = () => {
-  store.dispatch(mapDecrementZoom());
 };
 
 // TODO MAP MODULE make it a function

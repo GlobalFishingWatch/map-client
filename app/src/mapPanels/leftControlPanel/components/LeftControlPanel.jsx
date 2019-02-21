@@ -7,13 +7,7 @@ import LeftControlPanelStyles from 'mapPanels/leftControlPanel/components/leftCo
 
 
 class LeftControlPanel extends Component {
-  constructor(props) {
-    super(props);
-
-    this.changeZoomLevel = this.changeZoomLevel.bind(this);
-  }
-
-  changeZoomLevel(event) {
+  changeZoomLevel = (event) => {
     if (event.currentTarget.id === 'zoom_in') {
       this.props.incrementZoom();
     } else {

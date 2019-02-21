@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
-import { incrementZoom, decrementZoom } from 'src/_map';
 import LeftControlPanel from 'mapPanels/leftControlPanel/components/LeftControlPanel';
 import { openShareModal, setShareModalError } from 'share/shareActions';
-import { saveWorkspace } from 'workspace/workspaceActions';
+import { saveWorkspace, incrementZoom, decrementZoom } from 'workspace/workspaceActions';
 import { setSupportModalVisibility } from 'siteNav/supportFormActions';
 
 const mapStateToProps = state => ({
@@ -22,8 +21,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(saveWorkspace(setShareModalError));
   },
   // TODO MAP MODULE just reset workspace props
-  incrementZoom,
-  decrementZoom
+  incrementZoom: () => {
+    dispatch(incrementZoom());
+  },
+  decrementZoom: () => {
+    dispatch(decrementZoom());
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeftControlPanel);

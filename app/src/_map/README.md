@@ -38,7 +38,7 @@ String. URL schema to load Mapbox GL glyphs, for example 'gl-fonts/{fontstack}/{
 
 ## `viewport`
 
-Object. Allows setting map position.
+Object. Allows setting map position. If zoom change is strictly equal to 1, a transition will be used.
 
 ### `zoom`
 

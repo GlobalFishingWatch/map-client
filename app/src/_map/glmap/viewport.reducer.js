@@ -61,8 +61,8 @@ export default function (state = initialState, action) {
         ...state.viewport,
         ...DEFAULT_TRANSITION,
         zoom,
-        latitude: (action.payload.latitude === undefined) ? state.viewport.latitude : action.payload.latitude,
-        longitude: (action.payload.longitude === undefined) ? state.viewport.longitude : action.payload.longitude
+        latitude: (action.payload.latitude === null) ? state.viewport.latitude : action.payload.latitude,
+        longitude: (action.payload.longitude === null) ? state.viewport.longitude : action.payload.longitude
       };
       return {
         ...state,

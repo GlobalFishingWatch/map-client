@@ -28,7 +28,7 @@ export const updateViewport = viewportUpdate => (dispatch) => {
   dispatch(onViewportChange());
 };
 
-const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) => {
+const transitionTo = (increment, latitude = null, longitude = null, zoom = null) => (dispatch) => {
   dispatch({
     type: SET_ZOOM_INCREMENT,
     payload: {
@@ -42,13 +42,8 @@ const updateZoom = (increment, latitude, longitude, zoom = null) => (dispatch) =
   dispatch(onViewportChange());
 };
 
-
-export const incrementZoom = () => (dispatch) => {
-  dispatch(updateZoom(+1));
-};
-
-export const decrementZoom = () => (dispatch) => {
-  dispatch(updateZoom(-1));
+export const transitionToZoom = zoom => (dispatch) => {
+  dispatch(transitionTo(null, null, null, zoom));
 };
 
 export const setMouseLatLong = (lat, long) => (dispatch) => {
@@ -69,7 +64,7 @@ export const transitionEnd = () => (dispatch) => {
 };
 
 export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
-  dispatch(updateZoom(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
+  dispatch(transitionTo(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
 export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
@@ -80,7 +75,7 @@ export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
     height: state.map.viewport.viewport.height,
     padding: 50
   });
-  dispatch(updateZoom(null, vp.latitude, vp.longitude, vp.zoom));
+  dispatch(transitionTo(null, vp.latitude, vp.longitude, vp.zoom));
 };
 
 export const exportNativeViewport = nativeViewport => (dispatch) => {
