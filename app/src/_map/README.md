@@ -262,7 +262,7 @@ Function. TODO
 
 ## `onAttributionsChange`
 
-Function. TODO
+Function. Notify of attributions changes depending on layers toggled [PARTIALLY IMPLEMENTED] Will only fire at start.
 
 
 

@@ -84,6 +84,10 @@ class MapModule extends React.Component {
       }));
     }
 
+    if (this.props.onAttributionsChange !== undefined) {
+      this.props.onAttributionsChange(store.getState().map.style.attributions);
+    }
+
     if (store && store.getState().map.module.token === undefined) {
       store.dispatch(initModule({
         token: this.props.token,
@@ -93,7 +97,8 @@ class MapModule extends React.Component {
         onClick: this.props.onClick,
         onLoadStart: this.props.onLoadStart,
         onLoadComplete: this.props.onLoadComplete,
-        onClosePopup: this.props.onClosePopup
+        onClosePopup: this.props.onClosePopup,
+        onAttributionsChange: this.props.onAttributionsChange
       }));
     }
 

@@ -18,10 +18,6 @@ class MapFooter extends Component {
     this.onExternalLink = this.onExternalLink.bind(this);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState !== this.state;
-  }
-
   onCloseFooter() {
     this.setState({ footerExpanded: false });
   }
@@ -44,7 +40,6 @@ class MapFooter extends Component {
 
   render() {
     const toggleLabel = (this.state.footerExpanded) ? 'Hide Footer' : 'Show Footer';
-
     return (
       <div className={MapFooterStyles.overflowContainer} >
         <div className={MapFooterStyles.mapFooter} >

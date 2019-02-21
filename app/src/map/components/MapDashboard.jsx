@@ -11,6 +11,12 @@ import MapDashboardStyles from 'map/components/mapDashboard.scss';
 import MapWrapper from 'map/containers/MapWrapper';
 
 class MapDashboard extends Component {
+  state = {
+    attributions: []
+  }
+  onAttributionsChange = (attributions) => {
+    this.setState({ attributions });
+  }
   render() {
     const {
       isEmbedded,
@@ -20,8 +26,9 @@ class MapDashboard extends Component {
       mapPanelsExpanded,
       isWorkspaceLoaded
     } = this.props;
+ 
+    const { attributions } = this.state;
     const fullScreenMap = COMPLETE_MAP_RENDER === false;
-
     return (<div className="fullHeightContainer" >
       {(!isEmbedded) &&
       <div
@@ -48,7 +55,9 @@ class MapDashboard extends Component {
         }}
       >
         {isWorkspaceLoaded === true &&
-          <MapWrapper />
+          <MapWrapper
+            onAttributionsChange={this.onAttributionsChange}
+          />
         }
         <LeftControlPanel />
       </div>
@@ -56,12 +65,12 @@ class MapDashboard extends Component {
         <Timebar />
       </div>
       {fullScreenMap === false &&
-      <MapFooter
-        onOpenSupportFormModal={openSupportFormModal}
-        isEmbedded={isEmbedded}
-        onExternalLink={onExternalLink}
-        attributions={this.props.attributions}
-      />
+        <MapFooter
+          onOpenSupportFormModal={openSupportFormModal}
+          isEmbedded={isEmbedded}
+          onExternalLink={onExternalLink}
+          attributions={attributions}
+        />
       }
     </div >);
   }
@@ -69,7 +78,6 @@ class MapDashboard extends Component {
 
 MapDashboard.propTypes = {
   isEmbedded: PropTypes.bool,
-  attributions: PropTypes.array,
   mapPanelsExpanded: PropTypes.bool,
   onExternalLink: PropTypes.func,
   openSupportFormModal: PropTypes.func,

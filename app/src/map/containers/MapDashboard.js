@@ -6,8 +6,6 @@ import MapDashboard from 'map/components/MapDashboard';
 
 const mapStateToProps = state => ({
   isEmbedded: state.app.isEmbedded,
-  // attributions: state.mapStyle.attributions, TODO MAP MODULE
-  attributions: [],
   mapPanelsExpanded: state.app.mapPanelsExpanded,
   isWorkspaceLoaded: state.workspace.isLoaded
 });

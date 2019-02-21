@@ -63,6 +63,7 @@ class MapWrapper extends Component {
       onViewportChange,
       onLoadStart,
       onLoadComplete,
+      onAttributionsChange,
       token,
       viewport,
       tracks,
@@ -87,6 +88,7 @@ class MapWrapper extends Component {
         onViewportChange={onViewportChange}
         onLoadStart={onLoadStart}
         onLoadComplete={onLoadComplete}
+        onAttributionsChange={onAttributionsChange}
         onClosePopup={this.onClosePopup}
         hoverPopup={hoverPopup}
         clickPopup={clickPopup}
@@ -109,6 +111,7 @@ MapWrapper.propTypes = {
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,
+  onAttributionsChange: PropTypes.func,
   token: PropTypes.string,
   viewport: PropTypes.object,
   tracks: PropTypes.array,
