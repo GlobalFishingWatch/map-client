@@ -1,11 +1,9 @@
-import { LOAD_LITERALS } from 'siteNav/literalsActions';
+import literals from 'src/literals.json';
 
-const initialState = {};
+const initialState = literals;
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case LOAD_LITERALS:
-      return action.payload;
     default:
       return state;
   }

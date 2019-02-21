@@ -24,7 +24,6 @@ export const RELEASE_HEATMAP_TILES = 'RELEASE_HEATMAP_TILES';
 export const UPDATE_LOADED_TILES = 'UPDATE_LOADED_TILES';
 export const HIGHLIGHT_CLICKED_VESSEL = 'HIGHLIGHT_CLICKED_VESSEL';
 export const CLEAR_HIGHLIGHT_CLICKED_VESSEL = 'CLEAR_HIGHLIGHT_CLICKED_VESSEL';
-export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
 
 /**
  * getTemporalExtentsVisibleIndices - Compares timebar outer extent with temporal extents present on the layer header

@@ -11,8 +11,7 @@ import {
   TOGGLE_LAYER_PANEL_EDIT_MODE,
   TOGGLE_LAYER_VISIBILITY,
   TOGGLE_LAYER_WORKSPACE_PRESENCE,
-  TOGGLE_LAYER_SHOW_LABELS,
-  NOTIFY_DEPRECATED_LAYERS
+  TOGGLE_LAYER_SHOW_LABELS
 } from 'layers/layersActions';
 import { LAYER_TYPES, CUSTOM_LAYERS_SUBTYPES } from 'constants';
 import { PALETTE_COLORS, NO_COLOR_TOGGLE_DEFAULT } from 'config';
@@ -156,15 +155,6 @@ export default function (state = initialState, action) {
 
       return Object.assign({}, state, {
         workspaceLayers: [...state.workspaceLayers.slice(0, layerIndex), newLayer, ...state.workspaceLayers.slice(layerIndex + 1)]
-      });
-    }
-
-    case NOTIFY_DEPRECATED_LAYERS: {
-      const deprecatedLayers = action.payload.deprecatedLayers.map(l => `"${l}"`).join(', ');
-      const hasDeprecatedActivityLayersMessage =
-        action.payload.template.replace('$LAYERS', deprecatedLayers);
-      return Object.assign({}, state, {
-        hasDeprecatedActivityLayersMessage
       });
     }
 

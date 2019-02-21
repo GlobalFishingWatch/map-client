@@ -14,6 +14,7 @@ import { loadRecentVesselsList } from 'recentVessels/recentVesselsActions';
 import { setEncountersInfo } from 'encounters/encountersActions';
 import { getKeyByValue, hueToClosestColor, hueToRgbHexString, COLOR_HUES } from '@globalfishingwatch/map-colors';
 import defaultWorkspace from 'workspace/workspace';
+import { setNotification } from 'src/notifications/notificationsActions';
 
 export const UPDATE_WORKSPACE = 'UPDATE_WORKSPACE';
 export const TRANSITION_ZOOM = 'TRANSITION_ZOOM';
@@ -22,7 +23,6 @@ export const SET_URL_WORKSPACE_ID = 'SET_URL_WORKSPACE_ID';
 export const SET_WORKSPACE_ID = 'SET_WORKSPACE_ID';
 export const SET_WORKSPACE_OVERRIDE = 'SET_WORKSPACE_OVERRIDE';
 export const DELETE_WORKSPACE_ID = 'DELETE_WORKSPACE_ID';
-export const SET_LEGACY_WORKSPACE_LOADED = 'SET_LEGACY_WORKSPACE_LOADED';
 
 export function setUrlWorkspaceId(workspaceId) {
   return {
@@ -404,18 +404,23 @@ function applyWorkspaceOverrides(workspace, overrides) {
 
 function loadWorkspace(data) {
   return (dispatch, getState) => {
+    const { workspace, literals } = getState();
     let workspaceData;
     if (data.workspace !== undefined) {
       workspaceData = processNewWorkspace(data, dispatch);
     } else {
       console.warn('Legacy format detected. Support for legacy workspaces has been removed. Will reload with default workspace');
-      dispatch({ type: SET_LEGACY_WORKSPACE_LOADED });
+      dispatch(setNotification({
+        visible: true,
+        type: 'warning',
+        content: literals.legacy_workspace_warning
+      }));
       dispatch(setUrlWorkspaceId(null));
       dispatch(getWorkspace());
       return;
     }
-    if (getState().workspace.workspaceOverride !== undefined) {
-      workspaceData = applyWorkspaceOverrides(workspaceData, getState().workspace.workspaceOverride);
+    if (workspace.workspaceOverride !== undefined) {
+      workspaceData = applyWorkspaceOverrides(workspaceData, workspace.workspaceOverride);
     }
     dispatchActions(workspaceData, dispatch, getState);
   };

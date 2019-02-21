@@ -6,11 +6,11 @@ import {
   LAYER_TYPES_WITH_HEADER,
   HEADERLESS_LAYERS,
   TEMPORAL_EXTENTLESS,
-  LAYER_TYPES_MAPBOX_GL,
   CUSTOM_LAYERS_SUBTYPES
 } from 'constants';
 import { SET_OVERALL_TIMELINE_DATES } from 'filters/filtersActions';
 import { refreshFlagFiltersLayers } from 'filters/filterGroupsActions';
+import { setNotification } from 'src/notifications/notificationsActions';
 import calculateLayerId from 'utils/calculateLayerId';
 import { loadCustomLayer } from './customLayerActions';
 
@@ -25,8 +25,6 @@ export const ADD_CUSTOM_LAYER = 'ADD_CUSTOM_LAYER';
 export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE';
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL';
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE';
-export const NOTIFY_DEPRECATED_LAYERS = 'NOTIFY_DEPRECATED_LAYERS';
-
 
 function loadLayerHeader(tilesetUrl, token) {
   const headers = {
@@ -207,16 +205,17 @@ export function initLayers(workspaceLayers, libraryLayers) {
         const deprecatedLayers = workspaceLayers
           .filter(l => l.header !== undefined && l.header.deprecated === true)
           .map(l => l.title);
+
         if (deprecatedLayers.length) {
-          dispatch({
-            type: NOTIFY_DEPRECATED_LAYERS,
-            payload: {
-              deprecatedLayers,
-              template: (deprecatedLayers.length > 1) ?
-                state.literals.deprecated_layers_warning_plural :
-                state.literals.deprecated_layers_warning
-            }
-          });
+          const deprecatedLayersList = deprecatedLayers.map(l => `"${l}"`).join(', ');
+          const literal = deprecatedLayers.length > 1 ?
+            state.literals.deprecated_layers_warning_plural :
+            state.literals.deprecated_layers_warning;
+          dispatch(setNotification({
+            visible: true,
+            type: 'warning',
+            content: literal.replace('$LAYERS', deprecatedLayersList)
+          }));
         }
 
         // load custom layers data

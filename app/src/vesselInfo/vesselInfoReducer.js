@@ -37,11 +37,12 @@ export default function (state = initialState, action) {
 
       const newVessel = {
         seriesgroup: action.payload.seriesgroup,
+        tilesetId: action.payload.tilesetId,
+        parentEncounter: action.payload.parentEncounter,
+        comment: action.payload.comment,
         visible: action.payload.visible || false,
         pinned: false,
-        tilesetId: action.payload.tilesetId,
         shownInInfoPanel: false,
-        parentEncounter: action.payload.parentEncounter,
         color
       };
       return Object.assign({}, state, {

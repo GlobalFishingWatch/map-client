@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import IconStyles from 'src/components/Shared/Icon.scss';
+import AlertIcon from '-!babel-loader!svg-react-loader!assets/icons/alert.svg?';
 import Remove from '-!babel-loader!svg-react-loader!assets/icons/remove.svg';
 import Info from '-!babel-loader!svg-react-loader!assets/icons/info.svg';
 import Pencil from '-!babel-loader!svg-react-loader!assets/icons/pencil.svg';
@@ -26,6 +27,7 @@ class Icon extends Component {
     const classNames = classnames(IconStyles.icon, { [IconStyles._activated]: activated });
     let iconElement;
     switch (icon) {
+      case 'alert': iconElement = <AlertIcon className={classNames} />; break;
       case 'remove': iconElement = <Remove className={classNames} />; break;
       case 'info': iconElement = <Info className={classNames} />; break;
       case 'pencil': iconElement = <Pencil className={classNames} />; break;

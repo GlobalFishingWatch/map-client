@@ -2,6 +2,7 @@
 
 ## next release
 ### Added
+- Add warning notification for vessels with comments [#972](https://github.com/GlobalFishingWatch/GFW-Tasks/issues/972)
 - Added support for links in static layers popups 
 
 ## 3.2.0
@@ -77,11 +78,11 @@
 - Restore one-time report functionality on new subscriptions interface
 - Fix issue with filter select CSS on production settings
 - Fix issue where layers with no filter headers would crash the filters functionality
-- Fix regression on filter warning message 
+- Fix regression on filter warning message
 
 ## 2.3.0 RC1
 - Add and style scroll bars for modal boxes
-- Fix new filters backwards compatibility with old workspaces 
+- Fix new filters backwards compatibility with old workspaces
 
 ## 2.3.0 Beta 1
 - Add new filters interface

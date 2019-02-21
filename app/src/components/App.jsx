@@ -1,28 +1,21 @@
 /* eslint-disable react/no-danger */
 import React, { Component } from 'react';
-import * as PIXI from 'pixi.js';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import AppStyles from 'styles/components/app.scss';
-import BannerStyles from 'styles/components/banner.scss';
 import ReactGA from 'react-ga';
-import platform from 'platform';
+import Notifications from 'src/notifications/containers/Notifications';
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g;
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-      bannerDismissed: false
-    };
     ReactGA.initialize(GA_TRACKING_CODE);
     ReactGA.pageview(window.location.pathname);
   }
 
   componentWillMount() {
-    this.props.loadLiterals();
     // TODO move this logic out of a presentational component
     ACCESS_TOKEN_REGEX.lastIndex = 0;
     if (ACCESS_TOKEN_REGEX.test(window.location.hash)) {
@@ -35,6 +28,7 @@ class App extends Component {
     this.props.getLoggedUser();
 
     if (!DISABLE_WELCOME_MODAL) this.props.setWelcomeModalUrl();
+    this.props.checkInitialNotification();
   }
 
   componentDidUpdate(nextProps) {
@@ -49,46 +43,10 @@ class App extends Component {
     }
   }
 
-  dismissBanner() {
-    this.setState({
-      bannerDismissed: true
-    });
-  }
-
   render() {
-    const isWebGLSupported = PIXI.utils.isWebGLSupported();
-    const isEdge = platform.name.match(/edge/gi) !== null;
-
-    const showBanner =
-      (
-        isWebGLSupported === false ||
-        isEdge === true ||
-        this.props.legacyWorkspaceLoaded ||
-        this.props.hasDeprecatedActivityLayersMessage !== null ||
-        (SHOW_BANNER === true && this.props.banner !== undefined)
-      )
-      && this.state.bannerDismissed === false
-      && window.innerWidth > 768;
-
-    let bannerContent;
-    if (SHOW_BANNER === true) bannerContent = this.props.banner;
-    else if (isWebGLSupported === false) bannerContent = this.props.bannerWebGL;
-    else if (this.props.legacyWorkspaceLoaded === true) bannerContent = this.props.bannerLegacyWorkspace;
-    else if (this.props.hasDeprecatedActivityLayersMessage !== null) bannerContent = this.props.hasDeprecatedActivityLayersMessage;
-    else if (isEdge === true) bannerContent = this.props.bannerEdge;
-
-    document.body.classList.toggle('-has-banner', showBanner);
-
     return (
       <div>
-        {showBanner === true &&
-          <div className={BannerStyles.banner}>
-            <span dangerouslySetInnerHTML={{ __html: bannerContent }} />
-            <button className={BannerStyles.closeButton} onClick={() => this.dismissBanner()}>
-              <span className={BannerStyles.icon}>✕</span>
-            </button>
-          </div>
-        }
+        <Notifications />
         <div className={classnames('fullHeightContainer', AppStyles.app)}>
           {this.props.children}
         </div>
@@ -103,15 +61,9 @@ App.propTypes = {
   setToken: PropTypes.func,
   getLoggedUser: PropTypes.func,
   setWelcomeModalUrl: PropTypes.func,
+  checkInitialNotification: PropTypes.func,
   setWelcomeModalContent: PropTypes.func,
-  loadLiterals: PropTypes.func,
-  welcomeModalUrl: PropTypes.string,
-  banner: PropTypes.string,
-  bannerWebGL: PropTypes.string,
-  bannerLegacyWorkspace: PropTypes.string,
-  legacyWorkspaceLoaded: PropTypes.bool,
-  hasDeprecatedActivityLayersMessage: PropTypes.string,
-  bannerEdge: PropTypes.string
+  welcomeModalUrl: PropTypes.string
 };
 
 
