@@ -127,7 +127,6 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
     const feature = findFeature(features, null);
     if (feature !== undefined) {
       const metaFields = getFeatureMetaFields(feature.staticLayerId, state, feature.feature);
-
       let fields;
       const properties = feature.feature.properties;
       if (metaFields !== null) {
@@ -136,6 +135,7 @@ export const mapClick = (latitude, longitude, features) => (dispatch, getState) 
           const value = (id === POLYGON_LAYERS_AREA) ? getAreaKm2(feature.feature) : properties[id];
           return {
             title: metaField.label || metaField.id,
+            isLink: metaField.isLink,
             value
           };
         });

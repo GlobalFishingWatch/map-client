@@ -31,6 +31,7 @@ class StaticLayerPopup extends React.Component {
   render() {
     const { workspaceLayers, report, event, toggleCurrentReportPolygon } = this.props;
     const popup = getPopupData(workspaceLayers, report, event);
+    console.log(popup.fields)
     const toggleButtonText = (popup.polygonIsInReport === true) ? 'remove from report' : 'add to report';
     let toggleButtonClassName = classnames(PopupStyles.toggle);
     if (popup.polygonIsInReport === true) {
@@ -46,7 +47,11 @@ class StaticLayerPopup extends React.Component {
             <div key={field.title}>
               <b>{humanizePopupFieldId(field.title)}</b>
               {' '}
-              <span>{field.value}</span>
+              {(field.isLink === true) ? (
+                <a href={field.value}>Click here for more details</a>
+              ) : (
+                <span>{field.value}</span>
+              )}
             </div>
           ))}
         </div >

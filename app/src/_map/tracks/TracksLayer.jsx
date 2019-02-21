@@ -53,7 +53,6 @@ class TracksLayer extends React.Component {
         data: track.data,
         startIndex,
         endIndex,
-        series: track.selectedSeries,
         drawFishingCircles,
         fishingCirclesRadius,
         color: `0x${track.color.substr(1)}`,
@@ -67,7 +66,6 @@ class TracksLayer extends React.Component {
           data: track.data,
           startIndex: highlightTemporalExtentIndexes[0],
           endIndex: highlightTemporalExtentIndexes[1],
-          series: track.selectedSeries,
           drawFishingCircles,
           fishingCirclesRadius,
           color: '0xFFFFFF',
@@ -85,7 +83,6 @@ class TracksLayer extends React.Component {
    *
    * @param data track points data in 'playback form' (ie organized by days)
    * @param extent extent, in day indices
-   * @param series (optional) used to filter points by series
    * @param offset object containing info about the current situation of the map viewport, used to compute screen coords
    * @param drawFishingCircles whether to draw fishing circles or not
    * @param fishingCirclesRadius radius of the fishing circles
@@ -95,7 +92,7 @@ class TracksLayer extends React.Component {
    * @param worldOffset offset to use when a track crosses the dateline (ie 512 to add a second world to the right)
    */
   _drawTrack({
-    data, startIndex, endIndex, series, drawFishingCircles,
+    data, startIndex, endIndex, drawFishingCircles,
     fishingCirclesRadius, color, lineThickness, lineOpacity, worldOffset = 0
   }) {
     const { viewport } = this.props;
@@ -122,9 +119,6 @@ class TracksLayer extends React.Component {
 
       for (let i = 0, len = frame.series.length; i < len; i++) {
         const currentSeries = frame.series[i];
-        if (series && series !== currentSeries) {
-          continue;
-        }
 
         n++;
 
@@ -204,7 +198,6 @@ class TracksLayer extends React.Component {
           data,
           startIndex,
           endIndex,
-          series,
           drawFishingCircles,
           fishingCirclesRadius,
           color,
