@@ -86,7 +86,6 @@ class ActivityLayers extends BaseControl {
     this.props.exportNativeViewport(this._context.viewport);
 
     if (nextProps.viewport.width !== this.props.viewport.width || nextProps.viewport.height !== this.props.viewport.height) {
-      console.log(nextProps.viewport.height)
       this._updateViewportSize(nextProps.viewport.width, nextProps.viewport.height);
     }
   }

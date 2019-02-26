@@ -22,6 +22,55 @@ const setMapStyle = style => ({
   payload: style
 });
 
+export const applyTemporalExtent = temporalExtent => (dispatch, getState) => {
+  const state = getState().map.style;
+  let style = state.mapStyle;
+  const currentStyle = style.toJS();
+  const glLayers = currentStyle.layers;
+
+  const start = Math.round(temporalExtent[0].getTime() / 1000);
+  const end = Math.round(temporalExtent[1].getTime() / 1000);
+
+  for (let i = 0; i < glLayers.length; i++) {
+    const glLayer = glLayers[i];
+    if (glLayer.metadata === undefined || glLayer.metadata['gfw:temporal'] !== true) {
+      continue;
+    }
+
+    // if layer is temporal, a filter must always be preset on the style.json object
+    // because each layer can have a different time field to be filtered
+    const currentFilter = style.getIn(['layers', i, 'filter']).toJS();
+    if (currentFilter === null) {
+      throw new Error('filter must be preset on style.json for temporal layer: ', glLayer.id)
+    }
+    currentFilter[1][2] = start;
+    currentFilter[2][2] = end;
+    style = style.setIn(['layers', i, 'filter'], fromJS(currentFilter));
+  }
+  dispatch(setMapStyle(style));
+};
+
+const applyLayerFilters = (style, refLayer, currentGlLayer, glLayerIndex) => {
+  const isTemporal = currentGlLayer.metadata !== undefined && currentGlLayer.metadata['gfw:temporal'] === true;
+
+  if (refLayer.filters === undefined) {
+    if (isTemporal === true) {
+      // only keep temporal part and clean up custom filters
+      // if layer is temporal, extract the time filter part first
+      const currentFilter = currentGlLayer.filter.slice(0, 3)
+      return style.setIn(['layers', glLayerIndex, 'filter'], fromJS(currentFilter));
+    } else if (currentGlLayer.filter !== undefined) {
+      return style.deleteIn(['layers', glLayerIndex, 'filter']);
+    }
+    return style;
+  }
+
+  // if layer is temporal, extract the time filter part first
+  const currentFilter = (isTemporal) ? currentGlLayer.filter.slice(0, 3) : ['all'];
+  const newFilter = currentFilter.concat(refLayer.filters);
+  return style.setIn(['layers', glLayerIndex, 'filter'], fromJS(newFilter));
+}
+
 const toggleLayerVisibility = (style, refLayer, glLayerIndex) => {
   const visibility = (refLayer.visible === true) ? 'visible' : 'none';
   return style.setIn(['layers', glLayerIndex, 'layout', 'visibility'], visibility);
@@ -107,6 +156,8 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
       break;
     }
   }
+
+  newStyle = applyLayerFilters(newStyle, refLayer, glLayer, glLayerIndex);
 
   return newStyle;
 };
@@ -313,28 +364,6 @@ export const commitStyleUpdates = (staticLayers, basemapLayers) => (dispatch, ge
     dispatch(instanciateCartoLayers(cartoLayersToInstanciate));
   }
 
-  dispatch(setMapStyle(style));
-};
-
-export const applyTemporalExtent = temporalExtent => (dispatch, getState) => {
-  const state = getState().map.style;
-  let style = state.mapStyle;
-  const currentStyle = style.toJS();
-  const glLayers = currentStyle.layers;
-
-  const start = Math.round(temporalExtent[0].getTime() / 1000);
-  const end = Math.round(temporalExtent[1].getTime() / 1000);
-
-  for (let i = 0; i < glLayers.length; i++) {
-    const glLayer = glLayers[i];
-    if (glLayer.metadata === undefined || glLayer.metadata['gfw:temporal'] !== true) {
-      continue;
-    }
-    const currentFilter = style.getIn(['layers', i, 'filter']).toJS();
-    currentFilter[1][2] = start;
-    currentFilter[2][2] = end;
-    style = style.setIn(['layers', i, 'filter'], fromJS(currentFilter));
-  }
   dispatch(setMapStyle(style));
 };
 
