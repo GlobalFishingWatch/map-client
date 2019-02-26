@@ -1,3 +1,5 @@
+import geojsonExtent from '@mapbox/geojson-extent';
+import { lngLatToWorld } from 'viewport-mercator-project';
 import {
   getTilePromises,
   getCleanVectorArrays,
@@ -13,7 +15,42 @@ export const ADD_TRACK_DATA = 'ADD_TRACK_DATA';
 export const REMOVE_TRACK = 'REMOVE_TRACK';
 export const UPDATE_TRACK_STYLE = 'UPDATE_TRACK_STYLE';
 
-const getTrackBounds = (data, addOffset = false) => {
+const getTrackDataParsed = (geojson) => {
+  const time = { start: Infinity, end: 0 };
+  const tracks = geojson.features.reduce((acc, feature) => {
+    const hasTimes = feature.properties.coordinatesProperties.times && feature.properties.coordinatesProperties.times.length > 0;
+    if (hasTimes) {
+      feature.properties.coordinatesProperties.times.forEach((datetime) => {
+        if (datetime < time.start) {
+          time.start = datetime;
+        } else if (datetime > time.end) {
+          time.end = datetime;
+        }
+      });
+    }
+    const items = feature.geometry.coordinates.map((coordinate, i) => {
+      const [worldX, worldY] = lngLatToWorld([coordinate[0], coordinate[1]], 1);
+      const timestamp = feature.properties.coordinatesProperties.times[i];
+      return {
+        worldX,
+        worldY,
+        timestamp
+      };
+    });
+    if (feature.properties.type === 'track') {
+      acc.lines.push(items);
+    } else if (feature.properties.type === 'fishing') {
+      acc.points.push(items);
+    }
+  }, { lines: [], points: [] });
+  return {
+    tracks,
+    geoBounds: geojsonExtent(geojson),
+    timelineBounds: [time.start, time.end]
+  };
+};
+
+const getOldTrackBoundsFormat = (data, addOffset = false) => {
   const time = {
     start: Infinity,
     end: 0
@@ -54,7 +91,7 @@ const getTrackBounds = (data, addOffset = false) => {
 
   // track crosses the antimeridian
   if (geo.maxLng - geo.minLng > 350 && addOffset === false) {
-    return getTrackBounds(data, true);
+    return getOldTrackBoundsFormat(data, true);
   }
 
   return {
@@ -63,12 +100,11 @@ const getTrackBounds = (data, addOffset = false) => {
   };
 };
 
-function loadTrack({ id, url, layerTemporalExtents, color }) {
+function loadTrack({ id, url, type, layerTemporalExtents, color }) {
   return (dispatch, getState) => {
 
     const state = getState();
     const loaderID = startLoader(dispatch, state);
-    const token = state.map.module.token;
 
     if (state.map.tracks.find(t => t.id === id)) {
       return;
@@ -81,39 +117,63 @@ function loadTrack({ id, url, layerTemporalExtents, color }) {
         color
       }
     });
+    // Deprecated param, not used anymore in geojson format so using it as a flag
+    // to be removed one day
+    if (type !== 'geojson') {
+      const token = state.map.module.token;
+      const promises = getTilePromises(url, token, layerTemporalExtents, { seriesgroup: id });
 
-    const promises = getTilePromises(url, token, layerTemporalExtents, { seriesgroup: id });
+      Promise.all(promises.map(p => p.catch(e => e)))
+        .then((rawTileData) => {
+          const cleanData = getCleanVectorArrays(rawTileData);
 
-    Promise.all(promises.map(p => p.catch(e => e)))
-      .then((rawTileData) => {
-        const cleanData = getCleanVectorArrays(rawTileData);
-
-        if (!cleanData.length) {
-          return;
-        }
-        const rawTrackData = groupData(cleanData, [
-          'latitude',
-          'longitude',
-          'datetime',
-          'series',
-          'weight',
-          'sigma'
-        ]);
-
-        const vectorArray = addTracksPointsRenderingData(rawTrackData);
-        const bounds = getTrackBounds(rawTrackData);
-
-        dispatch({
-          type: ADD_TRACK_DATA,
-          payload: {
-            id,
-            data: getTracksPlaybackData(vectorArray),
-            geoBounds: bounds.geo,
-            timelineBounds: bounds.time
+          if (!cleanData.length) {
+            return;
           }
+          const rawTrackData = groupData(cleanData, [
+            'latitude',
+            'longitude',
+            'datetime',
+            'series',
+            'weight',
+            'sigma'
+          ]);
+
+          const vectorArray = addTracksPointsRenderingData(rawTrackData);
+          const bounds = getOldTrackBoundsFormat(rawTrackData);
+
+          dispatch({
+            type: ADD_TRACK_DATA,
+            payload: {
+              id,
+              data: getTracksPlaybackData(vectorArray),
+              geoBounds: bounds.geo,
+              timelineBounds: bounds.time
+            }
+          });
+          dispatch(completeLoader(loaderID));
         });
-        dispatch(completeLoader(loaderID));
-      });
+    } else {
+      fetch(url)
+        .then((res) => {
+          if (res.status >= 400) throw new Error(res.statusText);
+          return res.json();
+        })
+        .then((data) => {
+          const dataparsed = getTrackDataParsed(data);
+          dispatch({
+            type: ADD_TRACK_DATA,
+            payload: {
+              id,
+              data: dataparsed.tracks,
+              geoBounds: dataparsed.geoBounds,
+              timelineBounds: dataparsed.timelineBounds
+            }
+          });
+        })
+        .catch(err => console.warn(err))
+        .finally(() => dispatch(completeLoader(loaderID)));
+    }
   };
 }
 

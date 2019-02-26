@@ -61,7 +61,7 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
 export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
   const state = getState();
   const vp = fitBounds({
-    bounds: [[trackBounds.minLng, trackBounds.minLat], [trackBounds.maxLng, trackBounds.maxLat]],
+    bounds: [[trackBounds[3], trackBounds[2]], [trackBounds[0], trackBounds[1]]],
     width: state.map.viewport.viewport.width,
     height: state.map.viewport.viewport.height,
     padding: 50
