@@ -106,6 +106,10 @@ class MapModule extends React.Component {
       store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
 
+    if (this.props.tracks !== undefined) {
+      store.dispatch(updateTracks(this.props.tracks));
+    }
+
     // Now trigger async actions
 
     if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
