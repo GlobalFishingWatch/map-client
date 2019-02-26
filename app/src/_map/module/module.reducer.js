@@ -1,14 +1,20 @@
-import {
-  INIT_MODULE,
-  START_LOADER,
-  COMPLETE_LOADER
-} from './module.actions';
+import PropTypes from 'prop-types';
+import withReducerTypes from '../utils/withReducerTypes';
+import { INIT_MODULE, START_LOADER, COMPLETE_LOADER } from './module.actions';
 
 const initialState = {
-  loaders: []
+  loaders: null,
+  token: undefined,
+  onViewportChange: undefined,
+  onHover: undefined,
+  onClick: undefined,
+  onLoadStart: undefined,
+  onLoadComplete: undefined,
+  onClosePopup: undefined,
+  onAttributionsChange: undefined
 };
 
-export default function (state = initialState, action) {
+const moduleReducer = (state = initialState, action) => {
   switch (action.type) {
     case INIT_MODULE: {
       return {
@@ -33,4 +39,18 @@ export default function (state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+const moduleTypes = PropTypes.exact({
+  loaders: PropTypes.arrayOf(PropTypes.number),
+  token: PropTypes.string,
+  onViewportChange: PropTypes.func,
+  onHover: PropTypes.func,
+  onClick: PropTypes.func,
+  onLoadStart: PropTypes.func,
+  onLoadComplete: PropTypes.func,
+  onClosePopup: PropTypes.func,
+  onAttributionsChange: PropTypes.func
+});
+
+export default withReducerTypes('module', moduleTypes)(moduleReducer);
