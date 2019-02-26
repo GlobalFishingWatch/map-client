@@ -6,7 +6,6 @@ import ExpandButton from 'components/Shared/ExpandButton';
 
 import infoPanelStyles from 'styles/components/info-panel.scss';
 import buttonCloseStyles from 'styles/components/button-close.scss';
-import iconStyles from 'styles/icons.scss';
 
 import IconButton from 'src/components/Shared/IconButton';
 import CloseIcon from '-!babel-loader!svg-react-loader!assets/icons/close.svg?name=Icon';
@@ -33,7 +32,7 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const { vesselInfo, status } = this.props;
+    const { vesselInfo, status, warningLiteral } = this.props;
 
     if (status !== INFO_STATUS.LOADING && vesselInfo === null) {
       return null;
@@ -89,6 +88,11 @@ class VesselInfoPanel extends Component {
               <div onClick={this.props.targetVessel}>
                 <IconButton icon="target" disabled={vesselInfo.hasTrack !== true} />
               </div>
+              {vesselInfo.comment &&
+                <div onClick={() => this.props.showWarning(vesselInfo.comment)}>
+                  <IconButton icon="alert" title={warningLiteral} />
+                </div>
+              }
             </div>
           </div>
           {vesselInfo.parentEncounter !== null
@@ -136,6 +140,7 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
+  warningLiteral: PropTypes.string,
   vesselInfo: PropTypes.object,
   layerFieldsHeaders: PropTypes.array,
   layerIsPinable: PropTypes.bool,
@@ -144,6 +149,7 @@ VesselInfoPanel.propTypes = {
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
   login: PropTypes.func,
+  showWarning: PropTypes.func.isRequired,
   showParentEncounter: PropTypes.func,
   targetVessel: PropTypes.func
 };

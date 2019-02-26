@@ -6,9 +6,10 @@ import IconButtonStyles from 'src/components/Shared/IconButton.scss';
 
 class IconButton extends Component {
   render() {
-    const { icon, activated, disabled, label } = this.props;
+    const { icon, activated, disabled, label, title } = this.props;
     return (<div className={IconButtonStyles.iconButton} >
       <button
+        title={title}
         className={classnames(IconButtonStyles.button, {
           [IconButtonStyles._activated]: activated,
           [IconButtonStyles._disabled]: disabled
@@ -26,6 +27,7 @@ class IconButton extends Component {
 IconButton.propTypes = {
   icon: PropTypes.string,
   label: PropTypes.string,
+  title: PropTypes.string,
   activated: PropTypes.bool,
   disabled: PropTypes.bool
 };

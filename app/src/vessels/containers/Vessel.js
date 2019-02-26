@@ -8,12 +8,21 @@ import {
   targetVessel
 } from 'vesselInfo/vesselInfoActions';
 import { highlightTrack } from 'tracks/tracksActions';
+import { setNotification } from 'src/notifications/notificationsActions';
 
 const mapStateToProps = state => ({
+  warningLiteral: state.literals.vessel_warning,
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel
 });
 
 const mapDispatchToProps = dispatch => ({
+  showWarning(content) {
+    dispatch(setNotification({
+      visible: true,
+      type: 'warning',
+      content
+    }));
+  },
   toggle(seriesgroup) {
     dispatch(togglePinnedVesselVisibility(seriesgroup));
   },
