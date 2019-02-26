@@ -24,7 +24,9 @@ const moduleReducer = (state = initialState, action) => {
     }
 
     case START_LOADER: {
-      const loaders = [...state.loaders];
+      const loaders = state.loaders !== null
+        ? [...state.loaders]
+        : [];
       loaders.push(action.payload);
       return { ...state, loaders };
     }
