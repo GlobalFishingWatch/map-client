@@ -101,7 +101,29 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
         .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color);
 
       let fillColor = GL_TRANSPARENT;
+
+      /*
+      [
+        'match',
+        ['get', 'reporting_id'],
+        'lala',
+        blue,
+        'sadasd',
+        blue,
+        red
+      ]
+
+      PAINT_PROPERTY: [
+        'match',
+        ['get', FIELD],
+        ['VALUE_1','VALUE_N'],
+        PAINT_PROPERTY_SELECTED_VALUE,
+        PAINT_PROPERTY_DEFAULT_VALUE
+      ]
+      */
+
       if (refLayer.selectedPolygons !== null && refLayer.selectedPolygons.values.length) {
+        // TODO WHY NOT USING fill-opacity ???
         const selectedFillColor = hexToRgba(refLayer.color, 0.5);
         fillColor = [
           'match',
