@@ -49,7 +49,13 @@ const tracksTypes = {
     type: PropTypes.oneOf(['geojson', undefined]),
     color: PropTypes.string,
     data: PropTypes.object,
-    geoBounds: PropTypes.array,
+    geoBounds: PropTypes.exact({
+      minLat: PropTypes.string,
+      minLng: PropTypes.string,
+      maxLat: PropTypes.string,
+      maxLng: PropTypes.string
+    }),
+    fitBoundsOnLoad: PropTypes.bool,
     timelineBounds: PropTypes.array
   }))
 };

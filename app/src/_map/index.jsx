@@ -10,8 +10,8 @@ import debounce from 'lodash/debounce';
 import Map from './glmap/Map.container';
 import { initModule, setTemporalExtend } from './module/module.actions';
 import {
+  fitToBounds,
   updateViewport,
-  fitBoundsToTrack,
   transitionToZoom
 } from './glmap/viewport.actions';
 import {
@@ -222,7 +222,8 @@ MapModule.propTypes = {
     id: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    color: PropTypes.string
+    color: PropTypes.string,
+    fitBoundsOnLoad: PropTypes.bool
   })),
   heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -298,11 +299,10 @@ MapModule.propTypes = {
 export default MapModule;
 
 export const targetMapVessel = (id) => {
-  const track = store.getState().map.tracks.find(t =>
+  const track = store.getState().map.tracks.data.find(t =>
     t.id === id.toString()
   );
-
-  store.dispatch(fitBoundsToTrack(track.geoBounds));
+  store.dispatch(fitToBounds(track.geoBounds));
 
   return track.timelineBounds;
 };

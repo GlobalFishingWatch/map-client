@@ -58,10 +58,10 @@ export const zoomIntoVesselCenter = (latitude, longitude) => (dispatch) => {
   dispatch(transitionTo(CLUSTER_CLICK_ZOOM_INCREMENT, latitude, longitude));
 };
 
-export const fitBoundsToTrack = trackBounds => (dispatch, getState) => {
+export const fitToBounds = bounds => (dispatch, getState) => {
   const state = getState();
   const vp = fitBounds({
-    bounds: [[trackBounds[3], trackBounds[2]], [trackBounds[0], trackBounds[1]]],
+    bounds: [[bounds.minLng, bounds.minLat], [bounds.maxLng, bounds.maxLat]],
     width: state.map.viewport.viewport.width,
     height: state.map.viewport.viewport.height,
     padding: 50

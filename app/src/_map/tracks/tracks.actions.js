@@ -1,4 +1,5 @@
-import geojsonExtent from '@mapbox/geojson-extent';
+import tbbox from '@turf/bbox';
+import { targetMapVessel } from '../index';
 
 import {
   getTilePromises,
@@ -29,9 +30,16 @@ const getTrackDataParsed = (geojson) => {
       }
     });
   }
+  const bounds = tbbox(geojson);
+  const geoBounds = {
+    minLat: bounds[3],
+    minLng: bounds[0],
+    maxLat: bounds[1],
+    maxLng: bounds[2]
+  };
   return {
     geojson,
-    geoBounds: geojsonExtent(geojson),
+    geoBounds,
     timelineBounds: [time.start, time.end]
   };
 };
@@ -87,7 +95,7 @@ const getOldTrackBoundsFormat = (data, addOffset = false) => {
   };
 };
 
-function loadTrack({ id, url, type, layerTemporalExtents, color }) {
+function loadTrack({ id, url, type, fitBoundsOnLoad, layerTemporalExtents, color }) {
   return (dispatch, getState) => {
 
     const state = getState();
@@ -101,7 +109,8 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
       payload: {
         id,
         type,
-        color
+        color,
+        fitBoundsOnLoad
       }
     });
     if (type !== 'geojson') {
@@ -156,6 +165,9 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
               timelineBounds
             }
           });
+          if (fitBoundsOnLoad) {
+            targetMapVessel(id);
+          }
         })
         .catch(err => console.warn(err))
         .finally(() => dispatch(completeLoader(loaderID)));
