@@ -56,7 +56,8 @@ const composeEnhancersDev = composeWithDevTools({
   stateSanitizer: state => ({ ...state, map: { ...state.map, heatmap: 'NOT_SERIALIZED' } })
 });
 
-const composeEnhancers = process.env.NODE_ENV === 'development'
+// TODO: include env var when module is in gfw-components
+const composeEnhancers = false && process.env.NODE_ENV === 'development'
   ? composeEnhancersDev
   : compose;
 

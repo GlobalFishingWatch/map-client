@@ -54,27 +54,38 @@ export const getTracksStyles = createSelector(
       start: temporalExtent[0].getTime(),
       end: temporalExtent[1].getTime()
     };
-    const styles = tracks.reduce((acc, layer) => {
-      if (!layer.data) return acc;
+    const styles = tracks.reduce((acc, track) => {
+      if (!track.data) return acc;
 
-      const source = `${layer.id}Track`;
+      const source = `${track.id}Track`;
       const style = {
         sources: {
           [source]: {
             type: 'geojson',
-            data: filterGeojsonByTimerange(layer.data, timerange)
+            data: filterGeojsonByTimerange(track.data, timerange)
           }
         },
         layers: [
           {
-            id: layer.id,
+            id: `${track.id}Lines`,
             source,
             type: 'line',
             interactive: true,
             layout: {},
             paint: {
               'line-width': 1,
-              'line-color': '#fff'
+              'line-color': track.color
+            }
+          },
+          {
+            id: `${track.id}Points`,
+            source,
+            type: 'circle',
+            interactive: true,
+            layout: {},
+            paint: {
+              'circle-radius': 4,
+              'circle-color': track.color
             }
           }
         ]
