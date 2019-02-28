@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { composeWithDevTools } from 'remote-redux-devtools';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
@@ -45,11 +47,25 @@ const mapReducer = combineReducers({
   interaction: InteractionReducer
 });
 
+const composeEnhancersDev = composeWithDevTools({
+  name: 'Map module',
+  realtime: true,
+  hostname: 'localhost',
+  port: 8000,
+  maxAge: 30,
+  stateSanitizer: state => ({ ...state, map: { ...state.map, heatmap: 'NOT_SERIALIZED' } })
+});
+
+const composeEnhancers = process.env.NODE_ENV === 'development'
+  ? composeEnhancersDev
+  : compose;
+
 const store = createStore(
   combineReducers({
     map: mapReducer
   }),
-  applyMiddleware(thunk)
+  {},
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 
