@@ -1,5 +1,5 @@
 import geojsonExtent from '@mapbox/geojson-extent';
-import { lngLatToWorld } from 'viewport-mercator-project';
+
 import {
   getTilePromises,
   getCleanVectorArrays,
@@ -9,47 +9,34 @@ import {
 } from '../utils/heatmapTileData';
 import { startLoader, completeLoader } from '../module/module.actions';
 
-
 export const ADD_TRACK = 'ADD_TRACK';
-export const ADD_TRACK_DATA = 'ADD_TRACK_DATA';
+export const UPDATE_TRACK = 'UPDATE_TRACK';
 export const REMOVE_TRACK = 'REMOVE_TRACK';
-export const UPDATE_TRACK_STYLE = 'UPDATE_TRACK_STYLE';
 
 const getTrackDataParsed = (geojson) => {
   const time = { start: Infinity, end: 0 };
-  const tracks = geojson.features.reduce((acc, feature) => {
-    const hasTimes = feature.properties.coordinatesProperties.times && feature.properties.coordinatesProperties.times.length > 0;
-    if (hasTimes) {
-      feature.properties.coordinatesProperties.times.forEach((datetime) => {
-        if (datetime < time.start) {
-          time.start = datetime;
-        } else if (datetime > time.end) {
-          time.end = datetime;
-        }
-      });
-    }
-    const items = feature.geometry.coordinates.map((coordinate, i) => {
-      const [worldX, worldY] = lngLatToWorld([coordinate[0], coordinate[1]], 1);
-      const timestamp = feature.properties.coordinatesProperties.times[i];
-      return {
-        worldX,
-        worldY,
-        timestamp
-      };
+  if (geojson && geojson.features) {
+    geojson.features.forEach((feature) => {
+      const hasTimes = feature.properties.coordinateProperties.times && feature.properties.coordinateProperties.times.length > 0;
+      if (hasTimes) {
+        feature.properties.coordinateProperties.times.forEach((datetime) => {
+          if (datetime < time.start) {
+            time.start = datetime;
+          } else if (datetime > time.end) {
+            time.end = datetime;
+          }
+        });
+      }
     });
-    if (feature.properties.type === 'track') {
-      acc.lines.push(items);
-    } else if (feature.properties.type === 'fishing') {
-      acc.points.push(items);
-    }
-  }, { lines: [], points: [] });
+  }
   return {
-    tracks,
+    geojson,
     geoBounds: geojsonExtent(geojson),
     timelineBounds: [time.start, time.end]
   };
 };
 
+// Deprecated tracks format parsing
 const getOldTrackBoundsFormat = (data, addOffset = false) => {
   const time = {
     start: Infinity,
@@ -105,8 +92,7 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
 
     const state = getState();
     const loaderID = startLoader(dispatch, state);
-
-    if (state.map.tracks.find(t => t.id === id)) {
+    if ((state.map.tracks.data).find(t => t.id === id)) {
       return;
     }
 
@@ -114,12 +100,12 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
       type: ADD_TRACK,
       payload: {
         id,
+        type,
         color
       }
     });
-    // Deprecated param, not used anymore in geojson format so using it as a flag
-    // to be removed one day
     if (type !== 'geojson') {
+      // Deprecated tracks format logic to be deleted some day
       const token = state.map.module.token;
       const promises = getTilePromises(url, token, layerTemporalExtents, { seriesgroup: id });
 
@@ -143,7 +129,7 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
           const bounds = getOldTrackBoundsFormat(rawTrackData);
 
           dispatch({
-            type: ADD_TRACK_DATA,
+            type: UPDATE_TRACK,
             payload: {
               id,
               data: getTracksPlaybackData(vectorArray),
@@ -160,14 +146,14 @@ function loadTrack({ id, url, type, layerTemporalExtents, color }) {
           return res.json();
         })
         .then((data) => {
-          const dataparsed = getTrackDataParsed(data);
+          const { geojson, geoBounds, timelineBounds } = getTrackDataParsed(data);
           dispatch({
-            type: ADD_TRACK_DATA,
+            type: UPDATE_TRACK,
             payload: {
               id,
-              data: dataparsed.tracks,
-              geoBounds: dataparsed.geoBounds,
-              timelineBounds: dataparsed.timelineBounds
+              data: geojson,
+              geoBounds,
+              timelineBounds
             }
           });
         })
@@ -185,7 +171,7 @@ const removeTrack = trackId => ({
 });
 
 export const updateTracks = newTracks => (dispatch, getState) => {
-  const prevTracks = getState().map.tracks;
+  const prevTracks = getState().map.tracks.data;
   // add and update layers
   newTracks.forEach((newTrack) => {
     const trackId = newTrack.id;
@@ -196,7 +182,7 @@ export const updateTracks = newTracks => (dispatch, getState) => {
       prevTrack.color !== newTrack.color
     ) {
       dispatch({
-        type: UPDATE_TRACK_STYLE,
+        type: UPDATE_TRACK,
         payload: {
           id: newTrack.id,
           color: newTrack.color
