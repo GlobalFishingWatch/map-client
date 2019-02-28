@@ -236,7 +236,7 @@ MapModule.propTypes = {
     id: PropTypes.string.isRequired,
     // TODO MAP MODULE Is that needed and if so why
     visible: PropTypes.bool,
-    selectedPolygons: PropTypes.shape({
+    selectedFeatures: PropTypes.shape({
       field: PropTypes.string,
       values: PropTypes.arrayOf(PropTypes.string)
     }),

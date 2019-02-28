@@ -179,9 +179,17 @@ Object. Defines which features will appear selected on the map. The default appe
   }
 ```
 
+### `staticLayer.selected`
+
+Boolean. If set to true, overrides any provided `selectedFeatures` and applies selected style to the whole layer.
+
 ### `staticLayer.highlightedFeatures`
 
 Object. Defines which features will appear highlighted (ie on mouse hover) on the map. See `staticLayer.selectedFeatures` above for parameters.
+
+### `staticLayer.highlighted`
+
+Boolean. If set to true, overrides any provided `highlightedFeatures` and applies higlighted style to the whole layer.
 
 
 ### `staticLayer.interactive`

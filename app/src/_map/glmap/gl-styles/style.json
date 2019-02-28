@@ -9,20 +9,16 @@
       { "id": "graticules", "isOption": true },
       { "id": "bathymetry", "isOption": true }
     ],
-    "gfw:default-styles": {
-      "select": {
+    "gfw:styles": {
+      "selected": {
         "fill": {
           "fill-color": [
-            "rgba($REFLAYER_COLOR_RGB, 1)",
+            "rgba($REFLAYER_COLOR_RGB, 0.5)",
             "rgba(0,0,0,0)"
-          ],
-          "fill-opacity": [
-            0.5,
-            0
           ]
         }
       },
-      "highlight": {
+      "highlighted": {
         "circle": {
           "circle-stroke-width": [
             3,
