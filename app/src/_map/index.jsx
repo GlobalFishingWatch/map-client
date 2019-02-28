@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import debounce from 'lodash/debounce';
 
 import Map from './glmap/Map.container';
-import { initModule } from './module/module.actions';
+import { initModule, setTemporalExtend } from './module/module.actions';
 import {
   updateViewport,
   fitBoundsToTrack,
@@ -68,8 +68,10 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-
-const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
+const debouncedApplyTemporalExtent = debounce((temporalExtent) => {
+  store.dispatch(applyTemporalExtent(temporalExtent));
+  store.dispatch(setTemporalExtend(temporalExtent));
+}, 100);
 
 const updateViewportFromIncomingProps = (incomingViewport) => {
   store.dispatch(updateViewport({
@@ -281,6 +283,7 @@ MapModule.propTypes = {
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired
   }),
+  glyphsPath: PropTypes.string,
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,

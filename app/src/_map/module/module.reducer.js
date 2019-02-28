@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import withReducerTypes from '../utils/withReducerTypes';
-import { INIT_MODULE, START_LOADER, COMPLETE_LOADER } from './module.actions';
+import { INIT_MODULE, SET_TEMPORAL_EXTENT, START_LOADER, COMPLETE_LOADER } from './module.actions';
 
 const initialState = {
   loaders: null,
   token: undefined,
+  temporalExtent: null,
   onViewportChange: undefined,
   onHover: undefined,
   onClick: undefined,
@@ -20,6 +21,13 @@ const moduleReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload
+      };
+    }
+
+    case SET_TEMPORAL_EXTENT: {
+      return {
+        ...state,
+        temporalExtent: action.payload
       };
     }
 
@@ -43,9 +51,10 @@ const moduleReducer = (state = initialState, action) => {
   }
 };
 
-const moduleTypes = PropTypes.exact({
+const moduleTypes = {
   loaders: PropTypes.arrayOf(PropTypes.number),
   token: PropTypes.string,
+  temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   onViewportChange: PropTypes.func,
   onHover: PropTypes.func,
   onClick: PropTypes.func,
@@ -53,6 +62,6 @@ const moduleTypes = PropTypes.exact({
   onLoadComplete: PropTypes.func,
   onClosePopup: PropTypes.func,
   onAttributionsChange: PropTypes.func
-});
+};
 
 export default withReducerTypes('module', moduleTypes)(moduleReducer);

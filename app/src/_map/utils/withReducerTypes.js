@@ -4,7 +4,7 @@ const withReducerPropTypes = (name, propTypesSchema) => (reducer) => {
   if (process.env.NODE_ENV === 'development') {
     return (state, action) => {
       const result = reducer(state, action);
-      PropTypes.checkPropTypes({ state: propTypesSchema }, { state: result }, 'reducer', name);
+      PropTypes.checkPropTypes(propTypesSchema, result, 'reducer', name);
 
       return result;
     };
