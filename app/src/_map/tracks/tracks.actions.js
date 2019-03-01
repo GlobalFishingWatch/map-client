@@ -182,30 +182,32 @@ const removeTrack = trackId => ({
   }
 });
 
-export const updateTracks = newTracks => (dispatch, getState) => {
+export const updateTracks = (newTracks = []) => (dispatch, getState) => {
   const prevTracks = getState().map.tracks.data;
   // add and update layers
-  newTracks.forEach((newTrack) => {
-    const trackId = newTrack.id;
-    const prevTrack = prevTracks.find(t => t.id === trackId);
-    if (prevTrack === undefined) {
-      dispatch(loadTrack(newTrack));
-    } else if (
-      prevTrack.color !== newTrack.color
-    ) {
-      dispatch({
-        type: UPDATE_TRACK,
-        payload: {
-          id: newTrack.id,
-          color: newTrack.color
-        }
-      });
-    }
-  });
+  if (newTracks) {
+    newTracks.forEach((newTrack) => {
+      const trackId = newTrack.id;
+      const prevTrack = prevTracks.find(t => t.id === trackId);
+      if (prevTrack === undefined) {
+        dispatch(loadTrack(newTrack));
+      } else if (
+        prevTrack.color !== newTrack.color
+      ) {
+        dispatch({
+          type: UPDATE_TRACK,
+          payload: {
+            id: newTrack.id,
+            color: newTrack.color
+          }
+        });
+      }
+    });
+  }
 
   // clean up unused tracks
   prevTracks.forEach((prevTrack) => {
-    if (!newTracks.find(t => t.id === prevTrack.id)) {
+    if (!newTracks || !newTracks.find(t => t.id === prevTrack.id)) {
       dispatch(removeTrack(prevTrack.id));
     }
   });

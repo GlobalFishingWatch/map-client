@@ -50,10 +50,10 @@ const tracksTypes = {
     color: PropTypes.string,
     data: PropTypes.object,
     geoBounds: PropTypes.exact({
-      minLat: PropTypes.string,
-      minLng: PropTypes.string,
-      maxLat: PropTypes.string,
-      maxLng: PropTypes.string
+      minLat: PropTypes.number,
+      minLng: PropTypes.number,
+      maxLat: PropTypes.number,
+      maxLng: PropTypes.number
     }),
     fitBoundsOnLoad: PropTypes.bool,
     timelineBounds: PropTypes.array
