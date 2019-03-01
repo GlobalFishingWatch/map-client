@@ -5,7 +5,7 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 
 import Map from './glmap/Map.container';
 import { initModule, setTemporalExtend } from './module/module.actions';
@@ -69,10 +69,10 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-const debouncedApplyTemporalExtent = debounce((temporalExtent) => {
+const throttleApplyTemporalExtent = throttle((temporalExtent) => {
   store.dispatch(applyTemporalExtent(temporalExtent));
   store.dispatch(setTemporalExtend(temporalExtent));
-}, 100);
+}, 16);
 
 const updateViewportFromIncomingProps = (incomingViewport) => {
   store.dispatch(updateViewport({
@@ -132,7 +132,7 @@ class MapModule extends React.Component {
     // Now trigger async actions
 
     if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
-      debouncedApplyTemporalExtent(this.props.temporalExtent);
+      throttleApplyTemporalExtent(this.props.temporalExtent);
     }
 
     // eslint-disable-next-line react/no-did-mount-set-state
@@ -176,7 +176,7 @@ class MapModule extends React.Component {
         this.props.temporalExtent[0].getTime() !== prevProps.temporalExtent[0].getTime() ||
         this.props.temporalExtent[1].getTime() !== prevProps.temporalExtent[1].getTime()
       ) {
-        debouncedApplyTemporalExtent(this.props.temporalExtent);
+        throttleApplyTemporalExtent(this.props.temporalExtent);
       }
     }
 
