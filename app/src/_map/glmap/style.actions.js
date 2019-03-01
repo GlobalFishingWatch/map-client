@@ -88,7 +88,6 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
               (typeof selectedValue !== 'string') ? selectedValue : selectedValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment),
               (typeof fallbackValue !== 'string') ? fallbackValue : fallbackValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment)
             ];
-
           newStyle = newStyle
             .setIn(['layers', glLayerIndex, 'paint', glPaintProperty], glPaintFinalValue);
         });
@@ -155,7 +154,9 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color)
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius']);
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius'])
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-color'], initialGLLayer.paint['circle-stroke-color'] || '#000')
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-width'], initialGLLayer.paint['circle-stroke-width'] || 1);
       break;
     }
     case 'raster': {

@@ -16,13 +16,27 @@
             "rgba($REFLAYER_COLOR_RGB, 0.5)",
             "rgba(0,0,0,0)"
           ]
+        },
+        "circle": {
+          "circle-stroke-width": [
+            "visible",
+            "none"
+          ],
+          "circle-radius": [
+            15,
+            0
+          ]
         }
       },
       "highlighted": {
         "circle": {
           "circle-stroke-width": [
-            3,
+            2,
             0
+          ],
+          "circle-stroke-color": [
+            "#fff",
+            "#000"
           ]
         }
       }
@@ -476,19 +490,7 @@
       "source": "events_fishing",
       "source-layer": "default",
       "metadata": {
-        "gfw:temporal": true,
-        "gfw:styles": {
-          "selected": {
-            "circle-radius": [
-              15,
-              0
-            ],
-            "circle-opacity": [
-              1,
-              0
-            ]
-          }
-        }
+        "gfw:temporal": true
       },
       "layout": {
         "visibility": "none"
@@ -506,19 +508,7 @@
       "source": "events_encounter",
       "source-layer": "default",
       "metadata": {
-        "gfw:temporal": true,
-        "gfw:styles": {
-          "selected": {
-            "circle-radius": [
-              15,
-              0
-            ],
-            "circle-opacity": [
-              1,
-              0
-            ]
-          }
-        }
+        "gfw:temporal": true
       },
       "layout": {
         "visibility": "none"
@@ -536,19 +526,7 @@
       "source": "events_gap",
       "source-layer": "default",
       "metadata": {
-        "gfw:temporal": true,
-        "gfw:styles": {
-          "selected": {
-            "circle-radius": [
-              15,
-              0
-            ],
-            "circle-opacity": [
-              1,
-              0
-            ]
-          }
-        }
+        "gfw:temporal": true
       },
       "layout": {
         "visibility": "none"
@@ -566,19 +544,7 @@
       "source": "events_port",
       "source-layer": "default",
       "metadata": {
-        "gfw:temporal": true,
-        "gfw:styles": {
-          "selected": {
-            "circle-radius": [
-              15,
-              0
-            ],
-            "circle-opacity": [
-              1,
-              0
-            ]
-          }
-        }
+        "gfw:temporal": true
       },
       "layout": {
         "visibility": "none"
