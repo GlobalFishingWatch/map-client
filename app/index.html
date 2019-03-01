@@ -99,5 +99,12 @@ if(window.attachEvent) { window.attachEvent('onload', async_load); }
 else { window.addEventListener('load', async_load, false); }
 })();
 </script>
+<script src="//d.bablic.com/snippet/5c76e669cd0fe00001dc6aa4.js?version=3.9"></script>
+<script>
+  // Hide selector until map is loaded, will be shown in map componentDidMount
+  if (bablic !== undefined && bablic.widget && typeof bablic.widget.hide === 'function') {
+    bablic.widget.hide();
+  }
+</script>
 </body>
 </html>
