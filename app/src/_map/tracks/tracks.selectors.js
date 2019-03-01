@@ -82,6 +82,7 @@ export const getTracksStyles = createSelector(
             source,
             type: 'circle',
             interactive: true,
+            filter: ['match', ['geometry-type'], ['', 'Point'], true, false],
             layout: {},
             paint: {
               'circle-radius': 4,
