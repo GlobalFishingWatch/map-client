@@ -36,10 +36,6 @@ const mapDispatchToProps = dispatch => ({
   },
   setSubmenu: (submenuName) => {
     dispatch(setSubmenu(submenuName));
-    // Hides language selector on first interaction with the right menu
-    if (bablic !== undefined && bablic.widget && typeof bablic.widget.hide === 'function') {
-      bablic.widget.hide();
-    }
   }
 });
 

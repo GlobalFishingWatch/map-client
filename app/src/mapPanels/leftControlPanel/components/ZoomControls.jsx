@@ -3,6 +3,7 @@ import React from 'react';
 import classnames from 'classnames';
 import MapStyles from 'styles/components/map.scss';
 import iconStyles from 'styles/icons.scss';
+import LanguageSelector from 'src/components/Shared/LanguageSelector';
 import Icon from 'src/components/Shared/Icon';
 import ZoomInIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-in.svg?name=ZoomInIcon';
 import ZoomOutIcon from '-!babel-loader!svg-react-loader!assets/icons/zoom-out.svg?name=ZoomOutIcon';
@@ -28,6 +29,7 @@ function ZoomControls({ canShareWorkspaces, openShareModal, canZoomIn, canZoomOu
       <span className={MapStyles.control} id="share_map" onClick={openShareModal} >
         <Icon icon="share" activated />
       </span>}
+      <LanguageSelector />
     </div>
   );
 }

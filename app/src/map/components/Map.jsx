@@ -22,11 +22,6 @@ class Map extends React.Component {
     // there is a problem with the container width computation (only with "fat scrollbar" browser/os configs),
     // seems like the panels with scrollbars are taken into account or smth
     window.setTimeout(() => this._resize(), 10000);
-
-    // Shows the language selector hidden until map load finish
-    if (bablic !== undefined && bablic.widget && typeof bablic.widget.show === 'function') {
-      bablic.widget.show();
-    }
   }
 
   componentWillUnmount() {
