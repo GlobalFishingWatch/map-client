@@ -283,9 +283,6 @@
       "source-layer": "mpant",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -309,9 +306,6 @@
       "source-layer": "mparu",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -335,9 +329,6 @@
       "source-layer": "eez",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -361,9 +352,6 @@
       "source-layer": "highseas",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -387,9 +375,6 @@
       "source-layer": "rfmo",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -413,9 +398,6 @@
       "source-layer": "6",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -439,9 +421,6 @@
       "source-layer": "protectedplanet",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {
@@ -465,9 +444,6 @@
       "source-layer": "falklands_conservation",
       "layout": { 
        "visibility": "none"
-      },
-      "paint": {
-        "fill-color": "rgba(0,0,0,0)"
       }
     },
     {

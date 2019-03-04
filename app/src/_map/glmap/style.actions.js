@@ -1,9 +1,8 @@
 import { fromJS } from 'immutable';
 import { hexToRgb } from '@globalfishingwatch/map-colors';
 import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from '../config';
-import { CUSTOM_LAYERS_SUBTYPES } from '../constants';
+import { CUSTOM_LAYERS_SUBTYPES, GL_TRANSPARENT } from '../constants';
 import getMainGeomType from '../utils/getMainGeomType';
-import GL_STYLE from './gl-styles/style.json';
 
 export const INIT_MAP_STYLE = 'INIT_MAP_STYLE';
 export const SET_MAP_STYLE = 'SET_MAP_STYLE';
@@ -51,6 +50,28 @@ export const applyTemporalExtent = temporalExtent => (dispatch, getState) => {
   dispatch(setMapStyle(style));
 };
 
+const applyLayerFilters = (style, refLayer, currentGlLayer, glLayerIndex) => {
+  const isTemporal = currentGlLayer.metadata !== undefined && currentGlLayer.metadata['gfw:temporal'] === true;
+
+  if (refLayer.filters === undefined) {
+    if (isTemporal === true) {
+      // only keep temporal part and clean up custom filters
+      // if layer is temporal, extract the time filter part first
+      const currentFilter = currentGlLayer.filter.slice(0, 3);
+      return style.setIn(['layers', glLayerIndex, 'filter'], fromJS(currentFilter));
+    } else if (currentGlLayer.filter !== undefined) {
+      return style.deleteIn(['layers', glLayerIndex, 'filter']);
+    }
+    return style;
+  }
+
+  // if layer is temporal, extract the time filter part first
+  const currentFilter = (isTemporal) ? currentGlLayer.filter.slice(0, 3) : ['all'];
+  const newFilter = currentFilter.concat(refLayer.filters);
+  return style.setIn(['layers', glLayerIndex, 'filter'], fromJS(newFilter));
+};
+
+
 const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) => {
   let newStyle = style;
   const currentStyle = style.toJS();
@@ -66,7 +87,8 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
       const layerStyle =
         (metadata &&
           metadata['gfw:styles'] &&
-          metadata['gfw:styles'][styleType]
+          metadata['gfw:styles'][styleType] &&
+          metadata['gfw:styles'][styleType][glType]
         ) || {};
       const allPaintProperties = { ...defaultStyle, ...layerStyle };
       if (Object.keys(allPaintProperties).length) {
@@ -74,8 +96,8 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
         const layerColorRgbFragment = `${layerColorRgb.r},${layerColorRgb.g},${layerColorRgb.b}`;
         // go through each applicable gl paint property
         Object.keys(allPaintProperties).forEach((glPaintProperty) => {
-          const selectedValue = allPaintProperties[glPaintProperty][0];
-          const fallbackValue = allPaintProperties[glPaintProperty][1];
+          const selectedValue = allPaintProperties[glPaintProperty][0].replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment);
+          const fallbackValue = allPaintProperties[glPaintProperty][1].replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment);
           const glPaintFinalValue = (applyStyleToAllFeatures === true) ?
             // if the whole layer is selected or highlighted, the paint value
             // will always be the same for every feature
@@ -85,8 +107,8 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
               'match',
               ['get', features.field],
               features.values,
-              (typeof selectedValue !== 'string') ? selectedValue : selectedValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment),
-              (typeof fallbackValue !== 'string') ? fallbackValue : fallbackValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment)
+              selectedValue,
+              fallbackValue
             ];
           newStyle = newStyle
             .setIn(['layers', glLayerIndex, 'paint', glPaintProperty], glPaintFinalValue);
@@ -110,8 +132,6 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
   const glLayerIndex = currentStyleLayers.findIndex(l => l.id === glLayerId);
   const glLayer = currentStyleLayers.find(l => l.id === glLayerId);
 
-  const initialGLLayer = GL_STYLE.layers.find(l => l.id === glLayerId);
-
   // visibility
   newStyle = toggleLayerVisibility(newStyle, refLayer, glLayerIndex);
 
@@ -127,7 +147,7 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'fill-opacity'], refLayerOpacity)
         .setIn(['layers', glLayerIndex, 'paint', 'fill-outline-color'], refLayer.color)
-        .setIn(['layers', glLayerIndex, 'paint', 'fill-color'], initialGLLayer.paint['fill-color']);
+        .setIn(['layers', glLayerIndex, 'paint', 'fill-color'], GL_TRANSPARENT);
       break;
     }
     case 'line': {
@@ -153,10 +173,10 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
     case 'circle': {
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayerOpacity)
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color)
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius'])
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-color'], initialGLLayer.paint['circle-stroke-color'] || '#000')
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-width'], initialGLLayer.paint['circle-stroke-width'] || 1);
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
+        // .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius'])
+        // .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-color'], initialGLLayer.paint['circle-stroke-color'] || '#000')
+        // .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-width'], initialGLLayer.paint['circle-stroke-width'] || 1);
       break;
     }
     case 'raster': {
@@ -169,6 +189,7 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
     }
   }
 
+  newStyle = applyLayerFilters(newStyle, refLayer, glLayer, glLayerIndex);
   newStyle = applyLayerExpressions(newStyle, refLayer, glLayer, glLayerIndex);
 
   return newStyle;
