@@ -2,6 +2,7 @@ import { fromJS } from 'immutable';
 import { hexToRgb } from '@globalfishingwatch/map-colors';
 import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from '../config';
 import { CUSTOM_LAYERS_SUBTYPES, GL_TRANSPARENT } from '../constants';
+import GL_STYLE from './gl-styles/style.json';
 import getMainGeomType from '../utils/getMainGeomType';
 
 export const INIT_MAP_STYLE = 'INIT_MAP_STYLE';
@@ -68,6 +69,7 @@ const applyLayerFilters = (style, refLayer, currentGlLayer, glLayerIndex) => {
   // if layer is temporal, extract the time filter part first
   const currentFilter = (isTemporal) ? currentGlLayer.filter.slice(0, 3) : ['all'];
   const newFilter = currentFilter.concat(refLayer.filters);
+  console.log(newFilter)
   return style.setIn(['layers', glLayerIndex, 'filter'], fromJS(newFilter));
 };
 
@@ -96,8 +98,8 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
         const layerColorRgbFragment = `${layerColorRgb.r},${layerColorRgb.g},${layerColorRgb.b}`;
         // go through each applicable gl paint property
         Object.keys(allPaintProperties).forEach((glPaintProperty) => {
-          const selectedValue = allPaintProperties[glPaintProperty][0].replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment);
-          const fallbackValue = allPaintProperties[glPaintProperty][1].replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment);
+          const selectedValue = allPaintProperties[glPaintProperty][0];
+          const fallbackValue = allPaintProperties[glPaintProperty][1];
           const glPaintFinalValue = (applyStyleToAllFeatures === true) ?
             // if the whole layer is selected or highlighted, the paint value
             // will always be the same for every feature
@@ -107,8 +109,8 @@ const applyLayerExpressions = (style, refLayer, currentGlLayer, glLayerIndex) =>
               'match',
               ['get', features.field],
               features.values,
-              selectedValue,
-              fallbackValue
+              (typeof selectedValue !== 'string') ? selectedValue : selectedValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment),
+              (typeof fallbackValue !== 'string') ? fallbackValue : fallbackValue.replace('$REFLAYER_COLOR_RGB', layerColorRgbFragment)
             ];
           newStyle = newStyle
             .setIn(['layers', glLayerIndex, 'paint', glPaintProperty], glPaintFinalValue);
@@ -139,6 +141,7 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
     return newStyle;
   }
 
+  const initialGLLayer = GL_STYLE.layers.find(l => l.id === glLayerId);
   const refLayerOpacity = (refLayer.opacity === undefined) ? 1 : refLayer.opacity;
 
   // color/opacity
@@ -173,10 +176,10 @@ const updateGLLayer = (style, glLayerId, refLayer) => {
     case 'circle': {
       newStyle = newStyle
         .setIn(['layers', glLayerIndex, 'paint', 'circle-opacity'], refLayerOpacity)
-        .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color);
-        // .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius'])
-        // .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-color'], initialGLLayer.paint['circle-stroke-color'] || '#000')
-        // .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-width'], initialGLLayer.paint['circle-stroke-width'] || 1);
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-color'], refLayer.color)
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-radius'], initialGLLayer.paint['circle-radius'])
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-color'], initialGLLayer.paint['circle-stroke-color'] || '#000')
+        .setIn(['layers', glLayerIndex, 'paint', 'circle-stroke-width'], initialGLLayer.paint['circle-stroke-width'] || 1);
       break;
     }
     case 'raster': {

@@ -236,7 +236,13 @@ MapModule.propTypes = {
     id: PropTypes.string.isRequired,
     // TODO MAP MODULE Is that needed and if so why
     visible: PropTypes.bool,
+    selected: PropTypes.bool,
     selectedFeatures: PropTypes.shape({
+      field: PropTypes.string,
+      values: PropTypes.arrayOf(PropTypes.string)
+    }),
+    highlighted: PropTypes.bool,
+    higlightedFeatures: PropTypes.shape({
       field: PropTypes.string,
       values: PropTypes.arrayOf(PropTypes.string)
     }),
@@ -244,7 +250,7 @@ MapModule.propTypes = {
     color: PropTypes.string,
     showLabels: PropTypes.bool,
     interactive: PropTypes.bool,
-    filters: PropTypes.arrayOf(PropTypes.array),
+    filters: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
     isCustom: PropTypes.bool,
     subtype: PropTypes.oneOf([undefined, 'geojson', 'raster']),
     url: PropTypes.string,

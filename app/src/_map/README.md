@@ -198,7 +198,7 @@ Boolean. Whether interaction is active on the layer or not.
 
 ### `staticLayer.filters`
 
-Array of Arrays. When set, triggers filtering on this GL layer. The applied filter will be
+Array of Arrays of Strings. When set, triggers filtering on this GL layer. The applied filter will be
 an AND (`all`) filter, added to the temporal filter if applicable, and follows the format described in the Mapbox GL spec here: https://docs.mapbox.com/mapbox-gl-js/style-spec/#other-filter
 
 For instance, using this value: `filters: [['==','vessel_id','1234']]` can result on a GL `filter` value of `["all", ["==","vessel_id","1234"]]` or `["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999], ["==","vessel_id","1234"]]`

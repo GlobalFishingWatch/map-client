@@ -19,8 +19,8 @@
         },
         "circle": {
           "circle-stroke-width": [
-            "visible",
-            "none"
+            2,
+            0
           ],
           "circle-radius": [
             15,
