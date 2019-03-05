@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { trackTypes } from '../proptypes/tracks';
 import withReducerTypes from '../utils/withReducerTypes';
 
 import {
@@ -45,11 +46,8 @@ const tracksReducer = (state = initialState, action) => {
 
 const tracksTypes = {
   data: PropTypes.arrayOf(PropTypes.exact({
-    id: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(['geojson', undefined]),
-    color: PropTypes.string,
+    ...trackTypes,
     data: PropTypes.object,
-    fitBoundsOnLoad: PropTypes.bool,
     timelineBounds: PropTypes.array,
     geoBounds: PropTypes.exact({
       minLat: PropTypes.number,

@@ -6,6 +6,9 @@ import { composeWithDevTools } from 'remote-redux-devtools';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import throttle from 'lodash/throttle';
+import { trackTypes } from './proptypes/tracks';
+import { heatmapLayerTypes, basemapLayerTypes, staticLayerTypes } from './proptypes/layers';
+import { viewportTypes, popupTypes } from './proptypes/shared';
 
 import Map from './glmap/Map.container';
 import { initModule, setTemporalExtend } from './module/module.actions';
@@ -214,78 +217,17 @@ class MapModule extends React.Component {
 
 MapModule.propTypes = {
   token: PropTypes.string,
-  viewport: PropTypes.shape({
-    zoom: PropTypes.number,
-    center: PropTypes.arrayOf(PropTypes.number)
-  }),
-  tracks: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    type: PropTypes.oneOf(['geojson', undefined]),
-    layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    color: PropTypes.string,
-    fitBoundsOnLoad: PropTypes.bool
-  })),
-  heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    tilesetId: PropTypes.string,
-    subtype: PropTypes.string,
-    visible: PropTypes.bool,
-    hue: PropTypes.number,
-    opacity: PropTypes.number,
-    filters: PropTypes.arrayOf(PropTypes.shape({
-      // hue overrides layer hue if set
-      hue: PropTypes.number,
-      // filterValues is a dictionary in which each key is a filterable field,
-      // and values is an array of all possible values (OR filter)
-      // ie: filterValues: { category: [5, 6] }
-      filterValues: PropTypes.object
-    })),
-    header: PropTypes.shape({
-      endpoints: PropTypes.object,
-      isPBF: PropTypes.bool,
-      colsByName: PropTypes.object,
-      temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-      temporalExtentsLess: PropTypes.bool
-    }).isRequired,
-    interactive: PropTypes.bool
-  })),
+  viewport: PropTypes.shape(viewportTypes),
+  tracks: PropTypes.arrayOf(PropTypes.exact(trackTypes)),
+  heatmapLayers: PropTypes.arrayOf(PropTypes.shape(heatmapLayerTypes)),
   temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   loadTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-  basemapLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    visible: PropTypes.bool
-  })),
-  staticLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    // TODO MAP MODULE Is that needed and if so why
-    visible: PropTypes.bool,
-    selectedPolygons: PropTypes.shape({
-      field: PropTypes.string,
-      values: PropTypes.arrayOf(PropTypes.string)
-    }),
-    opacity: PropTypes.number,
-    color: PropTypes.string,
-    showLabels: PropTypes.bool,
-    interactive: PropTypes.bool,
-    isCustom: PropTypes.bool,
-    subtype: PropTypes.oneOf([undefined, 'geojson', 'raster']),
-    url: PropTypes.string,
-    data: PropTypes.object,
-    gl: PropTypes.object
-  })),
+  basemapLayers: PropTypes.arrayOf(PropTypes.shape(basemapLayerTypes)),
+  staticLayers: PropTypes.arrayOf(PropTypes.shape(staticLayerTypes)),
   // customLayers
-  hoverPopup: PropTypes.shape({
-    content: PropTypes.node,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired
-  }),
-  clickPopup: PropTypes.shape({
-    content: PropTypes.node,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired
-  }),
+  hoverPopup: PropTypes.shape(popupTypes),
+  clickPopup: PropTypes.shape(popupTypes),
   glyphsPath: PropTypes.string,
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,

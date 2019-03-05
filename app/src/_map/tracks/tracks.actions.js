@@ -108,6 +108,7 @@ function loadTrack({ id, url, type, fitBoundsOnLoad, layerTemporalExtents, color
       type: ADD_TRACK,
       payload: {
         id,
+        url,
         type,
         color,
         fitBoundsOnLoad
