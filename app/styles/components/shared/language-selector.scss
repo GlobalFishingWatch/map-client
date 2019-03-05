@@ -35,3 +35,7 @@ $height: 44px;
   font-family: $font-family-1;
   font-size: $font-size-normal;
 }
+
+.element:focus {
+  outline:0;
+}
