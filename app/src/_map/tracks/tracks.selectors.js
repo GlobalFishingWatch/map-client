@@ -5,19 +5,19 @@ export const getTracksData = state => state.map.tracks.data;
 
 const filterGeojsonByTimerange = (geojson, { start, end }) => {
   if (!geojson || !geojson.features) return null;
-  const featuresFiltered = geojson.features.reduce((acc, feature) => {
+  const featuresFiltered = geojson.features.reduce((filteredFeatures, feature) => {
     const hasTimes = feature.properties.coordinateProperties.times && feature.properties.coordinateProperties.times.length > 0;
     if (hasTimes) {
-      const filtered = feature.geometry.coordinates.reduce((acc2, coordinate, index) => {
+      const filtered = feature.geometry.coordinates.reduce((filteredCoordinates, coordinate, index) => {
         const timeCoordinate = feature.properties.coordinateProperties.times[index];
         const isInTimeline = timeCoordinate > start && timeCoordinate < end;
         if (isInTimeline) {
-          acc2.coordinates.push(coordinate);
-          acc2.times.push(timeCoordinate);
+          filteredCoordinates.coordinates.push(coordinate);
+          filteredCoordinates.times.push(timeCoordinate);
         }
-        return acc2;
+        return filteredCoordinates;
       }, { coordinates: [], times: [] });
-      if (!filtered.coordinates.length) return acc;
+      if (!filtered.coordinates.length) return filteredFeatures;
 
       const filteredFeature = {
         ...feature,
@@ -32,9 +32,9 @@ const filterGeojsonByTimerange = (geojson, { start, end }) => {
           }
         }
       };
-      acc.push(filteredFeature);
+      filteredFeatures.push(filteredFeature);
     }
-    return acc;
+    return filteredFeatures;
   }, []);
   const geojsonFiltered = {
     ...geojson,
