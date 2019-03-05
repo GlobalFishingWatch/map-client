@@ -57,7 +57,7 @@ export const onViewportChange = () => (dispatch, getState) => {
   });
 };
 
-export const setTemporalExtend = temporalExtent => ({
+export const setTemporalExtent = temporalExtent => ({
   type: SET_TEMPORAL_EXTENT,
   payload: temporalExtent
 });

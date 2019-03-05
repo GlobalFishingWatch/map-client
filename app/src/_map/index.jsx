@@ -11,7 +11,7 @@ import { heatmapLayerTypes, basemapLayerTypes, staticLayerTypes } from './propty
 import { viewportTypes, popupTypes } from './proptypes/shared';
 
 import Map from './glmap/Map.container';
-import { initModule, setTemporalExtend } from './module/module.actions';
+import { initModule, setTemporalExtent } from './module/module.actions';
 import {
   fitToBounds,
   updateViewport,
@@ -74,7 +74,7 @@ const store = createStore(
 
 const throttleApplyTemporalExtent = throttle((temporalExtent) => {
   store.dispatch(applyTemporalExtent(temporalExtent));
-  store.dispatch(setTemporalExtend(temporalExtent));
+  store.dispatch(setTemporalExtent(temporalExtent));
 }, 16);
 
 const updateViewportFromIncomingProps = (incomingViewport) => {
