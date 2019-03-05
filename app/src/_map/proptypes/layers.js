@@ -42,10 +42,10 @@ export const staticLayerTypes = {
   color: PropTypes.string,
   showLabels: PropTypes.bool,
   interactive: PropTypes.bool,
+  filters: PropTypes.arrayOf(PropTypes.array),
   isCustom: PropTypes.bool,
   subtype: PropTypes.oneOf([undefined, 'geojson', 'raster']),
   url: PropTypes.string,
   data: PropTypes.object,
   gl: PropTypes.object
 };
-
