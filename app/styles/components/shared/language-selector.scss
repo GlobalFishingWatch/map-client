@@ -1,0 +1,41 @@
+@import '../../settings';
+
+$width: 44px;
+$height: 44px;
+
+.container {
+  display: flex;
+  width: $width;
+  margin-top: 2px;
+}
+
+.elementContainer {
+  transition: transform 0.3s linear;
+  transform: translateX(-100%);
+}
+
+.elementContainerActive {
+  z-index: 1;
+  transform: translateX(0);
+}
+
+.container:hover .elementContainer {
+  transform: translateX(0)!important;
+}
+
+.element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-19;
+  color: $color-4;
+  cursor: pointer;
+  width: $width;
+  height: $height;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+}
+
+.element:focus {
+  outline:0;
+}
