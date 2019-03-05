@@ -3,6 +3,12 @@ import cx from 'classnames';
 
 import LanguageSelectorStyles from 'styles/components/shared/language-selector.scss';
 
+const getLanguagesOrdered = (languages, current) => {
+  const currentLang = languages.find(l => l.key === current);
+  const filteredLangs = languages.filter(l => l.key !== current);
+  return [currentLang, ...filteredLangs];
+};
+
 class LanguageSelector extends Component {
   state = {
     languages: null,
@@ -15,22 +21,16 @@ class LanguageSelector extends Component {
       const currentLng = window.bablic.getLocale();
       this.setState({
         currentLng,
-        languages: this.getLanguagesOrdered(languages, currentLng)
+        languages: getLanguagesOrdered(languages, currentLng)
       });
     }
-  }
-
-  getLanguagesOrdered(languages, current) {
-    const currentLang = languages.find(l => l.key === current);
-    const filteredLangs = languages.filter(l => l.key !== current);
-    return [currentLang, ...filteredLangs];
   }
 
   handleLangChange = (lang) => {
     window.bablic.redirectTo(lang);
     this.setState({
       currentLng: lang,
-      languages: this.getLanguagesOrdered(this.state.languages, lang)
+      languages: getLanguagesOrdered(this.state.languages, lang)
     });
   }
 
