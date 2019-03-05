@@ -72,9 +72,18 @@ Array of Arrays of Unix timestamps. For layers that are split across time ramges
 
 Boolean. When set to true, the whole track will render in white (notwithstanding `highlightTemporalExtents`).
 
+### `track.type`
+
+String. Track type, only supported `geojson` for now.
+This is needed to keep the compatibility with older tracks format.
+
+### `track.fitBoundsOnLoad`
+
+Boolean. This flag will fit to the track bounds once the track is loaded.
+
 ### `track.color`
 
-TODO
+Strin. Hexadecimal color to show the track.
 
 ## `heatmapLayers`
 
@@ -106,7 +115,7 @@ Boolean.
 
 ### `heatmapLayer.header`
 
-Object. Mandatory. Must be passed as is - mandatory fields are: 
+Object. Mandatory. Must be passed as is - mandatory fields are:
 
   - `endpoints` PropTypes.object,
   - `isPBF` PropTypes.bool,
@@ -116,11 +125,11 @@ Object. Mandatory. Must be passed as is - mandatory fields are:
 
 ### `heatmapLayer.interactive`
 
-Boolean. Whether interaction is active on the layer or not. [PARTIALLY IMPLEMENTED] Will not set interactivity per layer individually, just disable all if all are set to false. 
+Boolean. Whether interaction is active on the layer or not. [PARTIALLY IMPLEMENTED] Will not set interactivity per layer individually, just disable all if all are set to false.
 
 ## `heatmapLayer.filters`
 
-An array of filters. Heatmap filters are defined as: 
+An array of filters. Heatmap filters are defined as:
 - `hue`: Will override layer hue if set.
 - `filterValues`: a dictionary in which each key is a filterable field, and values is an array of all possible values (using OR). ie: `filterValues: { category: [5, 6] }`.
 
@@ -162,7 +171,7 @@ Boolean. Display the associated labels layer, if available.
 
 ### `staticLayer.selectedPolygons`
 
-A filter to apply specific rules per polygon. Polygon filter is defined as: 
+A filter to apply specific rules per polygon. Polygon filter is defined as:
 - `field`: String. A filterabl field.
 - `values`: an array of all possible values (using OR).
 
@@ -180,7 +189,7 @@ For instance, using this value: `filters: [['==','vessel_id','1234']]` can resul
 ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
 ### `staticLayer.isCustom`
 
-Boolean. Specifying if the layer is custom, which means it uses resources externally, not from the internal style data. 
+Boolean. Specifying if the layer is custom, which means it uses resources externally, not from the internal style data.
 
 ### `staticLayer.subtype`
 
@@ -225,11 +234,11 @@ React Node. Mandatory. DOM Node to display inside popup.
 
 ### `hoverPopup.latitude`
 
-Number. Mandatory. Latitude for anchor point. 
+Number. Mandatory. Latitude for anchor point.
 
 ### `hoverPopup.longitude`
 
-Number. Mandatory. Longitude for anchor point. 
+Number. Mandatory. Longitude for anchor point.
 
 
 ## `clickPopup`
@@ -242,11 +251,11 @@ React Node. Mandatory. DOM Node to display inside popup.
 
 ### `clickPopup.latitude`
 
-Number. Mandatory. Latitude for anchor point. 
+Number. Mandatory. Latitude for anchor point.
 
 ### `clickPopup.longitude`
 
-Number. Mandatory. Longitude for anchor point. 
+Number. Mandatory. Longitude for anchor point.
 
 ## `onViewportChange`
 
@@ -273,4 +282,11 @@ Function. TODO
 Function. Notify of attributions changes depending on layers toggled [PARTIALLY IMPLEMENTED] Will only fire at start.
 
 
+# Development
 
+As the module is using redux internally it is hard to debug the store or know which actions are being dispatched. To solve this you could run the [remote redux devtools](https://github.com/zalmoxisus/remote-redux-devtools) with the following steps:
+
+1. Run the websockets server with `npm run debug-server`
+2. Follow https://github.com/zalmoxisus/remote-redux-devtools#monitoring to see the logs
+
+TODO: Include a `REDUX_REMOTE_DEBUG` env variable when moved to map-components

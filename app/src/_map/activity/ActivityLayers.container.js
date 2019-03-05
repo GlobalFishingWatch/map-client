@@ -17,7 +17,7 @@ const getHeatmapLayersAsArray = createSelector(
   }
 );
 
-const getTracks = state => state.map.tracks;
+const getTracks = state => state.map.tracks.data;
 
 const getTracksWithData = createSelector(
   [getTracks],

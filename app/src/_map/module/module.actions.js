@@ -1,4 +1,5 @@
 export const INIT_MODULE = 'INIT_MODULE';
+export const SET_TEMPORAL_EXTENT = 'SET_TEMPORAL_EXTENT';
 export const START_LOADER = 'START_LOADER';
 export const COMPLETE_LOADER = 'COMPLETE_LOADER';
 
@@ -55,6 +56,11 @@ export const onViewportChange = () => (dispatch, getState) => {
     mouseLatLong: viewport.mouseLatLong
   });
 };
+
+export const setTemporalExtent = temporalExtent => ({
+  type: SET_TEMPORAL_EXTENT,
+  payload: temporalExtent
+});
 
 export const closePopup = () => (dispatch, getState) => {
   const state = getState();
