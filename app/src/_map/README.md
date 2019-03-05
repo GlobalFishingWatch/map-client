@@ -72,9 +72,18 @@ Array of Arrays of Unix timestamps. For layers that are split across time ramges
 
 Boolean. When set to true, the whole track will render in white (notwithstanding `highlightTemporalExtents`).
 
+### `track.type`
+
+String. Track type, only supported `geojson` for now.
+This is needed to keep the compatibility with older tracks format.
+
+### `track.fitBoundsOnLoad`
+
+Boolean. This flag will fit to the track bounds once the track is loaded.
+
 ### `track.color`
 
-TODO
+Strin. Hexadecimal color to show the track.
 
 ## `heatmapLayers`
 
