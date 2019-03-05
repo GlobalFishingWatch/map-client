@@ -10,9 +10,9 @@ class LanguageSelector extends Component {
   };
 
   componentDidMount = () => {
-    if (bablic !== undefined) {
-      const languages = bablic.languages.get();
-      const currentLng = bablic.getLocale();
+    if (window.bablic !== undefined) {
+      const languages = window.bablic.languages.get();
+      const currentLng = window.bablic.getLocale();
       this.setState({
         currentLng,
         languages: this.getLanguagesOrdered(languages, currentLng)
@@ -27,7 +27,7 @@ class LanguageSelector extends Component {
   }
 
   handleLangChange = (lang) => {
-    bablic.redirectTo(lang);
+    window.bablic.redirectTo(lang);
     this.setState({
       currentLng: lang,
       languages: this.getLanguagesOrdered(this.state.languages, lang)
