@@ -1,6 +1,7 @@
 {
   "version": 8,
   "glyphs": "//globalfishingwatch.org/map/gl-fonts/{fontstack}/{range}.pbf",
+  "sprites": "//raw.githubusercontent.com/GlobalFishingWatch/map-sprites/master/out/sprites",
   "metadata": {
     "gfw:basemap-layers": [
       { "id": "satellite", "label": "Satellite" },
@@ -530,6 +531,18 @@
         "circle-color": "#44A1B9",
         "circle-stroke-width": 0.5
       },
+      "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
+    },
+    {
+      "id": "events_port_icons",
+      "type": "symbol",
+      "metadata": {},
+      "source": "events_port",
+      "source-layer": "default",
+      "layout": {
+          "icon-image": "port"
+      },
+      "paint": {},
       "filter": ["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
     },
     {
