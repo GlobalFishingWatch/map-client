@@ -221,6 +221,7 @@ MapModule.propTypes = {
   tracks: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['geojson', undefined]),
     layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     color: PropTypes.string,
     fitBoundsOnLoad: PropTypes.bool

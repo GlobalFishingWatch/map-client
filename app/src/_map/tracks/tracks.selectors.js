@@ -70,7 +70,6 @@ export const getTracksStyles = createSelector(
             id: `${track.id}Lines`,
             source,
             type: 'line',
-            interactive: true,
             layout: {},
             paint: {
               'line-width': 1,
@@ -81,7 +80,6 @@ export const getTracksStyles = createSelector(
             id: `${track.id}Points`,
             source,
             type: 'circle',
-            interactive: true,
             filter: ['match', ['geometry-type'], ['', 'Point'], true, false],
             layout: {},
             paint: {
