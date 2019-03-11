@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
+import orderBy from 'lodash/orderBy';
 
 import LanguageSelectorStyles from 'styles/components/shared/language-selector.scss';
 
@@ -16,15 +17,27 @@ class LanguageSelector extends Component {
   };
 
   componentDidMount = () => {
-    if (window.bablic !== undefined) {
-      const languages = window.bablic.languages.get();
-      const currentLng = window.bablic.getLocale();
+    if (window.bablic !== undefined && window.bablic.loaded) {
+      this.onBablicLoad();
+    } else {
+      document.addEventListener('bablicload', this.onBablicLoad);
+    }
+  };
+
+  componentWillUnmount = () => {
+    document.removeEventListener('bablicload', this.onBablicLoad);
+  };
+
+  onBablicLoad = () => {
+    const languages = orderBy([...window.bablic.languages.get()], 'key');
+    const currentLng = window.bablic.getLocale();
+    if (languages && languages.length > 0) {
       this.setState({
         currentLng,
         languages: getLanguagesOrdered(languages, currentLng)
       });
     }
-  }
+  };
 
   handleLangChange = (lang) => {
     window.bablic.redirectTo(lang);
@@ -32,30 +45,28 @@ class LanguageSelector extends Component {
       currentLng: lang,
       languages: getLanguagesOrdered(this.state.languages, lang)
     });
-  }
+  };
 
   render() {
     const { currentLng, languages } = this.state;
     if (!languages) return null;
-    return (<ul className={LanguageSelectorStyles.container}>
-      {languages.map((l, i) => (
-        <li
-          key={l.key}
-          className={cx(
-            LanguageSelectorStyles.elementContainer,
-            { [LanguageSelectorStyles.elementContainerActive]: currentLng === l.key }
-          )}
-          style={{ transform: `translateX(-${100 * i}%)` }}
-        >
-          <button
-            className={LanguageSelectorStyles.element}
-            onClick={() => this.handleLangChange(l.key)}
+    return (
+      <ul className={LanguageSelectorStyles.container}>
+        {languages.map((l, i) => (
+          <li
+            key={l.key}
+            className={cx(LanguageSelectorStyles.elementContainer, {
+              [LanguageSelectorStyles.elementContainerActive]: currentLng === l.key
+            })}
+            style={{ transform: `translateX(-${100 * i}%)` }}
           >
-            {l.key.toUpperCase()}
-          </button>
-        </li>
-      ))}
-    </ul>);
+            <button className={LanguageSelectorStyles.element} onClick={() => this.handleLangChange(l.key)}>
+              {l.key.toUpperCase()}
+            </button>
+          </li>
+        ))}
+      </ul>
+    );
   }
 }
 

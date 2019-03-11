@@ -13,35 +13,35 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
-const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
-{
-  bypassOnDebug: true,
-  optipng: {
-    optimizationLevel: 7
-  },
-  gifsicle: {
-    interlaced: true
-  }
-} : 
-{
-  bypassOnDebug: true,
-  optipng: {
-    enabled: false
-  },
-  mozjpeg: {
-    enabled: false
-  },
-  optipng: {
-    enabled: false
-  },
-  pngquant: {
-    enabled: false
-  },
-  gifsicle: {
-    enabled: false
-  }
-}
-
+const imageLoaderConfiguration =
+  envVariables.NODE_ENV === 'production'
+    ? {
+      bypassOnDebug: true,
+      optipng: {
+        optimizationLevel: 7
+      },
+      gifsicle: {
+        interlaced: true
+      }
+    }
+    : {
+      bypassOnDebug: true,
+      optipng: {
+        enabled: false
+      },
+      mozjpeg: {
+        enabled: false
+      },
+      optipng: {
+        enabled: false
+      },
+      pngquant: {
+        enabled: false
+      },
+      gifsicle: {
+        enabled: false
+      }
+    };
 
 const webpackConfig = {
   entry: [
@@ -59,7 +59,8 @@ const webpackConfig = {
 
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name]-[hash].css', allChunks: true
+      filename: '[name]-[hash].css',
+      allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',
@@ -90,22 +91,20 @@ const webpackConfig = {
       SHARE_BASE_URL: JSON.stringify(envVariables.SHARE_BASE_URL),
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true'
     }),
-    new LodashModuleReplacementPlugin(),
+    // https://github.com/lodash/lodash-webpack-plugin/issues/128
+    new LodashModuleReplacementPlugin({
+      shorthands: true
+    }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.LoaderOptionsPlugin({
       options: {
-        postcss: [
-          autoprefixer()
-        ]
+        postcss: [autoprefixer()]
       }
     })
   ],
 
   resolve: {
-    modules: [
-      `${process.cwd()}/app`,
-      'node_modules'
-    ],
+    modules: [`${process.cwd()}/app`, 'node_modules'],
     alias: {
       // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
       'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
@@ -176,7 +175,7 @@ const webpackConfig = {
             {
               loader: 'css-loader',
               options: {
-                minimize: (envVariables.NODE_ENV === 'production'),
+                minimize: envVariables.NODE_ENV === 'production',
                 sourceMap: true,
                 modules: true,
                 importLoaders: 1,
@@ -210,7 +209,7 @@ const webpackConfig = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              minimize: (envVariables.NODE_ENV === 'production')
+              minimize: envVariables.NODE_ENV === 'production'
             }
           },
           {
@@ -248,7 +247,7 @@ const webpackConfig = {
             loader: 'html-loader',
             options: {
               interpolate: true,
-              minimize: (envVariables.NODE_ENV === 'production')
+              minimize: envVariables.NODE_ENV === 'production'
             }
           }
         ]
