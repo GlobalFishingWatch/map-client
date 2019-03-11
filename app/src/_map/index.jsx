@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { composeWithDevTools } from 'remote-redux-devtools';
+// import { composeWithDevTools } from 'remote-redux-devtools';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import throttle from 'lodash/throttle';
@@ -50,26 +50,26 @@ const mapReducer = combineReducers({
   interaction: InteractionReducer
 });
 
-const composeEnhancersDev = composeWithDevTools({
-  name: 'Map module',
-  realtime: true,
-  hostname: 'localhost',
-  port: 8000,
-  maxAge: 30,
-  stateSanitizer: state => ({ ...state, map: { ...state.map, heatmap: 'NOT_SERIALIZED' } })
-});
+// const composeEnhancersDev = composeWithDevTools({
+//   name: 'Map module',
+//   realtime: true,
+//   hostname: 'localhost',
+//   port: 8000,
+//   maxAge: 30,
+//   stateSanitizer: state => ({ ...state, map: { ...state.map, heatmap: 'NOT_SERIALIZED' } })
+// });
 
 // TODO: include env var when module is in gfw-components
-const composeEnhancers = false && process.env.NODE_ENV === 'development'
-  ? composeEnhancersDev
-  : compose;
+// const composeEnhancers = false && process.env.NODE_ENV === 'development'
+//   ? composeEnhancersDev
+//   : compose;
 
 const store = createStore(
   combineReducers({
     map: mapReducer
   }),
   {},
-  composeEnhancers(applyMiddleware(thunk))
+  compose(applyMiddleware(thunk))
 );
 
 const throttleApplyTemporalExtent = throttle((temporalExtent) => {
