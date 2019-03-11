@@ -17,7 +17,7 @@ class LanguageSelector extends Component {
   };
 
   componentDidMount = () => {
-    if (window.bablic !== undefined && bablic.loaded) {
+    if (window.bablic !== undefined && window.bablic.loaded) {
       this.onBablicLoad();
     } else {
       document.addEventListener('bablicload', this.onBablicLoad);
