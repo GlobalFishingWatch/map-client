@@ -1,41 +1,61 @@
+import PropTypes from 'prop-types';
+import { trackTypes } from '../proptypes/tracks';
+import withReducerTypes from '../utils/withReducerTypes';
+
 import {
   ADD_TRACK,
-  ADD_TRACK_DATA,
-  REMOVE_TRACK,
-  UPDATE_TRACK_STYLE
+  UPDATE_TRACK,
+  REMOVE_TRACK
 } from './tracks.actions';
 
-const initialState = [];
+const initialState = {
+  data: []
+};
 
-export default function (state = initialState, action) {
+const tracksReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TRACK: {
-      const newTrack = action.payload;
-      return [...state, newTrack];
+      const data = [...state.data, action.payload];
+      return { ...state, data };
     }
 
-    case ADD_TRACK_DATA: {
+    case UPDATE_TRACK: {
       const trackData = action.payload;
-      const trackIndex = state.findIndex(t => t.id === trackData.id);
-      const track = { ...state.find(t => t.id === trackData.id), ...trackData };
-      return [...state.slice(0, trackIndex), track, ...state.slice(trackIndex + 1)];
+      const data = state.data.map((track) => {
+        if (track.id !== trackData.id) return track;
+        return ({
+          ...track,
+          ...trackData
+        });
+      });
+      return { ...state, data };
     }
 
     case REMOVE_TRACK: {
       const removedTrackId = action.payload.trackId;
-      return state.filter(track =>
+      const data = state.data.filter(track =>
         track.id !== removedTrackId
       );
-    }
-
-    case UPDATE_TRACK_STYLE: {
-      const newTrack = action.payload;
-      const trackIndex = state.findIndex(t => t.id === newTrack.id);
-      const track = { ...state.find(t => t.id === newTrack.id), ...newTrack };
-      return [...state.slice(0, trackIndex), track, ...state.slice(trackIndex + 1)];
+      return { ...state, data };
     }
 
     default:
       return state;
   }
-}
+};
+
+const tracksTypes = {
+  data: PropTypes.arrayOf(PropTypes.exact({
+    ...trackTypes,
+    data: PropTypes.object,
+    timelineBounds: PropTypes.array,
+    geoBounds: PropTypes.exact({
+      minLat: PropTypes.number,
+      minLng: PropTypes.number,
+      maxLat: PropTypes.number,
+      maxLng: PropTypes.number
+    })
+  }))
+};
+
+export default withReducerTypes('tracks', tracksTypes)(tracksReducer);

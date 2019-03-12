@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+// import { composeWithDevTools } from 'remote-redux-devtools';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
+import { trackTypes } from './proptypes/tracks';
+import { heatmapLayerTypes, basemapLayerTypes, staticLayerTypes } from './proptypes/layers';
+import { viewportTypes, popupTypes } from './proptypes/shared';
 
 import Map from './glmap/Map.container';
-import { initModule } from './module/module.actions';
+import { initModule, setTemporalExtent } from './module/module.actions';
 import {
+  fitToBounds,
   updateViewport,
-  fitBoundsToTrack,
   transitionToZoom
 } from './glmap/viewport.actions';
 import {
@@ -45,15 +50,32 @@ const mapReducer = combineReducers({
   interaction: InteractionReducer
 });
 
+// const composeEnhancersDev = composeWithDevTools({
+//   name: 'Map module',
+//   realtime: true,
+//   hostname: 'localhost',
+//   port: 8000,
+//   maxAge: 30,
+//   stateSanitizer: state => ({ ...state, map: { ...state.map, heatmap: 'NOT_SERIALIZED' } })
+// });
+
+// TODO: include env var when module is in gfw-components
+// const composeEnhancers = false && process.env.NODE_ENV === 'development'
+//   ? composeEnhancersDev
+//   : compose;
+
 const store = createStore(
   combineReducers({
     map: mapReducer
   }),
-  applyMiddleware(thunk)
+  {},
+  compose(applyMiddleware(thunk))
 );
 
-
-const debouncedApplyTemporalExtent = debounce(temporalExtent => store.dispatch(applyTemporalExtent(temporalExtent)), 100);
+const throttleApplyTemporalExtent = throttle((temporalExtent) => {
+  store.dispatch(applyTemporalExtent(temporalExtent));
+  store.dispatch(setTemporalExtent(temporalExtent));
+}, 16);
 
 const updateViewportFromIncomingProps = (incomingViewport) => {
   store.dispatch(updateViewport({
@@ -106,10 +128,14 @@ class MapModule extends React.Component {
       store.dispatch(commitStyleUpdates(this.props.staticLayers || [], this.props.basemapLayers || []));
     }
 
+    if (this.props.tracks !== undefined) {
+      store.dispatch(updateTracks(this.props.tracks));
+    }
+
     // Now trigger async actions
 
     if (this.props.temporalExtent !== undefined && this.props.temporalExtent.length) {
-      debouncedApplyTemporalExtent(this.props.temporalExtent);
+      throttleApplyTemporalExtent(this.props.temporalExtent);
     }
 
     // eslint-disable-next-line react/no-did-mount-set-state
@@ -153,7 +179,7 @@ class MapModule extends React.Component {
         this.props.temporalExtent[0].getTime() !== prevProps.temporalExtent[0].getTime() ||
         this.props.temporalExtent[1].getTime() !== prevProps.temporalExtent[1].getTime()
       ) {
-        debouncedApplyTemporalExtent(this.props.temporalExtent);
+        throttleApplyTemporalExtent(this.props.temporalExtent);
       }
     }
 
@@ -191,83 +217,18 @@ class MapModule extends React.Component {
 
 MapModule.propTypes = {
   token: PropTypes.string,
-  viewport: PropTypes.shape({
-    zoom: PropTypes.number,
-    center: PropTypes.arrayOf(PropTypes.number)
-  }),
-  tracks: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    layerTemporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    color: PropTypes.string
-  })),
-  heatmapLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    tilesetId: PropTypes.string,
-    subtype: PropTypes.string,
-    visible: PropTypes.bool,
-    hue: PropTypes.number,
-    opacity: PropTypes.number,
-    filters: PropTypes.arrayOf(PropTypes.shape({
-      // hue overrides layer hue if set
-      hue: PropTypes.number,
-      // filterValues is a dictionary in which each key is a filterable field,
-      // and values is an array of all possible values (OR filter)
-      // ie: filterValues: { category: [5, 6] }
-      filterValues: PropTypes.object
-    })),
-    header: PropTypes.shape({
-      endpoints: PropTypes.object,
-      isPBF: PropTypes.bool,
-      colsByName: PropTypes.object,
-      temporalExtents: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-      temporalExtentsLess: PropTypes.bool
-    }).isRequired,
-    interactive: PropTypes.bool
-  })),
+  viewport: PropTypes.shape(viewportTypes),
+  tracks: PropTypes.arrayOf(PropTypes.exact(trackTypes)),
+  heatmapLayers: PropTypes.arrayOf(PropTypes.shape(heatmapLayerTypes)),
   temporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   highlightTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
   loadTemporalExtent: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
-  basemapLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    visible: PropTypes.bool
-  })),
-  staticLayers: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    // TODO MAP MODULE Is that needed and if so why
-    visible: PropTypes.bool,
-    selected: PropTypes.bool,
-    selectedFeatures: PropTypes.shape({
-      field: PropTypes.string,
-      values: PropTypes.arrayOf(PropTypes.string)
-    }),
-    highlighted: PropTypes.bool,
-    higlightedFeatures: PropTypes.shape({
-      field: PropTypes.string,
-      values: PropTypes.arrayOf(PropTypes.string)
-    }),
-    opacity: PropTypes.number,
-    color: PropTypes.string,
-    showLabels: PropTypes.bool,
-    interactive: PropTypes.bool,
-    filters: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-    isCustom: PropTypes.bool,
-    subtype: PropTypes.oneOf([undefined, 'geojson', 'raster']),
-    url: PropTypes.string,
-    data: PropTypes.object,
-    gl: PropTypes.object
-  })),
+  basemapLayers: PropTypes.arrayOf(PropTypes.shape(basemapLayerTypes)),
+  staticLayers: PropTypes.arrayOf(PropTypes.shape(staticLayerTypes)),
   // customLayers
-  hoverPopup: PropTypes.shape({
-    content: PropTypes.node,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired
-  }),
-  clickPopup: PropTypes.shape({
-    content: PropTypes.node,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired
-  }),
+  hoverPopup: PropTypes.shape(popupTypes),
+  clickPopup: PropTypes.shape(popupTypes),
+  glyphsPath: PropTypes.string,
   onViewportChange: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoadComplete: PropTypes.func,
@@ -281,11 +242,10 @@ MapModule.propTypes = {
 export default MapModule;
 
 export const targetMapVessel = (id) => {
-  const track = store.getState().map.tracks.find(t =>
+  const track = store.getState().map.tracks.data.find(t =>
     t.id === id.toString()
   );
-
-  store.dispatch(fitBoundsToTrack(track.geoBounds));
+  store.dispatch(fitToBounds(track.geoBounds));
 
   return track.timelineBounds;
 };

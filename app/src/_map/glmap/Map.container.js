@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import convert from '@globalfishingwatch/map-convert';
+import { mergeDeep, fromJS } from 'immutable';
 import { closePopup } from '../module/module.actions.js';
+import { getTracksStyles } from '../tracks/tracks.selectors.js';
 import { mapHover, mapClick } from './interaction.actions.js';
 import { setViewport, transitionEnd } from './viewport.actions.js';
 import {
@@ -47,12 +49,22 @@ const getInteractiveLayerIds = createSelector(
   staticLayers => staticLayers.filter(l => l.interactive === true && l.visible === true).map(l => l.id)
 );
 
+const getMapStyles = state => state.map.style.mapStyle;
+const getMapStyle = createSelector(
+  [getMapStyles, getTracksStyles],
+  (mapStyles, trackStyles) => {
+    if (!trackStyles) return mapStyles;
+
+    return mergeDeep(mapStyles, fromJS(trackStyles));
+  }
+);
+
 const mapStateToProps = (state, ownProps) => ({
   viewport: state.map.viewport.viewport,
   maxZoom: state.map.viewport.maxZoom,
   minZoom: state.map.viewport.minZoom,
-  mapStyle: state.map.style.mapStyle,
   cursor: state.map.interaction.cursor,
+  mapStyle: getMapStyle(state),
   temporalExtentIndexes: getTemporalExtentIndexes(state, ownProps),
   highlightTemporalExtentIndexes: getHighlightTemporalExtentIndexes(state, ownProps),
   interactiveLayerIds: getInteractiveLayerIds(state)

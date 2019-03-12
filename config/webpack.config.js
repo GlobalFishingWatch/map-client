@@ -14,34 +14,32 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const rootPath = process.cwd();
 const envVariables = process.env;
 
-const imageLoaderConfiguration = (envVariables.NODE_ENV === 'production') ?
-{
-  bypassOnDebug: true,
-  optipng: {
-    optimizationLevel: 7
-  },
-  gifsicle: {
-    interlaced: true
-  }
-} : 
-{
-  bypassOnDebug: true,
-  optipng: {
-    enabled: false
-  },
-  mozjpeg: {
-    enabled: false
-  },
-  optipng: {
-    enabled: false
-  },
-  pngquant: {
-    enabled: false
-  },
-  gifsicle: {
-    enabled: false
-  }
-}
+const imageLoaderConfiguration =
+  envVariables.NODE_ENV === 'production'
+    ? {
+      bypassOnDebug: true,
+      optipng: {
+        optimizationLevel: 7
+      },
+      gifsicle: {
+        interlaced: true
+      }
+    }
+    : {
+      bypassOnDebug: true,
+      optipng: {
+        enabled: false
+      },
+      mozjpeg: {
+        enabled: false
+      },
+      pngquant: {
+        enabled: false
+      },
+      gifsicle: {
+        enabled: false
+      }
+    };
 
 const alias = {
   // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
@@ -67,7 +65,8 @@ const webpackConfig = {
 
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name]-[hash].css', allChunks: true
+      filename: '[name]-[hash].css',
+      allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',
@@ -103,18 +102,13 @@ const webpackConfig = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.LoaderOptionsPlugin({
       options: {
-        postcss: [
-          autoprefixer()
-        ]
+        postcss: [autoprefixer()]
       }
     })
   ],
 
   resolve: {
-    modules: [
-      `${process.cwd()}/app`,
-      'node_modules'
-    ],
+    modules: [`${process.cwd()}/app`, 'node_modules'],
     alias,
     extensions: ['.js', '.jsx'],
     // This is needed to use npm/yarn link, see https://github.com/babel/babel-loader/issues/149
@@ -151,7 +145,7 @@ const webpackConfig = {
             {
               loader: 'css-loader',
               options: {
-                minimize: (envVariables.NODE_ENV === 'production'),
+                minimize: envVariables.NODE_ENV === 'production',
                 sourceMap: true,
                 modules: true,
                 importLoaders: 1,
@@ -185,7 +179,7 @@ const webpackConfig = {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              minimize: (envVariables.NODE_ENV === 'production'),
+              minimize: envVariables.NODE_ENV === 'production',
               modules: true
             }
           },
@@ -230,7 +224,7 @@ const webpackConfig = {
             loader: 'html-loader',
             options: {
               interpolate: true,
-              minimize: (envVariables.NODE_ENV === 'production')
+              minimize: envVariables.NODE_ENV === 'production'
             }
           }
         ]
@@ -245,8 +239,6 @@ if (envVariables.NODE_ENV === 'production') {
   webpackConfig.module.noParse = /(mapbox-gl)\.js$/;
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
   webpackConfig.devtool = 'source-map';
-  webpackConfig.resolve.alias.react = path.join(rootPath, 'node_modules/react/dist/react.min.js');
-  webpackConfig.resolve.alias['react-dom'] = path.join(rootPath, 'node_modules/react-dom/dist/react-dom.min.js');
 } else {
   webpackConfig.devtool = 'eval-source-map';
 }
