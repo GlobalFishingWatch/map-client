@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { hueOrColorToHexColor } from '@globalfishingwatch/map-colors';
+import { hueOrColorToHexColor } from '@globalfishingwatch/map-components/components/map/utils';
 import ToggleStyles from 'styles/components/shared/toggle.scss';
 
 class Toggle extends Component {

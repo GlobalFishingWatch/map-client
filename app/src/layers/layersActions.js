@@ -1,6 +1,6 @@
 import find from 'lodash/find';
 
-import { hueToRgbHexString } from '@globalfishingwatch/map-colors';
+import { hueToRgbHexString } from '@globalfishingwatch/map-components/components/map/utils';
 import {
   LAYER_TYPES,
   LAYER_TYPES_WITH_HEADER,

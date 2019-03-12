@@ -119,9 +119,8 @@ const webpackConfig = {
     rules: [
       {
         test: /\.jsx?$/,
-        // Babel should not compile node_modules, except for react-map-gl
-        // and gfw modules such a map-timebar-component, map-miniglobe-component, map-convert, etc
-        exclude: /node_modules\/(?!@globalfishingwatch\/map-|react-map-gl).*/,
+        // Babel should not compile node_modules
+        exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader'
@@ -172,7 +171,7 @@ const webpackConfig = {
         })
       },
       {
-        test: [/node_modules\/@globalfishingwatch\/.+\.css$/, /app\/src\/_map\/.+\.css$/],
+        test: [/node_modules\/.+\.css$/, /app\/src\/_map\/.+\.css$/],
         use: [
           'style-loader',
           {
@@ -196,7 +195,7 @@ const webpackConfig = {
       // CSS basic rule for non-module CSS
       {
         test: /node_modules.+\.css/,
-        exclude: /node_modules\/@globalfishingwatch\/.+\.css$/,
+        exclude: /node_modules\/.+\.css$/,
         use: ['style-loader', 'css-loader']
       },
       {

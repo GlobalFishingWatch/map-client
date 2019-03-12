@@ -110,16 +110,17 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@globalfishingwatch/map-colors@github:GlobalFishingWatch/map-colors":
-  version "1.0.1"
-  resolved "https://codeload.github.com/GlobalFishingWatch/map-colors/tar.gz/a514042b39739e5db27d1d5ce5e54f2863ca640f"
-
-"@globalfishingwatch/map-components@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-0.1.0.tgz#ce28d799cd130235cef32746f8d84fbf0871673a"
-  integrity sha512-uN3+pCsMWDfkEzIUS1eMfTdSHnxx9IzWqUJSDW0EZVKChnaoqRQ7ZaNGXNyODhbU4hvh+afXvZlPg4f0hwVeZA==
+"@globalfishingwatch/map-components@0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-0.4.1.tgz#9d942c580826e10d433a1bf3628e4dd91bd1a30d"
+  integrity sha512-ebFwq4aQEJs16MraugWFuXfIMuNcWdcuEPO1XrXAqbHuzzdQMpe0uXzTp6DYxzmGz4BEc+9ouk/O9nXk3zz1MQ==
   dependencies:
+    classnames "^2.2.6"
+    countryflag "^1.0.3"
     d3-geo "^1.11.3"
+    d3-scale "^2.2.2"
+    d3-shape "^1.3.4"
+    memoize-one "^5.0.0"
     topojson-client "^3.0.0"
 
 "@globalfishingwatch/map-convert@github:GlobalFishingWatch/map-convert":
@@ -2020,7 +2021,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.4, classnames@^2.2.5:
+classnames@^2.2.4, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -2341,6 +2342,14 @@ cosmiconfig@^4.0.0:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
     require-from-string "^2.0.1"
+
+countryflag@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-1.0.3.tgz#4ce2b55454814ca980f120e3155ba26e26e12b17"
+  integrity sha512-CQIZJMyXdvMnUEMseJRH00GSTEadQP0pKTUXFOOE/JjMlLVEVPA+ZEVTB2C11hmy8b5UjT+rQT6Zp7+SDZYbjw==
+  dependencies:
+    if-emoji "^0.1.0"
+    world-countries "^2.1.0"
 
 create-ecdh@^4.0.0:
   version "4.0.3"
@@ -2789,6 +2798,18 @@ d3-scale@1.0.7:
     d3-time "1"
     d3-time-format "2"
 
+d3-scale@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.2.2.tgz#4e880e0b2745acaaddd3ede26a9e908a9e17b81f"
+  integrity sha512-LbeEvGgIb8UMcAa0EATLNX0lelKWGYDQiPdHj+gLblGVhGLyNbaCn3EvrJf0A3Y/uOOU5aD6MTh5ZFCdEwGiCw==
+  dependencies:
+    d3-array "^1.2.0"
+    d3-collection "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
 d3-selection@1, d3-selection@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.4.0.tgz#ab9ac1e664cf967ebf1b479cc07e28ce9908c474"
@@ -2803,6 +2824,13 @@ d3-shape@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
   integrity sha1-RdAVOPBkuv0F6j1tLLdI/YxB93c=
+  dependencies:
+    d3-path "1"
+
+d3-shape@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.4.tgz#358e76014645321eecc7c364e188f8ae3d2a07d4"
+  integrity sha512-izaz4fOpOnY3CD17hkZWNxbaN70sIGagLR/5jb6RS96Y+6VqX+q1BQf1av6QSBRdfULi3Gb8Js4CzG4+KAPjMg==
   dependencies:
     d3-path "1"
 
@@ -5157,6 +5185,11 @@ ieee754@^1.1.12, ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
   integrity sha512-GguP+DRY+pJ3soyIiGPTvdiVXjZ+DbXOxGpXn3eMvNW4x4irjqXm4wHKscC+TfxSJ0yw/S1F24tqdMNsMZTiLA==
 
+if-emoji@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/if-emoji/-/if-emoji-0.1.0.tgz#85e1b036c6425a30f249e9034ff4400ceaa33947"
+  integrity sha1-heGwNsZCWjDySekDT/RADOqjOUc=
+
 ignore-walk@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-3.0.1.tgz#a83e62e7d272ac0e3b551aaa82831a19b69f82f8"
@@ -6654,6 +6687,11 @@ mem@^1.1.0:
   integrity sha1-Xt1StIXKHZAP5kiVUFOZoN+kX3Y=
   dependencies:
     mimic-fn "^1.0.0"
+
+memoize-one@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.0.tgz#d55007dffefb8de7546659a1722a5d42e128286e"
+  integrity sha512-7g0+ejkOaI9w5x6LvQwmj68kUj6rxROywPSCqmclG/HBacmFnZqhVscQ8kovkn9FBCNJmOz6SY42+jnvZzDWdw==
 
 memory-fs@^0.2.0:
   version "0.2.0"
@@ -10710,6 +10748,11 @@ wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus=
+
+world-countries@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/world-countries/-/world-countries-2.1.0.tgz#935a3bb5839a88bc1c7d05b8645341db4edd48d4"
+  integrity sha512-g8DRgoH7UJiF5L0xjj+RP/GFH4fOVlD3J5CxkJ+PZYH1PNl0i5JrstBOX53Ub8ObTZ6lCx0V7nIA8BuCvxMoSg==
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
