@@ -105,14 +105,14 @@ const getStaticLayers = createSelector(
   (layers, report) => layers
     .filter(layer => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
     .map((layer) => {
-      const selectedPolygons = (report.layerId === layer.id) ? {
+      const selectedFeatures = (report.layerId === layer.id) ? {
         field: 'reporting_id',
         values: report.polygonsIds
       } : null;
       const layerParams = {
         id: layer.id,
         visible: layer.visible,
-        selectedPolygons,
+        selectedFeatures,
         opacity: layer.opacity,
         color: layer.color,
         showLabels: layer.showLabels,

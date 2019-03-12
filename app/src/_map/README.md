@@ -169,11 +169,36 @@ String TODO
 
 Boolean. Display the associated labels layer, if available.
 
-### `staticLayer.selectedPolygons`
+### `staticLayer.selectedFeatures`
 
-A filter to apply specific rules per polygon. Polygon filter is defined as:
-- `field`: String. A filterabl field.
-- `values`: an array of all possible values (using OR).
+Object. Defines which features will appear selected on the map. The default appearance of the selected features is defined per GL feature type (fill, circle, etc). It can be overriden.
+- `field`: String. A filterable field.
+- `values`: Array. All selected values (logical OR).
+- `style`: [NOT IMPLEMENTED] Object. Defines for each GL paint property (`fill-color`, etc) rules for selected and non selected objects, ie:
+```
+  style: {
+    'fill-color': [
+      SELECTED COLOR,
+      DEFAULT COLOR
+    ],
+    'fill-opacity': [
+      SELECTED OPACITY,
+      DEFAULT OPACITY
+    ]
+  }
+```
+
+### `staticLayer.selected`
+
+Boolean. If set to true, overrides any provided `selectedFeatures` and applies selected style to the whole layer.
+
+### `staticLayer.highlightedFeatures`
+
+Object. Defines which features will appear highlighted (ie on mouse hover) on the map. See `staticLayer.selectedFeatures` above for parameters.
+
+### `staticLayer.highlighted`
+
+Boolean. If set to true, overrides any provided `highlightedFeatures` and applies higlighted style to the whole layer.
 
 ### `staticLayer.interactive`
 
@@ -181,12 +206,11 @@ Boolean. Whether interaction is active on the layer or not.
 
 ### `staticLayer.filters`
 
-Array of Arrays. When set, triggers filtering on this GL layer. The applied filter will be
+Array of Arrays of Strings. When set, triggers filtering on this GL layer. The applied filter will be
 an AND (`all`) filter, added to the temporal filter if applicable, and follows the format described in the Mapbox GL spec here: https://docs.mapbox.com/mapbox-gl-js/style-spec/#other-filter
 
 For instance, using this value: `filters: [['==','vessel_id','1234']]` can result on a GL `filter` value of `["all", ["==","vessel_id","1234"]]` or `["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999], ["==","vessel_id","1234"]]`
 
-["all", [">", "timestamp", 0], ["<", "timestamp", 999999999999]]
 ### `staticLayer.isCustom`
 
 Boolean. Specifying if the layer is custom, which means it uses resources externally, not from the internal style data.
