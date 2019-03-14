@@ -42,8 +42,6 @@ const imageLoaderConfiguration =
     };
 
 const alias = {
-  // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
-  'mapbox-gl$': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
   assets: 'assets',
   styles: 'styles',
   ...getAliases('app/', './app/src')
@@ -234,8 +232,6 @@ const webpackConfig = {
 
 // Environment configuration
 if (envVariables.NODE_ENV === 'production') {
-  // https://github.com/mapbox/mapbox-gl-js/issues/4359
-  webpackConfig.module.noParse = /(mapbox-gl)\.js$/;
   webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin({ sourceMap: true }));
   webpackConfig.devtool = 'source-map';
 } else {

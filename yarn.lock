@@ -110,18 +110,32 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@globalfishingwatch/map-components@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-0.4.1.tgz#9d942c580826e10d433a1bf3628e4dd91bd1a30d"
-  integrity sha512-ebFwq4aQEJs16MraugWFuXfIMuNcWdcuEPO1XrXAqbHuzzdQMpe0uXzTp6DYxzmGz4BEc+9ouk/O9nXk3zz1MQ==
+"@globalfishingwatch/map-components@0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-0.5.2.tgz#542aa9ce908379e41d332c0a0e038cc44b572b28"
+  integrity sha512-QQU4i+OF8P6+HwQXdya7fFMCuH4MfhDBvdA5yHR/kxRQezsES3WKGeWwLeDFBBOp6mkUyoK/TO4fiylJoPRcsg==
   dependencies:
+    "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
+    "@mapbox/tile-cover" "^3.0.2"
+    "@mapbox/vector-tile" "^1.3.1"
+    "@turf/area" "^6.0.1"
+    "@turf/bbox" "^6.0.1"
     classnames "^2.2.6"
     countryflag "^1.0.3"
+    d3-ease "^1.0.5"
     d3-geo "^1.11.3"
     d3-scale "^2.2.2"
     d3-shape "^1.3.4"
+    immutable "^4.0.0-rc.12"
+    lodash "^4.17.11"
     memoize-one "^5.0.0"
+    pbf "^3.2.0"
+    prop-types "^15.6.2"
+    react-spring "^7.2.10"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
     topojson-client "^3.0.0"
+    viewport-mercator-project "^6.1.1"
 
 "@globalfishingwatch/map-convert@github:GlobalFishingWatch/map-convert":
   version "1.0.0"
@@ -186,7 +200,7 @@
   resolved "https://registry.yarnpkg.com/@mapbox/unitbezier/-/unitbezier-0.0.0.tgz#15651bd553a67b8581fb398810c98ad86a34524e"
   integrity sha1-FWUb1VOme4WB+zmIEMmK2Go0Uk4=
 
-"@mapbox/vector-tile@^1.3.0", "@mapbox/vector-tile@^1.3.1":
+"@mapbox/vector-tile@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@mapbox/vector-tile/-/vector-tile-1.3.1.tgz#d3a74c90402d06e89ec66de49ec817ff53409666"
   integrity sha512-MCEddb8u44/xfQ3oD+Srl/tNcQoqTw3goGk2oLsrFxOTc3dUp+kAnby3PvAeeBYSMSjSPD1nd1AJA6W49WnoUw==
@@ -2677,7 +2691,7 @@ d3-dsv@1.0.8:
     iconv-lite "0.4"
     rw "1"
 
-d3-ease@1, d3-ease@^1.0.3:
+d3-ease@1, d3-ease@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.5.tgz#8ce59276d81241b1b72042d6af2d40e76d936ffb"
   integrity sha512-Ct1O//ly5y5lFM9YTdu+ygq7LleSgSE4oj7vUt9tPLHUi8VCV7QoizGpdWRWAwCO9LdYzIrQDg97+hGVdsSGPQ==
@@ -5283,7 +5297,7 @@ imagemin@^5.2.2:
     pify "^2.3.0"
     replace-ext "^1.0.0"
 
-immutable@4.0.0-rc.12:
+immutable@^4.0.0-rc.12:
   version "4.0.0-rc.12"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
   integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
@@ -6620,7 +6634,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mapbox-gl@^0.53.0, mapbox-gl@~0.53.0:
+mapbox-gl@~0.53.0:
   version "0.53.1"
   resolved "https://registry.yarnpkg.com/mapbox-gl/-/mapbox-gl-0.53.1.tgz#08a956d8da54b04bc7f29ab1319bddb9c97ddedf"
   integrity sha512-dTtW/qlkUowKGlqOhE8fqII2Tj4lcokvlZwUDLnkjy4uQ9zMFnVBULGeSzzTVkj9HtQZ3Zbey10/jmoVPV9t5w==
@@ -7692,7 +7706,7 @@ path-type@^2.0.0:
   dependencies:
     pify "^2.0.0"
 
-pbf@^3.0.5, pbf@^3.1.0:
+pbf@^3.0.5, pbf@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/pbf/-/pbf-3.2.0.tgz#e76f9f5114e395c25077ad6fe463b3507d6877fc"
   integrity sha512-98Eh7rsJNJF/Im6XYMLaOW3cLnNyedlOd6hu3iWMD5I7FZGgpw8yN3vQBrmLbLodu7G784Irb9Qsv2yFrxSAGw==
@@ -8382,10 +8396,10 @@ react-lifecycles-compat@^3.0.0:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-map-gl@^4.0.10:
-  version "4.0.14"
-  resolved "https://registry.yarnpkg.com/react-map-gl/-/react-map-gl-4.0.14.tgz#3bd79d9402a40496427791b7d4aa04ce68b3561d"
-  integrity sha512-Ijr0UIQ/wLGJZQgLzNDY2DVCduaLm4ILptEMoaKz66XG+XEEk27SssFWkfs2++E12TlFb7RctxiYRtEi87HyCw==
+react-map-gl@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/react-map-gl/-/react-map-gl-4.1.1.tgz#354baa5e5b4afbf21b4252983e44804b10a112d4"
+  integrity sha512-GvbaGLD5AGFDmhHPC0vMVITjNZbGHrXJjzZPKSP/2OiCzQA5JOt9hivJ4N/hkU82XhO9FzQtLk0p1SEmYdnO2A==
   dependencies:
     "@babel/runtime" "^7.0.0"
     mapbox-gl "~0.53.0"
@@ -8410,7 +8424,7 @@ react-paginate@^4.4.3:
     prop-types "^15.5.7"
     react-addons-create-fragment "^15.0.0"
 
-react-redux@^5.0.6:
+react-redux@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.1.1.tgz#88e368682c7fa80e34e055cd7ac56f5936b0f52f"
   integrity sha512-LE7Ned+cv5qe7tMV5BPYkGQ5Lpg8gzgItK07c67yHvJ8t0iaD9kPFPAli/mYkiyJYrs2pJgExR2ZgsGqlrOApg==
@@ -8440,6 +8454,13 @@ react-select@^1.0.0-rc.10:
     classnames "^2.2.4"
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
+
+react-spring@^7.2.10:
+  version "7.2.11"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-7.2.11.tgz#90962121c925c8a3181801b926eaf94c9b5c942e"
+  integrity sha512-VHoN34MTZFkvamy7Vlmcx2HR5WVSuaQQjFNlVRNyWNi+rcjYT8OcsggzeDltFycseBh8cZveYTc/iPCEe6O0Sw==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
 
 react-tooltip@^3.4.0:
   version "3.10.0"
@@ -8633,7 +8654,7 @@ redux-devtools-instrument@^1.9.4:
     lodash "^4.2.0"
     symbol-observable "^1.0.2"
 
-redux-thunk@^2.2.0:
+redux-thunk@^2.2.0, redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
