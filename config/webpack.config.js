@@ -67,7 +67,8 @@ const webpackConfig = {
 
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name]-[hash].css', allChunks: true
+      filename: '[name]-[hash].css',
+      allChunks: true
     }),
     new HtmlWebpackPlugin({
       template: 'app/index.html',
@@ -99,13 +100,14 @@ const webpackConfig = {
       SHOW_BANNER: envVariables.SHOW_BANNER === 'true',
       AS_MODULE: envVariables.AS_MODULE === 'true'
     }),
-    new LodashModuleReplacementPlugin(),
+    // https://github.com/lodash/lodash-webpack-plugin/issues/128
+    new LodashModuleReplacementPlugin({
+      shorthands: true
+    }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.LoaderOptionsPlugin({
       options: {
-        postcss: [
-          autoprefixer()
-        ]
+        postcss: [autoprefixer()]
       }
     })
   ],
@@ -151,7 +153,7 @@ const webpackConfig = {
             {
               loader: 'css-loader',
               options: {
-                minimize: (envVariables.NODE_ENV === 'production'),
+                minimize: envVariables.NODE_ENV === 'production',
                 sourceMap: true,
                 modules: true,
                 importLoaders: 1,
@@ -230,7 +232,7 @@ const webpackConfig = {
             loader: 'html-loader',
             options: {
               interpolate: true,
-              minimize: (envVariables.NODE_ENV === 'production')
+              minimize: envVariables.NODE_ENV === 'production'
             }
           }
         ]

@@ -166,7 +166,11 @@ const includeSubLayersDescription = (layer) => {
 
 export const confirmCustomLayer = layer => (dispatch, getState) => {
   const { previewLayer } = getState().customLayer;
-  const newLayer = { ...layer, ...previewLayer };
+  const newLayer = { 
+    ...previewLayer,
+    name: layer.name,
+    description: layer.description
+  };
   if (layer.subtype === 'wms') {
     if (!layer.subLayersActives || !layer.subLayersActives.length > 0) {
       dispatch({

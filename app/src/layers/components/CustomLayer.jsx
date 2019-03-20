@@ -12,7 +12,7 @@ class CustomLayer extends Component {
     super(props);
 
     this.state = {
-      name: 'Layer name',
+      name: '',
       description: '',
       subtype: 'geojson',
       url: '',
