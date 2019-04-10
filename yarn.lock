@@ -713,7 +713,7 @@
     "@babel/plugin-transform-react-jsx-self" "^7.0.0"
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.3.1":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.4.3.tgz#79888e452034223ad9609187a0ad1fe0d2ad4bdc"
   integrity sha512-9lsJwJLxDh/T3Q3SZszfWOTkk3pHbkmH+3KY+zwIDmsNlxsumuhS2TH3NIpktU4kNvfzy+k3eLT7aTJSPTo0OA==
@@ -792,13 +792,32 @@
   version "1.0.1"
   resolved "https://codeload.github.com/GlobalFishingWatch/map-colors/tar.gz/a514042b39739e5db27d1d5ce5e54f2863ca640f"
 
-"@globalfishingwatch/map-components@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-0.1.0.tgz#ce28d799cd130235cef32746f8d84fbf0871673a"
-  integrity sha512-uN3+pCsMWDfkEzIUS1eMfTdSHnxx9IzWqUJSDW0EZVKChnaoqRQ7ZaNGXNyODhbU4hvh+afXvZlPg4f0hwVeZA==
+"@globalfishingwatch/map-components@1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-1.6.0.tgz#ae17417dde71cd824465ba0f37a8e47b2ff810c1"
+  integrity sha512-fGXG/usrTiBZp+uadGIjmMq/O/KvzJo048RnKfwes+6ChdYOlP503QJWzoaOPL9EjCefpD+8dD1BTtJ314GJPQ==
   dependencies:
+    "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
+    "@mapbox/tile-cover" "^3.0.2"
+    "@mapbox/vector-tile" "^1.3.1"
+    "@turf/area" "^6.0.1"
+    "@turf/bbox" "^6.0.1"
+    classnames "^2.2.6"
+    countryflag "^2.3.0"
+    d3-ease "^1.0.5"
     d3-geo "^1.11.3"
+    d3-scale "^2.2.2"
+    d3-shape "^1.3.4"
+    immutable "^4.0.0-rc.12"
+    lodash "^4.17.11"
+    memoize-one "^5.0.0"
+    pbf "^3.2.0"
+    prop-types "^15.6.2"
+    react-spring "^8.0.19"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
     topojson-client "^3.0.0"
+    viewport-mercator-project "^6.1.1"
 
 "@globalfishingwatch/map-convert@github:GlobalFishingWatch/map-convert":
   version "1.0.0"
@@ -2554,7 +2573,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.4, classnames@^2.2.5:
+classnames@^2.2.4, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -2888,6 +2907,14 @@ cosmiconfig@^4.0.0:
     parse-json "^4.0.0"
     require-from-string "^2.0.1"
 
+countryflag@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-2.3.0.tgz#c8372bf26e3d4276e1fdc5304679c4862ffedad8"
+  integrity sha512-8DCgfafPxWfb3jWOOgNNKIZFxUA9MuaTjIhsHPhm0U02kseu+h/S4s8NpAY+Ce2aCVUH5VvrhpynuvvAPcVpxA==
+  dependencies:
+    if-emoji "^0.1.0"
+    world-countries "^2.1.0"
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
@@ -3214,7 +3241,7 @@ d3-dsv@1.0.8:
     iconv-lite "0.4"
     rw "1"
 
-d3-ease@1, d3-ease@^1.0.3:
+d3-ease@1, d3-ease@^1.0.3, d3-ease@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.5.tgz#8ce59276d81241b1b72042d6af2d40e76d936ffb"
   integrity sha512-Ct1O//ly5y5lFM9YTdu+ygq7LleSgSE4oj7vUt9tPLHUi8VCV7QoizGpdWRWAwCO9LdYzIrQDg97+hGVdsSGPQ==
@@ -3335,6 +3362,18 @@ d3-scale@1.0.7:
     d3-time "1"
     d3-time-format "2"
 
+d3-scale@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.2.2.tgz#4e880e0b2745acaaddd3ede26a9e908a9e17b81f"
+  integrity sha512-LbeEvGgIb8UMcAa0EATLNX0lelKWGYDQiPdHj+gLblGVhGLyNbaCn3EvrJf0A3Y/uOOU5aD6MTh5ZFCdEwGiCw==
+  dependencies:
+    d3-array "^1.2.0"
+    d3-collection "1"
+    d3-format "1"
+    d3-interpolate "1"
+    d3-time "1"
+    d3-time-format "2"
+
 d3-selection@1, d3-selection@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/d3-selection/-/d3-selection-1.4.0.tgz#ab9ac1e664cf967ebf1b479cc07e28ce9908c474"
@@ -3349,6 +3388,13 @@ d3-shape@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.0.tgz#45d01538f064bafd05ea3d6d2cb748fd8c41f777"
   integrity sha1-RdAVOPBkuv0F6j1tLLdI/YxB93c=
+  dependencies:
+    d3-path "1"
+
+d3-shape@^1.3.4:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.5.tgz#e81aea5940f59f0a79cfccac012232a8987c6033"
+  integrity sha512-VKazVR3phgD+MUCldapHD7P9kcrvPcexeX/PkMJmkUov4JM8IxsSg1DvbYoYich9AtdTsa5nNk2++ImPiDiSxg==
   dependencies:
     d3-path "1"
 
@@ -5544,6 +5590,11 @@ ieee754@^1.1.12, ieee754@^1.1.4:
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.13.tgz#ec168558e95aa181fd87d37f55c32bbcb6708b84"
   integrity sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
 
+if-emoji@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/if-emoji/-/if-emoji-0.1.0.tgz#85e1b036c6425a30f249e9034ff4400ceaa33947"
+  integrity sha1-heGwNsZCWjDySekDT/RADOqjOUc=
+
 ignore-walk@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/ignore-walk/-/ignore-walk-3.0.1.tgz#a83e62e7d272ac0e3b551aaa82831a19b69f82f8"
@@ -5641,6 +5692,11 @@ immutable@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
+
+immutable@^4.0.0-rc.12:
+  version "4.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
+  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -6875,6 +6931,11 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+memoize-one@^5.0.0:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.0.4.tgz#005928aced5c43d890a4dfab18ca908b0ec92cbc"
+  integrity sha512-P0z5IeAH6qHHGkJIXWw0xC2HNEgkx/9uWWBQw64FJj3/ol14VYdfVGWWr0fXfjhhv3TKVIqUq65os6O4GUNksA==
+
 memory-fs@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/memory-fs/-/memory-fs-0.2.0.tgz#f2bb25368bc121e391c2520de92969caee0a0290"
@@ -7809,7 +7870,7 @@ path-type@^2.0.0:
   dependencies:
     pify "^2.0.0"
 
-pbf@^3.0.5, pbf@^3.1.0:
+pbf@^3.0.5, pbf@^3.1.0, pbf@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/pbf/-/pbf-3.2.0.tgz#e76f9f5114e395c25077ad6fe463b3507d6877fc"
   integrity sha512-98Eh7rsJNJF/Im6XYMLaOW3cLnNyedlOd6hu3iWMD5I7FZGgpw8yN3vQBrmLbLodu7G784Irb9Qsv2yFrxSAGw==
@@ -8558,6 +8619,13 @@ react-select@^1.0.0-rc.10:
     prop-types "^15.5.8"
     react-input-autosize "^2.1.2"
 
+react-spring@^8.0.19:
+  version "8.0.19"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-8.0.19.tgz#62f4f396b4b73fa402838200a1c80374338cb12e"
+  integrity sha512-DjrwjXqqVEitj6e6GqdW5dUp1BoVyeFQhEcXvPfoQxwyIVSJ9smNt8CNjSvoQqRujVllE7XKaJRWSZO/ewd1/A==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+
 react-tooltip@^3.4.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.10.0.tgz#268b5ef519fd8a1369288d1f086f42c90d5da7ef"
@@ -8724,7 +8792,7 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-redux-thunk@^2.2.0:
+redux-thunk@^2.2.0, redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
   integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
@@ -10644,6 +10712,11 @@ wordwrap@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus=
+
+world-countries@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/world-countries/-/world-countries-2.1.0.tgz#935a3bb5839a88bc1c7d05b8645341db4edd48d4"
+  integrity sha512-g8DRgoH7UJiF5L0xjj+RP/GFH4fOVlD3J5CxkJ+PZYH1PNl0i5JrstBOX53Ub8ObTZ6lCx0V7nIA8BuCvxMoSg==
 
 wrap-ansi@^2.0.0:
   version "2.1.0"

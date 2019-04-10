@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StaticLayerPopup from 'map/components/StaticLayerPopup';
 import HoverPopup from 'map/components/HoverPopup';
-import MapModule from 'src/_map';
+import MapModule from '@globalfishingwatch/map-components/components/map';
 
 class MapWrapper extends Component {
   state = {

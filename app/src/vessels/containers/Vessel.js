@@ -8,7 +8,7 @@ import {
   highlightTrack
 } from 'vesselInfo/vesselInfoActions';
 import { fitTimelineToTrack } from 'filters/filtersActions';
-import { targetMapVessel } from 'src/_map';
+import { targetMapVessel } from '@globalfishingwatch/map-components/components/map';
 import { setNotification } from 'src/notifications/notificationsActions';
 
 const mapStateToProps = state => ({

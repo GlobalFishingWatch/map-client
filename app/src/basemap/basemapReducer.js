@@ -1,4 +1,4 @@
-import { AVAILABLE_BASEMAPS } from 'src/_map';
+import { AVAILABLE_BASEMAPS } from '@globalfishingwatch/map-components/components/map';
 import {
   INIT_BASEMAP,
   UPDATE_BASEMAP_LAYER
