@@ -30,6 +30,10 @@ If set, should point to the local workspace to be loaded.
 
 Enable usage of the "Subscription" feature.
 
+#### REACT_APP_FEATURE_TRANSLATIONS
+
+Enable to include translations engine
+
 ## Boolean flags
 
 #### REACT_APP_COMPLETE_MAP_RENDER

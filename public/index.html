@@ -68,13 +68,11 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
     <div id="app" class="fullHeightContainer"></div>
 
     <script type="text/javascript">
       piAId = '184512'
       piCId = '1548'
-
       ;(function() {
         function async_load() {
           var s = document.createElement('script')
@@ -92,6 +90,8 @@
         }
       })()
     </script>
+    <% if (process.env.REACT_APP_FEATURE_TRANSLATIONS === 'true') { %>
     <script src="//d.bablic.com/snippet/5c76e669cd0fe00001dc6aa4.js?version=3.9"></script>
+    <% } %>
   </body>
 </html>
