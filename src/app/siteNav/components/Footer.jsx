@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import BaseStyles from 'styles/_base.module.scss'
+import WrapStyles from 'styles/wrap.module.scss'
 import IconStyles from 'styles/icons.module.scss'
 import FooterStyles from 'styles/components/footer.module.scss'
 import OceanaLogo from 'assets/logos/oceana_logo_white.png'
@@ -34,7 +34,7 @@ class Footer extends Component {
             <span className={FooterStyles.cross} />
           </div>
           <div className={FooterStyles.scrollContainer}>
-            <div className={BaseStyles.wrap}>
+            <div className={WrapStyles.wrap}>
               <div className={FooterStyles.logosFooter}>
                 <div className={FooterStyles.partnerSection}>
                   <span className={FooterStyles.partnerText}>Founding Partners</span>

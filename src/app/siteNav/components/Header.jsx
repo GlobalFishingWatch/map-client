@@ -4,12 +4,12 @@ import classnames from 'classnames'
 import logo from 'assets/logos/gfw_logo.svg'
 import menuicon from 'assets/icons/menu.svg'
 import MenuMobile from 'app/siteNav/containers/MenuMobile'
-import BaseStyles from 'styles/_base.module.scss'
+import WrapStyles from 'styles/wrap.module.scss'
 import HeaderStyles from 'styles/components/shared/header.module.scss'
 import iconStyles from 'styles/icons.module.scss'
 import { ReactComponent as ShareIcon } from 'assets/icons/share.svg'
 
-const COMPLETE_MAP_RENDER = process.env.REACT_APP_COMPLETE_MAP_RENDER === false
+const COMPLETE_MAP_RENDER = process.env.REACT_APP_COMPLETE_MAP_RENDER === true
 
 class Header extends Component {
   constructor(props) {
@@ -37,27 +37,17 @@ class Header extends Component {
     return (
       <div>
         <div className={HeaderStyles.preview} />
-        {!this.props.isEmbedded && COMPLETE_MAP_RENDER && (
+        {!this.props.isEmbedded && !COMPLETE_MAP_RENDER && (
           <MenuMobile
             visible={this.state.mobileMenuVisible}
             onClose={this.closeMobileMenu}
             onOpenSupportModal={this.props.setSupportModalVisibility}
           />
         )}
-        <nav
-          className={classnames('c-header', {
-            [HeaderStyles.header]: true,
-            [HeaderStyles._map]: true,
-          })}
-        >
-          <div
-            className={classnames({
-              [BaseStyles.wrap]: true,
-              [BaseStyles._map]: true,
-            })}
-          >
+        <nav className={classnames('c-header', HeaderStyles.header, HeaderStyles._map)}>
+          <div className={classnames(WrapStyles.wrap, WrapStyles._map)}>
             <div className={HeaderStyles.containNav}>
-              {!isEmbedded && COMPLETE_MAP_RENDER && (
+              {!isEmbedded && !COMPLETE_MAP_RENDER && (
                 <img
                   onClick={() => this.setState({ mobileMenuVisible: true })}
                   className={HeaderStyles.iconMenuMobile}
@@ -65,7 +55,7 @@ class Header extends Component {
                   alt="Menu toggle icon"
                 />
               )}
-              {COMPLETE_MAP_RENDER && (
+              {!COMPLETE_MAP_RENDER && (
                 <a
                   target={target}
                   href={logoUrl}
