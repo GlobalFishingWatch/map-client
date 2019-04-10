@@ -97,7 +97,6 @@ export default function (state = initialState, action) {
         uids.forEach((tileUid) => {
           const releasedTileIndex = prevLayer.tiles.findIndex(tile => tile.uid === tileUid);
           if (releasedTileIndex > -1) {
-            // console.log('releasing', layerId, tileUid);
             prevLayer.tiles.splice(releasedTileIndex, 1);
           }
         });

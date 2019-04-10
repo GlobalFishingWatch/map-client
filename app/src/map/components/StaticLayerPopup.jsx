@@ -31,7 +31,6 @@ class StaticLayerPopup extends React.Component {
   render() {
     const { workspaceLayers, report, event, toggleCurrentReportPolygon } = this.props;
     const popup = getPopupData(workspaceLayers, report, event);
-    console.log(popup.fields)
     const toggleButtonText = (popup.polygonIsInReport === true) ? 'remove from report' : 'add to report';
     let toggleButtonClassName = classnames(PopupStyles.toggle);
     if (popup.polygonIsInReport === true) {

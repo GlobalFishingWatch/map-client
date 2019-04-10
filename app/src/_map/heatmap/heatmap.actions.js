@@ -59,7 +59,6 @@ function getTemporalExtentsVisibleIndices(loadTemporalExtent, layerTemporalExten
  * @return {Promise}                     a Promise that will be resolved when tile is loaded
  */
 function loadLayerTile(layerId, tileCoordinates, token, temporalExtentsIndices, { url, temporalExtents, temporalExtentsLess, isPBF }) {
-  // console.log('loadLayerTile', layerId, tileCoordinates, temporalExtentsIndices)
   if (url === undefined) {
     throw new Error('URL/endpoints object is not available on this tilesets header');
   }
@@ -144,14 +143,11 @@ function getTiles(layerIds, referenceTiles, newTemporalExtentsToLoad = undefined
         // check if tile does not already exist first
         let tile = tilesByLayer[layerId].find(t => t.uid === referenceTile.uid);
         if (!tile) {
-          // console.log('create tile ', referenceTile.uid)
           tile = {
             uid: referenceTile.uid,
             temporalExtentsIndicesLoaded: []
           };
           tilesByLayer[layerId].push(tile);
-        } else {
-          // console.log('found tile', referenceTile.uid)
         }
 
         const queriedTemporalExtentsIndices = (newTemporalExtentsToLoad === undefined)
@@ -448,7 +444,6 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
     const layerId = newLayer.id;
     const prevLayer = prevLayersDict[layerId];
     if (prevLayer === undefined) {
-      // console.log('adding', layerId)
       dispatch(addHeatmapLayer(newLayer, currentLoadTemporalExtent));
     } else {
       if (prevLayer.visible !== newLayer.visible && newLayer.visible === true) {
@@ -461,7 +456,6 @@ export const updateHeatmapLayers = (newLayers, currentLoadTemporalExtent) => (di
         prevLayer.filters !== newLayer.filters ||
         prevLayer.interactive !== newLayer.interactive
       ) {
-        // console.log('updating', layerId, ' with visibilty', newLayer.visible)
         dispatch({
           type: UPDATE_HEATMAP_LAYER_STYLE,
           payload: {

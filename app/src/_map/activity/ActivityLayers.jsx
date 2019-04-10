@@ -263,7 +263,7 @@ class ActivityLayers extends BaseControl {
     }
     if (this.renderer) {
       const err = this.renderer.gl.getError();
-      if (err !== 0) console.log(err);
+      if (err !== 0) console.warn(err);
     }
 
     const { highlightLayerData, highlightFilters } = this._getHighlightData(highlightedVessels, highlightedClickedVessel, heatmapLayers);

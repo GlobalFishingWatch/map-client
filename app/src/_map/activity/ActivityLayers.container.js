@@ -12,7 +12,6 @@ const getHeatmapLayersAsArray = createSelector(
     const a = Object.keys(heatmapLayers).map(id => ({
       ...heatmapLayers[id]
     }));
-    // console.log(a)
     return a;
   }
 );

@@ -108,12 +108,10 @@ export default class HeatmapSubLayer {
     const numProps = this.spritesPropsCount;
     const prevNumSprites = this.stage.children.length;
     const delta = numProps - prevNumSprites;
-    // console.log(prevNumSprites, '->', numProps, ' delta:', delta);
 
     if (delta < -4999) {
       // sprite needs to be removed. Do that progressively (max 100) to avoid UI lock
       const toRemove = Math.min(100, -delta);
-      // console.log('removing ', toRemove);
       for (let i = 0; i < toRemove; i++) {
         this.stage.removeChildAt(0);
       }
@@ -121,7 +119,6 @@ export default class HeatmapSubLayer {
 
     if (delta > 0) {
       const toAdd = Math.max(5000, delta);
-      // console.log('adding ', toAdd);
       this._addSprites(toAdd);
     }
   }
