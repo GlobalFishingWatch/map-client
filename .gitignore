@@ -40,5 +40,4 @@ yarn-error.log*
 bin/*.csv
 
 # Test workspaces
-public/workspace_*.json
-app/src/workspace/workspace.js
+src/app/workspace/workspace.js
