@@ -37,6 +37,7 @@
     "@turf/helpers": "^6.0.1",
     "body-parser": "^1.17.2",
     "classnames": "^2.2.5",
+    "dayjs": "^1.7.7",
     "d3": "^4.10.0",
     "d3-ease": "^1.0.3",
     "dotenv": "^4.0.0",
