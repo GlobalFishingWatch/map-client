@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/GlobalFishingWatch/map-client#readme",
   "dependencies": {
-    "@globalfishingwatch/map-colors": "github:GlobalFishingWatch/map-colors",
     "@globalfishingwatch/map-components": "1.6.0",
     "@globalfishingwatch/map-convert": "github:GlobalFishingWatch/map-convert",
     "@mapbox/tile-cover": "^3.0.2",

@@ -788,10 +788,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@globalfishingwatch/map-colors@github:GlobalFishingWatch/map-colors":
-  version "1.0.1"
-  resolved "https://codeload.github.com/GlobalFishingWatch/map-colors/tar.gz/a514042b39739e5db27d1d5ce5e54f2863ca640f"
-
 "@globalfishingwatch/map-components@1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-1.6.0.tgz#ae17417dde71cd824465ba0f37a8e47b2ff810c1"

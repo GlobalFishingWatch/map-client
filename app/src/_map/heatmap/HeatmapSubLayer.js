@@ -1,6 +1,6 @@
 /* global PIXI */
 import 'pixi.js';
-import { hueToHueIncrement, VESSELS_HUES_INCREMENTS_NUM } from '@globalfishingwatch/map-colors';
+import { hueToHueIncrement, VESSELS_HUES_INCREMENTS_NUM } from '@globalfishingwatch/map-components/components/map/utils';
 import {
   VESSELS_BASE_RADIUS,
   MAX_SPRITES_PER_LAYER

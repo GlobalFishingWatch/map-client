@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { hexToRgba } from '@globalfishingwatch/map-colors';
+import { hexToRgba } from '@globalfishingwatch/map-components/components/map/utils';
 import { STATIC_LAYERS_CARTO_ENDPOINT, STATIC_LAYERS_CARTO_TILES_ENDPOINT } from '../config';
 import { GL_TRANSPARENT, CUSTOM_LAYERS_SUBTYPES } from '../constants';
 import getMainGeomType from '../utils/getMainGeomType';
