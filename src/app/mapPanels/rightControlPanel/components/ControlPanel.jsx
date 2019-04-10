@@ -77,9 +77,9 @@ class ControlPanel extends Component {
           {this.props.userPermissions !== null &&
           this.props.userPermissions.indexOf('search') === -1 ? (
             <div>
-              <a className="loginRequiredLink" onClick={this.props.login}>
+              <button className="loginRequiredLink" onClick={this.props.login}>
                 Only registered users can use the search feature. Click here to log in.
-              </a>
+              </button>
               <Vessels />
             </div>
           ) : (

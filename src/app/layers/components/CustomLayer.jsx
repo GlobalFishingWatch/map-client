@@ -80,9 +80,9 @@ class CustomLayer extends Component {
       return (
         <div className={CustomLayerStyles.customLayer}>
           <div className={CustomLayerStyles.noAccess}>
-            <a className="loginRequiredLink" onClick={this.props.login}>
+            <button className="loginRequiredLink" onClick={this.props.login}>
               Only registered users can upload custom layers. Click here to log in.
-            </a>
+            </button>
           </div>
         </div>
       )

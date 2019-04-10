@@ -14,9 +14,9 @@ class NoLogin extends Component {
               Home Page
             </a>
           </p>
-          <a className={NoLoginStyles.btnAction} onClick={this.props.login}>
+          <button className={NoLoginStyles.btnAction} onClick={this.props.login}>
             log in / register
-          </a>
+          </button>
         </div>
       </div>
     )

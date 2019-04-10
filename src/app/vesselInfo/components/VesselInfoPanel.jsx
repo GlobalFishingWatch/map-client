@@ -69,7 +69,7 @@ class VesselInfoPanel extends Component {
               </a>
             )}
             {!canSeeVesselDetails && (
-              <a
+              <button
                 style={{ margin: 0 }}
                 className={infoPanelStyles.externalLink}
                 onClick={this.props.login}
@@ -77,7 +77,7 @@ class VesselInfoPanel extends Component {
                 Click here to login and
                 <br />
                 see more details
-              </a>
+              </button>
             )}
 
             <div className={infoPanelStyles.actionIcons}>

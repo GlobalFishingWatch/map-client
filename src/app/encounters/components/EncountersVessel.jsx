@@ -15,9 +15,9 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
   if (userPermissions !== null && userPermissions.indexOf('seeVesselBasicInfo') === -1) {
     return (
       <div className={infoPanelStyles.encountersData}>
-        <a className={infoPanelStyles.externalLink} onClick={login}>
+        <button className={infoPanelStyles.externalLink} onClick={login}>
           Click here to login and see more details
-        </a>
+        </button>
       </div>
     )
   }
@@ -35,7 +35,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
       >
         <div className={infoPanelStyles.rowInfo}>
           <span className={infoPanelStyles.key}>Vessel</span>
-          <a
+          <button
             onClick={() => openVessel(vessel)}
             className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)}
           >
@@ -43,7 +43,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
             <span className={infoPanelStyles.arrowSvg}>
               {<ArrowLinkIcon className={iconStyles.iconArrowLink} />}
             </span>
-          </a>
+          </button>
         </div>
       </VesselInfoDetails>
     </div>
