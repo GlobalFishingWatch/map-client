@@ -1,0 +1,38 @@
+@import '../../../styles/settings';
+
+.iconButton {
+  display: flex;
+  align-items: center;
+}
+
+.button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &._activated {
+    background-color: $color-31;
+  }
+
+  &._disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.label {
+  color: $color-4;
+  font-size: $font-size-xxs-small;
+  text-transform: capitalize;
+  cursor: pointer;
+}

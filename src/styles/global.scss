@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700');
+@import 'settings';
+
+* {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  &::after {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  &::before {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+}
+
+body,
+html {
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  font-weight: $font-weight-normal;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+:global .fullHeightContainer { // FIXME: add .full-height-container to each page root div
+  height: 100%;
+}
+
+:global .loginRequiredLink {
+  padding-left: 30px;
+  padding-right: 30px;
+  color: $color-3;
+  cursor: pointer;
+  display: inline-block;
+  font-family: $font-family-1;
+  font-size: $font-size-xs-small;
+  margin: 15px 0 0;
+  text-decoration: underline;
+}
+
+p {
+  color: $color-9;
+  font-family: $font-family-2;
+  font-size: $font-size-normal;
+  line-height: 1.6;
+
+  & + p {
+    margin-top: 15px;
+  }
+}
+
+a {
+  text-decoration: none;
+
+  &:visited {
+    color: currentColor;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+}
+
+:global ._mapPointer .gm-style > div {
+  cursor: pointer !important;
+}
+
+:global ._mapZoom .gm-style > div {
+  cursor: zoom-in !important;
+}

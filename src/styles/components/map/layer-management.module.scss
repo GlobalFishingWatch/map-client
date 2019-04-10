@@ -1,0 +1,18 @@
+@import '../../settings';
+
+.layerManagement {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 20px;
+  padding-right: 26px;
+  padding-left: $menu-mobile-left-padding;
+
+  @media #{$mq-tablet} {
+    padding-left: $menu-left-padding;
+    padding-right: $menu-right-padding;
+  }
+}
+
+.layerButton {
+  width: calc(50% - 1px);
+}

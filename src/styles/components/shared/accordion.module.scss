@@ -1,0 +1,42 @@
+@import '../../settings';
+@import '../../mixins';
+
+.accordion {
+  .accordionHeader {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 22px 25px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &:not(:first-child) {
+      padding-top: 20px;
+      border-top: 1px solid $color-fade-blue;
+    }
+
+    .title {
+      color: $color-4;
+      font-size: $font-size-small;
+    }
+
+    .expandArrowButton {
+      margin-top: 2px;
+      margin-right: 4px;
+      outline: none;
+      cursor: pointer;
+      pointer-events: none;
+
+      @include arrow(8px, 2px, $color-4, 'down');
+
+      &.expanded {
+        margin-top: 4px;
+
+        @include arrow(8px, 2px, $color-4, 'up');
+      }
+    }
+  }
+}

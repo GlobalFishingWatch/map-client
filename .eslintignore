@@ -1,6 +1,2 @@
-dist/**/*
-app/src/lib
-app/src/utils/assignPolyfill.js
-app/src/utils/findPolyfill.js
-app/src/utils/getURLParameterByName.js
+build/**/*
 app/src/workspace/workspace.js
