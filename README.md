@@ -25,6 +25,7 @@ node server.js
 You should be able to access your application at [http://localhost:3000/](http://localhost:3000/)
 
 Issues with `mozjpeg` on OSX:
+
 ```
 brew install automake
 brew install libpng
@@ -40,7 +41,7 @@ To use them, simply enable to built-in git hook manager:
 ```
 
 You only need to do this once. If new hooks/changes to existing hooks are brought from upstream, the git hook manager
- will automatically use them without requiring further actions from you.
+will automatically use them without requiring further actions from you.
 
 Note that as of now, before we fix all errors on the existing codebase, the push will carry on even with errors.
 
@@ -48,15 +49,18 @@ Note that as of now, before we fix all errors on the existing codebase, the push
 
 To compile the project to production environment, you need set the NODE_ENV variable value to `production` and
 execute the following command.
+
 ```
 npm run build
 ```
 
-This command generates a `dist` folder with the files needed to run application in a nginx or apache server. Your
+This command generates a `build` folder with the files needed to run application in a nginx or apache server. Your
 server needs to be configured to serve all routers from a static `index.html` file.
 
 ### nginx
+
 Example nginx config
+
 ```
 server {
     listen 80;
@@ -72,7 +76,9 @@ server {
 ```
 
 ### apache
+
 Example apache configure
+
 ```
 Options +FollowSymLinks
 IndexIgnore */*
@@ -86,17 +92,13 @@ RewriteRule (.*) index.html
 
 On server error, the `/public/500.html` page should be displayed.
 
+# Environment variables
 
-
-
-# Environment variables 
-
-See <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/env_variables.md">Environment Variables</a> 
+See <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/env_variables.md">Environment Variables</a>
 
 # Workspaces
 
-See <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/workspaces.md">Workspaces</a> 
-
+See <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/workspaces.md">Workspaces</a>
 
 # Permission keys description
 
@@ -142,15 +144,11 @@ Allows a user to report on report-enabled layers
 
 Allows a user to pin a vessel
 
-
-
-
 # Google Analytics events
 
 #### GA_INNER_TIMELINE_EXTENT_CHANGED
 
 Returns the length of the new inner extent in days.
-
 
 # GET parameters available on the client
 
@@ -165,7 +163,6 @@ A plain text JSON object that that represent values to override the currently di
 #### embedded
 
 A boolean value telling whether the client is in embedded mode (no share, no layers, no menu)
-
 
 # Console configuration
 

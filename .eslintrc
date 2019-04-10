@@ -1,94 +1,9 @@
 {
-  "env": {
-    "browser": true,
-    "node": true,
-    "mocha": true,
-    "es6": true
-  },
-  "globals": {
-    "FEATURE_FLAG_SUBSCRIPTIONS": true,
-    "FEATURE_FLAG_EXTENDED_POLYGON_LAYERS": true,
-    "BLOG_URL": true,
-    "COMPLETE_MAP_RENDER": true,
-    "DEFAULT_WORKSPACE": true,
-    "DISABLE_WELCOME_MODAL": true,
-    "GA_TRACKING_CODE": true,
-    "LOCAL_WORKSPACE": true,
-    "MAP_URL": true,
-    "PUBLIC_PATH": true,
-    "REQUIRE_MAP_LOGIN": true,
-    "SHARE_BASE_URL": true,
-    "SHOW_BANNER": true,
-    "SITE_URL": true,
-    "TIMEBAR_DATA_URL": true,
-    "V2_API_ENDPOINT": true,
-    "WELCOME_MODAL_COOKIE_KEY": true,
-    "bablic": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 7,
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
-  "parser": "babel-eslint",
-  "plugins": [
-    "react"
-  ],
-  "extends": [
-    "airbnb"
-  ],
+  "extends": ["prettier", "react-app"],
+  "plugins": ["prettier"],
   "rules": {
-    "no-console": [
-      "error",
-      {
-        "allow": [
-          "warn",
-          "error",
-          "info"
-        ]
-      }
-    ],
-    "comma-dangle": [
-      "error",
-      "never"
-    ],
-    "max-len": [
-      "error",
-      140
-    ],
-    "react/prefer-stateless-function": "off",
-    "no-underscore-dangle": 0,
-    "react/sort-comp": 0,
-    "no-plusplus": 0,
-    "no-param-reassign": 0,
-    "no-continue": 0,
-    "no-extra-boolean-cast": 0,
-    "no-bitwise": 0,
-    "react/require-default-props": "off",
-    "react/forbid-prop-types": "off",
-    "react/no-string-refs": "off",
-    "react/no-array-index-key": "off",
-    "react/jsx-filename-extension": 1,
-    "jsx-a11y/href-no-hash": 0,
-    "jsx-a11y/no-static-element-interactions": 0,
-    "jsx-a11y/label-has-for": 0,
-    "class-methods-use-this": 0,
-    "import/no-webpack-loader-syntax": 0,
-    "import/extensions": 0,
-    "jsx-a11y/no-noninteractive-element-interactions": 0,
-    "jsx-a11y/accessible-emoji": 0,
-    "padded-blocks": 0,
-    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
-    "react/jsx-first-prop-new-line": ["error", "multiline"],
-    "import/prefer-default-export": 0
-  },
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "config/webpack.config.js"
-      }
-    }
+    "prettier/prettier": "error",
+    "react/prop-types": "error",
+    "react/require-default-props": "error"
   }
 }
