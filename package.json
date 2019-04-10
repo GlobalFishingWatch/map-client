@@ -24,7 +24,6 @@
   "bugs": {
     "url": "https://github.com/GlobalFishingWatch/map-client/issues"
   },
-  "homepage": "https://github.com/GlobalFishingWatch/map-client#readme",
   "engines": {
     "node": "> 8.2.x",
     "npm": "> 5.3.x"
