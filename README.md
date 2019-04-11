@@ -24,13 +24,6 @@ node server.js
 
 You should be able to access your application at [http://localhost:3000/](http://localhost:3000/)
 
-Issues with `mozjpeg` on OSX:
-
-```
-brew install automake
-brew install libpng
-```
-
 # Development
 
 The project includes a set of hooks to automatize boring tasks as well as ensure code quality.
