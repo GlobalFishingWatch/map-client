@@ -8,11 +8,18 @@ export const SET_TOKEN = 'SET_TOKEN'
 export const LOGOUT = 'LOGOUT'
 export const TOKEN_SESSION = 'TOKEN_SESSION'
 
+// GTM = Google Tag Manager
+const GTGELoginEventId = 'loggedInUser'
+
 const setGAUserDimension = (user) => {
+  window.dataLayer = window.dataLayer || []
   if (user !== false) {
-    window.ga('set', 'dimension1', user.identity.userId)
+    window.dataLayer.push({
+      userID: user.identity.userId,
+      event: GTGELoginEventId,
+    })
   } else {
-    window.ga('set', 'dimension1', '')
+    window.dataLayer = window.dataLayer.filter((l) => l.event !== GTGELoginEventId)
   }
 }
 
