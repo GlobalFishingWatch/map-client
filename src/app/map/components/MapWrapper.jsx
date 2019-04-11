@@ -2,12 +2,23 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
-import MapModule from '@globalfishingwatch/map-components/components/map'
+import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
 
 class MapWrapper extends Component {
   state = {
     hoverPopupData: null,
     clickPopupData: null,
+    MapModule: null,
+  }
+
+  componentDidMount() {
+    this.loadMapModule()
+  }
+
+  loadMapModule() {
+    import('@globalfishingwatch/map-components/components/map').then((map) => {
+      this.setState({ MapModule: map.default })
+    })
   }
 
   renderClickPopup = () => {
@@ -62,6 +73,7 @@ class MapWrapper extends Component {
   }
 
   render() {
+    const { MapModule } = this.state
     const {
       onViewportChange,
       onLoadStart,
@@ -84,6 +96,8 @@ class MapWrapper extends Component {
       hoverPopupData === null ? null : { ...hoverPopupData, content: this.renderHoverPopup() }
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
+
+    if (MapModule === null) return <Loader visible absolute />
 
     return (
       <MapModule

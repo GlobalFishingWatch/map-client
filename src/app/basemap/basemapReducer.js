@@ -1,4 +1,4 @@
-import { AVAILABLE_BASEMAPS } from '@globalfishingwatch/map-components/components/map'
+import AVAILABLE_BASEMAPS from '@globalfishingwatch/map-components/components/map/basemaps'
 import { INIT_BASEMAP, UPDATE_BASEMAP_LAYER } from 'app/basemap/basemapActions'
 
 const initialState = {

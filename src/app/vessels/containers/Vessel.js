@@ -7,7 +7,7 @@ import {
   setPinnedVesselColor,
   highlightTrack,
 } from 'app/vesselInfo/vesselInfoActions'
-import { targetMapVessel } from '@globalfishingwatch/map-components/components/map'
+import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
 import { setNotification } from 'app/notifications/notificationsActions'
 
