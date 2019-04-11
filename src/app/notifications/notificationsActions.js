@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js'
 import platform from 'platform'
+import isWebGLSupported from '../utils/isWebGLSupported'
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION'
 
@@ -13,7 +13,7 @@ const getNotificationsConfig = (literals) => [
   {
     id: 'webgl',
     content: literals.webgl_warning,
-    checker: () => !PIXI.utils.isWebGLSupported(),
+    checker: () => !isWebGLSupported(),
     type: 'error',
   },
   {

@@ -7,7 +7,7 @@ import getVesselName from 'app/utils/getVesselName'
 import fetchEndpoint from 'app/utils/fetchEndpoint'
 import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
-import { targetMapVessel } from '@globalfishingwatch/map-components/components/map'
+import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
