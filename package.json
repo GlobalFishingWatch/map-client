@@ -77,6 +77,7 @@
     "wms-capabilities": "^0.3.4"
   },
   "devDependencies": {
+    "@satellitestudio/eslint-config": "^1.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
     "http-server": "^0.11.1",
@@ -99,7 +100,7 @@
     "not dead",
     "Firefox ESR",
     "Safari >= 8",
-    "not ie <= 11",
+    "not ie < 11",
     "not op_mini all"
   ]
 }

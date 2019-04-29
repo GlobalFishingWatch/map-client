@@ -1176,6 +1176,11 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@satellitestudio/eslint-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@satellitestudio/eslint-config/-/eslint-config-1.1.0.tgz#cd804871cc3f290105a2009e1fa5be455cd23f59"
+  integrity sha512-46DJqOjrKLqfFR1U5E7Sc3DGA+YfhlnSyxUYdTYP8KdD2jYcbwmY+jUjYYBGKggTIRm+0pdm1EblxBQYq3tHtA==
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
