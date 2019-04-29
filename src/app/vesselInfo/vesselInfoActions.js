@@ -44,40 +44,42 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
       id: seriesgroup,
     })
     fetchEndpoint(vesselInfoUrl, token).then((data) => {
-      delete data.series
-      data.tilesetId = tilesetId
+      if (data !== null) {
+        delete data.series
+        data.tilesetId = tilesetId
 
-      dispatch({
-        type: SET_VESSEL_DETAILS,
-        payload: {
-          vesselData: data,
-          layer,
-        },
-      })
-      dispatch(showVesselDetails(tilesetId, seriesgroup))
-      dispatch(toggleMapPanels(true))
+        dispatch({
+          type: SET_VESSEL_DETAILS,
+          payload: {
+            vesselData: data,
+            layer,
+          },
+        })
+        dispatch(showVesselDetails(tilesetId, seriesgroup))
+        dispatch(toggleMapPanels(true))
 
-      if (fromSearch) {
-        dispatch(trackSearchResultClicked(tilesetId, seriesgroup))
-      } else {
-        dispatch(trackVesselPointClicked(tilesetId, seriesgroup))
-      }
-      dispatch(
-        addVesselToRecentVesselList(
-          data.seriesgroup,
-          getVesselName(data, layer.header.info.fields),
-          tilesetId
-        )
-      )
-
-      if (data.comment) {
+        if (fromSearch) {
+          dispatch(trackSearchResultClicked(tilesetId, seriesgroup))
+        } else {
+          dispatch(trackVesselPointClicked(tilesetId, seriesgroup))
+        }
         dispatch(
-          setNotification({
-            content: data.comment,
-            type: 'warning',
-            visible: true,
-          })
+          addVesselToRecentVesselList(
+            data.seriesgroup,
+            getVesselName(data, layer.header.info.fields),
+            tilesetId
+          )
         )
+
+        if (data.comment) {
+          dispatch(
+            setNotification({
+              content: data.comment,
+              type: 'warning',
+              visible: true,
+            })
+          )
+        }
       }
     })
   }
@@ -157,39 +159,41 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
         id: pinnedVessel.seriesgroup,
       })
       fetchEndpoint(pinnedVesselUrl, token).then((data) => {
-        delete data.series
-        dispatch({
-          type: LOAD_PINNED_VESSEL,
-          payload: Object.assign({}, pinnedVessel, data),
-        })
-
-        const fleets = getState().fleets.fleets
-        const parentFleet = fleets.find((f) => f.vessels.indexOf(pinnedVessel.seriesgroup) > -1)
-        if (parentFleet) {
-          dispatch(applyFleetOverridesForVessel(pinnedVessel.seriesgroup, parentFleet))
-        } else {
-          dispatch(
-            togglePinnedVesselVisibility(pinnedVessel.seriesgroup, pinnedVessel.visible === true)
-          )
-        }
-
-        dispatch(
-          addVesselToRecentVesselList(
-            pinnedVessel.seriesgroup,
-            getVesselName(pinnedVessel, layer.header.info.fields),
-            pinnedVessel.tilesetId
-          )
-        )
-
-        if (shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
+        if (data !== null) {
+          delete data.series
           dispatch({
-            type: SET_VESSEL_DETAILS,
-            payload: {
-              vesselData: data,
-              layer,
-            },
+            type: LOAD_PINNED_VESSEL,
+            payload: Object.assign({}, pinnedVessel, data),
           })
-          dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.seriesgroup))
+
+          const fleets = getState().fleets.fleets
+          const parentFleet = fleets.find((f) => f.vessels.indexOf(pinnedVessel.seriesgroup) > -1)
+          if (parentFleet) {
+            dispatch(applyFleetOverridesForVessel(pinnedVessel.seriesgroup, parentFleet))
+          } else {
+            dispatch(
+              togglePinnedVesselVisibility(pinnedVessel.seriesgroup, pinnedVessel.visible === true)
+            )
+          }
+
+          dispatch(
+            addVesselToRecentVesselList(
+              pinnedVessel.seriesgroup,
+              getVesselName(pinnedVessel, layer.header.info.fields),
+              pinnedVessel.tilesetId
+            )
+          )
+
+          if (shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
+            dispatch({
+              type: SET_VESSEL_DETAILS,
+              payload: {
+                vesselData: data,
+                layer,
+              },
+            })
+            dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.seriesgroup))
+          }
         }
       })
     })
