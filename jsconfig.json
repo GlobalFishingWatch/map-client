@@ -8,5 +8,6 @@
       "app/*": ["./src/app"]
     }
   },
-  "exclude": ["node_modules"] // keep VS Code from slowing down by searching node_modules
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
