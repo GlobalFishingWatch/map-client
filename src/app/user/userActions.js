@@ -48,6 +48,7 @@ function getUserData(data) {
 }
 
 function getAclData(data) {
+  if (data === null) return null
   return data.allowedFeatures
 }
 
