@@ -57,7 +57,6 @@
     "react-app-polyfill": "^0.2.2",
     "react-datepicker": "^0.46.0",
     "react-dom": "^16.8.6",
-    "react-ga": "^2.2.0",
     "react-input-range": "^1.2.1",
     "react-map-gl": "^4.0.10",
     "react-paginate": "^4.4.3",
