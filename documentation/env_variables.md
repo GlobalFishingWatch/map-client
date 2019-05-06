@@ -54,9 +54,9 @@ Display message contained in literals.json's `banner` in a dismissable banner on
 
 ## Keys
 
-#### REACT_APP_GA_TRACKING_CODE
+#### REACT_APP_GOOGLE_TAG_MANAGER_KEY
 
-Google Analytics tracking code.
+Google Tag Manager tracking code.
 
 #### REACT_APP_WELCOME_MODAL_COOKIE_KEY
 

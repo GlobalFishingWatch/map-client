@@ -1,24 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component, Suspense } from 'react'
 import PropTypes from 'prop-types'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
 
+const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
+
 class MapWrapper extends Component {
   state = {
     hoverPopupData: null,
     clickPopupData: null,
-    MapModule: null,
-  }
-
-  componentDidMount() {
-    this.loadMapModule()
-  }
-
-  loadMapModule() {
-    import('@globalfishingwatch/map-components/components/map').then((map) => {
-      this.setState({ MapModule: map.default })
-    })
   }
 
   renderClickPopup = () => {
@@ -73,7 +64,6 @@ class MapWrapper extends Component {
   }
 
   render() {
-    const { MapModule } = this.state
     const {
       onViewportChange,
       onLoadStart,
@@ -97,31 +87,31 @@ class MapWrapper extends Component {
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
 
-    if (MapModule === null) return <Loader visible absolute />
-
     return (
-      <MapModule
-        onHover={this.onHover}
-        onClick={this.onClick}
-        onViewportChange={onViewportChange}
-        onLoadStart={onLoadStart}
-        onLoadComplete={onLoadComplete}
-        onAttributionsChange={onAttributionsChange}
-        onClosePopup={this.onClosePopup}
-        hoverPopup={hoverPopup}
-        clickPopup={clickPopup}
-        token={token}
-        // TODO REMOVE
-        glyphsPath={`${process.env.PUBLIC_URL}/gl-fonts/{fontstack}/{range}.pbf`}
-        viewport={viewport}
-        tracks={tracks}
-        heatmapLayers={heatmapLayers}
-        staticLayers={staticLayers}
-        basemapLayers={basemapLayers}
-        temporalExtent={temporalExtent}
-        loadTemporalExtent={loadTemporalExtent}
-        highlightTemporalExtent={highlightTemporalExtent}
-      />
+      <Suspense fallback={<Loader visible absolute />}>
+        <MapModule
+          onHover={this.onHover}
+          onClick={this.onClick}
+          onViewportChange={onViewportChange}
+          onLoadStart={onLoadStart}
+          onLoadComplete={onLoadComplete}
+          onAttributionsChange={onAttributionsChange}
+          onClosePopup={this.onClosePopup}
+          hoverPopup={hoverPopup}
+          clickPopup={clickPopup}
+          token={token}
+          // TODO REMOVE
+          glyphsPath={`${process.env.PUBLIC_URL}/gl-fonts/{fontstack}/{range}.pbf`}
+          viewport={viewport}
+          tracks={tracks}
+          heatmapLayers={heatmapLayers}
+          staticLayers={staticLayers}
+          basemapLayers={basemapLayers}
+          temporalExtent={temporalExtent}
+          loadTemporalExtent={loadTemporalExtent}
+          highlightTemporalExtent={highlightTemporalExtent}
+        />
+      </Suspense>
     )
   }
 }

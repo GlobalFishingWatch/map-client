@@ -256,26 +256,26 @@ const GA_ACTION_WHITELIST = [
 ]
 
 const googleAnalyticsMiddleware = (store) => (next) => (action) => {
-  if (typeof window.ga !== 'undefined' && typeof action.type !== 'undefined') {
+  if (typeof window.dataLayer !== 'undefined' && typeof action.type !== 'undefined') {
     const state = store.getState()
-    const gaAction = GA_ACTION_WHITELIST.find(
+    const gtmAction = GA_ACTION_WHITELIST.find(
       (whitelistAction) => action.type === whitelistAction.type
     )
-    if (gaAction) {
-      const gaEvent = {
-        hitType: 'event',
-        eventCategory: gaAction.category,
+    if (gtmAction) {
+      const gtmEvent = {
+        event: 'mapEvent',
+        mapEventCategory: gtmAction.category,
       }
-      if (isFunction(gaAction.action)) {
-        gaEvent.eventAction = gaAction.action(action, state)
-      } else {
-        gaEvent.eventAction = gaAction.action
-      }
-      if (gaAction.getPayload) {
-        gaEvent.eventLabel = gaAction.getPayload(action, state)
-      }
-      if (gaEvent.eventLabel !== null && typeof gaEvent.eventLabel !== 'undefined') {
-        window.ga('send', gaEvent)
+      const eventPayload = gtmAction.getPayload ? gtmAction.getPayload(action, state) : null
+      if (eventPayload !== null && typeof eventPayload !== 'undefined') {
+        gtmEvent.mapEventLabel = eventPayload
+        if (isFunction(gtmAction.action)) {
+          gtmEvent.mapEventAction = gtmAction.action(action, state)
+        } else {
+          gtmEvent.mapEventAction = gtmAction.action
+        }
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push(gtmEvent)
       }
     }
   }

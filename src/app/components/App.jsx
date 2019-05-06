@@ -3,19 +3,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import AppStyles from 'styles/components/app.module.scss'
-import ReactGA from 'react-ga'
 import Notifications from 'app/notifications/containers/Notifications'
 
 const ACCESS_TOKEN_REGEX = /#access_token=([a-zA-Z0-9.\-_]*)(&[a-z=])?/g
 const DISABLE_WELCOME_MODAL = process.env.REACT_APP_DISABLE_WELCOME_MODAL === true
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_CODE)
-    ReactGA.pageview(window.location.pathname)
-  }
-
   componentWillMount() {
     // TODO move this logic out of a presentational component
     ACCESS_TOKEN_REGEX.lastIndex = 0
