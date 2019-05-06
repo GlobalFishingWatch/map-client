@@ -316,17 +316,14 @@ export function toggleLayerWorkspacePresence(layerId, forceStatus = null) {
           loadLayerHeader(url, getState().user.token).then((header) => {
             if (header) {
               dispatch(setLayerHeader(layerId, header))
-              // dispatch(addHeatmapLayerFromLibrary(layerId, url));  TODO MAP MODULE
               dispatch(setGlobalFiltersFromHeader(header))
               dispatch(refreshFlagFiltersLayers())
             }
           })
         } else {
-          // dispatch(addHeatmapLayerFromLibrary(layerId, url));  TODO MAP MODULE
           dispatch(refreshFlagFiltersLayers())
         }
       } else {
-        // dispatch(removeHeatmapLayerFromLibrary(layerId));  TODO MAP MODULE
         dispatch(refreshFlagFiltersLayers())
       }
     }
