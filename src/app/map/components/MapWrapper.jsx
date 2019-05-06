@@ -111,6 +111,7 @@ class MapWrapper extends Component {
         hoverPopup={hoverPopup}
         clickPopup={clickPopup}
         token={token}
+        // TODO REMOVE
         glyphsPath={`${process.env.PUBLIC_URL}/gl-fonts/{fontstack}/{range}.pbf`}
         viewport={viewport}
         tracks={tracks}

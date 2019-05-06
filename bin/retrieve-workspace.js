@@ -4,7 +4,10 @@ const path = require('path')
 const fs = require('fs')
 
 if (!process.env.DEFAULT_WORKSPACE || !process.env.WORKSPACE_API_URL) {
-  console.log('Configuration not found in env variables, will use defaults')
+  console.error(
+    '\x1b[31m%s\x1b[0m',
+    'WARNING!: Configuration not found in env variables, will use defaults'
+  )
 }
 
 const WORKSPACE_PATH = 'src/app/workspace/workspace.js'

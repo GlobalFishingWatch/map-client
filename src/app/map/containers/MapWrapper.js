@@ -104,6 +104,7 @@ const getStaticLayers = createSelector(
     layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
+        // TODO replace with selectedFeatures
         const selectedPolygons =
           report.layerId === layer.id
             ? {
