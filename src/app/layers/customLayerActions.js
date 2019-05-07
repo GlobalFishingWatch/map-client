@@ -191,6 +191,7 @@ export const confirmCustomLayer = (layer) => (dispatch, getState) => {
     ...previewLayer,
     name: layer.name,
     description: layer.description,
+    subLayersActives: layer.subLayersActives,
   }
   if (layer.subtype === 'wms') {
     if (!layer.subLayersActives || !layer.subLayersActives.length > 0) {
