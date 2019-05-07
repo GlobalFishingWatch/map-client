@@ -184,7 +184,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
             )
           )
 
-          if (shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
+          if (shownVessel !== null && shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
             dispatch({
               type: SET_VESSEL_DETAILS,
               payload: {
