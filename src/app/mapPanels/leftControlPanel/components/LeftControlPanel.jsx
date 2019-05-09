@@ -64,7 +64,8 @@ LeftControlPanel.propTypes = {
 LeftControlPanel.defaultProps = {
   canZoomIn: false,
   canZoomOut: false,
-  mouseLatLong: [0, 0],
+  mouseLatLon: [0, 0],
+  userPermissions: null,
 }
 
 export default LeftControlPanel
