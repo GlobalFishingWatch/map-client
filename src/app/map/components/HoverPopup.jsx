@@ -7,7 +7,17 @@ import PopupStyles from 'styles/components/map/popup.module.scss'
 import moment from 'moment'
 
 const getPopupData = (event, layerTitle) => {
-  if (event.type === 'static') {
+  if (event.layer.id === 'encounters_ais') {
+    const encounter = event.target.properties
+    const date = convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex)
+    const featureTitle = moment(date)
+      .utc()
+      .format(FORMAT_DATE)
+    return {
+      layerTitle,
+      featureTitle,
+    }
+  } else if (event.type === 'static') {
     return {
       layerTitle,
       featureTitle: event.target.featureTitle,

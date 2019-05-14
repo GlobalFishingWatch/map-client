@@ -77,7 +77,7 @@ const getHeatmapLayers = createSelector(
     // for now interactive is set for all heatmap layers
     // (ie disable all layers if report is triggered)
     const interactive = report.layerId === null
-    return layers
+    const heatmapLayers = layers
       .filter((layer) => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
       .map((layer) => {
         const filters = layerFilters[layer.id] || []
@@ -95,16 +95,17 @@ const getHeatmapLayers = createSelector(
         }
         return layerParams
       })
+    console.log(heatmapLayers)
+    return heatmapLayers
   }
 )
 
 const getStaticLayers = createSelector(
   [getLayers, getReport],
-  (layers, report) =>
-    layers
+  (layers, report) => {
+    const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
-        // TODO replace with selectedFeatures
         const selectedFeatures =
           report.layerId === layer.id
             ? {
@@ -112,6 +113,10 @@ const getStaticLayers = createSelector(
                 values: report.polygonsIds,
               }
             : null
+        let url
+        if (layer.header && layer.header.endpoints) {
+          url = layer.header.endpoints.tiles.replace(/\{\{/g, '{').replace(/\}\}/g, '}')
+        }
         const layerParams = {
           id: layer.id,
           visible: layer.visible,
@@ -123,13 +128,15 @@ const getStaticLayers = createSelector(
           // -- needed for custom layers
           isCustom: layer.isCustom,
           subtype: layer.subtype,
-          url: layer.url,
+          url,
           data: layer.data,
           // -- needed for workspace GL layers
           gl: layer.gl,
         }
         return layerParams
       })
+    return staticLayers
+  }
 )
 
 const getBasemapLayers = createSelector(
@@ -191,7 +198,6 @@ const mapDispatchToProps = (dispatch) => ({
       const target = event.target
       if (target.isCluster === true) {
         dispatch(trackMapClicked(event.latitude, event.longitude, 'cluster'))
-        // dispatch(hideVesselsInfoPanel());
       } else if (event.layer.subtype === LAYER_TYPES.Encounters) {
         dispatch(
           setEncountersInfo(
@@ -212,7 +218,11 @@ const mapDispatchToProps = (dispatch) => ({
         )
       }
     } else if (event.type === 'static') {
-      dispatch(setCurrentSelectedPolygon(event.target.properties))
+      if (event.layer.id === 'encounters_ais') {
+        dispatch(setEncountersInfo(event.target.properties.id, 'encounters_ais'))
+      } else {
+        dispatch(setCurrentSelectedPolygon(event.target.properties))
+      }
     }
   },
   toggleCurrentReportPolygon: () => {

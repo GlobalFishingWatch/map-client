@@ -30,7 +30,7 @@ https
         const workspaceJSON = JSON.parse(data)
         let workspace = JSON.stringify(workspaceJSON, null, 2)
         workspace = `
-// AUTOMATICALLY RETRIEVED FROM ENV VARIABLES. DO NOT EDIT.
+// AUTOMATICALLY RETRIEVED FROM ENV VARIABLES. WILL BE OVERWRITTEN AT NEXT NPM INSTALL.
 const defaultWorkspace = ${workspace};
 export default defaultWorkspace;
       `

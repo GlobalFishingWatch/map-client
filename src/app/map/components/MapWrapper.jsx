@@ -31,7 +31,8 @@ class MapWrapper extends Component {
 
   onClick = (event) => {
     this.props.onMapClick(event)
-    const clickPopupData = event.type === 'static' ? event : null
+    const clickPopupData =
+      event.type === 'static' && event.layer.id !== 'encounters_ais' ? event : null
 
     this.setState({
       clickPopupData,
@@ -46,11 +47,17 @@ class MapWrapper extends Component {
     }
     const { workspaceLayers } = this.props
     const workspaceLayer = workspaceLayers.find((l) => l.id === hoverPopupData.layer.id)
-    return <HoverPopup event={hoverPopupData} layerTitle={workspaceLayer.title} />
+    return (
+      <HoverPopup
+        event={hoverPopupData}
+        layerTitle={workspaceLayer.title || workspaceLayer.label}
+      />
+    )
   }
 
   onHover = (event) => {
     const hoverPopupData = event.type !== null ? event : null
+
     this.props.onMapHover(event)
     this.setState({
       hoverPopupData,
