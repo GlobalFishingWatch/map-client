@@ -1,0 +1,37 @@
+@import '../../../../styles/settings';
+
+.mapLoader {
+  left: 8px;
+  position: absolute;
+  top: 160px;
+  z-index: 6;
+
+  @media #{$mq-tablet} {
+    left: 6px;
+    top: 250px;
+  }
+
+  &._isEmbedded {
+    left: 6px;
+    top: 110px;
+
+    @media #{$mq-tablet} {
+      top: 204px;
+    }
+  }
+}
+
+.latlon {
+  display: none;
+
+  @media #{$mq-tablet} {
+    color: rgba($color-4, 0.7);
+    display: block;
+    font-size: $font-size-xxs-small;
+    font-weight: bold;
+    left: 56px;
+    position: absolute;
+    top: 112px;
+    z-index: 99;
+  }
+}

@@ -1,0 +1,215 @@
+@import '../../settings';
+
+.share {
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.title {
+  font-size: $font-size-medium;
+  font-weight: $font-weight-bold;
+  margin-bottom: 10px;
+}
+
+.contentSwitcher {
+  align-items: center;
+  border: 1px solid $color-14;
+  border-radius: 100px;
+  display: flex;
+  font-weight: $font-weight-bold;
+  height: 40px;
+  justify-content: space-around;
+  margin: 25px auto;
+  max-width: 304px;
+}
+
+.contentOption {
+  color: $color-4;
+  cursor: pointer;
+  font-size: $font-size-xs-small;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  width: calc(50% - 9px);
+  z-index: 1;
+
+  &._selected {
+    color: $color-1;
+
+    &::before {
+      background-color: $color-4;
+      border-radius: 100px;
+      content: '';
+      display: inline-block;
+      height: 30px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      z-index: -1;
+    }
+  }
+}
+
+.content {
+  > form {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+    padding: 0;
+  }
+}
+
+.intro {
+  color: $color-4;
+  font-family: $font-family-1;
+  font-size: $font-size-small;
+  font-weight: $font-weight-bold;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.shareInput {
+  background-color: transparent;
+  border: 1px solid $color-14;
+  color: rgba($color-4, 0.3);
+  font-size: $font-size-small;
+  height: 40px;
+  max-width: 225px;
+  padding: 0 0 0 5px;
+  text-overflow: ellipsis;
+  width: calc(100% - 70px);
+}
+
+.copyButton {
+  background-color: $color-3;
+  border: 0;
+  color: $color-4;
+  cursor: pointer;
+  font-size: $font-size-small;
+  font-weight: $font-weight-bold;
+  height: 40px;
+  text-transform: uppercase;
+  width: 70px;
+}
+
+.embedContainer {
+  align-items: center;
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.separator {
+  margin: 45px 0 40px;
+}
+
+.wordSeparator {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    border-top: 1px solid $color-14;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 34px);
+  }
+
+  &::before {
+    left: 0;
+  }
+
+  &::after {
+    right: 0;
+  }
+}
+
+.socialLinks {
+  display: flex;
+  flex-direction: column;
+
+  @media #{$mq-tablet} {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.socialButton {
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+  padding: 24px 0;
+
+  &:not(:first-child) {
+    margin: 15px 0 0;
+  }
+
+  &._facebook {
+    background-color: $color-28;
+  }
+
+  &._googleplus {
+    background-color: $color-29;
+  }
+
+  &._twitter {
+    background-color: $color-30;
+  }
+
+  @media #{$mq-tablet} {
+    flex-basis: calc(33.33% - 18px);
+
+    &:not(:first-child) {
+      margin: 0;
+    }
+  }
+}
+
+.buttonContainer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.buttonText {
+  color: $color-4;
+  font-family: $font-family-1;
+  font-size: $font-size-small;
+  font-weight: $font-weight-bold;
+  margin: 0 0 0 5px;
+  text-transform: uppercase;
+}
+
+.facebookIcon,
+.googlePlusIcon,
+.twitterIcon {
+  fill: $color-4;
+}
+
+.facebookIcon {
+  height: 22px;
+  width: 10px;
+}
+
+.googlePlusIcon {
+  height: 17px;
+  width: 21px;
+}
+
+.twitterIcon {
+  height: 15px;
+  width: 18px;
+}
+
+.copyError {
+  color: $color-6;
+  margin-top: 20px;
+}
