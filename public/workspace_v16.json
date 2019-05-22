@@ -1,0 +1,202 @@
+{
+    "workspace": {
+        "tileset": "gfw-tasks-657-uvi-v2",
+        "map": {
+            "center": [
+                -4.039617826768424,
+                -142.20703125
+            ],
+            "zoom": 3,
+            "layers": [
+                {
+                    "title": "Night Light Vessel Detections",
+                    "color": "#A71AC1",
+                    "visible": false,
+                    "type": "ClusterAnimation",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-644-viirs-qf-1-v2",
+                    "id": "viirs",
+                    "tilesetId": "viirs",
+                    "label": "Night Light Vessel Detections",
+                    "description": "<p>This layer shows vessels at sea that satellites have detected by the light that they emit at night. This includes all vessels that emit a lot of light at night, including non-fishing vessels. However, the majority of lights detected at sea at night come from commercial fishing vessels. The satellite makes a single over-pass across the entire planet every night, detecting lights not obscured by clouds and designed to give at least one observation globally every day. Because the vessels are detected solely based on light emission, we can detect individual vessels and even entire fishing fleets that are not broadcasting AIS and so are not represented in the AIS-based fishing activity layer. Lights from fixed offshore infrastructure and other non-vessel sources are excluded.</p><p>To construct this layer, the GFW platform ingests boat detections processed from low light imaging data collected by the U.S. National Oceanic and Atmospheric Administration (NOAA) <a href='https://jointmission.gsfc.nasa.gov/viirs.html' target='_blank'>Visible Infrared Imaging Radiometer Suite (VIIRS)</a>. The boat detections are processed in near-real time by NOAA’s <a href='https://www.ngdc.noaa.gov/eog/index.html' target='_blank'>Earth Observation Group</a>, located in Boulder, Colorado. The product, known as <a href='https://ngdc.noaa.gov/eog/viirs/download_boat.html' target='_blank'>VIIRS Boat Detections</a>, picks up the presence of fishing vessels using lights to attract catch or to conduct operations at night. More than 85% of the detections are from vessels that lack AIS or Vessel Monitoring System (VMS) transponders. Due to the orbit design of polar orbiting satellites, places closer to polar will have more over-passes per day, while equatorial regions have only one daily.  Read more about this product, and download the data here: <a href='https://ngdc.noaa.gov/eog/viirs/download_boat.html' target='_blank'>https://ngdc.noaa.gov/eog/viirs/download_boat.html</a></p><br/><h4>Southern Anomaly Zone:</h4><p>South Atlantic Anomaly (SAA) is an area where the Earth's inner Van Allen radiation belt is at its lowest altitude, allowing more energetic particles from space to penetrate. When such particle hit the sensors on board of satellite, it creates a false signal which might cause the VBD algorithm to recognize it as a boat detection. A filtration algorithm has been implemented but more needs to be done to lower the possibility of mis-identification. </p><br/><p>The GFW layer includes all detections which NOAA has classified with QF=1 (boat) with a radiance value at the detector of at least 10 nano watts per square centimeter per steradian  nW/(cm^2 - sr)  (see the <a href='https://ncc.nesdis.noaa.gov/VIIRS/VIIRSFAQ.php' target='_blank'>VIIRS FAQ</a> for more)</p>",
+                    "added": true,
+                    "library": false,
+                    "opacity": 1,
+                    "hue": 22,
+                    "filterActivated": null
+                },
+                {
+                    "title": "Fishing effort",
+                    "description": "Global Fishing Watch uses data about a vessel’s identity, type, location, speed, direction and more that is broadcast using the Automatic Identification System (AIS) and collected via satellites and terrestrial receivers. AIS was developed for safety/collision-avoidance. Global Fishing Watch analyzes AIS data collected from vessels that our research has identified as known or possible commercial fishing vessels, and applies a fishing detection algorithm to determine “apparent fishing activity” based on changes in vessel speed and direction. The algorithm classifies each AIS broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. AIS data as broadcast may vary in completeness, accuracy and quality. Also, data collection by satellite or terrestrial receivers may introduce errors through missing or inaccurate data. Global Fishing Watch’s fishing detection algorithm is a best effort mathematically to identify “apparent fishing activity.” As a result, it is possible that some fishing activity is not identified as such by Global Fishing Watch; conversely, Global Fishing Watch may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies designations of vessel fishing activity, including synonyms of the term “fishing activity,” such as “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch is taking steps to make sure fishing activity designations are as accurate as possible. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v2",
+                    "visible": false,
+                    "hue": 182,
+                    "type": "ClusterAnimation",
+                    "opacity": 1,
+                    "id": "fishing",
+                    "tilesetId": "gfw-tasks-657-uvi-v2",
+                    "label": "Fishing effort",
+                    "added": true,
+                    "library": true,
+                    "filterActivated": null
+                },
+                {
+                    "title": "Indonesian VMS Fishing Activity",
+                    "visible": false,
+                    "type": "ClusterAnimation",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/525-indo-public-parametrize-v5",
+                    "id": "indo-public-fishing",
+                    "tilesetId": "indo-public-fishing",
+                    "label": "Indonesian VMS Fishing Activity",
+                    "description": "This layer of Global Fishing Watch uses data provided by the Indonesian Government’s Ministry of Maritime Affairs and Fisheries. The data is collected using their Vessel Monitoring System (VMS) via satellites and terrestrial receivers, and contains a vessel identities, gear type, location, speed, direction and more. Global Fishing Watch analyzes this data using the same algorithms developed for AIS data to identify fishing activity and behaviors. The algorithm classifies each broadcast data point for these vessels as either apparently fishing or not fishing and shows the former on the Global Fishing Watch fishing activity heat map. VMS broadcasts data quite differently from AIS and may give different measures of completeness, accuracy and quality. Over time our algorithms will improve across all our broadcast data formats. Global Fishing Watch’s fishing detection algorithm for VMS, as for AIS, is a best effort to algorithmically identify “apparent fishing activity.” It is possible that some fishing activity is not identified, or that the heat map may show apparent fishing activity where fishing is not actually taking place. For these reasons, Global Fishing Watch qualifies the terms “fishing activity,” “fishing” or “fishing effort,” as “apparent,” rather than certain. Any/all Global Fishing Watch information about “apparent fishing activity” should be considered an estimate and must be relied upon solely at your own risk. Global Fishing Watch fishing detection algorithms are developed and tested using actual fishing event data collected by observers, combined with expert analysis of AIS vessel movement data resulting in the manual classification of thousands of known fishing events. Global Fishing Watch also collaborates extensively with academic researchers through our research program to share fishing activity classification data and automated classification techniques.",
+                    "added": true,
+                    "library": false,
+                    "opacity": 1,
+                    "hue": 182,
+                    "filterActivated": null
+                },
+                {
+                    "type": "HeatmapTracksOnly",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-658-reefer-uvi-v4",
+                    "id": "reefers",
+                    "tilesetId": "gfw-tasks-658-reefer-uvi-v4",
+                    "added": true,
+                    "library": false,
+                    "opacity": 1
+                },
+                {
+                    "title": "Vessel Encounters",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-task-673-encounters-v3",
+                    "type": "Encounters",
+                    "description": "<h3>Encounters:</h3><br/><p>Vessel encounters were identified from AIS data as locations where two vessels were continuously within 500 meters for at least 2 hours, while at least 10 km from a coastal <a href='https://github.com/GlobalFishingWatch/globalfishingwatch.github.io/blob/rendezvous/anchorages.html' target='_blank'>anchorage</a>. These parameters balance the need to detect vessel pairs in close proximity for extended periods of time while recognizing that incomplete satellite coverage and inconsistent AIS transmission rates may limit our ability to identify long periods in which vessels are in immediate contact. We exclude encounters that occur in port or commonly used anchorages, because 1) transshipment at port is generally better regulated than at sea and 2) it would be challenging to determine if vessels were rendezvousing at a commonly used anchorage, or if they were just both using the same anchorage.</p><h3>Potential Transshipments</h3><br/><p>The <a href='https://github.com/GlobalFishingWatch/globalfishingwatch.github.io/blob/rendezvous/transshipment.html' target='_blank'>transshipments dataset</a> and the <a href='http://globalfishingwatch.org/map/' target='_blank'>Global Fishing Watch map</a> encounters layer use the subset of encounters where one of the vessels is identified a fish carrier and the other as a fishing vessel. We refer to these rendezvous as potential transshipments.</p><h3>Transshipment Vessels:</h3><br/><p>A database of refrigerated cargo vessels capable of receiving catch was compiled using three complementary methods. First, vessels classified as “refrigerated cargo” vessels, “fish carriers,” and “fish tender” vessels-- vessels we collectively refer to as “transshipment vessels”--were identified using lists from the International Telecommunications Union and major Regional Fisheries Management Organizations (RFMOs). Second, if we found a vessel participated in multiple encounters with fishing vessels, we conducted a web search and reviewed RFMO registries using information from the vessel's AIS to determine if the vessel was a transshipment vessel. Finally, we used a convolutional neural network, which predicts vessel class from vessel movement patterns (network described in Kroodsma et al. 2018), to identify possible transshipment vessels. Vessels that were identified as likely transshipment vessels by the neural network were manually validated through web searches and RFMO registries. Vessel identities were further corroborated via the IMO as nearly all vessels could be matched to an IMO registry number.</p><h3>Fishing Vessels:</h3><br/><p>Fishing vessels were identified by combining vessels that consistently self identify as fishing vessels with those identified as fishing vessels by the the convolutional neural network mentioned above. This list is available <a href='https://github.com/GlobalFishingWatch/treniformis/tree/master/treniformis/_assets/GFW/FISHING_MMSI/KNOWN_AND_LIKELY' target='_blank'>HERE</a>.</p>",
+                    "visible": true,
+                    "hue": 0,
+                    "opacity": 1,
+                    "id": "encounters",
+                    "tilesetId": "gfw-task-673-encounters-v3",
+                    "label": "Vessel Encounters",
+                    "added": true,
+                    "library": false,
+                    "filterActivated": null
+                },
+                {
+                    "title": "WDPA Protected Planet MPAs",
+                    "description": "This layer contains all of the Marine Protected Areas (MPAs) that are published in <a href='https://www.protectedplanet.net/' target='_blank'>Protected Planet WDPA</a>.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/protectedplanet/source",
+                    "visible": false,
+                    "hue": 145,
+                    "type": "CartoDBAnimation",
+                    "opacity": 1,
+                    "id": "protectedplanet",
+                    "label": "Protected Planet WDPA MPAs",
+                    "added": true,
+                    "library": true
+                },
+                {
+                    "title": "MPA - No Take",
+                    "description": "MPA stands for Marine Protected Area. A No-take Marine Protected Area is an area of ocean in which the extraction or significant destruction of natural cultural resources, including fish, is prohibited. The MPA - No Take layer was created using the data available from the <a href='http://mpatlas.org' target='_blank'>Marine Conservation Institute's MPAtlas</a>.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/mpant/source",
+                    "visible": false,
+                    "hue": 0,
+                    "type": "CartoDBAnimation",
+                    "opacity": 1,
+                    "id": "mpant",
+                    "label": "MPA - No Take",
+                    "added": true,
+                    "library": true,
+                    "reportId": "MPANT"
+                },
+                {
+                    "title": "MPA - Restricted Use",
+                    "description": "MPA stands for Marine Protected Area. A restricted Marine Protected Area is an area of ocean in which the extraction or significant destruction of natural cultural resources, including fish, is restricted but not completely prohibited. The MPA - Restricted Use layer was created using the data available from the <a href='http://mpatlas.org' target='_blank'>Marine Conservation Institute's MPAtlas</a>.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/mparu/source",
+                    "visible": false,
+                    "hue": 29,
+                    "type": "CartoDBAnimation",
+                    "opacity": 1,
+                    "id": "mparu",
+                    "label": "MPA - Restricted Use",
+                    "added": true,
+                    "library": true,
+                    "reportId": "MPARU"
+                },
+                {
+                    "title": "EEZ",
+                    "description": "EEZ stands for Exclusive Economic Zone and is a state’s sovereign waters, which extend 200 nautical miles from the coast. The EEZ layer was created using the data available from marineregions.org.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/eez/source",
+                    "visible": true,
+                    "hue": 140,
+                    "type": "CartoDBAnimation",
+                    "opacity": 0.6,
+                    "id": "eez",
+                    "label": "EEZ",
+                    "added": true,
+                    "library": true,
+                    "reportId": "EEZ"
+                },
+                {
+                    "title": "High Seas Pocket",
+                    "description": "The High Seas are any area of the ocean beyond Exclusive Economic Zones (EEZ). High Seas pockets are areas totally enclosed by EEZs. These pockets can be hard to distinguish from the multiple EEZ jurisdictions that surround them, thus, we have a layer that highlights them.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/highseas/source",
+                    "visible": false,
+                    "hue": 240,
+                    "type": "CartoDBAnimation",
+                    "opacity": 1,
+                    "id": "highseas",
+                    "label": "High Seas Pocket",
+                    "added": true,
+                    "library": true
+                },
+                {
+                    "title": "RFMO",
+                    "description": "RFMO stands for Regional Fishery Management Organization. These organizations are international organizations formed by countries with a shared interest in managing or conserving an area’s fish stock. Some RFMOs manage all the fish stocks found in a specific area, while others focus on particular highly migratory species, notably tuna, throughout vast geographical areas. The RFMO Layer on the Global Fishing Watch map currently includes the five tuna RFMOs.",
+                    "url": "https://api-dot-skytruth-pleuston.appspot.com/v2/directory/rfmo/source",
+                    "visible": false,
+                    "hue": 200,
+                    "type": "CartoDBAnimation",
+                    "opacity": 1,
+                    "id": "rfmo",
+                    "label": "RFMO",
+                    "added": true,
+                    "library": true,
+                    "reportId": "RFMO"
+                },
+                {
+                    "title": "WPP NRI",
+                    "color": "#F84F40",
+                    "visible": false,
+                    "type": "CartoDBAnimation",
+                    "url": "http://cartodb.skytruth.org/user/production/api/v2/viz/32d46386-1ed0-11e7-ad57-0242ac110006/viz.json",
+                    "id": "6",
+                    "label": "WPP NRI",
+                    "description": "The WPP-NRI (Wilayah Pengelolaan Perikanan Negara Republik Indonesia) are fisheries management areas for fishing, conservation, research, and fisheries development which covers inland waters, archipelagic waters, territorial sea, within and outside the exclusive economic zone of Indonesia.",
+                    "added": true,
+                    "library": false,
+                    "opacity": 1
+                }
+            ]
+        },
+        "pinnedVessels": [],
+        "basemap": "hybrid",
+        "timeline": {
+            "innerExtent": [
+                1525143600000,
+                1527649200000
+            ],
+            "outerExtent": [
+                1483153200000,
+                1527649200000
+            ]
+        },
+        "timelineSpeed": 1,
+        "areas": [],
+        "filterGroups": []
+    },
+    "metadata": {
+        "id": "vizz-default-workspace-v16",
+        "urls": {
+            "save": "https://api-dot-skytruth-pleuston.appspot.com/v2/workspaces",
+            "load": "https://api-dot-skytruth-pleuston.appspot.com/v2/workspaces/vizz-default-workspace-v16",
+            "visualization": "http://globalfishingwatch.org/map/workspace/vizz-default-workspace-v16"
+        }
+    }
+}

@@ -1,0 +1,114 @@
+@import '../_settings';
+
+.loader {
+  position: relative;
+
+  &._absolute {
+    background-color: rgba($color-1, 0.7);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 103;
+
+    > .loaderContainer {
+      background-color: transparent;
+      left: 50%;
+      margin: 0;
+      position: relative;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &._tiny {
+    align-items: center;
+    background-color: $color-19;
+    box-shadow: 0 0 8px 0 rgba($color-22, 0.3);
+    color: $color-4;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    text-align: center;
+
+    .loaderContainer {
+      background-color: transparent;
+      height: 26px;
+      left: 8px;
+      top: 10px;
+      position: absolute;
+      width: 26px;
+
+      > .loaderBubble::before {
+        height: 5px;
+        width: 5px;
+      }
+    }
+  }
+
+  .loaderContainer {
+    background-color: rgba($color-1, 0.7);
+    height: 65px;
+    margin: 0 auto;
+    width: 65px;
+
+    > .loaderBubble {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+
+      &::before {
+        animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+        background-color: $color-4;
+        border-radius: 100%;
+        content: '';
+        display: block;
+        height: 10px;
+        margin: 0 auto;
+        width: 10px;
+      }
+
+      // set initial values
+      $rotation: 45;
+      $delay: -1.1;
+      // iterate from elements 1 to 8
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) {
+          transform: rotate(#{$rotation}deg);
+
+          &::before {
+            animation-delay: #{$delay}s;
+          }
+        }
+        // update values for next iteration
+        $rotation: $rotation + 45;
+        $delay: $delay + 0.1;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes sk-circleBounceDelay {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sk-circleBounceDelay {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}

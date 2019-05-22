@@ -1,0 +1,39 @@
+@import '../../settings';
+@import '../../mixins';
+
+.colorPicker {
+  .section {
+    margin-top: 14px;
+  }
+
+  .colorInput {
+    display: inline-block;
+
+    input[type="radio"] {
+      display: none;
+
+      &:checked + label {
+        box-shadow: 0 0 0 2px $color-white;
+      }
+    }
+
+    label {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 10px;
+      padding: 1px;
+      border-radius: 50%;
+    }
+  }
+
+  .colorInputs {
+    margin-left: 2px;
+  }
+
+  .title {
+    margin-bottom: 5px;
+    font-size: $font-size-x-small;
+    font-weight: $font-weight-light-bold;
+  }
+}

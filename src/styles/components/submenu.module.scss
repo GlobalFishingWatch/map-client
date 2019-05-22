@@ -1,0 +1,77 @@
+@import '../settings';
+@import '../mixins';
+
+.submenu {
+  .main {
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+
+    .header {
+      align-items: center;
+      justify-content: space-between;
+      display: flex;
+      height: $menu-mobile-height;
+      padding-left: $menu-mobile-left-padding;
+      padding-right: $menu-mobile-right-padding;
+      border-bottom: 1px solid $color-fade-blue;
+
+      @media #{$mq-tablet} {
+        padding-left: $menu-left-padding;
+        padding-right: $menu-right-padding;
+        height: $menu-height;
+        flex-direction: row;
+      }
+
+      .titleContainer {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .title {
+          color: $color-4;
+          font-family: $font-family-1;
+          font-size: $font-size-small;
+          font-weight: $font-weight-bold;
+          text-align: left;
+          text-transform: uppercase;
+
+          @media #{$mq-tablet} {
+            font-size: $font-size-x-small;
+          }
+        }
+      }
+    }
+
+    .content {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .footer {
+    background-color: $color-mid-blue;
+    margin-bottom: 10px;
+    color: $color-white;
+    padding-top: 10px;
+    padding: 10px 35px;
+  }
+
+  .icon {
+    fill: $color-4;
+    min-height: 18px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    padding: 1em;
+    margin: -1em;
+    border-radius: 50%;
+
+    @media #{$mq-tablet} {
+      min-height: none;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
