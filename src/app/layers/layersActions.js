@@ -7,6 +7,7 @@ import {
   HEADERLESS_LAYERS,
   TEMPORAL_EXTENTLESS,
   CUSTOM_LAYERS_SUBTYPES,
+  ENCOUNTERS_AIS,
 } from 'app/constants'
 import { SET_OVERALL_TIMELINE_DATES } from 'app/filters/filtersActions'
 import { refreshFlagFiltersLayers } from 'app/filters/filterGroupsActions'
@@ -36,8 +37,10 @@ function loadLayerHeader(tilesetUrl, token) {
     headers.Authorization = `Bearer ${token}`
   }
 
+  const headerUrl = `${tilesetUrl}/header`
+
   return new Promise((resolve) => {
-    fetch(`${tilesetUrl}/header`, {
+    fetch(headerUrl, {
       method: 'GET',
       headers,
     })
@@ -177,7 +180,10 @@ export function initLayers(workspaceLayers, libraryLayers) {
     // get header promises
     const headersPromises = []
     workspaceLayers
-      .filter((l) => LAYER_TYPES_WITH_HEADER.includes(l.type) && l.added === true)
+      .filter(
+        (l) =>
+          (l.id === ENCOUNTERS_AIS || LAYER_TYPES_WITH_HEADER.includes(l.type)) && l.added === true
+      )
       .forEach((heatmapLayer) => {
         if (HEADERLESS_LAYERS.includes(heatmapLayer.tilesetId)) {
           // headerless layers are considered temporalExtents-less too

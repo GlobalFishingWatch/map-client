@@ -31,6 +31,8 @@ export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
   LAYER_TYPES.Encounters,
 ]
 
+export const ENCOUNTERS_AIS = 'encounters_ais'
+
 export const LAYER_TYPES_MAPBOX_GL = [LAYER_TYPES.Custom, LAYER_TYPES.Static]
 
 export const HEADERLESS_LAYERS = ['shark-points', 'shark-tracks']

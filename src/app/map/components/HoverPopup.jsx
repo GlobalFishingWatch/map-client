@@ -1,13 +1,24 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import convert from '@globalfishingwatch/map-convert'
-import { LAYER_TYPES } from 'app/constants'
+import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import { FORMAT_DATE } from 'app/config'
 import PopupStyles from 'styles/components/map/popup.module.scss'
 import moment from 'moment'
 
 const getPopupData = (event, layerTitle) => {
-  if (event.type === 'static') {
+  if (event.layer.id === ENCOUNTERS_AIS) {
+    const encounter = event.target.properties
+    const date = convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex)
+    const featureTitle = moment(date)
+      .utc()
+      .format(FORMAT_DATE)
+    return {
+      layerTitle,
+      featureTitle,
+    }
+  } else if (event.type === 'static') {
     return {
       layerTitle,
       featureTitle: event.target.featureTitle,
@@ -47,6 +58,21 @@ const HoverPopup = (props) => {
       {popup.layerTitle}: {popup.featureTitle}
     </div>
   )
+}
+
+HoverPopup.propTypes = {
+  event: PropTypes.shape({
+    type: PropTypes.string.isRequired,
+    layer: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+    target: PropTypes.shape({
+      properties: PropTypes.object,
+      objects: PropTypes.array,
+      featureTitle: PropTypes.string,
+    }),
+  }).isRequired,
+  layerTitle: PropTypes.string.isRequired,
 }
 
 export default HoverPopup

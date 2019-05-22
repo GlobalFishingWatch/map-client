@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
+import { ENCOUNTERS_AIS } from 'app/constants'
 
 const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
 
@@ -31,7 +32,8 @@ class MapWrapper extends Component {
 
   onClick = (event) => {
     this.props.onMapClick(event)
-    const clickPopupData = event.type === 'static' ? event : null
+    const clickPopupData =
+      event.type === 'static' && event.layer.id !== ENCOUNTERS_AIS ? event : null
 
     this.setState({
       clickPopupData,
@@ -46,11 +48,17 @@ class MapWrapper extends Component {
     }
     const { workspaceLayers } = this.props
     const workspaceLayer = workspaceLayers.find((l) => l.id === hoverPopupData.layer.id)
-    return <HoverPopup event={hoverPopupData} layerTitle={workspaceLayer.title} />
+    return (
+      <HoverPopup
+        event={hoverPopupData}
+        layerTitle={workspaceLayer.title || workspaceLayer.label}
+      />
+    )
   }
 
   onHover = (event) => {
     const hoverPopupData = event.type !== null ? event : null
+
     this.props.onMapHover(event)
     this.setState({
       hoverPopupData,
@@ -116,6 +124,7 @@ class MapWrapper extends Component {
   }
 }
 
+/* eslint-disable react/require-default-props  */
 MapWrapper.propTypes = {
   // sent to MapModule
   onViewportChange: PropTypes.func,
