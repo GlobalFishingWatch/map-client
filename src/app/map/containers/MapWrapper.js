@@ -6,7 +6,7 @@ import { clearVesselInfo, addVessel } from 'app/vesselInfo/vesselInfoActions'
 import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
 import { trackMapClicked } from 'app/analytics/analyticsActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
-import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL } from 'app/constants'
+import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL, ENCOUNTERS_AIS } from 'app/constants'
 import MapWrapper from 'app/map/components/MapWrapper'
 
 const getVessels = (state) => state.vesselInfo.vessels
@@ -95,7 +95,6 @@ const getHeatmapLayers = createSelector(
         }
         return layerParams
       })
-    console.log(heatmapLayers)
     return heatmapLayers
   }
 )
@@ -218,8 +217,8 @@ const mapDispatchToProps = (dispatch) => ({
         )
       }
     } else if (event.type === 'static') {
-      if (event.layer.id === 'encounters_ais') {
-        dispatch(setEncountersInfo(event.target.properties.id, 'encounters_ais'))
+      if (event.layer.id === ENCOUNTERS_AIS) {
+        dispatch(setEncountersInfo(event.target.properties.id, ENCOUNTERS_AIS))
       } else {
         dispatch(setCurrentSelectedPolygon(event.target.properties))
       }

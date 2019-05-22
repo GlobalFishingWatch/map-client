@@ -1,13 +1,13 @@
 import React from 'react'
 import classnames from 'classnames'
 import convert from '@globalfishingwatch/map-convert'
-import { LAYER_TYPES } from 'app/constants'
+import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import { FORMAT_DATE } from 'app/config'
 import PopupStyles from 'styles/components/map/popup.module.scss'
 import moment from 'moment'
 
 const getPopupData = (event, layerTitle) => {
-  if (event.layer.id === 'encounters_ais') {
+  if (event.layer.id === ENCOUNTERS_AIS) {
     const encounter = event.target.properties
     const date = convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex)
     const featureTitle = moment(date)

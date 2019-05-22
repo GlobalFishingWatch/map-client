@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
+import { ENCOUNTERS_AIS } from 'app/constants'
 
 const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
 
@@ -32,7 +33,7 @@ class MapWrapper extends Component {
   onClick = (event) => {
     this.props.onMapClick(event)
     const clickPopupData =
-      event.type === 'static' && event.layer.id !== 'encounters_ais' ? event : null
+      event.type === 'static' && event.layer.id !== ENCOUNTERS_AIS ? event : null
 
     this.setState({
       clickPopupData,

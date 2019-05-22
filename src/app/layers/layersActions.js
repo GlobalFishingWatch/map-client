@@ -7,6 +7,7 @@ import {
   HEADERLESS_LAYERS,
   TEMPORAL_EXTENTLESS,
   CUSTOM_LAYERS_SUBTYPES,
+  ENCOUNTERS_AIS,
 } from 'app/constants'
 import { SET_OVERALL_TIMELINE_DATES } from 'app/filters/filtersActions'
 import { refreshFlagFiltersLayers } from 'app/filters/filterGroupsActions'
@@ -181,8 +182,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
     workspaceLayers
       .filter(
         (l) =>
-          (l.id === 'encounters_ais' || LAYER_TYPES_WITH_HEADER.includes(l.type)) &&
-          l.added === true
+          (l.id === ENCOUNTERS_AIS || LAYER_TYPES_WITH_HEADER.includes(l.type)) && l.added === true
       )
       .forEach((heatmapLayer) => {
         if (HEADERLESS_LAYERS.includes(heatmapLayer.tilesetId)) {
