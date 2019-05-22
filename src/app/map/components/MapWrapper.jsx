@@ -124,6 +124,7 @@ class MapWrapper extends Component {
   }
 }
 
+/* eslint-disable react/require-default-props  */
 MapWrapper.propTypes = {
   // sent to MapModule
   onViewportChange: PropTypes.func,

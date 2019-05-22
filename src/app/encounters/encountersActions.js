@@ -28,7 +28,9 @@ export function clearEncountersInfo() {
 export function setEncountersInfo(seriesgroup, tilesetId) {
   return (dispatch, getState) => {
     const workspaceLayers = getState().layers.workspaceLayers
-    const encounterLayer = workspaceLayers.find((l) => l.tilesetId === tilesetId || l.id === tilesetId)
+    const encounterLayer = workspaceLayers.find(
+      (l) => l.tilesetId === tilesetId || l.id === tilesetId
+    )
 
     // dispatch(highlightClickedVessel(seriesgroup, encounterLayer.id)); TODO MAP MODULE
 
