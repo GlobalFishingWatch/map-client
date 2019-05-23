@@ -1,9 +1,27 @@
 # Changelog
 
+## 4.0.0
+
+Major new release as the map was moved and used as a [map component](https://github.com/GlobalFishingWatch/map-components)
+
+Also remove the old custom webpack and babel configuration to use the standard [create react app](https://github.com/facebook/create-react-app) configuration
+
+⚠️ New environment variables are needed
+
+### Added
+- Map as a module. [#1028](https://github.com/GlobalFishingWatch/map-client/issues/1028)
+- Create React App migration
+[#983](https://github.com/GlobalFishingWatch/map-client/issues/983)
+[#1009](https://github.com/GlobalFishingWatch/map-client/issues/1009)
+- Use Canonical URLS for map workspaces [#1015](https://github.com/GlobalFishingWatch/map-client/issues/1015)
+- Replace Google Analytics in favour of Tag Manager [#1027](https://github.com/GlobalFishingWatch/map-client/pull/1027)
+- Add live translations using [Bablic](https://www.bablic.com) [#1019](https://github.com/GlobalFishingWatch/map-client/pull/1019)
+- Encounters layer is available in mapbox gl [#1029](https://github.com/GlobalFishingWatch/map-client/pull/1029)
+
 ## next release
 ### Added
 - Add warning notification for vessels with comments [#972](https://github.com/GlobalFishingWatch/GFW-Tasks/issues/972)
-- Added support for links in static layers popups 
+- Added support for links in static layers popups
 
 ## 3.2.0
 ### Added
