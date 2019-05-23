@@ -17,9 +17,6 @@ Also remove the old custom webpack and babel configuration to use the standard [
 - Replace Google Analytics in favour of Tag Manager [#1027](https://github.com/GlobalFishingWatch/map-client/pull/1027)
 - Add live translations using [Bablic](https://www.bablic.com) [#1019](https://github.com/GlobalFishingWatch/map-client/pull/1019)
 - Encounters layer is available in mapbox gl [#1029](https://github.com/GlobalFishingWatch/map-client/pull/1029)
-
-## next release
-### Added
 - Add warning notification for vessels with comments [#972](https://github.com/GlobalFishingWatch/GFW-Tasks/issues/972)
 - Added support for links in static layers popups
 
