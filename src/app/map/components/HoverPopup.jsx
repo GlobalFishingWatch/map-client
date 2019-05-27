@@ -2,77 +2,60 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import convert from '@globalfishingwatch/map-convert'
-import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
+import { ENCOUNTERS_AIS } from 'app/constants'
 import { FORMAT_DATE } from 'app/config'
 import PopupStyles from 'styles/components/map/popup.module.scss'
 import moment from 'moment'
 
-const getPopupData = (event, layerTitle) => {
-  if (event.layer.id === ENCOUNTERS_AIS) {
-    const encounter = event.target.properties
-    const date = convert.getTimestampFromOffsetedtTimeAtPrecision(encounter.timeIndex)
-    const featureTitle = moment(date)
-      .utc()
-      .format(FORMAT_DATE)
-    return {
-      layerTitle,
-      featureTitle,
-    }
-  } else if (event.type === 'static') {
-    return {
-      layerTitle,
-      featureTitle: event.target.featureTitle,
-    }
-  } else if (event.type === 'activity') {
-    let featureTitle
-    const objects = event.target.objects
+const convertTimeIndexToDate = (timeIndex) => {
+  const date = convert.getTimestampFromOffsetedtTimeAtPrecision(timeIndex)
+  return moment(date)
+    .utc()
+    .format(FORMAT_DATE)
+}
 
-    if (event.layer.subtype === LAYER_TYPES.Encounters) {
-      const foundVessel = objects[0]
-      if (foundVessel.timeIndex) {
-        const date = new Date(
-          convert.getTimestampFromOffsetedtTimeAtPrecision(foundVessel.timeIndex)
-        )
-        featureTitle = moment(date)
-          .utc()
-          .format(FORMAT_DATE)
+const getPopupItems = (event, layerTitles) => {
+  const items = event.features.map((feature) => {
+    const title = layerTitles[feature.layer.id]
+    let description = feature.title
+
+    if (feature.layer.id === ENCOUNTERS_AIS) {
+      description = convertTimeIndexToDate(feature.properties.timeIndex)
+    } else if (feature.layer.group === 'legacyHeatmap') {
+      if (feature.isCluster === true) {
+        const numVessels = feature.count === -1 ? 'multiple' : feature.count
+        const vesselPlural = feature.count > 1 ? 'objects' : 'object'
+        description = `${numVessels} ${vesselPlural} at this location`
+      } else {
+        description = convertTimeIndexToDate(feature.properties.timeIndex)
       }
-    } else {
-      const numVessels = objects === undefined ? 'multiple' : objects.length
-      const vesselPlural = objects === undefined || objects.length > 1 ? 'objects' : 'object'
-      featureTitle = `${numVessels} ${vesselPlural} at this location`
     }
+
     return {
-      layerTitle,
-      featureTitle,
+      title,
+      description,
     }
-  }
-  return null
+  })
+  return items
 }
 
 const HoverPopup = (props) => {
-  const { event, layerTitle } = props
-  const popup = getPopupData(event, layerTitle)
+  const { event, layerTitles } = props
+  const items = getPopupItems(event, layerTitles)
   return (
     <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
-      {popup.layerTitle}: {popup.featureTitle}
+      {items.map((item, i) => (
+        <div key={i}>
+          {item.title}: {item.description}
+        </div>
+      ))}
     </div>
   )
 }
 
 HoverPopup.propTypes = {
-  event: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    layer: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
-    target: PropTypes.shape({
-      properties: PropTypes.object,
-      objects: PropTypes.array,
-      featureTitle: PropTypes.string,
-    }),
-  }).isRequired,
-  layerTitle: PropTypes.string.isRequired,
+  event: PropTypes.object.isRequired,
+  layerTitles: PropTypes.object.isRequired,
 }
 
 export default HoverPopup

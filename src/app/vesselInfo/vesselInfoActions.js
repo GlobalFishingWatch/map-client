@@ -228,6 +228,19 @@ export function addVessel({ tilesetId, seriesgroup, fromSearch = false, parentEn
   }
 }
 
+export const addVesselFromHeatmap = (feature) => (dispatch, getState) => {
+  const layer = getState().layers.workspaceLayers.find((l) => l.id === feature.layer.id)
+  const header = layer.header
+  const idFieldKey = header.info.id === undefined ? 'seriesgroup' : header.info.id
+  const targetID = feature.properties[idFieldKey]
+  dispatch(
+    addVessel({
+      tilesetId: layer.tilesetId,
+      seriesgroup: targetID,
+    })
+  )
+}
+
 export function addVesselFromEncounter(tilesetId, seriesgroup) {
   return (dispatch, getState) => {
     const state = getState()

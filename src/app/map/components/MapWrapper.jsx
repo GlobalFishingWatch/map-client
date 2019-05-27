@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
-import { ENCOUNTERS_AIS } from 'app/constants'
 
 const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
 
@@ -19,12 +18,13 @@ class MapWrapper extends Component {
       return null
     }
 
-    const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props
+    const { report, layerTitles, toggleCurrentReportPolygon } = this.props
+    const layerTitle = layerTitles[clickPopupData.feature.layer.id]
     return (
       <StaticLayerPopup
         event={clickPopupData}
         report={report}
-        workspaceLayers={workspaceLayers}
+        layerTitle={layerTitle}
         toggleCurrentReportPolygon={toggleCurrentReportPolygon}
       />
     )
@@ -32,8 +32,9 @@ class MapWrapper extends Component {
 
   onClick = (event) => {
     this.props.onMapClick(event)
+
     const clickPopupData =
-      event.type === 'static' && event.layer.id !== ENCOUNTERS_AIS ? event : null
+      event.count === 1 && event.feature.layer.group === 'static' ? event : null
 
     this.setState({
       clickPopupData,
@@ -43,22 +44,15 @@ class MapWrapper extends Component {
 
   renderHoverPopup = () => {
     const { hoverPopupData } = this.state
-    if (hoverPopupData === null || hoverPopupData.type === null) {
+    if (hoverPopupData === null) {
       return null
     }
-    const { workspaceLayers } = this.props
-    const workspaceLayer = workspaceLayers.find((l) => l.id === hoverPopupData.layer.id)
-    return (
-      <HoverPopup
-        event={hoverPopupData}
-        layerTitle={workspaceLayer.title || workspaceLayer.label}
-      />
-    )
+    const { layerTitles } = this.props
+    return <HoverPopup event={hoverPopupData} layerTitles={layerTitles} />
   }
 
   onHover = (event) => {
-    const hoverPopupData = event.type !== null ? event : null
-
+    const hoverPopupData = event.count !== 0 ? event : null
     this.props.onMapHover(event)
     this.setState({
       hoverPopupData,
@@ -86,6 +80,7 @@ class MapWrapper extends Component {
       temporalExtent,
       loadTemporalExtent,
       highlightTemporalExtent,
+      isCluster,
     } = this.props
 
     const { hoverPopupData, clickPopupData } = this.state
@@ -94,12 +89,12 @@ class MapWrapper extends Component {
       hoverPopupData === null ? null : { ...hoverPopupData, content: this.renderHoverPopup() }
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
-
     return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule
           onHover={this.onHover}
           onClick={this.onClick}
+          isCluster={isCluster}
           onViewportChange={onViewportChange}
           onLoadStart={onLoadStart}
           onLoadComplete={onLoadComplete}
@@ -143,8 +138,9 @@ MapWrapper.propTypes = {
   // internal
   onMapHover: PropTypes.func,
   onMapClick: PropTypes.func,
+  isCluster: PropTypes.func,
   report: PropTypes.object,
-  workspaceLayers: PropTypes.array,
+  layerTitles: PropTypes.object,
   toggleCurrentReportPolygon: PropTypes.func,
 }
 
