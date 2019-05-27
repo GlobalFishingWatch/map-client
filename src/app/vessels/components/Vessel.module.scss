@@ -1,0 +1,40 @@
+@import '../../../styles/settings';
+@import '../../../styles/mixins';
+
+.vessel {
+  @include panelRow();
+
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  align-items: center;
+
+  &._tall {
+    margin: 10px 0;
+  }
+}
+
+.toggle {
+  width: 20px;
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $color-4;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+  height: 100%;
+
+  @media #{$mq-tablet} {
+    font-size: $font-size-xxs-small;
+  }
+
+  &._light {
+    color: $color-3;
+  }
+}

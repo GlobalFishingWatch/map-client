@@ -25,11 +25,11 @@ The zoom value as a float (non integer values are allowed).
 
 #### gl
 
-The `gl` parameter allows specifying custom Mapbox GL JSON layers, even if they are not set in the <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/app/src/map/gl-styles/style.json">base GL JSON</a> style. 
+The `gl` parameter allows specifying custom Mapbox GL JSON layers, even if they are not set in the <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/app/src/map/gl-styles/style.json">base GL JSON</a> style.
 
 `gl` needs two mandatory parameters:
 - `source`: A source can set a SQL query on a CARTO table <a href="https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/layers.md#gfwcarto-sql">as described in the layers documentation</a>, as well as the fields displayed in popups. Source id will automatically be set to the workspace layer id.
-- `layers`: One or more GL layers associated to this workspace layer. A vector workspace layer will have typically a GL layer for polygons, and optionally a GL layer for labels. **Important:** the GL `type` (and associated style parameters) must match the corresponding CARTO/PostGIS type, ie: 
+- `layers`: One or more GL layers associated to this workspace layer. A vector workspace layer will have typically a GL layer for polygons, and optionally a GL layer for labels. **Important:** the GL `type` (and associated style parameters) must match the corresponding CARTO/PostGIS type, ie:
   - Polygons table -> `type: "fill"`
   - Lines table -> `type: "line"`
 Note: the `source` and `source-layer` are not required as they will be automatically set to the workspace layer id.
@@ -57,7 +57,7 @@ Simple line layer without labels nor popups:
       {
         "id": "mar_pacifico_peruano",
         "type": "line",
-        "layout": { 
+        "layout": {
           "visibility": "none"
         },
         "interactive": true
@@ -92,7 +92,7 @@ Polygon/fill layer with labels and popups:
       {
         "id": "samerica_adm0",
         "type": "fill",
-        "layout": { 
+        "layout": {
           "visibility": "none"
         },
         "interactive": true
@@ -116,7 +116,7 @@ Polygon/fill layer with labels and popups:
 
 ### timeline
 
-![](https://github.com/Vizzuality/GlobalFishingWatch/blob/develop/documentation/timebar.png?raw=true)
+![](https://github.com/GlobalFishingWatch/map-client/blob/develop/documentation/timebar.png?raw=true)
 
 Can be of two formats. To set inner and outer extent to static points in time (expressed as UTC milliseconds):
 ```
