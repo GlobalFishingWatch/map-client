@@ -85,11 +85,15 @@ class MapWrapper extends Component {
 
     const { hoverPopupData, clickPopupData } = this.state
 
+    
+
     const hoverPopup =
       hoverPopupData === null ? null : { ...hoverPopupData, content: this.renderHoverPopup() }
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
-    return (
+    
+      // console.log(hoverPopup)
+      return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule
           onHover={this.onHover}

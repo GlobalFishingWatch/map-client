@@ -217,11 +217,10 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setCurrentSelectedPolygon(null))
 
     if (event.count === 0) return // all cleared, now GTFO
-    if (event.clusterBehavior === true) return // let map module zoom in and bail
+    if (event.isCluster === true) return // let map module zoom in and bail
 
     const priorityFeatures = getPriorityFeatures(event)
     const feature = priorityFeatures.length === 1 ? priorityFeatures[0] : event.feature
-
     switch (feature.layer.group) {
       case 'static': {
         dispatch(setCurrentSelectedPolygon(feature.properties))
