@@ -44,7 +44,6 @@ const HoverPopup = (props) => {
   const items = getPopupItems(event, layerTitles)
   return (
     <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
-
       {items.map((item, i) => (
         <div key={i}>
           {item.title && <span>{item.title}:</span>}

@@ -1,6 +1,6 @@
 import 'whatwg-fetch'
 import { COLORS, TRACK_DEFAULT_COLOR } from 'app/config'
-import { LAYER_TYPES } from 'app/constants'
+import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import { initBasemap } from 'app/basemap/basemapActions'
 import { initLayers } from 'app/layers/layersActions'
 import { saveFilterGroup } from 'app/filters/filterGroupsActions'
@@ -154,9 +154,6 @@ export function saveWorkspace(errorAction) {
       .filter((layer) => layer.added)
       .map((layer) => {
         const newLayer = Object.assign({}, layer)
-        if (newLayer.subtype === LAYER_TYPES.Encounters) {
-          newLayer.type = LAYER_TYPES.Encounters
-        }
         // TODO Should we use a whitelist of fields instead ?
         delete newLayer.header
         return newLayer
@@ -362,10 +359,26 @@ const filtersToFilterGroups = (filters, layers) => {
   return filterGroups
 }
 
+const convertLegacyEncountersLayers = (layers) => {
+  return layers.map((layer) => {
+    if (layer.type !== LAYER_TYPES.Encounters) {
+      return layer
+    }
+    return {
+      ...layer,
+      id: ENCOUNTERS_AIS,
+      type: LAYER_TYPES.Static,
+      color: hueToRgbHexString(layer.hue, true),
+    }
+  })
+}
+
 function processNewWorkspace(data) {
   const workspace = data.workspace
   let filterGroups = workspace.filterGroups || []
   filterGroups = filterGroups.concat(filtersToFilterGroups(workspace.filters, workspace.map.layers))
+  const layers = convertLegacyEncountersLayers(workspace.map.layers)
+  console.log(layers)
   return {
     viewport: {
       zoom: workspace.map.zoom,
@@ -375,7 +388,7 @@ function processNewWorkspace(data) {
     timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
     basemapOptions: workspace.basemapOptions || [],
-    layers: workspace.map.layers,
+    layers,
     filters: workspace.filters,
     shownVessel: workspace.shownVessel,
     pinnedVessels: workspace.pinnedVessels,

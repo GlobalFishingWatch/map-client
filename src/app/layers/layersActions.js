@@ -116,15 +116,6 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
-      // while encounters layers have a different type than heatmap in workspaces,
-      // they are treated the same way by the front-end, except on map interaction (see heatmap actions)
-      if (layer.type === LAYER_TYPES.Encounters) {
-        layer.type = LAYER_TYPES.Heatmap
-        layer.subtype = LAYER_TYPES.Encounters
-      } else if (layer.type === LAYER_TYPES.Heatmap) {
-        layer.subtype = LAYER_TYPES.Heatmap
-      }
-
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url })
         console.warn(

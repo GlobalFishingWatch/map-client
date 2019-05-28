@@ -82,7 +82,6 @@ const getHeatmapLayers = createSelector(
         const filters = layerFilters[layer.id] || []
         const layerParams = {
           id: layer.id,
-          subtype: layer.subtype,
           tilesetId: layer.tilesetId,
           header: layer.header,
           hue: layer.hue,
@@ -211,7 +210,6 @@ const mapDispatchToProps = (dispatch) => ({
     )
   },
   onMapClick: (event) => {
-    console.log(event)
     dispatch(clearVesselInfo())
     dispatch(clearEncountersInfo())
     dispatch(setCurrentSelectedPolygon(null))

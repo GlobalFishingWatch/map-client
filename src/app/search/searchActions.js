@@ -1,5 +1,5 @@
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'app/config'
-import { LAYER_TYPES_SEARCHABLE, LAYER_TYPES } from 'app/constants'
+import { LAYER_TYPES_SEARCHABLE, LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import 'whatwg-fetch'
 import debounce from 'lodash/debounce'
 import getVesselName from 'app/utils/getVesselName'
@@ -42,9 +42,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     // - apply the same logic to a vessel layer that has an encounter "parent": if vessel layer
     // is not visible but encounter layer is visible, search should be done on vessel layer
     if (layer.type === LAYER_TYPES.HeatmapTracksOnly) {
-      const encountersLayer = state.layers.workspaceLayers.find(
-        (l) => l.subtype === LAYER_TYPES.Encounters
-      )
+      const encountersLayer = state.layers.workspaceLayers.find((l) => l.id === ENCOUNTERS_AIS)
       return encountersLayer && encountersLayer.visible === true
     }
     return false
