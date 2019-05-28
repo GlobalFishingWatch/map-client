@@ -59,7 +59,11 @@ class LayerPanel extends Component {
           enableColorInputs={LAYER_HAS_COLOR_INPUTS(layer.type, layer.subtype)}
         />
       )
-      ;(layer.type === LAYER_TYPES.Heatmap ? activityLayers : staticLayers).push(layerItem)
+      const layerList =
+        layer.showInPanel === 'activity' || layer.type === LAYER_TYPES.Heatmap
+          ? activityLayers
+          : staticLayers
+      layerList.push(layerItem)
     })
 
     return (
@@ -105,6 +109,10 @@ class LayerPanel extends Component {
 LayerPanel.propTypes = {
   layers: PropTypes.array,
   isVesselInfoPanelOpen: PropTypes.bool.isRequired,
+}
+
+LayerPanel.defaultProps = {
+  layers: [],
 }
 
 export default LayerPanel

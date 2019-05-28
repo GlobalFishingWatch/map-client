@@ -369,6 +369,8 @@ const convertLegacyEncountersLayers = (layers) => {
       id: ENCOUNTERS_AIS,
       type: LAYER_TYPES.Static,
       color: hueToRgbHexString(layer.hue, true),
+      showInPanel: 'activity',
+      headerUrl: `${layer.url}/header`,
     }
   })
 }
