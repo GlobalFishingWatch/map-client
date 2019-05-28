@@ -112,7 +112,7 @@ const getStaticLayers = createSelector(
                 values: report.polygonsIds,
               }
             : null
-        let url
+        let url = layer.url
         if (layer.header && layer.header.endpoints) {
           url = layer.header.endpoints.tiles.replace(/\{\{/g, '{').replace(/\}\}/g, '}')
         }
