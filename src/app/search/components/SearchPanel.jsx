@@ -49,70 +49,67 @@ class SearchPanel extends Component {
     this.props.openSearchModal()
   }
 
-  renderSearchingMessage() {
-    return <li className={ResultListStyles.statusMessage}>Searching...</li>
-  }
-
-  renderShortSearchWordMessage() {
-    return (
-      <li className={ResultListStyles.statusMessage}>
-        Type at least {SEARCH_QUERY_MINIMUM_LIMIT} characters
-      </li>
-    )
-  }
-
-  renderNoResultMessage(hasHiddenSearchableLayers) {
-    return (
-      <li className={ResultListStyles.statusMessage}>
-        No results.
-        {hasHiddenSearchableLayers === true && (
-          <span>
-            {' '}
-            Some layers are toggled off, you need to toggle them on to allow searching on them.
-          </span>
-        )}
-      </li>
-    )
-  }
-
   renderSearchResults() {
-    const searchResults = []
     const total = Math.min(this.props.entries.length, SEARCH_RESULTS_LIMIT)
 
-    for (let i = 0, length = total; i < length; i++) {
-      searchResults.push(
-        <SearchResult
-          className={classnames(
-            ResultListStyles.resultItem,
-            ResultListStyles.quickSearchResult,
-            searchPanelStyles.result
-          )}
-          key={i}
-          closeSearch={() => this.closeSearch()}
-          vesselInfo={this.props.entries[i]}
-        />
+    let searchResults = null
+    const hasResults =
+      !this.props.searching &&
+      this.props.pageCount &&
+      this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT
+    if (hasResults) {
+      for (let i = 0, length = total; i < length; i++) {
+        searchResults = []
+        searchResults.push(
+          <SearchResult
+            className={classnames(
+              ResultListStyles.resultItem,
+              ResultListStyles.quickSearchResult,
+              searchPanelStyles.result
+            )}
+            key={i}
+            closeSearch={() => this.closeSearch()}
+            vesselInfo={this.props.entries[i]}
+          />
+        )
+      }
+      return (
+        <ul className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}>
+          {searchResults}
+        </ul>
       )
     }
 
-    return searchResults
-  }
-
-  render() {
-    let searchResults = null
-
+    let content = null
+    let legend = null
+    console.log('TCL: SearchPanel -> renderSearchResults -> this.props', this.props)
     if (this.props.searching) {
-      searchResults = this.renderSearchingMessage()
-    } else if (this.props.pageCount && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
-      searchResults = this.renderSearchResults()
+      content = 'Searching...'
     } else if (
       this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT &&
       this.props.searchTerm.length > 0
     ) {
-      searchResults = this.renderShortSearchWordMessage()
+      content = `Type at least ${SEARCH_QUERY_MINIMUM_LIMIT} characters`
     } else {
-      searchResults = this.renderNoResultMessage(this.props.hasHiddenSearchableLayers)
+      content = 'No results.'
+      legend = this.props.hasHiddenSearchableLayers === true && (
+        <span>
+          {' '}
+          Some layers are toggled off, you need to toggle them on to allow searching on them.
+        </span>
+      )
     }
+    return (
+      <ul className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}>
+        <li className={ResultListStyles.statusMessage}>
+          {content}
+          {legend}
+        </li>
+      </ul>
+    )
+  }
 
+  render() {
     return (
       <div className={searchPanelStyles.searchPanel}>
         <input
@@ -146,9 +143,7 @@ class SearchPanel extends Component {
             [`${searchPanelStyles._open}`]: this.props.searchResultsOpen,
           })}
         >
-          <ul className={classnames(ResultListStyles.resultList, searchPanelStyles.searchList)}>
-            {searchResults}
-          </ul>
+          {this.renderSearchResults()}
           {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT &&
             !this.props.searching &&
             this.props.pageCount > SEARCH_RESULTS_LIMIT && (
