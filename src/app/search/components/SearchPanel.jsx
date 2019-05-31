@@ -58,8 +58,8 @@ class SearchPanel extends Component {
       this.props.pageCount &&
       this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT
     if (hasResults) {
+      searchResults = []
       for (let i = 0, length = total; i < length; i++) {
-        searchResults = []
         searchResults.push(
           <SearchResult
             className={classnames(
@@ -82,7 +82,7 @@ class SearchPanel extends Component {
 
     let content = null
     let legend = null
-    console.log('TCL: SearchPanel -> renderSearchResults -> this.props', this.props)
+
     if (this.props.searching) {
       content = 'Searching...'
     } else if (

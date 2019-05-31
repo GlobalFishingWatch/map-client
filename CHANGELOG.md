@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.2
+
+Fix google translator plugin crash
+
+## 4.0.1
+
+Fix custom layers url
+
 ## 4.0.0
 
 Major new release as the map was moved and used as a [map component](https://github.com/GlobalFishingWatch/map-components)
