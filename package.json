@@ -1,6 +1,6 @@
 {
   "name": "map-client",
-  "version": "4.0.0",
+  "version": "4.0.2",
   "description": "This repository hosts the Global Fishing Watch client application.",
   "private": false,
   "scripts": {
