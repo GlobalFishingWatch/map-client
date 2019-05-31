@@ -182,10 +182,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
             colsByName: [],
           }
         } else {
-          const headerPromise = loadLayerHeader(
-            layer.headerUrl || `${layer.url}/header`,
-            state.user.token
-          )
+          const headerUrl = layer.headerUrl || `${layer.url}/header`
+          const headerPromise = loadLayerHeader(headerUrl, state.user.token)
           headerPromise.then((header) => {
             if (header !== null) {
               if (header.temporalExtents === undefined || header.temporalExtents === null) {
