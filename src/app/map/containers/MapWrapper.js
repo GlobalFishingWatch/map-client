@@ -231,6 +231,8 @@ const mapDispatchToProps = (dispatch) => ({
       case 'temporal': {
         if (feature.layer.id === ENCOUNTERS_AIS) {
           dispatch(setEncountersInfo(feature.properties.id, ENCOUNTERS_AIS))
+        } else {
+          dispatch(addVesselFromHeatmap(feature))
         }
         break
       }
