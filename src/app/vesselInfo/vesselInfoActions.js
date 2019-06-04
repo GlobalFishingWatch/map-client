@@ -1,4 +1,3 @@
-import { LAYER_TYPES_WITH_HEADER } from 'app/constants'
 import { resetNotification, setNotification } from 'app/notifications/notificationsActions'
 import { trackSearchResultClicked, trackVesselPointClicked } from 'app/analytics/analyticsActions'
 import { addVesselToRecentVesselList } from 'app/recentVessels/recentVesselsActions'
@@ -37,8 +36,12 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
     const state = getState()
     const token = state.user.token
     const layer = state.layers.workspaceLayers.find(
-      (l) => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.tilesetId === tilesetId
+      (l) => l.header !== undefined && (l.tilesetId === tilesetId || l.id === tilesetId)
     )
+
+    if (layer === undefined) {
+      console.warn('Unable to select feature - cant find layer', tilesetId)
+    }
 
     const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, {
       id: seriesgroup,
@@ -233,9 +236,15 @@ export const addVesselFromHeatmap = (feature) => (dispatch, getState) => {
   const header = layer.header
   const idFieldKey = header.info.id === undefined ? 'seriesgroup' : header.info.id
   const targetID = feature.properties[idFieldKey]
+  if (targetID === undefined) {
+    console.warn('Cant lookup feature of layer', layer.id, ':')
+    console.warn('Identifier field', idFieldKey, 'cant be found on the selected feature')
+    console.warn('Header setting identifier field to', header.info.id, '(fallback to seriesgroup)')
+    return
+  }
   dispatch(
     addVessel({
-      tilesetId: layer.tilesetId,
+      tilesetId: layer.tilesetId || layer.id,
       seriesgroup: targetID,
     })
   )
