@@ -32,7 +32,7 @@ The `gl` parameter allows specifying custom Mapbox GL JSON layers, even if they 
 - `layers`: One or more GL layers associated to this workspace layer. A vector workspace layer will have typically a GL layer for polygons, and optionally a GL layer for labels. **Important:** the GL `type` (and associated style parameters) must match the corresponding CARTO/PostGIS type, ie:
   - Polygons table -> `type: "fill"`
   - Lines table -> `type: "line"`
-Note: the `source` and `source-layer` are not required as they will be automatically set to the workspace layer id.
+Note: `source` is not required as it will be automatically set to the workspace layer id. `source-layer` will also default to the layer id if not specified.
 
 For more on available GL layer style options, please refer to the <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/">GL style spec</a>
 
