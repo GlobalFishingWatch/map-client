@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import uniqBy from 'lodash/uniqBy'
 import convert from '@globalfishingwatch/map-convert'
 import { ENCOUNTERS_AIS } from 'app/constants'
 import { FORMAT_DATE } from 'app/config'
@@ -41,7 +42,9 @@ const getPopupItems = (event, layerTitles) => {
 
 const HoverPopup = (props) => {
   const { event, layerTitles } = props
-  const items = getPopupItems(event, layerTitles)
+  const items = uniqBy(getPopupItems(event, layerTitles), (item) =>
+    [item.title, item.description].join(',')
+  )
   return (
     <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
       {items.map((item, i) => (
