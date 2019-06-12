@@ -29,13 +29,16 @@ const getViewport = createSelector(
 )
 
 const getTrackFromLayers = (layers, tilesetId) => {
-  const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId)
+  const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId || layer.id === tilesetId)
 
   const header = trackLayer.header
+
+  // TODO replace {{id}} in url here
 
   return {
     layerTemporalExtents: header.temporalExtents,
     url: header.endpoints.tracks,
+    type: header.trackFormat || 'pelagos',
   }
 }
 
@@ -50,6 +53,7 @@ const getAllVesselsForTracks = createSelector(
         const color =
           highlightedTrack !== null && highlightedTrack === seriesgroup ? '#ffffff' : vessel.color
         tracks.push({
+          // TODO : seriesgroup - use whatever's set up in headers
           id: seriesgroup.toString(),
           color,
           ...getTrackFromLayers(layers, vessel.tilesetId),
@@ -65,6 +69,8 @@ const getAllVesselsForTracks = createSelector(
       }))
       tracks = [...tracks, ...encountersTracks]
     }
+
+    console.log(tracks)
 
     return tracks
   }
