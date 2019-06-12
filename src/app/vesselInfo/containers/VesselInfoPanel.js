@@ -12,7 +12,8 @@ import { setNotification } from 'app/notifications/notificationsActions'
 const mapStateToProps = (state) => {
   const vesselInfo = state.vesselInfo.currentlyShownVessel
   const currentlyShownLayer = state.layers.workspaceLayers.find(
-    (layer) => vesselInfo && layer.tilesetId === vesselInfo.tilesetId
+    (layer) =>
+      vesselInfo && (layer.tilesetId === vesselInfo.tilesetId || layer.id === vesselInfo.tilesetId)
   )
 
   let layerFieldsHeaders

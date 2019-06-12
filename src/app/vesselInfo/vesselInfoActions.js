@@ -68,7 +68,7 @@ function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
         }
         dispatch(
           addVesselToRecentVesselList(
-            data.seriesgroup,
+            data.seriesgroup || data.ssvid || data.vesselId,
             getVesselName(data, layer.header.info.fields),
             tilesetId
           )
@@ -181,7 +181,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
 
           dispatch(
             addVesselToRecentVesselList(
-              pinnedVessel.seriesgroup,
+              data.seriesgroup || data.ssvid || data.vesselId,
               getVesselName(pinnedVessel, layer.header.info.fields),
               pinnedVessel.tilesetId
             )
