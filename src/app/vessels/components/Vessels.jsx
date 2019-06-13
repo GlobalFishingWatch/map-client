@@ -14,8 +14,8 @@ class Vessels extends Component {
     fleets.forEach((fleet) => {
       const item = { ...fleet, isFleet: true }
       item.fleetVessels = []
-      fleet.vessels.forEach((seriesgroup) => {
-        const vesselIndex = pinnedVessels.findIndex((vessel) => seriesgroup === vessel.seriesgroup)
+      fleet.vessels.forEach((id) => {
+        const vesselIndex = pinnedVessels.findIndex((vessel) => id === vessel.id)
         const vessel = pinnedVessels[vesselIndex]
         item.fleetVessels.push({ ...vessel })
         pinnedVessels.splice(vesselIndex, 1)
@@ -40,7 +40,7 @@ class Vessels extends Component {
           }
           const seriesStr =
             item.series === null || item.series === undefined ? '' : item.series.toString()
-          const vesselKey = `${item.seriesgroup}${seriesStr}`
+          const vesselKey = `${item.id}${seriesStr}`
           return <Vessel vessel={item} key={vesselKey} />
         })}
       </div>

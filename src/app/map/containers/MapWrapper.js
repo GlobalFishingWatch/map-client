@@ -28,16 +28,14 @@ const getViewport = createSelector(
   }
 )
 
-const getTrackFromLayers = (layers, tilesetId) => {
+const getTrackFromLayers = (layers, tilesetId, vesselId) => {
   const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId || layer.id === tilesetId)
 
   const header = trackLayer.header
 
-  // TODO replace {{id}} in url here
-
   return {
     layerTemporalExtents: header.temporalExtents,
-    url: header.endpoints.tracks,
+    url: header.endpoints.tracks.replace('{{id}}', vesselId),
     type: header.trackFormat || 'pelagos',
   }
 }
@@ -49,28 +47,25 @@ const getAllVesselsForTracks = createSelector(
 
     vessels.forEach((vessel) => {
       if (vessel.visible === true || vessel.shownInInfoPanel === true) {
-        const seriesgroup = vessel.seriesgroup
+        const id = vessel.id
         const color =
-          highlightedTrack !== null && highlightedTrack === seriesgroup ? '#ffffff' : vessel.color
+          highlightedTrack !== null && highlightedTrack === id ? '#ffffff' : vessel.color
         tracks.push({
-          // TODO : seriesgroup - use whatever's set up in headers
-          id: seriesgroup.toString(),
           color,
-          ...getTrackFromLayers(layers, vessel.tilesetId),
+          ...getTrackFromLayers(layers, vessel.tilesetId, id),
+          id,
         })
       }
     })
 
     if (encounter !== null && encounter !== undefined) {
       const encountersTracks = encounter.vessels.map((encounterVessel) => ({
-        id: encounterVessel.seriesgroup.toString(),
+        id: encounterVessel.id,
         color: encounterVessel.color,
-        ...getTrackFromLayers(layers, encounterVessel.tilesetId),
+        ...getTrackFromLayers(layers, encounterVessel.tilesetId, encounterVessel.id),
       }))
       tracks = [...tracks, ...encountersTracks]
     }
-
-    console.log(tracks)
 
     return tracks
   }

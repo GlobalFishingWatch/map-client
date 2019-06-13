@@ -12,15 +12,15 @@ class RecentVesselsModal extends Component {
   renderContent() {
     let historyItems = []
     const pinnedVessels = this.props.vessels.filter((elem) => elem.pinned === true)
-    const pinnedVesselSeriesGroup =
-      pinnedVessels.length > 0 ? pinnedVessels.map((elem) => elem.seriesgroup) : []
+    const pinnedVesselIds =
+      pinnedVessels.length > 0 ? pinnedVessels.map((elem) => elem.id) : []
 
     if (this.props.history.length > 0) {
       historyItems = this.props.history.map((entry, i) => (
         <RecentVesselItem
           vesselInfo={entry}
-          pinned={pinnedVesselSeriesGroup.indexOf(entry.seriesgroup) !== -1}
-          onClick={() => this.props.drawVessel(entry.tilesetId, entry.seriesgroup)}
+          pinned={pinnedVesselIds.indexOf(entry.id) !== -1}
+          onClick={() => this.props.drawVessel(entry.tilesetId, entry.id)}
           key={i}
           closeable
         />

@@ -14,21 +14,19 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_RECENT_VESSEL_HISTORY: {
-      const { seriesgroup, label, tilesetId } = action.payload
+      const { id, label, tilesetId } = action.payload
 
       let vesselInHistoryIndex = -1
       let vesselInHistory = {}
 
       if (state.history.length > 0) {
-        vesselInHistoryIndex = state.history.findIndex(
-          (vessel) => vessel.seriesgroup === seriesgroup
-        )
+        vesselInHistoryIndex = state.history.findIndex((vessel) => vessel.id === id)
         vesselInHistory = state.history[vesselInHistoryIndex]
       }
 
       const newVessel = Object.assign({}, vesselInHistory, {
         label: label || vesselInHistory.label,
-        seriesgroup: seriesgroup || vesselInHistory.seriesgroup,
+        id: id || vesselInHistory.id,
         tilesetId: tilesetId || vesselInHistory.tilesetId,
         timestamp: new Date(),
       })
@@ -64,6 +62,12 @@ export default function(state = initialState, action) {
         if (serializedState === null) {
           return state
         }
+
+        const history = JSON.parse(serializedState)
+        history.forEach((vessel) => {
+          // previously saved vessels to localStorage might still have a legacy seriesgroup identifier
+          vessel.id = vessel.id || vessel.seriesgroup
+        })
 
         return Object.assign({}, state, {
           history: JSON.parse(serializedState),

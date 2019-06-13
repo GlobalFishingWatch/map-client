@@ -44,12 +44,12 @@ const mapDispatchToProps = (dispatch) => ({
   hide: () => {
     dispatch(clearVesselInfo())
   },
-  onTogglePin: (seriesgroup) => {
-    dispatch(toggleActiveVesselPin(seriesgroup))
+  onTogglePin: (id) => {
+    dispatch(toggleActiveVesselPin(id))
   },
   showParentEncounter: (encounter) => {
     dispatch(clearVesselInfo())
-    dispatch(setEncountersInfo(encounter.seriesgroup, encounter.tilesetId))
+    dispatch(setEncountersInfo(encounter.id, encounter.tilesetId))
   },
   targetVessel: () => {
     dispatch(targetCurrentlyShownVessel())

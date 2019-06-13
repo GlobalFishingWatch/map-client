@@ -39,7 +39,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
             onClick={() => openVessel(vessel)}
             className={classnames(infoPanelStyles.value, infoPanelStyles.arrowLink)}
           >
-            {vessel.info.vesselname || vessel.seriesgroup}
+            {vessel.info.vesselname || vessel.id}
             <span className={infoPanelStyles.arrowSvg}>
               {<ArrowLinkIcon className={iconStyles.iconArrowLink} />}
             </span>

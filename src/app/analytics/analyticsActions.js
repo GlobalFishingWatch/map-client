@@ -70,17 +70,16 @@ export const trackInnerTimelineChange = (
   }
 }
 
-export function trackSearchResultClicked(tilesetId, seriesgroup) {
+export function trackSearchResultClicked(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
-    const vesselIndex = state.vesselInfo.vessels.findIndex(
-      (vessel) => vessel.seriesgroup === seriesgroup
-    )
+    const vesselIndex = state.vesselInfo.vessels.findIndex((vessel) => vessel.id === id)
     // name can be undefined, but GA doesn't support objects as a label, so if undefined name will be removed on stringify
     const name = state.vesselInfo.vessels[vesselIndex].vesselname
+    debugger
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
-      payload: { tilesetId, seriesgroup, name },
+      payload: { tilesetId, id, name },
     })
   }
 }
@@ -101,17 +100,15 @@ export function trackCreateFilterGroups(filterGroup) {
   }
 }
 
-export function trackVesselPointClicked(tilesetId, seriesgroup) {
+export function trackVesselPointClicked(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
-    const vesselIndex = state.vesselInfo.vessels.findIndex(
-      (vessel) => vessel.seriesgroup === seriesgroup
-    )
+    const vesselIndex = state.vesselInfo.vessels.findIndex((vessel) => vessel.id === id)
     // name can be undefined, but GA doesn't support objects as a label, so if undefined name will be removed on stringify
     const name = state.vesselInfo.vessels[vesselIndex].vesselname
     dispatch({
       type: GA_VESSEL_POINT_CLICKED,
-      payload: { tilesetId, seriesgroup, name },
+      payload: { tilesetId, id, name },
     })
   }
 }

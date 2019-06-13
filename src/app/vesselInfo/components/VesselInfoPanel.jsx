@@ -87,7 +87,7 @@ class VesselInfoPanel extends Component {
                 vesselInfo.pinned) && (
                 <div
                   onClick={() => {
-                    this.props.onTogglePin(vesselInfo.seriesgroup)
+                    this.props.onTogglePin(vesselInfo.id)
                   }}
                 >
                   <IconButton icon="pin" activated={vesselInfo.pinned} />

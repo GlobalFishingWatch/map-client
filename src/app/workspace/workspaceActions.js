@@ -142,7 +142,7 @@ export function saveWorkspace(errorAction) {
     let shownVessel = null
     if (shownVesselData !== undefined) {
       shownVessel = {
-        seriesgroup: shownVesselData.seriesgroup,
+        id: shownVesselData.id,
         tilesetId: shownVesselData.tilesetId,
       }
       if (shownVesselData.series !== null) {
@@ -177,7 +177,7 @@ export function saveWorkspace(errorAction) {
         pinnedVessels: state.vesselInfo.vessels
           .filter((e) => e.pinned === true)
           .map((e) => ({
-            seriesgroup: e.seriesgroup,
+            id: e.id,
             tilesetId: e.tilesetId,
             title: e.title,
             visible: e.visible,
@@ -186,7 +186,7 @@ export function saveWorkspace(errorAction) {
         fleets: state.fleets.fleets,
         shownVessel,
         encounters: {
-          seriesgroup: state.encounters.seriesgroup,
+          id: state.encounters.id,
           tilesetId: state.encounters.tilesetId,
         },
         basemap,
@@ -260,21 +260,21 @@ function dispatchActions(workspaceData, dispatch, getState) {
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
     // we need heatmap layers headers to be loaded before loading track
     if (workspaceData.shownVessel) {
-      if (workspaceData.shownVessel.seriesgroup === undefined) {
+      if (workspaceData.shownVessel.id === undefined) {
         console.warn(
           `attempting to load vessel on tileset ${
             workspaceData.shownVessel.tilesetId
-          } with no seriesgroup`
+          } with no id/seriesgroup`
         )
       } else {
-        const { tilesetId, seriesgroup } = workspaceData.shownVessel
+        const { tilesetId, id } = workspaceData.shownVessel
 
         // only add vessel if it won't be loaded by loading pinned vessels mechanism later
-        if (!workspaceData.pinnedVessels.map((v) => v.seriesgroup).includes(seriesgroup)) {
+        if (!workspaceData.pinnedVessels.map((v) => v.id).includes(id)) {
           dispatch(
             addVessel({
               tilesetId,
-              seriesgroup,
+              id,
             })
           )
         }
@@ -297,12 +297,10 @@ function dispatchActions(workspaceData, dispatch, getState) {
     if (
       workspaceData.encounters !== null &&
       workspaceData.encounters !== undefined &&
-      workspaceData.encounters.seriesgroup !== null &&
-      workspaceData.encounters.seriesgroup !== undefined
+      workspaceData.encounters.id !== null &&
+      workspaceData.encounters.id !== undefined
     ) {
-      dispatch(
-        setEncountersInfo(workspaceData.encounters.seriesgroup, workspaceData.encounters.tilesetId)
-      )
+      dispatch(setEncountersInfo(workspaceData.encounters.id, workspaceData.encounters.tilesetId))
     }
   })
 
@@ -375,12 +373,31 @@ const convertLegacyEncountersLayers = (layers) => {
   })
 }
 
+const convertSeriesgroupsToIds = (workspace) => {
+  const newWorkspace = { ...workspace }
+  if (newWorkspace.shownVessel !== undefined) {
+    newWorkspace.shownVessel.id =
+      newWorkspace.shownVessel.id || newWorkspace.shownVessel.seriesgroup
+    delete newWorkspace.shownVessel.seriesgroup
+  }
+  if (newWorkspace.pinnedVessels !== undefined) {
+    newWorkspace.pinnedVessels.forEach((vessel) => {
+      vessel.id = vessel.id || vessel.seriesgroup
+      delete vessel.seriesgroup
+    })
+  }
+
+  // TOOD encounters
+  return newWorkspace
+}
+
 function processNewWorkspace(data) {
-  const workspace = data.workspace
+  const workspace = convertSeriesgroupsToIds(data.workspace)
+  console.log(workspace)
   let filterGroups = workspace.filterGroups || []
   filterGroups = filterGroups.concat(filtersToFilterGroups(workspace.filters, workspace.map.layers))
   const layers = convertLegacyEncountersLayers(workspace.map.layers)
-  console.log(layers)
+
   return {
     viewport: {
       zoom: workspace.map.zoom,
@@ -410,9 +427,9 @@ function applyWorkspaceOverrides(workspace, overrides) {
 
   if (overrides.vessels !== undefined && overrides.vessels.length) {
     overrides.vessels.forEach((vessel, i) => {
-      const [seriesgroup, tilesetId, series] = vessel
+      const [id, tilesetId, series] = vessel
       const newVessel = {
-        seriesgroup,
+        id,
         tilesetId,
         visible: true,
         // hue ?

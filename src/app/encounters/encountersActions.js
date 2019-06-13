@@ -25,14 +25,14 @@ export function clearEncountersInfo() {
   }
 }
 
-export function setEncountersInfo(seriesgroup, tilesetId) {
+export function setEncountersInfo(id, tilesetId) {
   return (dispatch, getState) => {
     const workspaceLayers = getState().layers.workspaceLayers
     const encounterLayer = workspaceLayers.find(
       (l) => l.tilesetId === tilesetId || l.id === tilesetId
     )
 
-    // dispatch(highlightClickedVessel(seriesgroup, encounterLayer.id)); TODO MAP MODULE
+    // dispatch(highlightClickedVessel(id, encounterLayer.id)); TODO MAP MODULE
 
     if (
       encounterLayer.header.endpoints === undefined ||
@@ -46,13 +46,13 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
     dispatch({
       type: LOAD_ENCOUNTERS_INFO,
       payload: {
-        seriesgroup,
+        id,
         tilesetId,
       },
     })
 
     const infoUrl = buildEndpoint(encounterInfoEndpoint, {
-      id: seriesgroup,
+      id,
     })
     const token = getState().user.token
 
@@ -60,7 +60,7 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
       encounterInfo.vessels = [
         {
           tilesetId: encounterInfo.vessel_1_tileset,
-          seriesgroup: encounterInfo.vessel_1_id,
+          id: encounterInfo.vessel_1_id,
           vesselTypeName: encounterInfo.vessel_1_type,
           color:
             encounterInfo.vessel_1_type === VESSEL_TYPE_REEFER
@@ -69,7 +69,7 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         },
         {
           tilesetId: encounterInfo.vessel_2_tileset,
-          seriesgroup: encounterInfo.vessel_2_id,
+          id: encounterInfo.vessel_2_id,
           vesselTypeName: encounterInfo.vessel_2_type,
           color:
             encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER
@@ -93,14 +93,14 @@ export function setEncountersInfo(seriesgroup, tilesetId) {
         const fields = vesselWorkspaceLayer.header.info.fields
         fetchEndpoint(
           buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, {
-            id: vessel.seriesgroup,
+            id,
           }),
           token
         ).then((vesselInfo) => {
           dispatch({
             type: SET_ENCOUNTERS_VESSEL_INFO,
             payload: {
-              seriesgroup: vessel.seriesgroup,
+              id: vessel.id,
               vesselInfo,
               fields,
             },

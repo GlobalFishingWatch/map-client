@@ -7,7 +7,7 @@ import {
 } from 'app/encounters/encountersActions'
 
 const initialState = {
-  seriesgroup: null,
+  id: null,
   tilesetId: null,
   encountersInfo: null,
   infoPanelStatus: INFO_STATUS.HIDDEN,
@@ -18,7 +18,7 @@ export default function(state = initialState, action) {
     case LOAD_ENCOUNTERS_INFO: {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.LOADING,
-        seriesgroup: action.payload.seriesgroup,
+        id: action.payload.id,
         tilesetId: action.payload.tilesetId,
       })
     }
@@ -33,7 +33,7 @@ export default function(state = initialState, action) {
     case SET_ENCOUNTERS_VESSEL_INFO: {
       const newEncountersInfo = Object.assign({}, state.encountersInfo)
       const newVesselIndex = state.encountersInfo.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === action.payload.seriesgroup
+        (vessel) => vessel.id === action.payload.id
       )
       const newVessel = Object.assign({}, newEncountersInfo.vessels[newVesselIndex])
       newVessel.info = action.payload.vesselInfo
@@ -48,7 +48,7 @@ export default function(state = initialState, action) {
       return Object.assign({}, state, {
         infoPanelStatus: INFO_STATUS.HIDDEN,
         encountersInfo: null,
-        seriesgroup: null,
+        id: null,
       })
     }
 

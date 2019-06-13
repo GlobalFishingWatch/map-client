@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   openVessel: (vessel) => {
     dispatch(clearVesselInfo())
-    dispatch(addVesselFromEncounter(vessel.tilesetId, vessel.seriesgroup))
+    dispatch(addVesselFromEncounter(vessel.tilesetId, vessel.id))
     dispatch(clearEncountersInfo())
   },
 })
