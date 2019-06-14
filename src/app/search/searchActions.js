@@ -1,5 +1,5 @@
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'app/config'
-import { LAYER_TYPES_SEARCHABLE, LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
+import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import 'whatwg-fetch'
 import debounce from 'lodash/debounce'
 import getVesselName from 'app/utils/getVesselName'
@@ -28,7 +28,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   }
 
   const searchableLayers = state.layers.workspaceLayers
-    .filter((layer) => LAYER_TYPES_SEARCHABLE.indexOf(layer.subtype || layer.type) > -1)
+    .filter((layer) => layer.header !== undefined)
     .filter((layer) => layer.header.searchable !== false)
     .filter((layer) => layer.added === true)
 

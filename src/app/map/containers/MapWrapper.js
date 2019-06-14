@@ -163,6 +163,15 @@ const getLayersTitles = createSelector(
 const getPriorityFeatures = (event) =>
   event.features.filter((f) => ['legacyHeatmap', 'temporal'].includes(f.layer.group))
 
+const isCluster = (event) => {
+  // always give priority to "interesting" layers
+  const priorityFeatures = getPriorityFeatures(event)
+  if (priorityFeatures.length === 1 && priorityFeatures[0].isCluster === false) {
+    return false
+  }
+  return event.isCluster === true
+}
+
 const mapStateToProps = (state) => ({
   // attributions: state.mapStyle.attributions, TODO MAP MODULE
   // Forwarded to Map Module
@@ -178,14 +187,7 @@ const mapStateToProps = (state) => ({
   // Internal
   layerTitles: getLayersTitles(state),
   report: state.report,
-  isCluster: (event) => {
-    // always give priority to "interesting" layers
-    const priorityFeatures = getPriorityFeatures(event)
-    if (priorityFeatures.length === 1 && priorityFeatures[0].isCluster === false) {
-      return false
-    }
-    return event.isCluster === true
-  },
+  isCluster,
 })
 
 const mapDispatchToProps = (dispatch) => ({
