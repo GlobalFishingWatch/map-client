@@ -12,8 +12,7 @@ class RecentVesselsModal extends Component {
   renderContent() {
     let historyItems = []
     const pinnedVessels = this.props.vessels.filter((elem) => elem.pinned === true)
-    const pinnedVesselIds =
-      pinnedVessels.length > 0 ? pinnedVessels.map((elem) => elem.id) : []
+    const pinnedVesselIds = pinnedVessels.length > 0 ? pinnedVessels.map((elem) => elem.id) : []
 
     if (this.props.history.length > 0) {
       historyItems = this.props.history.map((entry, i) => (

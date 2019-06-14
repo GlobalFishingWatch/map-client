@@ -375,25 +375,26 @@ const convertLegacyEncountersLayers = (layers) => {
 
 const convertSeriesgroupsToIds = (workspace) => {
   const newWorkspace = { ...workspace }
-  if (newWorkspace.shownVessel !== undefined) {
+  if (newWorkspace.shownVessel !== undefined && newWorkspace.shownVessel !== null) {
     newWorkspace.shownVessel.id =
       newWorkspace.shownVessel.id || newWorkspace.shownVessel.seriesgroup
     delete newWorkspace.shownVessel.seriesgroup
   }
-  if (newWorkspace.pinnedVessels !== undefined) {
+  if (newWorkspace.pinnedVessels !== undefined && newWorkspace.pinnedVessels !== null) {
     newWorkspace.pinnedVessels.forEach((vessel) => {
       vessel.id = vessel.id || vessel.seriesgroup
       delete vessel.seriesgroup
     })
   }
-
-  // TOOD encounters
+  if (newWorkspace.encounters !== undefined && newWorkspace.encounters !== null) {
+    newWorkspace.encounters.id = newWorkspace.encounters.id || newWorkspace.encounters.seriesgroup
+    delete newWorkspace.encounters.seriesgroup
+  }
   return newWorkspace
 }
 
 function processNewWorkspace(data) {
   const workspace = convertSeriesgroupsToIds(data.workspace)
-  console.log(workspace)
   let filterGroups = workspace.filterGroups || []
   filterGroups = filterGroups.concat(filtersToFilterGroups(workspace.filters, workspace.map.layers))
   const layers = convertLegacyEncountersLayers(workspace.map.layers)
@@ -528,9 +529,9 @@ export function getWorkspace() {
       .then((data) => {
         dispatch(loadWorkspace(data))
       })
-      .catch((error) => {
-        console.error('Error loading workspace: ', error.message)
-      })
+    // .catch((error) => {
+    //   console.error('Error loading workspace: ', error.message)
+    // })
   }
 }
 

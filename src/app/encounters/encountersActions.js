@@ -60,7 +60,7 @@ export function setEncountersInfo(id, tilesetId) {
       encounterInfo.vessels = [
         {
           tilesetId: encounterInfo.vessel_1_tileset,
-          id: encounterInfo.vessel_1_id,
+          id: encounterInfo.vessel_1_id.toString(),
           vesselTypeName: encounterInfo.vessel_1_type,
           color:
             encounterInfo.vessel_1_type === VESSEL_TYPE_REEFER
@@ -69,7 +69,7 @@ export function setEncountersInfo(id, tilesetId) {
         },
         {
           tilesetId: encounterInfo.vessel_2_tileset,
-          id: encounterInfo.vessel_2_id,
+          id: encounterInfo.vessel_2_id.toString(),
           vesselTypeName: encounterInfo.vessel_2_type,
           color:
             encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER
@@ -93,7 +93,7 @@ export function setEncountersInfo(id, tilesetId) {
         const fields = vesselWorkspaceLayer.header.info.fields
         fetchEndpoint(
           buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, {
-            id,
+            id: vessel.id,
           }),
           token
         ).then((vesselInfo) => {

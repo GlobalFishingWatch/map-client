@@ -153,7 +153,10 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
     const { token } = state.user
 
     pinnedVessels.forEach((pinnedVessel) => {
-      const layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
+      let layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
+      if (!layer) {
+        layer = state.layers.workspaceLayers.find((l) => l.id === pinnedVessel.tilesetId)
+      }
       if (layer === undefined) {
         console.warn(
           'Trying to load a pinned vessel but the layer seems to be absent on the workspace',
@@ -244,7 +247,7 @@ export const addVesselFromHeatmap = (feature) => (dispatch, getState) => {
 
   dispatch(
     addVessel({
-      tilesetId: layer.tilesetId,
+      tilesetId: layer.tilesetId || layer.id,
       id,
     })
   )
@@ -276,7 +279,7 @@ export function addVesselFromEncounter(tilesetId, id) {
     dispatch(
       addVessel({
         tilesetId,
-        id,
+        id: id.toString(),
         parentEncounter,
       })
     )

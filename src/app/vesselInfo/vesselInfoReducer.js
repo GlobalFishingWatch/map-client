@@ -84,9 +84,7 @@ export default function(state = initialState, action) {
 
     case LOAD_PINNED_VESSEL: {
       const vesselIndex = state.vessels.findIndex(
-        (vessel) =>
-          vessel.id === action.payload.id &&
-          vessel.tilesetId === action.payload.tilesetId
+        (vessel) => vessel.id === action.payload.id && vessel.tilesetId === action.payload.tilesetId
       )
       if (vesselIndex > -1) {
         const newVessel = Object.assign(state.vessels[vesselIndex], {
@@ -131,9 +129,7 @@ export default function(state = initialState, action) {
     }
 
     case SHOW_VESSEL_DETAILS: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.id === action.payload.id
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex])
       currentlyShownVessel.shownInInfoPanel = true
       // currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
@@ -227,9 +223,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_COLOR: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.id === action.payload.id
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.color = action.payload.color
 
@@ -242,9 +236,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_TRACK_VISIBILITY: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.id === action.payload.id
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.visible = action.payload.visible
 
@@ -257,9 +249,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_TITLE: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.id === action.payload.id
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.title = action.payload.title
 
