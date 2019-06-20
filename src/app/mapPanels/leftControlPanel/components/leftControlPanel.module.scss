@@ -1,15 +1,19 @@
 @import '../../../../styles/settings';
 
-.mapLoader {
+.container {
   left: 8px;
   position: absolute;
-  top: 160px;
+  top: 144px;
   z-index: 6;
 
   @media #{$mq-tablet} {
     left: 6px;
-    top: 250px;
+    top: 110px;
   }
+}
+
+.mapLoader {
+  z-index: 6;
 
   &._isEmbedded {
     left: 6px;
@@ -31,7 +35,7 @@
     font-weight: bold;
     left: 56px;
     position: absolute;
-    top: 112px;
+    top: 0;
     z-index: 99;
   }
 }
