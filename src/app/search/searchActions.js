@@ -59,43 +59,88 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
       type: SET_SEARCH_RESULTS,
       payload: {
         entries: [],
-        pageCount: 0,
       },
     })
     return
   }
 
-  const tilesets = searchableAndVisibleLayers.map((l) => l.tilesetId).join(',')
-  const baseURL = `${
-    process.env.REACT_APP_V2_API_ENDPOINT
-  }/tilesets/{{tilesets}}/search/?query={{query}}&limit={{limit}}&offset={{offset}}`
-  const url = buildEndpoint(baseURL, {
-    tilesets,
-    query: encodeURIComponent(searchTerm),
-    limit: SEARCH_MODAL_PAGE_SIZE,
-    offset: page * SEARCH_MODAL_PAGE_SIZE,
+  // NOW - error 500
+  // https://api-dot-skytruth-pleuston.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v2,gfw-tasks-658-reefer-uvi-v4/search/?query=orca&limit=14&offset=0
+
+  // before - ok 200
+  // https://api-dot-skytruth-pelagos-production.appspot.com/v2/tilesets/gfw-tasks-657-uvi-v2,test-chile-seconds-aquaculture-v7,test-chile-seconds-transport-v7,test-chile-seconds-industry-v7,test-chile-seconds-small-fisheries-v7,gfw-tasks-658-reefer-uvi-v4,/search/?query=orca&limit=14&offset=0
+  const searchEndpoints = searchableAndVisibleLayers
+    .map((l) => {
+      let endpoint = {
+        url: l.header.endpoints.search,
+        tilesetId: l.tilesetId,
+      }
+      // TODO remove this hack
+      endpoint.url = endpoint.url.replace('gfw-tasks-657-uvi-v2', '{{tilesets}}')
+      endpoint.url = endpoint.url.replace('gfw-tasks-658-reefer-uvi-v4', '{{tilesets}}')
+      endpoint.url = endpoint.url.replace('gfw-task-673-encounters-v3', '{{tilesets}}')
+      // endpoint.url = endpoint.url.replace('api-dot-skytruth-pleuston.appspot.com', 'api-dot-skytruth-pelagos-production.appspot.com')
+      return endpoint
+    })
+    .filter((l) => l.tilesetId !== undefined)
+
+  // Deduplicate search endpoints. Keep all layer tilesetIds to build the final URL
+  const uniqSearchEndpoints = {}
+  searchEndpoints.forEach((searchEndpoint) => {
+    if (uniqSearchEndpoints[searchEndpoint.url] === undefined) {
+      uniqSearchEndpoints[searchEndpoint.url] = []
+    }
+    uniqSearchEndpoints[searchEndpoint.url].push(searchEndpoint.tilesetId)
   })
 
-  fetch(url, options)
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.query !== searchTerm) {
-        console.warn('search term differs, searching for', searchTerm, 'receiving', result.query)
-      }
-      const pageCount = Math.ceil(result.total / result.limit)
-      const entries = result.entries.map((entry) => {
-        const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
-        const title = getVesselName(entry, layer.header.info.fields)
-        return { ...entry, title }
-      })
-      dispatch({
-        type: SET_SEARCH_RESULTS,
-        payload: {
-          entries,
-          pageCount,
-        },
-      })
+  // build uniq search URLs with all get params
+  const uniqSearchURLs = Object.keys(uniqSearchEndpoints).map((searchEndpointURL) => {
+    return buildEndpoint(searchEndpointURL, {
+      tilesets: uniqSearchEndpoints[searchEndpointURL].join(','),
+      query: encodeURIComponent(searchTerm),
+      limit: SEARCH_MODAL_PAGE_SIZE,
+      offset: page * SEARCH_MODAL_PAGE_SIZE,
     })
+  })
+
+  const searchPromises = uniqSearchURLs.map((url) =>
+    fetch(url, options)
+      .then((response) => response.json())
+      .catch((err) => err)
+  )
+
+  Promise.all(searchPromises).then((resultsOrErrors) => {
+    let entries = []
+    let total = 0
+    let numEndpoints = 0
+    resultsOrErrors.forEach((resultOrError, i) => {
+      if (resultOrError instanceof Error) {
+        console.error('Error loading search results', uniqSearchURLs[i], resultOrError)
+      } else {
+        entries = entries.concat(resultOrError.entries)
+        total += resultOrError.total
+        numEndpoints++
+      }
+    })
+
+    // Very simple but really not ideal: when querying n endpoints the number of results
+    // displayed is n * SEARCH_MODAL_PAGE_SIZE :/
+    const numResultsPerPage = numEndpoints * SEARCH_MODAL_PAGE_SIZE
+    const pageCount = Math.ceil(total / numResultsPerPage)
+    entries = entries.map((entry) => {
+      const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
+      const title = getVesselName(entry, layer.header.info.fields)
+      return { ...entry, title }
+    })
+    dispatch({
+      type: SET_SEARCH_RESULTS,
+      payload: {
+        entries,
+        pageCount,
+        totalResults: total,
+      },
+    })
+  })
 }, 200)
 
 export function setSearchPage(page) {

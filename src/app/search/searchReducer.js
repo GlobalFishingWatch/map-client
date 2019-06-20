@@ -10,20 +10,22 @@ import {
 
 const initialState = {
   entries: [],
-  count: 0,
+  totalResults: 0,
   searchTerm: '',
   searching: false,
   searchModalOpen: false,
   searchResultsOpen: false,
   page: 0,
   hasSearchableLayers: false,
+  hasHiddenSearchableLayers: false,
 }
 
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_SEARCH_RESULTS:
       return Object.assign({}, state, {
-        pageCount: action.payload.pageCount,
+        pageCount: action.payload.pageCount || 0,
+        totalResults: action.payload.totalResults || 0,
         entries: action.payload.entries,
         searching: false,
       })

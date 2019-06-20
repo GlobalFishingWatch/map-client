@@ -8,7 +8,7 @@ import {
 
 const mapStateToProps = (state) => ({
   entries: state.search.entries,
-  pageCount: state.search.pageCount,
+  totalResults: state.search.totalResults,
   searching: state.search.searching,
   searchTerm: state.search.searchTerm,
   searchModalOpen: state.search.searchModalOpen,

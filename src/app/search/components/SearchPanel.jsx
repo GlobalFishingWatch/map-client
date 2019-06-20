@@ -102,7 +102,10 @@ class SearchPanel extends Component {
 
     if (this.props.searching) {
       searchResults = this.renderSearchingMessage()
-    } else if (this.props.pageCount && this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT) {
+    } else if (
+      this.props.totalResults &&
+      this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT
+    ) {
       searchResults = this.renderSearchResults()
     } else if (
       this.props.searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT &&
@@ -112,7 +115,6 @@ class SearchPanel extends Component {
     } else {
       searchResults = this.renderNoResultMessage(this.props.hasHiddenSearchableLayers)
     }
-
     return (
       <div className={searchPanelStyles.searchPanel}>
         <input
@@ -151,7 +153,7 @@ class SearchPanel extends Component {
           </ul>
           {this.props.searchTerm.length >= SEARCH_QUERY_MINIMUM_LIMIT &&
             !this.props.searching &&
-            this.props.pageCount > SEARCH_RESULTS_LIMIT && (
+            this.props.totalResults > SEARCH_RESULTS_LIMIT && (
               <div className={searchPanelStyles.paginationContainer}>
                 <button
                   className={classnames(
@@ -173,34 +175,34 @@ class SearchPanel extends Component {
 }
 
 SearchPanel.propTypes = {
-  setSearchTerm: PropTypes.func,
-  openSearchModal: PropTypes.func,
-  setSearchResultsVisibility: PropTypes.func,
+  setSearchTerm: PropTypes.func.isRequired,
+  openSearchModal: PropTypes.func.isRequired,
+  setSearchResultsVisibility: PropTypes.func.isRequired,
   /*
    Search results
    */
-  entries: PropTypes.array,
+  entries: PropTypes.array.isRequired,
   /*
    Number of total search results
    */
-  pageCount: PropTypes.number,
+  totalResults: PropTypes.number.isRequired,
   /*
    If search is in progress
    */
-  searching: PropTypes.bool,
+  searching: PropTypes.bool.isRequired,
   /*
    If search modal is open
    */
-  searchModalOpen: PropTypes.bool,
+  searchModalOpen: PropTypes.bool.isRequired,
   /*
    If search result is open
    */
-  searchResultsOpen: PropTypes.bool,
+  searchResultsOpen: PropTypes.bool.isRequired,
   /*
   Search term to search for
   */
-  searchTerm: PropTypes.string,
-  hasHiddenSearchableLayers: PropTypes.bool,
+  searchTerm: PropTypes.string.isRequired,
+  hasHiddenSearchableLayers: PropTypes.bool.isRequired,
 }
 
 export default SearchPanel
