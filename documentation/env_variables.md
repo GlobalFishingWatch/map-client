@@ -32,7 +32,7 @@ Enable usage of the "Subscription" feature.
 
 #### REACT_APP_FEATURE_TRANSLATIONS
 
-Enable to include translations engine
+Enable to include translations engine (bablic) and language selctor.
 
 ## Boolean flags
 

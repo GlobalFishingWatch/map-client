@@ -1,3 +1,4 @@
+import 'core-js/stable/string/from-code-point'
 import { FLAGS, FLAGS_SHORTCODES } from 'app/constants'
 import iso3311a2 from 'iso-3166-1-alpha-2'
 

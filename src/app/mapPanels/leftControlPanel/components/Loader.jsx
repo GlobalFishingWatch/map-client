@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import LoaderStyles from 'styles/components/loader.module.scss'
 
 export default function Loader({ visible, absolute, tiny }) {
-  const loader = (
+  if (!visible) return null
+  return (
     <div
       className={classnames([
         LoaderStyles.loader,
@@ -26,10 +27,16 @@ export default function Loader({ visible, absolute, tiny }) {
       </div>
     </div>
   )
-  return visible ? loader : false
 }
 
 Loader.propTypes = {
   visible: PropTypes.bool,
   absolute: PropTypes.bool,
+  tiny: PropTypes.bool,
+}
+
+Loader.defaultProps = {
+  visible: false,
+  absolute: false,
+  tiny: false,
 }

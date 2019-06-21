@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import Loader from 'app/mapPanels/leftControlPanel/containers/Loader'
 import ZoomControls from 'app/mapPanels/leftControlPanel/components/ZoomControls'
+import LanguageSelector from 'app/components/Shared/LanguageSelector'
+import Loader from 'app/mapPanels/leftControlPanel/containers/Loader'
 import LeftControlPanelStyles from 'app/mapPanels/leftControlPanel/components/leftControlPanel.module.scss'
 
 class LeftControlPanel extends Component {
@@ -22,14 +23,7 @@ class LeftControlPanel extends Component {
         this.props.userPermissions.indexOf('shareWorkspace') !== -1)
 
     return (
-      <div>
-        <div
-          className={classnames(LeftControlPanelStyles.mapLoader, {
-            [LeftControlPanelStyles._isEmbedded]: isEmbedded,
-          })}
-        >
-          <Loader tiny />
-        </div>
+      <div className={LeftControlPanelStyles.container}>
         {mouseLatLon !== null && (
           <div className={LeftControlPanelStyles.latlon}>
             {mouseLatLon.latitude.toFixed(4)}, {mouseLatLon.longitude.toFixed(4)}
@@ -42,6 +36,14 @@ class LeftControlPanel extends Component {
           canZoomOut={this.props.canZoomOut}
           changeZoomLevel={this.changeZoomLevel}
         />
+        <LanguageSelector />
+        <div
+          className={classnames(LeftControlPanelStyles.mapLoader, {
+            [LeftControlPanelStyles._isEmbedded]: isEmbedded,
+          })}
+        >
+          <Loader tiny />
+        </div>
       </div>
     )
   }
