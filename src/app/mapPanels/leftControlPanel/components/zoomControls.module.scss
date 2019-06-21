@@ -1,14 +1,10 @@
 @import '../../../../styles/settings';
 
-
 .zoomControls {
   display: none;
 
   @media #{$mq-tablet} {
     display: block;
-    left: 6px;
-    position: absolute;
-    top: 112px;
     z-index: 6;
   }
 
