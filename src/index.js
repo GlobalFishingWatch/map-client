@@ -13,6 +13,11 @@ import analyticsMiddleware from 'app/analytics/analyticsMiddleware'
 import AppContainer from 'app/containers/App'
 import AuthMapContainer from 'app/containers/AuthMap'
 
+// IE 11 polyfills
+import 'core-js/stable/object/assign'
+import 'core-js/stable/object/values'
+import 'core-js/stable/array/find'
+
 const { NODE_ENV } = process.env
 
 // Polyfill for older browsers (IE11 for example)
