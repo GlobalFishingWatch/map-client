@@ -65,10 +65,9 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     return
   }
 
-  const baseURL = `${
-    process.env.REACT_APP_SEARCH_ENDPOINT
-  }/?query={{query}}&limit={{limit}}&offset={{offset}}`
-  const tilesets = searchableAndVisibleLayers.map((l) => l.tilesetId).join(',')
+  const baseURL = `${process.env.REACT_APP_SEARCH_ENDPOINT}/?query={{query}}&limit={{limit}}&offset={{offset}}`
+  // const tilesets = searchableAndVisibleLayers.map((l) => l.tilesetId).join(',')
+  const tilesets = ['chile']
 
   const url = buildEndpoint(baseURL, {
     tilesets,

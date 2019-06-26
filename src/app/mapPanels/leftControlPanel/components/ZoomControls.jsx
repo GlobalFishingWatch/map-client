@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react'
 import classnames from 'classnames'
 import ZoomControlsStyles from 'app/mapPanels/leftControlPanel/components/zoomControls.module.scss'
 import iconStyles from 'styles/icons.module.scss'
-import LanguageSelector from 'app/components/Shared/LanguageSelector'
 import Icon from 'app/components/Shared/Icon'
 import { ReactComponent as ZoomInIcon } from 'assets/icons/zoom-in.svg'
 import { ReactComponent as ZoomOutIcon } from 'assets/icons/zoom-out.svg'
@@ -42,7 +41,6 @@ class ZoomControls extends PureComponent {
             <Icon icon="share" activated />
           </span>
         )}
-        <LanguageSelector />
       </div>
     )
   }

@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   drawVessel: (vesselDetails) => {
+    console.log(vesselDetails)
     dispatch(toggleLayerVisibility(vesselDetails.tilesetId, true))
     dispatch(clearVesselInfo())
     dispatch(addVesselFromSearch(vesselDetails))
