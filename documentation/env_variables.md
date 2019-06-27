@@ -76,10 +76,6 @@ Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`
 
 Endpoint of the API (vessel tiles, workspace, contact, etc)
 
-#### REACT_APP_SEARCH_ENDPOINT
-
-Endpoint of the Search API 
-
 #### SATELLITE_BASEMAP_URL (deprecated)
 
 ## Links
