@@ -120,7 +120,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     entries = entries.map((entry) => {
       const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
       const title = getVesselName(entry, layer.header.info.fields)
-      return { ...entry, title }
+      return { ...entry, title, layerTitle: layer.title }
     })
     dispatch({
       type: SET_SEARCH_RESULTS,

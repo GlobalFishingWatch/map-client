@@ -29,22 +29,23 @@ class SearchResult extends Component {
   }
 
   render() {
-    const title = this.props.vesselInfo.title
+    const { vesselInfo, searchTerm, className } = this.props
+    const title = vesselInfo.title
     const MMSI =
-      this.props.vesselInfo.mmsi === undefined ||
-      (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title)
+      vesselInfo.mmsi === undefined || (vesselInfo.mmsi !== undefined && vesselInfo.mmsi === title)
         ? ''
-        : this.props.vesselInfo.mmsi
+        : vesselInfo.mmsi
 
     return (
       <li
-        className={this.props.className}
+        className={className}
         onClick={(event) => {
           this.onDrawVessel(event)
         }}
       >
-        {this.renderLine(this.props.searchTerm, title)}
-        {MMSI && this.renderLine(this.props.searchTerm, MMSI)}
+        {this.renderLine(searchTerm, title)}
+        From {vesselInfo.layerTitle} layer
+        {MMSI && this.renderLine(searchTerm, MMSI)}
       </li>
     )
   }
