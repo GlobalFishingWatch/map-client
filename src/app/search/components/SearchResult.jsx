@@ -10,18 +10,30 @@ class SearchResult extends Component {
   }
 
   renderLine(searchTerm, lineText) {
-    const searchTermWords = searchTerm.toUpperCase().split(' ')
-    const lineTextWords = lineText.split(' ')
+    const fragments = lineText.split(new RegExp(searchTerm, 'gi'))
+    const allFragments = []
+    fragments.forEach((fragment, i) => {
+      if (fragment !== '') {
+        allFragments.push(fragment)
+      }
+      if (fragment === '' && i < fragments.length - 1) {
+        allFragments.push(searchTerm)
+      }
+      if (fragment !== '' && i < fragments.length - 1) {
+        allFragments.push(searchTerm)
+      }
+    })
+
     return (
       <span className={ResultListStyles.mainResultLabel}>
-        {lineTextWords.map((lineWord, i) => (
+        {allFragments.map((fragment, i) => (
           <span
             key={`res${i}`}
             className={classnames({
-              [ResultListStyles.highlight]: searchTermWords.indexOf(lineWord) > -1,
+              [ResultListStyles.highlight]: fragment === searchTerm,
             })}
           >
-            {lineWord}{' '}
+            {fragment}
           </span>
         ))}
       </span>
