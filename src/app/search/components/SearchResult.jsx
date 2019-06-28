@@ -56,7 +56,7 @@ class SearchResult extends Component {
         }}
       >
         {this.renderLine(searchTerm, title)}
-        From {vesselInfo.layerTitle} layer
+        From layer: {vesselInfo.layerTitle}
         {MMSI && this.renderLine(searchTerm, MMSI)}
       </li>
     )
@@ -64,11 +64,11 @@ class SearchResult extends Component {
 }
 
 SearchResult.propTypes = {
-  className: PropTypes.string,
-  closeSearch: PropTypes.func,
-  drawVessel: PropTypes.func,
-  searchTerm: PropTypes.string,
-  vesselInfo: PropTypes.object,
+  className: PropTypes.string.isRequired,
+  closeSearch: PropTypes.func.isRequired,
+  drawVessel: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  vesselInfo: PropTypes.object.isRequired,
 }
 
 export default SearchResult

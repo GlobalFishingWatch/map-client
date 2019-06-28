@@ -76,7 +76,6 @@ export function trackSearchResultClicked(tilesetId, id) {
     const vesselIndex = state.vesselInfo.vessels.findIndex((vessel) => vessel.id === id)
     // name can be undefined, but GA doesn't support objects as a label, so if undefined name will be removed on stringify
     const name = state.vesselInfo.vessels[vesselIndex].vesselname
-    debugger
     dispatch({
       type: GA_SEARCH_RESULT_CLICKED,
       payload: { tilesetId, id, name },
