@@ -12,15 +12,19 @@ const getLanguagesOrdered = (languages, current) => {
 
 class LanguageSelector extends Component {
   state = {
+    loaded: false,
     languages: null,
     currentLng: null,
   }
+
+  eventFallbackInterval = null
 
   componentDidMount = () => {
     if (window.bablic !== undefined && window.bablic.loaded) {
       this.onBablicLoad()
     } else {
       document.addEventListener('bablicload', this.onBablicLoad)
+      this.addEventListenerFallback()
     }
   }
 
@@ -28,11 +32,25 @@ class LanguageSelector extends Component {
     document.removeEventListener('bablicload', this.onBablicLoad)
   }
 
+  checkBablicLoaded = () => {
+    if (!this.state.loaded && window.bablic !== undefined && window.bablic.loaded) {
+      this.onBablicLoad()
+    }
+  }
+
+  addEventListenerFallback = () => {
+    this.eventFallbackInterval = setInterval(this.checkBablicLoaded, 2000)
+  }
+
   onBablicLoad = () => {
+    if (this.eventFallbackInterval !== null) {
+      clearInterval(this.eventFallbackInterval)
+    }
     const languages = orderBy([...window.bablic.languages.get()], 'key')
     const currentLng = window.bablic.getLocale()
     if (languages && languages.length > 0) {
       this.setState({
+        loaded: true,
         currentLng,
         languages: getLanguagesOrdered(languages, currentLng),
       })
