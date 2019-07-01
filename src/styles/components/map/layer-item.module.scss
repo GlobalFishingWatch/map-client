@@ -18,7 +18,14 @@
   }
 }
 
-.itemName {
+.itemNameLabel {
+  color: $color-4;
+  position: absolute;
+  left: 25px;
+  pointer-events: none;
+}
+
+.itemNameInput {
   background-color: transparent;
   border: 0;
   border-bottom: 1px solid transparent;
@@ -31,6 +38,7 @@
   margin-top: 1px;
   outline: none;
   text-overflow: ellipsis;
+  opacity: 0;
 
   @media #{$mq-tablet} {
     line-height: 20px;
@@ -39,7 +47,14 @@
 }
 
 .itemRename {
-  border-bottom-color: rgba($color-3, 0.3);
+  input {
+    border-bottom-color: rgba($color-3, 0.3);
+    opacity: 1;
+  }
+
+  label {
+    opacity: 0;
+  }
 }
 
 .editionMenu {
@@ -65,4 +80,5 @@
   display: flex;
   flex: 1;
   align-items: center;
+  position: relative;
 }
