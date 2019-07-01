@@ -7,7 +7,7 @@ export default (url, token) => {
     headers.Authorization = `Bearer ${token}`
   }
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     fetch(url, {
       method: 'GET',
       headers,
@@ -15,6 +15,7 @@ export default (url, token) => {
       .then((res) => {
         if (res.status >= 400) {
           console.warn(`loading of url failed: ${url}`)
+          reject(res)
           return null
         }
         return res.json()
@@ -24,6 +25,7 @@ export default (url, token) => {
       })
       .catch((err) => {
         console.warn(err)
+        reject(err)
       })
   })
 }

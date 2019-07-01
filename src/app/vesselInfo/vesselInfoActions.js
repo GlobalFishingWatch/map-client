@@ -7,10 +7,12 @@ import fetchEndpoint from 'app/utils/fetchEndpoint'
 import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
 import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
+import { startLoading, completeLoading } from 'app/app/appActions'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
 export const SHOW_VESSEL_DETAILS = 'SHOW_VESSEL_DETAILS'
+export const SET_VESSEL_ERROR = 'SET_VESSEL_ERROR'
 export const CLEAR_VESSEL_INFO = 'CLEAR_VESSEL_INFO'
 export const HIDE_VESSELS_INFO_PANEL = 'HIDE_VESSELS_INFO_PANEL'
 export const TOGGLE_VESSEL_PIN = 'TOGGLE_VESSEL_PIN'
@@ -60,37 +62,50 @@ function setCurrentVessel(tilesetId, id) {
     const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, {
       id,
     })
-    fetchEndpoint(vesselInfoUrl, token).then((data) => {
-      if (data !== null) {
-        delete data.series
-        data.tilesetId = tilesetId
+    dispatch(startLoading())
+    fetchEndpoint(vesselInfoUrl, token)
+      .then((data) => {
+        dispatch(completeLoading())
+        if (data !== null) {
+          delete data.series
+          data.tilesetId = tilesetId
 
-        dispatch({
-          type: SET_VESSEL_DETAILS,
-          payload: {
-            id,
-            vesselData: data,
-            layer,
-          },
-        })
-        dispatch(showVesselDetails(tilesetId, id))
-        dispatch(toggleMapPanels(true))
+          dispatch({
+            type: SET_VESSEL_DETAILS,
+            payload: {
+              id,
+              vesselData: data,
+              layer,
+            },
+          })
+          dispatch(showVesselDetails(tilesetId, id))
+          dispatch(toggleMapPanels(true))
 
-        dispatch(
-          addVesselToRecentVesselList(id, getVesselName(data, layer.header.info.fields), tilesetId)
-        )
-
-        if (data.comment) {
           dispatch(
-            setNotification({
-              content: data.comment,
-              type: 'warning',
-              visible: true,
-            })
+            addVesselToRecentVesselList(
+              id,
+              getVesselName(data, layer.header.info.fields),
+              tilesetId
+            )
           )
+
+          if (data.comment) {
+            dispatch(
+              setNotification({
+                content: data.comment,
+                type: 'warning',
+                visible: true,
+              })
+            )
+          }
         }
-      }
-    })
+      })
+      .catch((e) => {
+        dispatch(completeLoading())
+        dispatch({
+          type: SET_VESSEL_ERROR,
+        })
+      })
   }
 }
 

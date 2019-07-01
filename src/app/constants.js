@@ -63,6 +63,7 @@ export const INFO_STATUS = {
   HIDDEN: 1,
   LOADING: 2,
   LOADED: 3,
+  ERROR: 4,
 }
 
 export const VESSEL_TYPE_VESSEL = 'vessel'

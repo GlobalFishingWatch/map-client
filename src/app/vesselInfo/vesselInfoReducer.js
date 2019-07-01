@@ -7,6 +7,7 @@ import {
   ADD_VESSEL,
   LOAD_PINNED_VESSEL,
   SHOW_VESSEL_DETAILS,
+  SET_VESSEL_ERROR,
   CLEAR_VESSEL_INFO,
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
@@ -80,6 +81,13 @@ export default function(state = initialState, action) {
         ],
         infoPanelStatus: INFO_STATUS.LOADED,
       })
+    }
+
+    case SET_VESSEL_ERROR: {
+      return {
+        ...state,
+        infoPanelStatus: INFO_STATUS.ERROR,
+      }
     }
 
     case LOAD_PINNED_VESSEL: {
