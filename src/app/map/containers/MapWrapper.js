@@ -194,6 +194,7 @@ const mapStateToProps = (state) => ({
   layerTitles: getLayersTitles(state),
   report: state.report,
   isCluster,
+  rulersEditing: state.rulers.editing,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -225,17 +226,20 @@ const mapDispatchToProps = (dispatch) => ({
       })
     )
   },
-  onMapClick: (event) => {
+  onMapClick: (event, rulersEditing) => {
     dispatch(clearVesselInfo())
     dispatch(clearEncountersInfo())
     dispatch(setCurrentSelectedPolygon(null))
 
-    dispatch(
-      editRuler({
-        latitude: event.latitude,
-        longitude: event.longitude,
-      })
-    )
+    if (rulersEditing === true) {
+      dispatch(
+        editRuler({
+          latitude: event.latitude,
+          longitude: event.longitude,
+        })
+      )
+      return
+    }
 
     if (event.count === 0) return // all cleared, now GTFO
     if (event.isCluster === true) return // let map module zoom in and bail
