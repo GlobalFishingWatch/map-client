@@ -7,7 +7,8 @@ import Rulers from '../components/Rulers'
 //   reset } from '../rulersActions'
 
 const mapStateToProps = (state) => ({
-  numRulers: 3,
+  numRulers: 1,
+  // numRulers: state.rulers.rulers.length,
   visible: true,
   editing: true,
 })

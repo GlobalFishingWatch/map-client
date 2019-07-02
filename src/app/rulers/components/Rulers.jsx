@@ -50,9 +50,9 @@ Rulers.propTypes = {
   visible: PropTypes.bool.isRequired,
   editing: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  toggleVisibility: PropTypes.bool.isRequired,
-  toggleEditing: PropTypes.bool.isRequired,
-  reset: PropTypes.bool.isRequired,
+  toggleVisibility: PropTypes.func.isRequired,
+  toggleEditing: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 }
 
 export default Rulers

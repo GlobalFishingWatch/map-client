@@ -5,6 +5,7 @@ import { startLoading, completeLoading } from 'app/app/appActions'
 import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfoActions'
 import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
+import { moveCurrentRuler, editRuler } from 'app/rulers/rulersActions'
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL, ENCOUNTERS_AIS } from 'app/constants'
 import MapWrapper from 'app/map/components/MapWrapper'
 
@@ -17,6 +18,8 @@ const getBasemap = (state) => state.basemap
 const getWorkspaceZoom = (state) => state.workspace.viewport.zoom
 const getWorkspaceCenter = (state) => state.workspace.viewport.center
 const getReport = (state) => state.report
+const getRulers = (state) => state.rulers.rulers
+const getRulersVisibility = (state) => state.rulers.visible
 
 const getViewport = createSelector(
   [getWorkspaceZoom, getWorkspaceCenter],
@@ -99,8 +102,8 @@ const getHeatmapLayers = createSelector(
 )
 
 const getStaticLayers = createSelector(
-  [getLayers, getReport],
-  (layers, report) => {
+  [getLayers, getReport, getRulers, getRulersVisibility],
+  (layers, report, rulers, rulersVisible) => {
     const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
@@ -133,6 +136,18 @@ const getStaticLayers = createSelector(
         }
         return layerParams
       })
+
+    if (rulers.features.length && rulersVisible === true) {
+      const rulersLayer = {
+        id: 'rulers',
+        visible: true,
+        interactive: false,
+        color: '#ffaa00',
+        data: rulers,
+      }
+      staticLayers.push(rulersLayer)
+    }
+
     return staticLayers
   }
 )
@@ -211,11 +226,25 @@ const mapDispatchToProps = (dispatch) => ({
         longitude: event.longitude,
       })
     )
+
+    dispatch(
+      moveCurrentRuler({
+        latitude: event.latitude,
+        longitude: event.longitude,
+      })
+    )
   },
   onMapClick: (event) => {
     dispatch(clearVesselInfo())
     dispatch(clearEncountersInfo())
     dispatch(setCurrentSelectedPolygon(null))
+
+    dispatch(
+      editRuler({
+        latitude: event.latitude,
+        longitude: event.longitude,
+      })
+    )
 
     if (event.count === 0) return // all cleared, now GTFO
     if (event.isCluster === true) return // let map module zoom in and bail
