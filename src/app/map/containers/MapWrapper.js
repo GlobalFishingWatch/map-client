@@ -136,6 +136,7 @@ const getStaticLayers = createSelector(
         return layerParams
       })
     if (rulerLayer !== null) {
+      // TODO not removed when not pushed :(
       staticLayers.push(rulerLayer)
     }
     return staticLayers

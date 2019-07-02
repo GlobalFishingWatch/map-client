@@ -12,6 +12,7 @@ $height: 44px;
 .container li {
   transition: transform 0.3s linear;
   transform: translateX(-100%);
+  opacity: 0.5;
 }
 
 .main {
@@ -26,6 +27,7 @@ $height: 44px;
 .container li._active {
   color: red;
   text-decoration: underline;
+  opacity: 1;
 }
 
 .container button {

@@ -33,7 +33,7 @@ const makeRulerGeometry = (ruler) => {
 export const getRulersLayer = createSelector(
   [getRulers, getRulersVisibility],
   (rulers, rulersVisibility) => {
-    if (!rulers.length || rulersVisibility === false) {
+    if (!rulers.length) {
       return null
     }
 
@@ -44,7 +44,7 @@ export const getRulersLayer = createSelector(
 
     const rulersLayer = {
       id: 'rulers',
-      visible: true,
+      visible: rulersVisibility,
       interactive: false,
       color: '#ffaa00',
       data: geojson,

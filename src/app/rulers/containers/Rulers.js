@@ -1,30 +1,25 @@
 import { connect } from 'react-redux'
 import Rulers from '../components/Rulers'
-// import {
-//   toggle,
-//   toggleVisibility,
-//   toggleEditing,
-//   reset } from '../rulersActions'
+import { toggle, toggleVisibility, toggleEditing, reset } from '../rulersActions'
 
 const mapStateToProps = (state) => ({
-  numRulers: 1,
-  // numRulers: state.rulers.rulers.length,
-  visible: true,
-  editing: true,
+  numRulers: state.rulers.rulers.length,
+  visible: state.rulers.visible,
+  editing: state.rulers.editing,
 })
 
 const mapDispatchToProps = (dispatch) => ({
   toggle: () => {
-    // dispatch(toggle())
+    dispatch(toggle())
   },
   toggleVisibility: () => {
-    // dispatch(toggleVisibility())
+    dispatch(toggleVisibility())
   },
   toggleEditing: () => {
-    // dispatch(toggleEditing())
+    dispatch(toggleEditing())
   },
   reset: () => {
-    // dispatch(reset())
+    dispatch(reset())
   },
 })
 

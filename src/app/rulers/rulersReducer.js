@@ -1,8 +1,15 @@
-import { EDIT_RULER, MOVE_CURRENT_RULER } from './rulersActions'
+import {
+  EDIT_RULER,
+  MOVE_CURRENT_RULER,
+  TOGGLE,
+  TOGGLE_VISIBILITY,
+  TOGGLE_EDITING,
+  RESET,
+} from './rulersActions'
 
 const initialState = {
   visible: true,
-  editing: false,
+  editing: true,
   drawing: false,
   rulers: [
     {
@@ -22,6 +29,9 @@ const initialState = {
 const rulersReducer = (state = initialState, action) => {
   switch (action.type) {
     case EDIT_RULER: {
+      if (state.editing === false || state.visible === false) {
+        return state
+      }
       if (state.drawing === true) {
         const lastRulerIndex = state.rulers.length - 1
         const updatedRuler = { ...state.rulers[lastRulerIndex] }
@@ -45,7 +55,7 @@ const rulersReducer = (state = initialState, action) => {
     }
 
     case MOVE_CURRENT_RULER: {
-      if (state.drawing === false) {
+      if (state.drawing === false || state.editing === false || state.visible === false) {
         return state
       }
       const lastRulerIndex = state.rulers.length - 1
@@ -54,6 +64,38 @@ const rulersReducer = (state = initialState, action) => {
       updatedRuler.end.latitude = action.latitude
       const newRulers = [...state.rulers.slice(0, -1), updatedRuler]
       return { ...state, rulers: newRulers }
+    }
+
+    case TOGGLE: {
+      const toggledOn = state.editing || state.visible
+
+      return {
+        ...state,
+        editing: !toggledOn,
+        visible: !toggledOn,
+      }
+    }
+
+    case TOGGLE_VISIBILITY: {
+      return {
+        ...state,
+        visible: !state.visible,
+      }
+    }
+
+    case TOGGLE_EDITING: {
+      return {
+        ...state,
+        editing: !state.editing,
+        visible: state.editing === false ? true : state.editing,
+      }
+    }
+
+    case RESET: {
+      return {
+        ...state,
+        rulers: [],
+      }
     }
 
     default:
