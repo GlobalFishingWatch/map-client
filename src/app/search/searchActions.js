@@ -1,5 +1,5 @@
 import { SEARCH_QUERY_MINIMUM_LIMIT, SEARCH_MODAL_PAGE_SIZE } from 'app/config'
-import { LAYER_TYPES_SEARCHABLE, LAYER_TYPES } from 'app/constants'
+import { LAYER_TYPES, ENCOUNTERS_AIS } from 'app/constants'
 import 'whatwg-fetch'
 import debounce from 'lodash/debounce'
 import getVesselName from 'app/utils/getVesselName'
@@ -28,7 +28,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   }
 
   const searchableLayers = state.layers.workspaceLayers
-    .filter((layer) => LAYER_TYPES_SEARCHABLE.indexOf(layer.subtype || layer.type) > -1)
+    .filter((layer) => layer.header !== undefined)
     .filter((layer) => layer.header.searchable !== false)
     .filter((layer) => layer.added === true)
 
@@ -42,9 +42,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     // - apply the same logic to a vessel layer that has an encounter "parent": if vessel layer
     // is not visible but encounter layer is visible, search should be done on vessel layer
     if (layer.type === LAYER_TYPES.HeatmapTracksOnly) {
-      const encountersLayer = state.layers.workspaceLayers.find(
-        (l) => l.subtype === LAYER_TYPES.Encounters
-      )
+      const encountersLayer = state.layers.workspaceLayers.find((l) => l.id === ENCOUNTERS_AIS)
       return encountersLayer && encountersLayer.visible === true
     }
     return false
@@ -61,43 +59,78 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
       type: SET_SEARCH_RESULTS,
       payload: {
         entries: [],
-        pageCount: 0,
       },
     })
     return
   }
 
-  const tilesets = searchableAndVisibleLayers.map((l) => l.tilesetId).join(',')
-  const baseURL = `${
-    process.env.REACT_APP_V2_API_ENDPOINT
-  }/tilesets/{{tilesets}}/search/?query={{query}}&limit={{limit}}&offset={{offset}}`
-  const url = buildEndpoint(baseURL, {
-    tilesets,
-    query: encodeURIComponent(searchTerm),
-    limit: SEARCH_MODAL_PAGE_SIZE,
-    offset: page * SEARCH_MODAL_PAGE_SIZE,
+  const searchEndpoints = searchableAndVisibleLayers
+    .map((l) => {
+      let endpoint = {
+        url: l.header.endpoints.search,
+        tilesetId: l.tilesetId,
+      }
+      return endpoint
+    })
+    .filter((l) => l.tilesetId !== undefined)
+
+  // Deduplicate search endpoints. Keep all layer tilesetIds to build the final URL
+  const uniqSearchEndpoints = {}
+  searchEndpoints.forEach((searchEndpoint) => {
+    if (uniqSearchEndpoints[searchEndpoint.url] === undefined) {
+      uniqSearchEndpoints[searchEndpoint.url] = []
+    }
+    uniqSearchEndpoints[searchEndpoint.url].push(searchEndpoint.tilesetId)
   })
 
-  fetch(url, options)
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.query !== searchTerm) {
-        console.warn('search term differs, searching for', searchTerm, 'receiving', result.query)
-      }
-      const pageCount = Math.ceil(result.total / result.limit)
-      const entries = result.entries.map((entry) => {
-        const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
-        const title = getVesselName(entry, layer.header.info.fields)
-        return { ...entry, title }
-      })
-      dispatch({
-        type: SET_SEARCH_RESULTS,
-        payload: {
-          entries,
-          pageCount,
-        },
-      })
+  // build uniq search URLs with all get params
+  const uniqSearchURLs = Object.keys(uniqSearchEndpoints).map((searchEndpointURL) => {
+    return buildEndpoint(searchEndpointURL, {
+      tilesets: uniqSearchEndpoints[searchEndpointURL].join(','),
+      query: encodeURIComponent(searchTerm),
+      limit: SEARCH_MODAL_PAGE_SIZE,
+      offset: page * SEARCH_MODAL_PAGE_SIZE,
     })
+  })
+
+  const searchPromises = uniqSearchURLs.map((url) =>
+    fetch(url, options)
+      .then((response) => response.json())
+      .catch((err) => err)
+  )
+
+  Promise.all(searchPromises).then((resultsOrErrors) => {
+    let entries = []
+    let total = 0
+    let numEndpoints = 0
+    resultsOrErrors.forEach((resultOrError, i) => {
+      if (resultOrError instanceof Error) {
+        console.error('Error loading search results', uniqSearchURLs[i], resultOrError)
+      } else {
+        entries = entries.concat(resultOrError.entries)
+        total += resultOrError.total
+        numEndpoints++
+      }
+    })
+
+    // Very simple but really not ideal: when querying n endpoints the number of results
+    // displayed is n * SEARCH_MODAL_PAGE_SIZE :/
+    const numResultsPerPage = numEndpoints * SEARCH_MODAL_PAGE_SIZE
+    const pageCount = Math.ceil(total / numResultsPerPage)
+    entries = entries.map((entry) => {
+      const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
+      const title = getVesselName(entry, layer.header.info.fields)
+      return { ...entry, title, layerTitle: layer.title }
+    })
+    dispatch({
+      type: SET_SEARCH_RESULTS,
+      payload: {
+        entries,
+        pageCount,
+        totalResults: total,
+      },
+    })
+  })
 }, 200)
 
 export function setSearchPage(page) {

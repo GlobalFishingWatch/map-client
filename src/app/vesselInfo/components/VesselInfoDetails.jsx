@@ -123,10 +123,22 @@ class VesselInfoDetails extends Component {
 }
 
 VesselInfoDetails.propTypes = {
-  layerFieldsHeaders: PropTypes.array,
-  vesselInfo: PropTypes.object,
-  userPermissions: PropTypes.array,
+  layerFieldsHeaders: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      display: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
+      kind: PropTypes.string,
+      titlePriority: PropTypes.number,
+      prefix: PropTypes.string,
+    })
+  ).isRequired,
+  vesselInfo: PropTypes.object.isRequired,
+  userPermissions: PropTypes.array.isRequired,
   children: PropTypes.node,
+}
+
+VesselInfoDetails.defaultProps = {
+  children: null,
 }
 
 export default VesselInfoDetails

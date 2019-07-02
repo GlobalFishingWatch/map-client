@@ -26,24 +26,24 @@ const mapDispatchToProps = (dispatch) => ({
       })
     )
   },
-  toggle(seriesgroup) {
-    dispatch(togglePinnedVesselVisibility(seriesgroup))
+  toggle(id) {
+    dispatch(togglePinnedVesselVisibility(id))
   },
-  togglePinnedVesselDetails: (seriesgroup, label, tilesetId) => {
-    dispatch(togglePinnedVesselDetails(seriesgroup, label, tilesetId))
+  togglePinnedVesselDetails: (id, label, tilesetId) => {
+    dispatch(togglePinnedVesselDetails(id, label, tilesetId))
   },
-  delete: (seriesgroup) => {
-    dispatch(toggleVesselPin(seriesgroup))
+  delete: (id) => {
+    dispatch(toggleVesselPin(id))
   },
-  setColor(seriesgroup, color) {
-    dispatch(setPinnedVesselColor(seriesgroup, color))
+  setColor(id, color) {
+    dispatch(setPinnedVesselColor(id, color))
   },
-  targetVessel: (seriesgroup) => {
-    const timelineBounds = targetMapVessel(seriesgroup)
+  targetVessel: (id) => {
+    const timelineBounds = targetMapVessel(id)
     dispatch(fitTimelineToTrack(timelineBounds))
   },
-  highlightTrack: (seriesgroup) => {
-    dispatch(highlightTrack(seriesgroup))
+  highlightTrack: (id) => {
+    dispatch(highlightTrack(id))
   },
 })
 

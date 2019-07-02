@@ -32,13 +32,24 @@ class VesselInfoPanel extends Component {
   render() {
     const { vesselInfo, status, warningLiteral } = this.props
 
-    if (status !== INFO_STATUS.LOADING && vesselInfo === null) {
+    if (status !== INFO_STATUS.LOADING && status !== INFO_STATUS.ERROR && vesselInfo === null) {
       return null
     }
 
     let vesselInfoContents = null
 
-    if (status === INFO_STATUS.LOADING) {
+    if (status === INFO_STATUS.ERROR) {
+      vesselInfoContents = (
+        <div className={infoPanelStyles.metadata}>
+          <div>
+            <span aria-label="error" role="img">
+              🚫
+            </span>{' '}
+            There was an error loading this vessel's information.
+          </div>
+        </div>
+      )
+    } else if (status === INFO_STATUS.LOADING) {
       vesselInfoContents = (
         <div className={infoPanelStyles.metadata}>
           <div>Loading vessel information...</div>
@@ -87,7 +98,7 @@ class VesselInfoPanel extends Component {
                 vesselInfo.pinned) && (
                 <div
                   onClick={() => {
-                    this.props.onTogglePin(vesselInfo.seriesgroup)
+                    this.props.onTogglePin(vesselInfo.id)
                   }}
                 >
                   <IconButton icon="pin" activated={vesselInfo.pinned} />

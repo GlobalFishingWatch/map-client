@@ -7,7 +7,6 @@ import {
   HEADERLESS_LAYERS,
   TEMPORAL_EXTENTLESS,
   CUSTOM_LAYERS_SUBTYPES,
-  ENCOUNTERS_AIS,
 } from 'app/constants'
 import { SET_OVERALL_TIMELINE_DATES } from 'app/filters/filtersActions'
 import { refreshFlagFiltersLayers } from 'app/filters/filterGroupsActions'
@@ -27,7 +26,7 @@ export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE'
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
-function loadLayerHeader(tilesetUrl, token) {
+function loadLayerHeader(headerUrl, token) {
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -37,8 +36,6 @@ function loadLayerHeader(tilesetUrl, token) {
     headers.Authorization = `Bearer ${token}`
   }
 
-  const headerUrl = `${tilesetUrl}/header`
-
   return new Promise((resolve) => {
     fetch(headerUrl, {
       method: 'GET',
@@ -46,7 +43,7 @@ function loadLayerHeader(tilesetUrl, token) {
     })
       .then((res) => {
         if (res.status >= 400) {
-          console.warn(`loading of layer failed ${tilesetUrl}`)
+          console.warn(`loading of layer header failed ${headerUrl}`)
           Promise.reject()
           return null
         }
@@ -116,15 +113,6 @@ export function initLayers(workspaceLayers, libraryLayers) {
     }
 
     workspaceLayers.forEach((layer) => {
-      // while encounters layers have a different type than heatmap in workspaces,
-      // they are treated the same way by the front-end, except on map interaction (see heatmap actions)
-      if (layer.type === LAYER_TYPES.Encounters) {
-        layer.type = LAYER_TYPES.Heatmap
-        layer.subtype = LAYER_TYPES.Encounters
-      } else if (layer.type === LAYER_TYPES.Heatmap) {
-        layer.subtype = LAYER_TYPES.Heatmap
-      }
-
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url })
         console.warn(
@@ -182,18 +170,20 @@ export function initLayers(workspaceLayers, libraryLayers) {
     workspaceLayers
       .filter(
         (l) =>
-          (l.id === ENCOUNTERS_AIS || LAYER_TYPES_WITH_HEADER.includes(l.type)) && l.added === true
+          (l.headerUrl !== undefined || LAYER_TYPES_WITH_HEADER.includes(l.type)) &&
+          l.added === true
       )
-      .forEach((heatmapLayer) => {
-        if (HEADERLESS_LAYERS.includes(heatmapLayer.tilesetId)) {
+      .forEach((layer) => {
+        if (HEADERLESS_LAYERS.includes(layer.tilesetId)) {
           // headerless layers are considered temporalExtents-less too
-          heatmapLayer.header = {
+          layer.header = {
             temporalExtentsLess: true,
             temporalExtents: TEMPORAL_EXTENTLESS,
             colsByName: [],
           }
         } else {
-          const headerPromise = loadLayerHeader(heatmapLayer.url, state.user.token)
+          const headerUrl = layer.headerUrl || `${layer.url}/header`
+          const headerPromise = loadLayerHeader(headerUrl, state.user.token)
           headerPromise.then((header) => {
             if (header !== null) {
               if (header.temporalExtents === undefined || header.temporalExtents === null) {
@@ -201,7 +191,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
                 header.temporalExtentsLess = true
               }
 
-              heatmapLayer.header = header
+              layer.header = header
               dispatch(setGlobalFiltersFromHeader(header))
             }
           })

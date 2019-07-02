@@ -9,7 +9,7 @@ import VesselStyles from 'app/vessels/components/Vessel.module.scss'
 
 class Fleet extends Component {
   renderFleetVessel(fleetVessel) {
-    return <div key={fleetVessel.seriesgroup}>{fleetVessel.title}</div>
+    return <div key={fleetVessel.id}>{fleetVessel.title}</div>
   }
 
   render() {
@@ -18,12 +18,7 @@ class Fleet extends Component {
       fleet.visible === false ? null : (
         <div className={FleetStyles.vessels}>
           {fleet.fleetVessels.map((fleetVessel) => (
-            <Vessel
-              vessel={fleetVessel}
-              key={fleetVessel.seriesgroup}
-              editable={false}
-              tall={false}
-            />
+            <Vessel vessel={fleetVessel} key={fleetVessel.id} editable={false} tall={false} />
           ))}
         </div>
       )

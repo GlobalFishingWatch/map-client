@@ -63,9 +63,9 @@ class FleetsModal extends Component {
     return pinnedVessels.map((vessel, i) => {
       const belongsToOtherFleet = fleets
         .filter((f) => f.id !== fleet.id)
-        .map((f) => f.vessels.indexOf(vessel.seriesgroup) > -1)
+        .map((f) => f.vessels.indexOf(vessel.id) > -1)
         .some((f) => f === true)
-      const belongsToThatFleet = fleet.vessels.indexOf(vessel.seriesgroup) > -1
+      const belongsToThatFleet = fleet.vessels.indexOf(vessel.id) > -1
 
       return (
         <li
@@ -74,11 +74,11 @@ class FleetsModal extends Component {
         >
           <Checkbox
             classNames="-spaced"
-            key={vessel.seriesgroup}
-            id={`fleetedit-${vessel.seriesgroup}`}
+            key={vessel.id}
+            id={`fleetedit-${vessel.id}`}
             label={vessel.title}
             labelClassNames={ModalStyles.itemTitle}
-            callback={() => this.props.onVesselChecked(vessel.seriesgroup)}
+            callback={() => this.props.onVesselChecked(vessel.id)}
             checked={belongsToThatFleet}
             disabled={belongsToOtherFleet}
           />

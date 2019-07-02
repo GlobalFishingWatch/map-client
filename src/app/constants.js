@@ -20,8 +20,6 @@ export const LAYER_TYPES = {
 
 export const LAYER_TYPES_WITH_HEADER = [LAYER_TYPES.Heatmap, LAYER_TYPES.HeatmapTracksOnly]
 
-export const LAYER_TYPES_SEARCHABLE = [LAYER_TYPES.Heatmap, LAYER_TYPES.HeatmapTracksOnly]
-
 export const LAYER_TYPES_DISPLAYED_IN_PANELS = [
   LAYER_TYPES.Static,
   // FIXME deprecate this in workspace layers ?
@@ -65,6 +63,7 @@ export const INFO_STATUS = {
   HIDDEN: 1,
   LOADING: 2,
   LOADED: 3,
+  ERROR: 4,
 }
 
 export const VESSEL_TYPE_VESSEL = 'vessel'

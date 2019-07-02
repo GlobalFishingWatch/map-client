@@ -28,7 +28,7 @@
 }
 
 .quickSearchResult {
-  color: rgba($color-34, 0.4);
+  color: rgba($color-4, 0.7);
   padding: 14px 11px;
 }
 
@@ -59,6 +59,7 @@
 
   .mainResultLabel {
     font-weight: $font-weight-bold;
+    text-transform: uppercase;
   }
 
   .subResultLabel {

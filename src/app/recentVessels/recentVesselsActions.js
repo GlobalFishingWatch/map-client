@@ -2,7 +2,7 @@ export const SET_RECENT_VESSEL_HISTORY = 'SET_RECENT_VESSEL_HISTORY'
 export const LOAD_RECENT_VESSEL_LIST = 'LOAD_RECENT_VESSEL_LIST'
 export const SET_RECENT_VESSELS_VISIBILITY = 'SET_RECENT_VESSELS_VISIBILITY'
 
-export function addVesselToRecentVesselList(seriesgroup, label, tilesetId) {
+export function addVesselToRecentVesselList(id, label, tilesetId) {
   return (dispatch, getState) => {
     const state = getState()
     if (state.user.loggedUser == null) {
@@ -11,7 +11,7 @@ export function addVesselToRecentVesselList(seriesgroup, label, tilesetId) {
     dispatch({
       type: SET_RECENT_VESSEL_HISTORY,
       payload: {
-        seriesgroup,
+        id,
         label,
         tilesetId,
       },
