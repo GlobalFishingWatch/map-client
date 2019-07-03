@@ -11,33 +11,13 @@ class Rulers extends Component {
   }
 
   render() {
-    const {
-      numRulers,
-      visible,
-      editing,
-      toggle,
-      toggleVisibility,
-      toggleEditing,
-      reset,
-    } = this.props
+    const { numRulers, editing, toggle, reset } = this.props
     return (
       <ul className={RulersStyles.container}>
-        <li className={cx(RulersStyles.main, { [RulersStyles._active]: visible || editing })}>
+        <li className={cx(RulersStyles.main, { [RulersStyles._active]: editing })}>
           <button onClick={() => toggle()}>:{numRulers}</button>
         </li>
-        <li
-          className={cx({ [RulersStyles._active]: visible })}
-          style={{ transform: `translateX(-100%)` }}
-        >
-          <button onClick={() => toggleVisibility()}>v</button>
-        </li>
-        <li
-          className={cx({ [RulersStyles._active]: editing })}
-          style={{ transform: `translateX(-200%)` }}
-        >
-          <button onClick={() => toggleEditing()}>e</button>
-        </li>
-        <li style={{ transform: `translateX(-300%)` }}>
+        <li style={{ transform: `translateX(-100%)` }}>
           <button onClick={() => reset()}>d</button>
         </li>
       </ul>
@@ -47,11 +27,8 @@ class Rulers extends Component {
 
 Rulers.propTypes = {
   numRulers: PropTypes.number.isRequired,
-  visible: PropTypes.bool.isRequired,
   editing: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  toggleVisibility: PropTypes.func.isRequired,
-  toggleEditing: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
 }
 

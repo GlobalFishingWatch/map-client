@@ -1,35 +1,16 @@
-import {
-  EDIT_RULER,
-  MOVE_CURRENT_RULER,
-  TOGGLE,
-  TOGGLE_VISIBILITY,
-  TOGGLE_EDITING,
-  RESET,
-} from './rulersActions'
+import { EDIT_RULER, MOVE_CURRENT_RULER, TOGGLE, RESET } from './rulersActions'
 
 const initialState = {
-  visible: true,
-  editing: true,
+  visible: false,
+  editing: false,
   drawing: false,
-  rulers: [
-    {
-      isNew: true,
-      start: {
-        longitude: -75.5859375,
-        latitude: -55.77657301866769,
-      },
-      end: {
-        longitude: -78.3984375,
-        latitude: -47.5172006978394,
-      },
-    },
-  ],
+  rulers: [],
 }
 
 const rulersReducer = (state = initialState, action) => {
   switch (action.type) {
     case EDIT_RULER: {
-      if (state.editing === false || state.visible === false) {
+      if (state.editing === false) {
         return state
       }
       if (state.drawing === true) {
@@ -37,7 +18,7 @@ const rulersReducer = (state = initialState, action) => {
         const updatedRuler = { ...state.rulers[lastRulerIndex] }
         updatedRuler.isNew = false
         const updatedRulers = [...state.rulers.slice(0, -1), updatedRuler]
-        return { ...state, drawing: false, rulers: updatedRulers }
+        return { ...state, drawing: false, visible: true, rulers: updatedRulers }
       }
       const newRuler = {
         start: {
@@ -51,11 +32,11 @@ const rulersReducer = (state = initialState, action) => {
         isNew: true,
       }
       const newRulers = [...state.rulers, newRuler]
-      return { ...state, rulers: newRulers, drawing: true }
+      return { ...state, rulers: newRulers, drawing: true, visible: true }
     }
 
     case MOVE_CURRENT_RULER: {
-      if (state.drawing === false || state.editing === false || state.visible === false) {
+      if (state.drawing === false || state.editing === false) {
         return state
       }
       const lastRulerIndex = state.rulers.length - 1
@@ -67,33 +48,16 @@ const rulersReducer = (state = initialState, action) => {
     }
 
     case TOGGLE: {
-      const toggledOn = state.editing || state.visible
-
-      return {
-        ...state,
-        editing: !toggledOn,
-        visible: !toggledOn,
-      }
-    }
-
-    case TOGGLE_VISIBILITY: {
-      return {
-        ...state,
-        visible: !state.visible,
-      }
-    }
-
-    case TOGGLE_EDITING: {
       return {
         ...state,
         editing: !state.editing,
-        visible: state.editing === false ? true : state.editing,
       }
     }
 
     case RESET: {
       return {
         ...state,
+        visible: false,
         rulers: [],
       }
     }

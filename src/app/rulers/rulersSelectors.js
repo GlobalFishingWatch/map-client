@@ -33,10 +33,6 @@ const makeRulerGeometry = (ruler) => {
 export const getRulersLayer = createSelector(
   [getRulers, getRulersVisibility],
   (rulers, rulersVisibility) => {
-    if (!rulers.length) {
-      return null
-    }
-
     const geojson = {
       type: 'FeatureCollection',
       features: rulers.map(makeRulerGeometry),
