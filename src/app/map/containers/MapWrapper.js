@@ -6,7 +6,7 @@ import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfo
 import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
 import { moveCurrentRuler, editRuler } from 'app/rulers/rulersActions'
-import { getRulersLayer } from 'app/rulers/rulersSelectors'
+import { getRulersLayers } from 'app/rulers/rulersSelectors'
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL, ENCOUNTERS_AIS } from 'app/constants'
 import MapWrapper from 'app/map/components/MapWrapper'
 
@@ -19,6 +19,7 @@ const getBasemap = (state) => state.basemap
 const getWorkspaceZoom = (state) => state.workspace.viewport.zoom
 const getWorkspaceCenter = (state) => state.workspace.viewport.center
 const getReport = (state) => state.report
+const getRulersEditing = (state) => state.rulers.editing
 
 const getViewport = createSelector(
   [getWorkspaceZoom, getWorkspaceCenter],
@@ -101,8 +102,8 @@ const getHeatmapLayers = createSelector(
 )
 
 const getStaticLayers = createSelector(
-  [getLayers, getReport, getRulersLayer],
-  (layers, report, rulerLayer) => {
+  [getLayers, getReport, getRulersLayers],
+  (layers, report, rulerLayers) => {
     const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
@@ -136,7 +137,9 @@ const getStaticLayers = createSelector(
         return layerParams
       })
 
-    staticLayers.push(rulerLayer)
+    const { rulersLayer, rulersPointsLayer } = rulerLayers
+    staticLayers.push(rulersLayer)
+    staticLayers.push(rulersPointsLayer)
 
     return staticLayers
   }
@@ -162,6 +165,16 @@ const getLayersTitles = createSelector(
       titles[layer.id] = layer.title
     })
     return titles
+  }
+)
+
+const getCursor = createSelector(
+  [getRulersEditing],
+  (rulersEditing) => {
+    if (rulersEditing) {
+      return 'crosshair'
+    }
+    return null
   }
 )
 
@@ -193,7 +206,8 @@ const mapStateToProps = (state) => ({
   layerTitles: getLayersTitles(state),
   report: state.report,
   isCluster,
-  rulersEditing: state.rulers.editing,
+  rulersEditing: getRulersEditing(state),
+  cursor: getCursor(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

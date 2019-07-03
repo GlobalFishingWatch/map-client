@@ -30,21 +30,56 @@ const makeRulerGeometry = (ruler) => {
   return finalFeature
 }
 
-export const getRulersLayer = createSelector(
+const makeRulerPointsGeometry = (ruler) => {
+  const { start, end, isNew } = ruler
+  return [
+    {
+      type: 'Feature',
+      properties: {
+        isNew,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [start.longitude, start.latitude],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: [end.longitude, end.latitude],
+      },
+    },
+  ]
+}
+
+export const getRulersLayers = createSelector(
   [getRulers, getRulersVisibility],
   (rulers, rulersVisibility) => {
-    const geojson = {
-      type: 'FeatureCollection',
-      features: rulers.map(makeRulerGeometry),
-    }
-
     const rulersLayer = {
       id: 'rulers',
       visible: rulersVisibility,
       interactive: false,
       color: '#ffaa00',
-      data: geojson,
+      data: {
+        type: 'FeatureCollection',
+        features: rulers.map(makeRulerGeometry),
+      },
     }
-    return rulersLayer
+
+    const rulersPointsLayer = {
+      id: 'rulers-points',
+      visible: rulersVisibility,
+      interactive: false,
+      color: '#ffaa00',
+      data: {
+        type: 'FeatureCollection',
+        features: rulers.reduce((acc, currentValue) => {
+          return acc.concat(makeRulerPointsGeometry(currentValue))
+        }, []),
+      },
+    }
+    return { rulersLayer, rulersPointsLayer }
   }
 )

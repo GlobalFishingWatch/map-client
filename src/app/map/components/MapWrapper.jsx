@@ -97,6 +97,7 @@ class MapWrapper extends Component {
       highlightTemporalExtent,
       isCluster,
       rulersEditing,
+      cursor,
     } = this.props
 
     const { hoverPopupData, clickPopupData } = this.state
@@ -108,7 +109,6 @@ class MapWrapper extends Component {
 
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
-
     return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule
@@ -133,6 +133,7 @@ class MapWrapper extends Component {
           temporalExtent={temporalExtent}
           loadTemporalExtent={loadTemporalExtent}
           highlightTemporalExtent={highlightTemporalExtent}
+          cursor={cursor}
         />
       </Suspense>
     )
@@ -163,6 +164,7 @@ MapWrapper.propTypes = {
   layerTitles: PropTypes.object,
   toggleCurrentReportPolygon: PropTypes.func,
   rulersEditing: PropTypes.bool,
+  cursor: PropTypes.string,
 }
 
 export default MapWrapper
