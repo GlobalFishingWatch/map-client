@@ -12,7 +12,6 @@ $height: 44px;
 .container li {
   transition: transform 0.3s linear;
   transform: translateX(-100%);
-  opacity: 0.5;
 }
 
 .main {
@@ -24,10 +23,21 @@ $height: 44px;
   transform: translateX(0) !important;
 }
 
-.container li._active {
-  color: red;
-  text-decoration: underline;
-  opacity: 1;
+.container li._disabled {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.num {
+  position: absolute;
+  font-size: $font-size-xxs-small;
+  top: 20px;
+  left: 23px;
+  text-shadow:
+  -1px -1px 0 $color-19,  
+   1px -1px 0 $color-19,
+   -1px 1px 0 $color-19,
+    1px 1px 0 $color-19;
 }
 
 .container button {
