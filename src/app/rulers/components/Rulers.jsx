@@ -17,7 +17,7 @@ class Rulers extends Component {
       <ul className={RulersStyles.container}>
         <li className={cx(RulersStyles.main, { [RulersStyles._active]: editing })}>
           <button onClick={() => toggle()}>
-            <Icon icon="ruler" activated={editing} />
+            <Icon icon="ruler" activated />
             {numRulers > 0 && <div className={RulersStyles.num}>{numRulers}</div>}
           </button>
         </li>

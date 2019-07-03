@@ -28,16 +28,22 @@ $height: 44px;
   pointer-events: none;
 }
 
+.container li._active button {
+  background: white;
+  color: $color-19;
+}
+
+.container li._active svg path {
+  stroke: $color-19;
+  stroke-width: 1px;
+}
+
 .num {
   position: absolute;
   font-size: $font-size-xxs-small;
   top: 20px;
   left: 23px;
-  text-shadow:
-  -1px -1px 0 $color-19,  
-   1px -1px 0 $color-19,
-   -1px 1px 0 $color-19,
-    1px 1px 0 $color-19;
+  text-shadow: -2px -2px 0 $color-4, 2px -2px 0 $color-4, -2px 2px 0 $color-4, 2px 2px 0 $color-4;
 }
 
 .container button {
