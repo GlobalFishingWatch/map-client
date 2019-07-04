@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import ZoomControls from 'app/mapPanels/leftControlPanel/components/ZoomControls'
 import LanguageSelector from 'app/components/Shared/LanguageSelector'
 import Loader from 'app/mapPanels/leftControlPanel/containers/Loader'
+import Rulers from 'app/rulers/containers/Rulers'
 import LeftControlPanelStyles from 'app/mapPanels/leftControlPanel/components/leftControlPanel.module.scss'
 
 class LeftControlPanel extends Component {
@@ -37,6 +38,7 @@ class LeftControlPanel extends Component {
           changeZoomLevel={this.changeZoomLevel}
         />
         <LanguageSelector />
+        <Rulers />
         <div
           className={classnames(LeftControlPanelStyles.mapLoader, {
             [LeftControlPanelStyles._isEmbedded]: isEmbedded,

@@ -1,8 +1,10 @@
 import React, { Component, Suspense } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
+import PopupStyles from 'styles/components/map/popup.module.scss'
 
 const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
 
@@ -31,7 +33,12 @@ class MapWrapper extends Component {
   }
 
   onClick = (event) => {
-    this.props.onMapClick(event)
+    const { rulersEditing } = this.props
+    this.props.onMapClick(event, rulersEditing)
+
+    if (rulersEditing === true) {
+      return
+    }
 
     const clickPopupData =
       event.count === 1 && event.feature.layer.group === 'static' ? event : null
@@ -47,15 +54,23 @@ class MapWrapper extends Component {
     if (hoverPopupData === null) {
       return null
     }
+    const { rulersEditing } = this.props
+    if (rulersEditing === true) {
+      return (
+        <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
+          Click to add a ruler
+        </div>
+      )
+    }
     const { layerTitles } = this.props
     return <HoverPopup event={hoverPopupData} layerTitles={layerTitles} />
   }
 
   onHover = (event) => {
-    const hoverPopupData = event.count !== 0 ? event : null
     this.props.onMapHover(event)
+    // const hoverPopupData = event.count !== 0 ? event : null
     this.setState({
-      hoverPopupData,
+      hoverPopupData: event,
     })
   }
 
@@ -81,15 +96,19 @@ class MapWrapper extends Component {
       loadTemporalExtent,
       highlightTemporalExtent,
       isCluster,
+      rulersEditing,
+      cursor,
     } = this.props
 
     const { hoverPopupData, clickPopupData } = this.state
 
     const hoverPopup =
-      hoverPopupData === null ? null : { ...hoverPopupData, content: this.renderHoverPopup() }
+      hoverPopupData === null || (hoverPopupData.count === 0 && rulersEditing === false)
+        ? null
+        : { ...hoverPopupData, content: this.renderHoverPopup() }
+
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
-
     return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule
@@ -114,6 +133,7 @@ class MapWrapper extends Component {
           temporalExtent={temporalExtent}
           loadTemporalExtent={loadTemporalExtent}
           highlightTemporalExtent={highlightTemporalExtent}
+          cursor={cursor}
         />
       </Suspense>
     )
@@ -143,6 +163,8 @@ MapWrapper.propTypes = {
   report: PropTypes.object,
   layerTitles: PropTypes.object,
   toggleCurrentReportPolygon: PropTypes.func,
+  rulersEditing: PropTypes.bool,
+  cursor: PropTypes.string,
 }
 
 export default MapWrapper
