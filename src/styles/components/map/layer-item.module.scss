@@ -22,6 +22,16 @@
   color: $color-4;
   position: absolute;
   left: 25px;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+
+  @media #{$mq-tablet} {
+    line-height: 20px;
+    font-size: $font-size-xxs-small;
+  }
+}
+
+.itemNameLabelEdit {
   pointer-events: none;
 }
 
