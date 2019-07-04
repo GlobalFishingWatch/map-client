@@ -34,7 +34,7 @@ $height: 44px;
 }
 
 .container li._active svg path {
-  stroke: $color-19;
+  fill: $color-19 !important;
   stroke-width: 1px;
 }
 
@@ -43,6 +43,14 @@ $height: 44px;
   font-size: $font-size-xxs-small;
   top: 20px;
   left: 23px;
+  text-shadow:
+    -1px -1px 0 $color-19,
+ 1px -1px 0 $color-19,
+ -1px 1px 0 $color-19,
+    1px 1px 0 $color-19;
+}
+
+.container li._active .num {
   text-shadow: -2px -2px 0 $color-4, 2px -2px 0 $color-4, -2px 2px 0 $color-4, 2px 2px 0 $color-4;
 }
 

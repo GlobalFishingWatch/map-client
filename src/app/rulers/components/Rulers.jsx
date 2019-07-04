@@ -6,11 +6,6 @@ import Icon from 'app/components/Shared/Icon'
 import RulersStyles from './rulers.module.scss'
 
 class Rulers extends Component {
-  state = {
-    languages: null,
-    currentLng: null,
-  }
-
   render() {
     const { numRulers, editing, toggle, reset } = this.props
     return (

@@ -1,4 +1,9 @@
-import { EDIT_RULER, MOVE_CURRENT_RULER, TOGGLE, RESET } from './rulersActions'
+import {
+  EDIT_RULER,
+  MOVE_CURRENT_RULER,
+  TOGGLE_RULERS_EDITING,
+  RESET_RULERS,
+} from './rulersActions'
 
 const initialState = {
   visible: false,
@@ -36,7 +41,7 @@ const rulersReducer = (state = initialState, action) => {
     }
 
     case MOVE_CURRENT_RULER: {
-      if (state.drawing === false || state.editing === false) {
+      if (state.drawing === false || state.editing === false || state.rulers.length === 0) {
         return state
       }
       const lastRulerIndex = state.rulers.length - 1
@@ -47,17 +52,18 @@ const rulersReducer = (state = initialState, action) => {
       return { ...state, rulers: newRulers }
     }
 
-    case TOGGLE: {
+    case TOGGLE_RULERS_EDITING: {
       return {
         ...state,
         editing: !state.editing,
       }
     }
 
-    case RESET: {
+    case RESET_RULERS: {
       return {
         ...state,
         visible: false,
+        drawing: false,
         rulers: [],
       }
     }
