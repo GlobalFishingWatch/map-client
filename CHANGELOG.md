@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.1.0
+
+- Added the Measurement Fixes
+- Support for PBF tiles removing the PixieJs renderer.
+- Performance Improvements.
+- Improvements to support Bablic translation.
+
 ## 4.0.2
 
 Fix google translator plugin crash
