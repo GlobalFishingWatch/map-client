@@ -10,18 +10,30 @@ class SearchResult extends Component {
   }
 
   renderLine(searchTerm, lineText) {
-    const searchTermWords = searchTerm.toUpperCase().split(' ')
-    const lineTextWords = lineText.split(' ')
+    const fragments = lineText.split(new RegExp(searchTerm, 'gi'))
+    const allFragments = []
+    fragments.forEach((fragment, i) => {
+      if (fragment !== '') {
+        allFragments.push(fragment)
+      }
+      if (fragment === '' && i < fragments.length - 1) {
+        allFragments.push(searchTerm)
+      }
+      if (fragment !== '' && i < fragments.length - 1) {
+        allFragments.push(searchTerm)
+      }
+    })
+
     return (
       <span className={ResultListStyles.mainResultLabel}>
-        {lineTextWords.map((lineWord, i) => (
+        {allFragments.map((fragment, i) => (
           <span
             key={`res${i}`}
             className={classnames({
-              [ResultListStyles.highlight]: searchTermWords.indexOf(lineWord) > -1,
+              [ResultListStyles.highlight]: fragment === searchTerm,
             })}
           >
-            {lineWord}{' '}
+            {fragment}
           </span>
         ))}
       </span>
@@ -29,33 +41,34 @@ class SearchResult extends Component {
   }
 
   render() {
-    const title = this.props.vesselInfo.title
+    const { vesselInfo, searchTerm, className } = this.props
+    const title = vesselInfo.title
     const MMSI =
-      this.props.vesselInfo.mmsi === undefined ||
-      (this.props.vesselInfo.mmsi !== undefined && this.props.vesselInfo.mmsi === title)
+      vesselInfo.mmsi === undefined || (vesselInfo.mmsi !== undefined && vesselInfo.mmsi === title)
         ? ''
-        : this.props.vesselInfo.mmsi
+        : vesselInfo.mmsi
 
     return (
       <li
-        className={this.props.className}
+        className={className}
         onClick={(event) => {
           this.onDrawVessel(event)
         }}
       >
-        {this.renderLine(this.props.searchTerm, title)}
-        {MMSI && this.renderLine(this.props.searchTerm, MMSI)}
+        {this.renderLine(searchTerm, title)}
+        From layer: {vesselInfo.layerTitle}
+        {MMSI && this.renderLine(searchTerm, MMSI)}
       </li>
     )
   }
 }
 
 SearchResult.propTypes = {
-  className: PropTypes.string,
-  closeSearch: PropTypes.func,
-  drawVessel: PropTypes.func,
-  searchTerm: PropTypes.string,
-  vesselInfo: PropTypes.object,
+  className: PropTypes.string.isRequired,
+  closeSearch: PropTypes.func.isRequired,
+  drawVessel: PropTypes.func.isRequired,
+  searchTerm: PropTypes.string.isRequired,
+  vesselInfo: PropTypes.object.isRequired,
 }
 
 export default SearchResult

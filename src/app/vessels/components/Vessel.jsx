@@ -23,9 +23,9 @@ class Vessel extends Component {
   onTintChange = (color) => {
     const { vessel } = this.props
     if (!vessel.visible) {
-      this.props.toggle(vessel.seriesgroup)
+      this.props.toggle(vessel.id)
     }
-    this.props.setColor(vessel.seriesgroup, color)
+    this.props.setColor(vessel.id, color)
   }
 
   render() {
@@ -43,14 +43,14 @@ class Vessel extends Component {
     const detailsCurrentlyShown =
       currentlyShownVessel !== null &&
       currentlyShownVessel !== undefined &&
-      currentlyShownVessel.seriesgroup === vessel.seriesgroup
+      currentlyShownVessel.id === vessel.id
 
     const tooltip = this.props.vessel.title.length > 15 ? vessel.title : null
 
     return (
       <div>
         <div
-          onMouseEnter={() => highlightTrack(vessel.seriesgroup)}
+          onMouseEnter={() => highlightTrack(vessel.id)}
           onMouseLeave={() => highlightTrack(null)}
           className={classnames(VesselStyles.vessel, {
             [VesselStyles._tall]: isTall,
@@ -62,13 +62,13 @@ class Vessel extends Component {
               <Toggle
                 on={vessel.visible}
                 color={vessel.color}
-                onToggled={() => this.props.toggle(vessel.seriesgroup)}
+                onToggled={() => this.props.toggle(vessel.id)}
               />
             )}
           </div>
           <div
             className={VesselStyles.title}
-            onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}
+            onClick={() => this.props.togglePinnedVesselDetails(vessel.id)}
             data-tip={tooltip}
             data-place="left"
             data-class={TooltipStyles.tooltip}
@@ -81,11 +81,11 @@ class Vessel extends Component {
             </div>
           )}
           {isEditable && (
-            <div onClick={() => this.props.delete(vessel.seriesgroup)}>
+            <div onClick={() => this.props.delete(vessel.id)}>
               <IconButton icon="unpin" />
             </div>
           )}
-          <div onClick={() => this.props.targetVessel(vessel.seriesgroup)}>
+          <div onClick={() => this.props.targetVessel(vessel.id)}>
             <IconButton icon="target" /* disabled={vessel.track === undefined} */ />
           </div>
           {isEditable && (
@@ -95,7 +95,7 @@ class Vessel extends Component {
               </ExpandableIconButton>
             </div>
           )}
-          <div onClick={() => this.props.togglePinnedVesselDetails(vessel.seriesgroup)}>
+          <div onClick={() => this.props.togglePinnedVesselDetails(vessel.id)}>
             <IconButton icon="info" activated={detailsCurrentlyShown} />
           </div>
         </div>
@@ -103,7 +103,7 @@ class Vessel extends Component {
           <ColorPicker
             color={vessel.color}
             onTintChange={this.onTintChange}
-            id={vessel.seriesgroup.toString()}
+            id={vessel.id.toString()}
             extendedPalette
           />
         </ExpandItem>

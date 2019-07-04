@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(
       addVessel({
         tilesetId: vesselDetails.tilesetId,
-        seriesgroup: vesselDetails.seriesgroup,
+        id: vesselDetails.id,
         fromSearch: true,
       })
     )

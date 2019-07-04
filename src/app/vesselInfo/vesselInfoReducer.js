@@ -7,6 +7,7 @@ import {
   ADD_VESSEL,
   LOAD_PINNED_VESSEL,
   SHOW_VESSEL_DETAILS,
+  SET_VESSEL_ERROR,
   CLEAR_VESSEL_INFO,
   HIDE_VESSELS_INFO_PANEL,
   TOGGLE_VESSEL_PIN,
@@ -32,8 +33,7 @@ export default function(state = initialState, action) {
       if (
         find(
           state.vessels,
-          (l) =>
-            l.seriesgroup === action.payload.seriesgroup && l.tilesetId === action.payload.tilesetId
+          (l) => l.id === action.payload.id && l.tilesetId === action.payload.tilesetId
         )
       ) {
         return state
@@ -42,7 +42,7 @@ export default function(state = initialState, action) {
       const color = PALETTE_COLORS[state.currentPaletteIndex].color
 
       const newVessel = {
-        seriesgroup: action.payload.seriesgroup,
+        id: action.payload.id,
         tilesetId: action.payload.tilesetId,
         parentEncounter: action.payload.parentEncounter,
         comment: action.payload.comment,
@@ -59,9 +59,7 @@ export default function(state = initialState, action) {
 
     case SET_VESSEL_DETAILS: {
       const vesselData = action.payload.vesselData
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === vesselData.seriesgroup
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const currentVessel = state.vessels[vesselIndex]
 
       const defaultTitle = getVesselName(vesselData, action.payload.layer.header.info.fields)
@@ -85,11 +83,16 @@ export default function(state = initialState, action) {
       })
     }
 
+    case SET_VESSEL_ERROR: {
+      return {
+        ...state,
+        infoPanelStatus: INFO_STATUS.ERROR,
+      }
+    }
+
     case LOAD_PINNED_VESSEL: {
       const vesselIndex = state.vessels.findIndex(
-        (vessel) =>
-          vessel.seriesgroup === action.payload.seriesgroup &&
-          vessel.tilesetId === action.payload.tilesetId
+        (vessel) => vessel.id === action.payload.id && vessel.tilesetId === action.payload.tilesetId
       )
       if (vesselIndex > -1) {
         const newVessel = Object.assign(state.vessels[vesselIndex], {
@@ -100,7 +103,7 @@ export default function(state = initialState, action) {
 
         let currentlyShownVessel = state.currentlyShownVessel
         if (
-          newVessel.seriesgroup === currentlyShownVessel.seriesgroup &&
+          newVessel.id === currentlyShownVessel.id &&
           newVessel.tilesetId === currentlyShownVessel.tilesetId
         ) {
           currentlyShownVessel = Object.assign({}, currentlyShownVessel)
@@ -134,9 +137,7 @@ export default function(state = initialState, action) {
     }
 
     case SHOW_VESSEL_DETAILS: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === action.payload.seriesgroup
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const currentlyShownVessel = Object.assign({}, state.vessels[vesselIndex])
       currentlyShownVessel.shownInInfoPanel = true
       // currentlyShownVessel.hasTrack = currentlyShownVessel.track !== undefined;
@@ -201,7 +202,7 @@ export default function(state = initialState, action) {
       let currentlyShownVessel = state.currentlyShownVessel
       if (
         state.currentlyShownVessel &&
-        newVessel.seriesgroup === state.currentlyShownVessel.seriesgroup &&
+        newVessel.id === state.currentlyShownVessel.id &&
         newVessel.tilesetId === state.currentlyShownVessel.tilesetId
       ) {
         currentlyShownVessel = Object.assign({}, state.currentlyShownVessel)
@@ -230,9 +231,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_COLOR: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === action.payload.seriesgroup
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.color = action.payload.color
 
@@ -245,9 +244,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_TRACK_VISIBILITY: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === action.payload.seriesgroup
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.visible = action.payload.visible
 
@@ -260,9 +257,7 @@ export default function(state = initialState, action) {
       })
     }
     case SET_PINNED_VESSEL_TITLE: {
-      const vesselIndex = state.vessels.findIndex(
-        (vessel) => vessel.seriesgroup === action.payload.seriesgroup
-      )
+      const vesselIndex = state.vessels.findIndex((vessel) => vessel.id === action.payload.id)
       const newVessel = Object.assign({}, state.vessels[vesselIndex])
       newVessel.title = action.payload.title
 

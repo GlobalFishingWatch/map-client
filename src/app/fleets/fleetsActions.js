@@ -54,9 +54,7 @@ export const discardCurrentEdits = () => (dispatch) => {
 }
 
 const getDefaultTitle = (fleetVessels, allVessels) =>
-  fleetVessels
-    .map((seriesgroup) => allVessels.find((v) => v.seriesgroup === seriesgroup).title)
-    .join(', ')
+  fleetVessels.map((id) => allVessels.find((v) => v.id === id).title).join(', ')
 
 const updateCurrentlyEditedDefaultTitle = () => (dispatch, getState) => {
   const vessels = getState().vesselInfo.vessels
@@ -79,16 +77,16 @@ export const createFleet = () => (dispatch, getState) => {
     allVesselsInFleets = allVesselsInFleets.concat(f.vessels)
   })
 
-  const defaultVessels = vessels.filter((v) => allVesselsInFleets.indexOf(v.seriesgroup) === -1)
-  const defaultVesselsSeriesgroups = defaultVessels.map((v) => v.seriesgroup)
+  const defaultVessels = vessels.filter((v) => allVesselsInFleets.indexOf(v.id) === -1)
+  const defaultVesselsIds = defaultVessels.map((v) => v.id)
 
-  const defaultTitle = getDefaultTitle(defaultVesselsSeriesgroups, vessels)
+  const defaultTitle = getDefaultTitle(defaultVesselsIds, vessels)
   const defaultColor = defaultVessels[0].color
 
   dispatch({
     type: CREATE_FLEET,
     payload: {
-      defaultVessels: defaultVesselsSeriesgroups,
+      defaultVessels: defaultVesselsIds,
       defaultTitle,
       defaultColor,
     },
@@ -105,10 +103,10 @@ export const startEditingFleet = (id) => (dispatch) => {
   dispatch(setFleetsModalVisibility(true))
 }
 
-export const toggleVesselInCurrentlyEditedFleet = (seriesgroup) => (dispatch) => {
+export const toggleVesselInCurrentlyEditedFleet = (id) => (dispatch) => {
   dispatch({
     type: TOGGLE_VESSEL_IN_CURRENTLY_EDITED_FLEET,
-    payload: seriesgroup,
+    payload: id,
   })
   dispatch(updateCurrentlyEditedDefaultTitle())
 }

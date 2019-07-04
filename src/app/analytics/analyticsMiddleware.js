@@ -119,14 +119,14 @@ const GA_ACTION_WHITELIST = [
       return actionLabel
     },
     getPayload: (action) =>
-      `${action.payload.tilesetId}:${action.payload.seriesgroup}:${action.payload.vesselname}`,
+      `${action.payload.tilesetId}:${action.payload.id}:${action.payload.vesselname}`,
   },
   {
     type: GA_VESSEL_POINT_CLICKED,
     category: 'Map Interaction',
     action: 'Loaded a vessel data',
     getPayload: (action) =>
-      `${action.payload.name}:${action.payload.tilesetId}:${action.payload.seriesgroup}`,
+      `${action.payload.name}:${action.payload.tilesetId}:${action.payload.id}`,
   },
   {
     type: GA_MAP_POINT_CLICKED,

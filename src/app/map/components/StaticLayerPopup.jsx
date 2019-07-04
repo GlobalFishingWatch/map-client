@@ -10,21 +10,19 @@ const humanizePopupFieldId = (id) =>
     .replace('_', ' ')
     .replace(/\b\w/g, (l) => l.toUpperCase())
 
-const getPopupData = (workspaceLayers, report, event) => {
-  const layerId = event.layer.id
-  const staticLayer = workspaceLayers.find((l) => l.id === layerId)
+const getPopupData = (report, event) => {
+  const feature = event.feature
+  const layerId = feature.layer.id
 
   const layerIsInReport = report.layerId === layerId
 
   const polygonIsInReport =
     layerIsInReport === true &&
-    report.polygons.find(
-      (polygon) => polygon.reportingId === event.target.properties.reporting_id
-    ) !== undefined
+    report.polygons.find((polygon) => polygon.reportingId === feature.properties.reporting_id) !==
+      undefined
 
   return {
-    layerTitle: staticLayer.title,
-    fields: event.target.fields,
+    fields: feature.fields,
     layerIsInReport,
     polygonIsInReport,
   }
@@ -32,8 +30,8 @@ const getPopupData = (workspaceLayers, report, event) => {
 
 class StaticLayerPopup extends React.Component {
   render() {
-    const { workspaceLayers, report, event, toggleCurrentReportPolygon } = this.props
-    const popup = getPopupData(workspaceLayers, report, event)
+    const { layerTitle, report, event, toggleCurrentReportPolygon } = this.props
+    const popup = getPopupData(report, event)
     const toggleButtonText =
       popup.polygonIsInReport === true ? 'remove from report' : 'add to report'
     let toggleButtonClassName = classnames(PopupStyles.toggle)
@@ -42,11 +40,11 @@ class StaticLayerPopup extends React.Component {
     }
     return (
       <div className={PopupStyles.popup}>
-        <div className={PopupStyles.title}>{popup.layerTitle}</div>
+        <div className={PopupStyles.title}>{layerTitle}</div>
         <div className={PopupStyles.description}>
           {popup.fields.map((field) => (
             <div key={field.title}>
-              <b>{humanizePopupFieldId(field.title)}</b>{' '}
+              <b>{humanizePopupFieldId(field.label)}</b>{' '}
               {field.isLink === true ? (
                 <a href={field.value}>Click here for more details</a>
               ) : (
@@ -71,10 +69,10 @@ class StaticLayerPopup extends React.Component {
 }
 
 StaticLayerPopup.propTypes = {
-  event: PropTypes.object,
-  workspaceLayers: PropTypes.array,
-  report: PropTypes.object,
-  toggleCurrentReportPolygon: PropTypes.func,
+  event: PropTypes.object.isRequired,
+  layerTitle: PropTypes.string.isRequired,
+  report: PropTypes.object.isRequired,
+  toggleCurrentReportPolygon: PropTypes.func.isRequired,
 }
 
 export default StaticLayerPopup

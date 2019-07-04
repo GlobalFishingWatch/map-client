@@ -20,6 +20,7 @@ import { ReactComponent as Pin } from 'assets/icons/pin.svg'
 import { ReactComponent as Unpin } from 'assets/icons/unpin.svg'
 import { ReactComponent as Share } from 'assets/icons/share.svg'
 import { ReactComponent as Close } from 'assets/icons/close.svg'
+import { ReactComponent as Ruler } from 'assets/icons/ruler.svg'
 
 class Icon extends Component {
   render() {
@@ -83,6 +84,9 @@ class Icon extends Component {
       case 'close':
         iconElement = <Close className={classnames(classNames, IconStyles.close)} />
         break
+      case 'ruler':
+        iconElement = <Ruler className={classnames(classNames, IconStyles.ruler)} />
+        break
       default:
         console.warn('that icon does not exist', icon)
         iconElement = null
@@ -93,8 +97,12 @@ class Icon extends Component {
 }
 
 Icon.propTypes = {
-  icon: PropTypes.string,
+  icon: PropTypes.string.isRequired,
   activated: PropTypes.bool,
+}
+
+Icon.defaultProps = {
+  activated: false,
 }
 
 export default Icon

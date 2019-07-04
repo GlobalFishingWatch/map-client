@@ -1,4 +1,3 @@
-import { LAYER_TYPES_WITH_HEADER } from 'app/constants'
 import { resetNotification, setNotification } from 'app/notifications/notificationsActions'
 import { trackSearchResultClicked, trackVesselPointClicked } from 'app/analytics/analyticsActions'
 import { addVesselToRecentVesselList } from 'app/recentVessels/recentVesselsActions'
@@ -8,10 +7,12 @@ import fetchEndpoint from 'app/utils/fetchEndpoint'
 import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
 import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
+import { startLoading, completeLoading } from 'app/app/appActions'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
 export const SHOW_VESSEL_DETAILS = 'SHOW_VESSEL_DETAILS'
+export const SET_VESSEL_ERROR = 'SET_VESSEL_ERROR'
 export const CLEAR_VESSEL_INFO = 'CLEAR_VESSEL_INFO'
 export const HIDE_VESSELS_INFO_PANEL = 'HIDE_VESSELS_INFO_PANEL'
 export const TOGGLE_VESSEL_PIN = 'TOGGLE_VESSEL_PIN'
@@ -22,100 +23,121 @@ export const TOGGLE_PINNED_VESSEL_EDIT_MODE = 'TOGGLE_PINNED_VESSEL_EDIT_MODE'
 export const SET_PINNED_VESSEL_TRACK_VISIBILITY = 'SET_PINNED_VESSEL_TRACK_VISIBILITY'
 export const HIGHLIGHT_TRACK = 'HIGHLIGHT_TRACK'
 
-function showVesselDetails(tilesetId, seriesgroup) {
+const getVesselId = (vessel, layerId, layers) => {
+  const layer = layers.find((l) => l.id === layerId)
+  const header = layer.header
+  const idFieldKey = header.info.id === undefined ? 'seriesgroup' : header.info.id
+  const id = vessel[idFieldKey]
+  if (id === undefined) {
+    console.warn('Cant lookup feature of layer', layer.id, ':')
+    console.warn('Identifier field', idFieldKey, 'cant be found on the selected feature')
+    console.warn('Header setting identifier field to', header.info.id, '(fallback to seriesgroup)')
+    return null
+  }
+  return id
+}
+
+function showVesselDetails(tilesetId, id) {
   return {
     type: SHOW_VESSEL_DETAILS,
     payload: {
-      seriesgroup,
+      id,
       tilesetId,
     },
   }
 }
 
-function setCurrentVessel(tilesetId, seriesgroup, fromSearch) {
+function setCurrentVessel(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
     const token = state.user.token
     const layer = state.layers.workspaceLayers.find(
-      (l) => LAYER_TYPES_WITH_HEADER.indexOf(l.type) > -1 && l.tilesetId === tilesetId
+      (l) => l.header !== undefined && (l.tilesetId === tilesetId || l.id === tilesetId)
     )
 
+    if (layer === undefined) {
+      console.warn('Unable to select feature - cant find layer', tilesetId)
+    }
+
     const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, {
-      id: seriesgroup,
+      id,
     })
-    fetchEndpoint(vesselInfoUrl, token).then((data) => {
-      if (data !== null) {
-        delete data.series
-        data.tilesetId = tilesetId
+    dispatch(startLoading())
+    fetchEndpoint(vesselInfoUrl, token)
+      .then((data) => {
+        dispatch(completeLoading())
+        if (data !== null) {
+          delete data.series
+          data.tilesetId = tilesetId
 
-        dispatch({
-          type: SET_VESSEL_DETAILS,
-          payload: {
-            vesselData: data,
-            layer,
-          },
-        })
-        dispatch(showVesselDetails(tilesetId, seriesgroup))
-        dispatch(toggleMapPanels(true))
+          dispatch({
+            type: SET_VESSEL_DETAILS,
+            payload: {
+              id,
+              vesselData: data,
+              layer,
+            },
+          })
+          dispatch(showVesselDetails(tilesetId, id))
+          dispatch(toggleMapPanels(true))
 
-        if (fromSearch) {
-          dispatch(trackSearchResultClicked(tilesetId, seriesgroup))
-        } else {
-          dispatch(trackVesselPointClicked(tilesetId, seriesgroup))
-        }
-        dispatch(
-          addVesselToRecentVesselList(
-            data.seriesgroup,
-            getVesselName(data, layer.header.info.fields),
-            tilesetId
-          )
-        )
-
-        if (data.comment) {
           dispatch(
-            setNotification({
-              content: data.comment,
-              type: 'warning',
-              visible: true,
-            })
+            addVesselToRecentVesselList(
+              id,
+              getVesselName(data, layer.header.info.fields),
+              tilesetId
+            )
           )
+
+          if (data.comment) {
+            dispatch(
+              setNotification({
+                content: data.comment,
+                type: 'warning',
+                visible: true,
+              })
+            )
+          }
         }
-      }
-    })
+      })
+      .catch((e) => {
+        dispatch(completeLoading())
+        dispatch({
+          type: SET_VESSEL_ERROR,
+        })
+      })
   }
 }
 
-export function setPinnedVesselColor(seriesgroup, color) {
+export function setPinnedVesselColor(id, color) {
   return {
     type: SET_PINNED_VESSEL_COLOR,
     payload: {
-      seriesgroup,
+      id,
       color,
     },
   }
 }
 
-export function setPinnedVesselTitle(seriesgroup, title) {
+export function setPinnedVesselTitle(id, title) {
   return {
     type: SET_PINNED_VESSEL_TITLE,
     payload: {
-      seriesgroup,
+      id,
       title,
     },
   }
 }
 
-export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
+export function togglePinnedVesselVisibility(id, forceStatus = null) {
   return (dispatch, getState) => {
-    const currentVessel = getState().vesselInfo.vessels.find(
-      (vessel) => vessel.seriesgroup === seriesgroup
-    )
+    const currentVessel = getState().vesselInfo.vessels.find((vessel) => vessel.id === id)
     if (currentVessel) {
       const visible = forceStatus !== null ? forceStatus : !currentVessel.visible
       dispatch({
         type: SET_PINNED_VESSEL_TRACK_VISIBILITY,
         payload: {
-          seriesgroup,
+          id,
           visible,
         },
       })
@@ -123,17 +145,17 @@ export function togglePinnedVesselVisibility(seriesgroup, forceStatus = null) {
   }
 }
 
-const applyFleetOverridesForVessel = (seriesgroup, fleet) => (dispatch) => {
-  dispatch(togglePinnedVesselVisibility(seriesgroup, fleet.visible))
-  dispatch(setPinnedVesselColor(seriesgroup, fleet.color))
+const applyFleetOverridesForVessel = (id, fleet) => (dispatch) => {
+  dispatch(togglePinnedVesselVisibility(id, fleet.visible))
+  dispatch(setPinnedVesselColor(id, fleet.color))
 }
 
 export const applyFleetOverrides = () => (dispatch, getState) => {
   const fleets = getState().fleets.fleets
-  const currentVesselsSeriesgroups = getState().vesselInfo.vessels.map((v) => v.seriesgroup)
+  const currentVesselsIds = getState().vesselInfo.vessels.map((v) => v.id)
   fleets.forEach((fleet) => {
     fleet.vessels.forEach((fleetVessel) => {
-      if (currentVesselsSeriesgroups.indexOf(fleetVessel) > -1) {
+      if (currentVesselsIds.indexOf(fleetVessel) > -1) {
         dispatch(applyFleetOverridesForVessel(fleetVessel, fleet))
       }
     })
@@ -146,7 +168,10 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
     const { token } = state.user
 
     pinnedVessels.forEach((pinnedVessel) => {
-      const layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
+      let layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
+      if (!layer) {
+        layer = state.layers.workspaceLayers.find((l) => l.id === pinnedVessel.tilesetId)
+      }
       if (layer === undefined) {
         console.warn(
           'Trying to load a pinned vessel but the layer seems to be absent on the workspace',
@@ -156,7 +181,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
       }
 
       const pinnedVesselUrl = buildEndpoint(layer.header.endpoints.info, {
-        id: pinnedVessel.seriesgroup,
+        id: pinnedVessel.id,
       })
       fetchEndpoint(pinnedVesselUrl, token).then((data) => {
         if (data !== null) {
@@ -167,32 +192,31 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
           })
 
           const fleets = getState().fleets.fleets
-          const parentFleet = fleets.find((f) => f.vessels.indexOf(pinnedVessel.seriesgroup) > -1)
+          const parentFleet = fleets.find((f) => f.vessels.indexOf(pinnedVessel.id) > -1)
           if (parentFleet) {
-            dispatch(applyFleetOverridesForVessel(pinnedVessel.seriesgroup, parentFleet))
+            dispatch(applyFleetOverridesForVessel(pinnedVessel.id, parentFleet))
           } else {
-            dispatch(
-              togglePinnedVesselVisibility(pinnedVessel.seriesgroup, pinnedVessel.visible === true)
-            )
+            dispatch(togglePinnedVesselVisibility(pinnedVessel.id, pinnedVessel.visible === true))
           }
 
           dispatch(
             addVesselToRecentVesselList(
-              pinnedVessel.seriesgroup,
+              pinnedVessel.id,
               getVesselName(pinnedVessel, layer.header.info.fields),
               pinnedVessel.tilesetId
             )
           )
 
-          if (shownVessel !== null && shownVessel.seriesgroup === pinnedVessel.seriesgroup) {
+          if (shownVessel !== null && shownVessel.id === pinnedVessel.id) {
             dispatch({
               type: SET_VESSEL_DETAILS,
               payload: {
+                id: pinnedVessel.id,
                 vesselData: data,
                 layer,
               },
             })
-            dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.seriesgroup))
+            dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.id))
           }
         }
       })
@@ -206,13 +230,13 @@ export function hideVesselsInfoPanel() {
   }
 }
 
-export function addVessel({ tilesetId, seriesgroup, fromSearch = false, parentEncounter = null }) {
+export function addVessel({ tilesetId, id, parentEncounter = null }) {
   return (dispatch, getState) => {
     const state = getState()
     dispatch({
       type: ADD_VESSEL,
       payload: {
-        seriesgroup,
+        id,
         tilesetId,
         parentEncounter,
       },
@@ -221,24 +245,56 @@ export function addVessel({ tilesetId, seriesgroup, fromSearch = false, parentEn
       state.user.userPermissions !== null &&
       state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1
     ) {
-      dispatch(setCurrentVessel(tilesetId, seriesgroup, fromSearch))
+      dispatch(setCurrentVessel(tilesetId, id))
     } else {
       dispatch(hideVesselsInfoPanel())
     }
   }
 }
 
-export function addVesselFromEncounter(tilesetId, seriesgroup) {
+export const addVesselFromHeatmap = (feature) => (dispatch, getState) => {
+  const layer = getState().layers.workspaceLayers.find((l) => l.id === feature.layer.id)
+  const id = getVesselId(
+    feature.properties,
+    feature.layer.id,
+    getState().layers.workspaceLayers
+  ).toString()
+
+  dispatch(
+    addVessel({
+      tilesetId: layer.tilesetId || layer.id,
+      id,
+    })
+  )
+
+  dispatch(trackVesselPointClicked(layer.id, id))
+}
+
+export const addVesselFromSearch = (vessel) => (dispatch, getState) => {
+  const layer = getState().layers.workspaceLayers.find((l) => l.tilesetId === vessel.tilesetId)
+  const id = getVesselId(vessel, layer.id, getState().layers.workspaceLayers).toString()
+
+  dispatch(
+    addVessel({
+      tilesetId: layer.tilesetId,
+      id,
+    })
+  )
+
+  dispatch(trackSearchResultClicked(layer.id, id))
+}
+
+export function addVesselFromEncounter(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
     const parentEncounter = {
-      seriesgroup: state.encounters.seriesgroup,
+      id: state.encounters.id,
       tilesetId: state.encounters.tilesetId,
     }
     dispatch(
       addVessel({
         tilesetId,
-        seriesgroup,
+        id: id.toString(),
         parentEncounter,
       })
     )
@@ -254,10 +310,8 @@ export function clearVesselInfo() {
   }
 }
 
-function _getPinAction(state, seriesgroup) {
-  const vesselIndex = state.vesselInfo.vessels.findIndex(
-    (vessel) => vessel.seriesgroup === seriesgroup
-  )
+function _getPinAction(state, id) {
+  const vesselIndex = state.vesselInfo.vessels.findIndex((vessel) => vessel.id === id)
   const vessel = state.vesselInfo.vessels[vesselIndex]
   const pinned = !vessel.pinned
 
@@ -273,22 +327,22 @@ function _getPinAction(state, seriesgroup) {
       vesselIndex,
       pinned,
       visible,
-      seriesgroup: vessel.seriesgroup,
+      id: vessel.id,
       vesselname: vessel.vesselname,
       tilesetId: vessel.layerId,
     },
   }
 }
 
-export function toggleActiveVesselPin(seriesgroup) {
+export function toggleActiveVesselPin(id) {
   return (dispatch, getState) => {
-    dispatch(_getPinAction(getState(), seriesgroup))
+    dispatch(_getPinAction(getState(), id))
   }
 }
 
-export function toggleVesselPin(seriesgroup) {
+export function toggleVesselPin(id) {
   return (dispatch, getState) => {
-    dispatch(_getPinAction(getState(), seriesgroup))
+    dispatch(_getPinAction(getState(), id))
   }
 }
 
@@ -301,30 +355,30 @@ export function togglePinnedVesselEditMode(forceMode = null) {
   }
 }
 
-export function togglePinnedVesselDetails(seriesgroup, label, tilesetId) {
+export function togglePinnedVesselDetails(id, label, tilesetId) {
   return (dispatch, getState) => {
     const hide =
       getState().vesselInfo.currentlyShownVessel &&
-      getState().vesselInfo.currentlyShownVessel.seriesgroup === seriesgroup
+      getState().vesselInfo.currentlyShownVessel.id === id
 
     if (hide === true) {
       dispatch(clearVesselInfo())
     } else {
-      dispatch(addVesselToRecentVesselList(seriesgroup, label, tilesetId))
-      dispatch(togglePinnedVesselVisibility(seriesgroup, true))
-      dispatch(showVesselDetails(tilesetId, seriesgroup))
+      dispatch(addVesselToRecentVesselList(id, label, tilesetId))
+      dispatch(togglePinnedVesselVisibility(id, true))
+      dispatch(showVesselDetails(tilesetId, id))
     }
   }
 }
 
 export const targetCurrentlyShownVessel = () => (dispatch, getState) => {
   const currentVessel = getState().vesselInfo.currentlyShownVessel
-  const seriesgroup = currentVessel.seriesgroup
-  const timelineBounds = targetMapVessel(seriesgroup)
+  const id = currentVessel.id
+  const timelineBounds = targetMapVessel(id)
   dispatch(fitTimelineToTrack(timelineBounds))
 }
 
-export const highlightTrack = (seriesgroup) => ({
+export const highlightTrack = (id) => ({
   type: HIGHLIGHT_TRACK,
-  payload: seriesgroup,
+  payload: id,
 })

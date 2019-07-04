@@ -2,10 +2,11 @@ import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { updateWorkspace, updateMouseLatLon } from 'app/workspace/workspaceActions'
 import { startLoading, completeLoading } from 'app/app/appActions'
-import { clearVesselInfo, addVessel } from 'app/vesselInfo/vesselInfoActions'
+import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfoActions'
 import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
-import { trackMapClicked } from 'app/analytics/analyticsActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
+import { moveCurrentRuler, editRuler } from 'app/rulers/rulersActions'
+import { getRulersLayers } from 'app/rulers/rulersSelectors'
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL, ENCOUNTERS_AIS } from 'app/constants'
 import MapWrapper from 'app/map/components/MapWrapper'
 
@@ -18,6 +19,7 @@ const getBasemap = (state) => state.basemap
 const getWorkspaceZoom = (state) => state.workspace.viewport.zoom
 const getWorkspaceCenter = (state) => state.workspace.viewport.center
 const getReport = (state) => state.report
+const getRulersEditing = (state) => state.rulers.editing
 
 const getViewport = createSelector(
   [getWorkspaceZoom, getWorkspaceCenter],
@@ -29,14 +31,25 @@ const getViewport = createSelector(
   }
 )
 
-const getTrackFromLayers = (layers, tilesetId) => {
-  const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId)
+const getAllowInteraction = createSelector(
+  [getReport, getRulersEditing],
+  (report, rulersEditing) => {
+    if (report.layerId === null && rulersEditing === false) {
+      return true
+    }
+    return false
+  }
+)
+
+const getTrackFromLayers = (layers, tilesetId, vesselId) => {
+  const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId || layer.id === tilesetId)
 
   const header = trackLayer.header
 
   return {
     layerTemporalExtents: header.temporalExtents,
-    url: header.endpoints.tracks,
+    url: header.endpoints.tracks.replace('{{id}}', vesselId),
+    type: header.trackFormat || 'pelagos',
   }
 }
 
@@ -47,22 +60,22 @@ const getAllVesselsForTracks = createSelector(
 
     vessels.forEach((vessel) => {
       if (vessel.visible === true || vessel.shownInInfoPanel === true) {
-        const seriesgroup = vessel.seriesgroup
+        const id = vessel.id
         const color =
-          highlightedTrack !== null && highlightedTrack === seriesgroup ? '#ffffff' : vessel.color
+          highlightedTrack !== null && highlightedTrack === id ? '#ffffff' : vessel.color
         tracks.push({
-          id: seriesgroup.toString(),
           color,
-          ...getTrackFromLayers(layers, vessel.tilesetId),
+          ...getTrackFromLayers(layers, vessel.tilesetId, id),
+          id,
         })
       }
     })
 
     if (encounter !== null && encounter !== undefined) {
       const encountersTracks = encounter.vessels.map((encounterVessel) => ({
-        id: encounterVessel.seriesgroup.toString(),
+        id: encounterVessel.id,
         color: encounterVessel.color,
-        ...getTrackFromLayers(layers, encounterVessel.tilesetId),
+        ...getTrackFromLayers(layers, encounterVessel.tilesetId, encounterVessel.id),
       }))
       tracks = [...tracks, ...encountersTracks]
     }
@@ -72,26 +85,23 @@ const getAllVesselsForTracks = createSelector(
 )
 
 const getHeatmapLayers = createSelector(
-  [getLayers, getLayerFilters, getReport],
-  (layers, layerFilters, report) => {
-    // for now interactive is set for all heatmap layers
-    // (ie disable all layers if report is triggered)
-    const interactive = report.layerId === null
+  [getLayers, getLayerFilters, getAllowInteraction],
+  (layers, layerFilters, allowInteraction) => {
     const heatmapLayers = layers
       .filter((layer) => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
       .map((layer) => {
         const filters = layerFilters[layer.id] || []
         const layerParams = {
           id: layer.id,
-          subtype: layer.subtype,
           tilesetId: layer.tilesetId,
           header: layer.header,
           hue: layer.hue,
           opacity: layer.opacity,
           visible: layer.visible,
           filters,
-          // toggle interaction off whenever a report is active
-          interactive,
+          // for now interactive is set for all heatmap layers
+          // (ie disable all layers if report or rulers are triggered)
+          interactive: allowInteraction,
         }
         return layerParams
       })
@@ -100,8 +110,8 @@ const getHeatmapLayers = createSelector(
 )
 
 const getStaticLayers = createSelector(
-  [getLayers, getReport],
-  (layers, report) => {
+  [getLayers, getReport, getRulersLayers, getAllowInteraction],
+  (layers, report, rulerLayers, allowInteraction) => {
     const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
@@ -123,7 +133,7 @@ const getStaticLayers = createSelector(
           opacity: layer.opacity,
           color: layer.color,
           showLabels: layer.showLabels,
-          interactive: report.layerId === null ? true : report.layerId === layer.id,
+          interactive: allowInteraction ? true : report.layerId === layer.id,
           // -- needed for custom layers
           isCustom: layer.isCustom,
           subtype: layer.subtype,
@@ -134,6 +144,11 @@ const getStaticLayers = createSelector(
         }
         return layerParams
       })
+
+    const { rulersLayer, rulersPointsLayer } = rulerLayers
+    staticLayers.push(rulersLayer)
+    staticLayers.push(rulersPointsLayer)
+
     return staticLayers
   }
 )
@@ -150,6 +165,39 @@ const getBasemapLayers = createSelector(
     })
 )
 
+const getLayersTitles = createSelector(
+  [getLayers],
+  (layers) => {
+    const titles = {}
+    layers.forEach((layer) => {
+      titles[layer.id] = layer.title
+    })
+    return titles
+  }
+)
+
+const getCursor = createSelector(
+  [getRulersEditing],
+  (rulersEditing) => {
+    if (rulersEditing) {
+      return 'crosshair'
+    }
+    return null
+  }
+)
+
+const getPriorityFeatures = (event) =>
+  event.features.filter((f) => ['legacyHeatmap', 'temporal'].includes(f.layer.group))
+
+const isCluster = (event) => {
+  // always give priority to "interesting" layers
+  const priorityFeatures = getPriorityFeatures(event)
+  if (priorityFeatures.length === 1 && priorityFeatures[0].isCluster === false) {
+    return false
+  }
+  return event.isCluster === true
+}
+
 const mapStateToProps = (state) => ({
   // attributions: state.mapStyle.attributions, TODO MAP MODULE
   // Forwarded to Map Module
@@ -163,8 +211,11 @@ const mapStateToProps = (state) => ({
   loadTemporalExtent: state.filters.timelineOuterExtent,
   highlightTemporalExtent: state.filters.timelineOverExtent,
   // Internal
-  workspaceLayers: state.layers.workspaceLayers,
+  layerTitles: getLayersTitles(state),
   report: state.report,
+  isCluster,
+  rulersEditing: getRulersEditing(state),
+  cursor: getCursor(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -188,40 +239,53 @@ const mapDispatchToProps = (dispatch) => ({
         longitude: event.longitude,
       })
     )
+
+    dispatch(
+      moveCurrentRuler({
+        latitude: event.latitude,
+        longitude: event.longitude,
+      })
+    )
   },
-  onMapClick: (event) => {
+  onMapClick: (event, rulersEditing) => {
     dispatch(clearVesselInfo())
     dispatch(clearEncountersInfo())
     dispatch(setCurrentSelectedPolygon(null))
-    if (event.type === 'activity') {
-      const target = event.target
-      if (target.isCluster === true) {
-        dispatch(trackMapClicked(event.latitude, event.longitude, 'cluster'))
-      } else if (event.layer.subtype === LAYER_TYPES.Encounters) {
-        dispatch(
-          setEncountersInfo(
-            event.target.series,
-            event.layer.tilesetId,
-            event.layer.header.endpoints.info
-          )
-        )
-      } else {
-        const header = event.layer.header
-        const idFieldKey = header.info.id === undefined ? 'seriesgroup' : header.info.id
-        const targetID = event.target[idFieldKey]
-        dispatch(
-          addVessel({
-            tilesetId: event.layer.tilesetId,
-            seriesgroup: targetID,
-          })
-        )
+
+    if (rulersEditing === true) {
+      dispatch(
+        editRuler({
+          latitude: event.latitude,
+          longitude: event.longitude,
+        })
+      )
+      return
+    }
+
+    if (event.count === 0) return // all cleared, now GTFO
+    if (event.isCluster === true) return // let map module zoom in and bail
+
+    const priorityFeatures = getPriorityFeatures(event)
+    const feature = priorityFeatures.length === 1 ? priorityFeatures[0] : event.feature
+    switch (feature.layer.group) {
+      case 'static': {
+        dispatch(setCurrentSelectedPolygon(feature.properties))
+        break
       }
-    } else if (event.type === 'static') {
-      if (event.layer.id === ENCOUNTERS_AIS) {
-        dispatch(setEncountersInfo(event.target.properties.id, ENCOUNTERS_AIS))
-      } else {
-        dispatch(setCurrentSelectedPolygon(event.target.properties))
+      case 'legacyHeatmap': {
+        dispatch(addVesselFromHeatmap(feature))
+        break
       }
+      case 'temporal': {
+        if (feature.layer.id === ENCOUNTERS_AIS) {
+          dispatch(setEncountersInfo(feature.properties.id, ENCOUNTERS_AIS))
+        } else {
+          dispatch(addVesselFromHeatmap(feature))
+        }
+        break
+      }
+      default:
+        break
     }
   },
   toggleCurrentReportPolygon: () => {

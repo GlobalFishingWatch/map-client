@@ -77,6 +77,12 @@ class LayerItem extends Component {
     this.setState({ expand: value })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.layerPanelEditMode && !this.props.layerPanelEditMode) {
+      this.props.setLayerLabel(this.props.layer.id, this.nameLabel.textContent)
+    }
+  }
+
   render() {
     const { id, hue, color, reportId, visible, opacity, showLabels } = this.props.layer
     const { layerPanelEditMode } = this.props
@@ -134,7 +140,11 @@ class LayerItem extends Component {
       <div className={ListItemStyles.listItemContainer}>
         <ReactTooltip />
         <li className={classnames(ListItemStyles.listItem, ListItemStyles._fixed)}>
-          <div className={LayerItemStyles.layerItemHeader}>
+          <div
+            className={classnames(LayerItemStyles.layerItemHeader, {
+              [LayerItemStyles.itemRename]: this.props.layerPanelEditMode,
+            })}
+          >
             <Toggle
               on={visible}
               color={color}
@@ -145,16 +155,21 @@ class LayerItem extends Component {
               data-tip={tooltip}
               data-place="left"
               data-class={TooltipStyles.tooltip}
-              className={classnames(LayerItemStyles.itemName, {
-                [LayerItemStyles.itemRename]: this.props.layerPanelEditMode,
-              })}
+              className={LayerItemStyles.itemNameInput}
               onChange={(e) => this.onChangeLayerLabel(e.currentTarget.value)}
               readOnly={!this.props.layerPanelEditMode}
               value={this.props.layer.label}
-              ref={(elem) => {
-                this.inputName = elem
-              }}
             />
+            <label
+              className={classnames(LayerItemStyles.itemNameLabel, {
+                [LayerItemStyles.itemNameLabelEdit]: this.props.layerPanelEditMode,
+              })}
+              ref={(elem) => {
+                this.nameLabel = elem
+              }}
+            >
+              {this.props.layer.label}
+            </label>
           </div>
           {actions}
         </li>

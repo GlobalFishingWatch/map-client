@@ -1,9 +1,10 @@
 import React, { Component, Suspense } from 'react'
 import PropTypes from 'prop-types'
+import classnames from 'classnames'
 import StaticLayerPopup from 'app/map/components/StaticLayerPopup'
 import HoverPopup from 'app/map/components/HoverPopup'
 import Loader from 'app/mapPanels/leftControlPanel/components/Loader'
-import { ENCOUNTERS_AIS } from 'app/constants'
+import PopupStyles from 'styles/components/map/popup.module.scss'
 
 const MapModule = React.lazy(() => import('@globalfishingwatch/map-components/components/map'))
 
@@ -19,21 +20,28 @@ class MapWrapper extends Component {
       return null
     }
 
-    const { report, workspaceLayers, toggleCurrentReportPolygon } = this.props
+    const { report, layerTitles, toggleCurrentReportPolygon } = this.props
+    const layerTitle = layerTitles[clickPopupData.feature.layer.id]
     return (
       <StaticLayerPopup
         event={clickPopupData}
         report={report}
-        workspaceLayers={workspaceLayers}
+        layerTitle={layerTitle}
         toggleCurrentReportPolygon={toggleCurrentReportPolygon}
       />
     )
   }
 
   onClick = (event) => {
-    this.props.onMapClick(event)
+    const { rulersEditing } = this.props
+    this.props.onMapClick(event, rulersEditing)
+
+    if (rulersEditing === true) {
+      return
+    }
+
     const clickPopupData =
-      event.type === 'static' && event.layer.id !== ENCOUNTERS_AIS ? event : null
+      event.count === 1 && event.feature.layer.group === 'static' ? event : null
 
     this.setState({
       clickPopupData,
@@ -43,25 +51,26 @@ class MapWrapper extends Component {
 
   renderHoverPopup = () => {
     const { hoverPopupData } = this.state
-    if (hoverPopupData === null || hoverPopupData.type === null) {
+    if (hoverPopupData === null) {
       return null
     }
-    const { workspaceLayers } = this.props
-    const workspaceLayer = workspaceLayers.find((l) => l.id === hoverPopupData.layer.id)
-    return (
-      <HoverPopup
-        event={hoverPopupData}
-        layerTitle={workspaceLayer.title || workspaceLayer.label}
-      />
-    )
+    const { rulersEditing } = this.props
+    if (rulersEditing === true) {
+      return (
+        <div className={classnames(PopupStyles.popup, PopupStyles._compact)}>
+          Click to add a ruler
+        </div>
+      )
+    }
+    const { layerTitles } = this.props
+    return <HoverPopup event={hoverPopupData} layerTitles={layerTitles} />
   }
 
   onHover = (event) => {
-    const hoverPopupData = event.type !== null ? event : null
-
     this.props.onMapHover(event)
+    // const hoverPopupData = event.count !== 0 ? event : null
     this.setState({
-      hoverPopupData,
+      hoverPopupData: event,
     })
   }
 
@@ -86,20 +95,26 @@ class MapWrapper extends Component {
       temporalExtent,
       loadTemporalExtent,
       highlightTemporalExtent,
+      isCluster,
+      rulersEditing,
+      cursor,
     } = this.props
 
     const { hoverPopupData, clickPopupData } = this.state
 
     const hoverPopup =
-      hoverPopupData === null ? null : { ...hoverPopupData, content: this.renderHoverPopup() }
+      hoverPopupData === null || (hoverPopupData.count === 0 && rulersEditing === false)
+        ? null
+        : { ...hoverPopupData, content: this.renderHoverPopup() }
+
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
-
     return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule
           onHover={this.onHover}
           onClick={this.onClick}
+          isCluster={isCluster}
           onViewportChange={onViewportChange}
           onLoadStart={onLoadStart}
           onLoadComplete={onLoadComplete}
@@ -118,6 +133,7 @@ class MapWrapper extends Component {
           temporalExtent={temporalExtent}
           loadTemporalExtent={loadTemporalExtent}
           highlightTemporalExtent={highlightTemporalExtent}
+          cursor={cursor}
         />
       </Suspense>
     )
@@ -143,9 +159,12 @@ MapWrapper.propTypes = {
   // internal
   onMapHover: PropTypes.func,
   onMapClick: PropTypes.func,
+  isCluster: PropTypes.func,
   report: PropTypes.object,
-  workspaceLayers: PropTypes.array,
+  layerTitles: PropTypes.object,
   toggleCurrentReportPolygon: PropTypes.func,
+  rulersEditing: PropTypes.bool,
+  cursor: PropTypes.string,
 }
 
 export default MapWrapper

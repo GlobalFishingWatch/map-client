@@ -21,8 +21,8 @@ const mapDispatchToProps = (dispatch) => ({
   onBreakApart: () => {
     dispatch(breakApartCurrentlyEditedFleet())
   },
-  onVesselChecked: (seriesgroup) => {
-    dispatch(toggleVesselInCurrentlyEditedFleet(seriesgroup))
+  onVesselChecked: (id) => {
+    dispatch(toggleVesselInCurrentlyEditedFleet(id))
   },
   onTintChange: (color) => {
     dispatch(setCurrentlyEditedFleetColor(color))
