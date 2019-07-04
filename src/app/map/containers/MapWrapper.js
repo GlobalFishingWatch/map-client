@@ -31,6 +31,16 @@ const getViewport = createSelector(
   }
 )
 
+const getAllowInteraction = createSelector(
+  [getReport, getRulersEditing],
+  (report, rulersEditing) => {
+    if (report.layerId === null && rulersEditing === false) {
+      return true
+    }
+    return false
+  }
+)
+
 const getTrackFromLayers = (layers, tilesetId, vesselId) => {
   const trackLayer = layers.find((layer) => layer.tilesetId === tilesetId || layer.id === tilesetId)
 
@@ -75,11 +85,8 @@ const getAllVesselsForTracks = createSelector(
 )
 
 const getHeatmapLayers = createSelector(
-  [getLayers, getLayerFilters, getReport],
-  (layers, layerFilters, report) => {
-    // for now interactive is set for all heatmap layers
-    // (ie disable all layers if report is triggered)
-    const interactive = report.layerId === null
+  [getLayers, getLayerFilters, getAllowInteraction],
+  (layers, layerFilters, allowInteraction) => {
     const heatmapLayers = layers
       .filter((layer) => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
       .map((layer) => {
@@ -92,8 +99,9 @@ const getHeatmapLayers = createSelector(
           opacity: layer.opacity,
           visible: layer.visible,
           filters,
-          // toggle interaction off whenever a report is active
-          interactive,
+          // for now interactive is set for all heatmap layers
+          // (ie disable all layers if report or rulers are triggered)
+          interactive: allowInteraction,
         }
         return layerParams
       })
@@ -102,8 +110,8 @@ const getHeatmapLayers = createSelector(
 )
 
 const getStaticLayers = createSelector(
-  [getLayers, getReport, getRulersLayers],
-  (layers, report, rulerLayers) => {
+  [getLayers, getReport, getRulersLayers, getAllowInteraction],
+  (layers, report, rulerLayers, allowInteraction) => {
     const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
@@ -125,7 +133,7 @@ const getStaticLayers = createSelector(
           opacity: layer.opacity,
           color: layer.color,
           showLabels: layer.showLabels,
-          interactive: report.layerId === null ? true : report.layerId === layer.id,
+          interactive: allowInteraction ? true : report.layerId === layer.id,
           // -- needed for custom layers
           isCustom: layer.isCustom,
           subtype: layer.subtype,
