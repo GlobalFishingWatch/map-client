@@ -20,6 +20,7 @@ import rightControlPanelReducer from 'app/mapPanels/rightControlPanel/rightContr
 import shareReducer from 'app/share/shareReducer'
 import workspaceReducer from 'app/workspace/workspaceReducer'
 import appReducer from 'app/app/appReducer'
+import rulersReducer from 'app/rulers/rulersReducer'
 
 const reducers = {
   supportForm: supportFormReducer,
@@ -44,6 +45,7 @@ const reducers = {
   encounters: encountersReducer,
   app: appReducer,
   workspace: workspaceReducer,
+  rulers: rulersReducer,
 }
 
 export default reducers

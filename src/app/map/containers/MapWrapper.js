@@ -5,6 +5,8 @@ import { startLoading, completeLoading } from 'app/app/appActions'
 import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfoActions'
 import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
+import { moveCurrentRuler, editRuler } from 'app/rulers/rulersActions'
+import { getRulersLayers } from 'app/rulers/rulersSelectors'
 import { LAYER_TYPES, LAYER_TYPES_MAPBOX_GL, ENCOUNTERS_AIS } from 'app/constants'
 import MapWrapper from 'app/map/components/MapWrapper'
 
@@ -17,6 +19,7 @@ const getBasemap = (state) => state.basemap
 const getWorkspaceZoom = (state) => state.workspace.viewport.zoom
 const getWorkspaceCenter = (state) => state.workspace.viewport.center
 const getReport = (state) => state.report
+const getRulersEditing = (state) => state.rulers.editing
 
 const getViewport = createSelector(
   [getWorkspaceZoom, getWorkspaceCenter],
@@ -25,6 +28,16 @@ const getViewport = createSelector(
       return { zoom, center }
     }
     return undefined
+  }
+)
+
+const getAllowInteraction = createSelector(
+  [getReport, getRulersEditing],
+  (report, rulersEditing) => {
+    if (report.layerId === null && rulersEditing === false) {
+      return true
+    }
+    return false
   }
 )
 
@@ -72,11 +85,8 @@ const getAllVesselsForTracks = createSelector(
 )
 
 const getHeatmapLayers = createSelector(
-  [getLayers, getLayerFilters, getReport],
-  (layers, layerFilters, report) => {
-    // for now interactive is set for all heatmap layers
-    // (ie disable all layers if report is triggered)
-    const interactive = report.layerId === null
+  [getLayers, getLayerFilters, getAllowInteraction],
+  (layers, layerFilters, allowInteraction) => {
     const heatmapLayers = layers
       .filter((layer) => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
       .map((layer) => {
@@ -89,8 +99,9 @@ const getHeatmapLayers = createSelector(
           opacity: layer.opacity,
           visible: layer.visible,
           filters,
-          // toggle interaction off whenever a report is active
-          interactive,
+          // for now interactive is set for all heatmap layers
+          // (ie disable all layers if report or rulers are triggered)
+          interactive: allowInteraction,
         }
         return layerParams
       })
@@ -99,8 +110,8 @@ const getHeatmapLayers = createSelector(
 )
 
 const getStaticLayers = createSelector(
-  [getLayers, getReport],
-  (layers, report) => {
+  [getLayers, getReport, getRulersLayers, getAllowInteraction],
+  (layers, report, rulerLayers, allowInteraction) => {
     const staticLayers = layers
       .filter((layer) => LAYER_TYPES_MAPBOX_GL.indexOf(layer.type) > -1)
       .map((layer) => {
@@ -122,7 +133,7 @@ const getStaticLayers = createSelector(
           opacity: layer.opacity,
           color: layer.color,
           showLabels: layer.showLabels,
-          interactive: report.layerId === null ? true : report.layerId === layer.id,
+          interactive: allowInteraction ? true : report.layerId === layer.id,
           // -- needed for custom layers
           isCustom: layer.isCustom,
           subtype: layer.subtype,
@@ -133,6 +144,11 @@ const getStaticLayers = createSelector(
         }
         return layerParams
       })
+
+    const { rulersLayer, rulersPointsLayer } = rulerLayers
+    staticLayers.push(rulersLayer)
+    staticLayers.push(rulersPointsLayer)
+
     return staticLayers
   }
 )
@@ -157,6 +173,16 @@ const getLayersTitles = createSelector(
       titles[layer.id] = layer.title
     })
     return titles
+  }
+)
+
+const getCursor = createSelector(
+  [getRulersEditing],
+  (rulersEditing) => {
+    if (rulersEditing) {
+      return 'crosshair'
+    }
+    return null
   }
 )
 
@@ -188,6 +214,8 @@ const mapStateToProps = (state) => ({
   layerTitles: getLayersTitles(state),
   report: state.report,
   isCluster,
+  rulersEditing: getRulersEditing(state),
+  cursor: getCursor(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -211,11 +239,28 @@ const mapDispatchToProps = (dispatch) => ({
         longitude: event.longitude,
       })
     )
+
+    dispatch(
+      moveCurrentRuler({
+        latitude: event.latitude,
+        longitude: event.longitude,
+      })
+    )
   },
-  onMapClick: (event) => {
+  onMapClick: (event, rulersEditing) => {
     dispatch(clearVesselInfo())
     dispatch(clearEncountersInfo())
     dispatch(setCurrentSelectedPolygon(null))
+
+    if (rulersEditing === true) {
+      dispatch(
+        editRuler({
+          latitude: event.latitude,
+          longitude: event.longitude,
+        })
+      )
+      return
+    }
 
     if (event.count === 0) return // all cleared, now GTFO
     if (event.isCluster === true) return // let map module zoom in and bail

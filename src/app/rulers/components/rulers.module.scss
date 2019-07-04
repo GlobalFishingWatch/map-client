@@ -1,0 +1,72 @@
+@import '../../../styles/settings';
+
+$width: 44px;
+$height: 44px;
+
+.container {
+  display: flex;
+  width: $width;
+  margin-top: 2px;
+}
+
+.container li {
+  transition: transform 0.3s linear;
+  transform: translateX(-100%);
+}
+
+.main {
+  z-index: 1;
+  transform: translateX(0) !important;
+}
+
+.container:hover li {
+  transform: translateX(0) !important;
+}
+
+.container li._disabled {
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.container li._active button {
+  background: white;
+  color: $color-19;
+}
+
+.container li._active svg path {
+  fill: $color-19 !important;
+  stroke-width: 1px;
+}
+
+.num {
+  position: absolute;
+  font-size: $font-size-xxs-small;
+  top: 20px;
+  left: 23px;
+  text-shadow:
+    -1px -1px 0 $color-19,
+ 1px -1px 0 $color-19,
+ -1px 1px 0 $color-19,
+    1px 1px 0 $color-19;
+}
+
+.container li._active .num {
+  text-shadow: -2px -2px 0 $color-4, 2px -2px 0 $color-4, -2px 2px 0 $color-4, 2px 2px 0 $color-4;
+}
+
+.container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-19;
+  color: $color-4;
+  cursor: pointer;
+  width: $width;
+  height: $height;
+  font-family: $font-family-1;
+  font-size: $font-size-normal;
+}
+
+.container button:focus {
+  outline: 0;
+}
