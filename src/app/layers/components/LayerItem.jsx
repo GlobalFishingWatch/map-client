@@ -151,14 +151,6 @@ class LayerItem extends Component {
               hue={hue}
               onToggled={() => this.onChangeVisibility()}
             />
-            <label
-              className={LayerItemStyles.itemNameLabel}
-              ref={(elem) => {
-                this.nameLabel = elem
-              }}
-            >
-              {this.props.layer.label}
-            </label>
             <input
               data-tip={tooltip}
               data-place="left"
@@ -168,6 +160,16 @@ class LayerItem extends Component {
               readOnly={!this.props.layerPanelEditMode}
               value={this.props.layer.label}
             />
+            <label
+              className={classnames(LayerItemStyles.itemNameLabel, {
+                [LayerItemStyles.itemNameLabelEdit]: this.props.layerPanelEditMode,
+              })}
+              ref={(elem) => {
+                this.nameLabel = elem
+              }}
+            >
+              {this.props.layer.label}
+            </label>
           </div>
           {actions}
         </li>
