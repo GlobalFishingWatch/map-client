@@ -72,6 +72,7 @@ export default function(state = initialState, action) {
         currentVessel,
         vesselData
       )
+      newVessel.layerTitle = action.payload.layer.title
 
       return Object.assign({}, state, {
         vessels: [

@@ -193,6 +193,11 @@
     }
   }
 
+  .layer {
+    padding: 0 20px 20px;
+    font-size: $font-size-xxs-small;
+  }
+
   .actionIcons {
     right: 86px;
     display: flex;

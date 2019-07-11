@@ -115,6 +115,9 @@ class VesselInfoPanel extends Component {
               )}
             </div>
           </div>
+          {vesselInfo.layerTitle && (
+            <div className={infoPanelStyles.layer}>From layer: {vesselInfo.layerTitle}</div>
+          )}
           {vesselInfo.parentEncounter !== null && vesselInfo.parentEncounter !== undefined && (
             <button
               className={classnames(infoPanelStyles.backButton)}
