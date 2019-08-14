@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import ControlPanel from 'app/mapPanels/rightControlPanel/containers/ControlPanel'
 import Timebar from 'app/timebar/containers/Timebar'
+import TimebarWrapper from 'app/timebar/containers/TimebarWrapper'
 import ReportPanel from 'app/report/containers/ReportPanel'
 import MapFooter from 'app/siteNav/components/MapFooter'
 import LeftControlPanel from 'app/mapPanels/leftControlPanel/containers/LeftControlPanel'
@@ -62,6 +63,7 @@ class MapDashboard extends Component {
             [MapDashboardStyles._noFooter]: COMPLETE_MAP_RENDER,
           })}
         >
+          <TimebarWrapper />
           <Timebar />
         </div>
         {!COMPLETE_MAP_RENDER && (
