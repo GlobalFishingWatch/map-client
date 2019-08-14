@@ -1,14 +1,10 @@
 import {
-  REWIND_TIMELINE,
   SET_FLAG_FILTERS,
   SET_INNER_TIMELINE_DATES,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
   SET_OUTER_TIMELINE_DATES,
   SET_OVERALL_TIMELINE_DATES,
-  SET_PLAYING_STATUS,
   SET_TIMELINE_HOVER_DATES,
-  SET_SPEED,
-  CHANGE_SPEED,
 } from 'app/filters/filtersActions'
 import {
   TIMELINE_DEFAULT_INNER_START_DATE,
@@ -17,9 +13,6 @@ import {
   TIMELINE_DEFAULT_OUTER_END_DATE,
   TIMELINE_OVERALL_START_DATE,
   TIMELINE_OVERALL_END_DATE,
-  TIMELINE_SPEED_CHANGE,
-  TIMELINE_MIN_SPEED,
-  TIMELINE_MAX_SPEED,
 } from 'app/config'
 
 const initialState = {
@@ -28,7 +21,6 @@ const initialState = {
   timelineInnerExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
   timelineOverExtent: [TIMELINE_DEFAULT_INNER_START_DATE, TIMELINE_DEFAULT_INNER_END_DATE],
   timelinePaused: true,
-  timelineSpeed: 1,
 }
 
 export default function(state = initialState, action) {
@@ -67,41 +59,13 @@ export default function(state = initialState, action) {
       })
     }
 
-    case SET_PLAYING_STATUS:
-      return Object.assign({}, state, {
-        timelinePaused: action.payload,
-      })
     case SET_TIMELINE_HOVER_DATES: {
       const timelineOverExtent = action.payload
       return Object.assign({}, state, {
         timelineOverExtent,
       })
     }
-    case REWIND_TIMELINE: {
-      const currentInnerDelta =
-        state.timelineInnerExtent[1].getTime() - state.timelineInnerExtent[0].getTime()
-      const newTimelineInnerEnd = new Date(
-        state.timelineOuterExtent[0].getTime() + currentInnerDelta
-      )
-      return Object.assign({}, state, {
-        timelineInnerExtent: [state.timelineOuterExtent[0], newTimelineInnerEnd],
-      })
-    }
-    case SET_SPEED: {
-      const timelineSpeed = action.payload.speed || state.timelineSpeed
-      return Object.assign({}, state, { timelineSpeed })
-    }
-    case CHANGE_SPEED: {
-      let timelineSpeed = state.timelineSpeed
-      const changeFactor = action.payload.shouldDecrease
-        ? 1 / TIMELINE_SPEED_CHANGE
-        : TIMELINE_SPEED_CHANGE
-      const isBetweenLimits =
-        timelineSpeed * changeFactor > TIMELINE_MIN_SPEED &&
-        timelineSpeed * changeFactor < TIMELINE_MAX_SPEED
-      if (isBetweenLimits) timelineSpeed *= changeFactor
-      return Object.assign({}, state, { timelineSpeed })
-    }
+
     default:
       return state
   }

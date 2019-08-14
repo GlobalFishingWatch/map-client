@@ -3,10 +3,7 @@ import Timebar from 'app/timebar/components/Timebar'
 import {
   setInnerTimelineDates,
   setOuterTimelineDates,
-  setPlayingStatus,
   setTimelineHoverDates,
-  rewindTimeline,
-  changeSpeed,
 } from 'app/filters/filtersActions'
 
 const mapStateToProps = (state) => ({
@@ -25,17 +22,8 @@ const mapDispatchToProps = (dispatch) => ({
   updateOuterTimelineDates: (dates, startChanged) => {
     dispatch(setOuterTimelineDates(dates, startChanged))
   },
-  updatePlayingStatus: (paused) => {
-    dispatch(setPlayingStatus(paused))
-  },
   updateTimelineOverDates: (dates) => {
     dispatch(setTimelineHoverDates(dates))
-  },
-  rewind: () => {
-    dispatch(rewindTimeline())
-  },
-  changeSpeed: (shouldDecrease) => {
-    dispatch(changeSpeed(shouldDecrease))
   },
 })
 

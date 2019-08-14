@@ -1,40 +1,54 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import Timebar from '@globalfishingwatch/map-components/components/timebar'
+import Timebar, { TimebarActivity } from '@globalfishingwatch/map-components/components/timebar'
 
-class TimebarWrapper extends Component {
-  render() {
-    const { start, end, absoluteStart, absoluteEnd, update } = this.props
-    // return <div>hello timebar</div>
-    return (
-      <Timebar
-        enablePlayback
-        start={start}
-        end={end}
-        absoluteStart={absoluteStart}
-        absoluteEnd={absoluteEnd}
-        // bookmarkStart={bookmarkStart}
-        // bookmarkEnd={bookmarkEnd}
-        onChange={update}
-        // onMouseMove={this.onMouseMove}
-        // onBookmarkChange={this.updateBookmark}
-      />
-    )
-  }
+const TimebarWrapper = ({
+  start,
+  end,
+  absoluteStart,
+  absoluteEnd,
+  update,
+  updateOver,
+  activity,
+}) => {
+  const [bookmark, setBookmark] = useState({ start: null, end: null })
+  return (
+    <Timebar
+      enablePlayback
+      start={start}
+      end={end}
+      absoluteStart={absoluteStart}
+      absoluteEnd={absoluteEnd}
+      bookmarkStart={bookmark.start}
+      bookmarkEnd={bookmark.end}
+      onChange={update}
+      onMouseMove={updateOver}
+      onBookmarkChange={(bookmarkStart, bookmarkEnd) => {
+        setBookmark({
+          start: bookmarkStart,
+          end: bookmarkEnd,
+        })
+      }}
+    >
+      {(props) =>
+        activity !== null && <TimebarActivity key="activity" {...props} activity={activity} />
+      }
+    </Timebar>
+  )
 }
 
 TimebarWrapper.propTypes = {
-  // timebarChartData: PropTypes.array,
-  // updateInnerTimelineDates: PropTypes.func.isRequired,
-  // updateOuterTimelineDates: PropTypes.func.isRequired,
-  // updatePlayingStatus: PropTypes.func.isRequired,
-  // updateTimelineOverDates: PropTypes.func.isRequired,
-  // rewind: PropTypes.func.isRequired,
-  // changeSpeed: PropTypes.func.isRequired,
-  // timelineOverallExtent: PropTypes.array,
-  // timelineOuterExtent: PropTypes.array,
-  // timelineInnerExtent: PropTypes.array,
-  // timelinePaused: PropTypes.bool,
-  // timelineSpeed: PropTypes.number.isRequired,
+  start: PropTypes.string.isRequired,
+  end: PropTypes.string.isRequired,
+  absoluteStart: PropTypes.string.isRequired,
+  absoluteEnd: PropTypes.string.isRequired,
+  update: PropTypes.func.isRequired,
+  updateOver: PropTypes.func.isRequired,
+  activity: PropTypes.array,
 }
+
+TimebarWrapper.defaultProps = {
+  activity: null,
+}
+
 export default TimebarWrapper

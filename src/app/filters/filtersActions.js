@@ -1,14 +1,7 @@
-import {
-  GA_PLAY_STATUS_TOGGLED,
-  trackInnerTimelineChange,
-  trackOuterTimelineChange,
-} from 'app/analytics/analyticsActions'
+import { trackInnerTimelineChange } from 'app/analytics/analyticsActions'
 import { TIMELINE_MIN_INNER_EXTENT } from 'app/config'
 
-export const SET_SPEED = 'SET_SPEED'
-export const CHANGE_SPEED = 'CHANGE_SPEED'
 export const SAVE_FILTER_GROUP = 'SAVE_FILTER_GROUP'
-export const REWIND_TIMELINE = 'REWIND_TIMELINE'
 export const SET_FILTER_GROUP_MODAL_VISIBILITY = 'SET_FILTER_GROUP_MODAL_VISIBILITY'
 export const SET_FILTER_GROUP_VISIBILITY = 'SET_FILTER_GROUP_VISIBILITY'
 export const SET_FLAG_FILTERS = 'SET_FLAG_FILTERS'
@@ -23,12 +16,7 @@ const getRangeDuration = (range) => range[1].getTime() - range[0].getTime()
 
 export function setInnerTimelineDates(innerTimelineDates) {
   return (dispatch, getState) => {
-    trackInnerTimelineChange(
-      dispatch,
-      innerTimelineDates,
-      getState().filters.timelineInnerExtent,
-      getState().filters.timelinePaused
-    )
+    trackInnerTimelineChange(dispatch, innerTimelineDates, getState().filters.timelineInnerExtent)
 
     dispatch({
       type: SET_INNER_TIMELINE_DATES,
@@ -39,8 +27,6 @@ export function setInnerTimelineDates(innerTimelineDates) {
 
 export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
   return (dispatch, getState) => {
-    trackOuterTimelineChange(dispatch, outerTimelineDates)
-
     const currentInnerTimelineDates = getState().filters.timelineInnerExtent
     const currentInnerDuration = getRangeDuration(currentInnerTimelineDates)
 
@@ -88,48 +74,10 @@ export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
   }
 }
 
-export function setPlayingStatus(paused) {
-  return (dispatch, getState) => {
-    const state = getState()
-
-    if (paused !== state.filters.timelinePaused) {
-      dispatch({
-        type: GA_PLAY_STATUS_TOGGLED,
-        payload: paused,
-      })
-    }
-
-    dispatch({
-      type: SET_PLAYING_STATUS,
-      payload: paused,
-    })
-  }
-}
-
 export function setTimelineHoverDates(overDates) {
   return {
     type: SET_TIMELINE_HOVER_DATES,
     payload: overDates,
-  }
-}
-
-export function changeSpeed(shouldDecrease) {
-  return {
-    type: CHANGE_SPEED,
-    payload: { shouldDecrease },
-  }
-}
-
-export function setSpeed(speed) {
-  return {
-    type: SET_SPEED,
-    payload: { speed },
-  }
-}
-
-export function rewindTimeline() {
-  return {
-    type: REWIND_TIMELINE,
   }
 }
 

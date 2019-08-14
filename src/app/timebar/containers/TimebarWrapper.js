@@ -1,13 +1,11 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import { maxBy } from 'lodash'
 import TimebarWrapper from 'app/timebar/components/TimebarWrapper'
 import {
   setInnerTimelineDates,
+  setTimelineHoverDates,
   // setOuterTimelineDates,
-  // setPlayingStatus,
-  // setTimelineHoverDates,
-  // rewindTimeline,
-  // changeSpeed,
 } from 'app/filters/filtersActions'
 
 const getInnerExtent = (state) => state.filters.timelineInnerExtent
@@ -29,42 +27,40 @@ const getAbsoluteEnd = createSelector(
   [getOverallExtent],
   (overallExtent) => overallExtent[1].toISOString()
 )
+const getActivity = createSelector(
+  [(state) => state.timebar.chartData],
+  (chartData) => {
+    console.log(chartData)
+    if (chartData === undefined || chartData === null || !chartData.length) return null
+    const maxValueItem = maxBy(chartData, (d) => d.value)
+    return chartData.map((d) => ({
+      ...d,
+      value: d.value / maxValueItem.value,
+    }))
+    return chartData
+  }
+)
 
 const mapStateToProps = (state) => ({
   start: getStart(state),
   end: getEnd(state),
   absoluteStart: getAbsoluteStart(state),
   absoluteEnd: getAbsoluteEnd(state),
-  // timebarChartData: state.timebar.chartData,
-  // timelineOverallExtent: state.filters.timelineOverallExtent,
-  // timelineOuterExtent: state.filters.timelineOuterExtent,
-  // timelineInnerExtent: state.filters.timelineInnerExtent,
-  // timelinePaused: state.filters.timelinePaused,
-  // timelineSpeed: state.filters.timelineSpeed,
+  activity: getActivity(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // updateInnerTimelineDates: (dates) => {
-  //   dispatch(setInnerTimelineDates(dates))
-  // },
   // updateOuterTimelineDates: (dates, startChanged) => {
   //   dispatch(setOuterTimelineDates(dates, startChanged))
   // },
-  // updatePlayingStatus: (paused) => {
-  //   dispatch(setPlayingStatus(paused))
-  // },
-  // updateTimelineOverDates: (dates) => {
-  //   dispatch(setTimelineHoverDates(dates))
-  // },
-  // rewind: () => {
-  //   dispatch(rewindTimeline())
-  // },
-  // changeSpeed: (shouldDecrease) => {
-  //   dispatch(changeSpeed(shouldDecrease))
-  // },
   update: (start, end) => {
-    console.log(start, end)
+    // TODO update outer when needed
     dispatch(setInnerTimelineDates([new Date(start), new Date(end)]))
+  },
+  updateOver: (clientX, scale) => {
+    const hoverStart = scale(clientX - 10)
+    const hoverEnd = scale(clientX + 10)
+    dispatch(setTimelineHoverDates([hoverStart, hoverEnd]))
   },
 })
 

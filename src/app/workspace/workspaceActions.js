@@ -7,7 +7,6 @@ import { saveFilterGroup } from 'app/filters/filterGroupsActions'
 import {
   setOuterTimelineDates,
   SET_INNER_TIMELINE_DATES_FROM_WORKSPACE,
-  setSpeed,
 } from 'app/filters/filtersActions'
 import { setPinnedVessels, addVessel } from 'app/vesselInfo/vesselInfoActions'
 import { setFleetsFromWorkspace } from 'app/fleets/fleetsActions'
@@ -197,7 +196,6 @@ export function saveWorkspace(errorAction) {
           outerExtent: state.filters.timelineOuterExtent.map((e) => +e),
         },
         filters: state.filters.flags,
-        timelineSpeed: state.filters.timelineSpeed,
         filterGroups: state.filterGroups.filterGroups,
       },
     }
@@ -253,8 +251,6 @@ function dispatchActions(workspaceData, dispatch, getState) {
 
   dispatch(initBasemap(workspaceData.basemap, workspaceData.basemapOptions))
 
-  dispatch(setSpeed(workspaceData.timelineSpeed))
-
   dispatch(updateWorkspace(workspace))
 
   dispatch(initLayers(workspaceData.layers, state.layerLibrary.layers)).then(() => {
@@ -262,9 +258,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     if (workspaceData.shownVessel) {
       if (workspaceData.shownVessel.id === undefined) {
         console.warn(
-          `attempting to load vessel on tileset ${
-            workspaceData.shownVessel.tilesetId
-          } with no id/seriesgroup`
+          `attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no id/seriesgroup`
         )
       } else {
         const { tilesetId, id } = workspaceData.shownVessel
@@ -405,7 +399,6 @@ function processNewWorkspace(data) {
       center: workspace.map.center,
     },
     timeline: workspace.timeline,
-    timelineSpeed: workspace.timelineSpeed,
     basemap: workspace.basemap,
     basemapOptions: workspace.basemapOptions || [],
     layers,

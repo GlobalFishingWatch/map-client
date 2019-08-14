@@ -11,7 +11,7 @@ import {
   SET_SUBSCRIPTION_STATUS_SENT,
   SET_REPORT_POLYGON,
 } from 'app/report/reportActions'
-import { SET_FLAG_FILTERS, CHANGE_SPEED } from 'app/filters/filtersActions'
+import { SET_FLAG_FILTERS } from 'app/filters/filtersActions'
 import { SET_SEARCH_TERM } from 'app/search/searchActions'
 import { SET_RECENT_VESSELS_VISIBILITY } from 'app/recentVessels/recentVesselsActions'
 import {
@@ -21,8 +21,6 @@ import {
   GA_INNER_TIMELINE_EXTENT_CHANGED,
   GA_MAP_CENTER_TILE,
   GA_MAP_POINT_CLICKED,
-  GA_OUTER_TIMELINE_DATES_UPDATED,
-  GA_PLAY_STATUS_TOGGLED,
   GA_SEARCH_RESULT_CLICKED,
   GA_SET_LAYER_HUE,
   GA_SET_LAYER_OPACITY,
@@ -32,7 +30,7 @@ import {
 } from 'app/analytics/analyticsActions'
 
 import isFunction from 'lodash/isFunction'
-import { SEARCH_QUERY_MINIMUM_LIMIT, TIMELINE_SPEED_CHANGE } from 'app/config'
+import { SEARCH_QUERY_MINIMUM_LIMIT } from 'app/config'
 import { FLAGS } from 'app/constants'
 import { TOGGLE_VESSEL_PIN } from 'app/vesselInfo/vesselInfoActions'
 import { SET_WORKSPACE_ID } from 'app/workspace/workspaceActions'
@@ -135,12 +133,6 @@ const GA_ACTION_WHITELIST = [
     getPayload: (action) => `${action.payload.lat}:${action.payload.long}:${action.payload.type}`,
   },
   {
-    type: GA_OUTER_TIMELINE_DATES_UPDATED,
-    category: 'Timeline',
-    action: 'Outer period changed',
-    getPayload: (action) => `${action.payload[0].getTime()}:${action.payload[1].getTime()}`,
-  },
-  {
     type: GA_INNER_TIMELINE_DATES_UPDATED,
     category: 'Timeline',
     action: 'Inner dates changed',
@@ -151,18 +143,6 @@ const GA_ACTION_WHITELIST = [
     category: 'Timeline',
     action: 'Inner extent changed',
     getPayload: (action) => action.payload.toString(),
-  },
-  {
-    type: GA_PLAY_STATUS_TOGGLED,
-    category: 'Timeline',
-    action: 'Press Play',
-    getPayload: (action, state) => {
-      if (action.payload === false) {
-        // pressed play
-        return `play:${state.filters.timelineInnerExtent[0].getTime()}`
-      }
-      return `pause:${state.filters.timelineInnerExtent[1].getTime()}`
-    },
   },
   {
     type: SET_WORKSPACE_ID,
@@ -234,18 +214,6 @@ const GA_ACTION_WHITELIST = [
     category: 'Map Interaction',
     action: 'Changed area',
     getPayload: (action) => `${action.payload.x},${action.payload.y}`,
-  },
-  {
-    type: CHANGE_SPEED,
-    category: 'Timeline',
-    action: 'Speed Control',
-    getPayload: (action, state) => {
-      const label = action.payload.shouldDecrease ? 'Decrease speed to' : 'Increase speed to'
-      const speedChangeFactor = action.payload.shouldDecrease
-        ? 1 / TIMELINE_SPEED_CHANGE
-        : TIMELINE_SPEED_CHANGE
-      return `${label} ${state.filters.timelineSpeed * speedChangeFactor}x`
-    },
   },
   {
     type: SET_RECENT_VESSELS_VISIBILITY,
