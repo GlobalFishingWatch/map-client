@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import ControlPanel from 'app/mapPanels/rightControlPanel/containers/ControlPanel'
-import Timebar from 'app/timebar/containers/Timebar'
 import TimebarWrapper from 'app/timebar/containers/TimebarWrapper'
 import ReportPanel from 'app/report/containers/ReportPanel'
 import MapFooter from 'app/siteNav/components/MapFooter'
@@ -21,6 +20,7 @@ class MapDashboard extends Component {
     this.setState({ attributions })
   }
   render() {
+    console.log('plop')
     const {
       isEmbedded,
       openSupportFormModal,
@@ -64,7 +64,6 @@ class MapDashboard extends Component {
           })}
         >
           <TimebarWrapper />
-          <Timebar />
         </div>
         {!COMPLETE_MAP_RENDER && (
           <MapFooter

@@ -12,6 +12,7 @@ const TimebarWrapper = ({
   activity,
 }) => {
   const [bookmark, setBookmark] = useState({ start: null, end: null })
+  console.log('plop')
   return (
     <Timebar
       enablePlayback

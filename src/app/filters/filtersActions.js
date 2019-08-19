@@ -25,48 +25,8 @@ export function setInnerTimelineDates(innerTimelineDates) {
   }
 }
 
-export function setOuterTimelineDates(outerTimelineDates, startChanged = null) {
+export function setOuterTimelineDates(outerTimelineDates) {
   return (dispatch, getState) => {
-    const currentInnerTimelineDates = getState().filters.timelineInnerExtent
-    const currentInnerDuration = getRangeDuration(currentInnerTimelineDates)
-
-    // check if outer start goes beyond outer end or the opposite, in which case
-    // we will arbitrarily move overlapped extent to set extent + currentInnerDuration * 2
-    if (outerTimelineDates[0] > outerTimelineDates[1]) {
-      if (startChanged === true) {
-        outerTimelineDates[1] = new Date(outerTimelineDates[0].getTime() + currentInnerDuration * 2)
-      } else if (startChanged === false) {
-        outerTimelineDates[0] = new Date(outerTimelineDates[1].getTime() - currentInnerDuration * 2)
-      }
-    }
-
-    // check inner dates, move inner range inside new outer timeline dates if needed
-    if (
-      outerTimelineDates[0] >= currentInnerTimelineDates[0] ||
-      outerTimelineDates[1] <= currentInnerTimelineDates[1]
-    ) {
-      const newInner = []
-      const currentOverallTimelineDates = getState().filters.timelineOverallExtent
-      if (outerTimelineDates[0] >= currentInnerTimelineDates[0]) {
-        newInner[0] = outerTimelineDates[0]
-        newInner[1] = new Date(
-          Math.min(
-            outerTimelineDates[0].getTime() + currentInnerDuration,
-            currentOverallTimelineDates[1].getTime()
-          )
-        )
-      } else {
-        newInner[1] = outerTimelineDates[1]
-        newInner[0] = new Date(
-          Math.max(
-            outerTimelineDates[1].getTime() - currentInnerDuration,
-            currentOverallTimelineDates[0].getTime()
-          )
-        )
-      }
-      dispatch(setInnerTimelineDates(newInner))
-    }
-
     dispatch({
       type: SET_OUTER_TIMELINE_DATES,
       payload: outerTimelineDates,

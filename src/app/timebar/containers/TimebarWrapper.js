@@ -2,11 +2,8 @@ import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
 import { maxBy } from 'lodash'
 import TimebarWrapper from 'app/timebar/components/TimebarWrapper'
-import {
-  setInnerTimelineDates,
-  setTimelineHoverDates,
-  // setOuterTimelineDates,
-} from 'app/filters/filtersActions'
+import { setInnerTimelineDates, setTimelineHoverDates } from 'app/filters/filtersActions'
+import { loadOuterRangeFromInnerRange } from 'app/timebar/timebarActions'
 
 const getInnerExtent = (state) => state.filters.timelineInnerExtent
 const getOverallExtent = (state) => state.filters.timelineOverallExtent
@@ -33,11 +30,11 @@ const getActivity = createSelector(
     console.log(chartData)
     if (chartData === undefined || chartData === null || !chartData.length) return null
     const maxValueItem = maxBy(chartData, (d) => d.value)
-    return chartData.map((d) => ({
+    const finalChartData = chartData.map((d) => ({
       ...d,
       value: d.value / maxValueItem.value,
     }))
-    return chartData
+    return finalChartData
   }
 )
 
@@ -56,6 +53,7 @@ const mapDispatchToProps = (dispatch) => ({
   update: (start, end) => {
     // TODO update outer when needed
     dispatch(setInnerTimelineDates([new Date(start), new Date(end)]))
+    dispatch(loadOuterRangeFromInnerRange())
   },
   updateOver: (clientX, scale) => {
     const hoverStart = scale(clientX - 10)
