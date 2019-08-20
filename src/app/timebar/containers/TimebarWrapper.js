@@ -27,7 +27,6 @@ const getAbsoluteEnd = createSelector(
 const getActivity = createSelector(
   [(state) => state.timebar.chartData],
   (chartData) => {
-    console.log(chartData)
     if (chartData === undefined || chartData === null || !chartData.length) return null
     const maxValueItem = maxBy(chartData, (d) => d.value)
     const finalChartData = chartData.map((d) => ({
@@ -47,11 +46,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  // updateOuterTimelineDates: (dates, startChanged) => {
-  //   dispatch(setOuterTimelineDates(dates, startChanged))
-  // },
   update: (start, end) => {
-    // TODO update outer when needed
     dispatch(setInnerTimelineDates([new Date(start), new Date(end)]))
     dispatch(loadOuterRangeFromInnerRange())
   },

@@ -20,7 +20,6 @@ class MapDashboard extends Component {
     this.setState({ attributions })
   }
   render() {
-    console.log('plop')
     const {
       isEmbedded,
       openSupportFormModal,

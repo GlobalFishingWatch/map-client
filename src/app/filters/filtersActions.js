@@ -12,8 +12,6 @@ export const SET_OVERALL_TIMELINE_DATES = 'SET_OVERALL_TIMELINE_DATES'
 export const SET_PLAYING_STATUS = 'SET_PLAYING_STATUS'
 export const SET_TIMELINE_HOVER_DATES = 'SET_TIMELINE_HOVER_DATES'
 
-const getRangeDuration = (range) => range[1].getTime() - range[0].getTime()
-
 export function setInnerTimelineDates(innerTimelineDates) {
   return (dispatch, getState) => {
     trackInnerTimelineChange(dispatch, innerTimelineDates, getState().filters.timelineInnerExtent)
