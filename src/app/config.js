@@ -1,9 +1,5 @@
 import moment from 'moment'
 
-// Application settings
-export const TIMELINE_STEP = 24 * 60 * 60 * 1000 // 1 day // TODO MAP MODULE: DUPLICATE VALUE
-export const MIN_FRAME_LENGTH_MS = TIMELINE_STEP // 1 day  // TODO MAP MODULE: DUPLICATE VALUE
-
 // Absolute maximum supported
 export const TIMELINE_OVERALL_START_DATE = new Date(Date.UTC(2012, 0, 1))
 export const TIMELINE_OVERALL_END_DATE = moment()
@@ -16,15 +12,12 @@ export const TIMELINE_DEFAULT_OUTER_END_DATE = new Date(Date.UTC(2016, 0, 1))
 export const TIMELINE_DEFAULT_INNER_START_DATE = new Date(Date.UTC(2015, 0, 1))
 export const TIMELINE_DEFAULT_INNER_END_DATE = new Date(Date.UTC(2015, 1, 1))
 
-export const TIMELINE_MIN_INNER_EXTENT = 1.21e9 // 2 weeks
+export const TIMELINE_MIN_INNER_EXTENT = 1.21e9 // 2 weeks - used when using fitTimelineToTrack
 
-export const TIMELINE_MAX_STEPS = 190 // six months
-export const TIMELINE_MAX_TIME = TIMELINE_STEP * TIMELINE_MAX_STEPS // six months
-export const TIMELINE_MIN_TIME = TIMELINE_STEP // 1 day
-
-export const TIMELINE_SPEED_CHANGE = 2 // 2 for double and half speed
-export const TIMELINE_MAX_SPEED = 16
-export const TIMELINE_MIN_SPEED = 0.03125
+export const TIMELINE_MINIMUM_RANGE = 1
+export const TIMELINE_MINIMUM_RANGE_UNIT = 'week'
+export const TIMELINE_MAXIMUM_RANGE = 6
+export const TIMELINE_MAXIMUM_RANGE_UNIT = 'month'
 
 export const GUEST_PERMISSION_SET = []
 
@@ -34,9 +27,6 @@ export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET
 // At which intervals should we consider showing a new frame. Impacts performance.
 // Expressed in ms, for example 86400000 is 1 day (24*60*60*1000)
 export const PLAYBACK_PRECISION = 86400000
-export const TIMELINE_OVERALL_START_DATE_OFFSET = Math.floor(
-  TIMELINE_OVERALL_START_DATE / PLAYBACK_PRECISION
-)
 
 // Legacy: this is only here for compatibility with pre-mapbox branch workspaces
 export const COLORS = {
