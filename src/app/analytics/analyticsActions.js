@@ -7,8 +7,6 @@ export const GA_INNER_TIMELINE_DATES_UPDATED = 'GA_INNER_TIMELINE_DATES_UPDATED'
 export const GA_INNER_TIMELINE_EXTENT_CHANGED = 'GA_INNER_TIMELINE_EXTENT_CHANGED'
 export const GA_MAP_CENTER_TILE = 'GA_MAP_CENTER_TILE'
 export const GA_MAP_POINT_CLICKED = 'GA_MAP_POINT_CLICKED'
-export const GA_OUTER_TIMELINE_DATES_UPDATED = 'GA_OUTER_TIMELINE_DATES_UPDATED'
-export const GA_PLAY_STATUS_TOGGLED = 'GA_PLAY_STATUS_TOGGLED'
 export const GA_SEARCH_RESULT_CLICKED = 'GA_SEARCH_RESULT_CLICKED'
 export const GA_SET_LAYER_HUE = 'GA_SET_LAYER_HUE'
 export const GA_SET_LAYER_OPACITY = 'GA_SET_LAYER_OPACITY'
@@ -32,12 +30,6 @@ export const trackLayerHueChange = debounce((dispatch, hue, layerId) => {
     payload: { hue, layerId },
   })
 }, 1000)
-export const trackOuterTimelineChange = debounce((dispatch, outerTimelineDates) => {
-  dispatch({
-    type: GA_OUTER_TIMELINE_DATES_UPDATED,
-    payload: outerTimelineDates,
-  })
-}, 1000)
 
 const trackInnerTimelineExtentChanged = debounce((dispatch, daysDelta) => {
   dispatch({
@@ -56,8 +48,7 @@ const trackInnerTimelineDatesUpdated = debounce((dispatch, innerTimelineDates) =
 export const trackInnerTimelineChange = (
   dispatch,
   innerTimelineDates,
-  previousInnerTimelineDates,
-  timelinePaused
+  previousInnerTimelineDates
 ) => {
   const currentDelta = previousInnerTimelineDates[1] - previousInnerTimelineDates[0]
   const newDelta = innerTimelineDates[1] - innerTimelineDates[0]
@@ -65,9 +56,8 @@ export const trackInnerTimelineChange = (
   if (extentChanged) {
     const daysDelta = Math.round(moment.duration(newDelta).asDays())
     trackInnerTimelineExtentChanged(dispatch, daysDelta)
-  } else if (timelinePaused !== false) {
-    trackInnerTimelineDatesUpdated(dispatch, innerTimelineDates)
   }
+  trackInnerTimelineDatesUpdated(dispatch, innerTimelineDates)
 }
 
 export function trackSearchResultClicked(tilesetId, id) {

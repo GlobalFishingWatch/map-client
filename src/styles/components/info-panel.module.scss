@@ -107,11 +107,10 @@
         }
       }
 
-
       .vesselHeader {
         &::before {
           display: inline-block;
-          content: "";
+          content: '';
           margin-right: 10px;
 
           @include line($color-red);
@@ -121,14 +120,13 @@
       .reeferHeader {
         &::before {
           display: inline-block;
-          content: "";
+          content: '';
           margin-right: 10px;
 
           @include line($color-salmon);
         }
       }
     }
-
 
     .rowInfo {
       display: flex;
@@ -155,7 +153,6 @@
         padding: 5px 0 0;
       }
     }
-
 
     .externalLink {
       color: $color-3;
@@ -226,7 +223,6 @@
       top: 18px;
       transform: translate(-50%, -50%);
     }
-
 
     > button {
       position: relative;

@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { getLayerLibrary } from 'app/layers/layerLibraryActions'
+import { setOuterTimelineDates } from 'app/filters/filtersActions'
 
 export const SET_TIMEBAR_CHART_DATA = 'SET_TIMEBAR_CHART_DATA'
 
@@ -47,5 +48,24 @@ export function loadTimebarChartData(startDate, endDate) {
         })
         dispatch(getLayerLibrary())
       })
+  }
+}
+
+// This action allows wrapping timebar legacy outer range behaviour with only inner range (new timebar).
+// Will set outerRange to fixed years, in a hardcoded way (doesn`t use header info for simplicity).
+// This is to be removed (as well as outerRange in state.filter across the app) when
+// new heatmap aka "fast tiles" kicks in
+export const loadOuterRangeFromInnerRange = () => (dispatch, getState) => {
+  const outerRange = getState().filters.timelineOuterExtent
+  const innerRange = getState().filters.timelineInnerExtent
+  const startYear = innerRange[0].getFullYear()
+  const endYear = innerRange[1].getFullYear()
+  if (outerRange[0].getFullYear() !== startYear || outerRange[1].getFullYear() !== endYear) {
+    dispatch(
+      setOuterTimelineDates([
+        new Date(Date.UTC(startYear, 0, 2)),
+        new Date(Date.UTC(endYear, 11, 31)),
+      ])
+    )
   }
 }
