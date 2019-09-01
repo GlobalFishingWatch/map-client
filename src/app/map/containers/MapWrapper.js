@@ -12,6 +12,7 @@ import MapWrapper from 'app/map/components/MapWrapper'
 
 const getVessels = (state) => state.vesselInfo.vessels
 const getHighlightedTrack = (state) => state.vesselInfo.highlightedTrack
+const getGeoJSONTracksData = (state) => state.tracks.tracks
 const getEncounter = (state) => state.encounters.encountersInfo
 const getLayers = (state) => state.layers.workspaceLayers
 const getLayerFilters = (state) => state.filterGroups.layerFilters
@@ -54,20 +55,28 @@ const getTrackFromLayers = (layers, tilesetId, vesselId) => {
 }
 
 const getAllVesselsForTracks = createSelector(
-  [getVessels, getEncounter, getLayers, getHighlightedTrack],
-  (vessels, encounter, layers, highlightedTrack) => {
+  [getVessels, getEncounter, getLayers, getHighlightedTrack, getGeoJSONTracksData],
+  (vessels, encounter, layers, highlightedTrack, geoJSONTracksData) => {
     let tracks = []
-
     vessels.forEach((vessel) => {
       if (vessel.visible === true || vessel.shownInInfoPanel === true) {
         const id = vessel.id
         const color =
           highlightedTrack !== null && highlightedTrack === id ? '#ffffff' : vessel.color
-        tracks.push({
+        const track = {
           color,
           ...getTrackFromLayers(layers, vessel.tilesetId, id),
           id,
-        })
+        }
+        if (track.type === 'geojson') {
+          if (geoJSONTracksData[id]) {
+            const trackData = geoJSONTracksData[id]
+            track.data = trackData.data
+            tracks.push(track)
+          }
+        } else {
+          tracks.push(track)
+        }
       }
     })
 

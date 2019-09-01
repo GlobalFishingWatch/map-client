@@ -33,7 +33,7 @@ const getActivity = createSelector(
       ...d,
       value: d.value / maxValueItem.value,
     }))
-    return finalChartData
+    return [finalChartData]
   }
 )
 
@@ -51,6 +51,13 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(loadOuterRangeFromInnerRange())
   },
   updateOver: (clientX, scale) => {
+    if (clientX === null) {
+      // this.setState({
+      //   hoverStart: null,
+      //   hoverEnd: null,
+      // })
+      return
+    }
     const hoverStart = scale(clientX - 10)
     const hoverEnd = scale(clientX + 10)
     dispatch(setTimelineHoverDates([hoverStart, hoverEnd]))
