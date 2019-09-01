@@ -7,6 +7,9 @@ import { loadOuterRangeFromInnerRange } from 'app/timebar/timebarActions'
 
 const getInnerExtent = (state) => state.filters.timelineInnerExtent
 const getOverallExtent = (state) => state.filters.timelineOverallExtent
+const getChartData = (state) => state.timebar.chartData
+const getVessels = (state) => state.vesselInfo.vessels
+const getTracks = (state) => state.tracks.tracks
 
 const getStart = createSelector(
   [getInnerExtent],
@@ -25,7 +28,7 @@ const getAbsoluteEnd = createSelector(
   (overallExtent) => overallExtent[1].toISOString()
 )
 const getActivity = createSelector(
-  [(state) => state.timebar.chartData],
+  [getChartData],
   (chartData) => {
     if (chartData === undefined || chartData === null || !chartData.length) return null
     const maxValueItem = maxBy(chartData, (d) => d.value)
@@ -36,6 +39,19 @@ const getActivity = createSelector(
     return [finalChartData]
   }
 )
+const getGeoJSONTracksData = createSelector(
+  [getTracks, getVessels],
+  (tracks, vessels) => {
+    const geoJSONTracks = []
+    Object.keys(tracks).forEach((id) => {
+      const vessel = vessels.find((v) => v.id === id)
+      if (vessel !== undefined && (vessel.visible === true || vessel.shownInInfoPanel === true)) {
+        geoJSONTracks.push({ ...tracks[id], color: vessel.color })
+      }
+    })
+    return geoJSONTracks
+  }
+)
 
 const mapStateToProps = (state) => ({
   start: getStart(state),
@@ -43,6 +59,7 @@ const mapStateToProps = (state) => ({
   absoluteStart: getAbsoluteStart(state),
   absoluteEnd: getAbsoluteEnd(state),
   activity: getActivity(state),
+  tracks: getGeoJSONTracksData(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

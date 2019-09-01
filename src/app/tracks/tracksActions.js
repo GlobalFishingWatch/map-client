@@ -7,8 +7,10 @@ import {
 export const GEOJSON_TRACK_LOADED = 'GEOJSON_TRACK_LOADED'
 
 export const loadGeoJSONTrack = (id, url) => (dispatch) => {
+  const features = ['fishing']
+  const finalUrl = `${url}?features=${features.join(',')}`
   dispatch(startLoading())
-  fetch(url)
+  fetch(finalUrl)
     .then((res) => {
       if (res.status >= 400) throw new Error(res.statusText)
       return res.json()

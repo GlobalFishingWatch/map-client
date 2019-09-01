@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import Timebar, {
   TimebarActivity,
+  TimebarTracks,
   getHumanizedDates,
 } from '@globalfishingwatch/map-components/components/timebar'
 import {
@@ -20,12 +21,14 @@ const TimebarWrapper = ({
   update,
   updateOver,
   activity,
+  tracks,
 }) => {
   const [bookmark, setBookmark] = useState({ start: null, end: null })
   const { humanizedStart, humanizedEnd, interval } = useMemo(() => getHumanizedDates(start, end), [
     start,
     end,
   ])
+  const hasTracks = tracks !== null && tracks.length
   return (
     <>
       <div className={humanRange}>
@@ -52,9 +55,14 @@ const TimebarWrapper = ({
           })
         }}
       >
-        {(props) =>
-          activity !== null && <TimebarActivity key="activity" {...props} activity={activity} />
-        }
+        {(props) => (
+          <>
+            {!hasTracks && activity !== null && (
+              <TimebarActivity key="activity" {...props} activity={activity} />
+            )}
+            {hasTracks && <TimebarTracks key="tracks" {...props} tracks={tracks} />}
+          </>
+        )}
       </Timebar>
     </>
   )
@@ -68,10 +76,12 @@ TimebarWrapper.propTypes = {
   update: PropTypes.func.isRequired,
   updateOver: PropTypes.func.isRequired,
   activity: PropTypes.array,
+  tracks: PropTypes.array,
 }
 
 TimebarWrapper.defaultProps = {
   activity: null,
+  tracks: null,
 }
 
 export default TimebarWrapper
