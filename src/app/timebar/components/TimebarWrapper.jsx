@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Timebar, {
   TimebarActivity,
   TimebarTracks,
+  TimebarHighlighter,
   getHumanizedDates,
 } from '@globalfishingwatch/map-components/components/timebar'
 import {
@@ -13,6 +14,13 @@ import {
 } from '../../config'
 import { humanRange } from './timebar.module.css'
 
+const getHoverExtent = (hoverExtent) => {
+  return {
+    hoverStart: hoverExtent[0].toISOString(),
+    hoverEnd: hoverExtent[1].toISOString(),
+  }
+}
+
 const TimebarWrapper = ({
   start,
   end,
@@ -20,6 +28,7 @@ const TimebarWrapper = ({
   absoluteEnd,
   update,
   updateOver,
+  hoverExtent,
   activity,
   tracks,
 }) => {
@@ -29,6 +38,7 @@ const TimebarWrapper = ({
     end,
   ])
   const hasTracks = tracks !== null && tracks.length
+  const { hoverStart, hoverEnd } = useMemo(() => getHoverExtent(hoverExtent), [hoverExtent])
   return (
     <>
       <div className={humanRange}>
@@ -61,6 +71,13 @@ const TimebarWrapper = ({
               <TimebarActivity key="activity" {...props} activity={activity} />
             )}
             {hasTracks && <TimebarTracks key="tracks" {...props} tracks={tracks} />}
+            <TimebarHighlighter
+              {...props}
+              hoverStart={hoverStart}
+              hoverEnd={hoverEnd}
+              // activity={activityMockForSubchart}
+              // unit={(currentSubChart === 'courses' ? 'degrees' : 'knots')}
+            />
           </>
         )}
       </Timebar>
@@ -77,6 +94,7 @@ TimebarWrapper.propTypes = {
   updateOver: PropTypes.func.isRequired,
   activity: PropTypes.array,
   tracks: PropTypes.array,
+  hoverExtent: PropTypes.array.isRequired,
 }
 
 TimebarWrapper.defaultProps = {

@@ -60,6 +60,7 @@ const mapStateToProps = (state) => ({
   absoluteEnd: getAbsoluteEnd(state),
   activity: getActivity(state),
   tracks: getGeoJSONTracksData(state),
+  hoverExtent: state.filters.timelineOverExtent,
 })
 
 const mapDispatchToProps = (dispatch) => ({
