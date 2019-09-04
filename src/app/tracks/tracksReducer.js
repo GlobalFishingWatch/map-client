@@ -1,8 +1,12 @@
-import { geoJSONTrackToTimebarTrack } from '@globalfishingwatch/map-components/src/timebar/utils'
-import { GEOJSON_TRACK_LOADED } from 'app/tracks/tracksActions'
+import {
+  geoJSONTrackToTimebarTrack,
+  geoJSONTrackToTimebarFeatureSegments,
+} from '@globalfishingwatch/map-components/src/timebar/utils'
+import { GEOJSON_TRACK_LOADED, SET_TRACK_CURRENT_FEATURE } from 'app/tracks/tracksActions'
 
 const initialState = {
   tracks: {},
+  currentFeature: null,
 }
 
 export default function(state = initialState, action) {
@@ -10,6 +14,7 @@ export default function(state = initialState, action) {
     case GEOJSON_TRACK_LOADED: {
       const track = action.payload
       const { points, segments } = geoJSONTrackToTimebarTrack(action.payload.data)
+      const featureSegments = geoJSONTrackToTimebarFeatureSegments(action.payload.data)
       return {
         ...state,
         tracks: {
@@ -18,9 +23,14 @@ export default function(state = initialState, action) {
             ...track,
             points,
             segments,
+            featureSegments,
           },
         },
       }
+    }
+
+    case SET_TRACK_CURRENT_FEATURE: {
+      return { ...state, currentFeature: action.payload.currentFeature }
     }
 
     default:

@@ -1,0 +1,58 @@
+@import '../../../styles/settings';
+
+.humanRange {
+  position: absolute;
+  right: 20px;
+  bottom: 120px;
+  z-index: 4;
+  background: no-repeat;
+  text-shadow: 1px 1px 3px black;
+  color: white;
+  opacity: 0.7;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.graphSelector {
+  position: absolute;
+  right: 10px;
+  bottom: 66px;
+  z-index: 100;
+}
+
+.graphSelector::after {
+  content: ' ';
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  width: 5px;
+  height: 5px;
+  transform: rotateZ(45deg);
+}
+
+.graphSelectorSelect {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid $color-mid-blue;
+  border-radius: 99px;
+  background: $color-base;
+  padding: 6px 16px 6px 24px;
+  color: white;
+  font-size: $font-size-xxs-small;
+  text-transform: uppercase;
+}
+
+.graphSelectorSelect:focus {
+  outline-width: 0;
+  border-color: white;
+}
+
+.graphSelectorArrow {
+  display: inline-block;
+  position: absolute;
+  left: 7px;
+  top: 7px;
+}

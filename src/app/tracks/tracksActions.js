@@ -5,10 +5,12 @@ import {
 } from '@globalfishingwatch/map-components/components/map'
 
 export const GEOJSON_TRACK_LOADED = 'GEOJSON_TRACK_LOADED'
+export const SET_TRACK_CURRENT_FEATURE = 'SET_TRACK_CURRENT_FEATURE'
 
-export const loadGeoJSONTrack = (id, url) => (dispatch) => {
-  const features = ['fishing']
-  const finalUrl = `${url}?features=${features.join(',')}`
+export const loadGeoJSONTrack = (id, baseUrl, trackFeatures = null) => (dispatch) => {
+  const availableFeatures = trackFeatures || []
+  const url = baseUrl.replace('{{id}}', id)
+  const finalUrl = `${url}?features=${availableFeatures.concat(['fishing']).join(',')}`
   dispatch(startLoading())
   fetch(finalUrl)
     .then((res) => {
@@ -25,6 +27,7 @@ export const loadGeoJSONTrack = (id, url) => (dispatch) => {
           data,
           geoBounds,
           timelineBounds,
+          availableFeatures,
         },
       })
       // if (fitBoundsOnLoad) {
@@ -34,3 +37,10 @@ export const loadGeoJSONTrack = (id, url) => (dispatch) => {
     .catch((err) => console.warn(err))
     .finally(() => dispatch(completeLoading()))
 }
+
+export const setTrackCurrentFeatureGraph = (currentFeature) => ({
+  type: SET_TRACK_CURRENT_FEATURE,
+  payload: {
+    currentFeature,
+  },
+})

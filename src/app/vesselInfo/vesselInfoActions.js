@@ -220,8 +220,8 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
             dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.id))
           }
           if (layer.header.trackFormat === 'geojson') {
-            const url = layer.header.endpoints.tracks.replace('{{id}}', pinnedVessel.id)
-            dispatch(loadGeoJSONTrack(pinnedVessel.id, url))
+            const baseUrl = layer.header.endpoints.tracks
+            dispatch(loadGeoJSONTrack(pinnedVessel.id, baseUrl, layer.trackFeatures))
           }
         }
       })
@@ -250,8 +250,8 @@ export function addVessel({ tilesetId, id, parentEncounter = null }) {
     const layer = getState().layers.workspaceLayers.find((l) => l.tilesetId === tilesetId)
 
     if (layer.header.trackFormat === 'geojson') {
-      const url = layer.header.endpoints.tracks.replace('{{id}}', id)
-      dispatch(loadGeoJSONTrack(id, url))
+      const baseUrl = layer.header.endpoints.tracks
+      dispatch(loadGeoJSONTrack(id, baseUrl, layer.trackFeatures))
     }
 
     if (

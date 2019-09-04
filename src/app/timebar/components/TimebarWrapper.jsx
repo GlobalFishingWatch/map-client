@@ -12,7 +12,18 @@ import {
   TIMELINE_MAXIMUM_RANGE,
   TIMELINE_MAXIMUM_RANGE_UNIT,
 } from '../../config'
-import { humanRange } from './timebar.module.css'
+import {
+  humanRange,
+  graphSelector,
+  graphSelectorSelect,
+  graphSelectorArrow,
+} from './timebar.module.scss'
+import Icon from 'app/components/Shared/Icon'
+
+const TRACK_FEATURES_UNITS = {
+  course: 'degrees',
+  speed: 'knots',
+}
 
 const getHoverExtent = (hoverExtent) => {
   return {
@@ -31,6 +42,10 @@ const TimebarWrapper = ({
   hoverExtent,
   activity,
   tracks,
+  featureGraph,
+  setTrackCurrentFeatureGraph,
+  currentFeature,
+  availableFeatures,
 }) => {
   const [bookmark, setBookmark] = useState({ start: null, end: null })
   const { humanizedStart, humanizedEnd, interval } = useMemo(() => getHumanizedDates(start, end), [
@@ -71,16 +86,49 @@ const TimebarWrapper = ({
               <TimebarActivity key="activity" {...props} activity={activity} />
             )}
             {hasTracks && <TimebarTracks key="tracks" {...props} tracks={tracks} />}
+            {featureGraph && (
+              <TimebarActivity
+                {...props}
+                key="trackActivity"
+                color={featureGraph.color}
+                opacity={0.4}
+                curve="curveBasis"
+                activity={featureGraph.segmentsWithCurrentFeature}
+              />
+            )}
             <TimebarHighlighter
               {...props}
               hoverStart={hoverStart}
               hoverEnd={hoverEnd}
-              // activity={activityMockForSubchart}
-              // unit={(currentSubChart === 'courses' ? 'degrees' : 'knots')}
+              activity={featureGraph && featureGraph.segmentsWithCurrentFeature}
+              unit={currentFeature && TRACK_FEATURES_UNITS[currentFeature]}
             />
           </>
         )}
       </Timebar>
+
+      {availableFeatures && availableFeatures.length && (
+        <div className={graphSelector}>
+          <select
+            className={graphSelectorSelect}
+            onChange={(event) => {
+              setTrackCurrentFeatureGraph(event.target.value)
+            }}
+            value={currentFeature === null ? '' : currentFeature}
+            disabled={tracks.length > 1}
+          >
+            <option value="none">chart...</option>
+            {availableFeatures.map((feature) => (
+              <option key={feature} value={feature}>
+                {feature}
+              </option>
+            ))}
+          </select>
+          <div className={graphSelectorArrow}>
+            <Icon icon="graph" />
+          </div>
+        </div>
+      )}
     </>
   )
 }
@@ -95,11 +143,21 @@ TimebarWrapper.propTypes = {
   activity: PropTypes.array,
   tracks: PropTypes.array,
   hoverExtent: PropTypes.array.isRequired,
+  featureGraph: PropTypes.shape({
+    segmentsWithCurrentFeature: PropTypes.array,
+    color: PropTypes.string,
+  }),
+  setTrackCurrentFeatureGraph: PropTypes.func.isRequired,
+  currentFeature: PropTypes.string,
+  availableFeatures: PropTypes.arrayOf(PropTypes.string),
 }
 
 TimebarWrapper.defaultProps = {
   activity: null,
   tracks: null,
+  featureGraph: null,
+  currentFeature: null,
+  availableFeatures: null,
 }
 
 export default TimebarWrapper
