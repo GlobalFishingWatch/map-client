@@ -10,6 +10,7 @@ import {
 const initialState = {
   isEmbedded: false,
   loading: false,
+  numLoaders: 0,
   layerModal: {
     open: false,
     info: {},
@@ -28,9 +29,10 @@ export default function(state = initialState, action) {
     case SET_IS_EMBEDDED:
       return Object.assign({}, state, { isEmbedded: action.payload })
     case SET_LOADING_START:
-      return Object.assign({}, state, { loading: true })
+      return Object.assign({}, state, { loading: true, numLoaders: state.numLoaders + 1 })
     case SET_LOADING_COMPLETE:
-      return Object.assign({}, state, { loading: false })
+      const numLoaders = state.numLoaders - 1
+      return Object.assign({}, state, { numLoaders, loading: numLoaders > 0 })
     case SET_LAYER_INFO_MODAL: {
       const newState = Object.assign({}, state)
       newState.layerModal = {

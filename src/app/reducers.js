@@ -21,6 +21,7 @@ import shareReducer from 'app/share/shareReducer'
 import workspaceReducer from 'app/workspace/workspaceReducer'
 import appReducer from 'app/app/appReducer'
 import rulersReducer from 'app/rulers/rulersReducer'
+import tracksReducer from 'app/tracks/tracksReducer'
 
 const reducers = {
   supportForm: supportFormReducer,
@@ -46,6 +47,7 @@ const reducers = {
   app: appReducer,
   workspace: workspaceReducer,
   rulers: rulersReducer,
+  tracks: tracksReducer,
 }
 
 export default reducers

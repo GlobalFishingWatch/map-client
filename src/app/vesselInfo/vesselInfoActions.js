@@ -1,3 +1,4 @@
+import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 import { resetNotification, setNotification } from 'app/notifications/notificationsActions'
 import { trackSearchResultClicked, trackVesselPointClicked } from 'app/analytics/analyticsActions'
 import { addVesselToRecentVesselList } from 'app/recentVessels/recentVesselsActions'
@@ -6,8 +7,8 @@ import getVesselName from 'app/utils/getVesselName'
 import fetchEndpoint from 'app/utils/fetchEndpoint'
 import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
-import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 import { startLoading, completeLoading } from 'app/app/appActions'
+import { loadGeoJSONTrack } from 'app/tracks/tracksActions'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
@@ -218,6 +219,10 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
             })
             dispatch(showVesselDetails(pinnedVessel.tilesetId, pinnedVessel.id))
           }
+          if (layer.header.trackFormat === 'geojson') {
+            const baseUrl = layer.header.endpoints.tracks
+            dispatch(loadGeoJSONTrack(pinnedVessel.id, baseUrl, layer.trackFeatures))
+          }
         }
       })
     })
@@ -241,6 +246,14 @@ export function addVessel({ tilesetId, id, parentEncounter = null }) {
         parentEncounter,
       },
     })
+
+    const layer = getState().layers.workspaceLayers.find((l) => l.tilesetId === tilesetId)
+
+    if (layer.header.trackFormat === 'geojson') {
+      const baseUrl = layer.header.endpoints.tracks
+      dispatch(loadGeoJSONTrack(id, baseUrl, layer.trackFeatures))
+    }
+
     if (
       state.user.userPermissions !== null &&
       state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1

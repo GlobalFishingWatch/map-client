@@ -21,6 +21,7 @@ import { ReactComponent as Unpin } from 'assets/icons/unpin.svg'
 import { ReactComponent as Share } from 'assets/icons/share.svg'
 import { ReactComponent as Close } from 'assets/icons/close.svg'
 import { ReactComponent as Ruler } from 'assets/icons/ruler.svg'
+import { ReactComponent as Graph } from 'assets/icons/graph.svg'
 
 class Icon extends Component {
   render() {
@@ -86,6 +87,9 @@ class Icon extends Component {
         break
       case 'ruler':
         iconElement = <Ruler className={classnames(classNames, IconStyles.ruler)} />
+        break
+      case 'graph':
+        iconElement = <Graph className={classNames} />
         break
       default:
         console.warn('that icon does not exist', icon)

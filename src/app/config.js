@@ -15,7 +15,7 @@ export const TIMELINE_DEFAULT_INNER_END_DATE = new Date(Date.UTC(2015, 1, 1))
 export const TIMELINE_MIN_INNER_EXTENT = 1.21e9 // 2 weeks - used when using fitTimelineToTrack
 
 export const TIMELINE_MINIMUM_RANGE = 1
-export const TIMELINE_MINIMUM_RANGE_UNIT = 'week'
+export const TIMELINE_MINIMUM_RANGE_UNIT = 'hour'
 export const TIMELINE_MAXIMUM_RANGE = 6
 export const TIMELINE_MAXIMUM_RANGE_UNIT = 'month'
 
