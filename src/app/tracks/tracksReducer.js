@@ -1,7 +1,7 @@
 import {
   geoJSONTrackToTimebarTrack,
   geoJSONTrackToTimebarFeatureSegments,
-} from '@globalfishingwatch/map-components/src/timebar/utils'
+} from '@globalfishingwatch/map-components/components/timebar/utils'
 import { GEOJSON_TRACK_LOADED, SET_TRACK_CURRENT_FEATURE } from 'app/tracks/tracksActions'
 
 const initialState = {
