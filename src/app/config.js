@@ -75,26 +75,6 @@ export const ENCOUNTERS_REEFER_COLOR = '#ffbcc6'
 // tracks
 export const TRACK_DEFAULT_COLOR = PALETTE_COLORS[8].color
 
-// time range options in the duration picker menu
-// replace moment humanized duration: use '1 month' instead of 'one month'
-// https://momentjs.com/docs/#/customization/relative-time/
-moment.updateLocale('en', {
-  relativeTime: {
-    m: '1 minute',
-    h: '1 hour',
-    d: '1 day',
-    M: '1 month',
-    y: '1 year',
-  },
-})
-
-export const DURATION_PICKER_OPTIONS = [
-  moment.duration(1, 'week'),
-  moment.duration(15, 'days'),
-  moment.duration(1, 'month'),
-  moment.duration(3, 'months'),
-]
-
 export const FORMAT_DATE = 'MMM Do YYYY'
 export const FORMAT_TIME = 'h:mm A'
 export const FORMAT_NUM_DECIMALS = {

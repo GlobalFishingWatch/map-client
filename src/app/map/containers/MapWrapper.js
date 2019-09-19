@@ -54,7 +54,7 @@ const getTrackFromLayers = (layers, tilesetId, vesselId) => {
   }
 }
 
-const getAllVesselsForTracks = createSelector(
+const getTracks = createSelector(
   [getVessels, getEncounter, getLayers, getHighlightedTrack, getGeoJSONTracksData],
   (vessels, encounter, layers, highlightedTrack, geoJSONTracksData) => {
     let tracks = []
@@ -68,6 +68,7 @@ const getAllVesselsForTracks = createSelector(
           ...getTrackFromLayers(layers, vessel.tilesetId, id),
           id,
         }
+        // what 'geojson' means here is 'geojson loaded externally'
         if (track.type === 'geojson') {
           if (geoJSONTracksData[id]) {
             const trackData = geoJSONTracksData[id]
@@ -94,8 +95,8 @@ const getAllVesselsForTracks = createSelector(
 )
 
 const getHeatmapLayers = createSelector(
-  [getLayers, getLayerFilters, getAllowInteraction],
-  (layers, layerFilters, allowInteraction) => {
+  [getLayers, getLayerFilters, getAllowInteraction, getTracks],
+  (layers, layerFilters, allowInteraction, tracks) => {
     const heatmapLayers = layers
       .filter((layer) => layer.type === LAYER_TYPES.Heatmap && layer.added === true)
       .map((layer) => {
@@ -105,7 +106,7 @@ const getHeatmapLayers = createSelector(
           tilesetId: layer.tilesetId,
           header: layer.header,
           hue: layer.hue,
-          opacity: layer.opacity,
+          opacity: tracks.length > 0 ? 0.15 : layer.opacity,
           visible: layer.visible,
           filters,
           // for now interactive is set for all heatmap layers
@@ -212,7 +213,7 @@ const mapStateToProps = (state) => ({
   // Forwarded to Map Module
   token: state.user.token,
   viewport: getViewport(state),
-  tracks: getAllVesselsForTracks(state),
+  tracks: getTracks(state),
   heatmapLayers: getHeatmapLayers(state),
   staticLayers: getStaticLayers(state),
   basemapLayers: getBasemapLayers(state),
