@@ -910,10 +910,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
-"@globalfishingwatch/map-components@^2.2.12":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.7.0.tgz#bed492eec69e5a5f87ccc6b4a4e3956d0d2873e5"
-  integrity sha512-4gV/wGgBrBU8ygmKW68WBJkBEDABsEHHLpdIWk7Xo1UQsYCz+yDcvNHQUR85BwIt8RcgOefBat402Xw9eA5MaQ==
+"@globalfishingwatch/map-components@2.2.16":
+  version "2.2.16"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.2.16.tgz#d7268afbe544efe2caf5db1154b92584e7f9ce9d"
+  integrity sha512-Sj+bEaj7+j61VCxyFjyeCGC0O2tnnvecSX2O718NMfR0w34Chi53PlgrSmDq9Uz7eUqIv6oFBPcHtzu1YzK7Kg==
   dependencies:
     "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
     "@mapbox/tile-cover" "^3.0.2"
