@@ -34,6 +34,7 @@
 
   :global .is-focused:not(.is-open) > .Select-control {
     border: solid 1px $color-button-primary;
+    background: transparent;
   }
 
   :global .Select-placeholder,
