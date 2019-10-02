@@ -19,8 +19,6 @@ class FilterGroupItem extends Component {
   }
 
   onChangeFilterGroupVisibility() {
-    // TODO: hide quick edits and such
-
     this.props.toggleFilterGroupVisibility(this.props.index)
     this.props.refreshFlagFiltersLayers()
   }
@@ -63,17 +61,14 @@ class FilterGroupItem extends Component {
           hue={this.props.filterGroup.hue}
           onToggled={() => this.onChangeFilterGroupVisibility()}
         />
-        <input
+        <div
           data-tip={tooltip}
           data-place="left"
           data-class={TooltipStyles.tooltip}
-          className={classnames(LayerItemStyles.itemName, {
-            [LayerItemStyles.itemRename]: this.props.isFilterGroupQuickEditMode,
-          })}
-          onChange={(e) => this.onChangeLayerLabel(e.currentTarget.value)}
-          readOnly={!this.props.isFilterGroupQuickEditMode}
-          value={this.props.filterGroup.label}
-        />
+          className={LayerItemStyles.itemNameLabel}
+        >
+          {this.props.filterGroup.label}
+        </div>
         {actionIcons}
       </li>
     )
@@ -81,17 +76,12 @@ class FilterGroupItem extends Component {
 }
 
 FilterGroupItem.propTypes = {
-  index: PropTypes.number,
-  filterGroup: PropTypes.object,
-  isFilterGroupQuickEditMode: PropTypes.bool, // if currently editing this filter group
-  editFilterGroup: PropTypes.func,
-  deleteFilterGroup: PropTypes.func,
-  toggleFilterGroupVisibility: PropTypes.func,
-  refreshFlagFiltersLayers: PropTypes.func,
-}
-
-FilterGroupItem.defaultProps = {
-  isFilterGroupQuickEditMode: false,
+  index: PropTypes.number.isRequired,
+  filterGroup: PropTypes.object.isRequired,
+  editFilterGroup: PropTypes.func.isRequired,
+  deleteFilterGroup: PropTypes.func.isRequired,
+  toggleFilterGroupVisibility: PropTypes.func.isRequired,
+  refreshFlagFiltersLayers: PropTypes.func.isRequired,
 }
 
 export default FilterGroupItem
