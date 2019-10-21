@@ -7,8 +7,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "serve": "http-server ./build",
-    "test": "react-scripts test",
+    "test": "npm run lint",
     "eject": "react-scripts eject",
+    "lint": "eslint -c .eslintrc src/*.js --fix",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "retrieve-workspace": "node ./bin/retrieve-workspace.js",
     "postinstall": "npm run retrieve-workspace"

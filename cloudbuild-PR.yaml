@@ -1,0 +1,37 @@
+steps:
+  # Push production image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '--build-arg',
+        'REACT_APP_DEPLOYED_VERSION=$SHORT_SHA',
+        '--build-arg',
+        'REACT_APP_LOGIN_FEATURE=$_REACT_APP_LOGIN_FEATURE',
+        '--build-arg',
+        'REACT_APP_API_AUTH=$_REACT_APP_API_AUTH',
+        '--build-arg',
+        'REACT_APP_API_EVENTS_ENDPOINT=$_REACT_APP_API_EVENTS_ENDPOINT',
+        '--build-arg',
+        'REACT_APP_API_VESSELS_ENDPOINT=$_REACT_APP_API_VESSELS_ENDPOINT',
+        '--build-arg',
+        'REACT_APP_API_SETTINGS_ENDPOINT=$_REACT_APP_API_SETTINGS_ENDPOINT',
+        '--build-arg',
+        'REACT_APP_GOOGLE_TAG_MANAGER_KEY=$_REACT_APP_GOOGLE_TAG_MANAGER_KEY',
+        '--build-arg',
+        'REACT_APP_DATASET_ID=$_REACT_APP_DATASET_ID',
+        '--target',
+        'build',
+        '-t',
+        'gcr.io/world-fishing-827/github.com/globalfishingwatch/carrier-portal:$COMMIT_SHA',
+        '.',
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'run',
+        'gcr.io/world-fishing-827/github.com/globalfishingwatch/carrier-portal:$COMMIT_SHA',
+        'npm',
+        'test',
+      ]
