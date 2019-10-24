@@ -73,8 +73,12 @@ export default function(state = initialState, action) {
       })
     case SET_TIMELINE_HOVER_DATES: {
       const timelineOverExtent = action.payload
+      const trimmedOverExtent = [
+        new Date(Math.max(state.timelineInnerExtent[0].getTime(), timelineOverExtent[0].getTime())),
+        new Date(Math.min(state.timelineInnerExtent[1].getTime(), timelineOverExtent[1].getTime())),
+      ]
       return Object.assign({}, state, {
-        timelineOverExtent,
+        timelineOverExtent: trimmedOverExtent,
       })
     }
     case REWIND_TIMELINE: {
