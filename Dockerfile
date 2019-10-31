@@ -24,7 +24,8 @@ ARG REACT_APP_BLOG_URL=http://blog.globalfishingwatch.org
 ARG REACT_APP_SITE_URL=http://globalfishingwatch.org/
 ARG REACT_APP_MAP_URL=http://globalfishingwatch.org/map
 ARG REACT_APP_SHARE_BASE_URL=https://globalfishingwatch.org/map/workspace/{workspace_id}
-ARG REACT_APP_GOOGLE_TAG_MANAGER_KEY=GTM-WXTMN69
+ARG REACT_APP_GOOGLE_TAG_MANAGER_KEY
+
 
 # Install build dependencies
 COPY . /app
