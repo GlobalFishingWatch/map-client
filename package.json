@@ -9,7 +9,7 @@
     "serve": "http-server ./build",
     "test": "npm run lint",
     "eject": "react-scripts eject",
-    "lint": "eslint -c .eslintrc src/*.js --fix",
+    "lint": "eslint -c .eslintrc src/*.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "retrieve-workspace": "node ./bin/retrieve-workspace.js",
     "postinstall": "npm run retrieve-workspace"
