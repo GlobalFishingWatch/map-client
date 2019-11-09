@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.0
+
+- `Taiwan, Province of China`, now reads `Chinese Taipei`
+- Fix issue that highlighted more than the selected inner range.
+- Static layer links now open on new tab.
+
 ## 4.1.0
 
 - Added the Measurement Fixes
