@@ -1,0 +1,10 @@
+{
+  "fishing_hours_description": "Total fishing hours for all vessels on the selected time period are determined by the Global Fishing Watch fishing detection algorithm. Our fishing algorithm identifies each AIS broadcast as 'likely fishing' or 'not fishing.' We then assign an amount of time to each AIS point calculated from the time between each AIS broadcast. Because data from AIS is not evenly spaced in time,  the amount of time assigned to each AIS point varies.",
+  "banner": "You are viewing a new version of the map. <a href='http://wp-dev.globalfishingwatch.org/legacy-map'>See legacy map</a>.",
+  "report_warning": "Only the following layers will be reported: $REPORTABLE_LAYERS",
+  "filter_groups_warning": "You selected a '$FILTER' filter, which can't be applied to the layer '$LAYER'. As a result, all the vessels of this layer will be hidden.",
+  "deprecated_layers_warning": "The activity layer $LAYERS used on this workspace is deprecated and may not get updated data, click <a href='http://wp-dev.globalfishingwatch.org/map'>here</a> to get the latest one.",
+  "deprecated_layers_warning_plural": "The activity layers $LAYERS used on this workspace are deprecated and they may not get updated data, click <a href='http://wp-dev.globalfishingwatch.org/map'>here</a> to get the latest ones.",
+  "webgl_warning": "⚠️ There is a problem with your current configuration (WebGL is disabled or unavailable). The map won't be able to load.",
+  "edge_warning": "Map performance might be degraded using Edge. We recommand using another browser such as Firefox or Chrome."
+}
