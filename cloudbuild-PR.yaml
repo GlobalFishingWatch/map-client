@@ -49,7 +49,7 @@ steps:
         '--target',
         'build',
         '-t',
-        'gcr.io/world-fishing-827/github.com/globalfishingwatch/carrier-portal:$COMMIT_SHA',
+        'gcr.io/world-fishing-827/github.com/globalfishingwatch/map-client:$COMMIT_SHA',
         '.',
       ]
 
@@ -57,7 +57,7 @@ steps:
     args:
       [
         'run',
-        'gcr.io/world-fishing-827/github.com/globalfishingwatch/carrier-portal:$COMMIT_SHA',
+        'gcr.io/world-fishing-827/github.com/globalfishingwatch/map-client:$COMMIT_SHA',
         'npm',
         'test',
       ]
