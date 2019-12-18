@@ -910,10 +910,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
-"@globalfishingwatch/map-components@^2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.7.1.tgz#4191d6176e015c8f6f783aca08f7b9639eec9798"
-  integrity sha512-oe7pKp+q6JlU6hiQxLJKqyU+HQVxEnrKE0MA3/H250wrHTzVD9EvIiYSDFcvb2+UwS6VxLOpBzsmu2eSeTKpyw==
+"@globalfishingwatch/map-components@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.7.5.tgz#04963d02202c89ebb4b5d2a19e967055d094d6a7"
+  integrity sha512-PCUQBrKmsvbVtPGZMQ82XWSeiT52KK6PQsB8Qj141ZMaXZa6I7HmbPXGlt5lmmLpeL42Hn8LTGLlX+oyNqQciw==
   dependencies:
     "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
     "@mapbox/tile-cover" "^3.0.2"
@@ -6812,10 +6812,9 @@ ismobilejs@^0.5.1:
   resolved "https://registry.yarnpkg.com/ismobilejs/-/ismobilejs-0.5.2.tgz#e81bacf6187c532ad8348355f4fecd6e6adfdce1"
   integrity sha512-ta9UdV60xVZk/ZafFtSFslQaE76SvNkcs1r73d2PVR21zVzx9xuYv9tNe4MxA1NN7WoeCc2RjGot3Bz1eHDx3Q==
 
-iso-3166-1-alpha-2@^1.0.0:
+iso-3166-1-alpha-2@GlobalFishingWatch/iso-3166-1-alpha-2#taiwan_fix:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/iso-3166-1-alpha-2/-/iso-3166-1-alpha-2-1.0.0.tgz#bc9e0bb94e584df5468a932997a28552e26f97ac"
-  integrity sha1-vJ4LuU5YTfVGipMpl6KFUuJvl6w=
+  resolved "https://codeload.github.com/GlobalFishingWatch/iso-3166-1-alpha-2/tar.gz/b4be6cb398be0e3c8bedc0ffd7bf961878a19eec"
   dependencies:
     mout "^0.11.0"
 
