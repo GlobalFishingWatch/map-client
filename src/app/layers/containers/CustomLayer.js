@@ -6,9 +6,10 @@ import {
   uploadCustomLayer,
   confirmCustomLayer,
 } from 'app/layers/customLayerActions'
-import { login } from 'app/user/userActions'
+import { getLoginUrl } from 'app/user/userActions'
 
 const mapStateToProps = (state) => ({
+  loginUrl: getLoginUrl(),
   error: state.customLayer.error,
   loading: state.customLayer.status === 'pending',
   subLayers: state.customLayer.previewLayer && state.customLayer.previewLayer.subLayers,
@@ -27,9 +28,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onConfirmCustomLayer: (layer) => {
     dispatch(confirmCustomLayer(layer))
-  },
-  login: () => {
-    dispatch(login())
   },
 })
 

@@ -80,9 +80,9 @@ class CustomLayer extends Component {
       return (
         <div className={CustomLayerStyles.customLayer}>
           <div className={CustomLayerStyles.noAccess}>
-            <button className="loginRequiredLink" onClick={this.props.login}>
+            <a className="loginRequiredLink" href={this.props.loginUrl}>
               Only registered users can upload custom layers. Click here to log in.
-            </button>
+            </a>
           </div>
         </div>
       )
@@ -271,10 +271,10 @@ CustomLayer.propTypes = {
       label: PropTypes.string,
       description: PropTypes.string,
     }).isRequired
-  ),
-  error: PropTypes.string,
-  login: PropTypes.func,
-  userPermissions: PropTypes.array,
+  ).isRequired,
+  error: PropTypes.string.isRequired,
+  loginUrl: PropTypes.string.isRequired,
+  userPermissions: PropTypes.array.isRequired,
 }
 
 export default CustomLayer

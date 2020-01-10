@@ -80,15 +80,15 @@ class VesselInfoPanel extends Component {
               </a>
             )}
             {!canSeeVesselDetails && (
-              <button
+              <a
                 style={{ margin: 0 }}
                 className={infoPanelStyles.externalLink}
-                onClick={this.props.login}
+                href={this.props.loginUrl}
               >
                 Click here to login and
                 <br />
                 see more details
-              </button>
+              </a>
             )}
 
             <div className={infoPanelStyles.actionIcons}>
@@ -169,7 +169,7 @@ VesselInfoPanel.propTypes = {
   userPermissions: PropTypes.array,
   hide: PropTypes.func,
   onTogglePin: PropTypes.func,
-  login: PropTypes.func,
+  loginUrl: PropTypes.string.isRequired,
   showWarning: PropTypes.func.isRequired,
   showParentEncounter: PropTypes.func,
   targetVessel: PropTypes.func,

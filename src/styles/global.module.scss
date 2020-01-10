@@ -54,6 +54,10 @@ body {
   text-decoration: underline;
 }
 
+:global .loginRequiredLink:visited {
+  color: $color-3;
+}
+
 p {
   color: $color-9;
   font-family: $font-family-2;
