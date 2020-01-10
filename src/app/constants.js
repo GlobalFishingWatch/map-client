@@ -1,5 +1,8 @@
 import getFlagFilterGroupValues from 'app/utils/getFlagFilterGroupValues'
 
+export const USER_TOKEN_STORAGE_KEY = 'CARRIER_PORTAL_USER_TOKEN'
+export const USER_REFRESH_TOKEN_STORAGE_KEY = 'CARRIER_PORTAL_USER_REFRESH_TOKEN'
+
 export const CONTROL_PANEL_MENUS = {
   FILTERS: 'FILTERS',
   LAYERS: 'LAYERS',

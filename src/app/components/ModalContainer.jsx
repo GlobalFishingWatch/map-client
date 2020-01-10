@@ -16,7 +16,7 @@ import FilterGroupModal from 'app/filters/containers/FilterGroupModal'
 import FleetsModal from 'app/fleets/containers/FleetsModal'
 import SubscriptionModal from 'app/report/containers/SubscriptionModal'
 
-const REQUIRE_MAP_LOGIN = process.env.REACT_APP_REQUIRE_MAP_LOGIN === true
+const REQUIRE_MAP_LOGIN = process.env.REACT_APP_REQUIRE_MAP_LOGIN === 'true'
 
 class ModalContainer extends Component {
   render() {
@@ -25,9 +25,9 @@ class ModalContainer extends Component {
       <div>
         <Modal
           opened={
-            (!this.props.token && REQUIRE_MAP_LOGIN) ||
-            (this.props.userPermissions !== null &&
-              this.props.userPermissions.indexOf('seeMap') === -1)
+            REQUIRE_MAP_LOGIN &&
+            this.props.userPermissions !== null &&
+            this.props.userPermissions.indexOf('seeMap') === -1
           }
           closeable={false}
           visible={!this.props.isEmbedded}

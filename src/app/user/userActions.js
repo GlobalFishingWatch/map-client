@@ -1,12 +1,15 @@
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
+import { getURLParameterByName } from 'app/utils/getURLParameterByName'
+
+const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL
+const API_AUTH_URL = `${API_GATEWAY_URL}/auth`
 
 export const SET_USER = 'SET_USER'
 export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS'
-export const SET_TOKEN = 'SET_TOKEN'
+export const SET_TOKENS = 'SET_TOKENS'
 export const LOGOUT = 'LOGOUT'
-export const TOKEN_SESSION = 'TOKEN_SESSION'
 
 // GTM = Google Tag Manager
 const GTGELoginEventId = 'loggedInUser'
@@ -23,11 +26,10 @@ const setGAUserDimension = (user) => {
   }
 }
 
-export function setToken(token) {
-  localStorage.setItem(TOKEN_SESSION, token)
+export function setTokens(tokens) {
   return {
-    type: SET_TOKEN,
-    payload: token,
+    type: SET_TOKENS,
+    payload: tokens,
   }
 }
 
@@ -35,89 +37,112 @@ function getUserData(data) {
   if (
     data === undefined ||
     data === null ||
-    data.displayName === undefined ||
+    data.firstName === undefined ||
     data.email === undefined
   ) {
     return null
   }
 
   return {
-    displayName: data.displayName,
+    displayName: data.firstName,
     email: data.email,
   }
 }
 
 function getAclData(data) {
-  if (data === null) return null
-  return data.allowedFeatures
+  if (data === null || !data.permissions) return []
+  return data.permissions
+    .filter((feature) => feature.type === 'application' && feature.value === 'map-client')
+    .map((feature) => feature.action)
+}
+
+async function getTokensWithAccessToken(accesToken) {
+  return fetch(`${API_AUTH_URL}/token?access-token=${accesToken}`).then((r) => r.json())
+}
+
+async function getTokenWithRefreshToken(refreshToken) {
+  const data = await fetch(`${API_AUTH_URL}/token/reload`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${refreshToken}`,
+    },
+  }).then((r) => r.json())
+  return data ? data.token : ''
 }
 
 export function getLoggedUser() {
-  return (dispatch, getState) => {
-    const state = getState()
-    let token = state.user.token
-    if ((!state.user || !state.user.token) && localStorage.getItem(TOKEN_SESSION)) {
-      token = localStorage.getItem(TOKEN_SESSION)
-      dispatch(setToken(token))
-    }
-
-    let headers = {}
-    let basePermissions
-    if (!token) {
-      basePermissions = GUEST_PERMISSION_SET
-    } else {
-      basePermissions = AUTH_PERMISSION_SET
-      headers = {
-        Authorization: `Bearer ${token}`,
+  return async (dispatch, getState) => {
+    const accessToken = getURLParameterByName('access-token')
+    try {
+      if (accessToken) {
+        const tokens = await getTokensWithAccessToken(accessToken)
+        dispatch(setTokens(tokens))
+        window.location.search = window.location.search.replace(
+          /access-token=([a-zA-Z0-9.\-_]*)/g,
+          ''
+        )
       }
+    } catch (e) {
+      console.log(e)
     }
 
-    fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/me`, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
-        }
-        dispatch({
-          type: SET_TOKEN,
-          payload: null,
+    let token = getState().user.token
+    const refreshToken = getState().user.refreshToken
+
+    if (token) {
+      const headers = { Authorization: `Bearer ${token}` }
+
+      fetch(`${API_AUTH_URL}/me`, { method: 'GET', headers })
+        .then((response) => response.json())
+        .then((payload) => {
+          if (payload && payload.identity) {
+            setGAUserDimension(payload)
+          } else {
+            setGAUserDimension(false)
+          }
+          dispatch({
+            type: SET_USER,
+            payload: getUserData(payload),
+          })
+          dispatch({
+            type: SET_USER_PERMISSIONS,
+            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(payload))),
+          })
         })
-        setGAUserDimension(false)
-        return null
-      })
-      .then((payload) => {
-        if (payload && payload.identity) {
-          setGAUserDimension(payload)
-        } else {
+        .catch(async () => {
+          setTokens({ token: null })
           setGAUserDimension(false)
-        }
-        dispatch({
-          type: SET_USER,
-          payload: getUserData(payload),
+          dispatch(getLoggedUser())
         })
-        dispatch({
-          type: SET_USER_PERMISSIONS,
-          payload: uniq(basePermissions.concat(getAclData(payload))),
-        })
+    } else if (refreshToken) {
+      token = await getTokenWithRefreshToken(refreshToken)
+      dispatch(setTokens({ token }))
+      dispatch(getLoggedUser())
+    } else {
+      dispatch({
+        type: SET_USER_PERMISSIONS,
+        payload: GUEST_PERMISSION_SET,
       })
+    }
   }
 }
 
 export function logout() {
-  return (dispatch) => {
-    localStorage.removeItem(TOKEN_SESSION)
-    dispatch({
-      type: LOGOUT,
-    })
-    dispatch(getLoggedUser())
+  return (dispatch, getState) => {
+    dispatch({ type: LOGOUT })
+    const token = getState().user.token
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    }
+    fetch(`${API_AUTH_URL}/logout`, { method: 'GET', headers })
     setGAUserDimension(false)
-    window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '')
   }
 }
 
+export function getLoginUrl() {
+  return `${API_AUTH_URL}?client=gfw&callback=${window.location.href}`
+}
+
 export function login() {
-  window.location = `${process.env.REACT_APP_V2_API_ENDPOINT}/authorize?\
-response_type=token&client_id=asddafd&redirect_uri=${window.location}`
+  window.location = getLoginUrl()
 }
