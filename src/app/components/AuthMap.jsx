@@ -18,8 +18,12 @@ class AuthMap extends Component {
 
 AuthMap.propTypes = {
   login: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
   canShareWorkspaces: PropTypes.bool.isRequired,
+}
+
+AuthMap.defaultProps = {
+  token: '',
 }
 
 export default AuthMap

@@ -15,6 +15,7 @@ import calculateLayerId from 'app/utils/calculateLayerId'
 import { loadCustomLayer } from './customLayerActions'
 import { USER_PERMISSIONS } from 'app/constants'
 import { hasUserActionPermission } from 'app/user/userSelectors'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const SET_LAYERS = 'SET_LAYERS'
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER'
@@ -28,29 +29,9 @@ export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE'
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
-function loadLayerHeader(headerUrl, token) {
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  }
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`
-  }
-
+function loadLayerHeader(headerUrl) {
   return new Promise((resolve) => {
-    fetch(headerUrl, {
-      method: 'GET',
-      headers,
-    })
-      .then((res) => {
-        if (res.status >= 400) {
-          console.warn(`loading of layer header failed ${headerUrl}`)
-          Promise.reject()
-          return null
-        }
-        return res.json()
-      })
+    fetchEndpoint(headerUrl)
       .then((data) => {
         resolve(data)
       })

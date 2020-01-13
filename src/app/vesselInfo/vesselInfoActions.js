@@ -52,7 +52,6 @@ function showVesselDetails(tilesetId, id) {
 function setCurrentVessel(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
-    const token = state.user.token
     const layer = state.layers.workspaceLayers.find(
       (l) => l.header !== undefined && (l.tilesetId === tilesetId || l.id === tilesetId)
     )
@@ -66,7 +65,7 @@ function setCurrentVessel(tilesetId, id) {
       id,
     })
     dispatch(startLoading())
-    fetchEndpoint(vesselInfoUrl, token)
+    fetchEndpoint(vesselInfoUrl)
       .then((data) => {
         dispatch(completeLoading())
         if (data !== null) {
@@ -168,7 +167,6 @@ export const applyFleetOverrides = () => (dispatch, getState) => {
 export function setPinnedVessels(pinnedVessels, shownVessel) {
   return (dispatch, getState) => {
     const state = getState()
-    const { token } = state.user
 
     pinnedVessels.forEach((pinnedVessel) => {
       let layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
@@ -186,7 +184,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
       const pinnedVesselUrl = buildEndpoint(layer.header.endpoints.info, {
         id: pinnedVessel.id,
       })
-      fetchEndpoint(pinnedVesselUrl, token).then((data) => {
+      fetchEndpoint(pinnedVesselUrl).then((data) => {
         if (data !== null) {
           delete data.series
           dispatch({

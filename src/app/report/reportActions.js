@@ -1,6 +1,7 @@
 import { toggleLayerVisibility, setLayerOpacity } from 'app/layers/layersActions'
 // import { clearHighlightedVessels } from 'activityLayers/heatmapActions'; TODO MAP MODULE
 import { FLAGS } from 'app/constants'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const SET_CURRENT_SELECTED_POLYGON = 'SET_CURRENT_SELECTED_POLYGON'
 export const ADD_REPORT_POLYGON = 'ADD_REPORT_POLYGON'
@@ -185,18 +186,7 @@ export function sendSubscription() {
       method: 'POST',
       body,
     }
-    options.headers = {
-      Authorization: `Bearer ${state.user.token}`,
-      'Content-Type': 'application/json',
-    }
-    fetch(url, options)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error sending report ${res.status} - ${res.statusText}`)
-        }
-        return res
-      })
-      .then((res) => res.json())
+    fetchEndpoint(url, options)
       .then((data) => {
         dispatch({
           type: SET_SUBSCRIPTION_STATUS_SENT,
@@ -204,9 +194,10 @@ export function sendSubscription() {
         })
       })
       .catch((err) => {
+        const message = `Error sending report ${err.status} - ${err.message}`
         dispatch({
           type: SET_SUBSCRIPTION_STATUS_ERROR,
-          payload: err.message,
+          payload: message,
         })
       })
   }

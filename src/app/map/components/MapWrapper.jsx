@@ -109,6 +109,7 @@ class MapWrapper extends Component {
 
     const clickPopup =
       clickPopupData === null ? null : { ...clickPopupData, content: this.renderClickPopup() }
+
     return (
       <Suspense fallback={<Loader visible absolute />}>
         <MapModule

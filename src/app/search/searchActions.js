@@ -4,6 +4,7 @@ import 'whatwg-fetch'
 import debounce from 'lodash/debounce'
 import getVesselName from 'app/utils/getVesselName'
 import buildEndpoint from 'app/utils/buildEndpoint'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS'
 export const SET_SEARCH_TERM = 'SET_SEARCH_TERM'
@@ -16,15 +17,6 @@ export const SET_HAS_HIDDEN_SEARCHABLE_LAYERS = 'SET_HAS_HIDDEN_SEARCHABLE_LAYER
 const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
   if (searchTerm.length < SEARCH_QUERY_MINIMUM_LIMIT) {
     return
-  }
-
-  const options = {
-    method: 'GET',
-  }
-  if (state.user.token) {
-    options.headers = {
-      Authorization: `Bearer ${state.user.token}`,
-    }
   }
 
   const searchableLayers = state.layers.workspaceLayers
@@ -93,11 +85,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     })
   })
 
-  const searchPromises = uniqSearchURLs.map((url) =>
-    fetch(url, options)
-      .then((response) => response.json())
-      .catch((err) => err)
-  )
+  const searchPromises = uniqSearchURLs.map((url) => fetchEndpoint(url).catch((err) => err))
 
   Promise.all(searchPromises).then((resultsOrErrors) => {
     let entries = []

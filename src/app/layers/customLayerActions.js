@@ -4,28 +4,20 @@ import { CUSTOM_LAYERS_SUBTYPES } from 'app/constants'
 import isURL from 'validator/lib/isURL'
 import WMSCapabilities from 'wms-capabilities'
 import URI from 'urijs'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const CUSTOM_LAYER_UPLOAD_START = 'CUSTOM_LAYER_UPLOAD_START'
 export const CUSTOM_LAYER_UPLOAD_SUCCESS = 'CUSTOM_LAYER_UPLOAD_SUCCESS'
 export const CUSTOM_LAYER_UPLOAD_ERROR = 'CUSTOM_LAYER_UPLOAD_ERROR'
 export const CUSTOM_LAYER_RESET = 'CUSTOM_LAYER_RESET'
 
-export const loadCustomLayer = ({ token, subtype, id, url }) => {
-  const loadPromise = fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error(res.statusText)
-      return res.json()
-    })
-    .then((json) => ({
-      data: json,
-      subtype,
-      id,
-      url,
-    }))
+export const loadCustomLayer = ({ subtype, id, url }) => {
+  const loadPromise = fetchEndpoint(url).then((json) => ({
+    data: json,
+    subtype,
+    id,
+    url,
+  }))
   return loadPromise
 }
 
@@ -84,24 +76,15 @@ const getWMSURLFilterdByLayers = ({ url, capabilities }, layersActives) => {
 }
 
 const saveToDirectory = ({ token, subtype, name, description, url }) => {
-  const savePromise = fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/directory`, {
+  const savePromise = fetchEndpoint(`${process.env.REACT_APP_V2_API_ENDPOINT}/directory`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'content-type': 'application/json',
-    },
     body: JSON.stringify({ title: name, url, description }),
-  })
-    .then((res) => {
-      if (!res.ok) throw new Error(res.statusText)
-      return res.json()
-    })
-    .then((json) => ({
-      token,
-      subtype,
-      id: json.args.id,
-      url: json.args.source.args.url,
-    }))
+  }).then((json) => ({
+    token,
+    subtype,
+    id: json.args.id,
+    url: json.args.source.args.url,
+  }))
 
   return savePromise
 }

@@ -21,6 +21,7 @@ import {
 } from '@globalfishingwatch/map-components/components/map/utils'
 import defaultWorkspace from 'app/workspace/workspace'
 import { setNotification } from 'app/notifications/notificationsActions'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 const LOCAL_WORKSPACE = process.env.REACT_APP_LOCAL_WORKSPACE === true
 
@@ -129,15 +130,6 @@ export function saveWorkspace(errorAction) {
   // FIXME double check filtergoups hue save
   return (dispatch, getState) => {
     const state = getState()
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }
-
-    if (state.user.token) {
-      headers.Authorization = `Bearer ${state.user.token}`
-    }
-
     const shownVesselData = state.vesselInfo.vessels.find((e) => e.shownInInfoPanel === true)
     let shownVessel = null
     if (shownVesselData !== undefined) {
@@ -202,9 +194,8 @@ export function saveWorkspace(errorAction) {
       },
     }
 
-    fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces`, {
+    fetchEndpoint(`${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces`, {
       method: 'POST',
-      headers,
       body: JSON.stringify(workspaceData),
     })
       .then((res) => res.json())
@@ -262,9 +253,7 @@ function dispatchActions(workspaceData, dispatch, getState) {
     if (workspaceData.shownVessel) {
       if (workspaceData.shownVessel.id === undefined) {
         console.warn(
-          `attempting to load vessel on tileset ${
-            workspaceData.shownVessel.tilesetId
-          } with no id/seriesgroup`
+          `attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no id/seriesgroup`
         )
       } else {
         const { tilesetId, id } = workspaceData.shownVessel
@@ -517,14 +506,7 @@ export function getWorkspace() {
       url = `${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`
     }
 
-    const options = {}
-    if (state.user.token) {
-      options.headers = {
-        Authorization: `Bearer ${state.user.token}`,
-      }
-    }
-
-    fetch(url, options)
+    fetchEndpoint(url)
       .then((res) => res.json())
       .then((data) => {
         dispatch(loadWorkspace(data))
