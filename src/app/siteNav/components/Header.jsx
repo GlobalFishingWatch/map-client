@@ -37,6 +37,7 @@ class Header extends Component {
     return (
       <div>
         <div className={HeaderStyles.preview} />
+        {/* <button onClick={this.props.logout}>LOGOUT</button> */}
         {!this.props.isEmbedded && !COMPLETE_MAP_RENDER && (
           <MenuMobile
             visible={this.state.mobileMenuVisible}
@@ -85,15 +86,17 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  logout: PropTypes.func,
-  login: PropTypes.func,
-  loggedUser: PropTypes.object,
-  openShareModal: PropTypes.func,
-  setSupportModalVisibility: PropTypes.func,
-  setVisibleMenu: PropTypes.func,
-  isEmbedded: PropTypes.bool,
+  logout: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  openShareModal: PropTypes.func.isRequired,
+  setSupportModalVisibility: PropTypes.func.isRequired,
+  isEmbedded: PropTypes.bool.isRequired,
   urlWorkspaceId: PropTypes.string,
-  canShareWorkspaces: PropTypes.bool,
+  canShareWorkspaces: PropTypes.bool.isRequired,
+}
+
+Header.defaultProps = {
+  urlWorkspaceId: '',
 }
 
 export default Header

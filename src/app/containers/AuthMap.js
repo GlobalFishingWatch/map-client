@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import AuthMap from 'app/components/AuthMap'
 import { login } from 'app/user/userActions'
+import { canShareWorkspaces } from 'app/user/userSelectors'
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
-  userPermissions: state.user.userPermissions,
-  isEmbedded: state.app.isEmbedded,
+  canShareWorkspaces: canShareWorkspaces(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import LeftControlPanel from 'app/mapPanels/leftControlPanel/components/LeftControlPanel'
 import { openShareModal, setShareModalError } from 'app/share/shareActions'
+import { canShareWorkspaces } from 'app/user/userSelectors'
 import { saveWorkspace, incrementZoom, decrementZoom } from 'app/workspace/workspaceActions'
 import { setSupportModalVisibility } from 'app/siteNav/supportFormActions'
 
@@ -9,7 +10,7 @@ const mapStateToProps = (state) => ({
   canZoomIn: state.workspace.viewport.canZoomIn,
   canZoomOut: state.workspace.viewport.canZoomOut,
   mouseLatLon: state.workspace.mouseLatLon,
-  userPermissions: state.user.userPermissions,
+  canShareWorkspaces: canShareWorkspaces(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({

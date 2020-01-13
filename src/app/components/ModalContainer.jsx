@@ -20,15 +20,10 @@ const REQUIRE_MAP_LOGIN = process.env.REACT_APP_REQUIRE_MAP_LOGIN === 'true'
 
 class ModalContainer extends Component {
   render() {
-    const canShareWorkspaces = !this.props.isEmbedded && this.props.canShareWorkspaces === true
     return (
       <div>
         <Modal
-          opened={
-            REQUIRE_MAP_LOGIN &&
-            this.props.userPermissions !== null &&
-            this.props.userPermissions.indexOf('seeMap') === -1
-          }
+          opened={REQUIRE_MAP_LOGIN && !this.props.canSeeMap}
           closeable={false}
           visible={!this.props.isEmbedded}
           close={() => {}}
@@ -89,7 +84,7 @@ class ModalContainer extends Component {
         <Modal
           opened={this.props.shareModalOpenState}
           closeable
-          visible={canShareWorkspaces}
+          visible={this.props.canShareWorkspaces}
           close={this.props.closeShareModal}
         >
           <Share />
@@ -117,34 +112,32 @@ class ModalContainer extends Component {
 }
 
 ModalContainer.propTypes = {
-  closeFilterGroupModal: PropTypes.func,
-  closeFleetsModal: PropTypes.func,
-  closeLayerInfoModal: PropTypes.func,
-  closeLayerManagementModal: PropTypes.func,
-  closeLayerRemovalModal: PropTypes.func,
-  closeRecentVesselModal: PropTypes.func,
-  closeSearchModal: PropTypes.func,
-  closeShareModal: PropTypes.func,
-  closeSubscriptionModal: PropTypes.func,
-  closeSupportModal: PropTypes.func,
-  closeWelcomeModal: PropTypes.func,
-  isFilterGroupModalOpen: PropTypes.bool,
-  isFleetsModalOpen: PropTypes.bool,
-  isEmbedded: PropTypes.bool,
-  layerIdPromptedForRemoval: PropTypes.any,
-  layerManagementModal: PropTypes.bool,
-  layerModal: PropTypes.object,
-  openSupportModal: PropTypes.func,
-  recentVesselModalOpen: PropTypes.bool,
-  reportHasPolygon: PropTypes.bool,
-  searchModalOpen: PropTypes.bool,
-  shareModalOpenState: PropTypes.bool,
-  subscriptionModalOpen: PropTypes.bool,
-  supportFormModalOpen: PropTypes.bool,
-  token: PropTypes.string,
-  userPermissions: PropTypes.array,
-  welcomeModalOpen: PropTypes.bool,
-  canShareWorkspaces: PropTypes.bool,
+  closeFilterGroupModal: PropTypes.func.isRequired,
+  closeFleetsModal: PropTypes.func.isRequired,
+  closeLayerInfoModal: PropTypes.func.isRequired,
+  closeLayerManagementModal: PropTypes.func.isRequired,
+  closeLayerRemovalModal: PropTypes.func.isRequired,
+  closeRecentVesselModal: PropTypes.func.isRequired,
+  closeSearchModal: PropTypes.func.isRequired,
+  closeShareModal: PropTypes.func.isRequired,
+  closeSubscriptionModal: PropTypes.func.isRequired,
+  closeSupportModal: PropTypes.func.isRequired,
+  closeWelcomeModal: PropTypes.func.isRequired,
+  isFilterGroupModalOpen: PropTypes.bool.isRequired,
+  isFleetsModalOpen: PropTypes.bool.isRequired,
+  isEmbedded: PropTypes.bool.isRequired,
+  layerIdPromptedForRemoval: PropTypes.any.isRequired,
+  layerManagementModal: PropTypes.bool.isRequired,
+  layerModal: PropTypes.object.isRequired,
+  recentVesselModalOpen: PropTypes.bool.isRequired,
+  reportHasPolygon: PropTypes.bool.isRequired,
+  searchModalOpen: PropTypes.bool.isRequired,
+  shareModalOpenState: PropTypes.bool.isRequired,
+  subscriptionModalOpen: PropTypes.bool.isRequired,
+  supportFormModalOpen: PropTypes.bool.isRequired,
+  canSeeMap: PropTypes.bool.isRequired,
+  canShareWorkspaces: PropTypes.bool.isRequired,
+  welcomeModalOpen: PropTypes.bool.isRequired,
 }
 
 export default ModalContainer
