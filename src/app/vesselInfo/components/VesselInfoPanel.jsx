@@ -159,7 +159,7 @@ class VesselInfoPanel extends Component {
 
 VesselInfoPanel.propTypes = {
   warningLiteral: PropTypes.string.isRequired,
-  vesselInfo: PropTypes.object.isRequired,
+  vesselInfo: PropTypes.object,
   layerIsPinable: PropTypes.bool.isRequired,
   status: PropTypes.number.isRequired,
   hide: PropTypes.func.isRequired,
@@ -171,6 +171,10 @@ VesselInfoPanel.propTypes = {
   canSeeVesselBasicInfo: PropTypes.bool.isRequired,
   canSeeVesselDetails: PropTypes.bool.isRequired,
   canPinVessel: PropTypes.bool.isRequired,
+}
+
+VesselInfoPanel.defaultProps = {
+  vesselInfo: null,
 }
 
 export default VesselInfoPanel
