@@ -56,6 +56,18 @@ function getAclData(data) {
     .map((feature) => feature.action)
 }
 
+function removeUrlToken() {
+  if (window.history.replaceState) {
+    window.history.replaceState(
+      null,
+      '',
+      window.location.pathname +
+        window.location.search.replace(/[?&]access-token=[^&]+/, '').replace(/^&/, '?') +
+        window.location.hash
+    )
+  }
+}
+
 async function getTokensWithAccessToken(accesToken) {
   return fetch(`${API_AUTH_URL}/token?access-token=${accesToken}`).then((r) => r.json())
 }
@@ -73,21 +85,28 @@ async function getTokenWithRefreshToken(refreshToken) {
 export function getLoggedUser() {
   return async (dispatch, getState) => {
     const accessToken = getURLParameterByName('access-token')
+
     try {
       if (accessToken) {
         const tokens = await getTokensWithAccessToken(accessToken)
         dispatch(setTokens(tokens))
-        window.location.search = window.location.search.replace(
-          /access-token=([a-zA-Z0-9.\-_]*)/g,
-          ''
-        )
+        removeUrlToken()
       }
     } catch (e) {
-      console.log(e)
+      console.warn('Error trying to get tokens with access token', e)
     }
 
-    let token = getState().user.token
-    const refreshToken = getState().user.refreshToken
+    let token
+    let refreshToken = getState().user.refreshToken
+    if (refreshToken) {
+      try {
+        token = await getTokenWithRefreshToken(refreshToken)
+        dispatch(setTokens({ token }))
+      } catch (e) {
+        dispatch(setTokens({ refreshToken: '' }))
+        console.warn('Error trying to refresh token', e)
+      }
+    }
 
     if (token) {
       const headers = { Authorization: `Bearer ${token}` }
@@ -112,12 +131,7 @@ export function getLoggedUser() {
         .catch(async () => {
           setTokens({ token: null })
           setGAUserDimension(false)
-          dispatch(getLoggedUser())
         })
-    } else if (refreshToken) {
-      token = await getTokenWithRefreshToken(refreshToken)
-      dispatch(setTokens({ token }))
-      dispatch(getLoggedUser())
     } else {
       dispatch({
         type: SET_USER_PERMISSIONS,
