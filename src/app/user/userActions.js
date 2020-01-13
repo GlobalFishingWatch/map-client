@@ -2,6 +2,7 @@ import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
 import { getURLParameterByName } from 'app/utils/getURLParameterByName'
+import GFWAPI from 'app/gfw-api-client'
 
 const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL
 const API_AUTH_URL = `${API_GATEWAY_URL}/auth`
@@ -68,87 +69,52 @@ function removeUrlToken() {
   }
 }
 
-async function getTokensWithAccessToken(accesToken) {
-  return fetch(`${API_AUTH_URL}/token?access-token=${accesToken}`).then((r) => r.json())
-}
-
-async function getTokenWithRefreshToken(refreshToken) {
-  const data = await fetch(`${API_AUTH_URL}/token/reload`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${refreshToken}`,
-    },
-  }).then((r) => r.json())
-  return data ? data.token : ''
-}
-
 export function getLoggedUser() {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const accessToken = getURLParameterByName('access-token')
 
     try {
-      if (accessToken) {
-        const tokens = await getTokensWithAccessToken(accessToken)
-        dispatch(setTokens(tokens))
+      const user = await GFWAPI.login({ accessToken })
+      if (user) {
         removeUrlToken()
-      }
-    } catch (e) {
-      console.warn('Error trying to get tokens with access token', e)
-    }
-
-    let token
-    let refreshToken = getState().user.refreshToken
-    if (refreshToken) {
-      try {
-        token = await getTokenWithRefreshToken(refreshToken)
-        dispatch(setTokens({ token }))
-      } catch (e) {
-        dispatch(setTokens({ refreshToken: '' }))
-        console.warn('Error trying to refresh token', e)
-      }
-    }
-
-    if (token) {
-      const headers = { Authorization: `Bearer ${token}` }
-
-      fetch(`${API_AUTH_URL}/me`, { method: 'GET', headers })
-        .then((response) => response.json())
-        .then((payload) => {
-          if (payload && payload.identity) {
-            setGAUserDimension(payload)
+        const tokens = {
+          token: GFWAPI.getToken(),
+          refreshToken: GFWAPI.getRefreshToken(),
+        }
+        dispatch(setTokens(tokens))
+        try {
+          if (user && user.identity) {
+            setGAUserDimension(user)
           } else {
             setGAUserDimension(false)
           }
           dispatch({
             type: SET_USER,
-            payload: getUserData(payload),
+            payload: getUserData(user),
           })
           dispatch({
             type: SET_USER_PERMISSIONS,
-            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(payload))),
+            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(user))),
           })
-        })
-        .catch(async () => {
-          setTokens({ token: null })
+        } catch (e) {
           setGAUserDimension(false)
+        }
+      } else {
+        dispatch({
+          type: SET_USER_PERMISSIONS,
+          payload: GUEST_PERMISSION_SET,
         })
-    } else {
-      dispatch({
-        type: SET_USER_PERMISSIONS,
-        payload: GUEST_PERMISSION_SET,
-      })
+      }
+    } catch (e) {
+      console.warn('Error trying to login', e)
     }
   }
 }
 
 export function logout() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
+    GFWAPI.logout()
     dispatch({ type: LOGOUT })
-    const token = getState().user.token
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    }
-    fetch(`${API_AUTH_URL}/logout`, { method: 'GET', headers })
     setGAUserDimension(false)
   }
 }
