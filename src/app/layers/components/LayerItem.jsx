@@ -85,10 +85,8 @@ class LayerItem extends Component {
 
   render() {
     const { id, hue, color, reportId, visible, opacity, showLabels } = this.props.layer
-    const { layerPanelEditMode } = this.props
+    const { layerPanelEditMode, canReport } = this.props
     const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id
-    const canReport =
-      this.props.userPermissions !== null && this.props.userPermissions.indexOf('reporting') !== -1
 
     let actions
     if (this.props.layerPanelEditMode === true) {
@@ -199,8 +197,8 @@ LayerItem.propTypes = {
   /*
    list of restricted actions a user is allowed to perform
    */
-  userPermissions: PropTypes.array,
-  layerIndex: PropTypes.number,
+  canReport: PropTypes.bool.isRequired,
+  layerIndex: PropTypes.number.isRequired,
   /*
    layer object
    */

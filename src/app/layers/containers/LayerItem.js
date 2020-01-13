@@ -12,11 +12,13 @@ import {
   confirmLayerRemoval,
 } from 'app/layers/layersActions'
 import { trackLayerOpacityChange, trackLayerHueChange } from 'app/analytics/analyticsActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 const mapStateToProps = (state) => ({
   layerPanelEditMode: state.layers.layerPanelEditMode,
   currentlyReportedLayerId: state.report.layerId,
-  userPermissions: state.user.userPermissions,
+  canReport: hasUserActionPermission(USER_PERMISSIONS.reporting)(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
