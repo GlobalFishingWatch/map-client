@@ -8,6 +8,8 @@ import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
 import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 import { startLoading, completeLoading } from 'app/app/appActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
@@ -57,6 +59,7 @@ function setCurrentVessel(tilesetId, id) {
 
     if (layer === undefined) {
       console.warn('Unable to select feature - cant find layer', tilesetId)
+      return
     }
 
     const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, {
@@ -241,10 +244,11 @@ export function addVessel({ tilesetId, id, parentEncounter = null }) {
         parentEncounter,
       },
     })
-    if (
-      state.user.userPermissions !== null &&
-      state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1
-    ) {
+    const canSeeVesselBasicInfo = hasUserActionPermission(USER_PERMISSIONS.seeVesselBasicInfo)(
+      state
+    )
+
+    if (canSeeVesselBasicInfo) {
       dispatch(setCurrentVessel(tilesetId, id))
     } else {
       dispatch(hideVesselsInfoPanel())
