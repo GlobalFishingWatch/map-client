@@ -7,11 +7,14 @@ const getUserPermissions = (state) => state.user.userPermissions
 export const hasUserActionPermission = (action) =>
   createSelector(
     [getUserPermissions],
-    (userPermissions) =>
-      userPermissions !== null && userPermissions.indexOf(USER_PERMISSIONS[action]) !== -1
+    (userPermissions) => {
+      return userPermissions !== null && userPermissions.indexOf(action) !== -1
+    }
   )
 
 export const canShareWorkspaces = createSelector(
   [getEmbedded, hasUserActionPermission(USER_PERMISSIONS.shareWorkspace)],
-  (isEmbedded, shareWorkspace) => !isEmbedded && shareWorkspace
+  (isEmbedded, shareWorkspace) => {
+    return !isEmbedded && shareWorkspace
+  }
 )
