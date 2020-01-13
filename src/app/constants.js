@@ -3,6 +3,19 @@ import getFlagFilterGroupValues from 'app/utils/getFlagFilterGroupValues'
 export const USER_TOKEN_STORAGE_KEY = 'CARRIER_PORTAL_USER_TOKEN'
 export const USER_REFRESH_TOKEN_STORAGE_KEY = 'CARRIER_PORTAL_USER_REFRESH_TOKEN'
 
+export const USER_PERMISSIONS = {
+  seeMap: 'map.load',
+  search: 'map.search',
+  pinVessel: 'map.vessel-pin',
+  reporting: 'map.reports',
+  customLayer: 'map.layers-custom',
+  shareWorkspace: 'map.workspace-share',
+  selectVessel: 'map.vessel-select',
+  seeVesselInfo: 'map.vessel-info',
+  seeVesselBasicInfo: 'map.vessel-basic-info',
+  seeVesselsLayers: 'map.layer-vessel',
+}
+
 export const CONTROL_PANEL_MENUS = {
   FILTERS: 'FILTERS',
   LAYERS: 'LAYERS',
