@@ -13,6 +13,8 @@ import { refreshFlagFiltersLayers } from 'app/filters/filterGroupsActions'
 import { setNotification } from 'app/notifications/notificationsActions'
 import calculateLayerId from 'app/utils/calculateLayerId'
 import { loadCustomLayer } from './customLayerActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 export const SET_LAYERS = 'SET_LAYERS'
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER'
@@ -104,10 +106,8 @@ export function addCustomLayer(subtype, id, url, name, description, data) {
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState()
-    if (
-      state.user.userPermissions !== null &&
-      state.user.userPermissions.indexOf('seeVesselsLayers') === -1
-    ) {
+    const canSeeVesselLayers = hasUserActionPermission(USER_PERMISSIONS.seeVesselsLayers)(state)
+    if (canSeeVesselLayers) {
       workspaceLayers = workspaceLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
       libraryLayers = libraryLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
     }
@@ -116,9 +116,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url })
         console.warn(
-          `Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${
-            layer.url
-          }`
+          `Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${layer.url}`
         )
       }
       layer.label = layer.label || layer.title
