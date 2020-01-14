@@ -28,6 +28,7 @@ export class GFW_API {
     this._setToken(token || localStorage.getItem(tokenStorageKey))
     this._setRefreshToken(refreshToken || localStorage.getItem(refreshTokenStorageKey))
     this.refreshRetries = 0
+    this.logging = null
 
     if (debug) {
       console.log('GFW API Client initialized with the following config', this._getConfig())
@@ -86,48 +87,58 @@ export class GFW_API {
 
   async fetch(url, options = {}, refreshRetries = 0) {
     try {
-      const { method = 'GET', body = null, headers = {} } = options
-      if (this.debug) {
-        console.log(`GFWAPI: Fetching url: ${url}`)
+      if (this.logging && url !== `${this.baseUrl}/me`) {
+        // Don't do any request until the login is completed
+        // and don't wait for the login request itselft
+        await this.logging
       }
-      const data = await fetch(url, {
-        method,
-        ...(body && body),
-        headers: { ...headers, Authorization: `Bearer ${this.getToken()}` },
-      })
-        .then(processStatus)
-        .then(parseJSON)
-      return data
-    } catch (e) {
-      if (this.debug) {
-        if (refreshRetries >= 2) {
-          console.log(`GFWAPI: Attemps to refresh the token excedeed`)
-        }
-        console.warn(`GFWAPI: There was an error trying to fetch ${url}`)
-        console.warn(e)
-      }
-      // 401 = not authenticated, trying to refresh the token
-      if (e.status === 401 && refreshRetries < 2) {
-        if (this.debug) {
-          console.log(`GFWAPI: Trying to refresh the token attempt: ${refreshRetries}`)
-        }
-        try {
-          const { token } = await this._getTokenWithRefreshToken(this.getRefreshToken())
-          this._setToken(token)
 
-          if (this.debug) {
-            console.log(`Token refresh worked! trying to fetch again ${url}`)
+      try {
+        const { method = 'GET', body = null, headers = {}, json = true } = options
+        if (this.debug) {
+          console.log(`GFWAPI: Fetching url: ${url}`)
+        }
+        const data = await fetch(url, {
+          method,
+          ...(body && body),
+          headers: { ...headers, Authorization: `Bearer ${this.getToken()}` },
+        })
+          .then(processStatus)
+          .then((res) => (json ? parseJSON(res) : res))
+        return data
+      } catch (e) {
+        if (this.debug) {
+          if (refreshRetries >= 2) {
+            console.log(`GFWAPI: Attemps to refresh the token excedeed`)
           }
-          return this.fetch(url, options, ++refreshRetries)
-        } catch (e) {
+          console.warn(`GFWAPI: There was an error trying to fetch ${url}`)
+          console.warn(e)
+        }
+        // 401 = not authenticated, trying to refresh the token
+        if (e.status === 401 && refreshRetries < 2) {
           if (this.debug) {
-            console.warn(e)
+            console.log(`GFWAPI: Trying to refresh the token attempt: ${refreshRetries}`)
           }
+          try {
+            const { token } = await this._getTokenWithRefreshToken(this.getRefreshToken())
+            this._setToken(token)
+
+            if (this.debug) {
+              console.log(`Token refresh worked! trying to fetch again ${url}`)
+            }
+            return this.fetch(url, options, ++refreshRetries)
+          } catch (e) {
+            if (this.debug) {
+              console.warn(e)
+            }
+            throw new Error(`Error fetching resource ${url}`)
+          }
+        } else {
           throw new Error(`Error fetching resource ${url}`)
         }
-      } else {
-        throw new Error(`Error fetching resource ${url}`)
       }
+    } catch (e) {
+      throw new Error('Fetch resource not executed as the logged failed', url)
     }
   }
 
@@ -141,46 +152,81 @@ export class GFW_API {
   }
 
   async login({ accessToken = '', refreshToken = this.getRefreshToken() }) {
-    if (accessToken) {
-      try {
-        const tokens = await this._getTokensWithAccessToken(accessToken)
-        this._setToken(tokens.token)
-        this._setRefreshToken(tokens.refreshToken)
-      } catch (e) {
-        if (!this.getToken() && !this.getRefreshToken()) {
-          const msg = isUnauthorizedError(e)
-            ? 'Invalid access token'
-            : 'Error trying to generate tokens'
-          throw new Error(msg)
-        }
-      }
-    }
-
-    if (this.getToken()) {
-      try {
-        const user = await this.fetchUser()
-        return user
-      } catch (e) {
+    this.logging = new Promise(async (resolve, reject) => {
+      if (accessToken) {
         if (this.debug) {
-          console.warn('GFWAPI: Token expired, trying to refresh', e)
+          console.log(`GFWAPI: Trying to get tokens using access-token`)
+        }
+        try {
+          const tokens = await this._getTokensWithAccessToken(accessToken)
+          this._setToken(tokens.token)
+          this._setRefreshToken(tokens.refreshToken)
+          if (this.debug) {
+            console.log(`GFWAPI: access-token valid, tokens ready`)
+          }
+        } catch (e) {
+          if (!this.getToken() && !this.getRefreshToken()) {
+            const msg = isUnauthorizedError(e)
+              ? 'Invalid access token'
+              : 'Error trying to generate tokens'
+            if (this.debug) {
+              console.warn(`GFWAPI: ${msg}`)
+            }
+            reject(new Error(msg))
+            return null
+          }
         }
       }
-    }
 
-    if (refreshToken) {
-      try {
-        const { token } = await this._getTokenWithRefreshToken(refreshToken)
-        this._setToken(token)
-        return this.fetchUser()
-      } catch (e) {
-        const msg = isUnauthorizedError(e)
-          ? 'Invalid refresh token'
-          : 'Error trying to refreshing the token'
-        throw new Error(msg)
+      if (this.getToken()) {
+        if (this.debug) {
+          console.log(`GFWAPI: Trying to get user with current token`)
+        }
+        try {
+          const user = await this.fetchUser()
+          if (this.debug) {
+            console.log(`GFWAPI: Token valid, user data ready:`, user)
+          }
+          resolve(user)
+          return user
+        } catch (e) {
+          if (this.debug) {
+            console.warn('GFWAPI: Token expired, trying to refresh', e)
+          }
+        }
       }
-    }
 
-    return null
+      if (refreshToken) {
+        if (this.debug) {
+          console.log(`GFWAPI: Token wasn't valid, trying to refresh`)
+        }
+        try {
+          const { token } = await this._getTokenWithRefreshToken(refreshToken)
+          this._setToken(token)
+          if (this.debug) {
+            console.log(`GFWAPI: Refresh token OK, fetching user`)
+          }
+          const user = await this.fetchUser()
+          if (this.debug) {
+            console.log(`GFWAPI: Login finished, user data ready:`, user)
+          }
+          resolve(user)
+          return user
+        } catch (e) {
+          const msg = isUnauthorizedError(e)
+            ? 'Invalid refresh token'
+            : 'Error trying to refreshing the token'
+          if (this.debug) {
+            console.warn(`GFWAPI: ${msg}`)
+          }
+          reject(new Error(msg))
+          return null
+        }
+      }
+      resolve(null)
+      return null
+    })
+    return await this.logging
   }
 
   async logout() {
