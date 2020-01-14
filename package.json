@@ -32,6 +32,7 @@
   },
   "homepage": ".",
   "dependencies": {
+    "@globalfishingwatch/api-client": "^0.0.3",
     "@globalfishingwatch/map-components": "2.8.1",
     "@globalfishingwatch/map-convert": "github:GlobalFishingWatch/map-convert",
     "@mapbox/tile-cover": "3.0.2",

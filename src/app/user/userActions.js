@@ -2,10 +2,7 @@ import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
 import { getURLParameterByName } from 'app/utils/getURLParameterByName'
-import GFWAPI from 'app/gfw-api-client'
-
-const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL
-const API_AUTH_URL = `${API_GATEWAY_URL}/auth`
+import GFWAPI, { getLoginUrl as getLoginUrlLib } from '@globalfishingwatch/api-client'
 
 export const SET_USER = 'SET_USER'
 export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS'
@@ -120,7 +117,8 @@ export function logout() {
 }
 
 export function getLoginUrl() {
-  return `${API_AUTH_URL}?client=gfw&callback=${window.location.href}`
+  const callback = window.location.href
+  return getLoginUrlLib(callback)
 }
 
 export function login() {
