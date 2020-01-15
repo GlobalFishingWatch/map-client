@@ -910,10 +910,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
-"@globalfishingwatch/map-components@^2.7.5":
-  version "2.7.5"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.7.5.tgz#04963d02202c89ebb4b5d2a19e967055d094d6a7"
-  integrity sha512-PCUQBrKmsvbVtPGZMQ82XWSeiT52KK6PQsB8Qj141ZMaXZa6I7HmbPXGlt5lmmLpeL42Hn8LTGLlX+oyNqQciw==
+"@globalfishingwatch/map-components@^2.8.1":
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-2.8.1.tgz#3aee1a912aeeec96ed945b7df97ba8f9ddba895a"
+  integrity sha512-u/cI54DHJg7zS74oHrOWmXb/jplWj8zA/VVgeMZ/ZSoQ3VAGNBvNnS08bgSk49JBXBITLoRcn8CeQZKKoefvyA==
   dependencies:
     "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
     "@mapbox/tile-cover" "^3.0.2"
@@ -921,7 +921,7 @@
     "@turf/area" "^6.0.1"
     "@turf/bbox" "^6.0.1"
     classnames "^2.2.6"
-    countryflag "^2.4.0"
+    countryflag "^2.4.2"
     d3-ease "^1.0.5"
     d3-geo "^1.11.3"
     d3-scale "^2.2.2"
@@ -3268,10 +3268,10 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.0.7, cosmiconfig@^5.2.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-countryflag@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-2.4.0.tgz#a3a299603838f36fb028f9ae6e37d8373a2c195f"
-  integrity sha512-NuAAvNnc/OinEvO3pbFZ7nnrjAEu0suzsMcPKczm8QZZBot6/IiKDZNaOx1clfU4QlqlDGgBpDxDMcvAcYn8YA==
+countryflag@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-2.4.2.tgz#fd7b992ac3bb75cbf9560739c2ab34b84351a1c9"
+  integrity sha512-s2iyo9okeMnRlzcQlpoLGq42F7Y7WS8Z4vTRc+9rlWz6clCIvQynYREdQc3VhYMOGsdGU12yLSFhW+fSfkNF+Q==
   dependencies:
     core-js "^3.1.4"
     if-emoji "^0.1.0"
