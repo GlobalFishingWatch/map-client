@@ -18,6 +18,7 @@ class LanguageSelector extends Component {
   }
 
   eventFallbackInterval = null
+  eventFallbackRetries = 0
 
   componentDidMount = () => {
     if (window.bablic !== undefined && window.bablic.loaded) {
@@ -35,7 +36,10 @@ class LanguageSelector extends Component {
   checkBablicLoaded = () => {
     if (!this.state.loaded && window.bablic !== undefined && window.bablic.loaded) {
       this.onBablicLoad()
+    } else if (this.eventFallbackRetries > 3 && this.eventFallbackInterval !== null) {
+      clearInterval(this.eventFallbackInterval)
     }
+    this.eventFallbackRetries++
   }
 
   addEventListenerFallback = () => {
@@ -54,6 +58,8 @@ class LanguageSelector extends Component {
         currentLng,
         languages: getLanguagesOrdered(languages, currentLng),
       })
+    } else {
+      this.addEventListenerFallback()
     }
   }
 

@@ -46,7 +46,9 @@ class StaticLayerPopup extends React.Component {
             <div key={field.title}>
               <b>{humanizePopupFieldId(field.label)}</b>{' '}
               {field.isLink === true ? (
-                <a href={field.value}>Click here for more details</a>
+                <a href={field.value} target="_blank" rel="noopener noreferrer">
+                  Click here for more details
+                </a>
               ) : (
                 <span>{field.value}</span>
               )}
