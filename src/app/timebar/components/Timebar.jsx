@@ -117,12 +117,15 @@ class Timebar extends Component {
 
   componentWillUnmount() {
     if (!this.svg) return
-
-    outerBrushHandleLeft.on('mousedown', null)
-    outerBrushHandleRight.on('mousedown', null)
+    if (outerBrushHandleLeft) {
+      outerBrushHandleLeft.on('mousedown', null)
+      outerBrushHandleRight.on('mousedown', null)
+    }
     d3select('body').on('mousemove', null)
     d3select('body').on('mouseup', null)
-    this.innerBrushFunc.on('end', null)
+    if (this.innerBrushFunc) {
+      this.innerBrushFunc.on('end', null)
+    }
   }
 
   tickCounter() {
@@ -169,108 +172,117 @@ class Timebar extends Component {
       .attr('d', area)
 
     // set up brush generators
-    brush = () => d3brushX().extent([[0, 0], [width, height]])
-    this.innerBrushFunc = brush()
+    brush = () =>
+      d3brushX().extent([
+        [0, 0],
+        [width, height],
+      ])
 
-    this.innerBrush = this.group
-      .append('g')
-      .attr('class', TimelineStyles.timelineInnerBrush)
-      .call(this.innerBrushFunc)
+    try {
+      this.innerBrushFunc = brush()
 
-    outerBrushHandleLeft = this.createOuterHandle()
-    outerBrushHandleRight = this.createOuterHandle()
+      this.innerBrush = this.group
+        .append('g')
+        .attr('class', TimelineStyles.timelineInnerBrush)
+        .call(this.innerBrushFunc)
 
-    this.innerBrush.select('.overlay').remove()
+      outerBrushHandleLeft = this.createOuterHandle()
+      outerBrushHandleRight = this.createOuterHandle()
 
-    this.innerBrush
-      .select('.selection')
-      .attr('height', height)
-      .classed(TimelineStyles.timelineInnerBrushSelection, true)
+      this.innerBrush.select('.overlay').remove()
 
-    const innerBrushCircles = this.innerBrush
-      .append('g')
-      .classed(TimelineStyles.timelineInnerBrushCircles, true)
+      this.innerBrush
+        .select('.selection')
+        .attr('height', height)
+        .classed(TimelineStyles.timelineInnerBrushSelection, true)
 
-    innerBrushLeftCircle = innerBrushCircles.append('circle')
-    innerBrushRightCircle = innerBrushCircles.append('circle')
-    innerBrushCircles
-      .selectAll('circle')
-      .attr('cy', height / 2)
-      .attr('r', 5)
-      .classed(TimelineStyles.timelineInnerBrushCircle, true)
+      const innerBrushCircles = this.innerBrush
+        .append('g')
+        .classed(TimelineStyles.timelineInnerBrushCircles, true)
 
-    innerBrushMiddle = this.innerBrush
-      .append('g')
-      .classed(TimelineStyles.timelineInnerBrushMiddle, true)
-    innerBrushMiddle.append('path').attr('d', `M 0 0 L 0 ${height}`)
-    innerBrushMiddle
-      .append('circle')
-      .attr('r', 5)
-      .attr('cy', height / 2)
-      .classed(TimelineStyles.timelineInnerBrushCircle, true)
+      innerBrushLeftCircle = innerBrushCircles.append('circle')
+      innerBrushRightCircle = innerBrushCircles.append('circle')
+      innerBrushCircles
+        .selectAll('circle')
+        .attr('cy', height / 2)
+        .attr('r', 5)
+        .classed(TimelineStyles.timelineInnerBrushCircle, true)
 
-    // Create month ticks for xAxis
-    this.group
-      .append('g')
-      .attr('class', TimelineStyles.timelineXAxis)
-      .attr('transform', `translate(0, ${height})`)
-      .call(xAxis)
+      innerBrushMiddle = this.innerBrush
+        .append('g')
+        .classed(TimelineStyles.timelineInnerBrushMiddle, true)
+      innerBrushMiddle.append('path').attr('d', `M 0 0 L 0 ${height}`)
+      innerBrushMiddle
+        .append('circle')
+        .attr('r', 5)
+        .attr('cy', height / 2)
+        .classed(TimelineStyles.timelineInnerBrushCircle, true)
 
-    // Add label for the timeline
-    const label = this.group
-      .append('g')
-      .attr('class', TimelineStyles.timelineLabel)
-      .append('text')
+      // Create month ticks for xAxis
+      this.group
+        .append('g')
+        .attr('class', TimelineStyles.timelineXAxis)
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis)
 
-    label
-      .append('tspan')
-      .attr('x', '0')
-      .text('Fishing')
+      // Add label for the timeline
+      const label = this.group
+        .append('g')
+        .attr('class', TimelineStyles.timelineLabel)
+        .append('text')
 
-    label
-      .append('tspan')
-      .attr('x', '0')
-      .attr('y', '15px')
-      .text('hours')
+      label
+        .append('tspan')
+        .attr('x', '0')
+        .text('Fishing')
 
-    // move both brushes to initial position
-    this.resetOuterBrush()
-    this.redrawInnerBrush(this.props.timelineInnerExtent)
+      label
+        .append('tspan')
+        .attr('x', '0')
+        .attr('y', '15px')
+        .text('hours')
 
-    // custom outer brush events
-    outerBrushHandleLeft.on('mousedown', this.onOuterHandleClick.bind(this))
-    outerBrushHandleRight.on('mousedown', this.onOuterHandleClick.bind(this))
-
-    this.group.on('mousemove', () => {
-      this.onMouseOver(d3event.offsetX)
-    })
-
-    this.group.on('mouseout', () => {
-      this.onMouseOut()
-    })
-
-    d3select('body').on('mousemove', () => {
-      if (dragging) {
-        const nx = d3event.pageX - leftOffset - X_OVERFLOW_OFFSET
-        if (currentHandleIsWest) {
-          currentOuterPxExtent[0] = nx
-        } else {
-          currentOuterPxExtent[1] = nx
-        }
-      }
-    })
-
-    d3select('body').on('mouseup', () => {
-      dragging = false
-      if (this.isZoomingIn(currentOuterPxExtent)) {
-        // release, actually do the zoom in (when zooming out this is done at each tick)
-        this.setOuterExtent(currentOuterPxExtent)
-      }
+      // move both brushes to initial position
       this.resetOuterBrush()
-      this.enableInnerBrush()
-    })
+      this.redrawInnerBrush(this.props.timelineInnerExtent)
 
-    this.enableInnerBrush()
+      // custom outer brush events
+      outerBrushHandleLeft.on('mousedown', this.onOuterHandleClick.bind(this))
+      outerBrushHandleRight.on('mousedown', this.onOuterHandleClick.bind(this))
+
+      this.group.on('mousemove', () => {
+        this.onMouseOver(d3event.offsetX)
+      })
+
+      this.group.on('mouseout', () => {
+        this.onMouseOut()
+      })
+
+      d3select('body').on('mousemove', () => {
+        if (dragging) {
+          const nx = d3event.pageX - leftOffset - X_OVERFLOW_OFFSET
+          if (currentHandleIsWest) {
+            currentOuterPxExtent[0] = nx
+          } else {
+            currentOuterPxExtent[1] = nx
+          }
+        }
+      })
+
+      d3select('body').on('mouseup', () => {
+        dragging = false
+        if (this.isZoomingIn(currentOuterPxExtent)) {
+          // release, actually do the zoom in (when zooming out this is done at each tick)
+          this.setOuterExtent(currentOuterPxExtent)
+        }
+        this.resetOuterBrush()
+        this.enableInnerBrush()
+      })
+
+      this.enableInnerBrush()
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   createOuterHandle() {
@@ -418,13 +430,15 @@ class Timebar extends Component {
   }
 
   redrawInnerBrush(newInnerExtent) {
-    currentInnerPxExtent = this.getPxExtent(newInnerExtent)
-    // prevent d3 from dispatching brush events that are not user-initiated
-    this.disableInnerBrush()
-    this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent)
-    this.redrawInnerBrushCircles(currentInnerPxExtent)
-    this.redrawDurationPicker(currentInnerPxExtent)
-    this.enableInnerBrush()
+    if (this.innerBrushFunc) {
+      currentInnerPxExtent = this.getPxExtent(newInnerExtent)
+      // prevent d3 from dispatching brush events that are not user-initiated
+      this.disableInnerBrush()
+      this.innerBrushFunc.move(this.innerBrush, currentInnerPxExtent)
+      this.redrawInnerBrushCircles(currentInnerPxExtent)
+      this.redrawDurationPicker(currentInnerPxExtent)
+      this.enableInnerBrush()
+    }
   }
 
   redrawInnerBrushCircles(newInnerPxExtent) {
@@ -441,12 +455,16 @@ class Timebar extends Component {
   }
 
   disableInnerBrush() {
-    this.innerBrushFunc.on('brush', null)
-    this.innerBrushFunc.on('end', null)
+    if (this.innerBrushFunc) {
+      this.innerBrushFunc.on('brush', null)
+      this.innerBrushFunc.on('end', null)
+    }
   }
 
   enableInnerBrush() {
-    this.innerBrushFunc.on('brush', this.onInnerBrushMoved.bind(this))
+    if (this.innerBrushFunc) {
+      this.innerBrushFunc.on('brush', this.onInnerBrushMoved.bind(this))
+    }
   }
 
   getExtent(extentPx) {
