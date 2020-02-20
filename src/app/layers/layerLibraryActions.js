@@ -8,39 +8,49 @@ export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY'
 
 export function getLayerLibrary() {
   return (dispatch) => {
-    fetchEndpoint(`${process.env.REACT_APP_V2_API_ENDPOINT}/directory`).then((data) => {
-      const layers = data.entries.map((l) => {
-        const layer = {
-          id: l.args.id,
-          title: l.args.title,
-          label: l.args.title,
-          description: l.args.description,
-          color: l.args.color ? l.args.color : PALETTE_COLORS[0].color,
-          visible: false,
-          type: l.type,
-          url: l.args.source.args.url,
-          added: false,
-          library: true,
-        }
-        // FIXME review/flatten directory API. Include field.
-        if (l.args.meta && l.args.meta.reports && l.args.meta.reports.regions) {
-          layer.reportId = Object.keys(l.args.meta.reports.regions)[0]
-        }
+    fetchEndpoint(`/directory`)
+      .then((res) => res.json())
+      .then((data) => {
+        const layers = data.entries.map((l) => {
+          const layer = {
+            id: l.args.id,
+            title: l.args.title,
+            label: l.args.title,
+            description: l.args.description,
+            color: l.args.color ? l.args.color : PALETTE_COLORS[0].color,
+            visible: false,
+            type: l.type,
+            url: l.args.source.args.url,
+            added: false,
+            library: true,
+          }
+          // FIXME review/flatten directory API. Include field.
+          if (l.args.meta && l.args.meta.reports && l.args.meta.reports.regions) {
+            layer.reportId = Object.keys(l.args.meta.reports.regions)[0]
+          }
 
-        return layer
+          return layer
+        })
+
+        layers.forEach((layer) => {
+          layer.id = calculateLayerId(layer)
+        })
+
+        dispatch({
+          type: GET_LAYER_LIBRARY,
+          payload: layers,
+        })
+
+        dispatch(getWorkspace())
       })
-
-      layers.forEach((layer) => {
-        layer.id = calculateLayerId(layer)
+      .catch((e) => {
+        console.warn('Error retreiving /directory', e)
+        dispatch({
+          type: GET_LAYER_LIBRARY,
+          payload: [],
+        })
+        dispatch(getWorkspace())
       })
-
-      dispatch({
-        type: GET_LAYER_LIBRARY,
-        payload: layers,
-      })
-
-      dispatch(getWorkspace())
-    })
 
     return true
   }

@@ -194,7 +194,7 @@ export function saveWorkspace(errorAction) {
       },
     }
 
-    fetchEndpoint(`${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces`, {
+    fetchEndpoint(`/workspaces`, {
       method: 'POST',
       body: JSON.stringify(workspaceData),
     })
@@ -503,7 +503,7 @@ export function getWorkspace() {
     if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE
     } else {
-      url = `${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`
+      url = `/workspaces/${urlWorkspaceId}`
     }
 
     fetchEndpoint(url)

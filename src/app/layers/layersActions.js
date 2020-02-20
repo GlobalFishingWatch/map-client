@@ -29,9 +29,12 @@ export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE'
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
+// remove when /directory endpoint is migrated
+const LEGACY_PELAGOS_API = 'https://api-dot-world-fishing-827.appspot.com'
+
 function loadLayerHeader(headerUrl) {
   return new Promise((resolve) => {
-    fetchEndpoint(headerUrl)
+    fetchEndpoint(headerUrl.replace(LEGACY_PELAGOS_API, ''))
       .then((data) => {
         resolve(data)
       })

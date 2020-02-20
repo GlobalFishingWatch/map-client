@@ -3,21 +3,21 @@ const https = require('https')
 const path = require('path')
 const fs = require('fs')
 
-if (!process.env.DEFAULT_WORKSPACE || !process.env.WORKSPACE_API_URL) {
+if (!process.env.DEFAULT_WORKSPACE || !process.env.REACT_APP_API_GATEWAY_URL) {
   console.error(
     '\x1b[31m%s\x1b[0m',
     'WARNING!: Configuration not found in env variables, will use defaults'
   )
 }
-
-const WORKSPACE_PATH = 'src/app/workspace/workspace.js'
 const WORKSPACE_API_URL =
-  process.env.WORKSPACE_API_URL || 'https://api-dot-skytruth-pelagos-production.appspot.com/v2'
+  process.env.REACT_APP_API_GATEWAY_URL || 'https://gateway.api.dev.globalfishingwatch.org/v2'
 const DEFAULT_WORKSPACE = process.env.DEFAULT_WORKSPACE || 'vizz-default-workspace-v16'
+const WORKSPACE_PATH = 'src/app/workspace/workspace.js'
 
 console.log('Retrieving worskpace with configuration:')
 console.log('WORKSPACE_API_URL', WORKSPACE_API_URL)
 console.log('DEFAULT_WORKSPACE', DEFAULT_WORKSPACE)
+console.log('REQUESTED URL', `${WORKSPACE_API_URL}/workspaces/${DEFAULT_WORKSPACE}`)
 
 https
   .get(`${WORKSPACE_API_URL}/workspaces/${DEFAULT_WORKSPACE}`, (resp) => {

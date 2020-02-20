@@ -76,7 +76,7 @@ const getWMSURLFilterdByLayers = ({ url, capabilities }, layersActives) => {
 }
 
 const saveToDirectory = ({ token, subtype, name, description, url }) => {
-  const savePromise = fetchEndpoint(`${process.env.REACT_APP_V2_API_ENDPOINT}/directory`, {
+  const savePromise = fetchEndpoint(`/directory`, {
     method: 'POST',
     body: JSON.stringify({ title: name, url, description }),
   }).then((json) => ({
