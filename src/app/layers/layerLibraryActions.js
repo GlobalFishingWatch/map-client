@@ -8,8 +8,7 @@ export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY'
 
 export function getLayerLibrary() {
   return (dispatch) => {
-    fetchEndpoint(`/directory`)
-      .then((res) => res.json())
+    fetchEndpoint(`/v2/directory`)
       .then((data) => {
         const layers = data.entries.map((l) => {
           const layer = {

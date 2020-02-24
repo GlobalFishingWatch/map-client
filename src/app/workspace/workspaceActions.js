@@ -194,7 +194,7 @@ export function saveWorkspace(errorAction) {
       },
     }
 
-    fetchEndpoint(`/workspaces`, {
+    fetchEndpoint(`/v2/workspaces`, {
       method: 'POST',
       body: JSON.stringify(workspaceData),
     })

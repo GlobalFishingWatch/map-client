@@ -73,7 +73,9 @@ export function getLoggedUser() {
     try {
       const user = await GFWAPI.login({ accessToken })
       if (user) {
-        removeUrlToken()
+        if (accessToken) {
+          removeUrlToken()
+        }
         const tokens = {
           token: GFWAPI.getToken(),
           refreshToken: GFWAPI.getRefreshToken(),
