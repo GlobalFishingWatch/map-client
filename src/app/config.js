@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { USER_PERMISSIONS } from './constants'
 
 // Application settings
 export const TIMELINE_STEP = 24 * 60 * 60 * 1000 // 1 day // TODO MAP MODULE: DUPLICATE VALUE
@@ -26,7 +27,7 @@ export const TIMELINE_SPEED_CHANGE = 2 // 2 for double and half speed
 export const TIMELINE_MAX_SPEED = 16
 export const TIMELINE_MIN_SPEED = 0.03125
 
-export const GUEST_PERMISSION_SET = []
+export const GUEST_PERMISSION_SET = [USER_PERMISSIONS.shareWorkspace]
 
 // for now, auth users get no special permissions, everything comes from the API
 export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET
