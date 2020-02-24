@@ -77,7 +77,7 @@ class LayerItem extends Component {
     this.setState({ expand: value })
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.layerPanelEditMode && !this.props.layerPanelEditMode) {
       this.props.setLayerLabel(this.props.layer.id, this.nameLabel.textContent)
     }

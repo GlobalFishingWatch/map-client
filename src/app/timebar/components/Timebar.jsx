@@ -83,7 +83,7 @@ class Timebar extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.timebarChartData.length && !this.props.timebarChartData.length) {
       this.build(nextProps.timebarChartData)
     }
@@ -109,7 +109,7 @@ class Timebar extends Component {
     }
   }
 
-  componentWillUpdate(nextProps) {
+  UNSAFE_componentWillUpdate(nextProps) {
     if (this.props.timelinePaused !== nextProps.timelinePaused) {
       this.togglePause(nextProps.timelinePaused)
     }

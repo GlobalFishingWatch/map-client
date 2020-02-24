@@ -8,7 +8,7 @@ import Notifications from 'app/notifications/containers/Notifications'
 const DISABLE_WELCOME_MODAL = process.env.REACT_APP_DISABLE_WELCOME_MODAL === 'true'
 
 class App extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.getLoggedUser()
 
     if (!DISABLE_WELCOME_MODAL) {

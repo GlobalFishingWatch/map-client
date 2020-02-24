@@ -18,7 +18,7 @@ class SupportForm extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const showThankYou = this.props.supportRequestStatus !== nextProps.supportRequestStatus
     this.setState({
       showFormResponse: showThankYou,
