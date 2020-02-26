@@ -8,13 +8,18 @@ class SupportForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      url: window.location,
       showFormResponse: false,
       classSelect: '',
       disabledOption: false,
-      name: props.defaultUserName ? props.defaultUserName : '',
-      email: props.defaultUserEmail ? props.defaultUserEmail : '',
       validated: false,
+      form: {
+        url: window.location.href,
+        type: '',
+        subject: '',
+        description: '',
+        name: props.defaultUserName ? props.defaultUserName : '',
+        email: props.defaultUserEmail ? props.defaultUserEmail : '',
+      },
     }
   }
 
@@ -32,9 +37,11 @@ class SupportForm extends Component {
         disabledOption: true,
       })
     }
-    this.setState({
+    const form = {
+      ...this.state.form,
       [event.target.id.substr(8)]: event.target.value,
-    })
+    }
+    this.setState({ form })
   }
 
   handleFormSubmit(event) {
@@ -46,14 +53,14 @@ class SupportForm extends Component {
       return false
     }
 
-    this.props.onFormSubmit(this.state, '/contact/support')
+    this.props.onFormSubmit(this.state.form, '/contact/support')
     return true
   }
 
   render() {
     if (this.state.showFormResponse) {
       let message
-      if (this.props.supportRequestStatus && this.props.supportRequestStatus.status === 200) {
+      if (this.props.supportRequestStatus === 200) {
         message = 'Thank you for your inquiry'
       } else {
         message = 'There was a problem submitting your contact request. Please try again later'
@@ -103,7 +110,7 @@ class SupportForm extends Component {
                 onChange={(event) => {
                   this.handleChange(event)
                 }}
-                value={this.state.name}
+                value={this.state.form.name}
               />
               <label htmlFor="support_email">Email</label>
               <input
@@ -114,7 +121,7 @@ class SupportForm extends Component {
                 onChange={(event) => {
                   this.handleChange(event)
                 }}
-                value={this.state.email}
+                value={this.state.form.email}
                 required
               />
               <label htmlFor="support_type">Type</label>
@@ -183,11 +190,11 @@ class SupportForm extends Component {
 }
 
 SupportForm.propTypes = {
-  supportRequestStatus: PropTypes.any,
-  onFormSubmit: PropTypes.func,
-  defaultUserName: PropTypes.string,
-  defaultUserEmail: PropTypes.string,
-  close: PropTypes.func,
+  supportRequestStatus: PropTypes.any.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
+  defaultUserName: PropTypes.string.isRequired,
+  defaultUserEmail: PropTypes.string.isRequired,
+  close: PropTypes.func.isRequired,
 }
 
 export default SupportForm

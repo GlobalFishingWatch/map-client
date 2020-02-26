@@ -3,14 +3,17 @@ const https = require('https')
 const path = require('path')
 const fs = require('fs')
 
-if (!process.env.DEFAULT_WORKSPACE || !process.env.REACT_APP_API_GATEWAY_URL) {
+const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL
+
+if (!process.env.DEFAULT_WORKSPACE || !API_GATEWAY_URL) {
   console.error(
     '\x1b[31m%s\x1b[0m',
     'WARNING!: Configuration not found in env variables, will use defaults'
   )
 }
-const WORKSPACE_API_URL =
-  process.env.REACT_APP_API_GATEWAY_URL || 'https://gateway.api.dev.globalfishingwatch.org/v2'
+const WORKSPACE_API_URL = API_GATEWAY_URL
+  ? API_GATEWAY_URL + '/v2'
+  : 'https://gateway.api.dev.globalfishingwatch.org/v2'
 const DEFAULT_WORKSPACE = process.env.DEFAULT_WORKSPACE || 'vizz-default-workspace-v16'
 const WORKSPACE_PATH = 'src/app/workspace/workspace.js'
 
