@@ -31,8 +31,6 @@ steps:
         '--build-arg',
         'REACT_APP_API_GATEWAY_URL=${_REACT_APP_API_GATEWAY_URL}',
         '--build-arg',
-        'REACT_APP_BLOG_URL=${_REACT_APP_BLOG_URL}',
-        '--build-arg',
         'REACT_APP_SITE_URL=${_REACT_APP_SITE_URL}',
         '--build-arg',
         'REACT_APP_MAP_URL=${_REACT_APP_MAP_URL}',
