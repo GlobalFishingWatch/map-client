@@ -1041,10 +1041,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
   integrity sha512-6It2EVfGskxZCQhuykrfnALg7oVeiI6KclWSmGDqB0AiInVrTGB9Jp9i4/Ad21u9Jde/voVQz6eFX/eSg/UsPA==
 
-"@globalfishingwatch/api-client@0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/api-client/-/api-client-0.0.12.tgz#7218054488cf6692c4f0953456f90565d7353b8c"
-  integrity sha512-JzuW4PmYeDCgSfqW/Bq14o128ajrezK0bvemlRGhzN8Yjn9RpOBJpAoSMIaNnQDL7ml+UnduHZ+3q797X6nOng==
+"@globalfishingwatch/api-client@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/api-client/-/api-client-0.0.13.tgz#008998b5174bac2f3774911cea9ea3c38305a578"
+  integrity sha512-7UF6DBJvDBX+skzw2fA6sl7KWUbsz8fSoD7vT9y9//5A+dnEr5CAsQseyZmGur6MwUd3bgfAQsUOD7uXVWLMTA==
 
 "@globalfishingwatch/map-components@2.9.10":
   version "2.9.10"

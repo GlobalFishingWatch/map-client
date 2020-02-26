@@ -181,10 +181,9 @@ export function sendSubscription() {
       payload.recurrency = state.report.subscriptionFrequency
     }
 
-    const body = JSON.stringify(payload)
     const options = {
       method: 'POST',
-      body,
+      body: payload,
     }
     fetchEndpoint(url, options)
       .then((data) => {

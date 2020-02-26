@@ -196,7 +196,7 @@ export function saveWorkspace(errorAction) {
 
     fetchEndpoint(`/v2/workspaces`, {
       method: 'POST',
-      body: JSON.stringify(workspaceData),
+      body: workspaceData,
     })
       .then((res) => res.json())
       .then((data) => {
@@ -253,7 +253,9 @@ function dispatchActions(workspaceData, dispatch, getState) {
     if (workspaceData.shownVessel) {
       if (workspaceData.shownVessel.id === undefined) {
         console.warn(
-          `attempting to load vessel on tileset ${workspaceData.shownVessel.tilesetId} with no id/seriesgroup`
+          `attempting to load vessel on tileset ${
+            workspaceData.shownVessel.tilesetId
+          } with no id/seriesgroup`
         )
       } else {
         const { tilesetId, id } = workspaceData.shownVessel
