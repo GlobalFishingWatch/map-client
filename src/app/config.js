@@ -27,7 +27,10 @@ export const TIMELINE_SPEED_CHANGE = 2 // 2 for double and half speed
 export const TIMELINE_MAX_SPEED = 16
 export const TIMELINE_MIN_SPEED = 0.03125
 
-export const GUEST_PERMISSION_SET = [USER_PERMISSIONS.shareWorkspace]
+export const GUEST_PERMISSION_SET = [
+  USER_PERMISSIONS.shareWorkspace,
+  USER_PERMISSIONS.seeVesselsLayers,
+]
 
 // for now, auth users get no special permissions, everything comes from the API
 export const AUTH_PERMISSION_SET = GUEST_PERMISSION_SET

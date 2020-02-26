@@ -30,11 +30,12 @@ export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
 // remove when /directory endpoint is migrated
-const LEGACY_PELAGOS_API = 'https://api-dot-world-fishing-827.appspot.com'
+const LEGACY_PELAGOS_API = 'https://api-dot-skytruth-pelagos-production.appspot.com'
 
 function loadLayerHeader(headerUrl) {
   return new Promise((resolve) => {
-    fetchEndpoint(headerUrl.replace(LEGACY_PELAGOS_API, ''))
+    const url = headerUrl.replace(LEGACY_PELAGOS_API, '')
+    fetchEndpoint(url)
       .then((data) => {
         resolve(data)
       })
@@ -91,7 +92,7 @@ export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState()
     const canSeeVesselLayers = hasUserActionPermission(USER_PERMISSIONS.seeVesselsLayers)(state)
-    if (canSeeVesselLayers) {
+    if (!canSeeVesselLayers) {
       workspaceLayers = workspaceLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
       libraryLayers = libraryLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
     }
@@ -100,7 +101,9 @@ export function initLayers(workspaceLayers, libraryLayers) {
       if (layer.type === LAYER_TYPES.Heatmap && layer.tilesetId === undefined) {
         layer.tilesetId = calculateLayerId({ url: layer.url })
         console.warn(
-          `Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${layer.url}`
+          `Heatmap layers should specify their tilesetId. Guessing ${layer.tilesetId} from URL ${
+            layer.url
+          }`
         )
       }
       layer.label = layer.label || layer.title
