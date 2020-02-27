@@ -197,8 +197,8 @@ export function saveWorkspace(errorAction) {
     fetchEndpoint(`/v2/workspaces`, {
       method: 'POST',
       body: workspaceData,
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then((res) => res.json())
       .then((data) => {
         dispatch(setWorkspaceId(data.id))
         dispatch(updateURL())
