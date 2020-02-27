@@ -5,22 +5,23 @@ export const SET_SUPPORT_MODAL_VISIBILITY = 'SET_SUPPORT_MODAL_VISIBILITY'
 
 export function submitForm(data, endpoint) {
   return (dispatch) => {
-    fetchEndpoint(endpoint, { method: 'POST', body: data })
+    fetchEndpoint(endpoint, {
+      method: 'POST',
+      body: data,
+      json: false,
+      headers: { 'Content-Type': 'application/json' },
+    })
       .then(() => {
         dispatch({
           type: FORM_RESPONSE,
-          payload: {
-            status: 200,
-          },
+          payload: 200,
         })
       })
       .catch((e) => {
         console.warn(e)
         dispatch({
           type: FORM_RESPONSE,
-          payload: {
-            status: e.status || 500,
-          },
+          payload: e.status || 500,
         })
       })
   }
