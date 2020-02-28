@@ -2,6 +2,7 @@ import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
 import { getURLParameterByName } from 'app/utils/getURLParameterByName'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 import GFWAPI, { getLoginUrl as getLoginUrlLib } from '@globalfishingwatch/api-client'
 
 export const SET_USER = 'SET_USER'
@@ -47,9 +48,9 @@ function getUserData(data) {
   }
 }
 
-function getAclData(data) {
-  if (data === null || !data.permissions) return []
-  return data.permissions
+function getAclData(permissions) {
+  if (!permissions) return []
+  return permissions
     .filter((feature) => feature.type === 'application' && feature.value === 'map-client')
     .map((feature) => feature.action)
 }
@@ -93,19 +94,24 @@ export function getLoggedUser() {
           })
           dispatch({
             type: SET_USER_PERMISSIONS,
-            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(user))),
+            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(user.permissions))),
           })
         } catch (e) {
           setGAUserDimension(false)
         }
       } else {
+        const guestPermissions = await fetchEndpoint('/auth/acl/permissions/anonymous')
         dispatch({
           type: SET_USER_PERMISSIONS,
-          payload: GUEST_PERMISSION_SET,
+          payload: getAclData(guestPermissions),
         })
       }
     } catch (e) {
       console.warn('Error trying to login', e)
+      dispatch({
+        type: SET_USER_PERMISSIONS,
+        payload: GUEST_PERMISSION_SET,
+      })
     }
   }
 }

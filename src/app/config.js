@@ -28,8 +28,12 @@ export const TIMELINE_MAX_SPEED = 16
 export const TIMELINE_MIN_SPEED = 0.03125
 
 export const GUEST_PERMISSION_SET = [
-  USER_PERMISSIONS.shareWorkspace,
+  USER_PERMISSIONS.seeMap,
   USER_PERMISSIONS.seeVesselsLayers,
+  USER_PERMISSIONS.selectVessel,
+  USER_PERMISSIONS.seeVesselBasicInfo,
+  USER_PERMISSIONS.shareWorkspace,
+  USER_PERMISSIONS.pinVessel,
 ]
 
 // for now, auth users get no special permissions, everything comes from the API
