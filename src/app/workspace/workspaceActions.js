@@ -505,14 +505,13 @@ export function getWorkspace() {
     if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE
     } else {
-      url = `/workspaces/${urlWorkspaceId}`
+      url = `/v2/workspaces/${urlWorkspaceId}`
     }
 
-    fetchEndpoint(url)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(loadWorkspace(data))
-      })
+    fetchEndpoint(url).then((data) => {
+      const workspace = { workspace: data }
+      dispatch(loadWorkspace(workspace))
+    })
     // .catch((error) => {
     //   console.error('Error loading workspace: ', error.message)
     // })
