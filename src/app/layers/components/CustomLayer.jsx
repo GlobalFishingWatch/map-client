@@ -73,7 +73,7 @@ class CustomLayer extends Component {
     const { subtype, subLayersActives, allowSubmitting } = this.state
     const { subLayers, error, canCustomizeLayers } = this.props
 
-    if (canCustomizeLayers) {
+    if (!canCustomizeLayers) {
       return (
         <div className={CustomLayerStyles.customLayer}>
           <div className={CustomLayerStyles.noAccess}>
@@ -268,10 +268,15 @@ CustomLayer.propTypes = {
       label: PropTypes.string,
       description: PropTypes.string,
     }).isRequired
-  ).isRequired,
-  error: PropTypes.string.isRequired,
+  ),
+  error: PropTypes.string,
   loginUrl: PropTypes.string.isRequired,
   canCustomizeLayers: PropTypes.bool.isRequired,
+}
+
+CustomLayer.defaultProps = {
+  error: '',
+  subLayers: [],
 }
 
 export default CustomLayer

@@ -184,6 +184,7 @@ export function sendSubscription() {
     const options = {
       method: 'POST',
       body: payload,
+      headers: { 'Content-Type': 'application/json' },
     }
     fetchEndpoint(url, options)
       .then((data) => {
