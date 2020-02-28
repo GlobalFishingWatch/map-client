@@ -15,7 +15,6 @@ class Header extends Component {
   constructor(props) {
     super(props)
     this.login = this.props.login.bind(this)
-    this.logout = this.props.logout.bind(this)
     this.state = {
       mobileMenuVisible: false,
     }
@@ -37,7 +36,6 @@ class Header extends Component {
     return (
       <div>
         <div className={HeaderStyles.preview} />
-        {/* <button onClick={this.props.logout}>LOGOUT</button> */}
         {!this.props.isEmbedded && !COMPLETE_MAP_RENDER && (
           <MenuMobile
             visible={this.state.mobileMenuVisible}
@@ -86,7 +84,6 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  logout: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   openShareModal: PropTypes.func.isRequired,
   setSupportModalVisibility: PropTypes.func.isRequired,

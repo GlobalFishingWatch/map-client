@@ -16,14 +16,10 @@ export default function(state = initialState, action) {
       return { ...state, loggedUser: action.payload }
     case SET_TOKENS: {
       const { token = state.token, refreshToken = state.refreshToken } = action.payload
-      localStorage.setItem(USER_TOKEN_STORAGE_KEY, token)
-      localStorage.setItem(USER_REFRESH_TOKEN_STORAGE_KEY, refreshToken)
       return { ...state, token, refreshToken }
     }
     case LOGOUT: {
-      localStorage.setItem(USER_TOKEN_STORAGE_KEY, '')
-      localStorage.setItem(USER_REFRESH_TOKEN_STORAGE_KEY, '')
-      return { ...state, token: null, loggedUser: null }
+      return { ...state, token: null, refreshToken: null, loggedUser: null, userPermissions: null }
     }
     default:
       return state
