@@ -72,7 +72,7 @@ Key used to read the welcome modal's url cookie. On load, the app will look for 
 
 Endpoint where the JSON timebar data is hosted. Typically enabled as `/timebar/`.
 
-#### REACT_APP_API_GATEWAY_URL
+#### REACT_APP_API_GATEWAY
 
 Endpoint of the API (vessel tiles, workspace, contact, etc)
 

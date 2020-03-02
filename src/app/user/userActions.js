@@ -3,7 +3,7 @@ import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
 import { getURLParameterByName } from 'app/utils/getURLParameterByName'
 import fetchEndpoint from 'app/utils/fetchEndpoint'
-import GFWAPI, { getLoginUrl as getLoginUrlLib } from '@globalfishingwatch/api-client'
+import GFWAPI from '@globalfishingwatch/api-client'
 
 export const SET_USER = 'SET_USER'
 export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS'
@@ -126,7 +126,7 @@ export function logout() {
 
 export function getLoginUrl() {
   const callback = window.location.href
-  return getLoginUrlLib(callback)
+  return GFWAPI.getLoginUrl(callback)
 }
 
 export function login() {

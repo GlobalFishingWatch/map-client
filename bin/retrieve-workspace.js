@@ -3,7 +3,7 @@ const https = require('https')
 const path = require('path')
 const fs = require('fs')
 
-const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL
+const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY
 
 if (!process.env.DEFAULT_WORKSPACE || !API_GATEWAY_URL) {
   console.error(
