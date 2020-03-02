@@ -52,7 +52,7 @@
     "dotenv": "4.0.0",
     "immutable": "3.8.2",
     "iso-3166-1-alpha-2": "GlobalFishingWatch/iso-3166-1-alpha-2#taiwan_fix",
-    "lodash": "4.17.13",
+    "lodash": "4.17.15",
     "mapbox-gl": "0.53.0",
     "moment": "2.24.0",
     "pbf": "3.1.0",
