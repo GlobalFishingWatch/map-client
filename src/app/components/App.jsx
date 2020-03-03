@@ -9,8 +9,6 @@ const DISABLE_WELCOME_MODAL = process.env.REACT_APP_DISABLE_WELCOME_MODAL === 't
 
 class App extends Component {
   componentDidMount() {
-    this.props.getLoggedUser()
-
     if (!DISABLE_WELCOME_MODAL) {
       this.props.setWelcomeModalUrl()
     }
@@ -48,7 +46,6 @@ class App extends Component {
 
 App.propTypes = {
   children: PropTypes.object,
-  getLoggedUser: PropTypes.func,
   setWelcomeModalUrl: PropTypes.func,
   checkInitialNotification: PropTypes.func,
   setWelcomeModalContent: PropTypes.func,
