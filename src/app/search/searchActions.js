@@ -106,7 +106,7 @@ const loadSearchResults = debounce((searchTerm, page, state, dispatch) => {
     const numResultsPerPage = numEndpoints * SEARCH_MODAL_PAGE_SIZE
     const pageCount = Math.ceil(total / numResultsPerPage)
     entries = entries.map((entry) => {
-      const layer = searchableAndVisibleLayers.find((l) => l.tilesetId === entry.tilesetId)
+      const layer = searchableAndVisibleLayers.find((l) => entry && l.tilesetId === entry.tilesetId)
       const title = getVesselName(entry, layer.header.info.fields)
       return { ...entry, title, layerTitle: layer.title }
     })
