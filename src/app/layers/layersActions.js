@@ -29,15 +29,18 @@ export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE'
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
-// remove when /directory endpoint is migrated
+const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY
+const API_LEGACY_URL = 'https://api-dot-skytruth-pelagos-production.appspot.com'
 
 function loadLayerHeader(headerUrl) {
   return new Promise((resolve) => {
-    fetchEndpoint(headerUrl)
+    fetchEndpoint(headerUrl.replace(API_LEGACY_URL, API_GATEWAY_URL))
       .then((data) => {
         resolve(data)
       })
       .catch((err) => {
+        // Resolve with null to avoid promise.all crashing and show the rest of layers
+        resolve(null)
         console.warn(err)
       })
   })

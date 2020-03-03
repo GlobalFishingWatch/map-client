@@ -509,7 +509,7 @@ export function getWorkspace() {
     }
 
     fetchEndpoint(url).then((data) => {
-      const workspace = { workspace: data }
+      const workspace = data && data.workspace ? data : { workspace: data }
       dispatch(loadWorkspace(workspace))
     })
     // .catch((error) => {
