@@ -6,13 +6,13 @@ import iconStyles from 'styles/icons.module.scss'
 import { ReactComponent as ArrowLinkIcon } from 'assets/icons/arrow-link.svg'
 import VesselInfoDetails from 'app/vesselInfo/components/VesselInfoDetails'
 
-function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
+function EncountersVessel({ vessel, canSeeVesselInfo, canSeeVesselBasicInfo, login, openVessel }) {
   if (vessel.info === undefined) {
     return <div className={infoPanelStyles.encountersData}>loading...</div>
   } else if (vessel.info === null) {
     return <div className={infoPanelStyles.encountersData}>Vessel info could not be loaded.</div>
   }
-  if (userPermissions !== null && userPermissions.indexOf('seeVesselBasicInfo') === -1) {
+  if (!canSeeVesselBasicInfo) {
     return (
       <div className={infoPanelStyles.encountersData}>
         <button className={infoPanelStyles.externalLink} onClick={login}>
@@ -31,7 +31,7 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
       <VesselInfoDetails
         vesselInfo={vessel.info}
         layerFieldsHeaders={fields}
-        userPermissions={userPermissions}
+        canSeeVesselDetails={canSeeVesselInfo}
       >
         <div className={infoPanelStyles.rowInfo}>
           <span className={infoPanelStyles.key}>Vessel</span>
@@ -51,8 +51,9 @@ function EncountersVessel({ vessel, userPermissions, login, openVessel }) {
 }
 
 EncountersVessel.propTypes = {
-  vessel: PropTypes.object,
-  userPermissions: PropTypes.array,
+  vessel: PropTypes.object.isRequired,
+  canSeeVesselInfo: PropTypes.bool.isRequired,
+  canSeeVesselBasicInfo: PropTypes.bool.isRequired,
   login: PropTypes.func.isRequired,
   openVessel: PropTypes.func.isRequired,
 }

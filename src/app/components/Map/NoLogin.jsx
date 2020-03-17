@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import NoLoginStyles from 'styles/components/map/no-login.module.scss'
+import { getLoginUrl } from 'app/user/userActions'
 
 class NoLogin extends Component {
   render() {
@@ -14,9 +15,9 @@ class NoLogin extends Component {
               Home Page
             </a>
           </p>
-          <button className={NoLoginStyles.btnAction} onClick={this.props.login}>
+          <a className={NoLoginStyles.btnAction} href={getLoginUrl()}>
             log in / register
-          </button>
+          </a>
         </div>
       </div>
     )
@@ -24,7 +25,7 @@ class NoLogin extends Component {
 }
 
 NoLogin.propTypes = {
-  login: PropTypes.func,
+  login: PropTypes.func.isRequired,
 }
 
 export default NoLogin

@@ -21,6 +21,7 @@ import {
 } from '@globalfishingwatch/map-components/components/map/utils'
 import defaultWorkspace from 'app/workspace/workspace'
 import { setNotification } from 'app/notifications/notificationsActions'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 const LOCAL_WORKSPACE = process.env.REACT_APP_LOCAL_WORKSPACE === true
 
@@ -129,15 +130,6 @@ export function saveWorkspace(errorAction) {
   // FIXME double check filtergoups hue save
   return (dispatch, getState) => {
     const state = getState()
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    }
-
-    if (state.user.token) {
-      headers.Authorization = `Bearer ${state.user.token}`
-    }
-
     const shownVesselData = state.vesselInfo.vessels.find((e) => e.shownInInfoPanel === true)
     let shownVessel = null
     if (shownVesselData !== undefined) {
@@ -202,12 +194,11 @@ export function saveWorkspace(errorAction) {
       },
     }
 
-    fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces`, {
+    fetchEndpoint(`/v2/workspaces`, {
       method: 'POST',
-      headers,
-      body: JSON.stringify(workspaceData),
+      body: workspaceData,
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then((res) => res.json())
       .then((data) => {
         dispatch(setWorkspaceId(data.id))
         dispatch(updateURL())
@@ -514,21 +505,13 @@ export function getWorkspace() {
     if (!urlWorkspaceId && LOCAL_WORKSPACE) {
       url = LOCAL_WORKSPACE
     } else {
-      url = `${process.env.REACT_APP_V2_API_ENDPOINT}/workspaces/${urlWorkspaceId}`
+      url = `/v2/workspaces/${urlWorkspaceId}`
     }
 
-    const options = {}
-    if (state.user.token) {
-      options.headers = {
-        Authorization: `Bearer ${state.user.token}`,
-      }
-    }
-
-    fetch(url, options)
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(loadWorkspace(data))
-      })
+    fetchEndpoint(url).then((data) => {
+      const workspace = data && data.workspace ? data : { workspace: data }
+      dispatch(loadWorkspace(workspace))
+    })
     // .catch((error) => {
     //   console.error('Error loading workspace: ', error.message)
     // })

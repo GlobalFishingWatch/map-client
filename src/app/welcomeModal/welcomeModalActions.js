@@ -29,7 +29,7 @@ export function setWelcomeModalContent() {
       })
       .then((body) => {
         dispatch({ type: SET_WELCOME_MODAL_CONTENT, payload: body })
-        dispatch({ type: SET_WELCOME_MODAL_VISIBILITY, payload: true })
+        dispatch(setWelcomeModalVisibility(true))
       })
       .catch((err) => dispatch({ type: SET_WELCOME_MODAL_CONTENT_ERROR, payload: err }))
   }

@@ -21,7 +21,7 @@ class FilterGroupForm extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // if defaultLabel generated in container changed,
     // and if user did not changed from the default label (label is the same as the previously generated label)
     // force trigger a label change with the generated name

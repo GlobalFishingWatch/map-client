@@ -8,8 +8,7 @@ import infoPanelStyles from 'styles/components/info-panel.module.scss'
 
 class VesselInfoDetails extends Component {
   render() {
-    const { vesselInfo, layerFieldsHeaders, userPermissions } = this.props
-    const canSeeVesselDetails = userPermissions !== null && userPermissions.indexOf('info') !== -1
+    const { vesselInfo, layerFieldsHeaders, canSeeVesselDetails } = this.props
 
     const renderedFieldList = this.generateVesselDetails(
       layerFieldsHeaders,
@@ -133,7 +132,7 @@ VesselInfoDetails.propTypes = {
     })
   ).isRequired,
   vesselInfo: PropTypes.object.isRequired,
-  userPermissions: PropTypes.array.isRequired,
+  canSeeVesselDetails: PropTypes.bool.isRequired,
   children: PropTypes.node,
 }
 

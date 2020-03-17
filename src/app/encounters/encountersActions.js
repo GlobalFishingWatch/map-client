@@ -54,9 +54,8 @@ export function setEncountersInfo(id, tilesetId) {
     const infoUrl = buildEndpoint(encounterInfoEndpoint, {
       id,
     })
-    const token = getState().user.token
 
-    fetchEndpoint(infoUrl, token).then((encounterInfo) => {
+    fetchEndpoint(infoUrl).then((encounterInfo) => {
       encounterInfo.vessels = [
         {
           tilesetId: encounterInfo.vessel_1_tileset,
@@ -94,8 +93,7 @@ export function setEncountersInfo(id, tilesetId) {
         fetchEndpoint(
           buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, {
             id: vessel.id,
-          }),
-          token
+          })
         ).then((vesselInfo) => {
           dispatch({
             type: SET_ENCOUNTERS_VESSEL_INFO,

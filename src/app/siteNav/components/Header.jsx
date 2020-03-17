@@ -15,7 +15,6 @@ class Header extends Component {
   constructor(props) {
     super(props)
     this.login = this.props.login.bind(this)
-    this.logout = this.props.logout.bind(this)
     this.state = {
       mobileMenuVisible: false,
     }
@@ -85,15 +84,16 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  logout: PropTypes.func,
-  login: PropTypes.func,
-  loggedUser: PropTypes.object,
-  openShareModal: PropTypes.func,
-  setSupportModalVisibility: PropTypes.func,
-  setVisibleMenu: PropTypes.func,
-  isEmbedded: PropTypes.bool,
+  login: PropTypes.func.isRequired,
+  openShareModal: PropTypes.func.isRequired,
+  setSupportModalVisibility: PropTypes.func.isRequired,
+  isEmbedded: PropTypes.bool.isRequired,
   urlWorkspaceId: PropTypes.string,
-  canShareWorkspaces: PropTypes.bool,
+  canShareWorkspaces: PropTypes.bool.isRequired,
+}
+
+Header.defaultProps = {
+  urlWorkspaceId: '',
 }
 
 export default Header
