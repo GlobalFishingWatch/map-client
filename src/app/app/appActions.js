@@ -1,6 +1,7 @@
 import { setUrlWorkspaceId, setWorkspaceOverride } from 'app/workspace/workspaceActions'
 import { getURLParameterByName, getURLPieceByName } from 'app/utils/getURLParameterByName'
 import { loadTimebarChartData } from 'app/timebar/timebarActions'
+import { getLoggedUser } from 'app/user/userActions'
 import { resetCustomLayerForm } from 'app/layers/customLayerActions'
 import { TIMELINE_OVERALL_START_DATE, TIMELINE_OVERALL_END_DATE } from 'app/config'
 
@@ -53,6 +54,8 @@ export const setLayerManagementModalVisibility = (visibility) => (dispatch) => {
 
 export function init() {
   return (dispatch) => {
+    dispatch(getLoggedUser())
+
     const workspaceId = getURLParameterByName('workspace') || getURLPieceByName('workspace')
     if (workspaceId !== undefined) {
       dispatch(setUrlWorkspaceId(workspaceId))

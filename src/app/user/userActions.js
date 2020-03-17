@@ -1,12 +1,14 @@
 import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
+import { getURLParameterByName } from 'app/utils/getURLParameterByName'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
+import GFWAPI from '@globalfishingwatch/api-client'
 
 export const SET_USER = 'SET_USER'
 export const SET_USER_PERMISSIONS = 'SET_USER_PERMISSIONS'
-export const SET_TOKEN = 'SET_TOKEN'
+export const SET_TOKENS = 'SET_TOKENS'
 export const LOGOUT = 'LOGOUT'
-export const TOKEN_SESSION = 'TOKEN_SESSION'
 
 // GTM = Google Tag Manager
 const GTGELoginEventId = 'loggedInUser'
@@ -23,11 +25,10 @@ const setGAUserDimension = (user) => {
   }
 }
 
-export function setToken(token) {
-  localStorage.setItem(TOKEN_SESSION, token)
+export function setTokens(tokens) {
   return {
-    type: SET_TOKEN,
-    payload: token,
+    type: SET_TOKENS,
+    payload: tokens,
   }
 }
 
@@ -35,89 +36,99 @@ function getUserData(data) {
   if (
     data === undefined ||
     data === null ||
-    data.displayName === undefined ||
+    data.firstName === undefined ||
     data.email === undefined
   ) {
     return null
   }
 
   return {
-    displayName: data.displayName,
+    displayName: data.firstName,
     email: data.email,
   }
 }
 
-function getAclData(data) {
-  if (data === null) return null
-  return data.allowedFeatures
+function getAclData(permissions) {
+  if (!permissions) return []
+  return permissions
+    .filter((feature) => feature.type === 'application' && feature.value === 'map-client')
+    .map((feature) => feature.action)
+}
+
+function removeUrlToken() {
+  if (window.history.replaceState) {
+    window.history.replaceState(
+      null,
+      '',
+      window.location.pathname +
+        window.location.search.replace(/[?&]access-token=[^&]+/, '').replace(/^&/, '?') +
+        window.location.hash
+    )
+  }
 }
 
 export function getLoggedUser() {
-  return (dispatch, getState) => {
-    const state = getState()
-    let token = state.user.token
-    if ((!state.user || !state.user.token) && localStorage.getItem(TOKEN_SESSION)) {
-      token = localStorage.getItem(TOKEN_SESSION)
-      dispatch(setToken(token))
-    }
+  return async (dispatch) => {
+    const accessToken = getURLParameterByName('access-token')
 
-    let headers = {}
-    let basePermissions
-    if (!token) {
-      basePermissions = GUEST_PERMISSION_SET
-    } else {
-      basePermissions = AUTH_PERMISSION_SET
-      headers = {
-        Authorization: `Bearer ${token}`,
-      }
-    }
-
-    fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/me`, {
-      method: 'GET',
-      headers,
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json()
+    try {
+      const user = await GFWAPI.login({ accessToken })
+      if (user) {
+        if (accessToken) {
+          removeUrlToken()
         }
-        dispatch({
-          type: SET_TOKEN,
-          payload: null,
-        })
-        setGAUserDimension(false)
-        return null
-      })
-      .then((payload) => {
-        if (payload && payload.identity) {
-          setGAUserDimension(payload)
-        } else {
+        const tokens = {
+          token: GFWAPI.getToken(),
+          refreshToken: GFWAPI.getRefreshToken(),
+        }
+        dispatch(setTokens(tokens))
+        try {
+          if (user && user.identity) {
+            setGAUserDimension(user)
+          } else {
+            setGAUserDimension(false)
+          }
+          dispatch({
+            type: SET_USER,
+            payload: getUserData(user),
+          })
+          dispatch({
+            type: SET_USER_PERMISSIONS,
+            payload: uniq(AUTH_PERMISSION_SET.concat(getAclData(user.permissions))),
+          })
+        } catch (e) {
           setGAUserDimension(false)
         }
-        dispatch({
-          type: SET_USER,
-          payload: getUserData(payload),
-        })
+      } else {
+        const guestPermissions = await fetchEndpoint('/auth/acl/permissions/anonymous')
         dispatch({
           type: SET_USER_PERMISSIONS,
-          payload: uniq(basePermissions.concat(getAclData(payload))),
+          payload: getAclData(guestPermissions),
         })
+      }
+    } catch (e) {
+      console.warn('Error trying to login', e)
+      dispatch({
+        type: SET_USER_PERMISSIONS,
+        payload: GUEST_PERMISSION_SET,
       })
+    }
   }
 }
 
 export function logout() {
   return (dispatch) => {
-    localStorage.removeItem(TOKEN_SESSION)
-    dispatch({
-      type: LOGOUT,
-    })
-    dispatch(getLoggedUser())
+    GFWAPI.logout()
+    dispatch({ type: LOGOUT })
     setGAUserDimension(false)
-    window.location.hash = window.location.hash.replace(/#access_token=([a-zA-Z0-9.\-_]*)/g, '')
   }
 }
 
+export function getLoginUrl() {
+  const callback = window.location.href
+  return GFWAPI.getLoginUrl(callback)
+}
+
 export function login() {
-  window.location = `${process.env.REACT_APP_V2_API_ENDPOINT}/authorize?\
-response_type=token&client_id=asddafd&redirect_uri=${window.location}`
+  window.location = getLoginUrl()
 }

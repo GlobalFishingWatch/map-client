@@ -71,18 +71,15 @@ class CustomLayer extends Component {
 
   render() {
     const { subtype, subLayersActives, allowSubmitting } = this.state
-    const { subLayers, error } = this.props
+    const { subLayers, error, canCustomizeLayers } = this.props
 
-    if (
-      this.props.userPermissions !== null &&
-      this.props.userPermissions.indexOf('custom-layer') === -1
-    ) {
+    if (!canCustomizeLayers) {
       return (
         <div className={CustomLayerStyles.customLayer}>
           <div className={CustomLayerStyles.noAccess}>
-            <button className="loginRequiredLink" onClick={this.props.login}>
+            <a className="loginRequiredLink" href={this.props.loginUrl}>
               Only registered users can upload custom layers. Click here to log in.
-            </button>
+            </a>
           </div>
         </div>
       )
@@ -273,8 +270,13 @@ CustomLayer.propTypes = {
     }).isRequired
   ),
   error: PropTypes.string,
-  login: PropTypes.func,
-  userPermissions: PropTypes.array,
+  loginUrl: PropTypes.string.isRequired,
+  canCustomizeLayers: PropTypes.bool.isRequired,
+}
+
+CustomLayer.defaultProps = {
+  error: '',
+  subLayers: [],
 }
 
 export default CustomLayer

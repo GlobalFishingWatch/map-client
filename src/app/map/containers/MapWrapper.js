@@ -165,12 +165,12 @@ const getBasemapLayers = createSelector(
     })
 )
 
-const getLayersTitles = createSelector(
+const getLayersTooltips = createSelector(
   [getLayers],
   (layers) => {
     const titles = {}
     layers.forEach((layer) => {
-      titles[layer.id] = layer.title
+      titles[layer.id] = layer.tooltip || layer.title
     })
     return titles
   }
@@ -211,7 +211,7 @@ const mapStateToProps = (state) => ({
   loadTemporalExtent: state.filters.timelineOuterExtent,
   highlightTemporalExtent: state.filters.timelineOverExtent,
   // Internal
-  layerTitles: getLayersTitles(state),
+  layerTitles: getLayersTooltips(state),
   report: state.report,
   isCluster,
   rulersEditing: getRulersEditing(state),

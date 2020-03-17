@@ -74,12 +74,11 @@ class ControlPanel extends Component {
     return (
       <div>
         <SubMenu title="Vessels" onClose={this.onCloseVesselsSubMenu}>
-          {this.props.userPermissions !== null &&
-          this.props.userPermissions.indexOf('search') === -1 ? (
+          {!this.props.canSearch ? (
             <div>
-              <button className="loginRequiredLink" onClick={this.props.login}>
+              <a className="loginRequiredLink" href={this.props.loginUrl}>
                 Only registered users can use the search feature. Click here to log in.
-              </button>
+              </a>
               <Vessels />
             </div>
           ) : (
@@ -194,10 +193,10 @@ ControlPanel.propTypes = {
   isReportStarted: PropTypes.bool,
   layerPanelEditMode: PropTypes.bool,
   layers: PropTypes.array,
-  login: PropTypes.func,
+  loginUrl: PropTypes.string.isRequired,
   pinnedVesselEditMode: PropTypes.bool,
   setSubmenu: PropTypes.func.isRequired,
-  userPermissions: PropTypes.array,
+  canSearch: PropTypes.bool.isRequired,
   vessels: PropTypes.array,
   numPinnedVessels: PropTypes.number.isRequired,
   numFilters: PropTypes.number.isRequired,

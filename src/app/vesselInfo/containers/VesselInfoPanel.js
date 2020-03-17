@@ -7,8 +7,10 @@ import {
   targetCurrentlyShownVessel,
 } from 'app/vesselInfo/vesselInfoActions'
 import { setEncountersInfo } from 'app/encounters/encountersActions'
-import { login } from 'app/user/userActions'
 import { setNotification } from 'app/notifications/notificationsActions'
+import { getLoginUrl } from '../../user/userActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 const getVesselInfo = (state) => state.vesselInfo.currentlyShownVessel
 const getWorkspaceLayers = (state) => state.layers.workspaceLayers
@@ -52,18 +54,19 @@ const getLayerIsPinnable = createSelector(
 )
 
 const mapStateToProps = (state) => ({
+  loginUrl: getLoginUrl(),
   layerFieldsHeaders: getLayerFieldsHeaders(state),
   layerIsPinable: getLayerIsPinnable(state),
   vesselInfo: getVesselInfo(state),
   status: state.vesselInfo.infoPanelStatus,
   userPermissions: state.user.userPermissions,
+  canSeeVesselBasicInfo: hasUserActionPermission(USER_PERMISSIONS.seeVesselBasicInfo)(state),
+  canSeeVesselDetails: hasUserActionPermission(USER_PERMISSIONS.seeVesselInfo)(state),
+  canPinVessel: hasUserActionPermission(USER_PERMISSIONS.pinVessel)(state),
   warningLiteral: state.literals.vessel_warning,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: () => {
-    dispatch(login())
-  },
   hide: () => {
     dispatch(clearVesselInfo())
   },

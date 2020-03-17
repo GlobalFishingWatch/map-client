@@ -15,13 +15,13 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_WELCOME_MODAL_URL:
-      return Object.assign({}, state, { url: action.payload })
+      return { ...state, url: action.payload }
     case SET_WELCOME_MODAL_CONTENT:
-      return Object.assign({}, state, { content: action.payload })
+      return { ...state, content: action.payload }
     case SET_WELCOME_MODAL_CONTENT_ERROR:
-      return Object.assign({}, state, { error: action.payload })
+      return { ...state, error: action.payload }
     case SET_WELCOME_MODAL_VISIBILITY:
-      return Object.assign({}, state, { open: action.payload })
+      return { ...state, open: action.payload }
     default:
       return state
   }

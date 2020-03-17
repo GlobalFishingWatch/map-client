@@ -18,6 +18,8 @@ import {
   toggleReportPanelVisibility,
 } from 'app/report/reportActions'
 import isEmpty from 'lodash/isEmpty'
+import { USER_PERMISSIONS } from 'app/constants'
+import { canShareWorkspaces, hasUserActionPermission } from 'app/user/userSelectors'
 
 const mapStateToProps = (state) => ({
   isFilterGroupModalOpen: state.filterGroups.isFilterGroupModalOpen,
@@ -32,7 +34,8 @@ const mapStateToProps = (state) => ({
   subscriptionModalOpen: state.report.showSubscriptionModal,
   supportFormModalOpen: state.supportForm.open,
   token: state.user.token,
-  userPermissions: state.user.userPermissions,
+  canSeeMap: hasUserActionPermission(USER_PERMISSIONS.seeMap)(state),
+  canShareWorkspaces: canShareWorkspaces(state),
   welcomeModalOpen: state.welcomeModal.open,
   isEmbedded: state.app.isEmbedded,
 })

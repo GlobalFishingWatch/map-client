@@ -8,6 +8,8 @@ import buildEndpoint from 'app/utils/buildEndpoint'
 import { fitTimelineToTrack } from 'app/filters/filtersActions'
 import { targetMapVessel } from '@globalfishingwatch/map-components/components/map/store'
 import { startLoading, completeLoading } from 'app/app/appActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 export const ADD_VESSEL = 'ADD_VESSEL'
 export const SET_VESSEL_DETAILS = 'SET_VESSEL_DETAILS'
@@ -50,20 +52,20 @@ function showVesselDetails(tilesetId, id) {
 function setCurrentVessel(tilesetId, id) {
   return (dispatch, getState) => {
     const state = getState()
-    const token = state.user.token
     const layer = state.layers.workspaceLayers.find(
       (l) => l.header !== undefined && (l.tilesetId === tilesetId || l.id === tilesetId)
     )
 
     if (layer === undefined) {
       console.warn('Unable to select feature - cant find layer', tilesetId)
+      return
     }
 
     const vesselInfoUrl = buildEndpoint(layer.header.endpoints.info, {
       id,
     })
     dispatch(startLoading())
-    fetchEndpoint(vesselInfoUrl, token)
+    fetchEndpoint(vesselInfoUrl)
       .then((data) => {
         dispatch(completeLoading())
         if (data !== null) {
@@ -165,7 +167,6 @@ export const applyFleetOverrides = () => (dispatch, getState) => {
 export function setPinnedVessels(pinnedVessels, shownVessel) {
   return (dispatch, getState) => {
     const state = getState()
-    const { token } = state.user
 
     pinnedVessels.forEach((pinnedVessel) => {
       let layer = state.layers.workspaceLayers.find((l) => l.tilesetId === pinnedVessel.tilesetId)
@@ -183,7 +184,7 @@ export function setPinnedVessels(pinnedVessels, shownVessel) {
       const pinnedVesselUrl = buildEndpoint(layer.header.endpoints.info, {
         id: pinnedVessel.id,
       })
-      fetchEndpoint(pinnedVesselUrl, token).then((data) => {
+      fetchEndpoint(pinnedVesselUrl).then((data) => {
         if (data !== null) {
           delete data.series
           dispatch({
@@ -241,10 +242,11 @@ export function addVessel({ tilesetId, id, parentEncounter = null }) {
         parentEncounter,
       },
     })
-    if (
-      state.user.userPermissions !== null &&
-      state.user.userPermissions.indexOf('seeVesselBasicInfo') > -1
-    ) {
+    const canSeeVesselBasicInfo = hasUserActionPermission(USER_PERMISSIONS.seeVesselBasicInfo)(
+      state
+    )
+
+    if (canSeeVesselBasicInfo) {
       dispatch(setCurrentVessel(tilesetId, id))
     } else {
       dispatch(hideVesselsInfoPanel())

@@ -30,7 +30,14 @@ class VesselInfoPanel extends Component {
   }
 
   render() {
-    const { vesselInfo, status, warningLiteral } = this.props
+    const {
+      vesselInfo,
+      status,
+      warningLiteral,
+      canPinVessel,
+      canSeeVesselBasicInfo,
+      canSeeVesselDetails,
+    } = this.props
 
     if (status !== INFO_STATUS.LOADING && status !== INFO_STATUS.ERROR && vesselInfo === null) {
       return null
@@ -55,20 +62,13 @@ class VesselInfoPanel extends Component {
           <div>Loading vessel information...</div>
         </div>
       )
-    } else if (
-      this.props.userPermissions !== null &&
-      this.props.userPermissions.indexOf('seeVesselBasicInfo') === -1
-    ) {
+    } else if (!canSeeVesselBasicInfo) {
       return null
     } else if (status === INFO_STATUS.LOADED && vesselInfo) {
-      const canSeeVesselDetails =
-        this.props.userPermissions !== null && this.props.userPermissions.indexOf('info') !== -1
-
       vesselInfoContents = (
         <div>
           <div className={infoPanelStyles.metadata}>
             <VesselInfoDetails {...this.props} />
-
             {canSeeVesselDetails && vesselInfo.mmsi && (
               <a
                 className={infoPanelStyles.externalLink}
@@ -80,22 +80,19 @@ class VesselInfoPanel extends Component {
               </a>
             )}
             {!canSeeVesselDetails && (
-              <button
+              <a
                 style={{ margin: 0 }}
                 className={infoPanelStyles.externalLink}
-                onClick={this.props.login}
+                href={this.props.loginUrl}
               >
                 Click here to login and
                 <br />
                 see more details
-              </button>
+              </a>
             )}
 
             <div className={infoPanelStyles.actionIcons}>
-              {((this.props.userPermissions !== null &&
-                this.props.userPermissions.indexOf('pin-vessel') !== -1 &&
-                this.props.layerIsPinable) ||
-                vesselInfo.pinned) && (
+              {((canPinVessel && this.props.layerIsPinable) || vesselInfo.pinned) && (
                 <div
                   onClick={() => {
                     this.props.onTogglePin(vesselInfo.id)
@@ -161,18 +158,23 @@ class VesselInfoPanel extends Component {
 }
 
 VesselInfoPanel.propTypes = {
-  warningLiteral: PropTypes.string,
+  warningLiteral: PropTypes.string.isRequired,
   vesselInfo: PropTypes.object,
-  layerFieldsHeaders: PropTypes.array,
-  layerIsPinable: PropTypes.bool,
-  status: PropTypes.number,
-  userPermissions: PropTypes.array,
-  hide: PropTypes.func,
-  onTogglePin: PropTypes.func,
-  login: PropTypes.func,
+  layerIsPinable: PropTypes.bool.isRequired,
+  status: PropTypes.number.isRequired,
+  hide: PropTypes.func.isRequired,
+  onTogglePin: PropTypes.func.isRequired,
+  loginUrl: PropTypes.string.isRequired,
   showWarning: PropTypes.func.isRequired,
-  showParentEncounter: PropTypes.func,
-  targetVessel: PropTypes.func,
+  showParentEncounter: PropTypes.func.isRequired,
+  targetVessel: PropTypes.func.isRequired,
+  canSeeVesselBasicInfo: PropTypes.bool.isRequired,
+  canSeeVesselDetails: PropTypes.bool.isRequired,
+  canPinVessel: PropTypes.bool.isRequired,
+}
+
+VesselInfoPanel.defaultProps = {
+  vesselInfo: null,
 }
 
 export default VesselInfoPanel

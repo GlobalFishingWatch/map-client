@@ -13,6 +13,9 @@ import { refreshFlagFiltersLayers } from 'app/filters/filterGroupsActions'
 import { setNotification } from 'app/notifications/notificationsActions'
 import calculateLayerId from 'app/utils/calculateLayerId'
 import { loadCustomLayer } from './customLayerActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const SET_LAYERS = 'SET_LAYERS'
 export const SET_LAYER_HEADER = 'SET_LAYER_HEADER'
@@ -26,33 +29,18 @@ export const TOGGLE_LAYER_PANEL_EDIT_MODE = 'TOGGLE_LAYER_PANEL_EDIT_MODE'
 export const SET_WORKSPACE_LAYER_LABEL = 'SET_WORKSPACE_LAYER_LABEL'
 export const SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE = 'SHOW_CONFIRM_LAYER_REMOVAL_MESSAGE'
 
-function loadLayerHeader(headerUrl, token) {
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  }
+const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY
+const API_LEGACY_URL = 'https://api-dot-skytruth-pelagos-production.appspot.com'
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`
-  }
-
+function loadLayerHeader(headerUrl) {
   return new Promise((resolve) => {
-    fetch(headerUrl, {
-      method: 'GET',
-      headers,
-    })
-      .then((res) => {
-        if (res.status >= 400) {
-          console.warn(`loading of layer header failed ${headerUrl}`)
-          Promise.reject()
-          return null
-        }
-        return res.json()
-      })
+    fetchEndpoint(headerUrl.replace(API_LEGACY_URL, API_GATEWAY_URL))
       .then((data) => {
         resolve(data)
       })
       .catch((err) => {
+        // Resolve with null to avoid promise.all crashing and show the rest of layers
+        resolve(null)
         console.warn(err)
       })
   })
@@ -104,10 +92,8 @@ export function addCustomLayer(subtype, id, url, name, description, data) {
 export function initLayers(workspaceLayers, libraryLayers) {
   return (dispatch, getState) => {
     const state = getState()
-    if (
-      state.user.userPermissions !== null &&
-      state.user.userPermissions.indexOf('seeVesselsLayers') === -1
-    ) {
+    const canSeeVesselLayers = hasUserActionPermission(USER_PERMISSIONS.seeVesselsLayers)(state)
+    if (!canSeeVesselLayers) {
       workspaceLayers = workspaceLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
       libraryLayers = libraryLayers.filter((l) => l.type !== LAYER_TYPES.Heatmap)
     }

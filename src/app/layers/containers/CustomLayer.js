@@ -6,13 +6,16 @@ import {
   uploadCustomLayer,
   confirmCustomLayer,
 } from 'app/layers/customLayerActions'
-import { login } from 'app/user/userActions'
+import { getLoginUrl } from 'app/user/userActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 const mapStateToProps = (state) => ({
+  loginUrl: getLoginUrl(),
   error: state.customLayer.error,
   loading: state.customLayer.status === 'pending',
   subLayers: state.customLayer.previewLayer && state.customLayer.previewLayer.subLayers,
-  userPermissions: state.user.userPermissions,
+  canCustomizeLayers: hasUserActionPermission(USER_PERMISSIONS.customLayer)(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -27,9 +30,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onConfirmCustomLayer: (layer) => {
     dispatch(confirmCustomLayer(layer))
-  },
-  login: () => {
-    dispatch(login())
   },
 })
 

@@ -2,22 +2,13 @@ import { PALETTE_COLORS } from 'app/config'
 import { getWorkspace } from 'app/workspace/workspaceActions'
 import calculateLayerId from 'app/utils/calculateLayerId'
 import { toggleLayerVisibility, toggleLayerWorkspacePresence } from 'app/layers/layersActions'
+import fetchEndpoint from 'app/utils/fetchEndpoint'
 
 export const GET_LAYER_LIBRARY = 'GET_LAYER_LIBRARY'
 
 export function getLayerLibrary() {
-  return (dispatch, getState) => {
-    const state = getState()
-
-    const options = {}
-    if (state.user.token) {
-      options.headers = {
-        Authorization: `Bearer ${state.user.token}`,
-      }
-    }
-
-    fetch(`${process.env.REACT_APP_V2_API_ENDPOINT}/directory`, options)
-      .then((res) => res.json())
+  return (dispatch) => {
+    fetchEndpoint(`/v2/directory`)
       .then((data) => {
         const layers = data.entries.map((l) => {
           const layer = {
@@ -49,6 +40,14 @@ export function getLayerLibrary() {
           payload: layers,
         })
 
+        dispatch(getWorkspace())
+      })
+      .catch((e) => {
+        console.warn('Error retreiving /directory', e)
+        dispatch({
+          type: GET_LAYER_LIBRARY,
+          payload: [],
+        })
         dispatch(getWorkspace())
       })
 

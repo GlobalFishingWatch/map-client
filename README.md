@@ -78,7 +78,7 @@ Allows a user to see a vessel layer (filters by layer type)
 
 Allows a user to see vessel's basic info
 
-#### info
+#### seeVesselInfo
 
 Allows a user to see all available vessel info
 

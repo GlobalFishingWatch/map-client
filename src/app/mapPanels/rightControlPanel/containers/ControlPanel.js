@@ -3,8 +3,10 @@ import ControlPanel from 'app/mapPanels/rightControlPanel/components/ControlPane
 import { setSearchResultVisibility } from 'app/search/searchActions'
 import { togglePinnedVesselEditMode } from 'app/vesselInfo/vesselInfoActions'
 import { toggleLayerPanelEditMode } from 'app/layers/layersActions'
-import { login } from 'app/user/userActions'
 import { setSubmenu } from 'app/mapPanels/rightControlPanel/rightControlPanelActions'
+import { getLoginUrl } from 'app/user/userActions'
+import { USER_PERMISSIONS } from 'app/constants'
+import { hasUserActionPermission } from 'app/user/userSelectors'
 
 const mapStateToProps = (state) => ({
   activeSubmenu: state.rightControlPanel.activeSubmenu,
@@ -12,18 +14,16 @@ const mapStateToProps = (state) => ({
   layerPanelEditMode: state.layers.layerPanelEditMode,
   layers: state.layers.workspaceLayers,
   pinnedVesselEditMode: state.vesselInfo.pinnedVesselEditMode,
-  userPermissions: state.user.userPermissions,
+  canSearch: hasUserActionPermission(USER_PERMISSIONS.search)(state),
   vessels: state.vesselInfo.vessels,
   numPinnedVessels: state.vesselInfo.vessels.filter((vessel) => vessel.pinned === true).length,
   numFilters: state.filterGroups.filterGroups.filter((filter) => filter.visible === true).length,
   encountersInfo: state.encounters.encountersInfo,
   currentlyShownVessel: state.vesselInfo.currentlyShownVessel,
+  loginUrl: getLoginUrl(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  login: () => {
-    dispatch(login())
-  },
   disableSearchEditMode: () => {
     dispatch(togglePinnedVesselEditMode(false))
   },

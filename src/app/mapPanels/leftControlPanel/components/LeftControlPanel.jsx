@@ -17,11 +17,7 @@ class LeftControlPanel extends Component {
   }
 
   render() {
-    const { isEmbedded, mouseLatLon } = this.props
-    const canShareWorkspaces =
-      !isEmbedded &&
-      (this.props.userPermissions !== null &&
-        this.props.userPermissions.indexOf('shareWorkspace') !== -1)
+    const { isEmbedded, mouseLatLon, canShareWorkspaces } = this.props
 
     return (
       <div className={LeftControlPanelStyles.container}>
@@ -62,14 +58,13 @@ LeftControlPanel.propTypes = {
   openShareModal: PropTypes.func.isRequired,
   incrementZoom: PropTypes.func.isRequired,
   decrementZoom: PropTypes.func.isRequired,
-  userPermissions: PropTypes.array,
+  canShareWorkspaces: PropTypes.bool.isRequired,
 }
 
 LeftControlPanel.defaultProps = {
   canZoomIn: false,
   canZoomOut: false,
   mouseLatLon: [0, 0],
-  userPermissions: null,
 }
 
 export default LeftControlPanel

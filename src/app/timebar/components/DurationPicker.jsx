@@ -18,13 +18,13 @@ class DurationPicker extends Component {
     this.hideSettingsPanelBinded = this.hideSettingsPanel.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       extent: nextProps.extent,
     })
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (nextState === this.state) return
 
     if (nextState.showSettingsMenu) {

@@ -11,7 +11,7 @@ import ModalStyles from 'styles/components/map/modal.module.scss'
 import ItemList from 'styles/components/map/item-list.module.scss'
 
 class FleetsModal extends Component {
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { fleet, onTitleChange } = this.props
     const nextFleet = nextProps.fleet
     // if defaultTitle generated in reducer changed,

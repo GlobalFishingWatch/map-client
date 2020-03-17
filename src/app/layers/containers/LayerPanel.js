@@ -6,7 +6,6 @@ import { toggleLayerVisibility } from 'app/layers/layersActions'
 const mapStateToProps = (state) => ({
   layers: state.layers.workspaceLayers,
   currentlyReportedLayerId: state.report.layerId,
-  userPermissions: state.user.userPermissions,
   isVesselInfoPanelOpen:
     state.vesselInfo.currentlyShownVessel !== null &&
     state.vesselInfo.currentlyShownVessel !== undefined,
