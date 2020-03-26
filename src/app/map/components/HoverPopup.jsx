@@ -25,7 +25,7 @@ const getPopupItems = (event, layerTitles) => {
     } else if (feature.layer.group === 'legacyHeatmap') {
       if (feature.isCluster === true) {
         const numVessels = feature.count === -1 ? 'multiple' : feature.count
-        const vesselPlural = feature.count > 1 ? 'objects' : 'object'
+        const vesselPlural = feature.count === -1 || feature.count > 1 ? 'objects' : 'object'
         description = `${numVessels} ${vesselPlural} at this location`
       } else {
         description = convertTimeIndexToDate(feature.properties.timeIndex)
