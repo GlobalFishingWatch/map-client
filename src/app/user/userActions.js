@@ -2,7 +2,6 @@ import { AUTH_PERMISSION_SET, GUEST_PERMISSION_SET } from 'app/config'
 import 'whatwg-fetch'
 import uniq from 'lodash/uniq'
 import { getURLParameterByName } from 'app/utils/getURLParameterByName'
-import fetchEndpoint from 'app/utils/fetchEndpoint'
 import GFWAPI from '@globalfishingwatch/api-client'
 
 export const SET_USER = 'SET_USER'
@@ -100,18 +99,25 @@ export function getLoggedUser() {
           setGAUserDimension(false)
         }
       } else {
-        const guestPermissions = await fetchEndpoint('/auth/acl/permissions/anonymous')
+        throw new Error('User not found')
+      }
+    } catch (e) {
+      console.warn('Error trying to login', e)
+      console.log(GFWAPI.getBaseUrl())
+      try {
+        const guestPermissions = await fetch(
+          `${GFWAPI.getBaseUrl()}/auth/acl/permissions/anonymous`
+        ).then((r) => r.json())
         dispatch({
           type: SET_USER_PERMISSIONS,
           payload: getAclData(guestPermissions),
         })
+      } catch (e) {
+        dispatch({
+          type: SET_USER_PERMISSIONS,
+          payload: getAclData(GUEST_PERMISSION_SET),
+        })
       }
-    } catch (e) {
-      console.warn('Error trying to login', e)
-      dispatch({
-        type: SET_USER_PERMISSIONS,
-        payload: GUEST_PERMISSION_SET,
-      })
     }
   }
 }
