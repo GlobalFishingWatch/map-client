@@ -53,8 +53,8 @@ export const setLayerManagementModalVisibility = (visibility) => (dispatch) => {
 }
 
 export function init() {
-  return (dispatch) => {
-    dispatch(getLoggedUser())
+  return async (dispatch) => {
+    await dispatch(getLoggedUser())
 
     const workspaceId = getURLParameterByName('workspace') || getURLPieceByName('workspace')
     if (workspaceId !== undefined) {
