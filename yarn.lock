@@ -1006,10 +1006,10 @@
   dependencies:
     file-saver "^2.0.2"
 
-"@globalfishingwatch/map-components@3.0.10":
-  version "3.0.10"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-3.0.10.tgz#3e143b6f015e987400c44fd55362976465d171fc"
-  integrity sha512-bkD87+S5IwOhKEep59hdo+TFmpjH40yV9+tiuYNi17xkQIRLU5aCjEiTry6zIDNcadKlzWNl5ZFLYN1EuOzOKg==
+"@globalfishingwatch/map-components@3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-3.1.1.tgz#ed6913bc188d4b89c94c6e9f5686c601e69b9379"
+  integrity sha512-dD45kc6EWgCEBGaGxc1mGMgWk7tG6Glm2Bo29GBinEXTjvwak2Xdb3rT6OdtKPt+p/yqZYd4RceABnqCcY8zqQ==
   dependencies:
     "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
     "@mapbox/tile-cover" "^3.0.2"
