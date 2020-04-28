@@ -69,13 +69,13 @@ function removeUrlToken() {
 export function getLoggedUser() {
   return async (dispatch) => {
     const accessToken = getURLParameterByName('access-token')
+    if (accessToken) {
+      removeUrlToken()
+    }
 
     try {
       const user = await GFWAPI.login({ accessToken })
       if (user) {
-        if (accessToken) {
-          removeUrlToken()
-        }
         const tokens = {
           token: GFWAPI.getToken(),
           refreshToken: GFWAPI.getRefreshToken(),
