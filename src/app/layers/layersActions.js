@@ -75,7 +75,7 @@ function setLayerHeader(layerId, header) {
   }
 }
 
-export function addCustomLayer(subtype, id, url, name, description, data) {
+export function addCustomLayer(subtype, id, url, name, description, data, color) {
   return {
     type: ADD_CUSTOM_LAYER,
     payload: {
@@ -85,6 +85,7 @@ export function addCustomLayer(subtype, id, url, name, description, data) {
       name,
       description,
       data,
+      color,
     },
   }
 }
@@ -239,7 +240,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
                   customLayer.url,
                   customLayer.title,
                   customLayer.description,
-                  layer.data
+                  layer.data,
+                  customLayer.color
                 )
               )
             })
