@@ -128,10 +128,13 @@ export default function(state = initialState, action) {
         (layer) => layer.type === LAYER_TYPES.Heatmap
       )
       const subtype = action.payload.subtype
-      const color =
-        subtype === CUSTOM_LAYERS_SUBTYPES.raster
-          ? NO_COLOR_TOGGLE_DEFAULT.color
-          : PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color
+      let color = action.payload.color
+      if (color === undefined || color === null) {
+        color =
+          subtype === CUSTOM_LAYERS_SUBTYPES.raster
+            ? NO_COLOR_TOGGLE_DEFAULT.color
+            : PALETTE_COLORS[Math.floor(PALETTE_COLORS.length * Math.random())].color
+      }
       const newLayer = {
         subtype,
         isCustom: true,
