@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
+import GFWAPI from '@globalfishingwatch/api-client'
 import { updateWorkspace, updateMouseLatLon } from 'app/workspace/workspaceActions'
 import { startLoading, completeLoading } from 'app/app/appActions'
 import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfoActions'
@@ -126,6 +127,11 @@ const getStaticLayers = createSelector(
         if (layer.header && layer.header.endpoints) {
           url = layer.header.endpoints.tiles.replace(/\{\{/g, '{').replace(/\}\}/g, '}')
         }
+
+        if (url && !url.match(/^http/)) {
+          url = `${GFWAPI.getBaseUrl()}${url}`
+        }
+
         const layerParams = {
           id: layer.id,
           visible: layer.visible,
@@ -148,7 +154,6 @@ const getStaticLayers = createSelector(
     const { rulersLayer, rulersPointsLayer } = rulerLayers
     staticLayers.push(rulersLayer)
     staticLayers.push(rulersPointsLayer)
-
     return staticLayers
   }
 )
