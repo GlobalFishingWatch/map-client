@@ -148,6 +148,7 @@ export function saveWorkspace(errorAction) {
         const newLayer = Object.assign({}, layer)
         // TODO Should we use a whitelist of fields instead ?
         delete newLayer.header
+        delete newLayer.data
         return newLayer
       })
 
