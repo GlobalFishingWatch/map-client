@@ -97,13 +97,14 @@ export function getLoggedUser() {
           })
         } catch (e) {
           setGAUserDimension(false)
+          throw new Error('Error on user login')
         }
       } else {
         throw new Error('User not found')
       }
     } catch (e) {
       console.warn('Error trying to login', e)
-      console.log(GFWAPI.getBaseUrl())
+      alert(`Something went wrong\n\nError: ${e}`)
       try {
         const guestPermissions = await fetch(
           `${GFWAPI.getBaseUrl()}/auth/acl/permissions/anonymous`
