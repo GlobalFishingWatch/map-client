@@ -97,14 +97,15 @@ export function getLoggedUser() {
           })
         } catch (e) {
           setGAUserDimension(false)
+          alert(`Something went wrong\n\nError: user login failed`)
           throw new Error('Error on user login')
         }
       } else {
+        alert(`Something went wrong\n\nError: user not found`)
         throw new Error('User not found')
       }
     } catch (e) {
-      console.warn('Error trying to login', e)
-      alert(`Something went wrong\n\nError: ${e}`)
+      console.log('Error trying to login', e)
       try {
         const guestPermissions = await fetch(
           `${GFWAPI.getBaseUrl()}/auth/acl/permissions/anonymous`
@@ -124,10 +125,15 @@ export function getLoggedUser() {
 }
 
 export function logout() {
-  return (dispatch) => {
-    GFWAPI.logout()
-    dispatch({ type: LOGOUT })
-    setGAUserDimension(false)
+  return async (dispatch) => {
+    try {
+      await GFWAPI.logout()
+      dispatch({ type: LOGOUT })
+      setGAUserDimension(false)
+    } catch (e) {
+      alert(`Something went wrong\n\nError: user logout`)
+      console.warn(e)
+    }
   }
 }
 
