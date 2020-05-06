@@ -6,32 +6,14 @@ const SITE_URL = process.env.REACT_APP_SITE_URL
 
 class MenuMobile extends Component {
   render() {
-    const cssClass = this.props.visible
+    const { isUserLogged, login, logout, visible } = this.props
+    const cssClass = visible
       ? `${MenuMobileStyles.mobileMenu} ${MenuMobileStyles._show}`
       : `${MenuMobileStyles.mobileMenu}`
 
-    const backClass = this.props.visible
+    const backClass = visible
       ? `${MenuMobileStyles.menuBack} ${MenuMobileStyles._show}`
       : `${MenuMobileStyles.menuBack}`
-
-    let userLinks
-    if (this.props.loggedUser) {
-      userLinks = (
-        <div>
-          <button className={MenuMobileStyles.buttonLogin} onClick={this.props.logout}>
-            log out
-          </button>
-        </div>
-      )
-    } else {
-      userLinks = (
-        <div>
-          <button className={MenuMobileStyles.buttonLogin} onClick={this.props.login}>
-            log in
-          </button>
-        </div>
-      )
-    }
 
     return (
       <div>
@@ -72,7 +54,14 @@ class MenuMobile extends Component {
               <a href={`${SITE_URL}/sitemap/`}>Site Map</a>
             </li>
           </ul>
-          {userLinks}
+          <div>
+            <button
+              className={MenuMobileStyles.buttonLogin}
+              onClick={isUserLogged ? logout : login}
+            >
+              {isUserLogged ? 'log out' : 'log in'}
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -80,13 +69,11 @@ class MenuMobile extends Component {
 }
 
 MenuMobile.propTypes = {
-  visible: PropTypes.bool,
-  onClose: PropTypes.func,
-  logout: PropTypes.func,
-  login: PropTypes.func,
-  loggedUser: PropTypes.object,
-  setSupportModalVisibility: PropTypes.func,
-  beforeLeave: PropTypes.func,
+  visible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  isUserLogged: PropTypes.bool.isRequired,
 }
 
 export default MenuMobile
