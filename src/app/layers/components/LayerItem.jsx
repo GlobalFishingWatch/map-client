@@ -55,10 +55,6 @@ class LayerItem extends Component {
     this.props.setLayerLabel(this.props.layer.id, value)
   }
 
-  onClickReport() {
-    this.props.toggleReport(this.props.layer.id)
-  }
-
   onClickInfo() {
     const modalParams = {
       open: true,
@@ -86,7 +82,6 @@ class LayerItem extends Component {
   render() {
     const { id, hue, color, reportId, visible, opacity, showLabels } = this.props.layer
     const { layerPanelEditMode, canReport } = this.props
-    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id
 
     let actions
     if (this.props.layerPanelEditMode === true) {
@@ -108,8 +103,15 @@ class LayerItem extends Component {
       actions = (
         <ul className={LayerItemStyles.itemOptionList}>
           {canReport && reportId !== undefined && (
-            <li className={LayerItemStyles.itemOptionItem} onClick={() => this.onClickReport()}>
-              <IconButton icon="report" activated={isCurrentlyReportedLayer === true} />
+            <li
+              data-tip={
+                'Reporting functionality is currently offline, we are working on a new and improved version of the feature. If you have a specific request you can send it to info@globalfishingwatch.org'
+              }
+              data-place="left"
+              data-class={TooltipStyles.tooltip}
+              className={classnames(LayerItemStyles.itemOptionItem, LayerItemStyles.disabled)}
+            >
+              <IconButton icon="report" disabled />
             </li>
           )}
           {this.props.enableLayerDisplaySettings && (
