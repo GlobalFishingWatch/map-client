@@ -12,6 +12,7 @@ import IconStyles from 'styles/icons.module.scss'
 import ButtonStyles from 'styles/components/button.module.scss'
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg'
 import { ReactComponent as DeleteIcon } from 'assets/icons/remove.svg'
+import debounce from 'lodash/debounce'
 import Toggle from 'app/components/Shared/Toggle'
 import ColorPicker from 'app/components/Shared/ColorPicker'
 
@@ -19,6 +20,19 @@ class LayerItem extends Component {
   constructor() {
     super()
     this.state = { expand: null }
+    this.trackReportDisabledHoverDebounced = debounce(
+      this.trackReportDisabledHover.bind(this),
+      2000
+    )
+    this.trackReportDisabledOutBound = this.trackReportDisabledOut.bind(this)
+  }
+
+  trackReportDisabledHover() {
+    this.props.trackReportDisabledHover()
+  }
+
+  trackReportDisabledOut() {
+    this.trackReportDisabledHoverDebounced.cancel()
   }
 
   onChangeVisibility() {
@@ -55,10 +69,6 @@ class LayerItem extends Component {
     this.props.setLayerLabel(this.props.layer.id, value)
   }
 
-  onClickReport() {
-    this.props.toggleReport(this.props.layer.id)
-  }
-
   onClickInfo() {
     const modalParams = {
       open: true,
@@ -86,7 +96,6 @@ class LayerItem extends Component {
   render() {
     const { id, hue, color, reportId, visible, opacity, showLabels } = this.props.layer
     const { layerPanelEditMode, canReport } = this.props
-    const isCurrentlyReportedLayer = this.props.currentlyReportedLayerId === id
 
     let actions
     if (this.props.layerPanelEditMode === true) {
@@ -108,8 +117,17 @@ class LayerItem extends Component {
       actions = (
         <ul className={LayerItemStyles.itemOptionList}>
           {canReport && reportId !== undefined && (
-            <li className={LayerItemStyles.itemOptionItem} onClick={() => this.onClickReport()}>
-              <IconButton icon="report" activated={isCurrentlyReportedLayer === true} />
+            <li
+              data-tip={
+                'Reporting functionality is currently offline, we are working on a new and improved version of the feature. If you have a specific request you can send it to info@globalfishingwatch.org'
+              }
+              data-place="left"
+              data-class={TooltipStyles.tooltip}
+              className={classnames(LayerItemStyles.itemOptionItem, LayerItemStyles.disabled)}
+              onMouseOver={this.trackReportDisabledHoverDebounced}
+              onMouseOut={this.trackReportDisabledOutBound}
+            >
+              <IconButton icon="report" disabled />
             </li>
           )}
           {this.props.enableLayerDisplaySettings && (
@@ -224,6 +242,7 @@ LayerItem.propTypes = {
   enableLayerDisplaySettings: PropTypes.bool,
   enableLabels: PropTypes.bool,
   enableColorInputs: PropTypes.bool,
+  trackReportDisabledHover: PropTypes.func.isRequired,
 }
 
 export default LayerItem

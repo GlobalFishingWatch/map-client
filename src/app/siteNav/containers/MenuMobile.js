@@ -4,7 +4,7 @@ import { login, logout } from 'app/user/userActions'
 import { setSupportModalVisibility } from 'app/siteNav/supportFormActions'
 
 const mapStateToProps = (state) => ({
-  loggedUser: state.user.loggedUser,
+  isUserLogged: state.user.loggedUser !== null,
 })
 
 const mapDispatchToProps = (dispatch) => ({
