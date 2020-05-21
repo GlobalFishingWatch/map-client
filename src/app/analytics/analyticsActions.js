@@ -15,6 +15,7 @@ export const GA_SET_LAYER_OPACITY = 'GA_SET_LAYER_OPACITY'
 export const GA_VESSEL_POINT_CLICKED = 'GA_VESSEL_POINT_CLICKED'
 export const GA_RECENT_VESSEL_ADDED = 'GA_RECENT_VESSEL_ADDED'
 export const GA_CREATE_FILTER = 'GA_CREATE_FILTER'
+export const GA_REPORT_DISABLED_HOVER = 'GA_REPORT_DISABLED_HOVER'
 
 /**
  * Only add here actions that are GA-exclusive.
@@ -141,3 +142,7 @@ export function trackRecentVesselAdded() {
     type: GA_RECENT_VESSEL_ADDED,
   }
 }
+
+export const trackReportDisabledHover = () => ({
+  type: GA_REPORT_DISABLED_HOVER,
+})
