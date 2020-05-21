@@ -12,6 +12,7 @@ import IconStyles from 'styles/icons.module.scss'
 import ButtonStyles from 'styles/components/button.module.scss'
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg'
 import { ReactComponent as DeleteIcon } from 'assets/icons/remove.svg'
+import debounce from 'lodash/debounce'
 import Toggle from 'app/components/Shared/Toggle'
 import ColorPicker from 'app/components/Shared/ColorPicker'
 
@@ -19,6 +20,19 @@ class LayerItem extends Component {
   constructor() {
     super()
     this.state = { expand: null }
+    this.trackReportDisabledHoverDebounced = debounce(
+      this.trackReportDisabledHover.bind(this),
+      2000
+    )
+    this.trackReportDisabledOutBound = this.trackReportDisabledOut.bind(this)
+  }
+
+  trackReportDisabledHover() {
+    this.props.trackReportDisabledHover()
+  }
+
+  trackReportDisabledOut() {
+    this.trackReportDisabledHoverDebounced.cancel()
   }
 
   onChangeVisibility() {
@@ -110,6 +124,8 @@ class LayerItem extends Component {
               data-place="left"
               data-class={TooltipStyles.tooltip}
               className={classnames(LayerItemStyles.itemOptionItem, LayerItemStyles.disabled)}
+              onMouseOver={this.trackReportDisabledHoverDebounced}
+              onMouseOut={this.trackReportDisabledOutBound}
             >
               <IconButton icon="report" disabled />
             </li>
@@ -226,6 +242,7 @@ LayerItem.propTypes = {
   enableLayerDisplaySettings: PropTypes.bool,
   enableLabels: PropTypes.bool,
   enableColorInputs: PropTypes.bool,
+  trackReportDisabledHover: PropTypes.func.isRequired,
 }
 
 export default LayerItem

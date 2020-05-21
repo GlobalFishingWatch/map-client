@@ -11,7 +11,11 @@ import {
   setLayerLabel,
   confirmLayerRemoval,
 } from 'app/layers/layersActions'
-import { trackLayerOpacityChange, trackLayerHueChange } from 'app/analytics/analyticsActions'
+import {
+  trackLayerOpacityChange,
+  trackLayerHueChange,
+  trackReportDisabledHover,
+} from 'app/analytics/analyticsActions'
 import { USER_PERMISSIONS } from 'app/constants'
 import { hasUserActionPermission } from 'app/user/userSelectors'
 
@@ -52,6 +56,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   openLayerInfoModal: (modalParams) => {
     dispatch(setLayerInfoModal(modalParams))
+  },
+  trackReportDisabledHover: () => {
+    dispatch(trackReportDisabledHover())
   },
 })
 

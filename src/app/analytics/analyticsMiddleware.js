@@ -29,6 +29,7 @@ import {
   GA_VESSEL_POINT_CLICKED,
   GA_RECENT_VESSEL_ADDED,
   GA_CREATE_FILTER,
+  GA_REPORT_DISABLED_HOVER,
 } from 'app/analytics/analyticsActions'
 
 import isFunction from 'lodash/isFunction'
@@ -252,6 +253,12 @@ const GA_ACTION_WHITELIST = [
     category: 'Search',
     action: 'Recent Vessels',
     getPayload: (action) => (action.payload ? 'Open infowindow' : null), // Send only if the modal is opened
+  },
+  {
+    type: GA_REPORT_DISABLED_HOVER,
+    category: 'Report Interaction',
+    action: 'Hovered on disabled reports functionality',
+    getPayload: () => '',
   },
 ]
 
