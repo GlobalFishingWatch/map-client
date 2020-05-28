@@ -1073,6 +1073,13 @@
   dependencies:
     file-saver "^2.0.2"
 
+"@globalfishingwatch/api-client@^1.1.0":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/api-client/-/api-client-1.1.1.tgz#087471bd09e7ff621f42e19526ce521da8d1fbf6"
+  integrity sha512-6WYo/cKhrDwis5q4ehj/QFQjp73W3wLPigRcX9OCLHsF0KejWc6yGQdBHGNMAH+ek0teKzelHj7YiRUvljiBow==
+  dependencies:
+    file-saver "^2.0.2"
+
 "@globalfishingwatch/map-components@3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-3.1.1.tgz#ed6913bc188d4b89c94c6e9f5686c601e69b9379"
@@ -1103,6 +1110,16 @@
 "@globalfishingwatch/map-convert@github:GlobalFishingWatch/map-convert":
   version "1.0.0"
   resolved "https://codeload.github.com/GlobalFishingWatch/map-convert/tar.gz/29d2918507ad3b57ac661abc2791b9334a43b853"
+
+"@globalfishingwatch/ui-components@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/ui-components/-/ui-components-1.1.0.tgz#db316335d127f47328aaf991c882ffa75415cd4a"
+  integrity sha512-m7E+rgAvUzenHuMmrO2WQWZr94A80pDL+uLZ8TBmFmhHJJdiuKis3Ght3NON6bl2bUzGU0ShV9Qm7jLqPd64eQ==
+  dependencies:
+    "@globalfishingwatch/api-client" "^1.1.0"
+    countryflag "^3.0.3"
+    d3-geo "^1.12.0"
+    topojson-client "^3.1.0"
 
 "@hapi/address@2.x.x":
   version "2.1.4"
@@ -3668,6 +3685,16 @@ countryflag@^2.4.2:
     if-emoji "0.1.0"
     world-countries "4.0.0"
 
+countryflag@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-3.0.3.tgz#8e2e819365c93fa55f38ce831975f3dbaa953906"
+  integrity sha512-C3vMfznS10l2T/OD+86nYovYziXlR1+SokAXzegsOwMZ/o6udQrXIH09uplCd/j6A6LZULKsVyskEMddXtxIAw==
+  dependencies:
+    core-js "3.1.4"
+    cross-env "^7.0.2"
+    if-emoji "0.1.0"
+    world-countries "4.0.0"
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
@@ -3708,6 +3735,13 @@ create-react-class@^15.5.x, create-react-class@^15.6.0:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+cross-env@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.2.tgz#bd5ed31339a93a3418ac4f3ca9ca3403082ae5f9"
+  integrity sha512-KZP/bMEOJEDCkDQAyRhu3RL2ZO/SUVrxQVI0G3YEQ+OLbRA3c6zgixe8Mq8a/z7+HKlNEjo8oiLUs8iRijY2Rw==
+  dependencies:
+    cross-spawn "^7.0.1"
+
 cross-spawn@7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
@@ -3744,6 +3778,15 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+cross-spawn@^7.0.1:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
+  integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
+  dependencies:
+    path-key "^3.1.0"
+    shebang-command "^2.0.0"
+    which "^2.0.1"
 
 crypto-browserify@^3.11.0:
   version "3.12.0"
@@ -4155,6 +4198,13 @@ d3-geo@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/d3-geo/-/d3-geo-1.9.1.tgz#157e3b0f917379d0f73bebfff3be537f49fa7356"
   integrity sha512-l9wL/cEQkyZQYXw3xbmLsH3eQ5ij+icNfo4r0GrLa5rOCZR/e/3am45IQ0FvQ5uMsv+77zBRunLc9ufTWSQYFA==
+  dependencies:
+    d3-array "1"
+
+d3-geo@^1.12.0:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/d3-geo/-/d3-geo-1.12.1.tgz#7fc2ab7414b72e59fbcbd603e80d9adc029b035f"
+  integrity sha512-XG4d1c/UJSEX9NfU02KwBL6BYPj8YKHxgBEw5om2ZnTRSbIcego6dhHwcxuSR3clxh0EpE38os1DVPOmnYtTPg==
   dependencies:
     d3-array "1"
 
@@ -13462,7 +13512,7 @@ topojson-client@3.0.0:
   dependencies:
     commander "2"
 
-topojson-client@^3.0.0:
+topojson-client@^3.0.0, topojson-client@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/topojson-client/-/topojson-client-3.1.0.tgz#22e8b1ed08a2b922feeb4af6f53b6ef09a467b99"
   integrity sha512-605uxS6bcYxGXw9qi62XyrV6Q3xwbndjachmNxu8HWTtVPxZfEJN9fd/SZS1Q54Sn2y0TMyMxFj/cJINqGHrKw==
