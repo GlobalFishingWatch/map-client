@@ -1080,17 +1080,17 @@
   dependencies:
     file-saver "^2.0.2"
 
-"@globalfishingwatch/map-components@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-3.1.1.tgz#ed6913bc188d4b89c94c6e9f5686c601e69b9379"
-  integrity sha512-dD45kc6EWgCEBGaGxc1mGMgWk7tG6Glm2Bo29GBinEXTjvwak2Xdb3rT6OdtKPt+p/yqZYd4RceABnqCcY8zqQ==
+"@globalfishingwatch/map-components@3.8.11":
+  version "3.8.11"
+  resolved "https://registry.yarnpkg.com/@globalfishingwatch/map-components/-/map-components-3.8.11.tgz#596caef220d82750cbcdbe4c2b08ce7e97f8e54b"
+  integrity sha512-wfulhzhN6TIjvRujnjfmma28G5CI/UmA/48gvkb07aZ0Cc6w8eKr/mU4NnbfgrAAyEauFUgxbGHzry0fYohuhw==
   dependencies:
     "@globalfishingwatch/map-convert" "github:GlobalFishingWatch/map-convert"
     "@mapbox/tile-cover" "^3.0.2"
     "@turf/area" "^6.0.1"
     "@turf/bbox" "^6.0.1"
     classnames "^2.2.6"
-    countryflag "^2.4.2"
+    countryflag "^2.5.3"
     d3-ease "1.0.5"
     d3-geo "1.11.3"
     d3-scale "2.2.2"
@@ -3676,10 +3676,10 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
-countryflag@^2.4.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-2.5.0.tgz#03615546078739f692fc85c107d9c7ba2900e019"
-  integrity sha512-Yh1xsTxwLK2pihISGIxRB6E4NP3gP+SalYThBvBs8eieX+/t7DB7pHiaCDRxTYzlsZTbc/GmufwxMqCyNnMO6A==
+countryflag@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/countryflag/-/countryflag-2.5.3.tgz#f0a9bbc64e1de994df913d3a594780bf871ab17f"
+  integrity sha512-2xzvk93Hf8r95K5+soBAj+ckRi11YXag/YP6WzK0ki5/HOkNToiAYt96+gMUSZTHUGZ2emd7eU/PlAp+MyJ26g==
   dependencies:
     core-js "3.1.4"
     if-emoji "0.1.0"
@@ -14208,9 +14208,9 @@ websocket-driver@>=0.5.1:
     websocket-extensions ">=0.1.1"
 
 websocket-extensions@>=0.1.1:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
-  integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
+  integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
 
 wgs84@0.0.0:
   version "0.0.0"
