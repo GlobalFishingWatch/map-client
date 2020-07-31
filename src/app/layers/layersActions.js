@@ -180,6 +180,8 @@ export function initLayers(workspaceLayers, libraryLayers) {
 
               layer.header = header
               dispatch(setGlobalFiltersFromHeader(header))
+            } else {
+              layer.headersError = true
             }
           })
           headersPromises.push(headerPromise)
@@ -187,12 +189,14 @@ export function initLayers(workspaceLayers, libraryLayers) {
       })
 
     // load activity layers headers
-    const headersPromise = Promise.all(headersPromises.map((p) => p.catch((e) => e)))
+    const headersPromise = Promise.all(headersPromises)
     headersPromise
       .then(() => {
         dispatch({
           type: SET_LAYERS,
           payload: workspaceLayers
+            // exclude layers that has failed in headers load
+            .filter((layer) => !layer.headersError)
             // exclude layers that are Heatmaps and don't have a header
             .filter((layer) => layer.type !== LAYER_TYPES.Heatmap || layer.header !== undefined)
             // exclude custom layers as they need to load their data first
