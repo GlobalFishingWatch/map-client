@@ -105,7 +105,7 @@ export function getLoggedUser() {
         throw new Error('User not found')
       }
     } catch (e) {
-      console.log('Error trying to login', e)
+      console.log('Error trying to login:', e.message)
       try {
         const guestPermissions = await fetch(
           `${GFWAPI.getBaseUrl()}/auth/acl/permissions/anonymous`
