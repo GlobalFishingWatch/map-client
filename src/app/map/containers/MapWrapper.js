@@ -14,7 +14,12 @@ import MapWrapper from 'app/map/components/MapWrapper'
 const getVessels = (state) => state.vesselInfo.vessels
 const getHighlightedTrack = (state) => state.vesselInfo.highlightedTrack
 const getEncounter = (state) => state.encounters.encountersInfo
-const getLayers = (state) => state.layers.workspaceLayers
+const getLayers = (state) =>
+  state.layers.workspaceLayers.filter((l) =>
+    l && l.gl
+      ? l.gl.source.type !== 'vector' || (l.gl.source.tiles && l.gl.source.tiles.length > 0)
+      : true
+  )
 const getLayerFilters = (state) => state.filterGroups.layerFilters
 const getBasemap = (state) => state.basemap
 const getWorkspaceZoom = (state) => state.workspace.viewport.zoom
