@@ -9,7 +9,7 @@ import { init } from 'app/app/appActions'
 import reducers from 'app/reducers'
 import analyticsMiddleware from 'app/analytics/analyticsMiddleware'
 import 'styles/global.module.scss'
-import '@globalfishingwatch/ui-components/dist/base.css'
+// import '@globalfishingwatch/ui-components/dist/base.css'
 
 import AppContainer from 'app/containers/App'
 import AuthMapContainer from 'app/containers/AuthMap'
