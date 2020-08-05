@@ -289,7 +289,7 @@ const mapDispatchToProps = (dispatch) => ({
         if (feature.layer.id === ENCOUNTERS_AIS) {
           dispatch(setEncountersInfo(feature.properties.id, ENCOUNTERS_AIS))
         } else if (feature.properties.vessel_1_id && feature.properties.vessel_2_id) {
-          dispatch(setEncountersInfoFromGLLayer(feature.properties))
+          dispatch(setEncountersInfoFromGLLayer(feature.properties, feature.layer.id))
         } else {
           dispatch(addVesselFromHeatmap(feature))
         }

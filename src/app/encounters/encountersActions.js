@@ -25,9 +25,19 @@ export function clearEncountersInfo() {
   }
 }
 
-export function setEncountersInfoFromGLLayer(encounterInfo) {
+export function setEncountersInfoFromGLLayer(encounterInfo, layerId) {
   return (dispatch, getState) => {
     const workspaceLayers = getState().layers.workspaceLayers
+    const encounterLayer = workspaceLayers.find((workspaceLayer) => workspaceLayer.id === layerId)
+
+    dispatch({
+      type: LOAD_ENCOUNTERS_INFO,
+      payload: {
+        id: encounterInfo.id,
+        tilesetId: encounterLayer.tilesetId,
+      },
+    })
+
     encounterInfo.vessels = [
       {
         tilesetId: encounterInfo.vessel_1_tileset,
