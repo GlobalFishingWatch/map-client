@@ -123,9 +123,9 @@ const getStaticLayers = createSelector(
         const selectedFeatures =
           report.layerId === layer.id
             ? {
-              field: 'reporting_id',
-              values: report.polygonsIds,
-            }
+                field: 'reporting_id',
+                values: report.polygonsIds,
+              }
             : null
         let url = layer.url
         if (layer.header && layer.header.endpoints) {
@@ -286,10 +286,10 @@ const mapDispatchToProps = (dispatch) => ({
         break
       }
       case 'temporal': {
-        if (feature.properties.vessel_1_id && feature.properties.vessel_2_id) {
-          dispatch(setEncountersInfoFromGLLayer(feature.properties))
-        } else if (feature.layer.id === ENCOUNTERS_AIS) {
+        if (feature.layer.id === ENCOUNTERS_AIS) {
           dispatch(setEncountersInfo(feature.properties.id, ENCOUNTERS_AIS))
+        } else if (feature.properties.vessel_1_id && feature.properties.vessel_2_id) {
+          dispatch(setEncountersInfoFromGLLayer(feature.properties))
         } else {
           dispatch(addVesselFromHeatmap(feature))
         }
