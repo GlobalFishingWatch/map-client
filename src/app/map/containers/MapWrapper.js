@@ -4,7 +4,11 @@ import GFWAPI from '@globalfishingwatch/api-client'
 import { updateWorkspace, updateMouseLatLon } from 'app/workspace/workspaceActions'
 import { startLoading, completeLoading } from 'app/app/appActions'
 import { clearVesselInfo, addVesselFromHeatmap } from 'app/vesselInfo/vesselInfoActions'
-import { setEncountersInfo, clearEncountersInfo } from 'app/encounters/encountersActions'
+import {
+  setEncountersInfo,
+  clearEncountersInfo,
+  setEncountersInfoFromGLLayer,
+} from 'app/encounters/encountersActions'
 import { toggleCurrentReportPolygon, setCurrentSelectedPolygon } from 'app/report/reportActions'
 import { moveCurrentRuler, editRuler } from 'app/rulers/rulersActions'
 import { getRulersLayers } from 'app/rulers/rulersSelectors'
@@ -119,9 +123,9 @@ const getStaticLayers = createSelector(
         const selectedFeatures =
           report.layerId === layer.id
             ? {
-                field: 'reporting_id',
-                values: report.polygonsIds,
-              }
+              field: 'reporting_id',
+              values: report.polygonsIds,
+            }
             : null
         let url = layer.url
         if (layer.header && layer.header.endpoints) {
@@ -282,7 +286,9 @@ const mapDispatchToProps = (dispatch) => ({
         break
       }
       case 'temporal': {
-        if (feature.layer.id === ENCOUNTERS_AIS) {
+        if (feature.properties.vessel_1_id && feature.properties.vessel_2_id) {
+          dispatch(setEncountersInfoFromGLLayer(feature.properties))
+        } else if (feature.layer.id === ENCOUNTERS_AIS) {
           dispatch(setEncountersInfo(feature.properties.id, ENCOUNTERS_AIS))
         } else {
           dispatch(addVesselFromHeatmap(feature))

@@ -38,9 +38,11 @@ class ControlPanel extends Component {
   }
 
   _animateScroll() {
+    if (!this.controlPanelRef) return
     const targetY = this.controlPanelRef.clientHeight
     let nextY = this.controlPanelRef.scrollTop
     const step = () => {
+      if (!this.controlPanelRef) return
       const currentY = nextY
       const deltaY = targetY - currentY
       const incrementY = deltaY * 0.1

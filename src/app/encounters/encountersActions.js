@@ -25,6 +25,61 @@ export function clearEncountersInfo() {
   }
 }
 
+export function setEncountersInfoFromGLLayer(encounterInfo) {
+  return (dispatch, getState) => {
+    const workspaceLayers = getState().layers.workspaceLayers
+    encounterInfo.vessels = [
+      {
+        tilesetId: encounterInfo.vessel_1_tileset,
+        id: encounterInfo.vessel_1_id.toString(),
+        vesselTypeName: encounterInfo.vessel_1_type,
+        color:
+          encounterInfo.vessel_1_type === VESSEL_TYPE_REEFER
+            ? ENCOUNTERS_REEFER_COLOR
+            : ENCOUNTERS_VESSEL_COLOR,
+      },
+      {
+        tilesetId: encounterInfo.vessel_2_tileset,
+        id: encounterInfo.vessel_2_id.toString(),
+        vesselTypeName: encounterInfo.vessel_2_type,
+        color:
+          encounterInfo.vessel_2_type === VESSEL_TYPE_REEFER
+            ? ENCOUNTERS_REEFER_COLOR
+            : ENCOUNTERS_VESSEL_COLOR,
+      },
+    ]
+
+    dispatch({
+      type: SET_ENCOUNTERS_INFO,
+      payload: {
+        encounterInfo,
+      },
+    })
+
+    encounterInfo.vessels.forEach((vessel) => {
+      const vesselWorkspaceLayer = workspaceLayers.find(
+        (workspaceLayer) =>
+          workspaceLayer.tilesetId === vessel.tilesetId || workspaceLayer.id === vessel.tilesetId
+      )
+      const fields = vesselWorkspaceLayer.header.info.fields
+      fetchEndpoint(
+        buildEndpoint(vesselWorkspaceLayer.header.endpoints.info, {
+          id: vessel.id,
+        })
+      ).then((vesselInfo) => {
+        dispatch({
+          type: SET_ENCOUNTERS_VESSEL_INFO,
+          payload: {
+            id: vessel.id,
+            vesselInfo,
+            fields,
+          },
+        })
+      })
+    })
+  }
+}
+
 export function setEncountersInfo(id, tilesetId) {
   return (dispatch, getState) => {
     const workspaceLayers = getState().layers.workspaceLayers
