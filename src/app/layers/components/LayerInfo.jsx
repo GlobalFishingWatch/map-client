@@ -16,15 +16,23 @@ class LayerInfo extends Component {
   }
 
   render() {
-    if (this.props.info === undefined) {
+    const { info } = this.props
+    if (info === undefined) {
       return null
     }
 
-    const description = this.props.info.description || this.defaults.messages.noDescription
+    const description = info.description || this.defaults.messages.noDescription
+    const isIndonesianLayer = info.id === 'indo-public-fishing' || info.id === 'indo-private'
 
     return (
       <div className={LayerInfoStyles.layerInfo}>
-        <h2 className={LayerInfoStyles.layerTitle}>{this.props.info.title}</h2>
+        <h2 className={LayerInfoStyles.layerTitle}>{info.title}</h2>
+        {isIndonesianLayer && (
+          <p className={LayerInfoStyles.layerDescription}>
+            Notice: VMS data for Indonesia is not currently available for the period from July 2020
+            to date
+          </p>
+        )}
         <p
           className={LayerInfoStyles.layerDescription}
           dangerouslySetInnerHTML={{
