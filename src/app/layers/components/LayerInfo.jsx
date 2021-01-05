@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import Icon from 'app/components/Shared/Icon'
 import LayerInfoStyles from 'styles/components/map/layer-info.module.scss'
 
 class LayerInfo extends Component {
@@ -29,8 +30,8 @@ class LayerInfo extends Component {
         <h2 className={LayerInfoStyles.layerTitle}>{info.title}</h2>
         {isIndonesianLayer && (
           <p className={LayerInfoStyles.layerDescription}>
-            Notice: VMS data for Indonesia is not currently available for the period from July 2020
-            to date
+            <Icon icon="alert" inline /> VMS data for Indonesia is not currently available for the
+            period from July 2020 to date
           </p>
         )}
         <p
