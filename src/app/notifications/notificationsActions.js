@@ -1,5 +1,4 @@
 import platform from 'platform'
-import isWebGLSupported from '../utils/isWebGLSupported'
 
 export const SET_NOTIFICATION = 'SET_NOTIFICATION'
 
@@ -9,12 +8,6 @@ const getNotificationsConfig = (literals) => [
     content: literals.banner,
     checker: () => process.env.REACT_APP_SHOW_BANNER === true,
     type: 'notification',
-  },
-  {
-    id: 'webgl',
-    content: literals.webgl_warning,
-    checker: () => !isWebGLSupported(),
-    type: 'error',
   },
   {
     id: 'edge',

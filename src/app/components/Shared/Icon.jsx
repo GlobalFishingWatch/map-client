@@ -24,9 +24,10 @@ import { ReactComponent as Ruler } from 'assets/icons/ruler.svg'
 
 class Icon extends Component {
   render() {
-    const { icon, activated } = this.props
+    const { icon, activated, inline } = this.props
     const classNames = classnames(IconStyles.icon, {
       [IconStyles._activated]: activated,
+      [IconStyles._inline]: inline,
     })
     let iconElement
     switch (icon) {
@@ -99,10 +100,12 @@ class Icon extends Component {
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
   activated: PropTypes.bool,
+  inline: PropTypes.bool,
 }
 
 Icon.defaultProps = {
   activated: false,
+  inline: false,
 }
 
 export default Icon

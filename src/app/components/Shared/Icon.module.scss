@@ -12,6 +12,10 @@
     fill: $color-31 !important;
   }
 
+  &._inline {
+    display: inline-block;
+  }
+
   &._activated {
     fill: $color-4;
 

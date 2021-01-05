@@ -11,6 +11,7 @@ import ReactTooltip from 'react-tooltip'
 import IconStyles from 'styles/icons.module.scss'
 import ButtonStyles from 'styles/components/button.module.scss'
 import { ReactComponent as InfoIcon } from 'assets/icons/info.svg'
+import { ReactComponent as AlertIcon } from 'assets/icons/alert.svg'
 import { ReactComponent as DeleteIcon } from 'assets/icons/remove.svg'
 import debounce from 'lodash/debounce'
 import Toggle from 'app/components/Shared/Toggle'
@@ -143,7 +144,13 @@ class LayerItem extends Component {
           )}
           <li className={LayerItemStyles.itemOptionItem} onClick={() => this.onClickInfo()}>
             <button className={ButtonStyles.infoButton}>
-              <InfoIcon className={IconStyles.infoIcon} />
+              {id === 'indo-public-fishing' || id === 'indo-private' ? (
+                <AlertIcon
+                  className={classnames(IconStyles.infoIcon, LayerItemStyles.warningIcon)}
+                />
+              ) : (
+                <InfoIcon className={IconStyles.infoIcon} />
+              )}
             </button>
           </li>
         </ul>

@@ -84,6 +84,16 @@
   display: inline-flex;
   position: relative;
   margin-right: 5px;
+
+  .warningIcon {
+    height: 14px;
+    width: 12px;
+    margin-left: -2px;
+
+    > path {
+      fill: $color-button-primary;
+    }
+  }
 }
 
 .layerItemHeader {
