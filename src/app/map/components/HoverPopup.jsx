@@ -21,9 +21,7 @@ const getPopupItems = (event, layerTitles) => {
     let description = feature.title
 
     if (feature.layer.id === ENCOUNTERS_AIS) {
-      description = moment(feature.properties.timestamp * 1000)
-        .utc()
-        .format(FORMAT_DATE)
+      description = convertTimeIndexToDate(feature.properties.timeIndex)
     } else if (feature.layer.group === 'legacyHeatmap') {
       if (feature.isCluster === true) {
         const numVessels = feature.count === -1 ? 'multiple' : feature.count
