@@ -13,8 +13,8 @@ if (!process.env.DEFAULT_WORKSPACE || !API_GATEWAY_URL) {
 }
 const WORKSPACE_API_URL = API_GATEWAY_URL
   ? API_GATEWAY_URL + '/v2'
-  : 'https://gateway.api.dev.globalfishingwatch.org/v2'
-const DEFAULT_WORKSPACE = process.env.DEFAULT_WORKSPACE || 'vizz-default-workspace-v16'
+  : 'https://gateway.api.globalfishingwatch.org/v2'
+const DEFAULT_WORKSPACE = process.env.DEFAULT_WORKSPACE || 'default-map-client-3-0-workspace-v12'
 const WORKSPACE_PATH = 'src/app/workspace/workspace.js'
 
 console.log('Retrieving worskpace with configuration:')
