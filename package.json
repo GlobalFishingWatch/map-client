@@ -3,6 +3,7 @@
   "version": "4.0.2",
   "description": "This repository hosts the Global Fishing Watch client application.",
   "private": false,
+  "homepage": "https://globalfishingwatch.org/legacy-map",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -30,7 +31,6 @@
     "node": "> 8.2.x",
     "npm": "> 5.3.x"
   },
-  "homepage": ".",
   "dependencies": {
     "@globalfishingwatch/api-client": "0.0.21",
     "@globalfishingwatch/map-components": "3.8.12",
