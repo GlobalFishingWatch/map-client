@@ -1,8 +1,42 @@
 import platform from 'platform'
-
+import { getURLParameterByName, getURLPieceByName } from 'app/utils/getURLParameterByName'
 export const SET_NOTIFICATION = 'SET_NOTIFICATION'
 
+const workspaceId = getURLParameterByName('workspace') || getURLPieceByName('workspace')
+
 const getNotificationsConfig = (literals) => [
+  {
+    id: 'sunsetting_map2_migrated',
+    content: literals.sunsetting_map2_migrated,
+    checker: () => {
+      return [
+        /* whitelist of GFW migrated workspaces? */
+      ].includes(workspaceId)
+    },
+    type: 'warning',
+  },
+  {
+    id: 'sunsetting_map2_not_migrated',
+    content: literals.sunsetting_map2_not_migrated,
+    checker: () => {
+      return workspaceId && workspaceId.match(/^udw/) === null
+    },
+    type: 'warning',
+  },
+  {
+    id: 'sunsetting_map2_user_defined',
+    content: literals.sunsetting_map2_user_defined,
+    checker: () => {
+      return workspaceId && workspaceId.match(/^udw/) !== null
+    },
+    type: 'warning',
+  },
+  {
+    id: 'sunsetting_map2',
+    content: literals.sunsetting_map2,
+    checker: () => true,
+    type: 'warning',
+  },
   {
     id: 'banner',
     content: literals.banner,

@@ -6,16 +6,15 @@
   font-family: $font-family-1;
   font-size: $font-size-xs-small;
   font-weight: 400;
-  min-height: 60px;
+  min-height: 45px;
   justify-content: center;
   padding: 10px 10px 10px 50px;
   width: 100%;
-  z-index: 21;
+  z-index: 999;
 
   @media #{$mq-tablet} {
-    font-size: $font-size-small;
-    padding-right: calc(#{$map-panels-width} + 50px);
     position: absolute;
+    font-size: $font-size-small;
   }
 
   a {
@@ -29,7 +28,7 @@
     height: 20px;
     left: 20px;
     position: absolute;
-    top: 20px;
+    top: 12px;
     width: 20px;
 
     > .icon {
