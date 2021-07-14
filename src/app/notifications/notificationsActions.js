@@ -19,7 +19,7 @@ const getNotificationsConfig = (literals) => [
     id: 'sunsetting_map2_not_migrated',
     content: literals.sunsetting_map2_not_migrated,
     checker: () => {
-      return workspaceId.match(/^udw/) === null
+      return workspaceId && workspaceId.match(/^udw/) === null
     },
     type: 'warning',
   },
@@ -27,7 +27,7 @@ const getNotificationsConfig = (literals) => [
     id: 'sunsetting_map2_user_defined',
     content: literals.sunsetting_map2_user_defined,
     checker: () => {
-      return workspaceId.match(/^udw/) !== null
+      return workspaceId && workspaceId.match(/^udw/) !== null
     },
     type: 'warning',
   },
